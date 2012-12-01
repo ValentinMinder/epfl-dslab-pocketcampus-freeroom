@@ -223,7 +223,8 @@ typedef int64_t timestamp;
   BOOL __iVisible;
   NSString * __iTextContent;
   NSString * __iVideoSourceProvider;
-  NSString * __iVideoURL;
+  NSString * __iVideoID;
+  NSString * __iVideoDownloadURL;
   timestamp __iCreationTimestamp;
   timestamp __iLastUpdateTimestamp;
 
@@ -234,7 +235,8 @@ typedef int64_t timestamp;
   BOOL __iVisible_isset;
   BOOL __iTextContent_isset;
   BOOL __iVideoSourceProvider_isset;
-  BOOL __iVideoURL_isset;
+  BOOL __iVideoID_isset;
+  BOOL __iVideoDownloadURL_isset;
   BOOL __iCreationTimestamp_isset;
   BOOL __iLastUpdateTimestamp_isset;
 }
@@ -247,12 +249,13 @@ typedef int64_t timestamp;
 @property (nonatomic, getter=iVisible, setter=setIVisible:) BOOL iVisible;
 @property (nonatomic, retain, getter=iTextContent, setter=setITextContent:) NSString * iTextContent;
 @property (nonatomic, retain, getter=iVideoSourceProvider, setter=setIVideoSourceProvider:) NSString * iVideoSourceProvider;
-@property (nonatomic, retain, getter=iVideoURL, setter=setIVideoURL:) NSString * iVideoURL;
+@property (nonatomic, retain, getter=iVideoID, setter=setIVideoID:) NSString * iVideoID;
+@property (nonatomic, retain, getter=iVideoDownloadURL, setter=setIVideoDownloadURL:) NSString * iVideoDownloadURL;
 @property (nonatomic, getter=iCreationTimestamp, setter=setICreationTimestamp:) timestamp iCreationTimestamp;
 @property (nonatomic, getter=iLastUpdateTimestamp, setter=setILastUpdateTimestamp:) timestamp iLastUpdateTimestamp;
 #endif
 
-- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iTitle: (NSString *) iTitle iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoURL: (NSString *) iVideoURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp;
+- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iTitle: (NSString *) iTitle iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoID: (NSString *) iVideoID iVideoDownloadURL: (NSString *) iVideoDownloadURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -285,9 +288,13 @@ typedef int64_t timestamp;
 - (void) setIVideoSourceProvider: (NSString *) iVideoSourceProvider;
 - (BOOL) iVideoSourceProviderIsSet;
 
-- (NSString *) iVideoURL;
-- (void) setIVideoURL: (NSString *) iVideoURL;
-- (BOOL) iVideoURLIsSet;
+- (NSString *) iVideoID;
+- (void) setIVideoID: (NSString *) iVideoID;
+- (BOOL) iVideoIDIsSet;
+
+- (NSString *) iVideoDownloadURL;
+- (void) setIVideoDownloadURL: (NSString *) iVideoDownloadURL;
+- (BOOL) iVideoDownloadURLIsSet;
 
 - (timestamp) iCreationTimestamp;
 - (void) setICreationTimestamp: (timestamp) iCreationTimestamp;
@@ -440,19 +447,26 @@ typedef int64_t timestamp;
 @end
 
 @interface MyEduCourseDetailsRequest : NSObject <NSCoding> {
+  MyEduRequest * __iMyEduRequest;
   NSString * __iCourseCode;
 
+  BOOL __iMyEduRequest_isset;
   BOOL __iCourseCode_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iCourseCode, setter=setICourseCode:) NSString * iCourseCode;
 #endif
 
-- (id) initWithICourseCode: (NSString *) iCourseCode;
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (MyEduRequest *) iMyEduRequest;
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
+- (BOOL) iMyEduRequestIsSet;
 
 - (NSString *) iCourseCode;
 - (void) setICourseCode: (NSString *) iCourseCode;
@@ -461,22 +475,29 @@ typedef int64_t timestamp;
 @end
 
 @interface MyEduSectionDetailsRequest : NSObject <NSCoding> {
+  MyEduRequest * __iMyEduRequest;
   NSString * __iCourseCode;
   int32_t __iSectionId;
 
+  BOOL __iMyEduRequest_isset;
   BOOL __iCourseCode_isset;
   BOOL __iSectionId_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iCourseCode, setter=setICourseCode:) NSString * iCourseCode;
 @property (nonatomic, getter=iSectionId, setter=setISectionId:) int32_t iSectionId;
 #endif
 
-- (id) initWithICourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId;
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (MyEduRequest *) iMyEduRequest;
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
+- (BOOL) iMyEduRequestIsSet;
 
 - (NSString *) iCourseCode;
 - (void) setICourseCode: (NSString *) iCourseCode;
@@ -489,25 +510,32 @@ typedef int64_t timestamp;
 @end
 
 @interface MyEduModuleDetailsRequest : NSObject <NSCoding> {
+  MyEduRequest * __iMyEduRequest;
   NSString * __iCourseCode;
   int32_t __iSectionId;
   int32_t __iModuleId;
 
+  BOOL __iMyEduRequest_isset;
   BOOL __iCourseCode_isset;
   BOOL __iSectionId_isset;
   BOOL __iModuleId_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iCourseCode, setter=setICourseCode:) NSString * iCourseCode;
 @property (nonatomic, getter=iSectionId, setter=setISectionId:) int32_t iSectionId;
 @property (nonatomic, getter=iModuleId, setter=setIModuleId:) int32_t iModuleId;
 #endif
 
-- (id) initWithICourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId;
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (MyEduRequest *) iMyEduRequest;
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
+- (BOOL) iMyEduRequestIsSet;
 
 - (NSString *) iCourseCode;
 - (void) setICourseCode: (NSString *) iCourseCode;
@@ -524,12 +552,14 @@ typedef int64_t timestamp;
 @end
 
 @interface MyEduSubmitFeedbackRequest : NSObject <NSCoding> {
+  MyEduRequest * __iMyEduRequest;
   NSString * __iCourseCode;
   int32_t __iSectionId;
   int32_t __iModuleId;
   NSString * __iText;
   int32_t __iRating;
 
+  BOOL __iMyEduRequest_isset;
   BOOL __iCourseCode_isset;
   BOOL __iSectionId_isset;
   BOOL __iModuleId_isset;
@@ -538,6 +568,7 @@ typedef int64_t timestamp;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iCourseCode, setter=setICourseCode:) NSString * iCourseCode;
 @property (nonatomic, getter=iSectionId, setter=setISectionId:) int32_t iSectionId;
 @property (nonatomic, getter=iModuleId, setter=setIModuleId:) int32_t iModuleId;
@@ -545,10 +576,14 @@ typedef int64_t timestamp;
 @property (nonatomic, getter=iRating, setter=setIRating:) int32_t iRating;
 #endif
 
-- (id) initWithICourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId iText: (NSString *) iText iRating: (int32_t) iRating;
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId iText: (NSString *) iText iRating: (int32_t) iRating;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (MyEduRequest *) iMyEduRequest;
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
+- (BOOL) iMyEduRequestIsSet;
 
 - (NSString *) iCourseCode;
 - (void) setICourseCode: (NSString *) iCourseCode;
@@ -730,10 +765,10 @@ typedef int64_t timestamp;
 - (MyEduTequilaToken *) getTequilaTokenForMyEdu;  // throws TException
 - (MyEduSession *) getMyEduSession: (MyEduTequilaToken *) iTequilaToken;  // throws TException
 - (MyEduSubscribedCoursesListReply *) getSubscribedCoursesList: (MyEduRequest *) iMyEduRequest;  // throws TException
-- (MyEduCourseDetailsReply *) getCourseDetails: (MyEduRequest *) iMyEduRequest : (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest;  // throws TException
-- (MyEduSectionDetailsReply *) getSectionDetails: (MyEduRequest *) iMyEduRequest : (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest;  // throws TException
-- (MyEduModuleDetailsReply *) getModuleDetails: (MyEduRequest *) iMyEduRequest : (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest;  // throws TException
-- (MyEduSubmitFeedbackReply *) submitFeedback: (MyEduRequest *) iMyEduRequest : (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest;  // throws TException
+- (MyEduCourseDetailsReply *) getCourseDetails: (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest;  // throws TException
+- (MyEduSectionDetailsReply *) getSectionDetails: (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest;  // throws TException
+- (MyEduModuleDetailsReply *) getModuleDetails: (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest;  // throws TException
+- (MyEduSubmitFeedbackReply *) submitFeedback: (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest;  // throws TException
 @end
 
 @interface MyEduServiceClient : NSObject <MyEduService> {

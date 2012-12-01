@@ -16,7 +16,7 @@
 
 - (void)tempTest {
     service = [[MyEduService sharedInstanceToRetain] retain];
-    authController = [[AuthenticationController alloc] init];
+    authController = [[AuthenticationController sharedInstance] retain];
     //[service getSubscribedCoursesListForRequest:[[[MyEduRequest alloc] initWithIMyEduSession:[[[MyEduSession alloc] initWithIMyEduCookie:@"fsdfsdf"] autorelease] iLanguage:@""] autorelease] delegate:self];
     [service getTequilaTokenForMyEduWithDelegate:self];
 }
@@ -37,7 +37,7 @@
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken*)tequilaToken didReturn:(MyEduSession*)myEduSession {
     NSLog(@"getSessionIdForServiceWithTequilaKey:didReturn: %@", myEduSession);
     self.myEduRequest = [[[MyEduRequest alloc] initWithIMyEduSession:myEduSession iLanguage:@"en"] autorelease];
-    [service getSubscribedCoursesListForRequest:self.myEduRequest delegate:self];
+    [service getSubscribedCoursesListForRequest:[service createMyEduRequest] delegate:self];
 
 }
 
@@ -48,7 +48,7 @@
 - (void)getSubscribedCoursesListForRequest:(MyEduRequest *)request didReturn:(MyEduSubscribedCoursesListReply *)reply {
     NSLog(@"getSubscribedCoursesListForRequest:didReturn: %@", reply);
     for (MyEduCourse* course in reply.iSubscribedCourses) {
-        [service getCourseDetailsForRequest:[[MyEduCourseDetailsRequest alloc] initWithICourseCode:course.iCode] myeduRequest:self.myEduRequest delegate:self];
+        [service getCourseDetailsForRequest:[[MyEduCourseDetailsRequest alloc] initWithIMyEduRequest:[service createMyEduRequest] iCourseCode:course.iCode] delegate:self];
     }
     
 }

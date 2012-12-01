@@ -32,6 +32,8 @@
 
 #import "ZUUIRevealController.h"
 
+#import "PCUtils.h"
+
 @interface ZUUIRevealController()
 
 // Private Properties:
@@ -657,6 +659,10 @@
 	return NO;
 }
 
+- (BOOL)shouldAutomaticallyForwardRotationMethods {
+    return NO;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
@@ -689,7 +695,7 @@
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	[self.frontViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	[self.rearViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self.rearViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -760,17 +766,38 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    if (self.frontViewController) {
-        return [self.frontViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    
+    if ([PCUtils isIdiomPad]) {
+        return YES;
+        if (self.frontViewController && [self.frontViewController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
+            return [self.frontViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation]; 
+        } else {
+            return YES; //By default, support all orientations on iPad
+        }
+    } else { //iPhone, iPod touch
+        if (self.frontViewController && [self.frontViewController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
+            return [self.frontViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+        } else {
+            return (toInterfaceOrientation == UIInterfaceOrientationPortrait); //By default, only support portrait on iPhone
+        }
     }
-    return (toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
-    if (self.frontViewController) {
-        return [self.frontViewController supportedInterfaceOrientations];
+    if ([PCUtils isIdiomPad]) {
+        if (self.frontViewController && [self.frontViewController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
+            return [self.frontViewController supportedInterfaceOrientations];
+        } else {
+            return UIInterfaceOrientationMaskAll; //By default, support all orientations on iPad
+        }
+    } else { //iPhone, iPod touch
+        if (self.frontViewController && [self.frontViewController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
+            return [self.frontViewController supportedInterfaceOrientations];
+        } else {
+            return UIInterfaceOrientationMaskPortrait; //By default, only support portrait on iPhone
+        }
     }
-    return UIInterfaceOrientationMaskAll;
 }
 
 #pragma mark - Memory Management

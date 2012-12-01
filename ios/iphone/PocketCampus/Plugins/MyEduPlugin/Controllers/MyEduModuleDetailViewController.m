@@ -49,7 +49,8 @@
     NSString* title = [NSString stringWithFormat:@"%@ ‣ %@", self.section.iTitle, self.module.iTitle];
     
     MyEduModuleVideoViewController* videoController = [[MyEduModuleVideoViewController alloc] initWithMyEduModule:self.module];
-    videoController.navigationItem.title = [NSString stringWithFormat:@"%@ ‣ %@", title, NSLocalizedStringFromTable(@"Video", @"MyEduPlugin", nil)];
+    //videoController.navigationItem.title = [NSString stringWithFormat:@"%@ ‣ %@", title, NSLocalizedStringFromTable(@"Video", @"MyEduPlugin", nil)];
+    videoController.navigationItem.title = title;
     videoController.navigationItem.leftBarButtonItem = [self toggleMasterViewBarButtonItem];
     UINavigationController* videoNavController = [[UINavigationController alloc] initWithRootViewController:videoController];
     videoNavController.title = NSLocalizedStringFromTable(@"Video", @"MyEduPlugin", nil);
@@ -57,7 +58,8 @@
     videoNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
     
     MyEduModuleTextViewController* textController = [[MyEduModuleTextViewController alloc] initWithMyEduModule:self.module];
-    textController.navigationItem.title = [NSString stringWithFormat:@"%@ ‣ %@", title, NSLocalizedStringFromTable(@"Text", @"MyEduPlugin", nil)];
+    //textController.navigationItem.title = [NSString stringWithFormat:@"%@ ‣ %@", title, NSLocalizedStringFromTable(@"Text", @"MyEduPlugin", nil)];
+    textController.navigationItem.title = title;
     textController.navigationItem.leftBarButtonItem = [self toggleMasterViewBarButtonItem];
     UINavigationController* textNavController = [[UINavigationController alloc] initWithRootViewController:textController];
     textNavController.title = NSLocalizedStringFromTable(@"Text", @"MyEduPlugin", nil);
@@ -65,7 +67,8 @@
     textNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
     
     MyEduModuleMaterialsViewController* materialsController = [[MyEduModuleMaterialsViewController alloc] initWithMyEduModule:self.module section:self.section course:self.course];
-    materialsController.navigationItem.title = [NSString stringWithFormat:@"%@ ‣ %@", title, NSLocalizedStringFromTable(@"Material", @"MyEduPlugin", nil)];
+    //materialsController.navigationItem.title = [NSString stringWithFormat:@"%@ ‣ %@", title, NSLocalizedStringFromTable(@"Material", @"MyEduPlugin", nil)];
+    materialsController.navigationItem.title = title;
     materialsController.navigationItem.leftBarButtonItem = [self toggleMasterViewBarButtonItem];
     UINavigationController* materialsNavController = [[UINavigationController alloc] initWithRootViewController:materialsController];
     materialsNavController.title = NSLocalizedStringFromTable(@"Material", @"MyEduPlugin", nil);

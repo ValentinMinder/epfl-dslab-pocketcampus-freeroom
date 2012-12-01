@@ -30,7 +30,7 @@
     self = [super initWithNibName:@"CourseSectionsView" bundle:nil];
     if (self) {
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
-        authController = [[AuthenticationController alloc] init];
+        authController = [[AuthenticationController sharedInstance] retain];
         tequilaKey = nil;
         iSections = nil;
         courseId = aCourseId;

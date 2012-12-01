@@ -5,7 +5,7 @@
 
 @implementation MoodleService
 
-static MoodleService* instance = nil;
+static MoodleService* instance __weak = nil;
 
 static int kFetchMoodleResourceTimeoutSeconds = 20;
 
@@ -13,17 +13,30 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
 
 @synthesize moodleCookie;
 
-+ (id)sharedInstanceToRetain {
-    if (instance != nil) {
-        return instance;
-    }
+- (id)init {
     @synchronized(self) {
-        if (instance == nil) {
-            instance = [[[self class] alloc] initWithServiceName:@"moodle"];            
-            instance.moodleCookie = (NSString*)[ObjectArchiver objectForKey:kMoodleCookieKey andPluginName:@"moodle"];
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MoodleService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
+        self = [super initWithServiceName:@"moodle"];
+        if (self) {
+            instance = self;
+        }
+        return self;
     }
-    return [instance autorelease];
+}
+
++ (id)sharedInstanceToRetain {
+    @synchronized (self) {
+        if (instance) {
+            return instance;
+        }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
+    }
 }
 
 - (id)thriftServiceClientInstance {
@@ -165,7 +178,9 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
 - (void)dealloc
 {
     [moodleCookie release];
-    instance = nil;
+    @synchronized(self) {
+        instance = nil;
+    }
     [super dealloc];
 }
 

@@ -27,7 +27,7 @@
     self = [super initWithNibName:@"CoursesListView" bundle:nil];
     if (self) {
         // Custom initialization
-        authController = [[AuthenticationController alloc] init];
+        authController = [[AuthenticationController sharedInstance] retain];
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
         tequilaKey = nil;
         iCourses = nil;

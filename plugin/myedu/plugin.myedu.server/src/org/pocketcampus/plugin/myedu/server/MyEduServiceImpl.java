@@ -171,8 +171,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 	
 	
 	@Override
-	public MyEduCourseDetailsReply getCourseDetails(MyEduRequest iMyEduRequest,
-			MyEduCourseDetailsRequest iMyEduCourseDetailsRequest)
+	public MyEduCourseDetailsReply getCourseDetails(MyEduCourseDetailsRequest iMyEduCourseDetailsRequest)
 			throws TException {
 		System.out.println("getCourseDetails");
 		
@@ -180,7 +179,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		
 		try {
 			String path = String.format(MyEduServiceConfig.COURSE_DETAILS_PATH_WITH_FORMAT, iMyEduCourseDetailsRequest.iCourseCode);
-			HttpReply reply = getReplyForMyEduRequest(path, iMyEduRequest);
+			HttpReply reply = getReplyForMyEduRequest(path, iMyEduCourseDetailsRequest.iMyEduRequest);
 			if (reply.getStatusCode() != 200) {
 				return new MyEduCourseDetailsReply(reply.getStatusCode()); 
 			}
@@ -218,9 +217,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 	
 	
 	@Override
-	public MyEduSectionDetailsReply getSectionDetails(
-			MyEduRequest iMyEduRequest,
-			MyEduSectionDetailsRequest iMyEduSectionDetailsRequest)
+	public MyEduSectionDetailsReply getSectionDetails(MyEduSectionDetailsRequest iMyEduSectionDetailsRequest)
 			throws TException {
 		System.out.println("getSectionDetails");
 		
@@ -228,7 +225,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		
 		try {
 			String path = String.format(MyEduServiceConfig.SECTION_DETAILS_PATH_WITH_FORMAT, iMyEduSectionDetailsRequest.iCourseCode, iMyEduSectionDetailsRequest.iSectionId);
-			HttpReply reply = getReplyForMyEduRequest(path, iMyEduRequest);
+			HttpReply reply = getReplyForMyEduRequest(path, iMyEduSectionDetailsRequest.iMyEduRequest);
 			if (reply.getStatusCode() != 200) {
 				return new MyEduSectionDetailsReply(reply.getStatusCode()); 
 			}
@@ -265,8 +262,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 	}
 	
 	@Override
-	public MyEduModuleDetailsReply getModuleDetails(MyEduRequest iMyEduRequest,
-			MyEduModuleDetailsRequest iMyEduModuleDetailsRequest)
+	public MyEduModuleDetailsReply getModuleDetails(MyEduModuleDetailsRequest iMyEduModuleDetailsRequest)
 			throws TException {
 		System.out.println("getModuleDetails");
 		
@@ -274,7 +270,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		
 		try {
 			String path = String.format(MyEduServiceConfig.MODULE_DETAILS_PATH_WITH_FORMAT, iMyEduModuleDetailsRequest.iCourseCode, iMyEduModuleDetailsRequest.iSectionId, iMyEduModuleDetailsRequest.iModuleId);
-			HttpReply reply = getReplyForMyEduRequest(path, iMyEduRequest);
+			HttpReply reply = getReplyForMyEduRequest(path, iMyEduModuleDetailsRequest.iMyEduRequest);
 			if (reply.getStatusCode() != 200) {
 				return new MyEduModuleDetailsReply(reply.getStatusCode()); 
 			}
@@ -397,7 +393,13 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		myEduModule.setIVisible(module.is_visible);
 		myEduModule.setITextContent(module.text_content);
 		myEduModule.setIVideoSourceProvider(module.video_source);
-		myEduModule.setIVideoURL(module.video_url);
+		myEduModule.setIVideoID(module.video_url); //normal, video_url is actually id
+		
+		if (module.video_source.equals("vimeo")) {
+			myEduModule.setIVideoDownloadURL("http://pocketcampus.epfl.ch/vimeo/vimeo.php?vid="+myEduModule.getIVideoID());
+		} else {
+			//download with other providers not suported
+		}
 		
 		return myEduModule;
 	}
@@ -540,8 +542,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 
 
 	@Override
-	public MyEduSubmitFeedbackReply submitFeedback(MyEduRequest iMyEduRequest,
-			MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest)
+	public MyEduSubmitFeedbackReply submitFeedback(MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest)
 			throws TException {
 		// TODO Auto-generated method stub
 		return null;

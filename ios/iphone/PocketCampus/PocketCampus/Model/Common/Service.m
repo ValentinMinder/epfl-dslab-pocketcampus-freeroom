@@ -275,6 +275,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
         returnCacheIfServerIsUnreachable = NO;
         skipCache = NO;
         cacheValidity = 100.0 * 365 * 24 * 60 * 60; // hundred years in seconds (equivalent to the old skipCache = NO)
+        _nbTrimmedArgumentsFromLeftInDelegateCall = 0;
     }
     return self;
 }
@@ -918,6 +919,8 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
 }
 
 - (void)setWrappedArgumentsForInvocation:(NSInvocation*)inv {
+    /*NSMethodSignature* methodSignature = [[[NSMethodSignature alloc] init] methodSignatureForSelector:inv.selector];
+    NSUInteger invNbArguments = [methodSignature numberOfArguments];*/
     for (int i = 0; i < arguments.count; i++) {
         NSDictionary* argDic = [arguments objectAtIndex:i];
         if ([[argDic objectForKey:@"primitive"] boolValue]) {

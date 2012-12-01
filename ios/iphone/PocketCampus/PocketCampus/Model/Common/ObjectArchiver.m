@@ -87,6 +87,10 @@
 }
 
 + (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName {
+    return [self pathForKey:key pluginName:pluginName customFileExtension:nil];
+}
+
++ (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName customFileExtension:(NSString*)customFileExtension {
     if (![key isKindOfClass:[NSString class]] || ![pluginName isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad argument(s)" reason:@"bad key and/or pluginName argument" userInfo:nil];
     }
@@ -98,7 +102,11 @@
     NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
 	NSString* path = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
     path = [path stringByAppendingPathComponent:pluginName];
-    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.archive", key]];
+    NSString* ext = @"archive";
+    if (customFileExtension) {
+        ext = customFileExtension;
+    }
+    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", key, ext]];
 	return path;
     
 }

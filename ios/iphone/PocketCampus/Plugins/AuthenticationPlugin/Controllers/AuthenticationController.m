@@ -5,25 +5,68 @@
 
 #import "PCValues.h"
 
+
+#pragma mark - PCLoginObserver implementation
+
+@implementation PCLoginObserver
+
+@synthesize observer, operationIdentifier, successBlock, userCancelledBlock, failureBlock;
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    return [self isEqualToPCLoginObserver:object];
+}
+
+- (BOOL)isEqualToPCLoginObserver:(PCLoginObserver*)loginObserver {
+    return self.observer == loginObserver.observer && [self.operationIdentifier isEqual:loginObserver.operationIdentifier];
+}
+
+- (NSUInteger)hash {
+    NSUInteger hash = 0;
+    hash += [self.observer hash];
+    hash += [self.operationIdentifier hash];
+    return hash;
+}
+
+@end
+
+
+#pragma mark - AuthenticationController implementation
+
+static AuthenticationController* instance __weak = nil;
+
 @implementation AuthenticationController
 
 - (id)init
 {
-    self = [super init];
-    if (self) {
-        gasparViewController = nil;
+    @synchronized(self) {
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"AuthenticationController cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
+        }
+        self = [super init];
+        if (self) {
+            instance = self;
+        }
+        return self;
     }
-    return self;
 }
 
-- (id)initWithMainController:(MainController2 *)mainController_
-{
-    self = [self init];
-    if (self) {
-        mainController = mainController_;
-        
++ (id)sharedInstance {
+    @synchronized (self) {
+        if (instance) {
+            return instance;
+        }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
     }
-    return self;
 }
 
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate; {
@@ -70,9 +113,15 @@
 
 - (void)dealloc
 {
+    @synchronized(self) {
+        instance = nil;
+    }
+#if __has_feature(objc_arc)
+#else
     [credentialsAlertViewController release];
     [gasparViewController release];
     [super dealloc];
+#endif
 }
 
 @end

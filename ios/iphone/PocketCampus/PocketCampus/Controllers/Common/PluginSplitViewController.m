@@ -15,16 +15,6 @@
 @implementation PluginSplitViewController
 
 
-@synthesize pluginIdentifier;
-
-/*- (NSUInteger)supportedInterfaceOrientations {
-    return [self.topViewController supportedInterfaceOrientations];
-}*/
-
-/*- (BOOL)shouldAutorotate {
-    return [self.topViewController shouldAutorotate];
-}*/
-
 - (id)initWithMasterViewController:(UIViewController*)masterViewController detailViewController:(UIViewController*)detailViewController {
     self = [super init];
     if (self) {
@@ -126,15 +116,15 @@
     [self setMasterViewControllerHidden:hidden animated:NO];
 }
 
-/*- (NSUInteger)supportedInterfaceOrientations //iOS 6
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
-    return [self.viewControllers[0] supportedInterfaceOrientations];
+    return UIInterfaceOrientationMaskAll; //always force support of all orientations on iPad (split view controller)
     
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
 {
-    return [self.viewControllers[0] shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}*/
+    return YES; //always force support of all orientations on iPad (split view controller)
+}
 
 @end

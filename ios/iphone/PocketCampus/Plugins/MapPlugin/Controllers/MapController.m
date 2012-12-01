@@ -10,34 +10,47 @@
 
 #import "MapViewController.h"
 
+static MapController* instance __weak = nil;
+
 @implementation MapController
 
 - (id)init
 {
-    self = [super init];
-    if (self) {
-        MapViewController* mapViewController = [[MapViewController alloc] init];
-        mainViewController = mapViewController;
+    @synchronized(self) {
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MapController cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
+        }
+        self = [super init];
+        if (self) {
+            MapViewController* mapViewController = [[MapViewController alloc] init];
+            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:mapViewController];
+            navController.pluginIdentifier = [[self class] identifierName];
+            self.mainNavigationController = navController;
+            instance = self;
+        }
+        return self;
     }
-    return self;
 }
 
-- (id)initWithMainController:(MainController2 *)mainController_
-{
-    self = [self init];
-    if (self) {
-        mainController = mainController_;
-        
++ (id)sharedInstance {
+    @synchronized (self) {
+        if (instance) {
+            return instance;
+        }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
     }
-    return self;
 }
 
 + (UIViewController*)viewControllerWithInitialSearchQuery:(NSString*)query {
-    return [[[MapViewController alloc] initWithInitialQuery:query] autorelease];
+    return [[MapViewController alloc] initWithInitialQuery:query];
 }
 
 + (UIViewController*)viewControllerWithInitialSearchQuery:(NSString*)query pinLabelText:(NSString*)pinLabelText {
-    return [[[MapViewController alloc] initWithInitialQuery:query pinTextLabel:pinLabelText] autorelease];
+    return [[MapViewController alloc] initWithInitialQuery:query pinTextLabel:pinLabelText];
 }
 
 + (NSString*)localizedName {
@@ -50,7 +63,13 @@
 
 - (void)dealloc
 {
+    @synchronized(self) {
+        instance = nil;
+    }
+#if __has_feature(objc_arc)
+#else
     [super dealloc];
+#endif
 }
 
 @end

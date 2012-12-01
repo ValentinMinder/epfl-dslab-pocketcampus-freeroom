@@ -14,18 +14,40 @@
 
 @implementation TransportController
 
+static TransportController* instance __weak = nil;
+
 static BOOL settingsAreDirty = NO;
 static NSMutableDictionary* settings = nil;
 
-- (id)initWithMainController:(MainController2*)mainController_ {
-    self = [super init];
-    if (self) {
-        mainController = mainController_;
-        NextDeparturesListViewController* viewController = [[NextDeparturesListViewController alloc] init];
-        viewController.title = [[self class] localizedName];
-        mainViewController = viewController;
+- (id)init {
+    @synchronized(self) {
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"TransportController cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
+        }
+        self = [super init];
+        if (self) {
+            NextDeparturesListViewController* nextDeparturesListViewController = [[NextDeparturesListViewController alloc] init];
+            nextDeparturesListViewController.title = [[self class] localizedName];
+            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:nextDeparturesListViewController];
+            navController.pluginIdentifier = [[self class] identifierName];
+            self.mainNavigationController = navController;
+            instance = self;
+        }
+        return self;
     }
-    return self;
+}
+
++ (id)sharedInstance {
+    @synchronized (self) {
+        if (instance) {
+            return instance;
+        }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
+    }
 }
 
 + (NSString*)localizedName {
@@ -37,16 +59,15 @@ static NSMutableDictionary* settings = nil;
 }
 
 - (void)refresh {
-    if (mainViewController == nil || ![mainViewController isKindOfClass:[NextDeparturesListViewController class]] || mainViewController.navigationController.visibleViewController != mainViewController) {
-        return;
+    if (self.mainNavigationController.visibleViewController == self.mainNavigationController.viewControllers[0]) {
+        [(NextDeparturesListViewController*)(self.mainNavigationController.viewControllers[0]) refresh];
     }
-    [(NextDeparturesListViewController*)mainViewController refresh];
 }
 
 + (BOOL)saveObjectSetting:(NSObject<NSCoding>*)val forKey:(NSString*)settingKey {
     @synchronized(self) {
         if (settings == nil) {
-            settings = [[NSMutableDictionary dictionary] retain];
+            settings = [NSMutableDictionary dictionary];
         }
         [settings setObject:val forKey:settingKey];
         settingsAreDirty = YES;
@@ -57,9 +78,7 @@ static NSMutableDictionary* settings = nil;
 + (id<NSCoding>)objectSettingForKey:(NSString*)settingKey {
     @synchronized(self) {
         if (settings == nil || settingsAreDirty) {
-            [settings release];
             settings = (NSMutableDictionary*)[ObjectArchiver objectForKey:kSettingsKey andPluginName:@"transport"];
-            [settings retain];
             settingsAreDirty = NO;
         }
         if (settings == nil) {
@@ -69,8 +88,15 @@ static NSMutableDictionary* settings = nil;
     }
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
+    @synchronized(self) {
+        instance = nil;
+    }
+#if __has_feature(objc_arc)
+#else
     [super dealloc];
+#endif
 }
 
 @end

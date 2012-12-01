@@ -12,22 +12,35 @@
 
 @implementation TransportService
 
-static TransportService* instance = nil;
+static TransportService* instance __weak = nil;
 
 static NSString* kFavoriteTransportStationsKey = @"favoriteTransportStations";
 static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 
-+ (id)sharedInstanceToRetain {
-    if (instance != nil) {
-        return instance;
-    }
+- (id)init {
     @synchronized(self) {
-        if (instance == nil) {
-            instance = [[[self class] alloc] initWithServiceName:@"transport"];
-            //[instance.operationQueue setMaxConcurrentOperationCount:1];
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"PushNotifService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
+        self = [super initWithServiceName:@"transport"];
+        if (self) {
+            instance = self;
+        }
+        return self;
     }
-    return [instance autorelease];
+}
+
++ (id)sharedInstanceToRetain {
+    @synchronized (self) {
+        if (instance) {
+            return instance;
+        }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
+    }
 }
 
 - (id)thriftServiceClientInstance {
@@ -196,7 +209,9 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 
 - (void)dealloc
 {
-    instance = nil;
+    @synchronized(self) {
+        instance = nil;
+    }
     [super dealloc];
 }
 

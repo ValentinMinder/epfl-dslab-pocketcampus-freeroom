@@ -14,19 +14,34 @@
 
 static NSString* kLastSessionIdKey = @"lastSessionId";
 
-static CamiproService* instance = nil;
+static CamiproService* instance __weak = nil;
+
+- (id)init {
+    @synchronized(self) {
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"CamiproService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
+        }
+        self = [super initWithServiceName:@"camipro"];
+        if (self) {
+            instance = self;
+        }
+        return self;
+    }
+}
 
 + (id)sharedInstanceToRetain {
-    if (instance != nil) {
-        return instance;
-    }
-    @synchronized(self) {
-        if (instance == nil) {
-            instance = [[[self class] alloc] initWithServiceName:@"camipro"];
+    @synchronized (self) {
+        if (instance) {
+            return instance;
         }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
     }
-    return [instance autorelease];
 }
+
 
 - (id)thriftServiceClientInstance {
     return [[[CamiproServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
@@ -105,8 +120,13 @@ static CamiproService* instance = nil;
 
 - (void)dealloc
 {
-    instance = nil;
+    @synchronized(self) {
+        instance = nil;
+    }
+#if __has_feature(objc_arc)
+#else
     [super dealloc];
+#endif
 }
 
 @end

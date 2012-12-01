@@ -31,9 +31,10 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
   private static final org.apache.thrift.protocol.TField I_VISIBLE_FIELD_DESC = new org.apache.thrift.protocol.TField("iVisible", org.apache.thrift.protocol.TType.BOOL, (short)5);
   private static final org.apache.thrift.protocol.TField I_TEXT_CONTENT_FIELD_DESC = new org.apache.thrift.protocol.TField("iTextContent", org.apache.thrift.protocol.TType.STRING, (short)6);
   private static final org.apache.thrift.protocol.TField I_VIDEO_SOURCE_PROVIDER_FIELD_DESC = new org.apache.thrift.protocol.TField("iVideoSourceProvider", org.apache.thrift.protocol.TType.STRING, (short)7);
-  private static final org.apache.thrift.protocol.TField I_VIDEO_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("iVideoURL", org.apache.thrift.protocol.TType.STRING, (short)8);
-  private static final org.apache.thrift.protocol.TField I_CREATION_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iCreationTimestamp", org.apache.thrift.protocol.TType.I64, (short)9);
-  private static final org.apache.thrift.protocol.TField I_LAST_UPDATE_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iLastUpdateTimestamp", org.apache.thrift.protocol.TType.I64, (short)10);
+  private static final org.apache.thrift.protocol.TField I_VIDEO_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iVideoID", org.apache.thrift.protocol.TType.STRING, (short)8);
+  private static final org.apache.thrift.protocol.TField I_VIDEO_DOWNLOAD_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("iVideoDownloadURL", org.apache.thrift.protocol.TType.STRING, (short)9);
+  private static final org.apache.thrift.protocol.TField I_CREATION_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iCreationTimestamp", org.apache.thrift.protocol.TType.I64, (short)10);
+  private static final org.apache.thrift.protocol.TField I_LAST_UPDATE_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iLastUpdateTimestamp", org.apache.thrift.protocol.TType.I64, (short)11);
 
   public int iId; // required
   public int iSectionId; // required
@@ -42,7 +43,8 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
   public boolean iVisible; // required
   public String iTextContent; // required
   public String iVideoSourceProvider; // required
-  public String iVideoURL; // required
+  public String iVideoID; // required
+  public String iVideoDownloadURL; // required
   public long iCreationTimestamp; // required
   public long iLastUpdateTimestamp; // required
 
@@ -55,9 +57,10 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     I_VISIBLE((short)5, "iVisible"),
     I_TEXT_CONTENT((short)6, "iTextContent"),
     I_VIDEO_SOURCE_PROVIDER((short)7, "iVideoSourceProvider"),
-    I_VIDEO_URL((short)8, "iVideoURL"),
-    I_CREATION_TIMESTAMP((short)9, "iCreationTimestamp"),
-    I_LAST_UPDATE_TIMESTAMP((short)10, "iLastUpdateTimestamp");
+    I_VIDEO_ID((short)8, "iVideoID"),
+    I_VIDEO_DOWNLOAD_URL((short)9, "iVideoDownloadURL"),
+    I_CREATION_TIMESTAMP((short)10, "iCreationTimestamp"),
+    I_LAST_UPDATE_TIMESTAMP((short)11, "iLastUpdateTimestamp");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -86,11 +89,13 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
           return I_TEXT_CONTENT;
         case 7: // I_VIDEO_SOURCE_PROVIDER
           return I_VIDEO_SOURCE_PROVIDER;
-        case 8: // I_VIDEO_URL
-          return I_VIDEO_URL;
-        case 9: // I_CREATION_TIMESTAMP
+        case 8: // I_VIDEO_ID
+          return I_VIDEO_ID;
+        case 9: // I_VIDEO_DOWNLOAD_URL
+          return I_VIDEO_DOWNLOAD_URL;
+        case 10: // I_CREATION_TIMESTAMP
           return I_CREATION_TIMESTAMP;
-        case 10: // I_LAST_UPDATE_TIMESTAMP
+        case 11: // I_LAST_UPDATE_TIMESTAMP
           return I_LAST_UPDATE_TIMESTAMP;
         default:
           return null;
@@ -157,7 +162,9 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.I_VIDEO_SOURCE_PROVIDER, new org.apache.thrift.meta_data.FieldMetaData("iVideoSourceProvider", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.I_VIDEO_URL, new org.apache.thrift.meta_data.FieldMetaData("iVideoURL", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_VIDEO_ID, new org.apache.thrift.meta_data.FieldMetaData("iVideoID", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.I_VIDEO_DOWNLOAD_URL, new org.apache.thrift.meta_data.FieldMetaData("iVideoDownloadURL", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.I_CREATION_TIMESTAMP, new org.apache.thrift.meta_data.FieldMetaData("iCreationTimestamp", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
@@ -178,7 +185,7 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     boolean iVisible,
     String iTextContent,
     String iVideoSourceProvider,
-    String iVideoURL,
+    String iVideoID,
     long iCreationTimestamp,
     long iLastUpdateTimestamp)
   {
@@ -194,7 +201,7 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     setIVisibleIsSet(true);
     this.iTextContent = iTextContent;
     this.iVideoSourceProvider = iVideoSourceProvider;
-    this.iVideoURL = iVideoURL;
+    this.iVideoID = iVideoID;
     this.iCreationTimestamp = iCreationTimestamp;
     setICreationTimestampIsSet(true);
     this.iLastUpdateTimestamp = iLastUpdateTimestamp;
@@ -220,8 +227,11 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     if (other.isSetIVideoSourceProvider()) {
       this.iVideoSourceProvider = other.iVideoSourceProvider;
     }
-    if (other.isSetIVideoURL()) {
-      this.iVideoURL = other.iVideoURL;
+    if (other.isSetIVideoID()) {
+      this.iVideoID = other.iVideoID;
+    }
+    if (other.isSetIVideoDownloadURL()) {
+      this.iVideoDownloadURL = other.iVideoDownloadURL;
     }
     this.iCreationTimestamp = other.iCreationTimestamp;
     this.iLastUpdateTimestamp = other.iLastUpdateTimestamp;
@@ -244,7 +254,8 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     this.iVisible = false;
     this.iTextContent = null;
     this.iVideoSourceProvider = null;
-    this.iVideoURL = null;
+    this.iVideoID = null;
+    this.iVideoDownloadURL = null;
     setICreationTimestampIsSet(false);
     this.iCreationTimestamp = 0;
     setILastUpdateTimestampIsSet(false);
@@ -415,27 +426,51 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     }
   }
 
-  public String getIVideoURL() {
-    return this.iVideoURL;
+  public String getIVideoID() {
+    return this.iVideoID;
   }
 
-  public MyEduModule setIVideoURL(String iVideoURL) {
-    this.iVideoURL = iVideoURL;
+  public MyEduModule setIVideoID(String iVideoID) {
+    this.iVideoID = iVideoID;
     return this;
   }
 
-  public void unsetIVideoURL() {
-    this.iVideoURL = null;
+  public void unsetIVideoID() {
+    this.iVideoID = null;
   }
 
-  /** Returns true if field iVideoURL is set (has been assigned a value) and false otherwise */
-  public boolean isSetIVideoURL() {
-    return this.iVideoURL != null;
+  /** Returns true if field iVideoID is set (has been assigned a value) and false otherwise */
+  public boolean isSetIVideoID() {
+    return this.iVideoID != null;
   }
 
-  public void setIVideoURLIsSet(boolean value) {
+  public void setIVideoIDIsSet(boolean value) {
     if (!value) {
-      this.iVideoURL = null;
+      this.iVideoID = null;
+    }
+  }
+
+  public String getIVideoDownloadURL() {
+    return this.iVideoDownloadURL;
+  }
+
+  public MyEduModule setIVideoDownloadURL(String iVideoDownloadURL) {
+    this.iVideoDownloadURL = iVideoDownloadURL;
+    return this;
+  }
+
+  public void unsetIVideoDownloadURL() {
+    this.iVideoDownloadURL = null;
+  }
+
+  /** Returns true if field iVideoDownloadURL is set (has been assigned a value) and false otherwise */
+  public boolean isSetIVideoDownloadURL() {
+    return this.iVideoDownloadURL != null;
+  }
+
+  public void setIVideoDownloadURLIsSet(boolean value) {
+    if (!value) {
+      this.iVideoDownloadURL = null;
     }
   }
 
@@ -543,11 +578,19 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
       }
       break;
 
-    case I_VIDEO_URL:
+    case I_VIDEO_ID:
       if (value == null) {
-        unsetIVideoURL();
+        unsetIVideoID();
       } else {
-        setIVideoURL((String)value);
+        setIVideoID((String)value);
+      }
+      break;
+
+    case I_VIDEO_DOWNLOAD_URL:
+      if (value == null) {
+        unsetIVideoDownloadURL();
+      } else {
+        setIVideoDownloadURL((String)value);
       }
       break;
 
@@ -593,8 +636,11 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     case I_VIDEO_SOURCE_PROVIDER:
       return getIVideoSourceProvider();
 
-    case I_VIDEO_URL:
-      return getIVideoURL();
+    case I_VIDEO_ID:
+      return getIVideoID();
+
+    case I_VIDEO_DOWNLOAD_URL:
+      return getIVideoDownloadURL();
 
     case I_CREATION_TIMESTAMP:
       return Long.valueOf(getICreationTimestamp());
@@ -627,8 +673,10 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
       return isSetITextContent();
     case I_VIDEO_SOURCE_PROVIDER:
       return isSetIVideoSourceProvider();
-    case I_VIDEO_URL:
-      return isSetIVideoURL();
+    case I_VIDEO_ID:
+      return isSetIVideoID();
+    case I_VIDEO_DOWNLOAD_URL:
+      return isSetIVideoDownloadURL();
     case I_CREATION_TIMESTAMP:
       return isSetICreationTimestamp();
     case I_LAST_UPDATE_TIMESTAMP:
@@ -713,12 +761,21 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
         return false;
     }
 
-    boolean this_present_iVideoURL = true && this.isSetIVideoURL();
-    boolean that_present_iVideoURL = true && that.isSetIVideoURL();
-    if (this_present_iVideoURL || that_present_iVideoURL) {
-      if (!(this_present_iVideoURL && that_present_iVideoURL))
+    boolean this_present_iVideoID = true && this.isSetIVideoID();
+    boolean that_present_iVideoID = true && that.isSetIVideoID();
+    if (this_present_iVideoID || that_present_iVideoID) {
+      if (!(this_present_iVideoID && that_present_iVideoID))
         return false;
-      if (!this.iVideoURL.equals(that.iVideoURL))
+      if (!this.iVideoID.equals(that.iVideoID))
+        return false;
+    }
+
+    boolean this_present_iVideoDownloadURL = true && this.isSetIVideoDownloadURL();
+    boolean that_present_iVideoDownloadURL = true && that.isSetIVideoDownloadURL();
+    if (this_present_iVideoDownloadURL || that_present_iVideoDownloadURL) {
+      if (!(this_present_iVideoDownloadURL && that_present_iVideoDownloadURL))
+        return false;
+      if (!this.iVideoDownloadURL.equals(that.iVideoDownloadURL))
         return false;
     }
 
@@ -782,10 +839,15 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     if (present_iVideoSourceProvider)
       builder.append(iVideoSourceProvider);
 
-    boolean present_iVideoURL = true && (isSetIVideoURL());
-    builder.append(present_iVideoURL);
-    if (present_iVideoURL)
-      builder.append(iVideoURL);
+    boolean present_iVideoID = true && (isSetIVideoID());
+    builder.append(present_iVideoID);
+    if (present_iVideoID)
+      builder.append(iVideoID);
+
+    boolean present_iVideoDownloadURL = true && (isSetIVideoDownloadURL());
+    builder.append(present_iVideoDownloadURL);
+    if (present_iVideoDownloadURL)
+      builder.append(iVideoDownloadURL);
 
     boolean present_iCreationTimestamp = true;
     builder.append(present_iCreationTimestamp);
@@ -878,12 +940,22 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIVideoURL()).compareTo(typedOther.isSetIVideoURL());
+    lastComparison = Boolean.valueOf(isSetIVideoID()).compareTo(typedOther.isSetIVideoID());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIVideoURL()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iVideoURL, typedOther.iVideoURL);
+    if (isSetIVideoID()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iVideoID, typedOther.iVideoID);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIVideoDownloadURL()).compareTo(typedOther.isSetIVideoDownloadURL());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIVideoDownloadURL()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iVideoDownloadURL, typedOther.iVideoDownloadURL);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -978,14 +1050,21 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 8: // I_VIDEO_URL
+        case 8: // I_VIDEO_ID
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.iVideoURL = iprot.readString();
+            this.iVideoID = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 9: // I_CREATION_TIMESTAMP
+        case 9: // I_VIDEO_DOWNLOAD_URL
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.iVideoDownloadURL = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 10: // I_CREATION_TIMESTAMP
           if (field.type == org.apache.thrift.protocol.TType.I64) {
             this.iCreationTimestamp = iprot.readI64();
             setICreationTimestampIsSet(true);
@@ -993,7 +1072,7 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 10: // I_LAST_UPDATE_TIMESTAMP
+        case 11: // I_LAST_UPDATE_TIMESTAMP
           if (field.type == org.apache.thrift.protocol.TType.I64) {
             this.iLastUpdateTimestamp = iprot.readI64();
             setILastUpdateTimestampIsSet(true);
@@ -1061,10 +1140,17 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
       oprot.writeString(this.iVideoSourceProvider);
       oprot.writeFieldEnd();
     }
-    if (this.iVideoURL != null) {
-      oprot.writeFieldBegin(I_VIDEO_URL_FIELD_DESC);
-      oprot.writeString(this.iVideoURL);
+    if (this.iVideoID != null) {
+      oprot.writeFieldBegin(I_VIDEO_ID_FIELD_DESC);
+      oprot.writeString(this.iVideoID);
       oprot.writeFieldEnd();
+    }
+    if (this.iVideoDownloadURL != null) {
+      if (isSetIVideoDownloadURL()) {
+        oprot.writeFieldBegin(I_VIDEO_DOWNLOAD_URL_FIELD_DESC);
+        oprot.writeString(this.iVideoDownloadURL);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldBegin(I_CREATION_TIMESTAMP_FIELD_DESC);
     oprot.writeI64(this.iCreationTimestamp);
@@ -1121,13 +1207,23 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("iVideoURL:");
-    if (this.iVideoURL == null) {
+    sb.append("iVideoID:");
+    if (this.iVideoID == null) {
       sb.append("null");
     } else {
-      sb.append(this.iVideoURL);
+      sb.append(this.iVideoID);
     }
     first = false;
+    if (isSetIVideoDownloadURL()) {
+      if (!first) sb.append(", ");
+      sb.append("iVideoDownloadURL:");
+      if (this.iVideoDownloadURL == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iVideoDownloadURL);
+      }
+      first = false;
+    }
     if (!first) sb.append(", ");
     sb.append("iCreationTimestamp:");
     sb.append(this.iCreationTimestamp);
@@ -1155,8 +1251,8 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     if (iVideoSourceProvider == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iVideoSourceProvider' was not present! Struct: " + toString());
     }
-    if (iVideoURL == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iVideoURL' was not present! Struct: " + toString());
+    if (iVideoID == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iVideoID' was not present! Struct: " + toString());
     }
     // alas, we cannot check 'iCreationTimestamp' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'iLastUpdateTimestamp' because it's a primitive and you chose the non-beans generator.

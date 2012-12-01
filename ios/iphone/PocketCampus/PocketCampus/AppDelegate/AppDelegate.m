@@ -16,6 +16,8 @@
 
 #import "MyEduServiceTests.h"
 
+#import "PushNotifController.h"
+
 @implementation AppDelegate
 
 @synthesize window = _window, mainController;
@@ -58,6 +60,10 @@
     
     /* OFFICIAL TESTS */
     
+    //PushNotifController* controller = [[PushNotifController sharedInstance] retain];
+    
+    //[controller release];
+    
     //[[[PocketCampusLogicTests alloc] init] testAll];
     
     //[[[DirectoryServiceTests alloc] init] tempTest];
@@ -71,6 +77,14 @@
     [self.window makeKeyAndVisible];
 
     return YES;
+}
+
+- (void)test {
+    PushNotifController* controller4 = [[PushNotifController alloc] init];
+    
+    NSLog(@"%@", controller4);
+    
+    [controller4 release];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -105,6 +119,16 @@
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
     return [window.rootViewController supportedInterfaceOrientations];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    NSString* deviceTokenString = [[[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSNotification* notif = [NSNotification notificationWithName:AppDidSucceedToRegisterToNotifications object:nil userInfo:[NSDictionary dictionaryWithObject:deviceTokenString forKey:kPushDeviceTokenStringKey]];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    [[NSNotificationCenter defaultCenter] postNotificationName:AppDidFailToRegisterToNotifications object:nil];
 }
 
 /* Google Analytics Delegation */

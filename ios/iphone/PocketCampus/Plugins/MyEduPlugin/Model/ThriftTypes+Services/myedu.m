@@ -1173,7 +1173,7 @@
 
 @implementation MyEduModule
 
-- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iTitle: (NSString *) iTitle iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoURL: (NSString *) iVideoURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp
+- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iTitle: (NSString *) iTitle iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoID: (NSString *) iVideoID iVideoDownloadURL: (NSString *) iVideoDownloadURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp
 {
   self = [super init];
   __iId = iId;
@@ -1190,8 +1190,10 @@
   __iTextContent_isset = YES;
   __iVideoSourceProvider = [iVideoSourceProvider retain];
   __iVideoSourceProvider_isset = YES;
-  __iVideoURL = [iVideoURL retain];
-  __iVideoURL_isset = YES;
+  __iVideoID = [iVideoID retain];
+  __iVideoID_isset = YES;
+  __iVideoDownloadURL = [iVideoDownloadURL retain];
+  __iVideoDownloadURL_isset = YES;
   __iCreationTimestamp = iCreationTimestamp;
   __iCreationTimestamp_isset = YES;
   __iLastUpdateTimestamp = iLastUpdateTimestamp;
@@ -1237,10 +1239,15 @@
     __iVideoSourceProvider = [[decoder decodeObjectForKey: @"iVideoSourceProvider"] retain];
     __iVideoSourceProvider_isset = YES;
   }
-  if ([decoder containsValueForKey: @"iVideoURL"])
+  if ([decoder containsValueForKey: @"iVideoID"])
   {
-    __iVideoURL = [[decoder decodeObjectForKey: @"iVideoURL"] retain];
-    __iVideoURL_isset = YES;
+    __iVideoID = [[decoder decodeObjectForKey: @"iVideoID"] retain];
+    __iVideoID_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iVideoDownloadURL"])
+  {
+    __iVideoDownloadURL = [[decoder decodeObjectForKey: @"iVideoDownloadURL"] retain];
+    __iVideoDownloadURL_isset = YES;
   }
   if ([decoder containsValueForKey: @"iCreationTimestamp"])
   {
@@ -1285,9 +1292,13 @@
   {
     [encoder encodeObject: __iVideoSourceProvider forKey: @"iVideoSourceProvider"];
   }
-  if (__iVideoURL_isset)
+  if (__iVideoID_isset)
   {
-    [encoder encodeObject: __iVideoURL forKey: @"iVideoURL"];
+    [encoder encodeObject: __iVideoID forKey: @"iVideoID"];
+  }
+  if (__iVideoDownloadURL_isset)
+  {
+    [encoder encodeObject: __iVideoDownloadURL forKey: @"iVideoDownloadURL"];
   }
   if (__iCreationTimestamp_isset)
   {
@@ -1304,7 +1315,8 @@
   [__iTitle release];
   [__iTextContent release];
   [__iVideoSourceProvider release];
-  [__iVideoURL release];
+  [__iVideoID release];
+  [__iVideoDownloadURL release];
   [super dealloc];
 }
 
@@ -1439,25 +1451,46 @@
   __iVideoSourceProvider_isset = NO;
 }
 
-- (NSString *) iVideoURL {
-  return [[__iVideoURL retain] autorelease];
+- (NSString *) iVideoID {
+  return [[__iVideoID retain] autorelease];
 }
 
-- (void) setIVideoURL: (NSString *) iVideoURL {
-  [iVideoURL retain];
-  [__iVideoURL release];
-  __iVideoURL = iVideoURL;
-  __iVideoURL_isset = YES;
+- (void) setIVideoID: (NSString *) iVideoID {
+  [iVideoID retain];
+  [__iVideoID release];
+  __iVideoID = iVideoID;
+  __iVideoID_isset = YES;
 }
 
-- (BOOL) iVideoURLIsSet {
-  return __iVideoURL_isset;
+- (BOOL) iVideoIDIsSet {
+  return __iVideoID_isset;
 }
 
-- (void) unsetIVideoURL {
-  [__iVideoURL release];
-  __iVideoURL = nil;
-  __iVideoURL_isset = NO;
+- (void) unsetIVideoID {
+  [__iVideoID release];
+  __iVideoID = nil;
+  __iVideoID_isset = NO;
+}
+
+- (NSString *) iVideoDownloadURL {
+  return [[__iVideoDownloadURL retain] autorelease];
+}
+
+- (void) setIVideoDownloadURL: (NSString *) iVideoDownloadURL {
+  [iVideoDownloadURL retain];
+  [__iVideoDownloadURL release];
+  __iVideoDownloadURL = iVideoDownloadURL;
+  __iVideoDownloadURL_isset = YES;
+}
+
+- (BOOL) iVideoDownloadURLIsSet {
+  return __iVideoDownloadURL_isset;
+}
+
+- (void) unsetIVideoDownloadURL {
+  [__iVideoDownloadURL release];
+  __iVideoDownloadURL = nil;
+  __iVideoDownloadURL_isset = NO;
 }
 
 - (int64_t) iCreationTimestamp {
@@ -1568,12 +1601,20 @@
       case 8:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
-          [self setIVideoURL: fieldValue];
+          [self setIVideoID: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
       case 9:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setIVideoDownloadURL: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 10:
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setICreationTimestamp: fieldValue];
@@ -1581,7 +1622,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 10:
+      case 11:
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setILastUpdateTimestamp: fieldValue];
@@ -1641,20 +1682,27 @@
       [outProtocol writeFieldEnd];
     }
   }
-  if (__iVideoURL_isset) {
-    if (__iVideoURL != nil) {
-      [outProtocol writeFieldBeginWithName: @"iVideoURL" type: TType_STRING fieldID: 8];
-      [outProtocol writeString: __iVideoURL];
+  if (__iVideoID_isset) {
+    if (__iVideoID != nil) {
+      [outProtocol writeFieldBeginWithName: @"iVideoID" type: TType_STRING fieldID: 8];
+      [outProtocol writeString: __iVideoID];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__iVideoDownloadURL_isset) {
+    if (__iVideoDownloadURL != nil) {
+      [outProtocol writeFieldBeginWithName: @"iVideoDownloadURL" type: TType_STRING fieldID: 9];
+      [outProtocol writeString: __iVideoDownloadURL];
       [outProtocol writeFieldEnd];
     }
   }
   if (__iCreationTimestamp_isset) {
-    [outProtocol writeFieldBeginWithName: @"iCreationTimestamp" type: TType_I64 fieldID: 9];
+    [outProtocol writeFieldBeginWithName: @"iCreationTimestamp" type: TType_I64 fieldID: 10];
     [outProtocol writeI64: __iCreationTimestamp];
     [outProtocol writeFieldEnd];
   }
   if (__iLastUpdateTimestamp_isset) {
-    [outProtocol writeFieldBeginWithName: @"iLastUpdateTimestamp" type: TType_I64 fieldID: 10];
+    [outProtocol writeFieldBeginWithName: @"iLastUpdateTimestamp" type: TType_I64 fieldID: 11];
     [outProtocol writeI64: __iLastUpdateTimestamp];
     [outProtocol writeFieldEnd];
   }
@@ -1678,8 +1726,10 @@
   [ms appendFormat: @"\"%@\"", __iTextContent];
   [ms appendString: @",iVideoSourceProvider:"];
   [ms appendFormat: @"\"%@\"", __iVideoSourceProvider];
-  [ms appendString: @",iVideoURL:"];
-  [ms appendFormat: @"\"%@\"", __iVideoURL];
+  [ms appendString: @",iVideoID:"];
+  [ms appendFormat: @"\"%@\"", __iVideoID];
+  [ms appendString: @",iVideoDownloadURL:"];
+  [ms appendFormat: @"\"%@\"", __iVideoDownloadURL];
   [ms appendString: @",iCreationTimestamp:"];
   [ms appendFormat: @"%qi", __iCreationTimestamp];
   [ms appendString: @",iLastUpdateTimestamp:"];
@@ -2523,9 +2573,11 @@
 
 @implementation MyEduCourseDetailsRequest
 
-- (id) initWithICourseCode: (NSString *) iCourseCode
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode
 {
   self = [super init];
+  __iMyEduRequest = [iMyEduRequest retain];
+  __iMyEduRequest_isset = YES;
   __iCourseCode = [iCourseCode retain];
   __iCourseCode_isset = YES;
   return self;
@@ -2534,6 +2586,11 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
+  if ([decoder containsValueForKey: @"iMyEduRequest"])
+  {
+    __iMyEduRequest = [[decoder decodeObjectForKey: @"iMyEduRequest"] retain];
+    __iMyEduRequest_isset = YES;
+  }
   if ([decoder containsValueForKey: @"iCourseCode"])
   {
     __iCourseCode = [[decoder decodeObjectForKey: @"iCourseCode"] retain];
@@ -2544,6 +2601,10 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
+  if (__iMyEduRequest_isset)
+  {
+    [encoder encodeObject: __iMyEduRequest forKey: @"iMyEduRequest"];
+  }
   if (__iCourseCode_isset)
   {
     [encoder encodeObject: __iCourseCode forKey: @"iCourseCode"];
@@ -2552,8 +2613,30 @@
 
 - (void) dealloc
 {
+  [__iMyEduRequest release];
   [__iCourseCode release];
   [super dealloc];
+}
+
+- (MyEduRequest *) iMyEduRequest {
+  return [[__iMyEduRequest retain] autorelease];
+}
+
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest {
+  [iMyEduRequest retain];
+  [__iMyEduRequest release];
+  __iMyEduRequest = iMyEduRequest;
+  __iMyEduRequest_isset = YES;
+}
+
+- (BOOL) iMyEduRequestIsSet {
+  return __iMyEduRequest_isset;
+}
+
+- (void) unsetIMyEduRequest {
+  [__iMyEduRequest release];
+  __iMyEduRequest = nil;
+  __iMyEduRequest_isset = NO;
 }
 
 - (NSString *) iCourseCode {
@@ -2593,6 +2676,16 @@
     switch (fieldID)
     {
       case 1:
+        if (fieldType == TType_STRUCT) {
+          MyEduRequest *fieldValue = [[MyEduRequest alloc] init];
+          [fieldValue read: inProtocol];
+          [self setIMyEduRequest: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setICourseCode: fieldValue];
@@ -2611,9 +2704,16 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"MyEduCourseDetailsRequest"];
+  if (__iMyEduRequest_isset) {
+    if (__iMyEduRequest != nil) {
+      [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
+      [__iMyEduRequest write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
   if (__iCourseCode_isset) {
     if (__iCourseCode != nil) {
-      [outProtocol writeFieldBeginWithName: @"iCourseCode" type: TType_STRING fieldID: 1];
+      [outProtocol writeFieldBeginWithName: @"iCourseCode" type: TType_STRING fieldID: 2];
       [outProtocol writeString: __iCourseCode];
       [outProtocol writeFieldEnd];
     }
@@ -2624,7 +2724,9 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"MyEduCourseDetailsRequest("];
-  [ms appendString: @"iCourseCode:"];
+  [ms appendString: @"iMyEduRequest:"];
+  [ms appendFormat: @"%@", __iMyEduRequest];
+  [ms appendString: @",iCourseCode:"];
   [ms appendFormat: @"\"%@\"", __iCourseCode];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
@@ -2634,9 +2736,11 @@
 
 @implementation MyEduSectionDetailsRequest
 
-- (id) initWithICourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId
 {
   self = [super init];
+  __iMyEduRequest = [iMyEduRequest retain];
+  __iMyEduRequest_isset = YES;
   __iCourseCode = [iCourseCode retain];
   __iCourseCode_isset = YES;
   __iSectionId = iSectionId;
@@ -2647,6 +2751,11 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
+  if ([decoder containsValueForKey: @"iMyEduRequest"])
+  {
+    __iMyEduRequest = [[decoder decodeObjectForKey: @"iMyEduRequest"] retain];
+    __iMyEduRequest_isset = YES;
+  }
   if ([decoder containsValueForKey: @"iCourseCode"])
   {
     __iCourseCode = [[decoder decodeObjectForKey: @"iCourseCode"] retain];
@@ -2662,6 +2771,10 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
+  if (__iMyEduRequest_isset)
+  {
+    [encoder encodeObject: __iMyEduRequest forKey: @"iMyEduRequest"];
+  }
   if (__iCourseCode_isset)
   {
     [encoder encodeObject: __iCourseCode forKey: @"iCourseCode"];
@@ -2674,8 +2787,30 @@
 
 - (void) dealloc
 {
+  [__iMyEduRequest release];
   [__iCourseCode release];
   [super dealloc];
+}
+
+- (MyEduRequest *) iMyEduRequest {
+  return [[__iMyEduRequest retain] autorelease];
+}
+
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest {
+  [iMyEduRequest retain];
+  [__iMyEduRequest release];
+  __iMyEduRequest = iMyEduRequest;
+  __iMyEduRequest_isset = YES;
+}
+
+- (BOOL) iMyEduRequestIsSet {
+  return __iMyEduRequest_isset;
+}
+
+- (void) unsetIMyEduRequest {
+  [__iMyEduRequest release];
+  __iMyEduRequest = nil;
+  __iMyEduRequest_isset = NO;
 }
 
 - (NSString *) iCourseCode {
@@ -2732,6 +2867,16 @@
     switch (fieldID)
     {
       case 1:
+        if (fieldType == TType_STRUCT) {
+          MyEduRequest *fieldValue = [[MyEduRequest alloc] init];
+          [fieldValue read: inProtocol];
+          [self setIMyEduRequest: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setICourseCode: fieldValue];
@@ -2739,7 +2884,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 2:
+      case 3:
         if (fieldType == TType_I32) {
           int32_t fieldValue = [inProtocol readI32];
           [self setISectionId: fieldValue];
@@ -2758,15 +2903,22 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"MyEduSectionDetailsRequest"];
+  if (__iMyEduRequest_isset) {
+    if (__iMyEduRequest != nil) {
+      [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
+      [__iMyEduRequest write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
   if (__iCourseCode_isset) {
     if (__iCourseCode != nil) {
-      [outProtocol writeFieldBeginWithName: @"iCourseCode" type: TType_STRING fieldID: 1];
+      [outProtocol writeFieldBeginWithName: @"iCourseCode" type: TType_STRING fieldID: 2];
       [outProtocol writeString: __iCourseCode];
       [outProtocol writeFieldEnd];
     }
   }
   if (__iSectionId_isset) {
-    [outProtocol writeFieldBeginWithName: @"iSectionId" type: TType_I32 fieldID: 2];
+    [outProtocol writeFieldBeginWithName: @"iSectionId" type: TType_I32 fieldID: 3];
     [outProtocol writeI32: __iSectionId];
     [outProtocol writeFieldEnd];
   }
@@ -2776,7 +2928,9 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"MyEduSectionDetailsRequest("];
-  [ms appendString: @"iCourseCode:"];
+  [ms appendString: @"iMyEduRequest:"];
+  [ms appendFormat: @"%@", __iMyEduRequest];
+  [ms appendString: @",iCourseCode:"];
   [ms appendFormat: @"\"%@\"", __iCourseCode];
   [ms appendString: @",iSectionId:"];
   [ms appendFormat: @"%i", __iSectionId];
@@ -2788,9 +2942,11 @@
 
 @implementation MyEduModuleDetailsRequest
 
-- (id) initWithICourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId
 {
   self = [super init];
+  __iMyEduRequest = [iMyEduRequest retain];
+  __iMyEduRequest_isset = YES;
   __iCourseCode = [iCourseCode retain];
   __iCourseCode_isset = YES;
   __iSectionId = iSectionId;
@@ -2803,6 +2959,11 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
+  if ([decoder containsValueForKey: @"iMyEduRequest"])
+  {
+    __iMyEduRequest = [[decoder decodeObjectForKey: @"iMyEduRequest"] retain];
+    __iMyEduRequest_isset = YES;
+  }
   if ([decoder containsValueForKey: @"iCourseCode"])
   {
     __iCourseCode = [[decoder decodeObjectForKey: @"iCourseCode"] retain];
@@ -2823,6 +2984,10 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
+  if (__iMyEduRequest_isset)
+  {
+    [encoder encodeObject: __iMyEduRequest forKey: @"iMyEduRequest"];
+  }
   if (__iCourseCode_isset)
   {
     [encoder encodeObject: __iCourseCode forKey: @"iCourseCode"];
@@ -2839,8 +3004,30 @@
 
 - (void) dealloc
 {
+  [__iMyEduRequest release];
   [__iCourseCode release];
   [super dealloc];
+}
+
+- (MyEduRequest *) iMyEduRequest {
+  return [[__iMyEduRequest retain] autorelease];
+}
+
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest {
+  [iMyEduRequest retain];
+  [__iMyEduRequest release];
+  __iMyEduRequest = iMyEduRequest;
+  __iMyEduRequest_isset = YES;
+}
+
+- (BOOL) iMyEduRequestIsSet {
+  return __iMyEduRequest_isset;
+}
+
+- (void) unsetIMyEduRequest {
+  [__iMyEduRequest release];
+  __iMyEduRequest = nil;
+  __iMyEduRequest_isset = NO;
 }
 
 - (NSString *) iCourseCode {
@@ -2914,6 +3101,16 @@
     switch (fieldID)
     {
       case 1:
+        if (fieldType == TType_STRUCT) {
+          MyEduRequest *fieldValue = [[MyEduRequest alloc] init];
+          [fieldValue read: inProtocol];
+          [self setIMyEduRequest: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setICourseCode: fieldValue];
@@ -2921,7 +3118,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 2:
+      case 3:
         if (fieldType == TType_I32) {
           int32_t fieldValue = [inProtocol readI32];
           [self setISectionId: fieldValue];
@@ -2929,7 +3126,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 3:
+      case 4:
         if (fieldType == TType_I32) {
           int32_t fieldValue = [inProtocol readI32];
           [self setIModuleId: fieldValue];
@@ -2948,20 +3145,27 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"MyEduModuleDetailsRequest"];
+  if (__iMyEduRequest_isset) {
+    if (__iMyEduRequest != nil) {
+      [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
+      [__iMyEduRequest write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
   if (__iCourseCode_isset) {
     if (__iCourseCode != nil) {
-      [outProtocol writeFieldBeginWithName: @"iCourseCode" type: TType_STRING fieldID: 1];
+      [outProtocol writeFieldBeginWithName: @"iCourseCode" type: TType_STRING fieldID: 2];
       [outProtocol writeString: __iCourseCode];
       [outProtocol writeFieldEnd];
     }
   }
   if (__iSectionId_isset) {
-    [outProtocol writeFieldBeginWithName: @"iSectionId" type: TType_I32 fieldID: 2];
+    [outProtocol writeFieldBeginWithName: @"iSectionId" type: TType_I32 fieldID: 3];
     [outProtocol writeI32: __iSectionId];
     [outProtocol writeFieldEnd];
   }
   if (__iModuleId_isset) {
-    [outProtocol writeFieldBeginWithName: @"iModuleId" type: TType_I32 fieldID: 3];
+    [outProtocol writeFieldBeginWithName: @"iModuleId" type: TType_I32 fieldID: 4];
     [outProtocol writeI32: __iModuleId];
     [outProtocol writeFieldEnd];
   }
@@ -2971,7 +3175,9 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"MyEduModuleDetailsRequest("];
-  [ms appendString: @"iCourseCode:"];
+  [ms appendString: @"iMyEduRequest:"];
+  [ms appendFormat: @"%@", __iMyEduRequest];
+  [ms appendString: @",iCourseCode:"];
   [ms appendFormat: @"\"%@\"", __iCourseCode];
   [ms appendString: @",iSectionId:"];
   [ms appendFormat: @"%i", __iSectionId];
@@ -2985,9 +3191,11 @@
 
 @implementation MyEduSubmitFeedbackRequest
 
-- (id) initWithICourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId iText: (NSString *) iText iRating: (int32_t) iRating
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId iText: (NSString *) iText iRating: (int32_t) iRating
 {
   self = [super init];
+  __iMyEduRequest = [iMyEduRequest retain];
+  __iMyEduRequest_isset = YES;
   __iCourseCode = [iCourseCode retain];
   __iCourseCode_isset = YES;
   __iSectionId = iSectionId;
@@ -3004,6 +3212,11 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
+  if ([decoder containsValueForKey: @"iMyEduRequest"])
+  {
+    __iMyEduRequest = [[decoder decodeObjectForKey: @"iMyEduRequest"] retain];
+    __iMyEduRequest_isset = YES;
+  }
   if ([decoder containsValueForKey: @"iCourseCode"])
   {
     __iCourseCode = [[decoder decodeObjectForKey: @"iCourseCode"] retain];
@@ -3034,6 +3247,10 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
+  if (__iMyEduRequest_isset)
+  {
+    [encoder encodeObject: __iMyEduRequest forKey: @"iMyEduRequest"];
+  }
   if (__iCourseCode_isset)
   {
     [encoder encodeObject: __iCourseCode forKey: @"iCourseCode"];
@@ -3058,9 +3275,31 @@
 
 - (void) dealloc
 {
+  [__iMyEduRequest release];
   [__iCourseCode release];
   [__iText release];
   [super dealloc];
+}
+
+- (MyEduRequest *) iMyEduRequest {
+  return [[__iMyEduRequest retain] autorelease];
+}
+
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest {
+  [iMyEduRequest retain];
+  [__iMyEduRequest release];
+  __iMyEduRequest = iMyEduRequest;
+  __iMyEduRequest_isset = YES;
+}
+
+- (BOOL) iMyEduRequestIsSet {
+  return __iMyEduRequest_isset;
+}
+
+- (void) unsetIMyEduRequest {
+  [__iMyEduRequest release];
+  __iMyEduRequest = nil;
+  __iMyEduRequest_isset = NO;
 }
 
 - (NSString *) iCourseCode {
@@ -3172,6 +3411,16 @@
     switch (fieldID)
     {
       case 1:
+        if (fieldType == TType_STRUCT) {
+          MyEduRequest *fieldValue = [[MyEduRequest alloc] init];
+          [fieldValue read: inProtocol];
+          [self setIMyEduRequest: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setICourseCode: fieldValue];
@@ -3179,7 +3428,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 2:
+      case 3:
         if (fieldType == TType_I32) {
           int32_t fieldValue = [inProtocol readI32];
           [self setISectionId: fieldValue];
@@ -3187,7 +3436,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 3:
+      case 4:
         if (fieldType == TType_I32) {
           int32_t fieldValue = [inProtocol readI32];
           [self setIModuleId: fieldValue];
@@ -3195,7 +3444,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 4:
+      case 5:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setIText: fieldValue];
@@ -3203,7 +3452,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 5:
+      case 6:
         if (fieldType == TType_I32) {
           int32_t fieldValue = [inProtocol readI32];
           [self setIRating: fieldValue];
@@ -3222,32 +3471,39 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"MyEduSubmitFeedbackRequest"];
+  if (__iMyEduRequest_isset) {
+    if (__iMyEduRequest != nil) {
+      [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
+      [__iMyEduRequest write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
   if (__iCourseCode_isset) {
     if (__iCourseCode != nil) {
-      [outProtocol writeFieldBeginWithName: @"iCourseCode" type: TType_STRING fieldID: 1];
+      [outProtocol writeFieldBeginWithName: @"iCourseCode" type: TType_STRING fieldID: 2];
       [outProtocol writeString: __iCourseCode];
       [outProtocol writeFieldEnd];
     }
   }
   if (__iSectionId_isset) {
-    [outProtocol writeFieldBeginWithName: @"iSectionId" type: TType_I32 fieldID: 2];
+    [outProtocol writeFieldBeginWithName: @"iSectionId" type: TType_I32 fieldID: 3];
     [outProtocol writeI32: __iSectionId];
     [outProtocol writeFieldEnd];
   }
   if (__iModuleId_isset) {
-    [outProtocol writeFieldBeginWithName: @"iModuleId" type: TType_I32 fieldID: 3];
+    [outProtocol writeFieldBeginWithName: @"iModuleId" type: TType_I32 fieldID: 4];
     [outProtocol writeI32: __iModuleId];
     [outProtocol writeFieldEnd];
   }
   if (__iText_isset) {
     if (__iText != nil) {
-      [outProtocol writeFieldBeginWithName: @"iText" type: TType_STRING fieldID: 4];
+      [outProtocol writeFieldBeginWithName: @"iText" type: TType_STRING fieldID: 5];
       [outProtocol writeString: __iText];
       [outProtocol writeFieldEnd];
     }
   }
   if (__iRating_isset) {
-    [outProtocol writeFieldBeginWithName: @"iRating" type: TType_I32 fieldID: 5];
+    [outProtocol writeFieldBeginWithName: @"iRating" type: TType_I32 fieldID: 6];
     [outProtocol writeI32: __iRating];
     [outProtocol writeFieldEnd];
   }
@@ -3257,7 +3513,9 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"MyEduSubmitFeedbackRequest("];
-  [ms appendString: @"iCourseCode:"];
+  [ms appendString: @"iMyEduRequest:"];
+  [ms appendFormat: @"%@", __iMyEduRequest];
+  [ms appendString: @",iCourseCode:"];
   [ms appendFormat: @"\"%@\"", __iCourseCode];
   [ms appendString: @",iSectionId:"];
   [ms appendFormat: @"%i", __iSectionId];
@@ -4960,26 +5218,19 @@
 @end
 
 @interface getCourseDetails_args : NSObject <NSCoding> {
-  MyEduRequest * __iMyEduRequest;
   MyEduCourseDetailsRequest * __iMyEduCourseDetailsRequest;
 
-  BOOL __iMyEduRequest_isset;
   BOOL __iMyEduCourseDetailsRequest_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iMyEduCourseDetailsRequest, setter=setIMyEduCourseDetailsRequest:) MyEduCourseDetailsRequest * iMyEduCourseDetailsRequest;
 #endif
 
-- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iMyEduCourseDetailsRequest: (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest;
+- (id) initWithIMyEduCourseDetailsRequest: (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
-
-- (MyEduRequest *) iMyEduRequest;
-- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
-- (BOOL) iMyEduRequestIsSet;
 
 - (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest;
 - (void) setIMyEduCourseDetailsRequest: (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest;
@@ -4989,11 +5240,9 @@
 
 @implementation getCourseDetails_args
 
-- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iMyEduCourseDetailsRequest: (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest
+- (id) initWithIMyEduCourseDetailsRequest: (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest
 {
   self = [super init];
-  __iMyEduRequest = [iMyEduRequest retain];
-  __iMyEduRequest_isset = YES;
   __iMyEduCourseDetailsRequest = [iMyEduCourseDetailsRequest retain];
   __iMyEduCourseDetailsRequest_isset = YES;
   return self;
@@ -5002,11 +5251,6 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"iMyEduRequest"])
-  {
-    __iMyEduRequest = [[decoder decodeObjectForKey: @"iMyEduRequest"] retain];
-    __iMyEduRequest_isset = YES;
-  }
   if ([decoder containsValueForKey: @"iMyEduCourseDetailsRequest"])
   {
     __iMyEduCourseDetailsRequest = [[decoder decodeObjectForKey: @"iMyEduCourseDetailsRequest"] retain];
@@ -5017,10 +5261,6 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__iMyEduRequest_isset)
-  {
-    [encoder encodeObject: __iMyEduRequest forKey: @"iMyEduRequest"];
-  }
   if (__iMyEduCourseDetailsRequest_isset)
   {
     [encoder encodeObject: __iMyEduCourseDetailsRequest forKey: @"iMyEduCourseDetailsRequest"];
@@ -5029,30 +5269,8 @@
 
 - (void) dealloc
 {
-  [__iMyEduRequest release];
   [__iMyEduCourseDetailsRequest release];
   [super dealloc];
-}
-
-- (MyEduRequest *) iMyEduRequest {
-  return [[__iMyEduRequest retain] autorelease];
-}
-
-- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest {
-  [iMyEduRequest retain];
-  [__iMyEduRequest release];
-  __iMyEduRequest = iMyEduRequest;
-  __iMyEduRequest_isset = YES;
-}
-
-- (BOOL) iMyEduRequestIsSet {
-  return __iMyEduRequest_isset;
-}
-
-- (void) unsetIMyEduRequest {
-  [__iMyEduRequest release];
-  __iMyEduRequest = nil;
-  __iMyEduRequest_isset = NO;
 }
 
 - (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest {
@@ -5093,16 +5311,6 @@
     {
       case 1:
         if (fieldType == TType_STRUCT) {
-          MyEduRequest *fieldValue = [[MyEduRequest alloc] init];
-          [fieldValue read: inProtocol];
-          [self setIMyEduRequest: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_STRUCT) {
           MyEduCourseDetailsRequest *fieldValue = [[MyEduCourseDetailsRequest alloc] init];
           [fieldValue read: inProtocol];
           [self setIMyEduCourseDetailsRequest: fieldValue];
@@ -5122,16 +5330,9 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"getCourseDetails_args"];
-  if (__iMyEduRequest_isset) {
-    if (__iMyEduRequest != nil) {
-      [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
-      [__iMyEduRequest write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
   if (__iMyEduCourseDetailsRequest_isset) {
     if (__iMyEduCourseDetailsRequest != nil) {
-      [outProtocol writeFieldBeginWithName: @"iMyEduCourseDetailsRequest" type: TType_STRUCT fieldID: 2];
+      [outProtocol writeFieldBeginWithName: @"iMyEduCourseDetailsRequest" type: TType_STRUCT fieldID: 1];
       [__iMyEduCourseDetailsRequest write: outProtocol];
       [outProtocol writeFieldEnd];
     }
@@ -5142,9 +5343,7 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"getCourseDetails_args("];
-  [ms appendString: @"iMyEduRequest:"];
-  [ms appendFormat: @"%@", __iMyEduRequest];
-  [ms appendString: @",iMyEduCourseDetailsRequest:"];
+  [ms appendString: @"iMyEduCourseDetailsRequest:"];
   [ms appendFormat: @"%@", __iMyEduCourseDetailsRequest];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
@@ -5288,26 +5487,19 @@
 @end
 
 @interface getSectionDetails_args : NSObject <NSCoding> {
-  MyEduRequest * __iMyEduRequest;
   MyEduSectionDetailsRequest * __iMyEduSectionDetailsRequest;
 
-  BOOL __iMyEduRequest_isset;
   BOOL __iMyEduSectionDetailsRequest_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iMyEduSectionDetailsRequest, setter=setIMyEduSectionDetailsRequest:) MyEduSectionDetailsRequest * iMyEduSectionDetailsRequest;
 #endif
 
-- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iMyEduSectionDetailsRequest: (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest;
+- (id) initWithIMyEduSectionDetailsRequest: (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
-
-- (MyEduRequest *) iMyEduRequest;
-- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
-- (BOOL) iMyEduRequestIsSet;
 
 - (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest;
 - (void) setIMyEduSectionDetailsRequest: (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest;
@@ -5317,11 +5509,9 @@
 
 @implementation getSectionDetails_args
 
-- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iMyEduSectionDetailsRequest: (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest
+- (id) initWithIMyEduSectionDetailsRequest: (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest
 {
   self = [super init];
-  __iMyEduRequest = [iMyEduRequest retain];
-  __iMyEduRequest_isset = YES;
   __iMyEduSectionDetailsRequest = [iMyEduSectionDetailsRequest retain];
   __iMyEduSectionDetailsRequest_isset = YES;
   return self;
@@ -5330,11 +5520,6 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"iMyEduRequest"])
-  {
-    __iMyEduRequest = [[decoder decodeObjectForKey: @"iMyEduRequest"] retain];
-    __iMyEduRequest_isset = YES;
-  }
   if ([decoder containsValueForKey: @"iMyEduSectionDetailsRequest"])
   {
     __iMyEduSectionDetailsRequest = [[decoder decodeObjectForKey: @"iMyEduSectionDetailsRequest"] retain];
@@ -5345,10 +5530,6 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__iMyEduRequest_isset)
-  {
-    [encoder encodeObject: __iMyEduRequest forKey: @"iMyEduRequest"];
-  }
   if (__iMyEduSectionDetailsRequest_isset)
   {
     [encoder encodeObject: __iMyEduSectionDetailsRequest forKey: @"iMyEduSectionDetailsRequest"];
@@ -5357,30 +5538,8 @@
 
 - (void) dealloc
 {
-  [__iMyEduRequest release];
   [__iMyEduSectionDetailsRequest release];
   [super dealloc];
-}
-
-- (MyEduRequest *) iMyEduRequest {
-  return [[__iMyEduRequest retain] autorelease];
-}
-
-- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest {
-  [iMyEduRequest retain];
-  [__iMyEduRequest release];
-  __iMyEduRequest = iMyEduRequest;
-  __iMyEduRequest_isset = YES;
-}
-
-- (BOOL) iMyEduRequestIsSet {
-  return __iMyEduRequest_isset;
-}
-
-- (void) unsetIMyEduRequest {
-  [__iMyEduRequest release];
-  __iMyEduRequest = nil;
-  __iMyEduRequest_isset = NO;
 }
 
 - (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest {
@@ -5421,16 +5580,6 @@
     {
       case 1:
         if (fieldType == TType_STRUCT) {
-          MyEduRequest *fieldValue = [[MyEduRequest alloc] init];
-          [fieldValue read: inProtocol];
-          [self setIMyEduRequest: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_STRUCT) {
           MyEduSectionDetailsRequest *fieldValue = [[MyEduSectionDetailsRequest alloc] init];
           [fieldValue read: inProtocol];
           [self setIMyEduSectionDetailsRequest: fieldValue];
@@ -5450,16 +5599,9 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"getSectionDetails_args"];
-  if (__iMyEduRequest_isset) {
-    if (__iMyEduRequest != nil) {
-      [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
-      [__iMyEduRequest write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
   if (__iMyEduSectionDetailsRequest_isset) {
     if (__iMyEduSectionDetailsRequest != nil) {
-      [outProtocol writeFieldBeginWithName: @"iMyEduSectionDetailsRequest" type: TType_STRUCT fieldID: 2];
+      [outProtocol writeFieldBeginWithName: @"iMyEduSectionDetailsRequest" type: TType_STRUCT fieldID: 1];
       [__iMyEduSectionDetailsRequest write: outProtocol];
       [outProtocol writeFieldEnd];
     }
@@ -5470,9 +5612,7 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"getSectionDetails_args("];
-  [ms appendString: @"iMyEduRequest:"];
-  [ms appendFormat: @"%@", __iMyEduRequest];
-  [ms appendString: @",iMyEduSectionDetailsRequest:"];
+  [ms appendString: @"iMyEduSectionDetailsRequest:"];
   [ms appendFormat: @"%@", __iMyEduSectionDetailsRequest];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
@@ -5616,26 +5756,19 @@
 @end
 
 @interface getModuleDetails_args : NSObject <NSCoding> {
-  MyEduRequest * __iMyEduRequest;
   MyEduModuleDetailsRequest * __iMyEduModuleDetailsRequest;
 
-  BOOL __iMyEduRequest_isset;
   BOOL __iMyEduModuleDetailsRequest_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iMyEduModuleDetailsRequest, setter=setIMyEduModuleDetailsRequest:) MyEduModuleDetailsRequest * iMyEduModuleDetailsRequest;
 #endif
 
-- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iMyEduModuleDetailsRequest: (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest;
+- (id) initWithIMyEduModuleDetailsRequest: (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
-
-- (MyEduRequest *) iMyEduRequest;
-- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
-- (BOOL) iMyEduRequestIsSet;
 
 - (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest;
 - (void) setIMyEduModuleDetailsRequest: (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest;
@@ -5645,11 +5778,9 @@
 
 @implementation getModuleDetails_args
 
-- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iMyEduModuleDetailsRequest: (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest
+- (id) initWithIMyEduModuleDetailsRequest: (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest
 {
   self = [super init];
-  __iMyEduRequest = [iMyEduRequest retain];
-  __iMyEduRequest_isset = YES;
   __iMyEduModuleDetailsRequest = [iMyEduModuleDetailsRequest retain];
   __iMyEduModuleDetailsRequest_isset = YES;
   return self;
@@ -5658,11 +5789,6 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"iMyEduRequest"])
-  {
-    __iMyEduRequest = [[decoder decodeObjectForKey: @"iMyEduRequest"] retain];
-    __iMyEduRequest_isset = YES;
-  }
   if ([decoder containsValueForKey: @"iMyEduModuleDetailsRequest"])
   {
     __iMyEduModuleDetailsRequest = [[decoder decodeObjectForKey: @"iMyEduModuleDetailsRequest"] retain];
@@ -5673,10 +5799,6 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__iMyEduRequest_isset)
-  {
-    [encoder encodeObject: __iMyEduRequest forKey: @"iMyEduRequest"];
-  }
   if (__iMyEduModuleDetailsRequest_isset)
   {
     [encoder encodeObject: __iMyEduModuleDetailsRequest forKey: @"iMyEduModuleDetailsRequest"];
@@ -5685,30 +5807,8 @@
 
 - (void) dealloc
 {
-  [__iMyEduRequest release];
   [__iMyEduModuleDetailsRequest release];
   [super dealloc];
-}
-
-- (MyEduRequest *) iMyEduRequest {
-  return [[__iMyEduRequest retain] autorelease];
-}
-
-- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest {
-  [iMyEduRequest retain];
-  [__iMyEduRequest release];
-  __iMyEduRequest = iMyEduRequest;
-  __iMyEduRequest_isset = YES;
-}
-
-- (BOOL) iMyEduRequestIsSet {
-  return __iMyEduRequest_isset;
-}
-
-- (void) unsetIMyEduRequest {
-  [__iMyEduRequest release];
-  __iMyEduRequest = nil;
-  __iMyEduRequest_isset = NO;
 }
 
 - (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest {
@@ -5749,16 +5849,6 @@
     {
       case 1:
         if (fieldType == TType_STRUCT) {
-          MyEduRequest *fieldValue = [[MyEduRequest alloc] init];
-          [fieldValue read: inProtocol];
-          [self setIMyEduRequest: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_STRUCT) {
           MyEduModuleDetailsRequest *fieldValue = [[MyEduModuleDetailsRequest alloc] init];
           [fieldValue read: inProtocol];
           [self setIMyEduModuleDetailsRequest: fieldValue];
@@ -5778,16 +5868,9 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"getModuleDetails_args"];
-  if (__iMyEduRequest_isset) {
-    if (__iMyEduRequest != nil) {
-      [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
-      [__iMyEduRequest write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
   if (__iMyEduModuleDetailsRequest_isset) {
     if (__iMyEduModuleDetailsRequest != nil) {
-      [outProtocol writeFieldBeginWithName: @"iMyEduModuleDetailsRequest" type: TType_STRUCT fieldID: 2];
+      [outProtocol writeFieldBeginWithName: @"iMyEduModuleDetailsRequest" type: TType_STRUCT fieldID: 1];
       [__iMyEduModuleDetailsRequest write: outProtocol];
       [outProtocol writeFieldEnd];
     }
@@ -5798,9 +5881,7 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"getModuleDetails_args("];
-  [ms appendString: @"iMyEduRequest:"];
-  [ms appendFormat: @"%@", __iMyEduRequest];
-  [ms appendString: @",iMyEduModuleDetailsRequest:"];
+  [ms appendString: @"iMyEduModuleDetailsRequest:"];
   [ms appendFormat: @"%@", __iMyEduModuleDetailsRequest];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
@@ -5944,26 +6025,19 @@
 @end
 
 @interface submitFeedback_args : NSObject <NSCoding> {
-  MyEduRequest * __iMyEduRequest;
   MyEduSubmitFeedbackRequest * __iMyEduSubmitFeedbackRequest;
 
-  BOOL __iMyEduRequest_isset;
   BOOL __iMyEduSubmitFeedbackRequest_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iMyEduSubmitFeedbackRequest, setter=setIMyEduSubmitFeedbackRequest:) MyEduSubmitFeedbackRequest * iMyEduSubmitFeedbackRequest;
 #endif
 
-- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iMyEduSubmitFeedbackRequest: (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest;
+- (id) initWithIMyEduSubmitFeedbackRequest: (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
-
-- (MyEduRequest *) iMyEduRequest;
-- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
-- (BOOL) iMyEduRequestIsSet;
 
 - (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest;
 - (void) setIMyEduSubmitFeedbackRequest: (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest;
@@ -5973,11 +6047,9 @@
 
 @implementation submitFeedback_args
 
-- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iMyEduSubmitFeedbackRequest: (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest
+- (id) initWithIMyEduSubmitFeedbackRequest: (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest
 {
   self = [super init];
-  __iMyEduRequest = [iMyEduRequest retain];
-  __iMyEduRequest_isset = YES;
   __iMyEduSubmitFeedbackRequest = [iMyEduSubmitFeedbackRequest retain];
   __iMyEduSubmitFeedbackRequest_isset = YES;
   return self;
@@ -5986,11 +6058,6 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"iMyEduRequest"])
-  {
-    __iMyEduRequest = [[decoder decodeObjectForKey: @"iMyEduRequest"] retain];
-    __iMyEduRequest_isset = YES;
-  }
   if ([decoder containsValueForKey: @"iMyEduSubmitFeedbackRequest"])
   {
     __iMyEduSubmitFeedbackRequest = [[decoder decodeObjectForKey: @"iMyEduSubmitFeedbackRequest"] retain];
@@ -6001,10 +6068,6 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__iMyEduRequest_isset)
-  {
-    [encoder encodeObject: __iMyEduRequest forKey: @"iMyEduRequest"];
-  }
   if (__iMyEduSubmitFeedbackRequest_isset)
   {
     [encoder encodeObject: __iMyEduSubmitFeedbackRequest forKey: @"iMyEduSubmitFeedbackRequest"];
@@ -6013,30 +6076,8 @@
 
 - (void) dealloc
 {
-  [__iMyEduRequest release];
   [__iMyEduSubmitFeedbackRequest release];
   [super dealloc];
-}
-
-- (MyEduRequest *) iMyEduRequest {
-  return [[__iMyEduRequest retain] autorelease];
-}
-
-- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest {
-  [iMyEduRequest retain];
-  [__iMyEduRequest release];
-  __iMyEduRequest = iMyEduRequest;
-  __iMyEduRequest_isset = YES;
-}
-
-- (BOOL) iMyEduRequestIsSet {
-  return __iMyEduRequest_isset;
-}
-
-- (void) unsetIMyEduRequest {
-  [__iMyEduRequest release];
-  __iMyEduRequest = nil;
-  __iMyEduRequest_isset = NO;
 }
 
 - (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest {
@@ -6077,16 +6118,6 @@
     {
       case 1:
         if (fieldType == TType_STRUCT) {
-          MyEduRequest *fieldValue = [[MyEduRequest alloc] init];
-          [fieldValue read: inProtocol];
-          [self setIMyEduRequest: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_STRUCT) {
           MyEduSubmitFeedbackRequest *fieldValue = [[MyEduSubmitFeedbackRequest alloc] init];
           [fieldValue read: inProtocol];
           [self setIMyEduSubmitFeedbackRequest: fieldValue];
@@ -6106,16 +6137,9 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"submitFeedback_args"];
-  if (__iMyEduRequest_isset) {
-    if (__iMyEduRequest != nil) {
-      [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
-      [__iMyEduRequest write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
   if (__iMyEduSubmitFeedbackRequest_isset) {
     if (__iMyEduSubmitFeedbackRequest != nil) {
-      [outProtocol writeFieldBeginWithName: @"iMyEduSubmitFeedbackRequest" type: TType_STRUCT fieldID: 2];
+      [outProtocol writeFieldBeginWithName: @"iMyEduSubmitFeedbackRequest" type: TType_STRUCT fieldID: 1];
       [__iMyEduSubmitFeedbackRequest write: outProtocol];
       [outProtocol writeFieldEnd];
     }
@@ -6126,9 +6150,7 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"submitFeedback_args("];
-  [ms appendString: @"iMyEduRequest:"];
-  [ms appendFormat: @"%@", __iMyEduRequest];
-  [ms appendString: @",iMyEduSubmitFeedbackRequest:"];
+  [ms appendString: @"iMyEduSubmitFeedbackRequest:"];
   [ms appendFormat: @"%@", __iMyEduSubmitFeedbackRequest];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
@@ -6407,17 +6429,12 @@
   return [self recv_getSubscribedCoursesList];
 }
 
-- (void) send_getCourseDetails: (MyEduRequest *) iMyEduRequest : (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest
+- (void) send_getCourseDetails: (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest
 {
   [outProtocol writeMessageBeginWithName: @"getCourseDetails" type: TMessageType_CALL sequenceID: 0];
   [outProtocol writeStructBeginWithName: @"getCourseDetails_args"];
-  if (iMyEduRequest != nil)  {
-    [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
-    [iMyEduRequest write: outProtocol];
-    [outProtocol writeFieldEnd];
-  }
   if (iMyEduCourseDetailsRequest != nil)  {
-    [outProtocol writeFieldBeginWithName: @"iMyEduCourseDetailsRequest" type: TType_STRUCT fieldID: 2];
+    [outProtocol writeFieldBeginWithName: @"iMyEduCourseDetailsRequest" type: TType_STRUCT fieldID: 1];
     [iMyEduCourseDetailsRequest write: outProtocol];
     [outProtocol writeFieldEnd];
   }
@@ -6446,23 +6463,18 @@
                                            reason: @"getCourseDetails failed: unknown result"];
 }
 
-- (MyEduCourseDetailsReply *) getCourseDetails: (MyEduRequest *) iMyEduRequest : (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest
+- (MyEduCourseDetailsReply *) getCourseDetails: (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest
 {
-  [self send_getCourseDetails: iMyEduRequest : iMyEduCourseDetailsRequest];
+  [self send_getCourseDetails: iMyEduCourseDetailsRequest];
   return [self recv_getCourseDetails];
 }
 
-- (void) send_getSectionDetails: (MyEduRequest *) iMyEduRequest : (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest
+- (void) send_getSectionDetails: (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest
 {
   [outProtocol writeMessageBeginWithName: @"getSectionDetails" type: TMessageType_CALL sequenceID: 0];
   [outProtocol writeStructBeginWithName: @"getSectionDetails_args"];
-  if (iMyEduRequest != nil)  {
-    [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
-    [iMyEduRequest write: outProtocol];
-    [outProtocol writeFieldEnd];
-  }
   if (iMyEduSectionDetailsRequest != nil)  {
-    [outProtocol writeFieldBeginWithName: @"iMyEduSectionDetailsRequest" type: TType_STRUCT fieldID: 2];
+    [outProtocol writeFieldBeginWithName: @"iMyEduSectionDetailsRequest" type: TType_STRUCT fieldID: 1];
     [iMyEduSectionDetailsRequest write: outProtocol];
     [outProtocol writeFieldEnd];
   }
@@ -6491,23 +6503,18 @@
                                            reason: @"getSectionDetails failed: unknown result"];
 }
 
-- (MyEduSectionDetailsReply *) getSectionDetails: (MyEduRequest *) iMyEduRequest : (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest
+- (MyEduSectionDetailsReply *) getSectionDetails: (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest
 {
-  [self send_getSectionDetails: iMyEduRequest : iMyEduSectionDetailsRequest];
+  [self send_getSectionDetails: iMyEduSectionDetailsRequest];
   return [self recv_getSectionDetails];
 }
 
-- (void) send_getModuleDetails: (MyEduRequest *) iMyEduRequest : (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest
+- (void) send_getModuleDetails: (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest
 {
   [outProtocol writeMessageBeginWithName: @"getModuleDetails" type: TMessageType_CALL sequenceID: 0];
   [outProtocol writeStructBeginWithName: @"getModuleDetails_args"];
-  if (iMyEduRequest != nil)  {
-    [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
-    [iMyEduRequest write: outProtocol];
-    [outProtocol writeFieldEnd];
-  }
   if (iMyEduModuleDetailsRequest != nil)  {
-    [outProtocol writeFieldBeginWithName: @"iMyEduModuleDetailsRequest" type: TType_STRUCT fieldID: 2];
+    [outProtocol writeFieldBeginWithName: @"iMyEduModuleDetailsRequest" type: TType_STRUCT fieldID: 1];
     [iMyEduModuleDetailsRequest write: outProtocol];
     [outProtocol writeFieldEnd];
   }
@@ -6536,23 +6543,18 @@
                                            reason: @"getModuleDetails failed: unknown result"];
 }
 
-- (MyEduModuleDetailsReply *) getModuleDetails: (MyEduRequest *) iMyEduRequest : (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest
+- (MyEduModuleDetailsReply *) getModuleDetails: (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest
 {
-  [self send_getModuleDetails: iMyEduRequest : iMyEduModuleDetailsRequest];
+  [self send_getModuleDetails: iMyEduModuleDetailsRequest];
   return [self recv_getModuleDetails];
 }
 
-- (void) send_submitFeedback: (MyEduRequest *) iMyEduRequest : (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest
+- (void) send_submitFeedback: (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest
 {
   [outProtocol writeMessageBeginWithName: @"submitFeedback" type: TMessageType_CALL sequenceID: 0];
   [outProtocol writeStructBeginWithName: @"submitFeedback_args"];
-  if (iMyEduRequest != nil)  {
-    [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
-    [iMyEduRequest write: outProtocol];
-    [outProtocol writeFieldEnd];
-  }
   if (iMyEduSubmitFeedbackRequest != nil)  {
-    [outProtocol writeFieldBeginWithName: @"iMyEduSubmitFeedbackRequest" type: TType_STRUCT fieldID: 2];
+    [outProtocol writeFieldBeginWithName: @"iMyEduSubmitFeedbackRequest" type: TType_STRUCT fieldID: 1];
     [iMyEduSubmitFeedbackRequest write: outProtocol];
     [outProtocol writeFieldEnd];
   }
@@ -6581,9 +6583,9 @@
                                            reason: @"submitFeedback failed: unknown result"];
 }
 
-- (MyEduSubmitFeedbackReply *) submitFeedback: (MyEduRequest *) iMyEduRequest : (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest
+- (MyEduSubmitFeedbackReply *) submitFeedback: (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest
 {
-  [self send_submitFeedback: iMyEduRequest : iMyEduSubmitFeedbackRequest];
+  [self send_submitFeedback: iMyEduSubmitFeedbackRequest];
   return [self recv_submitFeedback];
 }
 
@@ -6753,7 +6755,7 @@
   [args read: inProtocol];
   [inProtocol readMessageEnd];
   GetCourseDetails_result * result = [[GetCourseDetails_result alloc] init];
-  [result setSuccess: [mService getCourseDetails: [args iMyEduRequest]: [args iMyEduCourseDetailsRequest]]];
+  [result setSuccess: [mService getCourseDetails: [args iMyEduCourseDetailsRequest]]];
   [outProtocol writeMessageBeginWithName: @"getCourseDetails"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
@@ -6770,7 +6772,7 @@
   [args read: inProtocol];
   [inProtocol readMessageEnd];
   GetSectionDetails_result * result = [[GetSectionDetails_result alloc] init];
-  [result setSuccess: [mService getSectionDetails: [args iMyEduRequest]: [args iMyEduSectionDetailsRequest]]];
+  [result setSuccess: [mService getSectionDetails: [args iMyEduSectionDetailsRequest]]];
   [outProtocol writeMessageBeginWithName: @"getSectionDetails"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
@@ -6787,7 +6789,7 @@
   [args read: inProtocol];
   [inProtocol readMessageEnd];
   GetModuleDetails_result * result = [[GetModuleDetails_result alloc] init];
-  [result setSuccess: [mService getModuleDetails: [args iMyEduRequest]: [args iMyEduModuleDetailsRequest]]];
+  [result setSuccess: [mService getModuleDetails: [args iMyEduModuleDetailsRequest]]];
   [outProtocol writeMessageBeginWithName: @"getModuleDetails"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
@@ -6804,7 +6806,7 @@
   [args read: inProtocol];
   [inProtocol readMessageEnd];
   SubmitFeedback_result * result = [[SubmitFeedback_result alloc] init];
-  [result setSuccess: [mService submitFeedback: [args iMyEduRequest]: [args iMyEduSubmitFeedbackRequest]]];
+  [result setSuccess: [mService submitFeedback: [args iMyEduSubmitFeedbackRequest]]];
   [outProtocol writeMessageBeginWithName: @"submitFeedback"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];

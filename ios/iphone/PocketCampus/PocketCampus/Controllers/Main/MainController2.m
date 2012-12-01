@@ -157,11 +157,11 @@ static NSString* kSettingsIdentifier = @"SETTINGS";
         
     }
     
-    [menuItems addObject:[MainMenuItem menuItemThinSeparator]];
+    /*[menuItems addObject:[MainMenuItem menuItemThinSeparator]];
     
-    MainMenuItem* settingsButton = [MainMenuItem menuItemButtonWithTitle:NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil) leftImage:[UIImage imageNamed:@"SettingsHomeButton"] identifier:kSettingsIdentifier];
+    MainMenuItem* settingsButton = [MainMenuItem menuItemButtonWithTitle:NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil) leftImage:[UIImage imageNamed:@"Settings"] identifier:kSettingsIdentifier];
     
-    [menuItems addObject:settingsButton];
+    [menuItems addObject:settingsButton];*/
     
     MainMenuViewController* mainMenuViewController = [[MainMenuViewController alloc] initWithMenuItems:menuItems mainController:self];
     self.mainMenuViewController = mainMenuViewController;
@@ -169,9 +169,8 @@ static NSString* kSettingsIdentifier = @"SETTINGS";
 
 - (void)initRevealController {
     SplashViewController* splashViewController = [[SplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
-    ZUUIRevealController* revealController = [[ZUUIRevealController alloc] initWithFrontViewController:splashViewController rearViewController:self.mainMenuViewController];
-    revealController.rearViewRevealWidth = self.revealWidth;
-    self.revealController = revealController;
+    self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:splashViewController rearViewController:self.mainMenuViewController];
+    self.revealController.rearViewRevealWidth = self.revealWidth;
 }
 
 - (NSString*)pluginControllerClassNameForIdentifier:(NSString*)identifier {
@@ -184,15 +183,19 @@ static NSString* kSettingsIdentifier = @"SETTINGS";
     }
 }
 
+- (void)showGlobalSettings {
+    GlobalSettingsViewController* settingsViewController = [[GlobalSettingsViewController alloc] init];
+    UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+    settingsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
+    settingsNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
+    [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];
+}
+
 - (BOOL)setActivePluginWithIdentifier:(NSString*)identifier animated:(BOOL)animated {
-    if ([identifier isEqualToString:kSettingsIdentifier]) {
-        GlobalSettingsViewController* settingsViewController = [[GlobalSettingsViewController alloc] init];
-        UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-        settingsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
-        settingsNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
-        [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];
-        return NO;
-    }
+    
+    /* specials cases */
+    //nothing
+    /* end of special cases */
     
     PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:identifier];
     if (pluginController) {
@@ -205,11 +208,12 @@ static NSString* kSettingsIdentifier = @"SETTINGS";
         
     } else {
         Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:identifier]);
-        pluginController = [[pluginClass alloc] initWithMainController:self];
+        pluginController = [[pluginClass alloc] init];
         [self adaptInitializedNavigationOrSplitViewControllerOfPluginController:pluginController];
         UIViewController* pluginRootViewController = [[self class] rootViewControllerForPluginController:pluginController];
         
         if (pluginRootViewController) {
+            [self.pluginsControllers removeAllObjects];
             [self.pluginsControllers setObject:pluginController forKey:identifier];
             [self.revealController setFrontViewController:pluginRootViewController];
         }
@@ -221,6 +225,7 @@ static NSString* kSettingsIdentifier = @"SETTINGS";
 + (UIViewController*)rootViewControllerForPluginController:(PluginController*)pluginController {
     UIViewController* pluginRootViewController = nil;
     if (pluginController.mainViewController) {
+        NSLog(@"!! Warning: legacy property mainViewController used. There won't be any navigation controller to support navigation. Consider using mainNavigationController and/or mainSplitViewController (iPad) instead.");
         pluginRootViewController = pluginController.mainViewController;
     } else if (pluginController.mainNavigationController) {
         pluginRootViewController = pluginController.mainNavigationController;
@@ -254,7 +259,7 @@ static NSString* kSettingsIdentifier = @"SETTINGS";
     
     UIPanGestureRecognizer* panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
     UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealToggle:)];
-    UIView* gesturesView = [[UIView alloc] initWithFrame:CGRectNull];
+    UIView* gesturesView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1.0, 1.0)];
     gesturesView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     //gesturesView.hidden = YES;
     //gesturesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];

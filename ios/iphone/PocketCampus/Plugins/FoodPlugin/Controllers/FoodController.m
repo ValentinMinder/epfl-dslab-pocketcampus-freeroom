@@ -9,38 +9,51 @@
 #import "FoodController.h"
 #import "RestaurantsListViewController.h"
 
+static FoodController* instance __weak = nil;
+
 @implementation FoodController
 
 - (id)init
 {
-    self = [super init];
-    if (self) {
-        RestaurantsListViewController* restaurantsListViewController = [[RestaurantsListViewController alloc] init];
-        restaurantsListViewController.title = [[self class] localizedName];
-        mainViewController = restaurantsListViewController;
+    @synchronized(self) {
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"FoodController cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
+        }
+        self = [super init];
+        if (self) {
+            RestaurantsListViewController* restaurantsListViewController = [[RestaurantsListViewController alloc] init];
+            restaurantsListViewController.title = [[self class] localizedName];
+            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:restaurantsListViewController];
+            navController.pluginIdentifier = [[self class] identifierName];
+            self.mainNavigationController = navController;
+            instance = self;
+        }
+        return self;
     }
-    return self;
 }
 
-- (id)initWithMainController:(MainController2 *)mainController_
-{
-    self = [self init];
-    if (self) {
-        mainController = mainController_;
-        
++ (id)sharedInstance {
+    @synchronized (self) {
+        if (instance) {
+            return instance;
+        }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
     }
-    return self;
 }
 
 - (void)refresh {
     if (mainViewController == nil || ![mainViewController isKindOfClass:[RestaurantsListViewController class]]) {
         return;
     }
-    if ([((RestaurantsListViewController*)mainViewController) shouldRefresh]) {
-        if (mainViewController.navigationController.topViewController != mainViewController) {
-            [mainViewController.navigationController popToViewController:mainViewController animated:NO];
+    if ([(RestaurantsListViewController*)(self.mainNavigationController.viewControllers[0]) shouldRefresh]) {
+        if (self.mainNavigationController.topViewController != self.mainNavigationController.viewControllers[0]) {
+            [self.mainNavigationController popToRootViewControllerAnimated:NO];
         }
-        [(RestaurantsListViewController*)mainViewController refresh];
+        [(RestaurantsListViewController*)(self.mainNavigationController.viewControllers[0]) refresh];
     }
 }
 
@@ -58,7 +71,13 @@
 
 - (void)dealloc
 {
+    @synchronized(self) {
+        instance = nil;
+    }
+#if __has_feature(objc_arc)
+#else
     [super dealloc];
+#endif
 }
 
 @end
