@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.transport.R;
 import org.pocketcampus.plugin.transport.android.utils.DestinationFormatter;
 import org.pocketcampus.plugin.transport.android.utils.TransportFormatter;
 import org.pocketcampus.plugin.transport.shared.TransportConnection;

@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.map.android.ui;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.map.R;
 import org.pocketcampus.plugin.map.android.MapMainView;
 import org.pocketcampus.plugin.map.android.elements.MapElement;
 import org.pocketcampus.plugin.map.android.utils.GeoPointConverter;

@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.food.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;

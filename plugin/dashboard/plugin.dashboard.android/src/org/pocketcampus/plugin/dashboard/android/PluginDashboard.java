@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.dashboard.R;
 import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginInfo;
 import org.pocketcampus.android.platform.sdk.ui.layout.DashboardLayout;

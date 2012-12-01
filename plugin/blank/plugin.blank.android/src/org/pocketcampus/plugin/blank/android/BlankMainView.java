@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.blank.android;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.blank.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;

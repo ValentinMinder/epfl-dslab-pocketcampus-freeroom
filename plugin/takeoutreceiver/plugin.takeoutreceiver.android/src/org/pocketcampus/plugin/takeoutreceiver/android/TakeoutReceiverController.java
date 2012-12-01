@@ -11,7 +11,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.platform.sdk.shared.restaurant.ChosenMenuItem;
 import org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient;
 import org.pocketcampus.platform.sdk.shared.restaurant.PaymentMethod;
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.takeoutreceiver.R;
 import org.pocketcampus.plugin.takeoutreceiver.android.request.LoadPendingOrdersRequest;
 import org.pocketcampus.plugin.takeoutreceiver.android.request.RegisterCookTokenRequest;
 import org.pocketcampus.plugin.takeoutreceiver.android.request.SetOrderStatusRequest;

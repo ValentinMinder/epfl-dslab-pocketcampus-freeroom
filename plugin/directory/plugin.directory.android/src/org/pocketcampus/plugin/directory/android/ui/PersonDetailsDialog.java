@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.directory.android.ui;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.directory.R;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 import org.pocketcampus.plugin.directory.android.DirectoryResultListView;

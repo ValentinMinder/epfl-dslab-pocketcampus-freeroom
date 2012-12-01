@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.camipro.android;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.camipro.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;

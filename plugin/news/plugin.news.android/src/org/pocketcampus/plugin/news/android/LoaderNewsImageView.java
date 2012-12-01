@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.news.android;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.news.R;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

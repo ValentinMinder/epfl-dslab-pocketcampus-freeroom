@@ -6,7 +6,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.RedirectHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.authentication.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;

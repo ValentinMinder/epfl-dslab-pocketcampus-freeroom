@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.events.android;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.events.R;
 
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;

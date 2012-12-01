@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.map.android;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.map.R;
 import org.pocketcampus.plugin.map.android.elements.MapElementsList;
 
 import android.app.AlertDialog;

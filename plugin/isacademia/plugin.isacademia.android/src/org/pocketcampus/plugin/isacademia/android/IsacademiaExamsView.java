@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.isacademia.android;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.isacademia.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;

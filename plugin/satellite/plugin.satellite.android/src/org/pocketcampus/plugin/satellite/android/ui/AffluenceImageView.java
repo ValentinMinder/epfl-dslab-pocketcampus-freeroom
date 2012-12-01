@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.satellite.android.ui;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.satellite.R;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 
 import android.content.Context;

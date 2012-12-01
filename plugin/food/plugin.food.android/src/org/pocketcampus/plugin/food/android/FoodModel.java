@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.food.R;
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodMainView;

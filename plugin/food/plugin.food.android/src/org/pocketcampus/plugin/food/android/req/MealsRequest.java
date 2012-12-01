@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.food.android.req;
 
 import java.util.List;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.food.R;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.food.android.FoodController;
 import org.pocketcampus.plugin.food.android.FoodModel;

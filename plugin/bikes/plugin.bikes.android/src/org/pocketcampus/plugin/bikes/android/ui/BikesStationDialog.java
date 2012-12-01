@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.bikes.android.ui;
 
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.bikes.R;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
 
 import android.app.Dialog;
