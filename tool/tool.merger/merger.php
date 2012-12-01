@@ -394,6 +394,17 @@ function export_libs($output_dir) {
 
 }
 
+function fix_R_imports($dir) {
+	if(is_file($dir)) return;
+	array_map("fix_R", glob("$dir/*.java"));
+	array_map(__FUNCTION__, glob("$dir/*"));
+}
+
+function fix_R($file) {
+	if(is_dir($file)) return;
+	file_put_contents($file, preg_replace("/import org.pocketcampus.plugin.[a-z]+.R;/", "import org.pocketcampus.R;", file_get_contents($file)));
+}
+
 
 // LOGIC
 
@@ -421,5 +432,6 @@ collect_src("$output_dir");
 delete_dir("$output_dir/libs");
 export_libs("$output_dir");
 
+fix_R_imports("$output_dir/src");
 
 ?>
