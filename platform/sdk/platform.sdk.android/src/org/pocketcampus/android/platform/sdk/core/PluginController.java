@@ -11,7 +11,6 @@ import org.apache.thrift.TServiceClientFactory;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.THttpClient;
-import org.apache.thrift.transport.TSocket;
 
 import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
@@ -24,11 +23,19 @@ import android.os.IBinder;
  * Base controller class.
  * 
  * @author Florian <florian.laurent@epfl.ch>
+ * @author Amer <amer.chamseddine@epfl.ch>
  */
 public abstract class PluginController extends Service {
-	/** Socket connection for this plugin. */
-	protected TSocket mSocket;
 
+	/**
+	 * Gets this plugin's client. May return an exception if connection to the
+	 * server is impossible, but won't return null. FIXME for now we'll try to
+	 * connect multiple times in a row if the model calls getCLient every
+	 * time...
+	 * 
+	 * @return
+	 * @throws TException
+	 */
 	protected TServiceClient getClient(
 			TServiceClientFactory<? extends TServiceClient> clientFactory,
 			String pluginName) {
@@ -99,24 +106,5 @@ public abstract class PluginController extends Service {
 	 * @return
 	 */
 	public abstract PluginModel getModel();
-
-	/**
-	 * Gets this plugin's client. May return an exception if connection to the
-	 * server is impossible, but won't return null. FIXME for now we'll try to
-	 * connect multiple times in a row if the model calls getCLient every
-	 * time...
-	 * 
-	 * @return
-	 * @throws TException
-	 */
-
-	@Override
-	public void onDestroy() {
-		if (mSocket != null) {
-			mSocket.close();
-		}
-
-		super.onDestroy();
-	}
 
 }
