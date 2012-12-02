@@ -27,14 +27,15 @@ typedef enum {
     SearchBarStateHidden
 } SearchBarState;
 
-@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, CustomOverlayViewDelegate, DirectoryServiceDelegate> {
-    UIBarButtonItem* myLocationButton;
-    UIBarButtonItem* floorDownButton;
+@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, CustomOverlayViewDelegate, DirectoryServiceDelegate, UIPopoverControllerDelegate> {
+    UIButton* myLocationButton;
+    UIView* floorManagementSuperview;
+    UIImageView* floorManagementBackground;
+    UIButton* floorDownButton;
     UILabel* floorLabel;
-    UIBarButtonItem* floorUpButton;
-    UIBarButtonItem* othersButton;
+    UIButton* floorUpButton;
+    UIButton* eyeButton;
     UIActionSheet* othersActionSheet;
-    UIToolbar* toolbar;
     UIAlertView* internetConnectionAlert;
     MapService* mapService;
     DirectoryService* directoryService;
@@ -57,17 +58,19 @@ typedef enum {
     UIActivityIndicatorView* navBarLoadingIndicator;
     BOOL showBuildingsInterior;
     NSArray* annotationsToAdd;
+    UIPopoverController* personPopOverController;
 }
 
 @property (nonatomic, assign) IBOutlet MKMapView* mapView;
 @property (nonatomic, assign) IBOutlet UISearchBar* searchBar;
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView* overlaysLoadingIndicator;
-@property (nonatomic, assign) IBOutlet UIBarButtonItem* myLocationButton;
-@property (nonatomic, assign) IBOutlet UIBarButtonItem* floorDownButton;
+@property (nonatomic, assign) IBOutlet UIButton* myLocationButton;
+@property (nonatomic, assign) IBOutlet UIView* floorManagementSuperview;
+@property (nonatomic, assign) IBOutlet UIImageView* floorManagementBackground;
+@property (nonatomic, assign) IBOutlet UIButton* floorDownButton;
 @property (nonatomic, assign) IBOutlet UILabel* floorLabel;
-@property (nonatomic, assign) IBOutlet UIBarButtonItem* floorUpButton;
-@property (nonatomic, assign) IBOutlet UIBarButtonItem* othersButton;
-@property (nonatomic, assign) IBOutlet UIToolbar* toolbar;
+@property (nonatomic, assign) IBOutlet UIButton* floorUpButton;
+@property (nonatomic, assign) IBOutlet UIButton* eyeButton;
 
 - (id)initWithInitialQuery:(NSString*)query;
 - (id)initWithInitialQuery:(NSString*)query pinTextLabel:(NSString*)pinTextLabel;
@@ -75,7 +78,7 @@ typedef enum {
 - (IBAction)myLocationPressed;
 - (IBAction)floorDownPressed;
 - (IBAction)floorUpPressed;
-- (IBAction)othersPressed;
+- (IBAction)eyePressed;
 
 
 @end

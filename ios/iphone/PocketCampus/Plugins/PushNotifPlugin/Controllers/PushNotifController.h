@@ -7,6 +7,8 @@
 
 #import "PushNotifService.h"
 
+#import "AuthenticationController.h"
+
 typedef enum {
     PushNotifDeviceRegistrationErrorUnknown = 0,
     PushNotifDeviceRegistrationErrorServerCommunication = 1,

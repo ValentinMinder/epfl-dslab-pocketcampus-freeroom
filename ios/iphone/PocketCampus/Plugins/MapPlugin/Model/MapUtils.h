@@ -27,6 +27,7 @@ typedef struct {
 
 @interface MapUtils : NSObject
 
++ (UIImage*)mapControlOverylabBoxImage;
 + (NSArray*)mapItemAnnotationsThatShouldBeDisplayed:(NSArray*)annotations forQuery:(NSString*)query;
 + (id<MKAnnotation>)annotationThatShouldBeSelectedOnMapView:(MKMapView*)mapView forQuery:(NSString*)query;
 + (NSInteger)levelToSelectForRoomName:(NSString*)roomName; //returns INT_MAX if level cannot be determined

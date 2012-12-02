@@ -79,6 +79,12 @@ double WGStoCHy(double lat, double lng) {
 
 @implementation MapUtils
 
++ (UIImage*)mapControlOverylabBoxImage {
+    UIImage* image = [UIImage imageNamed:@"MapControlsOverlayBox"];
+    image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 30.0, 0.0, 30.0)];
+    return image;
+}
+
 + (NSArray*)mapItemAnnotationsThatShouldBeDisplayed:(NSArray*)annotations forQuery:(NSString*)query {
     if (annotations == nil || ![annotations isKindOfClass:[NSArray class]]) {
         @throw [NSException exceptionWithName:@"bad argument annotations in mapItemAnnotationsThatShouldBeDisplayed:for:Query:" reason:@"annotations is not kind of class NSAarray" userInfo:nil];
@@ -209,6 +215,10 @@ double WGStoCHy(double lat, double lng) {
     }
     
     if ([roomName isEqualToString:@"Le Vinci"]) {
+        return 2;
+    }
+    
+    if ([[roomName lowercaseString] isEqualToString:@"satellite"]) {
         return 2;
     }
     

@@ -54,6 +54,10 @@ public class PushNotifMsgSender {
 		logger.info("Asynchronously sending " + tasks
 				+ " multicast messages to " + total + " devices");
 	}
+	
+	public static void sendToIOSDevices(PushNotifDataStore dataStore, List<String> devices, String plugin, String msg) {
+		//TODO
+	}
 
 	private static void asyncSend(PushNotifDataStore tempDataStore, List<String> partialDevices, Message dupMessage) {
 		// make a copy

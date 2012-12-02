@@ -7,8 +7,6 @@
 
 @class GasparViewController;
 
-typedef void (^VoidBlock)();
-
 @interface PCLoginObserver : NSObject
 
 @property (nonatomic, assign) id observer;

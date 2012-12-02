@@ -16,7 +16,9 @@
 
 #import "MyEduServiceTests.h"
 
-#import "PushNotifController.h"
+#import "PushNotifControllerTests.h"
+
+static id test __strong = nil;
 
 @implementation AppDelegate
 
@@ -60,9 +62,8 @@
     
     /* OFFICIAL TESTS */
     
-    //PushNotifController* controller = [[PushNotifController sharedInstance] retain];
-    
-    //[controller release];
+    //test = [[PushNotifControllerTests alloc] init];
+    //[test testRegistrationAuthenticated];
     
     //[[[PocketCampusLogicTests alloc] init] testAll];
     
@@ -77,14 +78,6 @@
     [self.window makeKeyAndVisible];
 
     return YES;
-}
-
-- (void)test {
-    PushNotifController* controller4 = [[PushNotifController alloc] init];
-    
-    NSLog(@"%@", controller4);
-    
-    [controller4 release];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

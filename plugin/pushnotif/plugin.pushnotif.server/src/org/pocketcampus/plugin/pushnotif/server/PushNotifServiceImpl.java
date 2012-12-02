@@ -48,7 +48,7 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		if(androidTokens == null || iosTokens == null)
 			return;
 		PushNotifMsgSender.sendToAndroidDevices(dataStore, androidTokens, req.getPluginName(), req.getMessage());
-		// TODO send for IOS as well
+		PushNotifMsgSender.sendToIOSDevices(dataStore, iosTokens, req.getPluginName(), req.getMessage());
 	}
 	
 	@Override
@@ -100,6 +100,7 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		 * unixid=517095, groupid=500000}]
 		 * regId = APA91bGs1MJdynn2OIUsyw3EJrTRnFl4XHvPwwEDt8iSj--1l09jzVMB90jnW9dsKrYF1hHhtaRvwfnVtN6VGIL7oaBzDoaBNj4w1IU9ZbfWaaPmY1zls0ZBeZ9sUl5PmHCUtgtetQorCAr8P_7BVBRuuBzWmBMHcm9Je-NeGVbZFxPrliO6qQQ
 		 */
+		
 		boolean st;
 		st = dataStore.insertUser(principal);
 		if(!st)
@@ -108,6 +109,8 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		if(!st)
 			return new PushNotifReply(504);
 		return new PushNotifReply(200);
+		
+		
 		/*switch (aPushNotifRequest.getIPlatformType()) {
 		case PC_PLATFORM_ANDROID:
 			System.out.println("principal = " + principal);

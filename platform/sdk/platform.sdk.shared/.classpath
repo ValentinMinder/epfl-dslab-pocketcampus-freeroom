@@ -7,10 +7,10 @@
 	<classpathentry kind="lib" path="lib/bcprov-jdk15-146.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang3-3.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/javapns_2.0_Beta_4.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.6.2-sources.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.6.2-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/javapns_2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

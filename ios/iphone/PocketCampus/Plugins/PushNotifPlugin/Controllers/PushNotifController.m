@@ -172,8 +172,8 @@ static PushNotifController* instance __weak = nil;
 #pragma mark - Push notifs registration callback from AppDelegate
      
 - (void)registrationSuccessNotification:(NSNotification*)notif {
-    
-    PushNotifRegReq* request = [[PushNotifRegReq alloc] initWithIAuthenticatedToken:self.tequilaToken iPlatformType:PlatformType_PC_PLATFORM_IOS RegistrationId:notif.userInfo[kPushDeviceTokenStringKey]];
+    NSString* deviceToken = notif.userInfo[kPushDeviceTokenStringKey];
+    PushNotifRegReq* request = [[PushNotifRegReq alloc] initWithIAuthenticatedToken:self.tequilaToken iPlatformType:PlatformType_PC_PLATFORM_IOS RegistrationId:deviceToken];
     [self.pushNotifService registerPushNotif:request delegate:self];
 }
 
