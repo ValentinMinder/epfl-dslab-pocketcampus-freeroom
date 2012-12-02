@@ -50,7 +50,7 @@ typedef enum {
     BOOL overlaysVisible;
     MKCoordinateRegion epflRegion;
     UISearchBar* searchBar;
-    UIActivityIndicatorView* searchActivityIndicator; //no need to release it, the searchBar retains it
+    UIActivityIndicatorView* searchActivityIndicator;
     SearchBarState searchBarState;
     CGRect searchBarHiddenFrame;
     CGRect searchBarVisibleFrame;

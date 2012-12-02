@@ -125,7 +125,6 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     }
     searchActivityIndicator.hidesWhenStopped = YES;
     [searchBar addSubview:searchActivityIndicator];
-    [searchActivityIndicator release];
     
     
     if ([PCUtils isIdiomPad]) {
@@ -813,6 +812,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [initialQueryManualPinLabelText release];
     [annotationsToAdd release];
     [personPopOverController release];
+    [searchActivityIndicator release];
     [super dealloc];
 }
 
