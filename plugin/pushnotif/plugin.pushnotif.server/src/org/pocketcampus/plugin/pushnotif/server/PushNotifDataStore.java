@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.pushnotif.server;
 
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,8 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.pushnotif.shared.PlatformType;
-
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import ch.epfl.tequila.client.model.TequilaPrincipal;
 

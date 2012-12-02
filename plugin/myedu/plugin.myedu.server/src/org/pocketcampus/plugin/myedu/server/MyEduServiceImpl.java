@@ -1,12 +1,13 @@
 package org.pocketcampus.plugin.myedu.server;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
+import java.rmi.NoSuchObjectException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -14,6 +15,8 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifRequest;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseDetailsJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseJson;
@@ -137,6 +140,16 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 			MyEduRequest iMyEduRequest) throws TException {
 		System.out.println("getSubscribedCoursesList");
 		
+		/*TEST*/
+		
+		try {
+			PocketCampusServer.invokeOnPlugin("pushnotif", "pushMessage", new PushNotifRequest("myedu", Arrays.asList("gardiol"), "Hello, world!"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		/*END TEST*/
+		
 		String json = null;
 		
 		try {
@@ -165,7 +178,6 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		} catch (JsonParseException jsonSyntaxException) {
 			throw new TException("Error while parsing JSON");
 		}
-		System.out.println("getSubscribedCoursesList will return");
 		return new MyEduSubscribedCoursesListReply(200).setISubscribedCourses(coursesList);
 	}
 	

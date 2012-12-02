@@ -15,8 +15,8 @@
  */
 package ch.epfl.tequila.client.model;
 
-import java.security.*;
-import java.util.*;
+import java.security.Principal;
+import java.util.Map;
 
 /**
  * Principal holding the values returned by the Tequila server after a successful authentification.

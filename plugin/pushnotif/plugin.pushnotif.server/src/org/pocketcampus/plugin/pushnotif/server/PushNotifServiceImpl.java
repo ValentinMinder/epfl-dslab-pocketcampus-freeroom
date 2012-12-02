@@ -7,8 +7,8 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.authentication.TequilaToken;
 import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifRequest;
 import org.pocketcampus.plugin.pushnotif.shared.PlatformType;
-import org.pocketcampus.plugin.pushnotif.shared.PushNotifReply;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifRegReq;
+import org.pocketcampus.plugin.pushnotif.shared.PushNotifReply;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService;
 
 import ch.epfl.tequila.client.model.ClientConfig;
@@ -47,8 +47,7 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		List<String> iosTokens = dataStore.selectTokens(req.getGasparList(), PlatformType.PC_PLATFORM_IOS);
 		if(androidTokens == null || iosTokens == null)
 			return;
-		PushNotifMsgSender.sendToAndroidDevices(dataStore, androidTokens, req.getPluginName(), req.getMessage());
-		PushNotifMsgSender.sendToIOSDevices(dataStore, iosTokens, req.getPluginName(), req.getMessage());
+		PushNotifMsgSender.sendToDevices(dataStore, androidTokens, iosTokens, req.getPluginName(), req.getMessage());
 	}
 	
 	@Override

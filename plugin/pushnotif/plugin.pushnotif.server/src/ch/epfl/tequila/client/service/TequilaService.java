@@ -15,11 +15,17 @@
  */
 package ch.epfl.tequila.client.service;
 
-import ch.epfl.tequila.client.model.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import ch.epfl.tequila.client.model.ClientConfig;
+import ch.epfl.tequila.client.model.TequilaPrincipal;
 
 /**
  * Service for interacting with the Tequila server.

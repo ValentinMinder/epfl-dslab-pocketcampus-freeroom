@@ -64,6 +64,7 @@ static id test __strong = nil;
     
     //test = [[PushNotifControllerTests alloc] init];
     //[test testRegistrationAuthenticated];
+
     
     //[[[PocketCampusLogicTests alloc] init] testAll];
     
@@ -122,6 +123,10 @@ static id test __strong = nil;
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     [[NSNotificationCenter defaultCenter] postNotificationName:AppDidFailToRegisterToNotifications object:nil];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    NSLog(@"didReceiveRemoteNotification %@", userInfo);
 }
 
 /* Google Analytics Delegation */
