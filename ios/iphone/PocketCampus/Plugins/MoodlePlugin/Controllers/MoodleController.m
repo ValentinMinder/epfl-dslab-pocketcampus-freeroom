@@ -4,6 +4,15 @@
 
 #import "ObjectArchiver.h"
 
+@interface MoodleController ()
+
+@property (nonatomic, strong) AuthenticationController* authController;
+@property (nonatomic, strong) MoodleService* moodleService;
+@property (nonatomic, strong) TequilaToken* tequilaToken;
+@property (nonatomic, strong) NSMutableArray* loginObservers; //array of PCLoginObservers (def. in AuthenticationController)
+
+@end
+
 @implementation MoodleController
 
 static MoodleController* instance __weak = nil;
@@ -66,11 +75,145 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
             } else {
                 NSLog(@"-> Moodle received %@ notification", [AuthenticationService logoutNotificationName]);
                 [MoodleService deleteMoodleCookie]; //removing stored session
+                [[MainController publicController] requestLeavePlugin:@"Moodle"];
             }
         }];
         initObserversDone = YES;
     }
 }
+
+#pragma mark - Login observers management
+
+- (void)addLoginObserver:(id)observer operationIdentifier:(NSString*)identifier successBlock:(VoidBlock)successBlock
+      userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
+    
+    @synchronized(self) {
+        PCLoginObserver* loginObserver = [[PCLoginObserver alloc] init];
+        loginObserver.observer = observer;
+        loginObserver.operationIdentifier = identifier;
+        loginObserver.successBlock = successBlock;
+        loginObserver.userCancelledBlock = userCancelledblock;
+        loginObserver.failureBlock = failureBlock;
+        [self.loginObservers addObject:loginObserver];
+        if(!self.authController) {
+            self.moodleService = [MoodleService sharedInstanceToRetain];
+            self.authController = [AuthenticationController sharedInstance];
+            [self.moodleService getTequilaTokenForMoodleDelegate:self];
+        }
+    }
+}
+
+- (void)removeLoginObserver:(id)observer {
+    [self removeLoginObserver:observer operationIdentifier:nil];
+}
+
+- (void)removeLoginObserver:(id)observer operationIdentifier:(NSString*)identifier { //pass nil identifier to remove all from observer
+    @synchronized(self) {
+        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
+            if (loginObserver.observer == observer && (!identifier || [loginObserver.operationIdentifier isEqualToString:identifier])) {
+                [self.loginObservers removeObject:loginObserver];
+            }
+        }
+        if ([self.loginObservers count] == 0) {
+            [self.moodleService cancelOperationsForDelegate:self]; //abandon login attempt if no more observer interested
+            self.moodleService = nil;
+            self.tequilaToken = nil;
+            self.authController = nil;
+        }
+    }
+}
+
+- (void)cleanAndNotifySuccessToObservers {
+    self.tequilaToken = nil;
+    self.authController = nil;
+    self.moodleService = nil;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.successBlock();
+        }
+    }
+}
+
+- (void)cleanAndNotifyFailureToObservers {
+    self.tequilaToken = nil;
+    self.authController = nil;
+    self.moodleService = nil;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.failureBlock();
+        }
+    }
+}
+
+- (void)cleanAndNotifyUserCancelledToObservers {
+    self.tequilaToken = nil;
+    self.authController = nil;
+    self.moodleService = nil;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.userCancelledBlock();
+        }
+    }
+}
+
+#pragma mark - MyEduServiceDelegate
+
+- (void)getTequilaTokenForMoodleDidReturn:(TequilaToken *)tequilaKey {
+    self.tequilaToken = tequilaKey;
+    if (self.mainSplitViewController) {
+        [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.mainSplitViewController delegate:self];
+    } else {
+        [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.mainNavigationController delegate:self];
+    }
+}
+
+- (void)getTequilaTokenForMoodleFailed {
+    [self cleanAndNotifyFailureToObservers];
+}
+
+- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)aTequilaKey didReturn:(MoodleSession *)aSessionId {
+    [self.moodleService saveMoodleCookie:aSessionId.moodleCookie];
+    [self cleanAndNotifySuccessToObservers];
+}
+
+- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken *)aTequilaKey {
+    [self cleanAndNotifyFailureToObservers];
+}
+
+- (void)serviceConnectionToServerTimedOut {
+    self.authController = nil;
+    self.tequilaToken = nil;
+    self.moodleService = nil;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
+            if ([loginObserver.observer respondsToSelector:@selector(serviceConnectionToServerTimedOut)]) {
+                [loginObserver.observer serviceConnectionToServerTimedOut];
+            }
+            [self.loginObservers removeObject:loginObserver];
+        }
+    }
+}
+
+#pragma mark - AuthenticationCallbackDelegate
+
+- (void)authenticationSucceeded {
+    if (!self.tequilaToken) {
+        NSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
+        return;
+    }
+    [self.moodleService getSessionIdForServiceWithTequilaKey:self.tequilaToken delegate:self];;
+}
+
+- (void)userCancelledAuthentication {
+    [self.moodleService saveMoodleCookie:nil];
+    [self cleanAndNotifyUserCancelledToObservers];
+}
+
+- (void)invalidToken {
+    [self.moodleService getTequilaTokenForMoodleDelegate:self]; //restart to get new token
+}
+
+#pragma mark - PluginControllerProtocol
 
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"MoodlePlugin", @"");

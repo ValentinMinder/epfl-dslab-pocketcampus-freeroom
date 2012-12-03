@@ -103,11 +103,13 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 #pragma mark - MyEduServiceDelegate
 
 - (void)getSubscribedCoursesListForRequest:(MyEduRequest *)request didReturn:(MyEduSubscribedCoursesListReply *)reply {
+    [[MyEduController sharedInstance] removeLoginObserver:self];
     switch (reply.iStatus) {
         case 200:
             self.subscribedCourses = reply.iSubscribedCourses;
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
+            
             break;
         case 407:
             [self.myEduService deleteSession];
@@ -120,6 +122,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 }
 
 - (void)getSubscribedCoursesListFailedForRequest:(MyEduRequest *)request {
+    [[MyEduController sharedInstance] removeLoginObserver:self];
     [self error];
 }
 
@@ -200,7 +203,6 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (void)dealloc
 {
     [self.myEduService cancelOperationsForDelegate:self];
-    [[MyEduController sharedInstance] removeLoginObserver:self];
 }
 
 

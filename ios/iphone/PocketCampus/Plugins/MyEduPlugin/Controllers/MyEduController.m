@@ -13,7 +13,7 @@
 
 #import "AuthenticationController.h"
 
-static MyEduController* instance __weak = nil;
+#import "PushNotifController.h"
 
 static BOOL initObserversDone = NO;
 static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
@@ -26,6 +26,8 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 @property (nonatomic, strong) NSMutableArray* loginObservers; //array of PCLoginObservers (def. in AuthenticationController)
 
 @end
+
+static MyEduController* instance __weak = nil;
 
 @implementation MyEduController
 
@@ -91,15 +93,22 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
             } else {
                 NSLog(@"-> MyEdu received %@ notification", [AuthenticationService logoutNotificationName]);
                 [[MyEduService sharedInstanceToRetain] deleteSession];
+                [[MainController publicController] requestLeavePlugin:@"MyEdu"];
             }
-            NSLog(@"!! Warning: TODO, MyEdu logout => delete cache + leave plugin if direct notification");
         }];
+        
+        [[PushNotifController sharedInstance] addNotificationObserverWithPluginLowerIdentifier:@"myedu" newNotificationBlock:^(NSString *notificationMessage) {
+            [[MainController publicController] requestPluginToForeground:@"MyEdu"];
+        }];
+        
         initObserversDone = YES;
     }
 }
 
-- (void)addLoginObserver:(id)observer operationIdentifier:(NSString*)identifier successBlock:(void (^)(void))successBlock
-    userCancelledBlock:(void (^)(void))userCancelledblock failureBlock:(void (^)(void))failureBlock {
+#pragma mark - Login observers management
+
+- (void)addLoginObserver:(id)observer operationIdentifier:(NSString*)identifier successBlock:(VoidBlock)successBlock
+    userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
     
     @synchronized(self) {
         PCLoginObserver* loginObserver = [[PCLoginObserver alloc] init];
@@ -136,6 +145,39 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     }
 }
 
+- (void)cleanAndNotifySuccessToObservers {
+    self.tequilaToken = nil;
+    self.authController = nil;
+    self.myEduService = nil;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.successBlock();
+        }
+    }
+}
+
+- (void)cleanAndNotifyFailureToObservers {
+    self.tequilaToken = nil;
+    self.authController = nil;
+    self.myEduService = nil;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.failureBlock();
+        }
+    }
+}
+
+- (void)cleanAndNotifyUserCancelledToObservers {
+    self.tequilaToken = nil;
+    self.authController = nil;
+    self.myEduService = nil;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.userCancelledBlock();
+        }
+    }
+}
+
 #pragma mark - MyEduServiceDelegate
 
 - (void)getTequilaTokenForMyEduDidReturn:(MyEduTequilaToken *)tequilaToken {
@@ -148,43 +190,21 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 }
 
 - (void)getTequilaTokenForMyEduFailed {
-    self.tequilaToken = nil;
-    self.authController = nil;
-    self.myEduService = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
-            loginObserver.failureBlock();
-        }
-    }
+    [self cleanAndNotifyFailureToObservers];
 }
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken *)tequilaToken didReturn:(MyEduSession *)myEduSession {
     [self.myEduService saveSession:myEduSession];
-    self.tequilaToken = nil;
-    self.authController = nil;
-    self.myEduService = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
-            loginObserver.successBlock();
-            [self.loginObservers removeObject:loginObserver];
-        }
-    }
+    [self cleanAndNotifySuccessToObservers];
 }
 
 - (void)getMyEduSessionFailedForTequilaToken:(MyEduTequilaToken *)tequilaToken {
-    self.tequilaToken = nil;
-    self.authController = nil;
-    self.myEduService = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
-            loginObserver.failureBlock();
-            [self.loginObservers removeObject:loginObserver];
-        }
-    }
+    [self cleanAndNotifyFailureToObservers];
 }
 
 - (void)serviceConnectionToServerTimedOut {
     self.authController = nil;
+    self.tequilaToken = nil;
     self.myEduService = nil;
     @synchronized (self) {
         for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
@@ -208,14 +228,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (void)userCancelledAuthentication {
     [self.myEduService deleteSession];
-    self.tequilaToken = nil;
-    self.authController = nil;
-    self.myEduService = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
-            loginObserver.userCancelledBlock();
-        }
-    }
+    [self cleanAndNotifyUserCancelledToObservers];
 }
 
 - (void)invalidToken {

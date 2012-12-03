@@ -105,6 +105,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
 #pragma mark - MyEduServiceDelegate
 
 - (void)getCourseDetailsForRequest:(MyEduCourseDetailsRequest*)request didReturn:(MyEduCourseDetailsReply*)reply {
+    [[MyEduController sharedInstance] removeLoginObserver:self];
     switch (reply.iStatus) {
         case 200:
             self.sections = reply.iMyEduSections;
@@ -122,6 +123,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
 }
 
 - (void)getCourseDetailsFailedForRequest:(MyEduCourseDetailsRequest *)request {
+    [[MyEduController sharedInstance] removeLoginObserver:self];
     [self error];
 }
 
@@ -202,7 +204,6 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
 - (void)dealloc
 {
     [self.myEduService cancelOperationsForDelegate:self];
-    [[MyEduController sharedInstance] removeLoginObserver:self];
 }
 
 

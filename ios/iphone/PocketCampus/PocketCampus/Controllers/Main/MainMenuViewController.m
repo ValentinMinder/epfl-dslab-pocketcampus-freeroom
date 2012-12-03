@@ -8,7 +8,7 @@
 
 #import "MainMenuViewController.h"
 
-#import "MainController2.h"
+#import "MainController.h"
 
 #import "MainMenuItem.h"
 
@@ -22,7 +22,7 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 @interface MainMenuViewController ()
 
 @property (nonatomic, strong) NSArray* menuItems; //array of MainMenuItem
-@property (nonatomic, weak) MainController2* mainController;
+@property (nonatomic, weak) MainController* mainController;
 @property (nonatomic, copy) NSArray* sections;
 @property (nonatomic, copy) NSArray* rowsForSection;
 @property (nonatomic, strong) NSMutableDictionary* cells; //key: NSIndexPath, value:corresponding MainMenuItemCell
@@ -31,7 +31,7 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
 @implementation MainMenuViewController
 
-- (id)initWithMenuItems:(NSArray*)menuItems mainController:(MainController2*)mainController;
+- (id)initWithMenuItems:(NSArray*)menuItems mainController:(MainController*)mainController;
 {
     self = [super initWithNibName:@"MainMenuView" bundle:nil];
     if (self) {
@@ -95,6 +95,22 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
 }
 
+- (void)setSelectedPluginWithIdentifier:(NSString*)pluginIdentifier animated:(BOOL)animated {
+    if (![self isViewLoaded]) {
+        return;
+    }
+    if (!pluginIdentifier) {
+        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathsForSelectedRows][0] animated:animated];
+        return;
+    }
+    [self.cells enumerateKeysAndObjectsUsingBlock:^(NSIndexPath* indexPath, MainMenuItemCell* cell, BOOL *stop) {
+        MainMenuItem* menuItem = self.rowsForSection[indexPath.section][indexPath.row];
+        if ([menuItem.identifier isEqualToString:pluginIdentifier]) {
+            [self.tableView selectRowAtIndexPath:indexPath animated:animated scrollPosition:UITableViewScrollPositionNone];
+        }
+    }];
+}
+
 #pragma mark - Actions
 
 - (IBAction)settingsButtonPressed {
@@ -106,9 +122,7 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MainMenuItem* item = self.rowsForSection[indexPath.section][indexPath.row];
     if (item.type == MainMenuItemTypeButton) {
-        if(![self.mainController setActivePluginWithIdentifier:item.identifier animated:YES]) {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
+        [self.mainController setActivePluginWithIdentifier:item.identifier];
     }
 }
 

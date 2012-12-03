@@ -124,6 +124,12 @@ static PushNotifController* instance __weak = nil;
     }
 }
 
+- (void)addNotificationObserverWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(NewNotificationBlock)newNotificationBlock {
+    [[NSNotificationCenter defaultCenter] addObserverForName:[AppDelegate nsNotificationNameForPluginLowerIdentifier:pluginLowerIdentifier] object:nil queue:nil usingBlock:^(NSNotification *notif) {
+        newNotificationBlock(notif.userInfo[@"aps"][@"alert"]);
+    }];
+}
+
 #pragma mark - PushNotifServiceDelegate
 
 - (void)getTequilaTokenForPushNotifDidReturn:(TequilaToken*)token {

@@ -60,7 +60,7 @@
     [backgroundView release];
     if (presentationMode == PresentationModeModal || presentationMode == PresentationModeTryHidden) {
         UIBarButtonItem* cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
-        self.navigationItem.rightBarButtonItem = cancelButton;
+        self.navigationItem.leftBarButtonItem = cancelButton;
         [cancelButton release];
     } else if (presentationMode == PresentationModeNavStack && isLoggedIn) {
         [self showDoneButton];
@@ -102,14 +102,16 @@
 
 - (void)cancelPressed {
     [authenticationService cancelOperationsForDelegate:self];
-    [AuthenticationService enqueueLogoutNotificationDelayed:NO];
     [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
     if (presentationMode == PresentationModeModal) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
             if ([(NSObject*)self.delegate respondsToSelector:@selector(userCancelledAuthentication)]) {
                 [(NSObject*)self.delegate performSelectorOnMainThread:@selector(userCancelledAuthentication) withObject:nil waitUntilDone:YES];
+                [AuthenticationService enqueueLogoutNotificationDelayed:NO];
             }
         }];
+    } else {
+        [AuthenticationService enqueueLogoutNotificationDelayed:NO];
     }
 }
 

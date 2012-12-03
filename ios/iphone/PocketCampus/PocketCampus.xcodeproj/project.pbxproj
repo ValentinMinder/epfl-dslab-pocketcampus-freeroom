@@ -29,8 +29,6 @@
 		32058ACC1572B44D00F4D361 /* TransportSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32058ACB1572B44D00F4D361 /* TransportSettingsViewController.m */; };
 		32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */; };
 		320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* GlobalSettingsViewController.m */; };
-		320A05B915B02D5F0057B15C /* HomeIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B515B02D5F0057B15C /* HomeIcon.m */; };
-		320A05BA15B02D5F0057B15C /* HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320A05B615B02D5F0057B15C /* HomeView.xib */; };
 		320AAC7514FD481E00F71CD7 /* ConfigOLD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 320AAC7414FD481E00F71CD7 /* ConfigOLD.plist */; };
 		320DFC2616469A2300849907 /* MyEduSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320DFC2516469A2300849907 /* MyEduSplashDetailView.xib */; };
 		320DFC291646A25A00849907 /* MyEduSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320DFC281646A25900849907 /* MyEduSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -122,7 +120,7 @@
 		3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
 		325C47A61621D63E006752B4 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47A51621D63E006752B4 /* MainMenuItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */; };
-		325C47AE1621E91A006752B4 /* MainController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController2.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		325C47AE1621E91A006752B4 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325C47B4162200E8006752B4 /* BlankPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47B3162200E8006752B4 /* BlankPluginView.xib */; };
 		32649B23160DD7DA002E6498 /* PCUnkownPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* PCUnkownPersonViewController.m */; };
 		3266394A150C00E100719F6E /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663947150C00E100719F6E /* NSString+MD5Addition.m */; };
@@ -156,7 +154,6 @@
 		32777B4615D1BFBC00A29F56 /* AboutPC.html in Resources */ = {isa = PBXBuildFile; fileRef = 32777B4215D1BFB400A29F56 /* AboutPC.html */; };
 		327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327BF2351666043100C67937 /* PushNotifPlugin.strings */; };
 		328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3288699214FE5AF300CC97DB /* AppDelegate.m */; };
-		328869BD14FE6EBA00CC97DB /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328869BC14FE6EBA00CC97DB /* HomeViewController.m */; };
 		328872C71534D82C00330B54 /* DestinationConnectionsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */; };
 		328872C91534D85400330B54 /* DestinationConnectionsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328872C81534D85400330B54 /* DestinationConnectionsListView.xib */; };
 		3289D28A15094739008DD299 /* Directory.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28815094739008DD299 /* Directory.png */; };
@@ -188,6 +185,8 @@
 		3297E0281555B4FB0054F790 /* NewsItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3297E0271555B4FB0054F790 /* NewsItemViewController.m */; };
 		3297E02A1555B9DB0054F790 /* NewsItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3297E0291555B9DB0054F790 /* NewsItemView.xib */; };
 		329840E316397ADB00FBADFA /* PluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32704C66150016B3002BCB75 /* PluginController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		329CA503166D452E00F7B1AE /* SettingsNavBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329CA501166D452E00F7B1AE /* SettingsNavBarButton.png */; };
+		329CA504166D452E00F7B1AE /* SettingsNavBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329CA502166D452E00F7B1AE /* SettingsNavBarButton@2x.png */; };
 		329D4ACD151F810E000AC339 /* DestinationTransportArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4ACB151F810E000AC339 /* DestinationTransportArrow.png */; };
 		329D4ACE151F810E000AC339 /* DestinationTransportArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */; };
 		329D4AD2151F86D7000AC339 /* BusTransport.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4AD0151F86D7000AC339 /* BusTransport.png */; };
@@ -333,7 +332,6 @@
 		32FAC0F91500F40700925180 /* DirectoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0ED1500F40700925180 /* DirectoryService.m */; };
 		32FAC0FA1500F40700925180 /* directory.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0F01500F40700925180 /* directory.m */; };
 		32FAC0FD1500F40700925180 /* DirectorySearchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FAC0F41500F40700925180 /* DirectorySearchView.xib */; };
-		32FAC1061500FE9F00925180 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC1051500FE9F00925180 /* MainController.m */; };
 		32FB2E0915179014007AE82B /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FB2DFE15179014007AE82B /* TransportPlugin.strings */; };
 		32FB2E0A15179014007AE82B /* transport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0415179014007AE82B /* transport.m */; };
 		32FB2E0B15179014007AE82B /* TransportService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0615179014007AE82B /* TransportService.m */; };
@@ -373,9 +371,6 @@
 		32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportSettingsView.xib; sourceTree = "<group>"; };
 		320A05B015B02C240057B15C /* GlobalSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalSettingsViewController.h; sourceTree = "<group>"; };
 		320A05B115B02C240057B15C /* GlobalSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalSettingsViewController.m; sourceTree = "<group>"; };
-		320A05B415B02D5F0057B15C /* HomeIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeIcon.h; sourceTree = "<group>"; };
-		320A05B515B02D5F0057B15C /* HomeIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeIcon.m; sourceTree = "<group>"; };
-		320A05B615B02D5F0057B15C /* HomeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeView.xib; sourceTree = "<group>"; };
 		320AAC7414FD481E00F71CD7 /* ConfigOLD.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ConfigOLD.plist; sourceTree = "<group>"; };
 		320DFC24164697AE00849907 /* PCMasterSplitDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCMasterSplitDelegate.h; sourceTree = "<group>"; };
 		320DFC2516469A2300849907 /* MyEduSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduSplashDetailView.xib; sourceTree = "<group>"; };
@@ -524,8 +519,8 @@
 		325C47A41621D63E006752B4 /* MainMenuItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuItemCell.h; sourceTree = "<group>"; };
 		325C47A51621D63E006752B4 /* MainMenuItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuItemCell.m; sourceTree = "<group>"; };
 		325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuItemCell.xib; sourceTree = "<group>"; };
-		325C47AC1621E91A006752B4 /* MainController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController2.h; sourceTree = "<group>"; };
-		325C47AD1621E91A006752B4 /* MainController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController2.m; sourceTree = "<group>"; };
+		325C47AC1621E91A006752B4 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MainController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		325C47AD1621E91A006752B4 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MainController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		325C47B3162200E8006752B4 /* BlankPluginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BlankPluginView.xib; sourceTree = "<group>"; };
 		32649B21160DD7DA002E6498 /* PCUnkownPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCUnkownPersonViewController.h; sourceTree = "<group>"; };
 		32649B22160DD7DA002E6498 /* PCUnkownPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCUnkownPersonViewController.m; sourceTree = "<group>"; };
@@ -564,7 +559,7 @@
 		32675C2315F50F4A00880387 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		326B924F150279E900DB4AEE /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		326B925115027A1400DB4AEE /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		32704C65150016B3002BCB75 /* PluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginController.h; sourceTree = "<group>"; };
+		32704C65150016B3002BCB75 /* PluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32704C66150016B3002BCB75 /* PluginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginController.m; sourceTree = "<group>"; };
 		32704C7B15002F67002BCB75 /* Plugins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Plugins.plist; sourceTree = "<group>"; };
 		32710E8B1564FC2400DE6984 /* CamiproService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamiproService.h; sourceTree = "<group>"; };
@@ -583,10 +578,8 @@
 		32777B4515D1BFBC00A29F56 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/AboutPC.html; sourceTree = "<group>"; };
 		327BF2361666043100C67937 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PushNotifPlugin.strings; sourceTree = "<group>"; };
 		327BF2381666043500C67937 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PushNotifPlugin.strings; sourceTree = "<group>"; };
-		3288699114FE5AF300CC97DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		3288699214FE5AF300CC97DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		328869BB14FE6EBA00CC97DB /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
-		328869BC14FE6EBA00CC97DB /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		3288699114FE5AF300CC97DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AppDelegate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		3288699214FE5AF300CC97DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		328872C51534D82C00330B54 /* DestinationConnectionsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationConnectionsListViewController.h; sourceTree = "<group>"; };
 		328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationConnectionsListViewController.m; sourceTree = "<group>"; };
 		328872C81534D85400330B54 /* DestinationConnectionsListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DestinationConnectionsListView.xib; sourceTree = "<group>"; };
@@ -628,6 +621,8 @@
 		3297E0261555B4FB0054F790 /* NewsItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsItemViewController.h; sourceTree = "<group>"; };
 		3297E0271555B4FB0054F790 /* NewsItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsItemViewController.m; sourceTree = "<group>"; };
 		3297E0291555B9DB0054F790 /* NewsItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsItemView.xib; sourceTree = "<group>"; };
+		329CA501166D452E00F7B1AE /* SettingsNavBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsNavBarButton.png; sourceTree = "<group>"; };
+		329CA502166D452E00F7B1AE /* SettingsNavBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsNavBarButton@2x.png"; sourceTree = "<group>"; };
 		329D4ACB151F810E000AC339 /* DestinationTransportArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DestinationTransportArrow.png; sourceTree = "<group>"; };
 		329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DestinationTransportArrow@2x.png"; sourceTree = "<group>"; };
 		329D4AD0151F86D7000AC339 /* BusTransport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BusTransport.png; sourceTree = "<group>"; };
@@ -659,8 +654,8 @@
 		32B3F38716218CE0007A75C7 /* ZUUIRevealController-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZUUIRevealController-Prefix.pch"; sourceTree = "<group>"; };
 		32B3F38816218CE0007A75C7 /* ZUUIRevealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZUUIRevealController.h; sourceTree = "<group>"; };
 		32B3F38916218CE0007A75C7 /* ZUUIRevealController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZUUIRevealController.m; sourceTree = "<group>"; };
-		32B3F38E16219402007A75C7 /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuViewController.h; sourceTree = "<group>"; };
-		32B3F38F16219403007A75C7 /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
+		32B3F38E16219402007A75C7 /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MainMenuViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		32B3F38F16219403007A75C7 /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MainMenuViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32B3F3931621956C007A75C7 /* MainMenuView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuView.xib; sourceTree = "<group>"; };
 		32B3F3951621B6D2007A75C7 /* MainMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuItem.h; sourceTree = "<group>"; };
 		32B3F3961621B6D2007A75C7 /* MainMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuItem.m; sourceTree = "<group>"; };
@@ -746,7 +741,7 @@
 		32CCB4D41555237500220282 /* CoursesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursesListViewController.h; sourceTree = "<group>"; };
 		32CCB4D51555237500220282 /* CoursesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursesListViewController.m; sourceTree = "<group>"; };
 		32CCB4D61555237500220282 /* MoodleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleController.h; sourceTree = "<group>"; };
-		32CCB4D71555237500220282 /* MoodleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleController.m; sourceTree = "<group>"; };
+		32CCB4D71555237500220282 /* MoodleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32CCB4D91555237500220282 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MoodlePlugin.strings; sourceTree = "<group>"; };
 		32CCB4DA1555237500220282 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MoodlePlugin.strings; sourceTree = "<group>"; };
 		32CCB4DC1555237500220282 /* MoodleService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleService.h; sourceTree = "<group>"; };
@@ -856,8 +851,6 @@
 		32FAC0EF1500F40700925180 /* directory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = directory.h; sourceTree = "<group>"; };
 		32FAC0F01500F40700925180 /* directory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = directory.m; sourceTree = "<group>"; };
 		32FAC0F41500F40700925180 /* DirectorySearchView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectorySearchView.xib; sourceTree = "<group>"; };
-		32FAC1041500FE9F00925180 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
-		32FAC1051500FE9F00925180 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
 		32FB2DFF15179014007AE82B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TransportPlugin.strings; sourceTree = "<group>"; };
 		32FB2E0015179014007AE82B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/TransportPlugin.strings; sourceTree = "<group>"; };
 		32FB2E0315179014007AE82B /* transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transport.h; sourceTree = "<group>"; };
@@ -871,7 +864,7 @@
 		74EB4361AD2616FF44DA66CB /* MyEdu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MyEdu.png; path = Plugins/MyEduPlugin/Views/Images/MyEdu.png; sourceTree = SOURCE_ROOT; };
 		7FB34D299D06660A1C768169 /* PushNotifController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PushNotifController.h; path = Plugins/PushNotifPlugin/Controllers/PushNotifController.h; sourceTree = SOURCE_ROOT; };
 		92184A8EA6FCB1AB9277A185 /* myedu.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = myedu.m; path = "Plugins/MyEduPlugin/Model/ThriftTypes+Services/myedu.m"; sourceTree = SOURCE_ROOT; };
-		968E4CDC8AB22470DE349C3B /* MyEduController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MyEduController.m; path = Plugins/MyEduPlugin/Controllers/MyEduController.m; sourceTree = SOURCE_ROOT; };
+		968E4CDC8AB22470DE349C3B /* MyEduController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = MyEduController.m; path = Plugins/MyEduPlugin/Controllers/MyEduController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = pushnotif.m; path = "Plugins/PushNotifPlugin/Model/ThriftTypes+Services/pushnotif.m"; sourceTree = SOURCE_ROOT; };
 		B3F946738F2D6EB698F30C23 /* MyEduService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MyEduService.h; path = Plugins/MyEduPlugin/Model/MyEduService.h; sourceTree = SOURCE_ROOT; };
 		BB5245679D4E9E9B9F64BAC1 /* MyEdu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MyEdu@2x.png"; path = "Plugins/MyEduPlugin/Views/Images/MyEdu@2x.png"; sourceTree = SOURCE_ROOT; };
@@ -956,9 +949,6 @@
 				325C47A51621D63E006752B4 /* MainMenuItemCell.m */,
 				325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */,
 				325C47B3162200E8006752B4 /* BlankPluginView.xib */,
-				320A05B415B02D5F0057B15C /* HomeIcon.h */,
-				320A05B515B02D5F0057B15C /* HomeIcon.m */,
-				320A05B615B02D5F0057B15C /* HomeView.xib */,
 				321F37EA15B0307700E7BA6D /* GlobalSettingsView.xib */,
 				3293AD2215D1BC930097D414 /* AboutPCView.xib */,
 				32777B4215D1BFB400A29F56 /* AboutPC.html */,
@@ -1143,6 +1133,8 @@
 				32CC7B3715B804D3004F0A31 /* SettingsBarButton@2x.png */,
 				321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */,
 				321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */,
+				329CA501166D452E00F7B1AE /* SettingsNavBarButton.png */,
+				329CA502166D452E00F7B1AE /* SettingsNavBarButton@2x.png */,
 				32DE48AF164D3138009C6152 /* Settings.png */,
 				32DE48B0164D3138009C6152 /* Settings@2x.png */,
 				32401B19165D940200998CBD /* SettingsWhite.png */,
@@ -1439,14 +1431,10 @@
 		3288699514FE5AF300CC97DB /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				32FAC1041500FE9F00925180 /* MainController.h */,
-				32FAC1051500FE9F00925180 /* MainController.m */,
-				325C47AC1621E91A006752B4 /* MainController2.h */,
-				325C47AD1621E91A006752B4 /* MainController2.m */,
+				325C47AC1621E91A006752B4 /* MainController.h */,
+				325C47AD1621E91A006752B4 /* MainController.m */,
 				32B3F38E16219402007A75C7 /* MainMenuViewController.h */,
 				32B3F38F16219403007A75C7 /* MainMenuViewController.m */,
-				328869BB14FE6EBA00CC97DB /* HomeViewController.h */,
-				328869BC14FE6EBA00CC97DB /* HomeViewController.m */,
 				320A05B015B02C240057B15C /* GlobalSettingsViewController.h */,
 				320A05B115B02C240057B15C /* GlobalSettingsViewController.m */,
 				3293AD1E15D1BC7C0097D414 /* AboutPCViewController.h */,
@@ -2480,7 +2468,6 @@
 				32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */,
 				32D97C8A15AF160D004384A5 /* README.md in Resources */,
 				32D97C8B15AF160D004384A5 /* entities.strings in Resources */,
-				320A05BA15B02D5F0057B15C /* HomeView.xib in Resources */,
 				321F37E615B02FBE00E7BA6D /* HelpBarButton.png in Resources */,
 				321F37E715B02FBE00E7BA6D /* HelpBarButton@2x.png in Resources */,
 				321F37E815B02FBE00E7BA6D /* HomeNavbar.png in Resources */,
@@ -2583,6 +2570,8 @@
 				32D0B263166ABEA200F68304 /* FloorUp@2x.png in Resources */,
 				32D0B266166AC86100F68304 /* EyeMap.png in Resources */,
 				32D0B267166AC86100F68304 /* EyeMap@2x.png in Resources */,
+				329CA503166D452E00F7B1AE /* SettingsNavBarButton.png in Resources */,
+				329CA504166D452E00F7B1AE /* SettingsNavBarButton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2608,12 +2597,10 @@
 				3219EF9714FCE08300A271CD /* TTransportException.m in Sources */,
 				3219EF9814FCE08300A271CD /* TSharedProcessorFactory.m in Sources */,
 				328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */,
-				328869BD14FE6EBA00CC97DB /* HomeViewController.m in Sources */,
 				32FAC0F51500F40700925180 /* DirectoryController.m in Sources */,
 				32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */,
 				32FAC0F91500F40700925180 /* DirectoryService.m in Sources */,
 				32FAC0FA1500F40700925180 /* directory.m in Sources */,
-				32FAC1061500FE9F00925180 /* MainController.m in Sources */,
 				32102B6615050B9D0076537E /* food.m in Sources */,
 				32102B6915050BB50076537E /* common.m in Sources */,
 				32102B6C15050C000076537E /* FoodService.m in Sources */,
@@ -2692,7 +2679,6 @@
 				32D97C8C15AF160D004384A5 /* STKeychain.m in Sources */,
 				32D97C9615AF169B004384A5 /* CLLocation+STAdditions.m in Sources */,
 				320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */,
-				320A05B915B02D5F0057B15C /* HomeIcon.m in Sources */,
 				3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */,
 				32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */,
 				32A47D6E15B9F48D00592477 /* DocumentViewController.m in Sources */,
@@ -2716,7 +2702,7 @@
 				32B3F39016219403007A75C7 /* MainMenuViewController.m in Sources */,
 				32B3F3971621B6D3007A75C7 /* MainMenuItem.m in Sources */,
 				325C47A61621D63E006752B4 /* MainMenuItemCell.m in Sources */,
-				325C47AE1621E91A006752B4 /* MainController2.m in Sources */,
+				325C47AE1621E91A006752B4 /* MainController.m in Sources */,
 				D2A344178B2283CAF92E9B46 /* MyEduController.m in Sources */,
 				E6C14DE7BD48C7DCC99900DB /* MyEduService.m in Sources */,
 				553A402C812143D9F650BB50 /* myedu.m in Sources */,

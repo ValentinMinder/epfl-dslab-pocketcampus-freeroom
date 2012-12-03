@@ -24,9 +24,9 @@
 
 + (CGFloat)heightForMainMenuItemType:(MainMenuItemType)type {
     if (type == MainMenuItemTypeButton) {
-        return 60.0;
+        return 55.0;
     } else if (type == MainMenuItemTypeSectionHeader) {
-        return 60.0;
+        return 55.0;
     } else if (type == MainMenuItemTypeThinSeparator) {
         return 3.0;
     } else {

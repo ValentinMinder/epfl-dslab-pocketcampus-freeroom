@@ -44,6 +44,7 @@
 						<string key="NSFrame">{{0, 44}, {320, 416}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="939386716">
 							<int key="NSColorSpace">3</int>
@@ -65,14 +66,14 @@
 						<string key="NSFrameSize">{320, 44}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="257202520"/>
+						<reference key="NSNextKeyView" ref="950044092"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSColor" key="IBUITintColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC42NjY2NjY2NjY3IDAgMC4xMDE5NjA3ODQzAA</bytes>
 						</object>
-						<array class="NSMutableArray" key="IBUIItems"/>
+						<array key="IBUIItems" id="0"/>
 					</object>
 					<object class="IBUILabel" id="257202520">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -113,7 +114,7 @@
 						<string key="NSFrame">{{2, 1}, {42, 42}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="482225850"/>
+						<reference key="NSNextKeyView" ref="257202520"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -132,7 +133,7 @@
 						</object>
 						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">SettingsWhite.png</string>
+							<string key="NSResourceName">SettingsNavBarButton@2x.png</string>
 						</object>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<int key="type">2</int>
@@ -148,7 +149,7 @@
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="950044092"/>
+				<reference key="NSNextKeyView" ref="482225850"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -210,7 +211,7 @@
 				<array key="orderedObjects">
 					<object class="IBObjectRecord">
 						<int key="objectID">0</int>
-						<array key="object" id="0"/>
+						<reference key="object" ref="0"/>
 						<reference key="children" ref="1000"/>
 						<nil key="parent"/>
 					</object>
@@ -306,8 +307,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">SettingsWhite.png</string>
-			<string key="NS.object.0">{46, 46}</string>
+			<string key="NS.key.0">SettingsNavBarButton@2x.png</string>
+			<string key="NS.object.0">{84, 84}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">2078</string>
 	</data>

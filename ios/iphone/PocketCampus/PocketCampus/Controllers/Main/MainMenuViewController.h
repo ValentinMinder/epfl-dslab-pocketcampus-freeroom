@@ -8,14 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class MainController2;
+@class MainController;
 
 @interface MainMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
 @property (nonatomic, strong, readonly) NSArray* menuItems; //array of MainMenuItem
-@property (nonatomic, weak, readonly) MainController2* mainController;
+@property (nonatomic, weak, readonly) MainController* mainController;
 
-- (id)initWithMenuItems:(NSArray*)menuItems mainController:(MainController2*)mainController;
+- (id)initWithMenuItems:(NSArray*)menuItems mainController:(MainController*)mainController;
+- (void)setSelectedPluginWithIdentifier:(NSString*)pluginIdentifier animated:(BOOL)animated; //pass nil to select no cell
 
 @end

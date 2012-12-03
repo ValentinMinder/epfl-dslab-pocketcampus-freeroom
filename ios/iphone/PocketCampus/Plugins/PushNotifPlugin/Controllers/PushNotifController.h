@@ -18,6 +18,8 @@ typedef enum {
 
 typedef void (^PushNotifDeviceRegistrationFailureBlock)(PushNotifDeviceRegistrationError error);
 
+typedef void (^NewNotificationBlock)(NSString* notificationMessage);
+
 @interface PushNotifDeviceRegistrationObserver : NSObject
 
 @property (nonatomic, weak) id observer;
@@ -33,5 +35,7 @@ typedef void (^PushNotifDeviceRegistrationFailureBlock)(PushNotifDeviceRegistrat
 - (void)addAuthentifiedUserDeviceRegistrationObserver:(id)observer presentationViewControllerForAutentication:(UIViewController*)presController successBlock:(VoidBlock)successBlock failureBlock:(PushNotifDeviceRegistrationFailureBlock)failureBlock; //will start registration procedure of device on PC server, and will link device token to gaspar on PC server. presentationViewControllerForAutentication (give self usually) will be used to present GasparViewController if credentials not saved.
 - (void)addDeviceUnregistrationObserver:(id)observer successBlock:(VoidBlock)successBlock failureBlock:(PushNotifDeviceRegistrationFailureBlock)failureBlock; //will start unregistration procedure of device token on PC server.
 - (void)removeObserver:(id)observer;
+
+- (void)addNotificationObserverWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(NewNotificationBlock)newNotificationBlock;
 
 @end

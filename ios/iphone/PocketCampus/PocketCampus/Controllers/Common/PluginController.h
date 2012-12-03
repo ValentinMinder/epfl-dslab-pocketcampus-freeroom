@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#import "MainController2.h"
+#import "MainController.h"
 
 #import "PluginNavigationController.h"
 #import "PluginSplitViewController.h"
@@ -43,6 +43,10 @@
 
 @optional
 + (void)initObservers;
+
+@optional
+/* Should return whether the plugin can be deallocated. Do not return NO unless there is an operation currently in progress */
+- (BOOL)canBeReleased;
 
 @optional
 - (void)pluginWillLoseFocus; //called when menu is revealed and plugin shiften to the right

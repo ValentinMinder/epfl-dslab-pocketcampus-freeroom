@@ -153,6 +153,7 @@
 #pragma mark - MyEduServiceDelegate
 
 - (void)getSectionDetailsForRequest:(MyEduSectionDetailsRequest*)request didReturn:(MyEduSectionDetailsReply*)reply {
+    [[MyEduController sharedInstance] removeLoginObserver:self];
     switch (reply.iStatus) {
         case 200:
             self.modules = reply.iMyEduModules;
@@ -171,6 +172,7 @@
 }
 
 - (void)getSectionDetailsFailedForRequest:(MyEduSectionDetailsRequest *)request {
+    [[MyEduController sharedInstance] removeLoginObserver:self];
     [self error];
 }
 
@@ -257,7 +259,6 @@
 {
     [self.myEduService removeDownloadObserver:self];
     [self.myEduService cancelOperationsForDelegate:self];
-    [[MyEduController sharedInstance] removeLoginObserver:self];
 }
 
 @end

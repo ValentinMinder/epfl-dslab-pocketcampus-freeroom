@@ -54,28 +54,37 @@
 	// Do any additional setup after loading the view.
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    //NSLog(@"%lf, %lf, %lf x %lf", self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+- (void)viewWillAppear:(BOOL)animated {
+    self.splashViewImage.center = self.view.center;
 }
 
-- (void)willMoveToRightWithDuration:(NSTimeInterval)duration {
+- (void)willMoveToRightWithDuration:(NSTimeInterval)duration hideDrawingOnIdiomPhone:(BOOL)hideDrawingOnIdiomPhone {
     if ([PCUtils isIdiomPad]) { //adapt drawing's position
         [UIView animateWithDuration:duration animations:^{
             self.view.frame = CGRectMake(0, 0, self.view.frame.size.width - self.rightHiddenOffset, self.view.frame.size.height);
         }];
     } else { //hide drowing
-        [UIView animateWithDuration:duration animations:^{
+        if (hideDrawingOnIdiomPhone) {
             self.splashViewImage.alpha = 0.0;
-        }];
+        }
     }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return YES;
+    if ([PCUtils isIdiomPad]) {
+        return YES;
+    } else {
+        return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+    }
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAll;
+    if ([PCUtils isIdiomPad]) {
+        return UIInterfaceOrientationMaskAll;
+    } else {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning

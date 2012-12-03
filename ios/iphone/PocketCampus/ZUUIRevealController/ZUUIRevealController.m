@@ -276,7 +276,7 @@
 		[self.delegate revealController:self willEnterRearViewControllerPresentationMode:self.rearViewController];
 	}
 	
-	[self _revealCompletelyAnimationWithDuration:self.toggleAnimationDuration*0.5f];
+	[self _revealCompletelyAnimationWithDuration:self.toggleAnimationDuration];
 	self.currentFrontViewPosition = FrontViewPositionRightMost;
 }
 

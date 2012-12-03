@@ -13,6 +13,6 @@
 @property (nonatomic) CGFloat rightHiddenOffset;
 
 - (id)initWithRightHiddenOffset:(CGFloat)rightHiddenOffset;
-- (void)willMoveToRightWithDuration:(NSTimeInterval)duration;
+- (void)willMoveToRightWithDuration:(NSTimeInterval)duration hideDrawingOnIdiomPhone:(BOOL)hideDrawingOnIdiomPhone;
 
 @end

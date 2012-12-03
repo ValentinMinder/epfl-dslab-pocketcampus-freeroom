@@ -22,12 +22,11 @@ static id test __strong = nil;
 
 @implementation AppDelegate
 
-@synthesize window = _window, mainController;
+@synthesize window = _window;
 
 - (void)dealloc
 {
     [[GANTracker sharedTracker] stopTracker];
-    [mainController release];
     [_window release];
     [super dealloc];
 }
@@ -56,8 +55,7 @@ static id test __strong = nil;
         [application setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
     }
     
-    //self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
-    self.mainController2 = [[[MainController2 alloc] initWithWindow:self.window] autorelease];
+    self.MainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
     
     
     /* OFFICIAL TESTS */
@@ -77,6 +75,15 @@ static id test __strong = nil;
     /* END OF OFFICAL TESTS */
     
     [self.window makeKeyAndVisible];
+    
+    /* App might have been opened by notification touch */
+    NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (userInfo) {
+        [self application:[UIApplication sharedApplication] didReceiveRemoteNotification:userInfo];
+    }
+    
+    //test
+    //[self application:[UIApplication sharedApplication] didReceiveRemoteNotification:[NSDictionary dictionaryWithObject:@"myedu" forKey:@"pluginName"]];
 
     return YES;
 }
@@ -102,7 +109,7 @@ static id test __strong = nil;
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    [self.mainController refreshDisplayedPlugin];
+    [self.MainController refreshDisplayedPlugin];
     
 }
 
@@ -126,7 +133,14 @@ static id test __strong = nil;
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    NSLog(@"didReceiveRemoteNotification %@", userInfo);
+    NSString* pluginName = userInfo[@"pluginName"];
+    NSString* message = userInfo[@"aps"][@"alert"];
+    NSLog(@"-> Notification received for plugin %@: %@", pluginName, message);
+    [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:pluginName] object:nil userInfo:userInfo];
+}
+
++ (NSString*)nsNotificationNameForPluginLowerIdentifier:(NSString*)pluginLowerIdentifier {
+    return [NSString stringWithFormat:@"%@_%@", RemoteNotifForPluginName, pluginLowerIdentifier];
 }
 
 /* Google Analytics Delegation */
