@@ -8,7 +8,8 @@
 "MoodleAllWeeks" = "All weeks";
 "MoodleCurrentWeek" = "Current week";
 "Saved" = "saved ";
-"LoadingCourse" = "Loading course\nPlease wait";
+"LoadingCourseList" = "Loading course list...";
+"LoadingCourse" = "Loading course, please wait...";
 "ErrorWhileDownloadingFile" = "Sorry, an error occured while downloading the file.\n\nCheck your internet connection.";
 "FileCouldNotBeDisplayedTryOpenIn" = "This file  cannot be displayed.\nTry the action button.";
 "Sorry" = "Sorry";

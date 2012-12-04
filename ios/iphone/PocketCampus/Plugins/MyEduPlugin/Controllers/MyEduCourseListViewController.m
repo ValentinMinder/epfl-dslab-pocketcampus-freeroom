@@ -109,7 +109,6 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
             self.subscribedCourses = reply.iSubscribedCourses;
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
-            
             break;
         case 407:
             [self.myEduService deleteSession];

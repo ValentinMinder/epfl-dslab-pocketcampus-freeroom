@@ -14,6 +14,4 @@
 
 @interface MyEduCourseListViewController : UITableViewController<PCMasterSplitDelegate, MyEduServiceDelegate>
 
-@property (nonatomic, strong) NSArray* elements;
-
 @end

@@ -6,14 +6,14 @@
 #import "ASIHTTPRequest.h"
 
 
-@interface MoodleService : Service<ServiceProtocol> {
-    NSString* moodleCookie;
-}
+@interface MoodleService : Service<ServiceProtocol>
 
-@property(nonatomic, retain) NSString* moodleCookie;
+@property(nonatomic, retain) MoodleSession* moodleCookie;
 
-+ (BOOL)deleteMoodleCookie;
-- (BOOL)saveMoodleCookie:(NSString*)moodleCookie;
+- (MoodleRequest*)createMoodleRequestWithCourseId:(int)courseId; //pass courseId = 0 to ignore it
+- (MoodleSession*)lastSession;
+- (BOOL)saveSession:(MoodleSession*)session;
+- (BOOL)deleteSession;
 + (NSString*)fileTypeForURL:(NSString*)urlString;
 + (NSString*)localPathForURL:(NSString*)urlString; //same as next with second argument NO
 + (NSString*)localPathForURL:(NSString*)urlString createIntermediateDirectories:(BOOL)createIntermediateDirectories;
@@ -23,10 +23,16 @@
 - (void)getTequilaTokenForMoodleDelegate:(id)delegate;
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate;
 
+#pragma mark - Service methods
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
 - (void)getEventsList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
 
+#pragma mark - Cached service methods
+- (CoursesListReply*)getFromCacheCoursesListForRequest:(MoodleRequest*)moodleRequest;
+- (SectionsListReply*)getFromCacheCourseSectionsForRequest:(MoodleRequest*)moodleRequest;
+
+#pragma mark - Fetch resources
 - (void)fetchMoodleResourceWithURL:(NSString*)url cookie:(NSString*)cookie delegate:(id)delegate;
 
 @end

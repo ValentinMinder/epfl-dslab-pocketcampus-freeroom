@@ -1,5 +1,6 @@
 
 #import "MoodleController.h"
+
 #import "CoursesListViewController.h"
 
 #import "ObjectArchiver.h"
@@ -28,6 +29,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
         }
         self = [super init];
         if (self) {
+            self.loginObservers = [NSMutableArray array];
             [[self class] deleteSessionIfNecessary];
             CoursesListViewController* coursesListViewController = [[CoursesListViewController alloc] init];
             coursesListViewController.title = [[self class] localizedName];
@@ -57,7 +59,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     NSNumber* deleteSession = (NSNumber*)[ObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
     if (deleteSession && [deleteSession boolValue]) {
         NSLog(@"-> Delayed logout notification on Moodle now applied : deleting sessionId");
-        [MoodleService deleteMoodleCookie];
+        [[MoodleService sharedInstanceToRetain] deleteSession];
         [ObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
     }
 }
@@ -74,7 +76,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
                 [ObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
             } else {
                 NSLog(@"-> Moodle received %@ notification", [AuthenticationService logoutNotificationName]);
-                [MoodleService deleteMoodleCookie]; //removing stored session
+                [[MoodleService sharedInstanceToRetain] deleteSession]; //removing stored session
                 [[MainController publicController] requestLeavePlugin:@"Moodle"];
             }
         }];
@@ -172,7 +174,8 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)aTequilaKey didReturn:(MoodleSession *)aSessionId {
-    [self.moodleService saveMoodleCookie:aSessionId.moodleCookie];
+    MoodleSession* session = [[MoodleSession alloc] initWithMoodleCookie:aSessionId.moodleCookie];
+    [self.moodleService saveSession:session];
     [self cleanAndNotifySuccessToObservers];
 }
 
@@ -205,7 +208,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 }
 
 - (void)userCancelledAuthentication {
-    [self.moodleService saveMoodleCookie:nil];
+    [self.moodleService deleteSession];
     [self cleanAndNotifyUserCancelledToObservers];
 }
 

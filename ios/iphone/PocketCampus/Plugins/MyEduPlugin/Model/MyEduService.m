@@ -146,7 +146,8 @@ static MyEduService* instance __weak = nil;
     if (self.session) {
         return self.session;
     }
-    return (MyEduSession*)[ObjectArchiver objectForKey:kMyEduSessionIdentifier andPluginName:@"myedu"];
+    self.session = (MyEduSession*)[ObjectArchiver objectForKey:kMyEduSessionIdentifier andPluginName:@"myedu"];
+    return self.session;
 }
 
 - (BOOL)saveSession:(MyEduSession*)session {

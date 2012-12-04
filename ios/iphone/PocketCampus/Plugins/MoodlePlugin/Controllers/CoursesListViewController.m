@@ -2,241 +2,198 @@
 //  CoursesListViewController.m
 //  PocketCampus
 //
-//  Created by Amer C on 5/2/12.
+//  Created by Loïc Gardiol on 04.12.12.
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
-
 #import "CoursesListViewController.h"
+
+#import "PCRefreshControl.h"
+
+#import "MoodleController.h"
+
+#import "PCCenterMessageCell.h"
+
+#import "GANTracker.h"
 
 #import "CourseSectionsViewController.h"
 
-#import "MoodleService.h"
+@interface CoursesListViewController ()
 
-#import "PCValues.h"
+@property (nonatomic, strong) MoodleService* moodleService;
+@property (nonatomic, strong) NSArray* courses;
+@property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 
-#import "PCUtils.h"
+@end
+
+static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 
 @implementation CoursesListViewController
-
-@synthesize coursesList, centerActivityIndicator, centerMessageLabel;
 
 - (id)init
 {
     self = [super initWithNibName:@"CoursesListView" bundle:nil];
     if (self) {
-        // Custom initialization
-        authController = [[AuthenticationController sharedInstance] retain];
-        moodleService = [[MoodleService sharedInstanceToRetain] retain];
-        tequilaKey = nil;
-        iCourses = nil;
+        self.moodleService = [MoodleService sharedInstanceToRetain];
+        self.courses = [self.moodleService getFromCacheCoursesListForRequest:[self.moodleService createMoodleRequestWithCourseId:0]].iCourses;
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle" withError:NULL];
-    self.view.backgroundColor = [PCValues backgroundColor1];
-    coursesList.backgroundColor = [UIColor clearColor];
-    UIView* backgroundView = [[UIView alloc] initWithFrame:coursesList.frame];
-    backgroundView.backgroundColor = [PCValues backgroundColor1];;
-    coursesList.backgroundView = backgroundView;
-    [backgroundView release];
-    [centerActivityIndicator startAnimating];
-    if(moodleService.moodleCookie == nil) {
-        centerMessageLabel.text = @"";
-        coursesList.hidden = YES;
-        [self startAuth];
-    } else {
-        [self startGetCoursesListRequest];
+    self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+    [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    if (!self.courses) {
+        [self refresh];
     }
-    
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [coursesList deselectRowAtIndexPath:[coursesList indexPathForSelectedRow] animated:animated];
-}
-
-- (void)viewDidUnload
+- (void)didReceiveMemoryWarning
 {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
-- (void)startGetCoursesListRequest {
-    [centerActivityIndicator startAnimating];
-    centerMessageLabel.text = @"";
-    coursesList.hidden = YES;
-    
-    SessionId* sess = [[SessionId alloc] init];
-    [sess setTos:TypeOfService_SERVICE_MOODLE];
-    [sess setMoodleCookie:moodleService.moodleCookie];
-    MoodleRequest* req = [[MoodleRequest alloc] init];
-    [req setISessionId:sess];
-    [req setILanguage:@"en"];
-    [moodleService getCoursesList:req withDelegate:self];
-    [req release];
-    [sess release];
-    
-    self.title = NSLocalizedStringFromTable(@"MoodleCourses", @"MoodlePlugin", nil);
-}
+#pragma mark - refresh control
 
-- (void)startAuth {
-    [centerActivityIndicator startAnimating];
-    [moodleService getTequilaTokenForMoodleDelegate:self];
-}
-
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
-{
-    return UIInterfaceOrientationMaskAllButUpsideDown;
-}
-
-- (BOOL)shouldAutorotate {
-    if (coursesList.hidden) {
-        return NO;
-    }
-    return YES;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5 and earlier
-{
-    if (coursesList.hidden) {
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
-    }
-    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
-}
-
-/* service delegation */
-
-- (void)serviceConnectionToServerTimedOut {
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
-}
-
-/* MoodleServiceDelegate delegation */
-
-- (void)getTequilaTokenForMoodleDidReturn:(TequilaToken*)tequilaKey_ {
-    [tequilaKey release];
-    tequilaKey = [tequilaKey_ retain];
-    [authController authToken:tequilaKey.iTequilaKey presentationViewController:self.navigationController delegate:self];
-}
-
-- (void)getTequilaTokenForMoodleFailed {
-    NSLog(@"-> getTequilaTokenForMoodleFailed");
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
-    //[MoodleService deleteMoodleCookie];
-}
-
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(MoodleSession*)sessionId {
-    [moodleService saveMoodleCookie:sessionId.moodleCookie];
+- (void)refresh {
+    [self.moodleService cancelOperationsForDelegate:self]; //cancel before retrying
+    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingCourseList", @"MoodlePlugin", nil)];
     [self startGetCoursesListRequest];
 }
 
-- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)tequilaKey {
-    NSLog(@"-> getSessionIdForServiceFailedForTequilaKey");
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
-    [MoodleService deleteMoodleCookie];
+- (void)startGetCoursesListRequest {
+    VoidBlock successBlock = ^{
+        [self.moodleService getCoursesList:[self.moodleService createMoodleRequestWithCourseId:0] withDelegate:self];
+    };
+    if ([self.moodleService lastSession]) {
+        successBlock();
+    } else {
+        NSLog(@"-> No saved session, loggin in...");
+        [[MoodleController sharedInstance] addLoginObserver:self operationIdentifier:nil successBlock:successBlock userCancelledBlock:^{
+            [self.pcRefreshControl endRefreshing];
+        } failureBlock:^{
+            [self error];
+        }];
+    }
 }
 
-- (void)getCoursesList:(MoodleRequest*)aMoodleRequest didReturn:(CoursesListReply*)coursesListReply {
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = @"";
-    if(coursesListReply.iStatus == 200) {
-        [iCourses release];
-        iCourses = [coursesListReply.iCourses retain];
-        if(iCourses.count != 0) {
-            [PCUtils reloadTableView:coursesList withFadingDuration:0.2];
-        } else {
-            centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleNoCourse", @"MoodlePlugin", nil);
+#pragma mark - MoodleServiceDelegate
+
+- (void)getCoursesList:(MoodleRequest *)aMoodleRequest didReturn:(CoursesListReply *)coursesListReply {
+    [[MoodleController sharedInstance] removeLoginObserver:self];
+    switch (coursesListReply.iStatus) {
+        case 200:
+            self.courses = coursesListReply.iCourses;
+            [self.tableView reloadData];
+            [self.pcRefreshControl endRefreshing];
+            break;
+        case 407:
+            [self.moodleService deleteSession];
+            [self startGetCoursesListRequest];
+            break;
+        case 405:
+            [self error];
+            break;
+        case 404:
+        {
+            [self.pcRefreshControl endRefreshing];
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
         }
-    } else if(coursesListReply.iStatus == 404) {
-        centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil);
-    } else if(coursesListReply.iStatus == 407) { // session timed out
-        // kill the cookie
-        [moodleService saveMoodleCookie:nil];
-        // and re call auth
-        [self startAuth];
+        default:
+            [self getCoursesListFailed:aMoodleRequest];
+            break;
     }
 }
 
-- (void)getCoursesListFailed:(MoodleRequest*)aMoodleRequest {
-    NSLog(@"-> getCoursesListFailed");
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+- (void)getCoursesListFailed:(MoodleRequest *)aMoodleRequest {
+    [[MoodleController sharedInstance] removeLoginObserver:self];
+    [self error];
 }
 
-/* AuthenticationCallbackDelegate delegation */
-
-- (void)authenticationSucceeded {
-    [moodleService getSessionIdForServiceWithTequilaKey:tequilaKey delegate:self];
-}
-
-- (void)invalidToken {
-    NSLog(@"-> invalidToken");
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
-    [MoodleService deleteMoodleCookie];
-}
-
-- (void)userCancelledAuthentication {
-    [MoodleService deleteMoodleCookie];
-    [centerActivityIndicator stopAnimating];
-    if (self.navigationController.visibleViewController == self) {
-        [self.navigationController popViewControllerAnimated:YES]; //leaving plugin
+- (void)error {
+    self.pcRefreshControl.type = RefreshControlTypeProblem;
+    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
+    if (!self.courses) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }
+    [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 
-/* UITableViewDelegate delegation */
+- (void)serviceConnectionToServerTimedOut {
+    self.pcRefreshControl.type = RefreshControlTypeProblem;
+    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
+    if (!self.courses) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
+    [self.pcRefreshControl hideInTimeInterval:2.0];
+}
+
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    MoodleCourse* course = [iCourses objectAtIndex:indexPath.row];
-    CourseSectionsViewController* controller = [[CourseSectionsViewController alloc] initWithCourseId:course.iId andCourseTitle:course.iTitle];
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
+    MoodleCourse* course = self.courses[indexPath.row];
+    CourseSectionsViewController* viewController = [[CourseSectionsViewController alloc] initWithCourseId:course.iId andCourseTitle:course.iTitle];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
-/* UITableViewDataSource */
+#pragma mark - UITableViewDataSource
 
-- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MoodleCourse* course = [iCourses objectAtIndex:indexPath.row];
-    UITableViewCell* newCell = [coursesList dequeueReusableCellWithIdentifier:@"MOODLE_COURSES_LIST"];
-    if (newCell == nil) {
-        newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MOODLE_COURSES_LIST"] autorelease];
-        newCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        newCell.selectionStyle = UITableViewCellSelectionStyleGray;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.courses && [self.courses count] == 0) {
+        if (indexPath.row == 2) {
+            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NotSubscribedToAnyCourse", @"MyEduPlugin", nil)];
+        } else {
+            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        }
     }
-    newCell.textLabel.text = course.iTitle;
-    return newCell;
+    
+    MoodleCourse* course = self.courses[indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMoodleCourseListCell];
+    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMoodleCourseListCell];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    }
+    
+    cell.textLabel.text = course.iTitle;
+    
+    return cell;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (iCourses == nil) {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    if ([self.courses count] == 0) {
+        return 2; //first empty cell, second cell says no content
+    }
+    return [self.courses count];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    if (!self.courses) {
         return 0;
     }
-    return iCourses.count;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-/* end */
+#pragma mark - dealloc
 
-- (void)dealloc
-{
-    [authController release];
-    [moodleService cancelOperationsForDelegate:self];
-    [moodleService release];
-    [iCourses release];
-    [tequilaKey release];
-    [super dealloc];
+- (void)dealloc {
+    [self.moodleService cancelOperationsForDelegate:self];
 }
 
 @end

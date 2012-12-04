@@ -61,7 +61,8 @@
     } else { //needs to be downloaded
         [centerActivityIndicator startAnimating];
         centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
-        [moodleService fetchMoodleResourceWithURL:documentRemoteURLString cookie:moodleService.moodleCookie delegate:self];
+        MoodleSession* session = [moodleService lastSession];
+        [moodleService fetchMoodleResourceWithURL:documentRemoteURLString cookie:session.moodleCookie delegate:self];
         [self deleteButton].enabled = NO;
         [self actionButton].enabled = NO;
     }
