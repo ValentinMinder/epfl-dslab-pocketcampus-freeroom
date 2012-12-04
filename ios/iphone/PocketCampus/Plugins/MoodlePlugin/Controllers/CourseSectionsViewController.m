@@ -46,6 +46,8 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
         self.title = self.courseTitle;
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.sections = [self.moodleService getFromCacheCourseSectionsForRequest:[self.moodleService createMoodleRequestWithCourseId:self.courseId]].iSections;
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+        [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
 }
@@ -53,8 +55,6 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course" withError:NULL];
-    self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
-    [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

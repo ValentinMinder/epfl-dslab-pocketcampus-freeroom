@@ -45,6 +45,8 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
         self.title = NSLocalizedStringFromTable(@"Sections", @"MyEduPlugin", nil);
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.sections = [self.myEduService getFromCacheCourseDetailsForRequest:[[MyEduCourseDetailsRequest alloc] initWithIMyEduRequest:[self.myEduService createMyEduRequest] iCourseCode:self.course.iCode]].iMyEduSections;
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+        [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
 }
@@ -56,8 +58,6 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
      backgroundView.backgroundColor = [UIColor whiteColor];
      self.tableView.backgroundView = backgroundView;
      self.tableView.backgroundColor = [UIColor clearColor];*/
-    self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
-    [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

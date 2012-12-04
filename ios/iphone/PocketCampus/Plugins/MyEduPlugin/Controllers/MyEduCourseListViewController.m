@@ -42,6 +42,8 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
         // Custom initialization
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.subscribedCourses = [self.myEduService getFromCacheSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest]].iSubscribedCourses;
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+        [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
 }
@@ -53,8 +55,6 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     backgroundView.backgroundColor = [UIColor whiteColor];
     self.tableView.backgroundView = backgroundView;
     self.tableView.backgroundColor = [UIColor clearColor];*/
-    self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
-    [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

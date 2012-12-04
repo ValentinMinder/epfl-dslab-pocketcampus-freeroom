@@ -51,9 +51,7 @@ static NSString* kSupportedIdiomPhonePad = @"phone+pad";
 
 static int kGesturesViewTag = 50;
 
-static BOOL BACKGROUND_PLUGINS_ENABLED = NO;
-
-static NSString* kSettingsIdentifier = @"SETTINGS";
+static BOOL BACKGROUND_PLUGINS_ENABLED = NO; //YES not supported yet
 
 static MainController<MainControllerPublic>* instance = nil;
 

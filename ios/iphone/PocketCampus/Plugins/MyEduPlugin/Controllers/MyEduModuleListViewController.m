@@ -48,6 +48,8 @@
         if (self.modules) {
             [self initCellsWithModules];
         }
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+        [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
 }
@@ -59,8 +61,6 @@
      backgroundView.backgroundColor = [UIColor whiteColor];
      self.tableView.backgroundView = backgroundView;
      self.tableView.backgroundColor = [UIColor clearColor];*/
-    self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
-    [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
