@@ -18,7 +18,7 @@
 
 #import "PCTableViewSectionHeader.h"
 
-#import "DocumentViewController.h"
+#import "MoodleResourceViewController.h"
 
 #import "GANTracker.h"
 
@@ -48,6 +48,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
         self.sections = [self.moodleService getFromCacheCourseSectionsForRequest:[self.moodleService createMoodleRequestWithCourseId:self.courseId]].iSections;
         self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+        self.clearsSelectionOnViewWillAppear = NO; //managed manually to know which row was selected and reload it to update "saved" label
     }
     return self;
 }
@@ -55,6 +56,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course" withError:NULL];
+    [self showToggleButtonIfPossible];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -118,6 +120,18 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     }
 }
 
+- (void)showToggleButtonIfPossible {
+    int visibleCount = 0;
+    for (int i = 1; i < self.sections.count; i++) {
+        MoodleSection* secObj = [self.sections objectAtIndex:i];
+        visibleCount += secObj.iResources.count;
+    }
+    if(visibleCount > 0) {
+        [self computeCurrentWeek];
+        [self showToggleButton];
+    }
+}
+
 - (void)showToggleButton {
     UIBarButtonItem *anotherButton = nil;
     if (self.currentWeek > 0) {
@@ -138,14 +152,6 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     [self.tableView reloadData];
 }
 
-#pragma mark - DocumentController presentation
-
-- (void)presentDocumentViewControllerForFileRemoteURLString:(NSString*)fileURL {
-    DocumentViewController* docViewController = [[DocumentViewController alloc] initWithDocumentRemoteURLString:fileURL];
-    docViewController.title = @""; //TODO
-    [self.navigationController pushViewController:docViewController animated:YES];
-}
-
 #pragma MoodleServiceDelegate
 
 - (void)getCourseSections:(MoodleRequest *)aMoodleRequest didReturn:(SectionsListReply *)sectionsListReply {
@@ -153,15 +159,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     switch (sectionsListReply.iStatus) {
         case 200:
             self.sections = sectionsListReply.iSections;
-            int visibleCount = 0;
-            for (int i = 1; i < self.sections.count; i++) {
-                MoodleSection* secObj = [self.sections objectAtIndex:i];
-                visibleCount += secObj.iResources.count;
-            }
-            if(visibleCount > 0) {
-                [self computeCurrentWeek];
-                [self showToggleButton];
-            }
+            [self showToggleButtonIfPossible];
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
             break;
@@ -213,7 +211,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
-    [self presentDocumentViewControllerForFileRemoteURLString:resource.iUrl];
+    [self.navigationController pushViewController:[[MoodleResourceViewController alloc] initWithMoodleResource:resource] animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -263,8 +261,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
         MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
-        NSString* localPath = [MoodleService localPathForURL:resource.iUrl];
-        if (![MoodleService deleteFileAtPath:localPath]) {
+        if (![self.moodleService deleteDownloadedMoodleResource:resource]) {
             UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleDeleteFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [errorAlert show];
             return;
@@ -277,7 +274,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView_ editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
-    if ([MoodleService isFileCached:[MoodleService localPathForURL:resource.iUrl]]) {
+    if ([self.moodleService isMoodleResourceDownloaded:resource]) {
         return UITableViewCellEditingStyleDelete;
     }
     return UITableViewCellEditingStyleNone;
@@ -306,8 +303,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     newCell.textLabel.text = resource.iName;
     NSArray* pathComponents = [resource.iUrl pathComponents];
     newCell.detailTextLabel.text = [pathComponents objectAtIndex:pathComponents.count-1];
-    NSString* localPath = [MoodleService localPathForURL:resource.iUrl];
-    if ([MoodleService isFileCached:localPath]) {
+    if ([self.moodleService isMoodleResourceDownloaded:resource]) {
         [newCell.accessoryView sizeToFit];
         /*if (![newCell.contentView viewWithTag:kDownloadedCornerImageViewTag]) { //if image view is already present, do not add it a second time
          UIImage* image = [UIImage imageNamed:@"DownloadedCorner"];

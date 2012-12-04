@@ -18,6 +18,8 @@ static MoodleService* instance __weak = nil;
 static int kFetchMoodleResourceTimeoutSeconds = 20;
 
 static NSString* kMoodleSessionKey = @"moodleSession";
+static NSString* kServiceDelegateKey = @"serviceDelegate";
+static NSString* kMoodleResourceKey = @"moodleResource";
 
 - (id)init {
     @synchronized(self) {
@@ -75,7 +77,7 @@ static NSString* kMoodleSessionKey = @"moodleSession";
     return [ObjectArchiver saveObject:nil forKey:kMoodleSessionKey andPluginName:@"moodle"];
 }
 
-#pragma mark -
+#pragma mark - File utilities
                               
 + (NSString*)fileTypeForURL:(NSString*)urlString {
     NSString* ext = [urlString pathExtension];
@@ -127,6 +129,54 @@ static NSString* kMoodleSessionKey = @"moodleSession";
 + (BOOL)deleteFileAtPath:(NSString*)localPath {
     return [[NSFileManager defaultManager] removeItemAtPath:localPath error:nil]; //OK to pass nil for error, method returns aleary YES/NO is case of success/failure
 }
+
+#pragma mark - Resources files management
+
+- (NSString*)localPathForMoodleResource:(MoodleResource*)moodleResource {
+    return [self localPathForMoodleResource:moodleResource createIntermediateDirectories:NO];
+}
+
+- (NSString*)localPathForMoodleResource:(MoodleResource*)moodleResource createIntermediateDirectories:(BOOL)createIntermediateDirectories {
+    if (![moodleResource isKindOfClass:[MoodleResource class]]) {
+        @throw [NSException exceptionWithName:@"bad moodleResource argument" reason:@"moodleResource is not kind of class MoodleResource" userInfo:nil];
+    }
+    NSString* urlString = moodleResource.iUrl;
+    NSRange nsr = [urlString rangeOfString:@"/file.php/"];
+    if (nsr.location == NSNotFound) {
+        nsr = [urlString rangeOfString:@"/resource.php/"];
+    }
+    if (nsr.location == NSNotFound) {
+        nsr = [urlString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+    }
+    NSString* nss = [urlString substringFromIndex:(nsr.location + nsr.length)];
+    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString* cachePath = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    NSString* cacheMoodlePath = [cachePath stringByAppendingPathComponent:@"moodle"];
+    cacheMoodlePath = [cacheMoodlePath stringByAppendingPathComponent:@"downloads"];
+    NSString* filePath = [cacheMoodlePath stringByAppendingPathComponent:nss];
+    
+    if (createIntermediateDirectories) {
+        NSString* directory = [filePath substringToIndex:[filePath rangeOfString:@"/" options:NSBackwardsSearch].location];
+        BOOL isDir = TRUE;
+        NSFileManager *fileManager= [NSFileManager defaultManager];
+        if(![fileManager fileExistsAtPath:directory isDirectory:&isDir]) {
+            if(![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL]) {
+                NSLog(@"-> Error while creating directory in cache : %@", directory);
+            }
+        }
+    }
+    return filePath;
+}
+
+- (BOOL)isMoodleResourceDownloaded:(MoodleResource*)moodleResource {
+    return [[NSFileManager defaultManager] fileExistsAtPath:[self localPathForMoodleResource:moodleResource]];
+}
+
+- (BOOL)deleteDownloadedMoodleResource:(MoodleResource*)moodleResource {
+    return [[NSFileManager defaultManager] removeItemAtPath:[self localPathForMoodleResource:moodleResource] error:nil]; //OK to pass nil for error, method returns aleary YES/NO is case of success/failure
+}
+
+#pragma mark - Service methods
 
 - (void)getTequilaTokenForMoodleDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
@@ -204,6 +254,8 @@ static NSString* kMoodleSessionKey = @"moodleSession";
     return [operation cachedResponseObjectEvenIfStale:YES];
 }
 
+#pragma mark - Resource download
+
 - (void)fetchMoodleResourceWithURL:(NSString*)url cookie:(NSString*)cookie delegate:(id)delegate {    
     NSURL *nsurl = [NSURL URLWithString:url];
     ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:nsurl];
@@ -216,6 +268,50 @@ static NSString* kMoodleSessionKey = @"moodleSession";
     [request setDidFinishSelector:@selector(fetchMoodleResourceDidReturn:)];
     [request setDidFailSelector:@selector(fetchMoodleResourceFailed:)];
     [operationQueue addOperation:request];
+}
+
+- (void)downloadMoodleResource:(MoodleResource*)moodleResource progressView:(UIProgressView*)progressView delegate:(id)delegate {
+    NSURL *nsurl = [NSURL URLWithString:moodleResource.iUrl];
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:nsurl];
+    NSString* filePath = [self localPathForMoodleResource:moodleResource createIntermediateDirectories:YES];
+    [request setDownloadDestinationPath:filePath];
+    [request addRequestHeader:@"Cookie" value:[self lastSession].moodleCookie];
+    [request setTimeOutSeconds:kFetchMoodleResourceTimeoutSeconds];
+    [request setDelegate:self];
+    [request setDidFinishSelector:@selector(downloadMoodleResourceRequestDidFinish:)];
+    [request setDidFailSelector:@selector(downloadMoodleResourceFailed:)];
+    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
+    userInfo[kServiceDelegateKey] = delegate;
+    userInfo[kMoodleResourceKey] = moodleResource;
+    request.userInfo = userInfo;
+    request.showAccurateProgress = YES;
+    request.downloadProgressDelegate = progressView;
+    [operationQueue addOperation:request];
+}
+
+#pragma mark - ASIHTTPRequestDelegate
+
+- (void)downloadMoodleResourceRequestDidFinish:(ASIHTTPRequest*)request {
+    NSLog(@"%@", request.userInfo);
+    id<MoodleServiceDelegate> delegate_ = request.userInfo[kServiceDelegateKey];
+    MoodleResource* moodleResource = request.userInfo[kMoodleResourceKey];
+    if (request.responseStatusCode != 200) {
+        [self downloadMoodleResourceFailed:request];
+        return;
+    }
+    NSURL* fileLocalURL = [NSURL fileURLWithPath:request.downloadDestinationPath];
+    if ([delegate_ respondsToSelector:@selector(downloadOfMoodleResource:didFinish:)]) {
+        [delegate_ downloadOfMoodleResource:moodleResource didFinish:fileLocalURL];
+    }
+}
+
+- (void)downloadMoodleResourceFailed:(ASIHTTPRequest*)request {
+    id<MoodleServiceDelegate> delegate = request.userInfo[kServiceDelegateKey];
+    MoodleResource* moodleResource = request.userInfo[kMoodleResourceKey];
+    if (request.responseStatusCode != 200 && [delegate respondsToSelector:@selector(downloadFailedForMoodleResource:responseStatusCode:)]) {
+        [delegate downloadFailedForMoodleResource:moodleResource responseStatusCode:request.responseStatusCode];
+        return;
+    }
 }
 
 - (void)dealloc

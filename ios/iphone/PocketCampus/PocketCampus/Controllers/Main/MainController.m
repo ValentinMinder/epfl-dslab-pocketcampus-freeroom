@@ -76,7 +76,7 @@ static MainController<MainControllerPublic>* instance = nil;
         if ([PCUtils isIdiomPad]) {
             self.revealController.toggleAnimationDuration = 0.65;
         } else {
-            self.revealController.toggleAnimationDuration = 0.8;
+            self.revealController.toggleAnimationDuration = 0.65;
         }
         self.revealController.delegate = self;
         self.window.rootViewController = self.revealController;
@@ -242,7 +242,9 @@ static MainController<MainControllerPublic>* instance = nil;
 - (void)setActivePluginWithIdentifier:(NSString*)identifier {
     
     if (!identifier) {
-        [self.pluginsControllers removeObjectForKey:[self.activePluginController.class identifierName]];
+        if (self.activePluginController) {
+            [self.pluginsControllers removeObjectForKey:[self.activePluginController.class identifierName]];
+        }
         [self.mainMenuViewController setSelectedPluginWithIdentifier:nil animated:YES];
         [self.revealController setFrontViewController:self.splashViewController animated:NO]; //do NOT put animated YES. If YES, executed call will start asynchronous animation and following lines will exectue before instead of after.
         if ([PCUtils isIdiomPad]) {
