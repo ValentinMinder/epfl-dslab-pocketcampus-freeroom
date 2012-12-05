@@ -73,16 +73,16 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Label</string>
 								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC45MTUxNTg2NDE2IDAuOTE1MTU4NjQxNiAwLjkxNTE1ODY0MTYAA</bytes>
 								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<object class="NSColor" key="IBUIShadowColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MCAwIDAAA</bytes>
+									<bytes key="NSRGB">MC4wMDAxOTkyOTg0Njk0IDAuMDAwMTk5Mjk4NDY5NCAwLjAwMDE5OTI5ODQ2OTQgMC44NQA</bytes>
 								</object>
-								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">0</int>
+								<int key="IBUINumberOfLines">0</int>
 								<int key="IBUITextAlignment">1</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<int key="type">1</int>
@@ -94,6 +94,7 @@
 									<int key="NSfFlags">16</int>
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
+								<double key="preferredMaxLayoutWidth">294</double>
 							</object>
 							<object class="IBUIProgressView" id="154259649">
 								<reference key="NSNextResponder" ref="146391323"/>
@@ -103,17 +104,13 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="777559231"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC44Mzk4MjI1MjA0IDAuODM5ODIyNTIwNCAwLjgzOTgyMjUyMDQgMAA</bytes>
-								</object>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<float key="IBUIProgress">0.5</float>
 								<int key="IBUIProgressViewStyle">1</int>
 								<object class="NSColor" key="IBUITrackTintColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MCAwIDAAA</bytes>
-									<string key="IBUIColorCocoaTouchKeyPath">darkTextColor</string>
+									<bytes key="NSRGB">MC4xODc4MDA2OTQ4IDAuMTcwMzg4MTEwNSAwLjI3MTc2MzM5MjkAA</bytes>
 								</object>
 							</object>
 							<object class="IBUIActivityIndicatorView" id="777559231">
@@ -122,14 +119,13 @@
 								<string key="NSFrame">{{129, 52}, {37, 37}}</string>
 								<reference key="NSSuperview" ref="146391323"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIStyle">0</int>
 							</object>
 						</array>
-						<string key="NSFrame">{{13, 174}, {294, 141}}</string>
+						<string key="NSFrame">{{13, 172}, {294, 141}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="956937568"/>

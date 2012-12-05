@@ -35,7 +35,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
     self = [super initWithNibName:@"CoursesListView" bundle:nil];
     if (self) {
         self.moodleService = [MoodleService sharedInstanceToRetain];
-        self.courses = [self.moodleService getFromCacheCoursesListForRequest:[self.moodleService createMoodleRequestWithCourseId:0]].iCourses;
+        self.courses = [self.moodleService getFromCacheCourseListReply].iCourses;
         self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
@@ -101,6 +101,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
     switch (coursesListReply.iStatus) {
         case 200:
             self.courses = coursesListReply.iCourses;
+            [self.moodleService saveToCacheCourseListReply:coursesListReply];
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
             break;
@@ -150,7 +151,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MoodleCourse* course = self.courses[indexPath.row];
-    CourseSectionsViewController* viewController = [[CourseSectionsViewController alloc] initWithCourseId:course.iId andCourseTitle:course.iTitle];
+    CourseSectionsViewController* viewController = [[CourseSectionsViewController alloc] initWithCourse:course];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

@@ -77,59 +77,6 @@ static NSString* kMoodleResourceKey = @"moodleResource";
     return [ObjectArchiver saveObject:nil forKey:kMoodleSessionKey andPluginName:@"moodle"];
 }
 
-#pragma mark - File utilities
-                              
-+ (NSString*)fileTypeForURL:(NSString*)urlString {
-    NSString* ext = [urlString pathExtension];
-    if (ext) {
-        return [ext uppercaseString];
-    }
-    return @"";
-}
-
-+ (NSString*)localPathForURL:(NSString*)urlString {
-    return [self localPathForURL:urlString createIntermediateDirectories:NO];
-}
-
-+ (NSString*)localPathForURL:(NSString*)urlString createIntermediateDirectories:(BOOL)createIntermediateDirectories {
-    if (![urlString isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad urlString argument" reason:@"urlString is not kind of class NSString" userInfo:nil];
-    }
-    NSRange nsr = [urlString rangeOfString:@"/file.php/"];
-    if (nsr.location == NSNotFound) {
-        nsr = [urlString rangeOfString:@"/resource.php/"];
-    }
-    if (nsr.location == NSNotFound) {
-        nsr = [urlString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
-    }
-    NSString* nss = [urlString substringFromIndex:(nsr.location + nsr.length)];
-    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString* cachePath = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    NSString* cacheMoodlePath = [cachePath stringByAppendingPathComponent:@"moodle"];
-    cacheMoodlePath = [cacheMoodlePath stringByAppendingPathComponent:@"downloads"];
-    NSString* filePath = [cacheMoodlePath stringByAppendingPathComponent:nss];
-    
-    if (createIntermediateDirectories) {
-        NSString* directory = [filePath substringToIndex:[filePath rangeOfString:@"/" options:NSBackwardsSearch].location];
-        BOOL isDir = TRUE;
-        NSFileManager *fileManager= [NSFileManager defaultManager];
-        if(![fileManager fileExistsAtPath:directory isDirectory:&isDir]) {
-            if(![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL]) {
-                NSLog(@"-> Error while creating directory in cache : %@", directory);
-            }
-        }
-    }
-    return filePath;
-}
-
-+ (BOOL)isFileCached:(NSString*)localPath {
-    return [[NSFileManager defaultManager] fileExistsAtPath:localPath];
-}
-
-+ (BOOL)deleteFileAtPath:(NSString*)localPath {
-    return [[NSFileManager defaultManager] removeItemAtPath:localPath error:nil]; //OK to pass nil for error, method returns aleary YES/NO is case of success/failure
-}
-
 #pragma mark - Resources files management
 
 - (NSString*)localPathForMoodleResource:(MoodleResource*)moodleResource {
@@ -210,16 +157,6 @@ static NSString* kMoodleResourceKey = @"moodleResource";
     [operationQueue addOperation:operation];
 }
 
-- (CoursesListReply*)getFromCacheCoursesListForRequest:(MoodleRequest*)moodleRequest {
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
-    operation.serviceClientSelector = @selector(getCoursesList:);
-    operation.delegateDidReturnSelector = @selector(getCoursesList:didReturn:);
-    operation.delegateDidFailSelector = @selector(getCoursesListFailed:);
-    [operation addObjectArgument:moodleRequest];
-    operation.returnType = ReturnTypeObject;
-    return [operation cachedResponseObjectEvenIfStale:YES];
-}
-
 - (void)getEventsList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getEventsList:);
@@ -244,31 +181,32 @@ static NSString* kMoodleResourceKey = @"moodleResource";
     [operationQueue addOperation:operation];
 }
 
-- (SectionsListReply*)getFromCacheCourseSectionsForRequest:(MoodleRequest*)moodleRequest {
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
-    operation.serviceClientSelector = @selector(getCourseSections:);
-    operation.delegateDidReturnSelector = @selector(getCourseSections:didReturn:);
-    operation.delegateDidFailSelector = @selector(getCourseSectionsFailed:);
-    [operation addObjectArgument:moodleRequest];
-    operation.returnType = ReturnTypeObject;
-    return [operation cachedResponseObjectEvenIfStale:YES];
+#pragma mark - Saved elements
+
+static NSString* kCourseListReplyKey = @"courseListReply";
+static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%d";
+
+- (NSString*)keyForSectionsListReplyForCourse:(MoodleCourse*)course {
+    return [NSString stringWithFormat:kSectionsListReplyForCourseIdWithFormat, course.iId];
+}
+
+- (CoursesListReply*)getFromCacheCourseListReply {
+    return (CoursesListReply*)[ObjectArchiver objectForKey:kCourseListReplyKey andPluginName:@"moodle" isCache:YES];
+}
+
+- (BOOL)saveToCacheCourseListReply:(CoursesListReply*)courseListReply {
+    return [ObjectArchiver saveObject:courseListReply forKey:kCourseListReplyKey andPluginName:@"moodle" isCache:YES];
+}
+
+- (SectionsListReply*)getFromCacheSectionsListReplyForCourse:(MoodleCourse*)course {
+    return (SectionsListReply*)[ObjectArchiver objectForKey:[self keyForSectionsListReplyForCourse:course] andPluginName:@"moodle" isCache:YES];
+}
+
+- (BOOL)saveToCacheSectionsListReply:(SectionsListReply*)sectionsListReply forCourse:(MoodleCourse*)course {
+    return [ObjectArchiver saveObject:sectionsListReply forKey:[self keyForSectionsListReplyForCourse:course] andPluginName:@"moodle" isCache:YES];
 }
 
 #pragma mark - Resource download
-
-- (void)fetchMoodleResourceWithURL:(NSString*)url cookie:(NSString*)cookie delegate:(id)delegate {    
-    NSURL *nsurl = [NSURL URLWithString:url];
-    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:nsurl];
-    
-    NSString* filePath = [[self class] localPathForURL:url createIntermediateDirectories:YES];
-    [request setDownloadDestinationPath:filePath];
-    [request addRequestHeader:@"Cookie" value:cookie];
-    [request setTimeOutSeconds:kFetchMoodleResourceTimeoutSeconds];
-    [request setDelegate:delegate];
-    [request setDidFinishSelector:@selector(fetchMoodleResourceDidReturn:)];
-    [request setDidFailSelector:@selector(fetchMoodleResourceFailed:)];
-    [operationQueue addOperation:request];
-}
 
 - (void)downloadMoodleResource:(MoodleResource*)moodleResource progressView:(UIProgressView*)progressView delegate:(id)delegate {
     NSURL *nsurl = [NSURL URLWithString:moodleResource.iUrl];
@@ -286,7 +224,21 @@ static NSString* kMoodleResourceKey = @"moodleResource";
     request.userInfo = userInfo;
     request.showAccurateProgress = YES;
     request.downloadProgressDelegate = progressView;
+    request.shouldRedirect = NO;
     [operationQueue addOperation:request];
+}
+
+- (void)cancelDownloadOfMoodleResourceForDelegate:(id)delegate {
+    [[operationQueue.operations copy] enumerateObjectsUsingBlock:^(NSOperation* operation, NSUInteger idx, BOOL *stop) {
+        if ([operation isKindOfClass:[ASIHTTPRequest class]]) {
+            ASIHTTPRequest* request = (ASIHTTPRequest*)operation;
+            id reqDelegate = request.userInfo[kServiceDelegateKey];
+            if (delegate == reqDelegate) {
+                [request cancel];
+                request.delegate = nil;
+            }
+        }
+    }];
 }
 
 #pragma mark - ASIHTTPRequestDelegate
@@ -312,6 +264,12 @@ static NSString* kMoodleResourceKey = @"moodleResource";
         [delegate downloadFailedForMoodleResource:moodleResource responseStatusCode:request.responseStatusCode];
         return;
     }
+}
+
+//override
+- (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
+    [super cancelOperationsForDelegate:delegate];
+    [self cancelDownloadOfMoodleResourceForDelegate:delegate];
 }
 
 - (void)dealloc

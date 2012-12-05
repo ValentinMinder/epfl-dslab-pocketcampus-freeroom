@@ -310,7 +310,7 @@ static MyEduService* instance __weak = nil;
 
 + (NSString*)localPathOfVideoForModule:(MyEduModule*)module nilIfNoFile:(BOOL)nilIfNoFile { //if onlyIfFileExists is YES, nil is returned if file does not exist
     NSString* filename = [self keyForVideoOfModule:module];
-    NSString* fullPath = [ObjectArchiver pathForKey:filename pluginName:@"myedu" customFileExtension:@"mp4"];
+    NSString* fullPath = [ObjectArchiver pathForKey:filename pluginName:@"myedu" customFileExtension:@"mp4" isCache:YES];
     
     if (nilIfNoFile) {
         NSFileManager* fileManager = [NSFileManager defaultManager];
@@ -357,7 +357,7 @@ static MyEduService* instance __weak = nil;
 }
 
 - (MyEduMaterialData*)materialDataIfExistsForMaterial:(MyEduMaterial*)material {
-    return (MyEduMaterialData*)[ObjectArchiver objectForKey:[MyEduService keyForMaterial:material] andPluginName:@"myedu"];
+    return (MyEduMaterialData*)[ObjectArchiver objectForKey:[MyEduService keyForMaterial:material] andPluginName:@"myedu" isCache:YES];
 }
 
 
@@ -539,7 +539,7 @@ static MyEduService* instance __weak = nil;
     
     MyEduMaterialData* materialData = [[MyEduMaterialData alloc] init];
     materialData.material = material;
-    materialData.localURL = [NSURL fileURLWithPath:[ObjectArchiver pathForKey:[MyEduService keyForMaterial:material] pluginName:@"myedu"]];
+    materialData.localURL = [NSURL fileURLWithPath:[ObjectArchiver pathForKey:[MyEduService keyForMaterial:material] pluginName:@"myedu" customFileExtension:nil isCache:YES]];
     materialData.data = request.responseData;
     NSString* contentType = [request.responseHeaders objectForKey:@"Content-Type"];
     NSArray* parts = [contentType componentsSeparatedByString:@";"];
@@ -551,7 +551,7 @@ static MyEduService* instance __weak = nil;
         [delegate downloadOfMaterial:material didFinish:materialData];
     }
     
-    [ObjectArchiver saveObject:materialData forKey:[MyEduService keyForMaterial:material] andPluginName:@"myedu"];
+    [ObjectArchiver saveObject:materialData forKey:[MyEduService keyForMaterial:material] andPluginName:@"myedu" isCache:YES];
 }
 
 - (void)downloadMaterialRequestFailed:(ASIHTTPRequest *)request {

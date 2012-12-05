@@ -12,6 +12,6 @@
 
 @interface CourseSectionsViewController : UITableViewController<MoodleServiceDelegate>
 
-- (id)initWithCourseId:(int)courseId andCourseTitle:(NSString*)courseTitle;
+- (id)initWithCourse:(MoodleCourse*)course;
 
 @end

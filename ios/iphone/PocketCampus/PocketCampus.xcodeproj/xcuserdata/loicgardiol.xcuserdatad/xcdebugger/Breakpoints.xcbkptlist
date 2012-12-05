@@ -1083,11 +1083,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MoodlePlugin/Controllers/CourseSectionsViewController.m"
-         timestampString = "376356081.627235"
+         timestampString = "376423834.589933"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "466"
-         endingLineNumber = "466">
+         startingLineNumber = "465"
+         endingLineNumber = "465">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
@@ -1304,11 +1304,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MoodlePlugin/Controllers/CourseSectionsViewController.m"
-         timestampString = "376356081.627235"
+         timestampString = "376423834.589933"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "209"
-         endingLineNumber = "209"
+         startingLineNumber = "208"
+         endingLineNumber = "208"
          landmarkName = "@implementation CourseSectionsViewController"
          landmarkType = "3">
          <Actions>
@@ -2931,43 +2931,83 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
-         continueAfterRunningActions = "No"
+         continueAfterRunningActions = "Yes"
          filePath = "Plugins/MoodlePlugin/Model/MoodleService.m"
-         timestampString = "376354699.539242"
+         timestampString = "376423690.175791"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "296"
-         endingLineNumber = "296"
+         startingLineNumber = "248"
+         endingLineNumber = "248"
          landmarkName = "-downloadMoodleResourceRequestDidFinish:"
          landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "downloadMoodleResourceRequestDidFinish"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
-         continueAfterRunningActions = "No"
+         continueAfterRunningActions = "Yes"
          filePath = "Plugins/MoodlePlugin/Model/MoodleService.m"
-         timestampString = "376354699.539242"
+         timestampString = "376423690.175791"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "309"
-         endingLineNumber = "309"
+         startingLineNumber = "261"
+         endingLineNumber = "261"
          landmarkName = "-downloadMoodleResourceFailed:"
          landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "downloadMoodleResourceFailed"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MoodlePlugin/Model/MoodleService.m"
-         timestampString = "376354464.25405"
+         timestampString = "376423690.175791"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "275"
-         endingLineNumber = "275"
+         startingLineNumber = "213"
+         endingLineNumber = "213"
          landmarkName = "-downloadMoodleResource:progressView:delegate:"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
+         timestampString = "376420482.207818"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "160"
+         endingLineNumber = "160"
+         landmarkName = "-downloadFailedForMoodleResource:responseStatusCode:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "bad status"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
       </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>

@@ -10,11 +10,14 @@
 
 @interface ObjectArchiver : NSObject
 
-+ (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString*)key andPluginName:(NSString*)pluginName;
-+ (id<NSCoding>)objectForKey:(NSString*)key andPluginName:(NSString*)pluginName;
-+ (id<NSCoding>)objectForKey:(NSString*)key andPluginName:(NSString*)pluginName nilIfDiffIntervalLargerThan:(NSTimeInterval)interval; //nb seconds
++ (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString*)key andPluginName:(NSString*)pluginName; //save as next with isCache = NO
++ (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString *)key andPluginName:(NSString *)pluginName isCache:(BOOL)isCache;
++ (id<NSCoding>)objectForKey:(NSString*)key andPluginName:(NSString*)pluginName; //same as next with isCache = NO
++ (id<NSCoding>)objectForKey:(NSString*)key andPluginName:(NSString*)pluginName isCache:(BOOL)isCache;
++ (id<NSCoding>)objectForKey:(NSString*)key andPluginName:(NSString*)pluginName nilIfDiffIntervalLargerThan:(NSTimeInterval)interval isCache:(BOOL)isCache; //nb seconds
 + (void)createComponentsForPath:(NSString*)path;
 + (NSDictionary*)fileAttributesForKey:(NSString*)key andPluginName:(NSString*)pluginName;
-+ (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName;
-+ (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName customFileExtension:(NSString*)customFileExtension; //extension without dot. Passing nil customExtension will result in extension .archive
++ (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName; //same as next with customExt = nil and isCache = NO
++ (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName customFileExtension:(NSString*)customFileExtension isCache:(BOOL)isCache; //extension without dot. Passing nil customExtension will result in extension .archive
++ (BOOL)deleteAllCachedObjectsForPluginName:(NSString*)pluginName; //will ONLY delete save objects that were saved with option isCache = YES
 @end

@@ -325,9 +325,9 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
     
     NSDictionary* cached;
     if(evenIfStale) {
-        cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName]];
+        cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] isCache:YES];
     } else {
-        cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity];
+        cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity isCache:YES];
     }
     
     if ([[cached objectForKey:@"primitive"] boolValue]) {
@@ -348,9 +348,9 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
         
         if (!self.skipCache) {
             if (self.returnCacheIfServerIsUnreachable) {
-                cached = (NSDictionary*)[ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName]];
+                cached = (NSDictionary*)[ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] isCache:YES];
             } else {
-                cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity];
+                cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity isCache:YES];
             }
         }
         
@@ -437,7 +437,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                     id object;
                     [serviceInv getReturnValue:&object];
                     [object retain];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentObject:object] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentObject:object] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:&object atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (self.delegate != nil && [self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -453,7 +453,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     int* result = malloc(sizeof(int));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentInt:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentInt:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -469,7 +469,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     double* result = malloc(sizeof(double));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentDouble:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentDouble:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -485,7 +485,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     float* result = malloc(sizeof(float));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentFloat:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentFloat:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -501,7 +501,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     BOOL* result = malloc(sizeof(BOOL));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentBool:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentBool:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -517,7 +517,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     char* result = malloc(sizeof(char));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentChar:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentChar:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -533,7 +533,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     long* result = malloc(sizeof(long));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentLong:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentLong:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -549,7 +549,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     long long* result = malloc(sizeof(long long));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentLongLong:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentLongLong:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -565,7 +565,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     short* result = malloc(sizeof(short));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentShort:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentShort:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -581,7 +581,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     unsigned int* result = malloc(sizeof(unsigned int));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedInt:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedInt:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -597,7 +597,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     unsigned char* result = malloc(sizeof(unsigned char));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedChar:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedChar:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -613,7 +613,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     unsigned long* result = malloc(sizeof(unsigned long));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedLong:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedLong:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -629,7 +629,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     unsigned long long* result = malloc(sizeof(unsigned long long));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedLongLong:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedLongLong:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -645,7 +645,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
                 {
                     unsigned short* result = malloc(sizeof(unsigned short));
                     [serviceInv getReturnValue:result];
-                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedShort:*result] forKey:hashCode andPluginName:[service serviceName]];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedShort:*result] forKey:hashCode andPluginName:[service serviceName] isCache:YES];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {

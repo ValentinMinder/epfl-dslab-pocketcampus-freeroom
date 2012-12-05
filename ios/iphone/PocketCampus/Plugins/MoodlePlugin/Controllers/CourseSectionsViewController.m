@@ -27,8 +27,7 @@
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) NSArray* sections;
 @property (nonatomic) int currentWeek;
-@property (nonatomic) int courseId;
-@property (nonatomic, copy) NSString* courseTitle;
+@property (nonatomic, strong) MoodleCourse* course;
 @property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 
 @end
@@ -37,15 +36,14 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 
 @implementation CourseSectionsViewController
 
-- (id)initWithCourseId:(int)courseId andCourseTitle:(NSString*)courseTitle
+- (id)initWithCourse:(MoodleCourse*)course;
 {
     self = [super initWithNibName:@"CourseSectionsView" bundle:nil];
     if (self) {
-        self.courseId = courseId;
-        self.courseTitle = courseTitle;
-        self.title = self.courseTitle;
+        self.course = course;
+        self.title = self.course.iTitle;
         self.moodleService = [MoodleService sharedInstanceToRetain];
-        self.sections = [self.moodleService getFromCacheCourseSectionsForRequest:[self.moodleService createMoodleRequestWithCourseId:self.courseId]].iSections;
+        self.sections = [self.moodleService getFromCacheSectionsListReplyForCourse:self.course].iSections;
         self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
         self.clearsSelectionOnViewWillAppear = NO; //managed manually to know which row was selected and reload it to update "saved" label
@@ -91,7 +89,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 
 - (void)startGetCourseSectionsRequest {
     VoidBlock successBlock = ^{
-        [self.moodleService getCourseSections:[self.moodleService createMoodleRequestWithCourseId:self.courseId] withDelegate:self];
+        [self.moodleService getCourseSections:[self.moodleService createMoodleRequestWithCourseId:self.course.iId] withDelegate:self];
     };
     if ([self.moodleService lastSession]) {
         successBlock();
@@ -159,6 +157,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     switch (sectionsListReply.iStatus) {
         case 200:
             self.sections = sectionsListReply.iSections;
+            [self.moodleService saveToCacheSectionsListReply:sectionsListReply forCourse:self.course];
             [self showToggleButtonIfPossible];
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];

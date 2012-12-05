@@ -152,21 +152,16 @@
 }
 
 - (void)downloadFailedForMoodleResource:(MoodleResource *)moodleResource responseStatusCode:(int)statusCode {
-    switch (statusCode) {
-        case 404: //Moodle down, broken link, ...?
-        {
-            UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [errorAlert show];
-            [self serviceConnectionToServerTimedOut];
-            break;
-        }
-        case 407: //session expired
-            [self.moodleService deleteSession];
-            [self startMoodleResourceDownload];
-            break;
-        default:
-            [self serviceConnectionToServerTimedOut];
-            break;
+    if (statusCode == 404) {
+        UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [errorAlert show];
+        [self serviceConnectionToServerTimedOut];
+    } else if (statusCode == 303 || statusCode == 407) {
+        //mans bad cookie
+        [self.moodleService deleteSession];
+        [self startMoodleResourceDownload];
+    } else { //other unkown error
+        [self serviceConnectionToServerTimedOut];
     }
 }
 
