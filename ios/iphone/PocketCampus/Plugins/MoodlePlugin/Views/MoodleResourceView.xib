@@ -106,7 +106,6 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<float key="IBUIProgress">0.5</float>
 								<int key="IBUIProgressViewStyle">1</int>
 								<object class="NSColor" key="IBUITrackTintColor">
 									<int key="NSColorSpace">1</int>
@@ -119,6 +118,7 @@
 								<string key="NSFrame">{{129, 52}, {37, 37}}</string>
 								<reference key="NSSuperview" ref="146391323"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>

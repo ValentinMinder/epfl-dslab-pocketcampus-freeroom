@@ -114,6 +114,8 @@
 		324A5998151DFDD200977F33 /* AddStationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A5997151DFDD200977F33 /* AddStationViewController.m */; };
 		324A599A151DFDF700977F33 /* AddStationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5999151DFDF700977F33 /* AddStationView.xib */; };
 		324A59A0151E453300977F33 /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; };
+		324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */; };
+		324CB5821671585B008C7B3D /* MoodleSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		324F6B3015D7B55F00CFB8B5 /* MapServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */; };
 		325368C0164932F600406801 /* StretchableInnerShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 325368BE164932F600406801 /* StretchableInnerShadow.png */; };
 		325368C1164932F600406801 /* StretchableInnerShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325368BF164932F600406801 /* StretchableInnerShadow@2x.png */; };
@@ -511,6 +513,9 @@
 		324A5999151DFDF700977F33 /* AddStationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStationView.xib; sourceTree = "<group>"; };
 		324A599E151E453300977F33 /* TransportUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportUtils.h; sourceTree = "<group>"; };
 		324A599F151E453300977F33 /* TransportUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportUtils.m; sourceTree = "<group>"; };
+		324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleSplashDetailView.xib; sourceTree = "<group>"; };
+		324CB5801671585B008C7B3D /* MoodleSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleSplashDetailViewController.h; sourceTree = "<group>"; };
+		324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSplashDetailViewController.m; sourceTree = "<group>"; };
 		324F6B2E15D7B55F00CFB8B5 /* MapServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapServiceTests.h; sourceTree = "<group>"; };
 		324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapServiceTests.m; sourceTree = "<group>"; };
 		325368BE164932F600406801 /* StretchableInnerShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StretchableInnerShadow.png; sourceTree = "<group>"; };
@@ -1728,6 +1733,8 @@
 				32EE9622166E19D5005B0F65 /* CoursesListViewController.m */,
 				32EE9626166E25BD005B0F65 /* CourseSectionsViewController.h */,
 				32EE9627166E25BD005B0F65 /* CourseSectionsViewController.m */,
+				324CB5801671585B008C7B3D /* MoodleSplashDetailViewController.h */,
+				324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */,
 				32035BB1166E987100E134DD /* MoodleResourceViewController.h */,
 				32035BB2166E987100E134DD /* MoodleResourceViewController.m */,
 			);
@@ -1761,6 +1768,7 @@
 				32EE9629166E3053005B0F65 /* CourseSectionsView.xib */,
 				32A47D7015B9F4A600592477 /* DocumentView.xib */,
 				32035BB4166E988600E134DD /* MoodleResourceView.xib */,
+				324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2576,6 +2584,7 @@
 				32EE9625166E1FE7005B0F65 /* CoursesListView.xib in Resources */,
 				32EE962A166E3053005B0F65 /* CourseSectionsView.xib in Resources */,
 				32035BB5166E988600E134DD /* MoodleResourceView.xib in Resources */,
+				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2735,6 +2744,7 @@
 				32EE9623166E19D5005B0F65 /* CoursesListViewController.m in Sources */,
 				32EE9628166E25BD005B0F65 /* CourseSectionsViewController.m in Sources */,
 				32035BB3166E987100E134DD /* MoodleResourceViewController.m in Sources */,
+				324CB5821671585B008C7B3D /* MoodleSplashDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

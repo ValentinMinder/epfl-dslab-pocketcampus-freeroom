@@ -123,6 +123,17 @@ static NSString* kMoodleResourceKey = @"moodleResource";
     return [[NSFileManager defaultManager] removeItemAtPath:[self localPathForMoodleResource:moodleResource] error:nil]; //OK to pass nil for error, method returns aleary YES/NO is case of success/failure
 }
 
+- (BOOL)deleteAllDownloadedResources {
+    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString* path = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    path = [path stringByAppendingPathComponent:@"moodle"];
+    path = [path stringByAppendingPathComponent:@"downloads"];
+    NSFileManager* fileManager= [NSFileManager defaultManager];
+    NSError* error = nil;
+    [fileManager removeItemAtPath:path error:&error];
+    return (error == nil);
+}
+
 #pragma mark - Service methods
 
 - (void)getTequilaTokenForMoodleDelegate:(id)delegate {
@@ -149,9 +160,6 @@ static NSString* kMoodleResourceKey = @"moodleResource";
     operation.serviceClientSelector = @selector(getCoursesList:);
     operation.delegateDidReturnSelector = @selector(getCoursesList:didReturn:);
     operation.delegateDidFailSelector = @selector(getCoursesListFailed:);
-    operation.cacheValidity = 1209600; // seconds == 2 weeks
-    operation.keepInCache = YES;
-    operation.skipCache = YES;
     [operation addObjectArgument:aMoodleRequest];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
@@ -169,9 +177,6 @@ static NSString* kMoodleResourceKey = @"moodleResource";
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.keepInCache = YES;
-    operation.skipCache = YES;
-    operation.cacheValidity = 10*60.0; // 10 minutes
     operation.customTimeout = 60.0; // might take time
     operation.serviceClientSelector = @selector(getCourseSections:);
     operation.delegateDidReturnSelector = @selector(getCourseSections:didReturn:);
@@ -225,6 +230,8 @@ static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%
     request.showAccurateProgress = YES;
     request.downloadProgressDelegate = progressView;
     request.shouldRedirect = NO;
+    request.useCookiePersistence = NO;
+    request.cachePolicy = ASIDoNotReadFromCacheCachePolicy;
     [operationQueue addOperation:request];
 }
 
@@ -244,7 +251,6 @@ static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%
 #pragma mark - ASIHTTPRequestDelegate
 
 - (void)downloadMoodleResourceRequestDidFinish:(ASIHTTPRequest*)request {
-    NSLog(@"%@", request.userInfo);
     id<MoodleServiceDelegate> delegate_ = request.userInfo[kServiceDelegateKey];
     MoodleResource* moodleResource = request.userInfo[kMoodleResourceKey];
     if (request.responseStatusCode != 200) {
@@ -260,6 +266,7 @@ static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%
 - (void)downloadMoodleResourceFailed:(ASIHTTPRequest*)request {
     id<MoodleServiceDelegate> delegate = request.userInfo[kServiceDelegateKey];
     MoodleResource* moodleResource = request.userInfo[kMoodleResourceKey];
+    [self deleteDownloadedMoodleResource:moodleResource]; //to be sure not empty/wrong file is there
     if (request.responseStatusCode != 200 && [delegate respondsToSelector:@selector(downloadFailedForMoodleResource:responseStatusCode:)]) {
         [delegate downloadFailedForMoodleResource:moodleResource responseStatusCode:request.responseStatusCode];
         return;

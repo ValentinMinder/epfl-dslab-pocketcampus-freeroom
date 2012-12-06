@@ -103,6 +103,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     }
 }
 
+
 #pragma mark - Utils and toggle week button
 
 - (void)computeCurrentWeek {
@@ -210,7 +211,15 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:[[MoodleResourceViewController alloc] initWithMoodleResource:resource] animated:YES];
+    MoodleResourceViewController* detailViewController = [[MoodleResourceViewController alloc] initWithMoodleResource:resource];
+    
+    if (self.splitViewController) { /* iPad */
+        UINavigationController* detailNavController = [[UINavigationController alloc] initWithRootViewController:detailViewController]; //to have nav bar
+        detailNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
+        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], detailNavController];
+    } else { /* iPhone */
+        [self.navigationController pushViewController:[[MoodleResourceViewController alloc] initWithMoodleResource:resource] animated:YES];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

@@ -23,6 +23,7 @@
 - (NSString*)localPathForMoodleResource:(MoodleResource*)moodleResource createIntermediateDirectories:(BOOL)createIntermediateDirectories;
 - (BOOL)isMoodleResourceDownloaded:(MoodleResource*)moodleResource;
 - (BOOL)deleteDownloadedMoodleResource:(MoodleResource*)moodleResource;
+- (BOOL)deleteAllDownloadedResources;
 
 #pragma mark - Service methods
 
@@ -42,7 +43,6 @@
 #pragma mark - Fetch resources
 
 - (void)downloadMoodleResource:(MoodleResource*)moodleResource progressView:(UIProgressView*)progressView delegate:(id)delegate;
-
 @end
 
 

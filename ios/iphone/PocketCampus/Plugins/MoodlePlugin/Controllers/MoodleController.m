@@ -5,6 +5,10 @@
 
 #import "ObjectArchiver.h"
 
+#import "PluginSplitViewController.h"
+
+#import "PCUtils.h"
+
 @interface MoodleController ()
 
 @property (nonatomic, strong) AuthenticationController* authController;
@@ -33,9 +37,21 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
             [[self class] deleteSessionIfNecessary];
             CoursesListViewController* coursesListViewController = [[CoursesListViewController alloc] init];
             coursesListViewController.title = [[self class] localizedName];
-            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:coursesListViewController];
-            navController.pluginIdentifier = [[self class] identifierName];
-            self.mainNavigationController = navController;
+            
+            
+            if ([PCUtils isIdiomPad]) {
+                UINavigationController* navController =  [[UINavigationController alloc] initWithRootViewController:coursesListViewController];
+                UIViewController* emptyDetailViewController = [[UIViewController alloc] init]; //splash view controller will be returned by coursesListViewController as PluginSplitViewControllerDelegate
+                PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:emptyDetailViewController];
+                splitViewController.pluginIdentifier = [[self class] identifierName];
+                splitViewController.delegate = self;
+                self.mainSplitViewController = splitViewController;
+            } else {
+                PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:coursesListViewController];
+                navController.pluginIdentifier = [[self class] identifierName];
+                self.mainNavigationController = navController;
+            }
+            
             instance = self;
         }
         return self;
@@ -76,7 +92,11 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
                 [ObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
             } else {
                 NSLog(@"-> Moodle received %@ notification", [AuthenticationService logoutNotificationName]);
-                [[MoodleService sharedInstanceToRetain] deleteSession]; //removing stored session
+                MoodleService* moodleService = [MoodleService sharedInstanceToRetain];
+                [moodleService deleteSession]; //removing stored session
+                [moodleService deleteAllDownloadedResources]; //removing all downloaded Moodle files
+                moodleService = nil;
+                [ObjectArchiver deleteAllCachedObjectsForPluginName:@"moodle"];
                 [[MainController publicController] requestLeavePlugin:@"Moodle"];
             }
         }];
@@ -228,6 +248,15 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (NSString*)localizedStringForKey:(NSString*)key {
     return NSLocalizedStringFromTable(key, [[self class] identifierName], @"");
+}
+
+#pragma mark - UISplitViewControllerDelegate
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
+    /*if (orientation == UIInterfaceOrientationMaskPortrait) {
+     return YES;
+     }*/
+    return NO;
 }
 
 - (void)dealloc

@@ -10,6 +10,8 @@
 
 #import "MoodleService.h"
 
-@interface CoursesListViewController : UITableViewController<MoodleServiceDelegate>
+#import "PluginSplitViewController.h"
+
+@interface CoursesListViewController : UITableViewController<PCMasterSplitDelegate, MoodleServiceDelegate>
 
 @end

@@ -18,6 +18,8 @@
 
 #import "CourseSectionsViewController.h"
 
+#import "MoodleSplashDetailViewController.h"
+
 @interface CoursesListViewController ()
 
 @property (nonatomic, strong) MoodleService* moodleService;
@@ -92,6 +94,13 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
             [self error];
         }];
     }
+}
+
+#pragma mark - PCMasterSplitDelegate /* used on iPad */
+
+- (UIViewController*)detailViewControllerThatShouldBeDisplayed {
+    MoodleSplashDetailViewController* detailViewController = [[MoodleSplashDetailViewController alloc] init];
+    return detailViewController;
 }
 
 #pragma mark - MoodleServiceDelegate
