@@ -60,7 +60,8 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
      self.tableView.backgroundColor = [UIColor clearColor];*/
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     if (!self.sections) {
         [self refresh];
     }

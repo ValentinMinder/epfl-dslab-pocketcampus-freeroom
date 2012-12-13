@@ -72,6 +72,12 @@
 		321F37ED15B0371500E7BA6D /* SettingsHomeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */; };
 		321F37EF15B0499200E7BA6D /* SettingsHomeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */; };
 		32216D1616594005008F1D3B /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32216D1516594005008F1D3B /* MediaPlayer.framework */; };
+		3221933016788F520072CE86 /* MyEduMovieSpeed1X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3221932F16788F520072CE86 /* MyEduMovieSpeed1X@2x.png */; };
+		322193321678907F0072CE86 /* MyEduMovieSpeed1X.png in Resources */ = {isa = PBXBuildFile; fileRef = 322193311678907F0072CE86 /* MyEduMovieSpeed1X.png */; };
+		322193371678A10C0072CE86 /* MyEduMovieSpeed0_5X.png in Resources */ = {isa = PBXBuildFile; fileRef = 322193331678A10C0072CE86 /* MyEduMovieSpeed0_5X.png */; };
+		322193381678A10C0072CE86 /* MyEduMovieSpeed0_5X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322193341678A10C0072CE86 /* MyEduMovieSpeed0_5X@2x.png */; };
+		322193391678A10C0072CE86 /* MyEduMovieSpeed1_5X.png in Resources */ = {isa = PBXBuildFile; fileRef = 322193351678A10C0072CE86 /* MyEduMovieSpeed1_5X.png */; };
+		3221933A1678A10C0072CE86 /* MyEduMovieSpeed1_5X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322193361678A10C0072CE86 /* MyEduMovieSpeed1_5X@2x.png */; };
 		322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322BA0441643F4510063B632 /* MyEduModuleListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322BA0431643F4510063B632 /* MyEduModuleListView.xib */; };
 		322BA0481643FBEB0063B632 /* MSPullToRefreshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */; };
@@ -327,6 +333,8 @@
 		32EE9625166E1FE7005B0F65 /* CoursesListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EE9624166E1FE7005B0F65 /* CoursesListView.xib */; };
 		32EE9628166E25BD005B0F65 /* CourseSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9627166E25BD005B0F65 /* CourseSectionsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32EE962A166E3053005B0F65 /* CourseSectionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EE9629166E3053005B0F65 /* CourseSectionsView.xib */; };
+		32F2F6051678C9BE00A32983 /* MyEduMovieSpeed1_2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6031678C9BE00A32983 /* MyEduMovieSpeed1_2X.png */; };
+		32F2F6061678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */; };
 		32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32F3EAB116334DD200DA8902 /* MyEduPlugin.strings */; };
 		32F3EAB61633506900DA8902 /* MyEduServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3EAB51633506900DA8902 /* MyEduServiceTests.m */; };
 		32FAC0F51500F40700925180 /* DirectoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E31500F40700925180 /* DirectoryController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -450,6 +458,12 @@
 		321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsHomeButton@2x.png"; sourceTree = "<group>"; };
 		321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsHomeButton.png; sourceTree = "<group>"; };
 		32216D1516594005008F1D3B /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		3221932F16788F520072CE86 /* MyEduMovieSpeed1X@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduMovieSpeed1X@2x.png"; sourceTree = "<group>"; };
+		322193311678907F0072CE86 /* MyEduMovieSpeed1X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduMovieSpeed1X.png; sourceTree = "<group>"; };
+		322193331678A10C0072CE86 /* MyEduMovieSpeed0_5X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduMovieSpeed0_5X.png; sourceTree = "<group>"; };
+		322193341678A10C0072CE86 /* MyEduMovieSpeed0_5X@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduMovieSpeed0_5X@2x.png"; sourceTree = "<group>"; };
+		322193351678A10C0072CE86 /* MyEduMovieSpeed1_5X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduMovieSpeed1_5X.png; sourceTree = "<group>"; };
+		322193361678A10C0072CE86 /* MyEduMovieSpeed1_5X@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduMovieSpeed1_5X@2x.png"; sourceTree = "<group>"; };
 		322BA0401643CF3A0063B632 /* MyEduModuleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleListViewController.h; sourceTree = "<group>"; };
 		322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduModuleListViewController.m; sourceTree = "<group>"; };
 		322BA0431643F4510063B632 /* MyEduModuleListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleListView.xib; sourceTree = "<group>"; };
@@ -843,6 +857,8 @@
 		32EE9626166E25BD005B0F65 /* CourseSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseSectionsViewController.h; sourceTree = "<group>"; };
 		32EE9627166E25BD005B0F65 /* CourseSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseSectionsViewController.m; sourceTree = "<group>"; };
 		32EE9629166E3053005B0F65 /* CourseSectionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CourseSectionsView.xib; sourceTree = "<group>"; };
+		32F2F6031678C9BE00A32983 /* MyEduMovieSpeed1_2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduMovieSpeed1_2X.png; sourceTree = "<group>"; };
+		32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduMovieSpeed1_2X@2x.png"; sourceTree = "<group>"; };
 		32F3EAB016334DD200DA8902 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MyEduPlugin.strings; sourceTree = "<group>"; };
 		32F3EAB216334DDB00DA8902 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MyEduPlugin.strings; sourceTree = "<group>"; };
 		32F3EAB41633506900DA8902 /* MyEduServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduServiceTests.h; sourceTree = "<group>"; };
@@ -2322,6 +2338,14 @@
 				320073621646E101002AD7BA /* MyEduModuleText@2x.png */,
 				320073581646CBF0002AD7BA /* MyEduModuleVideo.png */,
 				320073591646CBF0002AD7BA /* MyEduModuleVideo@2x.png */,
+				322193331678A10C0072CE86 /* MyEduMovieSpeed0_5X.png */,
+				322193341678A10C0072CE86 /* MyEduMovieSpeed0_5X@2x.png */,
+				322193311678907F0072CE86 /* MyEduMovieSpeed1X.png */,
+				3221932F16788F520072CE86 /* MyEduMovieSpeed1X@2x.png */,
+				32F2F6031678C9BE00A32983 /* MyEduMovieSpeed1_2X.png */,
+				32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */,
+				322193351678A10C0072CE86 /* MyEduMovieSpeed1_5X.png */,
+				322193361678A10C0072CE86 /* MyEduMovieSpeed1_5X@2x.png */,
 				3242F4091655A5B900A8C3D7 /* MyEduDrawersNavbar.png */,
 				3242F40A1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png */,
 			);
@@ -2585,6 +2609,14 @@
 				32EE962A166E3053005B0F65 /* CourseSectionsView.xib in Resources */,
 				32035BB5166E988600E134DD /* MoodleResourceView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
+				3221933016788F520072CE86 /* MyEduMovieSpeed1X@2x.png in Resources */,
+				322193321678907F0072CE86 /* MyEduMovieSpeed1X.png in Resources */,
+				322193371678A10C0072CE86 /* MyEduMovieSpeed0_5X.png in Resources */,
+				322193381678A10C0072CE86 /* MyEduMovieSpeed0_5X@2x.png in Resources */,
+				322193391678A10C0072CE86 /* MyEduMovieSpeed1_5X.png in Resources */,
+				3221933A1678A10C0072CE86 /* MyEduMovieSpeed1_5X@2x.png in Resources */,
+				32F2F6051678C9BE00A32983 /* MyEduMovieSpeed1_2X.png in Resources */,
+				32F2F6061678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -49,7 +49,8 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle" withError:NULL];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     if (!self.courses) {
         [self refresh];
     }
@@ -183,7 +184,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMoodleCourseListCell];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
         cell.textLabel.numberOfLines = 2;
         cell.textLabel.adjustsFontSizeToFitWidth = YES;
     }

@@ -74,4 +74,8 @@
     return [NSString stringWithFormat:@"%1.1f GB",floatSize];
 }
 
++ (BOOL)double:(double)d1 isEqualToDouble:(double)d2 epsilon:(double)epsilon {
+    return (fabs(d1-d2) < epsilon);
+}
+
 @end

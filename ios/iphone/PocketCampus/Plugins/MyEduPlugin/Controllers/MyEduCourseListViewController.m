@@ -57,7 +57,8 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     self.tableView.backgroundColor = [UIColor clearColor];*/
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     if (!self.subscribedCourses) {
         [self refresh];
     }

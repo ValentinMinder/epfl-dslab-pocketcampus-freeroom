@@ -63,7 +63,8 @@
      self.tableView.backgroundColor = [UIColor clearColor];*/
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     if (!self.modules) {
         [self refresh];
     }
@@ -119,7 +120,7 @@
             cell.accessoryView = downloadedImageView;
         }
         
-        [self.myEduService removeDownloadObserver:self forVideoModule:module];
+        //[self.myEduService removeDownloadObserver:self forVideoModule:module];
         [self.myEduService addDownloadObserver:self forVideoOfModule:module startDownload:NO startBlock:^{
             cell.detailTextLabel.text = [NSString stringWithFormat:@"      %@", NSLocalizedStringFromTable(@"StartingDownload", @"MyEduPlugin", nil)];
             [cell setNeedsLayout];

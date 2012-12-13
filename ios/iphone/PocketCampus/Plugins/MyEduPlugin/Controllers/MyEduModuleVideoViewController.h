@@ -12,11 +12,12 @@
 
 #import "MyEduService.h"
 
-@interface MyEduModuleVideoViewController : UIViewController<UIWebViewDelegate, NSURLConnectionDownloadDelegate, UIActionSheetDelegate>
+@interface MyEduModuleVideoViewController : UIViewController<UIWebViewDelegate, ASIHTTPRequestDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* loadingIndicator;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
+@property (nonatomic, weak) IBOutlet UIButton* playbackRateButton;
 
 - (id)initWithMyEduModule:(MyEduModule*)module;
 

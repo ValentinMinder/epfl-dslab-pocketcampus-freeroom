@@ -279,24 +279,25 @@ static MyEduService* instance __weak = nil;
     [operationQueue addOperation:operation];
 }
 
+#pragma mark - playback time persistence
 
-#pragma mark - Class utilities
-
-+ (NSString*)keyForMaterial:(MyEduMaterial*)material {
-    NSString* key = [NSString stringWithFormat:@"material-%u", [material.iURL hash]];
-    return key;
-}
-
-+ (NSTimeInterval)lastPlaybackTimeForVideoForModule:(MyEduModule*)module {
-    NSNumber* number = (NSNumber*)[ObjectArchiver objectForKey:[NSString stringWithFormat:@"lastPlayback-%@", [self keyForVideoOfModule:module]] andPluginName:@"myedu"];
+- (NSTimeInterval)lastPlaybackTimeForVideoForModule:(MyEduModule*)module {
+    NSNumber* number = (NSNumber*)[ObjectArchiver objectForKey:[NSString stringWithFormat:@"lastPlayback-%@", [self.class keyForVideoOfModule:module]] andPluginName:@"myedu"];
     if (!number) {
         return 0.0;
     }
     return (NSTimeInterval)[number doubleValue];
 }
 
-+ (BOOL)saveLastPlaybackTime:(NSTimeInterval)time forVideoOfModule:(MyEduModule*)module {
-    return [ObjectArchiver saveObject:[NSNumber numberWithDouble:time] forKey:[NSString stringWithFormat:@"lastPlayback-%@", [self keyForVideoOfModule:module]] andPluginName:@"myedu"];
+- (BOOL)saveLastPlaybackTime:(NSTimeInterval)time forVideoOfModule:(MyEduModule*)module {
+    return [ObjectArchiver saveObject:[NSNumber numberWithDouble:time] forKey:[NSString stringWithFormat:@"lastPlayback-%@", [self.class keyForVideoOfModule:module]] andPluginName:@"myedu"];
+}
+
+#pragma mark - Class utilities
+
++ (NSString*)keyForMaterial:(MyEduMaterial*)material {
+    NSString* key = [NSString stringWithFormat:@"material-%u", [material.iURL hash]];
+    return key;
 }
 
 + (NSString*)keyForVideoOfModule:(MyEduModule*)module {
@@ -404,7 +405,6 @@ static MyEduService* instance __weak = nil;
 }
 
 - (void)addDownloadObserver:(id)observer forVideoOfModule:(MyEduModule*)module startDownload:(BOOL)startDownload startBlock:(DownloadDidStartBlock)startBlock finishBlock:(DownloadDidFinishBlock)finishBlock progressBlock:(DownloadDidProgressBlock)progressBlock cancelledBlock:(DownloadWasCancelledBlock)cancelledBlock failureBlock:(DownloadDidFailBlock)failureBlock deletedBlock:(DownloadWasDeletedBlock)deletedBlock {
-    
     MyEduDownloadObserver* downloadObserver = [[MyEduDownloadObserver alloc] init];
     downloadObserver.observer = observer;
     NSString* key = [MyEduService keyForVideoOfModule:module];
@@ -434,11 +434,11 @@ static MyEduService* instance __weak = nil;
     @synchronized(self) {
         NSString* key = [MyEduService keyForVideoOfModule:module];
         NSMutableArray* observers = self.downloadsObserversForVideoKey[key];
-        [[observers copy] enumerateObjectsUsingBlock:^(MyEduDownloadObserver* downloadObserver, NSUInteger idx, BOOL *stop) {
-            if (downloadObserver.observer == observer && [downloadObserver.downloadIdentifier isEqual:key]) {
+        for (MyEduDownloadObserver* downloadObserver in [observers copy]) {
+            if (downloadObserver.observer == observer && [downloadObserver.downloadIdentifier isEqualToString:key]) {
                 [observers removeObject:downloadObserver];
             }
-        }];
+        }
     }
 }
 
@@ -567,7 +567,7 @@ static MyEduService* instance __weak = nil;
     NSArray* observers = self.downloadsObserversForVideoKey[key];
     if (key) {
         [[observers copy] enumerateObjectsUsingBlock:^(MyEduDownloadObserver* downloadObserver, NSUInteger idx, BOOL *stop) {
-            if (downloadObserver.finishBlock) {
+            if (downloadObserver.observer && downloadObserver.finishBlock) {
                 downloadObserver.finishBlock([NSURL fileURLWithPath:request.downloadDestinationPath]);
             }
         }];

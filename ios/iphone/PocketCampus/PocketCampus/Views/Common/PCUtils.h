@@ -19,5 +19,6 @@
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration;
 + (void)printFrame:(CGRect)frame;
 + (NSString*)stringFromFileSize:(unsigned long long)size;
++ (BOOL)double:(double)d1 isEqualToDouble:(double)d2 epsilon:(double)epsilon;
 
 @end

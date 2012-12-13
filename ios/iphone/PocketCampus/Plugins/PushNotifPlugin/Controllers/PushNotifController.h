@@ -22,7 +22,7 @@ typedef void (^NewNotificationBlock)(NSString* notificationMessage);
 
 @interface PushNotifDeviceRegistrationObserver : NSObject
 
-@property (nonatomic, weak) id observer;
+@property (nonatomic, unsafe_unretained) id observer;
 @property (nonatomic) BOOL authentified;
 @property (nonatomic, copy) VoidBlock successBlock;
 @property (nonatomic, copy) PushNotifDeviceRegistrationFailureBlock failureBlock;

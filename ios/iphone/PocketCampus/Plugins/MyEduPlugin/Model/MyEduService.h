@@ -36,7 +36,7 @@ typedef void (^DownloadWasDeletedBlock)(void); //called when downloaded file was
 
 @interface MyEduDownloadObserver : NSObject
 
-@property (nonatomic, assign) id observer;
+@property (nonatomic, unsafe_unretained) id observer;
 @property (nonatomic, copy) NSString* downloadIdentifier;
 @property (nonatomic, copy) DownloadDidStartBlock startBlock; //this block will be called for any observer that was added before and after the download has started
 @property (nonatomic, copy) DownloadDidFinishBlock finishBlock;
@@ -108,10 +108,13 @@ typedef void (^DownloadWasDeletedBlock)(void); //called when downloaded file was
 
 - (MyEduMaterialData*)materialDataIfExistsForMaterial:(MyEduMaterial*)material; //returns nil if not such stored material
 
+/* playback time */
+
+- (NSTimeInterval)lastPlaybackTimeForVideoForModule:(MyEduModule*)module;
+- (BOOL)saveLastPlaybackTime:(NSTimeInterval)time forVideoOfModule:(MyEduModule*)module;
+
 /* Utiliy methods */
 
-+ (NSTimeInterval)lastPlaybackTimeForVideoForModule:(MyEduModule*)module;
-+ (BOOL)saveLastPlaybackTime:(NSTimeInterval)time forVideoOfModule:(MyEduModule*)module;
 + (NSString*)keyForVideoOfModule:(MyEduModule*)module;
 + (NSString*)localPathForVideoOfModule:(MyEduModule*)module;
 + (NSString*)localPathOfVideoForModule:(MyEduModule*)module nilIfNoFile:(BOOL)nilIfNoFile;

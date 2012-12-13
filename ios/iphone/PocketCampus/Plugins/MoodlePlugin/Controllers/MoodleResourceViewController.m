@@ -18,15 +18,19 @@
 @property (nonatomic, strong) MoodleResource* moodleResource;
 @property (nonatomic, strong) UIDocumentInteractionController* docInteractionController;
 @property (nonatomic, strong) UIActionSheet* deleteActionSheet;
+@property (nonatomic, copy) VoidBlock downloadedBlock;
+@property (nonatomic, copy) VoidBlock deletedBlock;
 
 @end
 
 @implementation MoodleResourceViewController
 
-- (id)initWithMoodleResource:(MoodleResource*)moodleResource {
+- (id)initWithMoodleResource:(MoodleResource*)moodleResource downloadedBlock:(VoidBlock)downloadedBlock deletedBlock:(VoidBlock)deletedBlock {
     self = [super initWithNibName:@"MoodleResourceView" bundle:nil];
     if (self) {
         self.moodleResource = moodleResource;
+        self.downloadedBlock = downloadedBlock;
+        self.deletedBlock = deletedBlock;
         if ([PCUtils isIdiomPad]) {
             self.title = moodleResource.iName; //enough space to display title if iPad
         }
@@ -180,6 +184,7 @@
     [self deleteButton].enabled = YES;
     [self actionButton].enabled = YES;
     [self loadDownloadedMoodleResourceInWebView];
+    self.downloadedBlock(); //run the block that was given in constructor when resource is downloaded
 }
 
 - (void)downloadFailedForMoodleResource:(MoodleResource *)moodleResource responseStatusCode:(int)statusCode {
@@ -215,7 +220,7 @@
             return;
         }
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document/delete" withError:NULL];
-        [self.navigationController popViewControllerAnimated:YES];
+        self.deletedBlock(); //run the block that was given in constructor when resource is deleted
     }
 }
 

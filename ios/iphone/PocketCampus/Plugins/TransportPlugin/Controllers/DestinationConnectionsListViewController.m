@@ -54,6 +54,7 @@ static NSString* kConnectionCellIdentifier = @"ConnectionCell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
 

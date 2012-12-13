@@ -141,13 +141,13 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		System.out.println("getSubscribedCoursesList");
 		
 		/*TEST*/
-		
+		/*
 		try {
 			PocketCampusServer.invokeOnPlugin("pushnotif", "pushMessage", new PushNotifRequest("myedu", Arrays.asList("gardiol"), "Hello, world!"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-		
+		*/
 		/*END TEST*/
 		
 		String json = null;

@@ -9,9 +9,9 @@
 "Sections" = "Sections";
 "Section" = "Section";
 "Modules" = "Modules";
-"DownloadingCourseList" = "Téléchargement de la liste des cours...";
-"DownloadingSectionList" = "Téléchargement de la liste des sections...";
-"DownloadingModuleList" = "Téléchargement de la liste des modules...";
+"DownloadingCourseList" = "Chargement de la liste des cours...";
+"DownloadingSectionList" = "Chargement de la liste des sections...";
+"DownloadingModuleList" = "Chargement de la liste des modules...";
 "NotSubscribedToAnyCourse" = "Vous n'êtes inscrit à aucun cours MyEdu";
 "NoSection" = "Aucune section";
 "NoModule" = "Aucun module";
