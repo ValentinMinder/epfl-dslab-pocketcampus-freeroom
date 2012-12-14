@@ -45,7 +45,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
         self.title = NSLocalizedStringFromTable(@"Sections", @"MyEduPlugin", nil);
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.sections = [self.myEduService getFromCacheCourseDetailsForRequest:[[MyEduCourseDetailsRequest alloc] initWithIMyEduRequest:[self.myEduService createMyEduRequest] iCourseCode:self.course.iCode]].iMyEduSections;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[NSString stringWithFormat:@"myEduSectionList-%d", self.course.iId]];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
@@ -112,6 +112,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
             self.sections = reply.iMyEduSections;
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
+            [self.pcRefreshControl markRefreshSuccessful];
             break;
         case 407:
             [self.myEduService deleteSession];

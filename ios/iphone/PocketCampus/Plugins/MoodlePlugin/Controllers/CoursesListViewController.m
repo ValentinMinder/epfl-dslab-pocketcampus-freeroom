@@ -38,7 +38,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
     if (self) {
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.courses = [self.moodleService getFromCacheCourseListReply].iCourses;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:@"moodleCoursesList"];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
@@ -114,6 +114,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
             [self.moodleService saveToCacheCourseListReply:coursesListReply];
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
+            [self.pcRefreshControl markRefreshSuccessful];
             break;
         case 407:
             [self.moodleService deleteSession];

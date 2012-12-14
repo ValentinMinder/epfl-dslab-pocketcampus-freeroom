@@ -10,6 +10,7 @@
 
 @interface PCValues : NSObject
 
++ (void)applyAppearenceProxy;
 + (UIColor*)pocketCampusRed;
 + (UIColor*)backgroundColor1;
 + (UIColor*)textColor1;

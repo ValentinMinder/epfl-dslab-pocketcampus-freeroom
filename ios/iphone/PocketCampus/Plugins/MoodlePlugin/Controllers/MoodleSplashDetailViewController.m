@@ -29,7 +29,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.navBar.tintColor = [PCValues pocketCampusRed];
     self.view.backgroundColor = [PCValues backgroundColor1];
 }
 

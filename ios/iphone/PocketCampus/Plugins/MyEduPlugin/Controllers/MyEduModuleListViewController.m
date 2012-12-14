@@ -48,7 +48,7 @@
         if (self.modules) {
             [self initCellsWithModules];
         }
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[NSString stringWithFormat:@"myEduSectionList-%d-%d", self.course.iId, self.section.iId]];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
@@ -161,6 +161,7 @@
             [self initCellsWithModules];
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
+            [self.pcRefreshControl markRefreshSuccessful];
             break;
         case 407:
             [self.myEduService deleteSession];

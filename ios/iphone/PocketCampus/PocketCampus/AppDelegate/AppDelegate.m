@@ -12,6 +12,8 @@
 
 #import "PCUtils.h"
 
+#import "PCValues.h"
+
 #import "GANTracker.h"
 
 #import "MyEduServiceTests.h"
@@ -33,6 +35,9 @@ static id test __strong = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    /* Apply appearence proxy => specified UI elements will defaut to PC defined look&feel, eg. red navigation bar */
+    [PCValues applyAppearenceProxy];
+    
     /* Initialize defaults with PC config */
     [PCConfig initConfig];
     

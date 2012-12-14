@@ -228,7 +228,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
                 voteButton.backgroundColor = [UIColor colorWithWhite:0.6 alpha:1.0];
             };
             if (animated) {
-                [UIView transitionWithView:voteButton duration:0.1 options:UIViewAnimationTransitionNone animations:animBlock completion:NULL];
+                [UIView transitionWithView:voteButton duration:0.1 options:NULL animations:animBlock completion:NULL];
             } else {
                 animBlock();
             }
@@ -244,7 +244,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
                 voteButton.frame = voteButtonNormalFrame;
             };
             if (animated) {
-                [UIView transitionWithView:voteButton duration:0.1 options:UIViewAnimationTransitionNone animations:animBlock completion:NULL];
+                [UIView transitionWithView:voteButton duration:0.1 options:NULL animations:animBlock completion:NULL];
             } else {
                 animBlock();
             }
@@ -256,7 +256,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
                 voteButton.frame = voteButtonHiddenFrame;
             };
             if (animated) {
-                [UIView transitionWithView:voteButton duration:0.1 options:UIViewAnimationTransitionFlipFromLeft animations:animBlock completion:NULL];
+                [UIView transitionWithView:voteButton duration:0.1 options:NULL animations:animBlock completion:NULL];
             } else {
                 animBlock();
             }

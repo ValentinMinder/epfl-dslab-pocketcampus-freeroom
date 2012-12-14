@@ -25,10 +25,12 @@ typedef enum {
 
 
 - (id)initWithTableViewController:(UITableViewController*)tableViewController;
+- (id)initWithTableViewController:(UITableViewController*)tableViewController refreshedDataIdentifier:(NSString*)dataIdentifier; //will show "last refresh <date>". Task identifier will be use to save last refresh timestamp
 - (void)setTarget:(id)target selector:(SEL)selector;
 
 - (void)startRefreshingWithMessage:(NSString*)message;
 - (void)endRefreshing;
+- (void)markRefreshSuccessful; //call this method just after endRefresh to signal that the last refresh was successfull. This will set the default text to "last refresh <date>". This feature is only supported if refreshedDataIdentifier was indicated at construction.
 - (void)show;
 - (void)showForTimeInterval:(NSTimeInterval)timeInterval;
 - (void)hide;

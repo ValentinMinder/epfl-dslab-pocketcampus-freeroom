@@ -513,7 +513,6 @@
             passwordTextField.enabled = YES;
             
             UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:self]; //so that nav bar is shown
-            tmpNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
             [viewControllerForPresentation presentViewController:tmpNavController animated:YES completion:^{
                 [self focusOnInput];
             }];

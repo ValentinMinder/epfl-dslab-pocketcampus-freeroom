@@ -43,7 +43,6 @@
     self.bottomLabel.textColor = [UIColor colorWithRed:0.000000 green:0.231373 blue:0.733333 alpha:1.0];
     self.bottomLabel.shadowColor = [UIColor whiteColor];
     self.bottomLabel.shadowOffset = [PCValues shadowOffset1];*/
-    self.navBar.tintColor = [PCValues pocketCampusRed];
     self.containerView.layer.masksToBounds = NO;
     self.containerView.layer.shadowOffset = CGSizeMake(0.0, 2.00);
     self.containerView.layer.shadowRadius = 3.0;

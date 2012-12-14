@@ -47,7 +47,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
         self.title = self.course.iTitle;
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.sections = [self.moodleService getFromCacheSectionsListReplyForCourse:self.course].iSections;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
         self.clearsSelectionOnViewWillAppear = NO; //managed manually to know which row was selected and reload it to update "saved" label
     }
@@ -72,6 +72,11 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
+
+/*- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathsForVisibleRows][0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}*/
 
 - (void)didReceiveMemoryWarning
 {
@@ -166,7 +171,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
                 [self.sections enumerateObjectsUsingBlock:^(MoodleSection* section, NSUInteger sectionI, BOOL *stop) {
                     [section.iResources enumerateObjectsUsingBlock:^(MoodleResource* resource, NSUInteger rowI, BOOL *stop) {
                         if ([resource.iUrl isEqualToString:self.selectedResource.iUrl]) { //considered same, isEqual not implemented by thrift
-                            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:rowI inSection:sectionI] animated:NO scrollPosition:UITableViewRowAnimationNone];
+                            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:rowI inSection:sectionI] animated:NO scrollPosition:UITableViewScrollPositionNone];
                             *stop = YES;
                             found = YES;
                         }
@@ -182,6 +187,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
                 }
             }
             [self.pcRefreshControl endRefreshing];
+            [self.pcRefreshControl markRefreshSuccessful];
             break;
         case 407:
             [self.moodleService deleteSession];
@@ -247,14 +253,13 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     
     MoodleResourceViewController* detailViewController = [[MoodleResourceViewController alloc] initWithMoodleResource:resource downloadedBlock:^{
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewRowAnimationNone];
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     } deletedBlock:deletedBlock];
     
     
     
     if (self.splitViewController) { /* iPad */
         UINavigationController* detailNavController = [[UINavigationController alloc] initWithRootViewController:detailViewController]; //to have nav bar
-        detailNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], detailNavController];
     } else { /* iPhone */
         [self.navigationController pushViewController:detailViewController animated:YES];

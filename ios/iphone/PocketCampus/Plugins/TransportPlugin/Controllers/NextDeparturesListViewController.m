@@ -492,7 +492,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     FavoriteStationsViewController* favStationsViewController = [[FavoriteStationsViewController alloc] init];
     favStationsViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     UINavigationController* modalNavController = [[UINavigationController alloc] initWithRootViewController:favStationsViewController];
-    modalNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
     
     if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
         [self presentViewController:modalNavController animated:YES completion:NULL];
@@ -508,7 +507,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 - (IBAction)presentHelpViewController:(id)sender {
     TransportHelpViewController* viewController = [[TransportHelpViewController alloc] initWithHTMLFilePath:[[NSBundle mainBundle] pathForResource:@"TransportHelp" ofType:@"html"]];
     UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    navController.navigationBar.tintColor = [PCValues pocketCampusRed];
     if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
         [self presentViewController:navController animated:YES completion:NULL];
     } else {
@@ -522,7 +520,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     TransportSettingsViewController* viewController = [[TransportSettingsViewController alloc] init];
     viewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    navController.navigationBar.tintColor = [PCValues pocketCampusRed];
     
     if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
         [self presentViewController:navController animated:YES completion:NULL];

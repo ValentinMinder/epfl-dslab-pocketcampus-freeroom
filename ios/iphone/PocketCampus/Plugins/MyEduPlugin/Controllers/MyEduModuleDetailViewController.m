@@ -55,7 +55,6 @@
     UINavigationController* videoNavController = [[UINavigationController alloc] initWithRootViewController:videoController];
     videoNavController.title = NSLocalizedStringFromTable(@"Video", @"MyEduPlugin", nil);
     videoNavController.tabBarItem.image = [UIImage imageNamed:@"MyEduModuleVideo"];
-    videoNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
     
     MyEduModuleTextViewController* textController = [[MyEduModuleTextViewController alloc] initWithMyEduModule:self.module];
     //textController.navigationItem.title = [NSString stringWithFormat:@"%@ ‣ %@", title, NSLocalizedStringFromTable(@"Text", @"MyEduPlugin", nil)];
@@ -64,7 +63,6 @@
     UINavigationController* textNavController = [[UINavigationController alloc] initWithRootViewController:textController];
     textNavController.title = NSLocalizedStringFromTable(@"Text", @"MyEduPlugin", nil);
     textNavController.tabBarItem.image = [UIImage imageNamed:@"MyEduModuleText"];
-    textNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
     
     MyEduModuleMaterialsViewController* materialsController = [[MyEduModuleMaterialsViewController alloc] initWithMyEduModule:self.module section:self.section course:self.course];
     //materialsController.navigationItem.title = [NSString stringWithFormat:@"%@ ‣ %@", title, NSLocalizedStringFromTable(@"Material", @"MyEduPlugin", nil)];
@@ -73,7 +71,6 @@
     UINavigationController* materialsNavController = [[UINavigationController alloc] initWithRootViewController:materialsController];
     materialsNavController.title = NSLocalizedStringFromTable(@"Material", @"MyEduPlugin", nil);
     materialsNavController.tabBarItem.image = [UIImage imageNamed:@"MyEduModuleMaterial"];
-    materialsNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
 
     self.tabBarController.viewControllers = @[videoNavController, textNavController, materialsNavController];
     

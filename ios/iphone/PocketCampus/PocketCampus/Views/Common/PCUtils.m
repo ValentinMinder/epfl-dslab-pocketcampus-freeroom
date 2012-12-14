@@ -50,7 +50,7 @@
     tableView.alpha = 0.0;
     [tableView reloadData];
     tableView.hidden = NO;
-    [UIView transitionWithView:tableView duration:duration options:UIViewAnimationCurveEaseIn animations:^{
+    [UIView transitionWithView:tableView duration:duration options:UIViewAnimationOptionCurveEaseInOut animations:^{
         tableView.alpha = 1.0;
     } completion:NULL];
 }

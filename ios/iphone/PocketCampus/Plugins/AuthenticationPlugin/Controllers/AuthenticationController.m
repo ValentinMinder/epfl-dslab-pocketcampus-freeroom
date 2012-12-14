@@ -88,7 +88,6 @@ static AuthenticationController* instance __weak = nil;
         gasparViewController.token = token;
         UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:gasparViewController]; //so that nav bar is shown
         tmpNavController.modalPresentationStyle = UIModalPresentationFormSheet;
-        tmpNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
         
         [presentationViewController presentViewController:tmpNavController animated:YES completion:^{
             [gasparViewController focusOnInput];

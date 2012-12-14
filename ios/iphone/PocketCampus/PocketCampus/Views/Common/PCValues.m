@@ -10,6 +10,11 @@
 
 @implementation PCValues
 
++ (void)applyAppearenceProxy {
+    UINavigationBar *navigationBarAppearance = [UINavigationBar appearance];
+    navigationBarAppearance.tintColor = [PCValues pocketCampusRed];
+}
+
 + (UIColor*)pocketCampusRed {
     return [UIColor colorWithRed:0.66666 green:0 blue:0.101960 alpha:1.0]; //170, 0, 26
 }

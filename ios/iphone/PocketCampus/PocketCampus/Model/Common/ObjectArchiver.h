@@ -17,6 +17,7 @@
 + (id<NSCoding>)objectForKey:(NSString*)key andPluginName:(NSString*)pluginName nilIfDiffIntervalLargerThan:(NSTimeInterval)interval isCache:(BOOL)isCache; //nb seconds
 + (void)createComponentsForPath:(NSString*)path;
 + (NSDictionary*)fileAttributesForKey:(NSString*)key andPluginName:(NSString*)pluginName;
++ (NSDictionary*)fileAttributesForKey:(NSString*)key andPluginName:(NSString*)pluginName isCache:(BOOL)isCache;
 + (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName; //same as next with customExt = nil and isCache = NO
 + (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName customFileExtension:(NSString*)customFileExtension isCache:(BOOL)isCache; //extension without dot. Passing nil customExtension will result in extension .archive
 + (BOOL)deleteAllCachedObjectsForPluginName:(NSString*)pluginName; //will ONLY delete save objects that were saved with option isCache = YES

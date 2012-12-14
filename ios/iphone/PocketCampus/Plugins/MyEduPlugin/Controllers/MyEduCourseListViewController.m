@@ -42,7 +42,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
         // Custom initialization
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.subscribedCourses = [self.myEduService getFromCacheSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest]].iSubscribedCourses;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:@"myEduSubscribedCourseList"];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
@@ -110,6 +110,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
             self.subscribedCourses = reply.iSubscribedCourses;
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
+            [self.pcRefreshControl markRefreshSuccessful];
             break;
         case 407:
             [self.myEduService deleteSession];

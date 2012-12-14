@@ -235,7 +235,6 @@ static MainController<MainControllerPublic>* instance = nil;
     GlobalSettingsViewController* settingsViewController = [[GlobalSettingsViewController alloc] init];
     UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
-    settingsNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
     [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];
 }
 
@@ -338,7 +337,6 @@ static MainController<MainControllerPublic>* instance = nil;
     if ([pluginRootViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController* navController = (UINavigationController*)pluginRootViewController;
         
-        navController.navigationBar.tintColor = [PCValues pocketCampusRed];
         UIPanGestureRecognizer* navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
         [navController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
         
@@ -360,7 +358,6 @@ static MainController<MainControllerPublic>* instance = nil;
                     UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
                     [navController.viewControllers[0] navigationItem].leftBarButtonItem = menuButton;
                 }
-                navController.navigationBar.tintColor = [PCValues pocketCampusRed];
                 UIPanGestureRecognizer* navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
                 [navController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
             }

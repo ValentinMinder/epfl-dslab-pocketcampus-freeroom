@@ -12,6 +12,7 @@
 
 #import "PCUtils.h"
 
+#import "ObjectArchiver.h"
 
 @interface PCRefreshControl ()
 
@@ -22,6 +23,8 @@
 @property (nonatomic, strong) MSPullToRefreshController* msPtRController;
 @property (nonatomic, weak) id target;
 @property (nonatomic) SEL selector;
+@property (nonatomic, copy) NSString* refreshedDataIdentifier;
+@property (nonatomic, strong) NSDate* lastSuccessfullRefreshDate;
 @property (nonatomic) BOOL engagedRefreshProgrammatically;
 @property (nonatomic, strong) NSTimer* showHideTimer;
 @property (nonatomic, strong) UIView* containerView;
@@ -65,6 +68,18 @@
             
             self.type = RefreshControlTypeDefault;
             [self.tableView addSubview:self.containerView];
+        }
+    }
+    return self;
+}
+
+- (id)initWithTableViewController:(UITableViewController*)tableViewController refreshedDataIdentifier:(NSString*)dataIdentifier; {
+    self = [self initWithTableViewController:tableViewController];
+    if (self) {
+        self.refreshedDataIdentifier = dataIdentifier;
+        self.lastSuccessfullRefreshDate = (NSDate*)[ObjectArchiver objectForKey:[self keyForLastRefresh] andPluginName:@"pocketcampus"];
+        if (self.lastSuccessfullRefreshDate) {
+            [self setMessage:nil];
         }
     }
     return self;
@@ -116,11 +131,39 @@
     }
 }
 
-- (void)setMessage:(NSString *)message {
-    if (!message) {
-        message = @"";
+- (NSString*)keyForLastRefresh {
+    return [NSString stringWithFormat:@"pcRefreshControlLastRefreshDate-%u", [self.refreshedDataIdentifier hash]];
+}
+
+- (void)markRefreshSuccessful {
+    if (!self.refreshedDataIdentifier) {
+        @throw [NSException exceptionWithName:@"Illegal operation" reason:@"PCRefreshControl does not support markRefreshSuccessful without being initilized with a refreshTaskUniqueIdentifier" userInfo:nil];
     }
-    _message = [message copy];
+    self.lastSuccessfullRefreshDate = [NSDate date]; //now
+    [self setMessage:nil]; //will set last message to default => last refresh message
+    [ObjectArchiver saveObject:self.lastSuccessfullRefreshDate forKey:[self keyForLastRefresh] andPluginName:@"pocketcampus"];
+    
+}
+
+- (NSString*)timeStringForLastRefresh {
+    if (!self.lastSuccessfullRefreshDate) {
+        return @"";
+    }
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    return [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"PocketCampus", nil),[dateFormatter stringFromDate:self.lastSuccessfullRefreshDate]];
+}
+
+- (void)setMessage:(NSString *)message {
+    if (!message || [message isEqualToString:@""]) {
+        if (self.refreshedDataIdentifier) {
+            message = [self timeStringForLastRefresh];
+        } else {
+            message = @"";
+        }
+    }
+    _message = [message copy]; //DO NOT USE self.message because this is THIS method (would cause infinite recursion)
     if (self.usesUIRefreshControl) {
         if (self.type == RefreshControlTypeProblem) {
             self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:message attributes:[NSDictionary dictionaryWithObject:self.problemColor forKey:NSForegroundColorAttributeName]];

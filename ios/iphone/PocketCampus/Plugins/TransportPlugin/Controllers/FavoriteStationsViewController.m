@@ -139,7 +139,6 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 - (IBAction)presentHelpViewController:(id)sender {
     TransportHelpViewController* viewController = [[TransportHelpViewController alloc] initWithHTMLFilePath:[[NSBundle mainBundle] pathForResource:@"MyStationsHelp" ofType:@"html"]];
     UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    navController.navigationBar.tintColor = [PCValues pocketCampusRed];
     if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
         [self presentViewController:navController animated:YES completion:NULL];
     } else {

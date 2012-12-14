@@ -285,7 +285,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
             break;
     }
     
-    [UIView transitionWithView:searchBar duration:0.25 options:UIViewAnimationTransitionNone animations:animBlock completion:NULL];
+    [UIView transitionWithView:searchBar duration:0.25 options:UIViewAnimationOptionTransitionNone animations:animBlock completion:NULL];
 }
 
 

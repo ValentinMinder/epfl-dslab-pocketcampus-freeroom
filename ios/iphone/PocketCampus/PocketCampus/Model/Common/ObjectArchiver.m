@@ -67,9 +67,10 @@
         return nil;
     }
     
-    NSDictionary* fileAttributes = [self fileAttributesForKey:key andPluginName:pluginName];
+    NSDictionary* fileAttributes = [self fileAttributesForKey:key andPluginName:pluginName isCache:isCache];
     if (!fileAttributes) {
-        @throw [NSException exceptionWithName:@"-> objectForKey:andPluginName:nilIfDiffIntervalLargerThan: exception" reason:@"could not read file attributes" userInfo:nil];
+        NSLog(@"!! ERROR in objectForKey:andPluginName:nilIfDiffIntervalLargerThan:isCache: : could not read file attributes");
+        return nil;
     }
     NSDate* modifDate = [fileAttributes objectForKey:@"NSFileModificationDate"];
     if ((double)(abs([modifDate timeIntervalSinceNow])) > interval) {
@@ -79,16 +80,20 @@
 }
 
 + (NSDictionary*)fileAttributesForKey:(NSString*)key andPluginName:(NSString*)pluginName {
+    return [self fileAttributesForKey:key andPluginName:pluginName isCache:NO];
+}
+
++ (NSDictionary*)fileAttributesForKey:(NSString*)key andPluginName:(NSString*)pluginName isCache:(BOOL)isCache {
     if (![key isKindOfClass:[NSString class]] || ![pluginName isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad argument(s)" reason:@"bad key and/or pluginName argument" userInfo:nil];
     }
-    NSString* filePath = [self pathForKey:key pluginName:pluginName];
+    NSString* filePath = [self pathForKey:key pluginName:pluginName customFileExtension:nil isCache:isCache];
     NSFileManager* fileManager = [[NSFileManager alloc] init];
     NSError* error = nil;
     NSDictionary* fileAttributes = [fileManager attributesOfItemAtPath:filePath error:&error];
     [fileManager release];
     if (error != nil) {
-        NSLog(@"-> fileAttributeForKey:andPluginName: impossible to get attribute of file %@", filePath);
+        NSLog(@"-> fileAttributeForKey:andPluginName:isCache: impossible to get attribute of file %@", filePath);
         return nil;
     }
     return fileAttributes;
