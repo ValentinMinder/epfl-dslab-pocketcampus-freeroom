@@ -23,7 +23,7 @@ static __PluginID__Service* instance __weak = nil;
     }
 }
 
-+ (id)sharedInstance {
++ (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
             return instance;
@@ -44,7 +44,43 @@ static __PluginID__Service* instance __weak = nil;
 #endif
 }
 
-//TODO: implement service methods defined in header
+
+#pragma mark - Service methods
+
+// ----------------------------------------  TODO ----------------------------------------  //
+// Implement async methods declared in header (__PluginID__Service.h)
+// This is done very easily by using the ServiceRequest class.
+// 
+// Examples (see definitions in __PluginID__Service.h)
+//
+// 1) Method with 0 argument:
+//  - (void)getMealsWithDelegate:(id)delegate {    
+//      ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+//      operation.serviceClientSelector = @selector(getMeals); //corresponds to Thrift method definition
+//      operation.delegateDidReturnSelector = @selector(getMealsDidReturn:); //corresponding *didReturn* definition
+//      operation.delegateDidFailSelector = @selector(getMealsFailed); //corresponding *Failed* definition
+//      operation.returnType = ReturnTypeObject; //result type. Can be object or any standard primitive types (ReturnTypeInt, ...)
+//      [operationQueue addOperation:operation]; //schedulescall in background
+//      [operation release]; //If you do NOT use ARC: release operation (has been retained by operationQueue)
+//  }
+//
+// 2) Method with arguments:
+//  - (void)setRatingForMeal:(Id)mealId rating:(double)rating delegate:(id)delegate {
+//      ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+//      operation.serviceClientSelector = @selector(setRating::); //notice double columns, because Thrift setRating has 2 arguments
+//      operation.delegateDidReturnSelector = @selector(setRatingForMeal:rating:didReturn:);
+//      operation.delegateDidFailSelector = @selector(setRatingFailedForMeal:rating:);
+//      [operation addLongLongArgument:mealId]; //add arguments in order in which they appear
+//      [operation addDoubleArgument:rating];
+//      operation.returnType = ReturnTypeInt; //return type is int this time
+//      [operationQueue addOperation:operation]; //schedule call in background
+//      [operation release]; //If you do NOT use ARC: release operation (has been retained by operationQueue)
+//  } 
+//
+// --------------------------------------------------------------------------------------  //
+
+
+#pragma mark - dealloc
 
 - (void)dealloc
 {

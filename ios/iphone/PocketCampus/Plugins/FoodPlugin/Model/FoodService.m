@@ -44,8 +44,6 @@ static FoodService* instance __weak = nil;
 
 - (void)getMealsWithDelegate:(id)delegate {    
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    //operation.keepInCache = YES;
-    //operation.cacheValidity = 3*3600; //3 hours
     operation.serviceClientSelector = @selector(getMeals);
     operation.delegateDidReturnSelector = @selector(getMealsDidReturn:);
     operation.delegateDidFailSelector = @selector(getMealsFailed);
@@ -113,7 +111,7 @@ static FoodService* instance __weak = nil;
     [operation release];
 }
 
-- (void)setRatingForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId delegate:(id)delegate; {
+- (void)setRatingForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId delegate:(id)delegate {
     //Id is primitive type (long long), rating is primitive (double) => cannot be checked
     if (![deviceId isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad deviceId" reason:@"deviceId is either nil or not of class NSString" userInfo:nil];
