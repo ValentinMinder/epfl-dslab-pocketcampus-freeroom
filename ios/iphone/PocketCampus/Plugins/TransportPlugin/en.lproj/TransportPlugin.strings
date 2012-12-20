@@ -37,6 +37,6 @@
 "Schedules" = "Schedules";
 "Reset" = "Reset";
 "ResetFavStations" = "Restore default stations...";
-"ResetFavStationsExplanations" = "Your stations will be replaced by default stations (EPFL, Lausanne-Flon).";
+"ResetFavStationsExplanations" = "Your stations will be replaced by default stations:\nEPFL and Lausanne-Flon.";
 "PlatformShort" = "plat.";
 "TransportHelp" = "Transports help";

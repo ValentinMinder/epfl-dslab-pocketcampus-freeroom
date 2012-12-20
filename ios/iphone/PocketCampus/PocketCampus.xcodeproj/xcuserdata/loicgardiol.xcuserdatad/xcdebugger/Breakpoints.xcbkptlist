@@ -290,11 +290,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "369932715.169719"
+         timestampString = "377720005.88444"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "89"
-         endingLineNumber = "89"
+         startingLineNumber = "106"
+         endingLineNumber = "106"
          landmarkName = "-startAutocompleteRequest"
          landmarkType = "5">
          <Actions>
@@ -312,11 +312,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "369932715.169719"
+         timestampString = "377720005.88444"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "98"
-         endingLineNumber = "98"
+         startingLineNumber = "115"
+         endingLineNumber = "115"
          landmarkName = "-startSearchRequest"
          landmarkType = "5">
          <Actions>
@@ -334,11 +334,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "369932715.169719"
+         timestampString = "377720005.88444"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "178"
-         endingLineNumber = "178"
+         startingLineNumber = "184"
+         endingLineNumber = "184"
          landmarkName = "-autocompleteFor:didReturn:"
          landmarkType = "5">
          <Actions>
@@ -356,11 +356,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "372696523.442946"
+         timestampString = "377720005.88444"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "119"
-         endingLineNumber = "119"
+         startingLineNumber = "128"
+         endingLineNumber = "128"
          landmarkName = "-searchBar:textDidChange:"
          landmarkType = "5">
          <Actions>

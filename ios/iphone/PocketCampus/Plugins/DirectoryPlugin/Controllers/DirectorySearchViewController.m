@@ -12,25 +12,33 @@
 
 #import "MapController.h"
 
-@implementation DirectorySearchViewController
+@interface DirectorySearchViewController ()
+ 
+@property (nonatomic, strong) DirectoryService* directoryService;
+@property (nonatomic, strong) NSTimer* typingTimer;
+@property (nonatomic, strong) NSArray* autocompleteResults;
+@property (nonatomic, strong) NSArray* searchResults;
+@property (nonatomic) ResultsMode resultsMode;
+@property (nonatomic, strong) PCUnkownPersonViewController* personViewController;
+@property (nonatomic, strong) Person* displayedPerson;
+@property (nonatomic) BOOL skipNextSearchBarValueChange;
 
-@synthesize searchBar, barActivityIndicator, tableView, messageLabel, backgroundIcon; 
+@end
+
+@implementation DirectorySearchViewController
 
 static NSString* kAutocompleteResultCellIdentifier = @"autocompleteResult";
 static NSString* kSearchResultCellIdentifier = @"searchResult";
+
+static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (id)init
 {
     self = [super initWithNibName:@"DirectorySearchView" bundle:nil];
     if (self) {
         // Custom initialization
-        directoryService = [[DirectoryService sharedInstanceToRetain] retain];
-        typingTimer = nil;
-        searchResults = nil;
-        autocompleteResults = nil;
-        resultsMode = ResutlsModeNotStarted;
-        personViewController = nil;
-        displayedPerson = nil;
+        self.directoryService = [DirectoryService sharedInstanceToRetain];
+        self.resultsMode = ResutlsModeNotStarted;
         //skipNextSearchBarValueChange = NO;
     }
     return self;
@@ -41,10 +49,10 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/directory" withError:NULL];
-    searchBar.placeholder = NSLocalizedStringFromTable(@"SearchFieldPlaceholder", @"DirectoryPlugin", @"");
-    [searchBar setIsAccessibilityElement:YES];
-    searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
-    tableView.accessibilityIdentifier = @"SearchResults";
+    self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchFieldPlaceholder", @"DirectoryPlugin", @"");
+    [self.searchBar setIsAccessibilityElement:YES];
+    self.searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
+    self.tableView.accessibilityIdentifier = @"SearchResults";
 }
 
 - (void)viewDidUnload
@@ -55,22 +63,21 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
-    [displayedPerson release];
-    displayedPerson = nil;
-    personViewController = nil; //so that profile picture request does not try to set picture for personViewController that is no longer displayed (and thus released)
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+    self.displayedPerson = nil;
+    self.personViewController = nil; //so that profile picture request does not try to set picture for personViewController that is no longer displayed (and thus released)
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (resultsMode == ResutlsModeNotStarted) {
-        [searchBar becomeFirstResponder];
+    if (self.resultsMode == ResutlsModeNotStarted) {
+        [self.searchBar becomeFirstResponder];
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [searchBar resignFirstResponder];
+    [self.searchBar resignFirstResponder];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -83,108 +90,107 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)showNoResultMessage {
+    [self.barActivityIndicator stopAnimating];
+    self.tableView.hidden = YES;
+    self.backgroundIcon.hidden = NO;
+    self.messageLabel.text = NSLocalizedStringFromTable(@"SearchNoResult", @"DirectoryPlugin", @"Message that says the autocomplete/search returned empty result.");
+    self.messageLabel.hidden = NO;
+}
+
+#pragma mark - Requests start
+
 - (void)startAutocompleteRequest {
-    [directoryService cancelOperationsForDelegate:self];
-    if (searchBar.text.length == 0) {
+    [self.directoryService cancelOperationsForDelegate:self];
+    if (self.searchBar.text.length == 0) {
         return;
     }
-    [barActivityIndicator startAnimating];
-    [directoryService autocomplete:searchBar.text delegate:self];
+    [self.barActivityIndicator startAnimating];
+    [self.directoryService autocomplete:self.searchBar.text delegate:self];
 }
 
 - (void)startSearchRequest {
-    [directoryService cancelOperationsForDelegate:self];
-    if (searchBar.text.length == 0) {
+    [self.directoryService cancelOperationsForDelegate:self];
+    if (self.searchBar.text.length == 0) {
         return;
     }
-    [barActivityIndicator startAnimating];
-    [directoryService searchPersons:searchBar.text delegate:self];
+    [self.barActivityIndicator startAnimating];
+    [self.directoryService searchPersons:self.searchBar.text delegate:self];
 }
 
-- (void)showNoResultMessage {
-    [barActivityIndicator stopAnimating];
-    tableView.hidden = YES;
-    backgroundIcon.hidden = NO;
-    messageLabel.text = NSLocalizedStringFromTable(@"SearchNoResult", @"DirectoryPlugin", @"Message that says the autocomplete/search returned empty result.");
-    messageLabel.hidden = NO;
-}
-
-/* Search bar delegation */
+#pragma mark - UISearchBarDelegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     /*if (skipNextSearchBarValueChange) {
         skipNextSearchBarValueChange = NO;
         return;
     }*/
-    messageLabel.text = @"";
+    self.messageLabel.text = @"";
     if (searchText.length == 0) {
-        [barActivityIndicator stopAnimating];
-        [directoryService cancelOperationsForDelegate:self];
-        tableView.hidden = YES;
-        backgroundIcon.hidden = NO;
-        messageLabel.hidden = YES;
-        resultsMode = ResutlsModeNotStarted;
-        [tableView reloadData];
+        [self.barActivityIndicator stopAnimating];
+        [self.directoryService cancelOperationsForDelegate:self];
+        self.tableView.hidden = YES;
+        self.backgroundIcon.hidden = NO;
+        self.messageLabel.hidden = YES;
+        self.resultsMode = ResutlsModeNotStarted;
+        [self.tableView reloadData];
         return;
     }
-    [typingTimer invalidate];
-    [typingTimer release];
-    typingTimer = nil;
+    [self.typingTimer invalidate];
+    self.typingTimer = nil;
     
     NSArray* words = [searchText componentsSeparatedByString:@" "];
     
     if (words.count > 1) { //would actually start an LDAP search on server instead of autocomplete anyway
-        typingTimer = [[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO] retain];
+        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO];
     } else {
-        typingTimer = [[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutocompleteRequest) userInfo:nil repeats:NO] retain];
+        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutocompleteRequest) userInfo:nil repeats:NO];
     }
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar_ {
-    if (resultsMode == ResutlsModeNotStarted || resultsMode == ResultsModeFailed) {
-        messageLabel.text = @"";
+    if (self.resultsMode == ResutlsModeNotStarted || self.resultsMode == ResultsModeFailed) {
+        self.messageLabel.text = @"";
         [self startAutocompleteRequest];
     }
-    [searchBar resignFirstResponder];
+    [self.searchBar resignFirstResponder];
 }
 
-/* UIScrollView delegation */
+#pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [searchBar resignFirstResponder];
+    [self.searchBar resignFirstResponder];
 }
 
 
-/* DirectoryServiceDelegate delegation */
+#pragma mark - DirectoryServiceDelegate
 
 - (void)autocompleteFor:(NSString *)constraint didReturn:(NSArray*)results {
-    [barActivityIndicator stopAnimating];
+    [self.barActivityIndicator stopAnimating];
     if (results.count == 0) {
         [self showNoResultMessage];
         return;
     }
     
-    if (searchBar.text.length == 0) { //result from previous non-empty search returned => return to initial state
-        tableView.hidden = YES;
-        backgroundIcon.hidden = NO;
-        messageLabel.hidden = YES;
+    if (self.searchBar.text.length == 0) { //result from previous non-empty search returned => return to initial state
+        self.tableView.hidden = YES;
+        self.backgroundIcon.hidden = NO;
+        self.messageLabel.hidden = YES;
         return;
     }
     
-    [autocompleteResults release];
-    NSSet* autocompleteSet = [NSSet setWithArray:results]; //eliminate duplicates
-    autocompleteResults = [[autocompleteSet allObjects] retain];
-    resultsMode = ResultsModeAutocomplete;
+    self.autocompleteResults = [[NSSet setWithArray:results] allObjects]; //eliminate duplicates
+    self.resultsMode = ResultsModeAutocomplete;
     
     if (results.count == 1) {
-        [barActivityIndicator startAnimating];
+        [self.barActivityIndicator startAnimating];
         NSString* searchString = [NSString stringWithFormat:@"%@", [results objectAtIndex:0]];
-        [directoryService searchPersons:searchString delegate:self];
+        [self.directoryService searchPersons:searchString delegate:self];
     } else {
-        tableView.hidden = NO;
-        backgroundIcon.hidden = YES;
-        messageLabel.hidden = YES;
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        self.tableView.hidden = NO;
+        self.backgroundIcon.hidden = YES;
+        self.messageLabel.hidden = YES;
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }
     
 }
@@ -194,27 +200,26 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 }
 
 - (void)searchDirectoryFor:(NSString*)searchPattern didReturn:(NSArray*)results {
-    [barActivityIndicator stopAnimating];
+    [self.barActivityIndicator stopAnimating];
     if (results.count == 0) {
         [self showNoResultMessage];
         return;
     }
     
-    if (searchBar.text.length == 0) { //result from previous non-empty search returned => return to initial state
-        tableView.hidden = YES;
-        backgroundIcon.hidden = NO;
-        messageLabel.hidden = YES;
+    if (self.searchBar.text.length == 0) { //result from previous non-empty search returned => return to initial state
+        self.tableView.hidden = YES;
+        self.backgroundIcon.hidden = NO;
+        self.messageLabel.hidden = YES;
         return;
     }
-    tableView.hidden = NO;
-    backgroundIcon.hidden = YES;
-    messageLabel.hidden = YES;
+    self.tableView.hidden = NO;
+    self.backgroundIcon.hidden = YES;
+    self.messageLabel.hidden = YES;
     
-    [searchResults release];
-    searchResults = [results retain];
-    resultsMode = ResultsModeSearch;
-    [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-    [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    self.searchResults = results;
+    self.resultsMode = ResultsModeSearch;
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 }
 
 - (void)searchDirectoryFailedFor:(NSString*)searchPattern {
@@ -222,60 +227,59 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 }
 
 - (void)profilePictureFor:(NSString*)sciper didReturn:(NSData*)data {
-    if (self.navigationController.topViewController == personViewController) {
-        [personViewController setProfilePictureData:data];
+    if (self.navigationController.topViewController == self.personViewController) {
+        [self.personViewController setProfilePictureData:data];
     }
 }
 
 - (void)profilePictureFailedFor:(NSString*)sciper {
-    if (self.navigationController.topViewController == personViewController) {
-        [personViewController setProfilePictureData:NULL];
+    if (self.navigationController.topViewController == self.personViewController) {
+        [self.personViewController setProfilePictureData:NULL];
     }
 }
 
 - (void)resultsError {
-    [directoryService cancelOperationsForDelegate:self];
-    [barActivityIndicator stopAnimating];
-    tableView.hidden = YES;
-    messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
-    messageLabel.hidden = NO;
-    resultsMode = ResultsModeFailed;
+    [self.directoryService cancelOperationsForDelegate:self];
+    [self.barActivityIndicator stopAnimating];
+    self.tableView.hidden = YES;
+    self.messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
+    self.messageLabel.hidden = NO;
+    self.resultsMode = ResultsModeFailed;
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    [directoryService cancelOperationsForDelegate:self];
-    [barActivityIndicator stopAnimating];
-    tableView.hidden = YES;
-    messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
-    messageLabel.hidden = NO;
-    resultsMode = ResultsModeFailed;
+    [self.directoryService cancelOperationsForDelegate:self];
+    [self.barActivityIndicator stopAnimating];
+    self.tableView.hidden = YES;
+    self.messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
+    self.messageLabel.hidden = NO;
+    self.resultsMode = ResultsModeFailed;
 }
 
-/* UITableViewDelegate delegation */
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (resultsMode == ResultsModeAutocomplete) {
-        UIActivityIndicatorView* activityIndicatorView = (UIActivityIndicatorView*)[[tableView cellForRowAtIndexPath:indexPath] accessoryView];
+    if (self.resultsMode == ResultsModeAutocomplete) {
+        UIActivityIndicatorView* activityIndicatorView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:indexPath] accessoryView];
         if ([activityIndicatorView isAnimating]) {
             return; //means cell was already selected
         }
         [activityIndicatorView startAnimating];
-        NSString* searchString = [NSString stringWithFormat:@"%@", [tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+        NSString* searchString = [NSString stringWithFormat:@"%@", [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
         //skipNextSearchBarValueChange = YES;
-        searchBar.text = searchString;
-        [directoryService searchPersons:searchString delegate:self];
-        [searchBar resignFirstResponder];
-    } else if (resultsMode == ResultsModeSearch) {
-        Person* person = [searchResults objectAtIndex:indexPath.row];
-        personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:self];
-        [personViewController setPerson:person];
+        self.searchBar.text = searchString;
+        [self.directoryService searchPersons:searchString delegate:self];
+        [self.searchBar resignFirstResponder];
+    } else if (self.resultsMode == ResultsModeSearch) {
+        Person* person = [self.searchResults objectAtIndex:indexPath.row];
+        self.personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:self];
+        [self.personViewController setPerson:person];
         UIImage* loadingImage = [UIImage imageNamed:@"LoadingIndicator"];
         NSData* imageData = UIImagePNGRepresentation(loadingImage);
-        [personViewController setProfilePictureData:imageData];
-        [self.navigationController pushViewController:personViewController animated:YES];
-        [personViewController release];
-        displayedPerson = [person retain];
-        [directoryService getProfilePicture:person.sciper delegate:self];
+        [self.personViewController setProfilePictureData:imageData];
+        [self.navigationController pushViewController:self.personViewController animated:YES];
+        self.displayedPerson = person;
+        [self.directoryService getProfilePicture:person.sciper delegate:self];
         //skipNextSearchBarValueChange = NO; //prevent bug in UIAutomation where sometimes search bar delegation is not called
     } else {
         //Not supported mode
@@ -283,28 +287,28 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 }
 
 
-/* UITableViewDataSource delegation */
+#pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (resultsMode == ResultsModeAutocomplete) {
-        UITableViewCell* newCell =  [tableView dequeueReusableCellWithIdentifier:kAutocompleteResultCellIdentifier];
+    if (self.resultsMode == ResultsModeAutocomplete) {
+        UITableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kAutocompleteResultCellIdentifier];
         if (newCell == nil) {
-            newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kAutocompleteResultCellIdentifier] autorelease];
+            newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kAutocompleteResultCellIdentifier];
             newCell.selectionStyle = UITableViewCellSelectionStyleGray;
-            newCell.accessoryView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
+            newCell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         } else {
             [(UIActivityIndicatorView*)(newCell.accessoryView) stopAnimating];
         }
-        newCell.textLabel.text = [autocompleteResults objectAtIndex:indexPath.row];
+        newCell.textLabel.text = [self.autocompleteResults objectAtIndex:indexPath.row];
         return newCell;
-    } else if (resultsMode == ResultsModeSearch) {
-        UITableViewCell* newCell =  [tableView dequeueReusableCellWithIdentifier:kSearchResultCellIdentifier];
+    } else if (self.resultsMode == ResultsModeSearch) {
+        UITableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kSearchResultCellIdentifier];
         if (newCell == nil) {
-            newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSearchResultCellIdentifier] autorelease];
+            newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSearchResultCellIdentifier];
             newCell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
-        Person* person = [searchResults objectAtIndex:indexPath.row];
+        Person* person = [self.searchResults objectAtIndex:indexPath.row];
         newCell.textLabel.text = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
         if (person.organisationalUnit) {
             newCell.detailTextLabel.text = [person.organisationalUnit objectAtIndex:0];
@@ -318,16 +322,16 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(resultsMode == ResultsModeAutocomplete) {
-        if (autocompleteResults == nil) { //should not happen in such mode
+    if(self.resultsMode == ResultsModeAutocomplete) {
+        if (self.autocompleteResults == nil) { //should not happen in such mode
             return 0; 
         }
-        return autocompleteResults.count;
-    } else if (resultsMode == ResultsModeSearch) {
-        if (searchResults == nil) { //should not happen in such mode
+        return self.autocompleteResults.count;
+    } else if (self.resultsMode == ResultsModeSearch) {
+        if (self.searchResults == nil) { //should not happen in such mode
             return 0; 
         }
-        return searchResults.count;
+        return self.searchResults.count;
     } else {
         //ResulsModeNotStarted or ResultsModeFailed
         return 0;
@@ -335,14 +339,14 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 }
 
 
-/* ABUnknownPersonViewControllerDelegate delegation */
+#pragma mark - ABUnknownPersonViewControllerDelegate
 
 - (BOOL)unknownPersonViewController:(ABUnknownPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
     if (property == kABPersonAddressProperty) { //office was clicked
         /*NSString* firstName = (NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
         NSString* lastName = (NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);*/
-        if (displayedPerson != nil) {
-            [self.navigationController pushViewController:[MapController viewControllerWithInitialSearchQuery:displayedPerson.office pinLabelText:[NSString stringWithFormat:@"%@ %@", displayedPerson.firstName, displayedPerson.lastName]] animated:YES];
+        if (self.displayedPerson != nil) {
+            [self.navigationController pushViewController:[MapController viewControllerWithInitialSearchQuery:self.displayedPerson.office pinLabelText:[NSString stringWithFormat:@"%@ %@", self.displayedPerson.firstName, self.displayedPerson.lastName]] animated:YES];
         }
         return NO;
     }
@@ -353,16 +357,13 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     //Nothing
 }
 
+#pragma mark - dealloc
+
 - (void)dealloc
 {
-    tableView.delegate = nil;
-    tableView.dataSource = nil;
-    [directoryService cancelOperationsForDelegate:self];
-    [directoryService release];
-    [typingTimer release];
-    [autocompleteResults release];
-    [searchResults release];
-    [super dealloc];
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+    [self.directoryService cancelOperationsForDelegate:self];
 }
 
 

@@ -21,26 +21,12 @@ typedef enum {
     ResultsModeFailed = 3
 } ResultsMode;
 
-@interface DirectorySearchViewController : UIViewController<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, ABUnknownPersonViewControllerDelegate, DirectoryServiceDelegate> {
-    UISearchBar* searchBar;
-    UIActivityIndicatorView* barActivityIndicator;
-    UITableView* tableView;
-    UILabel* messageLabel;
-    UIImageView* backgroundIcon;
-    DirectoryService* directoryService;
-    NSTimer* typingTimer;
-    NSArray* autocompleteResults;
-    NSArray* searchResults;
-    ResultsMode resultsMode;
-    PCUnkownPersonViewController* personViewController;
-    Person* displayedPerson;
-    BOOL skipNextSearchBarValueChange;
-}
+@interface DirectorySearchViewController : UIViewController<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, ABUnknownPersonViewControllerDelegate, DirectoryServiceDelegate>
 
-@property (nonatomic, assign) IBOutlet UISearchBar* searchBar;
-@property (nonatomic, assign) IBOutlet UIActivityIndicatorView* barActivityIndicator;
-@property (nonatomic, assign) IBOutlet UITableView* tableView;
-@property (nonatomic, assign) IBOutlet UILabel* messageLabel;
-@property (nonatomic, assign) IBOutlet UIImageView* backgroundIcon;
+@property (nonatomic, weak) IBOutlet UISearchBar* searchBar;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* barActivityIndicator;
+@property (nonatomic, weak) IBOutlet UITableView* tableView;
+@property (nonatomic, weak) IBOutlet UILabel* messageLabel;
+@property (nonatomic, weak) IBOutlet UIImageView* backgroundIcon;
 
 @end

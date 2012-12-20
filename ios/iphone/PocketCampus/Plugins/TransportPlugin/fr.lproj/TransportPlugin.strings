@@ -37,6 +37,6 @@
 "Schedules" = "Horaires";
 "Reset" = "Réinitialiser";
 "ResetFavStations" = "Stations par défaut...";
-"ResetFavStationsExplanations" = "Vos stations seront remplacées par les stations par défaut (EPFL, Lausanne-Flon).";
+"ResetFavStationsExplanations" = "Vos stations seront remplacées par les stations par défaut:\nEPFL et Lausanne-Flon.";
 "PlatformShort" = "voie";
 "TransportHelp" = "Aide Transports";
