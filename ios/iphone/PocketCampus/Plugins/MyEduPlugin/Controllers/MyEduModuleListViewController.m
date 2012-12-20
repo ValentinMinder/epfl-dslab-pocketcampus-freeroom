@@ -20,6 +20,8 @@
 
 #import "MyEduModuleDetailViewController.h"
 
+#import "PCTableViewCellWithDownloadIndication.h"
+
 @interface MyEduModuleListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -48,7 +50,7 @@
         if (self.modules) {
             [self initCellsWithModules];
         }
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[NSString stringWithFormat:@"myEduSectionList-%d-%d", self.course.iId, self.section.iId]];
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"myedu" refreshedDataIdentifier:[NSString stringWithFormat:@"myEduSectionList-%d-%d", self.course.iId, self.section.iId]];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
@@ -107,7 +109,7 @@
     NSMutableArray* cellsTmp = [NSMutableArray arrayWithCapacity:[self.modules count]];
     
     [self.modules enumerateObjectsUsingBlock:^(MyEduModule* module, NSUInteger idx, BOOL *stop) {
-        UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+        PCTableViewCellWithDownloadIndication* cell = [[PCTableViewCellWithDownloadIndication alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
         cell.textLabel.numberOfLines = 2;
@@ -116,32 +118,30 @@
         cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
         
         if ([MyEduService localPathOfVideoForModule:module nilIfNoFile:YES]) {
-            UIImageView* downloadedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DownloadedRectSmall"]];
-            cell.accessoryView = downloadedImageView;
+            [cell setDownloaded:YES];
         }
         
-        //[self.myEduService removeDownloadObserver:self forVideoModule:module];
+        [self.myEduService removeDownloadObserver:self forVideoModule:module];
         [self.myEduService addDownloadObserver:self forVideoOfModule:module startDownload:NO startBlock:^{
             cell.detailTextLabel.text = [NSString stringWithFormat:@"      %@", NSLocalizedStringFromTable(@"StartingDownload", @"MyEduPlugin", nil)];
             [cell setNeedsLayout];
         } finishBlock:^(NSURL *fileLocalURL) {
-            UIImageView* downloadedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DownloadedRectSmall"]];
-            cell.accessoryView = downloadedImageView;
+            [cell setDownloaded:YES];
             cell.detailTextLabel.text = nil;
         } progressBlock:^(unsigned long long nbBytesDownloaded, unsigned long long nbBytesToDownload, float ratio) {
             NSString* text = [NSString stringWithFormat:@"      %@ %d%%", NSLocalizedStringFromTable(@"DownloadingVideo", @"MyEduPlugin", nil), (int)(ratio*100)];
             cell.detailTextLabel.text = text;
             [cell setNeedsLayout];
         } cancelledBlock:^{
-            cell.accessoryView = nil;
+            [cell setDownloaded:NO];
             cell.detailTextLabel.text = nil;
             [cell setNeedsLayout];
         } failureBlock:^(int statusCode) {
-            cell.accessoryView = nil;
+           [cell setDownloaded:NO];
             cell.detailTextLabel.text = nil;
             [cell setNeedsLayout];
         } deletedBlock:^{
-            cell.accessoryView = nil;
+            [cell setDownloaded:NO];
             cell.detailTextLabel.text = nil;
             [cell setNeedsLayout];
         }];
@@ -227,10 +227,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.modules && [self.modules count] == 0) {
-        if (indexPath.row == 2) {
+        if (indexPath.row == 1) {
             return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NoModule", @"MyEduPlugin", nil)];
         } else {
-            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil]; //two empty cells first
         }
     }
     
@@ -243,7 +243,7 @@
 {
     // Return the number of rows in the section.
     if ([self.modules count] == 0) {
-        return 3; //first empty cell, second cell says no content
+        return 2; //first empty cell, second cell says no content
     }
     return [self.modules count];
 }

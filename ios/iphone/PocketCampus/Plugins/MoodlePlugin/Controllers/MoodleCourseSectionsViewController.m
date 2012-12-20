@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "CourseSectionsViewController.h"
+#import "MoodleCourseSectionsViewController.h"
 
 #import "PCRefreshControl.h"
 
@@ -22,9 +22,13 @@
 
 #import "MoodleSplashDetailViewController.h"
 
+#import "PCTableViewCellWithDownloadIndication.h"
+
+#import "PCCenterMessageCell.h"
+
 #import "GANTracker.h"
 
-@interface CourseSectionsViewController ()
+@interface MoodleCourseSectionsViewController ()
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) NSArray* sections;
@@ -37,19 +41,18 @@
 
 static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementCell";
 
-@implementation CourseSectionsViewController
+@implementation MoodleCourseSectionsViewController
 
 - (id)initWithCourse:(MoodleCourse*)course;
 {
-    self = [super initWithNibName:@"CourseSectionsView" bundle:nil];
+    self = [super initWithNibName:@"MoodleCourseSectionsView" bundle:nil];
     if (self) {
         self.course = course;
         self.title = self.course.iTitle;
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.sections = [self.moodleService getFromCacheSectionsListReplyForCourse:self.course].iSections;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]];
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"moodle"refreshedDataIdentifier:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
-        self.clearsSelectionOnViewWillAppear = NO; //managed manually to know which row was selected and reload it to update "saved" label
     }
     return self;
 }
@@ -58,25 +61,15 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     [super viewDidLoad];
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course" withError:NULL];
     [self showToggleButtonIfPossible];
+    self.tableView.allowsMultipleSelection = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.selectedResource = nil;
     if (!self.sections) {
         [self refresh];
     }
-    NSIndexPath* selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    if (selectedIndexPath) {
-        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:animated];
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
 }
-
-/*- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathsForVisibleRows][0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-}*/
 
 - (void)didReceiveMemoryWarning
 {
@@ -234,42 +227,45 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 
 #pragma mark - UITableViewDelegate
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.selectedResource = nil;
+    return indexPath;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
     if (self.selectedResource == resource) {
         return;
     }
-    VoidBlock deletedBlock = ^{
-        self.selectedResource = nil;
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        if (self.splitViewController) { /* iPad */
-            MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
-            self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], splashViewController];
-        } else { /* iPhone */
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    };
-    
-    MoodleResourceViewController* detailViewController = [[MoodleResourceViewController alloc] initWithMoodleResource:resource downloadedBlock:^{
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    } deletedBlock:deletedBlock];
-    
-    
-    
+    self.selectedResource = resource;
+    MoodleResourceViewController* detailViewController = [[MoodleResourceViewController alloc] initWithMoodleResource:resource];
+
     if (self.splitViewController) { /* iPad */
         UINavigationController* detailNavController = [[UINavigationController alloc] initWithRootViewController:detailViewController]; //to have nav bar
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], detailNavController];
     } else { /* iPhone */
         [self.navigationController pushViewController:detailViewController animated:YES];
     }
-    
-    self.selectedResource = resource;
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!self.sections || self.sections.count == 0) {
+        return;
+    }
+    @try {
+        MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
+        MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
+        [self.moodleService removeMoodleResourceObserver:self forResource:resource];
+    }
+    @catch (NSException *exception) {
+        //OK to ignore, means that indexPath does not correspond anymore to self.sections (because it was valid for previous data)
+        //after refresh for example
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (self.sections == nil) {
+    if (self.sections == nil || self.sections.count == 0) {
         return 0.0;
     }
     if (![self showSection:section]) {
@@ -284,7 +280,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (self.sections == nil || ![self showSection:section]) {
+    if (self.sections == nil || self.sections.count == 0 || ![self showSection:section]) {
         return nil;
     }
 
@@ -307,12 +303,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     return [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView];    
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 44.0;
-}
-
-/*- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"%@", indexPath);
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
         MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
@@ -324,12 +315,13 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document/delete" withError:NULL];
         
         if (self.selectedResource == resource) {
-            //[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade]; //hack to remove downloaded mention. Cannot refresh cell from here, would result in double cell selected bug.
+            PCTableViewCellWithDownloadIndication* cell = (PCTableViewCellWithDownloadIndication*)[tableView cellForRowAtIndexPath:indexPath];
+            [cell setSelected:NO animated:YES];
+            [cell setDownloaded:NO];
             self.selectedResource = nil;
-            self.selectedResourceIndexPath = nil;
         }
         
-    if (self.splitViewController) { // iPad
+        if (self.splitViewController) { // iPad
             MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
             self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], splashViewController];
         }
@@ -345,72 +337,75 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     return UITableViewCellEditingStyleNone;
 }
 
-- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!indexPath) { //API bug here. If delete commit is done and row actually not removed, this method will be called with indexPath nil
-                      //return;
-    }
-    if (self.selectedResourceIndexPath) {
-        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedResourceIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView selectRowAtIndexPath:self.selectedResourceIndexPath animated:NO scrollPosition:UITableViewRowAnimationNone];
-    } else {
-        if (self.tableView.indexPathForSelectedRow) {
-            [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-        }
-    }
-}*/
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
-    MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
-    if (self.selectedResource == resource) {
-        [cell setSelected:YES];
-    }
-}
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (self.sections && [self.sections count] == 0) {
+        if (indexPath.row == 1) {
+            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"MoodleEmptyCourse", @"MoodlePlugin", nil)];
+        } else {
+            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        }
+    }
+    
     MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
-    UITableViewCell* newCell = [self.tableView dequeueReusableCellWithIdentifier:kMoodleCourseSectionElementCell];
+    PCTableViewCellWithDownloadIndication* newCell = [self.tableView dequeueReusableCellWithIdentifier:kMoodleCourseSectionElementCell];
     if (!newCell) {
-        newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kMoodleCourseSectionElementCell];
+        newCell = [[PCTableViewCellWithDownloadIndication alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kMoodleCourseSectionElementCell];
         newCell.selectionStyle = UITableViewCellSelectionStyleGray;
         newCell.textLabel.font = [UIFont boldSystemFontOfSize:14.0];
         newCell.textLabel.adjustsFontSizeToFitWidth = YES;
         newCell.textLabel.minimumFontSize = 11.0;
-        UILabel* savedLabel = [[UILabel alloc] initWithFrame:CGRectNull];
-        savedLabel.text = NSLocalizedStringFromTable(@"Saved", @"MoodlePlugin", nil);
-        savedLabel.font = [UIFont systemFontOfSize:13.0];
-        savedLabel.textAlignment = UITextAlignmentRight;
-        savedLabel.adjustsFontSizeToFitWidth = YES;
-        savedLabel.textColor = [UIColor colorWithWhite:0.6 alpha:1.0];
-        newCell.accessoryView = savedLabel;
+        newCell.textLabel.backgroundColor = [UIColor clearColor];
+        newCell.detailTextLabel.backgroundColor = [UIColor clearColor];
     }
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
     newCell.textLabel.text = resource.iName;
     NSArray* pathComponents = [resource.iUrl pathComponents];
     newCell.detailTextLabel.text = [pathComponents objectAtIndex:pathComponents.count-1];
     if ([self.moodleService isMoodleResourceDownloaded:resource]) {
-        [newCell.accessoryView sizeToFit];
-        /*if (![newCell.contentView viewWithTag:kDownloadedCornerImageViewTag]) { //if image view is already present, do not add it a second time
-         UIImage* image = [UIImage imageNamed:@"DownloadedCorner"];
-         UIImageView* imageView = [[UIImageView alloc] initWithImage:image];
-         //imageView.alpha = 0.7;
-         imageView.frame = CGRectMake(tableView_.frame.size.width-image.size.width, -1.0, image.size.width, image.size.height);
-         imageView.tag = kDownloadedCornerImageViewTag;
-         [newCell.contentView addSubview:imageView];
-         [imageView release];
-         }*/
+        [newCell setDownloaded:YES];
     } else {
-        newCell.accessoryView.frame = CGRectNull;
-        //[[newCell.contentView viewWithTag:kDownloadedCornerImageViewTag] removeFromSuperview];
+        [newCell setDownloaded:NO];
     }
+    
+    if ([self.selectedResource.iUrl isEqualToString:resource.iUrl]) { //considered equal, isEqual not implemented by Thrift
+        [newCell setSelected:YES];
+    }
+    
+    MoodleCourseSectionsViewController* controller __weak = self;
+    
+    PCTableViewCellWithDownloadIndication* cellWeak __weak = newCell;
+    
+    [self.moodleService removeMoodleResourceObserver:self forResource:resource];
+    [self.moodleService addMoodleResourceObserver:self forResource:resource eventBlock:^(MoodleResourceEvent event) {
+        if (event == MoodleResourceEventDeleted) { //resource deleted => hide ResourceViewController
+            [cellWeak setSelected:NO];
+            [cellWeak setDownloaded:NO];
+            if (controller.splitViewController) { /* iPad */
+                MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
+                controller.splitViewController.viewControllers = @[controller.splitViewController.viewControllers[0], splashViewController];
+            }
+            controller.selectedResource = nil;
+        } else if (event == MoodleResourceEventDownloaded) {
+            [cellWeak setDownloaded:YES];
+        } else {
+            //not supported
+        }
+        [newCell setNeedsLayout];
+    }];
+    
     return newCell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.sections == nil) {
+    if (!self.sections) {
         return 0;
+    }
+    if (self.sections && self.sections.count == 0) {
+        return 2; //first empty cell, second cell says no content
     }
     if(![self showSection:section]) {
         return 0;
@@ -420,8 +415,11 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.sections == nil) {
+    if (!self.sections) {
         return 0;
+    }
+    if (self.sections && self.sections.count == 0) {
+        return 1; //empty course message
     }
     return self.sections.count;
 }
@@ -442,6 +440,7 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 
 - (void)dealloc
 {
+    [self.moodleService removeMoodleResourceObserver:self];
     [self.moodleService cancelOperationsForDelegate:self];
 }
 

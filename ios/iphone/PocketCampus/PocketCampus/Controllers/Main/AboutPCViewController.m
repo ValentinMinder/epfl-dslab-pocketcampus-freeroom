@@ -92,9 +92,8 @@
 /* UIWebViewDelegate delegation */
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView_ {
-    [UIView animateWithDuration:0.2 animations:^{
-        webView.alpha = 1.0;
-    }];
+    [webView sizeToFit];
+    webView.alpha = 1.0;
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {

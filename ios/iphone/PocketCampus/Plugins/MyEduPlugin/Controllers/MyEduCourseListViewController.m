@@ -42,7 +42,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
         // Custom initialization
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.subscribedCourses = [self.myEduService getFromCacheSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest]].iSubscribedCourses;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:@"myEduSubscribedCourseList"];
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"myedu"  refreshedDataIdentifier:@"myEduSubscribedCourseList"];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
@@ -158,7 +158,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.subscribedCourses && [self.subscribedCourses count] == 0) {
-        if (indexPath.row == 2) {
+        if (indexPath.row == 1) {
             return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NotSubscribedToAnyCourse", @"MyEduPlugin", nil)];
         } else {
             return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];

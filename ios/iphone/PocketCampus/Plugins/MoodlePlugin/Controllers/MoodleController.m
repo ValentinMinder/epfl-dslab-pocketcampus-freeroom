@@ -1,7 +1,7 @@
 
 #import "MoodleController.h"
 
-#import "CoursesListViewController.h"
+#import "MoodleCoursesListViewController.h"
 
 #import "ObjectArchiver.h"
 
@@ -35,7 +35,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
         if (self) {
             self.loginObservers = [NSMutableArray array];
             [[self class] deleteSessionIfNecessary];
-            CoursesListViewController* coursesListViewController = [[CoursesListViewController alloc] init];
+            MoodleCoursesListViewController* coursesListViewController = [[MoodleCoursesListViewController alloc] init];
             coursesListViewController.title = [[self class] localizedName];
             
             

@@ -5,12 +5,30 @@
 
 #import "ASIHTTPRequest.h"
 
+#pragma mark - MoodleResourceObserver definition
+
+typedef enum {
+    MoodleResourceEventDownloaded,
+    MoodleResourceEventDeleted
+} MoodleResourceEvent;
+
+typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
+
+@interface MoodleResourceObserver : NSObject
+
+@property (nonatomic, unsafe_unretained) id observer;
+@property (nonatomic, strong) MoodleResource* resource;
+@property (nonatomic, copy) MoodleResourceEventBlock eventBlock;
+
+@end
+
+#pragma mark - MoodleService definition
 
 @interface MoodleService : Service<ServiceProtocol>
 
 @property(nonatomic, retain) MoodleSession* moodleCookie;
 
-#pragma Session
+#pragma mark - Session
 
 - (MoodleRequest*)createMoodleRequestWithCourseId:(int)courseId; //pass courseId = 0 to ignore it
 - (MoodleSession*)lastSession;
@@ -40,11 +58,19 @@
 - (SectionsListReply*)getFromCacheSectionsListReplyForCourse:(MoodleCourse*)course;
 - (BOOL)saveToCacheSectionsListReply:(SectionsListReply*)sectionsListReply forCourse:(MoodleCourse*)course;
 
+#pragma mark - MoodleResources files observation
+
+- (void)addMoodleResourceObserver:(id)observer forResource:(MoodleResource*)resource eventBlock:(MoodleResourceEventBlock)eventBlock;
+- (void)removeMoodleResourceObserver:(id)observer;
+- (void)removeMoodleResourceObserver:(id)observer forResource:(MoodleResource*)resource;
+
 #pragma mark - Fetch resources
 
 - (void)downloadMoodleResource:(MoodleResource*)moodleResource progressView:(UIProgressView*)progressView delegate:(id)delegate;
+
 @end
 
+#pragma mark - MoodleServiceDelegate definition
 
 @protocol MoodleServiceDelegate <ServiceDelegate>
 

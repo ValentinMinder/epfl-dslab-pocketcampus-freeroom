@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "CoursesListViewController.h"
+#import "MoodleCoursesListViewController.h"
 
 #import "PCRefreshControl.h"
 
@@ -16,11 +16,11 @@
 
 #import "GANTracker.h"
 
-#import "CourseSectionsViewController.h"
+#import "MoodleCourseSectionsViewController.h"
 
 #import "MoodleSplashDetailViewController.h"
 
-@interface CoursesListViewController ()
+@interface MoodleCoursesListViewController ()
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) NSArray* courses;
@@ -30,15 +30,15 @@
 
 static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 
-@implementation CoursesListViewController
+@implementation MoodleCoursesListViewController
 
 - (id)init
 {
-    self = [super initWithNibName:@"CoursesListView" bundle:nil];
+    self = [super initWithNibName:@"MoodleCoursesListView" bundle:nil];
     if (self) {
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.courses = [self.moodleService getFromCacheCourseListReply].iCourses;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:@"moodleCoursesList"];
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"moodle" refreshedDataIdentifier:@"moodleCoursesList"];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
@@ -162,7 +162,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MoodleCourse* course = self.courses[indexPath.row];
-    CourseSectionsViewController* viewController = [[CourseSectionsViewController alloc] initWithCourse:course];
+    MoodleCourseSectionsViewController* viewController = [[MoodleCourseSectionsViewController alloc] initWithCourse:course];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -171,7 +171,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.courses && [self.courses count] == 0) {
-        if (indexPath.row == 2) {
+        if (indexPath.row == 1) {
             return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NotSubscribedToAnyCourse", @"MyEduPlugin", nil)];
         } else {
             return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -185,7 +185,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMoodleCourseListCell];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
         cell.textLabel.numberOfLines = 2;
         cell.textLabel.adjustsFontSizeToFitWidth = YES;
     }
@@ -198,7 +198,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if ([self.courses count] == 0) {
+    if (self.courses && [self.courses count] == 0) {
         return 2; //first empty cell, second cell says no content
     }
     return [self.courses count];

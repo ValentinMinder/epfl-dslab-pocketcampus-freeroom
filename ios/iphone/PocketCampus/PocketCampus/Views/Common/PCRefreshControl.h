@@ -25,7 +25,7 @@ typedef enum {
 
 
 - (id)initWithTableViewController:(UITableViewController*)tableViewController;
-- (id)initWithTableViewController:(UITableViewController*)tableViewController refreshedDataIdentifier:(NSString*)dataIdentifier; //will show "last refresh <date>". Task identifier will be use to save last refresh timestamp
+- (id)initWithTableViewController:(UITableViewController*)tableViewController pluginName:(NSString*)pluginName refreshedDataIdentifier:(NSString*)dataIdentifier; //will show "last refresh <date>". Task identifier will be use to save last refresh timestamp
 - (void)setTarget:(id)target selector:(SEL)selector;
 
 - (void)startRefreshingWithMessage:(NSString*)message;

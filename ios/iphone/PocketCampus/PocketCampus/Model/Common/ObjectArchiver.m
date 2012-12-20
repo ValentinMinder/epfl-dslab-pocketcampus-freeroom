@@ -99,6 +99,12 @@
     return fileAttributes;
 }
 
++ (NSString*)standardizedNameForPluginName:(NSString*)name {
+    name = [[name lowercaseString] stringByReplacingOccurrencesOfString:@"plugin" withString:@""];
+    name = [name stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return name;
+}
+
 + (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName {
     return [self pathForKey:key pluginName:pluginName customFileExtension:nil isCache:NO];
 }
@@ -114,7 +120,7 @@
     
     NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
 	NSString* path = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    path = [path stringByAppendingPathComponent:pluginName];
+    path = [path stringByAppendingPathComponent:[self standardizedNameForPluginName:pluginName]];
     if (isCache) {
         path = [path stringByAppendingPathComponent:@"cache"];
     }
@@ -148,7 +154,7 @@
         }
         NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
         NSString* path = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-        path = [path stringByAppendingPathComponent:pluginName];
+        path = [path stringByAppendingPathComponent:[self standardizedNameForPluginName:pluginName]];
         path = [path stringByAppendingPathComponent:@"cache"];
         NSFileManager* fileManager = [[NSFileManager alloc] init];
         NSError* error = nil;

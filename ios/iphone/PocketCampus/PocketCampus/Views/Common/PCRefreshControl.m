@@ -24,6 +24,7 @@
 @property (nonatomic, weak) id target;
 @property (nonatomic) SEL selector;
 @property (nonatomic, copy) NSString* refreshedDataIdentifier;
+@property (nonatomic, copy) NSString* pluginName;
 @property (nonatomic, strong) NSDate* lastSuccessfullRefreshDate;
 @property (nonatomic) BOOL engagedRefreshProgrammatically;
 @property (nonatomic, strong) NSTimer* showHideTimer;
@@ -40,6 +41,9 @@
 - (id)initWithTableViewController:(UITableViewController*)tableViewController {
     self = [super init];
     if (self) {
+        if (!tableViewController) {
+            @throw [NSException exceptionWithName:@"illegal argument" reason:@"tableviewcontroller cannot nil" userInfo:nil];
+        }
         self.tableViewController = tableViewController;
         self.tableView = self.tableViewController.tableView;
         _type = -1;
@@ -73,11 +77,21 @@
     return self;
 }
 
-- (id)initWithTableViewController:(UITableViewController*)tableViewController refreshedDataIdentifier:(NSString*)dataIdentifier; {
+- (id)initWithTableViewController:(UITableViewController*)tableViewController pluginName:(NSString*)pluginName  refreshedDataIdentifier:(NSString*)dataIdentifier; {
+    
+    if (!pluginName || pluginName.length == 0) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginName cannot be nil or length 0" userInfo:nil];
+    }
+    
+    if (!dataIdentifier || dataIdentifier.length == 0) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"refreshedDataIdentifier cannot be nil or length 0" userInfo:nil];
+    }
+    
     self = [self initWithTableViewController:tableViewController];
     if (self) {
+        self.pluginName = pluginName;
         self.refreshedDataIdentifier = dataIdentifier;
-        self.lastSuccessfullRefreshDate = (NSDate*)[ObjectArchiver objectForKey:[self keyForLastRefresh] andPluginName:@"pocketcampus"];
+        self.lastSuccessfullRefreshDate = (NSDate*)[ObjectArchiver objectForKey:[self keyForLastRefresh] andPluginName:self.pluginName isCache:YES];
         if (self.lastSuccessfullRefreshDate) {
             [self setMessage:nil];
         }
@@ -108,6 +122,11 @@
 }
 
 - (void)setTarget:(id)target selector:(SEL)selector {
+    
+    if (!target) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"target cannot be nil" userInfo:nil];
+    }
+    
     if (self.usesUIRefreshControl) {
         [self.refreshControl removeTarget:self.target action:self.selector forControlEvents:UIControlEventValueChanged];
         [self.refreshControl addTarget:self action:@selector(uiRefreshControlValueChanged) forControlEvents:UIControlEventValueChanged];
@@ -141,7 +160,9 @@
     }
     self.lastSuccessfullRefreshDate = [NSDate date]; //now
     [self setMessage:nil]; //will set last message to default => last refresh message
-    [ObjectArchiver saveObject:self.lastSuccessfullRefreshDate forKey:[self keyForLastRefresh] andPluginName:@"pocketcampus"];
+    if (![ObjectArchiver saveObject:self.lastSuccessfullRefreshDate forKey:[self keyForLastRefresh] andPluginName:self.pluginName isCache:YES]) {
+        NSLog(@"-> Error while markRefreshSuccessful");
+    }
     
 }
 
@@ -231,7 +252,7 @@
             self.messageLabel.hidden = NO;
         }
     } else {
-        @throw [NSException exceptionWithName:@"bad argument" reason:@"imageType must be of enum type RefreshControlImageType" userInfo:nil];
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"imageType must be of enum type RefreshControlImageType" userInfo:nil];
     }
     _type = type;
 }
@@ -318,6 +339,7 @@
 }
 
 - (void)hideInTimeInterval:(NSTimeInterval)timeInterval {
+    
     if (!self.isVisible) {
         return;
     }

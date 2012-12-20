@@ -45,7 +45,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
         self.title = NSLocalizedStringFromTable(@"Sections", @"MyEduPlugin", nil);
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.sections = [self.myEduService getFromCacheCourseDetailsForRequest:[[MyEduCourseDetailsRequest alloc] initWithIMyEduRequest:[self.myEduService createMyEduRequest] iCourseCode:self.course.iCode]].iMyEduSections;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[NSString stringWithFormat:@"myEduSectionList-%d", self.course.iId]];
+        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"myedu" refreshedDataIdentifier:[NSString stringWithFormat:@"myEduSectionList-%d", self.course.iId]];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
@@ -162,7 +162,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.sections && [self.sections count] == 0) {
-        if (indexPath.row == 2) {
+        if (indexPath.row == 1) {
             return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NoSection", @"MyEduPlugin", nil)];
         } else {
             return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -189,7 +189,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
 {
     // Return the number of rows in the section.
     if ([self.sections count] == 0) {
-        return 3; //first empty cell, second cell says no content
+        return 2; //first empty cell, second cell says no content
     }
     return [self.sections count];
 }

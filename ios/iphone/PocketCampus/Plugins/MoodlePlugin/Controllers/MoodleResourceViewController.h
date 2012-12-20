@@ -17,6 +17,6 @@
 @property (nonatomic, weak) IBOutlet UIProgressView* progressView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* loadingIndicator;
 
-- (id)initWithMoodleResource:(MoodleResource*)moodleResource downloadedBlock:(VoidBlock)downloadedBlock deletedBlock:(VoidBlock)deletedBlock;
+- (id)initWithMoodleResource:(MoodleResource*)moodleResource;
 
 @end

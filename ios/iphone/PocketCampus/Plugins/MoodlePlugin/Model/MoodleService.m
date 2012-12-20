@@ -5,9 +5,39 @@
 
 #import "PCUtils.h"
 
+#pragma mark - MoodleResourceObserver implementation
+
+@implementation MoodleResourceObserver
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    return [self isEqualToMoodleResourceObserver:object];
+}
+
+- (BOOL)isEqualToMoodleResourceObserver:(MoodleResourceObserver*)resourceObserver {
+    return self.observer == resourceObserver.observer && [self.resource.iUrl isEqualToString:resourceObserver.resource.iUrl];
+}
+
+- (NSUInteger)hash {
+    NSUInteger hash = 0;
+    hash += [self.observer hash];
+    hash += [self.resource.iUrl hash];
+    return hash;
+}
+
+@end
+
+#pragma mark - MoodleService implementation
+
 @interface MoodleService ()
 
 @property (nonatomic, strong) MoodleSession* session;
+@property (strong) NSMutableDictionary* resourcesObserversForResourceKey; //key: [self keyForMoodleResource:] value: NSArray of MoodleResourceObserver
 
 @end
 
@@ -120,7 +150,17 @@ static NSString* kMoodleResourceKey = @"moodleResource";
 }
 
 - (BOOL)deleteDownloadedMoodleResource:(MoodleResource*)moodleResource {
-    return [[NSFileManager defaultManager] removeItemAtPath:[self localPathForMoodleResource:moodleResource] error:nil]; //OK to pass nil for error, method returns aleary YES/NO is case of success/failure
+    BOOL success = [[NSFileManager defaultManager] removeItemAtPath:[self localPathForMoodleResource:moodleResource] error:nil]; //OK to pass nil for error, method returns aleary YES/NO is case of success/failure
+    if (success) {
+        /* Execute observers block */
+        for (MoodleResourceObserver* observer in self.resourcesObserversForResourceKey[[self keyForMoodleResource:moodleResource]]) {
+            if (observer.observer && observer.eventBlock) {
+                observer.eventBlock(MoodleResourceEventDeleted);
+            }
+        }
+        return YES;
+    }
+    return NO;
 }
 
 - (BOOL)deleteAllDownloadedResources {
@@ -131,7 +171,18 @@ static NSString* kMoodleResourceKey = @"moodleResource";
     NSFileManager* fileManager= [NSFileManager defaultManager];
     NSError* error = nil;
     [fileManager removeItemAtPath:path error:&error];
-    return (error == nil);
+    if (!error) {
+        /* Execute observers block */
+        [self.resourcesObserversForResourceKey enumerateKeysAndObjectsUsingBlock:^(id key, NSMutableSet* observers, BOOL *stop) {
+            for (MoodleResourceObserver* observer in observers) {
+                if (observer.observer && observer.eventBlock) {
+                    observer.eventBlock(MoodleResourceEventDeleted);
+                }
+            }
+        }];
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - Service methods
@@ -211,6 +262,65 @@ static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%
     return [ObjectArchiver saveObject:sectionsListReply forKey:[self keyForSectionsListReplyForCourse:course] andPluginName:@"moodle" isCache:YES];
 }
 
+#pragma mark - MoodleResources observation
+
+- (NSString*)keyForMoodleResource:(MoodleResource*)resource {
+    return [NSString stringWithFormat:@"%u", [resource.iUrl hash]];
+}
+
+- (void)addMoodleResourceObserver:(id)observer_ forResource:(MoodleResource*)resource eventBlock:(MoodleResourceEventBlock)eventBlock {
+    @synchronized(self) {
+        NSString* key = [self keyForMoodleResource:resource];
+        
+        if (!self.resourcesObserversForResourceKey) {
+            self.resourcesObserversForResourceKey = [NSMutableDictionary dictionary];
+        }
+        
+        NSMutableArray* currentObservers = self.resourcesObserversForResourceKey[key];
+        if (!currentObservers) {
+            currentObservers = [NSMutableSet set];
+            self.resourcesObserversForResourceKey[key] = currentObservers;
+        }
+        
+        MoodleResourceObserver* observer = [[MoodleResourceObserver alloc] init];
+        observer.observer = observer_;
+        observer.resource = resource;
+        observer.eventBlock = eventBlock;
+        
+        [currentObservers addObject:observer];
+    }
+}
+
+- (void)removeMoodleResourceObserver:(id)observer {
+    @synchronized (self) {
+        [[self.resourcesObserversForResourceKey copy] enumerateKeysAndObjectsUsingBlock:^(id key, NSMutableSet* observers, BOOL *stop) {
+            for (MoodleResourceObserver* resourceObserver in [observers copy]) {
+                if (resourceObserver.observer == observer) {
+                    [observers removeObject:resourceObserver];
+                    if (observers.count == 0) {
+                        [self.resourcesObserversForResourceKey removeObjectForKey:key];
+                    }
+                }
+            }
+        }];
+    }
+}
+
+- (void)removeMoodleResourceObserver:(id)observer forResource:(MoodleResource*)resource {
+    @synchronized (self) {
+        NSString* key = [self keyForMoodleResource:resource];
+        NSMutableSet* observers = self.resourcesObserversForResourceKey[key];
+        for (MoodleResourceObserver* resourceObserver in [observers copy]) {
+            if (resourceObserver.observer == observer) {
+                [observers removeObject:resourceObserver];
+                if (observers.count == 0) {
+                    [self.resourcesObserversForResourceKey removeObjectForKey:key];
+                }
+            }
+        }
+    }
+}
+
 #pragma mark - Resource download
 
 - (void)downloadMoodleResource:(MoodleResource*)moodleResource progressView:(UIProgressView*)progressView delegate:(id)delegate {
@@ -257,9 +367,16 @@ static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%
         [self downloadMoodleResourceFailed:request];
         return;
     }
+    /* Notify delegate */
     NSURL* fileLocalURL = [NSURL fileURLWithPath:request.downloadDestinationPath];
     if ([delegate_ respondsToSelector:@selector(downloadOfMoodleResource:didFinish:)]) {
         [delegate_ downloadOfMoodleResource:moodleResource didFinish:fileLocalURL];
+    }
+    /* Execute observers block */
+    for (MoodleResourceObserver* observer in self.resourcesObserversForResourceKey[[self keyForMoodleResource:moodleResource]]) {
+        if (observer.observer && observer.eventBlock) {
+            observer.eventBlock(MoodleResourceEventDownloaded);
+        }
     }
 }
 

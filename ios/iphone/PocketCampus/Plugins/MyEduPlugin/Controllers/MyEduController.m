@@ -93,12 +93,9 @@ static MyEduController* instance __weak = nil;
             } else {
                 NSLog(@"-> MyEdu received %@ notification", [AuthenticationService logoutNotificationName]);
                 [[MyEduService sharedInstanceToRetain] deleteSession];
+                [ObjectArchiver deleteAllCachedObjectsForPluginName:@"MyEdu"];
                 [[MainController publicController] requestLeavePlugin:@"MyEdu"];
             }
-        }];
-        
-        [[PushNotifController sharedInstance] addNotificationObserverWithPluginLowerIdentifier:@"myedu" newNotificationBlock:^(NSString *notificationMessage) {
-            [[MainController publicController] requestPluginToForeground:@"MyEdu"];
         }];
         
         initObserversDone = YES;

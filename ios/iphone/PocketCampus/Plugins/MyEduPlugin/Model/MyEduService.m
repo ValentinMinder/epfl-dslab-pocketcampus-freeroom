@@ -373,9 +373,9 @@ static MyEduService* instance __weak = nil;
             self.downloadsObserversForVideoKey = [NSMutableDictionary dictionary];
         }
         
-        NSMutableArray* currentObservers = self.downloadsObserversForVideoKey[key];
+        NSMutableSet* currentObservers = self.downloadsObserversForVideoKey[key];
         if (!currentObservers) { //start video download
-            currentObservers = [NSMutableArray array];
+            currentObservers = [NSMutableSet set];
             self.downloadsObserversForVideoKey[key] = currentObservers;
         }
         
@@ -405,6 +405,7 @@ static MyEduService* instance __weak = nil;
 }
 
 - (void)addDownloadObserver:(id)observer forVideoOfModule:(MyEduModule*)module startDownload:(BOOL)startDownload startBlock:(DownloadDidStartBlock)startBlock finishBlock:(DownloadDidFinishBlock)finishBlock progressBlock:(DownloadDidProgressBlock)progressBlock cancelledBlock:(DownloadWasCancelledBlock)cancelledBlock failureBlock:(DownloadDidFailBlock)failureBlock deletedBlock:(DownloadWasDeletedBlock)deletedBlock {
+    
     MyEduDownloadObserver* downloadObserver = [[MyEduDownloadObserver alloc] init];
     downloadObserver.observer = observer;
     NSString* key = [MyEduService keyForVideoOfModule:module];
@@ -420,10 +421,13 @@ static MyEduService* instance __weak = nil;
 
 - (void)removeDownloadObserver:(id)observer {
     @synchronized(self) {
-        [self.downloadsObserversForVideoKey enumerateKeysAndObjectsUsingBlock:^(id key, NSArray* observers, BOOL *stop) {
+        [[self.downloadsObserversForVideoKey copy] enumerateKeysAndObjectsUsingBlock:^(id key, NSMutableSet* observers, BOOL *stop) {
             for (MyEduDownloadObserver* downloadObserver in [observers copy]) {
                 if (downloadObserver.observer == observer) {
-                    [self.downloadsObserversForVideoKey[key] removeObject:downloadObserver];
+                    [observers removeObject:downloadObserver];
+                }
+                if (observers.count == 0) {
+                    [self.downloadsObserversForVideoKey removeObjectForKey:key];
                 }
             }
         }];
@@ -433,10 +437,13 @@ static MyEduService* instance __weak = nil;
 - (void)removeDownloadObserver:(id)observer forVideoModule:(MyEduModule*)module {
     @synchronized(self) {
         NSString* key = [MyEduService keyForVideoOfModule:module];
-        NSMutableArray* observers = self.downloadsObserversForVideoKey[key];
+        NSMutableSet* observers = self.downloadsObserversForVideoKey[key];
         for (MyEduDownloadObserver* downloadObserver in [observers copy]) {
             if (downloadObserver.observer == observer && [downloadObserver.downloadIdentifier isEqualToString:key]) {
                 [observers removeObject:downloadObserver];
+            }
+            if (observers.count == 0) {
+                [self.downloadsObserversForVideoKey removeObjectForKey:key];
             }
         }
     }

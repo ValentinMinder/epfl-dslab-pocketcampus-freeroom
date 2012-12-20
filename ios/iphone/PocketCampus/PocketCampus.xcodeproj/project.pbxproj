@@ -155,6 +155,11 @@
 		32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E8C1564FC2400DE6984 /* CamiproService.m */; };
 		32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E90156507DA00DE6984 /* CamiproViewController.m */; };
 		32710E951565129600DE6984 /* CamiproLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32710E941565129600DE6984 /* CamiproLarge.png */; };
+		327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412D8167E776A001E8C62 /* DownloadedCorner.png */; };
+		327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412D9167E776A001E8C62 /* DownloadedCorner@2x.png */; };
+		327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412DF167E7E56001E8C62 /* DownloadedCornerSelected.png */; };
+		327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */; };
+		327412E5167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.m in Sources */ = {isa = PBXBuildFile; fileRef = 327412E4167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.m */; };
 		3275435F153872DF00C94F3D /* MapUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3275435E153872DF00C94F3D /* MapUtils.m */; };
 		32763231166511B700C33DF9 /* MapView-pad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32763230166511B600C33DF9 /* MapView-pad.xib */; };
 		3276BE0B150BBA77001F2A88 /* RatingStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE09150BBA77001F2A88 /* RatingStarEmpty.png */; };
@@ -205,7 +210,6 @@
 		329FD2FE164485DF003FF9BE /* ArrowDownCircle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */; };
 		329FD30516449C67003FF9BE /* WarningSignRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD30316449C67003FF9BE /* WarningSignRed.png */; };
 		329FD30616449C67003FF9BE /* WarningSignRed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD30416449C67003FF9BE /* WarningSignRed@2x.png */; };
-		32A47D7115B9F4A600592477 /* DocumentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A47D7015B9F4A600592477 /* DocumentView.xib */; };
 		32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A54B7C15B5A8E100A7C882 /* GasparViewController.m */; };
 		32A54B8015B5AA5900A7C882 /* GasparView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A54B7F15B5AA5900A7C882 /* GasparView.xib */; };
 		32A63A4B1535FFF400237841 /* DestinationConnectionsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */; };
@@ -329,10 +333,10 @@
 		32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32EC303E164B18A600D2112D /* MyEduModuleMaterial.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */; };
 		32EC303F164B18A600D2112D /* MyEduModuleMaterial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */; };
-		32EE9623166E19D5005B0F65 /* CoursesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9622166E19D5005B0F65 /* CoursesListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32EE9625166E1FE7005B0F65 /* CoursesListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EE9624166E1FE7005B0F65 /* CoursesListView.xib */; };
-		32EE9628166E25BD005B0F65 /* CourseSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9627166E25BD005B0F65 /* CourseSectionsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32EE962A166E3053005B0F65 /* CourseSectionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EE9629166E3053005B0F65 /* CourseSectionsView.xib */; };
+		32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32EE9625166E1FE7005B0F65 /* MoodleCoursesListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EE9624166E1FE7005B0F65 /* MoodleCoursesListView.xib */; };
+		32EE9628166E25BD005B0F65 /* MoodleCourseSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32EE962A166E3053005B0F65 /* MoodleCourseSectionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EE9629166E3053005B0F65 /* MoodleCourseSectionsView.xib */; };
 		32F2F6051678C9BE00A32983 /* MyEduMovieSpeed1_2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6031678C9BE00A32983 /* MyEduMovieSpeed1_2X.png */; };
 		32F2F6061678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */; };
 		32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32F3EAB116334DD200DA8902 /* MyEduPlugin.strings */; };
@@ -590,6 +594,12 @@
 		32710E8F156507DA00DE6984 /* CamiproViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamiproViewController.h; sourceTree = "<group>"; };
 		32710E90156507DA00DE6984 /* CamiproViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproViewController.m; sourceTree = "<group>"; };
 		32710E941565129600DE6984 /* CamiproLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CamiproLarge.png; sourceTree = "<group>"; };
+		327412D8167E776A001E8C62 /* DownloadedCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DownloadedCorner.png; sourceTree = "<group>"; };
+		327412D9167E776A001E8C62 /* DownloadedCorner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownloadedCorner@2x.png"; sourceTree = "<group>"; };
+		327412DF167E7E56001E8C62 /* DownloadedCornerSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DownloadedCornerSelected.png; sourceTree = "<group>"; };
+		327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownloadedCornerSelected@2x.png"; sourceTree = "<group>"; };
+		327412E3167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCTableViewCellWithDownloadIndication.h; sourceTree = "<group>"; };
+		327412E4167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTableViewCellWithDownloadIndication.m; sourceTree = "<group>"; };
 		3275435D153872DF00C94F3D /* MapUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapUtils.h; sourceTree = "<group>"; };
 		3275435E153872DF00C94F3D /* MapUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapUtils.m; sourceTree = "<group>"; };
 		32763230166511B600C33DF9 /* MapView-pad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MapView-pad.xib"; sourceTree = "<group>"; };
@@ -654,7 +664,6 @@
 		329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowDownCircle@2x.png"; sourceTree = "<group>"; };
 		329FD30316449C67003FF9BE /* WarningSignRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WarningSignRed.png; sourceTree = "<group>"; };
 		329FD30416449C67003FF9BE /* WarningSignRed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WarningSignRed@2x.png"; sourceTree = "<group>"; };
-		32A47D7015B9F4A600592477 /* DocumentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocumentView.xib; sourceTree = "<group>"; };
 		32A54B7B15B5A8E100A7C882 /* GasparViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GasparViewController.h; sourceTree = "<group>"; };
 		32A54B7C15B5A8E100A7C882 /* GasparViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GasparViewController.m; sourceTree = "<group>"; };
 		32A54B7F15B5AA5900A7C882 /* GasparView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GasparView.xib; sourceTree = "<group>"; };
@@ -851,12 +860,12 @@
 		32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginSplitViewController.m; sourceTree = "<group>"; };
 		32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduModuleMaterial.png; sourceTree = "<group>"; };
 		32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduModuleMaterial@2x.png"; sourceTree = "<group>"; };
-		32EE9621166E19D5005B0F65 /* CoursesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursesListViewController.h; sourceTree = "<group>"; };
-		32EE9622166E19D5005B0F65 /* CoursesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursesListViewController.m; sourceTree = "<group>"; };
-		32EE9624166E1FE7005B0F65 /* CoursesListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoursesListView.xib; sourceTree = "<group>"; };
-		32EE9626166E25BD005B0F65 /* CourseSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseSectionsViewController.h; sourceTree = "<group>"; };
-		32EE9627166E25BD005B0F65 /* CourseSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseSectionsViewController.m; sourceTree = "<group>"; };
-		32EE9629166E3053005B0F65 /* CourseSectionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CourseSectionsView.xib; sourceTree = "<group>"; };
+		32EE9621166E19D5005B0F65 /* MoodleCoursesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleCoursesListViewController.h; sourceTree = "<group>"; };
+		32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleCoursesListViewController.m; sourceTree = "<group>"; };
+		32EE9624166E1FE7005B0F65 /* MoodleCoursesListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleCoursesListView.xib; sourceTree = "<group>"; };
+		32EE9626166E25BD005B0F65 /* MoodleCourseSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleCourseSectionsViewController.h; sourceTree = "<group>"; };
+		32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleCourseSectionsViewController.m; sourceTree = "<group>"; };
+		32EE9629166E3053005B0F65 /* MoodleCourseSectionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleCourseSectionsView.xib; sourceTree = "<group>"; };
 		32F2F6031678C9BE00A32983 /* MyEduMovieSpeed1_2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduMovieSpeed1_2X.png; sourceTree = "<group>"; };
 		32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduMovieSpeed1_2X@2x.png"; sourceTree = "<group>"; };
 		32F3EAB016334DD200DA8902 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MyEduPlugin.strings; sourceTree = "<group>"; };
@@ -1140,6 +1149,10 @@
 				32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */,
 				32ADC7171659AAEB0039F6A6 /* Download.png */,
 				32ADC7181659AAEB0039F6A6 /* Download@2x.png */,
+				327412D8167E776A001E8C62 /* DownloadedCorner.png */,
+				327412D9167E776A001E8C62 /* DownloadedCorner@2x.png */,
+				327412DF167E7E56001E8C62 /* DownloadedCornerSelected.png */,
+				327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */,
 				3295DF0D165BC60B00CA3B9D /* DownloadedRectSmall.png */,
 				3295DF0E165BC60C00CA3B9D /* DownloadedRectSmall@2x.png */,
 				3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */,
@@ -1505,6 +1518,8 @@
 				32BA30701645D31A00909D82 /* PCCenterMessageCell.m */,
 				32D0B24C166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.h */,
 				32D0B24D166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.m */,
+				327412E3167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.h */,
+				327412E4167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1745,10 +1760,10 @@
 			children = (
 				32CCB4D61555237500220282 /* MoodleController.h */,
 				32CCB4D71555237500220282 /* MoodleController.m */,
-				32EE9621166E19D5005B0F65 /* CoursesListViewController.h */,
-				32EE9622166E19D5005B0F65 /* CoursesListViewController.m */,
-				32EE9626166E25BD005B0F65 /* CourseSectionsViewController.h */,
-				32EE9627166E25BD005B0F65 /* CourseSectionsViewController.m */,
+				32EE9621166E19D5005B0F65 /* MoodleCoursesListViewController.h */,
+				32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */,
+				32EE9626166E25BD005B0F65 /* MoodleCourseSectionsViewController.h */,
+				32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */,
 				324CB5801671585B008C7B3D /* MoodleSplashDetailViewController.h */,
 				324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */,
 				32035BB1166E987100E134DD /* MoodleResourceViewController.h */,
@@ -1780,9 +1795,8 @@
 			isa = PBXGroup;
 			children = (
 				32CCB4E41555237500220282 /* Images */,
-				32EE9624166E1FE7005B0F65 /* CoursesListView.xib */,
-				32EE9629166E3053005B0F65 /* CourseSectionsView.xib */,
-				32A47D7015B9F4A600592477 /* DocumentView.xib */,
+				32EE9624166E1FE7005B0F65 /* MoodleCoursesListView.xib */,
+				32EE9629166E3053005B0F65 /* MoodleCourseSectionsView.xib */,
 				32035BB4166E988600E134DD /* MoodleResourceView.xib */,
 				324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */,
 			);
@@ -2515,7 +2529,6 @@
 				32CC7B3815B804D3004F0A31 /* SettingsBarButton.png in Resources */,
 				32CC7B3915B804D3004F0A31 /* SettingsBarButton@2x.png in Resources */,
 				3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */,
-				32A47D7115B9F4A600592477 /* DocumentView.xib in Resources */,
 				32B6A53A15BDF7BB000E7F3C /* PocketCampusStyled@2x.png in Resources */,
 				32B6A53C15BDFB86000E7F3C /* PocketCampusStyled.png in Resources */,
 				3293AD2315D1BC930097D414 /* AboutPCView.xib in Resources */,
@@ -2605,8 +2618,8 @@
 				32D0B267166AC86100F68304 /* EyeMap@2x.png in Resources */,
 				329CA503166D452E00F7B1AE /* SettingsNavBarButton.png in Resources */,
 				329CA504166D452E00F7B1AE /* SettingsNavBarButton@2x.png in Resources */,
-				32EE9625166E1FE7005B0F65 /* CoursesListView.xib in Resources */,
-				32EE962A166E3053005B0F65 /* CourseSectionsView.xib in Resources */,
+				32EE9625166E1FE7005B0F65 /* MoodleCoursesListView.xib in Resources */,
+				32EE962A166E3053005B0F65 /* MoodleCourseSectionsView.xib in Resources */,
 				32035BB5166E988600E134DD /* MoodleResourceView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 				3221933016788F520072CE86 /* MyEduMovieSpeed1X@2x.png in Resources */,
@@ -2617,6 +2630,10 @@
 				3221933A1678A10C0072CE86 /* MyEduMovieSpeed1_5X@2x.png in Resources */,
 				32F2F6051678C9BE00A32983 /* MyEduMovieSpeed1_2X.png in Resources */,
 				32F2F6061678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png in Resources */,
+				327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */,
+				327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */,
+				327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */,
+				327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2773,10 +2790,11 @@
 				3200A93F1666B709003D163E /* MapController.m in Sources */,
 				32D0B24B166A282700F68304 /* PushNotifControllerTests.m in Sources */,
 				32D0B24E166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.m in Sources */,
-				32EE9623166E19D5005B0F65 /* CoursesListViewController.m in Sources */,
-				32EE9628166E25BD005B0F65 /* CourseSectionsViewController.m in Sources */,
+				32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */,
+				32EE9628166E25BD005B0F65 /* MoodleCourseSectionsViewController.m in Sources */,
 				32035BB3166E987100E134DD /* MoodleResourceViewController.m in Sources */,
 				324CB5821671585B008C7B3D /* MoodleSplashDetailViewController.m in Sources */,
+				327412E5167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

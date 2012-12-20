@@ -1,5 +1,5 @@
 //
-//  CoursesListViewController.h
+//  CourseSectionsViewController.h
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 04.12.12.
@@ -10,8 +10,8 @@
 
 #import "MoodleService.h"
 
-#import "PluginSplitViewController.h"
+@interface MoodleCourseSectionsViewController : UITableViewController<MoodleServiceDelegate>
 
-@interface CoursesListViewController : UITableViewController<PCMasterSplitDelegate, MoodleServiceDelegate>
+- (id)initWithCourse:(MoodleCourse*)course;
 
 @end
