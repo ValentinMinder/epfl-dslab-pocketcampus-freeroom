@@ -146,7 +146,12 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
         [self computeCurrentWeek];
     }
     [self showToggleButton];
+    NSIndexPath* selectedIndexPath = [self.tableView indexPathForSelectedRow];
     [self.tableView reloadData];
+    if (selectedIndexPath) {
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
+        [[self.tableView cellForRowAtIndexPath:selectedIndexPath] setSelected:YES];
+    }
 }
 
 #pragma MoodleServiceDelegate
@@ -336,7 +341,6 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     }
     return UITableViewCellEditingStyleNone;
 }
-
 
 #pragma mark - UITableViewDataSource
 
