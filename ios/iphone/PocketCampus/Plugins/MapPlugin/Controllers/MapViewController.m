@@ -206,6 +206,17 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     }
 }
 
+- (void)willLoseFocus {
+    searchBarWasFirstResponder = [searchBar isFirstResponder];
+    [searchBar resignFirstResponder];
+}
+
+- (void)didRegainActive {
+    if (searchBarWasFirstResponder) {
+        [searchBar becomeFirstResponder];
+    }
+}
+
 #pragma mark - startSearchForQuery
 
 - (void)startSearchForQuery:(NSString*)query {

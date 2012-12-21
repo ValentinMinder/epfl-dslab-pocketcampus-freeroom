@@ -26,6 +26,8 @@
 
 #import "PCCenterMessageCell.h"
 
+#import "PluginSplitViewController.h"
+
 #import "GANTracker.h"
 
 @interface MoodleCourseSectionsViewController ()
@@ -155,6 +157,10 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
         [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
         [[self.tableView cellForRowAtIndexPath:selectedIndexPath] setSelected:YES];
     }
+}
+
+- (void)showMasterViewController {
+    [(PluginSplitViewController*)self.splitViewController setMasterViewControllerHidden:NO animated:YES];
 }
 
 #pragma MoodleServiceDelegate
@@ -388,14 +394,15 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
     
     [self.moodleService removeMoodleResourceObserver:self forResource:resource];
     [self.moodleService addMoodleResourceObserver:self forResource:resource eventBlock:^(MoodleResourceEvent event) {
-        if (event == MoodleResourceEventDeleted) { //resource deleted => hide ResourceViewController
+        if (event == MoodleResourceEventDeleted) { 
             [cellWeak setSelected:NO];
             [cellWeak setDownloaded:NO];
-            if (controller.splitViewController) { /* iPad */
+            controller.selectedResource = nil;
+            if (controller.splitViewController) { /* iPad */ //resource deleted => hide ResourceViewController
                 MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
                 controller.splitViewController.viewControllers = @[controller.splitViewController.viewControllers[0], splashViewController];
+                [NSTimer scheduledTimerWithTimeInterval:0.3 target:controller selector:@selector(showMasterViewController) userInfo:nil repeats:NO];
             }
-            controller.selectedResource = nil;
         } else if (event == MoodleResourceEventDownloaded) {
             [cellWeak setDownloaded:YES];
         } else {

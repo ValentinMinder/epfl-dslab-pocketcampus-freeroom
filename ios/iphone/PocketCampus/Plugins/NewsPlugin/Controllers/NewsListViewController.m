@@ -51,7 +51,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/news" withError:NULL];
     self.view.backgroundColor = [PCValues backgroundColor1];
     tableView.rowHeight = 50.0;
-    tableView.backgroundColor = [UIColor clearColor];
+    tableView.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshButton;
     [refreshButton release];

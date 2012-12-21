@@ -29,8 +29,7 @@
 + (NSString*)dateLocaleStringForTimestamp:(NSTimeInterval)timestamp {
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:timestamp];
     NSDateFormatter* formatter = [[[NSDateFormatter alloc] init] autorelease];
-    formatter.locale = [NSLocale currentLocale];
-    formatter.dateStyle = NSDateFormatterShortStyle;
+    formatter.dateStyle = NSDateFormatterMediumStyle;
     return [formatter stringFromDate:date];
 }
 

@@ -59,6 +59,7 @@ typedef enum {
     BOOL showBuildingsInterior;
     NSArray* annotationsToAdd;
     UIPopoverController* personPopOverController;
+    BOOL searchBarWasFirstResponder;
 }
 
 @property (nonatomic, assign) IBOutlet MKMapView* mapView;
@@ -79,6 +80,10 @@ typedef enum {
 - (IBAction)floorDownPressed;
 - (IBAction)floorUpPressed;
 - (IBAction)eyePressed;
+
+
+- (void)willLoseFocus;
+- (void)didRegainActive;
 
 
 @end

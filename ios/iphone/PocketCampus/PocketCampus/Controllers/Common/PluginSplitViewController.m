@@ -62,6 +62,10 @@
     [self.view setNeedsLayout];
     self.delegate = prevDegate;*/
     
+    if ((_masterViewControllerHidden && hidden) || (!_masterViewControllerHidden && !hidden)) {
+        return;
+    }
+    
     CGRect newFrame = self.view.frame;
     UIViewController* masterViewController = self.viewControllers[0];
     UIViewController* detailViewControler = self.viewControllers[1];

@@ -14,9 +14,13 @@
 
 #import "PCUtils.h"
 
+#import "PCValues.h"
+
+#import "PCTableViewSectionHeader.h"
+
 static NSString* kRestaurantCellIdentifier = @"restaurant";
 
-static NSTimeInterval kMealsValidityTimeSeconds = 14400; // 4 hours.
+static NSTimeInterval kMealsValidityTimeSeconds = 1800; // 30 min.
 
 @implementation RestaurantsListViewController
 
@@ -41,6 +45,7 @@ static NSTimeInterval kMealsValidityTimeSeconds = 14400; // 4 hours.
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/food" withError:NULL];
+    self.view.backgroundColor = [PCValues backgroundColor1];
     [self refresh];
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshButton;
@@ -112,7 +117,7 @@ static NSTimeInterval kMealsValidityTimeSeconds = 14400; // 4 hours.
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-/* FoodServiceDelegate delegation */
+#pragma mark - FoodServiceDelegate
 
 - (void)getMealsDidReturn:(NSArray*)meals_ {
     self.navigationItem.rightBarButtonItem.enabled = YES;
@@ -193,7 +198,27 @@ static NSTimeInterval kMealsValidityTimeSeconds = 14400; // 4 hours.
     }] retain];
 }
 
-/* UITableViewDelegate delegation */
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return [PCValues tableViewSectionHeaderHeight];
+}
+
+- (UIView *) tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section
+{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    
+    NSString* dateString = [dateFormatter stringFromDate:[NSDate date]]; //now
+    
+    dateString = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"MenusFor", @"FoodPlugin", nil), dateString];
+    
+    [dateFormatter release];
+    
+    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:dateString tableView:tableView];
+    return [sectionHeader autorelease];
+    
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Restaurant* restaurant = [restaurants objectAtIndex:indexPath.row];
@@ -202,7 +227,7 @@ static NSTimeInterval kMealsValidityTimeSeconds = 14400; // 4 hours.
     [controller release];
 }
 
-/* UITableViewDataSource */
+#pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     Restaurant* restaurant = [restaurants objectAtIndex:indexPath.row];
@@ -240,6 +265,8 @@ static NSTimeInterval kMealsValidityTimeSeconds = 14400; // 4 hours.
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
+
+#pragma mark - dealloc
 
 - (void)dealloc
 {
