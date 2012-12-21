@@ -8,6 +8,6 @@
 
 #import "PluginController.h"
 
-@interface DirectoryController : PluginController<PluginControllerProtocol>
+@interface DirectoryController : PluginController<PluginControllerProtocol, UISplitViewControllerDelegate>
 
 @end

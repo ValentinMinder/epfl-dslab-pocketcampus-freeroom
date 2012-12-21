@@ -228,7 +228,7 @@ static NSString* kMoodleResourceKey = @"moodleResource";
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.customTimeout = 60.0; // might take time
+    operation.customTimeout = 90.0; // might take time
     operation.serviceClientSelector = @selector(getCourseSections:);
     operation.delegateDidReturnSelector = @selector(getCourseSections:didReturn:);
     operation.delegateDidFailSelector = @selector(getCourseSectionsFailed:);

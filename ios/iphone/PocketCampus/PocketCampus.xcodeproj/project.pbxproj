@@ -332,6 +332,11 @@
 		32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */; };
 		32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBA16847A0900E5CFF6 /* ClockCell.png */; };
 		32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */; };
+		32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */; };
+		32E67DC31684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E67DC21684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32E67DC61684D40C00E5CFF6 /* PCRecentResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E67DC51684D40C00E5CFF6 /* PCRecentResultTableViewCell.m */; };
+		32E67DC91684D62300E5CFF6 /* ClockCellSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */; };
+		32E67DCA1684D62300E5CFF6 /* ClockCellSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DC81684D62300E5CFF6 /* ClockCellSelected@2x.png */; };
 		32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32EC303E164B18A600D2112D /* MyEduModuleMaterial.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */; };
 		32EC303F164B18A600D2112D /* MyEduModuleMaterial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */; };
@@ -860,6 +865,13 @@
 		32E280AA156E613100B74825 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		32E67DBA16847A0900E5CFF6 /* ClockCell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockCell.png; sourceTree = "<group>"; };
 		32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCell@2x.png"; sourceTree = "<group>"; };
+		32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryEmptyDetailView.xib; sourceTree = "<group>"; };
+		32E67DC11684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryEmptyDetailViewController.h; sourceTree = "<group>"; };
+		32E67DC21684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryEmptyDetailViewController.m; sourceTree = "<group>"; };
+		32E67DC41684D40C00E5CFF6 /* PCRecentResultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCRecentResultTableViewCell.h; sourceTree = "<group>"; };
+		32E67DC51684D40C00E5CFF6 /* PCRecentResultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCRecentResultTableViewCell.m; sourceTree = "<group>"; };
+		32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockCellSelected.png; sourceTree = "<group>"; };
+		32E67DC81684D62300E5CFF6 /* ClockCellSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCellSelected@2x.png"; sourceTree = "<group>"; };
 		32E9A22116394F6D00188AE0 /* PluginSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginSplitViewController.h; sourceTree = "<group>"; };
 		32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginSplitViewController.m; sourceTree = "<group>"; };
 		32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduModuleMaterial.png; sourceTree = "<group>"; };
@@ -1153,6 +1165,8 @@
 				32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */,
 				32E67DBA16847A0900E5CFF6 /* ClockCell.png */,
 				32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */,
+				32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */,
+				32E67DC81684D62300E5CFF6 /* ClockCellSelected@2x.png */,
 				32ADC7171659AAEB0039F6A6 /* Download.png */,
 				32ADC7181659AAEB0039F6A6 /* Download@2x.png */,
 				327412D8167E776A001E8C62 /* DownloadedCorner.png */,
@@ -1526,6 +1540,8 @@
 				32D0B24D166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.m */,
 				327412E3167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.h */,
 				327412E4167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.m */,
+				32E67DC41684D40C00E5CFF6 /* PCRecentResultTableViewCell.h */,
+				32E67DC51684D40C00E5CFF6 /* PCRecentResultTableViewCell.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2088,6 +2104,8 @@
 				32FAC0E31500F40700925180 /* DirectoryController.m */,
 				32FAC0E41500F40700925180 /* DirectorySearchViewController.h */,
 				32FAC0E51500F40700925180 /* DirectorySearchViewController.m */,
+				32E67DC11684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.h */,
+				32E67DC21684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m */,
 				32649B21160DD7DA002E6498 /* PCUnkownPersonViewController.h */,
 				32649B22160DD7DA002E6498 /* PCUnkownPersonViewController.m */,
 			);
@@ -2118,6 +2136,7 @@
 			children = (
 				32FAC0FF1500F4F100925180 /* Images */,
 				32FAC0F41500F40700925180 /* DirectorySearchView.xib */,
+				32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2642,6 +2661,9 @@
 				327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */,
 				32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */,
 				32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */,
+				32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */,
+				32E67DC91684D62300E5CFF6 /* ClockCellSelected.png in Resources */,
+				32E67DCA1684D62300E5CFF6 /* ClockCellSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2803,6 +2825,8 @@
 				32035BB3166E987100E134DD /* MoodleResourceViewController.m in Sources */,
 				324CB5821671585B008C7B3D /* MoodleSplashDetailViewController.m in Sources */,
 				327412E5167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.m in Sources */,
+				32E67DC31684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m in Sources */,
+				32E67DC61684D40C00E5CFF6 /* PCRecentResultTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

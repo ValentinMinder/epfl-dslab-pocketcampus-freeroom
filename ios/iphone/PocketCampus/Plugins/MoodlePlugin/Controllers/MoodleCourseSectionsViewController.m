@@ -146,6 +146,9 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
         [self computeCurrentWeek];
     }
     [self showToggleButton];
+    if (!self.splitViewController) {
+        self.selectedResource = nil;
+    }
     NSIndexPath* selectedIndexPath = [self.tableView indexPathForSelectedRow];
     [self.tableView reloadData];
     if (selectedIndexPath) {
@@ -240,13 +243,13 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
-    if (self.selectedResource == resource) {
+    if (self.selectedResource == resource && self.splitViewController) {
         return;
     }
-    self.selectedResource = resource;
     MoodleResourceViewController* detailViewController = [[MoodleResourceViewController alloc] initWithMoodleResource:resource];
 
     if (self.splitViewController) { /* iPad */
+        self.selectedResource = resource;
         UINavigationController* detailNavController = [[UINavigationController alloc] initWithRootViewController:detailViewController]; //to have nav bar
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], detailNavController];
     } else { /* iPhone */

@@ -93,7 +93,9 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView_ {
     [webView sizeToFit];
-    if (![PCUtils isIdiomPad]) {
+    if ([PCUtils isIdiomPad]) {
+        webView.frame = CGRectOffset(webView.frame, 0, -20.0);
+    } else {
         if ([PCUtils is4inchDevice]) {
             webView.frame = CGRectOffset(webView.frame, 0, -10.0);
         } else {
