@@ -12,12 +12,15 @@
 
 #import "MapController.h"
 
+#import "ObjectArchiver.h"
+
 @interface DirectorySearchViewController ()
  
 @property (nonatomic, strong) DirectoryService* directoryService;
 @property (nonatomic, strong) NSTimer* typingTimer;
-@property (nonatomic, strong) NSArray* autocompleteResults;
-@property (nonatomic, strong) NSArray* searchResults;
+@property (nonatomic, strong) NSArray* autocompleteResults; //array of NSString*
+@property (nonatomic, strong) NSArray* searchResults; //array of Person*
+@property (nonatomic, strong) NSMutableOrderedSet* recentSearches; //ordered mutable set of NSString*  (most recent at index 0)
 @property (nonatomic) ResultsMode resultsMode;
 @property (nonatomic, strong) PCUnkownPersonViewController* personViewController;
 @property (nonatomic, strong) Person* displayedPerson;
@@ -27,9 +30,11 @@
 
 @implementation DirectorySearchViewController
 
-static NSString* kAutocompleteResultCellIdentifier = @"autocompleteResult";
-static NSString* kSearchResultCellIdentifier = @"searchResult";
+static NSString* kAutocompleteResultCellIdentifier = @"autocompleteResultCell";
+static NSString* kSearchResultCellIdentifier = @"searchResultCell";
+static NSString* kRecentSearchCellIdentifier = @"recentSearchCell";
 
+static NSUInteger kMaxRecentSearches = 10;
 static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (id)init
@@ -39,6 +44,10 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         // Custom initialization
         self.directoryService = [DirectoryService sharedInstanceToRetain];
         self.resultsMode = ResutlsModeNotStarted;
+        self.recentSearches = [(NSOrderedSet*)[ObjectArchiver objectForKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES] mutableCopy]; //archived object are always returned as copy => immutable
+        if (!self.recentSearches) {
+            self.recentSearches = [NSMutableOrderedSet orderedSet];
+        }
         //skipNextSearchBarValueChange = NO;
     }
     return self;
@@ -53,6 +62,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     [self.searchBar setIsAccessibilityElement:YES];
     self.searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
     self.tableView.accessibilityIdentifier = @"SearchResults";
+    [self searchBar:self.searchBar textDidChange:self.searchBar.text]; //show recent searches if any
 }
 
 - (void)viewDidUnload
@@ -80,6 +90,10 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     [self.searchBar resignFirstResponder];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [ObjectArchiver saveObject:self.recentSearches forKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES];
+}
+
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
     return UIInterfaceOrientationMaskPortrait;
@@ -96,6 +110,43 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     self.backgroundIcon.hidden = NO;
     self.messageLabel.text = NSLocalizedStringFromTable(@"SearchNoResult", @"DirectoryPlugin", @"Message that says the autocomplete/search returned empty result.");
     self.messageLabel.hidden = NO;
+}
+
+- (void)showPersonViewControllerForPerson:(Person*)person {
+    self.personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:self];
+    [self.personViewController setPerson:person];
+    UIImage* loadingImage = [UIImage imageNamed:@"LoadingIndicator"];
+    NSData* imageData = UIImagePNGRepresentation(loadingImage);
+    [self.personViewController setProfilePictureData:imageData];
+    [self.navigationController pushViewController:self.personViewController animated:YES];
+    self.displayedPerson = person;
+    [self.directoryService getProfilePicture:person.sciper delegate:self];
+}
+
+- (void)putPersonAtTopOfRecentSearches:(Person*)person {
+    NSString* firstLast = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
+    NSUInteger currentIntex = [self.recentSearches indexOfObject:firstLast];
+    if (currentIntex == NSNotFound) { //this stupid logic needs to be done because there is now way to do in one step: add the object to top if it's not in the set already or move it if it is.
+        [self.recentSearches insertObject:firstLast atIndex:0]; // adding to top (works only if object not in set)
+    } else {
+        [self.recentSearches moveObjectsAtIndexes:[NSIndexSet indexSetWithIndex:currentIntex] toIndex:0]; //moving to top
+    }
+    
+    /* Cleaning old results */
+    if (self.recentSearches.count > kMaxRecentSearches) {
+        [self.recentSearches removeObjectsInRange:NSMakeRange(kMaxRecentSearches, self.recentSearches.count - kMaxRecentSearches)];
+    }
+}
+
+#pragma mark - clear button
+
+- (void)clearButtonPressed {
+    self.searchBar.text = @"";
+    [self.recentSearches removeAllObjects];
+    [ObjectArchiver saveObject:nil forKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES]; //deleted cached recent searches
+    [self searchBar:self.searchBar textDidChange:self.searchBar.text]; //reload default state
+    [self.navigationItem setRightBarButtonItem:nil animated:YES]; //hide button after clearing
+    [self.searchBar becomeFirstResponder];
 }
 
 #pragma mark - Requests start
@@ -129,15 +180,30 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     if (searchText.length == 0) {
         [self.barActivityIndicator stopAnimating];
         [self.directoryService cancelOperationsForDelegate:self];
-        self.tableView.hidden = YES;
-        self.backgroundIcon.hidden = NO;
-        self.messageLabel.hidden = YES;
-        self.resultsMode = ResutlsModeNotStarted;
-        [self.tableView reloadData];
+        
+        if (self.recentSearches && self.recentSearches.count > 0) {
+            self.tableView.hidden = NO;
+            self.backgroundIcon.hidden = YES;
+            self.messageLabel.hidden = YES;
+            self.resultsMode = ResultsModeRecentSearches;
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Clear", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(clearButtonPressed)] animated:YES];
+        } else {
+            
+            self.backgroundIcon.hidden = NO;
+            self.messageLabel.hidden = YES;
+            self.resultsMode = ResutlsModeNotStarted;
+            [UIView animateWithDuration:0.2 animations:^{
+                self.tableView.alpha = 0.0;
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            } completion:^(BOOL finished) {
+                self.tableView.hidden = YES;
+                self.tableView.alpha = 1.0;
+            }];
+        }
         return;
     }
     [self.typingTimer invalidate];
-    self.typingTimer = nil;
     
     NSArray* words = [searchText componentsSeparatedByString:@" "];
     
@@ -149,7 +215,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar_ {
-    if (self.resultsMode == ResutlsModeNotStarted || self.resultsMode == ResultsModeFailed) {
+    if (self.resultsMode == ResutlsModeNotStarted || self.resultsMode == ResultsModeRecentSearches || self.resultsMode == ResultsModeFailed) {
         self.messageLabel.text = @"";
         [self startAutocompleteRequest];
     }
@@ -173,15 +239,12 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     }
     
     if (self.searchBar.text.length == 0) { //result from previous non-empty search returned => return to initial state
-        self.tableView.hidden = YES;
-        self.backgroundIcon.hidden = NO;
-        self.messageLabel.hidden = YES;
         return;
     }
     
     self.autocompleteResults = [[NSSet setWithArray:results] allObjects]; //eliminate duplicates
     self.resultsMode = ResultsModeAutocomplete;
-    
+    self.navigationItem.rightBarButtonItem = nil;
     if (results.count == 1) {
         [self.barActivityIndicator startAnimating];
         NSString* searchString = [NSString stringWithFormat:@"%@", [results objectAtIndex:0]];
@@ -206,10 +269,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         return;
     }
     
-    if (self.searchBar.text.length == 0) { //result from previous non-empty search returned => return to initial state
-        self.tableView.hidden = YES;
-        self.backgroundIcon.hidden = NO;
-        self.messageLabel.hidden = YES;
+    if (self.searchBar.text.length == 0 && self.resultsMode != ResultsModeRecentSearches) { //result from previous non-empty search returned => return to initial state
         return;
     }
     self.tableView.hidden = NO;
@@ -217,9 +277,25 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     self.messageLabel.hidden = YES;
     
     self.searchResults = results;
-    self.resultsMode = ResultsModeSearch;
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    
+    if (self.resultsMode == ResultsModeRecentSearches && self.searchBar.text.length == 0) {
+        NSIndexPath* selectedIndexPath = [self.tableView indexPathForSelectedRow];
+        if (selectedIndexPath) {
+            Person* person = self.searchResults[0]; //first is excepted to be the one as recent searched made request with full first and last name
+            [self showPersonViewControllerForPerson:person];
+            [self putPersonAtTopOfRecentSearches:person];
+            UIActivityIndicatorView* loadingView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:selectedIndexPath] accessoryView];
+            if ([loadingView isKindOfClass:[UIActivityIndicatorView class]]) {
+                [loadingView stopAnimating];
+            }
+        }
+        
+    } else {
+        self.resultsMode = ResultsModeSearch;
+        self.navigationItem.rightBarButtonItem = nil;
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
 }
 
 - (void)searchDirectoryFailedFor:(NSString*)searchPattern {
@@ -241,20 +317,49 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 - (void)resultsError {
     [self.directoryService cancelOperationsForDelegate:self];
     [self.barActivityIndicator stopAnimating];
-    self.tableView.hidden = YES;
-    self.messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
-    self.messageLabel.hidden = NO;
-    self.resultsMode = ResultsModeFailed;
+    
+    if (self.resultsMode == ResultsModeRecentSearches) {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        NSIndexPath* selectedIndexPath = [self.tableView indexPathForSelectedRow];
+        if (selectedIndexPath) {
+            UIActivityIndicatorView* loadingView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:selectedIndexPath] accessoryView];
+            if ([loadingView isKindOfClass:[UIActivityIndicatorView class]]) {
+                [loadingView stopAnimating];
+            }
+            [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+        }
+    } else {
+        self.tableView.hidden = YES;
+        self.messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
+        self.messageLabel.hidden = NO;
+        self.resultsMode = ResultsModeFailed;
+    }
 }
 
 - (void)serviceConnectionToServerTimedOut {
     [self.directoryService cancelOperationsForDelegate:self];
     [self.barActivityIndicator stopAnimating];
-    self.tableView.hidden = YES;
-    self.messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
-    self.messageLabel.hidden = NO;
-    self.resultsMode = ResultsModeFailed;
+    
+    if (self.resultsMode == ResultsModeRecentSearches) {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        NSIndexPath* selectedIndexPath = [self.tableView indexPathForSelectedRow];
+        if (selectedIndexPath) {
+            UIActivityIndicatorView* loadingView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:selectedIndexPath] accessoryView];
+            if ([loadingView isKindOfClass:[UIActivityIndicatorView class]]) {
+                [loadingView stopAnimating];
+            }
+            [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+        }
+    } else {
+        self.tableView.hidden = YES;
+        self.messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
+        self.messageLabel.hidden = NO;
+        self.resultsMode = ResultsModeFailed;
+    }
 }
+
 
 #pragma mark - UITableViewDelegate
 
@@ -272,17 +377,22 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         [self.searchBar resignFirstResponder];
     } else if (self.resultsMode == ResultsModeSearch) {
         Person* person = [self.searchResults objectAtIndex:indexPath.row];
-        self.personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:self];
-        [self.personViewController setPerson:person];
-        UIImage* loadingImage = [UIImage imageNamed:@"LoadingIndicator"];
-        NSData* imageData = UIImagePNGRepresentation(loadingImage);
-        [self.personViewController setProfilePictureData:imageData];
-        [self.navigationController pushViewController:self.personViewController animated:YES];
-        self.displayedPerson = person;
-        [self.directoryService getProfilePicture:person.sciper delegate:self];
+        [self showPersonViewControllerForPerson:person];
+        [self putPersonAtTopOfRecentSearches:person];
         //skipNextSearchBarValueChange = NO; //prevent bug in UIAutomation where sometimes search bar delegation is not called
+    } else if (self.resultsMode == ResultsModeRecentSearches) {
+        UIActivityIndicatorView* activityIndicatorView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:indexPath] accessoryView];
+        if ([activityIndicatorView isAnimating]) {
+            return; //means cell was already selected
+        }
+        [activityIndicatorView startAnimating];
+        NSString* searchString = [NSString stringWithFormat:@"%@", [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+        //skipNextSearchBarValueChange = YES;
+        //self.searchBar.text = searchString;
+        [self.directoryService searchPersons:searchString delegate:self];
+        [self.searchBar resignFirstResponder];
     } else {
-        //Not supported mode
+        //Unsupported mode
     }
 }
 
@@ -315,6 +425,19 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         }
         
         return newCell;
+    } else if (self.resultsMode == ResultsModeRecentSearches) {
+        UITableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kRecentSearchCellIdentifier];
+        if (newCell == nil) {
+            newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRecentSearchCellIdentifier];
+            newCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            newCell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            newCell.imageView.image = [UIImage imageNamed:@"ClockCell"];
+            newCell.imageView.alpha = 0.5;
+        } else {
+            [(UIActivityIndicatorView*)(newCell.accessoryView) stopAnimating];
+        }
+        newCell.textLabel.text = [self.recentSearches objectAtIndex:indexPath.row];
+        return newCell;
     } else {
         //Unsupported mode
     }
@@ -322,19 +445,28 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(self.resultsMode == ResultsModeAutocomplete) {
-        if (self.autocompleteResults == nil) { //should not happen in such mode
-            return 0; 
-        }
-        return self.autocompleteResults.count;
-    } else if (self.resultsMode == ResultsModeSearch) {
-        if (self.searchResults == nil) { //should not happen in such mode
-            return 0; 
-        }
-        return self.searchResults.count;
-    } else {
-        //ResulsModeNotStarted or ResultsModeFailed
-        return 0;
+    switch (self.resultsMode) {
+        case ResultsModeAutocomplete:
+            if (!self.autocompleteResults) { //should not happen in such mode
+                return 0;
+            }
+            return self.autocompleteResults.count;
+            break;
+        case ResultsModeSearch:
+            if (!self.searchResults) { //should not happen in such mode
+                return 0;
+            }
+            return self.searchResults.count;
+            break;
+         case ResultsModeRecentSearches:
+            if (!self.recentSearches) {
+                return 0;
+            }
+            return self.recentSearches.count;
+            break;
+        default:
+            return 0;
+            break;
     }
 }
 
@@ -361,8 +493,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (void)dealloc
 {
-    self.tableView.delegate = nil;
-    self.tableView.dataSource = nil;
     [self.directoryService cancelOperationsForDelegate:self];
 }
 

@@ -93,8 +93,12 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView_ {
     [webView sizeToFit];
-    if (![PCUtils isIdiomPad] && ![PCUtils is4inchDevice]) { //standard 3.5 inches iPhones
-        webView.frame = CGRectOffset(webView.frame, 0, 15.0);
+    if (![PCUtils isIdiomPad]) {
+        if ([PCUtils is4inchDevice]) {
+            webView.frame = CGRectOffset(webView.frame, 0, -10.0);
+        } else {
+            webView.frame = CGRectOffset(webView.frame, 0, 15.0);
+        }
     }
     webView.alpha = 1.0;
 }

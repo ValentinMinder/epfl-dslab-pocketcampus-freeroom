@@ -330,6 +330,8 @@
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
 		32E280AC156E618800B74825 /* DirectoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E280A8156E583A00B74825 /* DirectoryServiceTests.m */; };
 		32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */; };
+		32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBA16847A0900E5CFF6 /* ClockCell.png */; };
+		32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */; };
 		32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32EC303E164B18A600D2112D /* MyEduModuleMaterial.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */; };
 		32EC303F164B18A600D2112D /* MyEduModuleMaterial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */; };
@@ -856,6 +858,8 @@
 		32E280A7156E583A00B74825 /* DirectoryServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServiceTests.h; sourceTree = "<group>"; };
 		32E280A8156E583A00B74825 /* DirectoryServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServiceTests.m; sourceTree = "<group>"; };
 		32E280AA156E613100B74825 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		32E67DBA16847A0900E5CFF6 /* ClockCell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockCell.png; sourceTree = "<group>"; };
+		32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCell@2x.png"; sourceTree = "<group>"; };
 		32E9A22116394F6D00188AE0 /* PluginSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginSplitViewController.h; sourceTree = "<group>"; };
 		32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginSplitViewController.m; sourceTree = "<group>"; };
 		32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduModuleMaterial.png; sourceTree = "<group>"; };
@@ -1147,6 +1151,8 @@
 				3200736A164718DA002AD7BA /* ArrowShow@2x.png */,
 				32ADC7151659A2BA0039F6A6 /* CancelCrossRound.png */,
 				32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */,
+				32E67DBA16847A0900E5CFF6 /* ClockCell.png */,
+				32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */,
 				32ADC7171659AAEB0039F6A6 /* Download.png */,
 				32ADC7181659AAEB0039F6A6 /* Download@2x.png */,
 				327412D8167E776A001E8C62 /* DownloadedCorner.png */,
@@ -2634,6 +2640,8 @@
 				327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */,
 				327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */,
 				327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */,
+				32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */,
+				32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

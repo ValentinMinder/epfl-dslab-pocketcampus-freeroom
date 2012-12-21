@@ -18,7 +18,8 @@ typedef enum {
     ResutlsModeNotStarted = 0,
     ResultsModeSearch = 1,
     ResultsModeAutocomplete = 2,
-    ResultsModeFailed = 3
+    ResultsModeRecentSearches = 3,
+    ResultsModeFailed = 4
 } ResultsMode;
 
 @interface DirectorySearchViewController : UIViewController<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, ABUnknownPersonViewControllerDelegate, DirectoryServiceDelegate>
