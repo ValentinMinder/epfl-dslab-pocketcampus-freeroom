@@ -10,6 +10,6 @@
 
 @interface PCTableViewCellWithDownloadIndication : UITableViewCell
 
-- (void)setDownloaded:(BOOL)downloaded;
+@property (nonatomic, getter = isDownloaded) BOOL downloaded;
 
 @end

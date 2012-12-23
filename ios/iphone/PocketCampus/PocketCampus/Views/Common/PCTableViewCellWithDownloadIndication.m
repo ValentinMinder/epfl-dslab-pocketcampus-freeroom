@@ -28,6 +28,7 @@
 }
 
 - (void)setDownloaded:(BOOL)downloaded {
+    _downloaded = downloaded;
     if (downloaded) {
         self.icon.hidden = NO;
     } else {

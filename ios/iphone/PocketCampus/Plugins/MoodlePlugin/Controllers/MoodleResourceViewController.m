@@ -46,6 +46,9 @@
 	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document" withError:NULL];
     
+    self.progressView.progress = 0.0;
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil);
+    
     self.webView.scalesPageToFit = YES; //otherwise, pinching zoom is disabled
     
     if ([PCUtils isIdiomPad]) {
