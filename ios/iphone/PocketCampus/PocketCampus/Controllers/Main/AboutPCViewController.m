@@ -84,7 +84,8 @@
 }
 
 - (void)showInfos {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"PC_CONFIG_TYPE" message:[[PCConfig defaults] objectForKey:PC_CONFIG_TYPE_KEY] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    NSString* message = [NSString stringWithFormat:@"%@\n\n%@", [[PCConfig defaults] objectForKey:PC_CONFIG_TYPE_KEY], [[PCConfig defaults] objectForKey:PC_CONFIG_SERVER_ADDRESS_KEY]];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"PC_CONFIG_TYPE" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [alert release];
 }

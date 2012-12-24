@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1536</int>
+		<int key="IBDocument.SystemTarget">1552</int>
 		<string key="IBDocument.SystemVersion">12C60</string>
-		<string key="IBDocument.InterfaceBuilderVersion">3080</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3083</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">2078</string>
+			<string key="NS.object.0">2083</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBMKMapView</string>
@@ -198,7 +198,7 @@
 							<object class="IBUIActivityIndicatorView" id="472646906">
 								<reference key="NSNextResponder" ref="149071592"/>
 								<int key="NSvFlags">-2147483383</int>
-								<string key="NSFrame">{{69, 16}, {20, 20}}</string>
+								<string key="NSFrame">{{266, 16}, {20, 20}}</string>
 								<reference key="NSSuperview" ref="149071592"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="576943545"/>
@@ -229,7 +229,6 @@
 						<string key="NSFrame">{{710, 910}, {60, 50}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -275,7 +274,6 @@
 				<string key="NSFrameSize">{350, 44}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<int key="IBUIContentMode">3</int>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -646,6 +644,6 @@
 			<string key="FloorUp.png">{20, 20}</string>
 			<string key="LocationArrowInactive.png">{20, 20}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">2078</string>
+		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>

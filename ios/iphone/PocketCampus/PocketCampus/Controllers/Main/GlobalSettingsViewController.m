@@ -20,18 +20,17 @@
 
 #import "AboutPCViewController.h"
 
+#import "AuthenticationService.h"
+
 static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
 
 @implementation GlobalSettingsViewController
-
-@synthesize tableView;
 
 - (id)init
 {
     self = [super initWithNibName:@"GlobalSettingsView" bundle:nil];
     if (self) {
         // Custom initialization
-        textEditing = NO;
     }
     return self;
 }
@@ -42,20 +41,19 @@ static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
 	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/dashboard/settings" withError:NULL];
     self.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
-    tableView.backgroundColor = [UIColor clearColor];
-    UIView* backgroundView = [[UIView alloc] initWithFrame:tableView.frame];
+    self.tableView.backgroundColor = [UIColor clearColor];
+    UIView* backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
     backgroundView.backgroundColor = [PCValues backgroundColor1];;
-    tableView.backgroundView = backgroundView;
-    [backgroundView release];
+    self.tableView.backgroundView = backgroundView;
     UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(doneBarButtonPressed)];
     [self.navigationItem setRightBarButtonItem:button animated:YES];
-    [button release];
-    cancelButtonDisplayed = NO;
+
     
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 }
 
 - (void)viewDidUnload
@@ -101,7 +99,6 @@ static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
                 {
                     GasparViewController* viewController = [[GasparViewController alloc] init];
                     [self.navigationController pushViewController:viewController animated:YES];
-                    [viewController release];
                     break;
                 }
                 default:
@@ -114,7 +111,6 @@ static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
                 {
                     AboutPCViewController* viewController = [[AboutPCViewController alloc] init];
                     [self.navigationController pushViewController:viewController animated:YES];
-                    [viewController release];
                     break;
                 }
                 default:
@@ -146,20 +142,27 @@ static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
     switch (indexPath.section) {
         case 0: //gaspar account
         {
-            cell = [tableView dequeueReusableCellWithIdentifier:kStandardSettingDefaultCell];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:kStandardSettingDefaultCell];
             if (!cell) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kStandardSettingDefaultCell] autorelease];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kStandardSettingDefaultCell];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
             }
             cell.textLabel.text = [GasparViewController localizedTitle];
+            NSString* username = [AuthenticationService savedUsername];
+            if (username) {
+                cell.detailTextLabel.text = username;
+            } else {
+                cell.detailTextLabel.text = @"";
+            }
             return cell;
             
         }
         case 1: //about
         {
-            cell = [tableView dequeueReusableCellWithIdentifier:kStandardSettingDefaultCell];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:kStandardSettingDefaultCell];
             if (!cell) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kStandardSettingDefaultCell] autorelease];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kStandardSettingDefaultCell];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);

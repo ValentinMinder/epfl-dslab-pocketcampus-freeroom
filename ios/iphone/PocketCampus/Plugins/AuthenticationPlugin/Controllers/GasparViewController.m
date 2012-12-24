@@ -333,11 +333,12 @@
         {
             
             if (isLoggedIn) { //logout button
-                UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-                cell.textLabel.text = NSLocalizedStringFromTable(@"Logout", @"AuthenticationPlugin", nil);
-                cell.textLabel.textAlignment = UITextAlignmentCenter;
-                cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                return cell;
+                UITableViewCell* logoutCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+                logoutCell.textLabel.text = NSLocalizedStringFromTable(@"Logout", @"AuthenticationPlugin", nil);
+                logoutCell.textLabel.textAlignment = UITextAlignmentCenter;
+                //logoutCell.textLabel.textColor = [UIColor colorWithRed:81.0/255.0 green:102.0/255.0 blue:145.0/255.0 alpha:1.0];
+                logoutCell.selectionStyle = UITableViewCellSelectionStyleGray;
+                return logoutCell;
             } else { //username, password
                 switch (indexPath.row) {
                     case 0: //username
@@ -394,7 +395,7 @@
             loginCell = [cell retain];
             loginCell.textLabel.text = NSLocalizedStringFromTable(@"Login", @"AuthenticationPlugin", nil);
             loginCell.textLabel.textAlignment = UITextAlignmentCenter;
-            loginCell.textLabel.textColor = [UIColor colorWithRed:81.0/255.0 green:102.0/255.0 blue:145.0/255.0 alpha:1.0];
+            //loginCell.textLabel.textColor = [UIColor colorWithRed:81.0/255.0 green:102.0/255.0 blue:145.0/255.0 alpha:1.0];
             loginCell.selectionStyle = UITableViewCellSelectionStyleNone;
             loginCell.textLabel.enabled = NO;
             loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -581,6 +582,8 @@
 
 - (void)connectionError {
     [loadingIndicator stopAnimating];
+    usernameTextField.enabled = YES;
+    passwordTextField.enabled = YES;
     loginCell.textLabel.enabled = YES;
     loginCell.selectionStyle = UITableViewCellSelectionStyleGray;
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

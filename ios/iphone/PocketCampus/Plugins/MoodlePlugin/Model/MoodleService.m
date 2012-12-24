@@ -45,7 +45,7 @@
 
 static MoodleService* instance __weak = nil;
 
-static int kFetchMoodleResourceTimeoutSeconds = 20;
+static int kFetchMoodleResourceTimeoutSeconds = 30;
 
 static NSString* kMoodleSessionKey = @"moodleSession";
 static NSString* kServiceDelegateKey = @"serviceDelegate";

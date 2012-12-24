@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface GlobalSettingsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
-    UITableView* tableView;
-    UITextField* usernameTextField;
-    UITextField* passwordTextField;
-    BOOL cancelButtonDisplayed;
-    BOOL textEditing;
+    //UITableView* tableView;
+    //UITextField* usernameTextField;
+    //UITextField* passwordTextField;
+    //BOOL cancelButtonDisplayed;
+    //BOOL textEditing;
 }
 
 @property (nonatomic, assign) IBOutlet UITableView* tableView;

@@ -57,6 +57,7 @@
             self.usesUIRefreshControl = NO;
             self.msPtRController = [[MSPullToRefreshController alloc] initWithScrollView:self.tableView delegate:self];
             self.messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.tableView.frame.size.height-25.0, self.tableView.frame.size.width-20.0, 20.0)];
+            self.messageLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             self.messageLabel.numberOfLines = 0;
             self.messageLabel.font = [UIFont boldSystemFontOfSize:13.0];
             self.messageLabel.shadowOffset = [PCValues shadowOffset1];
@@ -69,7 +70,7 @@
             [self.containerView addSubview:self.messageLabel];
             
             //self.containerView.backgroundColor = [UIColor yellowColor];
-            
+            self.containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             self.type = RefreshControlTypeDefault;
             [self.tableView addSubview:self.containerView];
         }
@@ -207,6 +208,7 @@
             [self.signView removeFromSuperview];
             self.signView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ArrowDownCircle"]];
             self.signView.center = CGPointMake(self.containerView.center.x, self.containerView.frame.size.height-25.0);
+            self.signView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
             [self.containerView addSubview:self.signView];
             self.messageLabel.hidden = YES;
         }
@@ -217,6 +219,7 @@
         } else {
             UIActivityIndicatorView* activityIndicator __block = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             activityIndicator.center = CGPointMake(self.containerView.center.x, self.containerView.frame.size.height-40.0);
+            activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
             activityIndicator.alpha = 0.0;
             [activityIndicator startAnimating];
             [self.containerView addSubview:activityIndicator];

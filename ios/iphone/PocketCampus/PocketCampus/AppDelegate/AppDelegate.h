@@ -23,7 +23,7 @@ static NSString* RemoteNotifForPluginName __unused = @"AppDidReceiveRemoteNotifi
 @interface AppDelegate : UIResponder <UIApplicationDelegate, GANTrackerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (retain) MainController* MainController;
+@property (retain) MainController* mainController;
 
 + (NSString*)nsNotificationNameForPluginLowerIdentifier:(NSString*)pluginLowerIdentifier;
 

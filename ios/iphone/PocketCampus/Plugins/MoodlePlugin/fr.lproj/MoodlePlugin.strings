@@ -10,7 +10,7 @@
 "Saved" = "téléchargé ";
 "LoadingCourseList" = "Chargement de la liste des cours...";
 "LoadingCourse" = "Chargement du cours, veuillez patienter...";
-"ErrorWhileDownloadingFile" = "Une erreur est survenue pendant le téléchargement du fichier.\n\n Vérifier votre connexion internet.";
+"ErrorWhileDownloadingFile" = "Une erreur est survenue pendant le téléchargement du fichier.\n\n Vérifiez votre connexion internet.";
 "FileCouldNotBeDisplayedTryOpenIn" = "Ce fichier ne peut pas être affiché.\nEssayez le bouton action.";
 "Sorry" = "Désolé";
 "NoActionForThisFile" = "Aucune action n'est disponible pour ce fichier.";

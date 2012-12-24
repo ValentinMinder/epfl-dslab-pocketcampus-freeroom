@@ -57,10 +57,14 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         internetConnectionAlert = nil;
         initialQuery = nil;
         initialQueryManualPinLabelText = nil;
-        if ([PCUtils isOSVersionSmallerThan:6.0]) {
-            epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
+        if ([PCUtils isIdiomPad]) {
+            epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.010395, 0.021973));
         } else {
-            epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.012285, 0.013733));
+            if ([PCUtils isOSVersionSmallerThan:6.0]) {
+                epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
+            } else {
+                epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.012285, 0.013733));
+            }
         }
         searchBarState = SearchBarStateHidden;
         navBarLoadingIndicator = nil;

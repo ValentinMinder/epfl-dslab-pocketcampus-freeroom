@@ -30,7 +30,7 @@
 		3204C6D11648412D003944D2 /* LightGrayTextureBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */; };
 		32058ACC1572B44D00F4D361 /* TransportSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32058ACB1572B44D00F4D361 /* TransportSettingsViewController.m */; };
 		32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */; };
-		320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* GlobalSettingsViewController.m */; };
+		320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* GlobalSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		320AAC7514FD481E00F71CD7 /* ConfigOLD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 320AAC7414FD481E00F71CD7 /* ConfigOLD.plist */; };
 		320DFC2616469A2300849907 /* MyEduSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320DFC2516469A2300849907 /* MyEduSplashDetailView.xib */; };
 		320DFC291646A25A00849907 /* MyEduSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320DFC281646A25900849907 /* MyEduSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -3057,7 +3057,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "CF735CC6-4170-4205-967F-AB8EACB73253";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F3DC9B7-48B3-436B-8400-CCAC5C089ED9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5742E21A-1C29-4B3A-A35D-29BAC860BEE5";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

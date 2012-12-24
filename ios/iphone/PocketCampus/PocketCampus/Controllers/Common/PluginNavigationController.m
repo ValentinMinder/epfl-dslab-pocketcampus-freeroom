@@ -17,11 +17,24 @@
 @synthesize pluginIdentifier;
 
 - (NSUInteger)supportedInterfaceOrientations {
-    return [self.topViewController supportedInterfaceOrientations];
+    if ([self.topViewController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
+        return [self.topViewController supportedInterfaceOrientations];
+    }
+    return UIInterfaceOrientationMaskPortrait; //default portait only on idiom phone
 }
 
 - (BOOL)shouldAutorotate {
-    return [self.topViewController shouldAutorotate];
+    if ([self.topViewController respondsToSelector:@selector(shouldAutorotate)]) {
+        return [self.topViewController shouldAutorotate];
+    }
+    return NO; //default portait only on idiom phone
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation { //<= iOS 5
+    if ([self.topViewController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
+        return [self.topViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    }
+    return NO; //default portait only on idiom phone
 }
 
 - (void)viewDidLoad {

@@ -232,7 +232,7 @@
 
 #pragma mark - UIDocumentInteractionControllerDelegate
 
-
+/* deprecated - required for iOS<=5 devices */
 - (BOOL)documentInteractionController:(UIDocumentInteractionController *)controller canPerformAction:(SEL)action
 {
     
@@ -242,6 +242,7 @@
     return NO;
 }
 
+/* deprecated - required for iOS<=5 devices */
 - (BOOL)documentInteractionController:(UIDocumentInteractionController *)controller performAction:(SEL)action
 {
     

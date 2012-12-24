@@ -225,6 +225,16 @@ static MainController<MainControllerPublic>* instance = nil;
     return [NSString stringWithFormat:@"%@Controller", identifier];
 }
 
+- (void)appDidReceiveMemoryWarning {
+    /* release backgrounded plugins */
+    NSLog(@"-> appDidReceiveMemoryWarning: releasing backgrounded plugins...");
+    for (PluginController* pluginController in [self.pluginsControllers copy]) {
+        if (pluginController != self.activePluginController) {
+            [self.pluginsControllers removeObjectForKey:pluginController];
+        }
+    }
+}
+
 - (void)refreshDisplayedPlugin {
     if ([self.activePluginController respondsToSelector:@selector(refresh)]) {
         [self.activePluginController performSelector:@selector(refresh)];
@@ -240,7 +250,7 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (void)setActivePluginWithIdentifier:(NSString*)identifier {
     
-    if (!identifier) {
+    if (!identifier) { //means swtich to splash view controller
         if (self.activePluginController) {
             [self.pluginsControllers removeObjectForKey:[self.activePluginController.class identifierName]];
         }
@@ -279,6 +289,27 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     [self.mainMenuViewController setSelectedPluginWithIdentifier:identifier animated:YES];
     self.activePluginController = pluginController;
+    [self rotateDeviceToPortraitIfNecessary];
+}
+
+/* will rotate phone idiom device to portrait if topviewcontroller only supports portait */
+- (void)rotateDeviceToPortraitIfNecessary {
+    if (!self.activePluginController || !self.activePluginController.mainNavigationController) {
+        return;
+    }
+    PluginNavigationController* navController = self.activePluginController.mainNavigationController;
+    if (([navController supportedInterfaceOrientations] | UIInterfaceOrientationMaskPortrait) == UIInterfaceOrientationMaskPortrait) {
+        /* means only potrait mask is supported */
+        UIDevice* device = [UIDevice currentDevice];
+        if ([device orientation] != UIInterfaceOrientationPortrait) {
+            NSInvocation* inv = [NSInvocation invocationWithMethodSignature:[device methodSignatureForSelector:@selector(setOrientation:)]];
+            [inv setSelector:@selector(setOrientation:)];
+            [inv setTarget:device];
+            UIDeviceOrientation val = UIDeviceOrientationPortrait;
+            [inv setArgument:&val atIndex:2];
+            [inv invoke];
+        }
+    }
 }
 
 - (void)manageBackgroundPlugins {
