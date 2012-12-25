@@ -144,9 +144,9 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 
 - (void)error {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
+    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
     if (!self.courses) {
-        [PCUtils showConnectionErrorAlert];
+        [PCUtils showServerErrorAlert];
     }
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
@@ -155,7 +155,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
     if (!self.courses) {
-        [PCUtils showServerUnreachableAlert];
+        [PCUtils showConnectionToServerTimedOutAlert];
     }
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }

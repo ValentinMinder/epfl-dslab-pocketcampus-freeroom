@@ -586,9 +586,7 @@
     passwordTextField.enabled = YES;
     loginCell.textLabel.enabled = YES;
     loginCell.selectionStyle = UITableViewCellSelectionStyleGray;
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView show];
-    [alertView release];
+    [PCUtils showConnectionToServerTimedOutAlert];
     
     if (presentationMode == PresentationModeTryHidden && [(NSObject*)self.delegate respondsToSelector:@selector(serviceConnectionToServerTimedOut)]) {
         [(NSObject*)self.delegate performSelectorOnMainThread:@selector(serviceConnectionToServerTimedOut) withObject:nil waitUntilDone:YES];

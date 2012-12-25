@@ -129,9 +129,9 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 
 - (void)error {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
+    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
     if (!self.subscribedCourses) {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        [PCUtils showServerErrorAlert];
     }
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
@@ -140,7 +140,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
     if (!self.subscribedCourses) {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        [PCUtils showConnectionToServerTimedOutAlert];
     }
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }

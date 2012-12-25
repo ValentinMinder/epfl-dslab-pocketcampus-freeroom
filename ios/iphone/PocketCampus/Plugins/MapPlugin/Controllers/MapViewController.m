@@ -615,9 +615,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)searchMapFailedFor:(NSString *)query {
     [searchActivityIndicator stopAnimating];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-    [alert release];
+    [PCUtils showServerErrorAlert];
 }
 
 - (void)serviceConnectionToServerTimedOut {

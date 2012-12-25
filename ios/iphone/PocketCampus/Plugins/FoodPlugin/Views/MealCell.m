@@ -16,6 +16,8 @@
 
 #import "PCConfig.h"
 
+#import "PCUtils.h"
+
 static float SEPARATOR_HEIGHT = 1.0;
 static float RATINGS_HEIGHT = 28.0;
 static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
@@ -312,9 +314,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
 
 - (void)serviceConnectionToServerTimedOut {
     [ratingActivityIndicator stopAnimating];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-    [alert release];
+    [PCUtils showConnectionToServerTimedOutAlert];
     [service cancelOperationsForDelegate:self];
     [controller setForAllCellsVoteMode:VoteModeVote exceptCell:nil animated:YES];
     [self updateRatingInfosRefreshFromServer:NO];

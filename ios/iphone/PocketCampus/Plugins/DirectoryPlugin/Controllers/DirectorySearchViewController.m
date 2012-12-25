@@ -358,8 +358,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     [self.barActivityIndicator stopAnimating];
     
     if (self.resultsMode == ResultsModeRecentSearches) {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
+        [PCUtils showServerErrorAlert];
         NSIndexPath* selectedIndexPath = [self.tableView indexPathForSelectedRow];
         if (selectedIndexPath) {
             UIActivityIndicatorView* loadingView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:selectedIndexPath] accessoryView];
@@ -370,7 +369,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         }
     } else {
         self.tableView.hidden = YES;
-        self.messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
+        self.messageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
         self.messageLabel.hidden = NO;
         self.resultsMode = ResultsModeFailed;
     }
@@ -381,8 +380,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     [self.barActivityIndicator stopAnimating];
     
     if (self.resultsMode == ResultsModeRecentSearches) {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
+        [PCUtils showConnectionToServerTimedOutAlert];
         NSIndexPath* selectedIndexPath = [self.tableView indexPathForSelectedRow];
         if (selectedIndexPath) {
             UIActivityIndicatorView* loadingView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:selectedIndexPath] accessoryView];

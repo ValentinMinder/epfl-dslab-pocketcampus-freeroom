@@ -168,7 +168,7 @@
 - (void)error {
     self.webView.hidden = YES;
     [self.loadingIndicator stopAnimating];
-    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
 }
 

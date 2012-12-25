@@ -80,7 +80,7 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
     [transportService cancelOperationsForDelegate:self];
     [barActivityIndicator stopAnimating];
     tableView.hidden = YES;
-    messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
+    messageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
     messageLabel.hidden = NO;
 }
 

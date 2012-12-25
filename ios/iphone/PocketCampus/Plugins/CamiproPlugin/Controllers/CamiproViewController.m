@@ -12,6 +12,8 @@
 
 #import "PCValues.h"
 
+#import "PCUtils.h"
+
 #import "PCTableViewSectionHeader.h"
 
 #import "ObjectArchiver.h"
@@ -134,7 +136,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 - (void)invalidToken {
     NSLog(@"-> invalid token");
     [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
     centerMessageLabel.hidden = NO;
     tableView.hidden = YES;
     toolbar.hidden = YES;
@@ -206,7 +208,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 - (void)getBalanceAndTransactionsFailedForCamiproRequest:(CamiproRequest*)camiproRequest {
     [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
     centerMessageLabel.hidden = NO;
     tableView.hidden = YES;
     toolbar.hidden = YES;
@@ -251,9 +253,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         return;
     }
     [sendMailAlertView dismissWithClickedButtonIndex:0 animated:NO];
-    UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [errorAlert show];
-    [errorAlert release];
+    [PCUtils showServerErrorAlert];
 }
 
 - (void)getStatsAndLoadingInfoForCamiproRequest:(CamiproRequest *)camiproRequest didReturn:(StatsAndLoadingInfo *)statsAndLoadingInfo {
@@ -305,24 +305,18 @@ static CGFloat kBalanceCellHeight = 70.0;
         return;
     }
     [statsAlertView dismissWithClickedButtonIndex:0 animated:NO];
-    UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [errorAlert show];
-    [errorAlert release];
+    [PCUtils showServerErrorAlert];
 }
 
 - (void)serviceConnectionToServerTimedOut {
     if (sendMailAlertView != nil) {
         [sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
-        UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [errorAlert show];
-        [errorAlert release];
+        [PCUtils showConnectionToServerTimedOutAlert];
         return;
     }
     if (statsAlertView != nil) {
         [statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
-        UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [errorAlert show];
-        [errorAlert release];
+        [PCUtils showConnectionToServerTimedOutAlert];
         return;
     }
     shouldRefresh = YES;

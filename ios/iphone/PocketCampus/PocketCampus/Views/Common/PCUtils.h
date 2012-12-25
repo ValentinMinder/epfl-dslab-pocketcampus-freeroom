@@ -21,7 +21,7 @@
 + (NSString*)stringFromFileSize:(unsigned long long)size;
 + (BOOL)double:(double)d1 isEqualToDouble:(double)d2 epsilon:(double)epsilon;
 
-+ (void)showConnectionErrorAlert;
-+ (void)showServerUnreachableAlert;
++ (void)showServerErrorAlert;
++ (void)showConnectionToServerTimedOutAlert;
 
 @end
