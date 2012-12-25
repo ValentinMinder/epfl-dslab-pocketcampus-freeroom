@@ -40,7 +40,7 @@
 @property (nonatomic, strong) SplashViewController* splashViewController;
 @property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
 @property (nonatomic, strong) NSString* initialActivePluginIdentifier;
-@property (nonatomic, strong) NSMutableDictionary* pluginsControllers; //key: plugin identifier, value: PluginController subclass.
+@property (nonatomic, strong) NSMutableDictionary* pluginsControllers; //key: plugin identifier name, value: PluginController subclass.
 
 @end
 
@@ -92,9 +92,8 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - MainControllerPublic
 
 - (BOOL)requestPluginToForeground:(NSString*)pluginIdentifierName {
-    if (![pluginIdentifierName isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifier cannot be nil and must be kind of class NSString" userInfo:nil];
-    }
+    [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
+    
     PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:pluginIdentifierName];
     if (BACKGROUND_PLUGINS_ENABLED && [pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
         return NO;
@@ -111,9 +110,8 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (BOOL)requestLeavePlugin:(NSString*)pluginIdentifierName {
-    if (![pluginIdentifierName isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifier cannot be nil and must be kind of class NSString" userInfo:nil];
-    }
+    [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
+    
     PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:pluginIdentifierName];
     if (BACKGROUND_PLUGINS_ENABLED && [pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
         return NO;
@@ -126,11 +124,14 @@ static MainController<MainControllerPublic>* instance = nil;
     if (!observer) {
         @throw [NSException exceptionWithName:@"illegal argument" reason:@"observer cannot be nil" userInfo:nil];
     }
-    if (![pluginIdentifierName isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName cannot be nil and must be kind of class NSString" userInfo:nil];
+    if (![observer respondsToSelector:selector]) {
+        NSLog(@"!! Warning: observer %@ does not respond to selector %@. Crash will occur when notification is posted.", observer, NSStringFromSelector(selector));
     }
+    [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
+    
     NSString* name = [self notificiationNameForPluginStateNotification:notification pluginIdentifierName:pluginIdentifierName];
     [[NSNotificationCenter defaultCenter] addObserver:observer selector:selector name:name object:self];
+    NSLog(@"-> %@ ('%@') registered for PluginStateNotification %d", observer, pluginIdentifierName, notification);
 }
 
 - (void)removePluginStateObserver:(id)observer {
@@ -138,6 +139,7 @@ static MainController<MainControllerPublic>* instance = nil;
         @throw [NSException exceptionWithName:@"illegal argument" reason:@"observer cannot be nil" userInfo:nil];
     }
     [[NSNotificationCenter defaultCenter] removeObserver:observer name:nil object:self];
+    NSLog(@"-> %@ unregistered of PluginStateNotifications", observer);
 }
 
 #pragma mark Private utilities
@@ -147,6 +149,7 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)postNotificationWithState:(PluginStateNotification)notification pluginIdentifier:(NSString*)pluginIdentifier {
+    [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifier];
     NSString* name = [self notificiationNameForPluginStateNotification:notification pluginIdentifierName:pluginIdentifier];
     [[NSNotificationCenter defaultCenter] postNotificationName:name object:self];
 }
@@ -160,6 +163,21 @@ static MainController<MainControllerPublic>* instance = nil;
     return nil;
 }
 
+/*
+ * Can be called only after self.pluginsList has been filled
+ */
+- (void)throwExceptionIfPluginIdentifierNameIsNotValid:(NSString*)identifier {
+    if (!identifier) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName cannot be nil." userInfo:nil];
+    }
+    if (![identifier isKindOfClass:[NSString class]]) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName is not kind of class NSString." userInfo:nil];
+    }
+    if (![self.pluginsList containsObject:identifier]) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName does not correspond to any existing identifier. Please use [PluginControllerProtocol identifierName] as argument." userInfo:nil];
+    }
+}
+
 #pragma mark - Inititalizations
 
 - (void)initPluginsList {
@@ -171,8 +189,13 @@ static MainController<MainControllerPublic>* instance = nil;
         NSString* identifierName = [pluginDic objectForKey:@"identifierName"];
         if ([[pluginDic objectForKey:@"enabled"] boolValue]) {
             NSString* idiom = [pluginDic objectForKey:@"supportedIdioms"];
-            if (idiom && ([idiom isEqualToString:kSupportedIdiomPhonePad] || (isPadIdiom && [idiom isEqualToString:kSupportedIdiomPad]) || (!isPadIdiom && [idiom isEqualToString:kSupportedIdiomPhone]))) {
-                NSLog(@"-> Detected enabled plugin : '%@' with idiom '%@'", identifierName, idiom);
+            if (idiom &&
+                (
+                 [idiom isEqualToString:kSupportedIdiomPhonePad]
+                 || (isPadIdiom && [idiom isEqualToString:kSupportedIdiomPad])
+                 || (!isPadIdiom && [idiom isEqualToString:kSupportedIdiomPhone]))
+                ) {
+                NSLog(@"-> Detected enabled idiom-compatible plugin: '%@' (idiom '%@')", identifierName, idiom);
                 [pluginsTempArray addObject:identifierName];
             }
         }
@@ -297,6 +320,8 @@ static MainController<MainControllerPublic>* instance = nil;
         }
         return;
     }
+    
+    [self throwExceptionIfPluginIdentifierNameIsNotValid:identifier];
     
     PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:identifier];
     if (pluginController) {

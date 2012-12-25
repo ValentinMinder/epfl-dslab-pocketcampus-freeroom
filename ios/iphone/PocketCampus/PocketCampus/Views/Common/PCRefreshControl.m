@@ -180,7 +180,7 @@
 
 - (NSString*)timeStringForLastRefresh {
     if (!self.lastSuccessfullRefreshDate) {
-        return @"";
+        return NSLocalizedStringFromTable(@"LastUpdateNever", @"PocketCampus", nil);
     }
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
