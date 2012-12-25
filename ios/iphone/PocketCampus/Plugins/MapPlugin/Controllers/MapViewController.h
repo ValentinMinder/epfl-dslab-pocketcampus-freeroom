@@ -81,9 +81,4 @@ typedef enum {
 - (IBAction)floorUpPressed;
 - (IBAction)eyePressed;
 
-
-- (void)willLoseFocus;
-- (void)didRegainActive;
-
-
 @end

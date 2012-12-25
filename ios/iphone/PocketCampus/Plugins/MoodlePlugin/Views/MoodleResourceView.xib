@@ -115,14 +115,13 @@
 								<string key="NSFrame">{{129, 52}, {37, 37}}</string>
 								<reference key="NSSuperview" ref="146391323"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIStyle">0</int>
 							</object>
 						</array>
-						<string key="NSFrame">{{13, 172}, {294, 141}}</string>
+						<string key="NSFrame">{{13, 164}, {294, 141}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="956937568"/>

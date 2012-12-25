@@ -12,6 +12,8 @@
 
 #import "PCValues.h"
 
+#import "PCUtils.h"
+
 #import "NewsUtils.h"
 
 #import "Reachability.h"
@@ -23,6 +25,7 @@
 @interface NewsItemViewController ()
 
 @property (nonatomic, strong) UIImage* image;
+@property (nonatomic, strong) UIActionSheet* actionButtonSheet;
 @property (nonatomic, strong) NewsItem* newsItem;
 @property (nonatomic, strong) NewsService* newsService;
 @property (nonatomic, strong) ASIHTTPRequest* imageRequest;
@@ -79,7 +82,6 @@
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
-    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
@@ -90,20 +92,24 @@
 #pragma mark - Actions
 
 - (void)actionButtonPressed {
-    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"OpenInSafari", @"NewsPlugin", nil), nil];
-    actionSheet.accessibilityIdentifier = @"NewsItemActionSheet";
-    [actionSheet showInView:self.view];
+    if (!self.actionButtonSheet) {
+        self.actionButtonSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"OpenInSafari", @"NewsPlugin", nil), nil];
+        self.actionButtonSheet.accessibilityIdentifier = @"NewsItemActionSheet";
+    }
+    [self.actionButtonSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
 
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 0:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.newsItem.link]];
-            break;
-        default:
-            break;
+    if (actionSheet == self.actionButtonSheet) {
+        switch (buttonIndex) {
+            case 0:
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.newsItem.link]];
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -156,7 +162,7 @@
     
     html = [NewsUtils htmlReplaceWidthWith100PercentInContent:html ifWidthHeigherThan:self.webView.frame.size.width-20.0];
     
-    [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:@"www.epfl.ch"]];
+    [self.webView loadHTMLString:html baseURL:[NSURL fileURLWithPath:@"/"]];
     self.webView.hidden = NO;
     [self.loadingIndicator stopAnimating];
 }
@@ -185,10 +191,6 @@
 }
 
 #pragma mark - UIWebViewDelegate
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [self error];
-}
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {

@@ -246,19 +246,6 @@ static MyEduController* instance __weak = nil;
     return @"MyEdu";
 }
 
-- (void)pluginDidBecomePassive {
-    //TODO
-}
-
-- (void)pluginWillLoseFocus {
-    //TODO
-}
-- (void)pluginDidRegainActive {
-    if ([self.mainSplitViewController.viewControllers[0] respondsToSelector:@selector(refresh)]) {
-        [self.mainSplitViewController.viewControllers[0] refresh];
-    }
-}
-
 #pragma mark - UISplitViewControllerDelegate
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {

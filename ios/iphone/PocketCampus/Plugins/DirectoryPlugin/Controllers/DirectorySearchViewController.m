@@ -20,6 +20,8 @@
 
 #import "PCRecentResultTableViewCell.h"
 
+#import "MainController.h"
+
 @interface DirectorySearchViewController ()
  
 @property (nonatomic, strong) DirectoryService* directoryService;
@@ -55,7 +57,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         if (!self.recentSearches) {
             self.recentSearches = [NSMutableOrderedSet orderedSet];
         }
-        //skipNextSearchBarValueChange = NO;
+        self.searchBarWasFirstResponder = YES; //such that search bar is first responder at first launch
     }
     return self;
 }
@@ -74,12 +76,19 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     self.searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
     self.tableView.accessibilityIdentifier = @"SearchResults";
     [self searchBar:self.searchBar textDidChange:self.searchBar.text]; //show recent searches if any
+    [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Directory"];
+    [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Directory"];
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
+- (void)willLoseForeground {
+    self.searchBarWasFirstResponder = [self.searchBar isFirstResponder];
+    [self.searchBar resignFirstResponder];
+}
+
+- (void)didEnterForeground {
+    if (self.searchBarWasFirstResponder) {
+        [self.searchBar becomeFirstResponder];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,14 +96,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     self.displayedPerson = nil;
     self.personViewController = nil; //so that profile picture request does not try to set picture for personViewController that is no longer displayed (and thus released)
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    if (self.resultsMode == ResutlsModeNotStarted) {
-        [self.searchBar becomeFirstResponder];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -113,17 +114,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void)willLoseFocus {
-    self.searchBarWasFirstResponder = [self.searchBar isFirstResponder];
-    [self.searchBar resignFirstResponder];
-}
-
-- (void)didRegainActive {
-    if (self.searchBarWasFirstResponder) {
-        [self.searchBar becomeFirstResponder];
-    }
 }
 
 - (void)showNoResultMessage {
@@ -535,6 +525,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (void)dealloc
 {
+    [[MainController publicController] removePluginStateObserver:self];
     [self.directoryService cancelOperationsForDelegate:self];
 }
 

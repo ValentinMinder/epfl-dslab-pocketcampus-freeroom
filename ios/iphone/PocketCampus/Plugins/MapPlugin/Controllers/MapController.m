@@ -69,18 +69,6 @@ static MapController* instance __weak = nil;
     return @"Map";
 }
 
-- (void)pluginDidBecomePassive {
-    //nothing
-}
-
-- (void)pluginWillLoseFocus {
-    //NSLog(@"%@", mainNavigationController.visibleViewController);
-    [self.mapViewController willLoseFocus];
-}
-- (void)pluginDidRegainActive {
-    [self.mapViewController didRegainActive];
-}
-
 #pragma mark - dealloc
 
 - (void)dealloc

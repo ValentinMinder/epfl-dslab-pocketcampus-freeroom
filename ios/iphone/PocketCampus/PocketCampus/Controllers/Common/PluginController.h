@@ -44,16 +44,25 @@
 @optional
 + (void)initObservers;
 
+/* 
+ * Should return whether the plugin can be deallocated. 
+ * Do not return NO unless there is an operation currently in progress that cannot be stopped.
+ */
 @optional
-/* Should return whether the plugin can be deallocated. Do not return NO unless there is an operation currently in progress */
 - (BOOL)canBeReleased;
 
+/*
+ * Called when menu is revealed and plugin shifted to the right.
+ */
 @optional
-- (void)pluginWillLoseFocus; //called when menu is revealed and plugin shiften to the right
-- (void)pluginDidRegainActive; //called when plugin switches from background (passive) state to front (active) again or when menu is hidden again (=> plugin shifted back to the left)
+- (void)pluginWillLoseForeground;
 
+/*
+ * Called when plugin is presented or when it is shifted back
+ * to the left after main menu was reaveled
+ */
 @optional
-- (void)refresh;
-- (void)pluginDidBecomePassive; //called when user will switch to other plugin2. Plugin should stop any non-necessary activity
+- (void)pluginDidEnterForeground;
+
 
 @end

@@ -30,7 +30,4 @@ typedef enum {
 @property (nonatomic, weak) IBOutlet UILabel* messageLabel;
 @property (nonatomic, weak) IBOutlet UIImageView* backgroundIcon;
 
-- (void)willLoseFocus;
-- (void)didRegainActive;
-
 @end

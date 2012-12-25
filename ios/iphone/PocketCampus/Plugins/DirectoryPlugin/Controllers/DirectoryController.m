@@ -75,18 +75,6 @@ static DirectoryController* instance __weak = nil;
     return @"Directory";
 }
 
-- (void)pluginDidBecomePassive {
-    //nothing
-}
-
-- (void)pluginWillLoseFocus {
-    //NSLog(@"%@", mainNavigationController.visibleViewController);
-    [self.directorySearchViewController willLoseFocus];
-}
-- (void)pluginDidRegainActive {
-    [self.directorySearchViewController didRegainActive];
-}
-
 #pragma mark - UISplitViewControllerDelegate
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {

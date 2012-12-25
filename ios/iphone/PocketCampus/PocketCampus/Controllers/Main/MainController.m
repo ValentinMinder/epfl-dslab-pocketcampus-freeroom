@@ -80,7 +80,6 @@ static MainController<MainControllerPublic>* instance = nil;
         }
         self.revealController.delegate = self;
         self.window.rootViewController = self.revealController;
-        //[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(revealMenuAfterSplash) userInfo:nil repeats:NO];
         instance = self;
     }
     return self;
@@ -93,6 +92,9 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - MainControllerPublic
 
 - (BOOL)requestPluginToForeground:(NSString*)pluginIdentifierName {
+    if (![pluginIdentifierName isKindOfClass:[NSString class]]) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifier cannot be nil and must be kind of class NSString" userInfo:nil];
+    }
     PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:pluginIdentifierName];
     if (BACKGROUND_PLUGINS_ENABLED && [pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
         return NO;
@@ -109,6 +111,9 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (BOOL)requestLeavePlugin:(NSString*)pluginIdentifierName {
+    if (![pluginIdentifierName isKindOfClass:[NSString class]]) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifier cannot be nil and must be kind of class NSString" userInfo:nil];
+    }
     PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:pluginIdentifierName];
     if (BACKGROUND_PLUGINS_ENABLED && [pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
         return NO;
@@ -117,32 +122,45 @@ static MainController<MainControllerPublic>* instance = nil;
     return YES;
 }
 
-#pragma mark -
-
-- (void)mainMenuIsReady {
-    if (![self.revealController.frontViewController isViewLoaded]) {
-        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(mainMenuIsReady) userInfo:nil repeats:NO];
-    } else {
-        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(revealMenuAfterSplash) userInfo:nil repeats:NO];
+- (void)addPluginStateObserver:(id)observer selector:(SEL)selector notification:(PluginStateNotification)notification pluginIdentifierName:(NSString*)pluginIdentifierName {
+    if (!observer) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"observer cannot be nil" userInfo:nil];
     }
+    if (![pluginIdentifierName isKindOfClass:[NSString class]]) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName cannot be nil and must be kind of class NSString" userInfo:nil];
+    }
+    NSString* name = [self notificiationNameForPluginStateNotification:notification pluginIdentifierName:pluginIdentifierName];
+    [[NSNotificationCenter defaultCenter] addObserver:observer selector:selector name:name object:self];
 }
 
-- (void)revealMenuAfterSplash {
-    if (self.initialActivePluginIdentifier) {
-        self.revealController.toggleAnimationDuration = 0.25;
-        [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
-        [self.revealController revealToggle:self];
-        [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:YES];
-    } else {
-        [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:NO];
-        if ([PCUtils isIdiomPad]) {
-            [self.revealController revealToggle:self];
-        } else {
-            [self.revealController hideFrontView];
-        }
-        self.revealController.toggleAnimationDuration = 0.25;
+- (void)removePluginStateObserver:(id)observer {
+    if (!observer) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"observer cannot be nil" userInfo:nil];
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:observer name:nil object:self];
 }
+
+#pragma mark Private utilities
+
+- (NSString*)notificiationNameForPluginStateNotification:(PluginStateNotification)notification pluginIdentifierName:(NSString*)pluginIdentifierName {
+    return [NSString stringWithFormat:@"%@-%d", pluginIdentifierName, notification];
+}
+
+- (void)postNotificationWithState:(PluginStateNotification)notification pluginIdentifier:(NSString*)pluginIdentifier {
+    NSString* name = [self notificiationNameForPluginStateNotification:notification pluginIdentifierName:pluginIdentifier];
+    [[NSNotificationCenter defaultCenter] postNotificationName:name object:self];
+}
+
+- (NSString*)identifierNameForPluginController:(PluginController*)pluginController {
+    if ([self.activePluginController conformsToProtocol:NSProtocolFromString(@"PluginControllerProtocol")]) {
+        id<PluginControllerProtocol> pluginController = self.activePluginController;
+        NSString* identifier = [[pluginController class] identifierName];
+        return identifier;
+    }
+    return nil;
+}
+
+#pragma mark - Inititalizations
 
 - (void)initPluginsList {
     NSDictionary* plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Plugins" ofType:@"plist"]];
@@ -169,14 +187,6 @@ static MainController<MainControllerPublic>* instance = nil;
     
     self.pluginsList = [NSArray arrayWithArray:pluginsTempArray]; //creates a non-mutable copy of the dictionary
     
-}
-
-- (NSString*)pluginControllerNameForIdentifier:(NSString*)identifier {
-    return [NSString stringWithFormat:@"%@Controller", identifier];
-}
-
-- (NSString*)pluginControllerNameForIndex:(NSUInteger)index {
-    return [self pluginControllerNameForIdentifier:self.pluginsList[index]];
 }
 
 - (void)initPluginObservers {
@@ -206,10 +216,10 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     
     /*[menuItems addObject:[MainMenuItem menuItemThinSeparator]];
-    
-    MainMenuItem* settingsButton = [MainMenuItem menuItemButtonWithTitle:NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil) leftImage:[UIImage imageNamed:@"Settings"] identifier:kSettingsIdentifier];
-    
-    [menuItems addObject:settingsButton];*/
+     
+     MainMenuItem* settingsButton = [MainMenuItem menuItemButtonWithTitle:NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil) leftImage:[UIImage imageNamed:@"Settings"] identifier:kSettingsIdentifier];
+     
+     [menuItems addObject:settingsButton];*/
     
     MainMenuViewController* mainMenuViewController = [[MainMenuViewController alloc] initWithMenuItems:menuItems mainController:self];
     self.mainMenuViewController = mainMenuViewController;
@@ -221,17 +231,43 @@ static MainController<MainControllerPublic>* instance = nil;
     self.revealController.rearViewRevealWidth = self.revealWidth;
 }
 
-- (NSString*)pluginControllerClassNameForIdentifier:(NSString*)identifier {
-    return [NSString stringWithFormat:@"%@Controller", identifier];
+- (void)revealMenuAfterSplash {
+    if (self.initialActivePluginIdentifier) {
+        self.revealController.toggleAnimationDuration = 0.25;
+        [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
+        [self.revealController revealToggle:self];
+        [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:YES];
+    } else {
+        [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:NO];
+        if ([PCUtils isIdiomPad]) {
+            [self.revealController revealToggle:self];
+        } else {
+            [self.revealController hideFrontView];
+        }
+        self.revealController.toggleAnimationDuration = 0.25;
+    }
 }
+
+
+#pragma mark - Called by AppDelegate
 
 - (void)appDidReceiveMemoryWarning {
     /* release backgrounded plugins */
-    NSLog(@"-> appDidReceiveMemoryWarning: releasing backgrounded plugins...");
+    NSLog(@"-> AppDidReceiveMemoryWarning: releasing backgrounded plugins if any...");
     for (PluginController* pluginController in [self.pluginsControllers copy]) {
         if (pluginController != self.activePluginController) {
             [self.pluginsControllers removeObjectForKey:pluginController];
         }
+    }
+}
+
+#pragma mark - Called by MainMenuViewController
+
+- (void)mainMenuIsReady {
+    if (![self.revealController.frontViewController isViewLoaded]) {
+        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(mainMenuIsReady) userInfo:nil repeats:NO];
+    } else {
+        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(revealMenuAfterSplash) userInfo:nil repeats:NO];
     }
 }
 
@@ -264,7 +300,7 @@ static MainController<MainControllerPublic>* instance = nil;
     
     PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:identifier];
     if (pluginController) {
-        UIViewController* pluginRootViewController = [[self class] rootViewControllerForPluginController:pluginController];
+        UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
         [self.revealController setFrontViewController:pluginRootViewController animated:NO]; //check on whether this is already the front one is done in the method implementation
     } else {
         Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:identifier]);
@@ -273,7 +309,7 @@ static MainController<MainControllerPublic>* instance = nil;
         }
         pluginController = [[pluginClass alloc] init];
         [self adaptInitializedNavigationOrSplitViewControllerOfPluginController:pluginController];
-        UIViewController* pluginRootViewController = [[self class] rootViewControllerForPluginController:pluginController];
+        UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
         
         if (pluginRootViewController) {
             [self manageBackgroundPlugins];
@@ -286,35 +322,26 @@ static MainController<MainControllerPublic>* instance = nil;
     [self rotateDeviceToPortraitIfNecessary];
 }
 
-/* will rotate phone idiom device to portrait if topviewcontroller only supports portait */
-- (void)rotateDeviceToPortraitIfNecessary {
-    if (!self.activePluginController || !self.activePluginController.mainNavigationController) {
-        return;
-    }
-    PluginNavigationController* navController = self.activePluginController.mainNavigationController;
-    if (([navController supportedInterfaceOrientations] | UIInterfaceOrientationMaskPortrait) == UIInterfaceOrientationMaskPortrait) {
-        /* means only potrait mask is supported */
-        UIDevice* device = [UIDevice currentDevice];
-        if ([device orientation] != UIInterfaceOrientationPortrait) {
-            NSInvocation* inv = [NSInvocation invocationWithMethodSignature:[device methodSignatureForSelector:@selector(setOrientation:)]];
-            [inv setSelector:@selector(setOrientation:)];
-            [inv setTarget:device];
-            UIDeviceOrientation val = UIDeviceOrientationPortrait;
-            [inv setArgument:&val atIndex:2];
-            [inv invoke];
-        }
-    }
+
+#pragma mark - PluginControllers identification
+
+- (NSString*)pluginControllerNameForIdentifier:(NSString*)identifier {
+    return [NSString stringWithFormat:@"%@Controller", identifier];
 }
 
-- (void)manageBackgroundPlugins {
-    if (BACKGROUND_PLUGINS_ENABLED) {
-        //TODO
-    } else {
-        [self.pluginsControllers removeAllObjects];
-    }
+- (NSString*)pluginControllerNameForIndex:(NSUInteger)index {
+    return [self pluginControllerNameForIdentifier:self.pluginsList[index]];
 }
 
-+ (UIViewController*)rootViewControllerForPluginController:(PluginController*)pluginController {
+
+- (NSString*)pluginControllerClassNameForIdentifier:(NSString*)identifier {
+    return [NSString stringWithFormat:@"%@Controller", identifier];
+}
+
+
+#pragma mark - ViewControllers Utils
+
+- (UIViewController*)rootViewControllerForPluginController:(PluginController*)pluginController {
     UIViewController* pluginRootViewController = nil;
     if (pluginController.mainViewController) {
         NSLog(@"!! Warning: legacy property mainViewController used. There won't be any navigation controller to support navigation. Consider using mainNavigationController and/or mainSplitViewController (iPad) instead.");
@@ -343,7 +370,7 @@ static MainController<MainControllerPublic>* instance = nil;
         @throw [NSException exceptionWithName:@"incorrect attributes" reason:@"pluginController properties mainNavigationController and mainSplitViewController cannot be both nil" userInfo:nil];
     }
     
-    UIViewController* pluginRootViewController = [[self  class] rootViewControllerForPluginController:pluginController];
+    UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
     
     if (!pluginRootViewController || ![pluginRootViewController respondsToSelector:@selector(pluginIdentifier)] || ![(id)pluginRootViewController pluginIdentifier]) {
         @throw [NSException exceptionWithName:@"incorrect attribute pluginIdentifier" reason:@"root view controller of pluginController must have initialized pluginIdentifier property" userInfo:nil];
@@ -388,14 +415,54 @@ static MainController<MainControllerPublic>* instance = nil;
             }
         }
     }
+    
+}
 
+/* will rotate phone idiom device to portrait if topviewcontroller only supports portait */
+- (void)rotateDeviceToPortraitIfNecessary {
+    if (!self.activePluginController || !self.activePluginController.mainNavigationController) {
+        return;
+    }
+    PluginNavigationController* navController = self.activePluginController.mainNavigationController;
+    if (([navController supportedInterfaceOrientations] | UIInterfaceOrientationMaskPortrait) == UIInterfaceOrientationMaskPortrait) {
+        /* means only potrait mask is supported */
+        UIDevice* device = [UIDevice currentDevice];
+        if ([device orientation] != UIInterfaceOrientationPortrait) {
+            /*
+             * Best but forbidden method (private API)
+             */
+            /*NSInvocation* inv = [NSInvocation invocationWithMethodSignature:[device methodSignatureForSelector:@selector(setOrientation:)]];
+            [inv setSelector:@selector(setOrientation:)];
+            [inv setTarget:device];
+            UIDeviceOrientation val = UIDeviceOrientationPortrait;
+            [inv setArgument:&val atIndex:2];
+            [inv invoke];*/
+            
+            /* 
+             * Little hack found on http://ev3r.tumblr.com/post/3854315796/uinavigationcontroller-pushviewcontroller-from 
+             * Will actually make view controller retest for supported operations and rotate if necessary.
+             */
+            UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:self.activePluginController];
+            [pluginRootViewController presentModalViewController:[[UIViewController alloc] init] animated:NO];
+            [pluginRootViewController dismissModalViewControllerAnimated:NO];
+        }
+    }
+}
+
+- (void)manageBackgroundPlugins {
+    if (BACKGROUND_PLUGINS_ENABLED) {
+        NSLog(@"!! WARNING: background plugins management is not fully supported. Plugins will simply stay in memory until app receives memory warning.");
+    } else {
+        [self.pluginsControllers removeAllObjects];
+    }
 }
 
 #pragma mark - ZUUIRevealControllerDelegate
 
 - (void)revealController:(ZUUIRevealController *)revealController willRevealRearViewController:(UIViewController *)rearViewController {
-    if ([self.activePluginController respondsToSelector:@selector(pluginWillLoseFocus)]) {
-        [self.activePluginController pluginWillLoseFocus];
+    [self postNotificationWithState:PluginWillLoseForegroundNotification pluginIdentifier:[self identifierNameForPluginController:self.activePluginController]];
+    if ([self.activePluginController respondsToSelector:@selector(pluginWillLoseForeground)]) {
+        [self.activePluginController pluginWillLoseForeground];
     }
 }
 
@@ -403,7 +470,7 @@ static MainController<MainControllerPublic>* instance = nil;
     if (!self.activePluginController) {
         return;
     }
-    UIViewController* pluginRootViewController = [[self class] rootViewControllerForPluginController:self.activePluginController];
+    UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:self.activePluginController];
     UIView* gesturesView = [pluginRootViewController.view viewWithTag:kGesturesViewTag];
     gesturesView.frame = pluginRootViewController.view.frame;
     gesturesView.hidden = NO;
@@ -417,10 +484,12 @@ static MainController<MainControllerPublic>* instance = nil;
     if (!self.activePluginController) {
         return;
     }
-    if ([self.activePluginController respondsToSelector:@selector(pluginDidRegainActive)]) {
-        [self.activePluginController pluginDidRegainActive];
+    
+    [self postNotificationWithState:PluginDidEnterForegroundNotification pluginIdentifier:[self identifierNameForPluginController:self.activePluginController]];
+    if ([self.activePluginController respondsToSelector:@selector(pluginDidEnterForeground)]) {
+        [self.activePluginController pluginDidEnterForeground];
     }
-    UIViewController* pluginRootViewController = [[self class] rootViewControllerForPluginController:self.activePluginController];
+    UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:self.activePluginController];
     UIView* gesturesView = [pluginRootViewController.view viewWithTag:kGesturesViewTag];
     gesturesView.hidden = YES;
 }

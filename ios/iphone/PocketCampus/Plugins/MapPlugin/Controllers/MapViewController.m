@@ -72,7 +72,6 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         myLocationButton = nil;
         floorUpButton = nil;
         floorDownButton = nil;
-        
     }
     return self;
 }
@@ -168,6 +167,19 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     }
     [self mapView:mapView regionDidChangeAnimated:NO]; //to refresh UI controls and add overlays
     [self updateFloorLabel];
+    [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Map"];
+    [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Map"];
+}
+
+- (void)willLoseForeground {
+    searchBarWasFirstResponder = [searchBar isFirstResponder];
+    [searchBar resignFirstResponder];
+}
+
+- (void)didEnterForeground {
+    if (searchBarWasFirstResponder) {
+        [searchBar becomeFirstResponder];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -205,17 +217,6 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         return YES;
     } else {
         return (interfaceOrientation == UIInterfaceOrientationPortrait);
-    }
-}
-
-- (void)willLoseFocus {
-    searchBarWasFirstResponder = [searchBar isFirstResponder];
-    [searchBar resignFirstResponder];
-}
-
-- (void)didRegainActive {
-    if (searchBarWasFirstResponder) {
-        [searchBar becomeFirstResponder];
     }
 }
 
@@ -803,6 +804,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)dealloc
 {
+    [[MainController publicController] removePluginStateObserver:self];
     mapView.delegate = nil;
     [mapService release];
     [directoryService release];
