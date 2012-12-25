@@ -485,7 +485,9 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - ZUUIRevealControllerDelegate
 
 - (void)revealController:(ZUUIRevealController *)revealController willRevealRearViewController:(UIViewController *)rearViewController {
-    [self postNotificationWithState:PluginWillLoseForegroundNotification pluginIdentifier:[self identifierNameForPluginController:self.activePluginController]];
+    if (self.activePluginController) {
+        [self postNotificationWithState:PluginWillLoseForegroundNotification pluginIdentifier:[self identifierNameForPluginController:self.activePluginController]];
+    }
     if ([self.activePluginController respondsToSelector:@selector(pluginWillLoseForeground)]) {
         [self.activePluginController pluginWillLoseForeground];
     }

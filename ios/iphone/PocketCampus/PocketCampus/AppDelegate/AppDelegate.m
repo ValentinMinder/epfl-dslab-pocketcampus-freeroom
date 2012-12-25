@@ -20,7 +20,7 @@
 
 #import "PushNotifControllerTests.h"
 
-static id test __strong = nil;
+static id test __strong __unused = nil;
 
 @implementation AppDelegate
 
@@ -63,7 +63,7 @@ static id test __strong = nil;
     self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
     
     
-    /* OFFICIAL TESTS */
+    /* TESTS */
     
     //test = [[PushNotifControllerTests alloc] init];
     //[test testRegistrationAuthenticated];
@@ -77,7 +77,7 @@ static id test __strong = nil;
     
     //[[[MyEduServiceTests alloc] init] tempTest];
     
-    /* END OF OFFICAL TESTS */
+    /* END OF TESTS */
     
     [self.window makeKeyAndVisible];
     
