@@ -49,10 +49,10 @@
     self.progressView.progress = 0.0;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil);
     
-    self.webView.scalesPageToFit = YES; //otherwise, pinching zoom is disabled
+    self.webView.scalesPageToFit = YES; //otherwise, pinch-to-zoom is disabled
     
     if ([PCUtils isIdiomPad]) {
-        self.navigationItem.leftBarButtonItem = [self toggleMasterViewBarButtonItem];
+        self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
     }
     
     NSMutableArray* rightButtons = [NSMutableArray arrayWithCapacity:2];
@@ -132,30 +132,6 @@
         return nil;
     }
     return [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-}
-
-#pragma mark - actions management
-
-- (UIBarButtonItem*)toggleMasterViewBarButtonItem {
-    UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 25.0, 25.0)];
-    [button setImage:[UIImage imageNamed:@"ArrowHide"] forState:UIControlStateNormal];
-    button.adjustsImageWhenHighlighted = NO;
-    button.showsTouchWhenHighlighted = YES;
-    [button addTarget:self action:@selector(toggleMasterVideoControllerHidden:) forControlEvents:UIControlEventTouchUpInside];
-    return [[UIBarButtonItem alloc] initWithCustomView:button];
-}
-
-- (void)toggleMasterVideoControllerHidden:(UIButton*)sender {
-    if ([self.navigationController.splitViewController isKindOfClass:[PluginSplitViewController class]]) { //should always be the case
-        PluginSplitViewController* pluginSplitViewController = (PluginSplitViewController*)self.navigationController.splitViewController;
-        if (pluginSplitViewController.masterViewControllerHidden) {
-            [sender setImage:[UIImage imageNamed:@"ArrowHide"] forState:UIControlStateNormal];
-            [pluginSplitViewController setMasterViewControllerHidden:NO animated:YES];
-        } else {
-            [sender setImage:[UIImage imageNamed:@"ArrowShow"] forState:UIControlStateNormal];
-            [pluginSplitViewController setMasterViewControllerHidden:YES animated:YES];
-        }
-    }
 }
 
 #pragma mark - Button actions

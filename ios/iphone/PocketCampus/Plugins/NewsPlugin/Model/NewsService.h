@@ -27,6 +27,10 @@
 - (void)getFeedUrlsForLanguage:(NSString*)language delegate:(id)delegate;
 - (void)getFeedsForLanguage:(NSString*)language delegate:(id)delegate;
 
+/* Cached versions */
+
+- (NSArray*)getFromCacheNewsItemsForLanguage:(NSString*)language;
+
 @end
 
 @protocol NewsServiceDelegate <ServiceDelegate>

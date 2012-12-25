@@ -14,6 +14,6 @@
 
 + (NSArray*)eliminateDuplicateNewsItemsInArray:(NSArray*)newsItems;
 + (NSString*)dateLocaleStringForTimestamp:(NSTimeInterval)timestamp;
-+ (NSString*)htmlReplaceWidthInContent:(NSString*)content ifWidthHeigherThan:(NSInteger)maxWidth;
++ (NSString*)htmlReplaceWidthWith100PercentInContent:(NSString*)content ifWidthHeigherThan:(NSInteger)maxWidth;
 
 @end

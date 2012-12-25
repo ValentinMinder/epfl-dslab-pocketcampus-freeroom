@@ -20,17 +20,49 @@ typedef enum {
 
 @property (nonatomic, weak, readonly) UITableViewController* tableViewController;
 @property (nonatomic) RefreshControlType type;
-@property (nonatomic, copy) NSString* message; //WARNING: changing message will set RefreshControlType type back to none. => must call setMessage THEN setType if needed
+@property (nonatomic, copy) NSString* message;
 @property (nonatomic, readonly) BOOL isVisible;
+
+/*
+ * Readonly. Use method markRefreshSuccessful to update it.
+ */
+@property (nonatomic, readonly) NSDate* lastSuccessfullRefreshDate;
 
 
 - (id)initWithTableViewController:(UITableViewController*)tableViewController;
-- (id)initWithTableViewController:(UITableViewController*)tableViewController pluginName:(NSString*)pluginName refreshedDataIdentifier:(NSString*)dataIdentifier; //will show "last refresh <date>". Task identifier will be use to save last refresh timestamp
+
+/*
+ * Enables "last refresh <date>" feature. See markRefreshSuccessful for How-To.
+ * Task identifier will be use to save last refresh timestamp.
+ */
+- (id)initWithTableViewController:(UITableViewController*)tableViewController pluginName:(NSString*)pluginName refreshedDataIdentifier:(NSString*)dataIdentifier;
+
+/*
+ * [target selector] will be called when user pulls to refresh
+ */
 - (void)setTarget:(id)target selector:(SEL)selector;
 
+/*
+ * Triggers refresh manually
+ */
 - (void)startRefreshingWithMessage:(NSString*)message;
 - (void)endRefreshing;
-- (void)markRefreshSuccessful; //call this method just after endRefresh to signal that the last refresh was successfull. This will set the default text to "last refresh <date>". This feature is only supported if refreshedDataIdentifier was indicated at construction.
+
+/*
+ * Call this method just after endRefresh to signal that the last refresh was successfull.
+ * This will set the default text to "last refresh <date>". 
+ * This feature is only supported if refreshedDataIdentifier was indicated at init.
+ */
+- (void)markRefreshSuccessful;
+
+
+/*
+ * This method can be used to know wether the data managed by the refresh control
+ * should be refreshed, for a specified validity (seconds)
+ * If refresh control was initiated without data identifier, this method always returns YES
+ */
+- (BOOL)shouldRefreshDataForValidity:(NSTimeInterval)validitySeconds;
+
 - (void)show;
 - (void)showForTimeInterval:(NSTimeInterval)timeInterval;
 - (void)hide;

@@ -235,12 +235,6 @@ static MainController<MainControllerPublic>* instance = nil;
     }
 }
 
-- (void)refreshDisplayedPlugin {
-    if ([self.activePluginController respondsToSelector:@selector(refresh)]) {
-        [self.activePluginController performSelector:@selector(refresh)];
-    }
-}
-
 - (void)showGlobalSettings {
     GlobalSettingsViewController* settingsViewController = [[GlobalSettingsViewController alloc] init];
     UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];

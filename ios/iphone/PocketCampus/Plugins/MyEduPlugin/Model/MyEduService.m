@@ -353,6 +353,7 @@ static MyEduService* instance __weak = nil;
     request.downloadProgressDelegate = progressView;
     request.showAccurateProgress = YES;
     request.shouldRedirect = NO;
+    request.timeOutSeconds = 5.0;
     [request addRequestHeader:@"Cookie" value:[self createMyEduRequest].iMyEduSession.iMyEduCookie];
     [operationQueue addOperation:request];
 }
@@ -535,6 +536,8 @@ static MyEduService* instance __weak = nil;
 
 #pragma mark - ASIHTTRequestDelegate
 
+#pragma mark Material downloads callbacks
+
 - (void)downloadMaterialRequestFinished:(ASIHTTPRequest *)request {
     id<MyEduServiceDelegate> delegate = [request.userInfo objectForKey:kServiceDelegateKey];
     MyEduMaterial* material = [request.userInfo objectForKey:kMaterialKey];
@@ -563,11 +566,13 @@ static MyEduService* instance __weak = nil;
 
 - (void)downloadMaterialRequestFailed:(ASIHTTPRequest *)request {
     id<MyEduServiceDelegate> delegate = [request.userInfo objectForKey:kServiceDelegateKey];
-    if ([delegate respondsToSelector:@selector(downloadFailedForMaterial:)]) {
+    if ([delegate respondsToSelector:@selector(downloadFailedForMaterial:responseStatusCode:)]) {
         MyEduMaterial* material = [request.userInfo objectForKey:kMaterialKey];
         [delegate downloadFailedForMaterial:material responseStatusCode:request.responseStatusCode];
     }
 }
+
+#pragma mark Video downloads callbacks
 
 - (void)downloadVideoRequestFinished:(ASIHTTPRequest *)request {
     NSString* key = request.userInfo[kVideoKey];

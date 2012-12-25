@@ -21,4 +21,7 @@
 - (id)initWithMasterViewController:(UIViewController*)masterViewController detailViewController:(UIViewController*)detailViewController;
 - (void)setMasterViewControllerHidden:(BOOL)hidden animated:(BOOL)animated;
 
+
+- (UIBarButtonItem*)toggleMasterViewBarButtonItem;
+
 @end

@@ -10,8 +10,8 @@
 "Section" = "Section";
 "Modules" = "Modules";
 "DownloadingCourseList" = "Loading course list...";
-"DownloadingSectionList" = "Loading section list...";
-"DownloadingModuleList" = "Loading module list...";
+"DownloadingSectionList" = "Loading sections...";
+"DownloadingModuleList" = "Loading modules...";
 "NotSubscribedToAnyCourse" = "You are not registered with any MyEdu course";
 "NoSection" = "No section";
 "NoModule" = "No module";

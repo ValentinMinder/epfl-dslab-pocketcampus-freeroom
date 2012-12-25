@@ -184,7 +184,6 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
 - (void)initDownloadObserver {
      MyEduModuleVideoViewController* controller __weak = self;
     
-    NSLog(@"SELF %@ CONTROLLER %p", self, &controller);
     [self.myEduService addDownloadObserver:self forVideoOfModule:self.module startDownload:NO startBlock:^{
         [controller setDownloadingButtonAnimated:NO];
     }  finishBlock:^(NSURL *fileLocalURL) {
@@ -233,7 +232,6 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
 }
 
 - (void)setDownloadingButtonAnimated:(BOOL)animated {
-    NSLog(@"SELF : %@", self);
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Download"] style:UIBarButtonItemStyleDone target:self action:@selector(downloadButtonPressed)] animated:animated];
     [self.downloadingButtonBlinkTimer invalidate];
     self.downloadingButtonBlinkTimer = [NSTimer scheduledTimerWithTimeInterval:0.8 target:self selector:@selector(toggleDownloadingButtonStyle) userInfo:nil repeats:YES];
@@ -276,7 +274,6 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
     double curr = (double)self.moviePlayerController.currentPlaybackRate;
     if ([PCUtils double:curr isEqualToDouble:1.0 epsilon:0.1]) {
         self.moviePlayerController.currentPlaybackRate = 1.2;
-        NSLog(@"%@", [UIImage imageNamed:@"MyEduMovieSpeed1_5X"]);
         [self.playbackRateButton setImage:[UIImage imageNamed:@"MyEduMovieSpeed1_2X"] forState:UIControlStateNormal];
     } else if ([PCUtils double:curr isEqualToDouble:1.2 epsilon:0.1]) {
         self.moviePlayerController.currentPlaybackRate = 1.5;
@@ -323,7 +320,6 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
     CGFloat ratio = self.moviePlayerController.naturalSize.width/self.moviePlayerController.naturalSize.height;
     CGFloat width = self.view.frame.size.width-40.0;
     CGFloat height = width/ratio;
-    //NSLog(@"%f, %f", self.moviePlayerController.naturalSize.width, self.moviePlayerController.naturalSize.height);
     self.moviePlayerController.view.bounds = CGRectMake(0, 0, width, height);
     self.moviePlayerController.view.center = self.view.center;
     
@@ -353,7 +349,6 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
 }
 
 - (void)saveLastPlaybackTime {
-    NSLog(@"saveLastPlaybackTime");
     [self.myEduService saveLastPlaybackTime:floor(self.moviePlayerController.currentPlaybackTime) forVideoOfModule:self.module];
 }
 

@@ -157,12 +157,20 @@
     [[MyEduController sharedInstance] removeLoginObserver:self];
     switch (reply.iStatus) {
         case 200:
-            self.modules = reply.iMyEduModules;
+        {
+            NSMutableArray* modulesWithoutHidden = [reply.iMyEduModules mutableCopy];
+            for (MyEduModule* module in reply.iMyEduModules) {
+                if (!module.iVisible) {
+                    [modulesWithoutHidden removeObject:module];
+                }
+            }
+            self.modules = [modulesWithoutHidden copy]; //non-mutable
             [self initCellsWithModules];
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
             [self.pcRefreshControl markRefreshSuccessful];
             break;
+        }
         case 407:
             [self.myEduService deleteSession];
             [self startGetSectionDetailsRequest];

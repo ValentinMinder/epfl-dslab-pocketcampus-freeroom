@@ -34,38 +34,53 @@
     self.view.layer.masksToBounds = YES;
 }
 
-#pragma mark UINavigationControllerDelegate
-
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    UIViewController* masterViewController = viewController;
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskAll; //always force support of all orientations on iPad (split view controller)
     
-    if ([masterViewController conformsToProtocol:@protocol(PCMasterSplitDelegate)] && [masterViewController respondsToSelector:@selector(detailViewControllerThatShouldBeDisplayed)]) {
-        UIViewController* detailViewController = [(id<PCMasterSplitDelegate>)masterViewController detailViewControllerThatShouldBeDisplayed];
-        self.viewControllers = @[navigationController, detailViewController];
-    }
-    
-    /*if ([masterViewController conformsToProtocol:@protocol(PCMasterSplitDelegate)] && [masterViewController respondsToSelector:@selector(shouldHideMasterViewController)]) {
-        BOOL shouldHide = [(id<PCMasterSplitDelegate>)masterViewController shouldHideMasterViewController];
-        self.shouldHideMasterViewController = shouldHide;
-        id prevDegate = self.delegate;
-        self.delegate = self;
-        [self willRotateToInterfaceOrientation:self.interfaceOrientation duration:1.0];
-        self.delegate = prevDegate;
-    }*/
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS<=5
+{
+    return YES; //always force support of all orientations on iPad (split view controller)
+}
+
+#pragma mark - Toggle button generation
+
+- (UIBarButtonItem*)toggleMasterViewBarButtonItem {
+    UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 25.0, 25.0)];
+    if (self.masterViewControllerHidden) {
+        [button setImage:[UIImage imageNamed:@"ArrowShow"] forState:UIControlStateNormal];
+    } else {
+        [button setImage:[UIImage imageNamed:@"ArrowHide"] forState:UIControlStateNormal];
+    }
+    button.adjustsImageWhenHighlighted = NO;
+    button.showsTouchWhenHighlighted = YES;
+    [button addTarget:self action:@selector(toggleMasterVideoControllerHidden:) forControlEvents:UIControlEventTouchUpInside];
+    return [[UIBarButtonItem alloc] initWithCustomView:button];
+}
+
+#pragma mark - Master view controller visibility management
+
+- (void)toggleMasterVideoControllerHidden:(UIButton*)sender {
+    if (self.masterViewControllerHidden) {
+        [sender setImage:[UIImage imageNamed:@"ArrowHide"] forState:UIControlStateNormal];
+        [self setMasterViewControllerHidden:NO animated:YES];
+    } else {
+        [sender setImage:[UIImage imageNamed:@"ArrowShow"] forState:UIControlStateNormal];
+        [self setMasterViewControllerHidden:YES animated:YES];
+    }
+}
+
+- (void)setMasterViewControllerHidden:(BOOL)hidden {
+    [self setMasterViewControllerHidden:hidden animated:NO];
+}
+
+
 - (void)setMasterViewControllerHidden:(BOOL)hidden animated:(BOOL)animated {
-    /*_masterViewControllerHidden = hidden;
-    id prevDegate = self.delegate;
-    self.delegate = self;
-    [self willRotateToInterfaceOrientation:self.interfaceOrientation duration:1.0];
-    [self.view setNeedsLayout];
-    self.delegate = prevDegate;*/
-    
     if ((_masterViewControllerHidden && hidden) || (!_masterViewControllerHidden && !hidden)) {
         return;
     }
-    
     CGRect newFrame = self.view.frame;
     UIViewController* masterViewController = self.viewControllers[0];
     UIViewController* detailViewControler = self.viewControllers[1];
@@ -93,14 +108,6 @@
         detailNewWidth = detailFrame.size.width - masterFrame.size.width;
     }
     
-    /*[UIView animateWithDuration:0.2 animations:^{
-        if (hidden) {
-            self.view.frame = CGRectMake(newFrameX, newFrameY, newFrameWidth, newFrameHeight);
-        } else
-            self.view.frame = CGRectMake(newFrameX, newFrameY, newFrame.size.width, newFrameHeight);
-        }
-    }];*/
-    
     CGFloat duration = 0.0;
     
     if (animated) {
@@ -113,22 +120,18 @@
     } completion:NULL];
     
     _masterViewControllerHidden = hidden;
-
-}
-
-- (void)setMasterViewControllerHidden:(BOOL)hidden {
-    [self setMasterViewControllerHidden:hidden animated:NO];
-}
-
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
-{
-    return UIInterfaceOrientationMaskAll; //always force support of all orientations on iPad (split view controller)
     
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
-{
-    return YES; //always force support of all orientations on iPad (split view controller)
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    UIViewController* masterViewController = viewController;
+    
+    if ([masterViewController conformsToProtocol:@protocol(PCMasterSplitDelegate)] && [masterViewController respondsToSelector:@selector(detailViewControllerThatShouldBeDisplayed)]) {
+        UIViewController* detailViewController = [(id<PCMasterSplitDelegate>)masterViewController detailViewControllerThatShouldBeDisplayed];
+        self.viewControllers = @[navigationController, detailViewController];
+    }
 }
 
 @end

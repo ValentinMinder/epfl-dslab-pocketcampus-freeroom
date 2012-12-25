@@ -30,23 +30,7 @@ static DirectoryController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
-            /*
-             
-             if ([PCUtils isIdiomPad]) {
-             UINavigationController* navController =  [[UINavigationController alloc] initWithRootViewController:coursesListViewController];
-             UIViewController* emptyDetailViewController = [[UIViewController alloc] init]; //splash view controller will be returned by coursesListViewController as PluginSplitViewControllerDelegate
-             PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:emptyDetailViewController];
-             splitViewController.pluginIdentifier = [[self class] identifierName];
-             splitViewController.delegate = self;
-             self.mainSplitViewController = splitViewController;
-             } else {
-             PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:coursesListViewController];
-             navController.pluginIdentifier = [[self class] identifierName];
-             self.mainNavigationController = navController;
-             }
-             
-            */
-            
+                        
             self.directorySearchViewController = [[DirectorySearchViewController alloc] init];
             self.directorySearchViewController.title = [[self class] localizedName];
             

@@ -23,7 +23,7 @@ struct MyEduCourse {
 	1: required i32 iId;
 	2: required string iCode;
 	3: required string iTitle;
-	4: required string iDescription;
+	4: optional string iDescription;
 	5: required timestamp iCreationTimestamp;
 	6: required timestamp iLastUpdateTimestamp;
 }
@@ -32,7 +32,7 @@ struct MyEduSection {
 	1: required i32 iId;
 	2: required i32 iCourseId;
 	3: required string iTitle;
-	4: required string iDescription;
+	4: optional string iDescription;
 	5: required i32 iSequence;
 	6: required timestamp iCreationTimestamp;
 	7: required timestamp iLastUpdateTimestamp;

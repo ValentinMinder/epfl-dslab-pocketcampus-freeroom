@@ -8,6 +8,6 @@
 
 #import "PluginController.h"
 
-@interface NewsController : PluginController<PluginControllerProtocol>
+@interface NewsController : PluginController<PluginControllerProtocol, UISplitViewControllerDelegate>
 
 @end

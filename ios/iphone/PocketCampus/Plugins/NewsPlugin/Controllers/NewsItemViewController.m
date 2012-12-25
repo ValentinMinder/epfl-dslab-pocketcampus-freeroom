@@ -1,56 +1,46 @@
 //
-//  NewsItemViewController.m
+//  NewsItemViewController2.m
 //  PocketCampus
 //
-//  Created by Loïc Gardiol on 05.05.12.
+//  Created by Loïc Gardiol on 24.12.12.
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
-
 #import "NewsItemViewController.h"
+
+#import "GANTracker.h"
 
 #import "PCValues.h"
 
 #import "NewsUtils.h"
 
-#import "ASIHTTPRequest.h"
+#import "Reachability.h"
 
-static int NEWS_FONT_SIZE = 14.0;
+#import "ObjectArchiver.h"
+
+#import "PluginSplitViewController.h"
+
+@interface NewsItemViewController ()
+
+@property (nonatomic, strong) UIImage* image;
+@property (nonatomic, strong) NewsItem* newsItem;
+@property (nonatomic, strong) NewsService* newsService;
+@property (nonatomic, strong) ASIHTTPRequest* imageRequest;
+@property (nonatomic, strong) NSURL* urlClicked;
+@property (nonatomic, strong) Reachability* reachability;
+
+@end
 
 @implementation NewsItemViewController
 
-@synthesize scrollView, feedLabel, publishDateLabel, centerActivityIndicator, centerMessageLabel;
-
-- (id)init
+- (id)initWithNewsItem:(NewsItem*)newsItem cachedImageOrNil:(UIImage*)image
 {
-    self = [super initWithNibName:@"NewsItemView" bundle:nil];
+    self = [super initWithNibName:@"NewsItemView-phone" bundle:nil];
     if (self) {
-        newsService = [[NewsService sharedInstanceToRetain] retain];
-        newsItem = nil;
-        mainImageView = nil;
-        mainImage = nil;
-        thumbnailRequest = nil;
-        urlClickedByUser = nil;
-        reachability = nil;
-    }
-    return self;
-}
-
-- (id)initWithNewsItem:(NewsItem*)newsItem_ {
-    self = [self init];
-    if (self) {
-        newsItem = [newsItem_ retain];
-        
-    }
-    return self;
-}
-
-- (id)initWithNewsItem:(NewsItem *)newsItem_ andCachedImage:(UIImage*)image {
-    self = [self init];
-    if (self) {
-        newsItem = [newsItem_ retain];
-        mainImage = [image retain];
+        self.newsService = [NewsService sharedInstanceToRetain];
+        self.newsItem = newsItem;
+        self.image = image;
+        self.title = self.newsItem.title;
     }
     return self;
 }
@@ -58,247 +48,187 @@ static int NEWS_FONT_SIZE = 14.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/news/item" withError:NULL];
-    scrollView.accessibilityIdentifier = @"NewsItemScrollView";
-    self.title = newsItem.title;
-    UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
-    self.navigationItem.rightBarButtonItem = actionButton;
-    [actionButton release];
-
-    feedLabel.text = newsItem.feed;
-    publishDateLabel.text = [NewsUtils dateLocaleStringForTimestamp:newsItem.pubDate/1000.0];
+	[[GANTracker sharedTracker] trackPageview:@"/v3r1/news/item" withError:NULL];
     
-    UIFont* titleFont = [UIFont boldSystemFontOfSize:17.0];
-    
-    CGSize titleReqSize = [newsItem.title sizeWithFont:titleFont constrainedToSize:CGSizeMake(300.0, 200.0)];
-    
-    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 55.0, titleReqSize.width, titleReqSize.height)];
-    titleLabel.text = newsItem.title;
-    titleLabel.font = titleFont;
-    titleLabel.textColor = [PCValues textColor1];
-    titleLabel.numberOfLines = 0;
-    
-    [scrollView addSubview:titleLabel];
-    
-    [self loadNews];
-    
-}
-
-- (void)loadNews {
-    [centerActivityIndicator startAnimating];
-    centerMessageLabel.hidden = YES;
-    if (newsItem.imageUrl != nil) {
-        if (mainImage != nil) {
-            [self addMainImageToScrollView];
-            [newsService getNewsItemContentForId:newsItem.newsItemId delegate:self];
-        } else { //thumbnail has to be downloaded. When it returns, the request for news content will be done
-            thumbnailRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:newsItem.imageUrl]] retain];
-            thumbnailRequest.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
-            thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
-            thumbnailRequest.timeOutSeconds = 20.0;
-            thumbnailRequest.numberOfTimesToRetryOnTimeout = 2;
-            thumbnailRequest.delegate = self;
-            [thumbnailRequest startAsynchronous];
-        }
-    } else {
-        [newsService getNewsItemContentForId:newsItem.newsItemId delegate:self];
+    if (self.splitViewController) {
+        self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
     }
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
+    
+    self.webView.scalesPageToFit = NO;
+    
+    [self saveImageToDisk];
+    
+    [self loadNewsItem];
 }
+
+- (void)loadNewsItem {
+    [self.loadingIndicator startAnimating];
+    self.centerMessageLabel.hidden = YES;
+    self.webView.hidden = YES;
+    [self.newsService getNewsItemContentForId:self.newsItem.newsItemId delegate:self];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+    
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
+{
+    return UIInterfaceOrientationIsLandscape(interfaceOrientation) || (UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - Actions
 
 - (void)actionButtonPressed {
     UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"OpenInSafari", @"NewsPlugin", nil), nil];
     actionSheet.accessibilityIdentifier = @"NewsItemActionSheet";
     [actionSheet showInView:self.view];
-    [actionSheet release];
 }
 
-- (void)addMainImageToScrollView {
-    if (mainImage != nil) {
-        if (mainImage.size.width > 300.0) {
-            [mainImage autorelease];
-            mainImage = [[UIImage imageWithCGImage:(CGImageRef)mainImage.CGImage scale:(mainImage.size.width/300.0) orientation:UIImageOrientationUp] retain]; //new resized image
-        }
-        mainImageView = [[UIImageView alloc] initWithImage:mainImage];
-        mainImageView.center = CGPointMake(scrollView.center.x, titleLabel.frame.origin.y+titleLabel.frame.size.height+(mainImageView.frame.size.height/2.0)+7.0);
-        [scrollView addSubview:mainImageView];
-    }
-}
-
-- (void)viewWillUnload {
-    [webView stopLoading];
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
-{
-    return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation // <= iOS 5
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-/* UIActionSheetDelegate delegation */
+#pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:newsItem.link]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.newsItem.link]];
             break;
         default:
             break;
     }
 }
 
-/* ASIHTTPRequestDelegate delegation */
+#pragma mark - Image management
 
-- (void)requestFinished:(ASIHTTPRequest *)request {
-    if (request == thumbnailRequest) {
-        mainImage = [[UIImage imageWithData:request.responseData] retain];
-        [self addMainImageToScrollView];
-        [newsService getNewsItemContentForId:newsItem.newsItemId delegate:self];
-        [thumbnailRequest release];
-        thumbnailRequest = nil;
-    }
+- (NSString*)pathForImage {
+    NSString* key = [NSString stringWithFormat:@"newsItemImage-%u", [self.newsItem.imageUrl hash]];
+    return [ObjectArchiver pathForKey:key pluginName:@"news" customFileExtension:[self.newsItem.imageUrl pathExtension] isCache:YES];
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request {
-    if (request == thumbnailRequest) {
-        [self serviceConnectionToServerTimedOut];
-        [thumbnailRequest release];
-        thumbnailRequest = nil;
+- (void)saveImageToDisk {
+    if (!self.image) {
+        return;
     }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[self pathForImage]]) {
+        return;
+    }
+    NSData* jpgData = UIImageJPEGRepresentation(self.image, 1.0);
+    [jpgData writeToFile:[self pathForImage] atomically:NO];
 }
 
-/* NewsServiceDelegate delegation */
+#pragma mark - NewsServiceDelegate
+
 
 - (void)newsItemContentForId:(Id)newsItemId didReturn:(NSString *)content {
-    CGFloat startY; 
-    if (mainImage != nil) {
-        startY = mainImageView.frame.origin.y+mainImageView.frame.size.height+5.0;
-    } else {
-        startY = titleLabel.frame.origin.y+titleLabel.frame.size.height+5.0;
-    }
-    webView = [[UIWebView alloc] initWithFrame:CGRectMake(2.0, startY, 310.0, 50.0)]; //height will be recomputed when HTML loaded in delegate call
-    webView.scrollView.scrollEnabled = NO;
-    webView.delegate = self;
-    webView.hidden = YES;
-    NSString* contentWithStyle = [NSString stringWithFormat:@"<meta charset='utf-8'><meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'><style type='text/css'> a { color:#B80000; text-decoration:none; }</style><span style='font-family: Helvetica; font-size: %dpx; word-wrap:break-word; text-align:left;'>%@</span>", NEWS_FONT_SIZE, [NewsUtils htmlReplaceWidthInContent:content ifWidthHeigherThan:300]];
     
-    [webView loadHTMLString:contentWithStyle baseURL:nil];
-    [scrollView addSubview:webView];
+    NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"NewsItem" ofType:@"html"];
+    NSError* error = nil;
+    NSString* html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
+    if (error) {
+        [self error];
+        return;
+    }
+    html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_FEED_NAME$" withString:self.newsItem.feed];
+    html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_PUB_DATE$" withString:[NewsUtils dateLocaleStringForTimestamp:self.newsItem.pubDate/1000.0]];
+    html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_TITLE$" withString:self.newsItem.title];
+    
+    if (self.newsItem.imageUrl) {
+        NSString* imageSrc = self.newsItem.imageUrl;
+        NSString* path = [self pathForImage];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) { //then image was saved to disk (in viewDidLoad)
+            imageSrc = path;
+        }
+        html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_IMAGE_SRC$" withString:imageSrc];
+        html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_IMAGE_DISPLAY_CSS$" withString:@"inline"];
+    } else {
+        html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_IMAGE_DISPLAY_CSS$" withString:@"none"];
+    }
+    html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_CONTENT$" withString:content];
+    
+    html = [NewsUtils htmlReplaceWidthWith100PercentInContent:html ifWidthHeigherThan:self.webView.frame.size.width-20.0];
+    
+    [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:@"www.epfl.ch"]];
+    self.webView.hidden = NO;
+    [self.loadingIndicator stopAnimating];
 }
 
 - (void)newsItemContentFailedForId:(Id)newsItemId {
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
-    centerMessageLabel.hidden = NO;
+    [self error];
+}
+
+- (void)error {
+    self.webView.hidden = YES;
+    [self.loadingIndicator stopAnimating];
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+    self.centerMessageLabel.hidden = NO;
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    webView.hidden = YES;
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
-    centerMessageLabel.hidden = NO;
-    if (!reachability) {
-        reachability = [[Reachability reachabilityForInternetConnection] retain];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadNews) name:kReachabilityChangedNotification object:reachability];
-        [reachability startNotifier];
+    self.webView.hidden = YES;
+    [self.loadingIndicator stopAnimating];
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
+    self.centerMessageLabel.hidden = NO;
+    if (!self.reachability) {
+        self.reachability = [Reachability reachabilityForInternetConnection];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadNewsItem) name:kReachabilityChangedNotification object:self.reachability];
+        [self.reachability startNotifier];
     }
 }
 
-/* UIWebViewDelegate delegation */
+#pragma mark - UIWebViewDelegate
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView_ {
-    [centerActivityIndicator stopAnimating];
-    [webView sizeToFit];
-    webView.hidden = NO;
-    CGFloat scrollViewContentHeight = webView.frame.origin.y+webView.frame.size.height;
-    
-    if (scrollViewContentHeight <= self.view.frame.size.height) {
-        scrollViewContentHeight = self.view.frame.size.height + 1.0;//to be able to scroll even if not necessary
-    }
-    [scrollView setContentSize:CGSizeMake(self.view.frame.size.width, scrollViewContentHeight)];
-    if (reachability) {
-        [reachability stopNotifier];
-    }
-    [reachability release];
-    reachability = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
-}
-
-- (void)webView:(UIWebView *)webView_ didFailLoadWithError:(NSError *)error {
-    webView.hidden = YES;
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
-    centerMessageLabel.hidden = NO;
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [self error];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        [urlClickedByUser release];
-        urlClickedByUser = [request.URL retain];
-        NSString* title = urlClickedByUser.host;
-        if (urlClickedByUser.path.length > 1) { //empty path is "/"
+        self.urlClicked = request.URL;
+        NSString* title = self.urlClicked.host;
+        if (self.urlClicked.path.length > 1) { //empty path is "/"
             title = [title stringByAppendingString:@"/..."];
         }
         UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title message:NSLocalizedStringFromTable(@"ClickLinkLeaveApplicationExplanation", @"NewsPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:@"OK", nil];
         [alertView show];
-        [alertView release];
         return NO;
     }
     return YES;
 }
 
-/* UIAlertViewDelegate delegation */
+#pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (urlClickedByUser != nil) {
+    if (self.urlClicked) {
         switch (buttonIndex) {
             case 0: //cancel
                 //Nothing to do
                 break;
             case 1: //OK
-                [[UIApplication sharedApplication] openURL:urlClickedByUser];
+                [[UIApplication sharedApplication] openURL:self.urlClicked];
             default:
                 break;
         }
-        [urlClickedByUser release];
-        urlClickedByUser = nil;
+        self.urlClicked = nil;
     }
 }
 
-- (void)dealloc
-{
-    if (reachability) {
-        [reachability stopNotifier];
-    }
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:reachability];
-    [reachability release];
-    reachability = nil;
-    webView.delegate = nil;
-    [webView stopLoading];
-    [webView release];
-    [newsService cancelOperationsForDelegate:self];
-    [newsService release];
-    [titleLabel release];
-    [mainImageView release];
-    [mainImage release];
-    [newsItem release];
-    if (thumbnailRequest != nil) {
-        [thumbnailRequest cancel];
-        thumbnailRequest.delegate = nil;
-        [thumbnailRequest release];
-    }
-    [urlClickedByUser release];
-    [super dealloc];
+#pragma mark - dealloc
+
+- (void)dealloc {
+    [self.reachability stopNotifier];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:self.reachability];
+    self.webView.delegate = nil;
+    [self.webView stopLoading];
+    [self.newsService cancelOperationsForDelegate:self];
 }
 
 @end

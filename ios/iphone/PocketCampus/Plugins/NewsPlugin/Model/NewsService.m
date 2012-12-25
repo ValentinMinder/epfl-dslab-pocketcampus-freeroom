@@ -39,7 +39,7 @@ static NewsService* instance __weak = nil;
 }
 
 - (id)thriftServiceClientInstance {
-    return [[[NewsServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
+    return [[NewsServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 - (void)getNewsItemsForLanguage:(NSString*)language delegate:(id)delegate {
@@ -47,14 +47,14 @@ static NewsService* instance __weak = nil;
         @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
     }
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.customTimeout = 25.0; //fetch news can take much time
+    operation.keepInCache = YES;
+    operation.skipCache = YES;
     operation.serviceClientSelector = @selector(getNewsItems:);
     operation.delegateDidReturnSelector = @selector(newsItemsForLanguage:didReturn:);
     operation.delegateDidFailSelector = @selector(newsItemsFailedForLanguage:);
     [operation addObjectArgument:language];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getNewsItemContentForId:(Id)newsItemId delegate:(id)delegate {
@@ -68,7 +68,6 @@ static NewsService* instance __weak = nil;
     [operation addLongLongArgument:newsItemId];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getFeedUrlsForLanguage:(NSString*)language delegate:(id)delegate {
@@ -82,7 +81,6 @@ static NewsService* instance __weak = nil;
     [operation addObjectArgument:language];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getFeedsForLanguage:(NSString*)language delegate:(id)delegate {
@@ -96,7 +94,19 @@ static NewsService* instance __weak = nil;
     [operation addObjectArgument:language];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
+}
+
+- (NSArray*)getFromCacheNewsItemsForLanguage:(NSString*)language {
+    if (![language isKindOfClass:[NSString class]]) {
+        @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
+    }
+    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getNewsItems:);
+    operation.delegateDidReturnSelector = @selector(newsItemsForLanguage:didReturn:);
+    operation.delegateDidFailSelector = @selector(newsItemsFailedForLanguage:);
+    [operation addObjectArgument:language];
+    operation.returnType = ReturnTypeObject;
+    return [operation cachedResponseObjectEvenIfStale:YES];
 }
 
 - (void)dealloc

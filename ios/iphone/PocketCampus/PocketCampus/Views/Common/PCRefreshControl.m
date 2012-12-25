@@ -25,7 +25,7 @@
 @property (nonatomic) SEL selector;
 @property (nonatomic, copy) NSString* refreshedDataIdentifier;
 @property (nonatomic, copy) NSString* pluginName;
-@property (nonatomic, strong) NSDate* lastSuccessfullRefreshDate;
+@property (nonatomic, readwrite, strong) NSDate* lastSuccessfullRefreshDate;
 @property (nonatomic) BOOL engagedRefreshProgrammatically;
 @property (nonatomic, strong) NSTimer* showHideTimer;
 @property (nonatomic, strong) UIView* containerView;
@@ -165,6 +165,17 @@
         NSLog(@"-> Error while markRefreshSuccessful");
     }
     
+}
+
+- (BOOL)shouldRefreshDataForValidity:(NSTimeInterval)validitySeconds {
+    if (!self.refreshedDataIdentifier) {
+        return YES;
+    }
+    NSTimeInterval diffWithLastRefresh = [[NSDate date] timeIntervalSinceDate:self.lastSuccessfullRefreshDate];
+    if (diffWithLastRefresh > validitySeconds) {
+        return YES;
+    }
+    return NO;
 }
 
 - (NSString*)timeStringForLastRefresh {

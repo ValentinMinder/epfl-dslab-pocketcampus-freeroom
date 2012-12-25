@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MyEduServiceConfig {
 	
-	public final static String SERVICE_ROOT_URL = "https://myedu-test.epfl.ch/courses";
+	public final static String SERVICE_ROOT_URL = "https://myedu.epfl.ch/courses";
 	
 	public final static String API_PATH = "/api";
 	

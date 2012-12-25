@@ -10,6 +10,10 @@
 
 #import "NewsListViewController.h"
 
+#import "NewsSplashViewController.h"
+
+#import "PCUtils.h"
+
 static NewsController* instance __weak = nil;
 
 @implementation NewsController
@@ -24,14 +28,27 @@ static NewsController* instance __weak = nil;
         if (self) {
             NewsListViewController* newsListViewController = [[NewsListViewController alloc] init];
             newsListViewController.title = [[self class] localizedName];
-            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:newsListViewController];
-            navController.pluginIdentifier = [[self class] identifierName];
-            self.mainNavigationController = navController;
+            
+            if ([PCUtils isIdiomPad]) {
+                UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:newsListViewController];
+                NewsSplashViewController* splashViewController = [[NewsSplashViewController alloc] init];
+                self.mainSplitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:splashViewController];
+                self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
+                self.mainSplitViewController.delegate = self;
+                
+            } else {
+                PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:newsListViewController];
+                navController.pluginIdentifier = [[self class] identifierName];
+                self.mainNavigationController = navController;
+            }
+            
             instance = self;
         }
         return self;
     }
 }
+
+#pragma mark - PluginControllerProtocol
 
 + (id)sharedInstance {
     @synchronized (self) {
@@ -46,12 +63,6 @@ static NewsController* instance __weak = nil;
     }
 }
 
-- (void)refresh {
-    if (((NewsListViewController*)(self.mainNavigationController.viewControllers[0])).shouldRefresh) {
-        [((NewsListViewController*)(self.mainNavigationController.viewControllers[0])) refresh];
-    }
-}
-
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"NewsPlugin", @"");
 }
@@ -59,6 +70,14 @@ static NewsController* instance __weak = nil;
 + (NSString*)identifierName {
     return @"News";
 }
+
+#pragma mark - UISplitViewControllerDelegate
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
+    return NO;
+}
+
+#pragma mark - dealloc
 
 - (void)dealloc
 {

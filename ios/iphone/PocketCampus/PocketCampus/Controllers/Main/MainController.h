@@ -36,7 +36,6 @@
 
 - (id)initWithWindow:(UIWindow*)window;
 - (void)appDidReceiveMemoryWarning;
-- (void)refreshDisplayedPlugin;
 - (void)setActivePluginWithIdentifier:(NSString*)identifier;
 - (void)mainMenuIsReady;
 - (void)adaptInitializedNavigationOrSplitViewControllerOfPluginController:(PluginController*)pluginController;

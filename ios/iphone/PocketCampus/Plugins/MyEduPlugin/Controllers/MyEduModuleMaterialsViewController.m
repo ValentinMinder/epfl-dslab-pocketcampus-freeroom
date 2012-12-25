@@ -216,6 +216,7 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
 
 #pragma mark - UIDocumentInteractionControllerDelegate
 
+/* Deprecated. Necessary for iOS<=5 */
 - (BOOL)documentInteractionController:(UIDocumentInteractionController *)controller canPerformAction:(SEL)action
 {
     
@@ -225,6 +226,7 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
     return NO;
 }
 
+/* Deprecated. Necessary for iOS<=5 */
 - (BOOL)documentInteractionController:(UIDocumentInteractionController *)controller performAction:(SEL)action
 {
     

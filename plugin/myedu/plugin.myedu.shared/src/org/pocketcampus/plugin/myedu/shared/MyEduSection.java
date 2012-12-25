@@ -133,7 +133,7 @@ public class MyEduSection implements org.apache.thrift.TBase<MyEduSection, MyEdu
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.I_TITLE, new org.apache.thrift.meta_data.FieldMetaData("iTitle", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.I_DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("iDescription", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("iDescription", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.I_SEQUENCE, new org.apache.thrift.meta_data.FieldMetaData("iSequence", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
@@ -152,7 +152,6 @@ public class MyEduSection implements org.apache.thrift.TBase<MyEduSection, MyEdu
     int iId,
     int iCourseId,
     String iTitle,
-    String iDescription,
     int iSequence,
     long iCreationTimestamp,
     long iLastUpdateTimestamp)
@@ -163,7 +162,6 @@ public class MyEduSection implements org.apache.thrift.TBase<MyEduSection, MyEdu
     this.iCourseId = iCourseId;
     setICourseIdIsSet(true);
     this.iTitle = iTitle;
-    this.iDescription = iDescription;
     this.iSequence = iSequence;
     setISequenceIsSet(true);
     this.iCreationTimestamp = iCreationTimestamp;
@@ -799,9 +797,11 @@ public class MyEduSection implements org.apache.thrift.TBase<MyEduSection, MyEdu
       oprot.writeFieldEnd();
     }
     if (this.iDescription != null) {
-      oprot.writeFieldBegin(I_DESCRIPTION_FIELD_DESC);
-      oprot.writeString(this.iDescription);
-      oprot.writeFieldEnd();
+      if (isSetIDescription()) {
+        oprot.writeFieldBegin(I_DESCRIPTION_FIELD_DESC);
+        oprot.writeString(this.iDescription);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldBegin(I_SEQUENCE_FIELD_DESC);
     oprot.writeI32(this.iSequence);
@@ -836,14 +836,16 @@ public class MyEduSection implements org.apache.thrift.TBase<MyEduSection, MyEdu
       sb.append(this.iTitle);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("iDescription:");
-    if (this.iDescription == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.iDescription);
+    if (isSetIDescription()) {
+      if (!first) sb.append(", ");
+      sb.append("iDescription:");
+      if (this.iDescription == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iDescription);
+      }
+      first = false;
     }
-    first = false;
     if (!first) sb.append(", ");
     sb.append("iSequence:");
     sb.append(this.iSequence);
@@ -866,9 +868,6 @@ public class MyEduSection implements org.apache.thrift.TBase<MyEduSection, MyEdu
     // alas, we cannot check 'iCourseId' because it's a primitive and you chose the non-beans generator.
     if (iTitle == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iTitle' was not present! Struct: " + toString());
-    }
-    if (iDescription == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iDescription' was not present! Struct: " + toString());
     }
     // alas, we cannot check 'iSequence' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'iCreationTimestamp' because it's a primitive and you chose the non-beans generator.

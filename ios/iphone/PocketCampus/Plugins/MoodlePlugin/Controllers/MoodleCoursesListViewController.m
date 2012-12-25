@@ -20,6 +20,8 @@
 
 #import "MoodleSplashDetailViewController.h"
 
+#import "PCUtils.h"
+
 @interface MoodleCoursesListViewController ()
 
 @property (nonatomic, strong) MoodleService* moodleService;
@@ -144,7 +146,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
     if (!self.courses) {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        [PCUtils showConnectionErrorAlert];
     }
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
@@ -153,7 +155,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
     if (!self.courses) {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        [PCUtils showServerUnreachableAlert];
     }
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
