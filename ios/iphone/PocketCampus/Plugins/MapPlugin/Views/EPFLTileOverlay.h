@@ -16,12 +16,10 @@
 
 #import "OverlayWithURLs.h"
 
-@interface EPFLTileOverlay : NSObject<OverlayWithURLs> {
-    NSInteger currentLayerLevel;
-}
+@interface EPFLTileOverlay : NSObject<OverlayWithURLs>
 
-@property (readonly) NSInteger currentLayerLevel;
-@property (nonatomic, assign) MKMapView* mapView;
+@property (nonatomic, readonly) NSInteger currentLayerLevel;
+@property (nonatomic, weak) MKMapView* mapView;
 
 - (NSInteger)convertYCoord:(NSInteger)y withZoom:(NSInteger)zoom;
 - (NSString*)createCoordString:(NSInteger)coord;

@@ -12,11 +12,7 @@
 
 #import "map.h"
 
-@interface MapItemAnnotation : NSObject<MKAnnotation> {
-    MapItem* mapItem;
-    NSString* title;
-    NSString* subtitle;
-}
+@interface MapItemAnnotation : NSObject<MKAnnotation>
 
 - (id)initWithMapItem:(MapItem*)item;
 

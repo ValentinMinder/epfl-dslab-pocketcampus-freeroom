@@ -203,11 +203,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "368921935.823398"
+         timestampString = "378161959.54034"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "182"
-         endingLineNumber = "182"
+         startingLineNumber = "191"
+         endingLineNumber = "191"
          landmarkName = "@implementation CustomOverlayView"
          landmarkType = "3">
       </FileBreakpoint>
@@ -216,11 +216,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-         timestampString = "366310640.237027"
+         timestampString = "378163615.776288"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "132"
-         endingLineNumber = "132"
+         startingLineNumber = "137"
+         endingLineNumber = "137"
          landmarkName = "-setLayerLevel:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -391,11 +391,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "368921935.823398"
+         timestampString = "378161959.54034"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "49"
-         endingLineNumber = "49"
+         startingLineNumber = "59"
+         endingLineNumber = "59"
          landmarkName = "-canDrawMapRect:zoomScale:"
          landmarkType = "5">
          <Actions>
@@ -413,11 +413,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "368921935.823398"
+         timestampString = "378161959.54034"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "184"
-         endingLineNumber = "184"
+         startingLineNumber = "193"
+         endingLineNumber = "193"
          landmarkName = "-requestDidFinishLoad:"
          landmarkType = "5">
          <Actions>
@@ -441,11 +441,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "368921935.823398"
+         timestampString = "378161959.54034"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "53"
-         endingLineNumber = "53"
+         startingLineNumber = "63"
+         endingLineNumber = "63"
          landmarkName = "-canDrawMapRect:zoomScale:"
          landmarkType = "5">
          <Actions>
@@ -463,11 +463,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "368921935.823398"
+         timestampString = "378161959.54034"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "212"
-         endingLineNumber = "212"
+         startingLineNumber = "217"
+         endingLineNumber = "217"
          landmarkName = "-requestDidFinishLoad:"
          landmarkType = "5">
          <Actions>
@@ -491,11 +491,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "368921935.823398"
+         timestampString = "378161959.54034"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "105"
-         endingLineNumber = "105"
+         startingLineNumber = "115"
+         endingLineNumber = "115"
          landmarkName = "-canDrawMapRect:zoomScale:"
          landmarkType = "5">
          <Actions>
@@ -513,11 +513,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "368921935.823398"
+         timestampString = "378161959.54034"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "184"
-         endingLineNumber = "184"
+         startingLineNumber = "193"
+         endingLineNumber = "193"
          landmarkName = "-requestDidFinishLoad:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -526,11 +526,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "368921935.823398"
+         timestampString = "378161959.54034"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "40"
-         endingLineNumber = "40"
+         startingLineNumber = "50"
+         endingLineNumber = "50"
          landmarkName = "-didReceiveMemoryWarning"
          landmarkType = "5">
          <Actions>
@@ -548,11 +548,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "368921935.823398"
+         timestampString = "378161959.54034"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "65"
-         endingLineNumber = "65"
+         startingLineNumber = "75"
+         endingLineNumber = "75"
          landmarkName = "-canDrawMapRect:zoomScale:"
          landmarkType = "5">
          <Actions>
@@ -611,11 +611,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "368921935.823398"
+         timestampString = "378161959.54034"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "225"
-         endingLineNumber = "225"
+         startingLineNumber = "230"
+         endingLineNumber = "230"
          landmarkName = "-callDelegateAccordingToRequestsState"
          landmarkType = "5">
          <Actions>
@@ -3468,11 +3468,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Controllers/Main/MainController.m"
-         timestampString = "378160033.959952"
+         timestampString = "378162640.547124"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "513"
-         endingLineNumber = "513"
+         startingLineNumber = "515"
+         endingLineNumber = "515"
          landmarkName = "-revealController:didHideRearViewController:"
          landmarkType = "5">
          <Actions>
@@ -3529,6 +3529,19 @@
             </BreakpointActionProxy>
          </Actions>
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "PocketCampus/Controllers/Main/MainController.m"
+         timestampString = "378162661.33587"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "488"
+         endingLineNumber = "488"
+         landmarkName = "-revealController:willRevealRearViewController:"
+         landmarkType = "5">
+      </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>
       <SymbolicBreakpoint
@@ -3541,7 +3554,7 @@
    </SymbolicBreakpoints>
    <ExceptionBreakpoints>
       <ExceptionBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          scope = "0"

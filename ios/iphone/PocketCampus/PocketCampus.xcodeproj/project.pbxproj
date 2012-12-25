@@ -105,7 +105,7 @@
 		324151E21537527B00CCFB22 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 324151E11537527B00CCFB22 /* MapKit.framework */; };
 		324151E515375BDD00CCFB22 /* Map.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E315375BDD00CCFB22 /* Map.png */; };
 		324151E615375BDD00CCFB22 /* Map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E415375BDD00CCFB22 /* Map@2x.png */; };
-		324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151F315377B4C00CCFB22 /* MapItemAnnotation.m */; };
+		324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151F315377B4C00CCFB22 /* MapItemAnnotation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3241F1D615B4AB2400C7DF3A /* EditableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */; };
 		3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */; };
 		3242DE1F150577050082D720 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* Service.m */; };
@@ -237,8 +237,8 @@
 		32B58723156459370051C57E /* CamiproController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B58722156459370051C57E /* CamiproController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32B6A53A15BDF7BB000E7F3C /* PocketCampusStyled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B6A53915BDF7BB000E7F3C /* PocketCampusStyled@2x.png */; };
 		32B6A53C15BDFB86000E7F3C /* PocketCampusStyled.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B6A53B15BDFB86000E7F3C /* PocketCampusStyled.png */; };
-		32B89254154584A90058E472 /* EPFLTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B89253154584A90058E472 /* EPFLTileOverlay.m */; };
-		32B892581545892B0058E472 /* CustomOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B892571545892B0058E472 /* CustomOverlayView.m */; };
+		32B89254154584A90058E472 /* EPFLTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B89253154584A90058E472 /* EPFLTileOverlay.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32B892581545892B0058E472 /* CustomOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B892571545892B0058E472 /* CustomOverlayView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32B89272154589D70058E472 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B8925C154589D70058E472 /* ASIAuthenticationDialog.m */; };
 		32B89273154589D70058E472 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B8925F154589D70058E472 /* ASIDataCompressor.m */; };
 		32B89274154589D70058E472 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B89261154589D70058E472 /* ASIDataDecompressor.m */; };

@@ -12,17 +12,23 @@
 
 #import "MapUtils.h"
 
-@implementation EPFLTileOverlay
+@interface EPFLTileOverlay ()
+
+@property (nonatomic, readwrite) NSInteger currentLayerLevel;
+
+@end
 
 static NSString* URL_ENDING = @".png";
 
-@synthesize boundingMapRect, coordinate, currentLayerLevel, mapView;
+@implementation EPFLTileOverlay
+
+@synthesize boundingMapRect, coordinate; //auto-synthesis does not synthesize properties of protocol
 
 - (id)init {
     self = [super init];
     
     if (self) {
-        currentLayerLevel = 1;
+        self.currentLayerLevel = 1;
         
         // I am still not well-versed in map projections, but the Google Mercator projection
         // is slightly off from the "standard" Mercator projection, used by MapKit. (GMerc is used
@@ -86,7 +92,7 @@ static NSString* URL_ENDING = @".png";
 
 - (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
     NSString* baseUrl = [NSString stringWithFormat:@"%@%d%@", @"http://plan-epfl-tile", [self randomizeTileServer], @".epfl.ch/batiments"];
-    NSString* layerLevel = [NSString stringWithFormat: @"%d%@",currentLayerLevel,@"/"];//-ch
+    NSString* layerLevel = [NSString stringWithFormat: @"%d%@", self.currentLayerLevel, @"/"];//-ch
     NSString* zoomLevel = [NSString stringWithFormat:@"%d/",zoom];
     NSString* xCoord = [self createCoordString:x];
     NSString* yCoord = [self createCoordString:y];
@@ -111,17 +117,16 @@ static NSString* URL_ENDING = @".png";
 }
 
 - (void)increaseLayerLevel {
-    if (currentLayerLevel < MAX_LAYER_LEVEL) {
+    if (self.currentLayerLevel < MAX_LAYER_LEVEL) {
         //Redraw the overlay.
-        [self setLayerLevel:(currentLayerLevel+1)];
+        [self setLayerLevel:(self.currentLayerLevel+1)];
     }
 }
 
-
 - (void)decreaseLayerLevel {
-    if (currentLayerLevel > MIN_LAYER_LEVEL) {
+    if (self.currentLayerLevel > MIN_LAYER_LEVEL) {
         //Redraw the overlay.
-        [self setLayerLevel:(currentLayerLevel-1)];
+        [self setLayerLevel:(self.currentLayerLevel-1)];
     }
 }
 
@@ -129,7 +134,7 @@ static NSString* URL_ENDING = @".png";
     if (newLevel < MIN_LAYER_LEVEL || newLevel > MAX_LAYER_LEVEL) {
         return;
     }
-    currentLayerLevel = newLevel;
+    self.currentLayerLevel = newLevel;
     //Redraw the overlay.
 
     if (self.mapView == nil) {
@@ -137,9 +142,9 @@ static NSString* URL_ENDING = @".png";
         return;
     }
     
-    for(NSObject<MKOverlay>* overlay in mapView.overlays) {
+    for(NSObject<MKOverlay>* overlay in self.mapView.overlays) {
         if([overlay isKindOfClass:self.class]){
-            CustomOverlayView* customOverlayView = (CustomOverlayView*)[mapView viewForOverlay:overlay];
+            CustomOverlayView* customOverlayView = (CustomOverlayView*)[self.mapView viewForOverlay:overlay];
             [customOverlayView cancelTilesDownload:NO];
             [customOverlayView setNeedsDisplayInMapRect:MKMapRectWorld];
         }
@@ -148,10 +153,6 @@ static NSString* URL_ENDING = @".png";
 
 - (NSString*)identifier {
     return @"EPFLTiles";
-}
-
-- (void)dealloc {
-    [super dealloc];
 }
 
 

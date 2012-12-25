@@ -18,6 +18,16 @@
 
 static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
 
+@interface CustomOverlayView ()
+
+@property (nonatomic, strong) NSMutableArray* requests;
+@property (nonatomic, strong) NSTimer* callDelegateTimer;
+
+@property (strong) NSMutableDictionary* tilesDataTmp;  //key : - (NSString*)keyWithMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale, value : NSData of corresponding tile image data
+@property BOOL willBeDeallocated;
+
+@end
+
 @implementation CustomOverlayView
 
 @synthesize tilesDataTmp, willBeDeallocated, delegate;
@@ -26,8 +36,8 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
     self = [super initWithOverlay:overlay];
     if (self) {
         self.tilesDataTmp = [NSMutableDictionary dictionary]; //retained in prop
-        requests = [[NSMutableArray array] retain];
-        callDelegateTimer = [[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(callDelegateAccordingToRequestsState) userInfo:nil repeats:YES] retain];
+        self.requests = [NSMutableArray array];
+        self.callDelegateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(callDelegateAccordingToRequestsState) userInfo:nil repeats:YES];
         self.willBeDeallocated = NO;
     }
     return self;
@@ -35,7 +45,7 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
 
 - (void)didReceiveMemoryWarning {
     @synchronized(self) {
-        NSLog(@"CustomOverlayView didReceiveMemoryWarning. Removing tilesDataTmp objects...");
+        NSLog(@"-> CustomOverlayView didReceiveMemoryWarning. Removing tilesDataTmp objects...");
         [self.tilesDataTmp removeAllObjects];
     }
 }
@@ -63,7 +73,7 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
         NSString* urlString = [key copy];
         
         ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-        [urlString release];
+        urlString = nil;
         request.downloadCache = [ASIDownloadCache sharedCache];
         request.secondsToCache = TILES_VALIDITY;
         request.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
@@ -97,7 +107,7 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
             return NO;
         }
         
-        [requests addObject:request];
+        [self.requests addObject:request];
         [request startAsynchronous];
         return NO;
     }
@@ -141,7 +151,6 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
         UIGraphicsPushContext(context);
         [image drawInRect:[self rectForMapRect:mapRect] blendMode:kCGBlendModeNormal alpha:1.0];
         UIGraphicsPopContext();
-        [image release];
     }
 }
  
@@ -182,15 +191,12 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
 
 - (void)requestDidFinishLoad:(ASIHTTPRequest *)request {
     request.delegate = nil;
-    [request retain]; //released at end of method
-    [requests removeObject:request];
+    [self.requests removeObject:request];
     if (self.willBeDeallocated) {
-        [request release];
         return;
     }
     
     if (request.responseStatusCode == 404) {
-        [request release];
         return;
     }
     
@@ -208,12 +214,11 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
         [self.tilesDataTmp setObject:request.responseData forKey:[self keyWithMapRect:mapRect andZoomScale:zoomScale]];
     }
     [self setNeedsDisplayInMapRect:mapRect zoomScale:zoomScale];
-    [request release];
 }
 
 - (void)requestDidFail:(ASIHTTPRequest*)request {
     request.delegate = nil;
-    [requests removeObject:request];
+    [self.requests removeObject:request];
     if (self.willBeDeallocated) {
         return;
     }
@@ -221,7 +226,7 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
 
 
 - (void)callDelegateAccordingToRequestsState {
-    if ([requests count] == 0) {
+    if ([self.requests count] == 0) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(customOverlayViewDidFinishLoading:)]) {
             [(NSObject*)self.delegate performSelectorOnMainThread:@selector(customOverlayViewDidFinishLoading:) withObject:self waitUntilDone:NO];
         }
@@ -235,21 +240,17 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
 - (void)cancelTilesDownload:(BOOL)willBeDeallocated_ {
     self.willBeDeallocated = willBeDeallocated_;
 
-    for (ASIHTTPRequest* request in [[requests copy] autorelease]) {
+    for (ASIHTTPRequest* request in self.requests) {
         request.delegate = nil;
         [request cancel];
     }
     @synchronized(self) {
-        [requests removeAllObjects];
+        [self.requests removeAllObjects];
     }
 }
 
 - (void)dealloc {
-    [callDelegateTimer invalidate];
-    [callDelegateTimer release];
-    [requests release];
-    [tilesDataTmp release];
-    [super dealloc];
+    [self.callDelegateTimer invalidate];
 }
 
 @end
