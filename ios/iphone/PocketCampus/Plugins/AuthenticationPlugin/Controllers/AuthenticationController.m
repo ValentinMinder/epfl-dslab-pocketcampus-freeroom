@@ -1,8 +1,6 @@
 
 #import "AuthenticationController.h"
 
-#import "GasparViewController.h"
-
 #import "PCValues.h"
 
 
@@ -23,13 +21,15 @@
 }
 
 - (BOOL)isEqualToPCLoginObserver:(PCLoginObserver*)loginObserver {
-    return self.observer == loginObserver.observer && [self.operationIdentifier isEqual:loginObserver.operationIdentifier];
+    return self.observer == loginObserver.observer && (!self.operationIdentifier || [self.operationIdentifier isEqual:loginObserver.operationIdentifier]);
 }
 
 - (NSUInteger)hash {
     NSUInteger hash = 0;
     hash += [self.observer hash];
-    hash += [self.operationIdentifier hash];
+    if (self.operationIdentifier) {
+        hash += [self.operationIdentifier hash];
+    }
     return hash;
 }
 
@@ -37,6 +37,12 @@
 
 
 #pragma mark - AuthenticationController implementation
+
+@interface AuthenticationController ()
+
+@property (nonatomic, strong) GasparViewController* gasparViewController;
+
+@end
 
 static AuthenticationController* instance __weak = nil;
 
@@ -71,29 +77,26 @@ static AuthenticationController* instance __weak = nil;
 
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate; {
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]];
-    [gasparViewController release];
-    gasparViewController = [[GasparViewController alloc] init];
+    self.gasparViewController = [[GasparViewController alloc] init];
     if (savedPassword) {
-        gasparViewController.presentationMode = PresentationModeTryHidden;
-        gasparViewController.viewControllerForPresentation = presentationViewController;
-        gasparViewController.showSavePasswordSwitch = YES;
-        gasparViewController.hideGasparUsageAccountMessage = YES;
-        [gasparViewController authenticateSilentlyToken:token delegate:delegate];
+        self.gasparViewController.presentationMode = PresentationModeTryHidden;
+        self.gasparViewController.viewControllerForPresentation = presentationViewController;
+        self.gasparViewController.showSavePasswordSwitch = YES;
+        self.gasparViewController.hideGasparUsageAccountMessage = YES;
+        [self.gasparViewController authenticateSilentlyToken:token delegate:delegate];
     } else {
-        gasparViewController.presentationMode = PresentationModeModal;
-        gasparViewController.viewControllerForPresentation = presentationViewController;
-        gasparViewController.showSavePasswordSwitch = YES;
-        gasparViewController.hideGasparUsageAccountMessage = YES;
-        gasparViewController.delegate = delegate;
-        gasparViewController.token = token;
-        UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:gasparViewController]; //so that nav bar is shown
+        self.gasparViewController.presentationMode = PresentationModeModal;
+        self.gasparViewController.viewControllerForPresentation = presentationViewController;
+        self.gasparViewController.showSavePasswordSwitch = YES;
+        self.gasparViewController.hideGasparUsageAccountMessage = YES;
+        self.gasparViewController.delegate = delegate;
+        self.gasparViewController.token = token;
+        UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:self.gasparViewController]; //so that nav bar is shown
         tmpNavController.modalPresentationStyle = UIModalPresentationFormSheet;
         
         [presentationViewController presentViewController:tmpNavController animated:YES completion:^{
-            [gasparViewController focusOnInput];
+            [self.gasparViewController focusOnInput];
         }];
-        
-        [tmpNavController release];
     }
     
 }
@@ -117,8 +120,6 @@ static AuthenticationController* instance __weak = nil;
     }
 #if __has_feature(objc_arc)
 #else
-    [credentialsAlertViewController release];
-    [gasparViewController release];
     [super dealloc];
 #endif
 }

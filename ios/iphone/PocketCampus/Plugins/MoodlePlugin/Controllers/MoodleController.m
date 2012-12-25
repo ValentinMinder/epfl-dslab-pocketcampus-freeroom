@@ -150,7 +150,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     self.authController = nil;
     self.moodleService = nil;
     @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
+        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
             loginObserver.successBlock();
         }
     }
@@ -161,7 +161,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     self.authController = nil;
     self.moodleService = nil;
     @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
+        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
             loginObserver.failureBlock();
         }
     }
@@ -172,7 +172,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     self.authController = nil;
     self.moodleService = nil;
     @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
+        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
             loginObserver.userCancelledBlock();
         }
     }

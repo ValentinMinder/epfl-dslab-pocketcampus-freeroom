@@ -147,7 +147,7 @@ static MyEduController* instance __weak = nil;
     self.authController = nil;
     self.myEduService = nil;
     @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
+        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) { //in case executed block iteself modifies self.loginObservers
             loginObserver.successBlock();
         }
     }
@@ -158,7 +158,7 @@ static MyEduController* instance __weak = nil;
     self.authController = nil;
     self.myEduService = nil;
     @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
+        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) { //in case executed block iteself modifies self.loginObservers
             loginObserver.failureBlock();
         }
     }
@@ -169,7 +169,7 @@ static MyEduController* instance __weak = nil;
     self.authController = nil;
     self.myEduService = nil;
     @synchronized (self) {
-        for (PCLoginObserver* loginObserver in self.loginObservers) {
+        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) { //in case executed block iteself modifies self.loginObservers
             loginObserver.userCancelledBlock();
         }
     }

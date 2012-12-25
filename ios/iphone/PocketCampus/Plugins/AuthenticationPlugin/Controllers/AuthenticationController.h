@@ -3,7 +3,7 @@
 
 #import "AuthenticationService.h"
 
-@class CredentialsAlertViewController;
+#import "GasparViewController.h"
 
 @class GasparViewController;
 
@@ -17,10 +17,7 @@
 
 @end
 
-@interface AuthenticationController : PluginController<PluginControllerProtocol> {
-    CredentialsAlertViewController* credentialsAlertViewController;
-    GasparViewController* gasparViewController;
-}
+@interface AuthenticationController : PluginController<PluginControllerProtocol>
 
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate;
 
