@@ -62,6 +62,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     [fromValueLabel addGestureRecognizer:gestureRecognizer1];
     [fromLabel addGestureRecognizer:gestureRecognizer2];
     infoButton.accessibilityIdentifier = @"BookmarksButton";
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
 }
 
 - (void)viewDidUnload
@@ -642,6 +643,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     tableView.delegate = nil;
     tableView.dataSource = nil;
     [transportService cancelOperationsForDelegate:self];

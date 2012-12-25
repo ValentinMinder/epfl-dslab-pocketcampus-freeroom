@@ -58,12 +58,6 @@ static NSMutableDictionary* settings = nil;
     return @"Transport";
 }
 
-- (void)refresh {
-    if (self.mainNavigationController.visibleViewController == self.mainNavigationController.viewControllers[0]) {
-        [(NextDeparturesListViewController*)(self.mainNavigationController.viewControllers[0]) refresh];
-    }
-}
-
 + (BOOL)saveObjectSetting:(NSObject<NSCoding>*)val forKey:(NSString*)settingKey {
     @synchronized(self) {
         if (settings == nil) {

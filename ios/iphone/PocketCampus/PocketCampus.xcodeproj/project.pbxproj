@@ -83,12 +83,13 @@
 		322207EF1688F097003F6622 /* NewsItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207EE1688F096003F6622 /* NewsItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322207F11688F101003F6622 /* NewsItemView-phone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322207F01688F101003F6622 /* NewsItemView-phone.xib */; };
 		322207F31688FFFA003F6622 /* NewsItem.html in Resources */ = {isa = PBXBuildFile; fileRef = 322207F21688FFFA003F6622 /* NewsItem.html */; };
+		322207F91689E3A3003F6622 /* PCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207F61689E3A3003F6622 /* PCUtils.m */; };
+		322207FA1689E3A3003F6622 /* PCValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207F81689E3A3003F6622 /* PCValues.m */; };
 		322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322BA0441643F4510063B632 /* MyEduModuleListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322BA0431643F4510063B632 /* MyEduModuleListView.xib */; };
 		322BA0481643FBEB0063B632 /* MSPullToRefreshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */; };
 		322F326A1532F06300E53C6F /* BookmarksBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32681532F06300E53C6F /* BookmarksBlue.png */; };
 		322F326B1532F06300E53C6F /* BookmarksBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32691532F06300E53C6F /* BookmarksBlue@2x.png */; };
-		32311CF115A4A3E100E21C50 /* PCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32311CF015A4A3E100E21C50 /* PCUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		323586E416381BF700872ECE /* MyEduCourseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323586E316381BF700872ECE /* MyEduCourseListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		323586E816381E1200872ECE /* MyEduCourseListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323586E716381E1200872ECE /* MyEduCourseListView.xib */; };
 		3236B5B3151F746100C43769 /* NextDeparturesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3236B5B2151F746100C43769 /* NextDeparturesCell.m */; };
@@ -186,7 +187,6 @@
 		328B9EED150B8E7B00B50024 /* JSFavStarControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 328B9EEC150B8E7B00B50024 /* JSFavStarControl.m */; };
 		328B9EF4150B927500B50024 /* RatingStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF2150B927500B50024 /* RatingStar.png */; };
 		328B9EF5150B927500B50024 /* RatingStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF3150B927500B50024 /* RatingStar@2x.png */; };
-		328B9EFD150BA23D00B50024 /* PCValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 328B9EFC150BA23D00B50024 /* PCValues.m */; };
 		3292C31716402B4F00AE4D51 /* PCRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3292C31616402B4F00AE4D51 /* PCRefreshControl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; };
 		3293AD2315D1BC930097D414 /* AboutPCView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3293AD2215D1BC930097D414 /* AboutPCView.xib */; };
@@ -297,7 +297,6 @@
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
 		32CFECEF151CCB6800D8CBA6 /* ObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */; };
 		32D0B24B166A282700F68304 /* PushNotifControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0B24A166A282700F68304 /* PushNotifControllerTests.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32D0B24E166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0B24D166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.m */; };
 		32D0B24F166A9B9D00F68304 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322715C2070E0091757D /* QuartzCore.framework */; };
 		32D0B256166AA58E00F68304 /* LocationArrowActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B250166AA58D00F68304 /* LocationArrowActive.png */; };
 		32D0B257166AA58E00F68304 /* LocationArrowActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B251166AA58D00F68304 /* LocationArrowActive@2x.png */; };
@@ -485,6 +484,10 @@
 		322207EE1688F096003F6622 /* NewsItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsItemViewController.m; sourceTree = "<group>"; };
 		322207F01688F101003F6622 /* NewsItemView-phone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NewsItemView-phone.xib"; sourceTree = "<group>"; };
 		322207F21688FFFA003F6622 /* NewsItem.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = NewsItem.html; sourceTree = "<group>"; };
+		322207F51689E3A3003F6622 /* PCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCUtils.h; sourceTree = "<group>"; };
+		322207F61689E3A3003F6622 /* PCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCUtils.m; sourceTree = "<group>"; };
+		322207F71689E3A3003F6622 /* PCValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCValues.h; sourceTree = "<group>"; };
+		322207F81689E3A3003F6622 /* PCValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCValues.m; sourceTree = "<group>"; };
 		322BA0401643CF3A0063B632 /* MyEduModuleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleListViewController.h; sourceTree = "<group>"; };
 		322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduModuleListViewController.m; sourceTree = "<group>"; };
 		322BA0431643F4510063B632 /* MyEduModuleListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleListView.xib; sourceTree = "<group>"; };
@@ -492,8 +495,6 @@
 		322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPullToRefreshController.m; sourceTree = "<group>"; };
 		322F32681532F06300E53C6F /* BookmarksBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookmarksBlue.png; sourceTree = "<group>"; };
 		322F32691532F06300E53C6F /* BookmarksBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BookmarksBlue@2x.png"; sourceTree = "<group>"; };
-		32311CEF15A4A3E100E21C50 /* PCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCUtils.h; sourceTree = "<group>"; };
-		32311CF015A4A3E100E21C50 /* PCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCUtils.m; sourceTree = "<group>"; };
 		323586E216381BF700872ECE /* MyEduCourseListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduCourseListViewController.h; sourceTree = "<group>"; };
 		323586E316381BF700872ECE /* MyEduCourseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduCourseListViewController.m; sourceTree = "<group>"; };
 		323586E716381E1200872ECE /* MyEduCourseListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduCourseListView.xib; sourceTree = "<group>"; };
@@ -646,8 +647,6 @@
 		328B9EEC150B8E7B00B50024 /* JSFavStarControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSFavStarControl.m; sourceTree = "<group>"; };
 		328B9EF2150B927500B50024 /* RatingStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RatingStar.png; sourceTree = "<group>"; };
 		328B9EF3150B927500B50024 /* RatingStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RatingStar@2x.png"; sourceTree = "<group>"; };
-		328B9EFB150BA23D00B50024 /* PCValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCValues.h; sourceTree = "<group>"; };
-		328B9EFC150BA23D00B50024 /* PCValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCValues.m; sourceTree = "<group>"; };
 		3292C31516402B4F00AE4D51 /* PCRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCRefreshControl.h; sourceTree = "<group>"; };
 		3292C31616402B4F00AE4D51 /* PCRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCRefreshControl.m; sourceTree = "<group>"; };
 		3293AD1E15D1BC7C0097D414 /* AboutPCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutPCViewController.h; sourceTree = "<group>"; };
@@ -810,8 +809,6 @@
 		32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectArchiver.m; sourceTree = "<group>"; };
 		32D0B249166A282700F68304 /* PushNotifControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushNotifControllerTests.h; sourceTree = "<group>"; };
 		32D0B24A166A282700F68304 /* PushNotifControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushNotifControllerTests.m; sourceTree = "<group>"; };
-		32D0B24C166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+CustomViewImage.h"; sourceTree = "<group>"; };
-		32D0B24D166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+CustomViewImage.m"; sourceTree = "<group>"; };
 		32D0B250166AA58D00F68304 /* LocationArrowActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowActive.png; sourceTree = "<group>"; };
 		32D0B251166AA58D00F68304 /* LocationArrowActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrowActive@2x.png"; sourceTree = "<group>"; };
 		32D0B252166AA58D00F68304 /* LocationArrowInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowInactive.png; sourceTree = "<group>"; };
@@ -1060,6 +1057,7 @@
 			children = (
 				3288699014FE5AF300CC97DB /* AppDelegate */,
 				3288699314FE5AF300CC97DB /* Controllers */,
+				322207F41689E39E003F6622 /* Misc */,
 				3288699814FE5AF300CC97DB /* Model */,
 				328869A714FE5AF300CC97DB /* Views */,
 				3219EF5714FCDE4900A271CD /* Supporting Files */,
@@ -1214,6 +1212,17 @@
 			name = Images;
 			path = PocketCampus/Views/Images;
 			sourceTree = SOURCE_ROOT;
+		};
+		322207F41689E39E003F6622 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				322207F51689E3A3003F6622 /* PCUtils.h */,
+				322207F61689E3A3003F6622 /* PCUtils.m */,
+				322207F71689E3A3003F6622 /* PCValues.h */,
+				322207F81689E3A3003F6622 /* PCValues.m */,
+			);
+			path = Misc;
+			sourceTree = "<group>";
 		};
 		322BA0451643FBEB0063B632 /* MSPullToRefresh */ = {
 			isa = PBXGroup;
@@ -1530,10 +1539,6 @@
 		328869A814FE5AF400CC97DB /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				328B9EFB150BA23D00B50024 /* PCValues.h */,
-				328B9EFC150BA23D00B50024 /* PCValues.m */,
-				32311CEF15A4A3E100E21C50 /* PCUtils.h */,
-				32311CF015A4A3E100E21C50 /* PCUtils.m */,
 				3247CAF615135FD800105A71 /* PCTableViewSectionHeader.h */,
 				3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */,
 				3241F1DC15B4AB9B00C7DF3A /* EditableTableViewCell.h */,
@@ -1543,8 +1548,6 @@
 				3292C31616402B4F00AE4D51 /* PCRefreshControl.m */,
 				32BA306F1645D31900909D82 /* PCCenterMessageCell.h */,
 				32BA30701645D31A00909D82 /* PCCenterMessageCell.m */,
-				32D0B24C166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.h */,
-				32D0B24D166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.m */,
 				327412E3167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.h */,
 				327412E4167E824F001E8C62 /* PCTableViewCellWithDownloadIndication.m */,
 				32E67DC41684D40C00E5CFF6 /* PCRecentResultTableViewCell.h */,
@@ -2088,11 +2091,11 @@
 				32FAC0E01500F40700925180 /* DirectoryPlugin */,
 				3247C3AE1504F2E10079522A /* FoodPlugin */,
 				324151C415373A1700CCFB22 /* MapPlugin */,
-				32CCB4F5155546C100220282 /* NewsPlugin */,
 				32CCB4D01555237500220282 /* MoodlePlugin */,
 				F7814A8EA4833D3869C259E7 /* MyEduPlugin */,
-				32FB2DFC15179014007AE82B /* TransportPlugin */,
+				32CCB4F5155546C100220282 /* NewsPlugin */,
 				45F64094AC7F521F7FD1B828 /* PushNotifPlugin */,
+				32FB2DFC15179014007AE82B /* TransportPlugin */,
 			);
 			path = Plugins;
 			sourceTree = "<group>";
@@ -2715,7 +2718,6 @@
 				328B9ED3150B77DD00B50024 /* MenusListViewController.m in Sources */,
 				328B9EDE150B7DDE00B50024 /* MealCell.m in Sources */,
 				328B9EED150B8E7B00B50024 /* JSFavStarControl.m in Sources */,
-				328B9EFD150BA23D00B50024 /* PCValues.m in Sources */,
 				3266394A150C00E100719F6E /* NSString+MD5Addition.m in Sources */,
 				3266394B150C00E100719F6E /* UIDevice+IdentifierAddition.m in Sources */,
 				3247CAF815135FD800105A71 /* PCTableViewSectionHeader.m in Sources */,
@@ -2767,7 +2769,6 @@
 				3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */,
 				32058ACC1572B44D00F4D361 /* TransportSettingsViewController.m in Sources */,
 				32D57299157F7D780051230F /* EPFLLayersOverlay.m in Sources */,
-				32311CF115A4A3E100E21C50 /* PCUtils.m in Sources */,
 				32D97C7D15AF160D004384A5 /* NSArray+STAdditions.m in Sources */,
 				32D97C7E15AF160D004384A5 /* NSData+STAdditions.m in Sources */,
 				32D97C7F15AF160D004384A5 /* NSDate+STAdditions.m in Sources */,
@@ -2831,7 +2832,6 @@
 				3D60403F97790317C691C8A4 /* pushnotif.m in Sources */,
 				3200A93F1666B709003D163E /* MapController.m in Sources */,
 				32D0B24B166A282700F68304 /* PushNotifControllerTests.m in Sources */,
-				32D0B24E166A5C0600F68304 /* UIBarButtonItem+CustomViewImage.m in Sources */,
 				32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */,
 				32EE9628166E25BD005B0F65 /* MoodleCourseSectionsViewController.m in Sources */,
 				32035BB3166E987100E134DD /* MoodleResourceViewController.m in Sources */,
@@ -2841,6 +2841,8 @@
 				32E67DC61684D40C00E5CFF6 /* PCRecentResultTableViewCell.m in Sources */,
 				322207E81688E62E003F6622 /* NewsSplashViewController.m in Sources */,
 				322207EF1688F097003F6622 /* NewsItemViewController.m in Sources */,
+				322207F91689E3A3003F6622 /* PCUtils.m in Sources */,
+				322207FA1689E3A3003F6622 /* PCValues.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

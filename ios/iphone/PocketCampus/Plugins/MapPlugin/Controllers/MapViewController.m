@@ -24,8 +24,6 @@
 
 #import "PCUnkownPersonViewController.h"
 
-#import "UIBarButtonItem+CustomViewImage.h"
-
 #import <QuartzCore/QuartzCore.h>
 
 static int MAX_DISPLAYED_ANNOTATIONS = 70;
