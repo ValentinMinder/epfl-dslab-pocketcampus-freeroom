@@ -8,6 +8,8 @@
 
 #import "PluginNavigationController.h"
 
+#import "PCValues.h"
+
 @interface PluginNavigationController ()
 
 @end
@@ -39,7 +41,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.layer.cornerRadius = 3;
+    self.view.layer.cornerRadius = [PCValues defaultCornerRadius];
     self.view.layer.masksToBounds = YES;
 }
 

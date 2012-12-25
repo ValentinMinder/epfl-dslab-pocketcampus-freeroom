@@ -10,6 +10,8 @@
 
 #import "PCUtils.h"
 
+#import "PCValues.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 @interface SplashViewController ()
@@ -34,11 +36,8 @@
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)]; //any non-null size. AutoresizingMask will stretch to full screen size
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view.autoresizesSubviews = YES;
-    if ([PCUtils isIdiomPad]) {
-        self.view.layer.cornerRadius = 5;
-    } else {
-        self.view.layer.cornerRadius = 2;
-    }
+
+    self.view.layer.cornerRadius = [PCValues defaultCornerRadius];
     self.view.layer.masksToBounds = YES;
     
     self.splashViewImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PocketCampusDrawing"]];

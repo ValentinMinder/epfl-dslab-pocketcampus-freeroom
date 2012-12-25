@@ -8,11 +8,29 @@
 
 #import "PCValues.h"
 
+#import "PCUtils.h"
+
+#import <QuartzCore/QuartzCore.h>
+
 @implementation PCValues
 
 + (void)applyAppearenceProxy {
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearance];
     navigationBarAppearance.tintColor = [PCValues pocketCampusRed];
+    
+    /*if (![PCUtils isIdiomPad]) {
+        navigationBarAppearance.layer.cornerRadius = 2;
+    }
+    navigationBarAppearance.layer.masksToBounds = YES;*/
+    
+}
+
++ (float)defaultCornerRadius {
+    if ([PCUtils isIdiomPad]) {
+        return 5.0;
+    } else {
+        return 2.0;
+    }
 }
 
 + (UIColor*)pocketCampusRed {

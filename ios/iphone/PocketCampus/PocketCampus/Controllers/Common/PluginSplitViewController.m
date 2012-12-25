@@ -8,6 +8,8 @@
 
 #import "PluginSplitViewController.h"
 
+#import "PCValues.h"
+
 @interface PluginSplitViewController ()
 
 @end
@@ -30,7 +32,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.layer.cornerRadius = 5;
+    self.view.layer.cornerRadius = [PCValues defaultCornerRadius];
     self.view.layer.masksToBounds = YES;
 }
 

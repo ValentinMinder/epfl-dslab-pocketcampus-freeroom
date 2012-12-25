@@ -16,6 +16,8 @@
 
 #import "PCValues.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 static NSString* kMenuItemButtonIdentifier = @"MenuItemButton";
 static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
@@ -57,6 +59,8 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     | UIViewAutoresizingFlexibleHeight
     | UIViewAutoresizingFlexibleBottomMargin;
     self.tableView.backgroundView = backgroundView;
+    self.view.layer.cornerRadius = [PCValues defaultCornerRadius];
+    self.view.layer.masksToBounds = YES;
     [self.mainController mainMenuIsReady];
 }
 

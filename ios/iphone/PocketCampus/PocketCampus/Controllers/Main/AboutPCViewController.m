@@ -100,7 +100,11 @@
         if ([PCUtils is4inchDevice]) {
             webView.frame = CGRectOffset(webView.frame, 0, -10.0);
         } else {
-            webView.frame = CGRectOffset(webView.frame, 0, 0.0);
+            if ([PCUtils isOSVersionSmallerThan:6.0]) {
+                webView.frame = CGRectOffset(webView.frame, 0, +15.0);
+            } else {
+                webView.frame = CGRectOffset(webView.frame, 0, 0.0);
+            }
         }
     }
     webView.alpha = 1.0;

@@ -55,10 +55,6 @@ static id test __strong __unused = nil;
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
-
-    if ([PCUtils isOSVersionSmallerThan:6.0]) {
-        [application setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-    }
     
     self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
     

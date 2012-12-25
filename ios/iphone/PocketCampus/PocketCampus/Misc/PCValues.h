@@ -11,6 +11,8 @@
 @interface PCValues : NSObject
 
 + (void)applyAppearenceProxy;
+
++ (float)defaultCornerRadius;
 + (UIColor*)pocketCampusRed;
 + (UIColor*)backgroundColor1;
 + (UIColor*)textColor1;
