@@ -20,7 +20,7 @@
 
 static NSString* kRestaurantCellIdentifier = @"restaurant";
 
-static NSTimeInterval kMealsValidityTimeSeconds = 1800; // 30 min.
+static NSTimeInterval kMealsValidityTimeSeconds = 3600.0; // 60 min.
 
 @implementation RestaurantsListViewController
 
@@ -34,7 +34,6 @@ static NSTimeInterval kMealsValidityTimeSeconds = 1800; // 30 min.
         meals = nil;
         restaurants = nil;
         restaurantsAndMeals = nil;
-        shouldRefresh = NO;
         lastRefreshDate = nil;
     }
     return self;
@@ -50,6 +49,7 @@ static NSTimeInterval kMealsValidityTimeSeconds = 1800; // 30 min.
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshButton;
     [refreshButton release];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeed) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     /* TEST */
     /*
     Rating* rating = [[Rating alloc] initWithRatingValue:3.0 numberOfVotes:10 sumOfRatings:20];
@@ -84,20 +84,19 @@ static NSTimeInterval kMealsValidityTimeSeconds = 1800; // 30 min.
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
 }
 
-- (BOOL)shouldRefresh {
-    if (!lastRefreshDate || shouldRefresh) {
-        return YES;
+- (void)refreshIfNeed {
+    if (lastRefreshDate && [[NSDate date] timeIntervalSinceDate:lastRefreshDate] <= kMealsValidityTimeSeconds) {
+        return;
     }
-    if ([[NSDate date] timeIntervalSinceDate:lastRefreshDate] > kMealsValidityTimeSeconds) {
-        return YES;
+    if (self.navigationController.topViewController != self) {
+        [self.navigationController popToViewController:self animated:NO];
     }
-    return NO;
+    [self refresh];
 }
 
 - (void)refresh {
     [meals release];
     meals = nil;
-    shouldRefresh = NO;
     tableView.hidden = YES;
     [centerActivityIndicator startAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"CenterLabelLoadingText", @"FoodPlugin", @"Tell the user that the list of restaurants is loading");
@@ -164,7 +163,6 @@ static NSTimeInterval kMealsValidityTimeSeconds = 1800; // 30 min.
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    shouldRefresh = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
     tableView.hidden = YES;
     [centerActivityIndicator stopAnimating];
@@ -270,6 +268,7 @@ static NSTimeInterval kMealsValidityTimeSeconds = 1800; // 30 min.
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     tableView.delegate = nil;
     tableView.dataSource = nil;
     [lastRefreshDate release];
