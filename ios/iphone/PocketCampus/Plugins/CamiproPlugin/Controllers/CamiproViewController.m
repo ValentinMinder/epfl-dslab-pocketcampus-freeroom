@@ -63,6 +63,9 @@ static CGFloat kBalanceCellHeight = 70.0;
     lastUpdateLabel.shadowColor = [UIColor blackColor];
     [self.toolbar addSubview:lastUpdateLabel];
     [lastUpdateLabel release];
+    UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+    [self.navigationItem setRightBarButtonItem:refreshButton animated:YES];
+    [refreshButton release];
     [self refresh];
 }
 
@@ -83,7 +86,6 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (void)refresh {
-    shouldRefresh = NO;
     centerMessageLabel.text = @"";
     [centerActivityIndicator startAnimating];
     tableView.hidden = YES;
@@ -190,9 +192,6 @@ static CGFloat kBalanceCellHeight = 70.0;
             toolbar.hidden = NO;
             lastUpdateLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"CamiproPlugin", nil),balanceAndTransactions.iDate];
             [tableView reloadData];
-            UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
-            [self.navigationItem setRightBarButtonItem:refreshButton animated:YES];
-            [refreshButton release];
             [UIView animateWithDuration:0.2 animations:^{
                 tableView.alpha = 1.0;
                 toolbar.alpha = 1.0;

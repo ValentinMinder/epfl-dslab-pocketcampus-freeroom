@@ -26,10 +26,7 @@
     CamiproService* camiproService;
     BalanceAndTransactions* balanceAndTransactions;
     TequilaToken* tequilaKey;
-    BOOL shouldRefresh;
 }
-
-- (void)refresh;
 
 @property (nonatomic, assign) IBOutlet UITableView* tableView;
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;

@@ -51,12 +51,6 @@ static CamiproController* instance __weak = nil;
     }
 }
 
-- (void)refresh {
-    if (((CamiproViewController*)(self.mainNavigationController.visibleViewController)).shouldRefresh) {
-        [((CamiproViewController*)(self.mainNavigationController.visibleViewController)) refresh];
-    }
-}
-
 + (void)deleteSessionIfNecessary {
     NSNumber* deleteSession = (NSNumber*)[ObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
     if (deleteSession && [deleteSession boolValue]) {
