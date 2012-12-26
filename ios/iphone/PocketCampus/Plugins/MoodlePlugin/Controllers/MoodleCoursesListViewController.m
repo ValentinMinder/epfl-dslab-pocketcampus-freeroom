@@ -110,7 +110,6 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 #pragma mark - MoodleServiceDelegate
 
 - (void)getCoursesList:(MoodleRequest *)aMoodleRequest didReturn:(CoursesListReply *)coursesListReply {
-    [[MoodleController sharedInstance] removeLoginObserver:self];
     switch (coursesListReply.iStatus) {
         case 200:
             self.courses = coursesListReply.iCourses;
@@ -139,7 +138,6 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 }
 
 - (void)getCoursesListFailed:(MoodleRequest *)aMoodleRequest {
-    [[MoodleController sharedInstance] removeLoginObserver:self];
     [self error];
 }
 

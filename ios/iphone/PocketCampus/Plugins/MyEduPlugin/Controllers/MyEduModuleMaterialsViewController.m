@@ -304,7 +304,6 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
     self.webView.delegate = nil;
     [self.webView stopLoading];
     [self.myEduService cancelOperationsForDelegate:self];
-    [[MyEduController sharedInstance] removeLoginObserver:self];
 }
 
 @end

@@ -174,7 +174,6 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 #pragma MoodleServiceDelegate
 
 - (void)getCourseSections:(MoodleRequest *)aMoodleRequest didReturn:(SectionsListReply *)sectionsListReply {
-    [[MoodleController sharedInstance] removeLoginObserver:self];
     switch (sectionsListReply.iStatus) {
         case 200:
             self.sections = sectionsListReply.iSections;
@@ -230,7 +229,6 @@ static NSString* kMoodleCourseSectionElementCell = @"MoodleCourseSectionElementC
 }
 
 - (void)getCourseSectionsFailed:(MoodleRequest *)aMoodleRequest {
-    [[MoodleController sharedInstance] removeLoginObserver:self];
     [self error];
 }
 

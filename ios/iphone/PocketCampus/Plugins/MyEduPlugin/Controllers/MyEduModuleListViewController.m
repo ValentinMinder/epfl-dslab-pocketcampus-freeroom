@@ -154,7 +154,6 @@
 #pragma mark - MyEduServiceDelegate
 
 - (void)getSectionDetailsForRequest:(MyEduSectionDetailsRequest*)request didReturn:(MyEduSectionDetailsReply*)reply {
-    [[MyEduController sharedInstance] removeLoginObserver:self];
     switch (reply.iStatus) {
         case 200:
         {
@@ -182,7 +181,6 @@
 }
 
 - (void)getSectionDetailsFailedForRequest:(MyEduSectionDetailsRequest *)request {
-    [[MyEduController sharedInstance] removeLoginObserver:self];
     [self error];
 }
 
