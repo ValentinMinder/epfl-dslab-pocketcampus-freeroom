@@ -301,6 +301,8 @@ static MainController<MainControllerPublic>* instance = nil;
     [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];
 }
 
+#pragma mark setActivePluginWithIdentifier:
+
 - (void)setActivePluginWithIdentifier:(NSString*)identifier {
     
     if (!identifier) { //means swtich to splash view controller
@@ -368,10 +370,7 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (UIViewController*)rootViewControllerForPluginController:(PluginController*)pluginController {
     UIViewController* pluginRootViewController = nil;
-    if (pluginController.mainViewController) {
-        NSLog(@"!! Warning: legacy property mainViewController used. There won't be any navigation controller to support navigation. Consider using mainNavigationController and/or mainSplitViewController (iPad) instead.");
-        pluginRootViewController = pluginController.mainViewController;
-    } else if (pluginController.mainNavigationController) {
+    if (pluginController.mainNavigationController) {
         pluginRootViewController = pluginController.mainNavigationController;
     } else if (pluginController.mainSplitViewController) {
         pluginRootViewController = pluginController.mainSplitViewController;
@@ -443,13 +442,24 @@ static MainController<MainControllerPublic>* instance = nil;
     
 }
 
-/* will rotate phone idiom device to portrait if topviewcontroller only supports portait */
+/* will rotate phone idiom device to portrait if presentedViewController or topviewcontroller only supports portait */
 - (void)rotateDeviceToPortraitIfNecessary {
-    if (!self.activePluginController || !self.activePluginController.mainNavigationController) {
-        return;
+
+    UIViewController* viewController = nil;
+    UIViewController* topViewController = nil;
+    if (self.revealController.presentedViewController) {
+        viewController = self.revealController.presentedViewController;
+        if ([viewController isKindOfClass:[UINavigationController class]]) {
+            topViewController = [(UINavigationController*)viewController topViewController];
+        }
+    } else if (self.activePluginController.mainNavigationController) {
+        viewController = [self rootViewControllerForPluginController:self.activePluginController];
+    } else {
+        return; //no need to rotate if no active plugin nor presented view controller
     }
-    PluginNavigationController* navController = self.activePluginController.mainNavigationController;
-    if (([navController supportedInterfaceOrientations] | UIInterfaceOrientationMaskPortrait) == UIInterfaceOrientationMaskPortrait) {
+    
+    
+    if (([topViewController supportedInterfaceOrientations] | UIInterfaceOrientationMaskPortrait) == UIInterfaceOrientationMaskPortrait || ([viewController supportedInterfaceOrientations] | UIInterfaceOrientationMaskPortrait) == UIInterfaceOrientationMaskPortrait) {
         /* means only potrait mask is supported */
         UIDevice* device = [UIDevice currentDevice];
         if ([device orientation] != UIInterfaceOrientationPortrait) {
@@ -467,9 +477,8 @@ static MainController<MainControllerPublic>* instance = nil;
              * Little hack found on http://ev3r.tumblr.com/post/3854315796/uinavigationcontroller-pushviewcontroller-from 
              * Will actually make view controller retest for supported operations and rotate if necessary.
              */
-            UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:self.activePluginController];
-            [pluginRootViewController presentModalViewController:[[UIViewController alloc] init] animated:NO];
-            [pluginRootViewController dismissModalViewControllerAnimated:NO];
+            [viewController presentModalViewController:[[UIViewController alloc] init] animated:NO];
+            [viewController dismissModalViewControllerAnimated:NO];
         }
     }
 }

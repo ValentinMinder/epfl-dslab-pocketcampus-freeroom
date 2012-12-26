@@ -1,5 +1,6 @@
 
 "PluginName" = "Moodle";
+"MyCourses" = "My courses";
 "MoodleDown" = "Sorry, Moodle servers are down.\nPlease try again later.";
 "MoodleNoCourse" = "You do not seem to be registered\nwith any Moodle course.";
 "MoodleEmptyCourse" = "No document";

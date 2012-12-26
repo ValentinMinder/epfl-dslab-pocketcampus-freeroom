@@ -1,4 +1,8 @@
-/* 
+/*
+ * IMPORTANT: Modified
+ */
+
+/*
  
  Copyright (c) 2011, Philip Kluz (Philip.Kluz@zuui.org)
  All rights reserved.
@@ -794,6 +798,8 @@
     } else { //iPhone, iPod touch
         if (self.frontViewController && [self.frontViewController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
             return [self.frontViewController supportedInterfaceOrientations];
+        } else if (self.presentedViewController && [self.presentedViewController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
+            return [self.presentedViewController supportedInterfaceOrientations];
         } else {
             return UIInterfaceOrientationMaskPortrait; //By default, only support portrait on iPhone
         }

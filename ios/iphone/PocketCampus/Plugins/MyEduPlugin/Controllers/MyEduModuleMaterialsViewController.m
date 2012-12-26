@@ -73,7 +73,7 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
         successBlock();
     } else {
         NSLog(@"-> No saved session, loggin in...");
-        [[MyEduController sharedInstance] addLoginObserver:self operationIdentifier:nil successBlock:successBlock userCancelledBlock:^{
+        [[MyEduController sharedInstance] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             [self error];
         } failureBlock:^{
             [self error];
@@ -95,7 +95,7 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
         successBlock();
     } else {
         NSLog(@"-> No saved session, loggin in...");
-        [[MyEduController sharedInstance] addLoginObserver:self operationIdentifier:nil successBlock:successBlock userCancelledBlock:^{
+        [[MyEduController sharedInstance] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             [self error];
         } failureBlock:^{
             [self error];

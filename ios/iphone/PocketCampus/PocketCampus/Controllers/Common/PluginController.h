@@ -16,15 +16,10 @@
 
 /*Each plugin must have a controller named <plugin_name>Controller, and that subclasses PluginController. Is it NOT an instance of UIViewController*/
 
-@interface PluginController : NSObject {
-    UIViewController* mainViewController __attribute__ ((deprecated));
-    //PluginNavigationController* mainNavigationController;
-    //PluginSplitViewController* mainSplitViewController;
-}
+@interface PluginController : NSObject
 
 @property (readonly) NSArray* toolbarItems;
 /* Either mainNavigationController or mainSplitViewController can be instantiated. Not both. */
-@property (readonly) UIViewController* mainViewController; //Deprecated
 @property (strong) PluginNavigationController* mainNavigationController;
 @property (strong) PluginSplitViewController* mainSplitViewController;
 

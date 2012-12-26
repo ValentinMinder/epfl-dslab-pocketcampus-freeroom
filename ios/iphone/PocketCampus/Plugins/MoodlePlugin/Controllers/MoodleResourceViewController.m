@@ -106,7 +106,7 @@
         successBlock();
     } else {
         NSLog(@"-> No saved session, loggin in...");
-        [[MoodleController sharedInstance] addLoginObserver:self operationIdentifier:nil successBlock:successBlock userCancelledBlock:^{
+        [[MoodleController sharedInstance] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             if ([PCUtils isIdiomPad]) {
                 //TODO
             } else {

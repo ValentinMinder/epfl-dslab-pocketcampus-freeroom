@@ -49,7 +49,7 @@
 						<array key="IBUIItems">
 							<object class="IBUINavigationItem" id="356134922">
 								<reference key="IBUINavigationBar" ref="966566144"/>
-								<string key="IBUITitle"/>
+								<string key="IBUITitle">Moodle</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 						</array>
@@ -133,8 +133,8 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="966566144"/>
 							<reference ref="482503610"/>
+							<reference ref="966566144"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>

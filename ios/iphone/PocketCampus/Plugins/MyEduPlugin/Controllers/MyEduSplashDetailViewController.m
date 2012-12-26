@@ -28,6 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [PCValues backgroundColor1];
 }
 
 - (void)didReceiveMemoryWarning

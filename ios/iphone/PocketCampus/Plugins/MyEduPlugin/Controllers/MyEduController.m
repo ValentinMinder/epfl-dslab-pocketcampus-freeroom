@@ -40,7 +40,6 @@ static MyEduController* instance __weak = nil;
         self = [super init];
         if (self) {
             [[self class] deleteSessionIfNecessary];
-            _loginObservers = [NSMutableArray array];
             MyEduCourseListViewController* courseListViewController = [[MyEduCourseListViewController alloc] init];
             courseListViewController.title = NSLocalizedStringFromTable(@"MyCourses", @"MyEduPlugin", nil);
             
@@ -104,74 +103,20 @@ static MyEduController* instance __weak = nil;
 
 #pragma mark - Login observers management
 
-- (void)addLoginObserver:(id)observer operationIdentifier:(NSString*)identifier successBlock:(VoidBlock)successBlock
+- (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock
     userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
     
-    @synchronized(self) {
-        PCLoginObserver* loginObserver = [[PCLoginObserver alloc] init];
-        loginObserver.observer = observer;
-        loginObserver.operationIdentifier = identifier;
-        loginObserver.successBlock = successBlock;
-        loginObserver.userCancelledBlock = userCancelledblock;
-        loginObserver.failureBlock = failureBlock;
-        [self.loginObservers addObject:loginObserver];
-        if(!self.authController) {
-            self.myEduService = [MyEduService sharedInstanceToRetain];
-            self.authController = [AuthenticationController sharedInstance];
-            [self.myEduService getTequilaTokenForMyEduWithDelegate:self];
-        }
+    [super addLoginObserver:observer successBlock:successBlock userCancelledBlock:userCancelledblock failureBlock:failureBlock];
+    if(!self.myEduService) {
+        self.myEduService = [MyEduService sharedInstanceToRetain];
+        [self.myEduService getTequilaTokenForMyEduWithDelegate:self];
     }
 }
 
 - (void)removeLoginObserver:(id)observer {
-    [self removeLoginObserver:observer operationIdentifier:nil];
-}
-
-- (void)removeLoginObserver:(id)observer operationIdentifier:(NSString*)identifier { //pass nil identifier to remove all from observer
-    @synchronized(self) {
-        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
-            if (loginObserver.observer == observer && (!identifier || [loginObserver.operationIdentifier isEqualToString:identifier])) {
-                [self.loginObservers removeObject:loginObserver];
-            }
-        }
-        if ([self.loginObservers count] == 0) {
-            [self.myEduService cancelOperationsForDelegate:self]; //abandon login attempt if no more observer interested
-            self.myEduService = nil;
-            self.authController = nil;
-        }
-    }
-}
-
-- (void)cleanAndNotifySuccessToObservers {
-    self.tequilaToken = nil;
-    self.authController = nil;
-    self.myEduService = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) { //in case executed block iteself modifies self.loginObservers
-            loginObserver.successBlock();
-        }
-    }
-}
-
-- (void)cleanAndNotifyFailureToObservers {
-    self.tequilaToken = nil;
-    self.authController = nil;
-    self.myEduService = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) { //in case executed block iteself modifies self.loginObservers
-            loginObserver.failureBlock();
-        }
-    }
-}
-
-- (void)cleanAndNotifyUserCancelledToObservers {
-    self.tequilaToken = nil;
-    self.authController = nil;
-    self.myEduService = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) { //in case executed block iteself modifies self.loginObservers
-            loginObserver.userCancelledBlock();
-        }
+    [super removeLoginObserver:observer];
+    if ([self.loginObservers count] == 0) {
+        [self.myEduService cancelOperationsForDelegate:self]; //abandon login attempt if no more observer interested
     }
 }
 
@@ -200,17 +145,7 @@ static MyEduController* instance __weak = nil;
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    self.authController = nil;
-    self.tequilaToken = nil;
-    self.myEduService = nil;
-    @synchronized (self) {
-        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
-            if ([loginObserver.observer respondsToSelector:@selector(serviceConnectionToServerTimedOut)]) {
-                [loginObserver.observer serviceConnectionToServerTimedOut];
-            }
-            [self.loginObservers removeObject:loginObserver];
-        }
-    }
+    [super cleanAndNotifyConnectionToServerTimedOutToObservers];
 }
 
 #pragma mark - AuthenticationCallbackDelegate
@@ -259,8 +194,8 @@ static MyEduController* instance __weak = nil;
 
 - (void)dealloc
 {
-    [[self class] deleteSessionIfNecessary];
     [self.myEduService cancelOperationsForDelegate:self];
+    [[self class] deleteSessionIfNecessary];
     @synchronized(self) {
         instance = nil;
     }

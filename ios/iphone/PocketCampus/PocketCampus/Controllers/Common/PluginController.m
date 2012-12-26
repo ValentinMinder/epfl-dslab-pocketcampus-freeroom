@@ -10,6 +10,4 @@
 
 @implementation PluginController
 
-@synthesize mainViewController;
-
 @end

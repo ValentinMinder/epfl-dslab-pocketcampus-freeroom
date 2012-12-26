@@ -38,6 +38,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 {
     self = [super initWithNibName:@"MoodleCoursesListView" bundle:nil];
     if (self) {
+        self.title = NSLocalizedStringFromTable(@"MyCourses", @"MoodlePlugin", nil);
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.courses = [self.moodleService getFromCacheCourseListReply].iCourses;
         self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"moodle" refreshedDataIdentifier:@"moodleCoursesList"];
@@ -91,7 +92,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
         successBlock();
     } else {
         NSLog(@"-> No saved session, loggin in...");
-        [[MoodleController sharedInstance] addLoginObserver:self operationIdentifier:nil successBlock:successBlock userCancelledBlock:^{
+        [[MoodleController sharedInstance] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             [self.pcRefreshControl endRefreshing];
         } failureBlock:^{
             [self error];

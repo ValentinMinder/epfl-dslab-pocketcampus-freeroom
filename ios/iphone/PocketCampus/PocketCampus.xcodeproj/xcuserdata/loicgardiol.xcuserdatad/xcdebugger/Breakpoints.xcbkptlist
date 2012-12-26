@@ -1821,11 +1821,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
-         timestampString = "376235434.698992"
+         timestampString = "378253933.83293"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "670"
-         endingLineNumber = "670"
+         startingLineNumber = "674"
+         endingLineNumber = "674"
          landmarkName = "-viewWillAppear:"
          landmarkType = "5">
          <Actions>
@@ -1843,11 +1843,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
-         timestampString = "376235434.698992"
+         timestampString = "378253933.83293"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "677"
-         endingLineNumber = "677"
+         startingLineNumber = "681"
+         endingLineNumber = "681"
          landmarkName = "-viewDidAppear:"
          landmarkType = "5">
          <Actions>
@@ -1865,11 +1865,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
-         timestampString = "376235434.698992"
+         timestampString = "378253933.83293"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "684"
-         endingLineNumber = "684"
+         startingLineNumber = "688"
+         endingLineNumber = "688"
          landmarkName = "-viewWillDisappear:"
          landmarkType = "5">
          <Actions>
@@ -1887,11 +1887,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
-         timestampString = "376235434.698992"
+         timestampString = "378253933.83293"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "691"
-         endingLineNumber = "691"
+         startingLineNumber = "695"
+         endingLineNumber = "695"
          landmarkName = "-viewDidDisappear:"
          landmarkType = "5">
          <Actions>
@@ -1909,11 +1909,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/AppDelegate/AppDelegate.m"
-         timestampString = "378071926.851872"
+         timestampString = "378168390.585381"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "130"
-         endingLineNumber = "130"
+         startingLineNumber = "126"
+         endingLineNumber = "126"
          landmarkName = "-application:supportedInterfaceOrientationsForWindow:"
          landmarkType = "5">
          <Actions>
@@ -2257,12 +2257,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "377712299.427296"
+         timestampString = "378251688.490172"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "118"
-         endingLineNumber = "118"
-         landmarkName = "-addLoginObserver:operationIdentifier:successBlock:userCancelledBlock:failureBlock:"
+         startingLineNumber = "110"
+         endingLineNumber = "110"
+         landmarkName = "-addLoginObserver:successBlock:userCancelledBlock:failureBlock:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -2270,11 +2270,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "377712299.427296"
+         timestampString = "378251688.490172"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "185"
-         endingLineNumber = "185"
+         startingLineNumber = "130"
+         endingLineNumber = "130"
          landmarkName = "-getTequilaTokenForMyEduDidReturn:"
          landmarkType = "5">
          <Actions>
@@ -2400,11 +2400,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
-         timestampString = "376235434.698992"
+         timestampString = "378253933.83293"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "772"
-         endingLineNumber = "772"
+         startingLineNumber = "776"
+         endingLineNumber = "776"
          landmarkName = "-shouldAutorotateToInterfaceOrientation:"
          landmarkType = "5">
          <Actions>
@@ -2422,11 +2422,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
-         timestampString = "376235434.698992"
+         timestampString = "378253933.83293"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "698"
-         endingLineNumber = "698"
+         startingLineNumber = "702"
+         endingLineNumber = "702"
          landmarkName = "-willRotateToInterfaceOrientation:duration:"
          landmarkType = "5">
          <Actions>
@@ -2444,11 +2444,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
-         timestampString = "376235434.698992"
+         timestampString = "378253933.83293"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "712"
-         endingLineNumber = "712"
+         startingLineNumber = "716"
+         endingLineNumber = "716"
          landmarkName = "-didRotateFromInterfaceOrientation:"
          landmarkType = "5">
          <Actions>
@@ -2466,11 +2466,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
-         timestampString = "376235434.698992"
+         timestampString = "378253933.83293"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "699"
-         endingLineNumber = "699"
+         startingLineNumber = "703"
+         endingLineNumber = "703"
          landmarkName = "-willRotateToInterfaceOrientation:duration:"
          landmarkType = "5">
          <Actions>
@@ -2488,11 +2488,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
-         timestampString = "376235434.698992"
+         timestampString = "378253933.83293"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "700"
-         endingLineNumber = "700"
+         startingLineNumber = "704"
+         endingLineNumber = "704"
          landmarkName = "@implementation ZUUIRevealController"
          landmarkType = "3">
          <Actions>
@@ -2649,11 +2649,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "377712299.427296"
+         timestampString = "378251688.490172"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "227"
-         endingLineNumber = "227"
+         startingLineNumber = "162"
+         endingLineNumber = "162"
          landmarkName = "-userCancelledAuthentication"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2662,11 +2662,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "377712299.427296"
+         timestampString = "378251688.490172"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "95"
-         endingLineNumber = "95"
+         startingLineNumber = "94"
+         endingLineNumber = "94"
          landmarkName = "+initObservers"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2713,32 +2713,6 @@
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/MoodlePlugin/Controllers/MoodleController.m"
-         timestampString = "376528311.864033"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "149"
-         endingLineNumber = "149"
-         landmarkName = "-cleanAndNotifySuccessToObservers"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/MoodlePlugin/Controllers/MoodleController.m"
-         timestampString = "376528311.864033"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "121"
-         endingLineNumber = "121"
-         landmarkName = "-addLoginObserver:operationIdentifier:successBlock:userCancelledBlock:failureBlock:"
-         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -2819,24 +2793,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MoodlePlugin/Controllers/MoodleController.m"
-         timestampString = "376528311.864033"
+         timestampString = "378251688.490172"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "197"
-         endingLineNumber = "197"
-         landmarkName = "-getSessionIdForServiceWithTequilaKey:didReturn:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/MoodlePlugin/Controllers/MoodleController.m"
-         timestampString = "376528234.395956"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "45"
-         endingLineNumber = "45"
+         startingLineNumber = "40"
+         endingLineNumber = "40"
          landmarkName = "-init"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3468,11 +3429,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Controllers/Main/MainController.m"
-         timestampString = "378162640.547124"
+         timestampString = "378253658.840081"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "515"
-         endingLineNumber = "515"
+         startingLineNumber = "524"
+         endingLineNumber = "524"
          landmarkName = "-revealController:didHideRearViewController:"
          landmarkType = "5">
          <Actions>
@@ -3534,12 +3495,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Main/MainController.m"
-         timestampString = "378162661.33587"
+         timestampString = "378253658.840081"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "488"
-         endingLineNumber = "488"
+         startingLineNumber = "497"
+         endingLineNumber = "497"
          landmarkName = "-revealController:willRevealRearViewController:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/MoodlePlugin/Controllers/MoodleController.m"
+         timestampString = "378251688.490172"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "110"
+         endingLineNumber = "110"
+         landmarkName = "-addLoginObserver:successBlock:userCancelledBlock:failureBlock:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
@@ -3554,7 +3528,7 @@
    </SymbolicBreakpoints>
    <ExceptionBreakpoints>
       <ExceptionBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          scope = "0"

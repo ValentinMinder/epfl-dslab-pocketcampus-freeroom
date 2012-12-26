@@ -214,8 +214,8 @@
             [[GANTracker sharedTracker] trackPageview:@"/v3r1/authentication/click/login" withError:NULL];
             [loadingIndicator startAnimating];
             [usernameTextField resignFirstResponder];
-            usernameTextField.enabled = NO;
             [passwordTextField resignFirstResponder];
+            usernameTextField.enabled = NO;
             passwordTextField.enabled = NO;
             loginCell.textLabel.enabled = NO;
             loginCell.selectionStyle = UITableViewCellSelectionStyleNone;

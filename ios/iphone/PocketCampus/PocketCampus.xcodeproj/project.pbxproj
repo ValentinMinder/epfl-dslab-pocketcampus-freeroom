@@ -118,6 +118,7 @@
 		32442FF3151D141200685D10 /* TopTableViewInnerShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF2151D141200685D10 /* TopTableViewInnerShadow@2x.png */; };
 		32442FF6151D2BF700685D10 /* LocationArrowActiveLight.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF4151D2BF700685D10 /* LocationArrowActiveLight.png */; };
 		32442FF7151D2BF700685D10 /* LocationArrowActiveLight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF5151D2BF700685D10 /* LocationArrowActiveLight@2x.png */; };
+		324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3247C3B71504F2E10079522A /* FoodPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3247C3B01504F2E10079522A /* FoodPlugin.strings */; };
 		3247CAF815135FD800105A71 /* PCTableViewSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */; };
 		32488C921535F31B00BA49AB /* ConnectionSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */; };
@@ -213,6 +214,7 @@
 		329FD2FE164485DF003FF9BE /* ArrowDownCircle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */; };
 		329FD30516449C67003FF9BE /* WarningSignRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD30316449C67003FF9BE /* WarningSignRed.png */; };
 		329FD30616449C67003FF9BE /* WarningSignRed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD30416449C67003FF9BE /* WarningSignRed@2x.png */; };
+		32A46DE2168B975C0023F37C /* MyEduLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A46DE1168B975C0023F37C /* MyEduLarge.png */; };
 		32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A54B7C15B5A8E100A7C882 /* GasparViewController.m */; };
 		32A54B8015B5AA5900A7C882 /* GasparView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A54B7F15B5AA5900A7C882 /* GasparView.xib */; };
 		32A63A4B1535FFF400237841 /* DestinationConnectionsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */; };
@@ -533,6 +535,8 @@
 		32442FF2151D141200685D10 /* TopTableViewInnerShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TopTableViewInnerShadow@2x.png"; sourceTree = "<group>"; };
 		32442FF4151D2BF700685D10 /* LocationArrowActiveLight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowActiveLight.png; sourceTree = "<group>"; };
 		32442FF5151D2BF700685D10 /* LocationArrowActiveLight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrowActiveLight@2x.png"; sourceTree = "<group>"; };
+		324654C5168BA2D300F2782D /* PluginControllerAuthentified.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginControllerAuthentified.h; sourceTree = "<group>"; };
+		324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginControllerAuthentified.m; sourceTree = "<group>"; };
 		324715AC15001381007C230C /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
 		324715AD15001381007C230C /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
 		3247C3B11504F2E10079522A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/FoodPlugin.strings; sourceTree = "<group>"; };
@@ -677,6 +681,7 @@
 		329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowDownCircle@2x.png"; sourceTree = "<group>"; };
 		329FD30316449C67003FF9BE /* WarningSignRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WarningSignRed.png; sourceTree = "<group>"; };
 		329FD30416449C67003FF9BE /* WarningSignRed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WarningSignRed@2x.png"; sourceTree = "<group>"; };
+		32A46DE1168B975C0023F37C /* MyEduLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduLarge.png; sourceTree = "<group>"; };
 		32A54B7B15B5A8E100A7C882 /* GasparViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GasparViewController.h; sourceTree = "<group>"; };
 		32A54B7C15B5A8E100A7C882 /* GasparViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GasparViewController.m; sourceTree = "<group>"; };
 		32A54B7F15B5AA5900A7C882 /* GasparView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GasparView.xib; sourceTree = "<group>"; };
@@ -1561,6 +1566,8 @@
 			children = (
 				32704C65150016B3002BCB75 /* PluginController.h */,
 				32704C66150016B3002BCB75 /* PluginController.m */,
+				324654C5168BA2D300F2782D /* PluginControllerAuthentified.h */,
+				324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */,
 				32FF46531636FB2400932FF5 /* PluginNavigationController.h */,
 				32FF46541636FB2500932FF5 /* PluginNavigationController.m */,
 				320DFC24164697AE00849907 /* PCMasterSplitDelegate.h */,
@@ -1829,8 +1836,8 @@
 				32CCB4E41555237500220282 /* Images */,
 				32EE9624166E1FE7005B0F65 /* MoodleCoursesListView.xib */,
 				32EE9629166E3053005B0F65 /* MoodleCourseSectionsView.xib */,
-				32035BB4166E988600E134DD /* MoodleResourceView.xib */,
 				324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */,
+				32035BB4166E988600E134DD /* MoodleResourceView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2385,6 +2392,7 @@
 			children = (
 				74EB4361AD2616FF44DA66CB /* MyEdu.png */,
 				BB5245679D4E9E9B9F64BAC1 /* MyEdu@2x.png */,
+				32A46DE1168B975C0023F37C /* MyEduLarge.png */,
 				32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */,
 				32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */,
 				320073611646E101002AD7BA /* MyEduModuleText.png */,
@@ -2680,6 +2688,7 @@
 				322207EC1688E6B5003F6622 /* NewsSplashView.xib in Resources */,
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
+				32A46DE2168B975C0023F37C /* MyEduLarge.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2843,6 +2852,7 @@
 				322207EF1688F097003F6622 /* NewsItemViewController.m in Sources */,
 				322207F91689E3A3003F6622 /* PCUtils.m in Sources */,
 				322207FA1689E3A3003F6622 /* PCValues.m in Sources */,
+				324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
