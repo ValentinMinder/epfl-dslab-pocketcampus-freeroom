@@ -7,7 +7,7 @@
 */
 
 "PluginName" = "Annuaire";
-"SearchFieldPlaceholder" = "Rechercher dans l'annuaire de l'EPFL";
+"SearchFieldPlaceholder" = "Nom ou sciper";
 "SearchNoResult" = "Aucun résultat\nEssayez avec l'orthographe exacte (accents)";
 "OfficeLabel" = "bureau";
 "(showOnMap)" = "(voir sur le plan)";

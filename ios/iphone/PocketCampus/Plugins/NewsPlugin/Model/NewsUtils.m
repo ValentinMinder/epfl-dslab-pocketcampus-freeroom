@@ -11,19 +11,7 @@
 @implementation NewsUtils
 
 + (NSArray*)eliminateDuplicateNewsItemsInArray:(NSArray*)newsItems {
-    NSMutableArray* mutableNewsItems = [NSMutableArray array];
-    NSMutableDictionary* countDictionary = [NSMutableDictionary dictionaryWithCapacity:newsItems.count];
-    for (NewsItem* item in newsItems) {
-        NSString* stringId = [NSString stringWithFormat:@"%lld", item.newsItemId];
-        NSString* lowerTitle = [item.title lowercaseString];
-        if ([countDictionary objectForKey:stringId] == nil && [countDictionary objectForKey:lowerTitle] == nil) {
-            [mutableNewsItems addObject:item];
-            [countDictionary setObject:[NSNull null] forKey:stringId]; //object value is not important in dictionary
-            [countDictionary setObject:[NSNull null] forKey:lowerTitle]; //object value is not important in dictionary
-        }
-    }
-    //NSLog(@"%@", countDictionary);
-    return mutableNewsItems;
+    return [[NSOrderedSet orderedSetWithArray:newsItems] array];
 }
 
 + (NSString*)dateLocaleStringForTimestamp:(NSTimeInterval)timestamp {

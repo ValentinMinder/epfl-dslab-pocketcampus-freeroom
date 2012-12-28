@@ -328,6 +328,7 @@
 		32D97C8C15AF160D004384A5 /* STKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D97C7A15AF160D004384A5 /* STKeychain.m */; };
 		32D97C9615AF169B004384A5 /* CLLocation+STAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D97C9015AF169B004384A5 /* CLLocation+STAdditions.m */; };
 		32D97C9C15AF1BB8004384A5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D97C9B15AF1BB8004384A5 /* Security.framework */; };
+		32DA6454168E590B00D22D08 /* NewsItem+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */; };
 		32DE48AE164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE48AD164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32DE48B1164D3138009C6152 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE48AF164D3138009C6152 /* Settings.png */; };
 		32DE48B2164D3138009C6152 /* Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE48B0164D3138009C6152 /* Settings@2x.png */; };
@@ -859,6 +860,8 @@
 		32D97C9B15AF1BB8004384A5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		32D97C9D15AF26B2004384A5 /* NSData+SSToolkitAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+SSToolkitAdditions.h"; sourceTree = "<group>"; };
 		32D97C9E15AF26B3004384A5 /* NSData+SSToolkitAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+SSToolkitAdditions.m"; sourceTree = "<group>"; };
+		32DA6452168E590A00D22D08 /* NewsItem+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NewsItem+Comparison.h"; sourceTree = "<group>"; };
+		32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NewsItem+Comparison.m"; sourceTree = "<group>"; };
 		32DE48AC164D2C1C009C6152 /* MyEduModuleFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleFeedbackViewController.h; sourceTree = "<group>"; };
 		32DE48AD164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduModuleFeedbackViewController.m; sourceTree = "<group>"; };
 		32DE48AF164D3138009C6152 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
@@ -1893,6 +1896,8 @@
 				32CCB50415554A6600220282 /* NewsService.m */,
 				3297E01915557FE10054F790 /* NewsUtils.h */,
 				3297E01A15557FE10054F790 /* NewsUtils.m */,
+				32DA6452168E590A00D22D08 /* NewsItem+Comparison.h */,
+				32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */,
 				32CCB4FB155546C100220282 /* ThriftTypes+Services */,
 			);
 			path = Model;
@@ -2853,6 +2858,7 @@
 				322207F91689E3A3003F6622 /* PCUtils.m in Sources */,
 				322207FA1689E3A3003F6622 /* PCValues.m in Sources */,
 				324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */,
+				32DA6454168E590B00D22D08 /* NewsItem+Comparison.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

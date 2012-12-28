@@ -452,8 +452,20 @@ static NSString* kRecentSearchesKey = @"recentSearches";
             newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSearchResultCellIdentifier];
             newCell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
+        /* Remove secondary first names */
         Person* person = [self.searchResults objectAtIndex:indexPath.row];
-        newCell.textLabel.text = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
+        NSString* firstNameOnly = person.firstName;
+        NSArray* elems = [firstNameOnly componentsSeparatedByString:@" "];
+        firstNameOnly = elems[0];
+        
+        NSString* firstLastName = [NSString stringWithFormat:@"%@ %@", firstNameOnly, person.lastName];
+        
+        if (firstLastName.length > 24) { //prevent textLabel hiding detailTextLabel
+            firstLastName = [firstLastName stringByReplacingCharactersInRange:NSMakeRange(24, firstLastName.length-24) withString:@"..."];
+        }
+        
+        newCell.textLabel.text = firstLastName;
+        
         if (person.organisationalUnit) {
             newCell.detailTextLabel.text = [person.organisationalUnit objectAtIndex:0];
         }
