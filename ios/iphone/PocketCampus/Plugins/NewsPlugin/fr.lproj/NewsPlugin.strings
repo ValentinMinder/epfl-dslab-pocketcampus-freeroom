@@ -8,5 +8,9 @@
 
 "PluginName" = "News";
 "LoadingNews" = "Chargement des news";
+"TodaySectionTitle" = "Aujourd'hui";
+"WeekSectionTitle" = "Moins d'une semaine";
+"MonthSectionTitle" = "Moins d'un mois";
+"OlderSectionTitle" = "Plus ancien";
 "OpenInSafari" = "Ouvrir dans Safari";
 "ClickLinkLeaveApplicationExplanation" = "Vous allez quitter l'application. Continuer ?";

@@ -38,7 +38,7 @@
 
 - (id)initWithNewsItem:(NewsItem*)newsItem cachedImageOrNil:(UIImage*)image
 {
-    self = [super initWithNibName:@"NewsItemView-phone" bundle:nil];
+    self = [super initWithNibName:@"NewsItemView" bundle:nil];
     if (self) {
         self.newsService = [NewsService sharedInstanceToRetain];
         self.newsItem = newsItem;

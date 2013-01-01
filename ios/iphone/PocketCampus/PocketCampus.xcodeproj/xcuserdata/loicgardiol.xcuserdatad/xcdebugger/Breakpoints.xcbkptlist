@@ -3573,6 +3573,115 @@
             </BreakpointActionProxy>
          </Actions>
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/NewsPlugin/Model/NewsUtils.m"
+         timestampString = "378736015.9764"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "32"
+         endingLineNumber = "32"
+         landmarkName = "+newsItemsSectionsSortedByDate:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "today"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/NewsPlugin/Model/NewsUtils.m"
+         timestampString = "378736015.9764"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "34"
+         endingLineNumber = "34"
+         landmarkName = "+newsItemsSectionsSortedByDate:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "week"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/NewsPlugin/Model/NewsUtils.m"
+         timestampString = "378736015.9764"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "36"
+         endingLineNumber = "36"
+         landmarkName = "+newsItemsSectionsSortedByDate:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "month"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/NewsPlugin/Model/NewsUtils.m"
+         timestampString = "378736015.9764"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "38"
+         endingLineNumber = "38"
+         landmarkName = "+newsItemsSectionsSortedByDate:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "older"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/NewsPlugin/Model/NewsUtils.m"
+         timestampString = "378736015.9764"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "30"
+         endingLineNumber = "30"
+         landmarkName = "+newsItemsSectionsSortedByDate:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "po itemDate">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>
       <SymbolicBreakpoint

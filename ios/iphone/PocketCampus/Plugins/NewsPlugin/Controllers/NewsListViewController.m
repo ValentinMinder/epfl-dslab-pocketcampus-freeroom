@@ -22,13 +22,15 @@
 
 #import "NewsItemViewController.h"
 
+#import "PCTableViewSectionHeader.h"
+
 static NSString* kNewsCellIdentifier = @"NewsCell";
 static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 @interface NewsListViewController ()
 
 @property (nonatomic, strong) NewsService* newsService;
-@property (nonatomic, strong) NSArray* newsItems;
+@property (nonatomic, strong) NSArray* sections; //array of arrays, as returned by [NewsUtils eliminateDuplicateNewsItemsInArray:]
 @property (nonatomic, strong) ASINetworkQueue* networkQueue;
 @property (nonatomic, strong) NSMutableDictionary* thumbnails; //key : NSIndexPath , value : UIImage
 @property (nonatomic, strong) Reachability* reachability;
@@ -46,7 +48,10 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     self = [super initWithNibName:@"NewsListView" bundle:nil];
     if (self) {
         self.newsService = [NewsService sharedInstanceToRetain];
-        self.newsItems = [self.newsService getFromCacheNewsItemsForLanguage:[PCUtils userLanguageCode]];
+        NSArray* newsItems = [self.newsService getFromCacheNewsItemsForLanguage:[PCUtils userLanguageCode]];
+        if (newsItems) {
+            self.sections = [NewsUtils newsItemsSectionsSortedByDate:newsItems];
+        }
         self.networkQueue = [[ASINetworkQueue alloc] init];
         self.networkQueue.maxConcurrentOperationCount = 6;
         self.thumbnails = [[NSMutableDictionary alloc] init];
@@ -87,7 +92,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 #pragma mark - refresh control
 
 - (void)refreshIfNeed {
-    if (!self.newsItems || [self.pcRefreshControl shouldRefreshDataForValidity:kAutomaticRefreshPeriodSeconds]) {
+    if (!self.sections || [self.pcRefreshControl shouldRefreshDataForValidity:kAutomaticRefreshPeriodSeconds]) {
         [self refresh];
     }
 }
@@ -110,8 +115,9 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 #pragma mark - NewsServiceDelegate
 
-- (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems_ {
-    self.newsItems = [NewsUtils eliminateDuplicateNewsItemsInArray:newsItems_];
+- (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems {
+    newsItems = [NewsUtils eliminateDuplicateNewsItemsInArray:newsItems];
+    self.sections = [NewsUtils newsItemsSectionsSortedByDate:newsItems];
     [self.tableView reloadData];
     [self.pcRefreshControl endRefreshing];
     [self.pcRefreshControl markRefreshSuccessful];
@@ -121,7 +127,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (void)newsItemsFailedForLanguage:(NSString*)language {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
-    if (!self.newsItems) {
+    if (!self.sections) {
         [PCUtils showServerErrorAlert];
     }
     [self.pcRefreshControl hideInTimeInterval:2.0];
@@ -130,7 +136,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (void)serviceConnectionToServerTimedOut {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
-    if (!self.newsItems) {
+    if (!self.sections) {
         [PCUtils showConnectionToServerTimedOutAlert];
     }
     [self.pcRefreshControl hideInTimeInterval:2.0];
@@ -170,8 +176,43 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 #pragma mark - UITableViewDelegate
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if ([self.sections[section] count] == 0) {
+        return 0.0;
+    }
+    return [PCValues tableViewSectionHeaderHeight];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if ([self.sections[section] count] == 0) {
+        return nil;
+    }
+    
+    NSString* title = nil;
+    
+    switch (section) {
+        case 0:
+            title = NSLocalizedStringFromTable(@"TodaySectionTitle", @"NewsPlugin", nil);
+            break;
+        case 1:
+            title = NSLocalizedStringFromTable(@"WeekSectionTitle", @"NewsPlugin", nil);
+            break;
+        case 2:
+            title = NSLocalizedStringFromTable(@"MonthSectionTitle", @"NewsPlugin", nil);
+            break;
+        case 3:
+            title = NSLocalizedStringFromTable(@"OlderSectionTitle", @"NewsPlugin", nil);
+            break;
+        default:
+            title = @""; //not supported, should not happen
+            break;
+    }
+    
+    return [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NewsItem* newsItem = self.newsItems[indexPath.row];
+    NewsItem* newsItem = self.sections[indexPath.section][indexPath.row];
     UIImage* thumbnail = [self.thumbnails objectForKey:indexPath];
     
     NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:thumbnail];
@@ -186,7 +227,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NewsItem* newsItem = [self.newsItems objectAtIndex:indexPath.row];
+    NewsItem* newsItem = self.sections[indexPath.section][indexPath.row];
     UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:kNewsCellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNewsCellIdentifier];
@@ -225,10 +266,17 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.newsItems == nil) {
+    if (!self.sections) {
         return 0;
     }
-    return self.newsItems.count;
+    return [self.sections[section] count];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (!self.sections) {
+        return 0;
+    }
+    return self.sections.count;
 }
 
 #pragma mark - dealloc
