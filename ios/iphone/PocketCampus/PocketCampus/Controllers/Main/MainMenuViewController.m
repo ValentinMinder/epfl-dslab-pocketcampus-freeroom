@@ -61,6 +61,7 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     self.tableView.backgroundView = backgroundView;
     self.view.layer.cornerRadius = [PCValues defaultCornerRadius];
     self.view.layer.masksToBounds = YES;
+    self.tableView.scrollsToTop = NO; //if not set to NO, front view controllers cannot be scrolled to top by tapping the status bar
     [self.mainController mainMenuIsReady];
 }
 

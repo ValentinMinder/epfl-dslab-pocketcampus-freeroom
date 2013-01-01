@@ -32,7 +32,7 @@ typedef enum {
 - (id)initWithTableViewController:(UITableViewController*)tableViewController;
 
 /*
- * Enables "last refresh <date>" feature. See markRefreshSuccessful for How-To.
+ * Enables "last refresh <date>" feature. See method markRefreshSuccessful for How-To.
  * Task identifier will be use to save last refresh timestamp.
  */
 - (id)initWithTableViewController:(UITableViewController*)tableViewController pluginName:(NSString*)pluginName refreshedDataIdentifier:(NSString*)dataIdentifier;
@@ -52,6 +52,7 @@ typedef enum {
  * Call this method just after endRefresh to signal that the last refresh was successfull.
  * This will set the default text to "last refresh <date>". 
  * This feature is only supported if refreshedDataIdentifier was indicated at init.
+ * Note: last refresh date is only displayed in iOS>=6
  */
 - (void)markRefreshSuccessful;
 
