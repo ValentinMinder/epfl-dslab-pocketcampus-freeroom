@@ -28,6 +28,8 @@
 
 #import "GlobalSettingsViewController.h"
 
+#import "ObjectArchiver.h"
+
 #import <objc/message.h>
 
 @interface MainController ()
@@ -48,6 +50,10 @@
 static NSString* kSupportedIdiomPhone = @"phone";
 static NSString* kSupportedIdiomPad = @"pad";
 static NSString* kSupportedIdiomPhonePad = @"phone+pad";
+
+static NSString* kPluginsMainMenuItemsInfoKey = @"pluginsMainMenuItemsInfo";
+static NSString* kPluginsMainMenuItemsInfoOrderNumberKey = @"pluginsMainMenuItemsInfoOrderNumber";
+static NSString* kPluginsMainMenuItemsInfoHiddenKey = @"pluginsMainMenuItemsInfoHidden";
 
 static int kGesturesViewTag = 50;
 
@@ -223,26 +229,50 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)initMainMenu {
+    
+    /* Generating menu items from pluginsList */
+    
     NSMutableArray* menuItems = [NSMutableArray array];
-    
-    MainMenuItem* pluginSectionHeader = [MainMenuItem menuItemSectionHeaderWithTitle:@"Plugins"];
-    pluginSectionHeader.hidden = YES;
-    
-    [menuItems addObject:pluginSectionHeader];
     
     for (NSString* pluginIdentifier in self.pluginsList) {
         Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:pluginIdentifier]);
         NSString* localizedName = [pluginClass localizedName];
         MainMenuItem* item = [MainMenuItem menuItemButtonWithTitle:localizedName leftImage:[UIImage imageNamed:pluginIdentifier] identifier:pluginIdentifier];
         [menuItems addObject:item];
-        
     }
     
-    /*[menuItems addObject:[MainMenuItem menuItemThinSeparator]];
-     
-     MainMenuItem* settingsButton = [MainMenuItem menuItemButtonWithTitle:NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil) leftImage:[UIImage imageNamed:@"Settings"] identifier:kSettingsIdentifier];
-     
-     [menuItems addObject:settingsButton];*/
+    /* Restoring previous order / hidden of menu items, saved be used */
+    
+    NSDictionary* menuItemsInfo = (NSDictionary*)[ObjectArchiver objectForKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"];
+    
+    NSMutableArray* menuItemsCopy = [menuItems mutableCopy];
+    
+    @try {
+        for (MainMenuItem* item in menuItemsCopy) {
+
+            NSDictionary* infos = menuItemsInfo[item.identifier];
+            if (infos) {
+                if (infos[kPluginsMainMenuItemsInfoOrderNumberKey]) {
+                    NSUInteger index = [infos[kPluginsMainMenuItemsInfoOrderNumberKey] unsignedIntValue];
+                    [menuItems removeObject:item];
+                    [menuItems insertObject:item atIndex:index];
+                }
+                if (infos[kPluginsMainMenuItemsInfoHiddenKey]) {
+                    item.hidden = [infos[kPluginsMainMenuItemsInfoHiddenKey] boolValue];
+                }
+            }
+        }
+    }
+    @catch (NSException *exception) {
+        menuItems = menuItemsCopy; //if anything bad happens during recovery, go back to standard order.
+    }
+    
+    /* Adding section at beginning */
+    
+    MainMenuItem* pluginSectionHeader = [MainMenuItem menuItemSectionHeaderWithTitle:@"Plugins"];
+    pluginSectionHeader.hidden = YES;
+    
+    [menuItems insertObject:pluginSectionHeader atIndex:0];
     
     MainMenuViewController* mainMenuViewController = [[MainMenuViewController alloc] initWithMenuItems:menuItems mainController:self];
     self.mainMenuViewController = mainMenuViewController;
@@ -250,7 +280,7 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (void)initRevealController {
     self.splashViewController = [[SplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
-    self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:self.mainMenuViewController];
+    self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:[[UINavigationController alloc] initWithRootViewController:self.mainMenuViewController]];
     self.revealController.rearViewRevealWidth = self.revealWidth;
 }
 
@@ -294,8 +324,32 @@ static MainController<MainControllerPublic>* instance = nil;
     }
 }
 
+- (void)mainMenuStartedEditing {
+    if (![PCUtils isIdiomPad] && self.activePluginController) {
+        [self.revealController hideFrontView];
+    }
+}
+
+- (void)mainMenuEndedEditing {
+    if (![PCUtils isIdiomPad] && self.activePluginController) {
+        [self.revealController showFrontViewCompletely:NO];
+    }
+    
+    NSMutableDictionary* menuItemsInfo __block = [NSMutableDictionary dictionary];
+    [self.mainMenuViewController.pluginsMenuItems enumerateObjectsUsingBlock:^(MainMenuItem* item, NSUInteger index, BOOL *stop) {
+        NSMutableDictionary* infos = [NSMutableDictionary dictionaryWithCapacity:2];
+        infos[kPluginsMainMenuItemsInfoOrderNumberKey] = [NSNumber numberWithUnsignedInt:index];
+        infos[kPluginsMainMenuItemsInfoHiddenKey] = [NSNumber numberWithBool:item.hidden];
+        menuItemsInfo[item.identifier] = infos;
+    }];
+    if (![ObjectArchiver saveObject:menuItemsInfo forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
+        UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while saving the main menu state." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [errorAlert show];
+    }
+}
+
 - (void)showGlobalSettings {
-    GlobalSettingsViewController* settingsViewController = [[GlobalSettingsViewController alloc] init];
+    GlobalSettingsViewController* settingsViewController = [[GlobalSettingsViewController alloc] initWithMainController:self];
     UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];

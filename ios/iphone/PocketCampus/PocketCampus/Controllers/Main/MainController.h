@@ -18,6 +18,7 @@ typedef enum {
 } PluginStateNotification;
 
 @class PluginController;
+@class MainMenuViewController;
 
 /*
  * Note: see MainController interface to get instance of MainControllerPublic
@@ -76,5 +77,9 @@ typedef enum {
 - (void)mainMenuIsReady;
 - (void)showGlobalSettings;
 
+- (void)mainMenuStartedEditing;
+- (void)mainMenuEndedEditing;
+
+@property (nonatomic, readonly, strong) MainMenuViewController* mainMenuViewController;
 
 @end

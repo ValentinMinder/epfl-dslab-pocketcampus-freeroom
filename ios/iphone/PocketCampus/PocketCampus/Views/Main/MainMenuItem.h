@@ -11,7 +11,7 @@
 typedef enum {
     MainMenuItemTypeButton = 0,
     MainMenuItemTypeThinSeparator,
-    MainMenuItemTypeSectionHeader
+    MainMenuItemTypeSectionHeader //NOT SUPPORTED YET
 } MainMenuItemType;
 
 @interface MainMenuItem : NSObject

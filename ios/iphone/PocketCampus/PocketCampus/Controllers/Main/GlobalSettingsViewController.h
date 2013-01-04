@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class MainController;
+
 @interface GlobalSettingsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
     //UITableView* tableView;
     //UITextField* usernameTextField;
@@ -17,5 +19,7 @@
 }
 
 @property (nonatomic, assign) IBOutlet UITableView* tableView;
+
+- (id)initWithMainController:(MainController*)mainController;
 
 @end

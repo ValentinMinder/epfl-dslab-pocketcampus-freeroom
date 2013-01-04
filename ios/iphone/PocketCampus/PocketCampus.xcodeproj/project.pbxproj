@@ -260,6 +260,8 @@
 		32BA30731645DCB200909D82 /* MyEduCourseInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */; };
 		32BA30761645DF9200909D82 /* MyEduCourseInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDB15656D36008415A1 /* CamiproView.xib */; };
+		32BE787216977F0000EC3E64 /* EyeBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 32BE787016977F0000EC3E64 /* EyeBlack.png */; };
+		32BE787316977F0000EC3E64 /* EyeBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32BE787116977F0000EC3E64 /* EyeBlack@2x.png */; };
 		32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */; };
 		32CAE432153628C100AB17CC /* ConnectionPartsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */; };
 		32CBF04B163447FC00FD92E5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CBF040163447FA00FD92E5 /* Default-568h@2x.png */; };
@@ -759,6 +761,8 @@
 		32BA30741645DF9200909D82 /* MyEduCourseInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduCourseInfoViewController.h; sourceTree = "<group>"; };
 		32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduCourseInfoViewController.m; sourceTree = "<group>"; };
 		32BCACDB15656D36008415A1 /* CamiproView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproView.xib; sourceTree = "<group>"; };
+		32BE787016977F0000EC3E64 /* EyeBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EyeBlack.png; sourceTree = "<group>"; };
+		32BE787116977F0000EC3E64 /* EyeBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBlack@2x.png"; sourceTree = "<group>"; };
 		32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionPartsListViewController.h; sourceTree = "<group>"; };
 		32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionPartsListViewController.m; sourceTree = "<group>"; };
 		32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionPartsListView.xib; sourceTree = "<group>"; };
@@ -1188,6 +1192,8 @@
 				327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */,
 				3295DF0D165BC60B00CA3B9D /* DownloadedRectSmall.png */,
 				3295DF0E165BC60C00CA3B9D /* DownloadedRectSmall@2x.png */,
+				32BE787016977F0000EC3E64 /* EyeBlack.png */,
+				32BE787116977F0000EC3E64 /* EyeBlack@2x.png */,
 				3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */,
 				3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */,
 				325368BE164932F600406801 /* StretchableInnerShadow.png */,
@@ -2694,6 +2700,8 @@
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
 				32A46DE2168B975C0023F37C /* MyEduLarge.png in Resources */,
+				32BE787216977F0000EC3E64 /* EyeBlack.png in Resources */,
+				32BE787316977F0000EC3E64 /* EyeBlack@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

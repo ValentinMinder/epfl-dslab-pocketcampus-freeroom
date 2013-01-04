@@ -16,18 +16,26 @@
 
 #import "PCValues.h"
 
+#import "PCUtils.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 static NSString* kMenuItemButtonIdentifier = @"MenuItemButton";
 static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
+static const int kPluginsSection = 0;
+
 @interface MainMenuViewController ()
 
-@property (nonatomic, strong) NSArray* menuItems; //array of MainMenuItem
 @property (nonatomic, weak) MainController* mainController;
-@property (nonatomic, copy) NSArray* sections;
-@property (nonatomic, copy) NSArray* rowsForSection;
+@property (nonatomic, copy) NSArray* sections; //array of MenuItem* of type section
+@property (nonatomic, copy) NSMutableArray* rowsForSection; //index:section, value:array of MenuItems
+@property (nonatomic, readwrite, strong) NSMutableArray* pluginsMenuItems;
 @property (nonatomic, strong) NSMutableDictionary* cells; //key: NSIndexPath, value:corresponding MainMenuItemCell
+
+@property (nonatomic, strong) UIBarButtonItem* settingsButton;
+@property (nonatomic, strong) UIBarButtonItem* doneButton;
+@property (nonatomic, strong) UIBarButtonItem* pocketCampusTitle;
 
 @end
 
@@ -38,9 +46,8 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     self = [super initWithNibName:@"MainMenuView" bundle:nil];
     if (self) {
         // Custom initialization
-        self.menuItems = menuItems;
         self.mainController = mainController;
-        [self fillCollections];
+        [self fillCollectionsWithMenuItems:menuItems];
         self.cells = [NSMutableDictionary dictionary];
     }
     return self;
@@ -59,9 +66,11 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     | UIViewAutoresizingFlexibleHeight
     | UIViewAutoresizingFlexibleBottomMargin;
     self.tableView.backgroundView = backgroundView;
-    self.view.layer.cornerRadius = [PCValues defaultCornerRadius];
-    self.view.layer.masksToBounds = YES;
+    self.view.backgroundColor = [PCValues backgroundColor1];
+    self.navigationController.view.layer.cornerRadius = [PCValues defaultCornerRadius];
+    self.navigationController.view.layer.masksToBounds = YES;
     self.tableView.scrollsToTop = NO; //if not set to NO, front view controllers cannot be scrolled to top by tapping the status bar
+    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil];
     [self.mainController mainMenuIsReady];
 }
 
@@ -71,33 +80,32 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     // Dispose of any resources that can be recreated.
 }
 
-- (void)fillCollections {
-    if (!self.menuItems || [self.menuItems count] == 0) {
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return [self.parentViewController supportedInterfaceOrientations];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return [self.parentViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+#pragma mark - Public
+
+- (void)setEditing:(BOOL)editing {
+    if (self.tableView.editing == editing) {
         return;
     }
-    NSUInteger sectionIndex = -1;
-    NSMutableArray* sections = [NSMutableArray array];
-    NSMutableArray* rowsForSection = [NSMutableArray array];
-    for (MainMenuItem* item in self.menuItems) {
-        if (![item isKindOfClass:[MainMenuItem class]]) {
-            @throw [NSException exceptionWithName:@"Array element exception" reason:@"found an element of type different from MainMenuItem in menuItems" userInfo:nil];
-        }
-        if (item.type == MainMenuItemTypeSectionHeader) {
-            sectionIndex++;
-            [sections addObject:item];
-            [rowsForSection insertObject:[NSMutableArray array] atIndex:sectionIndex]; //preparing for rows
-        } else {
-            if (sectionIndex == -1) {
-                @throw [NSException exceptionWithName:@"Bad menuItems structure" reason:@"structure must begin with at least one item with type MainMenuItemSectionHead must be present (set hidden YES to hide it)" userInfo:nil];
-            }
-            NSMutableArray* rows = rowsForSection[sectionIndex];
-            [rows addObject:item];
-        }
+    if (editing) {
+        self.tableView.editing = YES;
+        [self.navigationItem setLeftBarButtonItems:[NSArray arrayWithObjects:self.doneButton, self.pocketCampusTitle, nil] animated:NO];
+        [self.mainController mainMenuStartedEditing];
+    } else {
+        self.tableView.editing = NO;
+        [self.navigationItem setLeftBarButtonItems:[NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil] animated:NO];
+        [self.mainController mainMenuEndedEditing];
     }
-    
-    self.sections = sections;
-    self.rowsForSection = rowsForSection;
-
+    [PCUtils reloadTableView:self.tableView withFadingDuration:0.5];
 }
 
 - (void)setSelectedPluginWithIdentifier:(NSString*)pluginIdentifier animated:(BOOL)animated {
@@ -116,13 +124,101 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     }];
 }
 
+#pragma mark - Utilities
+
+- (void)fillCollectionsWithMenuItems:(NSArray*)menuItems {
+    if (!menuItems || [menuItems count] == 0) {
+        return;
+    }
+    NSUInteger sectionIndex = -1;
+    NSMutableArray* sections = [NSMutableArray array];
+    NSMutableArray* rowsForSection = [NSMutableArray array];
+    for (MainMenuItem* item in menuItems) {
+        if (![item isKindOfClass:[MainMenuItem class]]) {
+            @throw [NSException exceptionWithName:@"Array element exception" reason:@"found an element of type different from MainMenuItem in menuItems" userInfo:nil];
+        }
+        if (item.type == MainMenuItemTypeSectionHeader) {
+            sectionIndex++;
+            [sections addObject:item];
+            [rowsForSection insertObject:[NSMutableArray array] atIndex:sectionIndex]; //preparing for rows
+        } else {
+            if (sectionIndex == -1) {
+                @throw [NSException exceptionWithName:@"Bad menuItems structure" reason:@"structure must begin with at least one item with type MainMenuItemSectionHead must be present (set hidden YES to hide it)" userInfo:nil];
+            }
+            NSMutableArray* rows = rowsForSection[sectionIndex];
+            [rows addObject:item];
+        }
+    }
+    
+    self.sections = sections;
+    self.rowsForSection = rowsForSection;
+    self.pluginsMenuItems = [rowsForSection[kPluginsSection] mutableCopy];
+}
+
+#pragma mark - Buttons
+
+- (UIBarButtonItem*)pocketCampusTitle {
+    if (_pocketCampusTitle) {
+        return _pocketCampusTitle;
+    }
+    UILabel* pocketCampusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 188.0, 40.0)];
+    pocketCampusLabel.backgroundColor = [UIColor clearColor];
+    pocketCampusLabel.text = @"PocketCampus";
+    pocketCampusLabel.textAlignment = UITextAlignmentRight;
+    pocketCampusLabel.textColor = [UIColor whiteColor];
+    pocketCampusLabel.font = [UIFont boldSystemFontOfSize:21.0];
+    pocketCampusLabel.shadowColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    pocketCampusLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    UIBarButtonItem* pocketCampusTitle = [[UIBarButtonItem alloc] initWithCustomView:pocketCampusLabel];
+    _pocketCampusTitle = pocketCampusTitle;
+    return _pocketCampusTitle;
+}
+
+- (UIBarButtonItem*)settingsButton {
+    if (_settingsButton) {
+        return _settingsButton;
+    }
+    UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 42.0, 42.0)];
+    [button setImage:[UIImage imageNamed:@"SettingsNavBarButton"] forState:UIControlStateNormal];
+    button.adjustsImageWhenHighlighted = NO;
+    button.showsTouchWhenHighlighted = YES;
+    [button addTarget:self action:@selector(settingsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    _settingsButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    return _settingsButton;
+}
+
+- (UIBarButtonItem*)doneButton {
+    if (_doneButton) {
+        return _doneButton;
+    }
+    _doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];;
+    return _doneButton;
+}
+
 #pragma mark - Actions
 
-- (IBAction)settingsButtonPressed {
+- (void)settingsButtonPressed {
     [self.mainController showGlobalSettings];
 }
 
-#pragma mark UITableViewDelegate
+- (void)doneButtonPressed {
+    [self setEditing:NO];
+}
+
+#pragma mark EyeButtonDelegate (MainMenuItemCell)
+
+- (void)eyeButtonPressedForMenuItemCell:(MainMenuItemCell *)cell {
+    /* cell.menuItem is same as menuItem is self collections (strong pointer) */
+    if (cell.menuItem.hidden) {
+        cell.menuItem.hidden = NO;
+        [cell setEyeButtonState:EyeButtonStateDataVisible];
+    } else {
+        cell.menuItem.hidden = YES;
+        [cell setEyeButtonState:EyeButtonStateDataHidden];
+    }
+}
+
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MainMenuItem* item = self.rowsForSection[indexPath.section][indexPath.row];
@@ -131,21 +227,27 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     }
 }
 
-
-#pragma mark UITableViewDataSource
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return  UITableViewCellEditingStyleNone;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     MainMenuItem* item = self.rowsForSection[indexPath.section][indexPath.row];
-    return [MainMenuItemCell heightForMainMenuItemType:item.type];
-    
+    if (!self.tableView.editing && item.hidden) {
+        return 0.0;
+    } else {
+        return [MainMenuItemCell heightForMainMenuItemType:item.type];
+    }
 }
+
+#pragma mark - UITableViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return [self tableView:tableView viewForHeaderInSection:section].frame.size.height;
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    //TODO
+    //MainMenuItemTypeSectionHeader not supported yet
     return nil;
 }
 
@@ -154,18 +256,54 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     MainMenuItemCell* cell = [self.cells objectForKey:indexPath];
     if (!cell) {
         if (menuItem.type == MainMenuItemTypeThinSeparator) {
-            cell = [MainMenuItemCell cellWithMainMenuItemType:MainMenuItemTypeThinSeparator reuseIdentifier:kMenuItemThinSeparatorIdentifier];
+            cell = [MainMenuItemCell cellWithMainMenuItem:menuItem reuseIdentifier:kMenuItemThinSeparatorIdentifier];
         } else if (menuItem.type == MainMenuItemTypeButton) {
-            cell = [MainMenuItemCell cellWithMainMenuItemType:MainMenuItemTypeButton reuseIdentifier:kMenuItemButtonIdentifier];
+            cell = [MainMenuItemCell cellWithMainMenuItem:menuItem reuseIdentifier:kMenuItemButtonIdentifier];
             cell.titleLabel.text = menuItem.title;
             cell.leftImageView.image = menuItem.leftImage;
         } else {
             //No other supported types
             NSLog(@"-> ERROR: Unsupported menu item type (%d)", menuItem.type);
         }
+        [self.cells setObject:cell forKey:indexPath];
     }
-    [self.cells setObject:cell forKey:indexPath];
+    cell.eyeButtonDelegate = self;
+    if (menuItem.hidden) {
+        [cell setEyeButtonState:EyeButtonStateDataHidden];
+    } else {
+        [cell setEyeButtonState:EyeButtonStateDataVisible];
+    }
+    if (!self.tableView.editing) {
+        cell.hidden = menuItem.hidden;
+    }
+    if (cell.hidden && self.tableView.editing) {
+        cell.hidden = NO;
+    }
     return cell;
+}
+
+- (NSIndexPath*)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+    if (proposedDestinationIndexPath.section > kPluginsSection) {
+        return [NSIndexPath indexPathForRow:[self.rowsForSection[kPluginsSection] count]-1 inSection:kPluginsSection];
+    } else if (proposedDestinationIndexPath.section < kPluginsSection) {
+        return [NSIndexPath indexPathForRow:0 inSection:kPluginsSection];
+    } else { //plugins section
+        return proposedDestinationIndexPath;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    if (destinationIndexPath.section != kPluginsSection) {
+        return; //should not happen, by tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:
+    }
+    
+    MainMenuItem* pluginMenuItem = self.rowsForSection[kPluginsSection][sourceIndexPath.row];
+    
+    [self.rowsForSection[kPluginsSection] removeObjectAtIndex:sourceIndexPath.row];
+    [self.rowsForSection[kPluginsSection] insertObject:pluginMenuItem atIndex:destinationIndexPath.row];
+    [self.pluginsMenuItems removeObjectAtIndex:sourceIndexPath.row];
+    [self.pluginsMenuItems insertObject:pluginMenuItem atIndex:destinationIndexPath.row];
+    [self.cells removeAllObjects]; //need to refill collection
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -175,58 +313,5 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self.sections count];
 }
-
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
-{
-    return [self.parentViewController supportedInterfaceOrientations];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [self.parentViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
-
-/*- (MainMenuItem*)menuItemWithType:(MainMenuItemType)type position:(NSUInteger)position {
-    MainMenuItem* __block item = nil;
-    NSUInteger __block pos = 0;
-    [self.menuItems enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[MainMenuItem class]]) {
-            MainMenuItem* obj = (MainMenuItem*)obj;
-            if (obj.type == type && pos == position) {
-                if (pos == position) {
-                    item = obj;
-                    *stop = YES;
-                }
-                pos++;
-            }
-        }
-    }];
-    return item;
-}
-
-- (MainMenuItem*)menuItemWithIndexPath:(NSIndexPath*)indexPath {
-    MainMenuItem* sectionItem = [self menuItemWithType:MainMenuItemTypeSectionHeader position:indexPath.section];
-    if (!sectionItem) {
-        return nil;
-    }
-    NSUInteger sectionIndex = [self.menuItems indexOfObject:sectionItem];
-    NSUInteger itemIndex = sectionIndex+indexPath.row+1;
-    if ([self.menuItems count] >= itemIndex) {
-        return nil;
-    }
-    return self.menuItems[itemIndex];
-}
-
-- (NSUInteger)numberOfRowsInSection:(NSUInteger)sectionIndex {
-    if (![self menuItemWithType:MainMenuItemTypeSectionHeader position:sectionIndex]) { //means section does not exist
-        return 0;
-    }
-    NSUInteger nbRows = 0;
-    for (NSUInteger rowIndex = sectionIndex+1; section < [self.menuItems count]; section++) {
-        MainMenuItem* item = self.menuItems[rowIndex];
-        if ()
-    }
-}*/
 
 @end

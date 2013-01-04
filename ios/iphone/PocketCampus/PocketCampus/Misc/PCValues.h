@@ -10,6 +10,10 @@
 
 @interface PCValues : NSObject
 
+/*
+ * Call at application launch to set default apparence for all upcoming instances of elements
+ * modified in the method.
+ */
 + (void)applyAppearenceProxy;
 
 + (float)defaultCornerRadius;

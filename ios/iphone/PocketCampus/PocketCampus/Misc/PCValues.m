@@ -17,12 +17,6 @@
 + (void)applyAppearenceProxy {
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearance];
     navigationBarAppearance.tintColor = [PCValues pocketCampusRed];
-    
-    /*if (![PCUtils isIdiomPad]) {
-        navigationBarAppearance.layer.cornerRadius = 2;
-    }
-    navigationBarAppearance.layer.masksToBounds = YES;*/
-    
 }
 
 + (float)defaultCornerRadius {
