@@ -9,7 +9,7 @@
 "PluginName" = "Plan";
 "CenterOnEPFL" = "Centrer sur l'EPFL";
 "CenterOnResults" = "Centrer sur les résultats";
-"SearchPlaceholder" = "Rechercher une salle, une personne, ...";
+"SearchPlaceholder" = "Bâtiment, salle, personne, ...";
 "RemoveElements" = "Effacer les résultats";
 "ShowBuildingsInterior" = "Aff. l'int. des bâtiments";
 "HideBuildingsInterior" = "Masquer l'int. des bâtiments";

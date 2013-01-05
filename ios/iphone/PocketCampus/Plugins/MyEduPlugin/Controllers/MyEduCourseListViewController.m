@@ -22,6 +22,8 @@
 
 #import "MyEduSplashDetailViewController.h"
 
+#import "PushNotifController.h"
+
 @interface MyEduCourseListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;

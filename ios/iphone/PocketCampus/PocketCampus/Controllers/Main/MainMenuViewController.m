@@ -99,13 +99,26 @@ static const int kPluginsSection = 0;
     if (editing) {
         self.tableView.editing = YES;
         [self.navigationItem setLeftBarButtonItems:[NSArray arrayWithObjects:self.doneButton, self.pocketCampusTitle, nil] animated:NO];
-        [self.mainController mainMenuStartedEditing];
     } else {
         self.tableView.editing = NO;
         [self.navigationItem setLeftBarButtonItems:[NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil] animated:NO];
-        [self.mainController mainMenuEndedEditing];
     }
     [PCUtils reloadTableView:self.tableView withFadingDuration:0.5];
+    
+    /* 
+     * Must be done in two separate steps because mainController need to see
+     * reloaded tableview, but tableview must be reloaded with toggled editing state.
+     * Cannot be called directly because table view reload is not done otherwise
+     */
+    [NSTimer scheduledTimerWithTimeInterval:0.0 target:self selector:@selector(callMainController) userInfo:nil repeats:NO];
+}
+
+- (void)callMainController {
+    if (self.tableView.editing) {
+        [self.mainController mainMenuStartedEditing];
+    } else {
+        [self.mainController mainMenuEndedEditing];
+    }
 }
 
 - (void)setSelectedPluginWithIdentifier:(NSString*)pluginIdentifier animated:(BOOL)animated {

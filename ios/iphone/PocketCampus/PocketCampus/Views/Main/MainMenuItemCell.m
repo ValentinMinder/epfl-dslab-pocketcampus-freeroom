@@ -47,7 +47,7 @@
             self.eyeButton.alpha = 0.0;
             break;
         case EyeButtonStateDataHidden:
-            self.eyeButton.alpha = 0.5;
+            self.eyeButton.alpha = 0.4;
             break;
         case EyeButtonStateDataVisible:
             self.eyeButton.alpha = 0.8;

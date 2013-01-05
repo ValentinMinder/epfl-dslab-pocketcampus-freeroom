@@ -25,6 +25,8 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 @property (nonatomic, strong) MyEduTequilaToken* tequilaToken;
 @property (nonatomic, strong) NSMutableArray* loginObservers; //array of PCLoginObservers (def. in AuthenticationController)
 
+@property (nonatomic, strong) PushNotifController* pushController;
+
 @end
 
 static MyEduController* instance __weak = nil;
@@ -51,7 +53,20 @@ static MyEduController* instance __weak = nil;
             
             self.mainSplitViewController = splitViewController;
             self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
+            
+            /* TEST */
+            /*
+             self.pushController = [PushNotifController sharedInstance];
+            [self.pushController addAuthentifiedUserDeviceRegistrationObserver:self presentationViewControllerForAutentication:courseListViewController successBlock:^{
+                NSLog(@"OK");
+            } failureBlock:^(PushNotifDeviceRegistrationError error) {
+                NSLog(@"Failed");
+            }];
+             */
+            /* */
+            
             instance = self;
+            
         }
         return self;
     }

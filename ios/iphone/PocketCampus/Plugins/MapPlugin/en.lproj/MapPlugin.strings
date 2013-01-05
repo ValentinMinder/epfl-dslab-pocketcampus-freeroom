@@ -9,7 +9,7 @@
 "PluginName" = "Map";
 "CenterOnEPFL" = "Center on EPFL";
 "CenterOnResults" = "Center on results";
-"SearchPlaceholder" = "Search for a room, a person, ...";
+"SearchPlaceholder" = "Building, room, person, ...";
 "RemoveElements" = "Clean results";
 "ShowBuildingsInterior" = "Show buildings interior";
 "HideBuildingsInterior" = "Hide buildings interior";

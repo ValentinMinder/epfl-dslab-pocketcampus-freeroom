@@ -50,6 +50,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         self.newsService = [NewsService sharedInstanceToRetain];
         NSArray* newsItems = [self.newsService getFromCacheNewsItemsForLanguage:[PCUtils userLanguageCode]];
         if (newsItems) {
+            newsItems = [NewsUtils eliminateDuplicateNewsItemsInArray:newsItems];
             self.sections = [NewsUtils newsItemsSectionsSortedByDate:newsItems];
         }
         self.networkQueue = [[ASINetworkQueue alloc] init];

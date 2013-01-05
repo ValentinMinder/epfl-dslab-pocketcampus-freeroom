@@ -331,17 +331,33 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)mainMenuEndedEditing {
-    if (![PCUtils isIdiomPad] && self.activePluginController) {
-        [self.revealController showFrontViewCompletely:NO];
+    
+    NSString* activePluginIdentifier = [self.activePluginController.class identifierName];
+    
+    if (self.activePluginController) {
+        if (![PCUtils isIdiomPad]) {
+            [self.revealController showFrontViewCompletely:NO];
+        }
+        [self.mainMenuViewController setSelectedPluginWithIdentifier:activePluginIdentifier animated:YES];
     }
+    
+    BOOL shouldLeaveActivePluginController __block = NO;
     
     NSMutableDictionary* menuItemsInfo __block = [NSMutableDictionary dictionary];
     [self.mainMenuViewController.pluginsMenuItems enumerateObjectsUsingBlock:^(MainMenuItem* item, NSUInteger index, BOOL *stop) {
         NSMutableDictionary* infos = [NSMutableDictionary dictionaryWithCapacity:2];
         infos[kPluginsMainMenuItemsInfoOrderNumberKey] = [NSNumber numberWithUnsignedInt:index];
         infos[kPluginsMainMenuItemsInfoHiddenKey] = [NSNumber numberWithBool:item.hidden];
+        if ([item.identifier isEqualToString:activePluginIdentifier] && item.hidden) {
+            shouldLeaveActivePluginController = YES;
+        }
         menuItemsInfo[item.identifier] = infos;
     }];
+    
+    if (shouldLeaveActivePluginController) {
+        [self requestLeavePlugin:activePluginIdentifier];
+    }
+    
     if (![ObjectArchiver saveObject:menuItemsInfo forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while saving the main menu state." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
