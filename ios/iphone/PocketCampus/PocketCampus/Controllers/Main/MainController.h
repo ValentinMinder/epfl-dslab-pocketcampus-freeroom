@@ -27,13 +27,14 @@ typedef enum {
 
 /* 
  * A plugin can call this method on [MainController publicController] to tell that it wants to become active (foreground), after receiving
- * a notification for example. Returns YES if plugin will go foreground, NO if current plugin replied NO to canBePassivated
+ * a notification for example. Returns YES if plugin will go foreground, NO if current plugin replied NO to canBeReleased
  */
 - (BOOL)requestPluginToForeground:(NSString*)pluginIdentifierName;
 
 /*
  * A plugin can call this method on [MainController publicController] to tell that it should not be kept into foreground
- * for example, when user has logged out. Returns YES if plugin will be deallocated, NO if pluginIdentifierName is not allocated.
+ * and should be released, for example when user has logged out. 
+ * Returns YES if plugin will be deallocated, NO if [plugin canBeReleased] returns NO.
  */
 - (BOOL)requestLeavePlugin:(NSString*)pluginIdentifierName;
 

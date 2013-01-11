@@ -43,6 +43,7 @@
 @property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
 @property (nonatomic, strong) NSString* initialActivePluginIdentifier;
 @property (nonatomic, strong) NSMutableDictionary* pluginsControllers; //key: plugin identifier name, value: PluginController subclass.
+@property (nonatomic) BOOL initDone;
 
 @end
 
@@ -57,7 +58,12 @@ static NSString* kPluginsMainMenuItemsInfoHiddenKey = @"pluginsMainMenuItemsInfo
 
 static int kGesturesViewTag = 50;
 
-static BOOL BACKGROUND_PLUGINS_ENABLED = NO; //YES not supported yet
+/* 
+ * If YES, plugins are kept alive when switching among them.
+ * Otherwise, only foreground is kept alive (allocated).
+ * IMPORTANT: background management is dummy and not well tested for now (no smart memory management)
+ */
+static BOOL BACKGROUND_PLUGINS_ENABLED = NO;
 
 static MainController<MainControllerPublic>* instance = nil;
 
@@ -100,16 +106,19 @@ static MainController<MainControllerPublic>* instance = nil;
 - (BOOL)requestPluginToForeground:(NSString*)pluginIdentifierName {
     [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
     
+    /* If not BACKGROUND_PLUGINS_ENABLED, check that active plugin controller can be released */
     PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:pluginIdentifierName];
-    if (BACKGROUND_PLUGINS_ENABLED && [pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
+    if (!BACKGROUND_PLUGINS_ENABLED && self.activePluginController == pluginController && [pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
         return NO;
     }
-    if ([[[self.activePluginController class] identifierName] isEqualToString:pluginIdentifierName]) { //already forground
-        return YES;
-    }
-    if (self.activePluginController) { //means app already started
+    
+    if (self.activePluginController) { /* current showing a plugin */
+        if (![[self identifierNameForPluginController:self.activePluginController] isEqualToString:pluginIdentifierName]) {
+            [self setActivePluginWithIdentifier:pluginIdentifierName];
+        }
+    } else if (self.initDone) { /* current showing splash (no active plugin) */
         [self setActivePluginWithIdentifier:pluginIdentifierName];
-    } else { //app is starting
+    } else { /* app is starting */
         self.initialActivePluginIdentifier = pluginIdentifierName;
     }
     return YES;
@@ -119,10 +128,21 @@ static MainController<MainControllerPublic>* instance = nil;
     [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
     
     PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:pluginIdentifierName];
-    if (BACKGROUND_PLUGINS_ENABLED && [pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
+    
+    if (!pluginController) {
+        return YES; //plugin is not allocated and not active => desired effect achieved
+    }
+    
+    if ([pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
         return NO;
     }
-    [self setActivePluginWithIdentifier:nil];
+    
+    if (self.activePluginController && [[self identifierNameForPluginController:self.activePluginController] isEqualToString:pluginIdentifierName]) {
+        [self setActivePluginWithIdentifier:nil];
+    }
+    
+    [self.pluginsControllers removeObjectForKey:pluginIdentifierName]; //already been done by setActivePluginIdentifer if not BACKGROUND_PLUGINS_ENABLED
+    
     return YES;
 }
 
@@ -290,6 +310,7 @@ static MainController<MainControllerPublic>* instance = nil;
         [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
         [self.revealController revealToggle:self];
         [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:YES];
+        [NSTimer scheduledTimerWithTimeInterval:self.revealController.toggleAnimationDuration target:self selector:@selector(setInitDoneYES) userInfo:nil repeats:NO];
     } else {
         [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:NO];
         if ([PCUtils isIdiomPad]) {
@@ -297,10 +318,17 @@ static MainController<MainControllerPublic>* instance = nil;
         } else {
             [self.revealController hideFrontView];
         }
+        [NSTimer scheduledTimerWithTimeInterval:self.revealController.toggleAnimationDuration target:self selector:@selector(setInitDoneYES) userInfo:nil repeats:NO];
         self.revealController.toggleAnimationDuration = 0.25;
     }
 }
 
+/*
+ * Called by timer scheduled in revealMenuAfterSplash.
+ */
+- (void)setInitDoneYES {
+    self.initDone = YES;
+}
 
 #pragma mark - Called by AppDelegate
 

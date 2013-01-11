@@ -113,8 +113,10 @@ static MyEduController* instance __weak = nil;
         }];
         
         initObserversDone = YES;
+        //[NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(test) userInfo:nil repeats:NO];
     }
 }
+
 
 #pragma mark - Login observers management
 

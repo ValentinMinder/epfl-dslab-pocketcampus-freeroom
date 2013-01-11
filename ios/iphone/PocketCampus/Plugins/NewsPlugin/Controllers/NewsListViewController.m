@@ -119,10 +119,14 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems {
     newsItems = [NewsUtils eliminateDuplicateNewsItemsInArray:newsItems];
     self.sections = [NewsUtils newsItemsSectionsSortedByDate:newsItems];
+    NSIndexPath* selectedIndexPath = [self.tableView indexPathForSelectedRow];
     [self.tableView reloadData];
+    if (selectedIndexPath) {
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
     [self.pcRefreshControl endRefreshing];
     [self.pcRefreshControl markRefreshSuccessful];
-    self.tableView.accessibilityIdentifier = @"NewsList";
+    //self.tableView.accessibilityIdentifier = @"NewsList";
 }
 
 - (void)newsItemsFailedForLanguage:(NSString*)language {

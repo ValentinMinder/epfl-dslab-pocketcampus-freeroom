@@ -290,8 +290,10 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
 }
 
 - (void)getRatingFor:(Meal*)meal_ didReturn:(Rating*)rating {
-    if (rating.numberOfVotes > 0) {
+    if (rating.numberOfVotes > 1) {
         votesLabel.text = [NSString stringWithFormat:@"  %d %@", rating.numberOfVotes, NSLocalizedStringFromTable(@"VoteNamePlural", @"FoodPlugin", nil)];
+    } else if (rating.numberOfVotes == 1) {
+        votesLabel.text = [NSString stringWithFormat:@"  %d %@", rating.numberOfVotes, NSLocalizedStringFromTable(@"VoteNameSingular", @"FoodPlugin", nil)];
     } else {
         votesLabel.text = [NSString stringWithFormat:@"  %@", NSLocalizedStringFromTable(@"NoVote", @"FoodPlugin", nil)];
     }
