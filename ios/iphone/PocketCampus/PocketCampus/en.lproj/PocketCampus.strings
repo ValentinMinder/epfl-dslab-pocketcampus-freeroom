@@ -8,6 +8,7 @@
 
 "HomeViewControllerTitle" = "PocketCampus EPFL";
 "ConnectionToServerTimedOut" = "Cannot connect to server.\nCheck your internet connection.";
+"ConnectionToServerTimedOutAlert" = "Cannot connect to server.\nCheck your internet connection.";
 "ConnectionToServerTimedOutShort" = "Cannot connect to server";
 "ServerError" = "Sorry, an error occured. Try to reload.";
 "ServerErrorShort" = "Sorry, an error occured"; 

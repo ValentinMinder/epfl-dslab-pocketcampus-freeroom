@@ -118,6 +118,7 @@
 		32442FF3151D141200685D10 /* TopTableViewInnerShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF2151D141200685D10 /* TopTableViewInnerShadow@2x.png */; };
 		32442FF6151D2BF700685D10 /* LocationArrowActiveLight.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF4151D2BF700685D10 /* LocationArrowActiveLight.png */; };
 		32442FF7151D2BF700685D10 /* LocationArrowActiveLight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF5151D2BF700685D10 /* LocationArrowActiveLight@2x.png */; };
+		3244B3E816A36976006A7E37 /* MoodleResource+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */; };
 		324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3247C3B71504F2E10079522A /* FoodPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3247C3B01504F2E10079522A /* FoodPlugin.strings */; };
 		3247CAF815135FD800105A71 /* PCTableViewSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */; };
@@ -538,6 +539,8 @@
 		32442FF2151D141200685D10 /* TopTableViewInnerShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TopTableViewInnerShadow@2x.png"; sourceTree = "<group>"; };
 		32442FF4151D2BF700685D10 /* LocationArrowActiveLight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowActiveLight.png; sourceTree = "<group>"; };
 		32442FF5151D2BF700685D10 /* LocationArrowActiveLight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrowActiveLight@2x.png"; sourceTree = "<group>"; };
+		3244B3E616A36976006A7E37 /* MoodleResource+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MoodleResource+Comparison.h"; sourceTree = "<group>"; };
+		3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MoodleResource+Comparison.m"; sourceTree = "<group>"; };
 		324654C5168BA2D300F2782D /* PluginControllerAuthentified.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginControllerAuthentified.h; sourceTree = "<group>"; };
 		324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginControllerAuthentified.m; sourceTree = "<group>"; };
 		324715AC15001381007C230C /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
@@ -1825,6 +1828,8 @@
 			children = (
 				32CCB4DC1555237500220282 /* MoodleService.h */,
 				32CCB4DD1555237500220282 /* MoodleService.m */,
+				3244B3E616A36976006A7E37 /* MoodleResource+Comparison.h */,
+				3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */,
 				32CCB4DE1555237500220282 /* ThriftTypes+Services */,
 			);
 			path = Model;
@@ -2867,6 +2872,7 @@
 				322207FA1689E3A3003F6622 /* PCValues.m in Sources */,
 				324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */,
 				32DA6454168E590B00D22D08 /* NewsItem+Comparison.m in Sources */,
+				3244B3E816A36976006A7E37 /* MoodleResource+Comparison.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3097,7 +3103,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "CF735CC6-4170-4205-967F-AB8EACB73253";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5742E21A-1C29-4B3A-A35D-29BAC860BEE5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F3DC9B7-48B3-436B-8400-CCAC5C089ED9";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

@@ -36,6 +36,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 @property (nonatomic, strong) Reachability* reachability;
 @property (nonatomic, strong) NSMutableSet* failedThumbsIndexPaths;
 @property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
+@property (nonatomic, strong) NewsItem* selectedItem;
 
 @end
 
@@ -119,14 +120,20 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems {
     newsItems = [NewsUtils eliminateDuplicateNewsItemsInArray:newsItems];
     self.sections = [NewsUtils newsItemsSectionsSortedByDate:newsItems];
-    NSIndexPath* selectedIndexPath = [self.tableView indexPathForSelectedRow];
     [self.tableView reloadData];
-    if (selectedIndexPath) {
-        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if (self.selectedItem) {
+        [self.sections enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
+            [items enumerateObjectsUsingBlock:^(NewsItem* item, NSUInteger row, BOOL *stop2) {
+                if ([item isEqual:self.selectedItem]) {
+                    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                    self.selectedItem = item;
+                }
+            }];
+        }];
     }
     [self.pcRefreshControl endRefreshing];
     [self.pcRefreshControl markRefreshSuccessful];
-    //self.tableView.accessibilityIdentifier = @"NewsList";
+    self.tableView.accessibilityIdentifier = @"NewsList";
 }
 
 - (void)newsItemsFailedForLanguage:(NSString*)language {
@@ -218,6 +225,11 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NewsItem* newsItem = self.sections[indexPath.section][indexPath.row];
+    
+    if ([PCUtils isIdiomPad]) {
+        self.selectedItem = newsItem;
+    }
+    
     UIImage* thumbnail = [self.thumbnails objectForKey:indexPath];
     
     NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:thumbnail];
@@ -250,9 +262,9 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     
     cell.textLabel.text = newsItem.title;
     
-    if ([self.thumbnails objectForKey:indexPath] == nil) {
+    if (!self.thumbnails[indexPath]) {
         cell.imageView.image = [UIImage imageNamed:@"BackgroundNewsThumbnail.png"]; //Temporary thumbnail until image is loaded
-        if (newsItem.imageUrl != nil) {
+        if (newsItem.imageUrl) {
             ASIHTTPRequest* thumbnailRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:newsItem.imageUrl]];
             thumbnailRequest.downloadCache = [ASIDownloadCache sharedCache];
             thumbnailRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
@@ -265,7 +277,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
             [self.networkQueue addOperation:thumbnailRequest];
         }
     } else {
-        cell.imageView.image = [self.thumbnails objectForKey:indexPath];
+        cell.imageView.image = self.thumbnails[indexPath];
     }
     return cell;
 }

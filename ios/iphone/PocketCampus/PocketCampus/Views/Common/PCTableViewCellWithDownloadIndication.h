@@ -11,5 +11,6 @@
 @interface PCTableViewCellWithDownloadIndication : UITableViewCell
 
 @property (nonatomic, getter = isDownloaded) BOOL downloaded;
+@property (nonatomic, getter = isDurablySelected) BOOL durablySelected;
 
 @end

@@ -20,13 +20,13 @@
 }
 
 - (BOOL)isEqualToMoodleResourceObserver:(MoodleResourceObserver*)resourceObserver {
-    return self.observer == resourceObserver.observer && [self.resource.iUrl isEqualToString:resourceObserver.resource.iUrl];
+    return self.observer == resourceObserver.observer && [self.resource isEqual:resourceObserver.resource];
 }
 
 - (NSUInteger)hash {
     NSUInteger hash = 0;
     hash += [self.observer hash];
-    hash += [self.resource.iUrl hash];
+    hash += [self.resource hash];
     return hash;
 }
 

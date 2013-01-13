@@ -11,6 +11,9 @@
 @interface PCTableViewCellWithDownloadIndication ()
 
 @property (nonatomic, strong) UIImageView* icon;
+@property (nonatomic, strong) UIColor* originalBackgroundColor;
+@property (nonatomic, strong) UIColor* originalTextLabelColor;
+@property (nonatomic, strong) UIColor* originalDetailTextLabelColor;
 
 @end
 
@@ -23,6 +26,10 @@
         self.icon.frame = CGRectMake(self.contentView.frame.size.width-self.icon.frame.size.width, 0, self.icon.frame.size.width, self.icon.frame.size.height);
         [self.contentView addSubview:self.icon];
         self.icon.hidden = YES; //not downloaded by default
+        self.originalBackgroundColor = self.backgroundColor;
+        self.originalTextLabelColor = self.textLabel.textColor;
+        self.originalDetailTextLabelColor = self.detailTextLabel.textColor;
+        self.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     }
     return self;
 }
@@ -37,6 +44,21 @@
     [self setNeedsDisplay];
 }
 
+- (void)setDurablySelected:(BOOL)durablySelected {
+    _durablySelected = durablySelected;
+    if (durablySelected) {
+        self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1.0];
+        self.textLabel.textColor = [UIColor whiteColor];
+        self.detailTextLabel.textColor = [UIColor whiteColor];
+    } else {
+        self.backgroundView.backgroundColor = self.originalBackgroundColor;
+        self.textLabel.textColor = self.originalTextLabelColor;
+        self.detailTextLabel.textColor = self.originalDetailTextLabelColor;
+    }
+    [self updateCornerIcon];
+    [self setNeedsDisplay];
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.icon.frame = CGRectMake(self.contentView.frame.size.width-self.icon.frame.size.width, 0, self.icon.frame.size.width, self.icon.frame.size.height);
@@ -44,16 +66,16 @@
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     [super setHighlighted:highlighted animated:animated];
-    if (self.highlighted) {
-        self.icon.image = [UIImage imageNamed:@"DownloadedCornerSelected"];
-    } else {
-        self.icon.image = [UIImage imageNamed:@"DownloadedCorner"];
-    }
+    [self updateCornerIcon];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-    if (self.selected) {
+    [self updateCornerIcon];
+}
+
+- (void)updateCornerIcon {
+    if (self.selected || self.highlighted || self.durablySelected) {
         self.icon.image = [UIImage imageNamed:@"DownloadedCornerSelected"];
     } else {
         self.icon.image = [UIImage imageNamed:@"DownloadedCorner"];
