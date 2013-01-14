@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "PCTableViewCellWithDownloadIndication.h"
+#import "PCTableViewCellAdditions.h"
 
-@interface PCTableViewCellWithDownloadIndication ()
+@interface PCTableViewCellAdditions ()
 
 @property (nonatomic, strong) UIImageView* icon;
 @property (nonatomic, strong) UIColor* originalBackgroundColor;
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation PCTableViewCellWithDownloadIndication
+@implementation PCTableViewCellAdditions
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -29,14 +29,16 @@
         self.originalBackgroundColor = self.backgroundColor;
         self.originalTextLabelColor = self.textLabel.textColor;
         self.originalDetailTextLabelColor = self.detailTextLabel.textColor;
+        self.textLabel.backgroundColor = [UIColor clearColor];
+        self.detailTextLabel.backgroundColor = [UIColor clearColor];
         self.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     }
     return self;
 }
 
-- (void)setDownloaded:(BOOL)downloaded {
-    _downloaded = downloaded;
-    if (downloaded) {
+- (void)setDownloadedIndicationVisible:(BOOL)visible {
+    _downloadedIndicationVisible = visible;
+    if (visible) {
         self.icon.hidden = NO;
     } else {
         self.icon.hidden = YES;

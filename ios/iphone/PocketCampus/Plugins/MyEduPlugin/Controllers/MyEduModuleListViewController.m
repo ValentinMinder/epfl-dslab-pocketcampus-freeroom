@@ -20,7 +20,7 @@
 
 #import "MyEduModuleDetailViewController.h"
 
-#import "PCTableViewCellWithDownloadIndication.h"
+#import "PCTableViewCellAdditions.h"
 
 @interface MyEduModuleListViewController ()
 
@@ -30,8 +30,8 @@
 @property (nonatomic, strong) NSArray* modules;
 @property (nonatomic, strong) MyEduTequilaToken* tequilaToken;
 @property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
-@property (nonatomic, strong) NSIndexPath* selectedModuleIndexPath;
-@property (nonatomic, strong) NSArray* cells;
+@property (nonatomic, strong) MyEduModule* selectedMyEduModule;
+@property (nonatomic, strong) NSDictionary* cellForMyEduModule;
 
 @end
 
@@ -106,10 +106,10 @@
     if (!self.modules) {
         return;
     }
-    NSMutableArray* cellsTmp = [NSMutableArray arrayWithCapacity:[self.modules count]];
+    NSMutableDictionary* cellsTmp = [NSMutableDictionary dictionaryWithCapacity:self.modules.count];
     
     [self.modules enumerateObjectsUsingBlock:^(MyEduModule* module, NSUInteger idx, BOOL *stop) {
-        PCTableViewCellWithDownloadIndication* cell = [[PCTableViewCellWithDownloadIndication alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+        PCTableViewCellAdditions* cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
         cell.textLabel.numberOfLines = 2;
@@ -118,7 +118,11 @@
         cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
         
         if ([MyEduService localPathOfVideoForModule:module nilIfNoFile:YES]) {
-            [cell setDownloaded:YES];
+            cell.downloadedIndicationVisible = YES;
+        }
+        
+        if ([self.selectedMyEduModule isEqual:module]) {
+            cell.durablySelected = YES;
         }
         
         [self.myEduService removeDownloadObserver:self forVideoModule:module];
@@ -126,29 +130,29 @@
             cell.detailTextLabel.text = [NSString stringWithFormat:@"      %@", NSLocalizedStringFromTable(@"StartingDownload", @"MyEduPlugin", nil)];
             [cell setNeedsLayout];
         } finishBlock:^(NSURL *fileLocalURL) {
-            [cell setDownloaded:YES];
+            [cell setDownloadedIndicationVisible:YES];
             cell.detailTextLabel.text = nil;
         } progressBlock:^(unsigned long long nbBytesDownloaded, unsigned long long nbBytesToDownload, float ratio) {
             NSString* text = [NSString stringWithFormat:@"      %@ %d%%", NSLocalizedStringFromTable(@"DownloadingVideo", @"MyEduPlugin", nil), (int)(ratio*100)];
             cell.detailTextLabel.text = text;
             [cell setNeedsLayout];
         } cancelledBlock:^{
-            [cell setDownloaded:NO];
+            [cell setDownloadedIndicationVisible:NO];
             cell.detailTextLabel.text = nil;
             [cell setNeedsLayout];
         } failureBlock:^(int statusCode) {
-           [cell setDownloaded:NO];
+           [cell setDownloadedIndicationVisible:NO];
             cell.detailTextLabel.text = nil;
             [cell setNeedsLayout];
         } deletedBlock:^{
-            [cell setDownloaded:NO];
+            [cell setDownloadedIndicationVisible:NO];
             cell.detailTextLabel.text = nil;
             [cell setNeedsLayout];
         }];
         
-        [cellsTmp addObject:cell];
+        cellsTmp[(id<NSCopying>)module] = cell;
     }];
-    self.cells = [cellsTmp copy];
+    self.cellForMyEduModule = [cellsTmp copy];
 }
 
 #pragma mark - MyEduServiceDelegate
@@ -207,7 +211,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger selectedTabIndex = 0;
-    if ([self.selectedModuleIndexPath isEqual:indexPath]) {
+    
+    MyEduModule* module = self.modules[indexPath.row];
+    
+    if (self.splitViewController && [self.selectedMyEduModule isEqual:module]) {
         return;
     }
     
@@ -216,15 +223,20 @@
         selectedTabIndex = controller.tabBarController.selectedIndex;
     }
     
-    MyEduModule* module = self.modules[indexPath.row];
     MyEduModuleDetailViewController* detailViewController = [[MyEduModuleDetailViewController alloc] initWithModule:module section:self.section course:self.course];
-    self.selectedModuleIndexPath = indexPath;
     
-    if (self.splitViewController) {
+    if (self.splitViewController) { //iPad
+        PCTableViewCellAdditions* prevCell = self.cellForMyEduModule[self.selectedMyEduModule];
+        prevCell.durablySelected = NO;
+        self.selectedMyEduModule = module;
+        
+        PCTableViewCellAdditions* newCell = self.cellForMyEduModule[module];
+        newCell.durablySelected = YES;
+        
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], detailViewController];
         detailViewController.tabBarController.selectedIndex = selectedTabIndex;
-    } else {
-        //TODO push on nav controller (iPhone)
+    } else { //iPhone
+        [self.navigationController pushViewController:detailViewController animated:YES];
     }
 }
 
@@ -240,9 +252,9 @@
         }
     }
     
-    UITableViewCell* cell = self.cells[indexPath.row];
+    MyEduModule* module = self.modules[indexPath.row];
     
-    return cell;
+    return self.cellForMyEduModule[module];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

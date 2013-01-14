@@ -22,7 +22,7 @@
 
 #import "MoodleSplashDetailViewController.h"
 
-#import "PCTableViewCellWithDownloadIndication.h"
+#import "PCTableViewCellAdditions.h"
 
 #import "PCCenterMessageCell.h"
 
@@ -184,13 +184,11 @@
         for (MoodleResource* resource in section.iResources) {
             
             
-            PCTableViewCellWithDownloadIndication* newCell = [[PCTableViewCellWithDownloadIndication alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+            PCTableViewCellAdditions* newCell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
             newCell.selectionStyle = UITableViewCellSelectionStyleGray;
             newCell.textLabel.font = [UIFont boldSystemFontOfSize:14.0];
             newCell.textLabel.adjustsFontSizeToFitWidth = YES;
             newCell.textLabel.minimumFontSize = 11.0;
-            newCell.textLabel.backgroundColor = [UIColor clearColor];
-            newCell.detailTextLabel.backgroundColor = [UIColor clearColor];
             
 
             newCell.textLabel.text = resource.iName;
@@ -199,7 +197,7 @@
             newCell.detailTextLabel.text = [pathComponents objectAtIndex:pathComponents.count-1];
             newCell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
             if ([self.moodleService isMoodleResourceDownloaded:resource]) {
-                newCell.downloaded = YES;
+                newCell.downloadedIndicationVisible = YES;
             }
             
             if ([self.selectedResource isEqual:resource]) {
@@ -207,13 +205,13 @@
             }
             
             MoodleCourseSectionsViewController* controller __weak = self;
-            PCTableViewCellWithDownloadIndication* cellWeak __weak = newCell;
+            PCTableViewCellAdditions* cellWeak __weak = newCell;
             
             [self.moodleService removeMoodleResourceObserver:self forResource:resource];
             [self.moodleService addMoodleResourceObserver:self forResource:resource eventBlock:^(MoodleResourceEvent event) {
                 if (event == MoodleResourceEventDeleted) {
                     cellWeak.durablySelected = NO;
-                    cellWeak.downloaded  = NO;
+                    cellWeak.downloadedIndicationVisible  = NO;
                     if (controller.splitViewController && [controller.selectedResource isEqual:resource]) { /* iPad */ //resource deleted => hide ResourceViewController
                         [controller.tableView deselectRowAtIndexPath:[controller.tableView indexPathForSelectedRow] animated:YES];
                         controller.selectedResource = nil;
@@ -222,7 +220,7 @@
                         [NSTimer scheduledTimerWithTimeInterval:0.2 target:controller selector:@selector(showMasterViewController) userInfo:nil repeats:NO];
                     }
                 } else if (event == MoodleResourceEventDownloaded) {
-                    cellWeak.downloaded = YES;
+                    cellWeak.downloadedIndicationVisible = YES;
                 } else {
                     //not supported
                 }
@@ -306,11 +304,11 @@
 
     if (self.splitViewController) { /* iPad */
         
-        PCTableViewCellWithDownloadIndication* prevCell = self.cellForMoodleResource[self.selectedResource];
+        PCTableViewCellAdditions* prevCell = self.cellForMoodleResource[self.selectedResource];
         prevCell.durablySelected = NO;
         self.selectedResource = resource;
         
-        PCTableViewCellWithDownloadIndication* newCell = self.cellForMoodleResource[resource];
+        PCTableViewCellAdditions* newCell = self.cellForMoodleResource[resource];
         newCell.durablySelected = YES;
         
         //[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -336,8 +334,8 @@
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView_ editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    PCTableViewCellWithDownloadIndication* cell = (PCTableViewCellWithDownloadIndication*)[self.tableView cellForRowAtIndexPath:indexPath];
-    if (cell.isDownloaded) {
+    PCTableViewCellAdditions* cell = (PCTableViewCellAdditions*)[self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell.isDownloadedIndicationVisible) {
         return UITableViewCellEditingStyleDelete;
     }
     return UITableViewCellEditingStyleNone;
@@ -397,7 +395,7 @@
     
     MoodleSection* section = self.sections[indexPath.section];
     MoodleResource* resource = section.iResources[indexPath.row];
-    PCTableViewCellWithDownloadIndication* cell = self.cellForMoodleResource[resource];
+    PCTableViewCellAdditions* cell = self.cellForMoodleResource[resource];
     return cell;
 }
 

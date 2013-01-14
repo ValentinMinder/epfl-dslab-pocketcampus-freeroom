@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PCTableViewCellWithDownloadIndication : UITableViewCell
+@interface PCTableViewCellAdditions : UITableViewCell
 
-@property (nonatomic, getter = isDownloaded) BOOL downloaded;
+@property (nonatomic, getter = isDownloadedIndicationVisible) BOOL downloadedIndicationVisible;
 @property (nonatomic, getter = isDurablySelected) BOOL durablySelected;
 
 @end
