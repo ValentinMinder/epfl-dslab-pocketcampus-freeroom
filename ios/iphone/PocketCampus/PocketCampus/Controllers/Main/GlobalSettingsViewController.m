@@ -26,11 +26,13 @@
 
 #import "MainMenuViewController.h"
 
-static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
 
 static const int kAccountsSection = 0;
 static const int kMainMenuSection = 1;
 static const int kAboutSection = 2;
+
+static const int kEditMainMenuRow = 0;
+static const int kRestoreDefaultMainMenuRow = 1;
 
 @interface GlobalSettingsViewController ()
 
@@ -121,10 +123,17 @@ static const int kAboutSection = 2;
             break;
         case kMainMenuSection:
             switch (indexPath.row) {
-                case 0: //gaspar account
+                case kEditMainMenuRow:
                 {
                     [self.mainController.mainMenuViewController setEditing:YES];
                     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+                    break;
+                }
+                case kRestoreDefaultMainMenuRow:
+                {
+                    [self.mainController.mainMenuViewController restoreDefaultMenu];
+                    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+                    break;
                 }
                 default:
                     break;
@@ -164,17 +173,15 @@ static const int kAboutSection = 2;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell* cell;
+    
+    UITableViewCell* cell = nil;
     
     switch (indexPath.section) {
         case kAccountsSection:
         {
-            cell = [self.tableView dequeueReusableCellWithIdentifier:nil];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
-            }
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
             cell.textLabel.text = [GasparViewController localizedTitle];
             NSString* username = [AuthenticationService savedUsername];
             if (username) {
@@ -182,32 +189,35 @@ static const int kAboutSection = 2;
             } else {
                 cell.detailTextLabel.text = @"";
             }
-            return cell;
-            
+            break;
         }
         case kMainMenuSection:
         {
-            cell = [self.tableView dequeueReusableCellWithIdentifier:nil];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            switch (indexPath.row) {
+                case kEditMainMenuRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"EditMainMenu", @"PocketCampus", nil);
+                    break;
+                case kRestoreDefaultMainMenuRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"RestoreDefaultMainMenu", @"PocketCampus", nil);
+                    break;
+                default:
+                    break;
             }
-            cell.textLabel.text = NSLocalizedStringFromTable(@"EditMainMenu", @"PocketCampus", nil);
-            return cell;
+            break;
         }
         case kAboutSection:
         {
-            cell = [self.tableView dequeueReusableCellWithIdentifier:nil];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
-            return cell;
+            break;
         }
         default:
             break;
     }
-    return nil;
+    return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -215,7 +225,7 @@ static const int kAboutSection = 2;
         case kAccountsSection:
             return 1;
         case kMainMenuSection:
-            return 1;
+            return 2;
         case kAboutSection:
             return 1;
         default:

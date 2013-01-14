@@ -343,18 +343,22 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (IBAction)eyePressed {
-    if (othersActionSheet) {
-        return;
+    if (!othersActionSheet) {
+        //NSLog(@"MapView region : %lf %lf, %lf %lf", mapView.region.center.latitude, mapView.region.center.longitude, mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
+        NSString* localizedStringFromBuildings;
+        if (showBuildingsInterior) {
+            localizedStringFromBuildings = NSLocalizedStringFromTable(@"HideBuildingsInterior", @"MapPlugin", nil);
+        } else {
+            localizedStringFromBuildings = NSLocalizedStringFromTable(@"ShowBuildingsInterior", @"MapPlugin", nil);
+        }
+        othersActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"CenterOnEPFL", @"MapPlugin", nil), localizedStringFromBuildings, nil];
     }
-    //NSLog(@"MapView region : %lf %lf, %lf %lf", mapView.region.center.latitude, mapView.region.center.longitude, mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
-    NSString* localizedStringFromBuildings;
-    if (showBuildingsInterior) {
-        localizedStringFromBuildings = NSLocalizedStringFromTable(@"HideBuildingsInterior", @"MapPlugin", nil);
+    
+    if (othersActionSheet.isVisible) {
+        [othersActionSheet dismissWithClickedButtonIndex:[othersActionSheet cancelButtonIndex] animated:YES];
     } else {
-        localizedStringFromBuildings = NSLocalizedStringFromTable(@"ShowBuildingsInterior", @"MapPlugin", nil);
+        [othersActionSheet showFromRect:eyeButton.frame inView:mapView animated:YES];
     }
-    othersActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"CenterOnEPFL", @"MapPlugin", nil), localizedStringFromBuildings, nil];
-    [othersActionSheet showFromRect:eyeButton.frame inView:mapView animated:YES];
 }
 
 - (IBAction)floorDownPressed {

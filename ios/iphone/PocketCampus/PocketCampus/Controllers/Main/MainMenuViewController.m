@@ -92,6 +92,10 @@ static const int kPluginsSection = 0;
 
 #pragma mark - Public
 
+- (void)restoreDefaultMenu {
+    //TODO
+}
+
 - (void)setEditing:(BOOL)editing {
     if (self.tableView.editing == editing) {
         return;

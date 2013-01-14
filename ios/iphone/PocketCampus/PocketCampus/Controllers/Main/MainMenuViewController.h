@@ -29,5 +29,6 @@
 - (id)initWithMenuItems:(NSArray*)menuItems mainController:(MainController*)mainController;
 - (void)setSelectedPluginWithIdentifier:(NSString*)pluginIdentifier animated:(BOOL)animated; //pass nil to select no cell
 
+- (void)restoreDefaultMenu;
 - (void)setEditing:(BOOL)editing;
 @end

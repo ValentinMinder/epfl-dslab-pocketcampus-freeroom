@@ -18,6 +18,7 @@
 @property (nonatomic, strong) MoodleResource* moodleResource;
 @property (nonatomic, strong) UIDocumentInteractionController* docInteractionController;
 @property (nonatomic, strong) UIActionSheet* deleteActionSheet;
+@property (nonatomic) BOOL isShowingActionMenu;
 
 @end
 
@@ -137,11 +138,22 @@
 #pragma mark - Button actions
 
 - (void)deleteButtonPressed {
-    self.deleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"DeleteFileFromCacheQuestion", @"MoodlePlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"PocketCampus", nil) otherButtonTitles:nil];
-    [self.deleteActionSheet showFromBarButtonItem:[self deleteButton] animated:YES];
+    if (!self.deleteActionSheet) {
+        self.deleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"DeleteFileFromCacheQuestion", @"MoodlePlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"PocketCampus", nil) otherButtonTitles:nil];
+    }
+    
+    if (self.deleteActionSheet.isVisible) {
+        [self.deleteActionSheet dismissWithClickedButtonIndex:[self.deleteActionSheet cancelButtonIndex] animated:YES];
+    } else {
+        [self.deleteActionSheet showFromBarButtonItem:[self deleteButton] animated:YES];
+    }
 }
 
 - (void)actionButtonPressed {
+    if (self.isShowingActionMenu) {
+        [self.docInteractionController dismissMenuAnimated:YES];
+        return;
+    }
     BOOL couldShowMenu = [self.docInteractionController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
     if (!couldShowMenu) {
         UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Sorry", @"MoodlePlugin", nil) message:NSLocalizedStringFromTable(@"NoActionForThisFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -233,6 +245,14 @@
         }];
     }
     return success;
+}
+
+- (void)documentInteractionControllerWillPresentOptionsMenu:(UIDocumentInteractionController *)controller {
+    self.isShowingActionMenu = YES;
+}
+
+- (void)documentInteractionControllerDidDismissOptionsMenu:(UIDocumentInteractionController *)controller {
+    self.isShowingActionMenu = NO;
 }
 
 #pragma mark - UIWebViewDelegate

@@ -96,7 +96,12 @@
         self.actionButtonSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"OpenInSafari", @"NewsPlugin", nil), nil];
         self.actionButtonSheet.accessibilityIdentifier = @"NewsItemActionSheet";
     }
-    [self.actionButtonSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+    
+    if (self.actionButtonSheet.isVisible) {
+        [self.actionButtonSheet dismissWithClickedButtonIndex:self.actionButtonSheet.cancelButtonIndex animated:YES];
+    } else {
+        [self.actionButtonSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+    }
 }
 
 #pragma mark - UIActionSheetDelegate

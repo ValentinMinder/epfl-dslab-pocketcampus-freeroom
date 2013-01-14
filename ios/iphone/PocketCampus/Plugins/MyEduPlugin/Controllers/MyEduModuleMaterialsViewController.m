@@ -118,11 +118,14 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
 #pragma mark menu actions control
 
 - (void)materialsListButtonPressed {
-    [self.docInteractionController dismissMenuAnimated:NO];
-    [self.materialsPopOverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    CGRect resizedBounds = self.materialsTableView.bounds;
-    resizedBounds.size.height = self.materialsTableView.contentSize.height;
-    [self.materialsPopOverController setPopoverContentSize:CGSizeMake(resizedBounds.size.width, resizedBounds.size.height) animated:NO];
+    if (self.materialsPopOverController.isPopoverVisible) {
+        [self.docInteractionController dismissMenuAnimated:YES];
+    } else {
+        [self.materialsPopOverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        CGRect resizedBounds = self.materialsTableView.bounds;
+        resizedBounds.size.height = self.materialsTableView.contentSize.height;
+        [self.materialsPopOverController setPopoverContentSize:CGSizeMake(resizedBounds.size.width, resizedBounds.size.height) animated:NO];
+    }
 }
 
 - (void)actionButtonPressed {
