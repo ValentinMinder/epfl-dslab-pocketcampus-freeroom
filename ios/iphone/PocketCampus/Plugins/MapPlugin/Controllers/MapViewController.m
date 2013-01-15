@@ -51,9 +51,9 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         directoryService = nil; //will be instancied if needed
         personToDisplay = nil;
         epflTileOverlay = [[EPFLTileOverlay alloc] init];
-        epflLayersOverlay = [[EPFLLayersOverlay alloc] init];
+        epflLayersOverlay = nil; //[[EPFLLayersOverlay alloc] init];
         tileOverlayView = [[CustomOverlayView alloc] initWithOverlay:epflTileOverlay];
-        layersOverlayView = [[CustomOverlayView alloc] initWithOverlay:epflLayersOverlay];
+        layersOverlayView = nil; //[[CustomOverlayView alloc] initWithOverlay:epflLayersOverlay];
         internetConnectionAlert = nil;
         initialQuery = nil;
         initialQueryManualPinLabelText = nil;
@@ -379,13 +379,17 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)updateFloorLabel {
     if (epflTileOverlay.currentLayerLevel == MIN_LAYER_LEVEL) {
-        floorManagementSuperview.hidden = YES;
+        floorDownButton.enabled = NO;
+        floorUpButton.enabled = YES;
     } else if (epflTileOverlay.currentLayerLevel == MAX_LAYER_LEVEL) {
-        floorManagementSuperview.hidden = YES;
+        floorDownButton.enabled = YES;
+        floorUpButton.enabled = NO;
     } else {
         MKZoomScale zoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width;
         if ([epflTileOverlay canDrawMapRect:mapView.visibleMapRect zoomScale:zoomScale]) {
             floorManagementSuperview.hidden = NO;
+            floorDownButton.enabled = YES;
+            floorUpButton.enabled = YES;
         }
     }
     floorLabel.text = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"Floor", @"MapPlugin", nil), epflTileOverlay.currentLayerLevel];

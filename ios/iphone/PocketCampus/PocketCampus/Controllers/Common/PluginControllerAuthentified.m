@@ -45,6 +45,7 @@
 
 - (void)cleanAndNotifySuccessToObservers {
     self.authController = nil;
+    self.authenticationStarted = NO;
     @synchronized (self) {
         for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
             loginObserver.successBlock();
@@ -55,6 +56,7 @@
 
 - (void)cleanAndNotifyFailureToObservers {
     self.authController = nil;
+    self.authenticationStarted = NO;
     @synchronized (self) {
         for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
             loginObserver.failureBlock();
@@ -65,6 +67,7 @@
 
 - (void)cleanAndNotifyUserCancelledToObservers {
     self.authController = nil;
+    self.authenticationStarted = NO;
     @synchronized (self) {
         for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
             loginObserver.userCancelledBlock();
@@ -75,10 +78,13 @@
 
 - (void)cleanAndNotifyConnectionToServerTimedOutToObservers {
     self.authController = nil;
+    self.authenticationStarted = NO;
     @synchronized (self) {
         for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
             if ([loginObserver.observer respondsToSelector:@selector(serviceConnectionToServerTimedOut)]) {
                 [loginObserver.observer serviceConnectionToServerTimedOut];
+            } else {
+                loginObserver.failureBlock();
             }
             [self.loginObservers removeObject:loginObserver];
         }

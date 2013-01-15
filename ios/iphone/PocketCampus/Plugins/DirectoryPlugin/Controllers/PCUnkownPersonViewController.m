@@ -8,54 +8,83 @@
 
 #import "PCUnkownPersonViewController.h"
 
-@implementation PCUnkownPersonViewController
+#import "DirectoryProfilePictureViewController.h"
 
-@synthesize person;
+#import "UIPopoverController+Additions.h"
+
+@interface PCUnkownPersonViewController ()
+
+@property (nonatomic, strong) UIImage* profilePictureImage;
+@property (nonatomic, strong) UIPopoverController* profilePicturePopover;
+
+@end
+
+@implementation PCUnkownPersonViewController
 
 - (id)initWithDelegate:(id<ABUnknownPersonViewControllerDelegate>)delegate
 {
     self = [super init];
     if (self) {
         // Custom initialization
-        person = nil;
         self.unknownPersonViewDelegate = delegate;
     }
     return self;
 }
 
 - (void)setProfilePictureData:(NSData*)data {
-    ABPersonSetImageData(self.displayedPerson,(CFDataRef)data, nil);
+    ABPersonSetImageData(self.displayedPerson,(__bridge CFDataRef)data, nil);
     [self loadView]; //reload view content to update picture
+    
+    if (data) {
+        self.profilePictureImage = [UIImage imageWithData:data];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"PhotoButtonTitle", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(photoButtonPressed)];
+    } else {
+        self.profilePictureImage = nil;
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
+- (void)photoButtonPressed {
+    DirectoryProfilePictureViewController* viewController = [[DirectoryProfilePictureViewController alloc] initWithImage:self.profilePictureImage];
+    
+    if (self.splitViewController) {
+        if (!self.profilePicturePopover) {
+            self.profilePicturePopover = [[UIPopoverController alloc] initWithContentViewController:viewController];
+            [self.profilePicturePopover setPopoverContentSize:CGSizeMake(320.0, 480.0)];
+        }
+        [self.profilePicturePopover togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
 }
 
 - (void)setPerson:(Person*)person_ {
-    [person release];
-    person = [person_ retain];
+    _person = person_;
     ABRecordRef abPerson = ABPersonCreate();
     
-    if (![person isKindOfClass:[Person class]]) {
-        goto error;
+    if (![self.person isKindOfClass:[Person class]]) {
+        @throw [NSException exceptionWithName:@"Illegal argument" reason:@"person is not kind of class Person" userInfo:nil];
     }
     
     self.displayedPerson = abPerson;
     self.allowsAddingToAddressBook = YES;
     self.allowsActions = YES;
-    self.title = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
+    self.title = [NSString stringWithFormat:@"%@ %@", self.person.firstName, self.person.lastName];
     
 	CFErrorRef anError = NULL;
     BOOL couldCreate = true;
     
-    ABRecordSetValue(abPerson, kABPersonFirstNameProperty, person.firstName, &anError);
+    ABRecordSetValue(abPerson, kABPersonFirstNameProperty, (__bridge CFTypeRef)(self.person.firstName), &anError);
     
-    ABRecordSetValue(abPerson, kABPersonLastNameProperty, person.lastName, &anError);
+    ABRecordSetValue(abPerson, kABPersonLastNameProperty, (__bridge CFTypeRef)(self.person.lastName), &anError);
     
     ABMultiValueRef phone = ABMultiValueCreateMutable(kABStringPropertyType);
-    if (person.officePhoneNumber) {
-        couldCreate = ABMultiValueAddValueAndLabel(phone, person.officePhoneNumber, kABWorkLabel, NULL);
+    if (self.person.officePhoneNumber) {
+        couldCreate = ABMultiValueAddValueAndLabel(phone, (__bridge CFTypeRef)(self.person.officePhoneNumber), kABWorkLabel, NULL);
         
     }
-    if (person.privatePhoneNumber) {
-        couldCreate = ABMultiValueAddValueAndLabel(phone, person.privatePhoneNumber, kABHomeLabel, NULL);
+    if (self.person.privatePhoneNumber) {
+        couldCreate = ABMultiValueAddValueAndLabel(phone, (__bridge CFTypeRef)(self.person.privatePhoneNumber), kABHomeLabel, NULL);
         
     }
     if (couldCreate) {
@@ -64,9 +93,9 @@
     CFRelease(phone);
     
     
-    if (person.email) {
+    if (self.person.email) {
         ABMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-        couldCreate = ABMultiValueAddValueAndLabel(email, person.email, (CFStringRef)@"email", NULL);
+        couldCreate = ABMultiValueAddValueAndLabel(email, (__bridge CFTypeRef)(self.person.email), (CFStringRef)@"email", NULL);
         if (couldCreate) {
             ABRecordSetValue(abPerson, kABPersonEmailProperty, email, &anError);
         }
@@ -85,22 +114,22 @@
      }
      }*/
     
-    if (person.web) {
+    if (self.person.web) {
         ABMultiValueRef web = ABMultiValueCreateMutable(kABStringPropertyType);
-        couldCreate = ABMultiValueAddValueAndLabel(web, person.web, (CFStringRef)@"web", NULL);
+        couldCreate = ABMultiValueAddValueAndLabel(web, (__bridge CFTypeRef)(self.person.web), (__bridge CFStringRef)@"web", NULL);
         if (couldCreate) {
             ABRecordSetValue(abPerson, kABPersonURLProperty, web, &anError);
         }
         CFRelease(web);
     }
     
-    if (person.office && self.unknownPersonViewDelegate) { //won't show office as row if no delegate to receive the map call
+    if (self.person.office && self.unknownPersonViewDelegate) { //won't show office as row if no delegate to receive the map call
         ABMultiValueRef office = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
         NSMutableDictionary *addressDictionary = [NSMutableDictionary dictionaryWithCapacity:2];
         NSString* label = NSLocalizedStringFromTable(@"OfficeLabel", @"DirectoryPlugin", @"Short name to describe label of office room");
-        [addressDictionary setObject:[NSString stringWithFormat:@"%@ %@", person.office, NSLocalizedStringFromTable(@"(showOnMap)", @"DirectoryPlugin", nil)] forKey:(NSString *)kABPersonAddressCityKey];
+        [addressDictionary setObject:[NSString stringWithFormat:@"%@ %@", self.person.office, NSLocalizedStringFromTable(@"(showOnMap)", @"DirectoryPlugin", nil)] forKey:(NSString *)kABPersonAddressCityKey];
         [addressDictionary setObject:@"" forKey:(NSString *)kABPersonAddressCountryKey];
-        couldCreate = ABMultiValueAddValueAndLabel(office, addressDictionary, (CFStringRef)label, NULL);
+        couldCreate = ABMultiValueAddValueAndLabel(office, (__bridge CFTypeRef)(addressDictionary), (__bridge CFStringRef)label, NULL);
         if (couldCreate) {
             ABRecordSetValue(abPerson, kABPersonAddressProperty, office, &anError);
         }
@@ -108,13 +137,13 @@
     }
     
     NSString* message = @"";
-    if (person.OrganisationalUnit) {
-        for (NSString* unit in person.OrganisationalUnit) {
+    if (self.person.OrganisationalUnit) {
+        for (NSString* unit in self.person.OrganisationalUnit) {
             message = [message stringByAppendingFormat:@"%@ ", unit];
         }
     }
-    if (person.office && !self.unknownPersonViewDelegate) {
-        message = [message stringByAppendingFormat:@"\n%@", person.office];
+    if (self.person.office && !self.unknownPersonViewDelegate) {
+        message = [message stringByAppendingFormat:@"\n%@", self.person.office];
     }
     self.message = message;
     
@@ -128,12 +157,6 @@
     CFRelease(abPerson);
     
     [self loadView];
-}
-
-- (void)dealloc
-{
-    [person release];
-    [super dealloc];
 }
 
 @end

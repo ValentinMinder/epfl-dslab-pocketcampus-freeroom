@@ -20,15 +20,19 @@
             @throw [NSException exceptionWithName:@"bad argument(s)" reason:@"bad key and/or pluginName argument" userInfo:nil];
         }
         @try {
-            
+            NSString* path = [self pathForKey:key pluginName:pluginName customFileExtension:nil isCache:isCache];
             if (object == nil) {
                 NSError* error = NULL;
                 NSFileManager* fileManager = [[NSFileManager alloc] init];
-                [fileManager removeItemAtPath:[self pathForKey:key pluginName:pluginName] error:&error];
+                [fileManager removeItemAtPath:path error:&error];
+                
+                if (error && ![fileManager fileExistsAtPath:path]) { //then error is that file is already deleted
+                    [fileManager release];
+                    return YES;
+                }
                 [fileManager release];
                 return (error == NULL);
             }
-            NSString* path = [self pathForKey:key pluginName:pluginName customFileExtension:nil isCache:isCache];
             [[self class] createComponentsForPath:path];
             return [NSKeyedArchiver archiveRootObject:object toFile:path];
         }

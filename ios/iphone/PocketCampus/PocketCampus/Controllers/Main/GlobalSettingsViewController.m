@@ -131,7 +131,7 @@ static const int kRestoreDefaultMainMenuRow = 1;
                 }
                 case kRestoreDefaultMainMenuRow:
                 {
-                    [self.mainController.mainMenuViewController restoreDefaultMenu];
+                    [self.mainController restoreDefaultMainMenu];
                     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
                     break;
                 }

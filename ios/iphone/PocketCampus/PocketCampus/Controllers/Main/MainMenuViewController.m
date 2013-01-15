@@ -66,6 +66,7 @@ static const int kPluginsSection = 0;
     | UIViewAutoresizingFlexibleHeight
     | UIViewAutoresizingFlexibleBottomMargin;
     self.tableView.backgroundView = backgroundView;
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
     self.view.backgroundColor = [PCValues backgroundColor1];
     self.navigationController.view.layer.cornerRadius = [PCValues defaultCornerRadius];
     self.navigationController.view.layer.masksToBounds = YES;
@@ -92,8 +93,10 @@ static const int kPluginsSection = 0;
 
 #pragma mark - Public
 
-- (void)restoreDefaultMenu {
-    //TODO
+- (void)reloadWithMenuItems:(NSArray*)menuItems {
+    [self fillCollectionsWithMenuItems:menuItems];
+    self.cells = [NSMutableDictionary dictionary];
+    [PCUtils reloadTableView:self.tableView withFadingDuration:0.5];
 }
 
 - (void)setEditing:(BOOL)editing {

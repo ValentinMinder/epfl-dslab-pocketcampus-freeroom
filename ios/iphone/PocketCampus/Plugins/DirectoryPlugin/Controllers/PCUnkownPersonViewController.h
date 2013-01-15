@@ -11,11 +11,9 @@
 
 #import "directory.h"
 
-@interface PCUnkownPersonViewController : ABUnknownPersonViewController {
-    Person* person;
-}
+@interface PCUnkownPersonViewController : ABUnknownPersonViewController
 
-@property (nonatomic, retain) Person* person;
+@property (nonatomic, strong) Person* person;
 
 - (id)initWithDelegate:(id<ABUnknownPersonViewControllerDelegate>)delegate;
 - (void)setProfilePictureData:(NSData*)data;

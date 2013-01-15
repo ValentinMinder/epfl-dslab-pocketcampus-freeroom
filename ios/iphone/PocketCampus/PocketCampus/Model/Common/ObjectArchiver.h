@@ -10,7 +10,7 @@
 
 @interface ObjectArchiver : NSObject
 
-+ (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString*)key andPluginName:(NSString*)pluginName; //save as next with isCache = NO
++ (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString*)key andPluginName:(NSString*)pluginName; //same as next with isCache = NO. Passing nil objects delete files for corresponding key if it exists
 + (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString *)key andPluginName:(NSString *)pluginName isCache:(BOOL)isCache;
 + (id<NSCoding>)objectForKey:(NSString*)key andPluginName:(NSString*)pluginName; //same as next with isCache = NO
 + (id<NSCoding>)objectForKey:(NSString*)key andPluginName:(NSString*)pluginName isCache:(BOOL)isCache;

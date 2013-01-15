@@ -124,7 +124,8 @@ static MyEduController* instance __weak = nil;
     userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
     
     [super addLoginObserver:observer successBlock:successBlock userCancelledBlock:userCancelledblock failureBlock:failureBlock];
-    if(!self.myEduService) {
+    if(!super.authenticationStarted) {
+        super.authenticationStarted = YES;
         self.myEduService = [MyEduService sharedInstanceToRetain];
         [self.myEduService getTequilaTokenForMyEduWithDelegate:self];
     }

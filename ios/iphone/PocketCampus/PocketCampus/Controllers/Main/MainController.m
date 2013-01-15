@@ -248,18 +248,25 @@ static MainController<MainControllerPublic>* instance = nil;
     }
 }
 
-- (void)initMainMenu {
-    
-    /* Generating menu items from pluginsList */
-    
+- (NSMutableArray*)defaultMainMenuItemsWithoutTopSection {
+    if (!self.pluginsList) {
+        return nil;
+    }
     NSMutableArray* menuItems = [NSMutableArray array];
-    
     for (NSString* pluginIdentifier in self.pluginsList) {
         Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:pluginIdentifier]);
         NSString* localizedName = [pluginClass localizedName];
         MainMenuItem* item = [MainMenuItem menuItemButtonWithTitle:localizedName leftImage:[UIImage imageNamed:pluginIdentifier] identifier:pluginIdentifier];
         [menuItems addObject:item];
     }
+    return menuItems;
+}
+
+- (void)initMainMenu {
+    
+    /* Generating menu items from pluginsList */
+    
+    NSMutableArray* menuItems = [self defaultMainMenuItemsWithoutTopSection];
     
     /* Restoring previous order / hidden of menu items, saved be used */
     
@@ -390,6 +397,20 @@ static MainController<MainControllerPublic>* instance = nil;
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while saving the main menu state." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
     }
+}
+
+- (void)restoreDefaultMainMenu {
+    if (![ObjectArchiver saveObject:nil forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
+        UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while restoring default main menu." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [errorAlert show];
+        return;
+    }
+    NSMutableArray* menuItems = [self defaultMainMenuItemsWithoutTopSection];
+    MainMenuItem* pluginSectionHeader = [MainMenuItem menuItemSectionHeaderWithTitle:@"Plugins"];
+    pluginSectionHeader.hidden = YES;
+    [menuItems insertObject:pluginSectionHeader atIndex:0];
+    
+    [self.mainMenuViewController reloadWithMenuItems:menuItems];
 }
 
 - (void)showGlobalSettings {

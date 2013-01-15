@@ -80,6 +80,7 @@ typedef enum {
 
 - (void)mainMenuStartedEditing;
 - (void)mainMenuEndedEditing;
+- (void)restoreDefaultMainMenu;
 
 @property (nonatomic, readonly, strong) MainMenuViewController* mainMenuViewController;
 

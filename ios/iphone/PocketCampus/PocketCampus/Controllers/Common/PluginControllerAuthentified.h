@@ -45,5 +45,6 @@
  */
 @property (nonatomic, strong) AuthenticationController* authController;
 @property (nonatomic, strong) NSMutableArray* loginObservers;
+@property (nonatomic) BOOL authenticationStarted;
 
 @end

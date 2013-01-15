@@ -27,4 +27,5 @@
 "Clear" = "Clear";
 "MainMenu" = "Main menu";
 "EditMainMenu" = "Edit main menu";
-"RestoreDefaultMainMenu" = "Restore default menu";
+"RestoreDefaultMainMenu" = "Default main menu";
+"Close" = "Close";

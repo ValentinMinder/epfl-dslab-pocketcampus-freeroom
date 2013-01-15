@@ -105,7 +105,8 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
       userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
     
     [super addLoginObserver:observer successBlock:successBlock userCancelledBlock:userCancelledblock failureBlock:failureBlock];
-    if (!self.moodleService) {
+    if (!super.authenticationStarted) {
+        super.authenticationStarted = YES;
         self.moodleService = [MoodleService sharedInstanceToRetain];
         [self.moodleService getTequilaTokenForMoodleDelegate:self];
     }

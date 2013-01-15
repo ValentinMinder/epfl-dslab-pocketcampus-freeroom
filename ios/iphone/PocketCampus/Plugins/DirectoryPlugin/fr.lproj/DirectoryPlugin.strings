@@ -12,6 +12,7 @@
 "OfficeLabel" = "bureau";
 "(showOnMap)" = "(voir sur le plan)";
 "NoContactSelected" = "Aucun contact séléctionné";
+"PhotoButtonTitle" = "Photo";
 
 /* Accessiblity */
 

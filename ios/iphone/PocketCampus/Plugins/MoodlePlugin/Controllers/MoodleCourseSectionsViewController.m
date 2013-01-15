@@ -55,6 +55,8 @@
         [self fillCellsFromSections];
         self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"moodle"refreshedDataIdentifier:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+        
+        //[self.moodleService deleteSession]; //TEST ONLY
     }
     return self;
 }
@@ -212,7 +214,7 @@
                 if (event == MoodleResourceEventDeleted) {
                     cellWeak.durablySelected = NO;
                     cellWeak.downloadedIndicationVisible  = NO;
-                    if (controller.splitViewController && [controller.selectedResource isEqual:resource]) { /* iPad */ //resource deleted => hide ResourceViewController
+                    if (controller.splitViewController && [controller.selectedResource isEqual:resource]) { //iPad //resource deleted => hide ResourceViewController
                         [controller.tableView deselectRowAtIndexPath:[controller.tableView indexPathForSelectedRow] animated:YES];
                         controller.selectedResource = nil;
                         MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];

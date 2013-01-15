@@ -120,7 +120,13 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems {
     newsItems = [NewsUtils eliminateDuplicateNewsItemsInArray:newsItems];
     self.sections = [NewsUtils newsItemsSectionsSortedByDate:newsItems];
+    
+    // index path are no longer corresponding
+    [self.networkQueue cancelAllOperations];
+    [self.thumbnails removeAllObjects]; 
+    
     [self.tableView reloadData];
+    
     if (self.selectedItem) {
         [self.sections enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
             [items enumerateObjectsUsingBlock:^(NewsItem* item, NSUInteger row, BOOL *stop2) {
@@ -226,15 +232,16 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NewsItem* newsItem = self.sections[indexPath.section][indexPath.row];
     
-    if ([PCUtils isIdiomPad]) {
-        self.selectedItem = newsItem;
+    if ([self.selectedItem isEqual:newsItem]) {
+        return;
     }
     
     UIImage* thumbnail = [self.thumbnails objectForKey:indexPath];
     
     NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:thumbnail];
     
-    if (self.splitViewController) {
+    if (self.splitViewController) { // iPad
+        self.selectedItem = newsItem;
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[UINavigationController alloc] initWithRootViewController:newsItemViewController]];
     } else {
         [self.navigationController pushViewController:newsItemViewController animated:YES];

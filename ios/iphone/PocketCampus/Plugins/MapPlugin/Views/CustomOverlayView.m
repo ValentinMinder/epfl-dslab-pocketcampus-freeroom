@@ -240,12 +240,12 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
 - (void)cancelTilesDownload:(BOOL)willBeDeallocated_ {
     self.willBeDeallocated = willBeDeallocated_;
 
-    for (ASIHTTPRequest* request in self.requests) {
-        request.delegate = nil;
-        [request cancel];
-    }
     @synchronized(self) {
-        [self.requests removeAllObjects];
+        for (ASIHTTPRequest* request in [self.requests copy]) {
+            request.delegate = nil;
+            [request cancel];
+            [self.requests removeObject: request];
+        }
     }
 }
 

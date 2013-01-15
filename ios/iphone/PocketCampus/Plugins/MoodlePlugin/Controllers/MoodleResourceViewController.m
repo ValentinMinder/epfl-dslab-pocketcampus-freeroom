@@ -14,6 +14,8 @@
 
 #import "UIActionSheet+Additions.h"
 
+#import "MoodleSplashDetailViewController.h"
+
 @interface MoodleResourceViewController ()
 
 @property (nonatomic, strong) MoodleService* moodleService;
@@ -84,6 +86,10 @@
     
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -110,8 +116,9 @@
     } else {
         NSLog(@"-> No saved session, loggin in...");
         [[MoodleController sharedInstance] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
-            if ([PCUtils isIdiomPad]) {
-                //TODO
+            if (self.splitViewController) {
+                MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
+                self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], splashViewController];
             } else {
                 [self.navigationController popViewControllerAnimated:YES];
             }

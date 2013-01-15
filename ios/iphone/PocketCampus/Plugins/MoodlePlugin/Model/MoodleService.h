@@ -67,6 +67,7 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 #pragma mark - Fetch resources
 
 - (void)downloadMoodleResource:(MoodleResource*)moodleResource progressView:(UIProgressView*)progressView delegate:(id)delegate;
+- (void)cancelDownloadOfMoodleResourceForDelegate:(id)delegate;
 
 @end
 
