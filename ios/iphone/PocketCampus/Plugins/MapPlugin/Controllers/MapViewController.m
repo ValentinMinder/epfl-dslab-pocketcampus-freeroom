@@ -24,6 +24,8 @@
 
 #import "PCUnkownPersonViewController.h"
 
+#import "UIActionSheet+Additions.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 static int MAX_DISPLAYED_ANNOTATIONS = 70;
@@ -354,11 +356,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         othersActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"CenterOnEPFL", @"MapPlugin", nil), localizedStringFromBuildings, nil];
     }
     
-    if (othersActionSheet.isVisible) {
-        [othersActionSheet dismissWithClickedButtonIndex:[othersActionSheet cancelButtonIndex] animated:YES];
-    } else {
-        [othersActionSheet showFromRect:eyeButton.frame inView:mapView animated:YES];
-    }
+    [othersActionSheet toggleFromRect:eyeButton.frame inView:mapView animated:YES];
 }
 
 - (IBAction)floorDownPressed {

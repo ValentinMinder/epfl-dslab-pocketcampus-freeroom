@@ -12,6 +12,8 @@
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#import "UIPopoverController+Additions.h"
+
 @interface MyEduModuleMaterialsViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -23,6 +25,7 @@
 @property (nonatomic, strong) UIPopoverController* materialsPopOverController;
 @property (nonatomic, strong) UIDocumentInteractionController* docInteractionController;
 @property (nonatomic, weak) UIBarButtonItem* actionButton;
+@property (nonatomic) BOOL isShowingActionMenu;
 
 @end
 
@@ -118,18 +121,19 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
 #pragma mark menu actions control
 
 - (void)materialsListButtonPressed {
-    if (self.materialsPopOverController.isPopoverVisible) {
-        [self.docInteractionController dismissMenuAnimated:YES];
-    } else {
-        [self.materialsPopOverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        CGRect resizedBounds = self.materialsTableView.bounds;
-        resizedBounds.size.height = self.materialsTableView.contentSize.height;
-        [self.materialsPopOverController setPopoverContentSize:CGSizeMake(resizedBounds.size.width, resizedBounds.size.height) animated:NO];
-    }
+    [self.docInteractionController dismissMenuAnimated:NO];
+    CGRect resizedBounds = self.materialsTableView.bounds;
+    resizedBounds.size.height = self.materialsTableView.contentSize.height;
+    [self.materialsPopOverController setPopoverContentSize:CGSizeMake(resizedBounds.size.width, resizedBounds.size.height) animated:NO];
+    [self.materialsPopOverController togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (void)actionButtonPressed {
     [self.materialsPopOverController dismissPopoverAnimated:NO];
+    if (self.isShowingActionMenu) {
+        [self.docInteractionController dismissMenuAnimated:YES];
+        return;
+    }
     BOOL couldShowMenu = [self.docInteractionController presentOptionsMenuFromBarButtonItem:self.actionButton animated:YES];
     if (!couldShowMenu) {
         UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Sorry", @"MoodlePlugin", nil) message:NSLocalizedStringFromTable(@"NoActionForThisFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -246,6 +250,13 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
     return success;
 }
 
+- (void)documentInteractionControllerWillPresentOptionsMenu:(UIDocumentInteractionController *)controller {
+    self.isShowingActionMenu = YES;
+}
+
+- (void)documentInteractionControllerDidDismissOptionsMenu:(UIDocumentInteractionController *)controller {
+    self.isShowingActionMenu = NO;
+}
 
 #pragma mark - UITableViewDelegate
 

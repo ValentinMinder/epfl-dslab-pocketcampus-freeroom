@@ -18,6 +18,10 @@
 
 #import "PCUtils.h"
 
+#import "UIActionSheet+Additions.h"
+
+#import "UIPopoverController+Additions.h"
+
 @interface MyEduModuleVideoViewController ()
 
 @property (nonatomic, strong) MyEduModule* module;
@@ -260,11 +264,7 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
         [self.downloadPopoverController setPopoverContentSize:CGSizeMake(366.0, 96.0) animated:NO];
     }
     
-    if (self.downloadPopoverController.isPopoverVisible) {
-        [self.downloadPopoverController dismissPopoverAnimated:YES];
-    } else {
-        [self.downloadPopoverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    }
+    [self.downloadPopoverController togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     [self.myEduService downloadVideoOfModule:self.module]; //will not do anything if downloading already
 }
          
@@ -272,11 +272,7 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
     if (!self.deleteVideoActionSheet) {
         self.deleteVideoActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"DeleteDownloadedVideoExplanation", @"MyEduPlugin", nil) delegate:self cancelButtonTitle:nil destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"PocketCampus", nil) otherButtonTitles:nil];
     }
-    if (self.deleteVideoActionSheet.isVisible) {
-        [self.deleteVideoActionSheet dismissWithClickedButtonIndex:self.deleteVideoActionSheet.cancelButtonIndex animated:YES];
-    } else {
-        [self.deleteVideoActionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
-    }
+    [self.deleteVideoActionSheet toggleFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
 
 - (IBAction)playbackRateButtonPressed {

@@ -22,6 +22,8 @@
 
 #import "PluginSplitViewController.h"
 
+#import "UIActionSheet+Additions.h"
+
 @interface NewsItemViewController ()
 
 @property (nonatomic, strong) UIImage* image;
@@ -97,11 +99,7 @@
         self.actionButtonSheet.accessibilityIdentifier = @"NewsItemActionSheet";
     }
     
-    if (self.actionButtonSheet.isVisible) {
-        [self.actionButtonSheet dismissWithClickedButtonIndex:self.actionButtonSheet.cancelButtonIndex animated:YES];
-    } else {
-        [self.actionButtonSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
-    }
+    [self.actionButtonSheet toggleFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
 
 #pragma mark - UIActionSheetDelegate

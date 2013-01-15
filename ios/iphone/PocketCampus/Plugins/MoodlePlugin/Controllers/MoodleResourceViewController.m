@@ -12,6 +12,8 @@
 
 #import "PCUtils.h"
 
+#import "UIActionSheet+Additions.h"
+
 @interface MoodleResourceViewController ()
 
 @property (nonatomic, strong) MoodleService* moodleService;
@@ -141,12 +143,8 @@
     if (!self.deleteActionSheet) {
         self.deleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"DeleteFileFromCacheQuestion", @"MoodlePlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"PocketCampus", nil) otherButtonTitles:nil];
     }
-    
-    if (self.deleteActionSheet.isVisible) {
-        [self.deleteActionSheet dismissWithClickedButtonIndex:[self.deleteActionSheet cancelButtonIndex] animated:YES];
-    } else {
-        [self.deleteActionSheet showFromBarButtonItem:[self deleteButton] animated:YES];
-    }
+    [self.docInteractionController dismissMenuAnimated:NO];
+    [self.deleteActionSheet toggleFromBarButtonItem:[self deleteButton] animated:YES];
 }
 
 - (void)actionButtonPressed {
@@ -154,6 +152,7 @@
         [self.docInteractionController dismissMenuAnimated:YES];
         return;
     }
+    [self.deleteActionSheet dismissWithClickedButtonIndex:self.deleteActionSheet.cancelButtonIndex animated:NO];
     BOOL couldShowMenu = [self.docInteractionController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
     if (!couldShowMenu) {
         UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Sorry", @"MoodlePlugin", nil) message:NSLocalizedStringFromTable(@"NoActionForThisFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
