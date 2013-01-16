@@ -12,10 +12,13 @@
 
 #import "UIPopoverController+Additions.h"
 
+#import "DirectoryService.h"
+
 @interface PCUnkownPersonViewController ()
 
 @property (nonatomic, strong) UIImage* profilePictureImage;
 @property (nonatomic, strong) UIPopoverController* profilePicturePopover;
+@property (nonatomic, strong) DirectoryService* directoryService;
 
 @end
 
@@ -27,20 +30,16 @@
     if (self) {
         // Custom initialization
         self.unknownPersonViewDelegate = delegate;
+        self.directoryService = [DirectoryService sharedInstanceToRetain];
     }
     return self;
 }
 
-- (void)setProfilePictureData:(NSData*)data {
-    ABPersonSetImageData(self.displayedPerson,(__bridge CFDataRef)data, nil);
-    [self loadView]; //reload view content to update picture
-    
-    if (data) {
-        self.profilePictureImage = [UIImage imageWithData:data];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"PhotoButtonTitle", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(photoButtonPressed)];
-    } else {
-        self.profilePictureImage = nil;
-        self.navigationItem.rightBarButtonItem = nil;
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Details", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
+    if (!self.profilePictureImage) {
+        [self.directoryService getProfilePicture:self.person.sciper delegate:self];
     }
 }
 
@@ -50,7 +49,8 @@
     if (self.splitViewController) {
         if (!self.profilePicturePopover) {
             self.profilePicturePopover = [[UIPopoverController alloc] initWithContentViewController:viewController];
-            [self.profilePicturePopover setPopoverContentSize:CGSizeMake(320.0, 480.0)];
+            //[self.profilePicturePopover setPopoverContentSize:CGSizeMake(320.0, 480.0)];
+            [self.profilePicturePopover setPopoverContentSize:viewController.contentSizeForViewInPopover];
         }
         [self.profilePicturePopover togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
@@ -70,6 +70,10 @@
     self.allowsAddingToAddressBook = YES;
     self.allowsActions = YES;
     self.title = [NSString stringWithFormat:@"%@ %@", self.person.firstName, self.person.lastName];
+    
+    UIImage* loadingImage = [UIImage imageNamed:@"LoadingIndicator"];
+    NSData* imageData = UIImagePNGRepresentation(loadingImage);
+    ABPersonSetImageData(self.displayedPerson,(__bridge CFDataRef)imageData, nil);
     
 	CFErrorRef anError = NULL;
     BOOL couldCreate = true;
@@ -157,6 +161,35 @@
     CFRelease(abPerson);
     
     [self loadView];
+}
+
+#pragma mark DirectoryServiceDelegate
+
+- (void)profilePictureFor:(NSString*)sciper didReturn:(NSData*)data {
+    if (data) {
+        ABPersonSetImageData(self.displayedPerson,(__bridge CFDataRef)data, nil);
+        [self loadView]; //reload view content to update picture
+        self.profilePictureImage = [UIImage imageWithData:data];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"PhotoButtonTitle", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(photoButtonPressed)];
+    }
+}
+
+- (void)profilePictureFailedFor:(NSString*)sciper {
+    NSLog(@"-> Profile picture request failed (possibly no picture available)");
+    ABPersonSetImageData(self.displayedPerson,NULL, nil);
+    [self loadView]; //reload view content to update picture
+}
+
+- (void)serviceConnectionToServerTimedOut {
+    NSLog(@"-> ProfilePicture request timed out");
+    ABPersonSetImageData(self.displayedPerson, NULL, nil);
+    [self loadView]; //reload view content to update picture
+}
+
+#pragma mark dealloc
+
+- (void)dealloc {
+    [self.directoryService cancelOperationsForDelegate:self];
 }
 
 @end

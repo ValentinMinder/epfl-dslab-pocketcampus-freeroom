@@ -43,7 +43,7 @@ static NSString* kAutocompleteResultCellIdentifier = @"autocompleteResultCell";
 static NSString* kSearchResultCellIdentifier = @"searchResultCell";
 static NSString* kRecentSearchCellIdentifier = @"recentSearchCell";
 
-static NSUInteger kMaxRecentSearches = 8;
+static NSUInteger kMaxRecentSearches = 15;
 static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (id)init
@@ -131,9 +131,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     }
     self.personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:self];
     [self.personViewController setPerson:person];
-    UIImage* loadingImage = [UIImage imageNamed:@"LoadingIndicator"];
-    NSData* imageData = UIImagePNGRepresentation(loadingImage);
-    [self.personViewController setProfilePictureData:imageData];
     if (self.splitViewController) {
         UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:self.personViewController];
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], navController];
@@ -141,7 +138,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         [self.navigationController pushViewController:self.personViewController animated:YES];
     }
     self.displayedPerson = person;
-    [self.directoryService getProfilePicture:person.sciper delegate:self];
 }
 
 - (void)showEmptyDetailViewController {
@@ -294,6 +290,9 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 - (void)searchDirectoryFor:(NSString*)searchPattern didReturn:(NSArray*)results {
     [self.barActivityIndicator stopAnimating];
     if (results.count == 0) {
+        if (self.resultsMode == ResultsModeRecentSearches && self.searchBar.text.length == 0) {
+            [self.recentSearches removeObject:searchPattern]; //means this recent result is not longer in directory (ex. left EPFL)
+        }
         [self showNoResultMessage];
         return;
     }
@@ -329,18 +328,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (void)searchDirectoryFailedFor:(NSString*)searchPattern {
     [self resultsError];
-}
-
-- (void)profilePictureFor:(NSString*)sciper didReturn:(NSData*)data {
-    if ([self.displayedPerson.sciper isEqualToString:sciper]) {
-        [self.personViewController setProfilePictureData:data];
-    }
-}
-
-- (void)profilePictureFailedFor:(NSString*)sciper {
-    if ([self.displayedPerson.sciper isEqualToString:sciper]) {
-        [self.personViewController setProfilePictureData:NULL];
-    }
 }
 
 - (void)resultsError {

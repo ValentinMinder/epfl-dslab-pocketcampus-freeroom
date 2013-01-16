@@ -2161,12 +2161,12 @@
 				32FAC0E31500F40700925180 /* DirectoryController.m */,
 				32FAC0E41500F40700925180 /* DirectorySearchViewController.h */,
 				32FAC0E51500F40700925180 /* DirectorySearchViewController.m */,
-				32E67DC11684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.h */,
-				32E67DC21684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m */,
 				32649B21160DD7DA002E6498 /* PCUnkownPersonViewController.h */,
 				32649B22160DD7DA002E6498 /* PCUnkownPersonViewController.m */,
 				3216C95616A6098C0050D17D /* DirectoryProfilePictureViewController.h */,
 				3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */,
+				32E67DC11684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.h */,
+				32E67DC21684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

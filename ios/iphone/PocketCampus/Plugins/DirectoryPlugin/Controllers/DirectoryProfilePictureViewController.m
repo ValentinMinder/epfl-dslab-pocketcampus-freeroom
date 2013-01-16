@@ -36,21 +36,37 @@
     
     self.view.backgroundColor = [PCValues backgroundColor1];
     
+    
     self.imageView.layer.masksToBounds = NO;
-    //self.imageView.layer.cornerRadius = 8; // if you like rounded corners
+    //self.imageView.layer.cornerRadius = 3; // if you like rounded corners
     self.imageView.layer.shadowOffset = CGSizeMake(0, 0);
     self.imageView.layer.shadowRadius = 3;
-    self.imageView.layer.shadowOpacity = 0.4;
+    self.imageView.layer.shadowOpacity = 0.45;
     
     self.imageView.image = self.image;
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     self.imageView.center = self.view.center;
     self.contentSizeForViewInPopover = self.view.frame.size;
-    //[self.view sizeToFit];
+    
+    self.imageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(saveProfilePictureToCameraRoll)];
+    gesture.numberOfTouchesRequired = 2;
+    gesture.numberOfTapsRequired = 3;
+    [self.imageView addGestureRecognizer:gesture];
 }
 
-- (void)closeButtonPressed {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+- (void)saveProfilePictureToCameraRoll {
+    NSLog(@"-> Saving profile picture");
+    UIImageWriteToSavedPhotosAlbum(self.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo; {
+    if (error) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error when saving image\ninto camera roll" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Image saved" message:@"Image correctly saved\ninto camera roll" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning

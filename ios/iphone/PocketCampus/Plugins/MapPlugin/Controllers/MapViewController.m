@@ -675,14 +675,6 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     
 }
 
-- (void)profilePictureFor:(NSString *)sciper didReturn:(NSData *)data {
-    [[self pcUnknownPersonViewControllerIfPresentedSciperCheck:sciper] setProfilePictureData:data];
-}
-
-- (void)profilePictureFailedFor:(NSString *)sciper {
-    [[self pcUnknownPersonViewControllerIfPresentedSciperCheck:sciper] setProfilePictureData:NULL]; //no picture => will show default icon
-}
-
 - (PCUnkownPersonViewController*)pcUnknownPersonViewControllerIfPresentedSciperCheck:(NSString*)sciper {
     if (!personToDisplay) {
         return nil;
@@ -711,7 +703,6 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     if (![button isKindOfClass:[UIButton class]] || !personToDisplay) {
         return;
     }
-    [directoryService getProfilePicture:personToDisplay.sciper delegate:self];
     PCUnkownPersonViewController* personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:nil];
     [personViewController setPerson:personToDisplay];
     
