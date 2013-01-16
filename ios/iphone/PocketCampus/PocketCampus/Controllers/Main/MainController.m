@@ -85,6 +85,7 @@ static MainController<MainControllerPublic>* instance = nil;
             self.revealWidth = 261.0;
         }
         [self initRevealController];
+        self.revealController.maxRearViewRevealOverdraw = 0.0;
         if ([PCUtils isIdiomPad]) {
             self.revealController.toggleAnimationDuration = 0.65;
         } else {
@@ -201,6 +202,13 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     if (![self.pluginsList containsObject:identifier]) {
         @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName does not correspond to any existing identifier. Please use [PluginControllerProtocol identifierName] as argument." userInfo:nil];
+    }
+}
+
+- (void)selectActivePluginInMainMenuIfNecessary {
+    if (self.activePluginController) {
+        NSString* activePluginIdentifier = [self.activePluginController.class identifierName];
+        [self.mainMenuViewController setSelectedPluginWithIdentifier:activePluginIdentifier animated:YES];
     }
 }
 
@@ -411,6 +419,12 @@ static MainController<MainControllerPublic>* instance = nil;
     [menuItems insertObject:pluginSectionHeader atIndex:0];
     
     [self.mainMenuViewController reloadWithMenuItems:menuItems];
+    
+    if (![PCUtils isIdiomPad] && self.activePluginController) {
+        [self.revealController showFrontViewCompletely:NO];
+    }
+    
+    [NSTimer scheduledTimerWithTimeInterval:0.0 target:self selector:@selector(selectActivePluginInMainMenuIfNecessary) userInfo:nil repeats:NO];
 }
 
 - (void)showGlobalSettings {

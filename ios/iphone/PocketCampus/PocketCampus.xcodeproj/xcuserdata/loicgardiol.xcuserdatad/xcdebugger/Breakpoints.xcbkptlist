@@ -290,11 +290,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066645.954919"
+         timestampString = "380066873.320394"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "183"
-         endingLineNumber = "183"
+         startingLineNumber = "182"
+         endingLineNumber = "182"
          landmarkName = "-startAutocompleteRequest"
          landmarkType = "5">
          <Actions>
@@ -312,11 +312,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066645.954919"
+         timestampString = "380066873.320394"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "192"
-         endingLineNumber = "192"
+         startingLineNumber = "191"
+         endingLineNumber = "191"
          landmarkName = "-startSearchRequest"
          landmarkType = "5">
          <Actions>
@@ -334,11 +334,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066645.954919"
+         timestampString = "380066873.320394"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "273"
-         endingLineNumber = "273"
+         startingLineNumber = "272"
+         endingLineNumber = "272"
          landmarkName = "-autocompleteFor:didReturn:"
          landmarkType = "5">
          <Actions>
@@ -356,11 +356,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066645.954919"
+         timestampString = "380066873.320394"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "205"
-         endingLineNumber = "205"
+         startingLineNumber = "204"
+         endingLineNumber = "204"
          landmarkName = "-searchBar:textDidChange:"
          landmarkType = "5">
          <Actions>
@@ -3003,11 +3003,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066645.954919"
+         timestampString = "380066873.320394"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "382"
-         endingLineNumber = "382"
+         startingLineNumber = "381"
+         endingLineNumber = "381"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3016,11 +3016,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066645.954919"
+         timestampString = "380066873.320394"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "357"
-         endingLineNumber = "357"
+         startingLineNumber = "356"
+         endingLineNumber = "356"
          landmarkName = "-serviceConnectionToServerTimedOut"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3320,11 +3320,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Controllers/Main/MainController.m"
-         timestampString = "379974423.949828"
+         timestampString = "380067778.262267"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "616"
-         endingLineNumber = "616"
+         startingLineNumber = "630"
+         endingLineNumber = "630"
          landmarkName = "-revealController:willRevealRearViewController:"
          landmarkType = "5">
          <Actions>
@@ -3342,11 +3342,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066645.954919"
+         timestampString = "380066873.320394"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "90"
-         endingLineNumber = "90"
+         startingLineNumber = "89"
+         endingLineNumber = "89"
          landmarkName = "-didEnterForeground"
          landmarkType = "5">
          <Actions>
@@ -3364,11 +3364,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066645.954919"
+         timestampString = "380066873.320394"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "85"
-         endingLineNumber = "85"
+         startingLineNumber = "84"
+         endingLineNumber = "84"
          landmarkName = "-willLoseForeground"
          landmarkType = "5">
          <Actions>
@@ -3386,11 +3386,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Main/MainController.m"
-         timestampString = "379974423.949828"
+         timestampString = "380067778.262267"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "589"
-         endingLineNumber = "589"
+         startingLineNumber = "603"
+         endingLineNumber = "603"
          landmarkName = "-rotateDeviceToPortraitIfNecessary"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3412,11 +3412,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066645.954919"
+         timestampString = "380066873.320394"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "509"
-         endingLineNumber = "509"
+         startingLineNumber = "508"
+         endingLineNumber = "508"
          landmarkName = "-unknownPersonViewController:shouldPerformDefaultActionForPerson:property:identifier:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3613,11 +3613,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Main/MainController.m"
-         timestampString = "379974254.483201"
+         timestampString = "380067778.262267"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "376"
-         endingLineNumber = "376"
+         startingLineNumber = "384"
+         endingLineNumber = "384"
          landmarkName = "-mainMenuEndedEditing"
          landmarkType = "5">
       </FileBreakpoint>
