@@ -29,8 +29,6 @@ static id test __strong __unused = nil;
 - (void)dealloc
 {
     [[GANTracker sharedTracker] stopTracker];
-    [_window release];
-    [super dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -52,11 +50,11 @@ static id test __strong __unused = nil;
     }
     
     
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
     
-    self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
+    self.mainController = [[MainController alloc] initWithWindow:self.window];
     
     
     /* TESTS */

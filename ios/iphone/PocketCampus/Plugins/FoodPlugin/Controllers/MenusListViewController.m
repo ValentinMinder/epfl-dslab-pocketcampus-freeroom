@@ -91,7 +91,8 @@ static NSString* kMealCellIdentifier = @"mealCell";
 }
 
 - (void)showMapButtonIfPossible {
-    if (restaurantName == nil || [restaurantName isEqualToString:@"Bistro 31"] || [restaurantName isEqualToString:@"Hong Thaï Rung"] || [restaurantName isEqualToString:@"Maharaja"]) { //map plugin does not know these restaurants
+    if (restaurantName == nil || [restaurantName isEqualToString:@"Bistro 31"] || [restaurantName isEqualToString:@"Hong Thaï Rung"] || [restaurantName isEqualToString:@"Maharaja"]
+        || [restaurantName isEqualToString:@"Obeirut Lebanese Cuisine"]) { //map plugin does not know these restaurants
         return;
     }
     UIBarButtonItem* mapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Map", @"FoodPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(mapButtonPressed)];

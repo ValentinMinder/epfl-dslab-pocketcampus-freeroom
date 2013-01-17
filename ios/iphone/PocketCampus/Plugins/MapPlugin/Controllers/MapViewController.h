@@ -27,58 +27,9 @@ typedef enum {
     SearchBarStateHidden
 } SearchBarState;
 
-@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, CustomOverlayViewDelegate, DirectoryServiceDelegate, UIPopoverControllerDelegate> {
-    UIButton* myLocationButton;
-    UIView* floorManagementSuperview;
-    UIImageView* floorManagementBackground;
-    UIButton* floorDownButton;
-    UILabel* floorLabel;
-    UIButton* floorUpButton;
-    UIButton* eyeButton;
-    UIActionSheet* othersActionSheet;
-    UIAlertView* internetConnectionAlert;
-    MapService* mapService;
-    DirectoryService* directoryService;
-    Person* personToDisplay;
-    NSString* initialQuery;
-    NSString* initialQueryManualPinLabelText;
-    MKMapView* mapView;
-    EPFLTileOverlay* epflTileOverlay;
-    EPFLLayersOverlay* epflLayersOverlay;
-    CustomOverlayView* tileOverlayView;
-    CustomOverlayView* layersOverlayView;
-    BOOL overlaysVisible;
-    MKCoordinateRegion epflRegion;
-    UISearchBar* searchBar;
-    UIActivityIndicatorView* searchActivityIndicator;
-    SearchBarState searchBarState;
-    CGRect searchBarHiddenFrame;
-    CGRect searchBarVisibleFrame;
-    UIActivityIndicatorView* overlaysLoadingIndicator;
-    UIActivityIndicatorView* navBarLoadingIndicator;
-    BOOL showBuildingsInterior;
-    NSArray* annotationsToAdd;
-    UIPopoverController* personPopOverController;
-    BOOL searchBarWasFirstResponder;
-}
-
-@property (nonatomic, assign) IBOutlet MKMapView* mapView;
-@property (nonatomic, assign) IBOutlet UISearchBar* searchBar;
-@property (nonatomic, assign) IBOutlet UIActivityIndicatorView* overlaysLoadingIndicator;
-@property (nonatomic, assign) IBOutlet UIButton* myLocationButton;
-@property (nonatomic, assign) IBOutlet UIView* floorManagementSuperview;
-@property (nonatomic, assign) IBOutlet UIImageView* floorManagementBackground;
-@property (nonatomic, assign) IBOutlet UIButton* floorDownButton;
-@property (nonatomic, assign) IBOutlet UILabel* floorLabel;
-@property (nonatomic, assign) IBOutlet UIButton* floorUpButton;
-@property (nonatomic, assign) IBOutlet UIButton* eyeButton;
+@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, CustomOverlayViewDelegate, DirectoryServiceDelegate, UIPopoverControllerDelegate>
 
 - (id)initWithInitialQuery:(NSString*)query;
 - (id)initWithInitialQuery:(NSString*)query pinTextLabel:(NSString*)pinTextLabel;
-
-- (IBAction)myLocationPressed;
-- (IBAction)floorDownPressed;
-- (IBAction)floorUpPressed;
-- (IBAction)eyePressed;
 
 @end

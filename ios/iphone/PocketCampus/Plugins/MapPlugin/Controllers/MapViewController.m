@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
-
 #import "MapViewController.h"
 
 #import "MapItemAnnotation.h"
@@ -26,14 +24,57 @@
 
 #import "UIActionSheet+Additions.h"
 
+#import "GANTracker.h"
+
 #import <QuartzCore/QuartzCore.h>
 
-static int MAX_DISPLAYED_ANNOTATIONS = 70;
+static int kMaxDisplayedAnnotations = 70;
 static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
+
+
+@interface MapViewController ()
+
+/* Outlets */
+
+@property (nonatomic, assign) IBOutlet MKMapView* mapView;
+@property (nonatomic, assign) IBOutlet UISearchBar* searchBar;
+@property (nonatomic, assign) IBOutlet UIActivityIndicatorView* overlaysLoadingIndicator;
+@property (nonatomic, assign) IBOutlet UIButton* myLocationButton;
+@property (nonatomic, assign) IBOutlet UIView* floorManagementSuperview;
+@property (nonatomic, assign) IBOutlet UIImageView* floorManagementBackground;
+@property (nonatomic, assign) IBOutlet UIButton* floorDownButton;
+@property (nonatomic, assign) IBOutlet UILabel* floorLabel;
+@property (nonatomic, assign) IBOutlet UIButton* floorUpButton;
+@property (nonatomic, assign) IBOutlet UIButton* eyeButton;
+
+@property (nonatomic, strong) MapService* mapService;
+@property (nonatomic, strong) DirectoryService* directoryService;
+@property (nonatomic, strong) Person* personToDisplay;
+@property (nonatomic, strong) EPFLTileOverlay* epflTileOverlay;
+@property (nonatomic, strong) EPFLLayersOverlay* epflLayersOverlay;
+@property (nonatomic, strong) CustomOverlayView* tileOverlayView;
+@property (nonatomic, strong) CustomOverlayView* layersOverlayView;
+@property (nonatomic, strong) UIAlertView* noResultAlert;
+@property (nonatomic, strong) UIAlertView* internetConnectionAlert;
+@property (nonatomic, strong) NSString* initialQuery;
+@property (nonatomic, strong) NSString* initialQueryManualPinLabelText;
+@property (nonatomic) MKCoordinateRegion epflRegion;
+@property (nonatomic) SearchBarState searchBarState;
+@property (nonatomic) CGRect searchBarHiddenFrame;
+@property (nonatomic) CGRect searchBarVisibleFrame;
+@property (nonatomic, strong) UIActivityIndicatorView* navBarLoadingIndicator;
+@property (nonatomic, strong) UIActivityIndicatorView* searchActivityIndicator;
+@property (nonatomic, strong) NSArray* annotationsToAdd;
+@property (nonatomic, strong) UIPopoverController* personPopOverController;
+@property (nonatomic, strong) UIActionSheet* othersActionSheet;
+@property (nonatomic) BOOL showBuildingsInterior;
+@property (nonatomic) BOOL searchBarWasFirstResponder;
+
+@end
 
 @implementation MapViewController
 
-@synthesize mapView, searchBar, myLocationButton, floorManagementSuperview, floorManagementBackground, floorDownButton, floorLabel, floorUpButton, eyeButton, overlaysLoadingIndicator;
+#pragma mark - Init
 
 - (id)init
 {
@@ -43,45 +84,34 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         self = [super initWithNibName:@"MapView-phone" bundle:nil];
     }
     if (self) {
-        // Custom initialization
         if (![PCUtils isIdiomPad]) {
             self.title = [MapController localizedName];
         }
-        mapService = [[MapService sharedInstanceToRetain] retain];
-        directoryService = nil; //will be instancied if needed
-        personToDisplay = nil;
-        epflTileOverlay = [[EPFLTileOverlay alloc] init];
-        epflLayersOverlay = nil; //[[EPFLLayersOverlay alloc] init];
-        tileOverlayView = [[CustomOverlayView alloc] initWithOverlay:epflTileOverlay];
-        layersOverlayView = nil; //[[CustomOverlayView alloc] initWithOverlay:epflLayersOverlay];
-        internetConnectionAlert = nil;
-        initialQuery = nil;
-        initialQueryManualPinLabelText = nil;
+        self.mapService = [MapService sharedInstanceToRetain];
+        self.epflTileOverlay = [[EPFLTileOverlay alloc] init];
+        self.epflLayersOverlay = nil; //[[EPFLLayersOverlay alloc] init];
+        self.tileOverlayView = [[CustomOverlayView alloc] initWithOverlay:self.epflTileOverlay];
+        self.layersOverlayView = nil; //[[CustomOverlayView alloc] initWithOverlay:epflLayersOverlay];
         if ([PCUtils isIdiomPad]) {
-            epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.010395, 0.021973));
+            self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.010395, 0.021973));
         } else {
             if ([PCUtils isOSVersionSmallerThan:6.0]) {
-                epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
+                self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
             } else {
-                epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.012285, 0.013733));
+                self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.012285, 0.013733));
             }
         }
-        searchBarState = SearchBarStateHidden;
-        navBarLoadingIndicator = nil;
-        annotationsToAdd = nil;
-        showBuildingsInterior = YES; //default
-        personPopOverController = nil;
-        myLocationButton = nil;
-        floorUpButton = nil;
-        floorDownButton = nil;
+        _searchBarState = SearchBarStateHidden;
+        self.showBuildingsInterior = YES; //default
     }
     return self;
+
 }
 
 - (id)initWithInitialQuery:(NSString*)query {
     self = [self init];
     if (self) {
-        initialQuery = [query retain];
+        self.initialQuery = query;
     }
     return self;
 }
@@ -89,119 +119,113 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 - (id)initWithInitialQuery:(NSString*)query pinTextLabel:(NSString*)pinTextLabel {
     self = [self initWithInitialQuery:query];
     if (self) {
-        initialQueryManualPinLabelText = [pinTextLabel retain];
+        self.initialQueryManualPinLabelText = query;
     }
     return self;
 }
+
+#pragma mark - View events
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    if (initialQuery)
+    if (self.initialQuery)
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/results" withError:NULL];
     else
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/map" withError:NULL];
-    UITapGestureRecognizer* mapTap = [[UITapGestureRecognizer alloc] initWithTarget:searchBar action:@selector(resignFirstResponder)];
+    UITapGestureRecognizer* mapTap = [[UITapGestureRecognizer alloc] initWithTarget:self.searchBar action:@selector(resignFirstResponder)];
     mapTap.cancelsTouchesInView = NO;
     mapTap.delegate = self;
-    [mapView addGestureRecognizer:mapTap];
-    [mapTap release];
-    tileOverlayView.delegate = self;
+    [self.mapView addGestureRecognizer:mapTap];
+    self.tileOverlayView.delegate = self;
     //layersOverlayView.delegate = self;
-    [mapView setRegion:epflRegion animated:NO];
-    mapView.accessibilityIdentifier = @"EPFLMapView";
-    floorDownButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorDown", @"MapPlugin", nil);
-    floorUpButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorUp", @"MapPlugin", nil);
-    eyeButton.accessibilityLabel = NSLocalizedStringFromTable(@"Eye", @"MapPlugin", nil);
-    epflTileOverlay.mapView = mapView;
-    epflLayersOverlay.mapView = mapView;
+    [self.mapView setRegion:self.epflRegion animated:NO];
+    self.mapView.accessibilityIdentifier = @"EPFLMapView";
+    self.floorDownButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorDown", @"MapPlugin", nil);
+    self.floorUpButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorUp", @"MapPlugin", nil);
+    self.eyeButton.accessibilityLabel = NSLocalizedStringFromTable(@"Eye", @"MapPlugin", nil);
+    self.epflTileOverlay.mapView = self.mapView;
+    self.epflLayersOverlay.mapView = self.mapView;
     
-    searchBar.placeholder = NSLocalizedStringFromTable(@"SearchPlaceholder", @"MapPlugin", nil);
-    searchBar.isAccessibilityElement = YES;
-    searchBar.accessibilityIdentifier = @"SearchBar";
-    searchActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchPlaceholder", @"MapPlugin", nil);
+    self.searchBar.isAccessibilityElement = YES;
+    self.searchBar.accessibilityIdentifier = @"SearchBar";
+    self.searchActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     if ([PCUtils isIdiomPad] && ![PCUtils isOSVersionSmallerThan:6.0]) {
-        searchActivityIndicator.center = CGPointMake(searchBar.frame.size.width-45.0, (searchBar.frame.size.height/2.0)+1.0);
+        self.searchActivityIndicator.center = CGPointMake(self.searchBar.frame.size.width-45.0, (self.searchBar.frame.size.height/2.0)+1.0);
     } else {
-        searchActivityIndicator.center = CGPointMake(searchBar.frame.size.width-45.0, (searchBar.frame.size.height/2.0));
+        self.searchActivityIndicator.center = CGPointMake(self.searchBar.frame.size.width-45.0, (self.searchBar.frame.size.height/2.0));
     }
-    searchActivityIndicator.hidesWhenStopped = YES;
-    [searchBar addSubview:searchActivityIndicator];
+    self.searchActivityIndicator.hidesWhenStopped = YES;
+    [self.searchBar addSubview:self.searchActivityIndicator];
     
     
     if ([PCUtils isIdiomPad]) {
-        searchBar.tintColor = [UIColor clearColor];
-        searchBar.backgroundColor = [UIColor clearColor];
-        searchBar.frame = CGRectMake(3.0, -1.0, searchBar.frame.size.width, searchBar.frame.size.height);
-        searchBar.tintColor = [UIColor clearColor];
-        [[searchBar.subviews objectAtIndex:0] removeFromSuperview];
-        UIView* searchBarContainerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, searchBar.frame.size.width, searchBar.frame.size.height)] autorelease];
+        self.searchBar.tintColor = [UIColor clearColor];
+        self.searchBar.backgroundColor = [UIColor clearColor];
+        self.searchBar.frame = CGRectMake(3.0, -1.0, self.searchBar.frame.size.width, self.searchBar.frame.size.height);
+        self.searchBar.tintColor = [UIColor clearColor];
+        [[self.searchBar.subviews objectAtIndex:0] removeFromSuperview];
+        UIView* searchBarContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.searchBar.frame.size.width, self.searchBar.frame.size.height)];
         searchBarContainerView.autoresizingMask = UIViewAutoresizingNone;
-        [searchBarContainerView addSubview:searchBar];
-        UIBarButtonItem* searchBarItem = [[[UIBarButtonItem alloc] initWithCustomView:searchBarContainerView] autorelease];
+        [searchBarContainerView addSubview:self.searchBar];
+        UIBarButtonItem* searchBarItem = [[UIBarButtonItem alloc] initWithCustomView:searchBarContainerView];
         self.navigationItem.rightBarButtonItem = searchBarItem;
     } else {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(toogleSearchBar)] autorelease];
-        searchBarHiddenFrame = searchBar.frame; //y = -44.0
-        CGRect tmpFrame = searchBar.frame;
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(toogleSearchBar)];
+        self.searchBarHiddenFrame = self.searchBar.frame; //y = -44.0
+        CGRect tmpFrame = self.searchBar.frame;
         tmpFrame.origin.y = 0.0;
-        searchBarVisibleFrame = tmpFrame;
+        self.searchBarVisibleFrame = tmpFrame;
     }
     
-    [myLocationButton setBackgroundImage:[MapUtils mapControlOverylabBoxImage] forState:UIControlStateNormal];
+    [self.myLocationButton setBackgroundImage:[MapUtils mapControlOverylabBoxImage] forState:UIControlStateNormal];
     
-    floorManagementBackground.image = [MapUtils mapControlOverylabBoxImage];
+    self.floorManagementBackground.image = [MapUtils mapControlOverylabBoxImage];
     
-    [eyeButton setBackgroundImage:[MapUtils mapControlOverylabBoxImage] forState:UIControlStateNormal];
+    [self.eyeButton setBackgroundImage:[MapUtils mapControlOverylabBoxImage] forState:UIControlStateNormal];
     
-    if (initialQuery) {
+    if (self.initialQuery) {
         /*searchBar.text = initialQuery;
-        [self setSearchBarState:SearchBarStateVisible];*/
+         [self setSearchBarState:SearchBarStateVisible];*/
         self.navigationItem.rightBarButtonItem = nil;
-        self.title = initialQuery;
-        navBarLoadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        navBarLoadingIndicator.center = CGPointMake(self.navigationController.navigationBar.frame.size.width - 24.0, 21.0);
-        [self.navigationController.navigationBar addSubview:navBarLoadingIndicator];
-        [navBarLoadingIndicator release];
-        [NSTimer scheduledTimerWithTimeInterval:0.5 target:navBarLoadingIndicator selector:@selector(startAnimating) userInfo:nil repeats:NO];
-        [self startSearchForQuery:initialQuery];
+        self.title = self.initialQuery;
+        self.navBarLoadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        self.navBarLoadingIndicator.center = CGPointMake(self.navigationController.navigationBar.frame.size.width - 24.0, 21.0);
+        [self.navigationController.navigationBar addSubview:self.navBarLoadingIndicator];
+        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self.navBarLoadingIndicator selector:@selector(startAnimating) userInfo:nil repeats:NO];
+        [self startSearchForQuery:self.initialQuery];
     }
-    [self mapView:mapView regionDidChangeAnimated:NO]; //to refresh UI controls and add overlays
+    [self mapView:self.mapView regionDidChangeAnimated:NO]; //to refresh UI controls and add overlays
     [self updateFloorLabel];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Map"];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Map"];
 }
 
 - (void)willLoseForeground {
-    searchBarWasFirstResponder = [searchBar isFirstResponder];
-    [searchBar resignFirstResponder];
+    self.searchBarWasFirstResponder = [self.searchBar isFirstResponder];
+    [self.searchBar resignFirstResponder];
 }
 
 - (void)didEnterForeground {
-    if (searchBarWasFirstResponder) {
-        [searchBar becomeFirstResponder];
+    if (self.searchBarWasFirstResponder) {
+        [self.searchBar becomeFirstResponder];
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    if (navBarLoadingIndicator) {
-        [navBarLoadingIndicator removeFromSuperview];
-        navBarLoadingIndicator = nil;
+    if (self.navBarLoadingIndicator) {
+        [self.navBarLoadingIndicator removeFromSuperview];
+        self.navBarLoadingIndicator = nil;
     }
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-     // Release any retained subviews of the main view
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    [tileOverlayView didReceiveMemoryWarning];
-    [layersOverlayView didReceiveMemoryWarning];
+    [self.tileOverlayView didReceiveMemoryWarning];
+    [self.layersOverlayView didReceiveMemoryWarning];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -225,13 +249,13 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 #pragma mark - startSearchForQuery
 
 - (void)startSearchForQuery:(NSString*)query {
-    if (mapService == nil) {
+    if (!self.mapService) {
         return;
     }
-    [MapUtils removeMapItemAnnotationsOnMapView:mapView];
-    [mapService searchFor:query delegate:self];
-    [searchActivityIndicator startAnimating];
-    [searchBar resignFirstResponder];
+    [MapUtils removeMapItemAnnotationsOnMapView:self.mapView];
+    [self.mapService searchFor:query delegate:self];
+    [self.searchActivityIndicator startAnimating];
+    [self.searchBar resignFirstResponder];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -243,9 +267,9 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 #pragma mark SearchBar animations
 
 - (void)toogleSearchBar {
-    if (searchBarState == SearchBarStateVisible) {
+    if (self.searchBarState == SearchBarStateVisible) {
         [self setSearchBarState:SearchBarStateHidden];
-        [MapUtils removeMapItemAnnotationsOnMapView:mapView];
+        [MapUtils removeMapItemAnnotationsOnMapView:self.mapView];
     } else {
         [self setSearchBarState:SearchBarStateVisible];
     }
@@ -256,7 +280,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (void)setSearchBarState:(SearchBarState)newState {
-    if (searchBarState == newState || [PCUtils isIdiomPad]) {
+    if (self.searchBarState == newState || [PCUtils isIdiomPad]) {
         return;
     }
     typedef void (^b1_t)(void);
@@ -266,18 +290,17 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     switch (newState) {
         case SearchBarStateHidden:
         {
-            searchBarState = SearchBarStateHidden;
-            if (mapService != nil) {
-                [mapService cancelOperationsForDelegate:self];
+            _searchBarState = SearchBarStateHidden;
+            if (self.mapService != nil) {
+                [self.mapService cancelOperationsForDelegate:self];
             }
-            searchBar.text = @"";
+            self.searchBar.text = @"";
             UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(toogleSearchBar)];
             [self.navigationItem setRightBarButtonItem:button animated:YES];
-            [button release];
-            [searchActivityIndicator stopAnimating];
-            [searchBar resignFirstResponder];
+            [self.searchActivityIndicator stopAnimating];
+            [self.searchBar resignFirstResponder];
             animBlock = ^{
-                searchBar.frame = searchBarHiddenFrame;
+                self.searchBar.frame = self.searchBarHiddenFrame;
                 //mapView.frame = CGRectMake(mapView.frame.origin.x, mapView.frame.origin.y-searchBar.frame.size.height, mapView.frame.size.width, mapView.frame.size.height+searchBar.frame.size.height);
             };
         }
@@ -285,13 +308,12 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         case SearchBarStateVisible:
         {
             [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/click/search" withError:NULL];
-            searchBarState = SearchBarStateVisible;
+            _searchBarState = SearchBarStateVisible;
             UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(toogleSearchBar)];
             [self.navigationItem setRightBarButtonItem:button animated:YES];
-            [button release];
-            [searchBar becomeFirstResponder];
+            [self.searchBar becomeFirstResponder];
             animBlock = ^{
-                searchBar.frame = searchBarVisibleFrame;
+                self.searchBar.frame = self.searchBarVisibleFrame;
                 //mapView.frame = CGRectMake(mapView.frame.origin.x, mapView.frame.origin.y+searchBar.frame.size.height, mapView.frame.size.width, mapView.frame.size.height-searchBar.frame.size.height);
             };
         }
@@ -301,22 +323,21 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
             break;
     }
     
-    [UIView transitionWithView:searchBar duration:0.25 options:UIViewAnimationOptionTransitionNone animations:animBlock completion:NULL];
+    [UIView transitionWithView:self.searchBar duration:0.25 options:UIViewAnimationOptionTransitionNone animations:animBlock completion:NULL];
 }
 
-
-#pragma mark - myLocationButton states edition 
+#pragma mark - myLocationButton states edition
 
 - (void)setMyLocationButtonSateForTrackingMode:(MKUserTrackingMode)mode {
     switch (mode) {
         case MKUserTrackingModeNone:
-            [myLocationButton setImage:[UIImage imageNamed:@"LocationArrowInactive"] forState:UIControlStateNormal];
+            [self.myLocationButton setImage:[UIImage imageNamed:@"LocationArrowInactive"] forState:UIControlStateNormal];
             break;
         case MKUserTrackingModeFollow:
-            [myLocationButton setImage:[UIImage imageNamed:@"LocationArrowActive"] forState:UIControlStateNormal];
+            [self.myLocationButton setImage:[UIImage imageNamed:@"LocationArrowActive"] forState:UIControlStateNormal];
             break;
         case MKUserTrackingModeFollowWithHeading:
-            [myLocationButton setImage:[UIImage imageNamed:@"Compass"] forState:UIControlStateNormal];
+            [self.myLocationButton setImage:[UIImage imageNamed:@"Compass"] forState:UIControlStateNormal];
             break;
         default:
             @throw [NSException exceptionWithName:@"unspported MKUserTrackingMode" reason:@"setMyLocationButtonSateForTrackingMode received unsupported mode" userInfo:nil];
@@ -326,73 +347,73 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 #pragma mark - IBActions
 
-- (IBAction)myLocationPressed {    
-    if (mapView.userTrackingMode == MKUserTrackingModeNone) {
+- (IBAction)myLocationPressed {
+    if (self.mapView.userTrackingMode == MKUserTrackingModeNone) {
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/click/mylocation" withError:NULL];
-        [mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
-        mapView.showsUserLocation = YES;
-        [mapView setRegion:MKCoordinateRegionMake(mapView.userLocation.coordinate, MKCoordinateSpanMake(0.003, 0.003)) animated:YES];
-    } else if (mapView.userTrackingMode == MKUserTrackingModeFollow) {
-        [mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
-        if (mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading) { //means heading not supported
-            [mapView setUserTrackingMode:MKUserTrackingModeNone];
-            mapView.showsUserLocation = NO;
+        [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+        self.mapView.showsUserLocation = YES;
+        [self.mapView setRegion:MKCoordinateRegionMake(self.mapView.userLocation.coordinate, MKCoordinateSpanMake(0.003, 0.003)) animated:YES];
+    } else if (self.mapView.userTrackingMode == MKUserTrackingModeFollow) {
+        [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
+        if (self.mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading) { //means heading not supported
+            [self.mapView setUserTrackingMode:MKUserTrackingModeNone];
+            self.mapView.showsUserLocation = NO;
         }
     } else {
-        [mapView setUserTrackingMode:MKUserTrackingModeNone animated:YES];
-        mapView.showsUserLocation = NO;
+        [self.mapView setUserTrackingMode:MKUserTrackingModeNone animated:YES];
+        self.mapView.showsUserLocation = NO;
     }
 }
 
 - (IBAction)eyePressed {
-    if (!othersActionSheet) {
+    if (!self.othersActionSheet) {
         //NSLog(@"MapView region : %lf %lf, %lf %lf", mapView.region.center.latitude, mapView.region.center.longitude, mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
         NSString* localizedStringFromBuildings;
-        if (showBuildingsInterior) {
+        if (self.showBuildingsInterior) {
             localizedStringFromBuildings = NSLocalizedStringFromTable(@"HideBuildingsInterior", @"MapPlugin", nil);
         } else {
             localizedStringFromBuildings = NSLocalizedStringFromTable(@"ShowBuildingsInterior", @"MapPlugin", nil);
         }
-        othersActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"CenterOnEPFL", @"MapPlugin", nil), localizedStringFromBuildings, nil];
+        self.othersActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"CenterOnEPFL", @"MapPlugin", nil), localizedStringFromBuildings, nil];
     }
     
-    [othersActionSheet toggleFromRect:eyeButton.frame inView:mapView animated:YES];
+    [self.othersActionSheet toggleFromRect:self.eyeButton.frame inView:self.mapView animated:YES];
 }
 
 - (IBAction)floorDownPressed {
-    for (id<MKAnnotation> annotation in mapView.annotations) {
-        [mapView deselectAnnotation:annotation animated:YES];
+    for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) { //copy in case they are modified in the meantime (highly unlikely though)
+        [self.mapView deselectAnnotation:annotation animated:YES];
     }
-    [epflTileOverlay decreaseLayerLevel];
-    [epflLayersOverlay decreaseLayerLevel];
+    [self.epflTileOverlay decreaseLayerLevel];
+    [self.epflLayersOverlay decreaseLayerLevel];
     [self updateFloorLabel];
 }
 
 - (IBAction)floorUpPressed {
-    for (id<MKAnnotation> annotation in mapView.annotations) {
-        [mapView deselectAnnotation:annotation animated:YES];
+    for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) {
+        [self.mapView deselectAnnotation:annotation animated:YES];
     }
-    [epflTileOverlay increaseLayerLevel];
-    [epflLayersOverlay increaseLayerLevel];
+    [self.epflTileOverlay increaseLayerLevel];
+    [self.epflLayersOverlay increaseLayerLevel];
     [self updateFloorLabel];
 }
 
 - (void)updateFloorLabel {
-    if (epflTileOverlay.currentLayerLevel == MIN_LAYER_LEVEL) {
-        floorDownButton.enabled = NO;
-        floorUpButton.enabled = YES;
-    } else if (epflTileOverlay.currentLayerLevel == MAX_LAYER_LEVEL) {
-        floorDownButton.enabled = YES;
-        floorUpButton.enabled = NO;
+    if (self.epflTileOverlay.currentLayerLevel == MIN_LAYER_LEVEL) {
+        self.floorDownButton.enabled = NO;
+        self.floorUpButton.enabled = YES;
+    } else if (self.epflTileOverlay.currentLayerLevel == MAX_LAYER_LEVEL) {
+        self.floorDownButton.enabled = YES;
+        self.floorUpButton.enabled = NO;
     } else {
-        MKZoomScale zoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width;
-        if ([epflTileOverlay canDrawMapRect:mapView.visibleMapRect zoomScale:zoomScale]) {
-            floorManagementSuperview.hidden = NO;
-            floorDownButton.enabled = YES;
-            floorUpButton.enabled = YES;
+        MKZoomScale zoomScale = self.mapView.bounds.size.width / self.mapView.visibleMapRect.size.width;
+        if ([self.epflTileOverlay canDrawMapRect:self.mapView.visibleMapRect zoomScale:zoomScale]) {
+            self.floorManagementSuperview.hidden = NO;
+            self.floorDownButton.enabled = YES;
+            self.floorUpButton.enabled = YES;
         }
     }
-    floorLabel.text = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"Floor", @"MapPlugin", nil), epflTileOverlay.currentLayerLevel];
+    self.floorLabel.text = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"Floor", @"MapPlugin", nil), self.epflTileOverlay.currentLayerLevel];
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -401,14 +422,14 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     switch (buttonIndex) {
         case 0: //Center of EPFL
         {
-            [mapView setUserTrackingMode:MKUserTrackingModeNone animated:NO];
-            [mapView setRegion:epflRegion animated:YES];
+            [self.mapView setUserTrackingMode:MKUserTrackingModeNone animated:NO];
+            [self.mapView setRegion:self.epflRegion animated:YES];
             break;
         }
         case 1: //show/hide buildings interior
         {
-            showBuildingsInterior = !showBuildingsInterior;
-            [self mapView:mapView regionDidChangeAnimated:NO]; //to refresh layer visibility
+            self.showBuildingsInterior = !self.showBuildingsInterior;
+            [self mapView:self.mapView regionDidChangeAnimated:NO]; //to refresh layer visibility
             break;
         }
         default:
@@ -417,24 +438,22 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    [othersActionSheet release];
-    othersActionSheet = nil;
+    self.othersActionSheet = nil;
 }
 
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar_ {
-    [self startSearchForQuery:searchBar.text];
+    [self startSearchForQuery:self.searchBar.text];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    if (searchActivityIndicator.isAnimating) {
-        [mapService cancelOperationsForDelegate:self];
-        [searchActivityIndicator stopAnimating];
+    if (self.searchActivityIndicator.isAnimating) {
+        [self.mapService cancelOperationsForDelegate:self];
+        [self.searchActivityIndicator stopAnimating];
     }
-    [MapUtils removeMapItemAnnotationsOnMapView:mapView];
+    [MapUtils removeMapItemAnnotationsOnMapView:self.mapView];
 }
-
 
 #pragma mark - MKMapViewDelegate
 
@@ -443,10 +462,10 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay {
-    if ([overlay isKindOfClass:[EPFLTileOverlay class]]) { 
-        return tileOverlayView;
+    if ([overlay isKindOfClass:[EPFLTileOverlay class]]) {
+        return self.tileOverlayView;
     } else if ([overlay isKindOfClass:[EPFLLayersOverlay class]]) {
-        return layersOverlayView;
+        return self.layersOverlayView;
     } else {
         //other, not managed
     }
@@ -458,9 +477,9 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         return nil;
     }
     
-    MKPinAnnotationView* pin = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:kMapItemAnnotationIdentifier]; //cast ok we know we only use MKPinAnnotationView
+    MKPinAnnotationView* pin = (MKPinAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:kMapItemAnnotationIdentifier]; //cast ok we know we only use MKPinAnnotationView
     if (pin == nil) {
-        pin = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kMapItemAnnotationIdentifier] autorelease];
+        pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kMapItemAnnotationIdentifier];
         pin.pinColor = MKPinAnnotationColorPurple;
         pin.animatesDrop = YES;
         pin.canShowCallout = YES;
@@ -475,9 +494,9 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (void)mapView:(MKMapView *)mapView_ didAddAnnotationViews:(NSArray *)views {
-    NSArray* mapItemAnnotations = [MapUtils mapItemAnnotations:mapView.annotations];
+    NSArray* mapItemAnnotations = [MapUtils mapItemAnnotations:self.mapView.annotations];
     if (mapItemAnnotations.count == 1) {
-        [mapView selectAnnotation:[mapItemAnnotations objectAtIndex:0] animated:YES];
+        [self.mapView selectAnnotation:[mapItemAnnotations objectAtIndex:0] animated:YES];
     }
 }
 
@@ -488,21 +507,21 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         if (roomName == nil || roomName.length == 0) {
             roomName = view.annotation.title;
         }
-        if (directoryService) {
-            [directoryService cancelOperationsForDelegate:self];
+        if (self.directoryService) {
+            [self.directoryService cancelOperationsForDelegate:self];
         }
         if (roomName != nil && !roomName.length == 0) {
             //both title and subtitle are indicated, might be a person => search in directory
-            if (!initialQuery) {
-                if (!directoryService) {
-                    directoryService = [[DirectoryService sharedInstanceToRetain] retain];
+            if (!self.initialQuery) {
+                if (!self.directoryService) {
+                    self.directoryService = [DirectoryService sharedInstanceToRetain];
                 }
-                [directoryService searchPersons:view.annotation.title delegate:self];
+                [self.directoryService searchPersons:view.annotation.title delegate:self];
             }
             int level = [MapUtils levelToSelectForRoomName:roomName];
             if (level != INT_MAX) {
-                [epflTileOverlay setLayerLevel:level];
-                [epflLayersOverlay setLayerLevel:level];
+                [self.epflTileOverlay setLayerLevel:level];
+                [self.epflLayersOverlay setLayerLevel:level];
                 [self updateFloorLabel];
             }
         }
@@ -511,63 +530,60 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     if (![PCUtils isIdiomPad]) { // on iPad, released on popover dismissed
-        [personToDisplay release];
-        personToDisplay = nil;
+        self.personToDisplay = nil;
     }
 }
 
 - (void)mapView:(MKMapView *)mapView_ regionDidChangeAnimated:(BOOL)animated {
     
     //NSLog(@"%lf, %lf", mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
-
-    MKZoomScale zoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width;
+    
+    MKZoomScale zoomScale = self.mapView.bounds.size.width / self.mapView.visibleMapRect.size.width;
     
     /*if ([epflTileOverlay canDrawMapRect:mapView.visibleMapRect zoomScale:zoomScale]) { //is normally a delegate method, but used here to know whether layer UI controls should be shown
-        if ([mapView.overlays count] == 0) {
-            if (showBuildingsInterior) {
-                [mapView addOverlay:epflTileOverlay];
-            }
-            //[mapView addOverlay:epflLayersOverlay];
-            floorDownButton.enabled = YES;
-            floorLabel.hidden = NO;
-            floorUpButton.enabled = YES;
-        } else {
-            [mapView removeOverlay:epflTileOverlay];
-        }
-    } else {
-        if ([mapView.overlays count] > 0) {
-            [mapView removeOverlay:epflTileOverlay];
-            //[mapView removeOverlay:epflLayersOverlay];
-            floorDownButton.enabled = NO;
-            floorLabel.hidden = YES;
-            floorUpButton.enabled = NO;
-        }
-    }*/
+     if ([mapView.overlays count] == 0) {
+     if (showBuildingsInterior) {
+     [mapView addOverlay:epflTileOverlay];
+     }
+     //[mapView addOverlay:epflLayersOverlay];
+     floorDownButton.enabled = YES;
+     floorLabel.hidden = NO;
+     floorUpButton.enabled = YES;
+     } else {
+     [mapView removeOverlay:epflTileOverlay];
+     }
+     } else {
+     if ([mapView.overlays count] > 0) {
+     [mapView removeOverlay:epflTileOverlay];
+     //[mapView removeOverlay:epflLayersOverlay];
+     floorDownButton.enabled = NO;
+     floorLabel.hidden = YES;
+     floorUpButton.enabled = NO;
+     }
+     }*/
     
-    if (![epflTileOverlay canDrawMapRect:mapView.visibleMapRect zoomScale:zoomScale] || !showBuildingsInterior) {
-        if ([mapView.overlays count] > 0) {
-            [mapView removeOverlay:epflTileOverlay];
+    if (![self.epflTileOverlay canDrawMapRect:self.mapView.visibleMapRect zoomScale:zoomScale] || !self.showBuildingsInterior) {
+        if ([self.mapView.overlays count] > 0) {
+            [self.mapView removeOverlay:self.epflTileOverlay];
             //[mapView removeOverlay:epflLayersOverlay];
-            floorManagementSuperview.hidden = YES;
+            self.floorManagementSuperview.hidden = YES;
         }
-    } else if (showBuildingsInterior) {
-        if ([mapView.overlays count] == 0) {
-            [mapView addOverlay:epflTileOverlay];
+    } else if (self.showBuildingsInterior) {
+        if ([self.mapView.overlays count] == 0) {
+            [self.mapView addOverlay:self.epflTileOverlay];
             //[mapView addOverlay:epflLayersOverlay];
-            floorManagementSuperview.hidden = NO;
+            self.floorManagementSuperview.hidden = NO;
         }
     } else {
         //nothing
     }
     
-    if (annotationsToAdd) {
-        [mapView addAnnotations:annotationsToAdd];
-        [annotationsToAdd release];
-        annotationsToAdd = nil;
+    if (self.annotationsToAdd) {
+        [self.mapView addAnnotations:self.annotationsToAdd];
+        self.annotationsToAdd = nil;
     }
     
 }
-
 
 
 #pragma mark - MapServiceDelegate
@@ -576,72 +592,68 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     
     /* TEST */
     /*
-    for (MapItem* item in results) {
-        NSLog(@"%@", [item descriptionObject]);
-    }
-    */
+     for (MapItem* item in results) {
+     NSLog(@"%@", [item descriptionObject]);
+     }
+     */
     /* END OF TEST */
     
-    [searchActivityIndicator stopAnimating];
-    [NSTimer scheduledTimerWithTimeInterval:1.5 target:navBarLoadingIndicator selector:@selector(stopAnimating) userInfo:nil repeats:NO];
+    [self.searchActivityIndicator stopAnimating];
+    [NSTimer scheduledTimerWithTimeInterval:1.5 target:self.navBarLoadingIndicator selector:@selector(stopAnimating) userInfo:nil repeats:NO];
     
-    [mapView setUserTrackingMode:MKUserTrackingModeNone];
+    [self.mapView setUserTrackingMode:MKUserTrackingModeNone];
     
     if (results.count == 0) { //no result
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"NoResult", @"MapPlugin", nil) message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
+        self.noResultAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"NoResult", @"MapPlugin", nil) message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [self.noResultAlert show];
         return;
     }
     
     NSArray* mapItemAnnotations = [MapUtils mapItemAnnotationsThatShouldBeDisplayed:[self mapItemAnnotationsForMapItems:results] forQuery:query];
     
-    if (mapItemAnnotations.count > MAX_DISPLAYED_ANNOTATIONS) {
+    if (mapItemAnnotations.count > kMaxDisplayedAnnotations) {
         NSLog(@"-> Search for %@ returned too many results (%d)", query, mapItemAnnotations.count);
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"TooManyResults", @"MapPlugin", nil) message:NSLocalizedStringFromTable(@"NarrowSearch", @"MapPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
-        [alert release];
         return;
     }
     
     MKCoordinateRegion reqRegion = [MapUtils regionToFitMapItemAnnotations:mapItemAnnotations];
     
-    [annotationsToAdd release];
-    annotationsToAdd = [mapItemAnnotations retain];
+    self.annotationsToAdd = mapItemAnnotations;
     
-    if ([MapUtils isRegion:mapView.region equalToRegion:[mapView regionThatFits:reqRegion]]) {
-        [self mapView:mapView regionDidChangeAnimated:NO]; //force this call to redraw annotations (not called because region has not changed)
+    if ([MapUtils isRegion:self.mapView.region equalToRegion:[self.mapView regionThatFits:reqRegion]]) {
+        [self mapView:self.mapView regionDidChangeAnimated:NO]; //force this call to redraw annotations (not called because region has not changed)
     } else {
-        [mapView setRegion:reqRegion animated:YES];
+        [self.mapView setRegion:reqRegion animated:YES];
     }
     
     //[MapUtils zoomMapView:mapView toFitMapItemAnnotationsAnimated:YES];
 }
 
 - (void)searchMapFailedFor:(NSString *)query {
-    [searchActivityIndicator stopAnimating];
+    [self.searchActivityIndicator stopAnimating];
     [PCUtils showServerErrorAlert];
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    [navBarLoadingIndicator stopAnimating];
-    [searchActivityIndicator stopAnimating];
-    [internetConnectionAlert release];
-    internetConnectionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [internetConnectionAlert show];    
+    [self.navBarLoadingIndicator stopAnimating];
+    [self.searchActivityIndicator stopAnimating];
+    self.internetConnectionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [self.internetConnectionAlert show];
 }
 
 #pragma mark - DirectoryServiceDelegate
 
 - (void)searchDirectoryFor:(NSString *)searchPattern didReturn:(NSArray *)results {
-    if (mapView.selectedAnnotations.count == 0 || results.count == 0) {
+    if (self.mapView.selectedAnnotations.count == 0 || results.count == 0) {
         [self searchDirectoryFailedFor:searchPattern];
         return;
     }
     
-    id<MKAnnotation> selectedAnnotation = [mapView.selectedAnnotations objectAtIndex:0];
+    id<MKAnnotation> selectedAnnotation = [self.mapView.selectedAnnotations objectAtIndex:0];
     
-    MKAnnotationView* selectedAnnotationView = [mapView viewForAnnotation:selectedAnnotation];
+    MKAnnotationView* selectedAnnotationView = [self.mapView viewForAnnotation:selectedAnnotation];
     
     Person* person = [results objectAtIndex:0];
     
@@ -656,69 +668,44 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [disclosureButton addTarget:self action:@selector(annotationAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
     disclosureButton.titleLabel.text = firstAndLastName;
     selectedAnnotationView.rightCalloutAccessoryView = disclosureButton;
-    [personToDisplay release];
-    personToDisplay = [person retain];
-
+    self.personToDisplay = person;
 }
 
 - (void)searchDirectoryFailedFor:(NSString *)searchPattern {
-    if (mapView.selectedAnnotations.count == 0) {
+    if (self.mapView.selectedAnnotations.count == 0) {
         return;
     }
-    id<MKAnnotation> selectedAnnotation = [mapView.selectedAnnotations objectAtIndex:0];
-
-    MKAnnotationView* selectedAnnotationView = [mapView viewForAnnotation:selectedAnnotation];
+    id<MKAnnotation> selectedAnnotation = [self.mapView.selectedAnnotations objectAtIndex:0];
+    
+    MKAnnotationView* selectedAnnotationView = [self.mapView viewForAnnotation:selectedAnnotation];
     
     selectedAnnotationView.rightCalloutAccessoryView = nil;
-    [personToDisplay release];
-    personToDisplay = nil;
+    self.personToDisplay = nil;
     
 }
 
-- (PCUnkownPersonViewController*)pcUnknownPersonViewControllerIfPresentedSciperCheck:(NSString*)sciper {
-    if (!personToDisplay) {
-        return nil;
-    }
-    
-    if (![personToDisplay.sciper isEqualToString:sciper]) {
-        [personToDisplay release];
-        personToDisplay = nil;
-        return nil;
-    }
-    
-    PCUnkownPersonViewController* personController = nil;
-    if ([PCUtils isIdiomPad]) {
-        if (personPopOverController) {
-            personController = (PCUnkownPersonViewController*)([(UINavigationController*)(personPopOverController.contentViewController) viewControllers][0]);
-        }
-    } else {
-        if ([self.navigationController.topViewController isKindOfClass:[PCUnkownPersonViewController class]]) {
-            personController = (PCUnkownPersonViewController*)self.navigationController.topViewController;
-        }
-    }
-    return personController;
-}
+#pragma mark - Directory related (cont'd)
 
 - (void)annotationAccessoryTapped:(UIButton*)button {
-    if (![button isKindOfClass:[UIButton class]] || !personToDisplay) {
+    if (![button isKindOfClass:[UIButton class]] || !self.personToDisplay) {
         return;
     }
     PCUnkownPersonViewController* personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:nil];
-    [personViewController setPerson:personToDisplay];
+    [personViewController setPerson:self.personToDisplay];
     
     if ([PCUtils isIdiomPad]) {
         
-        if (!personPopOverController) {
+        if (!self.personPopOverController) {
             personViewController.title = NSLocalizedStringFromTable(@"Details", @"MapPlugin", nil);
             
-            UINavigationController* navController = [[[UINavigationController alloc] initWithRootViewController:personViewController] autorelease]; //to have title
+            UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:personViewController]; //to have title
             
-            personPopOverController = [[UIPopoverController alloc] initWithContentViewController:navController];
-            personPopOverController.popoverContentSize = CGSizeMake(320.0, 480.0);
-            personPopOverController.delegate = self;
-            id<MKAnnotation> annotation = mapView.selectedAnnotations[0];
+            self.personPopOverController = [[UIPopoverController alloc] initWithContentViewController:navController];
+            self.personPopOverController.popoverContentSize = CGSizeMake(320.0, 480.0);
+            self.personPopOverController.delegate = self;
+            id<MKAnnotation> annotation = self.mapView.selectedAnnotations[0];
             
-            CGPoint annotationPoint = [mapView convertCoordinate:annotation.coordinate toPointToView:mapView];
+            CGPoint annotationPoint = [self.mapView convertCoordinate:annotation.coordinate toPointToView:self.mapView];
             float boxDY = annotationPoint.y;
             float boxDX = annotationPoint.x;
             
@@ -731,68 +718,69 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
             }
             
             
-            [mapView deselectAnnotation:annotation animated:YES];
+            [self.mapView deselectAnnotation:annotation animated:YES];
             
-            [personPopOverController presentPopoverFromRect:box inView:mapView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            [self.personPopOverController presentPopoverFromRect:box inView:self.mapView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             
         }
         
     } else {
         [self.navigationController pushViewController:personViewController animated:YES];
     }
-    
-    [personViewController release];
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    [personPopOverController release];
-    personPopOverController = nil;
-    [personToDisplay release];
-    personToDisplay = nil;
+    self.personPopOverController = nil;
+    self.personToDisplay = nil;
 }
 
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (alertView == internetConnectionAlert) {
-        [internetConnectionAlert release];
-        internetConnectionAlert = nil;
-        if (initialQuery && self.navigationController.visibleViewController == self) { //leave map if initial search query was not successful
+    if (alertView == self.internetConnectionAlert) {
+        self.internetConnectionAlert = nil;
+        if (self.initialQuery && self.navigationController.visibleViewController == self) { //leave map if initial search query was not successful
             [self.navigationController popViewControllerAnimated:YES];
         }
+    } else if (alertView == self.noResultAlert) {
+        self.noResultAlert = nil;
+        if (self.initialQuery && self.navigationController.visibleViewController == self) { //leave map if initial search query was not successful
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } else {
+        //no other alerts
     }
 }
 
 #pragma mark - CustomOverlayViewDelegate
 
 - (void)customOverlayViewDidStartLoading:(CustomOverlayView *)overlayView {
-    if (overlaysLoadingIndicator.isAnimating) {
+    if (self.overlaysLoadingIndicator.isAnimating) {
         return;
     }
-    [overlaysLoadingIndicator startAnimating];
+    [self.overlaysLoadingIndicator startAnimating];
 }
 
 - (void)customOverlayViewDidFinishLoading:(CustomOverlayView *)overlayView {
-    if (!overlaysLoadingIndicator.isAnimating) {
+    if (!self.overlaysLoadingIndicator.isAnimating) {
         return;
     }
-    [overlaysLoadingIndicator stopAnimating];
+    [self.overlaysLoadingIndicator stopAnimating];
 }
 
 #pragma mark - Utilities
 
 - (NSArray*)mapItemAnnotationsForMapItems:(NSArray*)mapItems {
-    if (mapItems == nil || ![mapItems isKindOfClass:[NSArray class]]) {
+    if (!mapItems || ![mapItems isKindOfClass:[NSArray class]]) {
         @throw [NSException exceptionWithName:@"bad mapItems argument in mapItemAnnotationsForMapItems:" reason:@"mapItems is not kind of class NSArray" userInfo:nil];
     }
     NSMutableArray* annotations = [NSMutableArray arrayWithCapacity:mapItems.count];
-    for(MapItem* item in mapItems) {
-        if (initialQuery != nil && initialQueryManualPinLabelText != nil && ![initialQueryManualPinLabelText isEqualToString:item.title]) {
-            item = [[[MapItem alloc] initWithTitle:initialQueryManualPinLabelText description:item.title latitude:item.latitude longitude:item.longitude layerId:item.layerId itemId:item.itemId] autorelease];
+    for (MapItem* item __strong in mapItems) {
+        if (self.initialQuery && self.initialQueryManualPinLabelText && ![self.initialQueryManualPinLabelText isEqualToString:item.title]) {
+            item = [[MapItem alloc] initWithTitle:self.initialQueryManualPinLabelText description:item.title latitude:item.latitude longitude:item.longitude layerId:item.layerId itemId:item.itemId];
         }
         MapItemAnnotation* annotation = [[MapItemAnnotation alloc] initWithMapItem:item];
         [annotations addObject:annotation];
-        [annotation release];
     }
     return annotations;
 }
@@ -801,29 +789,16 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)dealloc
 {
+    [self.mapService cancelOperationsForDelegate:self];
     [[MainController publicController] removePluginStateObserver:self];
-    mapView.delegate = nil;
-    [mapService release];
-    [directoryService release];
-    [personToDisplay release];
-    [epflTileOverlay release];
-    [epflLayersOverlay release];
-    [tileOverlayView cancelTilesDownload:YES];
-    tileOverlayView.delegate = nil;
-    [tileOverlayView release];
-    [layersOverlayView cancelTilesDownload:YES];
-    layersOverlayView.delegate = nil;
-    [layersOverlayView release];
-    if (internetConnectionAlert) {
-        internetConnectionAlert.delegate = nil;
-    }
-    [internetConnectionAlert release];
-    [initialQuery release];
-    [initialQueryManualPinLabelText release];
-    [annotationsToAdd release];
-    [personPopOverController release];
-    [searchActivityIndicator release];
-    [super dealloc];
+    self.mapView.delegate = nil;
+    [self.tileOverlayView cancelTilesDownload:YES];
+    self.tileOverlayView.delegate = nil;
+    [self.layersOverlayView cancelTilesDownload:YES];
+    self.layersOverlayView.delegate = nil;
+    self.internetConnectionAlert.delegate = nil;
 }
+
+
 
 @end

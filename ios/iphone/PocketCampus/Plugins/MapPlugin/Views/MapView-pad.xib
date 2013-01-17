@@ -549,30 +549,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">MapViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="eyePressed">id</string>
-						<string key="floorDownPressed">id</string>
-						<string key="floorUpPressed">id</string>
-						<string key="myLocationPressed">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="eyePressed">
-							<string key="name">eyePressed</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="floorDownPressed">
-							<string key="name">floorDownPressed</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="floorUpPressed">
-							<string key="name">floorUpPressed</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="myLocationPressed">
-							<string key="name">myLocationPressed</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="eyeButton">UIButton</string>
 						<string key="floorDownButton">UIButton</string>

@@ -219,9 +219,6 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
 - (void)requestDidFail:(ASIHTTPRequest*)request {
     request.delegate = nil;
     [self.requests removeObject:request];
-    if (self.willBeDeallocated) {
-        return;
-    }
 }
 
 
