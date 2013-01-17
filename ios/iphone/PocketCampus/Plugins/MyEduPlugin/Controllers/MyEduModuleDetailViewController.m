@@ -25,6 +25,8 @@
 @property (nonatomic, strong) MyEduCourse* course;
 @property (nonatomic, strong) NSMutableArray* showHideUIButtons;
 
+@property (nonatomic, weak) MyEduModuleVideoViewController* videoViewController; //weak because self.tabBarController owns it
+
 @end
 
 @implementation MyEduModuleDetailViewController
@@ -74,6 +76,8 @@
 
     self.tabBarController.viewControllers = @[videoNavController, textNavController, materialsNavController];
     
+    self.videoViewController = videoController;
+    
     [self addChildViewController:self.tabBarController];
     [self.view addSubview:self.tabBarController.view];
 }
@@ -93,6 +97,10 @@
         topViewController = [(UINavigationController*)(viewController) topViewController];
     }
     topViewController.navigationItem.leftBarButtonItem = barButton;
+}
+
+- (void)dealloc {
+    [self.videoViewController destroyVideoPlayer]; //be sure that player does not prevent videoViewController from being deallocated
 }
 
 @end

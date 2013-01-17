@@ -21,4 +21,6 @@
 
 - (id)initWithMyEduModule:(MyEduModule*)module;
 
+- (void)destroyVideoPlayer; //call when MyEduModuleVideoViewController should be deallocated to be sure player does not prevent it (when playing)
+
 @end
