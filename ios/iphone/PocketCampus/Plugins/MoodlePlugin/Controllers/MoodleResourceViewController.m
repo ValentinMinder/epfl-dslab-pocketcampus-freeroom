@@ -51,6 +51,8 @@
 	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document" withError:NULL];
     
+    self.webView.hidden = YES;
+    
     self.progressView.progress = 0.0;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil);
     
@@ -97,7 +99,7 @@
 }
 
 - (void)loadDownloadedMoodleResourceInWebView {
-    [self.loadingIndicator startAnimating];
+    self.webView.hidden = NO;
     NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:self.moodleResource]];
     [self.webView loadRequest:[NSURLRequest requestWithURL:localFileURL]];
 }
@@ -186,6 +188,7 @@
         [self serviceConnectionToServerTimedOut];
     } else if (statusCode == 303 || statusCode == 407) {
         //mans bad cookie
+        self.progressView.progress = 0.0;
         [self.moodleService deleteSession];
         [self startMoodleResourceDownload];
     } else { //other unkown error
@@ -263,10 +266,6 @@
 
 #pragma mark - UIWebViewDelegate
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView_ {
-    [self.loadingIndicator stopAnimating];
-    self.webView.hidden = NO;
-}
 
 - (void)webView:(UIWebView *)webView_ didFailLoadWithError:(NSError *)error {
     self.webView.hidden = YES;

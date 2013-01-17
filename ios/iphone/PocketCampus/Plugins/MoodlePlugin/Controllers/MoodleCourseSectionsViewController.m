@@ -56,7 +56,7 @@
         self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"moodle"refreshedDataIdentifier:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]];
         [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
         
-        //[self.moodleService deleteSession]; //TEST ONLY
+        //[self.moodleService saveSession:[[MoodleSession alloc] initWithMoodleCookie:@"sdfgjskjdfhgjshdfg"]]; //TEST ONLY
     }
     return self;
 }

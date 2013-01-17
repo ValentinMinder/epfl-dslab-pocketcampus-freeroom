@@ -383,7 +383,7 @@ static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%
 - (void)downloadMoodleResourceFailed:(ASIHTTPRequest*)request {
     id<MoodleServiceDelegate> delegate = request.userInfo[kServiceDelegateKey];
     MoodleResource* moodleResource = request.userInfo[kMoodleResourceKey];
-    [self deleteDownloadedMoodleResource:moodleResource]; //to be sure not empty/wrong file is there
+    [[NSFileManager defaultManager] removeItemAtPath:request.downloadDestinationPath error:nil]; //to be sure not empty/wrong file is there
     if (request.responseStatusCode != 200 && [delegate respondsToSelector:@selector(downloadFailedForMoodleResource:responseStatusCode:)]) {
         [delegate downloadFailedForMoodleResource:moodleResource responseStatusCode:request.responseStatusCode];
         return;
