@@ -790,6 +790,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 - (void)dealloc
 {
     [self.mapService cancelOperationsForDelegate:self];
+    [self.directoryService cancelOperationsForDelegate:self];
     [[MainController publicController] removePluginStateObserver:self];
     self.mapView.delegate = nil;
     [self.tileOverlayView cancelTilesDownload:YES];

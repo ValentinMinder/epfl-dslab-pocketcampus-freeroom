@@ -130,18 +130,14 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (void)error {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
-    if (!self.subscribedCourses) {
-        [PCUtils showServerErrorAlert];
-    }
+    [PCUtils showServerErrorAlert];
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 
 - (void)serviceConnectionToServerTimedOut {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
-    if (!self.subscribedCourses) {
-        [PCUtils showConnectionToServerTimedOutAlert];
-    }
+    [PCUtils showConnectionToServerTimedOutAlert];
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 

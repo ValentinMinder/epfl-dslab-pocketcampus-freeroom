@@ -145,18 +145,14 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (void)newsItemsFailedForLanguage:(NSString*)language {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
-    if (!self.sections) {
-        [PCUtils showServerErrorAlert];
-    }
+    [PCUtils showServerErrorAlert];
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 
 - (void)serviceConnectionToServerTimedOut {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
-    if (!self.sections) {
-        [PCUtils showConnectionToServerTimedOutAlert];
-    }
+    [PCUtils showConnectionToServerTimedOutAlert];
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 

@@ -139,6 +139,7 @@
 		325368C616496F8000406801 /* MyEduModuleMaterialsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325368C516496F7F00406801 /* MyEduModuleMaterialsView.xib */; };
 		3256175816A89C7D00F52D24 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3256175716A89C7D00F52D24 /* MapViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
+		3258D65116AF1FE20040DAE3 /* PCConfig2.m in Sources */ = {isa = PBXBuildFile; fileRef = 3258D65016AF1FE20040DAE3 /* PCConfig2.m */; };
 		325C47A61621D63E006752B4 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47A51621D63E006752B4 /* MainMenuItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */; };
 		325C47AE1621E91A006752B4 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -581,6 +582,8 @@
 		3256175716A89C7D00F52D24 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		3257C20B1570F99C00E626A4 /* TransportHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportHelpViewController.h; sourceTree = "<group>"; };
 		3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportHelpViewController.m; sourceTree = "<group>"; };
+		3258D64F16AF1FE20040DAE3 /* PCConfig2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCConfig2.h; sourceTree = "<group>"; };
+		3258D65016AF1FE20040DAE3 /* PCConfig2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCConfig2.m; sourceTree = "<group>"; };
 		325C47A41621D63E006752B4 /* MainMenuItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuItemCell.h; sourceTree = "<group>"; };
 		325C47A51621D63E006752B4 /* MainMenuItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuItemCell.m; sourceTree = "<group>"; };
 		325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuItemCell.xib; sourceTree = "<group>"; };
@@ -1368,6 +1371,8 @@
 				324715AD15001381007C230C /* Service.m */,
 				32675BF815F4FB1F00880387 /* PCConfig.h */,
 				32675BF915F4FB1F00880387 /* PCConfig.m */,
+				3258D64F16AF1FE20040DAE3 /* PCConfig2.h */,
+				3258D65016AF1FE20040DAE3 /* PCConfig2.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2901,6 +2906,7 @@
 				32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */,
 				3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */,
 				3256175816A89C7D00F52D24 /* MapViewController.m in Sources */,
+				3258D65116AF1FE20040DAE3 /* PCConfig2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3131,7 +3137,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "CF735CC6-4170-4205-967F-AB8EACB73253";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F3DC9B7-48B3-436B-8400-CCAC5C089ED9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5742E21A-1C29-4B3A-A35D-29BAC860BEE5";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
