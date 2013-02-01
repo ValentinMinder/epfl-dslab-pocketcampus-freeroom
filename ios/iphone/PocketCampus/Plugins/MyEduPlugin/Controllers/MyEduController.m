@@ -9,6 +9,8 @@
 
 #import "MyEduCourseListViewController.h"
 
+#import "MyEduSplashDetailViewController.h"
+
 #import "ObjectArchiver.h"
 
 #import "AuthenticationController.h"
@@ -46,7 +48,7 @@ static MyEduController* instance __weak = nil;
             courseListViewController.title = NSLocalizedStringFromTable(@"MyCourses", @"MyEduPlugin", nil);
             
             UINavigationController* masterNavigationController = [[UINavigationController alloc] initWithRootViewController:courseListViewController];
-            UIViewController* detailViewController = [[UIViewController alloc] init]; //detail view controller will be set by PluginSplitViewController that will ask to master view controller
+            UIViewController* detailViewController = [[MyEduSplashDetailViewController alloc] init]; //detail view controller will be set by PluginSplitViewController that will ask to master view controller
             
             PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:masterNavigationController detailViewController:detailViewController];
             splitViewController.delegate = self;

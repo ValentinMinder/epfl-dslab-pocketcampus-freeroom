@@ -88,7 +88,7 @@ static const int kPluginsSection = 0;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return [self.parentViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
 
 #pragma mark - Public

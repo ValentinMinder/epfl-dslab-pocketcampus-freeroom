@@ -3,7 +3,7 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
 		<string key="IBDocument.SystemVersion">12C60</string>
-		<string key="IBDocument.InterfaceBuilderVersion">3083</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
@@ -40,7 +40,7 @@
 					<object class="IBUILabel" id="682008700">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">301</int>
-						<string key="NSFrame">{{191, 301}, {387, 149}}</string>
+						<string key="NSFrame">{{191, 378}, {387, 149}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -53,7 +53,7 @@
 						<string key="IBUIText">No contact selected</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC40OTkyNTY5NjMzIDAuNDk5MjU2OTYzMyAwLjQ5OTI1Njk2MzMAA</bytes>
+							<bytes key="NSRGB">MC42MDMzNzYxMTYxIDAuNjAzMzc2MTE2MSAwLjYwMzM3NjExNjEAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<object class="NSColor" key="IBUIShadowColor">

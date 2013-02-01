@@ -98,6 +98,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
+{
+    return UIInterfaceOrientationIsLandscape(interfaceOrientation) || (UIInterfaceOrientationPortrait);
+}
+
+
 - (void)loadDownloadedMoodleResourceInWebView {
     self.webView.hidden = NO;
     NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:self.moodleResource]];
@@ -219,6 +230,7 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
+    self.deleteActionSheet = nil;
 }
 
 - (void)actionSheetCancel:(UIActionSheet *)actionSheet {

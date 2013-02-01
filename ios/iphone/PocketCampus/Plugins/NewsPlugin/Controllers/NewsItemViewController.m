@@ -113,6 +113,7 @@
             default:
                 break;
         }
+        self.actionButtonSheet = nil;
     }
 }
 

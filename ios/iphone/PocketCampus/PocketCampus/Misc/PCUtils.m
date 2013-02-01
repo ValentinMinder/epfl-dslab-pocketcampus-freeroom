@@ -34,7 +34,7 @@
 }
 
 + (NSString*)userLanguageCode {
-    return [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+    return [[NSLocale preferredLanguages] objectAtIndex:0];
 }
 
 + (NSString*)lastUpdateNowString {

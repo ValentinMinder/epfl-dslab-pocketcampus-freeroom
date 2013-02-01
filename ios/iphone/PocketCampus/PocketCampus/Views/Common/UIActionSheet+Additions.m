@@ -11,10 +11,15 @@
 @implementation UIActionSheet (Additions)
 
 - (void)toggleFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated {
-    if (self.isVisible) {
-        [self dismissWithClickedButtonIndex:self.cancelButtonIndex animated:animated];
-    } else {
-        [self showFromBarButtonItem:item animated:animated];
+    @try {
+        if (self.isVisible) {
+            [self dismissWithClickedButtonIndex:self.cancelButtonIndex animated:animated];
+        } else {
+            [self showFromBarButtonItem:item animated:animated];
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"!! WARNING: Exception caught in toggleFromBarButtonItem:animated: because of weakness of UIActionSheet API. You should release the action sheet in actionSheet:didDismissWithButtonIndex:");
     }
 }
 

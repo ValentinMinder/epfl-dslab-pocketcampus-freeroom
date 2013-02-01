@@ -73,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/FoodPlugin/Model/FoodService.m"
-         timestampString = "375831138.055739"
+         timestampString = "381410374.972213"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "123"
-         endingLineNumber = "123"
+         startingLineNumber = "135"
+         endingLineNumber = "135"
          landmarkName = "-setRatingForMeal:rating:deviceId:delegate:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -216,7 +216,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-         timestampString = "378163615.776288"
+         timestampString = "381413713.215058"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "137"
@@ -884,12 +884,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/FoodPlugin/Model/FoodService.m"
-         timestampString = "375831138.055739"
+         timestampString = "381410374.972213"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "53"
-         endingLineNumber = "53"
-         landmarkName = "-getMealsWithDelegate:"
+         startingLineNumber = "58"
+         endingLineNumber = "58"
+         landmarkName = "-getFromCacheMeals"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
@@ -947,11 +947,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/NewsPlugin/Controllers/NewsItemViewController.m"
-         timestampString = "379947106.189041"
+         timestampString = "381334329.630154"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "478"
-         endingLineNumber = "478">
+         startingLineNumber = "479"
+         endingLineNumber = "479">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
@@ -967,11 +967,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/FoodPlugin/Controllers/RestaurantsListViewController.m"
-         timestampString = "378134501.230035"
+         timestampString = "381410238.580388"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "119"
-         endingLineNumber = "119"
+         startingLineNumber = "138"
+         endingLineNumber = "138"
          landmarkName = "@implementation RestaurantsListViewController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -1385,11 +1385,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/FoodPlugin/Controllers/RestaurantsListViewController.m"
-         timestampString = "377819572.60785"
+         timestampString = "381410238.580388"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "98"
-         endingLineNumber = "98"
+         startingLineNumber = "111"
+         endingLineNumber = "111"
          landmarkName = "-refresh"
          landmarkType = "5">
          <Actions>
@@ -1937,11 +1937,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduCourseListViewController.m"
-         timestampString = "379080237.727127"
+         timestampString = "381417111.635696"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "78"
-         endingLineNumber = "78"
+         startingLineNumber = "90"
+         endingLineNumber = "90"
          landmarkName = "-refresh"
          landmarkType = "5">
          <Actions>
@@ -2135,11 +2135,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Common/PluginSplitViewController.m"
-         timestampString = "378167413.123612"
+         timestampString = "381416208.494695"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "131"
-         endingLineNumber = "131"
+         startingLineNumber = "133"
+         endingLineNumber = "133"
          landmarkName = "-navigationController:didShowViewController:animated:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2200,11 +2200,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "379616823.699175"
+         timestampString = "381415802.558822"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "127"
-         endingLineNumber = "127"
+         startingLineNumber = "129"
+         endingLineNumber = "129"
          landmarkName = "-addLoginObserver:successBlock:userCancelledBlock:failureBlock:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2213,11 +2213,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "379616823.699175"
+         timestampString = "381415802.558822"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "147"
-         endingLineNumber = "147"
+         startingLineNumber = "149"
+         endingLineNumber = "149"
          landmarkName = "-getTequilaTokenForMyEduDidReturn:"
          landmarkType = "5">
          <Actions>
@@ -2330,13 +2330,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduModuleListViewController.m"
-         timestampString = "379894374.458751"
+         timestampString = "381417489.828753"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "255"
-         endingLineNumber = "255"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
+         startingLineNumber = "267"
+         endingLineNumber = "267"
+         landmarkName = "@implementation MyEduModuleListViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -2590,11 +2590,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "379616823.699175"
+         timestampString = "381415802.558822"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "179"
-         endingLineNumber = "179"
+         startingLineNumber = "181"
+         endingLineNumber = "181"
          landmarkName = "-userCancelledAuthentication"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2603,11 +2603,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "379081457.939732"
+         timestampString = "381415802.558822"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "109"
-         endingLineNumber = "109"
+         startingLineNumber = "111"
+         endingLineNumber = "111"
          landmarkName = "+initObservers"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2660,11 +2660,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-         timestampString = "380145569.875007"
+         timestampString = "381336636.239793"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "175"
-         endingLineNumber = "175"
+         startingLineNumber = "186"
+         endingLineNumber = "186"
          landmarkName = "-downloadOfMoodleResource:didFinish:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2673,11 +2673,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-         timestampString = "380145569.875007"
+         timestampString = "381336636.239793"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "190"
-         endingLineNumber = "190"
+         startingLineNumber = "201"
+         endingLineNumber = "201"
          landmarkName = "-downloadFailedForMoodleResource:responseStatusCode:"
          landmarkType = "5">
          <Actions>
@@ -2830,11 +2830,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduModuleVideoViewController.m"
-         timestampString = "379947106.189041"
+         timestampString = "381334662.452197"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "401"
-         endingLineNumber = "401"
+         startingLineNumber = "402"
+         endingLineNumber = "402"
          landmarkName = "-dealloc"
          landmarkType = "5">
          <Actions>
@@ -2852,11 +2852,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduModuleVideoViewController.m"
-         timestampString = "379947106.189041"
+         timestampString = "381334662.452197"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "395"
-         endingLineNumber = "395"
+         startingLineNumber = "396"
+         endingLineNumber = "396"
          landmarkName = "-dealloc"
          landmarkType = "5">
          <Actions>
@@ -3084,8 +3084,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "320"
          endingLineNumber = "320"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
-         landmarkType = "5">
+         landmarkName = "@implementation MoodleCourseSectionsViewController"
+         landmarkType = "3">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
@@ -3167,11 +3167,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/NewsPlugin/Controllers/NewsItemViewController.m"
-         timestampString = "379947106.189041"
+         timestampString = "381334329.630154"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "355"
-         endingLineNumber = "355">
+         startingLineNumber = "356"
+         endingLineNumber = "356">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -3230,11 +3230,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduModuleListViewController.m"
-         timestampString = "379894374.458751"
+         timestampString = "381417489.828753"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "167"
-         endingLineNumber = "167"
+         startingLineNumber = "179"
+         endingLineNumber = "179"
          landmarkName = "-getSectionDetailsForRequest:didReturn:"
          landmarkType = "5">
          <Actions>
@@ -3252,11 +3252,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduCourseListViewController.m"
-         timestampString = "379080237.727127"
+         timestampString = "381417111.635696"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "112"
-         endingLineNumber = "112"
+         startingLineNumber = "124"
+         endingLineNumber = "124"
          landmarkName = "-getSubscribedCoursesListForRequest:didReturn:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3265,11 +3265,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/NewsPlugin/Controllers/NewsItemViewController.m"
-         timestampString = "379947106.189041"
+         timestampString = "381334329.630154"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "174"
-         endingLineNumber = "174"
+         startingLineNumber = "175"
+         endingLineNumber = "175"
          landmarkName = "-newsItemContentFailedForId:"
          landmarkType = "5">
          <Actions>
@@ -3287,11 +3287,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/NewsPlugin/Controllers/NewsItemViewController.m"
-         timestampString = "379947106.189041"
+         timestampString = "381334329.630154"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "154"
-         endingLineNumber = "154"
+         startingLineNumber = "155"
+         endingLineNumber = "155"
          landmarkName = "-newsItemContentForId:didReturn:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3300,11 +3300,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Controllers/Main/MainController.m"
-         timestampString = "380916008.353558"
+         timestampString = "381420943.277038"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "641"
-         endingLineNumber = "641"
+         startingLineNumber = "669"
+         endingLineNumber = "669"
          landmarkName = "-revealController:willRevealRearViewController:"
          landmarkType = "5">
          <Actions>
@@ -3366,11 +3366,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Main/MainController.m"
-         timestampString = "380916008.353558"
+         timestampString = "381420943.277038"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "614"
-         endingLineNumber = "614"
+         startingLineNumber = "642"
+         endingLineNumber = "642"
          landmarkName = "-rotateDeviceToPortraitIfNecessary"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3392,11 +3392,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066873.320394"
+         timestampString = "381241508.326258"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "508"
-         endingLineNumber = "508"
+         startingLineNumber = "509"
+         endingLineNumber = "509"
          landmarkName = "-unknownPersonViewController:shouldPerformDefaultActionForPerson:property:identifier:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3449,11 +3449,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/NewsPlugin/Model/NewsUtils.m"
-         timestampString = "378736015.9764"
+         timestampString = "381332325.685629"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "32"
-         endingLineNumber = "32"
+         startingLineNumber = "49"
+         endingLineNumber = "49"
          landmarkName = "+newsItemsSectionsSortedByDate:"
          landmarkType = "5">
          <Actions>
@@ -3471,11 +3471,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/NewsPlugin/Model/NewsUtils.m"
-         timestampString = "378736015.9764"
+         timestampString = "381332325.685629"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "34"
-         endingLineNumber = "34"
+         startingLineNumber = "51"
+         endingLineNumber = "51"
          landmarkName = "+newsItemsSectionsSortedByDate:"
          landmarkType = "5">
          <Actions>
@@ -3493,11 +3493,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/NewsPlugin/Model/NewsUtils.m"
-         timestampString = "378736015.9764"
+         timestampString = "381332325.685629"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "36"
-         endingLineNumber = "36"
+         startingLineNumber = "53"
+         endingLineNumber = "53"
          landmarkName = "+newsItemsSectionsSortedByDate:"
          landmarkType = "5">
          <Actions>
@@ -3515,11 +3515,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/NewsPlugin/Model/NewsUtils.m"
-         timestampString = "378736015.9764"
+         timestampString = "381332325.685629"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "38"
-         endingLineNumber = "38"
+         startingLineNumber = "55"
+         endingLineNumber = "55"
          landmarkName = "+newsItemsSectionsSortedByDate:"
          landmarkType = "5">
          <Actions>
@@ -3537,11 +3537,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/NewsPlugin/Model/NewsUtils.m"
-         timestampString = "378736015.9764"
+         timestampString = "381332325.685629"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "30"
-         endingLineNumber = "30"
+         startingLineNumber = "47"
+         endingLineNumber = "47"
          landmarkName = "+newsItemsSectionsSortedByDate:"
          landmarkType = "5">
          <Actions>
@@ -3593,11 +3593,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Main/MainController.m"
-         timestampString = "380916008.353558"
+         timestampString = "381420943.277038"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "392"
-         endingLineNumber = "392"
+         startingLineNumber = "415"
+         endingLineNumber = "415"
          landmarkName = "-mainMenuEndedEditing"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3728,7 +3728,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/PCUnkownPersonViewController.m"
-         timestampString = "380064846.723222"
+         timestampString = "381420943.277038"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "48"
@@ -3741,7 +3741,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/PCUnkownPersonViewController.m"
-         timestampString = "380064846.723222"
+         timestampString = "381420943.277038"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "169"
@@ -3775,11 +3775,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-         timestampString = "380145569.875007"
+         timestampString = "381336636.239793"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "110"
-         endingLineNumber = "110"
+         startingLineNumber = "121"
+         endingLineNumber = "121"
          landmarkName = "-startMoodleResourceDownload"
          landmarkType = "5">
          <Actions>
@@ -3797,11 +3797,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-         timestampString = "380145569.875007"
+         timestampString = "381336636.239793"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "121"
-         endingLineNumber = "121"
+         startingLineNumber = "132"
+         endingLineNumber = "132"
          landmarkName = "-startMoodleResourceDownload"
          landmarkType = "5">
          <Actions>
@@ -3819,11 +3819,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-         timestampString = "380145569.875007"
+         timestampString = "381336636.239793"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "128"
-         endingLineNumber = "128"
+         startingLineNumber = "139"
+         endingLineNumber = "139"
          landmarkName = "-startMoodleResourceDownload"
          landmarkType = "5">
          <Actions>
@@ -3841,11 +3841,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Controllers/Main/MainController.m"
-         timestampString = "380915640.444284"
+         timestampString = "381420943.277038"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "346"
-         endingLineNumber = "346"
+         startingLineNumber = "369"
+         endingLineNumber = "369"
          landmarkName = "-setInitDoneYES"
          landmarkType = "5">
          <Actions>
@@ -3854,6 +3854,221 @@
                <ActionContent
                   message = "setInitDoneYES"
                   conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
+         timestampString = "381241525.561971"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "408"
+         endingLineNumber = "408"
+         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "po self.displayedPerson.firstName">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "PocketCampus/Controllers/Main/MainController.m"
+         timestampString = "381420943.277038"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "371"
+         endingLineNumber = "371"
+         landmarkName = "-setInitDoneYES"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "will set"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "PocketCampus/Controllers/Main/MainController.m"
+         timestampString = "381420943.277038"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "348"
+         endingLineNumber = "348"
+         landmarkName = "-revealMenuAfterSplash"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "reveal initial"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "PocketCampus/Controllers/Main/MainController.m"
+         timestampString = "381420943.277038"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "354"
+         endingLineNumber = "354"
+         landmarkName = "-revealMenuAfterSplash"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "reveal no initial"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "PocketCampus/Controllers/Main/MainController.m"
+         timestampString = "381420943.277038"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "78"
+         endingLineNumber = "78"
+         landmarkName = "-initWithWindow:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "PocketCampus/Controllers/Main/MainController.m"
+         timestampString = "381420943.277038"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "394"
+         endingLineNumber = "394"
+         landmarkName = "-mainMenuIsReady"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
+         timestampString = "381336791.219649"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "76"
+         endingLineNumber = "76"
+         landmarkName = "-shouldAutorotateToInterfaceOrientation:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/FoodPlugin/Controllers/RestaurantsListViewController.m"
+         timestampString = "381338703.052109"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "90"
+         endingLineNumber = "90"
+         landmarkName = "-refreshIfNeeded"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/FoodPlugin/Controllers/RestaurantsListViewController.m"
+         timestampString = "381410461.659428"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "191"
+         endingLineNumber = "191"
+         landmarkName = "-populateRestaurantsAndMeals"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
+         timestampString = "381413416.408871"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "67"
+         endingLineNumber = "67"
+         landmarkName = "-canDrawMapRect:zoomScale:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "po zoomScale">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
+         timestampString = "381413713.215058"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "94"
+         endingLineNumber = "94"
+         landmarkName = "-urlForEpflTilesWithX:andY:andZoom:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "po zoom">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
+         timestampString = "381413736.010214"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "102"
+         endingLineNumber = "102"
+         landmarkName = "-urlForEpflTilesWithX:andY:andZoom:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "po urlString">
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>

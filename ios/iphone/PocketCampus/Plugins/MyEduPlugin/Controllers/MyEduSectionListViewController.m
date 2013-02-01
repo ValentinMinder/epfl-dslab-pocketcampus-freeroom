@@ -73,6 +73,18 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
     // Dispose of any resources that can be recreated.
 }
 
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+    
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
+{
+    return UIInterfaceOrientationIsLandscape(interfaceOrientation) || (UIInterfaceOrientationPortrait);
+}
+
+
 #pragma mark - refresh control
 
 - (void)refresh {

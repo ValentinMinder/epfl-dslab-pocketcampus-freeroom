@@ -44,12 +44,24 @@ static FoodService* instance __weak = nil;
 
 - (void)getMealsWithDelegate:(id)delegate {    
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = YES;
+    operation.skipCache = YES;
+    operation.cacheValidity = 3600*24;
     operation.serviceClientSelector = @selector(getMeals);
     operation.delegateDidReturnSelector = @selector(getMealsDidReturn:);
     operation.delegateDidFailSelector = @selector(getMealsFailed);
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
     [operation release];
+}
+
+- (NSArray*)getFromCacheMeals {
+    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getMeals);
+    operation.delegateDidReturnSelector = @selector(getMealsDidReturn:);
+    operation.delegateDidFailSelector = @selector(getMealsFailed);
+    operation.returnType = ReturnTypeObject;
+    return [operation cachedResponseObjectEvenIfStale:YES];
 }
 
 - (void)getRestaurantsWithDelegate:(id)delegate {

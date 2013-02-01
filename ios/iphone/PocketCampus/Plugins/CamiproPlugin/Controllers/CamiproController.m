@@ -73,6 +73,8 @@ static CamiproController* instance __weak = nil;
             } else {
                 NSLog(@"-> Camipro received %@ notification", [AuthenticationService logoutNotificationName]);
                 [CamiproService saveSessionId:nil]; //removing stored session
+                [ObjectArchiver deleteAllCachedObjectsForPluginName:@"camipro"];
+                [[MainController publicController] requestLeavePlugin:@"Camipro"];
             }
         }];
         initObserversDone = YES;

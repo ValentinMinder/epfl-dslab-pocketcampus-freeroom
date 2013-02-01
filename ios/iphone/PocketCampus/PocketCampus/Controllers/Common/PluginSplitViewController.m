@@ -12,6 +12,8 @@
 
 @interface PluginSplitViewController ()
 
+@property (nonatomic, weak) UINavigationController* masterNavigationController; //nil if master view controller is not kind of class UINavigationController
+
 @end
 
 @implementation PluginSplitViewController

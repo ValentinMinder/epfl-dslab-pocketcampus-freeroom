@@ -17,7 +17,12 @@
 
 @protocol PCMasterSplitDelegate <NSObject>
 
+
+/*
+ * PluginSplitViewController will call this method on viewcontrollers of master view every time they are pushed on masterNavigationController
+ * to know which viewcontroller should be displayed on the detail (right) view.
+ */
 @optional
-- (UIViewController*)detailViewControllerThatShouldBeDisplayed; //PluginSplitViewController will call this method on viewcontrollers of master view every time they are pushed on masterNavigationController to know which viewcontroller should be displayed on the detail (right) view
+- (UIViewController*)detailViewControllerThatShouldBeDisplayed;
 
 @end

@@ -30,4 +30,17 @@
     return hash;
 }
 
+- (NSComparisonResult)compare:(NewsItem*)object {
+    if (![object isKindOfClass:[self class]]) {
+        @throw [NSException exceptionWithName:@"Illegal argument" reason:[NSString stringWithFormat:@"cannot compare NewsItem with %@", [object class]] userInfo:nil];
+    }
+    if (self.pubDate < object.pubDate) {
+        return NSOrderedDescending;
+    } else if (self.pubDate > object.pubDate) {
+        return NSOrderedAscending;
+    } else {
+        return NSOrderedSame;
+    }
+}
+
 @end

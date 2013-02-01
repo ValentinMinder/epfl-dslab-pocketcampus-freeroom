@@ -30,6 +30,8 @@
 
 #import "ObjectArchiver.h"
 
+#import "PCConfig2.h"
+
 #import <objc/message.h>
 
 @interface MainController ()
@@ -94,8 +96,13 @@ static MainController<MainControllerPublic>* instance = nil;
         self.revealController.delegate = self;
         self.window.rootViewController = self.revealController;
         instance = self;
+        //[NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(test) userInfo:nil repeats:NO];
     }
     return self;
+}
+
+- (void)test {
+    [self requestPluginToForeground:@"Directory"];
 }
 
 + (id<MainControllerPublic>)publicController {
@@ -215,13 +222,29 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - Inititalizations
 
 - (void)initPluginsList {
+    
+    //Loading plugins list from Plugins.plist
     NSDictionary* plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Plugins" ofType:@"plist"]];
     NSArray* pluginsFromPlist = [plist objectForKey:@"Plugins"];
     NSMutableArray* pluginsTempArray = [NSMutableArray arrayWithCapacity:pluginsFromPlist.count];
+    
+    
+    //Plugins list gotten from server
+    NSArray* pluginsFromServer = [[PCConfig2 defaults] objectForKey:PC_CONFIG_ENABLED_PLUGINS_ARRAY_KEY];
+    
+    
     BOOL isPadIdiom = [PCUtils isIdiomPad];
+    
+    
     for (NSDictionary* pluginDic in pluginsFromPlist) {
         NSString* identifierName = [pluginDic objectForKey:@"identifierName"];
-        if ([[pluginDic objectForKey:@"enabled"] boolValue]) {
+        
+        BOOL pluginEnabled = [[pluginDic objectForKey:@"enabled"] boolValue];
+        if (pluginsFromServer) { //if server config available, it overrides one from Plugins.plist
+            pluginEnabled = [pluginsFromServer containsObject:identifierName];
+        }
+        
+        if (pluginEnabled) { //plugin is enabled
             NSString* idiom = [pluginDic objectForKey:@"supportedIdioms"];
             if (idiom &&
                 (
@@ -322,10 +345,10 @@ static MainController<MainControllerPublic>* instance = nil;
 - (void)revealMenuAfterSplash {
     if (self.initialActivePluginIdentifier) {
         self.revealController.toggleAnimationDuration = 0.25;
+        self.initDone = YES; //must do it before calling setActivePluginWithIdentifier otherwise no effect
         [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
+        self.initialActivePluginIdentifier = nil; //initial plugin has been treated, prevent future use
         [self.revealController revealToggle:self];
-        [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:YES];
-        [NSTimer scheduledTimerWithTimeInterval:self.revealController.toggleAnimationDuration target:self selector:@selector(setInitDoneYES) userInfo:nil repeats:NO];
     } else {
         [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:NO];
         if ([PCUtils isIdiomPad]) {
@@ -333,7 +356,7 @@ static MainController<MainControllerPublic>* instance = nil;
         } else {
             [self.revealController hideFrontView];
         }
-        [NSTimer scheduledTimerWithTimeInterval:self.revealController.toggleAnimationDuration target:self selector:@selector(setInitDoneYES) userInfo:nil repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:self.revealController.toggleAnimationDuration+0.1 target:self selector:@selector(setInitDoneYES) userInfo:nil repeats:NO];
         self.revealController.toggleAnimationDuration = 0.25;
     }
 }
@@ -343,6 +366,13 @@ static MainController<MainControllerPublic>* instance = nil;
  */
 - (void)setInitDoneYES {
     self.initDone = YES;
+    if (self.initialActivePluginIdentifier) {
+        [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
+        self.initialActivePluginIdentifier = nil; //initial plugin has been treated, prevent future use
+        if (self.revealController.currentFrontViewPosition != FrontViewPositionLeft) {
+            [self.revealController showFrontViewCompletely:YES];
+        }
+    }
 }
 
 #pragma mark - Called by AppDelegate
@@ -438,6 +468,11 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (void)setActivePluginWithIdentifier:(NSString*)identifier {
     
+    if (!self.initDone) {
+        self.initialActivePluginIdentifier = identifier;
+        return;
+    }
+    
     if (!identifier) { //means swtich to splash view controller
         if (self.activePluginController) {
             [self.pluginsControllers removeObjectForKey:[self.activePluginController.class identifierName]];
@@ -459,7 +494,7 @@ static MainController<MainControllerPublic>* instance = nil;
     [self throwExceptionIfPluginIdentifierNameIsNotValid:identifier];
     
     PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:identifier];
-    if (pluginController) {
+    if (pluginController) { // pluginController was backgrounded
         UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
         [self.revealController setFrontViewController:pluginRootViewController animated:NO]; //check on whether this is already the front one is done in the method implementation
     } else {
@@ -471,11 +506,14 @@ static MainController<MainControllerPublic>* instance = nil;
         [self adaptInitializedNavigationOrSplitViewControllerOfPluginController:pluginController];
         UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
         
-        if (pluginRootViewController) {
-            [self manageBackgroundPlugins];
-            [self.pluginsControllers setObject:pluginController forKey:identifier];
-            [self.revealController setFrontViewController:pluginRootViewController animated:NO];
+        if (!pluginRootViewController) {
+            NSLog(@"!! ERROR: could not obtain pluginRootViewController for plugin identifier %@", identifier);
+            return;
         }
+        
+        [self manageBackgroundPlugins];
+        [self.pluginsControllers setObject:pluginController forKey:identifier];
+        [self.revealController setFrontViewController:pluginRootViewController animated:NO];
     }
     [self.mainMenuViewController setSelectedPluginWithIdentifier:identifier animated:YES];
     self.activePluginController = pluginController;
@@ -508,7 +546,7 @@ static MainController<MainControllerPublic>* instance = nil;
     } else if (pluginController.mainSplitViewController) {
         pluginRootViewController = pluginController.mainSplitViewController;
     } else {
-        NSLog(@"-> ERROR : PluginController '%@' has no initialized view controller (mainViewController, mainNavigationController, mainSplitViewController are nil)", [(id<PluginControllerProtocol>)pluginController identifierName]);
+        NSLog(@"!! ERROR : PluginController '%@' has no initialized view controller (mainViewController, mainNavigationController, mainSplitViewController are nil)", [(id<PluginControllerProtocol>)pluginController identifierName]);
     }
     return pluginRootViewController;
 }

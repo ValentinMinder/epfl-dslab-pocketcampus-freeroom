@@ -32,6 +32,10 @@
 - (void)getRatingsWithDelegate:(id)delegate;
 - (void)setRatingForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId delegate:(id)delegate;
 
+/* Cached versions */
+
+- (NSArray*)getFromCacheMeals;
+
 @end
 
 @protocol FoodServiceDelegate <ServiceDelegate>

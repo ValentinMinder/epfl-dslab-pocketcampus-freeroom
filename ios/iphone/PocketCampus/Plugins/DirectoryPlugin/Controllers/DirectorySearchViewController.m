@@ -403,13 +403,14 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         }
     } else if (self.resultsMode == ResultsModeRecentSearches) {
         UIActivityIndicatorView* activityIndicatorView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:indexPath] accessoryView];
-        if ([activityIndicatorView isAnimating]) {
+         NSString* searchString = [NSString stringWithFormat:@"%@", [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+        if ([activityIndicatorView isAnimating] || (self.displayedPerson && [searchString rangeOfString:self.displayedPerson.firstName].location != NSNotFound && [searchString rangeOfString:self.displayedPerson.lastName].location != NSNotFound)) {
             return; //means cell was already selected
         }
         [activityIndicatorView startAnimating];
-        NSString* searchString = [NSString stringWithFormat:@"%@", [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
         //skipNextSearchBarValueChange = YES;
         //self.searchBar.text = searchString;
+        [self.directoryService cancelOperationsForDelegate:self];
         [self.directoryService searchPersons:searchString delegate:self];
         [self.searchBar resignFirstResponder];
     } else {

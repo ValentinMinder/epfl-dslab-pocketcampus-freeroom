@@ -30,5 +30,5 @@
 "StartingDownload" = "Démarrage du téléchargement...";
 "DownloadingVideo" = "Téléchargement de la vidéo...";
 "DownloadProgressWithFormat" = "%@ sur %@";
-"DeleteDownloadedVideoExplanation" = "Supprimer la vidéo téléchargée ?\n\nLe fichier sera supprimé et la lecture hors-ligne ne sera plus disponible.";
+"DeleteDownloadedVideoExplanation" = "Supprimer la vidéo téléchargée ?\nLe fichier sera supprimé et la lecture hors-ligne ne sera plus disponible.";
 "ErrorOccuredWhileDownloadingVideo" = "Désolé, une erreur est survenue pendant le téléchargement de la vidéo.";

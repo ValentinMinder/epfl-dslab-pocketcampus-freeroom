@@ -15,7 +15,24 @@ static NSTimeInterval kOneMonthSeconds = 2592000;
 @implementation NewsUtils
 
 + (NSArray*)eliminateDuplicateNewsItemsInArray:(NSArray*)newsItems {
-    return [[NSOrderedSet orderedSetWithArray:newsItems] array];
+    
+    if (newsItems.count == 0) {
+        return newsItems;
+    }
+    
+    /*
+     * Array is browsed in reverse order so that if a news appears twice (IC feed then EPFL All News feed)
+     * we take the one from the first feed => earliest time it appeared, so that user does not see later
+     * a news he already read coming back to the top.
+     */
+    
+    NSMutableOrderedSet* set = [NSMutableOrderedSet orderedSet];
+    
+    for (int i = newsItems.count-1; i>=0; i--) {
+        [set addObject:newsItems[i]];
+    }
+    
+    return [[[set array] reverseObjectEnumerator] allObjects]; //returns reversed array
 }
 
 + (NSArray*)newsItemsSectionsSortedByDate:(NSArray*)newsItems {

@@ -13,6 +13,9 @@
 /*
  * Call this method from action handler of bar button item to show action sheet or dismiss it
  * with clicked button index cancel automatically if it is already visible
+ *
+ * IMPORTANT: you must release the action sheet when the delegate method actionSheet:didDismissWithButtonIndex: 
+ * has been called. Otherwise, repeated toggling will cause the app to crash (API weakness).
  */
 - (void)toggleFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated;
 

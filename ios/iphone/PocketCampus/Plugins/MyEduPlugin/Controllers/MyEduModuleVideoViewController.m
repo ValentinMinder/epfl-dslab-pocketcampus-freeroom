@@ -369,6 +369,7 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (actionSheet == self.deleteVideoActionSheet && buttonIndex == 0) { //delete pressed
         [self.myEduService removeDownloadedVideoOfModule:self.module];
+        self.deleteVideoActionSheet = nil;
     }
 }
 
