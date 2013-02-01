@@ -52,7 +52,7 @@ static NSString* PC_CONFIG_TYPE_FROM_APPLICATION_SUPPORT __unused = @"init_confi
  * MUST BE CALLED BEFORE ANY ACCESS TO DEFAULTS
  * This method will synchronously (blocking) populate NSUserDefaults with content returned by http://pocketcampus.epfl.ch/backend/get_config.php
  * or Config.plist from bundle if server cannot be reached.
- * IMPORTANT DEV NOTE : if a Application Support/<bundle_identifier>/Config.plist exists, it will override all other configurations
+ * IMPORTANT DEV NOTE : if a Application Support/<bundle_identifier>/Config.plist exists, it will override keys found
  */
 + (void)initConfig;
     

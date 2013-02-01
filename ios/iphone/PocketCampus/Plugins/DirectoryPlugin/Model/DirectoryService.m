@@ -47,8 +47,8 @@ static DirectoryService* instance __weak = nil;
         @throw [NSException exceptionWithName:@"bad nameOrSciper" reason:@"nameOrSciper is either nil or not of class NSString" userInfo:nil];
     }
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    //operation.keepInCache = YES;
-    //operation.cacheValidity = 2*24*3600; //2 days
+    operation.keepInCache = YES;
+    operation.cacheValidity = 60; //1 min
     operation.serviceClientSelector = @selector(searchPersons:);
     operation.delegateDidReturnSelector = @selector(searchDirectoryFor:didReturn:);
     operation.delegateDidFailSelector = @selector(searchDirectoryFailedFor:);
@@ -211,6 +211,7 @@ static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people
     [self didChangeValueForKey:@"isExecuting"];
     NSString* fullURLStringWithSciper = [NSString stringWithFormat:@"%@%@", kProfilePictureURLbase, self.sciper];
     ASIHTTPRequest* pictureRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLStringWithSciper]];
+    pictureRequest.timeOutSeconds = 10;
     pictureRequest.delegate = self;
     pictureRequest.downloadCache = [ASIDownloadCache sharedCache];
     pictureRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;

@@ -222,6 +222,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
         case VoteModeVote: 
         {
             [voteButton addTarget:self action:@selector(votePressed) forControlEvents:UIControlEventTouchUpInside];
+            [ratingView setEditable:NO resetRating:YES];
             b1_t animBlock = ^{
                 voteButton.frame = voteButtonNormalFrame;
                 NSString* voteActionText = NSLocalizedStringFromTable(@"VoteVerb", @"FoodPlugin", nil);

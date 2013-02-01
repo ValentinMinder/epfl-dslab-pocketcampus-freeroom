@@ -171,6 +171,8 @@
         [self loadView]; //reload view content to update picture
         self.profilePictureImage = [UIImage imageWithData:data];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"PhotoButtonTitle", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(photoButtonPressed)];
+    } else {
+        [self profilePictureFailedFor:sciper];
     }
 }
 
