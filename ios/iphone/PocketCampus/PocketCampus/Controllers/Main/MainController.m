@@ -30,7 +30,7 @@
 
 #import "ObjectArchiver.h"
 
-#import "PCConfig2.h"
+#import "PCConfig.h"
 
 #import <objc/message.h>
 
@@ -230,7 +230,7 @@ static MainController<MainControllerPublic>* instance = nil;
     
     
     //Plugins list gotten from server
-    NSArray* pluginsFromServer = [[PCConfig2 defaults] objectForKey:PC_CONFIG_ENABLED_PLUGINS_ARRAY_KEY];
+    NSArray* pluginsFromServer = [[PCConfig defaults] objectForKey:PC_CONFIG_ENABLED_PLUGINS_ARRAY_KEY];
     
     
     BOOL isPadIdiom = [PCUtils isIdiomPad];

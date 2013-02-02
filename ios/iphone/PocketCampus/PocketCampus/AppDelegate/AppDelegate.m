@@ -39,16 +39,19 @@ static id test __strong __unused = nil;
     /* Initialize defaults with PC config */
     [PCConfig initConfig];
     
-    /* Start Google Analytics tracker if no config value prevents it */
-    if (![[PCConfig defaults] boolForKey:PC_OPTIONAL_GAN_DISABLED_KEY]) {
+    /* Start Google Analytics tracker if enabled in config */
+    if ([[PCConfig defaults] boolForKey:PC_CONFIG_GAN_ENABLED_KEY]) {
         NSLog(@"-> Starting Google Analytics tracker");
-        [[GANTracker sharedTracker] startTrackerWithAccountID:PC_PROD_GAN_ACCOUNT_ID
-                                               dispatchPeriod:PC_PROD_GAN_DISPATCH_PERIOD_SEC
-                                                     delegate:self];
+        NSString* ganId = (NSString*)[[PCConfig defaults] objectForKey:PC_CONFIG_GAN_TRACKING_CODE_KEY];
+        if (ganId) {
+            [[GANTracker sharedTracker] startTrackerWithAccountID:ganId dispatchPeriod:10 delegate:self];
+        } else {
+            NSLog(@"!! ERROR: could not start Google Analytics tracker because tracking code is absent from config.");
+        }
+        
     } else {
-        NSLog(@"-> Google Analytics tracker will NOT be started because GAN_disabled = YES in Config");
+        NSLog(@"-> Google Analytics disabled (config)");
     }
-    
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.

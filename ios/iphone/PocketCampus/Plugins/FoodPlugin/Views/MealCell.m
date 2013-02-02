@@ -162,7 +162,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/food/restaurant/click/rate" withError:NULL];
     [ratingActivityIndicator startAnimating];
     [self setVoteMode:VoteModeDisabled animated:YES];
-    if ([[PCConfig defaults] boolForKey:PC_OPTIONAL_CONFIG_ALLOW_MEALS_MULTI_VOTES_KEY]) {
+    if ([[PCConfig defaults] boolForKey:PC_CONFIG_ALLOW_MEALS_MULTI_VOTES_KEY]) {
         [service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[NSString stringWithFormat:@"%ld",time(NULL)]  delegate:self];
     } else {
         [service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[[UIDevice currentDevice] uniqueDeviceIdentifier]  delegate:self];

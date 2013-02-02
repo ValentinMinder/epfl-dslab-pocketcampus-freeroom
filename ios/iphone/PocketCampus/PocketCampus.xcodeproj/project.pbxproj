@@ -31,7 +31,6 @@
 		32058ACC1572B44D00F4D361 /* TransportSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32058ACB1572B44D00F4D361 /* TransportSettingsViewController.m */; };
 		32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */; };
 		320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* GlobalSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		320AAC7514FD481E00F71CD7 /* ConfigOLD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 320AAC7414FD481E00F71CD7 /* ConfigOLD.plist */; };
 		320DFC2616469A2300849907 /* MyEduSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320DFC2516469A2300849907 /* MyEduSplashDetailView.xib */; };
 		320DFC291646A25A00849907 /* MyEduSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320DFC281646A25900849907 /* MyEduSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		320DFC311646B35900849907 /* MyEduModuleVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320DFC301646B35900849907 /* MyEduModuleVideoViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -139,7 +138,7 @@
 		325368C616496F8000406801 /* MyEduModuleMaterialsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325368C516496F7F00406801 /* MyEduModuleMaterialsView.xib */; };
 		3256175816A89C7D00F52D24 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3256175716A89C7D00F52D24 /* MapViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
-		3258D65116AF1FE20040DAE3 /* PCConfig2.m in Sources */ = {isa = PBXBuildFile; fileRef = 3258D65016AF1FE20040DAE3 /* PCConfig2.m */; };
+		3258D65116AF1FE20040DAE3 /* PCConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3258D65016AF1FE20040DAE3 /* PCConfig.m */; };
 		325C47A61621D63E006752B4 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47A51621D63E006752B4 /* MainMenuItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */; };
 		325C47AE1621E91A006752B4 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -147,7 +146,6 @@
 		32649B23160DD7DA002E6498 /* PCUnkownPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* PCUnkownPersonViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3266394A150C00E100719F6E /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663947150C00E100719F6E /* NSString+MD5Addition.m */; };
 		3266394B150C00E100719F6E /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663949150C00E100719F6E /* UIDevice+IdentifierAddition.m */; };
-		32675BFA15F4FB1F00880387 /* PCConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 32675BF915F4FB1F00880387 /* PCConfig.m */; };
 		32675C1715F508E400880387 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 32675BFF15F508E400880387 /* NSObject+SBJson.m */; };
 		32675C1815F508E400880387 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 32675C0215F508E400880387 /* SBJsonParser.m */; };
 		32675C1915F508E400880387 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 32675C0415F508E400880387 /* SBJsonStreamParser.m */; };
@@ -410,7 +408,6 @@
 		32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportSettingsView.xib; sourceTree = "<group>"; };
 		320A05B015B02C240057B15C /* GlobalSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalSettingsViewController.h; sourceTree = "<group>"; };
 		320A05B115B02C240057B15C /* GlobalSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalSettingsViewController.m; sourceTree = "<group>"; };
-		320AAC7414FD481E00F71CD7 /* ConfigOLD.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ConfigOLD.plist; sourceTree = "<group>"; };
 		320DFC24164697AE00849907 /* PCMasterSplitDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCMasterSplitDelegate.h; sourceTree = "<group>"; };
 		320DFC2516469A2300849907 /* MyEduSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduSplashDetailView.xib; sourceTree = "<group>"; };
 		320DFC271646A25900849907 /* MyEduSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduSplashDetailViewController.h; sourceTree = "<group>"; };
@@ -582,8 +579,8 @@
 		3256175716A89C7D00F52D24 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		3257C20B1570F99C00E626A4 /* TransportHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportHelpViewController.h; sourceTree = "<group>"; };
 		3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportHelpViewController.m; sourceTree = "<group>"; };
-		3258D64F16AF1FE20040DAE3 /* PCConfig2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCConfig2.h; sourceTree = "<group>"; };
-		3258D65016AF1FE20040DAE3 /* PCConfig2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCConfig2.m; sourceTree = "<group>"; };
+		3258D64F16AF1FE20040DAE3 /* PCConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCConfig.h; sourceTree = "<group>"; };
+		3258D65016AF1FE20040DAE3 /* PCConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCConfig.m; sourceTree = "<group>"; };
 		325C47A41621D63E006752B4 /* MainMenuItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuItemCell.h; sourceTree = "<group>"; };
 		325C47A51621D63E006752B4 /* MainMenuItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuItemCell.m; sourceTree = "<group>"; };
 		325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuItemCell.xib; sourceTree = "<group>"; };
@@ -596,8 +593,6 @@
 		32663947150C00E100719F6E /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
 		32663948150C00E100719F6E /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
 		32663949150C00E100719F6E /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
-		32675BF815F4FB1F00880387 /* PCConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCConfig.h; sourceTree = "<group>"; };
-		32675BF915F4FB1F00880387 /* PCConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCConfig.m; sourceTree = "<group>"; };
 		32675BFD15F508E400880387 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		32675BFE15F508E400880387 /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
 		32675BFF15F508E400880387 /* NSObject+SBJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJson.m"; sourceTree = "<group>"; };
@@ -1104,7 +1099,6 @@
 			children = (
 				3296570914FF9DDB00C44C12 /* PocketCampus.strings */,
 				32704C7B15002F67002BCB75 /* Plugins.plist */,
-				320AAC7414FD481E00F71CD7 /* ConfigOLD.plist */,
 				32675C2315F50F4A00880387 /* Config.plist */,
 				3219EF5814FCDE4900A271CD /* PocketCampus-Info.plist */,
 				3219EF5C14FCDE4900A271CD /* main.m */,
@@ -1369,10 +1363,8 @@
 				32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */,
 				324715AC15001381007C230C /* Service.h */,
 				324715AD15001381007C230C /* Service.m */,
-				32675BF815F4FB1F00880387 /* PCConfig.h */,
-				32675BF915F4FB1F00880387 /* PCConfig.m */,
-				3258D64F16AF1FE20040DAE3 /* PCConfig2.h */,
-				3258D65016AF1FE20040DAE3 /* PCConfig2.m */,
+				3258D64F16AF1FE20040DAE3 /* PCConfig.h */,
+				3258D65016AF1FE20040DAE3 /* PCConfig.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2541,7 +2533,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				320AAC7514FD481E00F71CD7 /* ConfigOLD.plist in Resources */,
 				3296570B14FF9DDB00C44C12 /* PocketCampus.strings in Resources */,
 				32704C7C15002F67002BCB75 /* Plugins.plist in Resources */,
 				32FAC0F81500F40700925180 /* DirectoryPlugin.strings in Resources */,
@@ -2841,7 +2832,6 @@
 				32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */,
 				3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */,
 				324F6B3015D7B55F00CFB8B5 /* MapServiceTests.m in Sources */,
-				32675BFA15F4FB1F00880387 /* PCConfig.m in Sources */,
 				32675C1715F508E400880387 /* NSObject+SBJson.m in Sources */,
 				32675C1815F508E400880387 /* SBJsonParser.m in Sources */,
 				32675C1915F508E400880387 /* SBJsonStreamParser.m in Sources */,
@@ -2906,7 +2896,7 @@
 				32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */,
 				3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */,
 				3256175816A89C7D00F52D24 /* MapViewController.m in Sources */,
-				3258D65116AF1FE20040DAE3 /* PCConfig2.m in Sources */,
+				3258D65116AF1FE20040DAE3 /* PCConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

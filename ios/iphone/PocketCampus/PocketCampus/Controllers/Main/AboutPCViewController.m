@@ -84,8 +84,13 @@
 }
 
 - (void)showInfos {
-    NSString* message = [NSString stringWithFormat:@"%@\n\n%@", [[PCConfig defaults] objectForKey:PC_CONFIG_TYPE_KEY], [[PCConfig defaults] objectForKey:PC_CONFIG_SERVER_ADDRESS_KEY]];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"PC_CONFIG_TYPE" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    BOOL loadedFromBundle = [[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY];
+    BOOL loadedFromServer = [[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
+    BOOL loadedFromAppSupport = [[PCConfig defaults] boolForKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
+    NSString* serverAddress = [[PCConfig defaults] objectForKey:PC_CONFIG_SERVER_ADDRESS_KEY];
+    
+    NSString* message = [NSString stringWithFormat:@"%@:%d\n%@:%d\n%@:%d\n\nServer address:\n%@", @"Bundle", loadedFromBundle, @"Server", loadedFromServer, @"AppSupport", loadedFromAppSupport, serverAddress];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"PCConfig state" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [alert release];
 }

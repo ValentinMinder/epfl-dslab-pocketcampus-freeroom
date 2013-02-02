@@ -2,13 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>server_protocol</key>
+	<key>SERVER_PROTOCOL</key>
 	<string>http</string>
-	<key>server_address</key>
+	<key>SERVER_ADDRESS</key>
 	<string>pocketcampus.epfl.ch</string>
-	<key>server_port</key>
+	<key>SERVER_PORT</key>
 	<string>9090</string>
-	<key>server_uri</key>
+	<key>SERVER_URI</key>
 	<string>v3r1</string>
+	<key>GA_TRACKING_CODE</key>
+	<string>UA-22135241-3</string>
+	<key>GA_ENABLED</key>
+	<true/>
 </dict>
 </plist>
