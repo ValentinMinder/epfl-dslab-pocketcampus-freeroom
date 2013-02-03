@@ -29,6 +29,7 @@
 @property (nonatomic, strong) MyEduModule* module;
 @property (nonatomic, strong) MyEduService* myEduService;
 @property (nonatomic, strong) MPMoviePlayerController* moviePlayerController;
+@property (nonatomic, strong) UIWebView* webView;
 @property (nonatomic, strong) ASIHTTPRequest* videoHEADRequest;
 @property (nonatomic, strong) UIPopoverController* downloadPopoverController;
 @property (nonatomic, strong) UIActionSheet* deleteVideoActionSheet;
@@ -83,6 +84,12 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
                 self.centerMessageLabel.hidden = NO;
             } else {
                 [self.loadingIndicator startAnimating];
+                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(1, 1, 450, 338)];
+                self.webView.delegate = self;
+                [self.view addSubview:self.webView];
+                self.webView.center = self.view.center;
+                self.webView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
+                self.webView.hidden = YES;
                 self.webView.layer.masksToBounds = NO;
                 self.webView.layer.shadowOffset = CGSizeMake(0.0, 2.00);
                 self.webView.layer.shadowRadius = 10.0;
@@ -166,8 +173,14 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
     [self.moviePlayerController pause];
     [self.moviePlayerController stop];
     self.moviePlayerController.initialPlaybackTime = -1.0; //prevent flickering bug
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:self.moviePlayerController];
-    [self.view removeObserver:self forKeyPath:@"frame"];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:self.moviePlayerController];
+        [self.view removeObserver:self forKeyPath:@"frame"];
+    }
+    @catch (NSException *exception) {
+        //Might only happen if removeObserver called while no registered observer. Should never happen.
+        //In that case, just ignore it.
+    }
     self.moviePlayerController = nil;
 }
 
@@ -331,7 +344,7 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
     self.moviePlayerController.view.bounds = CGRectMake(0, 0, width, height);
     self.moviePlayerController.view.center = self.view.center;
     
-    self.playbackRateButton.center = CGPointMake(self.view.center.x, self.moviePlayerController.view.frame.origin.y+height+30.0);
+    self.playbackRateButton.frame = CGRectMake((int)(self.view.center.x-(self.playbackRateButton.frame.size.width/2.0)), (int)(self.moviePlayerController.view.frame.origin.y+height+15.0), self.playbackRateButton.frame.size.width, self.playbackRateButton.frame.size.height); //int cast is so that frame is integer values. Otherwise blurry on non-retina device.
 }
 
 - (void)playerLoadStateDidChange {

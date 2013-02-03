@@ -30,6 +30,8 @@
 
 #import "GANTracker.h"
 
+static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
+
 @interface MoodleCourseSectionsViewController ()
 
 @property (nonatomic, strong) MoodleService* moodleService;
@@ -70,7 +72,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.sections) {
+    if (!self.sections || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
 }

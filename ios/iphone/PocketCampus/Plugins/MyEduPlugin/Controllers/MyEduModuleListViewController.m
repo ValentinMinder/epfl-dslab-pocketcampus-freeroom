@@ -24,6 +24,8 @@
 
 #import "GANTracker.h"
 
+static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
+
 @interface MyEduModuleListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -70,7 +72,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.modules) {
+    if (!self.modules || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
 }

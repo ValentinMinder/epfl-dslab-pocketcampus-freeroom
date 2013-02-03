@@ -26,6 +26,8 @@
 
 #import "GANTracker.h"
 
+static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
+
 @interface MyEduCourseListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -64,7 +66,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.subscribedCourses) {
+    if (!self.subscribedCourses || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
 }

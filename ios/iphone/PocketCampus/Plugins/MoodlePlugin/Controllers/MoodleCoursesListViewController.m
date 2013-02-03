@@ -22,6 +22,8 @@
 
 #import "PCUtils.h"
 
+static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
+
 @interface MoodleCoursesListViewController ()
 
 @property (nonatomic, strong) MoodleService* moodleService;
@@ -54,7 +56,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.courses) {
+    if (!self.courses || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
 }
