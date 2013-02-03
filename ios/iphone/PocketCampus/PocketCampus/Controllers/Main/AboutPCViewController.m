@@ -99,19 +99,40 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView_ {
     [webView sizeToFit];
-    if ([PCUtils isIdiomPad]) {
+    
+    BOOL pad = [PCUtils isIdiomPad];
+    BOOL fourInch = [PCUtils is4inchDevice];
+    BOOL retina = [PCUtils isRetinaDevice];
+    BOOL ios5 = [PCUtils isOSVersionSmallerThan:6.0];
+    BOOL ios6_0 = !ios5 && [PCUtils isOSVersionSmallerThan:6.1];
+    
+    
+    if (pad) {
         webView.frame = CGRectOffset(webView.frame, 0, -20.0);
     } else {
-        if ([PCUtils is4inchDevice]) {
+        if (fourInch) {
             webView.frame = CGRectOffset(webView.frame, 0, -10.0);
         } else {
-            if ([PCUtils isOSVersionSmallerThan:6.0]) {
-                webView.frame = CGRectOffset(webView.frame, 0, +15.0);
+            if (retina) {
+                if (ios5) {
+                    webView.frame = CGRectOffset(webView.frame, 0, +15.0);
+                } else if (ios6_0) {
+                    webView.frame = CGRectOffset(webView.frame, 0, 0.0);
+                } else {
+                    webView.frame = CGRectOffset(webView.frame, 0, +15.0);
+                }
             } else {
-                webView.frame = CGRectOffset(webView.frame, 0, 0.0);
+                if (ios5) {
+                    webView.frame = CGRectOffset(webView.frame, 0, 0.0);
+                } else if (ios6_0) {
+                    webView.frame = CGRectOffset(webView.frame, 0, 0.0);
+                } else {
+                    webView.frame = CGRectOffset(webView.frame, 0, 0.0);
+                }
             }
         }
     }
+    
     webView.alpha = 1.0;
 }
 

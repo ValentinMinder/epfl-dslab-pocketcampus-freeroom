@@ -63,9 +63,9 @@
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo; {
     if (error) {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error when saving image\ninto camera roll" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error when saving image\nto camera roll" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Image saved" message:@"Image correctly saved\ninto camera roll" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Image saved" message:@"Image correctly saved\nto camera roll" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }
     
 }
