@@ -242,7 +242,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/AuthenticationPlugin/Controllers/GasparViewController.m"
-         timestampString = "378029318.275825"
+         timestampString = "381605152.281243"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "493"
@@ -255,7 +255,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/AuthenticationPlugin/Controllers/GasparViewController.m"
-         timestampString = "378029318.275825"
+         timestampString = "381605152.281243"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "353"
@@ -378,7 +378,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/AuthenticationPlugin/Controllers/GasparViewController.m"
-         timestampString = "378029318.275825"
+         timestampString = "381605152.281243"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "358"
@@ -934,7 +934,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/AuthenticationPlugin/Controllers/GasparViewController.m"
-         timestampString = "378029318.275825"
+         timestampString = "381605152.281243"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "531"
@@ -1372,7 +1372,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/AuthenticationPlugin/Controllers/GasparViewController.m"
-         timestampString = "378029318.275825"
+         timestampString = "381605152.281243"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "507"
@@ -2577,7 +2577,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/AuthenticationPlugin/Controllers/GasparViewController.m"
-         timestampString = "376231013.617965"
+         timestampString = "381605152.281243"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "105"
@@ -4208,6 +4208,19 @@
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/AuthenticationPlugin/Controllers/GasparViewController.m"
+         timestampString = "381605152.281243"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "537"
+         endingLineNumber = "537"
+         landmarkName = "-loginToTequilaDidReturn:"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>
