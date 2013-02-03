@@ -3,7 +3,7 @@
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 28.02.12.
-//  Copyright (c) 2012 Klewel SA. All rights reserved.
+//  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
