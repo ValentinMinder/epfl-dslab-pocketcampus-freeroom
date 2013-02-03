@@ -48,9 +48,11 @@
             break;
         case EyeButtonStateDataHidden:
             self.eyeButton.alpha = 0.4;
+            [self.eyeButton setImage:[UIImage imageNamed:@"EyeBlackCrossed"] forState:UIControlStateNormal];
             break;
         case EyeButtonStateDataVisible:
             self.eyeButton.alpha = 0.8;
+            [self.eyeButton setImage:[UIImage imageNamed:@"EyeBlack"] forState:UIControlStateNormal];
             break;
         default:
             @throw [NSException exceptionWithName:@"Illegal argument" reason:@"unsupported EyeButtonState" userInfo:nil];

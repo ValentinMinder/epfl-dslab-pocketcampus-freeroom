@@ -354,7 +354,7 @@ static MyEduService* instance __weak = nil;
     request.showAccurateProgress = YES;
     request.shouldRedirect = NO;
     request.timeOutSeconds = 5.0;
-    [request addRequestHeader:@"Cookie" value:[self createMyEduRequest].iMyEduSession.iMyEduCookie];
+    [request addRequestHeader:@"Cookie" value:[self lastSession].iMyEduCookie];
     [operationQueue addOperation:request];
 }
 
