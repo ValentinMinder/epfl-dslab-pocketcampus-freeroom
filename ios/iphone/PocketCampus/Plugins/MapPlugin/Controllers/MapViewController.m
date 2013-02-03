@@ -93,7 +93,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         self.tileOverlayView = [[CustomOverlayView alloc] initWithOverlay:self.epflTileOverlay];
         self.layersOverlayView = nil; //[[CustomOverlayView alloc] initWithOverlay:epflLayersOverlay];
         if ([PCUtils isIdiomPad]) {
-            self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.010395, 0.021973));
+            self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.014175, 0.016479));
         } else {
             if ([PCUtils isOSVersionSmallerThan:6.0]) {
                 self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
@@ -124,6 +124,17 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     return self;
 }
 
+#pragma mark - Properties override
+
+- (MKCoordinateRegion)epflRegion {
+    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) {
+        self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.014175, 0.016479));
+    } else {
+        self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.010395, 0.021973));
+    }
+    return _epflRegion;
+}
+
 #pragma mark - View events
 
 - (void)viewDidLoad
@@ -140,7 +151,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [self.mapView addGestureRecognizer:mapTap];
     self.tileOverlayView.delegate = self;
     //layersOverlayView.delegate = self;
-    [self.mapView setRegion:self.epflRegion animated:NO];
+    [self.mapView setRegion:_epflRegion animated:NO];
     self.mapView.accessibilityIdentifier = @"EPFLMapView";
     self.floorDownButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorDown", @"MapPlugin", nil);
     self.floorUpButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorUp", @"MapPlugin", nil);

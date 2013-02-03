@@ -9,6 +9,8 @@
 			<string>Directory</string>
 			<key>enabled</key>
 			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
 			<key>supportedIdioms</key>
 			<string>phone+pad</string>
 		</dict>
@@ -17,6 +19,8 @@
 			<string>Food</string>
 			<key>enabled</key>
 			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
 			<key>supportedIdioms</key>
 			<string>phone</string>
 		</dict>
@@ -25,6 +29,8 @@
 			<string>News</string>
 			<key>enabled</key>
 			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
 			<key>supportedIdioms</key>
 			<string>phone+pad</string>
 		</dict>
@@ -33,6 +39,8 @@
 			<string>Map</string>
 			<key>enabled</key>
 			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
 			<key>supportedIdioms</key>
 			<string>phone+pad</string>
 		</dict>
@@ -41,6 +49,8 @@
 			<string>Transport</string>
 			<key>enabled</key>
 			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
 			<key>supportedIdioms</key>
 			<string>phone</string>
 		</dict>
@@ -49,6 +59,8 @@
 			<string>Camipro</string>
 			<key>enabled</key>
 			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
 			<key>supportedIdioms</key>
 			<string>phone</string>
 		</dict>
@@ -57,6 +69,8 @@
 			<string>Moodle</string>
 			<key>enabled</key>
 			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
 			<key>supportedIdioms</key>
 			<string>phone+pad</string>
 		</dict>
@@ -64,6 +78,8 @@
 			<key>identifierName</key>
 			<string>MyEdu</string>
 			<key>enabled</key>
+			<true/>
+			<key>hiddenByDefault</key>
 			<true/>
 			<key>supportedIdioms</key>
 			<string>pad</string>

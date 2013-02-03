@@ -40,6 +40,7 @@
 @property (nonatomic, strong) MainMenuViewController* mainMenuViewController;
 @property (nonatomic, strong) ZUUIRevealController* revealController;
 @property (nonatomic) CGFloat revealWidth;
+@property (nonatomic, strong) NSDictionary* plistDicForPluginIdentifier;
 @property (nonatomic, strong) NSArray* pluginsList;
 @property (nonatomic, strong) SplashViewController* splashViewController;
 @property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
@@ -227,7 +228,7 @@ static MainController<MainControllerPublic>* instance = nil;
     NSDictionary* plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Plugins" ofType:@"plist"]];
     NSArray* pluginsFromPlist = [plist objectForKey:@"Plugins"];
     NSMutableArray* pluginsTempArray = [NSMutableArray arrayWithCapacity:pluginsFromPlist.count];
-    
+    NSMutableDictionary* tempPlistDicForPluginIdentifier = [NSMutableDictionary dictionaryWithCapacity:pluginsFromPlist.count];
     
     //Plugins list gotten from server
     NSArray* pluginsFromServer = [[PCConfig defaults] objectForKey:PC_CONFIG_ENABLED_PLUGINS_ARRAY_KEY];
@@ -254,6 +255,7 @@ static MainController<MainControllerPublic>* instance = nil;
                 ) {
                 NSLog(@"-> Detected enabled idiom-compatible plugin: '%@' (idiom '%@')", identifierName, idiom);
                 [pluginsTempArray addObject:identifierName];
+                tempPlistDicForPluginIdentifier[identifierName] = pluginDic;
             }
         }
     }
@@ -265,8 +267,8 @@ static MainController<MainControllerPublic>* instance = nil;
      return [name1 compare:name2];
      }];*/
     
-    self.pluginsList = [NSArray arrayWithArray:pluginsTempArray]; //creates a non-mutable copy of the dictionary
-    
+    self.pluginsList = [NSArray arrayWithArray:pluginsTempArray]; //creates a non-mutable copy of the array
+    self.plistDicForPluginIdentifier = [tempPlistDicForPluginIdentifier copy]; //creates a non-mutable copy of the dictionary
 }
 
 - (void)initPluginObservers {
@@ -288,6 +290,8 @@ static MainController<MainControllerPublic>* instance = nil;
         Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:pluginIdentifier]);
         NSString* localizedName = [pluginClass localizedName];
         MainMenuItem* item = [MainMenuItem menuItemButtonWithTitle:localizedName leftImage:[UIImage imageNamed:pluginIdentifier] identifier:pluginIdentifier];
+        NSNumber* hiddenByDefault = self.plistDicForPluginIdentifier[item.identifier][@"hiddenByDefault"];
+        item.hidden = [hiddenByDefault boolValue];
         [menuItems addObject:item];
     }
     return menuItems;
@@ -317,7 +321,13 @@ static MainController<MainControllerPublic>* instance = nil;
                 }
                 if (infos[kPluginsMainMenuItemsInfoHiddenKey]) {
                     item.hidden = [infos[kPluginsMainMenuItemsInfoHiddenKey] boolValue];
+                } else {
+                    NSNumber* hiddenByDefault = self.plistDicForPluginIdentifier[item.identifier][@"hiddenByDefault"];
+                    item.hidden = [hiddenByDefault boolValue];
                 }
+            } else {
+                NSNumber* hiddenByDefault = self.plistDicForPluginIdentifier[item.identifier][@"hiddenByDefault"];
+                item.hidden = [hiddenByDefault boolValue];
             }
         }
     }

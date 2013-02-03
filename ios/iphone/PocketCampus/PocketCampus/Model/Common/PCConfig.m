@@ -51,6 +51,7 @@ static NSString* GET_CONFIG_URL __unused = @"http://pocketcampus.epfl.ch/backend
 
 + (void)registerDefaultsFromServer {
     if (![[Reachability reachabilityForInternetConnection] isReachable]) {
+        [[self defaults] setBool:NO forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
         NSLog(@"   !! No internet connection. Cannot fetch config from server.");
         return;
     }
@@ -62,6 +63,7 @@ static NSString* GET_CONFIG_URL __unused = @"http://pocketcampus.epfl.ch/backend
     [request startSynchronous];
     
     if (request.error) {
+        [[self defaults] setBool:NO forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
         NSLog(@"   !! Error when loading config from server. Continuing with local config.");
     } else {
         NSDictionary* config = nil;
@@ -72,6 +74,7 @@ static NSString* GET_CONFIG_URL __unused = @"http://pocketcampus.epfl.ch/backend
             NSLog(@"   2. Config loaded from server");
         }
         @catch (NSException *exception) {
+            [[self defaults] setBool:NO forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
             NSLog(@"   !! Error when parsing config received from server");
         }
     }
@@ -82,11 +85,19 @@ static NSString* GET_CONFIG_URL __unused = @"http://pocketcampus.epfl.ch/backend
 	pathAppSupportConfig = [pathAppSupportConfig stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
     pathAppSupportConfig = [pathAppSupportConfig stringByAppendingPathComponent:@"Config.plist"];
     
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:pathAppSupportConfig]) {
-        [[self defaults] registerDefaults:[NSDictionary dictionaryWithContentsOfFile:pathAppSupportConfig]];
-        [[self defaults] setBool:YES forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
-        NSLog(@"   3. Detected and loaded overriding DEV config (%@)", pathAppSupportConfig);
+    @try {
+        NSFileManager* fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:pathAppSupportConfig]) {
+            [[self defaults] registerDefaults:[NSDictionary dictionaryWithContentsOfFile:pathAppSupportConfig]];
+            [[self defaults] setBool:YES forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
+            NSLog(@"   3. Detected and loaded overriding DEV config (%@)", pathAppSupportConfig);
+        } else {
+            [[self defaults] setBool:NO forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
+        }
+    }
+    @catch (NSException *exception) {
+        [[self defaults] setBool:NO forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
+        NSLog(@"   !! ERROR: Detected but unable to parse overriding DEV config (%@)", pathAppSupportConfig);
     }
 }
 
