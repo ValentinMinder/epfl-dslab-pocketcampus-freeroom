@@ -42,6 +42,7 @@
     self.imageView.layer.shadowOffset = CGSizeMake(0, 0);
     self.imageView.layer.shadowRadius = 3;
     self.imageView.layer.shadowOpacity = 0.45;
+    self.imageView.hidden = YES;
     
     self.imageView.image = self.image;
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -69,6 +70,10 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(showImage) userInfo:nil repeats:NO];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -83,6 +88,14 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation // iOS 5 and earlier
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)showImage {
+    self.imageView.alpha = 0.0;
+    self.imageView.hidden = NO;
+    [UIView animateWithDuration:0.2 animations:^{
+        self.imageView.alpha = 1.0;
+    }];
 }
 
 @end

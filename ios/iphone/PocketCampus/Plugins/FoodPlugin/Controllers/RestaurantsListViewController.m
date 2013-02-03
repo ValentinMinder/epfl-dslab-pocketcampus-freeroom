@@ -24,6 +24,13 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 
 static NSString* kLastRefreshDateKey = @"lastRefreshDate";
 
+/*
+ * Will refresh if last refresh date is not same date as current OR older than kRefreshValiditySeconds ago
+ * Important to refresh often, otherwise ratings are not updated. Background update of ratings should be
+ * considered in a future update.
+ */
+static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
+
 @implementation RestaurantsListViewController
 
 @synthesize tableView, centerActivityIndicator, centerMessageLabel;
@@ -96,7 +103,8 @@ static NSString* kLastRefreshDateKey = @"lastRefreshDate";
         
         if ([compLastRefresh day]   == [compNow day] &&
             [compLastRefresh month] == [compNow month] &&
-            [compLastRefresh year]  == [compNow year]) {
+            [compLastRefresh year]  == [compNow year] &&
+            abs([lastRefreshDate timeIntervalSinceNow]) < kRefreshValiditySeconds) {
             [self reloadAndShowTableView];
             return;
         }
