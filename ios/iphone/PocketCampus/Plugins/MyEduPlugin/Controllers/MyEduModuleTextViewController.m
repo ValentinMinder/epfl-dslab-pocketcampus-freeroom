@@ -8,6 +8,8 @@
 
 #import "MyEduModuleTextViewController.h"
 
+#import "GANTracker.h"
+
 @interface MyEduModuleTextViewController ()
 
 @property (nonatomic, strong) MyEduModule* module;
@@ -31,6 +33,8 @@ static int kTextContentSize = 15.0;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/myedu/sections/modules/text" withError:NULL];
+    
     if (!self.module.iTextContent || [self.module.iTextContent isEqualToString:@""]) {
         self.centerMessageLabel.text = NSLocalizedStringFromTable(@"NoTextInModule", @"MyEduPlugin", nil);
         self.centerMessageLabel.hidden = NO;

@@ -1,5 +1,5 @@
 //
-//  PCConfig2.m
+//  PCConfig.m
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 22.01.13.

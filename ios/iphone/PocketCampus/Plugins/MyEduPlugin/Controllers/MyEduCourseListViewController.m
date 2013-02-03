@@ -24,6 +24,8 @@
 
 #import "PushNotifController.h"
 
+#import "GANTracker.h"
+
 @interface MyEduCourseListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -53,6 +55,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/myedu" withError:NULL];
     /*UIView* backgroundView = [[UIView alloc] init];
     backgroundView.backgroundColor = [UIColor whiteColor];
     self.tableView.backgroundView = backgroundView;

@@ -22,6 +22,8 @@
 
 #import "MyEduCourseInfoViewController.h"
 
+#import "GANTracker.h"
+
 @interface MyEduSectionListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -54,6 +56,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/myedu/sections" withError:NULL];
     /*UIView* backgroundView = [[UIView alloc] init];
      backgroundView.backgroundColor = [UIColor whiteColor];
      self.tableView.backgroundView = backgroundView;

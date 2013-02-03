@@ -34,6 +34,10 @@ static const int kAboutSection = 2;
 static const int kEditMainMenuRow = 0;
 static const int kRestoreDefaultMainMenuRow = 1;
 
+static const int kRatePCRow = 0;
+static const int kLikePCFBRow = 1;
+static const int kAboutRow = 2;
+
 @interface GlobalSettingsViewController ()
 
 @property (nonatomic, weak) MainController* mainController;
@@ -141,7 +145,22 @@ static const int kRestoreDefaultMainMenuRow = 1;
             break;
         case kAboutSection: //about
             switch (indexPath.row) {
-                case 0: //About PC
+                case kRatePCRow:
+                {
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/ch/app/epfl/id549799535"];
+                    [[UIApplication sharedApplication] openURL:url];
+                    break;
+                }
+                case kLikePCFBRow:
+                {
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    //
+                    NSURL *url = [NSURL URLWithString:@"http://facebook.com/pocketcampus"];
+                    [[UIApplication sharedApplication] openURL:url];
+                    break;
+                }
+                case kAboutRow:
                 {
                     AboutPCViewController* viewController = [[AboutPCViewController alloc] init];
                     [self.navigationController pushViewController:viewController animated:YES];
@@ -165,7 +184,6 @@ static const int kRestoreDefaultMainMenuRow = 1;
             return NSLocalizedStringFromTable(@"MainMenu", @"PocketCampus", nil);
         case kAboutSection: //about
             return @"PocketCampus";
-            break;
         default:
             return @"";
             break;
@@ -209,9 +227,27 @@ static const int kRestoreDefaultMainMenuRow = 1;
         }
         case kAboutSection:
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
+            switch (indexPath.row) {
+                case kRatePCRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"RatePCAppStore", @"PocketCampus", nil);
+                    //cell.detailTextLabel.text = NSLocalizedStringFromTable(@"RatePCAppStoreSubtitle", @"PocketCampus", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"AppLogoCellImage"];
+                    break;
+                case kRestoreDefaultMainMenuRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"LikePConFB", @"PocketCampus", nil);
+                    //cell.detailTextLabel.text = NSLocalizedStringFromTable(@"LikePConFBSubtitle", @"PocketCampus", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"FacebookLikeCellImage"];
+                    break;
+                case kAboutRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
+                    break;
+                default:
+                    break;
+            }
             break;
         }
         default:
@@ -227,7 +263,7 @@ static const int kRestoreDefaultMainMenuRow = 1;
         case kMainMenuSection:
             return 2;
         case kAboutSection:
-            return 1;
+            return 3;
         default:
             return 0;
             break;

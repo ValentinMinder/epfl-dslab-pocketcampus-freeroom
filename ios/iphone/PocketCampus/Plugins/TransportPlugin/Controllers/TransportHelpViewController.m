@@ -33,7 +33,7 @@
 	self.title = NSLocalizedStringFromTable(@"TransportHelp", @"TransportPlugin", nil);
     self.view.backgroundColor = [PCValues backgroundColor1];
     webView.backgroundColor = [UIColor clearColor];
-    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissViewController)];
+    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismissViewController)];
     self.navigationItem.rightBarButtonItem = doneButton;
     [doneButton release];
     NSError* error = nil;

@@ -10,6 +10,8 @@
 
 #import "PCUtils.h"
 
+#import "GANTracker.h"
+
 @interface MyEduModuleVideoDownloadViewController ()
 
 @property (nonatomic, strong) MyEduModule* module;
@@ -33,6 +35,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/myedu/sections/modules/video/download" withError:NULL];
     
     self.titleLabel.text = NSLocalizedStringFromTable(@"StartingDownload", @"MyEduPlugin", nil);
     self.progressionLabel.text = @"";

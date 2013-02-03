@@ -10,13 +10,7 @@
 
 @class MainController;
 
-@interface GlobalSettingsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
-    //UITableView* tableView;
-    //UITextField* usernameTextField;
-    //UITextField* passwordTextField;
-    //BOOL cancelButtonDisplayed;
-    //BOOL textEditing;
-}
+@interface GlobalSettingsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 @property (nonatomic, assign) IBOutlet UITableView* tableView;
 

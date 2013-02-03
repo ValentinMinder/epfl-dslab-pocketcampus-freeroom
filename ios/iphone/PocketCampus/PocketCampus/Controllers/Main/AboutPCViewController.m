@@ -33,7 +33,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/dashboard/about" withError:NULL];
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/dashboard/settings/about" withError:NULL];
 	self.title = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
     self.view.backgroundColor = [PCValues backgroundColor1];
     webView.delegate = self;

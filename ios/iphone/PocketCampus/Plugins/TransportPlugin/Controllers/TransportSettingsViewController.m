@@ -42,7 +42,7 @@ static int kBestResultSwitchTag = 2;
     backgroundView.backgroundColor = [PCValues backgroundColor1];;
     tableView.backgroundView = backgroundView;
     [backgroundView release];
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBarButtonPressed)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(doneBarButtonPressed)];
 }
 
 - (void)viewDidUnload

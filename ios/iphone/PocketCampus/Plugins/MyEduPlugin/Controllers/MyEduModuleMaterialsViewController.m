@@ -14,6 +14,8 @@
 
 #import "UIPopoverController+Additions.h"
 
+#import "GANTracker.h"
+
 @interface MyEduModuleMaterialsViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -50,6 +52,8 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/myedu/sections/modules/material" withError:NULL];
+    
     self.webView.scalesPageToFit = YES;
     
     UIViewController* materialsListViewController = [[UIViewController alloc] init]; //will only be visible if more than 1 material

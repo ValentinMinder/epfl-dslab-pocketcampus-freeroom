@@ -23,7 +23,7 @@
         }
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        self.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WhiteDisclosureIndicator"]];
         
         self.backgroundColor = [UIColor clearColor];
         

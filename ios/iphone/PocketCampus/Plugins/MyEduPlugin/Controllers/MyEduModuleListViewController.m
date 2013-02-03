@@ -22,6 +22,8 @@
 
 #import "PCTableViewCellAdditions.h"
 
+#import "GANTracker.h"
+
 @interface MyEduModuleListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -59,6 +61,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/myedu/sections/modules" withError:NULL];
     /*UIView* backgroundView = [[UIView alloc] init];
      backgroundView.backgroundColor = [UIColor whiteColor];
      self.tableView.backgroundView = backgroundView;

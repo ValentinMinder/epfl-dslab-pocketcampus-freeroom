@@ -18,6 +18,8 @@
 
 #import "PCUtils.h"
 
+#import "GANTracker.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 static NSString* kMenuItemButtonIdentifier = @"MenuItemButton";
@@ -57,6 +59,7 @@ static const int kPluginsSection = 0;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/dashboard" withError:NULL];
     UIView* backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
     backgroundView.backgroundColor = [PCValues backgroundColor1];
     backgroundView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin
