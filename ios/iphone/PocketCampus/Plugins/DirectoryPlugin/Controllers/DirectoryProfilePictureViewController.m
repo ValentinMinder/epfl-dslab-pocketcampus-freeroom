@@ -71,7 +71,9 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(showImage) userInfo:nil repeats:NO];
+    if (self.imageView.hidden) {
+        [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(showImage) userInfo:nil repeats:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning

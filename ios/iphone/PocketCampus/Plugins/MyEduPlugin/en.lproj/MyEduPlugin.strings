@@ -32,3 +32,4 @@
 "DownloadProgressWithFormat" = "%@ of %@";
 "DeleteDownloadedVideoExplanation" = "Delete downloaded video ?\nThe file will be deleted and offline playing won't be available anymore.";
 "ErrorOccuredWhileDownloadingVideo" = "Sorry, an error occured while downloading the video.";
+"NotAllowedAccessToMyEdu" = "Sorry, you are not allowed to\naccess MyEdu.";

@@ -32,3 +32,4 @@
 "DownloadProgressWithFormat" = "%@ sur %@";
 "DeleteDownloadedVideoExplanation" = "Supprimer la vidéo téléchargée ?\nLe fichier sera supprimé et la lecture hors-ligne ne sera plus disponible.";
 "ErrorOccuredWhileDownloadingVideo" = "Désolé, une erreur est survenue pendant le téléchargement de la vidéo.";
+"NotAllowedAccessToMyEdu" = "Désolé, vous n'êtes pas autorisé à accéder à MyEdu";

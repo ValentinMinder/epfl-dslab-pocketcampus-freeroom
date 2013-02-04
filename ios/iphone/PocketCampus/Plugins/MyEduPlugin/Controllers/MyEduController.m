@@ -156,6 +156,22 @@ static MyEduController* instance __weak = nil;
 }
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken *)tequilaToken didReturn:(MyEduSession *)myEduSession {
+    
+    //myEduSession.iMyEduCookie = @"FORBIDDEN"; //TEST
+    
+    if (!myEduSession.iMyEduCookie) {
+        [self cleanAndNotifyFailureToObservers];
+        return;
+    }
+    
+    if ([myEduSession.iMyEduCookie isEqualToString:@"FORBIDDEN"]) {
+        //means user has successfully authentified but is NOT allowed to access MyEdu
+        [self.myEduService deleteSession];
+        [self cleanAndNotifyUserCancelledToObservers];
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"NotAllowedAccessToMyEdu", @"MyEduPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        return;
+    }
+    
     [self.myEduService saveSession:myEduSession];
     [self cleanAndNotifySuccessToObservers];
 }

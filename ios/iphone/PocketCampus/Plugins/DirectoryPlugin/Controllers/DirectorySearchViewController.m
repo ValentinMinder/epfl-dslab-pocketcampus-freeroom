@@ -103,7 +103,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [ObjectArchiver saveObject:self.recentSearches forKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES];
+    [ObjectArchiver saveObject:self.recentSearches forKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES]; //persist recent searches to disk
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6

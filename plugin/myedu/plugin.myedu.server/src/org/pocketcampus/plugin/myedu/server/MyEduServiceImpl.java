@@ -121,6 +121,11 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 			TypeToken<SessionEPFLLogin> replyType = new TypeToken<SessionEPFLLogin>() {};
 			SessionEPFLLogin replyObj = gson.fromJson(reply.getReplyString(), replyType.getType());
 			if (!replyObj.status.equals("OK")) { //ERROR
+				if (replyObj.message.equals("You have no access to MyEdu yet. Contact the admin staff for access.")) { //Not nice to rely on that. But this is apparently this only way to know.
+					System.out.println("(Forbidden user)");
+					return new MyEduSession("FORBIDDEN"); //client knows that it means user do not have access to MyEdu
+				}
+				
 				throw new TException("Upstream server returned error. Message: "+replyObj.message);
 			}
 			
