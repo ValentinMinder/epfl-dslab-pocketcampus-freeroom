@@ -27,10 +27,8 @@
                 [fileManager removeItemAtPath:path error:&error];
                 
                 if (error && ![fileManager fileExistsAtPath:path]) { //then error is that file is already deleted
-                    [fileManager release];
                     return YES;
                 }
-                [fileManager release];
                 return (error == NULL);
             }
             [[self class] createComponentsForPath:path];
@@ -95,7 +93,6 @@
     NSFileManager* fileManager = [[NSFileManager alloc] init];
     NSError* error = nil;
     NSDictionary* fileAttributes = [fileManager attributesOfItemAtPath:filePath error:&error];
-    [fileManager release];
     if (error != nil) {
         NSLog(@"-> fileAttributeForKey:andPluginName:isCache: impossible to get attribute of file %@", filePath);
         return nil;
@@ -147,7 +144,6 @@
         if (![fileManager fileExistsAtPath:directoryPath]) {
             [fileManager createDirectoryAtPath:directoryPath withIntermediateDirectories:YES attributes:nil error:nil];
         }
-        [fileManager release];
     }
 }
 

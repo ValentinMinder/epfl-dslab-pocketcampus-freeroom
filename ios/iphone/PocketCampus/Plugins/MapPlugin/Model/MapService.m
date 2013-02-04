@@ -41,7 +41,7 @@ static MapService* instance __weak = nil;
 }
 
 - (id)thriftServiceClientInstance {
-    return [[[MapServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
+    return [[MapServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 - (void)getLayerListWithDelegate:(id)delegate {
@@ -51,7 +51,6 @@ static MapService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(getLayerListFailed:);
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getLayerItemsForLayerId:(Id)layerId delegate:(id)delegate {
@@ -62,7 +61,6 @@ static MapService* instance __weak = nil;
     [operation addIntArgument:layerId];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)searchFor:(NSString*)query delegate:(id)delegate {
@@ -78,7 +76,6 @@ static MapService* instance __weak = nil;
     [operation addObjectArgument:query];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)dealloc

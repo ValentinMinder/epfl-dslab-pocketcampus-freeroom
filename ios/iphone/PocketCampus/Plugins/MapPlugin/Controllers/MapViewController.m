@@ -127,11 +127,21 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 #pragma mark - Properties override
 
 - (MKCoordinateRegion)epflRegion {
-    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) {
-        self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.014175, 0.016479));
+    
+    if ([PCUtils isIdiomPad]) {
+        if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) {
+            self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.014175, 0.016479));
+        } else {
+            self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.010395, 0.021973));
+        }
     } else {
-        self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.010395, 0.021973));
+        if ([PCUtils isOSVersionSmallerThan:6.0]) {
+            self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
+        } else {
+            self.epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.012285, 0.013733));
+        }
     }
+    
     return _epflRegion;
 }
 

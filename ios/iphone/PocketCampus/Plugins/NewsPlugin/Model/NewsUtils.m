@@ -60,7 +60,7 @@ static NSTimeInterval kOneMonthSeconds = 2592000;
 
 + (NSString*)dateLocaleStringForTimestamp:(NSTimeInterval)timestamp {
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:timestamp];
-    NSDateFormatter* formatter = [[[NSDateFormatter alloc] init] autorelease];
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     formatter.dateStyle = NSDateFormatterMediumStyle;
     return [formatter stringFromDate:date];
 }

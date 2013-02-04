@@ -12,7 +12,7 @@
 "LoadingCourseList" = "Loading course list...";
 "LoadingCourse" = "Loading course, might last 1 min...";
 "ErrorWhileDownloadingFile" = "Sorry, an error occured while downloading the file.\n\nCheck your internet connection.";
-"FileCouldNotBeDisplayedTryOpenIn" = "This file  cannot be displayed.\nTry the action button.";
+"FileCouldNotBeDisplayedTryOpenIn" = "This file cannot be displayed.\nTry the action button.";
 "Sorry" = "Sorry";
 "NoActionForThisFile" = "No action is available for this file.";
 "DownloadingFile" = "Downloading file...";
