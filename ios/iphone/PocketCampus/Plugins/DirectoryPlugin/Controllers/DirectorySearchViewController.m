@@ -32,7 +32,7 @@
 @property (nonatomic) ResultsMode resultsMode;
 @property (nonatomic, strong) PCUnkownPersonViewController* personViewController;
 @property (nonatomic, strong) Person* displayedPerson;
-//@property (nonatomic) BOOL skipNextSearchBarValueChange;
+@property (nonatomic) BOOL skipNextSearchBarValueChange;
 @property (nonatomic) BOOL searchBarWasFirstResponder;
 
 @end
@@ -165,6 +165,11 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 #pragma mark - clear button
 
 - (void)clearButtonPressed {
+    if ([PCUtils isOSVersionSmallerThan:6.0]) {
+        //in iOS < 6.0, programatically setting search bar text triggers searchBar:textDidChange: we do not want it
+        //skipNextSearchBarValueChange is automatically set back to NO when checked in searchBar:textDidChange:
+        self.skipNextSearchBarValueChange = YES;
+    }
     self.searchBar.text = @"";
     [self.recentSearches removeAllObjects];
     [ObjectArchiver saveObject:nil forKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES]; //deleted cached recent searches
@@ -197,10 +202,10 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    /*if (skipNextSearchBarValueChange) {
-        skipNextSearchBarValueChange = NO;
+    if (self.skipNextSearchBarValueChange) {
+        self.skipNextSearchBarValueChange = NO;
         return;
-    }*/
+    }
     self.messageLabel.text = @"";
     if (searchText.length == 0) {
         [self.barActivityIndicator stopAnimating];
@@ -385,7 +390,11 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         }
         [activityIndicatorView startAnimating];
         NSString* searchString = [NSString stringWithFormat:@"%@", [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
-        //skipNextSearchBarValueChange = YES;
+        if ([PCUtils isOSVersionSmallerThan:6.0]) {
+            //in iOS < 6.0, programatically setting search bar text triggers searchBar:textDidChange: we do not want it
+            //skipNextSearchBarValueChange is automatically set back to NO when checked in searchBar:textDidChange:
+            self.skipNextSearchBarValueChange = YES;
+        }
         self.searchBar.text = searchString;
         [self.directoryService searchPersons:searchString delegate:self];
         [self.searchBar resignFirstResponder];
@@ -408,8 +417,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
             return; //means cell was already selected
         }
         [activityIndicatorView startAnimating];
-        //skipNextSearchBarValueChange = YES;
-        //self.searchBar.text = searchString;
         [self.directoryService cancelOperationsForDelegate:self];
         [self.directoryService searchPersons:searchString delegate:self];
         [self.searchBar resignFirstResponder];
