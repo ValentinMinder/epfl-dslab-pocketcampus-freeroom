@@ -157,7 +157,7 @@ static MyEduController* instance __weak = nil;
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken *)tequilaToken didReturn:(MyEduSession *)myEduSession {
     
-    //myEduSession.iMyEduCookie = @"FORBIDDEN"; //TEST
+    myEduSession.iMyEduCookie = @"FORBIDDEN"; //TEST
     
     if (!myEduSession.iMyEduCookie) {
         [self cleanAndNotifyFailureToObservers];
