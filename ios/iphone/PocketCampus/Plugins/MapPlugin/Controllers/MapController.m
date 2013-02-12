@@ -38,7 +38,7 @@ static MapController* instance __weak = nil;
     }
 }
 
-+ (id)sharedInstance {
++ (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
             return instance;

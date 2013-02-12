@@ -32,11 +32,35 @@
 @protocol PluginControllerProtocol <NSObject>
 
 @required
-+ (id)sharedInstance;
+/*
+ * Must return an instance of the PluginController. This instance is a semi-singleton, meaning
+ * that only 1 instance can live at a time, but the instance is released when not pointed to anymore.
+ * This is why the caller should retain the instance (strong pointer in ARC or retain in manual ref. counting) 
+ */
++ (id)sharedInstanceToRetain;
+
+/*
+ * Must return the localized name of the plugin for device language. 
+ * Example: "Annuaire" in french for DirectoryController.
+ */
 + (NSString*)localizedName;
+
+/*
+ * Must return the official name <name> of the plugin.
+ * <name> is then used to find the <name>Controller class.
+ * Examples: Directory, MyEdu, PushNotif.
+ */
 + (NSString*)identifierName;
 
 @optional
+
+/*
+ * This method is called for each plugin at app startup.
+ * Plugins can implement this method to register observers
+ * that are the only way to execute plugin code when the
+ * PluginController is not instancied.
+ * See CamiproController for an example.
+ */
 + (void)initObservers;
 
 /* 

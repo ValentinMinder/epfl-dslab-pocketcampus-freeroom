@@ -45,7 +45,7 @@ static PushNotifController* instance __weak = nil;
     }
 }
 
-+ (id)sharedInstance {
++ (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
             return instance;
@@ -72,7 +72,7 @@ static PushNotifController* instance __weak = nil;
         self.authPresentationController = presController;
         if ([self.regObservers count] == 0) { //need to start device registration procedure
             self.pushNotifService = [PushNotifService sharedInstanceToRetain];
-            self.authController = [AuthenticationController sharedInstance];
+            self.authController = [AuthenticationController sharedInstanceToRetain];
         }
         [self.regObservers addObject:regObserver];
         [self.pushNotifService getTequilaTokenForPushNotifWithDelegate:self];

@@ -50,7 +50,7 @@ static NewsController* instance __weak = nil;
 
 #pragma mark - PluginControllerProtocol
 
-+ (id)sharedInstance {
++ (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
             return instance;

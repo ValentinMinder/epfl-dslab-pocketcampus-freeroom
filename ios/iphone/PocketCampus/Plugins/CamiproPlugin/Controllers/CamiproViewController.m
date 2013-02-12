@@ -32,7 +32,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 {
     self = [super initWithNibName:@"CamiproView" bundle:nil];
     if (self) {
-        authController = [[AuthenticationController sharedInstance] retain];
+        authController = [[AuthenticationController sharedInstanceToRetain] retain];
         camiproService = [[CamiproService sharedInstanceToRetain] retain];
         balanceAndTransactions = nil;
         tequilaKey = nil;

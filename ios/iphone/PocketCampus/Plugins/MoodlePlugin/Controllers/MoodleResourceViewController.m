@@ -128,7 +128,7 @@
         successBlock();
     } else {
         NSLog(@"-> No saved session, loggin in...");
-        [[MoodleController sharedInstance] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
+        [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             if (self.splitViewController) {
                 MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
                 self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], splashViewController];

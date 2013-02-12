@@ -53,7 +53,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     }
 }
 
-+ (id)sharedInstance {
++ (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
             return instance;

@@ -110,7 +110,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
         successBlock();
     } else {
         NSLog(@"-> No saved session, loggin in...");
-        [[MoodleController sharedInstance] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
+        [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             [self.pcRefreshControl endRefreshing];
         } failureBlock:^{
             [self error];

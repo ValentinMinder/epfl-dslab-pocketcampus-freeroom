@@ -22,7 +22,7 @@
 {
     self = [super init];
     if (self) {
-        self.pushNotifController = [PushNotifController sharedInstance];
+        self.pushNotifController = [PushNotifController sharedInstanceToRetain];
     }
     return self;
 }

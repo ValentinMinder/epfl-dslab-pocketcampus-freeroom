@@ -25,7 +25,7 @@
         }
         [self.loginObservers addObject:loginObserver];
         if(!self.authController) {
-            self.authController = [AuthenticationController sharedInstance];
+            self.authController = [AuthenticationController sharedInstanceToRetain];
         }
     }
 }
