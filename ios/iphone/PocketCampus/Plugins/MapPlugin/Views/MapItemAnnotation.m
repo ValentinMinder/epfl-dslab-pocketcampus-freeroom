@@ -21,12 +21,15 @@
 - (id)initWithMapItem:(MapItem*)item {
     self = [super init];
     if (self) {
-        self.mapItem = item;
-        self.title = [NSString stringWithFormat:@"%@", self.mapItem.title];
-        if (item.description != nil) {
-            self.subtitle = [NSString stringWithFormat:@"%@", self.mapItem.description];
-        } else {
-            self.subtitle = nil;
+        if (![item isKindOfClass:[MapItem class]]) {
+            @throw [NSException exceptionWithName:@"Illegal argument" reason:@"item must be kind of class MapItem" userInfo:nil];
+        }
+        _mapItem = item;
+        if (item.title.length != 0) {
+            _title = [self.mapItem.title copy];
+        }
+        if (item.description.length != 0) {
+            _subtitle = [self.mapItem.description copy];
         }
     }
     return self;
