@@ -157,10 +157,11 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    if (self.initialQuery)
+    if (self.initialQuery) {
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/results" withError:NULL];
-    else
+    } else {
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/map" withError:NULL];
+    }
     UITapGestureRecognizer* mapTap = [[UITapGestureRecognizer alloc] initWithTarget:self.searchBar action:@selector(resignFirstResponder)];
     mapTap.cancelsTouchesInView = NO;
     mapTap.delegate = self;
@@ -408,6 +409,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (IBAction)floorDownPressed {
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/floorDown" withError:NULL];
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) { //copy in case they are modified in the meantime (highly unlikely though)
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
@@ -417,6 +419,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (IBAction)floorUpPressed {
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/floorUp" withError:NULL];
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) {
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
