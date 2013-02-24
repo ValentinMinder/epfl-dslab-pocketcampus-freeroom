@@ -33,7 +33,8 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 	private SentType iParam;
 	private ResultType iResult;
 	private boolean iBypassCache = false;
-	private boolean iServicedFromCache = false;
+	private boolean iFoundInCache;
+	private boolean iServedFromCache;
 	
 	public void start(ControllerType controller, ClientType client, SentType param) {
 		mController = controller;
@@ -66,14 +67,14 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 		}
 
 		try {
+			iServedFromCache = true;
 			
-			if(!iBypassCache) {
-				ResultType cachedResult = (ResultType) RequestCache.queryCache(mGlobalContext, this.getClass().getCanonicalName(), iParam);
-				if(cachedResult != null) {
-					iServicedFromCache = true;
-					return cachedResult;
-				}
-			}
+			ResultType cachedResult = (ResultType) RequestCache.queryCache(mGlobalContext, this.getClass().getCanonicalName(), iParam);
+			iFoundInCache = (cachedResult != null);
+			if(iFoundInCache && !iBypassCache)
+				return cachedResult;
+			
+			iServedFromCache = false;
 			
 			ResultType result = runInBackground(mClient, iParam);
 			
@@ -121,17 +122,19 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 
 	/**
 	 * Instructs that the current server reply should be saved in cache
-	 * Should me called if the data was fetched successfully from the server (without errors)
+	 * Should be called if the data was fetched successfully from the server (without errors)
 	 */
 	protected void keepInCache() {
+		if(iServedFromCache)
+			return;
 		RequestCache.pushToCache(mGlobalContext, this.getClass().getCanonicalName(), iParam, (TBase) iResult);
 	}
 	
 	/**
-	 * Use this in onResult to know whether the request was serviced from cahce
+	 * Use this in onResult to know if the request was found in cache
 	 */
-	protected boolean wasServicedFromCache() {
-		return iServicedFromCache;
+	protected boolean foundInCache() {
+		return iFoundInCache;
 	}
 
 	/**
@@ -140,7 +143,7 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 	@Deprecated
 	protected void refreshAsWell() {
 		try {
-			if(wasServicedFromCache())
+			if(foundInCache())
 				this.getClass().newInstance().setBypassCache(true).start(mController, mClient, iParam);
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();

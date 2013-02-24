@@ -32,7 +32,7 @@ public class EventsListRequest extends Request<MoodleController, Iface, MoodleRe
 			controller.notLoggedIn();
 		} else if(result.getIStatus() == 200) {
 			((MoodleModel) controller.getModel()).setEvents(result.getIEvents());
-			if(!wasServicedFromCache())
+			//if(!foundInCache())
 				keepInCache();
 			/*else
 				refreshAsWell();*/

@@ -1,5 +1,0 @@
-<Language>en</Language>
-<Feed>
-	<name>EPFL Memento</name>
-	<rssfeed>http://memento.epfl.ch/cgi-bin/memento/select?memento=EPFL&rss=1</rssfeed>
-</Feed>

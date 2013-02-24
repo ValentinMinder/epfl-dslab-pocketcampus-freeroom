@@ -1,22 +1,36 @@
 package org.pocketcampus.plugin.events.android.iface;
 
+import java.util.List;
+
 import org.pocketcampus.android.platform.sdk.core.IView;
 
 /**
- * Interface to the public methods of the EventsView
+ * IEventsView
  * 
- * @author Elodie <elodienilane.triponez@epfl.ch>
+ * Interface for the Views of the Events plugin.
  * 
+ * It contains the method that are called by the Model
+ * when some data is updated, as well as the methods that
+ * are called by the "HttpRequest" classes when some usual
+ * behavior occurs.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
  */
 public interface IEventsView extends IView {
-
+	
 	/**
-	 * Called when the list of events has been updated
+	 * Update display when we get data.
 	 */
-	public void eventsUpdated();
-
+	void eventItemsUpdated(List<Long> ids);
+	void eventPoolsUpdated(List<Long> ids);
+	
 	/**
-	 * Called when the list of feed names and urls has been updated
+	 * Display errors and notices.
 	 */
-	public void feedUrlsUpdated();
+	void networkErrorHappened();
+	void networkErrorCacheExists();
+	void mementoServersDown();
+	void identificationRequired();
+	
 }
