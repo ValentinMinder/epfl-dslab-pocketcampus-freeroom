@@ -109,6 +109,9 @@ public class EventsController extends PluginController implements IEventsControl
 		if(image.contains("memento.epfl.ch/image")) {
 			image = getSubstringBetween(image, "image/", "/"); // get the image id
 			image = "http://memento.epfl.ch/image/" + image + "/" + newSize + "x" + newSize+ ".jpg";
+		} else if(image.contains("secure.gravatar.com")) {
+			image = getSubstringBetween(image, "avatar/", "?"); // get the image id
+			image = "http://secure.gravatar.com/avatar/" + image + "?s=" + newSize;
 		}
 		return image;
 	}

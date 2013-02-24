@@ -525,8 +525,11 @@ public class EventsServiceImpl implements EventsService.Iface {
 		public static String getSelectFields() {
 			return SELECT_FIELDS;
 		}
-		public static EventItem decodeFromResultSet(ResultSet rs, int level) throws SQLException {
+		public static EventItem decodeFromResultSet(ResultSet rs, int level, String exchangeToken) throws SQLException {
 			EventItem ei = new EventItem();
+			
+			if(exchangeToken != null) // self-event
+				level = 100; // full trust
 			
 			ei.setEventId(rs.getLong(1));
 			if(rs.wasNull()) ei.unsetEventId(); // should never happen
@@ -564,6 +567,13 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ei.setLocationHref(rs.getString(15));
 			ei.setDetailsLink(rs.getString(16));
 			
+			if(exchangeToken != null) {
+				ei.setEventCateg(-3); // force categ to Me
+				//ei.setEventDetails("<p><img src=\"http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?exchangeToken=" + exchangeToken + "\" style=\"width:400px;height:400px;\"></p>");
+				ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?exchangeToken=" + exchangeToken);
+				ei.setEventDetails(null);
+			}
+			
 			return ei;
 		}
 	}
@@ -573,24 +583,24 @@ public class EventsServiceImpl implements EventsService.Iface {
 		ResultSet rs;
 		
 		Map<Long, EventItem> items = new HashMap<Long, EventItem>();
-		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + " FROM eventitems WHERE (parentPool=?) AND (isProtected IS NULL) AND ( (DATEDIFF(startDate,NOW())<? AND DATEDIFF(endDate,NOW())>=0) OR (startDate IS NULL AND endDate IS NULL) );");
+		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + ",userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems LEFT JOIN eventusers ON eventId=mappedEvent WHERE (parentPool=?) AND (isProtected IS NULL) AND ( (DATEDIFF(startDate,NOW())<? AND DATEDIFF(endDate,NOW())>=0) OR (startDate IS NULL AND endDate IS NULL) );");
 		stm.setLong(1, parentId);
 		stm.setInt(2, period);
 		rs = stm.executeQuery();
 		while(rs.next()) {
-			EventItem ei = EventItemDecoderFromDb.decodeFromResultSet(rs, 100);
+			EventItem ei = EventItemDecoderFromDb.decodeFromResultSet(rs, 100, (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
 			items.put(ei.getEventId(), ei);
 		}
 		rs.close();
 		stm.close();
 		
-		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + ",permLevel AS PERM_LEVEL FROM eventitems,eventperms WHERE (parentPool=?) AND (userToken=?) AND (eventItemId=eventId) AND ( (DATEDIFF(startDate,NOW())<? AND DATEDIFF(endDate,NOW())>=0) OR (startDate IS NULL AND endDate IS NULL) );");
+		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + ",permLevel AS PERM_LEVEL,userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems INNER JOIN eventperms ON eventItemId=eventId LEFT JOIN eventusers ON eventId=mappedEvent WHERE (parentPool=?) AND (userToken=?) AND ( (DATEDIFF(startDate,NOW())<? AND DATEDIFF(endDate,NOW())>=0) OR (startDate IS NULL AND endDate IS NULL) );");
 		stm.setLong(1, parentId);
 		stm.setString(2, token);
 		stm.setInt(3, period);
 		rs = stm.executeQuery();
 		while(rs.next()) {
-			EventItem ei = EventItemDecoderFromDb.decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"));
+			EventItem ei = EventItemDecoderFromDb.decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"), (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
 			items.put(ei.getEventId(), ei);
 		}
 		rs.close();
@@ -616,11 +626,11 @@ public class EventsServiceImpl implements EventsService.Iface {
 		ResultSet rs;
 		
 		EventItem ei = null;
-		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + " FROM eventitems WHERE eventId=? AND isProtected IS NULL;");
+		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + ",userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems LEFT JOIN eventusers ON eventId=mappedEvent WHERE eventId=? AND isProtected IS NULL;");
 		stm.setLong(1, id);
 		rs = stm.executeQuery();
 		if(rs.next()) {
-			ei = EventItemDecoderFromDb.decodeFromResultSet(rs, 100);
+			ei = EventItemDecoderFromDb.decodeFromResultSet(rs, 100, (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
 		}
 		rs.close();
 		stm.close();
@@ -628,12 +638,12 @@ public class EventsServiceImpl implements EventsService.Iface {
 		if(ei != null)
 			return ei;
 		
-		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + ",permLevel AS PERM_LEVEL FROM eventitems,eventperms WHERE eventId=? AND eventItemId=eventId AND userToken=?;");
+		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + ",permLevel AS PERM_LEVEL,userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems INNER JOIN eventperms ON eventItemId=eventId LEFT JOIN eventusers ON eventId=mappedEvent WHERE eventId=? AND userToken=?;");
 		stm.setLong(1, id);
 		stm.setString(2, token);
 		rs = stm.executeQuery();
 		if(rs.next()) {
-			ei = EventItemDecoderFromDb.decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"));
+			ei = EventItemDecoderFromDb.decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"), (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
 		}
 		rs.close();
 		stm.close();
