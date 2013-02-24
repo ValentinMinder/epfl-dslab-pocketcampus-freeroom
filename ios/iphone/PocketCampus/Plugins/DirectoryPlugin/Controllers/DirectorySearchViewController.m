@@ -165,11 +165,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 #pragma mark - clear button
 
 - (void)clearButtonPressed {
-    /*if ([PCUtils isOSVersionSmallerThan:6.0]) {
-        //in iOS < 6.0, programatically setting search bar text triggers searchBar:textDidChange: we do not want it
-        //skipNextSearchBarValueChange is automatically set back to NO when checked in searchBar:textDidChange:
-        self.skipNextSearchBarValueChange = YES;
-    }*/
     self.searchBar.text = @"";
     [self.recentSearches removeAllObjects];
     [ObjectArchiver saveObject:nil forKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES]; //deleted cached recent searches
@@ -390,12 +385,10 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         }
         [activityIndicatorView startAnimating];
         NSString* searchString = [NSString stringWithFormat:@"%@", [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
-        if ([PCUtils isOSVersionSmallerThan:6.0]) {
+        if (![PCUtils isOSVersionSmallerThan:6.0]) {
             //in iOS < 6.0, programatically setting search bar text triggers searchBar:textDidChange: we do not want it
-            //skipNextSearchBarValueChange is automatically set back to NO when checked in searchBar:textDidChange:
-            self.skipNextSearchBarValueChange = YES;
+            self.searchBar.text = searchString;
         }
-        self.searchBar.text = searchString;
         [self.directoryService searchPersons:searchString delegate:self];
         [self.searchBar resignFirstResponder];
     } else if (self.resultsMode == ResultsModeSearch) {

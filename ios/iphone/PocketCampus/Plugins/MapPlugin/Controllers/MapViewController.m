@@ -111,6 +111,9 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 - (id)initWithInitialQuery:(NSString*)query {
     self = [self init];
     if (self) {
+        if (![query isKindOfClass:[NSString class]] || query.length == 0) {
+            @throw [NSException exceptionWithName:@"Illegal argument" reason:@"query must be of class NSString and of length > 0" userInfo:nil];
+        }
         self.initialQuery = query;
     }
     return self;
@@ -119,7 +122,10 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 - (id)initWithInitialQuery:(NSString*)query pinTextLabel:(NSString*)pinTextLabel {
     self = [self initWithInitialQuery:query];
     if (self) {
-        self.initialQueryManualPinLabelText = query;
+        if (![pinTextLabel isKindOfClass:[NSString class]] || pinTextLabel.length == 0) {
+            @throw [NSException exceptionWithName:@"Illegal argument" reason:@"pinTextLabel must be of class NSString and of length > 0" userInfo:nil];
+        }
+        self.initialQueryManualPinLabelText = pinTextLabel;
     }
     return self;
 }
@@ -151,10 +157,11 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    if (self.initialQuery)
+    if (self.initialQuery) {
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/results" withError:NULL];
-    else
+    } else {
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/map" withError:NULL];
+    }
     UITapGestureRecognizer* mapTap = [[UITapGestureRecognizer alloc] initWithTarget:self.searchBar action:@selector(resignFirstResponder)];
     mapTap.cancelsTouchesInView = NO;
     mapTap.delegate = self;
@@ -402,6 +409,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (IBAction)floorDownPressed {
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/floorDown" withError:NULL];
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) { //copy in case they are modified in the meantime (highly unlikely though)
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
@@ -411,6 +419,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (IBAction)floorUpPressed {
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/floorUp" withError:NULL];
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) {
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
@@ -499,7 +508,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     }
     
     MKPinAnnotationView* pin = (MKPinAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:kMapItemAnnotationIdentifier]; //cast ok we know we only use MKPinAnnotationView
-    if (pin == nil) {
+    if (!pin) {
         pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kMapItemAnnotationIdentifier];
         pin.pinColor = MKPinAnnotationColorPurple;
         pin.animatesDrop = YES;
@@ -523,22 +532,28 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     if ([view isKindOfClass:[MKAnnotationView class]]) {
+        
+        
+        // Directory stuff
+        [self.directoryService cancelOperationsForDelegate:self];
+        
         view.rightCalloutAccessoryView = nil;
-        NSString* roomName = view.annotation.subtitle;
-        if (roomName == nil || roomName.length == 0) {
-            roomName = view.annotation.title;
-        }
-        if (self.directoryService) {
-            [self.directoryService cancelOperationsForDelegate:self];
-        }
-        if (roomName != nil && !roomName.length == 0) {
-            //both title and subtitle are indicated, might be a person => search in directory
-            if (!self.initialQuery) {
+        
+        if (view.annotation.title.length != 0 && view.annotation.subtitle.length != 0 && !self.initialQuery) { //both title and subtitle are indicated and, might be a person => search in directory
                 if (!self.directoryService) {
                     self.directoryService = [DirectoryService sharedInstanceToRetain];
                 }
-                [self.directoryService searchPersons:view.annotation.title delegate:self];
-            }
+                [self.directoryService searchPersons:view.annotation.title delegate:self]; //person name is in title
+        }
+        
+        
+        // Normal stuff
+        NSString* roomName = view.annotation.subtitle;
+        if (roomName.length == 0) {
+            roomName = view.annotation.title;
+        }
+        
+        if (roomName.length != 0) {
             int level = [MapUtils levelToSelectForRoomName:roomName];
             if (level != INT_MAX) {
                 [self.epflTileOverlay setLayerLevel:level];
@@ -546,6 +561,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
                 [self updateFloorLabel];
             }
         }
+        
     }
 }
 
@@ -644,7 +660,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     self.annotationsToAdd = mapItemAnnotations;
     
     if ([MapUtils isRegion:self.mapView.region equalToRegion:[self.mapView regionThatFits:reqRegion]]) {
-        [self mapView:self.mapView regionDidChangeAnimated:NO]; //force this call to redraw annotations (not called because region has not changed)
+        [self mapView:self.mapView regionDidChangeAnimated:NO]; //force this call to draw annotations (not called because region has not changed)
     } else {
         [self.mapView setRegion:reqRegion animated:YES];
     }
@@ -680,7 +696,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     
     NSString* firstAndLastName = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
     
-    if (![firstAndLastName isEqualToString:selectedAnnotation.title]) {
+    if (![firstAndLastName isEqualToString:selectedAnnotation.title] || ![person.office isEqualToString:selectedAnnotation.subtitle]) {
         [self searchDirectoryFailedFor:searchPattern];
         return;
     }

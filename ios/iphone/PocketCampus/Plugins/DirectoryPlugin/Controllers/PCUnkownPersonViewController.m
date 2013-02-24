@@ -170,7 +170,8 @@
         ABPersonSetImageData(self.displayedPerson,(__bridge CFDataRef)data, nil);
         [self loadView]; //reload view content to update picture
         self.profilePictureImage = [UIImage imageWithData:data];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"PhotoButtonTitle", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(photoButtonPressed)];
+        UIBarButtonItem* photoButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"PhotoButtonTitle", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(photoButtonPressed)];
+        [self.navigationItem setRightBarButtonItem:photoButton animated:YES];
     } else {
         [self profilePictureFailedFor:sciper];
     }

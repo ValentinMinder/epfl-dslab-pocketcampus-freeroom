@@ -16,12 +16,16 @@
 
 #import "MoodleSplashDetailViewController.h"
 
+static NSTimeInterval kHideNavbarSeconds = 5.0;
+
 @interface MoodleResourceViewController ()
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) MoodleResource* moodleResource;
 @property (nonatomic, strong) UIDocumentInteractionController* docInteractionController;
 @property (nonatomic, strong) UIActionSheet* deleteActionSheet;
+@property (nonatomic) CGFloat navbarOriginalAlpha;
+@property (nonatomic, strong) NSTimer* hideNavbarTimer;
 @property (nonatomic) BOOL isShowingActionMenu;
 
 @end
@@ -50,6 +54,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document" withError:NULL];
+    
+    self.navigationController.navigationBar.translucent = YES;
     
     self.webView.hidden = YES;
     
@@ -113,6 +119,28 @@
     self.webView.hidden = NO;
     NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:self.moodleResource]];
     [self.webView loadRequest:[NSURLRequest requestWithURL:localFileURL]];
+    
+    UITapGestureRecognizer* tapGestureReco = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavbarVisibility)];
+    UITapGestureRecognizer* doubleTapGestureReco = [[UITapGestureRecognizer alloc] initWithTarget:nil action:NULL];
+    doubleTapGestureReco.numberOfTapsRequired = 2;
+    
+    [tapGestureReco requireGestureRecognizerToFail:doubleTapGestureReco]; //must add also double-tap because otherwise, single-tap is triggered immediately, even when double-tapping for zooming into PDF.
+    
+    [self.view addGestureRecognizer:tapGestureReco];
+    [self.view addGestureRecognizer:doubleTapGestureReco];
+    
+    
+    //Like in GoodReader, faster because reacts immediatly (instead of having to wait to check if second tap is coming becore triggering
+    UITapGestureRecognizer* tripleFingerTapRecp = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavbarVisibility)];
+    tripleFingerTapRecp.numberOfTouchesRequired = 3;
+    [self.view addGestureRecognizer:tripleFingerTapRecp];
+    
+    [self rescheduleHideNavbarTimer];
+}
+
+- (void)rescheduleHideNavbarTimer {
+    [self.hideNavbarTimer invalidate];
+    self.hideNavbarTimer = [NSTimer scheduledTimerWithTimeInterval:kHideNavbarSeconds target:self selector:@selector(hideNavbar) userInfo:nil repeats:NO];
 }
 
 - (void)startMoodleResourceDownload {
@@ -155,6 +183,36 @@
         return nil;
     }
     return [self.navigationItem.rightBarButtonItems objectAtIndex:1];
+}
+
+#pragma mark - Gestures actions
+
+- (void)hideNavbar {
+    if (self.navigationController.navigationBar.alpha == 0.0) {
+        return; //already hidden
+    }
+    self.navbarOriginalAlpha = self.navigationController.navigationBar.alpha;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.navigationController.navigationBar.alpha = 0.0;
+    }];
+}
+
+- (void)showNavbar {
+    if (self.navigationController.navigationBar.alpha > 0.0) {
+        return; //already visible
+    }
+    [UIView animateWithDuration:0.1 animations:^{
+        self.navigationController.navigationBar.alpha = self.navbarOriginalAlpha;
+    }];
+    [self rescheduleHideNavbarTimer];
+}
+
+- (void)toggleNavbarVisibility {
+    if (self.navigationController.navigationBar.alpha > 0.0) {
+        [self hideNavbar];
+    } else {
+        [self showNavbar];
+    }
 }
 
 #pragma mark - Button actions
@@ -299,8 +357,10 @@
 
 - (void)dealloc
 {
+    [self.hideNavbarTimer invalidate];
     [self.moodleService cancelOperationsForDelegate:self];
     [self.webView stopLoading];
+    self.webView.delegate = nil; //docs says so
     self.docInteractionController.delegate = nil;
     self.deleteActionSheet.delegate = nil;
 }
