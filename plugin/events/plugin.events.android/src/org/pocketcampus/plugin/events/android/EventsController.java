@@ -37,6 +37,8 @@ import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
+import android.widget.ListView;
 
 /**
  * EventsController - Main logic for the Events Plugin.
@@ -292,6 +294,19 @@ public class EventsController extends PluginController implements IEventsControl
 				newMap.put(k, map.get(k));
 		}
 		return newMap;
+	}
+	
+	public static class ScrollStateSaver {
+		int index;
+		int top;
+		public ScrollStateSaver(ListView mList) {
+			index = mList.getFirstVisiblePosition();
+			View v = mList.getChildAt(0);
+			top = (v == null ? 0 : v.getTop());
+		}
+		public void restore(ListView mList) {
+			mList.setSelectionFromTop(index, top);
+		}
 	}
 
 }

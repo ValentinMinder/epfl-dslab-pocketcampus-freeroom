@@ -70,7 +70,14 @@ public class EventsMainView extends PluginView implements IEventsView {
 	private Set<Integer> categsInRS = new HashSet<Integer>();
 	private Set<String> tagsInRS = new HashSet<String>();
 	
-	@Override
+	EventPool thisEventPool;
+	Map<Integer, List<EventItem>> eventsByCateg;
+	Set<Integer> filteredCategs;
+	Set<String> filteredTags;
+	
+	ListView mList;
+	ScrollStateSaver scrollState;
+	
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return EventsController.class;
 	}
@@ -86,6 +93,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		// The ActionBar is added automatically when you call setContentView
 		//disableActionBar();
 		setContentView(R.layout.events_main);
+		mList = (ListView) findViewById(R.id.events_main_list);
 		displayingList = true;
 	}
 	
@@ -120,9 +128,17 @@ public class EventsMainView extends PluginView implements IEventsView {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(mController != null) {
-			mController.refreshEventPool(this, eventPoolId, false);
-		}
+		if(displayingList && scrollState != null)
+			scrollState.restore(mList);
+		/*if(mController != null)
+			mController.refreshEventPool(this, eventPoolId, false);*/
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if(displayingList)
+			scrollState = new ScrollStateSaver(mList);
 	}
 	
 	@Override
@@ -159,21 +175,25 @@ public class EventsMainView extends PluginView implements IEventsView {
 		System.out.println("EventsMainView::eventPoolsUpdated eventPoolId=" + eventPoolId + " obj=" + this);
 		
 		//System.out.println("eventsListUpdated getting pool");
-		final EventPool parentEvent = mModel.getEventPool(eventPoolId);
-		if(parentEvent == null || parentEvent.getChildrenEvents() == null)
+		thisEventPool = mModel.getEventPool(eventPoolId);
+		if(thisEventPool == null || thisEventPool.getChildrenEvents() == null)
 			return; // Ow!
 		
 		
 		//System.out.println("eventsListUpdated building hash childrenEvent=" + parentEvent.getChildrenEvents().size());
-		Map<Integer, List<EventItem>> eventsByCateg = new HashMap<Integer, List<EventItem>>();
+		eventsByCateg = new HashMap<Integer, List<EventItem>>();
 		eventsInRS.clear();
 		categsInRS.clear();
 		tagsInRS.clear();
-		for(long eventId : parentEvent.getChildrenEvents()) {
+		for(long eventId : thisEventPool.getChildrenEvents()) {
 			EventItem e = mModel.getEventItem(eventId);
 			//e.setEventCateg(1);
-			if(e == null || !e.isSetEventCateg())
+			if(e == null)
 				continue;
+			if(!e.isSetEventCateg())
+				e.setEventCateg(1000000); // uncategorized
+			if(!e.isSetEventTags() || e.getEventTags().size() == 0)
+				e.setEventTags(oneItemList("unlabeled")); // unlabeled
 			eventsInRS.add(eventId);
 			categsInRS.add(e.getEventCateg());
 			if(e.isSetEventTags()) 
@@ -183,10 +203,28 @@ public class EventsMainView extends PluginView implements IEventsView {
 			eventsByCateg.get(e.getEventCateg()).add(e);
 		}
 		
+		filteredCategs = new HashSet<Integer>(categsInRS);
+		filteredTags = new HashSet<String>(tagsInRS);
+		
+		updateDisplay(false);
+	}
+	
+	/*private List<EventItem> filterByTags(List<EventItem> events) {
+		for()
+		
+	}*/
+	
+	private void updateDisplay(boolean saveScroll) {
+
+		if(saveScroll && displayingList)
+			scrollState = new ScrollStateSaver(mList);
+		
 		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.event_list_header);
 		List<Integer> categList = new LinkedList<Integer>(eventsByCateg.keySet());
 		Collections.sort(categList);
 		for(int i : categList) {
+			if(!filteredCategs.contains(i))
+				continue;
 			List<EventItem> categEvents = eventsByCateg.get(i);
 			Collections.sort(categEvents, eventItemComp4sort);
 			Preparated<EventItem> p = new Preparated<EventItem>(categEvents, new Preparator<EventItem>() {
@@ -206,18 +244,12 @@ public class EventsMainView extends PluginView implements IEventsView {
 							return null;
 						String startTime = simpleTimeFormat.format(new Date(e.getStartDate()));
 						String startDay = simpleDateFormat.format(new Date(e.getStartDate()));
-						String endDay = simpleDateFormat.format(new Date(e.getEndDate()));
-						String today = simpleDateFormat.format(new Date());
-						if(today.compareTo(startDay) >= 0 && today.compareTo(endDay) <= 0) {
-							if(e.isFullDay())
-								return "Today";
-							else
-								return startTime;
-						} else {
+						if(e.isFullDay())
 							return startDay;
-						}
+						else
+							return startDay + " - " + startTime;
 					case R.id.event_fav_star:
-						if(parentEvent.isDisableStar())
+						if(thisEventPool.isDisableStar())
 							return android.R.drawable.divider_horizontal_bright;
 						Integer fav = android.R.drawable.star_off;
 						if(e.getEventCateg() == -2)
@@ -240,26 +272,26 @@ public class EventsMainView extends PluginView implements IEventsView {
 					R.layout.events_list_row, p.getKeys(), p.getResources()));
 		}
 		
-		if(eventsInRS.size() == 0 && parentEvent.isSetNoResultText()) {
+		if(eventsInRS.size() == 0 && thisEventPool.isSetNoResultText()) {
 			displayingList = false;
 			StandardLayout sl = new StandardLayout(this);
-			sl.setText(parentEvent.getNoResultText());
+			sl.setText(thisEventPool.getNoResultText());
 			setContentView(sl);
 		} else {
 			if(!displayingList) {
 				setContentView(R.layout.events_main);
+				mList = (ListView) findViewById(R.id.events_main_list);
 				displayingList = true;
 			}
-			ListView list = (ListView) findViewById(R.id.events_main_list);
-			list.setAdapter(adapter);
-			//list.setCacheColorHint(Color.TRANSPARENT);
-			//list.setFastScrollEnabled(true);
-			//list.setScrollingCacheEnabled(false);
-			//list.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
+			mList.setAdapter(adapter);
+			//mList.setCacheColorHint(Color.TRANSPARENT);
+			//mList.setFastScrollEnabled(true);
+			//mList.setScrollingCacheEnabled(false);
+			//mList.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
 			
-			list.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 			
-			list.setOnItemClickListener(new OnItemClickListener() {
+			mList.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 					Object o = arg0.getItemAtPosition(arg2);
 					if(o instanceof Map<?, ?>) {
@@ -271,9 +303,11 @@ public class EventsMainView extends PluginView implements IEventsView {
 					}
 				}
 			});
+			
+			if(scrollState != null)
+				scrollState.restore(mList);
+			
 		}
-		
-		
 	}
 	
 	@Override
@@ -308,10 +342,14 @@ public class EventsMainView extends PluginView implements IEventsView {
 		if(showFilterCateg) {
 			MenuItem categMenu = menu.add("Filter by category");
 			categMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this, 
-					subMap(Constants.EVENTS_CATEGS, categsInRS), "Choose Category", categsInRS,
+					subMap(Constants.EVENTS_CATEGS, categsInRS), "Choose Category", filteredCategs,
 					new MultiChoiceHandler<Integer>() {
 						public void saveSelection(Integer t, boolean isChecked) {
-							Toast.makeText(getApplicationContext(), "Not yet implemented :-(", Toast.LENGTH_SHORT).show();
+							if(isChecked)
+								filteredCategs.add(t);
+							else
+								filteredCategs.remove(t);
+							updateDisplay(true);
 						}
 					}
 			));
@@ -319,10 +357,14 @@ public class EventsMainView extends PluginView implements IEventsView {
 		if(showFilterTags) {
 			MenuItem feedMenu = menu.add("Filter by tag(s)");
 			feedMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this,
-					subMap(Constants.EVENTS_TAGS, tagsInRS), "Choose Tag(s)", tagsInRS,
+					subMap(Constants.EVENTS_TAGS, tagsInRS), "Choose Tag(s)", filteredTags,
 					new MultiChoiceHandler<String>() {
 						public void saveSelection(String t, boolean isChecked) {
-							Toast.makeText(getApplicationContext(), "Not yet implemented :-(", Toast.LENGTH_SHORT).show();
+							if(isChecked)
+								filteredTags.add(t);
+							else
+								filteredTags.remove(t);
+							updateDisplay(true);
 						}
 					}
 			));

@@ -14,6 +14,7 @@ import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
 import org.pocketcampus.android.platform.sdk.ui.adapter.SeparatedListAdapter;
 import org.pocketcampus.plugin.events.android.EventsController.Preparated;
 import org.pocketcampus.plugin.events.android.EventsController.Preparator;
+import org.pocketcampus.plugin.events.android.EventsController.ScrollStateSaver;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
 import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.events.shared.EventPool;
@@ -47,10 +48,12 @@ public class EventDetailView extends PluginView implements IEventsView {
 	public static final String QUERYSTRING_KEY_EVENTITEMID = "eventItemId";
     public final static String MAP_KEY_EVENTPOOLID = "EVENT_POOL_ID";  
 	
-	private ListView mLayout;
+	private ListView mList;
 	
 	private long eventItemId;
 	private List<Long> displayedPools = new LinkedList<Long>();
+	
+	ScrollStateSaver scrollState;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -67,7 +70,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 		// The ActionBar is added automatically when you call setContentView
 		//disableActionBar();
 		setContentView(R.layout.events_main);
-		mLayout = (ListView) findViewById(R.id.events_main_list);
+		mList = (ListView) findViewById(R.id.events_main_list);
 		
 
 	}
@@ -103,13 +106,20 @@ public class EventDetailView extends PluginView implements IEventsView {
 		eventItemsUpdated(null);
 	}
 
-	/*@Override
+	@Override
 	protected void onResume() {
 		super.onResume();
-		if(mController != null) {
-			mController.refreshEventItem(eventItemId, false);
-		}
-	}*/
+		if(scrollState != null)
+			scrollState.restore(mList);
+		/*if(mController != null)
+			mController.refreshEventItem(this, eventItemId, false);*/
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onResume();
+		scrollState = new ScrollStateSaver(mList);
+	}
 	
 	@Override
 	public void eventItemsUpdated(List<Long> updated) {
@@ -307,15 +317,15 @@ public class EventDetailView extends PluginView implements IEventsView {
 		*/
 		
 		
-		mLayout.setAdapter(adapter);
+		mList.setAdapter(adapter);
 		//mLayout.setCacheColorHint(Color.TRANSPARENT);
 		//mLayout.setFastScrollEnabled(true);
-		mLayout.setScrollingCacheEnabled(false);
+		mList.setScrollingCacheEnabled(false);
 		//mLayout.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
 		
-		mLayout.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+		mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 		
-		mLayout.setOnItemClickListener(new OnItemClickListener() {
+		mList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				Object o = arg0.getItemAtPosition(arg2);
 				if(o instanceof Map<?, ?> && ((Map<?, ?>) o).containsKey(MAP_KEY_EVENTPOOLID)) {

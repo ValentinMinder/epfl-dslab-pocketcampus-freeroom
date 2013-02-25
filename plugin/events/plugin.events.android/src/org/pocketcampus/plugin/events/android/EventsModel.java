@@ -120,10 +120,16 @@ public class EventsModel extends PluginModel implements IEventsModel {
 		return i;
 	}
 	public void addEventItem(EventItem obj) {
+		if(!obj.isSetEventCateg()) obj.setEventCateg(1000000); // uncategorized
+		if(!obj.isSetEventTags() || obj.getEventTags().size() == 0) obj.setEventTags(oneItemList("unlabeled")); // unlabeled
 		iEvents.put(obj.getEventId(), obj);
 		mListeners.eventItemsUpdated(oneItemList(obj.getEventId()));
 	}
 	public void addEventItems(Map<Long, EventItem> obj) {
+		for(EventItem e : obj.values()) {
+			if(!e.isSetEventCateg()) e.setEventCateg(1000000); // uncategorized
+			if(!e.isSetEventTags() || e.getEventTags().size() == 0) e.setEventTags(oneItemList("unlabeled")); // unlabeled
+		}
 		iEvents.putAll(obj);
 		mListeners.eventItemsUpdated(new LinkedList<Long>(obj.keySet()));
 	}
