@@ -32,6 +32,7 @@ import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -71,7 +72,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	private Set<String> tagsInRS = new HashSet<String>();
 	
 	EventPool thisEventPool;
-	Map<Integer, List<EventItem>> eventsByCateg;
+	Map<String, List<EventItem>> eventsByTags;
 	Set<Integer> filteredCategs;
 	Set<String> filteredTags;
 	
@@ -181,7 +182,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		
 		
 		//System.out.println("eventsListUpdated building hash childrenEvent=" + parentEvent.getChildrenEvents().size());
-		eventsByCateg = new HashMap<Integer, List<EventItem>>();
+		eventsByTags = new HashMap<String, List<EventItem>>();
 		eventsInRS.clear();
 		categsInRS.clear();
 		tagsInRS.clear();
@@ -190,42 +191,56 @@ public class EventsMainView extends PluginView implements IEventsView {
 			//e.setEventCateg(1);
 			if(e == null)
 				continue;
-			if(!e.isSetEventCateg())
-				e.setEventCateg(1000000); // uncategorized
-			if(!e.isSetEventTags() || e.getEventTags().size() == 0)
-				e.setEventTags(oneItemList("unlabeled")); // unlabeled
 			eventsInRS.add(eventId);
-			categsInRS.add(e.getEventCateg());
+			if(e.getEventCateg() > 0)
+				categsInRS.add(e.getEventCateg());
 			if(e.isSetEventTags()) 
 				tagsInRS.addAll(e.getEventTags());
-			if(!eventsByCateg.containsKey(e.getEventCateg()))
-				eventsByCateg.put(e.getEventCateg(), new LinkedList<EventItem>());
-			eventsByCateg.get(e.getEventCateg()).add(e);
+			for(String t : e.getEventTags()) {
+				if(!eventsByTags.containsKey(t))
+					eventsByTags.put(t, new LinkedList<EventItem>());
+				eventsByTags.get(t).add(e);
+			}
 		}
 		
-		filteredCategs = new HashSet<Integer>(categsInRS);
-		filteredTags = new HashSet<String>(tagsInRS);
+		if(filteredCategs == null)
+			filteredCategs = new HashSet<Integer>(categsInRS);
+		if(filteredTags == null)
+			filteredTags = new HashSet<String>(tagsInRS);
 		
 		updateDisplay(false);
 	}
-	
-	/*private List<EventItem> filterByTags(List<EventItem> events) {
-		for()
-		
-	}*/
 	
 	private void updateDisplay(boolean saveScroll) {
 
 		if(saveScroll && displayingList)
 			scrollState = new ScrollStateSaver(mList);
 		
+		Set<EventItem> filteredEvents = new HashSet<EventItem>();
+		for(String tag : filteredTags) {
+			filteredEvents.addAll(eventsByTags.get(tag));
+		}
+		
+		//Map<Integer, List<EventItem>> eventsByCateg = new HashMap<Integer, List<EventItem>>();
+		SparseArray<List<EventItem>> eventsByCateg = new SparseArray<List<EventItem>>();
+		
+		
+		for(EventItem e : filteredEvents) {
+			if(e.getEventCateg() < 0)
+				filteredCategs.add(e.getEventCateg()); // make sure special categs are always displayed
+			if(eventsByCateg.indexOfKey(e.getEventCateg()) < 0)
+				eventsByCateg.put(e.getEventCateg(), new LinkedList<EventItem>());
+			eventsByCateg.get(e.getEventCateg()).add(e);
+		}
+		
+		
 		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.event_list_header);
-		List<Integer> categList = new LinkedList<Integer>(eventsByCateg.keySet());
+		List<Integer> categList = new LinkedList<Integer>(filteredCategs);
 		Collections.sort(categList);
 		for(int i : categList) {
-			if(!filteredCategs.contains(i))
-				continue;
 			List<EventItem> categEvents = eventsByCateg.get(i);
+			if(categEvents == null) // if category becomes empty (filtering by tags)
+				continue; // then skip it
 			Collections.sort(categEvents, eventItemComp4sort);
 			Preparated<EventItem> p = new Preparated<EventItem>(categEvents, new Preparator<EventItem>() {
 				public int[] resources() {
@@ -342,7 +357,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		if(showFilterCateg) {
 			MenuItem categMenu = menu.add("Filter by category");
 			categMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this, 
-					subMap(Constants.EVENTS_CATEGS, categsInRS), "Choose Category", filteredCategs,
+					subMap(Constants.EVENTS_CATEGS, categsInRS), "Filter by category", filteredCategs,
 					new MultiChoiceHandler<Integer>() {
 						public void saveSelection(Integer t, boolean isChecked) {
 							if(isChecked)
@@ -355,9 +370,9 @@ public class EventsMainView extends PluginView implements IEventsView {
 			));
 		}
 		if(showFilterTags) {
-			MenuItem feedMenu = menu.add("Filter by tag(s)");
+			MenuItem feedMenu = menu.add("Filter by areas");
 			feedMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this,
-					subMap(Constants.EVENTS_TAGS, tagsInRS), "Choose Tag(s)", filteredTags,
+					subMap(Constants.EVENTS_TAGS, tagsInRS), "Filter by areas", filteredTags,
 					new MultiChoiceHandler<String>() {
 						public void saveSelection(String t, boolean isChecked) {
 							if(isChecked)
@@ -370,9 +385,9 @@ public class EventsMainView extends PluginView implements IEventsView {
 			));
 		}
 		if(eventPoolId == Constants.CONTAINER_EVENT_ID) { // settings thingy
-			MenuItem periodMenu = menu.add("Choose a period");
+			MenuItem periodMenu = menu.add("Choose period");
 			periodMenu.setOnMenuItemClickListener(buildMenuListenerSingleChoiceDialog(this,
-					Constants.EVENTS_PERIODS, "Choose Period", mModel.getPeriod(), 
+					Constants.EVENTS_PERIODS, "Choose period", mModel.getPeriod(), 
 					new SingleChoiceHandler<Integer>() {
 						public void saveSelection(Integer t) {
 							mModel.setPeriod(t);

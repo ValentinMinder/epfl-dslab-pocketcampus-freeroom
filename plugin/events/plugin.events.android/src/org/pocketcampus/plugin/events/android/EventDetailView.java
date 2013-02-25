@@ -168,7 +168,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 					details.append(e.isSetEventPlace() ? ("<br><b>In</b> <a" + (e.isSetLocationHref() ? (" href=\"" + e.getLocationHref() + "\"") : "") + ">" + e.getEventPlace() + "</a>") : "");
 					details.append(e.isSetEventSpeaker() ? ("<br><b>By</b> " + e.getEventSpeaker()) : "");
 					details.append(e.isSetDetailsLink() ? ("<br><b>More</b> <a href=\"" + e.getDetailsLink() + "\">details</a>") : "");
-					details.append(e.isSetEventTags() && e.getEventTags().size() > 0 ? ("<br><b>Tag(s)</b> " + expandTags(e.getEventTags()) + "") : "");
+					//details.append(e.isSetEventTags() && e.getEventTags().size() > 0 ? ("<br><b>Tag(s)</b> " + expandTags(e.getEventTags()) + "") : "");
 					return "<p>" + details.toString() + "</p>";
 				case R.id.event_list_complex_image:
 					if(!e.isSetEventPicture())
