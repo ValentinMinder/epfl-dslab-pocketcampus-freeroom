@@ -214,7 +214,7 @@ static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people
     pictureRequest.timeOutSeconds = 10;
     pictureRequest.delegate = self;
     pictureRequest.downloadCache = [ASIDownloadCache sharedCache];
-    pictureRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
+    pictureRequest.cachePolicy = ASIAskServerIfModifiedWhenStaleCachePolicy;
     pictureRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
     pictureRequest.secondsToCache = 86400; //seconds == 1 day. Should not cache an profile picture too long if it was changed
     pictureRequest.timeOutSeconds = [Service requestTimeoutInterval];
