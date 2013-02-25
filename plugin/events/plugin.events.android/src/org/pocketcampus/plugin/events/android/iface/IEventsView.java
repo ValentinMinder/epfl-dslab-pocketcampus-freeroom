@@ -21,16 +21,20 @@ public interface IEventsView extends IView {
 	
 	/**
 	 * Update display when we get data.
+	 * Called from Model
+	 * Called on ALL listeners
 	 */
 	void eventItemsUpdated(List<Long> ids);
 	void eventPoolsUpdated(List<Long> ids);
 	
 	/**
 	 * Display errors and notices.
+	 * Called from Request
+	 * Called on the particular object that issued the request
 	 */
 	void networkErrorHappened();
 	void networkErrorCacheExists();
 	void mementoServersDown();
-	void identificationRequired();
+	void exchangeContactsFinished(boolean success);
 	
 }

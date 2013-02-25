@@ -37,8 +37,6 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	private static final String EVENTS_STORAGE_NAME = "EVENTS_STORAGE_NAME";
 	
 	private static final String EVENTS_PERIOD_KEY = "EVENTS_PERIOD_KEY";
-	private static final String EVENTS_TAG_KEY = "EVENTS_TAG_KEY";
-	private static final String EVENTS_CATEG_KEY = "EVENTS_CATEG_KEY";
 	private static final String EVENTS_FAVOTITES_LIST_KEY = "EVENTS_FAVOTITES_LIST_KEY";
 	private static final String EVENTS_TOKEN_KEY = "EVENTS_TOKEN_KEY";
 	
@@ -66,8 +64,6 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	 * Member variables that need to be persistent
 	 */
 	private int iPeriod; // we send
-	private String iTag; // used to filter locally
-	private int iCateg; // used to filter locally
 	private List<Long> iFavorites; // for eventItems only
 	private String iToken; // used to identify users (authentication)
 	
@@ -84,9 +80,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 		iStorage = context.getSharedPreferences(EVENTS_STORAGE_NAME, 0);
 		//cntxt = context;
 		
-		iPeriod = iStorage.getInt(EVENTS_PERIOD_KEY, 1);
-		iTag = iStorage.getString(EVENTS_TAG_KEY, "epfl");
-		iCateg = iStorage.getInt(EVENTS_CATEG_KEY, 0);
+		iPeriod = iStorage.getInt(EVENTS_PERIOD_KEY, 30);
 		iFavorites = decodeFavList(iStorage.getString(EVENTS_FAVOTITES_LIST_KEY, ""));
 		iToken = iStorage.getString(EVENTS_TOKEN_KEY, null);
 		
@@ -159,20 +153,6 @@ public class EventsModel extends PluginModel implements IEventsModel {
 		iPeriod = x;
 		savePrefs();
 	}
-	public int getCateg() {
-		return iCateg;
-	}
-	public void setCateg(int x) {
-		iCateg = x;
-		savePrefs();
-	}
-	public String getTag() {
-		return iTag;
-	}
-	public void setTag(String x) {
-		iTag = x;
-		savePrefs();
-	}
 	public String getToken() {
 		return iToken;
 	}
@@ -183,9 +163,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	
 	private void savePrefs() {
 		iStorage.edit()
-				.putInt(EVENTS_CATEG_KEY, iCateg)
 				.putInt(EVENTS_PERIOD_KEY, iPeriod)
-				.putString(EVENTS_TAG_KEY, iTag)
 				.putString(EVENTS_FAVOTITES_LIST_KEY, encodeFavList(iFavorites))
 				.putString(EVENTS_TOKEN_KEY, iToken)
 				.commit();

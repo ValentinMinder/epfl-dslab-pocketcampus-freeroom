@@ -36,7 +36,7 @@ enum EventsCategories {
 	ACADEMIC_CAL = 13;
 }
 
-const map<string, string> EVENTS_FEEDS = {
+const map<string, string> EVENTS_TAGS = {
 	"epfl": "École Polytechnique Fédérale de Lausanne";
 	"enac": "Architecture, Civil and Environmental Engineering";
 	"sb": "Basic Sciences";
@@ -48,7 +48,7 @@ const map<string, string> EVENTS_FEEDS = {
 	"associations": "Associations";
 }
 
-enum EventsFeeds {
+enum EventsTags {
 	EPFL;
 	ENAC;
 	SB;
@@ -92,13 +92,14 @@ struct EventItem {
 	7: optional string eventPlace;
 	8: optional string eventSpeaker;
 	9: optional string eventDetails;
-	11: optional list<i64> childrenPools;
+	10: optional string eventThumbnail;
 	12: optional string eventUri;
 	13: optional string vcalUid;
 	14: optional i32 eventCateg;
 	15: optional list<string> eventTags;
 	16: optional string locationHref;
 	17: optional string detailsLink;
+	20: optional list<i64> childrenPools;
 }
 
 struct EventPool {
@@ -108,7 +109,11 @@ struct EventPool {
 	7: optional string poolPlace;
 	9: optional string poolDetails;
 	10: optional bool disableStar;
-	11: optional list<i64> childrenEvents;
+	11: optional bool disableFilterByCateg;
+	12: optional bool disableFilterByTags;
+	13: optional bool enableScan;
+	14: optional string noResultText;
+	15: optional list<i64> childrenEvents;
 }
 
 struct EventItemRequest {
@@ -145,10 +150,20 @@ struct EventPoolReply {
 	6: optional map<string, string> tags;
 }
 
+struct ExchangeRequest {
+	1: required string userToken;
+	2: required string exchangeToken;
+}
+
+struct ExchangeReply {
+	1: required i32 status;
+}
+
 
 service EventsService {
 	EventItemReply getEventItem(1: EventItemRequest iRequest);
 	EventPoolReply getEventPool(1: EventPoolRequest iRequest);
+	ExchangeReply exchangeContacts(1: ExchangeRequest iRequest);
 	
 	string updateDatabase(1: string arg);
 }

@@ -12,6 +12,8 @@ import java.util.Map;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.events.android.iface.IEventsController;
+import org.pocketcampus.plugin.events.android.iface.IEventsView;
+import org.pocketcampus.plugin.events.android.req.ExchangeContactsRequest;
 import org.pocketcampus.plugin.events.android.req.GetEventItemRequest;
 import org.pocketcampus.plugin.events.android.req.GetEventPoolRequest;
 import org.pocketcampus.plugin.events.shared.Constants;
@@ -21,6 +23,7 @@ import org.pocketcampus.plugin.events.shared.EventPool;
 import org.pocketcampus.plugin.events.shared.EventPoolRequest;
 import org.pocketcampus.plugin.events.shared.EventsService.Client;
 import org.pocketcampus.plugin.events.shared.EventsService.Iface;
+import org.pocketcampus.plugin.events.shared.ExchangeRequest;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -47,7 +50,12 @@ public class EventsController extends PluginController implements IEventsControl
 	private EventsModel mModel;
 
 	/** Interface to the plugin's server client */
-	private Iface mClient;
+	private Iface mClientEI;
+	private Iface mClientEP;
+	private Iface mClientEX;
+	private GetEventPoolRequest currEventPoolRequest;
+	private GetEventItemRequest currEventItemRequest;
+	private ExchangeContactsRequest currExchangeContactsRequest;
 
 	/** The name of the plugin */
 	private String mPluginName = "events";
@@ -62,7 +70,9 @@ public class EventsController extends PluginController implements IEventsControl
 
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.
-		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+		mClientEI = (Iface) getClient(new Client.Factory(), mPluginName);
+		mClientEP = (Iface) getClient(new Client.Factory(), mPluginName);
+		mClientEX = (Iface) getClient(new Client.Factory(), mPluginName);
 
 		// initialize ImageLoader
 		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
@@ -80,22 +90,39 @@ public class EventsController extends PluginController implements IEventsControl
 	/**
 	 * Initiates a request to the server to get the events items.
 	 */
-	public void refreshEventPool(long eventPoolId, boolean useCache) {
+	public void refreshEventPool(IEventsView caller, long eventPoolId, boolean useCache) {
+		if(currEventPoolRequest != null)
+			currEventPoolRequest.cancel(true);
 		EventPoolRequest req = new EventPoolRequest(eventPoolId);
 		req.setUserToken(mModel.getToken());
 		req.setLang(Locale.getDefault().getLanguage());
 		req.setPeriod(mModel.getPeriod());
-		new GetEventPoolRequest().setBypassCache(!useCache).start(this, mClient, req);
+		currEventPoolRequest = new GetEventPoolRequest(caller);
+		currEventPoolRequest.setBypassCache(!useCache).start(this, mClientEP, req);
 	}
 
 	/**
 	 * Initiates a request to the server to get the events pools.
 	 */
-	public void refreshEventItem(long eventItemId, boolean useCache) {
+	public void refreshEventItem(IEventsView caller, long eventItemId, boolean useCache) {
+		if(currEventItemRequest != null)
+			currEventItemRequest.cancel(true);
 		EventItemRequest req = new EventItemRequest(eventItemId);
 		req.setUserToken(mModel.getToken());
 		req.setLang(Locale.getDefault().getLanguage());
-		new GetEventItemRequest().setBypassCache(!useCache).start(this, mClient, req);
+		currEventItemRequest = new GetEventItemRequest(caller);
+		currEventItemRequest.setBypassCache(!useCache).start(this, mClientEI, req);
+	}
+
+	/**
+	 * Initiates a request to exchange contact information.
+	 */
+	public void exchangeContacts(IEventsView caller, String exchangeToken) {
+		if(currExchangeContactsRequest != null)
+			currExchangeContactsRequest.cancel(true);
+		ExchangeRequest req = new ExchangeRequest(mModel.getToken(), exchangeToken);
+		currExchangeContactsRequest = new ExchangeContactsRequest(caller);
+		currExchangeContactsRequest.start(this, mClientEX, req);
 	}
 
 
@@ -103,31 +130,6 @@ public class EventsController extends PluginController implements IEventsControl
 	 * HELPER CLASSES AND FUNCTIONS
 	 */
 	
-	public static String getResizedPhotoUrl (String image, int newSize) {
-		if(image == null)
-			return null;
-		if(image.contains("memento.epfl.ch/image")) {
-			image = getSubstringBetween(image, "image/", "/"); // get the image id
-			image = "http://memento.epfl.ch/image/" + image + "/" + newSize + "x" + newSize+ ".jpg";
-		} else if(image.contains("secure.gravatar.com")) {
-			image = getSubstringBetween(image, "avatar/", "?"); // get the image id
-			image = "http://secure.gravatar.com/avatar/" + image + "?s=" + newSize;
-		}
-		return image;
-	}
-	
-	public static  String getSubstringBetween(String orig, String before, String after) {
-		int b = orig.indexOf(before);
-		if(b != -1) {
-			orig = orig.substring(b + before.length());
-		}
-		int a = orig.indexOf(after);
-		if(a != -1) {
-			orig = orig.substring(0, a);
-		}
-		return orig;
-	}
-
 	public static interface Preparator<T> {
 		public Object content(int res, T item);
 		public int[] resources();

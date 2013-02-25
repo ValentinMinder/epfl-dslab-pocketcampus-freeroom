@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum EventsFeeds implements org.apache.thrift.TEnum {
+public enum EventsTags implements org.apache.thrift.TEnum {
   EPFL(0),
   ENAC(1),
   SB(2),
@@ -24,7 +24,7 @@ public enum EventsFeeds implements org.apache.thrift.TEnum {
 
   private final int value;
 
-  private EventsFeeds(int value) {
+  private EventsTags(int value) {
     this.value = value;
   }
 
@@ -39,7 +39,7 @@ public enum EventsFeeds implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static EventsFeeds findByValue(int value) { 
+  public static EventsTags findByValue(int value) { 
     switch (value) {
       case 0:
         return EPFL;

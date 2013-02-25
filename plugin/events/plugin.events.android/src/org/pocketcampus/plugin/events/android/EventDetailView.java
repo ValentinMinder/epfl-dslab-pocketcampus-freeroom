@@ -22,7 +22,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,7 +44,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 	private EventsModel mModel;
 	
 	public static final String EXTRAS_KEY_EVENTITEMID = "eventItemId";
-	public static final String QUERYSTRING_KEY_EVENTITEMID = "id";
+	public static final String QUERYSTRING_KEY_EVENTITEMID = "eventItemId";
     public final static String MAP_KEY_EVENTPOOLID = "EVENT_POOL_ID";  
 	
 	private ListView mLayout;
@@ -83,13 +82,13 @@ public class EventDetailView extends PluginView implements IEventsView {
 		eventItemId = 0l;
 		if(aIntent != null) {
 			Bundle aExtras = aIntent.getExtras();
-			Uri aData = aIntent.getData();
+			//Uri aData = aIntent.getData();
 			if(aExtras != null && aExtras.containsKey(EXTRAS_KEY_EVENTITEMID)) {
-				System.out.println("Started with intent to display event " + eventItemId);
 				eventItemId = Long.parseLong(aExtras.getString(EXTRAS_KEY_EVENTITEMID));
-			} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTITEMID) != null) {
-				System.out.println("External start with intent to display event " + eventItemId);
+				System.out.println("Started with intent to display event " + eventItemId);
+			/*} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTITEMID) != null) {
 				eventItemId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTITEMID));
+				System.out.println("External start with intent to display event " + eventItemId);*/
 			}
 		}
 		if(eventItemId == 0l) {
@@ -100,17 +99,25 @@ public class EventDetailView extends PluginView implements IEventsView {
 		//Tracker
 		Tracker.getInstance().trackPageView("events/" + eventItemId);
 		
-		mController.refreshEventItem(eventItemId, false);
+		mController.refreshEventItem(this, eventItemId, false);
 		eventItemsUpdated(null);
 	}
 
-
+	/*@Override
+	protected void onResume() {
+		super.onResume();
+		if(mController != null) {
+			mController.refreshEventItem(eventItemId, false);
+		}
+	}*/
+	
 	@Override
 	public void eventItemsUpdated(List<Long> updated) {
-		System.out.println("EventDetailView::eventItemsUpdated");
 		
 		if(updated != null && !updated.contains(eventItemId))
 			return;
+		
+		System.out.println("EventDetailView::eventItemsUpdated eventItemId=" + eventItemId + " obj=" + this);
 		
 		EventItem parentEvent = mModel.getEventItem(eventItemId);
 		if(parentEvent == null)
@@ -154,7 +161,9 @@ public class EventDetailView extends PluginView implements IEventsView {
 					details.append(e.isSetEventTags() && e.getEventTags().size() > 0 ? ("<br><b>Tag(s)</b> " + expandTags(e.getEventTags()) + "") : "");
 					return "<p>" + details.toString() + "</p>";
 				case R.id.event_list_complex_image:
-					return getResizedPhotoUrl(e.getEventPicture(), 480);
+					if(!e.isSetEventPicture())
+						return android.R.drawable.divider_horizontal_bright;
+					return e.getEventPicture();
 				case R.id.event_list_complex_caption:
 					return e.getEventDetails();
 				default:
@@ -334,7 +343,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 	public void networkErrorCacheExists() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.sdk_connection_no_cache_yes), Toast.LENGTH_SHORT).show();
-		mController.refreshEventItem(eventItemId, true);
+		mController.refreshEventItem(this, eventItemId, true);
 	}
 	
 	@Override
@@ -350,10 +359,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 	}
 
 	@Override
-	public void identificationRequired() {
-		Toast.makeText(getApplicationContext(), 
-				"Please scan the barcode in the email to enable this feature", 
-				Toast.LENGTH_SHORT).show();
+	public void exchangeContactsFinished(boolean success) {
 	}
 
 }

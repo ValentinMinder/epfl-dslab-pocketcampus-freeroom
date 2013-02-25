@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.events.android.req;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.events.android.EventsController;
 import org.pocketcampus.plugin.events.android.EventsModel;
+import org.pocketcampus.plugin.events.android.iface.IEventsView;
 import org.pocketcampus.plugin.events.shared.Constants;
 import org.pocketcampus.plugin.events.shared.EventItemReply;
 import org.pocketcampus.plugin.events.shared.EventItemRequest;
@@ -19,6 +20,12 @@ import org.pocketcampus.plugin.events.shared.EventsService.Iface;
  */
 public class GetEventItemRequest extends Request<EventsController, Iface, EventItemRequest, EventItemReply> {
 
+	private IEventsView caller;
+	
+	public GetEventItemRequest(IEventsView caller) {
+		this.caller = caller;
+	}
+	
 	@Override
 	protected EventItemReply runInBackground(Iface client, EventItemRequest param) throws Exception {
 		return client.getEventItem(param);
@@ -38,19 +45,17 @@ public class GetEventItemRequest extends Request<EventsController, Iface, EventI
 				Constants.EVENTS_TAGS.putAll(result.getTags());
 			}
 			keepInCache();
-		} else if(result.getStatus() == 407) {
-			((EventsModel) controller.getModel()).getListenersToNotify().identificationRequired();
 		} else {
-			((EventsModel) controller.getModel()).getListenersToNotify().mementoServersDown();
+			caller.mementoServersDown();
 		}
 	}
 
 	@Override
 	protected void onError(EventsController controller, Exception e) {
 		if(foundInCache())
-			((EventsModel) controller.getModel()).getListenersToNotify().networkErrorCacheExists();
+			caller.networkErrorCacheExists();
 		else
-			controller.getModel().notifyNetworkError();
+			caller.networkErrorHappened();
 		e.printStackTrace();
 	}
 	

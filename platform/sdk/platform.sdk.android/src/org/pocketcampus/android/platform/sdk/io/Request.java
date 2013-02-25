@@ -112,6 +112,15 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 		});
 	};
 	
+	@Override
+	protected final void onCancelled() {
+		mHandler.post(new Runnable() {
+		    public void run() {
+		    	mGlobalContext.decrementRequestCounter();
+		    }
+		});
+	};
+	
 	/**
 	 * Call this if you want to bypass the cache
 	 */

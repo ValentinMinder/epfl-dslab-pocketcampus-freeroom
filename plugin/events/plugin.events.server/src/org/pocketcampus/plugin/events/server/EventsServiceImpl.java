@@ -43,6 +43,8 @@ import org.pocketcampus.plugin.events.shared.EventPool;
 import org.pocketcampus.plugin.events.shared.EventPoolReply;
 import org.pocketcampus.plugin.events.shared.EventPoolRequest;
 import org.pocketcampus.plugin.events.shared.EventsService;
+import org.pocketcampus.plugin.events.shared.ExchangeReply;
+import org.pocketcampus.plugin.events.shared.ExchangeRequest;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
@@ -74,8 +76,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	
 	@Override
 	public EventItemReply getEventItem(EventItemRequest req) throws TException {
-		// TODO int a = 17301535;
-		System.out.println("getEventItemChildren");
+		System.out.println("getEventItem id=" + req.getEventItemId());
 		long parentId = req.getEventItemId();
 		try {
 			Connection conn = connMgr.getConnection();
@@ -98,7 +99,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	
 	@Override
 	public EventPoolReply getEventPool(EventPoolRequest req) throws TException {
-		System.out.println("getEventPoolChildren");
+		System.out.println("getEventPool id=" + req.getEventPoolId());
 		long parentId = req.getEventPoolId();
 		int period = (req.isSetPeriod() ? req.getPeriod() : 1);
 		try {
@@ -120,6 +121,28 @@ public class EventsServiceImpl implements EventsService.Iface {
 		}
 	}
 
+	@Override
+	public ExchangeReply exchangeContacts(ExchangeRequest req) throws TException {
+		System.out.println("exchangeContacts");
+		try {
+			Connection conn = connMgr.getConnection();
+			String userToken = userTokenFromExchangeToken(conn, req.getExchangeToken());
+			if(userToken == null)
+				return new ExchangeReply(400);
+			System.out.println("Exchannging contact information between " + req.getUserToken() + " and " + userToken);
+			int res = exchangeContacts(conn, req.getUserToken(), userToken);
+			if(res != 2) {
+				System.out.println("Failed");
+				return new ExchangeReply(400);
+			}
+			System.out.println("Succeess");
+			return new ExchangeReply(200);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return new ExchangeReply(500);
+		}
+	}
+	
 	/*private void addFeaturedEvents(Map<Long, EventItem> eventItems) throws ParseException {
 		EventItem edicOpenHouse = new EventItem(12000000l);
 		edicOpenHouse.setEventCateg(-1);
@@ -300,6 +323,19 @@ public class EventsServiceImpl implements EventsService.Iface {
 	/**
 	 * HELPER FUNCTIONS
 	 */
+	
+	public static String getResizedPhotoUrl (String image, int newSize) {
+		if(image == null)
+			return null;
+		if(image.contains("memento.epfl.ch/image")) {
+			image = getSubstringBetween(image, "image/", "/"); // get the image id
+			image = "http://memento.epfl.ch/image/" + image + "/" + newSize + "x" + newSize+ ".jpg";
+		} else if(image.contains("secure.gravatar.com")) {
+			image = getSubstringBetween(image, "avatar/", "?"); // get the image id
+			image = "http://secure.gravatar.com/avatar/" + image + "?s=" + newSize;
+		}
+		return image;
+	}
 	
 	private static int getCategFromName(String categName) {
 		if("Conferences - Seminars".equals(categName) || "Conférences - Séminaires".equals(categName)) return 1;
@@ -542,7 +578,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 			if(level < 10)
 				return ei;
 			
-			ei.setEventPicture("drawable://17301535");
+			ei.setEventThumbnail("drawable://17301535");
 			ei.setEventTitle(rs.getString(6));
 			
 			if(level < 100)
@@ -555,7 +591,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ei.setFullDay(rs.getBoolean(4));
 			if(rs.wasNull()) ei.unsetFullDay();
 			
-			ei.setEventPicture(rs.getString(5));
+			ei.setEventPicture(getResizedPhotoUrl(rs.getString(5), 480));
+			ei.setEventThumbnail(getResizedPhotoUrl(rs.getString(5), 48));
 			ei.setEventTitle(rs.getString(6));
 			ei.setEventPlace(rs.getString(7));
 			ei.setEventSpeaker(rs.getString(8));
@@ -568,9 +605,11 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ei.setDetailsLink(rs.getString(16));
 			
 			if(exchangeToken != null) {
-				ei.setEventCateg(-3); // force categ to Me
-				//ei.setEventDetails("<p><img src=\"http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?exchangeToken=" + exchangeToken + "\" style=\"width:400px;height:400px;\"></p>");
-				ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?exchangeToken=" + exchangeToken);
+				// force categ to Me
+				ei.setEventCateg(-3);
+				// force big picture to QR-code
+				ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=13000002%26exchangeToken=" + exchangeToken);
+				// remove details
 				ei.setEventDetails(null);
 			}
 			
@@ -652,7 +691,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 	
 	private static class EventPoolDecoderFromDb {
-		private static final String SELECT_FIELDS = "poolId,poolPicture,poolTitle,poolPlace,poolDetails,disableStar,parentEvent";
+		private static final String SELECT_FIELDS = "poolId,poolPicture,poolTitle,poolPlace,poolDetails,disableStar,disableFilterByCateg,disableFilterByTags,enableScan,noResultText,parentEvent";
 		public static String getSelectFields() {
 			return SELECT_FIELDS;
 		}
@@ -662,11 +701,15 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ep.setPoolId(rs.getLong(1));
 			if(rs.wasNull()) ep.unsetPoolId(); // should never happen
 			
-			ep.setPoolPicture(rs.getString(2));
+			ep.setPoolPicture(getResizedPhotoUrl(rs.getString(2), 48));
 			ep.setPoolTitle(rs.getString(3));
 			ep.setPoolPlace(rs.getString(4));
 			ep.setPoolDetails(rs.getString(5));
 			ep.setDisableStar(rs.getBoolean(6));
+			ep.setDisableFilterByCateg(rs.getBoolean(7));
+			ep.setDisableFilterByTags(rs.getBoolean(8));
+			ep.setEnableScan(rs.getBoolean(9));
+			ep.setNoResultText(rs.getString(10));
 			ep.setChildrenEvents(new LinkedList<Long>());
 			
 			return ep;
@@ -717,6 +760,44 @@ public class EventsServiceImpl implements EventsService.Iface {
 		stm.close();
 		
 		return ep;
+	}
+
+
+	private static String userTokenFromExchangeToken(Connection conn, String exchangeToken) throws SQLException {
+		PreparedStatement stm;
+		ResultSet rs;
+		
+		String userToken = null;
+		stm = conn.prepareStatement("SELECT userId FROM eventusers WHERE exchangeToken=?;");
+		stm.setString(1, exchangeToken);
+		rs = stm.executeQuery();
+		if(rs.next()) {
+			userToken = rs.getString(1);
+		}
+		rs.close();
+		stm.close();
+		
+		return userToken;
+	}
+
+	private static int exchangeContacts(Connection conn, String userToken1, String userToken2) throws SQLException {
+		PreparedStatement stm;
+		int affectedRows = 0;
+		String query = "UPDATE eventperms SET permLevel=100 WHERE userToken=? AND eventItemId=(SELECT mappedEvent FROM eventusers WHERE userId=?);";
+		
+		stm = conn.prepareStatement(query);
+		stm.setString(1, userToken1);
+		stm.setString(2, userToken2);
+		affectedRows += stm.executeUpdate();
+		stm.close();
+		
+		stm = conn.prepareStatement(query);
+		stm.setString(1, userToken2);
+		stm.setString(2, userToken1);
+		affectedRows += stm.executeUpdate();
+		stm.close();
+		
+		return affectedRows;
 	}
 
 }

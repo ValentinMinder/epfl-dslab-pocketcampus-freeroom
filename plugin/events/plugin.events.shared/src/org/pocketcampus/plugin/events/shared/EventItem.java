@@ -33,13 +33,14 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
   private static final org.apache.thrift.protocol.TField EVENT_PLACE_FIELD_DESC = new org.apache.thrift.protocol.TField("eventPlace", org.apache.thrift.protocol.TType.STRING, (short)7);
   private static final org.apache.thrift.protocol.TField EVENT_SPEAKER_FIELD_DESC = new org.apache.thrift.protocol.TField("eventSpeaker", org.apache.thrift.protocol.TType.STRING, (short)8);
   private static final org.apache.thrift.protocol.TField EVENT_DETAILS_FIELD_DESC = new org.apache.thrift.protocol.TField("eventDetails", org.apache.thrift.protocol.TType.STRING, (short)9);
-  private static final org.apache.thrift.protocol.TField CHILDREN_POOLS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenPools", org.apache.thrift.protocol.TType.LIST, (short)11);
+  private static final org.apache.thrift.protocol.TField EVENT_THUMBNAIL_FIELD_DESC = new org.apache.thrift.protocol.TField("eventThumbnail", org.apache.thrift.protocol.TType.STRING, (short)10);
   private static final org.apache.thrift.protocol.TField EVENT_URI_FIELD_DESC = new org.apache.thrift.protocol.TField("eventUri", org.apache.thrift.protocol.TType.STRING, (short)12);
   private static final org.apache.thrift.protocol.TField VCAL_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("vcalUid", org.apache.thrift.protocol.TType.STRING, (short)13);
   private static final org.apache.thrift.protocol.TField EVENT_CATEG_FIELD_DESC = new org.apache.thrift.protocol.TField("eventCateg", org.apache.thrift.protocol.TType.I32, (short)14);
   private static final org.apache.thrift.protocol.TField EVENT_TAGS_FIELD_DESC = new org.apache.thrift.protocol.TField("eventTags", org.apache.thrift.protocol.TType.LIST, (short)15);
   private static final org.apache.thrift.protocol.TField LOCATION_HREF_FIELD_DESC = new org.apache.thrift.protocol.TField("locationHref", org.apache.thrift.protocol.TType.STRING, (short)16);
   private static final org.apache.thrift.protocol.TField DETAILS_LINK_FIELD_DESC = new org.apache.thrift.protocol.TField("detailsLink", org.apache.thrift.protocol.TType.STRING, (short)17);
+  private static final org.apache.thrift.protocol.TField CHILDREN_POOLS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenPools", org.apache.thrift.protocol.TType.LIST, (short)20);
 
   public long eventId; // required
   public long startDate; // required
@@ -50,13 +51,14 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
   public String eventPlace; // required
   public String eventSpeaker; // required
   public String eventDetails; // required
-  public List<Long> childrenPools; // required
+  public String eventThumbnail; // required
   public String eventUri; // required
   public String vcalUid; // required
   public int eventCateg; // required
   public List<String> eventTags; // required
   public String locationHref; // required
   public String detailsLink; // required
+  public List<Long> childrenPools; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -69,13 +71,14 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     EVENT_PLACE((short)7, "eventPlace"),
     EVENT_SPEAKER((short)8, "eventSpeaker"),
     EVENT_DETAILS((short)9, "eventDetails"),
-    CHILDREN_POOLS((short)11, "childrenPools"),
+    EVENT_THUMBNAIL((short)10, "eventThumbnail"),
     EVENT_URI((short)12, "eventUri"),
     VCAL_UID((short)13, "vcalUid"),
     EVENT_CATEG((short)14, "eventCateg"),
     EVENT_TAGS((short)15, "eventTags"),
     LOCATION_HREF((short)16, "locationHref"),
-    DETAILS_LINK((short)17, "detailsLink");
+    DETAILS_LINK((short)17, "detailsLink"),
+    CHILDREN_POOLS((short)20, "childrenPools");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -108,8 +111,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
           return EVENT_SPEAKER;
         case 9: // EVENT_DETAILS
           return EVENT_DETAILS;
-        case 11: // CHILDREN_POOLS
-          return CHILDREN_POOLS;
+        case 10: // EVENT_THUMBNAIL
+          return EVENT_THUMBNAIL;
         case 12: // EVENT_URI
           return EVENT_URI;
         case 13: // VCAL_UID
@@ -122,6 +125,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
           return LOCATION_HREF;
         case 17: // DETAILS_LINK
           return DETAILS_LINK;
+        case 20: // CHILDREN_POOLS
+          return CHILDREN_POOLS;
         default:
           return null;
       }
@@ -190,9 +195,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.EVENT_DETAILS, new org.apache.thrift.meta_data.FieldMetaData("eventDetails", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.CHILDREN_POOLS, new org.apache.thrift.meta_data.FieldMetaData("childrenPools", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64))));
+    tmpMap.put(_Fields.EVENT_THUMBNAIL, new org.apache.thrift.meta_data.FieldMetaData("eventThumbnail", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.EVENT_URI, new org.apache.thrift.meta_data.FieldMetaData("eventUri", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.VCAL_UID, new org.apache.thrift.meta_data.FieldMetaData("vcalUid", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
@@ -206,6 +210,9 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.DETAILS_LINK, new org.apache.thrift.meta_data.FieldMetaData("detailsLink", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.CHILDREN_POOLS, new org.apache.thrift.meta_data.FieldMetaData("childrenPools", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(EventItem.class, metaDataMap);
   }
@@ -246,12 +253,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     if (other.isSetEventDetails()) {
       this.eventDetails = other.eventDetails;
     }
-    if (other.isSetChildrenPools()) {
-      List<Long> __this__childrenPools = new ArrayList<Long>();
-      for (Long other_element : other.childrenPools) {
-        __this__childrenPools.add(other_element);
-      }
-      this.childrenPools = __this__childrenPools;
+    if (other.isSetEventThumbnail()) {
+      this.eventThumbnail = other.eventThumbnail;
     }
     if (other.isSetEventUri()) {
       this.eventUri = other.eventUri;
@@ -272,6 +275,13 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     }
     if (other.isSetDetailsLink()) {
       this.detailsLink = other.detailsLink;
+    }
+    if (other.isSetChildrenPools()) {
+      List<Long> __this__childrenPools = new ArrayList<Long>();
+      for (Long other_element : other.childrenPools) {
+        __this__childrenPools.add(other_element);
+      }
+      this.childrenPools = __this__childrenPools;
     }
   }
 
@@ -294,7 +304,7 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     this.eventPlace = null;
     this.eventSpeaker = null;
     this.eventDetails = null;
-    this.childrenPools = null;
+    this.eventThumbnail = null;
     this.eventUri = null;
     this.vcalUid = null;
     setEventCategIsSet(false);
@@ -302,6 +312,7 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     this.eventTags = null;
     this.locationHref = null;
     this.detailsLink = null;
+    this.childrenPools = null;
   }
 
   public long getEventId() {
@@ -516,42 +527,27 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     }
   }
 
-  public int getChildrenPoolsSize() {
-    return (this.childrenPools == null) ? 0 : this.childrenPools.size();
+  public String getEventThumbnail() {
+    return this.eventThumbnail;
   }
 
-  public java.util.Iterator<Long> getChildrenPoolsIterator() {
-    return (this.childrenPools == null) ? null : this.childrenPools.iterator();
-  }
-
-  public void addToChildrenPools(long elem) {
-    if (this.childrenPools == null) {
-      this.childrenPools = new ArrayList<Long>();
-    }
-    this.childrenPools.add(elem);
-  }
-
-  public List<Long> getChildrenPools() {
-    return this.childrenPools;
-  }
-
-  public EventItem setChildrenPools(List<Long> childrenPools) {
-    this.childrenPools = childrenPools;
+  public EventItem setEventThumbnail(String eventThumbnail) {
+    this.eventThumbnail = eventThumbnail;
     return this;
   }
 
-  public void unsetChildrenPools() {
-    this.childrenPools = null;
+  public void unsetEventThumbnail() {
+    this.eventThumbnail = null;
   }
 
-  /** Returns true if field childrenPools is set (has been assigned a value) and false otherwise */
-  public boolean isSetChildrenPools() {
-    return this.childrenPools != null;
+  /** Returns true if field eventThumbnail is set (has been assigned a value) and false otherwise */
+  public boolean isSetEventThumbnail() {
+    return this.eventThumbnail != null;
   }
 
-  public void setChildrenPoolsIsSet(boolean value) {
+  public void setEventThumbnailIsSet(boolean value) {
     if (!value) {
-      this.childrenPools = null;
+      this.eventThumbnail = null;
     }
   }
 
@@ -713,6 +709,45 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     }
   }
 
+  public int getChildrenPoolsSize() {
+    return (this.childrenPools == null) ? 0 : this.childrenPools.size();
+  }
+
+  public java.util.Iterator<Long> getChildrenPoolsIterator() {
+    return (this.childrenPools == null) ? null : this.childrenPools.iterator();
+  }
+
+  public void addToChildrenPools(long elem) {
+    if (this.childrenPools == null) {
+      this.childrenPools = new ArrayList<Long>();
+    }
+    this.childrenPools.add(elem);
+  }
+
+  public List<Long> getChildrenPools() {
+    return this.childrenPools;
+  }
+
+  public EventItem setChildrenPools(List<Long> childrenPools) {
+    this.childrenPools = childrenPools;
+    return this;
+  }
+
+  public void unsetChildrenPools() {
+    this.childrenPools = null;
+  }
+
+  /** Returns true if field childrenPools is set (has been assigned a value) and false otherwise */
+  public boolean isSetChildrenPools() {
+    return this.childrenPools != null;
+  }
+
+  public void setChildrenPoolsIsSet(boolean value) {
+    if (!value) {
+      this.childrenPools = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case EVENT_ID:
@@ -787,11 +822,11 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       }
       break;
 
-    case CHILDREN_POOLS:
+    case EVENT_THUMBNAIL:
       if (value == null) {
-        unsetChildrenPools();
+        unsetEventThumbnail();
       } else {
-        setChildrenPools((List<Long>)value);
+        setEventThumbnail((String)value);
       }
       break;
 
@@ -843,6 +878,14 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       }
       break;
 
+    case CHILDREN_POOLS:
+      if (value == null) {
+        unsetChildrenPools();
+      } else {
+        setChildrenPools((List<Long>)value);
+      }
+      break;
+
     }
   }
 
@@ -875,8 +918,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     case EVENT_DETAILS:
       return getEventDetails();
 
-    case CHILDREN_POOLS:
-      return getChildrenPools();
+    case EVENT_THUMBNAIL:
+      return getEventThumbnail();
 
     case EVENT_URI:
       return getEventUri();
@@ -895,6 +938,9 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
 
     case DETAILS_LINK:
       return getDetailsLink();
+
+    case CHILDREN_POOLS:
+      return getChildrenPools();
 
     }
     throw new IllegalStateException();
@@ -925,8 +971,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       return isSetEventSpeaker();
     case EVENT_DETAILS:
       return isSetEventDetails();
-    case CHILDREN_POOLS:
-      return isSetChildrenPools();
+    case EVENT_THUMBNAIL:
+      return isSetEventThumbnail();
     case EVENT_URI:
       return isSetEventUri();
     case VCAL_UID:
@@ -939,6 +985,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       return isSetLocationHref();
     case DETAILS_LINK:
       return isSetDetailsLink();
+    case CHILDREN_POOLS:
+      return isSetChildrenPools();
     }
     throw new IllegalStateException();
   }
@@ -1037,12 +1085,12 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         return false;
     }
 
-    boolean this_present_childrenPools = true && this.isSetChildrenPools();
-    boolean that_present_childrenPools = true && that.isSetChildrenPools();
-    if (this_present_childrenPools || that_present_childrenPools) {
-      if (!(this_present_childrenPools && that_present_childrenPools))
+    boolean this_present_eventThumbnail = true && this.isSetEventThumbnail();
+    boolean that_present_eventThumbnail = true && that.isSetEventThumbnail();
+    if (this_present_eventThumbnail || that_present_eventThumbnail) {
+      if (!(this_present_eventThumbnail && that_present_eventThumbnail))
         return false;
-      if (!this.childrenPools.equals(that.childrenPools))
+      if (!this.eventThumbnail.equals(that.eventThumbnail))
         return false;
     }
 
@@ -1100,6 +1148,15 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         return false;
     }
 
+    boolean this_present_childrenPools = true && this.isSetChildrenPools();
+    boolean that_present_childrenPools = true && that.isSetChildrenPools();
+    if (this_present_childrenPools || that_present_childrenPools) {
+      if (!(this_present_childrenPools && that_present_childrenPools))
+        return false;
+      if (!this.childrenPools.equals(that.childrenPools))
+        return false;
+    }
+
     return true;
   }
 
@@ -1152,10 +1209,10 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     if (present_eventDetails)
       builder.append(eventDetails);
 
-    boolean present_childrenPools = true && (isSetChildrenPools());
-    builder.append(present_childrenPools);
-    if (present_childrenPools)
-      builder.append(childrenPools);
+    boolean present_eventThumbnail = true && (isSetEventThumbnail());
+    builder.append(present_eventThumbnail);
+    if (present_eventThumbnail)
+      builder.append(eventThumbnail);
 
     boolean present_eventUri = true && (isSetEventUri());
     builder.append(present_eventUri);
@@ -1186,6 +1243,11 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     builder.append(present_detailsLink);
     if (present_detailsLink)
       builder.append(detailsLink);
+
+    boolean present_childrenPools = true && (isSetChildrenPools());
+    builder.append(present_childrenPools);
+    if (present_childrenPools)
+      builder.append(childrenPools);
 
     return builder.toHashCode();
   }
@@ -1288,12 +1350,12 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetChildrenPools()).compareTo(typedOther.isSetChildrenPools());
+    lastComparison = Boolean.valueOf(isSetEventThumbnail()).compareTo(typedOther.isSetEventThumbnail());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetChildrenPools()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.childrenPools, typedOther.childrenPools);
+    if (isSetEventThumbnail()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.eventThumbnail, typedOther.eventThumbnail);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1354,6 +1416,16 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     }
     if (isSetDetailsLink()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.detailsLink, typedOther.detailsLink);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetChildrenPools()).compareTo(typedOther.isSetChildrenPools());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetChildrenPools()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.childrenPools, typedOther.childrenPools);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1442,19 +1514,9 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 11: // CHILDREN_POOLS
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-              this.childrenPools = new ArrayList<Long>(_list0.size);
-              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
-              {
-                long _elem2; // required
-                _elem2 = iprot.readI64();
-                this.childrenPools.add(_elem2);
-              }
-              iprot.readListEnd();
-            }
+        case 10: // EVENT_THUMBNAIL
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.eventThumbnail = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1484,13 +1546,13 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         case 15: // EVENT_TAGS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list3 = iprot.readListBegin();
-              this.eventTags = new ArrayList<String>(_list3.size);
-              for (int _i4 = 0; _i4 < _list3.size; ++_i4)
+              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+              this.eventTags = new ArrayList<String>(_list0.size);
+              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
               {
-                String _elem5; // required
-                _elem5 = iprot.readString();
-                this.eventTags.add(_elem5);
+                String _elem2; // required
+                _elem2 = iprot.readString();
+                this.eventTags.add(_elem2);
               }
               iprot.readListEnd();
             }
@@ -1508,6 +1570,23 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         case 17: // DETAILS_LINK
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.detailsLink = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 20: // CHILDREN_POOLS
+          if (field.type == org.apache.thrift.protocol.TType.LIST) {
+            {
+              org.apache.thrift.protocol.TList _list3 = iprot.readListBegin();
+              this.childrenPools = new ArrayList<Long>(_list3.size);
+              for (int _i4 = 0; _i4 < _list3.size; ++_i4)
+              {
+                long _elem5; // required
+                _elem5 = iprot.readI64();
+                this.childrenPools.add(_elem5);
+              }
+              iprot.readListEnd();
+            }
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1583,17 +1662,10 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         oprot.writeFieldEnd();
       }
     }
-    if (this.childrenPools != null) {
-      if (isSetChildrenPools()) {
-        oprot.writeFieldBegin(CHILDREN_POOLS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I64, this.childrenPools.size()));
-          for (long _iter6 : this.childrenPools)
-          {
-            oprot.writeI64(_iter6);
-          }
-          oprot.writeListEnd();
-        }
+    if (this.eventThumbnail != null) {
+      if (isSetEventThumbnail()) {
+        oprot.writeFieldBegin(EVENT_THUMBNAIL_FIELD_DESC);
+        oprot.writeString(this.eventThumbnail);
         oprot.writeFieldEnd();
       }
     }
@@ -1621,9 +1693,9 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         oprot.writeFieldBegin(EVENT_TAGS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.eventTags.size()));
-          for (String _iter7 : this.eventTags)
+          for (String _iter6 : this.eventTags)
           {
-            oprot.writeString(_iter7);
+            oprot.writeString(_iter6);
           }
           oprot.writeListEnd();
         }
@@ -1641,6 +1713,20 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       if (isSetDetailsLink()) {
         oprot.writeFieldBegin(DETAILS_LINK_FIELD_DESC);
         oprot.writeString(this.detailsLink);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.childrenPools != null) {
+      if (isSetChildrenPools()) {
+        oprot.writeFieldBegin(CHILDREN_POOLS_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I64, this.childrenPools.size()));
+          for (long _iter7 : this.childrenPools)
+          {
+            oprot.writeI64(_iter7);
+          }
+          oprot.writeListEnd();
+        }
         oprot.writeFieldEnd();
       }
     }
@@ -1724,13 +1810,13 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       }
       first = false;
     }
-    if (isSetChildrenPools()) {
+    if (isSetEventThumbnail()) {
       if (!first) sb.append(", ");
-      sb.append("childrenPools:");
-      if (this.childrenPools == null) {
+      sb.append("eventThumbnail:");
+      if (this.eventThumbnail == null) {
         sb.append("null");
       } else {
-        sb.append(this.childrenPools);
+        sb.append(this.eventThumbnail);
       }
       first = false;
     }
@@ -1787,6 +1873,16 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         sb.append("null");
       } else {
         sb.append(this.detailsLink);
+      }
+      first = false;
+    }
+    if (isSetChildrenPools()) {
+      if (!first) sb.append(", ");
+      sb.append("childrenPools:");
+      if (this.childrenPools == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.childrenPools);
       }
       first = false;
     }

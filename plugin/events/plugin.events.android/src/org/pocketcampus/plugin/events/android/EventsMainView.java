@@ -15,10 +15,14 @@ import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuated;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuator;
 import org.pocketcampus.android.platform.sdk.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
 import org.pocketcampus.plugin.events.shared.Constants;
 import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.events.shared.EventPool;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
@@ -28,6 +32,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -51,11 +56,12 @@ public class EventsMainView extends PluginView implements IEventsView {
 	private EventsModel mModel;
 	
 	public static final String EXTRAS_KEY_EVENTPOOLID = "eventPoolId";
-	public static final String QUERYSTRING_KEY_EVENTPOOLID = "id";
-	public static final String QUERYSTRING_KEY_TOKEN = "token";
+	public static final String QUERYSTRING_KEY_EVENTPOOLID = "eventPoolId";
+	public static final String QUERYSTRING_KEY_TOKEN = "userToken";
+	public static final String QUERYSTRING_KEY_EXCHANGETOKEN = "exchangeToken";
 	public static final String MAP_KEY_EVENTITEMID = "EVENT_ITEM_ID";
 	
-	private ListView mLayout;
+	private boolean displayingList;
 	
 	private long eventPoolId;
 	private List<Long> displayedEvents = new LinkedList<Long>();
@@ -76,7 +82,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		// The ActionBar is added automatically when you call setContentView
 		//disableActionBar();
 		setContentView(R.layout.events_main);
-		mLayout = (ListView) findViewById(R.id.events_main_list);
+		displayingList = true;
 	}
 	
 
@@ -90,17 +96,12 @@ public class EventsMainView extends PluginView implements IEventsView {
 		eventPoolId = Constants.CONTAINER_EVENT_ID;
 		if(aIntent != null) {
 			Bundle aExtras = aIntent.getExtras();
-			Uri aData = aIntent.getData();
+			//Uri aData = aIntent.getData();
 			if(aExtras != null && aExtras.containsKey(EXTRAS_KEY_EVENTPOOLID)) {
-				System.out.println("Started with intent to display pool " + eventPoolId);
 				eventPoolId = Long.parseLong(aExtras.getString(EXTRAS_KEY_EVENTPOOLID));
-			} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID) != null) {
-				System.out.println("External start with intent to display pool " + eventPoolId);
-				eventPoolId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID));
-				if(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN) != null) {
-					System.out.println("Got also a token :-)");
-					mModel.setToken(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN));
-				}
+				System.out.println("Started with intent to display pool " + eventPoolId);
+			/*} else {
+				externalCall(aData); // TODO too many refresh*/
 			}
 		}
 		
@@ -108,16 +109,50 @@ public class EventsMainView extends PluginView implements IEventsView {
 		if(eventPoolId == Constants.CONTAINER_EVENT_ID) Tracker.getInstance().trackPageView("events");
 		else Tracker.getInstance().trackPageView("events/" + eventPoolId + "/subevents");
 		
-		mController.refreshEventPool(eventPoolId, false);
-		eventPoolsUpdated(null);
+		mController.refreshEventPool(this, eventPoolId, false);
+		//eventPoolsUpdated(null);
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		if(mController != null) {
+			mController.refreshEventPool(this, eventPoolId, false);
+		}
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		System.out.println("back from barcode scanner");
+		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		if (scanResult != null && "QR_CODE".equals(scanResult.getFormatName())) {
+			externalCall(Uri.parse(scanResult.getContents()));
+		}
+	}
+	
+	private void externalCall(Uri aData) {
+		if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID) != null) {
+			eventPoolId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID));
+			System.out.println("External start with intent to display pool " + eventPoolId);
+			if(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN) != null) {
+				System.out.println("Got also a token :-)");
+				mModel.setToken(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN));
+				mController.refreshEventPool(this, eventPoolId, false);
+			} else if(aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN) != null) {
+				System.out.println("Got request to exchange contacts");
+				if(mModel.getToken() != null)
+					mController.exchangeContacts(this, aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN));
+			}
+		}
+	}
+	
+	@Override
 	public void eventPoolsUpdated(List<Long> updated) {
-		System.out.println("EventsMainView::eventPoolsUpdated");
 		
 		if(updated != null && !updated.contains(eventPoolId))
 			return;
+		
+		System.out.println("EventsMainView::eventPoolsUpdated eventPoolId=" + eventPoolId + " obj=" + this);
 		
 		//System.out.println("eventsListUpdated getting pool");
 		final EventPool parentEvent = mModel.getEventPool(eventPoolId);
@@ -156,7 +191,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 					case R.id.event_speaker:
 						return e.getEventPlace();
 					case R.id.event_thumbnail:
-						return getResizedPhotoUrl(e.getEventPicture(), 48);
+						return e.getEventThumbnail();
 					case R.id.event_time:
 						if(!e.isSetStartDate())
 							return null;
@@ -196,26 +231,38 @@ public class EventsMainView extends PluginView implements IEventsView {
 					R.layout.events_list_row, p.getKeys(), p.getResources()));
 		}
 		
-		mLayout.setAdapter(adapter);
-		//mLayout.setCacheColorHint(Color.TRANSPARENT);
-		//mLayout.setFastScrollEnabled(true);
-		//mLayout.setScrollingCacheEnabled(false);
-		//mLayout.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
-		
-		mLayout.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
-		
-		mLayout.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Object o = arg0.getItemAtPosition(arg2);
-				if(o instanceof Map<?, ?>) {
-					Intent i = new Intent(EventsMainView.this, EventDetailView.class);
-					i.putExtra(EXTRAS_KEY_EVENTITEMID, ((Map<?, ?>) o).get(MAP_KEY_EVENTITEMID).toString());
-					EventsMainView.this.startActivity(i);
-				} else {
-					Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
-				}
+		if(displayedEvents.size() == 0 && parentEvent.isSetNoResultText()) {
+			displayingList = false;
+			StandardLayout sl = new StandardLayout(this);
+			sl.setText(parentEvent.getNoResultText());
+			setContentView(sl);
+		} else {
+			if(!displayingList) {
+				setContentView(R.layout.events_main);
+				displayingList = true;
 			}
-		});
+			ListView list = (ListView) findViewById(R.id.events_main_list);
+			list.setAdapter(adapter);
+			//list.setCacheColorHint(Color.TRANSPARENT);
+			//list.setFastScrollEnabled(true);
+			//list.setScrollingCacheEnabled(false);
+			//list.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
+			
+			list.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+			
+			list.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					Object o = arg0.getItemAtPosition(arg2);
+					if(o instanceof Map<?, ?>) {
+						Intent i = new Intent(EventsMainView.this, EventDetailView.class);
+						i.putExtra(EXTRAS_KEY_EVENTITEMID, ((Map<?, ?>) o).get(MAP_KEY_EVENTITEMID).toString());
+						EventsMainView.this.startActivity(i);
+					} else {
+						Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+		}
 		
 		
 	}
@@ -228,35 +275,61 @@ public class EventsMainView extends PluginView implements IEventsView {
 	
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem categMenu = menu.add("Choose Category");
-		categMenu.setOnMenuItemClickListener(buildMenuListener(this, 
-				Constants.EVENTS_CATEGS, "Choose a Category", 
-				new SelectionHandler<Integer>() {
-					public void saveSelection(Integer t) {
-						mModel.setCateg(t);
-					}
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
+		boolean showScanBarcode = false;
+		boolean showFilterCateg = true;
+		boolean showFilterTags = true;
+		EventPool pool = mModel.getEventPool(eventPoolId);
+		if(pool != null) {
+			showScanBarcode = pool.isEnableScan();
+			showFilterCateg = !pool.isDisableFilterByCateg();
+			showFilterTags = !pool.isDisableFilterByTags();
+		}
+		if(showScanBarcode) {
+			MenuItem scanMenu = menu.add("Scan barcode");
+			scanMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					IntentIntegrator integrator = new IntentIntegrator(EventsMainView.this);
+					integrator.initiateScan();
+					return true;
 				}
-		));
-		MenuItem feedMenu = menu.add("Choose Feed");
-		feedMenu.setOnMenuItemClickListener(buildMenuListener(this,
-				Constants.EVENTS_TAGS, "Choose a Feed", 
-				new SelectionHandler<String>() {
-					public void saveSelection(String t) {
-						mModel.setTag(t);
+			});
+		}
+		if(showFilterCateg) {
+			MenuItem categMenu = menu.add("Filter by category");
+			categMenu.setOnMenuItemClickListener(buildMenuListener(this, 
+					Constants.EVENTS_CATEGS, "Choose Category", 
+					new SelectionHandler<Integer>() {
+						public void saveSelection(Integer t) {
+							//mModel.setCateg(t);
+						}
 					}
-				}
-		));
-		MenuItem periodMenu = menu.add("Choose Period");
-		periodMenu.setOnMenuItemClickListener(buildMenuListener(this,
-				Constants.EVENTS_PERIODS, "Choose a Period", 
-				new SelectionHandler<Integer>() {
-					public void saveSelection(Integer t) {
-						mModel.setPeriod(t);
-						mController.refreshEventPool(eventPoolId, false);
+			));
+		}
+		if(showFilterTags) {
+			MenuItem feedMenu = menu.add("Filter by tag(s)");
+			feedMenu.setOnMenuItemClickListener(buildMenuListener(this,
+					Constants.EVENTS_TAGS, "Choose Tag(s)", 
+					new SelectionHandler<String>() {
+						public void saveSelection(String t) {
+							//mModel.setTag(t);
+						}
 					}
-				}
-		));
+			));
+		}
+		if(eventPoolId == Constants.CONTAINER_EVENT_ID) { // settings thingy
+			MenuItem periodMenu = menu.add("Choose a period");
+			periodMenu.setOnMenuItemClickListener(buildMenuListener(this,
+					Constants.EVENTS_PERIODS, "Choose Period", 
+					new SelectionHandler<Integer>() {
+						public void saveSelection(Integer t) {
+							mModel.setPeriod(t);
+							mController.refreshEventPool(EventsMainView.this, eventPoolId, false);
+						}
+					}
+			));
+		}
 		return true;
 	}
 	
@@ -264,7 +337,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	public void networkErrorCacheExists() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.sdk_connection_no_cache_yes), Toast.LENGTH_SHORT).show();
-		mController.refreshEventPool(eventPoolId, true);
+		mController.refreshEventPool(this, eventPoolId, true);
 	}
 	
 	@Override
@@ -280,10 +353,17 @@ public class EventsMainView extends PluginView implements IEventsView {
 	}
 
 	@Override
-	public void identificationRequired() {
-		Toast.makeText(getApplicationContext(), 
-				"Please scan the barcode in the email to enable this feature", 
-				Toast.LENGTH_SHORT).show();
+	public void exchangeContactsFinished(boolean success) {
+		if(success) {
+			mController.refreshEventPool(this, eventPoolId, false);
+			Toast.makeText(getApplicationContext(), 
+					"Successfully exchanged contacts information", 
+					Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(getApplicationContext(), 
+					"Failed to exchange contact information", 
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 }

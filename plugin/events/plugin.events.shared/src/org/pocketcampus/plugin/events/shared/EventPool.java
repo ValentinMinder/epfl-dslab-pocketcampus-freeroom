@@ -30,7 +30,11 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   private static final org.apache.thrift.protocol.TField POOL_PLACE_FIELD_DESC = new org.apache.thrift.protocol.TField("poolPlace", org.apache.thrift.protocol.TType.STRING, (short)7);
   private static final org.apache.thrift.protocol.TField POOL_DETAILS_FIELD_DESC = new org.apache.thrift.protocol.TField("poolDetails", org.apache.thrift.protocol.TType.STRING, (short)9);
   private static final org.apache.thrift.protocol.TField DISABLE_STAR_FIELD_DESC = new org.apache.thrift.protocol.TField("disableStar", org.apache.thrift.protocol.TType.BOOL, (short)10);
-  private static final org.apache.thrift.protocol.TField CHILDREN_EVENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenEvents", org.apache.thrift.protocol.TType.LIST, (short)11);
+  private static final org.apache.thrift.protocol.TField DISABLE_FILTER_BY_CATEG_FIELD_DESC = new org.apache.thrift.protocol.TField("disableFilterByCateg", org.apache.thrift.protocol.TType.BOOL, (short)11);
+  private static final org.apache.thrift.protocol.TField DISABLE_FILTER_BY_TAGS_FIELD_DESC = new org.apache.thrift.protocol.TField("disableFilterByTags", org.apache.thrift.protocol.TType.BOOL, (short)12);
+  private static final org.apache.thrift.protocol.TField ENABLE_SCAN_FIELD_DESC = new org.apache.thrift.protocol.TField("enableScan", org.apache.thrift.protocol.TType.BOOL, (short)13);
+  private static final org.apache.thrift.protocol.TField NO_RESULT_TEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("noResultText", org.apache.thrift.protocol.TType.STRING, (short)14);
+  private static final org.apache.thrift.protocol.TField CHILDREN_EVENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenEvents", org.apache.thrift.protocol.TType.LIST, (short)15);
 
   public long poolId; // required
   public String poolPicture; // required
@@ -38,6 +42,10 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   public String poolPlace; // required
   public String poolDetails; // required
   public boolean disableStar; // required
+  public boolean disableFilterByCateg; // required
+  public boolean disableFilterByTags; // required
+  public boolean enableScan; // required
+  public String noResultText; // required
   public List<Long> childrenEvents; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -48,7 +56,11 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     POOL_PLACE((short)7, "poolPlace"),
     POOL_DETAILS((short)9, "poolDetails"),
     DISABLE_STAR((short)10, "disableStar"),
-    CHILDREN_EVENTS((short)11, "childrenEvents");
+    DISABLE_FILTER_BY_CATEG((short)11, "disableFilterByCateg"),
+    DISABLE_FILTER_BY_TAGS((short)12, "disableFilterByTags"),
+    ENABLE_SCAN((short)13, "enableScan"),
+    NO_RESULT_TEXT((short)14, "noResultText"),
+    CHILDREN_EVENTS((short)15, "childrenEvents");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -75,7 +87,15 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
           return POOL_DETAILS;
         case 10: // DISABLE_STAR
           return DISABLE_STAR;
-        case 11: // CHILDREN_EVENTS
+        case 11: // DISABLE_FILTER_BY_CATEG
+          return DISABLE_FILTER_BY_CATEG;
+        case 12: // DISABLE_FILTER_BY_TAGS
+          return DISABLE_FILTER_BY_TAGS;
+        case 13: // ENABLE_SCAN
+          return ENABLE_SCAN;
+        case 14: // NO_RESULT_TEXT
+          return NO_RESULT_TEXT;
+        case 15: // CHILDREN_EVENTS
           return CHILDREN_EVENTS;
         default:
           return null;
@@ -119,7 +139,10 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   // isset id assignments
   private static final int __POOLID_ISSET_ID = 0;
   private static final int __DISABLESTAR_ISSET_ID = 1;
-  private BitSet __isset_bit_vector = new BitSet(2);
+  private static final int __DISABLEFILTERBYCATEG_ISSET_ID = 2;
+  private static final int __DISABLEFILTERBYTAGS_ISSET_ID = 3;
+  private static final int __ENABLESCAN_ISSET_ID = 4;
+  private BitSet __isset_bit_vector = new BitSet(5);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -136,6 +159,14 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.DISABLE_STAR, new org.apache.thrift.meta_data.FieldMetaData("disableStar", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.DISABLE_FILTER_BY_CATEG, new org.apache.thrift.meta_data.FieldMetaData("disableFilterByCateg", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.DISABLE_FILTER_BY_TAGS, new org.apache.thrift.meta_data.FieldMetaData("disableFilterByTags", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.ENABLE_SCAN, new org.apache.thrift.meta_data.FieldMetaData("enableScan", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.NO_RESULT_TEXT, new org.apache.thrift.meta_data.FieldMetaData("noResultText", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.CHILDREN_EVENTS, new org.apache.thrift.meta_data.FieldMetaData("childrenEvents", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64))));
@@ -174,6 +205,12 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       this.poolDetails = other.poolDetails;
     }
     this.disableStar = other.disableStar;
+    this.disableFilterByCateg = other.disableFilterByCateg;
+    this.disableFilterByTags = other.disableFilterByTags;
+    this.enableScan = other.enableScan;
+    if (other.isSetNoResultText()) {
+      this.noResultText = other.noResultText;
+    }
     if (other.isSetChildrenEvents()) {
       List<Long> __this__childrenEvents = new ArrayList<Long>();
       for (Long other_element : other.childrenEvents) {
@@ -197,6 +234,13 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     this.poolDetails = null;
     setDisableStarIsSet(false);
     this.disableStar = false;
+    setDisableFilterByCategIsSet(false);
+    this.disableFilterByCateg = false;
+    setDisableFilterByTagsIsSet(false);
+    this.disableFilterByTags = false;
+    setEnableScanIsSet(false);
+    this.enableScan = false;
+    this.noResultText = null;
     this.childrenEvents = null;
   }
 
@@ -342,6 +386,99 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     __isset_bit_vector.set(__DISABLESTAR_ISSET_ID, value);
   }
 
+  public boolean isDisableFilterByCateg() {
+    return this.disableFilterByCateg;
+  }
+
+  public EventPool setDisableFilterByCateg(boolean disableFilterByCateg) {
+    this.disableFilterByCateg = disableFilterByCateg;
+    setDisableFilterByCategIsSet(true);
+    return this;
+  }
+
+  public void unsetDisableFilterByCateg() {
+    __isset_bit_vector.clear(__DISABLEFILTERBYCATEG_ISSET_ID);
+  }
+
+  /** Returns true if field disableFilterByCateg is set (has been assigned a value) and false otherwise */
+  public boolean isSetDisableFilterByCateg() {
+    return __isset_bit_vector.get(__DISABLEFILTERBYCATEG_ISSET_ID);
+  }
+
+  public void setDisableFilterByCategIsSet(boolean value) {
+    __isset_bit_vector.set(__DISABLEFILTERBYCATEG_ISSET_ID, value);
+  }
+
+  public boolean isDisableFilterByTags() {
+    return this.disableFilterByTags;
+  }
+
+  public EventPool setDisableFilterByTags(boolean disableFilterByTags) {
+    this.disableFilterByTags = disableFilterByTags;
+    setDisableFilterByTagsIsSet(true);
+    return this;
+  }
+
+  public void unsetDisableFilterByTags() {
+    __isset_bit_vector.clear(__DISABLEFILTERBYTAGS_ISSET_ID);
+  }
+
+  /** Returns true if field disableFilterByTags is set (has been assigned a value) and false otherwise */
+  public boolean isSetDisableFilterByTags() {
+    return __isset_bit_vector.get(__DISABLEFILTERBYTAGS_ISSET_ID);
+  }
+
+  public void setDisableFilterByTagsIsSet(boolean value) {
+    __isset_bit_vector.set(__DISABLEFILTERBYTAGS_ISSET_ID, value);
+  }
+
+  public boolean isEnableScan() {
+    return this.enableScan;
+  }
+
+  public EventPool setEnableScan(boolean enableScan) {
+    this.enableScan = enableScan;
+    setEnableScanIsSet(true);
+    return this;
+  }
+
+  public void unsetEnableScan() {
+    __isset_bit_vector.clear(__ENABLESCAN_ISSET_ID);
+  }
+
+  /** Returns true if field enableScan is set (has been assigned a value) and false otherwise */
+  public boolean isSetEnableScan() {
+    return __isset_bit_vector.get(__ENABLESCAN_ISSET_ID);
+  }
+
+  public void setEnableScanIsSet(boolean value) {
+    __isset_bit_vector.set(__ENABLESCAN_ISSET_ID, value);
+  }
+
+  public String getNoResultText() {
+    return this.noResultText;
+  }
+
+  public EventPool setNoResultText(String noResultText) {
+    this.noResultText = noResultText;
+    return this;
+  }
+
+  public void unsetNoResultText() {
+    this.noResultText = null;
+  }
+
+  /** Returns true if field noResultText is set (has been assigned a value) and false otherwise */
+  public boolean isSetNoResultText() {
+    return this.noResultText != null;
+  }
+
+  public void setNoResultTextIsSet(boolean value) {
+    if (!value) {
+      this.noResultText = null;
+    }
+  }
+
   public int getChildrenEventsSize() {
     return (this.childrenEvents == null) ? 0 : this.childrenEvents.size();
   }
@@ -431,6 +568,38 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       }
       break;
 
+    case DISABLE_FILTER_BY_CATEG:
+      if (value == null) {
+        unsetDisableFilterByCateg();
+      } else {
+        setDisableFilterByCateg((Boolean)value);
+      }
+      break;
+
+    case DISABLE_FILTER_BY_TAGS:
+      if (value == null) {
+        unsetDisableFilterByTags();
+      } else {
+        setDisableFilterByTags((Boolean)value);
+      }
+      break;
+
+    case ENABLE_SCAN:
+      if (value == null) {
+        unsetEnableScan();
+      } else {
+        setEnableScan((Boolean)value);
+      }
+      break;
+
+    case NO_RESULT_TEXT:
+      if (value == null) {
+        unsetNoResultText();
+      } else {
+        setNoResultText((String)value);
+      }
+      break;
+
     case CHILDREN_EVENTS:
       if (value == null) {
         unsetChildrenEvents();
@@ -462,6 +631,18 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     case DISABLE_STAR:
       return Boolean.valueOf(isDisableStar());
 
+    case DISABLE_FILTER_BY_CATEG:
+      return Boolean.valueOf(isDisableFilterByCateg());
+
+    case DISABLE_FILTER_BY_TAGS:
+      return Boolean.valueOf(isDisableFilterByTags());
+
+    case ENABLE_SCAN:
+      return Boolean.valueOf(isEnableScan());
+
+    case NO_RESULT_TEXT:
+      return getNoResultText();
+
     case CHILDREN_EVENTS:
       return getChildrenEvents();
 
@@ -488,6 +669,14 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       return isSetPoolDetails();
     case DISABLE_STAR:
       return isSetDisableStar();
+    case DISABLE_FILTER_BY_CATEG:
+      return isSetDisableFilterByCateg();
+    case DISABLE_FILTER_BY_TAGS:
+      return isSetDisableFilterByTags();
+    case ENABLE_SCAN:
+      return isSetEnableScan();
+    case NO_RESULT_TEXT:
+      return isSetNoResultText();
     case CHILDREN_EVENTS:
       return isSetChildrenEvents();
     }
@@ -561,6 +750,42 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         return false;
     }
 
+    boolean this_present_disableFilterByCateg = true && this.isSetDisableFilterByCateg();
+    boolean that_present_disableFilterByCateg = true && that.isSetDisableFilterByCateg();
+    if (this_present_disableFilterByCateg || that_present_disableFilterByCateg) {
+      if (!(this_present_disableFilterByCateg && that_present_disableFilterByCateg))
+        return false;
+      if (this.disableFilterByCateg != that.disableFilterByCateg)
+        return false;
+    }
+
+    boolean this_present_disableFilterByTags = true && this.isSetDisableFilterByTags();
+    boolean that_present_disableFilterByTags = true && that.isSetDisableFilterByTags();
+    if (this_present_disableFilterByTags || that_present_disableFilterByTags) {
+      if (!(this_present_disableFilterByTags && that_present_disableFilterByTags))
+        return false;
+      if (this.disableFilterByTags != that.disableFilterByTags)
+        return false;
+    }
+
+    boolean this_present_enableScan = true && this.isSetEnableScan();
+    boolean that_present_enableScan = true && that.isSetEnableScan();
+    if (this_present_enableScan || that_present_enableScan) {
+      if (!(this_present_enableScan && that_present_enableScan))
+        return false;
+      if (this.enableScan != that.enableScan)
+        return false;
+    }
+
+    boolean this_present_noResultText = true && this.isSetNoResultText();
+    boolean that_present_noResultText = true && that.isSetNoResultText();
+    if (this_present_noResultText || that_present_noResultText) {
+      if (!(this_present_noResultText && that_present_noResultText))
+        return false;
+      if (!this.noResultText.equals(that.noResultText))
+        return false;
+    }
+
     boolean this_present_childrenEvents = true && this.isSetChildrenEvents();
     boolean that_present_childrenEvents = true && that.isSetChildrenEvents();
     if (this_present_childrenEvents || that_present_childrenEvents) {
@@ -606,6 +831,26 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     builder.append(present_disableStar);
     if (present_disableStar)
       builder.append(disableStar);
+
+    boolean present_disableFilterByCateg = true && (isSetDisableFilterByCateg());
+    builder.append(present_disableFilterByCateg);
+    if (present_disableFilterByCateg)
+      builder.append(disableFilterByCateg);
+
+    boolean present_disableFilterByTags = true && (isSetDisableFilterByTags());
+    builder.append(present_disableFilterByTags);
+    if (present_disableFilterByTags)
+      builder.append(disableFilterByTags);
+
+    boolean present_enableScan = true && (isSetEnableScan());
+    builder.append(present_enableScan);
+    if (present_enableScan)
+      builder.append(enableScan);
+
+    boolean present_noResultText = true && (isSetNoResultText());
+    builder.append(present_noResultText);
+    if (present_noResultText)
+      builder.append(noResultText);
 
     boolean present_childrenEvents = true && (isSetChildrenEvents());
     builder.append(present_childrenEvents);
@@ -683,6 +928,46 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetDisableFilterByCateg()).compareTo(typedOther.isSetDisableFilterByCateg());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetDisableFilterByCateg()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.disableFilterByCateg, typedOther.disableFilterByCateg);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetDisableFilterByTags()).compareTo(typedOther.isSetDisableFilterByTags());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetDisableFilterByTags()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.disableFilterByTags, typedOther.disableFilterByTags);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetEnableScan()).compareTo(typedOther.isSetEnableScan());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetEnableScan()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.enableScan, typedOther.enableScan);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetNoResultText()).compareTo(typedOther.isSetNoResultText());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetNoResultText()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.noResultText, typedOther.noResultText);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetChildrenEvents()).compareTo(typedOther.isSetChildrenEvents());
     if (lastComparison != 0) {
       return lastComparison;
@@ -754,7 +1039,38 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 11: // CHILDREN_EVENTS
+        case 11: // DISABLE_FILTER_BY_CATEG
+          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+            this.disableFilterByCateg = iprot.readBool();
+            setDisableFilterByCategIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 12: // DISABLE_FILTER_BY_TAGS
+          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+            this.disableFilterByTags = iprot.readBool();
+            setDisableFilterByTagsIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 13: // ENABLE_SCAN
+          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+            this.enableScan = iprot.readBool();
+            setEnableScanIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 14: // NO_RESULT_TEXT
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.noResultText = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 15: // CHILDREN_EVENTS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
               org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
@@ -824,6 +1140,28 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       oprot.writeFieldBegin(DISABLE_STAR_FIELD_DESC);
       oprot.writeBool(this.disableStar);
       oprot.writeFieldEnd();
+    }
+    if (isSetDisableFilterByCateg()) {
+      oprot.writeFieldBegin(DISABLE_FILTER_BY_CATEG_FIELD_DESC);
+      oprot.writeBool(this.disableFilterByCateg);
+      oprot.writeFieldEnd();
+    }
+    if (isSetDisableFilterByTags()) {
+      oprot.writeFieldBegin(DISABLE_FILTER_BY_TAGS_FIELD_DESC);
+      oprot.writeBool(this.disableFilterByTags);
+      oprot.writeFieldEnd();
+    }
+    if (isSetEnableScan()) {
+      oprot.writeFieldBegin(ENABLE_SCAN_FIELD_DESC);
+      oprot.writeBool(this.enableScan);
+      oprot.writeFieldEnd();
+    }
+    if (this.noResultText != null) {
+      if (isSetNoResultText()) {
+        oprot.writeFieldBegin(NO_RESULT_TEXT_FIELD_DESC);
+        oprot.writeString(this.noResultText);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.childrenEvents != null) {
       if (isSetChildrenEvents()) {
@@ -895,6 +1233,34 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       if (!first) sb.append(", ");
       sb.append("disableStar:");
       sb.append(this.disableStar);
+      first = false;
+    }
+    if (isSetDisableFilterByCateg()) {
+      if (!first) sb.append(", ");
+      sb.append("disableFilterByCateg:");
+      sb.append(this.disableFilterByCateg);
+      first = false;
+    }
+    if (isSetDisableFilterByTags()) {
+      if (!first) sb.append(", ");
+      sb.append("disableFilterByTags:");
+      sb.append(this.disableFilterByTags);
+      first = false;
+    }
+    if (isSetEnableScan()) {
+      if (!first) sb.append(", ");
+      sb.append("enableScan:");
+      sb.append(this.enableScan);
+      first = false;
+    }
+    if (isSetNoResultText()) {
+      if (!first) sb.append(", ");
+      sb.append("noResultText:");
+      if (this.noResultText == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.noResultText);
+      }
       first = false;
     }
     if (isSetChildrenEvents()) {
