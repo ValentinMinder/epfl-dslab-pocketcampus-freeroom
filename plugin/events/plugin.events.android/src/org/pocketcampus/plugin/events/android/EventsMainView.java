@@ -3,9 +3,11 @@ package org.pocketcampus.plugin.events.android;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.pocketcampus.plugin.events.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -64,7 +66,9 @@ public class EventsMainView extends PluginView implements IEventsView {
 	private boolean displayingList;
 	
 	private long eventPoolId;
-	private List<Long> displayedEvents = new LinkedList<Long>();
+	private List<Long> eventsInRS = new LinkedList<Long>();
+	private Set<Integer> categsInRS = new HashSet<Integer>();
+	private Set<String> tagsInRS = new HashSet<String>();
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -162,13 +166,18 @@ public class EventsMainView extends PluginView implements IEventsView {
 		
 		//System.out.println("eventsListUpdated building hash childrenEvent=" + parentEvent.getChildrenEvents().size());
 		Map<Integer, List<EventItem>> eventsByCateg = new HashMap<Integer, List<EventItem>>();
-		displayedEvents.clear();
+		eventsInRS.clear();
+		categsInRS.clear();
+		tagsInRS.clear();
 		for(long eventId : parentEvent.getChildrenEvents()) {
 			EventItem e = mModel.getEventItem(eventId);
 			//e.setEventCateg(1);
 			if(e == null || !e.isSetEventCateg())
 				continue;
-			displayedEvents.add(eventId);
+			eventsInRS.add(eventId);
+			categsInRS.add(e.getEventCateg());
+			if(e.isSetEventTags()) 
+				tagsInRS.addAll(e.getEventTags());
 			if(!eventsByCateg.containsKey(e.getEventCateg()))
 				eventsByCateg.put(e.getEventCateg(), new LinkedList<EventItem>());
 			eventsByCateg.get(e.getEventCateg()).add(e);
@@ -189,7 +198,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 					case R.id.event_title:
 						return e.getEventTitle();
 					case R.id.event_speaker:
-						return e.getEventPlace();
+						return (e.isSetEventPlace() ? e.getEventPlace() : e.getEventSpeaker());
 					case R.id.event_thumbnail:
 						return e.getEventThumbnail();
 					case R.id.event_time:
@@ -231,7 +240,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 					R.layout.events_list_row, p.getKeys(), p.getResources()));
 		}
 		
-		if(displayedEvents.size() == 0 && parentEvent.isSetNoResultText()) {
+		if(eventsInRS.size() == 0 && parentEvent.isSetNoResultText()) {
 			displayingList = false;
 			StandardLayout sl = new StandardLayout(this);
 			sl.setText(parentEvent.getNoResultText());
@@ -269,7 +278,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	
 	@Override
 	public void eventItemsUpdated(List<Long> updated) {
-		if(intersect(displayedEvents, updated).size() > 0)
+		if(intersect(eventsInRS, updated).size() > 0)
 			eventPoolsUpdated(null);
 	}
 	
@@ -298,31 +307,31 @@ public class EventsMainView extends PluginView implements IEventsView {
 		}
 		if(showFilterCateg) {
 			MenuItem categMenu = menu.add("Filter by category");
-			categMenu.setOnMenuItemClickListener(buildMenuListener(this, 
-					Constants.EVENTS_CATEGS, "Choose Category", 
-					new SelectionHandler<Integer>() {
-						public void saveSelection(Integer t) {
-							//mModel.setCateg(t);
+			categMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this, 
+					subMap(Constants.EVENTS_CATEGS, categsInRS), "Choose Category", categsInRS,
+					new MultiChoiceHandler<Integer>() {
+						public void saveSelection(Integer t, boolean isChecked) {
+							Toast.makeText(getApplicationContext(), "Not yet implemented :-(", Toast.LENGTH_SHORT).show();
 						}
 					}
 			));
 		}
 		if(showFilterTags) {
 			MenuItem feedMenu = menu.add("Filter by tag(s)");
-			feedMenu.setOnMenuItemClickListener(buildMenuListener(this,
-					Constants.EVENTS_TAGS, "Choose Tag(s)", 
-					new SelectionHandler<String>() {
-						public void saveSelection(String t) {
-							//mModel.setTag(t);
+			feedMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this,
+					subMap(Constants.EVENTS_TAGS, tagsInRS), "Choose Tag(s)", tagsInRS,
+					new MultiChoiceHandler<String>() {
+						public void saveSelection(String t, boolean isChecked) {
+							Toast.makeText(getApplicationContext(), "Not yet implemented :-(", Toast.LENGTH_SHORT).show();
 						}
 					}
 			));
 		}
 		if(eventPoolId == Constants.CONTAINER_EVENT_ID) { // settings thingy
 			MenuItem periodMenu = menu.add("Choose a period");
-			periodMenu.setOnMenuItemClickListener(buildMenuListener(this,
-					Constants.EVENTS_PERIODS, "Choose Period", 
-					new SelectionHandler<Integer>() {
+			periodMenu.setOnMenuItemClickListener(buildMenuListenerSingleChoiceDialog(this,
+					Constants.EVENTS_PERIODS, "Choose Period", mModel.getPeriod(), 
+					new SingleChoiceHandler<Integer>() {
 						public void saveSelection(Integer t) {
 							mModel.setPeriod(t);
 							mController.refreshEventPool(EventsMainView.this, eventPoolId, false);

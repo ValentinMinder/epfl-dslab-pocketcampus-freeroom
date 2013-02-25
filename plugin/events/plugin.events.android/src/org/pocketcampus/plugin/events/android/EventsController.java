@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.events.android;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -31,6 +33,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -173,24 +176,58 @@ public class EventsController extends PluginController implements IEventsControl
 		}
 	}
 	
-	public static interface SelectionHandler<T> {
+	public static interface SingleChoiceHandler<T> {
 		void saveSelection(T t);
 	}
 	
-	public static <T extends Comparable<? super T>> OnMenuItemClickListener buildMenuListener(
-			final Context context, final Map<T, String> map, final String title, final SelectionHandler<T> handler) {
+	public static interface MultiChoiceHandler<T> {
+		void saveSelection(T t, boolean isChecked);
+	}
+	
+	public static <T extends Comparable<? super T>> OnMenuItemClickListener buildMenuListenerSingleChoiceDialog(
+			final Context context, final Map<T, String> map, final String title, final T selected, final SingleChoiceHandler<T> handler) {
 		final List<T> keysList = new LinkedList<T>(map.keySet());
 		Collections.sort(keysList);
+		final int selPos = keysList.indexOf(selected);
 		final List<String> valuesList = extractValues(map, keysList);
 		return new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				AlertDialog dialog = new AlertDialog.Builder(context)
 						.setTitle(title)
-						.setItems(
-								valuesList.toArray(new String[]{}), 
+						.setSingleChoiceItems(
+								valuesList.toArray(new String[]{}), selPos, 
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int which) {
 										handler.saveSelection(keysList.get(which));
+										dialog.dismiss();
+									}
+								})
+						.create();
+				dialog.setCanceledOnTouchOutside(true);
+				dialog.show();
+				return true;
+			}
+		};
+	}
+
+	public static <T extends Comparable<? super T>> OnMenuItemClickListener buildMenuListenerMultiChoiceDialog(
+			final Context context, final Map<T, String> map, final String title, final Set<T> selected, final MultiChoiceHandler<T> handler) {
+		final List<T> keysList = new LinkedList<T>(map.keySet());
+		Collections.sort(keysList);
+		final boolean[] selPos = new boolean[keysList.size()];
+		for(int i = 0; i < keysList.size(); i++) {
+			selPos[i] = selected.contains(keysList.get(i));
+		}
+		final List<String> valuesList = extractValues(map, keysList);
+		return new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				AlertDialog dialog = new AlertDialog.Builder(context)
+						.setTitle(title)
+						.setMultiChoiceItems(
+								valuesList.toArray(new String[]{}), selPos, 
+								new OnMultiChoiceClickListener() {
+									public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+										handler.saveSelection(keysList.get(which), isChecked);
 									}
 								})
 						.create();
@@ -246,6 +283,15 @@ public class EventsController extends PluginController implements IEventsControl
 		for(String tag : shortTags)
 			longTags.add(Constants.EVENTS_TAGS.get(tag));
 		return TextUtils.join(", ", longTags);
+	}
+	
+	public static <K, V> Map<K, V> subMap(Map<K, V> map, Collection<K> subKeys) {
+		Map<K, V> newMap = new HashMap<K, V>();
+		for(K k : subKeys) {
+			if(map.containsKey(k))
+				newMap.put(k, map.get(k));
+		}
+		return newMap;
 	}
 
 }
