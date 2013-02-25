@@ -25,4 +25,7 @@
 	<string name="sdk_authentication_failed">L\'authentification a échoué</string>
 	<string name="sdk_authentication_unexpected_error">Erreur inattendue!</string>
 
+	<string name="sdk_upstream_server_down">Le serveur en amont est en panne</string>
+	<string name="sdk_connection_no_cache_yes">Erreur de connexion, affichage des données à partir du cache</string>
+			
 </resources>

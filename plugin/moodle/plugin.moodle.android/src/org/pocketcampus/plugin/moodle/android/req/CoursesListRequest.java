@@ -32,7 +32,7 @@ public class CoursesListRequest extends Request<MoodleController, Iface, MoodleR
 			controller.notLoggedIn();
 		} else if(result.getIStatus() == 200) {
 			((MoodleModel) controller.getModel()).setCourses(result.getICourses());
-			if(!wasServicedFromCache())
+			//if(!foundInCache())
 				keepInCache();
 			/*else
 				refreshAsWell();*/

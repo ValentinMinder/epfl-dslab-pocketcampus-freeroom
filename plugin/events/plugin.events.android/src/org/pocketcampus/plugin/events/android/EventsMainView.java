@@ -1,257 +1,289 @@
 package org.pocketcampus.plugin.events.android;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.pocketcampus.plugin.events.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.FeedListViewElement;
-import org.pocketcampus.plugin.events.android.iface.IEventsModel;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
+import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuated;
+import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuator;
+import org.pocketcampus.android.platform.sdk.ui.adapter.SeparatedListAdapter;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
+import org.pocketcampus.plugin.events.shared.Constants;
+import org.pocketcampus.plugin.events.shared.EventItem;
+import org.pocketcampus.plugin.events.shared.EventPool;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import static org.pocketcampus.plugin.events.android.EventDetailView.*;
+import static org.pocketcampus.plugin.events.android.EventsController.*;
+
 /**
+ * EventsMainView - Main view that shows list of Events.
  * 
- * @author Elodie <elodienilane.triponez@epfl.ch>
+ * This is the main view in the Events Plugin.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ * 
  */
 public class EventsMainView extends PluginView implements IEventsView {
+
 	private EventsController mController;
-	private IEventsModel mModel;
-
-	private StandardTitledLayout mLayout;
-	private FeedListViewElement mListView;
-
-	private OnItemClickListener mOnItemClickListener;
-
-	/**
-	 * Defines what the main controller is for this view. This is optional, some
-	 * view may not need a controller (see for example the dashboard).
-	 * 
-	 * This is only a shortcut for what is done in
-	 * <code>getOtherController()</code> below: if you know you'll need a
-	 * controller before doing anything else in this view, you can define it as
-	 * you're main controller so you know it'll be ready as soon as
-	 * <code>onDisplay()</code> is called.
-	 */
+	private EventsModel mModel;
+	
+	public static final String EXTRAS_KEY_EVENTPOOLID = "eventPoolId";
+	public static final String QUERYSTRING_KEY_EVENTPOOLID = "id";
+	public static final String QUERYSTRING_KEY_TOKEN = "token";
+	public static final String MAP_KEY_EVENTITEMID = "EVENT_ITEM_ID";
+	
+	private ListView mLayout;
+	
+	private long eventPoolId;
+	private List<Long> displayedEvents = new LinkedList<Long>();
+	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return EventsController.class;
 	}
 
-	/**
-	 * Called once the view is connected to the controller. If you don't
-	 * implement <code>getMainControllerClass()</code> then the controller given
-	 * here will simply be <code>null</code>.
-	 */
 	@Override
-	protected void onDisplay(Bundle savedInstanceState,
-			PluginController controller) {
-		//Tracker
-//		Tracker.getInstance().trackPageView("events");
+	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		
 		// Get and cast the controller and model
 		mController = (EventsController) controller;
 		mModel = (EventsModel) controller.getModel();
 
-		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardTitledLayout(this, null);
-
-		mLayout.setTitle(getString(R.string.events_plugin_title));
 
 		// The ActionBar is added automatically when you call setContentView
-		setContentView(mLayout);
-
-		// We need to force the display before asking the controller for the
-		// data,
-		// as the controller may take some time to get it.
-		displayData();
+		//disableActionBar();
+		setContentView(R.layout.events_main);
+		mLayout = (ListView) findViewById(R.id.events_main_list);
 	}
+	
 
 	/**
-	 * Initiates request for events items
+	 * Handles the intent that was used to start this plugin.
+	 * 
+	 * We need to read the Extras.
 	 */
-	private void displayData() {
-		mLayout.setText(getResources().getString(R.string.events_loading));
-		mLayout.hideTitle();
-		mController.getEventItems();
-	}
-
 	@Override
-	public void eventsUpdated() {
-		List<EventsItemWithSpanned> eventsList = mModel.getEvents(this);
-		mLayout.removeFillerView();
-		mLayout.hideTitle();
-		if (eventsList != null) {
-			if (!eventsList.isEmpty()) {
-				// Add them to the listView
-				mListView = new FeedListViewElement(this, eventsList,
-						mEventsItemLabeler);
-
-				// Set onClickListener
-				setOnListViewClickListener();
-
-				// Set the layout
-				mLayout.addFillerView(mListView);
-
-				mLayout.setText("");
-			} else {
-				mLayout.setText(getString(R.string.events_no_feed_selected));
+	protected void handleIntent(Intent aIntent) {
+		eventPoolId = Constants.CONTAINER_EVENT_ID;
+		if(aIntent != null) {
+			Bundle aExtras = aIntent.getExtras();
+			Uri aData = aIntent.getData();
+			if(aExtras != null && aExtras.containsKey(EXTRAS_KEY_EVENTPOOLID)) {
+				System.out.println("Started with intent to display pool " + eventPoolId);
+				eventPoolId = Long.parseLong(aExtras.getString(EXTRAS_KEY_EVENTPOOLID));
+			} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID) != null) {
+				System.out.println("External start with intent to display pool " + eventPoolId);
+				eventPoolId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID));
+				if(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN) != null) {
+					System.out.println("Got also a token :-)");
+					mModel.setToken(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN));
+				}
 			}
-		} else {
-			mLayout.setText(getString(R.string.events_no_events));
 		}
+		
+		//Tracker
+		if(eventPoolId == Constants.CONTAINER_EVENT_ID) Tracker.getInstance().trackPageView("events");
+		else Tracker.getInstance().trackPageView("events/" + eventPoolId + "/subevents");
+		
+		mController.refreshEventPool(eventPoolId, false);
+		eventPoolsUpdated(null);
 	}
 
 	@Override
-	public void feedUrlsUpdated() {
-
-		Intent settings = new Intent(getApplicationContext(),
-				EventsPreferences.class);
-		System.out.println(mModel.getFeedsUrls().size());
-		settings.putExtra("org.pocketcampus.events.feedUrls",
-				(HashMap<String, String>) mModel.getFeedsUrls());
-		startActivity(settings);
+	public void eventPoolsUpdated(List<Long> updated) {
+		System.out.println("EventsMainView::eventPoolsUpdated");
+		
+		if(updated != null && !updated.contains(eventPoolId))
+			return;
+		
+		//System.out.println("eventsListUpdated getting pool");
+		final EventPool parentEvent = mModel.getEventPool(eventPoolId);
+		if(parentEvent == null || parentEvent.getChildrenEvents() == null)
+			return; // Ow!
+		
+		
+		//System.out.println("eventsListUpdated building hash childrenEvent=" + parentEvent.getChildrenEvents().size());
+		Map<Integer, List<EventItem>> eventsByCateg = new HashMap<Integer, List<EventItem>>();
+		displayedEvents.clear();
+		for(long eventId : parentEvent.getChildrenEvents()) {
+			EventItem e = mModel.getEventItem(eventId);
+			//e.setEventCateg(1);
+			if(e == null || !e.isSetEventCateg())
+				continue;
+			displayedEvents.add(eventId);
+			if(!eventsByCateg.containsKey(e.getEventCateg()))
+				eventsByCateg.put(e.getEventCateg(), new LinkedList<EventItem>());
+			eventsByCateg.get(e.getEventCateg()).add(e);
+		}
+		
+		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.event_list_header);
+		List<Integer> categList = new LinkedList<Integer>(eventsByCateg.keySet());
+		Collections.sort(categList);
+		for(int i : categList) {
+			List<EventItem> categEvents = eventsByCateg.get(i);
+			Collections.sort(categEvents, eventItemComp4sort);
+			Preparated<EventItem> p = new Preparated<EventItem>(categEvents, new Preparator<EventItem>() {
+				public int[] resources() {
+					return new int[] { R.id.event_title, R.id.event_speaker, R.id.event_thumbnail, R.id.event_time, R.id.event_fav_star };
+				}
+				public Object content(int res, final EventItem e) {
+					switch (res) {
+					case R.id.event_title:
+						return e.getEventTitle();
+					case R.id.event_speaker:
+						return e.getEventPlace();
+					case R.id.event_thumbnail:
+						return getResizedPhotoUrl(e.getEventPicture(), 48);
+					case R.id.event_time:
+						if(!e.isSetStartDate())
+							return null;
+						String startTime = simpleTimeFormat.format(new Date(e.getStartDate()));
+						String startDay = simpleDateFormat.format(new Date(e.getStartDate()));
+						String endDay = simpleDateFormat.format(new Date(e.getEndDate()));
+						String today = simpleDateFormat.format(new Date());
+						if(today.compareTo(startDay) >= 0 && today.compareTo(endDay) <= 0) {
+							if(e.isFullDay())
+								return "Today";
+							else
+								return startTime;
+						} else {
+							return startDay;
+						}
+					case R.id.event_fav_star:
+						if(parentEvent.isDisableStar())
+							return android.R.drawable.divider_horizontal_bright;
+						Integer fav = android.R.drawable.star_off;
+						if(e.getEventCateg() == -2)
+							fav = android.R.drawable.star_on;
+						return new Actuated(fav, new Actuator() {
+							public void triggered() {
+								System.out.println("toggle fav event: " + e.getEventTitle());
+								mModel.markFavorite(e.getEventId(), (e.getEventCateg() != -2));
+							}
+						});
+					default:
+						return null;
+					}
+				}
+				public void finalize(Map<String, Object> map, EventItem item) {
+					map.put(MAP_KEY_EVENTITEMID, item.getEventId() + "");
+				}
+			});
+			adapter.addSection(Constants.EVENTS_CATEGS.get(i), new LazyAdapter(this, p.getMap(), 
+					R.layout.events_list_row, p.getKeys(), p.getResources()));
+		}
+		
+		mLayout.setAdapter(adapter);
+		//mLayout.setCacheColorHint(Color.TRANSPARENT);
+		//mLayout.setFastScrollEnabled(true);
+		//mLayout.setScrollingCacheEnabled(false);
+		//mLayout.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
+		
+		mLayout.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+		
+		mLayout.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				Object o = arg0.getItemAtPosition(arg2);
+				if(o instanceof Map<?, ?>) {
+					Intent i = new Intent(EventsMainView.this, EventDetailView.class);
+					i.putExtra(EXTRAS_KEY_EVENTITEMID, ((Map<?, ?>) o).get(MAP_KEY_EVENTITEMID).toString());
+					EventsMainView.this.startActivity(i);
+				} else {
+					Toast.makeText(getApplicationContext(), o.toString(), Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		
+		
 	}
-
-	/**
-	 * Main Food Options menu contains access to Meals by restaurants, ratings,
-	 * Sandwiches, Suggestions and Settings
-	 */
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.events_menu, menu);
-//		return true;
-//	}
-
-	/**
-	 * Decides what happens when the options menu is opened and an option is
-	 * chosen (what view to display)
-	 */
-//	@Override
-//	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-//		if (item.getItemId() == R.id.events_menu_settings) {
-//			mController.getFeedUrls();
-//		}
-//		return true;
-//	}
-
+	
+	@Override
+	public void eventItemsUpdated(List<Long> updated) {
+		if(intersect(displayedEvents, updated).size() > 0)
+			eventPoolsUpdated(null);
+	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuItem categMenu = menu.add("Choose Category");
+		categMenu.setOnMenuItemClickListener(buildMenuListener(this, 
+				Constants.EVENTS_CATEGS, "Choose a Category", 
+				new SelectionHandler<Integer>() {
+					public void saveSelection(Integer t) {
+						mModel.setCateg(t);
+					}
+				}
+		));
+		MenuItem feedMenu = menu.add("Choose Feed");
+		feedMenu.setOnMenuItemClickListener(buildMenuListener(this,
+				Constants.EVENTS_TAGS, "Choose a Feed", 
+				new SelectionHandler<String>() {
+					public void saveSelection(String t) {
+						mModel.setTag(t);
+					}
+				}
+		));
+		MenuItem periodMenu = menu.add("Choose Period");
+		periodMenu.setOnMenuItemClickListener(buildMenuListener(this,
+				Constants.EVENTS_PERIODS, "Choose a Period", 
+				new SelectionHandler<Integer>() {
+					public void saveSelection(Integer t) {
+						mModel.setPeriod(t);
+						mController.refreshEventPool(eventPoolId, false);
+					}
+				}
+		));
+		return true;
+	}
+	
+	@Override
+	public void networkErrorCacheExists() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_connection_no_cache_yes), Toast.LENGTH_SHORT).show();
+		mController.refreshEventPool(eventPoolId, true);
+	}
+	
 	@Override
 	public void networkErrorHappened() {
-		//Tracker
-//		Tracker.getInstance().trackPageView("events/network_error");
-		
-		mLayout.removeFillerView();
-		mLayout.hideTitle();
-		mLayout.setText(getString(R.string.events_no_events));
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void mementoServersDown() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_upstream_server_down), Toast.LENGTH_SHORT).show();
 	}
 
-	/* Sets the clickLIstener of the listView */
-	private void setOnListViewClickListener() {
-
-		mOnItemClickListener = new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View v,
-					int position, long arg3) {
-				Intent events = new Intent(getApplicationContext(),
-						EventsItemView.class);
-				EventsItemWithSpanned toPass = mModel.getEvents(
-						EventsMainView.this).get(position);
-				events.putExtra("org.pocketcampus.events.eventsitem.title",
-						toPass.getEventsItem().getTitle());
-				events.putExtra(
-						"org.pocketcampus.events.eventsitem.description",
-						toPass.getFormattedDescription());
-				events.putExtra("org.pocketcampus.events.eventsitem.feed",
-						toPass.getEventsItem().getFeed());
-
-				DateFormat df = new SimpleDateFormat("EEEE dd MMMM yyyy");
-
-				String info = "";
-
-				// Format date
-				long startDateLong = toPass.getEventsItem().getStartDate();
-				long endDateLong = toPass.getEventsItem().getEndDate();
-				if (startDateLong != 0) {
-					Date startDate = new Date(startDateLong);
-					if (endDateLong != 0 && startDateLong != endDateLong) {
-						Date endDate = new Date(endDateLong);
-
-						info = getString(R.string.events_from) + " "
-								+ bold(df.format(startDate)) + " "
-								+ getString(R.string.events_to) + " "
-								+ bold(df.format(endDate));
-					} else {
-						info = getString(R.string.events_on) + " "
-								+ bold(df.format(startDate));
-					}
-
-					if (!(toPass.getEventsItem().getStartTime()).equals("")) {
-						DateFormat time = new SimpleDateFormat("hh:mm");
-
-						try {
-							Date startTimeDate = time.parse(toPass
-									.getEventsItem().getStartTime());
-							String startTimeString = time.format(startTimeDate);
-
-							info = info + " " + getString(R.string.events_at)
-									+ " " + startTimeString;
-						} catch (ParseException e) {
-						}
-
-					}
-
-				}
-				if (!(toPass.getEventsItem().getSpeaker()).equals("")) {
-					info = info + "<br>" + getString(R.string.events_speaker)
-							+ " " + bold(toPass.getEventsItem().getSpeaker());
-				}
-
-				if (!(toPass.getEventsItem().getRoom()).equals("")) {
-					info = info + "<br>" + getString(R.string.events_room)
-							+ " " + toPass.getEventsItem().getRoom();
-				} else if (!(toPass.getEventsItem().getLocation()).equals("")) {
-					info = info + "<br>" + getString(R.string.events_location)
-							+ " " + bold(toPass.getEventsItem().getLocation());
-				}
-
-				events.putExtra("org.pocketcampus.events.eventsitem.info", info);
-
-				//Tracker
-//				Tracker.getInstance().trackPageView("events/click/" + toPass.getEventsItem().getTitle());
-				
-				startActivity(events);
-			}
-		};
-		mListView.setOnItemClickListener(mOnItemClickListener);
+	@Override
+	public void identificationRequired() {
+		Toast.makeText(getApplicationContext(), 
+				"Please scan the barcode in the email to enable this feature", 
+				Toast.LENGTH_SHORT).show();
 	}
-
-	private String bold(String toBoldify) {
-		return "<b>" + toBoldify + "</b>";
-	}
-
-	/**
-	 * The labeler for a feed, to tell how it has to be displayed in a generic
-	 * view.
-	 */
-	ILabeler<EventsItemWithSpanned> mEventsItemLabeler = new ILabeler<EventsItemWithSpanned>() {
-
-		@Override
-		public String getLabel(EventsItemWithSpanned obj) {
-			return obj.getEventsItem().getTitle();
-		}
-	};
 
 }

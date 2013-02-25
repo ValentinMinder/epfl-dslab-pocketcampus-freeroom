@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.moodle.android;
 
+import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
+
 import java.io.File;
 import java.net.URI;
 import java.util.Locale;
@@ -139,7 +141,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 		final String filePHP = "/pluginfile.php/";
 		fileName = fileName.substring(fileName.indexOf(filePHP) + filePHP.length());
 		String extStr = Environment.getExternalStorageDirectory().getAbsolutePath();
-		fileName = extStr + "/PCMoodle/" + fileName;
+		fileName = extStr + "/" + PC_ANDR_CFG.getString("SDCARD_FILES_PATH") + "/moodle/" + fileName;
 		File fileDir = new File(fileName.substring(0, fileName.lastIndexOf("/")));
 		fileDir.mkdirs();
 		return fileName;

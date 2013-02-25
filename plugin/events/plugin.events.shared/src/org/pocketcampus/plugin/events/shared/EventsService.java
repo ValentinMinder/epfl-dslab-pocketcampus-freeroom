@@ -25,21 +25,21 @@ public class EventsService {
 
   public interface Iface {
 
-    public List<EventsItem> getEventsItems(String language) throws org.apache.thrift.TException;
+    public EventItemReply getEventItem(EventItemRequest iRequest) throws org.apache.thrift.TException;
 
-    public Map<String,String> getFeedUrls(String language) throws org.apache.thrift.TException;
+    public EventPoolReply getEventPool(EventPoolRequest iRequest) throws org.apache.thrift.TException;
 
-    public List<Feed> getFeeds(String language) throws org.apache.thrift.TException;
+    public String updateDatabase(String arg) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getEventsItems(String language, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getEventsItems_call> resultHandler) throws org.apache.thrift.TException;
+    public void getEventItem(EventItemRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getEventItem_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getFeedUrls(String language, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getFeedUrls_call> resultHandler) throws org.apache.thrift.TException;
+    public void getEventPool(EventPoolRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getEventPool_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getFeeds(String language, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getFeeds_call> resultHandler) throws org.apache.thrift.TException;
+    public void updateDatabase(String arg, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.updateDatabase_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -63,73 +63,73 @@ public class EventsService {
       super(iprot, oprot);
     }
 
-    public List<EventsItem> getEventsItems(String language) throws org.apache.thrift.TException
+    public EventItemReply getEventItem(EventItemRequest iRequest) throws org.apache.thrift.TException
     {
-      send_getEventsItems(language);
-      return recv_getEventsItems();
+      send_getEventItem(iRequest);
+      return recv_getEventItem();
     }
 
-    public void send_getEventsItems(String language) throws org.apache.thrift.TException
+    public void send_getEventItem(EventItemRequest iRequest) throws org.apache.thrift.TException
     {
-      getEventsItems_args args = new getEventsItems_args();
-      args.setLanguage(language);
-      sendBase("getEventsItems", args);
+      getEventItem_args args = new getEventItem_args();
+      args.setIRequest(iRequest);
+      sendBase("getEventItem", args);
     }
 
-    public List<EventsItem> recv_getEventsItems() throws org.apache.thrift.TException
+    public EventItemReply recv_getEventItem() throws org.apache.thrift.TException
     {
-      getEventsItems_result result = new getEventsItems_result();
-      receiveBase(result, "getEventsItems");
+      getEventItem_result result = new getEventItem_result();
+      receiveBase(result, "getEventItem");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getEventsItems failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getEventItem failed: unknown result");
     }
 
-    public Map<String,String> getFeedUrls(String language) throws org.apache.thrift.TException
+    public EventPoolReply getEventPool(EventPoolRequest iRequest) throws org.apache.thrift.TException
     {
-      send_getFeedUrls(language);
-      return recv_getFeedUrls();
+      send_getEventPool(iRequest);
+      return recv_getEventPool();
     }
 
-    public void send_getFeedUrls(String language) throws org.apache.thrift.TException
+    public void send_getEventPool(EventPoolRequest iRequest) throws org.apache.thrift.TException
     {
-      getFeedUrls_args args = new getFeedUrls_args();
-      args.setLanguage(language);
-      sendBase("getFeedUrls", args);
+      getEventPool_args args = new getEventPool_args();
+      args.setIRequest(iRequest);
+      sendBase("getEventPool", args);
     }
 
-    public Map<String,String> recv_getFeedUrls() throws org.apache.thrift.TException
+    public EventPoolReply recv_getEventPool() throws org.apache.thrift.TException
     {
-      getFeedUrls_result result = new getFeedUrls_result();
-      receiveBase(result, "getFeedUrls");
+      getEventPool_result result = new getEventPool_result();
+      receiveBase(result, "getEventPool");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getFeedUrls failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getEventPool failed: unknown result");
     }
 
-    public List<Feed> getFeeds(String language) throws org.apache.thrift.TException
+    public String updateDatabase(String arg) throws org.apache.thrift.TException
     {
-      send_getFeeds(language);
-      return recv_getFeeds();
+      send_updateDatabase(arg);
+      return recv_updateDatabase();
     }
 
-    public void send_getFeeds(String language) throws org.apache.thrift.TException
+    public void send_updateDatabase(String arg) throws org.apache.thrift.TException
     {
-      getFeeds_args args = new getFeeds_args();
-      args.setLanguage(language);
-      sendBase("getFeeds", args);
+      updateDatabase_args args = new updateDatabase_args();
+      args.setArg(arg);
+      sendBase("updateDatabase", args);
     }
 
-    public List<Feed> recv_getFeeds() throws org.apache.thrift.TException
+    public String recv_updateDatabase() throws org.apache.thrift.TException
     {
-      getFeeds_result result = new getFeeds_result();
-      receiveBase(result, "getFeeds");
+      updateDatabase_result result = new updateDatabase_result();
+      receiveBase(result, "updateDatabase");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getFeeds failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "updateDatabase failed: unknown result");
     }
 
   }
@@ -150,99 +150,99 @@ public class EventsService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getEventsItems(String language, org.apache.thrift.async.AsyncMethodCallback<getEventsItems_call> resultHandler) throws org.apache.thrift.TException {
+    public void getEventItem(EventItemRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getEventItem_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getEventsItems_call method_call = new getEventsItems_call(language, resultHandler, this, ___protocolFactory, ___transport);
+      getEventItem_call method_call = new getEventItem_call(iRequest, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getEventsItems_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String language;
-      public getEventsItems_call(String language, org.apache.thrift.async.AsyncMethodCallback<getEventsItems_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getEventItem_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private EventItemRequest iRequest;
+      public getEventItem_call(EventItemRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getEventItem_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.language = language;
+        this.iRequest = iRequest;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getEventsItems", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getEventsItems_args args = new getEventsItems_args();
-        args.setLanguage(language);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getEventItem", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getEventItem_args args = new getEventItem_args();
+        args.setIRequest(iRequest);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<EventsItem> getResult() throws org.apache.thrift.TException {
+      public EventItemReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getEventsItems();
+        return (new Client(prot)).recv_getEventItem();
       }
     }
 
-    public void getFeedUrls(String language, org.apache.thrift.async.AsyncMethodCallback<getFeedUrls_call> resultHandler) throws org.apache.thrift.TException {
+    public void getEventPool(EventPoolRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getEventPool_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getFeedUrls_call method_call = new getFeedUrls_call(language, resultHandler, this, ___protocolFactory, ___transport);
+      getEventPool_call method_call = new getEventPool_call(iRequest, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getFeedUrls_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String language;
-      public getFeedUrls_call(String language, org.apache.thrift.async.AsyncMethodCallback<getFeedUrls_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getEventPool_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private EventPoolRequest iRequest;
+      public getEventPool_call(EventPoolRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getEventPool_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.language = language;
+        this.iRequest = iRequest;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getFeedUrls", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getFeedUrls_args args = new getFeedUrls_args();
-        args.setLanguage(language);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getEventPool", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getEventPool_args args = new getEventPool_args();
+        args.setIRequest(iRequest);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public Map<String,String> getResult() throws org.apache.thrift.TException {
+      public EventPoolReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getFeedUrls();
+        return (new Client(prot)).recv_getEventPool();
       }
     }
 
-    public void getFeeds(String language, org.apache.thrift.async.AsyncMethodCallback<getFeeds_call> resultHandler) throws org.apache.thrift.TException {
+    public void updateDatabase(String arg, org.apache.thrift.async.AsyncMethodCallback<updateDatabase_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getFeeds_call method_call = new getFeeds_call(language, resultHandler, this, ___protocolFactory, ___transport);
+      updateDatabase_call method_call = new updateDatabase_call(arg, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getFeeds_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String language;
-      public getFeeds_call(String language, org.apache.thrift.async.AsyncMethodCallback<getFeeds_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class updateDatabase_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String arg;
+      public updateDatabase_call(String arg, org.apache.thrift.async.AsyncMethodCallback<updateDatabase_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.language = language;
+        this.arg = arg;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getFeeds", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getFeeds_args args = new getFeeds_args();
-        args.setLanguage(language);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("updateDatabase", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        updateDatabase_args args = new updateDatabase_args();
+        args.setArg(arg);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<Feed> getResult() throws org.apache.thrift.TException {
+      public String getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getFeeds();
+        return (new Client(prot)).recv_updateDatabase();
       }
     }
 
@@ -259,72 +259,72 @@ public class EventsService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("getEventsItems", new getEventsItems());
-      processMap.put("getFeedUrls", new getFeedUrls());
-      processMap.put("getFeeds", new getFeeds());
+      processMap.put("getEventItem", new getEventItem());
+      processMap.put("getEventPool", new getEventPool());
+      processMap.put("updateDatabase", new updateDatabase());
       return processMap;
     }
 
-    private static class getEventsItems<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getEventsItems_args> {
-      public getEventsItems() {
-        super("getEventsItems");
+    private static class getEventItem<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getEventItem_args> {
+      public getEventItem() {
+        super("getEventItem");
       }
 
-      protected getEventsItems_args getEmptyArgsInstance() {
-        return new getEventsItems_args();
+      protected getEventItem_args getEmptyArgsInstance() {
+        return new getEventItem_args();
       }
 
-      protected getEventsItems_result getResult(I iface, getEventsItems_args args) throws org.apache.thrift.TException {
-        getEventsItems_result result = new getEventsItems_result();
-        result.success = iface.getEventsItems(args.language);
+      protected getEventItem_result getResult(I iface, getEventItem_args args) throws org.apache.thrift.TException {
+        getEventItem_result result = new getEventItem_result();
+        result.success = iface.getEventItem(args.iRequest);
         return result;
       }
     }
 
-    private static class getFeedUrls<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getFeedUrls_args> {
-      public getFeedUrls() {
-        super("getFeedUrls");
+    private static class getEventPool<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getEventPool_args> {
+      public getEventPool() {
+        super("getEventPool");
       }
 
-      protected getFeedUrls_args getEmptyArgsInstance() {
-        return new getFeedUrls_args();
+      protected getEventPool_args getEmptyArgsInstance() {
+        return new getEventPool_args();
       }
 
-      protected getFeedUrls_result getResult(I iface, getFeedUrls_args args) throws org.apache.thrift.TException {
-        getFeedUrls_result result = new getFeedUrls_result();
-        result.success = iface.getFeedUrls(args.language);
+      protected getEventPool_result getResult(I iface, getEventPool_args args) throws org.apache.thrift.TException {
+        getEventPool_result result = new getEventPool_result();
+        result.success = iface.getEventPool(args.iRequest);
         return result;
       }
     }
 
-    private static class getFeeds<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getFeeds_args> {
-      public getFeeds() {
-        super("getFeeds");
+    private static class updateDatabase<I extends Iface> extends org.apache.thrift.ProcessFunction<I, updateDatabase_args> {
+      public updateDatabase() {
+        super("updateDatabase");
       }
 
-      protected getFeeds_args getEmptyArgsInstance() {
-        return new getFeeds_args();
+      protected updateDatabase_args getEmptyArgsInstance() {
+        return new updateDatabase_args();
       }
 
-      protected getFeeds_result getResult(I iface, getFeeds_args args) throws org.apache.thrift.TException {
-        getFeeds_result result = new getFeeds_result();
-        result.success = iface.getFeeds(args.language);
+      protected updateDatabase_result getResult(I iface, updateDatabase_args args) throws org.apache.thrift.TException {
+        updateDatabase_result result = new updateDatabase_result();
+        result.success = iface.updateDatabase(args.arg);
         return result;
       }
     }
 
   }
 
-  public static class getEventsItems_args implements org.apache.thrift.TBase<getEventsItems_args, getEventsItems_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEventsItems_args");
+  public static class getEventItem_args implements org.apache.thrift.TBase<getEventItem_args, getEventItem_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEventItem_args");
 
-    private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField I_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public String language; // required
+    public EventItemRequest iRequest; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      LANGUAGE((short)1, "language");
+      I_REQUEST((short)1, "iRequest");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -339,8 +339,8 @@ public class EventsService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // LANGUAGE
-            return LANGUAGE;
+          case 1: // I_REQUEST
+            return I_REQUEST;
           default:
             return null;
         }
@@ -385,71 +385,71 @@ public class EventsService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.I_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, EventItemRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEventsItems_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEventItem_args.class, metaDataMap);
     }
 
-    public getEventsItems_args() {
+    public getEventItem_args() {
     }
 
-    public getEventsItems_args(
-      String language)
+    public getEventItem_args(
+      EventItemRequest iRequest)
     {
       this();
-      this.language = language;
+      this.iRequest = iRequest;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getEventsItems_args(getEventsItems_args other) {
-      if (other.isSetLanguage()) {
-        this.language = other.language;
+    public getEventItem_args(getEventItem_args other) {
+      if (other.isSetIRequest()) {
+        this.iRequest = new EventItemRequest(other.iRequest);
       }
     }
 
-    public getEventsItems_args deepCopy() {
-      return new getEventsItems_args(this);
+    public getEventItem_args deepCopy() {
+      return new getEventItem_args(this);
     }
 
     @Override
     public void clear() {
-      this.language = null;
+      this.iRequest = null;
     }
 
-    public String getLanguage() {
-      return this.language;
+    public EventItemRequest getIRequest() {
+      return this.iRequest;
     }
 
-    public getEventsItems_args setLanguage(String language) {
-      this.language = language;
+    public getEventItem_args setIRequest(EventItemRequest iRequest) {
+      this.iRequest = iRequest;
       return this;
     }
 
-    public void unsetLanguage() {
-      this.language = null;
+    public void unsetIRequest() {
+      this.iRequest = null;
     }
 
-    /** Returns true if field language is set (has been assigned a value) and false otherwise */
-    public boolean isSetLanguage() {
-      return this.language != null;
+    /** Returns true if field iRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIRequest() {
+      return this.iRequest != null;
     }
 
-    public void setLanguageIsSet(boolean value) {
+    public void setIRequestIsSet(boolean value) {
       if (!value) {
-        this.language = null;
+        this.iRequest = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case LANGUAGE:
+      case I_REQUEST:
         if (value == null) {
-          unsetLanguage();
+          unsetIRequest();
         } else {
-          setLanguage((String)value);
+          setIRequest((EventItemRequest)value);
         }
         break;
 
@@ -458,8 +458,8 @@ public class EventsService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case LANGUAGE:
-        return getLanguage();
+      case I_REQUEST:
+        return getIRequest();
 
       }
       throw new IllegalStateException();
@@ -472,8 +472,8 @@ public class EventsService {
       }
 
       switch (field) {
-      case LANGUAGE:
-        return isSetLanguage();
+      case I_REQUEST:
+        return isSetIRequest();
       }
       throw new IllegalStateException();
     }
@@ -482,21 +482,21 @@ public class EventsService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getEventsItems_args)
-        return this.equals((getEventsItems_args)that);
+      if (that instanceof getEventItem_args)
+        return this.equals((getEventItem_args)that);
       return false;
     }
 
-    public boolean equals(getEventsItems_args that) {
+    public boolean equals(getEventItem_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_language = true && this.isSetLanguage();
-      boolean that_present_language = true && that.isSetLanguage();
-      if (this_present_language || that_present_language) {
-        if (!(this_present_language && that_present_language))
+      boolean this_present_iRequest = true && this.isSetIRequest();
+      boolean that_present_iRequest = true && that.isSetIRequest();
+      if (this_present_iRequest || that_present_iRequest) {
+        if (!(this_present_iRequest && that_present_iRequest))
           return false;
-        if (!this.language.equals(that.language))
+        if (!this.iRequest.equals(that.iRequest))
           return false;
       }
 
@@ -507,28 +507,28 @@ public class EventsService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_language = true && (isSetLanguage());
-      builder.append(present_language);
-      if (present_language)
-        builder.append(language);
+      boolean present_iRequest = true && (isSetIRequest());
+      builder.append(present_iRequest);
+      if (present_iRequest)
+        builder.append(iRequest);
 
       return builder.toHashCode();
     }
 
-    public int compareTo(getEventsItems_args other) {
+    public int compareTo(getEventItem_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getEventsItems_args typedOther = (getEventsItems_args)other;
+      getEventItem_args typedOther = (getEventItem_args)other;
 
-      lastComparison = Boolean.valueOf(isSetLanguage()).compareTo(typedOther.isSetLanguage());
+      lastComparison = Boolean.valueOf(isSetIRequest()).compareTo(typedOther.isSetIRequest());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetLanguage()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.language, typedOther.language);
+      if (isSetIRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iRequest, typedOther.iRequest);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -550,9 +550,10 @@ public class EventsService {
           break;
         }
         switch (field.id) {
-          case 1: // LANGUAGE
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.language = iprot.readString();
+          case 1: // I_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iRequest = new EventItemRequest();
+              this.iRequest.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -572,9 +573,9 @@ public class EventsService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.language != null) {
-        oprot.writeFieldBegin(LANGUAGE_FIELD_DESC);
-        oprot.writeString(this.language);
+      if (this.iRequest != null) {
+        oprot.writeFieldBegin(I_REQUEST_FIELD_DESC);
+        this.iRequest.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -583,14 +584,14 @@ public class EventsService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getEventsItems_args(");
+      StringBuilder sb = new StringBuilder("getEventItem_args(");
       boolean first = true;
 
-      sb.append("language:");
-      if (this.language == null) {
+      sb.append("iRequest:");
+      if (this.iRequest == null) {
         sb.append("null");
       } else {
-        sb.append(this.language);
+        sb.append(this.iRequest);
       }
       first = false;
       sb.append(")");
@@ -619,12 +620,12 @@ public class EventsService {
 
   }
 
-  public static class getEventsItems_result implements org.apache.thrift.TBase<getEventsItems_result, getEventsItems_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEventsItems_result");
+  public static class getEventItem_result implements org.apache.thrift.TBase<getEventItem_result, getEventItem_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEventItem_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public List<EventsItem> success; // required
+    public EventItemReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -690,17 +691,16 @@ public class EventsService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, EventsItem.class))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, EventItemReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEventsItems_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEventItem_result.class, metaDataMap);
     }
 
-    public getEventsItems_result() {
+    public getEventItem_result() {
     }
 
-    public getEventsItems_result(
-      List<EventsItem> success)
+    public getEventItem_result(
+      EventItemReply success)
     {
       this();
       this.success = success;
@@ -709,18 +709,14 @@ public class EventsService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getEventsItems_result(getEventsItems_result other) {
+    public getEventItem_result(getEventItem_result other) {
       if (other.isSetSuccess()) {
-        List<EventsItem> __this__success = new ArrayList<EventsItem>();
-        for (EventsItem other_element : other.success) {
-          __this__success.add(new EventsItem(other_element));
-        }
-        this.success = __this__success;
+        this.success = new EventItemReply(other.success);
       }
     }
 
-    public getEventsItems_result deepCopy() {
-      return new getEventsItems_result(this);
+    public getEventItem_result deepCopy() {
+      return new getEventItem_result(this);
     }
 
     @Override
@@ -728,26 +724,11 @@ public class EventsService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<EventsItem> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(EventsItem elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<EventsItem>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<EventsItem> getSuccess() {
+    public EventItemReply getSuccess() {
       return this.success;
     }
 
-    public getEventsItems_result setSuccess(List<EventsItem> success) {
+    public getEventItem_result setSuccess(EventItemReply success) {
       this.success = success;
       return this;
     }
@@ -773,7 +754,7 @@ public class EventsService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<EventsItem>)value);
+          setSuccess((EventItemReply)value);
         }
         break;
 
@@ -806,12 +787,12 @@ public class EventsService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getEventsItems_result)
-        return this.equals((getEventsItems_result)that);
+      if (that instanceof getEventItem_result)
+        return this.equals((getEventItem_result)that);
       return false;
     }
 
-    public boolean equals(getEventsItems_result that) {
+    public boolean equals(getEventItem_result that) {
       if (that == null)
         return false;
 
@@ -839,13 +820,13 @@ public class EventsService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getEventsItems_result other) {
+    public int compareTo(getEventItem_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getEventsItems_result typedOther = (getEventsItems_result)other;
+      getEventItem_result typedOther = (getEventItem_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -875,19 +856,9 @@ public class EventsService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-                this.success = new ArrayList<EventsItem>(_list4.size);
-                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
-                {
-                  EventsItem _elem6; // required
-                  _elem6 = new EventsItem();
-                  _elem6.read(iprot);
-                  this.success.add(_elem6);
-                }
-                iprot.readListEnd();
-              }
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new EventItemReply();
+              this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -908,14 +879,7 @@ public class EventsService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (EventsItem _iter7 : this.success)
-          {
-            _iter7.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
+        this.success.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -924,7 +888,7 @@ public class EventsService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getEventsItems_result(");
+      StringBuilder sb = new StringBuilder("getEventItem_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -960,16 +924,16 @@ public class EventsService {
 
   }
 
-  public static class getFeedUrls_args implements org.apache.thrift.TBase<getFeedUrls_args, getFeedUrls_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getFeedUrls_args");
+  public static class getEventPool_args implements org.apache.thrift.TBase<getEventPool_args, getEventPool_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEventPool_args");
 
-    private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField I_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public String language; // required
+    public EventPoolRequest iRequest; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      LANGUAGE((short)1, "language");
+      I_REQUEST((short)1, "iRequest");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -984,8 +948,8 @@ public class EventsService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // LANGUAGE
-            return LANGUAGE;
+          case 1: // I_REQUEST
+            return I_REQUEST;
           default:
             return null;
         }
@@ -1030,71 +994,71 @@ public class EventsService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.I_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, EventPoolRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getFeedUrls_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEventPool_args.class, metaDataMap);
     }
 
-    public getFeedUrls_args() {
+    public getEventPool_args() {
     }
 
-    public getFeedUrls_args(
-      String language)
+    public getEventPool_args(
+      EventPoolRequest iRequest)
     {
       this();
-      this.language = language;
+      this.iRequest = iRequest;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getFeedUrls_args(getFeedUrls_args other) {
-      if (other.isSetLanguage()) {
-        this.language = other.language;
+    public getEventPool_args(getEventPool_args other) {
+      if (other.isSetIRequest()) {
+        this.iRequest = new EventPoolRequest(other.iRequest);
       }
     }
 
-    public getFeedUrls_args deepCopy() {
-      return new getFeedUrls_args(this);
+    public getEventPool_args deepCopy() {
+      return new getEventPool_args(this);
     }
 
     @Override
     public void clear() {
-      this.language = null;
+      this.iRequest = null;
     }
 
-    public String getLanguage() {
-      return this.language;
+    public EventPoolRequest getIRequest() {
+      return this.iRequest;
     }
 
-    public getFeedUrls_args setLanguage(String language) {
-      this.language = language;
+    public getEventPool_args setIRequest(EventPoolRequest iRequest) {
+      this.iRequest = iRequest;
       return this;
     }
 
-    public void unsetLanguage() {
-      this.language = null;
+    public void unsetIRequest() {
+      this.iRequest = null;
     }
 
-    /** Returns true if field language is set (has been assigned a value) and false otherwise */
-    public boolean isSetLanguage() {
-      return this.language != null;
+    /** Returns true if field iRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIRequest() {
+      return this.iRequest != null;
     }
 
-    public void setLanguageIsSet(boolean value) {
+    public void setIRequestIsSet(boolean value) {
       if (!value) {
-        this.language = null;
+        this.iRequest = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case LANGUAGE:
+      case I_REQUEST:
         if (value == null) {
-          unsetLanguage();
+          unsetIRequest();
         } else {
-          setLanguage((String)value);
+          setIRequest((EventPoolRequest)value);
         }
         break;
 
@@ -1103,8 +1067,8 @@ public class EventsService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case LANGUAGE:
-        return getLanguage();
+      case I_REQUEST:
+        return getIRequest();
 
       }
       throw new IllegalStateException();
@@ -1117,8 +1081,8 @@ public class EventsService {
       }
 
       switch (field) {
-      case LANGUAGE:
-        return isSetLanguage();
+      case I_REQUEST:
+        return isSetIRequest();
       }
       throw new IllegalStateException();
     }
@@ -1127,21 +1091,21 @@ public class EventsService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getFeedUrls_args)
-        return this.equals((getFeedUrls_args)that);
+      if (that instanceof getEventPool_args)
+        return this.equals((getEventPool_args)that);
       return false;
     }
 
-    public boolean equals(getFeedUrls_args that) {
+    public boolean equals(getEventPool_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_language = true && this.isSetLanguage();
-      boolean that_present_language = true && that.isSetLanguage();
-      if (this_present_language || that_present_language) {
-        if (!(this_present_language && that_present_language))
+      boolean this_present_iRequest = true && this.isSetIRequest();
+      boolean that_present_iRequest = true && that.isSetIRequest();
+      if (this_present_iRequest || that_present_iRequest) {
+        if (!(this_present_iRequest && that_present_iRequest))
           return false;
-        if (!this.language.equals(that.language))
+        if (!this.iRequest.equals(that.iRequest))
           return false;
       }
 
@@ -1152,28 +1116,28 @@ public class EventsService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_language = true && (isSetLanguage());
-      builder.append(present_language);
-      if (present_language)
-        builder.append(language);
+      boolean present_iRequest = true && (isSetIRequest());
+      builder.append(present_iRequest);
+      if (present_iRequest)
+        builder.append(iRequest);
 
       return builder.toHashCode();
     }
 
-    public int compareTo(getFeedUrls_args other) {
+    public int compareTo(getEventPool_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getFeedUrls_args typedOther = (getFeedUrls_args)other;
+      getEventPool_args typedOther = (getEventPool_args)other;
 
-      lastComparison = Boolean.valueOf(isSetLanguage()).compareTo(typedOther.isSetLanguage());
+      lastComparison = Boolean.valueOf(isSetIRequest()).compareTo(typedOther.isSetIRequest());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetLanguage()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.language, typedOther.language);
+      if (isSetIRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iRequest, typedOther.iRequest);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1195,9 +1159,10 @@ public class EventsService {
           break;
         }
         switch (field.id) {
-          case 1: // LANGUAGE
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.language = iprot.readString();
+          case 1: // I_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iRequest = new EventPoolRequest();
+              this.iRequest.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1217,9 +1182,9 @@ public class EventsService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.language != null) {
-        oprot.writeFieldBegin(LANGUAGE_FIELD_DESC);
-        oprot.writeString(this.language);
+      if (this.iRequest != null) {
+        oprot.writeFieldBegin(I_REQUEST_FIELD_DESC);
+        this.iRequest.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1228,14 +1193,14 @@ public class EventsService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getFeedUrls_args(");
+      StringBuilder sb = new StringBuilder("getEventPool_args(");
       boolean first = true;
 
-      sb.append("language:");
-      if (this.language == null) {
+      sb.append("iRequest:");
+      if (this.iRequest == null) {
         sb.append("null");
       } else {
-        sb.append(this.language);
+        sb.append(this.iRequest);
       }
       first = false;
       sb.append(")");
@@ -1264,12 +1229,12 @@ public class EventsService {
 
   }
 
-  public static class getFeedUrls_result implements org.apache.thrift.TBase<getFeedUrls_result, getFeedUrls_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getFeedUrls_result");
+  public static class getEventPool_result implements org.apache.thrift.TBase<getEventPool_result, getEventPool_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEventPool_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.MAP, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public Map<String,String> success; // required
+    public EventPoolReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1335,18 +1300,16 @@ public class EventsService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
-              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
-              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, EventPoolReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getFeedUrls_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEventPool_result.class, metaDataMap);
     }
 
-    public getFeedUrls_result() {
+    public getEventPool_result() {
     }
 
-    public getFeedUrls_result(
-      Map<String,String> success)
+    public getEventPool_result(
+      EventPoolReply success)
     {
       this();
       this.success = success;
@@ -1355,26 +1318,14 @@ public class EventsService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getFeedUrls_result(getFeedUrls_result other) {
+    public getEventPool_result(getEventPool_result other) {
       if (other.isSetSuccess()) {
-        Map<String,String> __this__success = new HashMap<String,String>();
-        for (Map.Entry<String, String> other_element : other.success.entrySet()) {
-
-          String other_element_key = other_element.getKey();
-          String other_element_value = other_element.getValue();
-
-          String __this__success_copy_key = other_element_key;
-
-          String __this__success_copy_value = other_element_value;
-
-          __this__success.put(__this__success_copy_key, __this__success_copy_value);
-        }
-        this.success = __this__success;
+        this.success = new EventPoolReply(other.success);
       }
     }
 
-    public getFeedUrls_result deepCopy() {
-      return new getFeedUrls_result(this);
+    public getEventPool_result deepCopy() {
+      return new getEventPool_result(this);
     }
 
     @Override
@@ -1382,22 +1333,11 @@ public class EventsService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public void putToSuccess(String key, String val) {
-      if (this.success == null) {
-        this.success = new HashMap<String,String>();
-      }
-      this.success.put(key, val);
-    }
-
-    public Map<String,String> getSuccess() {
+    public EventPoolReply getSuccess() {
       return this.success;
     }
 
-    public getFeedUrls_result setSuccess(Map<String,String> success) {
+    public getEventPool_result setSuccess(EventPoolReply success) {
       this.success = success;
       return this;
     }
@@ -1423,7 +1363,7 @@ public class EventsService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((Map<String,String>)value);
+          setSuccess((EventPoolReply)value);
         }
         break;
 
@@ -1456,12 +1396,12 @@ public class EventsService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getFeedUrls_result)
-        return this.equals((getFeedUrls_result)that);
+      if (that instanceof getEventPool_result)
+        return this.equals((getEventPool_result)that);
       return false;
     }
 
-    public boolean equals(getFeedUrls_result that) {
+    public boolean equals(getEventPool_result that) {
       if (that == null)
         return false;
 
@@ -1489,13 +1429,13 @@ public class EventsService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getFeedUrls_result other) {
+    public int compareTo(getEventPool_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getFeedUrls_result typedOther = (getFeedUrls_result)other;
+      getEventPool_result typedOther = (getEventPool_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -1525,20 +1465,9 @@ public class EventsService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.MAP) {
-              {
-                org.apache.thrift.protocol.TMap _map8 = iprot.readMapBegin();
-                this.success = new HashMap<String,String>(2*_map8.size);
-                for (int _i9 = 0; _i9 < _map8.size; ++_i9)
-                {
-                  String _key10; // required
-                  String _val11; // required
-                  _key10 = iprot.readString();
-                  _val11 = iprot.readString();
-                  this.success.put(_key10, _val11);
-                }
-                iprot.readMapEnd();
-              }
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new EventPoolReply();
+              this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1559,15 +1488,7 @@ public class EventsService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, this.success.size()));
-          for (Map.Entry<String, String> _iter12 : this.success.entrySet())
-          {
-            oprot.writeString(_iter12.getKey());
-            oprot.writeString(_iter12.getValue());
-          }
-          oprot.writeMapEnd();
-        }
+        this.success.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1576,7 +1497,7 @@ public class EventsService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getFeedUrls_result(");
+      StringBuilder sb = new StringBuilder("getEventPool_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -1612,16 +1533,16 @@ public class EventsService {
 
   }
 
-  public static class getFeeds_args implements org.apache.thrift.TBase<getFeeds_args, getFeeds_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getFeeds_args");
+  public static class updateDatabase_args implements org.apache.thrift.TBase<updateDatabase_args, updateDatabase_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("updateDatabase_args");
 
-    private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField ARG_FIELD_DESC = new org.apache.thrift.protocol.TField("arg", org.apache.thrift.protocol.TType.STRING, (short)1);
 
-    public String language; // required
+    public String arg; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      LANGUAGE((short)1, "language");
+      ARG((short)1, "arg");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1636,8 +1557,8 @@ public class EventsService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // LANGUAGE
-            return LANGUAGE;
+          case 1: // ARG
+            return ARG;
           default:
             return null;
         }
@@ -1682,71 +1603,71 @@ public class EventsService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.ARG, new org.apache.thrift.meta_data.FieldMetaData("arg", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getFeeds_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(updateDatabase_args.class, metaDataMap);
     }
 
-    public getFeeds_args() {
+    public updateDatabase_args() {
     }
 
-    public getFeeds_args(
-      String language)
+    public updateDatabase_args(
+      String arg)
     {
       this();
-      this.language = language;
+      this.arg = arg;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getFeeds_args(getFeeds_args other) {
-      if (other.isSetLanguage()) {
-        this.language = other.language;
+    public updateDatabase_args(updateDatabase_args other) {
+      if (other.isSetArg()) {
+        this.arg = other.arg;
       }
     }
 
-    public getFeeds_args deepCopy() {
-      return new getFeeds_args(this);
+    public updateDatabase_args deepCopy() {
+      return new updateDatabase_args(this);
     }
 
     @Override
     public void clear() {
-      this.language = null;
+      this.arg = null;
     }
 
-    public String getLanguage() {
-      return this.language;
+    public String getArg() {
+      return this.arg;
     }
 
-    public getFeeds_args setLanguage(String language) {
-      this.language = language;
+    public updateDatabase_args setArg(String arg) {
+      this.arg = arg;
       return this;
     }
 
-    public void unsetLanguage() {
-      this.language = null;
+    public void unsetArg() {
+      this.arg = null;
     }
 
-    /** Returns true if field language is set (has been assigned a value) and false otherwise */
-    public boolean isSetLanguage() {
-      return this.language != null;
+    /** Returns true if field arg is set (has been assigned a value) and false otherwise */
+    public boolean isSetArg() {
+      return this.arg != null;
     }
 
-    public void setLanguageIsSet(boolean value) {
+    public void setArgIsSet(boolean value) {
       if (!value) {
-        this.language = null;
+        this.arg = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case LANGUAGE:
+      case ARG:
         if (value == null) {
-          unsetLanguage();
+          unsetArg();
         } else {
-          setLanguage((String)value);
+          setArg((String)value);
         }
         break;
 
@@ -1755,8 +1676,8 @@ public class EventsService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case LANGUAGE:
-        return getLanguage();
+      case ARG:
+        return getArg();
 
       }
       throw new IllegalStateException();
@@ -1769,8 +1690,8 @@ public class EventsService {
       }
 
       switch (field) {
-      case LANGUAGE:
-        return isSetLanguage();
+      case ARG:
+        return isSetArg();
       }
       throw new IllegalStateException();
     }
@@ -1779,21 +1700,21 @@ public class EventsService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getFeeds_args)
-        return this.equals((getFeeds_args)that);
+      if (that instanceof updateDatabase_args)
+        return this.equals((updateDatabase_args)that);
       return false;
     }
 
-    public boolean equals(getFeeds_args that) {
+    public boolean equals(updateDatabase_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_language = true && this.isSetLanguage();
-      boolean that_present_language = true && that.isSetLanguage();
-      if (this_present_language || that_present_language) {
-        if (!(this_present_language && that_present_language))
+      boolean this_present_arg = true && this.isSetArg();
+      boolean that_present_arg = true && that.isSetArg();
+      if (this_present_arg || that_present_arg) {
+        if (!(this_present_arg && that_present_arg))
           return false;
-        if (!this.language.equals(that.language))
+        if (!this.arg.equals(that.arg))
           return false;
       }
 
@@ -1804,28 +1725,28 @@ public class EventsService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_language = true && (isSetLanguage());
-      builder.append(present_language);
-      if (present_language)
-        builder.append(language);
+      boolean present_arg = true && (isSetArg());
+      builder.append(present_arg);
+      if (present_arg)
+        builder.append(arg);
 
       return builder.toHashCode();
     }
 
-    public int compareTo(getFeeds_args other) {
+    public int compareTo(updateDatabase_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getFeeds_args typedOther = (getFeeds_args)other;
+      updateDatabase_args typedOther = (updateDatabase_args)other;
 
-      lastComparison = Boolean.valueOf(isSetLanguage()).compareTo(typedOther.isSetLanguage());
+      lastComparison = Boolean.valueOf(isSetArg()).compareTo(typedOther.isSetArg());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetLanguage()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.language, typedOther.language);
+      if (isSetArg()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.arg, typedOther.arg);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1847,9 +1768,9 @@ public class EventsService {
           break;
         }
         switch (field.id) {
-          case 1: // LANGUAGE
+          case 1: // ARG
             if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.language = iprot.readString();
+              this.arg = iprot.readString();
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1869,9 +1790,9 @@ public class EventsService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.language != null) {
-        oprot.writeFieldBegin(LANGUAGE_FIELD_DESC);
-        oprot.writeString(this.language);
+      if (this.arg != null) {
+        oprot.writeFieldBegin(ARG_FIELD_DESC);
+        oprot.writeString(this.arg);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1880,14 +1801,14 @@ public class EventsService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getFeeds_args(");
+      StringBuilder sb = new StringBuilder("updateDatabase_args(");
       boolean first = true;
 
-      sb.append("language:");
-      if (this.language == null) {
+      sb.append("arg:");
+      if (this.arg == null) {
         sb.append("null");
       } else {
-        sb.append(this.language);
+        sb.append(this.arg);
       }
       first = false;
       sb.append(")");
@@ -1916,12 +1837,12 @@ public class EventsService {
 
   }
 
-  public static class getFeeds_result implements org.apache.thrift.TBase<getFeeds_result, getFeeds_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getFeeds_result");
+  public static class updateDatabase_result implements org.apache.thrift.TBase<updateDatabase_result, updateDatabase_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("updateDatabase_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRING, (short)0);
 
-    public List<Feed> success; // required
+    public String success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1987,17 +1908,16 @@ public class EventsService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Feed.class))));
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getFeeds_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(updateDatabase_result.class, metaDataMap);
     }
 
-    public getFeeds_result() {
+    public updateDatabase_result() {
     }
 
-    public getFeeds_result(
-      List<Feed> success)
+    public updateDatabase_result(
+      String success)
     {
       this();
       this.success = success;
@@ -2006,18 +1926,14 @@ public class EventsService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getFeeds_result(getFeeds_result other) {
+    public updateDatabase_result(updateDatabase_result other) {
       if (other.isSetSuccess()) {
-        List<Feed> __this__success = new ArrayList<Feed>();
-        for (Feed other_element : other.success) {
-          __this__success.add(new Feed(other_element));
-        }
-        this.success = __this__success;
+        this.success = other.success;
       }
     }
 
-    public getFeeds_result deepCopy() {
-      return new getFeeds_result(this);
+    public updateDatabase_result deepCopy() {
+      return new updateDatabase_result(this);
     }
 
     @Override
@@ -2025,26 +1941,11 @@ public class EventsService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Feed> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Feed elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Feed>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Feed> getSuccess() {
+    public String getSuccess() {
       return this.success;
     }
 
-    public getFeeds_result setSuccess(List<Feed> success) {
+    public updateDatabase_result setSuccess(String success) {
       this.success = success;
       return this;
     }
@@ -2070,7 +1971,7 @@ public class EventsService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Feed>)value);
+          setSuccess((String)value);
         }
         break;
 
@@ -2103,12 +2004,12 @@ public class EventsService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getFeeds_result)
-        return this.equals((getFeeds_result)that);
+      if (that instanceof updateDatabase_result)
+        return this.equals((updateDatabase_result)that);
       return false;
     }
 
-    public boolean equals(getFeeds_result that) {
+    public boolean equals(updateDatabase_result that) {
       if (that == null)
         return false;
 
@@ -2136,13 +2037,13 @@ public class EventsService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getFeeds_result other) {
+    public int compareTo(updateDatabase_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getFeeds_result typedOther = (getFeeds_result)other;
+      updateDatabase_result typedOther = (updateDatabase_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -2172,19 +2073,8 @@ public class EventsService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list13 = iprot.readListBegin();
-                this.success = new ArrayList<Feed>(_list13.size);
-                for (int _i14 = 0; _i14 < _list13.size; ++_i14)
-                {
-                  Feed _elem15; // required
-                  _elem15 = new Feed();
-                  _elem15.read(iprot);
-                  this.success.add(_elem15);
-                }
-                iprot.readListEnd();
-              }
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.success = iprot.readString();
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -2205,14 +2095,7 @@ public class EventsService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Feed _iter16 : this.success)
-          {
-            _iter16.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
+        oprot.writeString(this.success);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -2221,7 +2104,7 @@ public class EventsService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getFeeds_result(");
+      StringBuilder sb = new StringBuilder("updateDatabase_result(");
       boolean first = true;
 
       sb.append("success:");
