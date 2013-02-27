@@ -26,6 +26,7 @@ import org.pocketcampus.plugin.events.shared.EventPool;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import com.markupartist.android.widget.ActionBar.Action;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
@@ -35,7 +36,6 @@ import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -70,6 +70,16 @@ public class EventsMainView extends PluginView implements IEventsView {
 	private List<Long> eventsInRS = new LinkedList<Long>();
 	private Set<Integer> categsInRS = new HashSet<Integer>();
 	private Set<String> tagsInRS = new HashSet<String>();
+	
+	Action scanBarcodeAction = new Action() {
+		public void performAction(View view) {
+			IntentIntegrator integrator = new IntentIntegrator(EventsMainView.this);
+			integrator.initiateScan();
+		}
+		public int getDrawable() {
+			return R.drawable.events_camera;
+		}
+	};
 	
 	EventPool thisEventPool;
 	Map<String, List<EventItem>> eventsByTags;
@@ -109,12 +119,15 @@ public class EventsMainView extends PluginView implements IEventsView {
 		eventPoolId = Constants.CONTAINER_EVENT_ID;
 		if(aIntent != null) {
 			Bundle aExtras = aIntent.getExtras();
-			//Uri aData = aIntent.getData();
+			Uri aData = aIntent.getData();
 			if(aExtras != null && aExtras.containsKey(EXTRAS_KEY_EVENTPOOLID)) {
 				eventPoolId = Long.parseLong(aExtras.getString(EXTRAS_KEY_EVENTPOOLID));
 				System.out.println("Started with intent to display pool " + eventPoolId);
-			/*} else {
-				externalCall(aData); // TODO too many refresh*/
+				mController.refreshEventPool(this, eventPoolId, false);
+			} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID) != null) {
+				eventPoolId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID));
+				System.out.println("External start with intent to display pool " + eventPoolId);
+				externalCall(aData);
 			}
 		}
 		
@@ -122,8 +135,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 		if(eventPoolId == Constants.CONTAINER_EVENT_ID) Tracker.getInstance().trackPageView("events");
 		else Tracker.getInstance().trackPageView("events/" + eventPoolId + "/subevents");
 		
-		mController.refreshEventPool(this, eventPoolId, false);
-		//eventPoolsUpdated(null);
+		if(eventPoolId == Constants.CONTAINER_EVENT_ID)
+			mController.refreshEventPool(this, eventPoolId, false);
 	}
 
 	@Override
@@ -147,23 +160,25 @@ public class EventsMainView extends PluginView implements IEventsView {
 		System.out.println("back from barcode scanner");
 		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		if (scanResult != null && "QR_CODE".equals(scanResult.getFormatName())) {
+			filteredCategs = null;
+			filteredTags = null;
 			externalCall(Uri.parse(scanResult.getContents()));
 		}
 	}
 	
 	private void externalCall(Uri aData) {
-		if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID) != null) {
-			eventPoolId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID));
-			System.out.println("External start with intent to display pool " + eventPoolId);
-			if(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN) != null) {
-				System.out.println("Got also a token :-)");
-				mModel.setToken(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN));
+		if(aData == null)
+			return;
+		if(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN) != null) {
+			System.out.println("Got also a token :-)");
+			mModel.setToken(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN));
+			mController.refreshEventPool(this, eventPoolId, false);
+		} else if(aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN) != null) {
+			System.out.println("Got request to exchange contacts");
+			if(mModel.getToken() != null)
+				mController.exchangeContacts(this, aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN));
+			else
 				mController.refreshEventPool(this, eventPoolId, false);
-			} else if(aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN) != null) {
-				System.out.println("Got request to exchange contacts");
-				if(mModel.getToken() != null)
-					mController.exchangeContacts(this, aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN));
-			}
 		}
 	}
 	
@@ -177,7 +192,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		
 		//System.out.println("eventsListUpdated getting pool");
 		thisEventPool = mModel.getEventPool(eventPoolId);
-		if(thisEventPool == null || thisEventPool.getChildrenEvents() == null)
+		if(thisEventPool == null)
 			return; // Ow!
 		
 		
@@ -186,20 +201,22 @@ public class EventsMainView extends PluginView implements IEventsView {
 		eventsInRS.clear();
 		categsInRS.clear();
 		tagsInRS.clear();
-		for(long eventId : thisEventPool.getChildrenEvents()) {
-			EventItem e = mModel.getEventItem(eventId);
-			//e.setEventCateg(1);
-			if(e == null)
-				continue;
-			eventsInRS.add(eventId);
-			if(e.getEventCateg() > 0)
-				categsInRS.add(e.getEventCateg());
-			if(e.isSetEventTags()) 
-				tagsInRS.addAll(e.getEventTags());
-			for(String t : e.getEventTags()) {
-				if(!eventsByTags.containsKey(t))
-					eventsByTags.put(t, new LinkedList<EventItem>());
-				eventsByTags.get(t).add(e);
+		if(thisEventPool.isSetChildrenEvents()) {
+			for(long eventId : thisEventPool.getChildrenEvents()) {
+				EventItem e = mModel.getEventItem(eventId);
+				//e.setEventCateg(1);
+				if(e == null)
+					continue;
+				eventsInRS.add(eventId);
+				if(e.getEventCateg() > 0)
+					categsInRS.add(e.getEventCateg());
+				if(e.isSetEventTags()) 
+					tagsInRS.addAll(e.getEventTags());
+				for(String t : e.getEventTags()) {
+					if(!eventsByTags.containsKey(t))
+						eventsByTags.put(t, new LinkedList<EventItem>());
+					eventsByTags.get(t).add(e);
+				}
 			}
 		}
 		
@@ -207,6 +224,46 @@ public class EventsMainView extends PluginView implements IEventsView {
 			filteredCategs = new HashSet<Integer>(categsInRS);
 		if(filteredTags == null)
 			filteredTags = new HashSet<String>(tagsInRS);
+		
+		// Action bar update
+		removeAllActionsFromActionBar();
+		if(!thisEventPool.isDisableFilterByCateg()) {
+			Map<Integer, String> subMap = subMap(Constants.EVENTS_CATEGS, categsInRS);
+			if(subMap.size() > 0) {
+				addActionToActionBar(buildActionMultiChoiceDialog(this, 
+						subMap, R.drawable.events_filter, "Filter by category", filteredCategs,
+						new MultiChoiceHandler<Integer>() {
+							public void saveSelection(Integer t, boolean isChecked) {
+								if(isChecked)
+									filteredCategs.add(t);
+								else
+									filteredCategs.remove(t);
+								updateDisplay(true);
+							}
+						}
+				));
+			}
+		}
+		if(!thisEventPool.isDisableFilterByTags()) {
+			Map<String, String> subMap = subMap(Constants.EVENTS_TAGS, tagsInRS);
+			if(subMap.size() > 0) {
+				addActionToActionBar(buildActionMultiChoiceDialog(this,
+						subMap, R.drawable.events_tags, "Filter by areas", filteredTags,
+						new MultiChoiceHandler<String>() {
+							public void saveSelection(String t, boolean isChecked) {
+								if(isChecked)
+									filteredTags.add(t);
+								else
+									filteredTags.remove(t);
+								updateDisplay(true);
+							}
+						}
+				));
+			}
+		}
+		if(thisEventPool.isEnableScan()) {
+			addActionToActionBar(scanBarcodeAction);
+		}
 		
 		updateDisplay(false);
 	}
@@ -339,7 +396,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		boolean showScanBarcode = false;
+		/*boolean showScanBarcode = false;
 		boolean showFilterCateg = true;
 		boolean showFilterTags = true;
 		EventPool pool = mModel.getEventPool(eventPoolId);
@@ -393,7 +450,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 						}
 				));
 			}
-		}
+		}*/
 		if(eventPoolId == Constants.CONTAINER_EVENT_ID) { // settings thingy
 			MenuItem periodMenu = menu.add("Choose period");
 			periodMenu.setOnMenuItemClickListener(buildMenuListenerSingleChoiceDialog(this,

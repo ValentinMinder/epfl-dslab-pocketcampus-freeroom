@@ -4,7 +4,6 @@ import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.events.android.EventsController;
 import org.pocketcampus.plugin.events.android.EventsModel;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
-import org.pocketcampus.plugin.events.shared.Constants;
 import org.pocketcampus.plugin.events.shared.EventItemReply;
 import org.pocketcampus.plugin.events.shared.EventItemRequest;
 import org.pocketcampus.plugin.events.shared.EventsService.Iface;
@@ -34,16 +33,14 @@ public class GetEventItemRequest extends Request<EventsController, Iface, EventI
 	@Override
 	protected void onResult(EventsController controller, EventItemReply result) {
 		if(result.getStatus() == 200) {
+			if(result.isSetCategs())
+				EventsController.updateEventCategs(result.getCategs());
+			if(result.isSetTags())
+				EventsController.updateEventTags(result.getTags());
+			
 			((EventsModel) controller.getModel()).addEventPools(result.getChildrenPools());
 			((EventsModel) controller.getModel()).addEventItem(result.getEventItem());
-			if(result.isSetCategs()) {
-				Constants.EVENTS_CATEGS.clear();
-				Constants.EVENTS_CATEGS.putAll(result.getCategs());
-			}
-			if(result.isSetTags()) {
-				Constants.EVENTS_TAGS.clear();
-				Constants.EVENTS_TAGS.putAll(result.getTags());
-			}
+			
 			keepInCache();
 		} else {
 			caller.mementoServersDown();

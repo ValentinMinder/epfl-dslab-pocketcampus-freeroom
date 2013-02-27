@@ -27,6 +27,7 @@ import org.pocketcampus.plugin.events.shared.EventsService.Client;
 import org.pocketcampus.plugin.events.shared.EventsService.Iface;
 import org.pocketcampus.plugin.events.shared.ExchangeRequest;
 
+import com.markupartist.android.widget.ActionBar.Action;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -212,6 +213,36 @@ public class EventsController extends PluginController implements IEventsControl
 		};
 	}
 
+	public static <T extends Comparable<? super T>> Action buildActionMultiChoiceDialog(
+			final Context context, final Map<T, String> map, final int res, final String title, final Set<T> selected, final MultiChoiceHandler<T> handler) {
+		final List<T> keysList = new LinkedList<T>(map.keySet());
+		Collections.sort(keysList);
+		final boolean[] selPos = new boolean[keysList.size()];
+		for(int i = 0; i < keysList.size(); i++) {
+			selPos[i] = selected.contains(keysList.get(i));
+		}
+		final List<String> valuesList = extractValues(map, keysList);
+		return new Action() {
+			public void performAction(View view) {
+				AlertDialog dialog = new AlertDialog.Builder(context)
+						.setTitle(title)
+						.setMultiChoiceItems(
+								valuesList.toArray(new String[]{}), selPos, 
+								new OnMultiChoiceClickListener() {
+									public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+										handler.saveSelection(keysList.get(which), isChecked);
+									}
+								})
+						.create();
+				dialog.setCanceledOnTouchOutside(true);
+				dialog.show();
+			}
+			public int getDrawable() {
+				return res;
+			}
+		};
+	}
+
 	public static <T extends Comparable<? super T>> OnMenuItemClickListener buildMenuListenerMultiChoiceDialog(
 			final Context context, final Map<T, String> map, final String title, final Set<T> selected, final MultiChoiceHandler<T> handler) {
 		final List<T> keysList = new LinkedList<T>(map.keySet());
@@ -307,6 +338,16 @@ public class EventsController extends PluginController implements IEventsControl
 		public void restore(ListView mList) {
 			mList.setSelectionFromTop(index, top);
 		}
+	}
+	
+	public static void updateEventCategs(Map<Integer, String> updated) {
+		Constants.EVENTS_CATEGS.clear();
+		Constants.EVENTS_CATEGS.putAll(updated);
+	}
+
+	public static void updateEventTags(Map<String, String> updated) {
+		Constants.EVENTS_TAGS.clear();
+		Constants.EVENTS_TAGS.putAll(updated);
 	}
 
 }

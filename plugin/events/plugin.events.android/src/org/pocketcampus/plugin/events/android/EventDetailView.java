@@ -23,6 +23,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -85,13 +86,13 @@ public class EventDetailView extends PluginView implements IEventsView {
 		eventItemId = 0l;
 		if(aIntent != null) {
 			Bundle aExtras = aIntent.getExtras();
-			//Uri aData = aIntent.getData();
+			Uri aData = aIntent.getData();
 			if(aExtras != null && aExtras.containsKey(EXTRAS_KEY_EVENTITEMID)) {
 				eventItemId = Long.parseLong(aExtras.getString(EXTRAS_KEY_EVENTITEMID));
 				System.out.println("Started with intent to display event " + eventItemId);
-			/*} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTITEMID) != null) {
+			} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTITEMID) != null) {
 				eventItemId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTITEMID));
-				System.out.println("External start with intent to display event " + eventItemId);*/
+				System.out.println("External start with intent to display event " + eventItemId);
 			}
 		}
 		if(eventItemId == 0l) {

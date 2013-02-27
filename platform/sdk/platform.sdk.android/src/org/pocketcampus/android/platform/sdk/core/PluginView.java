@@ -30,6 +30,7 @@ import com.markupartist.android.widget.ActionBar.Action;
  */
 public abstract class PluginView extends Activity {
 
+	private RelativeLayout actionBarLayout;
 	private ActionBar mActionBar;
 	private ServiceConnection mServiceConnection;
 	private ArrayList<PluginController> mControllers = new ArrayList<PluginController>();
@@ -251,20 +252,19 @@ public abstract class PluginView extends Activity {
 			super.setContentView(view);
 			return;
 		}
-
-		LayoutInflater inflater = getLayoutInflater();
-		View actionBarView = inflater.inflate(R.layout.sdk_actionbar_layout,
-				null);
-		super.setContentView(actionBarView);
-
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.FILL_PARENT);
-		RelativeLayout actionBarLayout = (RelativeLayout) actionBarView
-				.findViewById(R.id.sdk_actionbar_layout);
+		
+		if(actionBarLayout == null) {
+			LayoutInflater inflater = getLayoutInflater();
+			View actionBarView = inflater.inflate(R.layout.sdk_actionbar_layout, null);
+			super.setContentView(actionBarView);
+			actionBarLayout = (RelativeLayout) actionBarView.findViewById(R.id.sdk_actionbar_layout);
+			mActionBar = (ActionBar) actionBarView.findViewById(R.id.sdk_actionbar_layout_actionbar);
+			mActionBar.setTitle(getString(R.string.app_name));
+		}
+		
+		actionBarLayout.removeAllViews();
+		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		actionBarLayout.addView(view, layoutParams);
-
-		mActionBar = (ActionBar) actionBarView.findViewById(R.id.sdk_actionbar_layout_actionbar);
-		mActionBar.setTitle(getString(R.string.app_name));
 	}
 	
 	/**
