@@ -170,7 +170,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 			return;
 		if(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN) != null) {
 			System.out.println("Got also a token :-)");
-			mModel.setToken(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN));
+			if(mModel.getToken() == null)
+				mModel.setToken(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN));
 			mController.refreshEventPool(this, eventPoolId, false);
 		} else if(aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN) != null) {
 			System.out.println("Got request to exchange contacts");
