@@ -173,7 +173,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 					return "<p>" + details.toString() + "</p>";
 				case R.id.event_list_complex_image:
 					if(!e.isSetEventPicture())
-						return R.drawable.events_transparent;
+						return -1; // R.drawable.events_transparent;
 					return e.getEventPicture();
 				case R.id.event_list_complex_caption:
 					return e.getEventDetails();
@@ -187,7 +187,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 			}
 		});
 		adapter.addSection("Details" /* Constants.EVENTS_CATEGS.get(parentEvent.getEventCateg()) */ , new LazyAdapter(this, p1.getMap(),
-				R.layout.event_big_image, p1.getKeys(), p1.getResources()) /* .setImageSizeCap(840) */ );
+				R.layout.event_details, p1.getKeys(), p1.getResources()) /* .setImageSizeCap(840) */ );
 		
 		
 		/*if(thisEvent.isSetEventPicture()) {

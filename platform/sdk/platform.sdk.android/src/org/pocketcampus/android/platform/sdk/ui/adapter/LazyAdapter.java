@@ -157,17 +157,14 @@ public class LazyAdapter extends BaseAdapter {
         		}
         	} else if(containerView instanceof ImageView) {
         		String imgUrl = "drawable://" + noImage;
+        		((ImageView) containerView).setVisibility(View.VISIBLE);
         		if(contentData == null) {
-        			System.out.println("NULL");
-        			System.out.println(imgUrl);
         		} else if(contentData instanceof Integer) {
-        			System.out.println("INT");
+        			if(contentData.equals(-1))
+        				((ImageView) containerView).setVisibility(View.GONE);
         			imgUrl = "drawable://" + contentData.toString();
-        			System.out.println(imgUrl);
         		} else if(contentData instanceof String) {
-        			System.out.println("STR");
         			imgUrl = (String) contentData;
-        			System.out.println(imgUrl);
         		}
     			imageLoader.displayImage(imgUrl, (ImageView) containerView, options);
         	}
