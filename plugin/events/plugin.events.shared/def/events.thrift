@@ -93,13 +93,17 @@ struct EventItem {
 	8: optional string eventSpeaker;
 	9: optional string eventDetails;
 	10: optional string eventThumbnail;
+	11: optional string secondLine; // if set, overrides the second line in list view
 	12: optional string eventUri;
 	13: optional string vcalUid;
 	14: optional i32 eventCateg;
 	15: optional list<string> eventTags;
 	16: optional string locationHref;
 	17: optional string detailsLink;
-	20: optional list<i64> childrenPools;
+	18: optional string timeSnippet; // if set, overrides time snippet
+	19: optional bool hideDateInfo; // if set, hides date and time from event details view
+	21: optional bool hideTitle; // if set, hides the title from event details view
+	30: optional list<i64> childrenPools;
 }
 
 struct EventPool {

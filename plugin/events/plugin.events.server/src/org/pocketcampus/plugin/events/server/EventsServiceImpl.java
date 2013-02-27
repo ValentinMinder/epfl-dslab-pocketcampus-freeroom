@@ -557,7 +557,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 	
 	private static class EventItemDecoderFromDb {
-		private static final String SELECT_FIELDS = "eventId,startDate,endDate,fullDay,eventPicture,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink";
+		private static final String SELECT_FIELDS = "eventId,startDate,endDate,fullDay,eventPicture,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink,secondLine,timeSnippet,hideDateInfo,hideTitle";
 		public static String getSelectFields() {
 			return SELECT_FIELDS;
 		}
@@ -578,8 +578,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 			if(level < 10)
 				return ei;
 			
-			ei.setEventThumbnail("drawable://17301535");
 			ei.setEventTitle(rs.getString(6));
+			ei.setEventThumbnail("http://pocketcampus.epfl.ch/images/padlock.png"); // drawable://17301535
+			ei.setSecondLine("Use the menu key to scan the barcode of this person and unlock their contact information");
 			
 			if(level < 100)
 				return ei;
@@ -603,6 +604,10 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ei.setEventTags(split(rs.getString(14), "[,]"));
 			ei.setLocationHref(rs.getString(15));
 			ei.setDetailsLink(rs.getString(16));
+			ei.setSecondLine(rs.getString(17));
+			ei.setTimeSnippet(rs.getString(18));
+			ei.setHideDateInfo(rs.getBoolean(19));
+			ei.setHideTitle(rs.getBoolean(20));
 			
 			if(exchangeToken != null) {
 				// force categ to Me
@@ -611,6 +616,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 				ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=13000002%26exchangeToken=" + exchangeToken);
 				// remove details
 				ei.setEventDetails(null);
+				// show help
+				ei.setSecondLine("Click here to allow others to scan your barcode");
 			}
 			
 			return ei;

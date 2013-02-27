@@ -251,10 +251,12 @@ public class EventsMainView extends PluginView implements IEventsView {
 					case R.id.event_title:
 						return e.getEventTitle();
 					case R.id.event_speaker:
-						return (e.isSetEventPlace() ? e.getEventPlace() : e.getEventSpeaker());
+						return (e.isSetSecondLine() ? e.getSecondLine() : (e.isSetEventPlace() ? e.getEventPlace() : e.getEventSpeaker()));
 					case R.id.event_thumbnail:
 						return e.getEventThumbnail();
 					case R.id.event_time:
+						if(e.isSetTimeSnippet())
+							return e.getTimeSnippet();
 						if(!e.isSetStartDate())
 							return null;
 						String startTime = simpleTimeFormat.format(new Date(e.getStartDate()));
@@ -303,6 +305,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 			//mList.setFastScrollEnabled(true);
 			//mList.setScrollingCacheEnabled(false);
 			//mList.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
+			mList.setDivider(null);
+			mList.setDividerHeight(0);
 			
 			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 			
@@ -355,34 +359,40 @@ public class EventsMainView extends PluginView implements IEventsView {
 			});
 		}
 		if(showFilterCateg) {
-			MenuItem categMenu = menu.add("Filter by category");
-			categMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this, 
-					subMap(Constants.EVENTS_CATEGS, categsInRS), "Filter by category", filteredCategs,
-					new MultiChoiceHandler<Integer>() {
-						public void saveSelection(Integer t, boolean isChecked) {
-							if(isChecked)
-								filteredCategs.add(t);
-							else
-								filteredCategs.remove(t);
-							updateDisplay(true);
+			Map<Integer, String> subMap = subMap(Constants.EVENTS_CATEGS, categsInRS);
+			if(subMap.size() > 0) {
+				MenuItem categMenu = menu.add("Filter by category");
+				categMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this, 
+						subMap, "Filter by category", filteredCategs,
+						new MultiChoiceHandler<Integer>() {
+							public void saveSelection(Integer t, boolean isChecked) {
+								if(isChecked)
+									filteredCategs.add(t);
+								else
+									filteredCategs.remove(t);
+								updateDisplay(true);
+							}
 						}
-					}
-			));
+				));
+			}
 		}
 		if(showFilterTags) {
-			MenuItem feedMenu = menu.add("Filter by areas");
-			feedMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this,
-					subMap(Constants.EVENTS_TAGS, tagsInRS), "Filter by areas", filteredTags,
-					new MultiChoiceHandler<String>() {
-						public void saveSelection(String t, boolean isChecked) {
-							if(isChecked)
-								filteredTags.add(t);
-							else
-								filteredTags.remove(t);
-							updateDisplay(true);
+			Map<String, String> subMap = subMap(Constants.EVENTS_TAGS, tagsInRS);
+			if(subMap.size() > 0) {
+				MenuItem feedMenu = menu.add("Filter by areas");
+				feedMenu.setOnMenuItemClickListener(buildMenuListenerMultiChoiceDialog(this,
+						subMap, "Filter by areas", filteredTags,
+						new MultiChoiceHandler<String>() {
+							public void saveSelection(String t, boolean isChecked) {
+								if(isChecked)
+									filteredTags.add(t);
+								else
+									filteredTags.remove(t);
+								updateDisplay(true);
+							}
 						}
-					}
-			));
+				));
+			}
 		}
 		if(eventPoolId == Constants.CONTAINER_EVENT_ID) { // settings thingy
 			MenuItem periodMenu = menu.add("Choose period");

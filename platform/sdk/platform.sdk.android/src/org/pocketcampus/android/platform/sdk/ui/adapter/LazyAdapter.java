@@ -7,6 +7,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.content.Context;
+import android.opengl.Visibility;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -147,9 +148,14 @@ public class LazyAdapter extends BaseAdapter {
         	if(containerView == null) {
         		// don't know what to do
         	} else if(containerView instanceof TextView) {
-       			((TextView) containerView).setText((contentData == null ? null : Html.fromHtml(contentData.toString())));
-       			if(song.get(LINK_CLICKABLE) != null)
-       				((TextView) containerView).setMovementMethod(LinkMovementMethod.getInstance());
+        		if(contentData == null) {
+        			((TextView) containerView).setVisibility(View.GONE);
+        		} else {
+           			((TextView) containerView).setText(Html.fromHtml(contentData.toString()));
+           			if(song.get(LINK_CLICKABLE) != null)
+           				((TextView) containerView).setMovementMethod(LinkMovementMethod.getInstance());
+        			((TextView) containerView).setVisibility(View.VISIBLE);
+        		}
         	} else if(containerView instanceof ImageView) {
         		if(contentData == null) {
         			((ImageView) containerView).setImageDrawable(activity.getResources().getDrawable(noImage));

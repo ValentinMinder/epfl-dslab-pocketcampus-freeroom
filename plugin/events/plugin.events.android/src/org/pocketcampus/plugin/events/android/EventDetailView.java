@@ -134,7 +134,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 			return; // Ow!
 		
 		// create our list and custom adapter
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.event_list_header);
+		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.event_list_tinyheader);
 		
 	
 		Preparated<EventItem> p1 = new Preparated<EventItem>(oneItemList(parentEvent), new Preparator<EventItem>() {
@@ -158,10 +158,10 @@ public class EventDetailView extends PluginView implements IEventsView {
 			public Object content(int res, EventItem e) {
 				switch (res) {
 				case R.id.event_list_complex_title:
-					return e.getEventTitle();
+					return (e.isHideTitle() ? null : e.getEventTitle());
 				case R.id.event_list_item_details:
 					StringBuilder details = new StringBuilder();
-					if(e.isSetStartDate()) {
+					if(e.isSetStartDate() && !e.isHideDateInfo()) {
 						details.append("<br><b>On</b> " + getFormattedDateInterval(e));
 						details.append(!e.isFullDay() ? ("<br><b>At</b> " + getFormattedTimeInterval(e)) : "");
 					}
@@ -322,6 +322,8 @@ public class EventDetailView extends PluginView implements IEventsView {
 		//mLayout.setFastScrollEnabled(true);
 		mList.setScrollingCacheEnabled(false);
 		//mLayout.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
+		mList.setDivider(null);
+		mList.setDividerHeight(0);
 		
 		mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 		
