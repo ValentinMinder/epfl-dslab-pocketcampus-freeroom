@@ -100,7 +100,6 @@ public class EventsMainView extends PluginView implements IEventsView {
 		mController = (EventsController) controller;
 		mModel = (EventsModel) controller.getModel();
 
-
 		// The ActionBar is added automatically when you call setContentView
 		//disableActionBar();
 		setContentView(R.layout.events_main);
@@ -324,7 +323,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 							return startDay + " - " + startTime;
 					case R.id.event_fav_star:
 						if(thisEventPool.isDisableStar())
-							return android.R.drawable.divider_horizontal_bright;
+							return R.drawable.events_transparent;
 						Integer fav = android.R.drawable.star_off;
 						if(e.getEventCateg() == -2)
 							fav = android.R.drawable.star_on;

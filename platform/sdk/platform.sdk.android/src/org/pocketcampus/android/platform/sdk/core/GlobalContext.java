@@ -6,8 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
@@ -20,6 +22,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Bundle;
 import android.os.Environment;
 
 /**
@@ -29,7 +32,7 @@ import android.os.Environment;
  * @author Amer C <amer.chamseddine@epfl.ch>
  */
 public class GlobalContext extends Application {
-	private List<PluginInfo> mPluginInfoList;
+	private Map<String, PluginInfo> mPluginInfoList;
 
 	private int mRequestCounter = 0;
 	private RequestActivityListener mRequestActivityListener;
@@ -43,7 +46,7 @@ public class GlobalContext extends Application {
 		//Starts the Tracker for the google analytics
 		Tracker.getInstance().start(getApplicationContext());
 		
-		mPluginInfoList = new LinkedList<PluginInfo>();
+		mPluginInfoList = new HashMap<String, PluginInfo>();
 		
 		loadPluginManifests();
 	}
@@ -59,7 +62,8 @@ public class GlobalContext extends Application {
 			ActivityInfo activityInfo = resolveInfo.activityInfo;
 			if(!activityInfo.name.startsWith("org.pocketcampus.plugin."))
 				continue;
-			if(!enabledPlugins.contains(activityInfo.name.split("[.]")[3].toLowerCase()))
+			String shName = activityInfo.name.split("[.]")[3].toLowerCase();
+			if(!enabledPlugins.contains(shName))
 				continue;
 			PluginInfo pluginInfo = new PluginInfo();
 			try {
@@ -74,21 +78,36 @@ public class GlobalContext extends Application {
 				continue;
 			}
 
-			mPluginInfoList.add(pluginInfo);
+			mPluginInfoList.put(shName, pluginInfo);
 		}
 	}
 
 	public ArrayList<PluginInfo> getAllPluginInfos() {
-		return new ArrayList<PluginInfo>(mPluginInfoList);
+		return new ArrayList<PluginInfo>(mPluginInfoList.values());
 	}
 
 	public void displayPlugin(Context ctx, PluginInfo pluginManifest) {
 		startPlugin(ctx, new ComponentName(pluginManifest.getMainPackageName(), pluginManifest.getMainClassName()));
 	}
+	
+	public void startPluginActivity(Context ctx, String plugin, String activity, String action, Bundle extras) {
+		PluginInfo pi = mPluginInfoList.get(plugin);
+		if(pi == null)
+			return;
+		startPluginWithActionAndExtras(ctx, new ComponentName(pi.getMainPackageName(), activity), action, extras);
+	}
 
 	private void startPlugin(Context ctx, ComponentName comp) {
+		startPluginWithActionAndExtras(ctx, comp, null, null);
+	}
+
+	private void startPluginWithActionAndExtras(Context ctx, ComponentName comp, String action, Bundle extras) {
 		Intent intent = new Intent();
 		intent.setComponent(comp);
+		if(action != null)
+			intent.setAction(action);
+		if(extras != null)
+			intent.putExtras(extras);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		ctx.startActivity(intent);
 	}

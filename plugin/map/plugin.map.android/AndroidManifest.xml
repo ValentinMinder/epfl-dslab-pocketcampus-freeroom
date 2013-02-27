@@ -25,6 +25,19 @@
 
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
             </intent-filter>
+            
+
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="pocketcampus" 
+				    android:host="map.plugin.pocketcampus.org"  
+				    android:pathPrefix="/search" />
+			</intent-filter>
+                        
+            
+            
             <meta-data android:name="android.app.default_searchable"
                 	android:value="org.pocketcampus.plugin.map.android.search.MapSearchActivity" />
         </activity>

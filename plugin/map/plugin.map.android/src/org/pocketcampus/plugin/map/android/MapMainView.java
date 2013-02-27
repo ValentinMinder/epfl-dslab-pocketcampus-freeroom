@@ -30,17 +30,20 @@ import org.pocketcampus.plugin.map.android.elements.MapElement;
 import org.pocketcampus.plugin.map.android.elements.MapElementsList;
 import org.pocketcampus.plugin.map.android.elements.MapPathOverlay;
 import org.pocketcampus.plugin.map.android.iface.IMapView;
+import org.pocketcampus.plugin.map.android.search.MapSearchActivity;
 import org.pocketcampus.plugin.map.android.ui.LevelBar;
 import org.pocketcampus.plugin.map.android.ui.OnLevelBarChangeListener;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 import org.pocketcampus.plugin.map.shared.Position;
 
+import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -167,11 +170,11 @@ public class MapMainView extends PluginView implements IMapView {
 		layersCache_ = new LayersCache(this);
 		
 		// Get extras from the intent
-		Bundle extras = getIntent().getExtras();
-		if(extras != null) {
-			intentLayerId_ = Integer.parseInt(extras.getString("MapLayer"));
-			intentItemId_ = extras.getInt("MapItem");
-		}
+		Intent i = getIntent();
+		String s = i.getStringExtra("MapLayer");
+		intentLayerId_ = (s == null ? 0 : Integer.parseInt(s));
+		intentItemId_ = i.getIntExtra("MapItem", 0);
+
 	}
 
 	/**
@@ -352,6 +355,14 @@ public class MapMainView extends PluginView implements IMapView {
 	
 	@Override
 	protected void handleIntent(Intent intent) {
+		Uri aData = intent.getData();
+		if(aData != null && aData.getQueryParameter("q") != null) {
+			String query = aData.getQueryParameter("q");
+			Intent i = new Intent(this, MapSearchActivity.class);
+			i.putExtra(SearchManager.QUERY, query);
+			i.setAction(Intent.ACTION_SEARCH);
+			startActivity(i);
+		}
 		handleSearchIntent(intent.getExtras());
 	}
 

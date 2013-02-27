@@ -579,7 +579,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 				return ei;
 			
 			ei.setEventTitle(rs.getString(6));
-			ei.setEventThumbnail("http://pocketcampus.epfl.ch/images/padlock.png"); // drawable://17301535
+			ei.setEventThumbnail("http://pocketcampus.epfl.ch/images/padlock.png");
 			ei.setSecondLine("Use the scan button to exchange contacts with this person");
 			
 			if(level < 100)

@@ -173,7 +173,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 					return "<p>" + details.toString() + "</p>";
 				case R.id.event_list_complex_image:
 					if(!e.isSetEventPicture())
-						return android.R.drawable.divider_horizontal_bright;
+						return R.drawable.events_transparent;
 					return e.getEventPicture();
 				case R.id.event_list_complex_caption:
 					return e.getEventDetails();

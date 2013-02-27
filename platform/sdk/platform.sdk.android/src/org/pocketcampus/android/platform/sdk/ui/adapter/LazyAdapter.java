@@ -7,7 +7,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.content.Context;
-import android.opengl.Visibility;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -157,13 +156,20 @@ public class LazyAdapter extends BaseAdapter {
         			((TextView) containerView).setVisibility(View.VISIBLE);
         		}
         	} else if(containerView instanceof ImageView) {
+        		String imgUrl = "drawable://" + noImage;
         		if(contentData == null) {
-        			((ImageView) containerView).setImageDrawable(activity.getResources().getDrawable(noImage));
+        			System.out.println("NULL");
+        			System.out.println(imgUrl);
         		} else if(contentData instanceof Integer) {
-        			((ImageView) containerView).setImageDrawable(activity.getResources().getDrawable((Integer) contentData));
+        			System.out.println("INT");
+        			imgUrl = "drawable://" + contentData.toString();
+        			System.out.println(imgUrl);
         		} else if(contentData instanceof String) {
-        			imageLoader.displayImage((String) contentData, (ImageView) containerView, options);
+        			System.out.println("STR");
+        			imgUrl = (String) contentData;
+        			System.out.println(imgUrl);
         		}
+    			imageLoader.displayImage(imgUrl, (ImageView) containerView, options);
         	}
         }
 
