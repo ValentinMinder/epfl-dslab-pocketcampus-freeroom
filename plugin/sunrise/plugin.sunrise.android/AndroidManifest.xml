@@ -14,6 +14,7 @@
 		<activity android:name="org.pocketcampus.plugin.sunrise.android.SunriseMainView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:icon="@drawable/sunrise_icon"
+			android:screenOrientation="nosensor"
 			android:label="@string/sunrise_plugin_title"
 			android:windowSoftInputMode="adjustResize" >
 			<intent-filter>
@@ -55,6 +56,7 @@
 		    
 		<activity android:name="org.pocketcampus.plugin.sunrise.android.SunriseSettingsView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:screenOrientation="nosensor"
 			android:windowSoftInputMode="adjustResize" />
 		
 		<service android:name="org.pocketcampus.plugin.sunrise.android.SunriseController"
