@@ -18,6 +18,7 @@
         <activity
             android:label="@string/transport_plugin_name"
              android:icon="@drawable/transport_icon"
+             android:screenOrientation="nosensor"
             android:name="org.pocketcampus.plugin.transport.android.TransportMainView" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +27,11 @@
                 </intent-filter>
         </activity>
 	
-        <activity android:name="org.pocketcampus.plugin.transport.android.TransportAddView" >
+        <activity android:name="org.pocketcampus.plugin.transport.android.TransportAddView" 
+            android:screenOrientation="nosensor">
         </activity>  
-        <activity android:name="org.pocketcampus.plugin.transport.android.TransportEditView" >
+        <activity android:name="org.pocketcampus.plugin.transport.android.TransportEditView" 
+            android:screenOrientation="nosensor">
         </activity>    
            
         <service

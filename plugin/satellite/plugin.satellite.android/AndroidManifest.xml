@@ -15,13 +15,12 @@
         <activity
             android:name="org.pocketcampus.plugin.satellite.android.SatelliteMainView"
             android:icon="@drawable/satellite_normal_icon"
+            android:screenOrientation="nosensor"
             android:label="@string/satellite_plugin_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
             </intent-filter>
-        </activity>
-        <activity android:name="org.pocketcampus.plugin.satellite.android.SatelliteSandwichesView" >
         </activity>
 
         <service

@@ -15,6 +15,7 @@
         <activity
             android:icon="@drawable/news_icon"
             android:label="@string/news_plugin_title"
+            android:screenOrientation="nosensor"
             android:name="org.pocketcampus.plugin.news.android.NewsMainView" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
@@ -23,9 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.pocketcampus.plugin.news.android.NewsPreferencesView" >
+        <activity android:name="org.pocketcampus.plugin.news.android.NewsPreferencesView" 
+            android:screenOrientation="nosensor">
         </activity>
-        <activity android:name="org.pocketcampus.plugin.news.android.NewsItemView" >
+        <activity android:name="org.pocketcampus.plugin.news.android.NewsItemView"
+            android:screenOrientation="nosensor" >
         </activity>
 
         <service

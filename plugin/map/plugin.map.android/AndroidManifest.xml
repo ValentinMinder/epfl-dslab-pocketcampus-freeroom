@@ -17,6 +17,7 @@
         <activity
             android:label="@string/map_plugin_title"
             android:name="org.pocketcampus.plugin.map.android.MapMainView"
+            android:screenOrientation="nosensor"
             android:icon="@drawable/map_icon" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
@@ -43,6 +44,7 @@
         </activity>
         
             <activity android:name="org.pocketcampus.plugin.map.android.search.MapSearchActivity"
+                android:screenOrientation="nosensor"
 				android:launchMode="singleTop"
 				android:noHistory="true">
 			<intent-filter>

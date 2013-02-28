@@ -17,6 +17,7 @@
 		<activity
 		    android:name="org.pocketcampus.plugin.bikes.android.BikesMainView"
 			android:label="@string/bikes_plugin_name"
+			android:screenOrientation="nosensor"
 			 android:icon="@drawable/bike_icon">
 			
 			<intent-filter>

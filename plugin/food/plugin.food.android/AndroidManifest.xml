@@ -14,6 +14,7 @@
         <activity
             android:name="org.pocketcampus.plugin.food.android.FoodMainView"
             android:icon="@drawable/food_icon"
+            android:screenOrientation="nosensor"
             android:label="@string/food_plugin_title" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,11 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView" >
+        <activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView"
+            android:screenOrientation="nosensor" >
         </activity>
-        <activity android:name="org.pocketcampus.plugin.food.android.FoodPreferencesView" >
+        <activity android:name="org.pocketcampus.plugin.food.android.FoodPreferencesView" 
+            android:screenOrientation="nosensor">
         </activity>
-        <activity android:name="org.pocketcampus.plugin.food.android.FoodSettings" >
+        <activity android:name="org.pocketcampus.plugin.food.android.FoodSettings"
+            android:screenOrientation="nosensor" >
         </activity>
 
         <service
