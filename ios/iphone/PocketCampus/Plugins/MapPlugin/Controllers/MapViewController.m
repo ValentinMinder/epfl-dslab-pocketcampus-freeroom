@@ -676,7 +676,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 - (void)serviceConnectionToServerTimedOut {
     [self.navBarLoadingIndicator stopAnimating];
     [self.searchActivityIndicator stopAnimating];
-    self.internetConnectionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    self.internetConnectionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [self.internetConnectionAlert show];
 }
 
