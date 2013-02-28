@@ -112,8 +112,6 @@ public class EventDetailView extends PluginView implements IEventsView {
 		super.onResume();
 		if(scrollState != null)
 			scrollState.restore(mList);
-		/*if(mController != null)
-			mController.refreshEventItem(this, eventItemId, false);*/
 	}
 	
 	@Override
@@ -140,7 +138,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 	
 		Preparated<EventItem> p1 = new Preparated<EventItem>(oneItemList(parentEvent), new Preparator<EventItem>() {
 			public int[] resources() {
-				return new int[] { R.id.event_list_complex_title, R.id.event_list_item_details, R.id.event_list_complex_image, R.id.event_list_complex_caption };
+				return new int[] { R.id.event_list_complex_title, R.id.event_list_item_details, R.id.event_list_complex_image, R.id.event_list_complex_caption, R.id.event_big_image };
 			}
 			private String getFormattedTimeInterval(EventItem e) {
 				String eventTime = simpleTimeFormat.format(new Date(e.getStartDate()));
@@ -172,11 +170,15 @@ public class EventDetailView extends PluginView implements IEventsView {
 					//details.append(e.isSetEventTags() && e.getEventTags().size() > 0 ? ("<br><b>Tag(s)</b> " + expandTags(e.getEventTags()) + "") : "");
 					return "<p>" + details.toString() + "</p>";
 				case R.id.event_list_complex_image:
+					if(!e.isSetEventThumbnail())
+						return -1; // R.drawable.events_transparent;
+					return e.getEventThumbnail();
+				case R.id.event_list_complex_caption:
+					return e.getEventDetails();
+				case R.id.event_big_image:
 					if(!e.isSetEventPicture())
 						return -1; // R.drawable.events_transparent;
 					return e.getEventPicture();
-				case R.id.event_list_complex_caption:
-					return e.getEventDetails();
 				default:
 					return null;
 				}

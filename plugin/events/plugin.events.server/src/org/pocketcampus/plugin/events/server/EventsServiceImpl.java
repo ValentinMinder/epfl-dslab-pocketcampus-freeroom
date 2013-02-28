@@ -500,7 +500,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 
 	private static void updateEventItem(EventItem ei, Connection conn) throws SQLException {
-		PreparedStatement stm = conn.prepareStatement("REPLACE INTO eventitems (eventId,startDate,endDate,fullDay,eventPicture,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+		PreparedStatement stm = conn.prepareStatement("REPLACE INTO eventitems (eventId,startDate,endDate,fullDay,eventThumbnail,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 		stm.setLong(1, ei.getEventId());
 		stm.setTimestamp(2, (ei.isSetStartDate() ? new Timestamp(ei.getStartDate()) : null));
 		stm.setTimestamp(3, (ei.isSetEndDate() ? new Timestamp(ei.getEndDate()) : null));
@@ -557,7 +557,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 	
 	private static class EventItemDecoderFromDb {
-		private static final String SELECT_FIELDS = "eventId,startDate,endDate,fullDay,eventPicture,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink,secondLine,timeSnippet,hideDateInfo,hideTitle";
+		private static final String SELECT_FIELDS = "eventId,startDate,endDate,fullDay,eventPicture,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink,secondLine,timeSnippet,hideDateInfo,hideTitle,eventThumbnail";
 		public static String getSelectFields() {
 			return SELECT_FIELDS;
 		}
@@ -592,8 +592,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ei.setFullDay(rs.getBoolean(4));
 			if(rs.wasNull()) ei.unsetFullDay();
 			
-			ei.setEventPicture(getResizedPhotoUrl(rs.getString(5), 480));
-			ei.setEventThumbnail(getResizedPhotoUrl(rs.getString(5), 48));
+			ei.setEventPicture(getResizedPhotoUrl(rs.getString(5), 500));
+			ei.setEventThumbnail(getResizedPhotoUrl(rs.getString(21), 100));
 			ei.setEventTitle(rs.getString(6));
 			ei.setEventPlace(rs.getString(7));
 			ei.setEventSpeaker(rs.getString(8));
@@ -613,7 +613,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 				// force categ to Me
 				ei.setEventCateg(-3);
 				// force big picture to QR-code
-				ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=13000002%26exchangeToken=" + exchangeToken);
+				ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=13000002%26exchangeToken=" + exchangeToken);
 				// remove details
 				ei.setEventDetails(null);
 				// show help
@@ -698,7 +698,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 	
 	private static class EventPoolDecoderFromDb {
-		private static final String SELECT_FIELDS = "poolId,poolPicture,poolTitle,poolPlace,poolDetails,disableStar,disableFilterByCateg,disableFilterByTags,enableScan,noResultText,parentEvent";
+		private static final String SELECT_FIELDS = "poolId,poolPicture,poolTitle,poolPlace,poolDetails,disableStar,disableFilterByCateg,disableFilterByTags,enableScan,refreshOnBack,noResultText,parentEvent";
 		public static String getSelectFields() {
 			return SELECT_FIELDS;
 		}
@@ -708,7 +708,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ep.setPoolId(rs.getLong(1));
 			if(rs.wasNull()) ep.unsetPoolId(); // should never happen
 			
-			ep.setPoolPicture(getResizedPhotoUrl(rs.getString(2), 48));
+			ep.setPoolPicture(getResizedPhotoUrl(rs.getString(2), 50));
 			ep.setPoolTitle(rs.getString(3));
 			ep.setPoolPlace(rs.getString(4));
 			ep.setPoolDetails(rs.getString(5));
@@ -716,7 +716,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ep.setDisableFilterByCateg(rs.getBoolean(7));
 			ep.setDisableFilterByTags(rs.getBoolean(8));
 			ep.setEnableScan(rs.getBoolean(9));
-			ep.setNoResultText(rs.getString(10));
+			ep.setRefreshOnBack(rs.getBoolean(10));
+			ep.setNoResultText(rs.getString(11));
 			ep.setChildrenEvents(new LinkedList<Long>());
 			
 			return ep;

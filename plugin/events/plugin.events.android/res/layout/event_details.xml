@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     
@@ -55,6 +55,12 @@
         android:layout_marginBottom="0dip"
         android:text="Just gona stand there and ..." />
 
+
+    <ImageView  
+        android:id="@+id/event_big_image"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"  
+        />      
 	
 	<!-- Details -->
     <TextView
@@ -70,4 +76,4 @@
         android:layout_marginBottom="0dip"
         android:text="Just gona stand there and ..." />
     
-</RelativeLayout>
+</LinearLayout>

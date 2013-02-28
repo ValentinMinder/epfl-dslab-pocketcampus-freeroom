@@ -118,6 +118,7 @@ struct EventPool {
 	13: optional bool enableScan;
 	14: optional string noResultText;
 	15: optional list<i64> childrenEvents;
+	16: optional bool refreshOnBack;
 }
 
 struct EventItemRequest {

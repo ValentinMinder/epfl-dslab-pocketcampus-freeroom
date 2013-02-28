@@ -143,8 +143,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 		super.onResume();
 		if(displayingList && scrollState != null)
 			scrollState.restore(mList);
-		/*if(mController != null)
-			mController.refreshEventPool(this, eventPoolId, false);*/
+		if(thisEventPool != null && thisEventPool.isRefreshOnBack())
+			mController.refreshEventPool(this, eventPoolId, false);
 	}
 	
 	@Override
