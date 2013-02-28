@@ -61,6 +61,7 @@ typedef enum {
  * This method can be used to know wether the data managed by the refresh control
  * should be refreshed, for a specified validity (seconds)
  * If refresh control was initiated without data identifier, this method always returns YES
+ * IMPORTANT: this method automatically return NO if [PCUtils hasDeviceInternetConnection] returns NO
  */
 - (BOOL)shouldRefreshDataForValidity:(NSTimeInterval)validitySeconds;
 
