@@ -44,6 +44,7 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
   private static final org.apache.thrift.protocol.TField TIME_SNIPPET_FIELD_DESC = new org.apache.thrift.protocol.TField("timeSnippet", org.apache.thrift.protocol.TType.STRING, (short)18);
   private static final org.apache.thrift.protocol.TField HIDE_DATE_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("hideDateInfo", org.apache.thrift.protocol.TType.BOOL, (short)19);
   private static final org.apache.thrift.protocol.TField HIDE_TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("hideTitle", org.apache.thrift.protocol.TType.BOOL, (short)21);
+  private static final org.apache.thrift.protocol.TField HIDE_THUMBNAIL_FIELD_DESC = new org.apache.thrift.protocol.TField("hideThumbnail", org.apache.thrift.protocol.TType.BOOL, (short)22);
   private static final org.apache.thrift.protocol.TField CHILDREN_POOLS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenPools", org.apache.thrift.protocol.TType.LIST, (short)30);
 
   public long eventId; // required
@@ -66,6 +67,7 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
   public String timeSnippet; // required
   public boolean hideDateInfo; // required
   public boolean hideTitle; // required
+  public boolean hideThumbnail; // required
   public List<Long> childrenPools; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -90,6 +92,7 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     TIME_SNIPPET((short)18, "timeSnippet"),
     HIDE_DATE_INFO((short)19, "hideDateInfo"),
     HIDE_TITLE((short)21, "hideTitle"),
+    HIDE_THUMBNAIL((short)22, "hideThumbnail"),
     CHILDREN_POOLS((short)30, "childrenPools");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -145,6 +148,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
           return HIDE_DATE_INFO;
         case 21: // HIDE_TITLE
           return HIDE_TITLE;
+        case 22: // HIDE_THUMBNAIL
+          return HIDE_THUMBNAIL;
         case 30: // CHILDREN_POOLS
           return CHILDREN_POOLS;
         default:
@@ -194,7 +199,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
   private static final int __EVENTCATEG_ISSET_ID = 4;
   private static final int __HIDEDATEINFO_ISSET_ID = 5;
   private static final int __HIDETITLE_ISSET_ID = 6;
-  private BitSet __isset_bit_vector = new BitSet(7);
+  private static final int __HIDETHUMBNAIL_ISSET_ID = 7;
+  private BitSet __isset_bit_vector = new BitSet(8);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -239,6 +245,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     tmpMap.put(_Fields.HIDE_DATE_INFO, new org.apache.thrift.meta_data.FieldMetaData("hideDateInfo", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.HIDE_TITLE, new org.apache.thrift.meta_data.FieldMetaData("hideTitle", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.HIDE_THUMBNAIL, new org.apache.thrift.meta_data.FieldMetaData("hideThumbnail", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.CHILDREN_POOLS, new org.apache.thrift.meta_data.FieldMetaData("childrenPools", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
@@ -314,6 +322,7 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     }
     this.hideDateInfo = other.hideDateInfo;
     this.hideTitle = other.hideTitle;
+    this.hideThumbnail = other.hideThumbnail;
     if (other.isSetChildrenPools()) {
       List<Long> __this__childrenPools = new ArrayList<Long>();
       for (Long other_element : other.childrenPools) {
@@ -356,6 +365,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     this.hideDateInfo = false;
     setHideTitleIsSet(false);
     this.hideTitle = false;
+    setHideThumbnailIsSet(false);
+    this.hideThumbnail = false;
     this.childrenPools = null;
   }
 
@@ -847,6 +858,29 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     __isset_bit_vector.set(__HIDETITLE_ISSET_ID, value);
   }
 
+  public boolean isHideThumbnail() {
+    return this.hideThumbnail;
+  }
+
+  public EventItem setHideThumbnail(boolean hideThumbnail) {
+    this.hideThumbnail = hideThumbnail;
+    setHideThumbnailIsSet(true);
+    return this;
+  }
+
+  public void unsetHideThumbnail() {
+    __isset_bit_vector.clear(__HIDETHUMBNAIL_ISSET_ID);
+  }
+
+  /** Returns true if field hideThumbnail is set (has been assigned a value) and false otherwise */
+  public boolean isSetHideThumbnail() {
+    return __isset_bit_vector.get(__HIDETHUMBNAIL_ISSET_ID);
+  }
+
+  public void setHideThumbnailIsSet(boolean value) {
+    __isset_bit_vector.set(__HIDETHUMBNAIL_ISSET_ID, value);
+  }
+
   public int getChildrenPoolsSize() {
     return (this.childrenPools == null) ? 0 : this.childrenPools.size();
   }
@@ -1048,6 +1082,14 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       }
       break;
 
+    case HIDE_THUMBNAIL:
+      if (value == null) {
+        unsetHideThumbnail();
+      } else {
+        setHideThumbnail((Boolean)value);
+      }
+      break;
+
     case CHILDREN_POOLS:
       if (value == null) {
         unsetChildrenPools();
@@ -1121,6 +1163,9 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     case HIDE_TITLE:
       return Boolean.valueOf(isHideTitle());
 
+    case HIDE_THUMBNAIL:
+      return Boolean.valueOf(isHideThumbnail());
+
     case CHILDREN_POOLS:
       return getChildrenPools();
 
@@ -1175,6 +1220,8 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       return isSetHideDateInfo();
     case HIDE_TITLE:
       return isSetHideTitle();
+    case HIDE_THUMBNAIL:
+      return isSetHideThumbnail();
     case CHILDREN_POOLS:
       return isSetChildrenPools();
     }
@@ -1374,6 +1421,15 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         return false;
     }
 
+    boolean this_present_hideThumbnail = true && this.isSetHideThumbnail();
+    boolean that_present_hideThumbnail = true && that.isSetHideThumbnail();
+    if (this_present_hideThumbnail || that_present_hideThumbnail) {
+      if (!(this_present_hideThumbnail && that_present_hideThumbnail))
+        return false;
+      if (this.hideThumbnail != that.hideThumbnail)
+        return false;
+    }
+
     boolean this_present_childrenPools = true && this.isSetChildrenPools();
     boolean that_present_childrenPools = true && that.isSetChildrenPools();
     if (this_present_childrenPools || that_present_childrenPools) {
@@ -1489,6 +1545,11 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     builder.append(present_hideTitle);
     if (present_hideTitle)
       builder.append(hideTitle);
+
+    boolean present_hideThumbnail = true && (isSetHideThumbnail());
+    builder.append(present_hideThumbnail);
+    if (present_hideThumbnail)
+      builder.append(hideThumbnail);
 
     boolean present_childrenPools = true && (isSetChildrenPools());
     builder.append(present_childrenPools);
@@ -1706,6 +1767,16 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetHideThumbnail()).compareTo(typedOther.isSetHideThumbnail());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetHideThumbnail()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.hideThumbnail, typedOther.hideThumbnail);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetChildrenPools()).compareTo(typedOther.isSetChildrenPools());
     if (lastComparison != 0) {
       return lastComparison;
@@ -1890,6 +1961,14 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 22: // HIDE_THUMBNAIL
+          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+            this.hideThumbnail = iprot.readBool();
+            setHideThumbnailIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         case 30: // CHILDREN_POOLS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
@@ -2054,6 +2133,11 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     if (isSetHideTitle()) {
       oprot.writeFieldBegin(HIDE_TITLE_FIELD_DESC);
       oprot.writeBool(this.hideTitle);
+      oprot.writeFieldEnd();
+    }
+    if (isSetHideThumbnail()) {
+      oprot.writeFieldBegin(HIDE_THUMBNAIL_FIELD_DESC);
+      oprot.writeBool(this.hideThumbnail);
       oprot.writeFieldEnd();
     }
     if (this.childrenPools != null) {
@@ -2246,6 +2330,12 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       if (!first) sb.append(", ");
       sb.append("hideTitle:");
       sb.append(this.hideTitle);
+      first = false;
+    }
+    if (isSetHideThumbnail()) {
+      if (!first) sb.append(", ");
+      sb.append("hideThumbnail:");
+      sb.append(this.hideThumbnail);
       first = false;
     }
     if (isSetChildrenPools()) {

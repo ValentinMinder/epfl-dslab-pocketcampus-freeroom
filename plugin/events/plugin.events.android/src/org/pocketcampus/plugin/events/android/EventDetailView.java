@@ -170,7 +170,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 					//details.append(e.isSetEventTags() && e.getEventTags().size() > 0 ? ("<br><b>Tag(s)</b> " + expandTags(e.getEventTags()) + "") : "");
 					return "<p>" + details.toString() + "</p>";
 				case R.id.event_list_complex_image:
-					if(!e.isSetEventThumbnail())
+					if(!e.isSetEventThumbnail() || e.isHideThumbnail())
 						return -1; // R.drawable.events_transparent;
 					return e.getEventThumbnail();
 				case R.id.event_list_complex_caption:
@@ -325,8 +325,8 @@ public class EventDetailView extends PluginView implements IEventsView {
 		//mLayout.setFastScrollEnabled(true);
 		mList.setScrollingCacheEnabled(false);
 		//mLayout.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
-		mList.setDivider(null);
-		mList.setDividerHeight(0);
+		//mList.setDivider(null);
+		//mList.setDividerHeight(0);
 		
 		mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 		

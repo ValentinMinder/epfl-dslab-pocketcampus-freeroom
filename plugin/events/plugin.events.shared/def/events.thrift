@@ -103,6 +103,7 @@ struct EventItem {
 	18: optional string timeSnippet; // if set, overrides time snippet
 	19: optional bool hideDateInfo; // if set, hides date and time from event details view
 	21: optional bool hideTitle; // if set, hides the title from event details view
+	22: optional bool hideThumbnail; // if set, hides thumbnail from event details view
 	30: optional list<i64> childrenPools;
 }
 

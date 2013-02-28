@@ -331,6 +331,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 						return new Actuated(fav, new Actuator() {
 							public void triggered() {
 								System.out.println("toggle fav event: " + e.getEventTitle());
+								scrollState = null;
 								mModel.markFavorite(e.getEventId(), (e.getEventCateg() != -2));
 							}
 						});
@@ -362,8 +363,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 			//mList.setFastScrollEnabled(true);
 			//mList.setScrollingCacheEnabled(false);
 			//mList.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
-			mList.setDivider(null);
-			mList.setDividerHeight(0);
+			//mList.setDivider(null);
+			//mList.setDividerHeight(0);
 			
 			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 			
