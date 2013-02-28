@@ -27,6 +27,8 @@ public class DirectorySearchNameRequest extends Request<DirectoryController, Ifa
 	 *            the list of <code>Person</code> gotten from the server
 	 */
 	protected void onResult(DirectoryController controller, List<Person> result) {
+		for(Person p : result)
+			System.out.println("PIC URL=" + p.getPictureUrl());
 		((DirectoryModel) controller.getModel()).setResults(result);
 	}
 

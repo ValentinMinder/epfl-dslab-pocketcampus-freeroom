@@ -223,13 +223,14 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 		String pictureCamiproUrl = pictureCamiproBase + hashedSciper + pictureExtension;
 		String pictureExtUrl = pictureExtBase + hashedSciper + pictureExtension;
+		pictureExtUrl = "http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + sciper;
 		
 		if(NetworkUtil.checkUrlStatus(pictureCamiproUrl)) {
 			System.out.println(pictureCamiproUrl);
 			return pictureCamiproUrl;
 		}
 		
-		if(NetworkUtil.checkUrlStatus(pictureExtUrl)) {
+		if(NetworkUtil.checkUrlImage(pictureExtUrl)) {
 			System.out.println(pictureExtUrl);
 			return pictureExtUrl;
 		}

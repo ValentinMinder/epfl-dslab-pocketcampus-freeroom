@@ -14,12 +14,16 @@ import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.android.ui.PersonDetailsDialog;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -83,6 +87,15 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		displayView();
 		createSuggestionsList();
 		
+	}
+	
+	@Override
+	protected void handleIntent(Intent intent) {
+		Uri aData = intent.getData();
+		if(aData != null && aData.getQueryParameter("q") != null) {
+			search(aData.getQueryParameter("q"));
+		}
+
 	}
 	
 	/** 
