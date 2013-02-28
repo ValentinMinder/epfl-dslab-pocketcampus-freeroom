@@ -13,7 +13,7 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif", "Sunrise");
+$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif", "Sunrise", "Events");
 
 $libs_to_export = array("commons-lang-2.6.jar", "gcm.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar", "universal-image-loader-1.8.0.jar");
 
@@ -59,8 +59,8 @@ function generate_android_manifest($output_dir, $is_lib){
 	$doc->appendChild($manif);
 	$manif->setAttribute("xmlns:android", "http://schemas.android.com/apk/res/android");
 	$manif->setAttribute("package", "org.pocketcampus");
-	$manif->setAttribute("android:versionCode", "16");
-	$manif->setAttribute("android:versionName", "0.3.16");
+	$manif->setAttribute("android:versionCode", "18");
+	$manif->setAttribute("android:versionName", "0.3.18");
 
 	$app = $doc->createElement("application");
 	$manif->appendChild($app);
