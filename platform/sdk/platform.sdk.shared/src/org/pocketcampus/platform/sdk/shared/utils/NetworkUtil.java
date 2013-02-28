@@ -17,8 +17,24 @@ public class NetworkUtil {
 			checkedUrl = new URL(toCheck);
 			HttpURLConnection connection =  (HttpURLConnection)  checkedUrl.openConnection(); 
 			connection.setRequestMethod("GET"); 
-			connection.connect(); 
+			connection.connect();
 			return (connection.getResponseCode()==200);
+
+		} catch (Exception e) {
+			// misc network error
+		}
+
+		return false;
+	}
+	
+	public static boolean checkUrlImage(String toCheck) {
+		URL checkedUrl;
+		try {
+			checkedUrl = new URL(toCheck);
+			HttpURLConnection connection =  (HttpURLConnection)  checkedUrl.openConnection(); 
+			connection.setRequestMethod("GET"); 
+			connection.connect();
+			return (connection.getResponseCode()==200 && connection.getContentType() != null && connection.getContentType().contains("image"));
 
 		} catch (Exception e) {
 			// misc network error
