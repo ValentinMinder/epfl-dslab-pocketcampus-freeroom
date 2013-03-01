@@ -93,4 +93,10 @@
     return [[Reachability reachabilityForInternetConnection] isReachable];
 }
 
++ (void)throughExceptionIfObject:(id)object notKindOfClass:(Class)class; {
+    if (![object isKindOfClass:class]) {
+        @throw [NSException exceptionWithName:@"Illegal argument" reason:[NSString stringWithFormat:@"object '%@' must be kind of class %@", object, NSStringFromClass(class)] userInfo:nil];
+    }
+}
+
 @end

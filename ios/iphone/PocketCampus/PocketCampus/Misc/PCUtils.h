@@ -29,4 +29,6 @@
  */
 + (BOOL)hasDeviceInternetConnection;
 
++ (void)throughExceptionIfObject:(id)object notKindOfClass:(Class)class;
+
 @end

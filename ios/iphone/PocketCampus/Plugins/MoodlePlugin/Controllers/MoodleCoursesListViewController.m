@@ -22,8 +22,6 @@
 
 #import "PCUtils.h"
 
-static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
-
 @interface MoodleCoursesListViewController ()
 
 @property (nonatomic, strong) MoodleService* moodleService;
@@ -31,6 +29,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 @property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 
 @end
+
+static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
 static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 

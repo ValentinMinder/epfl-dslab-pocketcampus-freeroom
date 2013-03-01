@@ -36,6 +36,16 @@
 		</dict>
 		<dict>
 			<key>identifierName</key>
+			<string>Events</string>
+			<key>enabled</key>
+			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
+			<key>supportedIdioms</key>
+			<string>phone</string>
+		</dict>
+		<dict>
+			<key>identifierName</key>
 			<string>Map</string>
 			<key>enabled</key>
 			<true/>

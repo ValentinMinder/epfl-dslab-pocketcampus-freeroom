@@ -25,6 +25,11 @@
 		32015037150401E000FF87B6 /* DirectoryLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32015036150401E000FF87B6 /* DirectoryLarge.png */; };
 		32035BB3166E987100E134DD /* MoodleResourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035BB2166E987100E134DD /* MoodleResourceViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32035BB5166E988600E134DD /* MoodleResourceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035BB4166E988600E134DD /* MoodleResourceView.xib */; };
+		32035FE616E13A020016F03C /* EventPoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FE516E13A020016F03C /* EventPoolViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32035FE816E13F340016F03C /* EventPoolView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035FE716E13F340016F03C /* EventPoolView.xib */; };
+		32035FEB16E153860016F03C /* EventItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FEA16E153860016F03C /* EventItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32035FED16E153CF0016F03C /* EventItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035FEC16E153CF0016F03C /* EventItemCell.xib */; };
+		32035FF016E15A320016F03C /* EventItem+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FEF16E15A310016F03C /* EventItem+Additions.m */; };
 		3203ECD41503C01E004C2A13 /* LoadingIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 3203ECD31503C01E004C2A13 /* LoadingIndicator.png */; };
 		3204C6D01648412D003944D2 /* LightGrayTextureBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */; };
 		3204C6D11648412D003944D2 /* LightGrayTextureBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */; };
@@ -231,6 +236,8 @@
 		32A63A4B1535FFF400237841 /* DestinationConnectionsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */; };
 		32A77DC316A564460018976F /* UIPopoverController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC216A564460018976F /* UIPopoverController+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC516A565600018976F /* UIActionSheet+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AA6CCC16DFF0D100783E9C /* EventsPlugin.strings */; };
+		32AA6CD116DFF41100783E9C /* EventsServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AA6CD016DFF41100783E9C /* EventsServiceTests.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32ADC70A165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32ADC709165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32ADC70E165995050039F6A6 /* MyEduModuleVideoDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC70D165995050039F6A6 /* MyEduModuleVideoDownloadView.xib */; };
 		32ADC710165999820039F6A6 /* CancelCrossRound@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */; };
@@ -377,17 +384,23 @@
 		32FB2E0A15179014007AE82B /* transport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0415179014007AE82B /* transport.m */; };
 		32FB2E0B15179014007AE82B /* TransportService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0615179014007AE82B /* TransportService.m */; };
 		32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0FF44E59AC0FAF424B57744 /* Events@2x.png */; };
 		3D60403F97790317C691C8A4 /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; };
 		435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		4C3C4FEEB609B30BEFA34726 /* events.m in Sources */ = {isa = PBXBuildFile; fileRef = 62FB4BFDBB53089EB412B0C1 /* events.m */; };
 		553A402C812143D9F650BB50 /* myedu.m in Sources */ = {isa = PBXBuildFile; fileRef = 92184A8EA6FCB1AB9277A185 /* myedu.m */; };
+		8D964F08A876C676D9337E69 /* Events.png in Resources */ = {isa = PBXBuildFile; fileRef = C9574A2CA3E21EEE6B620DE7 /* Events.png */; };
 		D2A344178B2283CAF92E9B46 /* MyEduController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968E4CDC8AB22470DE349C3B /* MyEduController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		D4224276930AC66CEAA3E5A9 /* EventsService.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AE43D19400EAA046F5166E /* EventsService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		E6C14DE7BD48C7DCC99900DB /* MyEduService.m in Sources */ = {isa = PBXBuildFile; fileRef = 437F4DF1A201ED94FAB8E2F2 /* MyEduService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		E6C544C6812266BE16AC628D /* MyEdu.png in Resources */ = {isa = PBXBuildFile; fileRef = 74EB4361AD2616FF44DA66CB /* MyEdu.png */; };
 		E9D24E52ACF3440B795D0F3A /* PushNotifService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2F4A5AA559021373171E91 /* PushNotifService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		F1AE44D191F279D3C0533B81 /* EventsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8834ED985A01F6FB20543E8 /* EventsController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		108747F4A9B8A8CE3F473774 /* MyEduController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MyEduController.h; path = Plugins/MyEduPlugin/Controllers/MyEduController.h; sourceTree = SOURCE_ROOT; };
+		14D146FF839137578105D4C3 /* EventsService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventsService.h; path = Plugins/EventsPlugin/Model/EventsService.h; sourceTree = SOURCE_ROOT; };
 		1997124215EFC29C00E2A679 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANTracker.h; path = GALib/GANTracker.h; sourceTree = "<group>"; };
 		1997124515EFC2BF00E2A679 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = GALib/libGoogleAnalytics.a; sourceTree = "<group>"; };
 		2A2F4A5AA559021373171E91 /* PushNotifService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PushNotifService.m; path = Plugins/PushNotifPlugin/Model/PushNotifService.m; sourceTree = SOURCE_ROOT; };
@@ -407,6 +420,14 @@
 		32035BB1166E987100E134DD /* MoodleResourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleResourceViewController.h; sourceTree = "<group>"; };
 		32035BB2166E987100E134DD /* MoodleResourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleResourceViewController.m; sourceTree = "<group>"; };
 		32035BB4166E988600E134DD /* MoodleResourceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleResourceView.xib; sourceTree = "<group>"; };
+		32035FE416E13A020016F03C /* EventPoolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventPoolViewController.h; sourceTree = "<group>"; };
+		32035FE516E13A020016F03C /* EventPoolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventPoolViewController.m; sourceTree = "<group>"; };
+		32035FE716E13F340016F03C /* EventPoolView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventPoolView.xib; sourceTree = "<group>"; };
+		32035FE916E153860016F03C /* EventItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventItemCell.h; sourceTree = "<group>"; };
+		32035FEA16E153860016F03C /* EventItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventItemCell.m; sourceTree = "<group>"; };
+		32035FEC16E153CF0016F03C /* EventItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemCell.xib; sourceTree = "<group>"; };
+		32035FEE16E15A310016F03C /* EventItem+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EventItem+Additions.h"; path = "Plugins/EventsPlugin/Model/EventItem+Additions.h"; sourceTree = SOURCE_ROOT; };
+		32035FEF16E15A310016F03C /* EventItem+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EventItem+Additions.m"; path = "Plugins/EventsPlugin/Model/EventItem+Additions.m"; sourceTree = SOURCE_ROOT; };
 		3203ECD31503C01E004C2A13 /* LoadingIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoadingIndicator.png; sourceTree = "<group>"; };
 		3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LightGrayTextureBackground.png; sourceTree = "<group>"; };
 		3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LightGrayTextureBackground@2x.png"; sourceTree = "<group>"; };
@@ -720,6 +741,10 @@
 		32A77DC216A564460018976F /* UIPopoverController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPopoverController+Additions.m"; sourceTree = "<group>"; };
 		32A77DC416A565600018976F /* UIActionSheet+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Additions.h"; sourceTree = "<group>"; };
 		32A77DC516A565600018976F /* UIActionSheet+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Additions.m"; sourceTree = "<group>"; };
+		32AA6CCB16DFF0D100783E9C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EventsPlugin.strings; sourceTree = "<group>"; };
+		32AA6CCD16DFF0D400783E9C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EventsPlugin.strings; sourceTree = "<group>"; };
+		32AA6CCF16DFF41100783E9C /* EventsServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsServiceTests.h; sourceTree = "<group>"; };
+		32AA6CD016DFF41100783E9C /* EventsServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsServiceTests.m; sourceTree = "<group>"; };
 		32ADC708165994840039F6A6 /* MyEduModuleVideoDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleVideoDownloadViewController.h; sourceTree = "<group>"; };
 		32ADC709165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduModuleVideoDownloadViewController.m; sourceTree = "<group>"; };
 		32ADC70D165995050039F6A6 /* MyEduModuleVideoDownloadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleVideoDownloadView.xib; sourceTree = "<group>"; };
@@ -953,6 +978,7 @@
 		32FF46541636FB2500932FF5 /* PluginNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginNavigationController.m; sourceTree = "<group>"; };
 		39424C568B2FFD2731E4DCAE /* PushNotifService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PushNotifService.h; path = Plugins/PushNotifPlugin/Model/PushNotifService.h; sourceTree = SOURCE_ROOT; };
 		437F4DF1A201ED94FAB8E2F2 /* MyEduService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MyEduService.m; path = Plugins/MyEduPlugin/Model/MyEduService.m; sourceTree = SOURCE_ROOT; };
+		62FB4BFDBB53089EB412B0C1 /* events.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = events.m; path = "Plugins/EventsPlugin/Model/ThriftTypes+Services/events.m"; sourceTree = SOURCE_ROOT; };
 		74EB4361AD2616FF44DA66CB /* MyEdu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MyEdu.png; path = Plugins/MyEduPlugin/Views/Images/MyEdu.png; sourceTree = SOURCE_ROOT; };
 		7FB34D299D06660A1C768169 /* PushNotifController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PushNotifController.h; path = Plugins/PushNotifPlugin/Controllers/PushNotifController.h; sourceTree = SOURCE_ROOT; };
 		92184A8EA6FCB1AB9277A185 /* myedu.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = myedu.m; path = "Plugins/MyEduPlugin/Model/ThriftTypes+Services/myedu.m"; sourceTree = SOURCE_ROOT; };
@@ -960,9 +986,15 @@
 		AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = pushnotif.m; path = "Plugins/PushNotifPlugin/Model/ThriftTypes+Services/pushnotif.m"; sourceTree = SOURCE_ROOT; };
 		B3F946738F2D6EB698F30C23 /* MyEduService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MyEduService.h; path = Plugins/MyEduPlugin/Model/MyEduService.h; sourceTree = SOURCE_ROOT; };
 		BB5245679D4E9E9B9F64BAC1 /* MyEdu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MyEdu@2x.png"; path = "Plugins/MyEduPlugin/Views/Images/MyEdu@2x.png"; sourceTree = SOURCE_ROOT; };
+		BD4D44F5A831E245BEF1A101 /* events.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = events.h; path = "Plugins/EventsPlugin/Model/ThriftTypes+Services/events.h"; sourceTree = SOURCE_ROOT; };
+		C0FF44E59AC0FAF424B57744 /* Events@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Events@2x.png"; path = "Plugins/EventsPlugin/Views/Images/Events@2x.png"; sourceTree = SOURCE_ROOT; };
 		C8734797A297542D03FDAEBF /* pushnotif.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = pushnotif.h; path = "Plugins/PushNotifPlugin/Model/ThriftTypes+Services/pushnotif.h"; sourceTree = SOURCE_ROOT; };
+		C8AE43D19400EAA046F5166E /* EventsService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EventsService.m; path = Plugins/EventsPlugin/Model/EventsService.m; sourceTree = SOURCE_ROOT; };
+		C9574A2CA3E21EEE6B620DE7 /* Events.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Events.png; path = Plugins/EventsPlugin/Views/Images/Events.png; sourceTree = SOURCE_ROOT; };
 		CA7F427C8F702CC10F288D8C /* PushNotifController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PushNotifController.m; path = Plugins/PushNotifPlugin/Controllers/PushNotifController.m; sourceTree = SOURCE_ROOT; };
+		E8834ED985A01F6FB20543E8 /* EventsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EventsController.m; path = Plugins/EventsPlugin/Controllers/EventsController.m; sourceTree = SOURCE_ROOT; };
 		EEFA473CABC34BE9C7116902 /* myedu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = myedu.h; path = "Plugins/MyEduPlugin/Model/ThriftTypes+Services/myedu.h"; sourceTree = SOURCE_ROOT; };
+		F06C4E1F91F02A0DA83BA1D7 /* EventsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventsController.h; path = Plugins/EventsPlugin/Controllers/EventsController.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1489,6 +1521,18 @@
 			path = Map;
 			sourceTree = "<group>";
 		};
+		32654C1394E6F467509BDB85 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F06C4E1F91F02A0DA83BA1D7 /* EventsController.h */,
+				E8834ED985A01F6FB20543E8 /* EventsController.m */,
+				32035FE416E13A020016F03C /* EventPoolViewController.h */,
+				32035FE516E13A020016F03C /* EventPoolViewController.m */,
+			);
+			name = Controllers;
+			path = Plugins/EventsPlugin/Controllers;
+			sourceTree = SOURCE_ROOT;
+		};
 		32663945150C00E100719F6E /* UIDeviceUniqueID */ = {
 			isa = PBXGroup;
 			children = (
@@ -1625,6 +1669,15 @@
 				32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		32AA6CCE16DFF3F000783E9C /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				32AA6CCF16DFF41100783E9C /* EventsServiceTests.h */,
+				32AA6CD016DFF41100783E9C /* EventsServiceTests.m */,
+			);
+			path = Events;
 			sourceTree = "<group>";
 		};
 		32B3F38616218CE0007A75C7 /* ZUUIRevealController */ = {
@@ -2119,6 +2172,7 @@
 			isa = PBXGroup;
 			children = (
 				32E280A6156E577900B74825 /* Directory */,
+				32AA6CCE16DFF3F000783E9C /* Events */,
 				324F6B2D15D7B55F00CFB8B5 /* Map */,
 				32F3EAB31633505400DA8902 /* MyEdu */,
 				32D0B248166A280000F68304 /* PushNotif */,
@@ -2150,6 +2204,7 @@
 				32CCB4B6155520FE00220282 /* AuthenticationPlugin */,
 				32B5870F156458FA0051C57E /* CamiproPlugin */,
 				32FAC0E01500F40700925180 /* DirectoryPlugin */,
+				653B41919D6EC5027C646B84 /* EventsPlugin */,
 				3247C3AE1504F2E10079522A /* FoodPlugin */,
 				324151C415373A1700CCFB22 /* MapPlugin */,
 				32CCB4D01555237500220282 /* MoodlePlugin */,
@@ -2345,6 +2400,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		3A524626BC558AE16B9B24C4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				14D146FF839137578105D4C3 /* EventsService.h */,
+				C8AE43D19400EAA046F5166E /* EventsService.m */,
+				A0BE4288881DDD8131DDF320 /* ThriftTypes+Services */,
+			);
+			name = Model;
+			path = Plugins/EventsPlugin/Model;
+			sourceTree = SOURCE_ROOT;
+		};
 		44B04E2099C65A76217AF4C7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2374,6 +2440,18 @@
 			);
 			name = PushNotifPlugin;
 			path = Plugins/PushNotifPlugin;
+			sourceTree = SOURCE_ROOT;
+		};
+		653B41919D6EC5027C646B84 /* EventsPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				32654C1394E6F467509BDB85 /* Controllers */,
+				3A524626BC558AE16B9B24C4 /* Model */,
+				CB2740D98A019EC1A19FF152 /* Views */,
+				E1774AB18C86C0F302F9CF54 /* Supporting Files */,
+			);
+			name = EventsPlugin;
+			path = Plugins/EventsPlugin;
 			sourceTree = SOURCE_ROOT;
 		};
 		685D4DE983842A08B8922CA0 /* ThriftTypes+Services */ = {
@@ -2412,6 +2490,26 @@
 			path = Plugins/PushNotifPlugin/Views/Images;
 			sourceTree = SOURCE_ROOT;
 		};
+		88D34CADA49ED40C1A8F235E /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				C9574A2CA3E21EEE6B620DE7 /* Events.png */,
+				C0FF44E59AC0FAF424B57744 /* Events@2x.png */,
+			);
+			name = Images;
+			path = Plugins/EventsPlugin/Views/Images;
+			sourceTree = SOURCE_ROOT;
+		};
+		A0BE4288881DDD8131DDF320 /* ThriftTypes+Services */ = {
+			isa = PBXGroup;
+			children = (
+				BD4D44F5A831E245BEF1A101 /* events.h */,
+				62FB4BFDBB53089EB412B0C1 /* events.m */,
+			);
+			name = "ThriftTypes+Services";
+			path = "Plugins/EventsPlugin/Model/ThriftTypes+Services";
+			sourceTree = SOURCE_ROOT;
+		};
 		B3994422ABA65715FAFE1CCD /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2440,6 +2538,21 @@
 			);
 			name = Controllers;
 			path = Plugins/MyEduPlugin/Controllers;
+			sourceTree = SOURCE_ROOT;
+		};
+		CB2740D98A019EC1A19FF152 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				88D34CADA49ED40C1A8F235E /* Images */,
+				32035FE716E13F340016F03C /* EventPoolView.xib */,
+				32035FE916E153860016F03C /* EventItemCell.h */,
+				32035FEA16E153860016F03C /* EventItemCell.m */,
+				32035FEC16E153CF0016F03C /* EventItemCell.xib */,
+				32035FEE16E15A310016F03C /* EventItem+Additions.h */,
+				32035FEF16E15A310016F03C /* EventItem+Additions.m */,
+			);
+			name = Views;
+			path = Plugins/EventsPlugin/Views;
 			sourceTree = SOURCE_ROOT;
 		};
 		CEC74EF19134E69FAE06810E /* Images */ = {
@@ -2479,6 +2592,14 @@
 			name = Model;
 			path = Plugins/PushNotifPlugin/Model;
 			sourceTree = SOURCE_ROOT;
+		};
+		E1774AB18C86C0F302F9CF54 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				32AA6CCC16DFF0D100783E9C /* EventsPlugin.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
 		};
 		F2814BC4B6BED8E390FCDBD2 /* Supporting Files */ = {
 			isa = PBXGroup;
@@ -2754,6 +2875,11 @@
 				323676CD16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png in Resources */,
 				323676D016BDE2520004D5AD /* EyeBlackCrossed.png in Resources */,
 				323676D116BDE2520004D5AD /* EyeBlackCrossed@2x.png in Resources */,
+				8D964F08A876C676D9337E69 /* Events.png in Resources */,
+				38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */,
+				32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */,
+				32035FE816E13F340016F03C /* EventPoolView.xib in Resources */,
+				32035FED16E153CF0016F03C /* EventItemCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2923,6 +3049,13 @@
 				3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */,
 				3256175816A89C7D00F52D24 /* MapViewController.m in Sources */,
 				3258D65116AF1FE20040DAE3 /* PCConfig.m in Sources */,
+				F1AE44D191F279D3C0533B81 /* EventsController.m in Sources */,
+				D4224276930AC66CEAA3E5A9 /* EventsService.m in Sources */,
+				4C3C4FEEB609B30BEFA34726 /* events.m in Sources */,
+				32AA6CD116DFF41100783E9C /* EventsServiceTests.m in Sources */,
+				32035FE616E13A020016F03C /* EventPoolViewController.m in Sources */,
+				32035FEB16E153860016F03C /* EventItemCell.m in Sources */,
+				32035FF016E15A320016F03C /* EventItem+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3000,6 +3133,16 @@
 			);
 			name = DestinationConnectionsHeaderCell.xib;
 			sourceTree = "<group>";
+		};
+		32AA6CCC16DFF0D100783E9C /* EventsPlugin.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32AA6CCB16DFF0D100783E9C /* en */,
+				32AA6CCD16DFF0D400783E9C /* fr */,
+			);
+			name = EventsPlugin.strings;
+			path = Plugins/EventsPlugin;
+			sourceTree = SOURCE_ROOT;
 		};
 		32AF214615B197DE00BB445D /* TransportHelp.html */ = {
 			isa = PBXVariantGroup;
