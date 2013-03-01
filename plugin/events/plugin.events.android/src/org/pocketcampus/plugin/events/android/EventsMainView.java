@@ -62,6 +62,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	public static final String QUERYSTRING_KEY_EVENTPOOLID = "eventPoolId";
 	public static final String QUERYSTRING_KEY_TOKEN = "userToken";
 	public static final String QUERYSTRING_KEY_EXCHANGETOKEN = "exchangeToken";
+	public static final String QUERYSTRING_KEY_MARKFAVORITE = "markFavorite";
 	public static final String MAP_KEY_EVENTITEMID = "EVENT_ITEM_ID";
 	
 	private boolean displayingList;
@@ -173,13 +174,21 @@ public class EventsMainView extends PluginView implements IEventsView {
 			if(mModel.getToken() == null)
 				mModel.setToken(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN));
 			mController.refreshEventPool(this, eventPoolId, false);
-		} else if(aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN) != null) {
+			return;
+		}
+		if(aData.getQueryParameter(QUERYSTRING_KEY_MARKFAVORITE) != null) {
+			System.out.println("Should mark as favorite");
+			mModel.markFavorite(Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_MARKFAVORITE)), true);
+		}
+		if(aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN) != null) {
 			System.out.println("Got request to exchange contacts");
 			if(mModel.getToken() != null)
 				mController.exchangeContacts(this, aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN));
 			else
 				mController.refreshEventPool(this, eventPoolId, false);
+			return;
 		}
+		mController.refreshEventPool(this, eventPoolId, false);
 	}
 	
 	@Override

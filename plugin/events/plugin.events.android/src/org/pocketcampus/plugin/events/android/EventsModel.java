@@ -91,8 +91,6 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	}
 	
 	public void markFavorite(long l, boolean fav) {
-		if(iEvents.get(l) == null)
-			return;
 		if(fav) {
 			if(!iFavorites.contains(l)) {
 				iFavorites.add(l);
