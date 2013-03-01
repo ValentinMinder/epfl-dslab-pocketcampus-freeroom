@@ -171,6 +171,9 @@
     if (!self.refreshedDataIdentifier) {
         return YES;
     }
+    if (![PCUtils hasDeviceInternetConnection]) {
+        return NO;
+    }
     NSTimeInterval diffWithLastRefresh = [[NSDate date] timeIntervalSinceDate:self.lastSuccessfullRefreshDate];
     if (diffWithLastRefresh > validitySeconds) {
         return YES;

@@ -1915,11 +1915,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "378065231.031025"
+         timestampString = "383771173.619738"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "346"
-         endingLineNumber = "346"
+         startingLineNumber = "349"
+         endingLineNumber = "349"
          landmarkName = "-_hide"
          landmarkType = "5">
          <Actions>
@@ -1959,11 +1959,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "378065231.031025"
+         timestampString = "383771173.619738"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "372"
-         endingLineNumber = "372"
+         startingLineNumber = "375"
+         endingLineNumber = "375"
          landmarkName = "-pullToRefreshController:refreshableInsetForDirection:"
          landmarkType = "5">
          <Actions>
@@ -1981,11 +1981,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "378065231.031025"
+         timestampString = "383771173.619738"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "376"
-         endingLineNumber = "376"
+         startingLineNumber = "379"
+         endingLineNumber = "379"
          landmarkName = "-pullToRefreshController:refreshingInsetForDirection:"
          landmarkType = "5">
          <Actions>
@@ -2003,11 +2003,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "378065231.031025"
+         timestampString = "383771173.619738"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "380"
-         endingLineNumber = "380"
+         startingLineNumber = "383"
+         endingLineNumber = "383"
          landmarkName = "-pullToRefreshController:canEngageRefreshDirection:"
          landmarkType = "5">
          <Actions>
@@ -2025,11 +2025,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "378065231.031025"
+         timestampString = "383771173.619738"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "393"
-         endingLineNumber = "393"
+         startingLineNumber = "396"
+         endingLineNumber = "396"
          landmarkName = "@implementation PCRefreshControl"
          landmarkType = "3">
          <Actions>
@@ -2047,11 +2047,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "378065231.031025"
+         timestampString = "383771173.619738"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "399"
-         endingLineNumber = "399"
+         startingLineNumber = "402"
+         endingLineNumber = "402"
          landmarkName = "-pullToRefreshController:didEngageRefreshDirection:"
          landmarkType = "5">
          <Actions>
@@ -2069,11 +2069,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "378065231.031025"
+         timestampString = "383771173.619738"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "226"
-         endingLineNumber = "226"
+         startingLineNumber = "229"
+         endingLineNumber = "229"
          landmarkName = "-setType:"
          landmarkType = "5">
          <Actions>
@@ -2590,11 +2590,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "381674939.675456"
+         timestampString = "383771173.619738"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "197"
-         endingLineNumber = "197"
+         startingLineNumber = "195"
+         endingLineNumber = "195"
          landmarkName = "-userCancelledAuthentication"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4289,8 +4289,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "532"
          endingLineNumber = "532"
-         landmarkName = "-mapView:didSelectAnnotationView:"
-         landmarkType = "5">
+         landmarkName = "@implementation MapViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"

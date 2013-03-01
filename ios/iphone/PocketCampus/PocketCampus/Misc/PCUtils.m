@@ -8,6 +8,8 @@
 
 #import "PCUtils.h"
 
+#import "Reachability.h"
+
 @implementation PCUtils
 
 + (BOOL)isRetinaDevice{
@@ -85,6 +87,10 @@
 
 + (void)showConnectionToServerTimedOutAlert {
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
++ (BOOL)hasDeviceInternetConnection {
+    return [[Reachability reachabilityForInternetConnection] isReachable];
 }
 
 @end

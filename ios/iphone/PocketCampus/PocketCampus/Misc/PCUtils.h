@@ -24,4 +24,9 @@
 + (void)showServerErrorAlert;
 + (void)showConnectionToServerTimedOutAlert;
 
+/*
+ * Returns [[Reachability reachabilityForInternetConnection] isReachable], i.e. whether internet is reachable
+ */
++ (BOOL)hasDeviceInternetConnection;
+
 @end
