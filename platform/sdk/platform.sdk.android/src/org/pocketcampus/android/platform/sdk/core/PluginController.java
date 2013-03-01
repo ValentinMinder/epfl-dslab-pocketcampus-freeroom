@@ -40,7 +40,7 @@ public abstract class PluginController extends Service {
 			TServiceClientFactory<? extends TServiceClient> clientFactory,
 			String pluginName) {
 		TServiceClient client = null;
-		String url = PC_ANDR_CFG.getString("SERVER_PROTO") + "://" + PC_ANDR_CFG.getString("SERVER_IP") + ":"
+		String url = PC_ANDR_CFG.getString("SERVER_PROTOCOL") + "://" + PC_ANDR_CFG.getString("SERVER_ADDRESS") + ":"
 				+ PC_ANDR_CFG.getInteger("SERVER_PORT") + "/v3r1/" + pluginName;
 
 		System.out.println(url);
