@@ -36,6 +36,7 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   private static final org.apache.thrift.protocol.TField NO_RESULT_TEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("noResultText", org.apache.thrift.protocol.TType.STRING, (short)14);
   private static final org.apache.thrift.protocol.TField CHILDREN_EVENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenEvents", org.apache.thrift.protocol.TType.LIST, (short)15);
   private static final org.apache.thrift.protocol.TField REFRESH_ON_BACK_FIELD_DESC = new org.apache.thrift.protocol.TField("refreshOnBack", org.apache.thrift.protocol.TType.BOOL, (short)16);
+  private static final org.apache.thrift.protocol.TField PARENT_EVENT_FIELD_DESC = new org.apache.thrift.protocol.TField("parentEvent", org.apache.thrift.protocol.TType.I64, (short)17);
 
   public long poolId; // required
   public String poolPicture; // required
@@ -49,6 +50,7 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   public String noResultText; // required
   public List<Long> childrenEvents; // required
   public boolean refreshOnBack; // required
+  public long parentEvent; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -63,7 +65,8 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     ENABLE_SCAN((short)13, "enableScan"),
     NO_RESULT_TEXT((short)14, "noResultText"),
     CHILDREN_EVENTS((short)15, "childrenEvents"),
-    REFRESH_ON_BACK((short)16, "refreshOnBack");
+    REFRESH_ON_BACK((short)16, "refreshOnBack"),
+    PARENT_EVENT((short)17, "parentEvent");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -102,6 +105,8 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
           return CHILDREN_EVENTS;
         case 16: // REFRESH_ON_BACK
           return REFRESH_ON_BACK;
+        case 17: // PARENT_EVENT
+          return PARENT_EVENT;
         default:
           return null;
       }
@@ -148,7 +153,8 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   private static final int __DISABLEFILTERBYTAGS_ISSET_ID = 3;
   private static final int __ENABLESCAN_ISSET_ID = 4;
   private static final int __REFRESHONBACK_ISSET_ID = 5;
-  private BitSet __isset_bit_vector = new BitSet(6);
+  private static final int __PARENTEVENT_ISSET_ID = 6;
+  private BitSet __isset_bit_vector = new BitSet(7);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -178,6 +184,8 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64))));
     tmpMap.put(_Fields.REFRESH_ON_BACK, new org.apache.thrift.meta_data.FieldMetaData("refreshOnBack", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.PARENT_EVENT, new org.apache.thrift.meta_data.FieldMetaData("parentEvent", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(EventPool.class, metaDataMap);
   }
@@ -227,6 +235,7 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       this.childrenEvents = __this__childrenEvents;
     }
     this.refreshOnBack = other.refreshOnBack;
+    this.parentEvent = other.parentEvent;
   }
 
   public EventPool deepCopy() {
@@ -253,6 +262,8 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     this.childrenEvents = null;
     setRefreshOnBackIsSet(false);
     this.refreshOnBack = false;
+    setParentEventIsSet(false);
+    this.parentEvent = 0;
   }
 
   public long getPoolId() {
@@ -552,6 +563,29 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     __isset_bit_vector.set(__REFRESHONBACK_ISSET_ID, value);
   }
 
+  public long getParentEvent() {
+    return this.parentEvent;
+  }
+
+  public EventPool setParentEvent(long parentEvent) {
+    this.parentEvent = parentEvent;
+    setParentEventIsSet(true);
+    return this;
+  }
+
+  public void unsetParentEvent() {
+    __isset_bit_vector.clear(__PARENTEVENT_ISSET_ID);
+  }
+
+  /** Returns true if field parentEvent is set (has been assigned a value) and false otherwise */
+  public boolean isSetParentEvent() {
+    return __isset_bit_vector.get(__PARENTEVENT_ISSET_ID);
+  }
+
+  public void setParentEventIsSet(boolean value) {
+    __isset_bit_vector.set(__PARENTEVENT_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case POOL_ID:
@@ -650,6 +684,14 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       }
       break;
 
+    case PARENT_EVENT:
+      if (value == null) {
+        unsetParentEvent();
+      } else {
+        setParentEvent((Long)value);
+      }
+      break;
+
     }
   }
 
@@ -691,6 +733,9 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     case REFRESH_ON_BACK:
       return Boolean.valueOf(isRefreshOnBack());
 
+    case PARENT_EVENT:
+      return Long.valueOf(getParentEvent());
+
     }
     throw new IllegalStateException();
   }
@@ -726,6 +771,8 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       return isSetChildrenEvents();
     case REFRESH_ON_BACK:
       return isSetRefreshOnBack();
+    case PARENT_EVENT:
+      return isSetParentEvent();
     }
     throw new IllegalStateException();
   }
@@ -851,6 +898,15 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         return false;
     }
 
+    boolean this_present_parentEvent = true && this.isSetParentEvent();
+    boolean that_present_parentEvent = true && that.isSetParentEvent();
+    if (this_present_parentEvent || that_present_parentEvent) {
+      if (!(this_present_parentEvent && that_present_parentEvent))
+        return false;
+      if (this.parentEvent != that.parentEvent)
+        return false;
+    }
+
     return true;
   }
 
@@ -917,6 +973,11 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     builder.append(present_refreshOnBack);
     if (present_refreshOnBack)
       builder.append(refreshOnBack);
+
+    boolean present_parentEvent = true && (isSetParentEvent());
+    builder.append(present_parentEvent);
+    if (present_parentEvent)
+      builder.append(parentEvent);
 
     return builder.toHashCode();
   }
@@ -1049,6 +1110,16 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetParentEvent()).compareTo(typedOther.isSetParentEvent());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetParentEvent()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.parentEvent, typedOther.parentEvent);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -1166,6 +1237,14 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 17: // PARENT_EVENT
+          if (field.type == org.apache.thrift.protocol.TType.I64) {
+            this.parentEvent = iprot.readI64();
+            setParentEventIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -1259,6 +1338,11 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     if (isSetRefreshOnBack()) {
       oprot.writeFieldBegin(REFRESH_ON_BACK_FIELD_DESC);
       oprot.writeBool(this.refreshOnBack);
+      oprot.writeFieldEnd();
+    }
+    if (isSetParentEvent()) {
+      oprot.writeFieldBegin(PARENT_EVENT_FIELD_DESC);
+      oprot.writeI64(this.parentEvent);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -1361,6 +1445,12 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       if (!first) sb.append(", ");
       sb.append("refreshOnBack:");
       sb.append(this.refreshOnBack);
+      first = false;
+    }
+    if (isSetParentEvent()) {
+      if (!first) sb.append(", ");
+      sb.append("parentEvent:");
+      sb.append(this.parentEvent);
       first = false;
     }
     sb.append(")");

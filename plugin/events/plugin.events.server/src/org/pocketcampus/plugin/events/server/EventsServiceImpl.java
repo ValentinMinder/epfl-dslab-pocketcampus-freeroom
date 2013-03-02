@@ -81,6 +81,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 		try {
 			Connection conn = connMgr.getConnection();
 			EventItem item = eventItemFromDb(conn, parentId, (req.isSetUserToken() ? req.getUserToken() : ""));
+			if(item == null)
+				return new EventItemReply(400);
 			fixCategAndTags(item);
 			Map<Long, EventPool> childrenPools = eventPoolsFromDb(conn, parentId);
 			item.setChildrenPools(new LinkedList<Long>(childrenPools.keySet()));
@@ -106,6 +108,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 		try {
 			Connection conn = connMgr.getConnection();
 			EventPool pool = eventPoolFromDb(conn, parentId);
+			if(pool == null)
+				return new EventPoolReply(400);
 			Map<Long, EventItem> childrenItems = eventItemsFromDb(conn, parentId, period, (req.isSetUserToken() ? req.getUserToken() : ""));
 			for(EventItem e : childrenItems.values())
 				fixCategAndTags(e);
@@ -577,6 +581,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 			if(rs.wasNull()) ei.unsetEventCateg();
 			
 			ei.setChildrenPools(new LinkedList<Long>());
+			ei.setParentPool(rs.getLong(10));
 			
 			if(level < 10)
 				return ei;
@@ -617,7 +622,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 				// force categ to Me
 				ei.setEventCateg(-3);
 				// force big picture to QR-code 
-				ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=13000002%26exchangeToken=" + exchangeToken + "%26markFavorite=" + ei.getEventId());
+				ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=14000003%26exchangeToken=" + exchangeToken + "%26markFavorite=" + ei.getEventId());
 				// remove details
 				ei.setEventDetails("<p>This is your public QR code. Allow people to scan it to exchange contact information with them.</p>");
 				// show help
@@ -639,6 +644,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 		rs = stm.executeQuery();
 		while(rs.next()) {
 			EventItem ei = EventItemDecoderFromDb.decodeFromResultSet(rs, 100, (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
+			ei.setParentPool(parentId);
 			items.put(ei.getEventId(), ei);
 		}
 		rs.close();
@@ -651,6 +657,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 		rs = stm.executeQuery();
 		while(rs.next()) {
 			EventItem ei = EventItemDecoderFromDb.decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"), (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
+			ei.setParentPool(parentId);
 			items.put(ei.getEventId(), ei);
 		}
 		rs.close();
@@ -722,6 +729,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ep.setEnableScan(rs.getBoolean(9));
 			ep.setRefreshOnBack(rs.getBoolean(10));
 			ep.setNoResultText(rs.getString(11));
+			ep.setParentEvent(rs.getLong(12));
 			ep.setChildrenEvents(new LinkedList<Long>());
 			
 			return ep;
@@ -738,6 +746,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 		rs = stm.executeQuery();
 		while(rs.next()) {
 			EventPool ep = EventPoolDecoderFromDb.decodeFromResultSet(rs);
+			ep.setParentEvent(parentId);
 			pools.put(ep.getPoolId(), ep);
 		}
 		rs.close();

@@ -105,6 +105,7 @@ struct EventItem {
 	22: optional bool hideThumbnail; // if set, hides thumbnail from event details view
 	23: optional bool hideEventInfo; // if set, hides the block containing date, time, location, speaker, link, etc 
 	30: optional list<i64> childrenPools;
+	31: optional i64 parentPool;
 }
 
 struct EventPool {
@@ -120,6 +121,7 @@ struct EventPool {
 	14: optional string noResultText;
 	15: optional list<i64> childrenEvents;
 	16: optional bool refreshOnBack;
+	17: optional i64 parentEvent;
 }
 
 struct EventItemRequest {
