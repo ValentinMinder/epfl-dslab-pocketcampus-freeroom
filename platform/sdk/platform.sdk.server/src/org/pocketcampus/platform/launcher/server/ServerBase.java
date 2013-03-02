@@ -3,10 +3,16 @@ package org.pocketcampus.platform.launcher.server;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -89,6 +95,16 @@ public abstract class ServerBase {
 			context.addServlet(new ServletHolder(binThriftServlet), "/" + processor.getServiceName());
 			context.addServlet(new ServletHolder(jsonThriftServlet), "/json-" + processor.getServiceName());
 		}
+		
+		// add dummy servlet to ping to check if server is up
+		context.addServlet(new ServletHolder(new HttpServlet() {
+			private static final long serialVersionUID = 2812085352871299189L;
+			protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				    OutputStream out = response.getOutputStream();
+				    out.write("OK".getBytes());
+				    out.flush();
+				  }
+		}), "/ping");
 		
 		NCSARequestLog requestLog = new NCSARequestLog(PC_SRV_CONFIG.getString("JETTY_LOGFILES_PATH") + "/jetty-yyyy_mm_dd.request.log");
 		requestLog.setRetainDays(90);
