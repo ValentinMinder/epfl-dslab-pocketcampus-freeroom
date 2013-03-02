@@ -21,23 +21,49 @@
 	        android:layout_width="100dip"
 	        android:layout_height="100dip"/>
 	
+			    
+			
+		<LinearLayout  android:id="@+id/event_header_container" 
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content" 
+		    android:orientation="vertical">
+			    
+			<!-- Title Of Song-->
+		    <TextView
+		        android:id="@+id/event_list_complex_title"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="left"
+		        android:text="Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie "
+		        android:paddingLeft="5dip"
+		        android:paddingRight="5dip"
+		        android:textColor="#040404"
+		        android:typeface="sans" 
+		        android:layout_marginRight="0dip"
+		        android:layout_marginTop="0dip"
+		        android:textSize="20dip"
+		        android:textStyle="bold"/>
 		    
-		<!-- Title Of Song-->
-	    <TextView
-	        android:id="@+id/event_list_complex_title"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:gravity="left"
-	        android:text="Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie "
-	        android:paddingLeft="5dip"
-	        android:paddingRight="5dip"
-	        android:textColor="#040404"
-	        android:typeface="sans" 
-	        android:layout_marginRight="0dip"
-	        android:layout_marginTop="0dip"
-	        android:textSize="20dip"
-	        android:textStyle="bold"/>
-	
+		    
+			<!-- subtitle -->
+		    <TextView
+		        android:id="@+id/event_list_complex_subtitle"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="left"
+		        android:text="Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie Rihanna Love the way lie "
+		        android:paddingLeft="5dip"
+		        android:paddingRight="5dip"
+		        android:textColor="#040404"
+		        android:typeface="sans" 
+		        android:layout_marginRight="0dip"
+		        android:layout_marginTop="15dip"
+		        android:textSize="15dip"
+		        android:textStyle="italic"/>
+		    		
+		</LinearLayout>
+		
+		
 	</LinearLayout>
 	
 

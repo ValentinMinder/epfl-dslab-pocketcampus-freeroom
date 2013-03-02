@@ -138,7 +138,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 	
 		Preparated<EventItem> p1 = new Preparated<EventItem>(oneItemList(parentEvent), new Preparator<EventItem>() {
 			public int[] resources() {
-				return new int[] { R.id.event_list_complex_title, R.id.event_list_item_details, R.id.event_list_complex_image, R.id.event_list_complex_caption, R.id.event_big_image };
+				return new int[] { R.id.event_list_complex_title, R.id.event_list_complex_subtitle, R.id.event_list_item_details, R.id.event_list_complex_image, R.id.event_list_complex_caption, R.id.event_big_image };
 			}
 			private String getFormattedTimeInterval(EventItem e) {
 				String eventTime = simpleTimeFormat.format(new Date(e.getStartDate()));
@@ -158,6 +158,8 @@ public class EventDetailView extends PluginView implements IEventsView {
 				switch (res) {
 				case R.id.event_list_complex_title:
 					return (e.isHideTitle() ? null : e.getEventTitle());
+				case R.id.event_list_complex_subtitle:
+					return e.getSecondLine();
 				case R.id.event_list_item_details:
 					if(e.isHideEventInfo())
 						return null;
