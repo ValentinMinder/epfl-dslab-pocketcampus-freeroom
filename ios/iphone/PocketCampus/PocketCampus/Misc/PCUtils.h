@@ -21,6 +21,8 @@
 + (NSString*)stringFromFileSize:(unsigned long long)size;
 + (BOOL)double:(double)d1 isEqualToDouble:(double)d2 epsilon:(double)epsilon;
 
++ (UIImage*)strechableEmptyImageForCell;
+
 + (void)showServerErrorAlert;
 + (void)showConnectionToServerTimedOutAlert;
 

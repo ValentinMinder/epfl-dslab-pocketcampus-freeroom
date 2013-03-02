@@ -29,7 +29,6 @@
 		32035FE816E13F340016F03C /* EventPoolView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035FE716E13F340016F03C /* EventPoolView.xib */; };
 		32035FEB16E153860016F03C /* EventItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FEA16E153860016F03C /* EventItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32035FED16E153CF0016F03C /* EventItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035FEC16E153CF0016F03C /* EventItemCell.xib */; };
-		32035FF016E15A320016F03C /* EventItem+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FEF16E15A310016F03C /* EventItem+Additions.m */; };
 		3203ECD41503C01E004C2A13 /* LoadingIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 3203ECD31503C01E004C2A13 /* LoadingIndicator.png */; };
 		3204C6D01648412D003944D2 /* LightGrayTextureBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */; };
 		3204C6D11648412D003944D2 /* LightGrayTextureBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */; };
@@ -94,6 +93,7 @@
 		322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322BA0441643F4510063B632 /* MyEduModuleListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322BA0431643F4510063B632 /* MyEduModuleListView.xib */; };
 		322BA0481643FBEB0063B632 /* MSPullToRefreshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */; };
+		322C4ACD16E1FD8300DE418E /* EventItem+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F316E1FA1100AF365C /* EventItem+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322F326A1532F06300E53C6F /* BookmarksBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32681532F06300E53C6F /* BookmarksBlue.png */; };
 		322F326B1532F06300E53C6F /* BookmarksBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32691532F06300E53C6F /* BookmarksBlue@2x.png */; };
 		3235174616A4B5B70022B98E /* MyEduModule+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 3235174516A4B5B70022B98E /* MyEduModule+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -191,6 +191,9 @@
 		3276BE11150BBEE9001F2A88 /* RatingPoint@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE0F150BBEE9001F2A88 /* RatingPoint@2x.png */; };
 		32777B4615D1BFBC00A29F56 /* AboutPC.html in Resources */ = {isa = PBXBuildFile; fileRef = 32777B4215D1BFB400A29F56 /* AboutPC.html */; };
 		327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327BF2351666043100C67937 /* PushNotifPlugin.strings */; };
+		3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3281AB8116E221F700D8FAD1 /* EventItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
+		3281AB8616E232B300D8FAD1 /* EventItemInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8516E232B300D8FAD1 /* EventItemInfo.html */; };
 		328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3288699214FE5AF300CC97DB /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		328872C71534D82C00330B54 /* DestinationConnectionsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */; };
 		328872C91534D85400330B54 /* DestinationConnectionsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328872C81534D85400330B54 /* DestinationConnectionsListView.xib */; };
@@ -374,6 +377,9 @@
 		32F2F6061678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */; };
 		32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32F3EAB116334DD200DA8902 /* MyEduPlugin.strings */; };
 		32F3EAB61633506900DA8902 /* MyEduServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3EAB51633506900DA8902 /* MyEduServiceTests.m */; };
+		32F8E3ED16E1F53000AF365C /* CellNoImageStretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */; };
+		32F8E3EE16E1F53000AF365C /* CellNoImageStretchable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */; };
+		32F8E3F116E1F9D900AF365C /* EventsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F016E1F9D900AF365C /* EventsUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0F51500F40700925180 /* DirectoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E31500F40700925180 /* DirectoryController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E51500F40700925180 /* DirectorySearchViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0F81500F40700925180 /* DirectoryPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FAC0E81500F40700925180 /* DirectoryPlugin.strings */; };
@@ -426,8 +432,6 @@
 		32035FE916E153860016F03C /* EventItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventItemCell.h; sourceTree = "<group>"; };
 		32035FEA16E153860016F03C /* EventItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventItemCell.m; sourceTree = "<group>"; };
 		32035FEC16E153CF0016F03C /* EventItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemCell.xib; sourceTree = "<group>"; };
-		32035FEE16E15A310016F03C /* EventItem+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EventItem+Additions.h"; path = "Plugins/EventsPlugin/Model/EventItem+Additions.h"; sourceTree = SOURCE_ROOT; };
-		32035FEF16E15A310016F03C /* EventItem+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EventItem+Additions.m"; path = "Plugins/EventsPlugin/Model/EventItem+Additions.m"; sourceTree = SOURCE_ROOT; };
 		3203ECD31503C01E004C2A13 /* LoadingIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoadingIndicator.png; sourceTree = "<group>"; };
 		3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LightGrayTextureBackground.png; sourceTree = "<group>"; };
 		3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LightGrayTextureBackground@2x.png"; sourceTree = "<group>"; };
@@ -683,6 +687,10 @@
 		32777B4515D1BFBC00A29F56 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/AboutPC.html; sourceTree = "<group>"; };
 		327BF2361666043100C67937 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PushNotifPlugin.strings; sourceTree = "<group>"; };
 		327BF2381666043500C67937 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PushNotifPlugin.strings; sourceTree = "<group>"; };
+		3281AB8016E221F700D8FAD1 /* EventItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventItemViewController.h; sourceTree = "<group>"; };
+		3281AB8116E221F700D8FAD1 /* EventItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventItemViewController.m; sourceTree = "<group>"; };
+		3281AB8316E2254600D8FAD1 /* EventItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemView.xib; sourceTree = "<group>"; };
+		3281AB8516E232B300D8FAD1 /* EventItemInfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = EventItemInfo.html; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.html; };
 		3288699114FE5AF300CC97DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AppDelegate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		3288699214FE5AF300CC97DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		328872C51534D82C00330B54 /* DestinationConnectionsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationConnectionsListViewController.h; sourceTree = "<group>"; };
@@ -957,6 +965,12 @@
 		32F3EAB216334DDB00DA8902 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MyEduPlugin.strings; sourceTree = "<group>"; };
 		32F3EAB41633506900DA8902 /* MyEduServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduServiceTests.h; sourceTree = "<group>"; };
 		32F3EAB51633506900DA8902 /* MyEduServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduServiceTests.m; sourceTree = "<group>"; };
+		32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellNoImageStretchable.png; sourceTree = "<group>"; };
+		32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CellNoImageStretchable@2x.png"; sourceTree = "<group>"; };
+		32F8E3EF16E1F9D900AF365C /* EventsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsUtils.h; sourceTree = "<group>"; };
+		32F8E3F016E1F9D900AF365C /* EventsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsUtils.m; sourceTree = "<group>"; };
+		32F8E3F216E1FA1100AF365C /* EventItem+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EventItem+Additions.h"; sourceTree = "<group>"; };
+		32F8E3F316E1FA1100AF365C /* EventItem+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EventItem+Additions.m"; sourceTree = "<group>"; };
 		32FAC0E21500F40700925180 /* DirectoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryController.h; sourceTree = "<group>"; };
 		32FAC0E31500F40700925180 /* DirectoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryController.m; sourceTree = "<group>"; };
 		32FAC0E41500F40700925180 /* DirectorySearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectorySearchViewController.h; sourceTree = "<group>"; };
@@ -1243,6 +1257,8 @@
 				3200736A164718DA002AD7BA /* ArrowShow@2x.png */,
 				32ADC7151659A2BA0039F6A6 /* CancelCrossRound.png */,
 				32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */,
+				32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */,
+				32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */,
 				32E67DBA16847A0900E5CFF6 /* ClockCell.png */,
 				32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */,
 				32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */,
@@ -1528,6 +1544,8 @@
 				E8834ED985A01F6FB20543E8 /* EventsController.m */,
 				32035FE416E13A020016F03C /* EventPoolViewController.h */,
 				32035FE516E13A020016F03C /* EventPoolViewController.m */,
+				3281AB8016E221F700D8FAD1 /* EventItemViewController.h */,
+				3281AB8116E221F700D8FAD1 /* EventItemViewController.m */,
 			);
 			name = Controllers;
 			path = Plugins/EventsPlugin/Controllers;
@@ -2405,6 +2423,10 @@
 			children = (
 				14D146FF839137578105D4C3 /* EventsService.h */,
 				C8AE43D19400EAA046F5166E /* EventsService.m */,
+				32F8E3EF16E1F9D900AF365C /* EventsUtils.h */,
+				32F8E3F016E1F9D900AF365C /* EventsUtils.m */,
+				32F8E3F216E1FA1100AF365C /* EventItem+Additions.h */,
+				32F8E3F316E1FA1100AF365C /* EventItem+Additions.m */,
 				A0BE4288881DDD8131DDF320 /* ThriftTypes+Services */,
 			);
 			name = Model;
@@ -2548,8 +2570,8 @@
 				32035FE916E153860016F03C /* EventItemCell.h */,
 				32035FEA16E153860016F03C /* EventItemCell.m */,
 				32035FEC16E153CF0016F03C /* EventItemCell.xib */,
-				32035FEE16E15A310016F03C /* EventItem+Additions.h */,
-				32035FEF16E15A310016F03C /* EventItem+Additions.m */,
+				3281AB8316E2254600D8FAD1 /* EventItemView.xib */,
+				3281AB8516E232B300D8FAD1 /* EventItemInfo.html */,
 			);
 			name = Views;
 			path = Plugins/EventsPlugin/Views;
@@ -2880,6 +2902,10 @@
 				32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */,
 				32035FE816E13F340016F03C /* EventPoolView.xib in Resources */,
 				32035FED16E153CF0016F03C /* EventItemCell.xib in Resources */,
+				32F8E3ED16E1F53000AF365C /* CellNoImageStretchable.png in Resources */,
+				32F8E3EE16E1F53000AF365C /* CellNoImageStretchable@2x.png in Resources */,
+				3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */,
+				3281AB8616E232B300D8FAD1 /* EventItemInfo.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3055,7 +3081,9 @@
 				32AA6CD116DFF41100783E9C /* EventsServiceTests.m in Sources */,
 				32035FE616E13A020016F03C /* EventPoolViewController.m in Sources */,
 				32035FEB16E153860016F03C /* EventItemCell.m in Sources */,
-				32035FF016E15A320016F03C /* EventItem+Additions.m in Sources */,
+				32F8E3F116E1F9D900AF365C /* EventsUtils.m in Sources */,
+				322C4ACD16E1FD8300DE418E /* EventItem+Additions.m in Sources */,
+				3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

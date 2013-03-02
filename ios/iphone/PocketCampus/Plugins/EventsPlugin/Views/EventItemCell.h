@@ -10,13 +10,14 @@
 
 #import "events.h"
 
-@interface EventItemCell : UITableViewCell
+#import "ASIHTTPRequest.h"
+
+@interface EventItemCell : UITableViewCell<ASIHTTPRequestDelegate>
 
 - (id)initWithEventItem:(EventItem*)eventItem reuseIdentifier:(NSString*)reuseIdentifier;
 
 + (CGFloat)height;
 
-@property (nonatomic, weak) IBOutlet UIImageView* imageView;
 @property (nonatomic, weak) IBOutlet UILabel* titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel* subtitleLabel;
 @property (nonatomic, weak) IBOutlet UILabel* rightSubtitleLabel;

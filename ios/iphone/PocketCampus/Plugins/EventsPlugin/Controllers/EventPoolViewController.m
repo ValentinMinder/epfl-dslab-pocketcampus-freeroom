@@ -18,13 +18,25 @@
 
 #import "GANTracker.h"
 
+#import "EventsUtils.h"
+
+#import "PCTableViewSectionHeader.h"
+
+#import "PCValues.h"
+
 @interface EventPoolViewController ()
 
 @property (nonatomic) int64_t poolId;
 @property (nonatomic, strong) EventPoolReply* poolReply;
 @property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 @property (nonatomic, strong) EventsService* eventsService;
-@property (nonatomic, strong) NSArray* sections;
+
+@property (nonatomic) int32_t selectedPeriod; //see enum EventsPeriod in events.h
+@property (nonatomic, strong) NSMutableDictionary* selectedCategories; //key = categId (NSNumber with int32), value = name string of categ
+@property (nonatomic, strong) NSMutableDictionary* selectedTags; //key = tag short name, value = tag full name
+
+@property (nonatomic, strong) NSArray* sectionsNames; //array of names of sections, to be used as key in itemsForSectionName
+@property (nonatomic, strong) NSArray* itemsForSection; //array of arrays of EventItem
 
 @end
 
@@ -107,7 +119,7 @@ static NSString* kEventCell = @"EventCell";
 }
 
 - (void)startGetEventPoolRequest {
-    EventPoolRequest* req = [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_MONTH]; //TODO dynamic period
+    EventPoolRequest* req = [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_WEEK]; //TODO dynamic period
     [self.eventsService getEventPoolForRequest:req delegate:self];
 }
 
@@ -118,8 +130,32 @@ static NSString* kEventCell = @"EventCell";
         return;
     }
     
-    //TODO: fill sections accordingly
-    self.sections = [NSArray arrayWithObject:[self.poolReply.childrenItems allValues]];
+    if (!self.selectedCategories) { //select all categories (available in reply) by default
+        self.selectedCategories = [self.poolReply.categs mutableCopy];
+    }
+    
+    if (!self.selectedTags) { //select all tags (available in reply) by default
+        self.selectedTags = [self.poolReply.tags mutableCopy];
+    }
+    
+    //Force Favorites and Features to be always selected
+    self.selectedCategories[[EventsUtils favoriteCategory]] = self.poolReply.categs[[EventsUtils favoriteCategory]];
+    self.selectedCategories[[EventsUtils featuredCategory]] = self.poolReply.categs[[EventsUtils featuredCategory]];
+    
+    NSDictionary* itemsForCategNumber = [EventsUtils sectionsOfEventItem:[self.poolReply.childrenItems allValues] forCategories:self.selectedCategories andTags:self.selectedTags];
+    
+    
+    NSArray* sortedCategNumbers = [[itemsForCategNumber allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    
+    NSMutableArray* tmpSectionsNames = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
+    NSMutableArray* tmpItemsForSection = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
+    
+    for (NSNumber* categNumber in sortedCategNumbers) {
+        [tmpSectionsNames addObject:self.poolReply.categs[categNumber]];
+        [tmpItemsForSection addObject:itemsForCategNumber[categNumber]];
+    }
+    self.sectionsNames = [tmpSectionsNames copy];
+    self.itemsForSection = [tmpItemsForSection copy];
 }
 
 #pragma mark - EventsServiceDelegate
@@ -158,6 +194,30 @@ static NSString* kEventCell = @"EventCell";
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if ([self.itemsForSection[section] count] == 0) {
+        return 0.0;
+    }
+    return [PCValues tableViewSectionHeaderHeight];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if ([self.itemsForSection[section] count] == 0) {
+        return nil;
+    }
+    
+    NSString* title = self.sectionsNames[section];
+    
+    return [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    //TODO
+}
+
+
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -174,7 +234,7 @@ static NSString* kEventCell = @"EventCell";
         }
     }
     
-    EventItem* eventItem = self.sections[indexPath.section][indexPath.row];
+    EventItem* eventItem = self.itemsForSection[indexPath.section][indexPath.row];
     EventItemCell *cell = (EventItemCell*)[tableView dequeueReusableCellWithIdentifier:kEventCell];
     
     if (!cell) {
@@ -192,16 +252,16 @@ static NSString* kEventCell = @"EventCell";
     if (self.poolReply && [self.poolReply.childrenItems count] == 0) {
         return 2; //first empty cell, second cell says no content
     }
-    return [self.sections[section] count];
+    return [self.itemsForSection[section] count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if (!self.sections) {
+    if (!self.itemsForSection) {
         return 0;
     }
-    return 1;
+    return [self.itemsForSection count];
 }
 
 #pragma mark - dealloc

@@ -12,4 +12,8 @@
 
 - (NSString*)shortDateString;
 
+- (BOOL)isEqual:(id)object;
+- (NSUInteger)hash;
+- (NSComparisonResult)compare:(EventItem*)object;
+
 @end
