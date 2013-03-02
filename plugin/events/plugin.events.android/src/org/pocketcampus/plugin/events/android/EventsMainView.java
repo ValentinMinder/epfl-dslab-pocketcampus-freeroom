@@ -178,7 +178,11 @@ public class EventsMainView extends PluginView implements IEventsView {
 		}
 		if(aData.getQueryParameter(QUERYSTRING_KEY_MARKFAVORITE) != null) {
 			System.out.println("Should mark as favorite");
-			mModel.markFavorite(Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_MARKFAVORITE)), true);
+			String fav = aData.getQueryParameter(QUERYSTRING_KEY_MARKFAVORITE);
+			mModel.markFavorite(Long.parseLong(fav), true);
+			Intent i = new Intent(EventsMainView.this, EventDetailView.class);
+			i.putExtra(EXTRAS_KEY_EVENTITEMID, fav);
+			EventsMainView.this.startActivity(i);
 		}
 		if(aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN) != null) {
 			System.out.println("Got request to exchange contacts");
