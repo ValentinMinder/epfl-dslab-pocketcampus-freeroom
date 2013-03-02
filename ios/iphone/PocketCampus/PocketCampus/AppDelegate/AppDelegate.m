@@ -20,6 +20,8 @@
 
 #import "PushNotifControllerTests.h"
 
+#import "EventsServiceTests.h"
+
 static id test __strong __unused = nil;
 
 @implementation AppDelegate
@@ -73,6 +75,10 @@ static id test __strong __unused = nil;
     //[[[MapServiceTests alloc] init] tempTest];
     
     //[[[MyEduServiceTests alloc] init] tempTest];
+    
+    //test = [[EventsServiceTests alloc] init];
+    
+    //[test tmpTest];
     
     /* END OF TESTS */
     

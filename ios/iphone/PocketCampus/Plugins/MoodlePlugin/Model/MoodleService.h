@@ -26,7 +26,7 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 
 @interface MoodleService : Service<ServiceProtocol>
 
-@property(nonatomic, retain) MoodleSession* moodleCookie;
+//@property(nonatomic, retain) MoodleSession* moodleCookie; //NOT USED, TO REMOVE
 
 #pragma mark - Session
 

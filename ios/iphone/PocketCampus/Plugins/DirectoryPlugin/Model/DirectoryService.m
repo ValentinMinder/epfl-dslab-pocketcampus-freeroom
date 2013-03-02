@@ -211,7 +211,6 @@ static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people
     [self didChangeValueForKey:@"isExecuting"];
     NSString* fullURLStringWithSciper = [NSString stringWithFormat:@"%@%@", kProfilePictureURLbase, self.sciper];
     ASIHTTPRequest* pictureRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLStringWithSciper]];
-    pictureRequest.timeOutSeconds = 10;
     pictureRequest.delegate = self;
     pictureRequest.downloadCache = [ASIDownloadCache sharedCache];
     pictureRequest.cachePolicy = ASIAskServerIfModifiedWhenStaleCachePolicy;
