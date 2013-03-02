@@ -159,8 +159,10 @@ public class EventDetailView extends PluginView implements IEventsView {
 				case R.id.event_list_complex_title:
 					return (e.isHideTitle() ? null : e.getEventTitle());
 				case R.id.event_list_item_details:
+					if(e.isHideEventInfo())
+						return null;
 					StringBuilder details = new StringBuilder();
-					if(e.isSetStartDate() && !e.isHideDateInfo()) {
+					if(e.isSetStartDate()) {
 						details.append("<br><b>On</b> " + getFormattedDateInterval(e));
 						details.append(!e.isFullDay() ? ("<br><b>At</b> " + getFormattedTimeInterval(e)) : "");
 					}

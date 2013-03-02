@@ -101,9 +101,9 @@ struct EventItem {
 	16: optional string locationHref;
 	17: optional string detailsLink;
 	18: optional string timeSnippet; // if set, overrides time snippet
-	19: optional bool hideDateInfo; // if set, hides date and time from event details view
 	21: optional bool hideTitle; // if set, hides the title from event details view
 	22: optional bool hideThumbnail; // if set, hides thumbnail from event details view
+	23: optional bool hideEventInfo; // if set, hides the block containing date, time, location, speaker, link, etc 
 	30: optional list<i64> childrenPools;
 }
 

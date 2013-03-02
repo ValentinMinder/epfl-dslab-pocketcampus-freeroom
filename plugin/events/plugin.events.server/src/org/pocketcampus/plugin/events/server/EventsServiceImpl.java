@@ -557,7 +557,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 	
 	private static class EventItemDecoderFromDb {
-		private static final String SELECT_FIELDS = "eventId,startDate,endDate,fullDay,eventPicture,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink,secondLine,timeSnippet,hideDateInfo,hideTitle,eventThumbnail,hideThumbnail";
+		private static final String SELECT_FIELDS = "eventId,startDate,endDate,fullDay,eventPicture,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink,secondLine,timeSnippet,hideEventInfo,hideTitle,eventThumbnail,hideThumbnail";
 		public static String getSelectFields() {
 			return SELECT_FIELDS;
 		}
@@ -606,7 +606,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ei.setDetailsLink(rs.getString(16));
 			ei.setSecondLine(rs.getString(17));
 			ei.setTimeSnippet(rs.getString(18));
-			ei.setHideDateInfo(rs.getBoolean(19));
+			ei.setHideEventInfo(rs.getBoolean(19));
 			ei.setHideTitle(rs.getBoolean(20));
 			ei.setHideThumbnail(rs.getBoolean(22));
 			
