@@ -81,6 +81,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 		try {
 			Connection conn = connMgr.getConnection();
 			EventItem item = eventItemFromDb(conn, parentId, (req.isSetUserToken() ? req.getUserToken() : ""));
+			fixCategAndTags(item);
 			Map<Long, EventPool> childrenPools = eventPoolsFromDb(conn, parentId);
 			item.setChildrenPools(new LinkedList<Long>(childrenPools.keySet()));
 			EventItemReply reply = new EventItemReply(200);
@@ -106,6 +107,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 			Connection conn = connMgr.getConnection();
 			EventPool pool = eventPoolFromDb(conn, parentId);
 			Map<Long, EventItem> childrenItems = eventItemsFromDb(conn, parentId, period, (req.isSetUserToken() ? req.getUserToken() : ""));
+			for(EventItem e : childrenItems.values())
+				fixCategAndTags(e);
 			pool.setChildrenEvents(new LinkedList<Long>(childrenItems.keySet()));
 			EventPoolReply reply = new EventPoolReply(200);
 			reply.setEventPool(pool);
@@ -809,4 +812,17 @@ public class EventsServiceImpl implements EventsService.Iface {
 		return affectedRows;
 	}
 
+	private static void fixCategAndTags(EventItem e) {
+		if(!e.isSetEventCateg())
+			e.setEventCateg(1000000); // uncategorized
+		if(!e.isSetEventTags() || e.getEventTags().size() == 0)
+			e.setEventTags(oneItemList("unlabeled")); // unlabeled
+	}
+	
+	private static <T> List<T> oneItemList(T obj) {
+		List<T> list = new LinkedList<T>();
+		list.add(obj);
+		return list;
+	}
+	
 }
