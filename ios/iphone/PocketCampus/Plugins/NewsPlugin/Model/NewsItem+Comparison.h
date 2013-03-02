@@ -12,5 +12,6 @@
 
 - (BOOL)isEqual:(id)object;
 - (NSUInteger)hash;
+- (NSComparisonResult)compare:(NewsItem*)object;
 
 @end

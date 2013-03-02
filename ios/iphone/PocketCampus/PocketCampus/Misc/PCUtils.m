@@ -81,6 +81,13 @@
 }
 
 
++ (UIImage*)strechableEmptyImageForCell {
+    UIImage* image = [UIImage imageNamed:@"CellNoImageStretchable"];
+    image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(1.0, 1.0, 1.0, 1.0)];
+    return image;
+}
+
+
 + (void)showServerErrorAlert {
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
@@ -91,6 +98,12 @@
 
 + (BOOL)hasDeviceInternetConnection {
     return [[Reachability reachabilityForInternetConnection] isReachable];
+}
+
++ (void)throughExceptionIfObject:(id)object notKindOfClass:(Class)class; {
+    if (![object isKindOfClass:class]) {
+        @throw [NSException exceptionWithName:@"Illegal argument" reason:[NSString stringWithFormat:@"object '%@' must be kind of class %@", object, NSStringFromClass(class)] userInfo:nil];
+    }
 }
 
 @end
