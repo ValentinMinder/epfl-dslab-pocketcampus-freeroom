@@ -16,8 +16,7 @@
 		    android:background="@drawable/events_image_bg"
 			android:id="@+id/event_list_complex_image"   
 			android:padding="3dip"
-			android:layout_marginLeft="2dip"
-			android:layout_marginTop="1dip"
+			android:layout_margin="2dip"
 	        android:layout_width="100dip"
 	        android:layout_height="100dip"/>
 	

@@ -11,7 +11,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter;
-import org.pocketcampus.android.platform.sdk.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.android.platform.sdk.ui.adapter.MultiListAdapter;
 import org.pocketcampus.plugin.events.android.EventsController.Preparated;
 import org.pocketcampus.plugin.events.android.EventsController.Preparator;
 import org.pocketcampus.plugin.events.android.EventsController.ScrollStateSaver;
@@ -133,7 +133,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 			return; // Ow!
 		
 		// create our list and custom adapter
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.event_list_tinyheader);
+		MultiListAdapter adapter = new MultiListAdapter();
 		
 	
 		Preparated<EventItem> p1 = new Preparated<EventItem>(oneItemList(parentEvent), new Preparator<EventItem>() {
@@ -192,8 +192,8 @@ public class EventDetailView extends PluginView implements IEventsView {
 				map.put(LazyAdapter.LINK_CLICKABLE, "1");
 			}
 		});
-		adapter.addSection("Details" /* Constants.EVENTS_CATEGS.get(parentEvent.getEventCateg()) */ , new LazyAdapter(this, p1.getMap(),
-				R.layout.event_details, p1.getKeys(), p1.getResources()) /* .setImageSizeCap(840) */ );
+		adapter.addSection( new LazyAdapter(this, p1.getMap(),
+				R.layout.event_details, p1.getKeys(), p1.getResources())  );
 		
 		
 		/*if(thisEvent.isSetEventPicture()) {
@@ -286,7 +286,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 					map.put(MAP_KEY_EVENTPOOLID, item.getPoolId() + "");
 				}
 			});
-			adapter.addSection("More", new LazyAdapter(this, p4.getMap(),
+			adapter.addSection( new LazyAdapter(this, p4.getMap(),
 					R.layout.events_list_row, p4.getKeys(), p4.getResources()));
 		}
 
