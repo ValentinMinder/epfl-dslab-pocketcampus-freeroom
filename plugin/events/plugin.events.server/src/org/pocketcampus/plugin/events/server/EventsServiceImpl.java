@@ -61,6 +61,36 @@ import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CO
 public class EventsServiceImpl implements EventsService.Iface {
 	
 	private ConnectionManager connMgr;
+	private String dateLastImport = "";
+	private Runnable importer = new Runnable() {
+		public void run() {
+			System.out.println("Started Async Import from Memento on " + dateLastImport);
+			try {
+				HashMap<String, String> feedsMap = new HashMap<String, String>();
+				Connection conn = connMgr.getConnection();
+				for(String uri : collectUris(conn)) {
+					try {
+						EventItem ei = parseEvent(uri, feedsMap);
+						readFromIcs(ei);
+						updateEventItem(ei, conn);
+					} catch (IOException e) {
+						System.out.println("AIE IOException, skipping event=" + uri + "... " + e.getMessage());
+					} catch (ParserException e) {
+						System.out.println("AIE ParserException, skipping event=" + uri + "... " + e.getMessage());
+					} catch (ParseException e) {
+						System.out.println("AIE ParseException, skipping event=" + uri + "... " + e.getMessage());
+					}
+				}
+				for(String key : feedsMap.keySet()) {
+					updateEventTag(key, feedsMap.get(key), conn, true);
+				}
+				System.out.println("Finished Async Import on " + dateLastImport);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	};
+	
 
 	public EventsServiceImpl() {
 		System.out.println("Starting Events plugin server ...");
@@ -77,6 +107,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	@Override
 	public EventItemReply getEventItem(EventItemRequest req) throws TException {
 		System.out.println("getEventItem id=" + req.getEventItemId());
+		importFromMemento();
 		long parentId = req.getEventItemId();
 		try {
 			Connection conn = connMgr.getConnection();
@@ -89,9 +120,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 			EventItemReply reply = new EventItemReply(200);
 			reply.setEventItem(item);
 			reply.setChildrenPools(childrenPools);
-			reply.setTags(getTagsFromDb(conn));
+			reply.setTags(getTagsFromDb(conn, false));
 			reply.setCategs(getCategsFromDb(conn));
-			conn.close();
 			System.out.println("returned " + reply.getChildrenPools().size() + " pools");
 			return reply;
 		} catch (SQLException e) {
@@ -103,6 +133,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	@Override
 	public EventPoolReply getEventPool(EventPoolRequest req) throws TException {
 		System.out.println("getEventPool id=" + req.getEventPoolId());
+		importFromMemento();
 		long parentId = req.getEventPoolId();
 		int period = (req.isSetPeriod() ? req.getPeriod() : 1);
 		try {
@@ -117,9 +148,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 			EventPoolReply reply = new EventPoolReply(200);
 			reply.setEventPool(pool);
 			reply.setChildrenItems(childrenItems);
-			reply.setTags(getTagsFromDb(conn));
+			reply.setTags(getTagsFromDb(conn, false));
 			reply.setCategs(getCategsFromDb(conn));
-			conn.close();
 			System.out.println("returned " + reply.getChildrenItems().size() + " items");
 			return reply;
 		} catch (SQLException e) {
@@ -299,37 +329,18 @@ public class EventsServiceImpl implements EventsService.Iface {
 		}
 	}*/
 
-	@Override
-	public String updateDatabase(String arg) throws TException {
-		System.out.println("updateDatabase");
-		try {
-			HashMap<String, String> feedsMap = new HashMap<String, String>();
-			Connection conn = connMgr.getConnection();
-			for(String uri : collectUris(conn)) {
-				EventItem ei = parseEvent(uri, feedsMap);
-				readFromIcs(ei);
-				updateEventItem(ei, conn);
-			}
-			for(String key : feedsMap.keySet()) {
-				updateEventTag(key, feedsMap.get(key), conn);
-			}
-			conn.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 
 	/**
 	 * HELPER FUNCTIONS
 	 */
+	
+	private synchronized void importFromMemento() {
+		String date = new SimpleDateFormat("yyyyMMdd").format(new Date().getTime());
+		if(!dateLastImport.equals(date)) {
+			dateLastImport = date;
+			new Thread(importer).start();
+		}
+	}
 	
 	public static String getResizedPhotoUrl (String image, int newSize) {
 		if(image == null)
@@ -411,10 +422,14 @@ public class EventsServiceImpl implements EventsService.Iface {
 		return eventsIds;
 	}
 	
-	private static Set<String> collectUris(Connection conn) throws IOException, SQLException {
+	private static Set<String> collectUris(Connection conn) throws SQLException {
 		Set<String> eventsIds = new HashSet<String>();
-		for(String feed : getTagsFromDb(conn).keySet()) {
-			eventsIds.addAll(scanForUris(feed, 0, 365)); // All categories - One year
+		for(String feed : getTagsFromDb(conn, true).keySet()) {
+			try {
+				eventsIds.addAll(scanForUris(feed, 0, 365)); // All categories - One year
+			} catch (IOException e) {
+				System.out.println("AIE Exception, skipping feed=" + feed + "... " + e.getMessage());
+			}
 		}
 		System.out.println("all-in-all " + eventsIds.size() + " events");
 		return eventsIds;
@@ -530,8 +545,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 		System.out.println("inserted/updated event " + ei.getEventId());
 	}
 	
-	private static void updateEventTag(String key, String value, Connection conn) throws SQLException {
-		PreparedStatement stm = conn.prepareStatement("REPLACE INTO eventtags(feedKey,feedValue) VALUES (?,?);");
+	private static void updateEventTag(String key, String value, Connection conn, boolean isMemento) throws SQLException {
+		PreparedStatement stm = conn.prepareStatement("REPLACE INTO eventtags(feedKey,feedValue,isMemento) VALUES (?,?," + (isMemento ? "1" : "NULL" ) + ");");
 		stm.setString(1, key);
 		stm.setString(2, value);
 		stm.executeUpdate();
@@ -539,9 +554,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 		System.out.println("inserted/updated feed " + key);
 	}
 	
-	private static Map<String, String> getTagsFromDb(Connection conn) throws SQLException {
+	private static Map<String, String> getTagsFromDb(Connection conn, boolean mementoOnly) throws SQLException {
 		Map<String, String> feeds = new HashMap<String, String>();
-		PreparedStatement stm = conn.prepareStatement("SELECT feedKey,feedValue FROM eventtags;");
+		PreparedStatement stm = conn.prepareStatement("SELECT feedKey,feedValue FROM eventtags " + (mementoOnly ? "WHERE isMemento=1" : ""));
 		ResultSet rs = stm.executeQuery();
 		while(rs.next()) {
 			feeds.put(rs.getString(1), rs.getString(2));

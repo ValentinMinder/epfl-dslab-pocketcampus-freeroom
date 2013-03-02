@@ -172,6 +172,4 @@ service EventsService {
 	EventItemReply getEventItem(1: EventItemRequest iRequest);
 	EventPoolReply getEventPool(1: EventPoolRequest iRequest);
 	ExchangeReply exchangeContacts(1: ExchangeRequest iRequest);
-	
-	string updateDatabase(1: string arg);
 }
