@@ -59,8 +59,8 @@ function generate_android_manifest($output_dir, $is_lib){
 	$doc->appendChild($manif);
 	$manif->setAttribute("xmlns:android", "http://schemas.android.com/apk/res/android");
 	$manif->setAttribute("package", "org.pocketcampus");
-	$manif->setAttribute("android:versionCode", "18");
-	$manif->setAttribute("android:versionName", "0.3.18");
+	$manif->setAttribute("android:versionCode", "19");
+	$manif->setAttribute("android:versionName", "0.3.19");
 
 	$app = $doc->createElement("application");
 	$manif->appendChild($app);
