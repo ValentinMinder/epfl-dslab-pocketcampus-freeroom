@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -309,6 +310,12 @@ public class EventsController extends PluginController implements IEventsControl
 		List<T> nl = new LinkedList<T>(l1);
 		nl.retainAll(l2);
 		return nl;
+	}
+	
+	public static <T> Set<T> difference(Set<T> s1, Set<T> s2) {
+		Set<T> ns = new HashSet<T>(s1);
+		ns.removeAll(s2);
+		return ns;
 	}
 	
 	public static String expandTags(List<String> shortTags) {

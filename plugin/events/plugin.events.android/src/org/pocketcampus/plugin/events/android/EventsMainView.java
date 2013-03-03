@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.events.android;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,8 +85,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 	
 	EventPool thisEventPool;
 	Map<String, List<EventItem>> eventsByTags;
-	Set<Integer> filteredCategs;
-	Set<String> filteredTags;
+	Set<Integer> filteredCategs = new HashSet<Integer>();
+	Set<String> filteredTags = new HashSet<String>();
 	
 	ListView mList;
 	ScrollStateSaver scrollState;
@@ -160,8 +161,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 		System.out.println("back from barcode scanner");
 		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		if (scanResult != null && "QR_CODE".equals(scanResult.getFormatName())) {
-			filteredCategs = null;
-			filteredTags = null;
+			//filteredCategs = null; // no need to reset them 
+			//filteredTags = null; // because they will get updated 
 			externalCall(Uri.parse(scanResult.getContents()));
 		}
 	}
@@ -212,8 +213,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 		//System.out.println("eventsListUpdated building hash childrenEvent=" + parentEvent.getChildrenEvents().size());
 		eventsByTags = new HashMap<String, List<EventItem>>();
 		eventsInRS.clear();
-		categsInRS.clear();
-		tagsInRS.clear();
+		Set<Integer> newCategsInRS = new HashSet<Integer>();
+		Set<String> newTagsInRS = new HashSet<String>();
 		if(thisEventPool.isSetChildrenEvents()) {
 			for(long eventId : thisEventPool.getChildrenEvents()) {
 				EventItem e = mModel.getEventItem(eventId);
@@ -222,9 +223,9 @@ public class EventsMainView extends PluginView implements IEventsView {
 					continue;
 				eventsInRS.add(eventId);
 				if(e.getEventCateg() > 0)
-					categsInRS.add(e.getEventCateg());
+					newCategsInRS.add(e.getEventCateg());
 				if(e.isSetEventTags()) 
-					tagsInRS.addAll(e.getEventTags());
+					newTagsInRS.addAll(e.getEventTags());
 				for(String t : e.getEventTags()) {
 					if(!eventsByTags.containsKey(t))
 						eventsByTags.put(t, new LinkedList<EventItem>());
@@ -233,10 +234,10 @@ public class EventsMainView extends PluginView implements IEventsView {
 			}
 		}
 		
-		if(filteredCategs == null)
-			filteredCategs = new HashSet<Integer>(categsInRS);
-		if(filteredTags == null)
-			filteredTags = new HashSet<String>(tagsInRS);
+		filteredCategs.addAll(difference(newCategsInRS, categsInRS)); // if new categories appeared, then add them to filtered because otherwise they might go unnoticed
+		filteredTags.addAll(difference(newTagsInRS, tagsInRS)); // if new tags appeared, then add them to filtered because otherwise they might go unnoticed
+		categsInRS = newCategsInRS;
+		tagsInRS = newTagsInRS;
 		
 		// Action bar update
 		removeAllActionsFromActionBar();
@@ -288,7 +289,10 @@ public class EventsMainView extends PluginView implements IEventsView {
 		
 		Set<EventItem> filteredEvents = new HashSet<EventItem>();
 		for(String tag : filteredTags) {
-			filteredEvents.addAll(eventsByTags.get(tag));
+			List<EventItem> tagEvents = eventsByTags.get(tag);
+			if(tagEvents == null) // if tag becomes empty (shorter period selected)
+				continue; // then skip it
+			filteredEvents.addAll(tagEvents);
 		}
 		
 		//Map<Integer, List<EventItem>> eventsByCateg = new HashMap<Integer, List<EventItem>>();
@@ -305,7 +309,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		
 		
 		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.event_list_header);
-		List<Integer> categList = new LinkedList<Integer>(filteredCategs);
+		List<Integer> categList = new ArrayList<Integer>(filteredCategs);
 		Collections.sort(categList);
 		for(int i : categList) {
 			List<EventItem> categEvents = eventsByCateg.get(i);
