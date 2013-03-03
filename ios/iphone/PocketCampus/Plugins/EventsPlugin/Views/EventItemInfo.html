@@ -9,78 +9,91 @@
         
         body {
 			font-family: Helvetica;
-			font-size: 11pt;
+			background-color: #ededed;
 			word-wrap:break-word;
 			text-align:left;
 			margin-left: 8px;
             margin-right: 8px;
+            color: #424242;
+            text-shadow: 0px 1px 0px white;
 		}
 		
-		a { 
-			color:#B80000;
-			text-decoration:none;
+		a {
+			color: #c20002;
 		}
         
-        .feed_name {
-            font-style: italic;
-            font-size: 11pt;
-            color: #616161;
-        }
+        table {
+	    	width: 100%;  
+	    }
         
-        hr {
-            border: 0px;
-            width: 100%;
-            color: #808080;
-            background-color: #808080;
-            height: 2px;
-            margin-top: 3px;
+        #thumbnail img {
+	        max-width: 150px;
+	        display: block;
+            box-shadow: 1px 1px 5px #888888;
         }
-        
-        .pub_date {
-            font-size: 11pt;
-            color: #7E0000;
-            margin-top: -4px;
-        }
-        
-		h1 {
+		
+		#title {
 			font-size: 13pt;
-			margin-top: 5px;
-			margin-bottom: 10px;
+			font-weight: bold;
+			padding-top: 2px;
+			padding-left: 6px;
+			padding-bottom: 2px;
+			padding-right: 2px;
 		}
 		
-		img {
-			float: left;
-			margin-right: 10px;
-			margin-bottom: 10px;
-			box-shadow: 0px 0px 2px #888888;
+		#second_line {
+			font-size: 12pt;
+			padding-top: 2px;
+			padding-left: 6px;
+			padding-bottom: 2px;
+			padding-right: 2px;
 		}
+		
+		#infos {
+			padding-left: 3px;
+			padding-top: 8px;
+			font-size: 11pt;
+			line-height: 13pt;
+		}
+		
+		#center_image img {
+			max-width: 300px;
+			margin: auto;
+			display: block;
+			box-shadow: 1px 1px 5px #888888;
+		}
+		
+		#details {
+			padding-left: 3px;
+			font-size: 11pt;
+			padding-top: 5px;
+		}
+		
 	</style>
 	</head>
 <body>
  
-    <table>
+    <table border="0">
         <tr>
-            <td>$EVENT_ITEM_THUMBNAIL$</td>
-            <td>$EVENT_ITEM_TITLE$</td>
+            <td id="thumbnail" rowspan="2">$EVENT_ITEM_THUMBNAIL$</td>
+            <td id="title">$EVENT_ITEM_TITLE$</td>
         </tr>
         <tr>
-            <td>
-                $EVENT_ITEM_DATE$
-                <br>
-                $EVENT_ITEM_TIME$
-                <br>
+	        <td id="second_line">$EVENT_ITEM_SECOND_LINE$</td>
+	    </tr>
+        <tr>
+            <td colspan="2" id="infos">
+                $EVENT_ITEM_DATE_TIME$
                 $EVENT_ITEM_PLACE$
-                <br>
                 $EVENT_ITEM_SPEAKER$
-                <br>
                 $EVENT_ITEM_MORE$
             </td>
         </tr>
         <tr>
-            <td>$EVENT_ITEM_CENTER_IMAGE</td>
+            <td id="center_image" colspan="2">$EVENT_ITEM_CENTER_IMAGE$</td>
         </tr>
         <tr>
-            <td>$EVENT_ITEM_DETAILS</td>
+            <td id="details" colspan="2">$EVENT_ITEM_DETAILS$</td>
         </tr>
     </table>
 </body>

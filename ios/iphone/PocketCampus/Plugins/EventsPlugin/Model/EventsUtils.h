@@ -17,6 +17,7 @@
  */
 + (NSDictionary*)sectionsOfEventItem:(NSArray*)eventItems forCategories:(NSDictionary*)categs andTags:(NSDictionary*)tags;
 
++ (NSNumber*)nsNumberForEventId:(int64_t)eventId;
 + (NSNumber*)favoriteCategory;
 + (NSNumber*)featuredCategory;
 

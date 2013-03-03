@@ -14,9 +14,12 @@
 
 #import "PCUtils.h"
 
+#import "UIImage+Additions.h"
+
 @interface EventItemCell ()
 
 @property (nonatomic, strong) ASIHTTPRequest* imageRequest;
+@property (nonatomic, strong) NSString* customReuseIdentifier;
 
 @end
 
@@ -24,14 +27,18 @@
 
 - (id)initWithEventItem:(EventItem*)eventItem reuseIdentifier:(NSString*)reuseIdentifier
 {
-    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+    NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"EventItemCell" owner:self options:nil];
+    EventItemCell* cell = (EventItemCell*)[elements objectAtIndex:0];
+    self = cell;
     if (self) {
-        NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"EventItemCell" owner:self options:nil];
-        EventItemCell* cell = (EventItemCell*)[elements objectAtIndex:0];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.customReuseIdentifier = reuseIdentifier;
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.titleLabel.text = @"";
+        self.subtitleLabel.text = @"";
+        self.rightSubtitleLabel.text = @"";
+        self.rightSubtitleLabel.textColor = [UIColor colorWithRed:0.156863 green:0.250980 blue:0.458824 alpha:1.0];
         self.eventItem = eventItem;
-        return cell;
     }
     return self;
 }
@@ -40,8 +47,11 @@
     return 64.0;
 }
 
+- (NSString *) reuseIdentifier {
+    return self.customReuseIdentifier;
+}
+
 - (void)setEventItem:(EventItem *)eventItem {
-    //TODO: load thumbnail
     _eventItem = eventItem;
     self.imageView.image = [PCUtils strechableEmptyImageForCell];
     self.titleLabel.text = eventItem.eventTitle;
@@ -49,7 +59,9 @@
     if (eventItem.secondLine) {
         self.subtitleLabel.text = eventItem.secondLine;
     }
-    self.rightSubtitleLabel.text = [eventItem shortDateString];
+    if (eventItem.startDate) {
+        self.rightSubtitleLabel.text = [eventItem shortDateString];
+    }
     [self layoutSubviews];
     [self startImageRequest];
 }
@@ -74,8 +86,11 @@
         [self requestFailed:request];
         return;
     }
+    CGFloat size = [EventItemCell height];
+    //TODO: resize image
+    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     self.imageView.image = [UIImage imageWithData:request.responseData];
-    self.imageView.alpha = 1.0;
+    self.imageView.bounds = CGRectMake(0, 0, size, size);
     [self layoutSubviews];
 }
 

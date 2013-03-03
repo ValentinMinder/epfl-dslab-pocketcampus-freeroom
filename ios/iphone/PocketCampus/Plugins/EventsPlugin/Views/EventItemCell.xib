@@ -79,7 +79,7 @@
 							<object class="IBUILabel" id="241628502">
 								<reference key="NSNextResponder" ref="1071966374"/>
 								<int key="NSvFlags">270</int>
-								<string key="NSFrame">{{69, 41}, {127, 21}}</string>
+								<string key="NSFrame">{{69, 41}, {138, 21}}</string>
 								<reference key="NSSuperview" ref="1071966374"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="65250025"/>
@@ -110,10 +110,9 @@
 							<object class="IBUILabel" id="65250025">
 								<reference key="NSNextResponder" ref="1071966374"/>
 								<int key="NSvFlags">265</int>
-								<string key="NSFrame">{{202, 41}, {111, 21}}</string>
+								<string key="NSFrame">{{220, 41}, {111, 21}}</string>
 								<reference key="NSSuperview" ref="1071966374"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -123,7 +122,7 @@
 								<string key="IBUIText">RightSubtitle</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MCAwLjE5MTk0NTQ3NTUgMQA</bytes>
+									<bytes key="NSRGB">MC42NDUxMjI2NzA1IDAuNjEyMDM2MzcxOCAxAA</bytes>
 								</object>
 								<reference key="IBUIHighlightedColor" ref="217279169"/>
 								<int key="IBUIBaselineAdjustment">0</int>
@@ -221,13 +220,13 @@
 						<reference key="parent" ref="337707541"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">16</int>
-						<reference key="object" ref="241628502"/>
+						<int key="objectID">17</int>
+						<reference key="object" ref="65250025"/>
 						<reference key="parent" ref="337707541"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">17</int>
-						<reference key="object" ref="65250025"/>
+						<int key="objectID">16</int>
+						<reference key="object" ref="241628502"/>
 						<reference key="parent" ref="337707541"/>
 					</object>
 				</array>
@@ -246,7 +245,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">21</int>
+			<int key="maxID">23</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

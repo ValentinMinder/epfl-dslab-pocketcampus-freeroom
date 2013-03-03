@@ -18,6 +18,9 @@ typedef enum {
 } PluginStateNotification;
 
 @class PluginController;
+@protocol PluginControllerProtocol;
+@class PCURLSchemeHandler;
+
 @class MainMenuViewController;
 
 /*
@@ -54,6 +57,9 @@ typedef enum {
  */
 - (void)removePluginStateObserver:(id)observer;
 
+
+- (PCURLSchemeHandler*)urlSchemeHandlerSharedInstance;
+
 @end
 
 
@@ -81,6 +87,9 @@ typedef enum {
 - (void)mainMenuStartedEditing;
 - (void)mainMenuEndedEditing;
 - (void)restoreDefaultMainMenu;
+
+- (PluginController<PluginControllerProtocol>*)pluginControllerForPluginIdentifier:(NSString*)identifier;
+- (BOOL)existsPluginWithIdentifier:(NSString*)identifier;
 
 @property (nonatomic, readonly, strong) MainMenuViewController* mainMenuViewController;
 

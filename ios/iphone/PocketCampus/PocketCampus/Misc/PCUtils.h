@@ -23,8 +23,13 @@
 
 + (UIImage*)strechableEmptyImageForCell;
 
++ (UILabel*)addCenteredLabelInTableView:(UITableView*)tableView withMessage:(NSString*)message;
++ (void)removeCenteredLabelInTableView:(UITableView*)tableView;
+
 + (void)showServerErrorAlert;
 + (void)showConnectionToServerTimedOutAlert;
+
++ (NSDictionary*)urlStringParameters:(NSString*)urlString;
 
 /*
  * Returns [[Reachability reachabilityForInternetConnection] isReachable], i.e. whether internet is reachable

@@ -87,6 +87,23 @@
     return image;
 }
 
++ (UILabel*)addCenteredLabelInTableView:(UITableView*)tableView withMessage:(NSString*)message {
+    [self removeCenteredLabelInTableView:tableView];
+    UILabel* label = [[UILabel alloc] initWithFrame:tableView.frame];
+    label.text = message;
+    label.tag = 20;
+    label.textAlignment = UITextAlignmentCenter;
+    label.numberOfLines = 0;
+    label.textColor = [UIColor colorWithWhite:0.33 alpha:1.0];
+    [tableView addSubview:label];
+    return label;
+}
+
+
++ (void)removeCenteredLabelInTableView:(UITableView*)tableView {
+    [[tableView viewWithTag:20] removeFromSuperview];
+}
+
 
 + (void)showServerErrorAlert {
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
@@ -94,6 +111,30 @@
 
 + (void)showConnectionToServerTimedOutAlert {
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
++ (NSDictionary*)urlStringParameters:(NSString*)urlString {
+    
+    [self throughExceptionIfObject:urlString notKindOfClass:[NSString class]];
+    
+    NSMutableDictionary* queryStringDictionary = [[NSMutableDictionary alloc] init];
+    @try {
+        
+        NSArray* urlComponents = [urlString componentsSeparatedByString:@"?"];
+        
+        NSArray* paramsComponents = [urlComponents[1] componentsSeparatedByString:@"&"];
+        
+        for (NSString* keyValuePair in paramsComponents) {
+            NSArray* pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+            NSString* key = [pairComponents objectAtIndex:0];
+            NSString* value = [pairComponents objectAtIndex:1];
+            [queryStringDictionary setObject:value forKey:key];
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"!! ERROR: wrong URL format");
+    }
+    return  [queryStringDictionary copy]; //non-mutable copy
 }
 
 + (BOOL)hasDeviceInternetConnection {

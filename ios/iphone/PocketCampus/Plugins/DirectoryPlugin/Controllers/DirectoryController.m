@@ -65,6 +65,7 @@ static DirectoryController* instance __weak = nil;
     }
 }
 
+
 #pragma mark - PluginControllerProtocol
 
 + (NSString*)localizedName {

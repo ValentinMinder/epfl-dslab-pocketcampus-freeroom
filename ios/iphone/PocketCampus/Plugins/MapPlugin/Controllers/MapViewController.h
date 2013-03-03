@@ -32,4 +32,6 @@ typedef enum {
 - (id)initWithInitialQuery:(NSString*)query;
 - (id)initWithInitialQuery:(NSString*)query pinTextLabel:(NSString*)pinTextLabel;
 
+- (void)startSearchForQuery:(NSString*)query;
+
 @end

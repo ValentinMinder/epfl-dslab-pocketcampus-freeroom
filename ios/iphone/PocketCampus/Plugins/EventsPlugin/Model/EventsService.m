@@ -8,13 +8,18 @@
 
 #import "ObjectArchiver.h"
 
+#import "EventsUtils.h"
+
 @interface EventsService ()
 
 @property (nonatomic, strong) NSString* userToken;
+@property (nonatomic, strong) NSMutableSet* favoriteEventItemIds; //set of NSNumber int64_t
 
 @end
 
 static NSString* kUserTokenKey = @"userToken";
+
+static NSString* kFavoriteEventItemIds = @"favoriteEventItemIds";
 
 @implementation EventsService
 
@@ -65,12 +70,47 @@ static EventsService* instance __weak = nil;
 
 - (BOOL)saveUserToken:(NSString*)token {
     self.userToken = token;
-    return [ObjectArchiver saveObject:kUserTokenKey forKey:kUserTokenKey andPluginName:@"events"];
+    return [ObjectArchiver saveObject:token forKey:kUserTokenKey andPluginName:@"events"];
 }
 
 - (BOOL)deleteUserToken {
     self.userToken = nil;
     return [ObjectArchiver saveObject:nil forKey:kUserTokenKey andPluginName:@"events"];
+}
+
+#pragma mark - Favorites
+
+- (void)initFavorites {
+    if (!self.favoriteEventItemIds) {
+        self.favoriteEventItemIds = [(NSSet*)[ObjectArchiver objectForKey:kFavoriteEventItemIds andPluginName:@"events"] mutableCopy];
+    }
+    if (!self.favoriteEventItemIds) {
+        self.favoriteEventItemIds = [NSMutableSet set];
+    }
+}
+
+- (BOOL)persistFavorites {
+    if (!self.favoriteEventItemIds) {
+        return YES;
+    }
+    return [ObjectArchiver saveObject:self.favoriteEventItemIds forKey:kFavoriteEventItemIds andPluginName:@"events"];
+}
+
+- (void)addFavoriteEventItemId:(int64_t)itemId {
+    [self initFavorites];
+    [self.favoriteEventItemIds addObject:[EventsUtils nsNumberForEventId:itemId]];
+    [self persistFavorites];
+}
+
+- (void)removeFavoriteEventItemId:(int64_t)itemId {
+    [self initFavorites];
+    [self.favoriteEventItemIds removeObject:[EventsUtils nsNumberForEventId:itemId]];
+    [self persistFavorites];
+}
+
+- (BOOL)isEventItemIdFavorite:(int64_t)itemId {
+    [self initFavorites];
+    return [self.favoriteEventItemIds containsObject:[EventsUtils nsNumberForEventId:itemId]];
 }
 
 #pragma mark - Service methods

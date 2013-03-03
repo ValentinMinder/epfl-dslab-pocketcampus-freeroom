@@ -26,6 +26,10 @@
 - (BOOL)saveUserToken:(NSString*)token;
 - (BOOL)deleteUserToken;
 
+- (void)addFavoriteEventItemId:(int64_t)itemId;
+- (void)removeFavoriteEventItemId:(int64_t)itemId;
+- (BOOL)isEventItemIdFavorite:(int64_t)itemId;
+
 - (void)getEventItemForRequest:(EventItemRequest*)request delegate:(id)delegate;
 - (void)getEventPoolForRequest:(EventPoolRequest*)request delegate:(id)delegate;
 - (void)exchangeContactsForRequest:(ExchangeRequest*)request delegate:(id)delegate;

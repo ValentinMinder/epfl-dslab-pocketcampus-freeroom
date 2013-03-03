@@ -10,10 +10,10 @@
 
 @interface EventItem (Additions)
 
-- (NSString*)shortDateString;
-
 - (BOOL)isEqual:(id)object;
 - (NSUInteger)hash;
 - (NSComparisonResult)compare:(EventItem*)object;
+
+- (NSString*)shortDateString;
 
 @end
