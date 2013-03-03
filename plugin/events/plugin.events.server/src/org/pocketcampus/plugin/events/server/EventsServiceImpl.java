@@ -639,9 +639,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 				// force big picture to QR-code 
 				ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=14000003%26exchangeToken=" + exchangeToken + "%26markFavorite=" + ei.getEventId());
 				// remove details
-				ei.setEventDetails("<p>This is your public QR code. Allow people to scan it to exchange contact information with them.</p>");
+				ei.setEventDetails(null);
 				// show help
-				ei.setSecondLine("Click here to allow others to scan your barcode");
+				ei.setSecondLine("Allow others to scan your barcode to exchange contact information with them");
 			}
 			
 			return ei;
