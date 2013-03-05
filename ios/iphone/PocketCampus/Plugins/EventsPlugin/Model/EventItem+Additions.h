@@ -8,12 +8,17 @@
 
 #import "events.h"
 
+typedef enum {
+    EventItemDateStyleShort = 0,
+    EventItemDateStyleLong = 1
+} EventItemDateStyle;
+
 @interface EventItem (Additions)
 
 - (BOOL)isEqual:(id)object;
 - (NSUInteger)hash;
 - (NSComparisonResult)compare:(EventItem*)object;
 
-- (NSString*)shortDateString;
+- (NSString*)dateString:(EventItemDateStyle)dateStyle;
 
 @end

@@ -197,8 +197,15 @@ static NSString* kEventCell = @"EventCell";
     NSMutableArray* tmpSectionsNames = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
     NSMutableArray* tmpItemsForSection = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
     
+    BOOL foundFavorite = NO;
+    
     for (NSNumber* categNumber in sortedCategNumbers) {
-        [tmpSectionsNames addObject:self.poolReply.categs[categNumber]];
+        if (!foundFavorite && [categNumber isEqualToNumber:[EventsUtils favoriteCategory]]) {
+            [tmpSectionsNames addObject:NSLocalizedStringFromTable(@"Favorites", @"EventsPlugin", nil)];
+            foundFavorite = YES;
+        } else {
+            [tmpSectionsNames addObject:self.poolReply.categs[categNumber]];
+        }
         [tmpItemsForSection addObject:itemsForCategNumber[categNumber]];
     }
     self.sectionsNames = [tmpSectionsNames copy];
@@ -278,7 +285,7 @@ static NSString* kEventCell = @"EventCell";
 #pragma mark - EventsServiceDelegate
 
 - (void)getEventPoolForRequest:(EventPoolRequest *)request didReturn:(EventPoolReply *)reply {
-    switch (reply.status) { //TODO: other codes
+    switch (reply.status) {
         case 200:
             self.poolReply = reply;
             [self showButtonsConditionally];

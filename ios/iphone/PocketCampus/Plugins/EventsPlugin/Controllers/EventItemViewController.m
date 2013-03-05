@@ -123,7 +123,7 @@ static NSString* kPoolCell = @"PoolCell";
 
 - (void)refresh {
     [self.eventsService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingEventPool", @"EventsPlugin", nil)];
+    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingEventItem", @"EventsPlugin", nil)];
     [self startGetEventItemRequest];
 }
 
@@ -152,10 +152,10 @@ static NSString* kPoolCell = @"PoolCell";
 - (void)addRemoveFavoritesButtonPressed {
     if ([self.eventsService isEventItemIdFavorite:self.eventItem.eventId]) {
         [self.eventsService removeFavoriteEventItemId:self.eventItem.eventId];
-        self.navigationItem.rightBarButtonItem.title = NSLocalizedStringFromTable(@"AddToFavorites", @"EventsPlugin", nil);
+        [self refreshFavoriteButton];
     } else {
         [self.eventsService addFavoriteEventItemId:self.eventItem.eventId];
-        self.navigationItem.rightBarButtonItem.title = NSLocalizedStringFromTable(@"RemoveFromFavorites", @"EventsPlugin", nil);
+        [self refreshFavoriteButton];
     }
 }
 
@@ -167,20 +167,34 @@ static NSString* kPoolCell = @"PoolCell";
         return;
     }
     
-    NSString* title = nil;
-    if ([self.eventsService isEventItemIdFavorite:self.eventItem.eventId]) {
-        title = NSLocalizedStringFromTable(@"RemoveFromFavorites", @"EventsPlugin", nil);
-    } else {
-        title = NSLocalizedStringFromTable(@"AddToFavorites", @"EventsPlugin", nil);
-    }
-    UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleBordered target:self action:@selector(addRemoveFavoritesButtonPressed)];
-    [self.navigationItem setRightBarButtonItem:favoriteButton animated:YES];
+    [self refreshFavoriteButton];
     
     if ([self.eventItem.childrenPools count] == 0) {
         self.webView.frame = self.view.frame;
         self.tableView.hidden = YES;
     }
     [self loadWebView];
+}
+
+- (void)refreshFavoriteButton {
+    UIImage* image = nil;
+    if ([self.eventsService isEventItemIdFavorite:self.eventItem.eventId]) {
+        image = [UIImage imageNamed:@"FavoriteGlowNavBarButton"];
+    } else {
+        image = [UIImage imageNamed:@"FavoriteNavBarButton"];
+    }
+    
+    if (!self.navigationItem.rightBarButtonItem) {        
+        UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 42.0, 42.0)];
+        [button setImage:image forState:UIControlStateNormal];
+        button.adjustsImageWhenHighlighted = NO;
+        button.showsTouchWhenHighlighted = NO;
+        [button addTarget:self action:@selector(addRemoveFavoritesButtonPressed) forControlEvents:UIControlEventTouchDown];        
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:button] animated:NO];
+        
+    } else {
+        [(UIButton*)(self.navigationItem.rightBarButtonItem.customView) setImage:image forState:UIControlStateNormal];
+    }
 }
 
 - (void)loadWebView {
@@ -203,7 +217,7 @@ static NSString* kPoolCell = @"PoolCell";
     replacements[@"$EVENT_ITEM_MORE$"] = @"";
     
     
-    if (self.eventItem.eventThumbnail) {
+    if (self.eventItem.eventThumbnail && !self.eventItem.hideThumbnail) {
         replacements[@"$EVENT_ITEM_THUMBNAIL$"] = [NSString stringWithFormat:@"<img src='%@'>", self.eventItem.eventThumbnail];
     }
     
@@ -218,7 +232,11 @@ static NSString* kPoolCell = @"PoolCell";
     if (!self.eventItem.hideEventInfo) {
         
         if (self.eventItem.startDate) {
-            replacements[@"$EVENT_ITEM_DATE_TIME$"] = [NSString stringWithFormat:@"<b>%@:</b> %@<br>", NSLocalizedStringFromTable(@"Date&Time", @"EventsPlugin", nil), [self.eventItem shortDateString]];
+            if (self.eventItem.timeSnippet) {
+                replacements[@"$EVENT_ITEM_DATE_TIME$"] = [NSString stringWithFormat:@"%@<br>", self.eventItem.timeSnippet];
+            } else {
+                replacements[@"$EVENT_ITEM_DATE_TIME$"] = [NSString stringWithFormat:@"<b>%@:</b> %@<br>", NSLocalizedStringFromTable(@"Date&Time", @"EventsPlugin", nil), [self.eventItem dateString:EventItemDateStyleLong]];
+            }
         }
         
         if (self.eventItem.eventPlace) {
@@ -230,11 +248,11 @@ static NSString* kPoolCell = @"PoolCell";
         }
         
         if (self.eventItem.eventSpeaker) {
-            replacements[@"$EVENT_ITEM_SPEAKER$"] = [NSString stringWithFormat:@"<b>%@:</b> %@<br>", NSLocalizedStringFromTable(@"Speaker", @"EventsPlugin", nil), self.eventItem.eventSpeaker];
+            replacements[@"$EVENT_ITEM_SPEAKER$"] = [NSString stringWithFormat:@"<b>%@:</b> %@<br>", NSLocalizedStringFromTable(@"By", @"EventsPlugin", nil), self.eventItem.eventSpeaker];
         }
         
         if (self.eventItem.detailsLink) {
-            replacements[@"$EVENT_ITEM_MORE$"] = [NSString stringWithFormat:@"<b>%@:</b> <a href='%@'>%@</a>", NSLocalizedStringFromTable(@"More", @"EventsPlugin", nil), self.eventItem.detailsLink, NSLocalizedStringFromTable(@"Details", @"EventsPlugin", nil)];
+            replacements[@"$EVENT_ITEM_MORE$"] = [NSString stringWithFormat:@"<a href='%@'>%@</a>", self.eventItem.detailsLink, NSLocalizedStringFromTable(@"MoreDetails", @"EventsPlugin", nil)];
         }
     }
     
@@ -360,10 +378,12 @@ static NSString* kPoolCell = @"PoolCell";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    //TODO Pool picture
-    
     cell.textLabel.text = eventPool.poolTitle;
     cell.detailTextLabel.text = eventPool.poolPlace;
+    
+    //TODO: asynchronous load picture
+    
+    cell.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:eventPool.poolPicture]]];
     
     return cell;
 }

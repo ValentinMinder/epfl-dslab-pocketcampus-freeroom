@@ -1,0 +1,104 @@
+<html>
+	<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'>
+	<style type='text/css'>
+		html {
+            -webkit-text-size-adjust: none; /* prevent text from being resized in landscape */
+        }
+        
+        body {
+			font-family: Helvetica;
+			background-color: #ededed;
+			word-wrap:break-word;
+			text-align:left;
+			margin-left: 8px;
+            margin-right: 8px;
+            color: #424242;
+            text-shadow: 0px 1px 0px white;
+		}
+		
+		a {
+			color: #c20002;
+		}
+        
+        table {
+	    	width: 100%;  
+	    }
+        
+        #thumbnail img {
+	        max-width: 150px;
+	        display: block;
+            box-shadow: 1px 1px 5px #888888;
+        }
+		
+		#title {
+			font-size: 13pt;
+			font-weight: bold;
+			padding-top: 2px;
+			padding-left: 6px;
+			padding-bottom: 2px;
+			padding-right: 2px;
+		}
+		
+		#second_line {
+			font-size: 12pt;
+			font-style: italic;
+			padding-top: 2px;
+			padding-left: 6px;
+			padding-bottom: 2px;
+			padding-right: 2px;
+		}
+		
+		#infos {
+			padding-left: 3px;
+			padding-top: 8px;
+			font-size: 11pt;
+			line-height: 13pt;
+		}
+		
+		#center_image img {
+			max-width: 300px;
+			margin: auto;
+			display: block;
+			box-shadow: 1px 1px 5px #888888;
+		}
+		
+		#details {
+			padding-left: 3px;
+			font-size: 11pt;
+			padding-top: 5px;
+		}
+		
+	</style>
+	</head>
+<body>
+ 
+    <table border="0">
+        <tr>
+            <td id="thumbnail" rowspan="2">$EVENT_ITEM_THUMBNAIL$</td>
+            <td id="title">$EVENT_ITEM_TITLE$</td>
+        </tr>
+        <tr>
+	        <td id="second_line">$EVENT_ITEM_SECOND_LINE$</td>
+	    </tr>
+        <tr>
+            <td colspan="2" id="infos">
+                $EVENT_ITEM_DATE_TIME$
+                $EVENT_ITEM_PLACE$
+                $EVENT_ITEM_SPEAKER$
+                $EVENT_ITEM_MORE$
+            </td>
+        </tr>
+        <tr>
+            <td id="center_image" colspan="2">$EVENT_ITEM_CENTER_IMAGE$</td>
+        </tr>
+        <tr>
+            <td id="details" colspan="2">$EVENT_ITEM_DETAILS$</td>
+        </tr>
+    </table>
+</body>
+</html>
+
+
+

@@ -53,6 +53,7 @@
 
 - (void)setEventItem:(EventItem *)eventItem {
     _eventItem = eventItem;
+    [self.imageRequest cancel];
     self.imageView.image = [PCUtils strechableEmptyImageForCell];
     self.titleLabel.text = eventItem.eventTitle;
     self.subtitleLabel.text = eventItem.eventPlace;
@@ -60,7 +61,7 @@
         self.subtitleLabel.text = eventItem.secondLine;
     }
     if (eventItem.startDate) {
-        self.rightSubtitleLabel.text = [eventItem shortDateString];
+        self.rightSubtitleLabel.text = [eventItem dateString:EventItemDateStyleShort];
     }
     [self layoutSubviews];
     [self startImageRequest];
@@ -70,7 +71,9 @@
     if (!self.eventItem.eventThumbnail) {
         return;
     }
+    [self.imageRequest cancel];
     self.imageRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:self.eventItem.eventThumbnail]];
+    
     self.imageRequest.timeOutSeconds = 10;
     self.imageRequest.delegate = self;
     self.imageRequest.downloadCache = [ASIDownloadCache sharedCache];
@@ -82,22 +85,30 @@
 
 - (void)requestFinished:(ASIHTTPRequest*)request {
     request.delegate = nil;
+    self.imageRequest = nil;
     if (request.responseData.length == 0) {
         [self requestFailed:request];
         return;
     }
-    CGFloat size = [EventItemCell height];
-    //TODO: resize image
-    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.imageView.image = [UIImage imageWithData:request.responseData];
-    self.imageView.bounds = CGRectMake(0, 0, size, size);
+
+    UIImage* image = [[UIImage alloc] initWithCGImage:[UIImage imageWithData:request.responseData].CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
+    
+    NSData* imageData = UIImageJPEGRepresentation(image, 1.0);
+    
+    CGFloat size = [[self class] height];
+    
+    self.imageView.image = [[UIImage imageWithData:imageData] imageScaledToFitSize:CGSizeMake(size, size)]; //using UIImage+Additions
+    
     [self layoutSubviews];
 }
 
 - (void)requestFailed:(ASIHTTPRequest*)request {
+    request.delegate = nil;
+    self.imageRequest = nil;
     self.imageView.image = [PCUtils strechableEmptyImageForCell];
     [self layoutSubviews];
 }
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
