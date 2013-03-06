@@ -26,6 +26,8 @@
 
 #import "EventItemViewController.h"
 
+#import "PCTableViewWithRemoteThumbnails.h"
+
 @interface EventPoolViewController ()
 
 @property (nonatomic) int64_t poolId;
@@ -391,6 +393,8 @@ static NSString* kEventCell = @"EventCell";
     }
     
     cell.eventItem = eventItem;
+    
+    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setThumbnailURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
     
     return cell;
 }

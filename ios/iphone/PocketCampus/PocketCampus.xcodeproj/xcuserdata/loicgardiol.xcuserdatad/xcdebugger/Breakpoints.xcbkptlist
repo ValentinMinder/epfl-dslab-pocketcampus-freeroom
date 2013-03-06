@@ -290,11 +290,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "381714133.45"
+         timestampString = "384287236.853066"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "187"
-         endingLineNumber = "187"
+         startingLineNumber = "189"
+         endingLineNumber = "189"
          landmarkName = "@implementation DirectorySearchViewController"
          landmarkType = "3">
          <Actions>
@@ -312,11 +312,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "381714133.45"
+         timestampString = "384287236.853066"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "196"
-         endingLineNumber = "196"
+         startingLineNumber = "198"
+         endingLineNumber = "198"
          landmarkName = "@implementation DirectorySearchViewController"
          landmarkType = "3">
          <Actions>
@@ -334,11 +334,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "381714133.45"
+         timestampString = "384287236.853066"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "277"
-         endingLineNumber = "277"
+         startingLineNumber = "279"
+         endingLineNumber = "279"
          landmarkName = "-autocompleteFor:didReturn:"
          landmarkType = "5">
          <Actions>
@@ -356,11 +356,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "381714156.61678"
+         timestampString = "384287236.853066"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "209"
-         endingLineNumber = "209"
+         startingLineNumber = "211"
+         endingLineNumber = "211"
          landmarkName = "-searchBar:textDidChange:"
          landmarkType = "5">
          <Actions>
@@ -2992,11 +2992,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "381714133.45"
+         timestampString = "384287236.853066"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "386"
-         endingLineNumber = "386"
+         startingLineNumber = "388"
+         endingLineNumber = "388"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3005,11 +3005,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "381714133.45"
+         timestampString = "384287236.853066"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "361"
-         endingLineNumber = "361"
+         startingLineNumber = "363"
+         endingLineNumber = "363"
          landmarkName = "-serviceConnectionToServerTimedOut"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3388,11 +3388,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "382538930.39308"
+         timestampString = "384287236.853066"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "513"
-         endingLineNumber = "513"
+         startingLineNumber = "515"
+         endingLineNumber = "515"
          landmarkName = "-unknownPersonViewController:shouldPerformDefaultActionForPerson:property:identifier:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3724,47 +3724,35 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/PCUnkownPersonViewController.m"
-         timestampString = "381420943.277038"
+         timestampString = "384287557.302175"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "48"
-         endingLineNumber = "48"
+         startingLineNumber = "98"
+         endingLineNumber = "98"
          landmarkName = "-photoButtonPressed"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
-         continueAfterRunningActions = "No"
+         continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/PCUnkownPersonViewController.m"
-         timestampString = "381420943.277038"
+         timestampString = "384287557.302175"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "169"
-         endingLineNumber = "169"
+         startingLineNumber = "240"
+         endingLineNumber = "240"
          landmarkName = "-profilePictureFor:didReturn:"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               ActionType = "Xcode.BreakpointAction.Log">
                <ActionContent
-                  consoleCommand = "returned">
+                  message = "returned"
+                  conveyanceType = "0">
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/DirectoryPlugin/Controllers/PCUnkownPersonViewController.m"
-         timestampString = "380064846.723222"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "41"
-         endingLineNumber = "41"
-         landmarkName = "-viewWillAppear:"
-         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -3859,11 +3847,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "382538930.39308"
+         timestampString = "384287236.853066"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "414"
-         endingLineNumber = "414"
+         startingLineNumber = "416"
+         endingLineNumber = "416"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
          <Actions>
@@ -4074,11 +4062,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/PCUnkownPersonViewController.m"
-         timestampString = "382445864.111463"
+         timestampString = "384287557.302175"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "181"
-         endingLineNumber = "181"
+         startingLineNumber = "252"
+         endingLineNumber = "252"
          landmarkName = "-profilePictureFailedFor:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4087,11 +4075,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/PCUnkownPersonViewController.m"
-         timestampString = "382445864.111463"
+         timestampString = "384287557.302175"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "187"
-         endingLineNumber = "187"
+         startingLineNumber = "262"
+         endingLineNumber = "262"
          landmarkName = "-serviceConnectionToServerTimedOut"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4240,11 +4228,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "382538959.563939"
+         timestampString = "384287236.853066"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "396"
-         endingLineNumber = "396"
+         startingLineNumber = "398"
+         endingLineNumber = "398"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
          <Actions>
@@ -4262,11 +4250,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "381714181.546194"
+         timestampString = "384287236.853066"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "205"
-         endingLineNumber = "205"
+         startingLineNumber = "207"
+         endingLineNumber = "207"
          landmarkName = "-searchBar:textDidChange:"
          landmarkType = "5">
          <Actions>
@@ -4358,11 +4346,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "384022670.703521"
+         timestampString = "384296504.875507"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "188"
-         endingLineNumber = "188"
+         startingLineNumber = "190"
+         endingLineNumber = "190"
          landmarkName = "-fillSectionsFromReplyForCurrentCategoriesAndTags"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4371,11 +4359,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "384211773.559207"
+         timestampString = "384296504.875507"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "212"
-         endingLineNumber = "212"
+         startingLineNumber = "214"
+         endingLineNumber = "214"
          landmarkName = "-fillSectionsFromReplyForCurrentCategoriesAndTags"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4423,11 +4411,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "384211773.559207"
+         timestampString = "384297095.193596"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "401"
-         endingLineNumber = "401"
+         startingLineNumber = "405"
+         endingLineNumber = "405"
          landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4449,11 +4437,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "384211773.559207"
+         timestampString = "384296504.875507"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "232"
-         endingLineNumber = "232"
+         startingLineNumber = "234"
+         endingLineNumber = "234"
          landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
          landmarkType = "5">
          <Actions>
@@ -4483,11 +4471,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "384211773.559207"
+         timestampString = "384296504.875507"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "243"
-         endingLineNumber = "243"
+         startingLineNumber = "245"
+         endingLineNumber = "245"
          landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
          landmarkType = "5">
          <Actions>
@@ -4505,11 +4493,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "384211773.559207"
+         timestampString = "384296504.875507"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "250"
-         endingLineNumber = "250"
+         startingLineNumber = "252"
+         endingLineNumber = "252"
          landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
          landmarkType = "5">
          <Actions>
@@ -4527,11 +4515,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "384211773.559207"
+         timestampString = "384296504.875507"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "261"
-         endingLineNumber = "261"
+         startingLineNumber = "263"
+         endingLineNumber = "263"
          landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
          landmarkType = "5">
          <Actions>
@@ -4581,6 +4569,45 @@
          startingLineNumber = "84"
          endingLineNumber = "84"
          landmarkName = "-pluginLowerIdentifierIfValidURL:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/DirectoryPlugin/Controllers/PCUnkownPersonViewController.m"
+         timestampString = "384287557.302175"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "217"
+         endingLineNumber = "217"
+         landmarkName = "-setPerson:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "PocketCampus/Views/Common/PCTableViewWithRemoteThumbnails.m"
+         timestampString = "384299969.921407"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "112"
+         endingLineNumber = "112"
+         landmarkName = "-thumbnailRequestFinished:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "PocketCampus/Views/Common/PCTableViewWithRemoteThumbnails.m"
+         timestampString = "384299969.921407"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "79"
+         endingLineNumber = "79"
+         landmarkName = "-setThumbnailURL:forCell:atIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
