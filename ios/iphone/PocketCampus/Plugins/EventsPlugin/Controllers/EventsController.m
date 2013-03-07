@@ -8,6 +8,8 @@
 
 #import "EventPoolViewController.h"
 
+#import "EventItemViewController.h"
+
 static EventsController* instance __weak = nil;
 
 @implementation EventsController
@@ -20,30 +22,7 @@ static EventsController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
-            /*
-             * TODO: init mainNavigationController OR mainSplitViewController.
-             * On iPad, mainSplitViewController will be used if not nil, otherwise, mainNavigationController will be used
-             *
-             * Example: a plugin only providing a navigation controller
-             *
-             * MapViewController* mapViewController = [[MapViewController alloc] init];
-             * PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:mapViewController];
-             * navController.pluginIdentifier = [[self class] identifierName];
-             * self.mainNavigationController = navController;
-             *
-             * Example: a plugin using a split view controller (=> iPad optimized)
-             *
-             * UINavigationController* masterNavigationController = ...
-             * UIViewController* detailViewController = ...
-             *
-             * PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:masterNavigationController detailViewController:detailViewController];
-             * splitViewController.delegate = self;
-             *
-             * self.mainSplitViewController = splitViewController;
-             * self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
-             *
-             */
-            
+        
             EventPoolViewController* rootPoolViewController = [[EventPoolViewController alloc] initAndLoadRootPool];
             
             PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:rootPoolViewController];
@@ -68,6 +47,26 @@ static EventsController* instance __weak = nil;
 #endif
     }
 }
+
+- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
+    if ([action isEqualToString:@"showEventPool"]) {
+        NSString* poolId = parameters[@"eventPoolId"];
+        if (poolId) {
+            //TODO support parameters userToken, exchangeToken and markAsFavorite
+            
+            return [[EventPoolViewController alloc] initAndLoadEventPoolWithId:[poolId longLongValue]];
+        }
+    } else if ([action isEqualToString:@"showEventItem"]) {
+        NSString* eventId = parameters[@"eventItemId"];
+        if (eventId) {
+            return [[EventItemViewController alloc] initAndLoadEventItemWithId:[eventId longLongValue]];
+        }
+    } else {
+        //no other supported actions
+    }
+    return nil;
+}
+
 
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"EventsPlugin", @"");

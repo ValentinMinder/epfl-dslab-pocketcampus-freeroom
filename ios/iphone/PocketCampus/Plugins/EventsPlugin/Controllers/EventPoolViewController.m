@@ -24,6 +24,10 @@
 
 #import "PCValues.h"
 
+#import "EventItemViewController.h"
+
+#import "PCTableViewWithRemoteThumbnails.h"
+
 @interface EventPoolViewController ()
 
 @property (nonatomic) int64_t poolId;
@@ -64,6 +68,7 @@ static NSString* kEventCell = @"EventCell";
     if (self) {
         self.poolId = pool.poolId;
         self.title = pool.poolTitle;
+        self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
         [self initRefreshControl];
     }
     return self;
@@ -73,6 +78,7 @@ static NSString* kEventCell = @"EventCell";
     self = [self init];
     if (self) {
         self.poolId = [eventsConstants CONTAINER_EVENT_ID];
+        self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
         self.title = NSLocalizedStringFromTable(@"PluginName", @"EventsPlugin", nil);
         [self initRefreshControl];
     }
@@ -83,6 +89,10 @@ static NSString* kEventCell = @"EventCell";
     self = [self init];
     if (self) {
         self.poolId = poolId;
+        self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
+        if (self.poolReply) {
+            self.title = self.poolReply.eventPool.poolTitle;
+        }
         [self initRefreshControl];
     }
     return self;
@@ -102,7 +112,26 @@ static NSString* kEventCell = @"EventCell";
     [super viewWillAppear:animated];
     if (!self.poolReply || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
+    } else {
+        //if favorites modified, need to reload
+        [self fillSectionsFromReplyForCurrentCategoriesAndTags];
+        [self.tableView reloadData];
     }
+}
+
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate {
+    //special dynamic conditions for temporary prevent rotation
+    return NO;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation // iOS 5 and earlier
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - Refresh control
@@ -118,10 +147,39 @@ static NSString* kEventCell = @"EventCell";
     [self startGetEventPoolRequest];
 }
 
-- (void)startGetEventPoolRequest {
-    EventPoolRequest* req = [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_WEEK]; //TODO dynamic period
-    [self.eventsService getEventPoolForRequest:req delegate:self];
+- (EventPoolRequest*)createEventPoolRequest {
+    return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_MONTH]; //TODO dynamic period
 }
+
+- (void)startGetEventPoolRequest { 
+    [self.eventsService getEventPoolForRequest:[self createEventPoolRequest] delegate:self];
+}
+
+#pragma mark - Buttons preparation and actions
+
+- (void)showButtonsConditionally {
+    if (!self.poolReply) {
+        return;
+    }
+    if (self.poolReply.eventPool.enableScan) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)];
+    }
+}
+
+- (void)cameraButtonPressed {
+    ZBarReaderViewController *reader = [ZBarReaderViewController new];
+    reader.readerDelegate = self;
+    reader.supportedOrientationsMask = ZBarOrientationMask(UIInterfaceOrientationPortrait);
+    
+    ZBarImageScanner *scanner = reader.scanner;
+    
+    [scanner setSymbology: ZBAR_I25 config: ZBAR_CFG_ENABLE to: 0];
+    
+    
+    [self presentViewController:reader animated:YES completion:NULL];
+    
+}
+
 
 #pragma mark - Sections fill
 
@@ -150,12 +208,89 @@ static NSString* kEventCell = @"EventCell";
     NSMutableArray* tmpSectionsNames = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
     NSMutableArray* tmpItemsForSection = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
     
+    BOOL foundFavorite = NO;
+    
     for (NSNumber* categNumber in sortedCategNumbers) {
-        [tmpSectionsNames addObject:self.poolReply.categs[categNumber]];
+        if (!foundFavorite && [categNumber isEqualToNumber:[EventsUtils favoriteCategory]]) {
+            [tmpSectionsNames addObject:NSLocalizedStringFromTable(@"Favorites", @"EventsPlugin", nil)];
+            foundFavorite = YES;
+        } else {
+            [tmpSectionsNames addObject:self.poolReply.categs[categNumber]];
+        }
         [tmpItemsForSection addObject:itemsForCategNumber[categNumber]];
     }
     self.sectionsNames = [tmpSectionsNames copy];
     self.itemsForSection = [tmpItemsForSection copy];
+}
+
+#pragma mark - ZBar and Image picker delegate
+
+- (void) imagePickerController:(UIImagePickerController*)reader didFinishPickingMediaWithInfo:(NSDictionary*)info
+{
+    // ADD: get the decode results
+    id<NSFastEnumeration> results = [info objectForKey: ZBarReaderControllerResults];
+    ZBarSymbol *symbol = nil;
+    for(symbol in results)
+        //just grab the first barcode
+        break;
+    
+    // EXAMPLE: do something useful with the barcode data
+    
+    if (!symbol.data) {
+        [self showQRCodeError];
+        return;
+    }
+    
+    NSDictionary* parameters = [PCUtils urlStringParameters:symbol.data];
+    
+    if (!parameters) {
+        [self showQRCodeError];
+    }
+    
+    BOOL found = NO;
+    
+    NSString* userToken = parameters[@"userToken"];
+    if (userToken) {
+        found = YES;
+        [self.eventsService saveUserToken:userToken];
+        [self refresh];
+    }
+    
+    NSString* exchangeToken = parameters[@"exchangeToken"];
+    if (exchangeToken) {
+        found = YES;
+        if (![self.eventsService lastUserToken]) {
+            [self showNoUserTokenError];
+        } else {
+            ExchangeRequest* req = [[ExchangeRequest alloc] initWithUserToken:[self.eventsService lastUserToken] exchangeToken:exchangeToken];
+            [self.eventsService exchangeContactsForRequest:req delegate:self];
+        }
+    }
+    
+    NSString* eventItemIdToMarkFavorite = parameters[@"markFavorite"];
+    if (eventItemIdToMarkFavorite) {
+        found = YES;
+        int64_t itemId = [eventItemIdToMarkFavorite longLongValue];
+        /*[self.eventsService addFavoriteEventItemId:itemId];
+        [self fillSectionsFromReplyForCurrentCategoriesAndTags];
+        [self.tableView reloadData];*/
+        EventItemViewController* viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:itemId];
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    
+    if (found) {
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    } else {
+        [self showQRCodeError];
+    }
+}
+
+- (void)showQRCodeError {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"QRCodeErrorMessage", @"EventsPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
+- (void)showNoUserTokenError {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"UserNotRegistered", @"EventsPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 #pragma mark - EventsServiceDelegate
@@ -164,12 +299,13 @@ static NSString* kEventCell = @"EventCell";
     switch (reply.status) {
         case 200:
             self.poolReply = reply;
+            self.title = self.poolReply.eventPool.poolTitle;
+            [self showButtonsConditionally];
             [self fillSectionsFromReplyForCurrentCategoriesAndTags];
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
             [self.pcRefreshControl markRefreshSuccessful];
             break;
-            
         default:
             [self getEventPoolFailedForRequest:request];
             break;
@@ -178,6 +314,29 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)getEventPoolFailedForRequest:(EventPoolRequest *)request {
     [self error];
+}
+
+- (void)exchangeContactsForRequest:(ExchangeRequest *)request didReturn:(ExchangeReply *)reply {
+    switch (reply.status) {
+        case 200:
+            [self refresh];
+            break;
+        case 400:
+            [self showExchangeContactError];
+            break;
+        case 500:
+            [self exchangeContactsFailedForRequest:request];
+        default:
+            break;
+    }
+}
+
+- (void)exchangeContactsFailedForRequest:(ExchangeRequest *)request {
+    [self error];
+}
+
+- (void)showExchangeContactError {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ExchangeContactErrorMessage", @"EventsPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 - (void)error {
@@ -197,7 +356,7 @@ static NSString* kEventCell = @"EventCell";
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if ([self.itemsForSection[section] count] == 0) {
+    if ([self.itemsForSection count] == 0 || [self.itemsForSection[section] count] == 0) {
         return 0.0;
     }
     return [PCValues tableViewSectionHeaderHeight];
@@ -214,7 +373,9 @@ static NSString* kEventCell = @"EventCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //TODO
+    EventItem* eventItem = self.itemsForSection[indexPath.section][indexPath.row];
+    [self.navigationController pushViewController:[[EventItemViewController alloc] initWithEventItem:eventItem] animated:YES];
+    //[self.navigationController pushViewController:[[EventItemViewController alloc] initAndLoadEventItemWithId:eventItem.eventId] animated:YES];
 }
 
 
@@ -243,13 +404,15 @@ static NSString* kEventCell = @"EventCell";
     
     cell.eventItem = eventItem;
     
+    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setThumbnailURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
+    
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (self.poolReply && [self.poolReply.childrenItems count] == 0) {
+    if ([self.poolReply.childrenItems count] == 0 && self.poolReply.eventPool.noResultText) {
         return 2; //first empty cell, second cell says no content
     }
     return [self.itemsForSection[section] count];
@@ -258,9 +421,15 @@ static NSString* kEventCell = @"EventCell";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if (!self.itemsForSection) {
+    if (!self.poolReply) {
         return 0;
     }
+    
+    if ([self.poolReply.childrenItems count] == 0 && self.poolReply.eventPool.noResultText) {
+        [PCUtils addCenteredLabelInView:self.tableView withMessage:self.poolReply.eventPool.noResultText];
+        return 1;
+    }
+    [PCUtils removeCenteredLabelInView:self.tableView];
     return [self.itemsForSection count];
 }
 

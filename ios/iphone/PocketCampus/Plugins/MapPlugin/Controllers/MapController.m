@@ -10,6 +10,8 @@
 
 #import "MapViewController.h"
 
+#import "PCUtils.h"
+
 static MapController* instance __weak = nil;
 
 @interface MapController ()
@@ -49,6 +51,21 @@ static MapController* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
+}
+
+- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
+    if ([action isEqualToString:@"search"]) {
+        NSString* query = parameters[@"q"];
+        if (query) {
+            if ([self.mapViewController isViewLoaded]) {
+                [self.mapViewController startSearchForQuery:query];
+                return self.mapViewController;
+            } else {
+                return [[self class] viewControllerWithInitialSearchQuery:query];
+            }
+        }
+    }
+    return nil;
 }
 
 + (UIViewController*)viewControllerWithInitialSearchQuery:(NSString*)query {

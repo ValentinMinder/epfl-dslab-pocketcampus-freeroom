@@ -53,7 +53,6 @@
 + (NSString*)identifierName;
 
 @optional
-
 /*
  * This method is called for each plugin at app startup.
  * Plugins can implement this method to register observers
@@ -62,6 +61,20 @@
  * See CamiproController for an example.
  */
 + (void)initObservers;
+
+
+@optional
+/*
+ * If this method is implemented, this means that plugin supports action from URL,
+ * i.e. opening app from links of type: pocketcampus://<pluginIdentifier>.plugin.pocketcampus.org/<action>?<parameters>
+ *
+ * Example: pocketcampus://map.plugin.pocketcampus.org/search?q=BC410
+ * action = "search", parameters = {"q" => "BC410" }
+ *
+ * Must return a UIViewController instance corresponding to action or nil if the action is not supported
+ */
+- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters;
+
 
 /* 
  * Should return whether the plugin can be deallocated. 

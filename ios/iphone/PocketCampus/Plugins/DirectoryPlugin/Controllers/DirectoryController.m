@@ -65,6 +65,17 @@ static DirectoryController* instance __weak = nil;
     }
 }
 
+- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
+    if ([action isEqualToString:@"search"]) {
+        NSString* query = parameters[@"q"];
+        if (query) {
+            return [[PCUnkownPersonViewController alloc] initAndLoadPersonWithFullName:query delegate:nil];
+        }
+    }
+    return nil;
+}
+
+
 #pragma mark - PluginControllerProtocol
 
 + (NSString*)localizedName {

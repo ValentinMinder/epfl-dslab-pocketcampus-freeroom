@@ -70,10 +70,11 @@ enum EventsPeriods {
   NSString * __locationHref;
   NSString * __detailsLink;
   NSString * __timeSnippet;
-  BOOL __hideDateInfo;
   BOOL __hideTitle;
   BOOL __hideThumbnail;
+  BOOL __hideEventInfo;
   NSArray * __childrenPools;
+  int64_t __parentPool;
 
   BOOL __eventId_isset;
   BOOL __startDate_isset;
@@ -93,10 +94,11 @@ enum EventsPeriods {
   BOOL __locationHref_isset;
   BOOL __detailsLink_isset;
   BOOL __timeSnippet_isset;
-  BOOL __hideDateInfo_isset;
   BOOL __hideTitle_isset;
   BOOL __hideThumbnail_isset;
+  BOOL __hideEventInfo_isset;
   BOOL __childrenPools_isset;
+  BOOL __parentPool_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -118,13 +120,14 @@ enum EventsPeriods {
 @property (nonatomic, retain, getter=locationHref, setter=setLocationHref:) NSString * locationHref;
 @property (nonatomic, retain, getter=detailsLink, setter=setDetailsLink:) NSString * detailsLink;
 @property (nonatomic, retain, getter=timeSnippet, setter=setTimeSnippet:) NSString * timeSnippet;
-@property (nonatomic, getter=hideDateInfo, setter=setHideDateInfo:) BOOL hideDateInfo;
 @property (nonatomic, getter=hideTitle, setter=setHideTitle:) BOOL hideTitle;
 @property (nonatomic, getter=hideThumbnail, setter=setHideThumbnail:) BOOL hideThumbnail;
+@property (nonatomic, getter=hideEventInfo, setter=setHideEventInfo:) BOOL hideEventInfo;
 @property (nonatomic, retain, getter=childrenPools, setter=setChildrenPools:) NSArray * childrenPools;
+@property (nonatomic, getter=parentPool, setter=setParentPool:) int64_t parentPool;
 #endif
 
-- (id) initWithEventId: (int64_t) eventId startDate: (int64_t) startDate endDate: (int64_t) endDate fullDay: (BOOL) fullDay eventPicture: (NSString *) eventPicture eventTitle: (NSString *) eventTitle eventPlace: (NSString *) eventPlace eventSpeaker: (NSString *) eventSpeaker eventDetails: (NSString *) eventDetails eventThumbnail: (NSString *) eventThumbnail secondLine: (NSString *) secondLine eventUri: (NSString *) eventUri vcalUid: (NSString *) vcalUid eventCateg: (int32_t) eventCateg eventTags: (NSArray *) eventTags locationHref: (NSString *) locationHref detailsLink: (NSString *) detailsLink timeSnippet: (NSString *) timeSnippet hideDateInfo: (BOOL) hideDateInfo hideTitle: (BOOL) hideTitle hideThumbnail: (BOOL) hideThumbnail childrenPools: (NSArray *) childrenPools;
+- (id) initWithEventId: (int64_t) eventId startDate: (int64_t) startDate endDate: (int64_t) endDate fullDay: (BOOL) fullDay eventPicture: (NSString *) eventPicture eventTitle: (NSString *) eventTitle eventPlace: (NSString *) eventPlace eventSpeaker: (NSString *) eventSpeaker eventDetails: (NSString *) eventDetails eventThumbnail: (NSString *) eventThumbnail secondLine: (NSString *) secondLine eventUri: (NSString *) eventUri vcalUid: (NSString *) vcalUid eventCateg: (int32_t) eventCateg eventTags: (NSArray *) eventTags locationHref: (NSString *) locationHref detailsLink: (NSString *) detailsLink timeSnippet: (NSString *) timeSnippet hideTitle: (BOOL) hideTitle hideThumbnail: (BOOL) hideThumbnail hideEventInfo: (BOOL) hideEventInfo childrenPools: (NSArray *) childrenPools parentPool: (int64_t) parentPool;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -201,10 +204,6 @@ enum EventsPeriods {
 - (void) setTimeSnippet: (NSString *) timeSnippet;
 - (BOOL) timeSnippetIsSet;
 
-- (BOOL) hideDateInfo;
-- (void) setHideDateInfo: (BOOL) hideDateInfo;
-- (BOOL) hideDateInfoIsSet;
-
 - (BOOL) hideTitle;
 - (void) setHideTitle: (BOOL) hideTitle;
 - (BOOL) hideTitleIsSet;
@@ -213,9 +212,17 @@ enum EventsPeriods {
 - (void) setHideThumbnail: (BOOL) hideThumbnail;
 - (BOOL) hideThumbnailIsSet;
 
+- (BOOL) hideEventInfo;
+- (void) setHideEventInfo: (BOOL) hideEventInfo;
+- (BOOL) hideEventInfoIsSet;
+
 - (NSArray *) childrenPools;
 - (void) setChildrenPools: (NSArray *) childrenPools;
 - (BOOL) childrenPoolsIsSet;
+
+- (int64_t) parentPool;
+- (void) setParentPool: (int64_t) parentPool;
+- (BOOL) parentPoolIsSet;
 
 @end
 
@@ -232,6 +239,7 @@ enum EventsPeriods {
   NSString * __noResultText;
   NSArray * __childrenEvents;
   BOOL __refreshOnBack;
+  int64_t __parentEvent;
 
   BOOL __poolId_isset;
   BOOL __poolPicture_isset;
@@ -245,6 +253,7 @@ enum EventsPeriods {
   BOOL __noResultText_isset;
   BOOL __childrenEvents_isset;
   BOOL __refreshOnBack_isset;
+  BOOL __parentEvent_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -260,9 +269,10 @@ enum EventsPeriods {
 @property (nonatomic, retain, getter=noResultText, setter=setNoResultText:) NSString * noResultText;
 @property (nonatomic, retain, getter=childrenEvents, setter=setChildrenEvents:) NSArray * childrenEvents;
 @property (nonatomic, getter=refreshOnBack, setter=setRefreshOnBack:) BOOL refreshOnBack;
+@property (nonatomic, getter=parentEvent, setter=setParentEvent:) int64_t parentEvent;
 #endif
 
-- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText childrenEvents: (NSArray *) childrenEvents refreshOnBack: (BOOL) refreshOnBack;
+- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText childrenEvents: (NSArray *) childrenEvents refreshOnBack: (BOOL) refreshOnBack parentEvent: (int64_t) parentEvent;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -314,6 +324,10 @@ enum EventsPeriods {
 - (BOOL) refreshOnBack;
 - (void) setRefreshOnBack: (BOOL) refreshOnBack;
 - (BOOL) refreshOnBackIsSet;
+
+- (int64_t) parentEvent;
+- (void) setParentEvent: (int64_t) parentEvent;
+- (BOOL) parentEventIsSet;
 
 @end
 
@@ -552,7 +566,6 @@ enum EventsPeriods {
 - (EventItemReply *) getEventItem: (EventItemRequest *) iRequest;  // throws TException
 - (EventPoolReply *) getEventPool: (EventPoolRequest *) iRequest;  // throws TException
 - (ExchangeReply *) exchangeContacts: (ExchangeRequest *) iRequest;  // throws TException
-- (NSString *) updateDatabase: (NSString *) arg;  // throws TException
 @end
 
 @interface EventsServiceClient : NSObject <EventsService> {

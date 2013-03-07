@@ -18,8 +18,4 @@
 
 @interface NewsListViewController : UITableViewController<NewsServiceDelegate, ASIHTTPRequestDelegate, UITableViewDelegate, UITableViewDataSource>
 
-- (void)refresh;
-
-@property (readonly) BOOL shouldRefresh;
-
 @end

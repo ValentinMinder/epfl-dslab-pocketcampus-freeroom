@@ -4,3 +4,14 @@
 */
 
 "PluginName" = "Events";
+"LoadingEventPool" = "Loading elements...";
+"Favorites" = "Favorites";
+"QRCodeErrorMessage" = "This QRCode is not supported or an error occured during the scan. Please try again.";
+"UserNotRegistered" = "Please scan first your own private QR code.";
+"ExchangeContactErrorMessage" = "An error occured during the contact exchange. Please try again.";
+"NoEvent" = "No element";
+"LoadingEventItem" = "Loading...";
+"Date&Time" = "Date & time";
+"Place" = "Location";
+"By" = "By";
+"MoreDetails" = "More details";

@@ -727,7 +727,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     if (![button isKindOfClass:[UIButton class]] || !self.personToDisplay) {
         return;
     }
-    PCUnkownPersonViewController* personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:nil];
+    PCUnkownPersonViewController* personViewController = [[PCUnkownPersonViewController alloc] initWithPerson:self.personToDisplay delegate:nil];
     [personViewController setPerson:self.personToDisplay];
     
     if ([PCUtils isIdiomPad]) {

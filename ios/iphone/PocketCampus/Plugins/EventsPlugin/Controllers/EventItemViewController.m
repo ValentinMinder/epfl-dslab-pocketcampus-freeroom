@@ -10,8 +10,6 @@
 
 #import "PCUtils.h"
 
-#import "PCRefreshControl.h"
-
 #import "PCCenterMessageCell.h"
 
 #import "EventItemCell.h"
@@ -26,15 +24,28 @@
 
 #import "EventItem+Additions.h"
 
+#import "EventPoolViewController.h"
+
+#import "MainController.h"
+
+#import "PCURLSchemeHandler.h"
+
+#import "PCTableViewWithRemoteThumbnails.h"
+
 @interface EventItemViewController ()
 
 @property (nonatomic) int64_t eventId;
 @property (nonatomic, strong) EventItem* eventItem;
 @property (nonatomic, strong) EventItemReply* itemReply;
-@property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 @property (nonatomic, strong) EventsService* eventsService;
 
+@property (nonatomic, strong) NSArray* childrenPools; //array of EventPool sorted by Id
+
+@property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
+
 @end
+
+static NSString* kPoolCell = @"PoolCell";
 
 @implementation EventItemViewController
 
@@ -55,6 +66,7 @@
     self = [self init];
     if (self) {
         self.eventId = item.eventId;
+        self.eventItem = item;
         self.title = item.eventTitle;
     }
     return self;
@@ -68,31 +80,128 @@
     return self;
 }
 
-#pragma mark - View load and visibility
+#pragma mark - Standard view controller methods
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/events/item" withError:NULL];
+    self.view.backgroundColor = [PCValues backgroundColor1];
+    self.tableView.backgroundColor = [UIColor clearColor];
+    UIView* backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
+    backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    backgroundView.backgroundColor = [PCValues backgroundColor1];;
+    self.tableView.backgroundView = backgroundView;
+    
+    if (self.eventItem) {
+        [self loadEvent];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.itemReply) {
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+    if (!self.eventItem || ([self.eventItem.childrenPools count] > 0 && !self.itemReply)) {
         [self refresh];
     }
+}
+
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate {
+    //special dynamic conditions for temporary prevent rotation
+    return NO;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation // iOS 5 and earlier
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - Refresh control
 
 - (void)refresh {
     [self.eventsService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingEventPool", @"EventsPlugin", nil)];
     [self startGetEventItemRequest];
 }
 
 - (void)startGetEventItemRequest {
     EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_SIX_MONTHS];
     [self.eventsService getEventItemForRequest:req delegate:self];
+    if (!self.loadingIndicator) {
+        self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.loadingIndicator.color = [UIColor colorWithWhite:0.3 alpha:1.0];
+        [self.scrollView addSubview:self.loadingIndicator];
+        self.loadingIndicator.center = self.scrollView.center;
+        [self.loadingIndicator startAnimating];
+    }
+}
+
+#pragma mark - Collections fill
+
+- (void)fillChildrenPools {
+    if (!self.itemReply) {
+        return;
+    }
+    // Sort pools by Id
+    NSArray* sortedPoolIds = [[self.itemReply.childrenPools allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    NSMutableArray* sortedPools = [NSMutableArray arrayWithCapacity:[self.itemReply.childrenPools count]];
+    for (NSNumber* poolId in sortedPoolIds) {
+        [sortedPools addObject:self.itemReply.childrenPools[poolId]];
+    }
+    self.childrenPools = [sortedPools copy]; //non-mutale copy
+}
+
+#pragma mark - Buttons actions
+
+- (void)addRemoveFavoritesButtonPressed {
+    if ([self.eventsService isEventItemIdFavorite:self.eventItem.eventId]) {
+        [self.eventsService removeFavoriteEventItemId:self.eventItem.eventId];
+        [self refreshFavoriteButton];
+    } else {
+        [self.eventsService addFavoriteEventItemId:self.eventItem.eventId];
+        [self refreshFavoriteButton];
+    }
+}
+
+
+#pragma mark - Views loads
+
+- (void)loadEvent {
+    if (!self.eventItem) {
+        return;
+    }
+    
+    [self refreshFavoriteButton];
+    
+    if ([self.eventItem.childrenPools count] == 0) {
+        self.webView.frame = self.view.frame;
+        self.tableView.hidden = YES;
+    }
+    [self loadWebView];
+}
+
+- (void)refreshFavoriteButton {
+    UIImage* image = nil;
+    if ([self.eventsService isEventItemIdFavorite:self.eventItem.eventId]) {
+        image = [UIImage imageNamed:@"FavoriteGlowNavBarButton"];
+    } else {
+        image = [UIImage imageNamed:@"FavoriteNavBarButton"];
+    }
+    
+    if (!self.navigationItem.rightBarButtonItem) {        
+        UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 42.0, 42.0)];
+        [button setImage:image forState:UIControlStateNormal];
+        button.adjustsImageWhenHighlighted = NO;
+        button.showsTouchWhenHighlighted = NO;
+        [button addTarget:self action:@selector(addRemoveFavoritesButtonPressed) forControlEvents:UIControlEventTouchDown];        
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:button] animated:NO];
+        
+    } else {
+        [(UIButton*)(self.navigationItem.rightBarButtonItem.customView) setImage:image forState:UIControlStateNormal];
+    }
 }
 
 - (void)loadWebView {
@@ -106,40 +215,60 @@
     
     NSMutableDictionary* replacements = [NSMutableDictionary dictionaryWithCapacity:10];
     
-    if (self.eventItem.eventThumbnail) {
+    replacements[@"$EVENT_ITEM_THUMBNAIL$"] = @"";
+    replacements[@"$EVENT_ITEM_TITLE$"] = @"";
+    replacements[@"$EVENT_ITEM_SECOND_LINE$"] = @"";
+    replacements[@"$EVENT_ITEM_DATE_TIME$"] = @"";
+    replacements[@"$EVENT_ITEM_PLACE$"] = @"";
+    replacements[@"$EVENT_ITEM_SPEAKER$"] = @"";
+    replacements[@"$EVENT_ITEM_MORE$"] = @"";
+    
+    
+    if (self.eventItem.eventThumbnail && !self.eventItem.hideThumbnail) {
         replacements[@"$EVENT_ITEM_THUMBNAIL$"] = [NSString stringWithFormat:@"<img src='%@'>", self.eventItem.eventThumbnail];
     }
     
-    if (self.eventItem.eventTitle) {
+    if (self.eventItem.eventTitle && !self.eventItem.hideTitle) {
         replacements[@"$EVENT_ITEM_TITLE$"] = [NSString stringWithFormat:@"%@", self.eventItem.eventTitle];
     }
     
-    if (YES) { //TODO check hideInfo
+    if (self.eventItem.secondLine) {
+        replacements[@"$EVENT_ITEM_SECOND_LINE$"] = [NSString stringWithFormat:@"%@", self.eventItem.secondLine];
+    }
+    
+    if (!self.eventItem.hideEventInfo) {
+        
         if (self.eventItem.startDate) {
-            replacements[@"$EVENT_ITEM_DATE_TIME$"] = [NSString stringWithFormat:@"%@: %@", NSLocalizedStringFromTable(@"Date", @"EventsPlugin", nil), [self.eventItem shortDateString]];
+            if (self.eventItem.timeSnippet) {
+                replacements[@"$EVENT_ITEM_DATE_TIME$"] = [NSString stringWithFormat:@"%@<br>", self.eventItem.timeSnippet];
+            } else {
+                replacements[@"$EVENT_ITEM_DATE_TIME$"] = [NSString stringWithFormat:@"<b>%@:</b> %@<br>", NSLocalizedStringFromTable(@"Date&Time", @"EventsPlugin", nil), [self.eventItem dateString:EventItemDateStyleLong]];
+            }
         }
         
         if (self.eventItem.eventPlace) {
             if (self.eventItem.locationHref) {
-                replacements[@"$EVENT_ITEM_PLACE$"] = [NSString stringWithFormat:@"%@: <a href='%@'>%@</a>", NSLocalizedStringFromTable(@"Place", @"EventsPlugin", nil), self.eventItem.locationHref, self.eventItem.eventPlace];
+                replacements[@"$EVENT_ITEM_PLACE$"] = [NSString stringWithFormat:@"<b>%@:</b> <a href='%@'>%@</a><br>", NSLocalizedStringFromTable(@"Place", @"EventsPlugin", nil), self.eventItem.locationHref, self.eventItem.eventPlace];
             } else {
-                replacements[@"$EVENT_ITEM_PLACE$"] = [NSString stringWithFormat:@"%@: %@", NSLocalizedStringFromTable(@"Place", @"EventsPlugin", nil), self.eventItem.eventPlace];
+                replacements[@"$EVENT_ITEM_PLACE$"] = [NSString stringWithFormat:@"<b>%@:</b> %@<br>", NSLocalizedStringFromTable(@"Place", @"EventsPlugin", nil), self.eventItem.eventPlace];
             }
         }
         
         if (self.eventItem.eventSpeaker) {
-            replacements[@"$EVENT_ITEM_SPEAKER$"] = [NSString stringWithFormat:@"%@: %@", NSLocalizedStringFromTable(@"Speaker", @"EventsPlugin", nil), self.eventItem.eventSpeaker];
+            replacements[@"$EVENT_ITEM_SPEAKER$"] = [NSString stringWithFormat:@"<b>%@:</b> %@<br>", NSLocalizedStringFromTable(@"By", @"EventsPlugin", nil), self.eventItem.eventSpeaker];
         }
         
         if (self.eventItem.detailsLink) {
-            replacements[@"$EVENT_ITEM_MORE$"] = [NSString stringWithFormat:@"%@: <a href='%@'>%@</a>", NSLocalizedStringFromTable(@"More", @"EventsPlugin", nil), self.eventItem.detailsLink, NSLocalizedStringFromTable(@"Details", @"EventsPlugin", nil)];
+            replacements[@"$EVENT_ITEM_MORE$"] = [NSString stringWithFormat:@"<a href='%@'>%@</a>", self.eventItem.detailsLink, NSLocalizedStringFromTable(@"MoreDetails", @"EventsPlugin", nil)];
         }
     }
     
+    replacements[@"$EVENT_ITEM_CENTER_IMAGE$"] = @"";
     if (self.eventItem.eventPicture) {
         replacements[@"$EVENT_ITEM_CENTER_IMAGE$"] = [NSString stringWithFormat:@"<img src='%@'>", self.eventItem.eventPicture];
     }
     
+    replacements[@"$EVENT_ITEM_DETAILS$"] = @"";
     if (self.eventItem.eventDetails) {
         replacements[@"$EVENT_ITEM_DETAILS$"] = [NSString stringWithFormat:@"<p>%@</p>", self.eventItem.eventDetails];
     }
@@ -148,24 +277,50 @@
         html = [html stringByReplacingOccurrencesOfString:key withString:replacement];
     }];
     
-
-    
-    if (self.newsItem.imageUrl) {
-        NSString* imageSrc = self.newsItem.imageUrl;
-        NSString* path = [self pathForImage];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) { //then image was saved to disk (in viewDidLoad)
-            imageSrc = path;
-        }
-        html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_IMAGE_SRC$" withString:imageSrc];
-        html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_IMAGE_DISPLAY_CSS$" withString:@"inline"];
-    } else {
-        html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_IMAGE_DISPLAY_CSS$" withString:@"none"];
-    }
-    html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_CONTENT$" withString:content];
-    
-    html = [NewsUtils htmlReplaceWidthWith100PercentInContent:html ifWidthHeigherThan:self.webView.frame.size.width-20.0];
+    self.webView.delegate = self;
     
     [self.webView loadHTMLString:html baseURL:[NSURL fileURLWithPath:@"/"]];
+}
+
+- (void)finalizeElementsPositionAndSize {
+    self.tableView.scrollEnabled = NO;
+    self.tableView.frame = CGRectMake(0, self.webView.frame.origin.y + self.webView.frame.size.height, self.tableView.frame.size.width, self.tableView.contentSize.height);
+    [self.scrollView setContentSize: CGSizeMake(self.webView.frame.size.width, self.webView.frame.size.height + self.tableView.frame.size.height)];
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webViewDidFinishLoad:(UIWebView *)aWebView {
+    if ([self.eventItem.childrenPools count] == 0) {
+        return;
+    }
+    aWebView.scrollView.scrollEnabled = NO;    // Property available in iOS 5.0 and later
+    CGRect frame = aWebView.frame;
+    
+    frame.size.width = self.view.frame.size.width;       // Your desired width here.
+    frame.size.height = 1;        // Set the height to a small one.
+    
+    aWebView.frame = frame;       // Set webView's Frame, forcing the Layout of its embedded scrollView with current Frame's constraints (Width set above).
+    
+    frame.size.height = aWebView.scrollView.contentSize.height;  // Get the corresponding height from the webView's embedded scrollView.
+    
+    aWebView.frame = frame;
+
+    self.webView.hidden = NO;
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        id<MainControllerPublic> mainController = [MainController publicController];
+        UIViewController* viewController = [[mainController urlSchemeHandlerSharedInstance] viewControllerForPocketCampusURLScheme:request.URL];
+        if (viewController) {
+            [self.navigationController pushViewController:viewController animated:YES];
+        } else {
+            [[UIApplication sharedApplication] openURL:request.URL];
+        }
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - EventsServiceDelegate
@@ -173,10 +328,13 @@
 - (void)getEventItemForRequest:(EventItemRequest *)request didReturn:(EventItemReply *)reply {
     switch (reply.status) {
         case 200:
+            [self.loadingIndicator stopAnimating];
+            self.eventItem = reply.eventItem;
             self.itemReply = reply;
+            [self loadEvent];
+            [self fillChildrenPools];
             [self.tableView reloadData];
-            [self.pcRefreshControl endRefreshing];
-            [self.pcRefreshControl markRefreshSuccessful];
+            [self finalizeElementsPositionAndSize];
             break;
             
         default:
@@ -190,17 +348,68 @@
 }
 
 - (void)error {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
-    [PCUtils showServerErrorAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.loadingIndicator stopAnimating];
+    [PCUtils addCenteredLabelInView:self.scrollView withMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil)];
+    self.tableView.hidden = YES;
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
-    [PCUtils showConnectionToServerTimedOutAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.loadingIndicator stopAnimating];
+    [PCUtils addCenteredLabelInView:self.scrollView withMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil)];
+    self.tableView.hidden = YES;
 }
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    EventPool* eventPool = self.childrenPools[indexPath.row];
+    [self.navigationController pushViewController:[[EventPoolViewController alloc] initWithEventPool:eventPool] animated:YES];
+}
+
+
+#pragma mark - UITableViewDataSource
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    EventPool* eventPool = self.childrenPools[indexPath.row];
+    
+    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:kPoolCell];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kPoolCell];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+    cell.textLabel.text = eventPool.poolTitle;
+    cell.detailTextLabel.text = eventPool.poolPlace;
+    
+    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setThumbnailURL:[NSURL URLWithString:eventPool.poolPicture] forCell:cell atIndexPath:indexPath];
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.childrenPools count];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    if (!self.childrenPools) {
+        return 0;
+    }
+    return 1;
+}
+
+#pragma mark - dealloc
+
+- (void)dealloc {
+    [self.eventsService cancelOperationsForDelegate:self];
+}
+
+
+
 
 @end

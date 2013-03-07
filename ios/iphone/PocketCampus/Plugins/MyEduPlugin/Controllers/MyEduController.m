@@ -203,10 +203,6 @@ static MyEduController* instance __weak = nil;
 
 #pragma mark - PluginControllerProtocol
 
-- (void)refresh {
-    //TODO: refresh infos displayed by plugin if necessary
-}
-
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"MyEduPlugin", @"");
 }

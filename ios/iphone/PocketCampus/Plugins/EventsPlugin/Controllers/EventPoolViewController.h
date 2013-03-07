@@ -10,7 +10,9 @@
 
 #import "EventsService.h"
 
-@interface EventPoolViewController : UITableViewController<EventsServiceDelegate>
+#import "ZBarSDK.h"
+
+@interface EventPoolViewController : UITableViewController<EventsServiceDelegate, ZBarReaderDelegate>
 
 - (id)initWithEventPool:(EventPool*)pool;
 

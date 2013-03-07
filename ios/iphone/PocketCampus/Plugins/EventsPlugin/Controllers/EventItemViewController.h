@@ -10,11 +10,14 @@
 
 #import "EventsService.h"
 
-@interface EventItemViewController : UIViewController<EventsServiceDelegate>
+#import "ZBarSDK.h"
+
+@interface EventItemViewController : UIViewController<EventsServiceDelegate, UIWebViewDelegate>
 
 - (id)initWithEventItem:(EventItem*)item;
 - (id)initAndLoadEventItemWithId:(int64_t)eventId;
 
+@property (nonatomic, weak) IBOutlet UIScrollView* scrollView;
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 @property (nonatomic, weak) IBOutlet UITableView* tableView;
 

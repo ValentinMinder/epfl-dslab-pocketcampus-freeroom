@@ -8,13 +8,20 @@
 
 #import "ObjectArchiver.h"
 
+#import "EventsUtils.h"
+
+#import "PCUtils.h"
+
 @interface EventsService ()
 
 @property (nonatomic, strong) NSString* userToken;
+@property (nonatomic, strong) NSMutableSet* favoriteEventItemIds; //set of NSNumber int64_t
 
 @end
 
 static NSString* kUserTokenKey = @"userToken";
+
+static NSString* kFavoriteEventItemIds = @"favoriteEventItemIds";
 
 @implementation EventsService
 
@@ -65,7 +72,7 @@ static EventsService* instance __weak = nil;
 
 - (BOOL)saveUserToken:(NSString*)token {
     self.userToken = token;
-    return [ObjectArchiver saveObject:kUserTokenKey forKey:kUserTokenKey andPluginName:@"events"];
+    return [ObjectArchiver saveObject:token forKey:kUserTokenKey andPluginName:@"events"];
 }
 
 - (BOOL)deleteUserToken {
@@ -73,10 +80,49 @@ static EventsService* instance __weak = nil;
     return [ObjectArchiver saveObject:nil forKey:kUserTokenKey andPluginName:@"events"];
 }
 
+#pragma mark - Favorites
+
+- (void)initFavorites {
+    if (!self.favoriteEventItemIds) {
+        self.favoriteEventItemIds = [(NSSet*)[ObjectArchiver objectForKey:kFavoriteEventItemIds andPluginName:@"events"] mutableCopy];
+    }
+    if (!self.favoriteEventItemIds) {
+        self.favoriteEventItemIds = [NSMutableSet set];
+    }
+}
+
+- (BOOL)persistFavorites {
+    if (!self.favoriteEventItemIds) {
+        return YES;
+    }
+    return [ObjectArchiver saveObject:self.favoriteEventItemIds forKey:kFavoriteEventItemIds andPluginName:@"events"];
+}
+
+- (void)addFavoriteEventItemId:(int64_t)itemId {
+    [self initFavorites];
+    [self.favoriteEventItemIds addObject:[EventsUtils nsNumberForEventId:itemId]];
+    [self persistFavorites];
+}
+
+- (void)removeFavoriteEventItemId:(int64_t)itemId {
+    [self initFavorites];
+    [self.favoriteEventItemIds removeObject:[EventsUtils nsNumberForEventId:itemId]];
+    [self persistFavorites];
+}
+
+- (BOOL)isEventItemIdFavorite:(int64_t)itemId {
+    [self initFavorites];
+    return [self.favoriteEventItemIds containsObject:[EventsUtils nsNumberForEventId:itemId]];
+}
+
 #pragma mark - Service methods
 
 - (void)getEventItemForRequest:(EventItemRequest*)request delegate:(id)delegate {
+    [PCUtils throughExceptionIfObject:request notKindOfClass:[EventItemRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = YES;
+    operation.returnEvenStaleCacheIfServerIsUnreachable = YES;
+    operation.cacheValidity = 43200; //half-day
     operation.serviceClientSelector = @selector(getEventItem:);
     operation.delegateDidReturnSelector = @selector(getEventItemForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getEventItemFailedForRequest:);
@@ -85,18 +131,22 @@ static EventsService* instance __weak = nil;
     [operationQueue addOperation:operation];
 }
 
-
 - (void)getEventPoolForRequest:(EventPoolRequest*)request delegate:(id)delegate {
+    [PCUtils throughExceptionIfObject:request notKindOfClass:[EventPoolRequest class]];
+    //NSLog(@"original: %@", request);
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = YES;
+    operation.skipCache = YES;
     operation.serviceClientSelector = @selector(getEventPool:);
     operation.delegateDidReturnSelector = @selector(getEventPoolForRequest:didReturn:);
-    operation.delegateDidFailSelector = @selector(getEventPooolFailedForRequest:);
+    operation.delegateDidFailSelector = @selector(getEventPoolFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
 }
 
 - (void)exchangeContactsForRequest:(ExchangeRequest*)request delegate:(id)delegate {
+    [PCUtils throughExceptionIfObject:request notKindOfClass:[ExchangeRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(exchangeContacts:);
     operation.delegateDidReturnSelector = @selector(exchangeContactsForRequest:didReturn:);
@@ -106,6 +156,17 @@ static EventsService* instance __weak = nil;
     [operationQueue addOperation:operation];
 }
 
+- (EventPoolReply*)getFromCacheEventPoolForRequest:(EventPoolRequest*)request {
+    [PCUtils throughExceptionIfObject:request notKindOfClass:[EventPoolRequest class]];
+    //NSLog(@"cached: %@", request);
+    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getEventPool:);
+    operation.delegateDidReturnSelector = @selector(getEventPoolForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getEventPoolFailedForRequest:);
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    return [operation cachedResponseObjectEvenIfStale:YES];
+}
 
 #pragma mark - dealloc
 

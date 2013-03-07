@@ -129,8 +129,10 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         [self showEmptyDetailViewController];
         return;
     }
-    self.personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:self];
-    [self.personViewController setPerson:person];
+    self.personViewController = [[PCUnkownPersonViewController alloc] initWithPerson:person delegate:self];
+
+    //self.personViewController = [[PCUnkownPersonViewController alloc] initAndLoadPersonWithFullName:@"fdgkjdfhglkjdfhsg" delegate:self]; //TEST
+    
     if (self.splitViewController) {
         UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:self.personViewController];
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], navController];

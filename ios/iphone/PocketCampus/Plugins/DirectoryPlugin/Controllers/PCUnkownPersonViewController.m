@@ -14,34 +14,84 @@
 
 #import "DirectoryService.h"
 
+#import "PCUtils.h"
+
+#import "PCValues.h"
+
 @interface PCUnkownPersonViewController ()
 
+@property (nonatomic, strong) NSString* fullNameToSearch;
 @property (nonatomic, strong) UIImage* profilePictureImage;
 @property (nonatomic, strong) UIPopoverController* profilePicturePopover;
 @property (nonatomic, strong) DirectoryService* directoryService;
+
+/* Will only be instantied and added to view if initAndLoadPersonWithFullName:delegate: constructor used */
+@property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, strong) UILabel* centerMessageLabel;
 
 @end
 
 @implementation PCUnkownPersonViewController
 
-- (id)initWithDelegate:(id<ABUnknownPersonViewControllerDelegate>)delegate
+#pragma mark - Inits
+
+- (id)initWithPerson:(Person*)person delegate:(id<ABUnknownPersonViewControllerDelegate>)delegate;
 {
+    [PCUtils throughExceptionIfObject:person notKindOfClass:[Person class]];
     self = [super init];
     if (self) {
-        // Custom initialization
         self.unknownPersonViewDelegate = delegate;
         self.directoryService = [DirectoryService sharedInstanceToRetain];
+        self.person = person;
     }
     return self;
+}
+
+- (id)initAndLoadPersonWithFullName:(NSString*)fullName delegate:(id<ABUnknownPersonViewControllerDelegate>)delegate {
+    [PCUtils throughExceptionIfObject:fullName notKindOfClass:[NSString class]];
+    self = [super init];
+    if (self) {
+        self.unknownPersonViewDelegate = delegate;
+        self.directoryService = [DirectoryService sharedInstanceToRetain];
+        self.fullNameToSearch = fullName;
+    }
+    return self;
+}
+
+#pragma mark - Standard view controller methods
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    if (!self.person) {
+        [self.directoryService searchPersons:self.fullNameToSearch delegate:self];
+        
+        self.centerMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280.0, 100.0)];
+        self.centerMessageLabel.numberOfLines = 0; //auto
+        self.centerMessageLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        self.centerMessageLabel.textAlignment = UITextAlignmentCenter;
+        self.centerMessageLabel.backgroundColor = [UIColor clearColor];
+        self.centerMessageLabel.textColor = [PCValues textColor1];
+        self.centerMessageLabel.shadowColor = [UIColor whiteColor];
+        self.centerMessageLabel.shadowOffset = [PCValues shadowOffset1];
+        self.centerMessageLabel.hidden = NO;
+        [self.view addSubview:self.centerMessageLabel];
+        self.centerMessageLabel.center = CGPointMake(self.view.center.x, self.view.center.y-35.0);
+        
+        self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.loadingIndicator.color = [UIColor colorWithWhite:0.3 alpha:1.0];
+        [self.view addSubview:self.loadingIndicator];
+        self.loadingIndicator.center = CGPointMake(self.view.center.x, self.view.center.y-35.0);
+        [self.loadingIndicator startAnimating];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Details", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
-    if (!self.profilePictureImage) {
-        [self.directoryService getProfilePicture:self.person.sciper delegate:self];
-    }
 }
+
+
+#pragma mark - Button actions
 
 - (void)photoButtonPressed {
     DirectoryProfilePictureViewController* viewController = [[DirectoryProfilePictureViewController alloc] initWithImage:self.profilePictureImage];
@@ -57,6 +107,8 @@
         [self.navigationController pushViewController:viewController animated:YES];
     }
 }
+
+#pragma mark - Data related
 
 - (void)setPerson:(Person*)person_ {
     _person = person_;
@@ -161,9 +213,28 @@
     CFRelease(abPerson);
     
     [self loadView];
+    
+    [self.directoryService getProfilePicture:self.person.sciper delegate:self];
 }
 
-#pragma mark DirectoryServiceDelegate
+#pragma mark - DirectoryServiceDelegate
+
+- (void)searchDirectoryFor:(NSString *)searchPattern didReturn:(NSArray *)results {
+    [self.loadingIndicator stopAnimating];
+    if ([results count] == 0) {
+        self.centerMessageLabel.hidden = NO;
+        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"NoResultPCUnknownViewControllerLoad", @"DirectoryPlugin", nil);
+        return;
+    }
+    Person* person = results[0];
+    self.person = person;
+}
+
+- (void)searchDirectoryFailedFor:(NSString *)searchPattern {
+    [self.loadingIndicator stopAnimating];
+    self.centerMessageLabel.hidden = NO;
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", @"Message that says that connection to server throw an error");
+}
 
 - (void)profilePictureFor:(NSString*)sciper didReturn:(NSData*)data {
     if (data) {
@@ -184,9 +255,13 @@
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    NSLog(@"-> ProfilePicture request timed out");
-    ABPersonSetImageData(self.displayedPerson, NULL, nil);
-    [self loadView]; //reload view content to update picture
+    if (self.person) {
+        NSLog(@"-> ProfilePicture request timed out");
+        ABPersonSetImageData(self.displayedPerson, NULL, nil);
+        [self loadView]; //reload view content to update picture
+    } else {
+        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
+    }
 }
 
 #pragma mark dealloc

@@ -24,6 +24,12 @@
 
 static id test __strong __unused = nil;
 
+@interface AppDelegate ()
+
+@property (nonatomic, strong) MainController* mainController;
+
+@end
+
 @implementation AppDelegate
 
 @synthesize window = _window;

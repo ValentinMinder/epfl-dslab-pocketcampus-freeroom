@@ -41,7 +41,7 @@ static NSDictionary * EVENTS_PERIODS;
 
 @implementation EventItem
 
-- (id) initWithEventId: (int64_t) eventId startDate: (int64_t) startDate endDate: (int64_t) endDate fullDay: (BOOL) fullDay eventPicture: (NSString *) eventPicture eventTitle: (NSString *) eventTitle eventPlace: (NSString *) eventPlace eventSpeaker: (NSString *) eventSpeaker eventDetails: (NSString *) eventDetails eventThumbnail: (NSString *) eventThumbnail secondLine: (NSString *) secondLine eventUri: (NSString *) eventUri vcalUid: (NSString *) vcalUid eventCateg: (int32_t) eventCateg eventTags: (NSArray *) eventTags locationHref: (NSString *) locationHref detailsLink: (NSString *) detailsLink timeSnippet: (NSString *) timeSnippet hideDateInfo: (BOOL) hideDateInfo hideTitle: (BOOL) hideTitle hideThumbnail: (BOOL) hideThumbnail childrenPools: (NSArray *) childrenPools
+- (id) initWithEventId: (int64_t) eventId startDate: (int64_t) startDate endDate: (int64_t) endDate fullDay: (BOOL) fullDay eventPicture: (NSString *) eventPicture eventTitle: (NSString *) eventTitle eventPlace: (NSString *) eventPlace eventSpeaker: (NSString *) eventSpeaker eventDetails: (NSString *) eventDetails eventThumbnail: (NSString *) eventThumbnail secondLine: (NSString *) secondLine eventUri: (NSString *) eventUri vcalUid: (NSString *) vcalUid eventCateg: (int32_t) eventCateg eventTags: (NSArray *) eventTags locationHref: (NSString *) locationHref detailsLink: (NSString *) detailsLink timeSnippet: (NSString *) timeSnippet hideTitle: (BOOL) hideTitle hideThumbnail: (BOOL) hideThumbnail hideEventInfo: (BOOL) hideEventInfo childrenPools: (NSArray *) childrenPools parentPool: (int64_t) parentPool
 {
   self = [super init];
   __eventId = eventId;
@@ -80,14 +80,16 @@ static NSDictionary * EVENTS_PERIODS;
   __detailsLink_isset = YES;
   __timeSnippet = [timeSnippet retain];
   __timeSnippet_isset = YES;
-  __hideDateInfo = hideDateInfo;
-  __hideDateInfo_isset = YES;
   __hideTitle = hideTitle;
   __hideTitle_isset = YES;
   __hideThumbnail = hideThumbnail;
   __hideThumbnail_isset = YES;
+  __hideEventInfo = hideEventInfo;
+  __hideEventInfo_isset = YES;
   __childrenPools = [childrenPools retain];
   __childrenPools_isset = YES;
+  __parentPool = parentPool;
+  __parentPool_isset = YES;
   return self;
 }
 
@@ -184,11 +186,6 @@ static NSDictionary * EVENTS_PERIODS;
     __timeSnippet = [[decoder decodeObjectForKey: @"timeSnippet"] retain];
     __timeSnippet_isset = YES;
   }
-  if ([decoder containsValueForKey: @"hideDateInfo"])
-  {
-    __hideDateInfo = [decoder decodeBoolForKey: @"hideDateInfo"];
-    __hideDateInfo_isset = YES;
-  }
   if ([decoder containsValueForKey: @"hideTitle"])
   {
     __hideTitle = [decoder decodeBoolForKey: @"hideTitle"];
@@ -199,10 +196,20 @@ static NSDictionary * EVENTS_PERIODS;
     __hideThumbnail = [decoder decodeBoolForKey: @"hideThumbnail"];
     __hideThumbnail_isset = YES;
   }
+  if ([decoder containsValueForKey: @"hideEventInfo"])
+  {
+    __hideEventInfo = [decoder decodeBoolForKey: @"hideEventInfo"];
+    __hideEventInfo_isset = YES;
+  }
   if ([decoder containsValueForKey: @"childrenPools"])
   {
     __childrenPools = [[decoder decodeObjectForKey: @"childrenPools"] retain];
     __childrenPools_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"parentPool"])
+  {
+    __parentPool = [decoder decodeInt64ForKey: @"parentPool"];
+    __parentPool_isset = YES;
   }
   return self;
 }
@@ -281,10 +288,6 @@ static NSDictionary * EVENTS_PERIODS;
   {
     [encoder encodeObject: __timeSnippet forKey: @"timeSnippet"];
   }
-  if (__hideDateInfo_isset)
-  {
-    [encoder encodeBool: __hideDateInfo forKey: @"hideDateInfo"];
-  }
   if (__hideTitle_isset)
   {
     [encoder encodeBool: __hideTitle forKey: @"hideTitle"];
@@ -293,9 +296,17 @@ static NSDictionary * EVENTS_PERIODS;
   {
     [encoder encodeBool: __hideThumbnail forKey: @"hideThumbnail"];
   }
+  if (__hideEventInfo_isset)
+  {
+    [encoder encodeBool: __hideEventInfo forKey: @"hideEventInfo"];
+  }
   if (__childrenPools_isset)
   {
     [encoder encodeObject: __childrenPools forKey: @"childrenPools"];
+  }
+  if (__parentPool_isset)
+  {
+    [encoder encodeInt64: __parentPool forKey: @"parentPool"];
   }
 }
 
@@ -676,23 +687,6 @@ static NSDictionary * EVENTS_PERIODS;
   __timeSnippet_isset = NO;
 }
 
-- (BOOL) hideDateInfo {
-  return __hideDateInfo;
-}
-
-- (void) setHideDateInfo: (BOOL) hideDateInfo {
-  __hideDateInfo = hideDateInfo;
-  __hideDateInfo_isset = YES;
-}
-
-- (BOOL) hideDateInfoIsSet {
-  return __hideDateInfo_isset;
-}
-
-- (void) unsetHideDateInfo {
-  __hideDateInfo_isset = NO;
-}
-
 - (BOOL) hideTitle {
   return __hideTitle;
 }
@@ -727,6 +721,23 @@ static NSDictionary * EVENTS_PERIODS;
   __hideThumbnail_isset = NO;
 }
 
+- (BOOL) hideEventInfo {
+  return __hideEventInfo;
+}
+
+- (void) setHideEventInfo: (BOOL) hideEventInfo {
+  __hideEventInfo = hideEventInfo;
+  __hideEventInfo_isset = YES;
+}
+
+- (BOOL) hideEventInfoIsSet {
+  return __hideEventInfo_isset;
+}
+
+- (void) unsetHideEventInfo {
+  __hideEventInfo_isset = NO;
+}
+
 - (NSArray *) childrenPools {
   return [[__childrenPools retain] autorelease];
 }
@@ -746,6 +757,23 @@ static NSDictionary * EVENTS_PERIODS;
   [__childrenPools release];
   __childrenPools = nil;
   __childrenPools_isset = NO;
+}
+
+- (int64_t) parentPool {
+  return __parentPool;
+}
+
+- (void) setParentPool: (int64_t) parentPool {
+  __parentPool = parentPool;
+  __parentPool_isset = YES;
+}
+
+- (BOOL) parentPoolIsSet {
+  return __parentPool_isset;
+}
+
+- (void) unsetParentPool {
+  __parentPool_isset = NO;
 }
 
 - (void) read: (id <TProtocol>) inProtocol
@@ -917,14 +945,6 @@ static NSDictionary * EVENTS_PERIODS;
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 19:
-        if (fieldType == TType_BOOL) {
-          BOOL fieldValue = [inProtocol readBool];
-          [self setHideDateInfo: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
       case 21:
         if (fieldType == TType_BOOL) {
           BOOL fieldValue = [inProtocol readBool];
@@ -937,6 +957,14 @@ static NSDictionary * EVENTS_PERIODS;
         if (fieldType == TType_BOOL) {
           BOOL fieldValue = [inProtocol readBool];
           [self setHideThumbnail: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 23:
+        if (fieldType == TType_BOOL) {
+          BOOL fieldValue = [inProtocol readBool];
+          [self setHideEventInfo: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -955,6 +983,14 @@ static NSDictionary * EVENTS_PERIODS;
           [inProtocol readListEnd];
           [self setChildrenPools: fieldValue];
           [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 31:
+        if (fieldType == TType_I64) {
+          int64_t fieldValue = [inProtocol readI64];
+          [self setParentPool: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -1094,11 +1130,6 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldEnd];
     }
   }
-  if (__hideDateInfo_isset) {
-    [outProtocol writeFieldBeginWithName: @"hideDateInfo" type: TType_BOOL fieldID: 19];
-    [outProtocol writeBool: __hideDateInfo];
-    [outProtocol writeFieldEnd];
-  }
   if (__hideTitle_isset) {
     [outProtocol writeFieldBeginWithName: @"hideTitle" type: TType_BOOL fieldID: 21];
     [outProtocol writeBool: __hideTitle];
@@ -1107,6 +1138,11 @@ static NSDictionary * EVENTS_PERIODS;
   if (__hideThumbnail_isset) {
     [outProtocol writeFieldBeginWithName: @"hideThumbnail" type: TType_BOOL fieldID: 22];
     [outProtocol writeBool: __hideThumbnail];
+    [outProtocol writeFieldEnd];
+  }
+  if (__hideEventInfo_isset) {
+    [outProtocol writeFieldBeginWithName: @"hideEventInfo" type: TType_BOOL fieldID: 23];
+    [outProtocol writeBool: __hideEventInfo];
     [outProtocol writeFieldEnd];
   }
   if (__childrenPools_isset) {
@@ -1123,6 +1159,11 @@ static NSDictionary * EVENTS_PERIODS;
       }
       [outProtocol writeFieldEnd];
     }
+  }
+  if (__parentPool_isset) {
+    [outProtocol writeFieldBeginWithName: @"parentPool" type: TType_I64 fieldID: 31];
+    [outProtocol writeI64: __parentPool];
+    [outProtocol writeFieldEnd];
   }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
@@ -1166,14 +1207,16 @@ static NSDictionary * EVENTS_PERIODS;
   [ms appendFormat: @"\"%@\"", __detailsLink];
   [ms appendString: @",timeSnippet:"];
   [ms appendFormat: @"\"%@\"", __timeSnippet];
-  [ms appendString: @",hideDateInfo:"];
-  [ms appendFormat: @"%i", __hideDateInfo];
   [ms appendString: @",hideTitle:"];
   [ms appendFormat: @"%i", __hideTitle];
   [ms appendString: @",hideThumbnail:"];
   [ms appendFormat: @"%i", __hideThumbnail];
+  [ms appendString: @",hideEventInfo:"];
+  [ms appendFormat: @"%i", __hideEventInfo];
   [ms appendString: @",childrenPools:"];
   [ms appendFormat: @"%@", __childrenPools];
+  [ms appendString: @",parentPool:"];
+  [ms appendFormat: @"%qi", __parentPool];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -1182,7 +1225,7 @@ static NSDictionary * EVENTS_PERIODS;
 
 @implementation EventPool
 
-- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText childrenEvents: (NSArray *) childrenEvents refreshOnBack: (BOOL) refreshOnBack
+- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText childrenEvents: (NSArray *) childrenEvents refreshOnBack: (BOOL) refreshOnBack parentEvent: (int64_t) parentEvent
 {
   self = [super init];
   __poolId = poolId;
@@ -1209,6 +1252,8 @@ static NSDictionary * EVENTS_PERIODS;
   __childrenEvents_isset = YES;
   __refreshOnBack = refreshOnBack;
   __refreshOnBack_isset = YES;
+  __parentEvent = parentEvent;
+  __parentEvent_isset = YES;
   return self;
 }
 
@@ -1275,6 +1320,11 @@ static NSDictionary * EVENTS_PERIODS;
     __refreshOnBack = [decoder decodeBoolForKey: @"refreshOnBack"];
     __refreshOnBack_isset = YES;
   }
+  if ([decoder containsValueForKey: @"parentEvent"])
+  {
+    __parentEvent = [decoder decodeInt64ForKey: @"parentEvent"];
+    __parentEvent_isset = YES;
+  }
   return self;
 }
 
@@ -1327,6 +1377,10 @@ static NSDictionary * EVENTS_PERIODS;
   if (__refreshOnBack_isset)
   {
     [encoder encodeBool: __refreshOnBack forKey: @"refreshOnBack"];
+  }
+  if (__parentEvent_isset)
+  {
+    [encoder encodeInt64: __parentEvent forKey: @"parentEvent"];
   }
 }
 
@@ -1569,6 +1623,23 @@ static NSDictionary * EVENTS_PERIODS;
   __refreshOnBack_isset = NO;
 }
 
+- (int64_t) parentEvent {
+  return __parentEvent;
+}
+
+- (void) setParentEvent: (int64_t) parentEvent {
+  __parentEvent = parentEvent;
+  __parentEvent_isset = YES;
+}
+
+- (BOOL) parentEventIsSet {
+  return __parentEvent_isset;
+}
+
+- (void) unsetParentEvent {
+  __parentEvent_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -1690,6 +1761,14 @@ static NSDictionary * EVENTS_PERIODS;
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 17:
+        if (fieldType == TType_I64) {
+          int64_t fieldValue = [inProtocol readI64];
+          [self setParentEvent: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -1781,6 +1860,11 @@ static NSDictionary * EVENTS_PERIODS;
     [outProtocol writeBool: __refreshOnBack];
     [outProtocol writeFieldEnd];
   }
+  if (__parentEvent_isset) {
+    [outProtocol writeFieldBeginWithName: @"parentEvent" type: TType_I64 fieldID: 17];
+    [outProtocol writeI64: __parentEvent];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -1811,6 +1895,8 @@ static NSDictionary * EVENTS_PERIODS;
   [ms appendFormat: @"%@", __childrenEvents];
   [ms appendString: @",refreshOnBack:"];
   [ms appendFormat: @"%i", __refreshOnBack];
+  [ms appendString: @",parentEvent:"];
+  [ms appendFormat: @"%qi", __parentEvent];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -4125,271 +4211,6 @@ static NSDictionary * EVENTS_PERIODS;
 
 @end
 
-@interface updateDatabase_args : NSObject <NSCoding> {
-  NSString * __arg;
-
-  BOOL __arg_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=arg, setter=setArg:) NSString * arg;
-#endif
-
-- (id) initWithArg: (NSString *) arg;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (NSString *) arg;
-- (void) setArg: (NSString *) arg;
-- (BOOL) argIsSet;
-
-@end
-
-@implementation updateDatabase_args
-
-- (id) initWithArg: (NSString *) arg
-{
-  self = [super init];
-  __arg = [arg retain];
-  __arg_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"arg"])
-  {
-    __arg = [[decoder decodeObjectForKey: @"arg"] retain];
-    __arg_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__arg_isset)
-  {
-    [encoder encodeObject: __arg forKey: @"arg"];
-  }
-}
-
-- (void) dealloc
-{
-  [__arg release];
-  [super dealloc];
-}
-
-- (NSString *) arg {
-  return [[__arg retain] autorelease];
-}
-
-- (void) setArg: (NSString *) arg {
-  [arg retain];
-  [__arg release];
-  __arg = arg;
-  __arg_isset = YES;
-}
-
-- (BOOL) argIsSet {
-  return __arg_isset;
-}
-
-- (void) unsetArg {
-  [__arg release];
-  __arg = nil;
-  __arg_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 1:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setArg: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"updateDatabase_args"];
-  if (__arg_isset) {
-    if (__arg != nil) {
-      [outProtocol writeFieldBeginWithName: @"arg" type: TType_STRING fieldID: 1];
-      [outProtocol writeString: __arg];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"updateDatabase_args("];
-  [ms appendString: @"arg:"];
-  [ms appendFormat: @"\"%@\"", __arg];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@interface UpdateDatabase_result : NSObject <NSCoding> {
-  NSString * __success;
-
-  BOOL __success_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=success, setter=setSuccess:) NSString * success;
-#endif
-
-- (id) initWithSuccess: (NSString *) success;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (NSString *) success;
-- (void) setSuccess: (NSString *) success;
-- (BOOL) successIsSet;
-
-@end
-
-@implementation UpdateDatabase_result
-
-- (id) initWithSuccess: (NSString *) success
-{
-  self = [super init];
-  __success = [success retain];
-  __success_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"success"])
-  {
-    __success = [[decoder decodeObjectForKey: @"success"] retain];
-    __success_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__success_isset)
-  {
-    [encoder encodeObject: __success forKey: @"success"];
-  }
-}
-
-- (void) dealloc
-{
-  [__success release];
-  [super dealloc];
-}
-
-- (NSString *) success {
-  return [[__success retain] autorelease];
-}
-
-- (void) setSuccess: (NSString *) success {
-  [success retain];
-  [__success release];
-  __success = success;
-  __success_isset = YES;
-}
-
-- (BOOL) successIsSet {
-  return __success_isset;
-}
-
-- (void) unsetSuccess {
-  [__success release];
-  __success = nil;
-  __success_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 0:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setSuccess: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"UpdateDatabase_result"];
-
-  if (__success_isset) {
-    if (__success != nil) {
-      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRING fieldID: 0];
-      [outProtocol writeString: __success];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"UpdateDatabase_result("];
-  [ms appendString: @"success:"];
-  [ms appendFormat: @"\"%@\"", __success];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
 @implementation EventsServiceClient
 - (id) initWithProtocol: (id <TProtocol>) protocol
 {
@@ -4531,46 +4352,6 @@ static NSDictionary * EVENTS_PERIODS;
   return [self recv_exchangeContacts];
 }
 
-- (void) send_updateDatabase: (NSString *) arg
-{
-  [outProtocol writeMessageBeginWithName: @"updateDatabase" type: TMessageType_CALL sequenceID: 0];
-  [outProtocol writeStructBeginWithName: @"updateDatabase_args"];
-  if (arg != nil)  {
-    [outProtocol writeFieldBeginWithName: @"arg" type: TType_STRING fieldID: 1];
-    [outProtocol writeString: arg];
-    [outProtocol writeFieldEnd];
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-  [outProtocol writeMessageEnd];
-  [[outProtocol transport] flush];
-}
-
-- (NSString *) recv_updateDatabase
-{
-  int msgType = 0;
-  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
-  if (msgType == TMessageType_EXCEPTION) {
-    TApplicationException * x = [TApplicationException read: inProtocol];
-    [inProtocol readMessageEnd];
-    @throw x;
-  }
-  UpdateDatabase_result * result = [[[UpdateDatabase_result alloc] init] autorelease];
-  [result read: inProtocol];
-  [inProtocol readMessageEnd];
-  if ([result successIsSet]) {
-    return [result success];
-  }
-  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
-                                           reason: @"updateDatabase failed: unknown result"];
-}
-
-- (NSString *) updateDatabase: (NSString *) arg
-{
-  [self send_updateDatabase: arg];
-  return [self recv_updateDatabase];
-}
-
 @end
 
 @implementation EventsServiceProcessor
@@ -4606,14 +4387,6 @@ static NSDictionary * EVENTS_PERIODS;
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"exchangeContacts"];
-  }
-  {
-    SEL s = @selector(process_updateDatabase_withSequenceID:inProtocol:outProtocol:);
-    NSMethodSignature * sig = [self methodSignatureForSelector: s];
-    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
-    [invocation setSelector: s];
-    [invocation retainArguments];
-    [mMethodMap setValue: invocation forKey: @"updateDatabase"];
   }
   return self;
 }
@@ -4698,23 +4471,6 @@ static NSDictionary * EVENTS_PERIODS;
   ExchangeContacts_result * result = [[ExchangeContacts_result alloc] init];
   [result setSuccess: [mService exchangeContacts: [args iRequest]]];
   [outProtocol writeMessageBeginWithName: @"exchangeContacts"
-                                    type: TMessageType_REPLY
-                              sequenceID: seqID];
-  [result write: outProtocol];
-  [outProtocol writeMessageEnd];
-  [[outProtocol transport] flush];
-  [result release];
-  [args release];
-}
-
-- (void) process_updateDatabase_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
-{
-  updateDatabase_args * args = [[updateDatabase_args alloc] init];
-  [args read: inProtocol];
-  [inProtocol readMessageEnd];
-  UpdateDatabase_result * result = [[UpdateDatabase_result alloc] init];
-  [result setSuccess: [mService updateDatabase: [args arg]]];
-  [outProtocol writeMessageBeginWithName: @"updateDatabase"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

@@ -14,7 +14,7 @@
 "NoContactSelected" = "No contact selected";
 "PhotoButtonTitle" = "Photo";
 "Details" = "Details";
-
+"NoResultPCUnknownViewControllerLoad" = "Impossible to find this person.";
 
 /* Accessiblity */
 
