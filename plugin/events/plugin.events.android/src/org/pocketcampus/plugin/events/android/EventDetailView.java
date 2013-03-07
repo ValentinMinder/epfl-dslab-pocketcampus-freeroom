@@ -267,17 +267,16 @@ public class EventDetailView extends PluginView implements IEventsView {
 			Collections.sort(eventPools, eventPoolComp4sort);
 			Preparated<EventPool> p4 = new Preparated<EventPool>(eventPools, new Preparator<EventPool>() {
 				public int[] resources() {
-					return new int[] { R.id.event_title, R.id.event_speaker, R.id.event_thumbnail, R.id.event_time };
+					return new int[] { R.id.event_title, R.id.event_place, R.id.event_thumbnail };
 				}
 				public String content(int res, EventPool e) {
 					switch (res) {
 					case R.id.event_title:
 						return e.getPoolTitle();
-					case R.id.event_speaker:
+					case R.id.event_place:
 						return e.getPoolPlace();
 					case R.id.event_thumbnail:
 						return e.getPoolPicture();
-					case R.id.event_time:
 					default:
 						return null;
 					}
@@ -287,7 +286,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 				}
 			});
 			adapter.addSection( new LazyAdapter(this, p4.getMap(),
-					R.layout.events_list_row, p4.getKeys(), p4.getResources()));
+					R.layout.event_pool_row, p4.getKeys(), p4.getResources()));
 		}
 
 	
