@@ -105,7 +105,7 @@ typedef enum {
 @property NSTimeInterval customTimeout;
 @property BOOL keepInCache;
 @property BOOL skipCache;
-@property BOOL returnCacheIfServerIsUnreachable;
+@property BOOL returnEvenStaleCacheIfServerIsUnreachable;
 @property NSTimeInterval cacheValidity;
 @property SEL serviceClientSelector;
 @property ReturnType returnType;

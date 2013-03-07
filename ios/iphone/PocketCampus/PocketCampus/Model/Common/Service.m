@@ -254,7 +254,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
 
 @implementation ServiceRequest
 
-@synthesize thriftServiceClient, timedOut, shouldRestart, serviceClientSelector, returnType, customTimeout, service, keepInCache, returnCacheIfServerIsUnreachable, skipCache, cacheValidity;
+@synthesize thriftServiceClient, timedOut, shouldRestart, serviceClientSelector, returnType, customTimeout, service, keepInCache, returnEvenStaleCacheIfServerIsUnreachable, skipCache, cacheValidity;
 
 - (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service_ delegate:(id)delegate_
 {
@@ -272,7 +272,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
         canceled = NO;
         customTimeout = 0.0;
         keepInCache = NO;
-        returnCacheIfServerIsUnreachable = NO;
+        returnEvenStaleCacheIfServerIsUnreachable = NO;
         skipCache = NO;
         cacheValidity = 100.0 * 365 * 24 * 60 * 60; // hundred years in seconds (equivalent to the old skipCache = NO)
         _nbTrimmedArgumentsFromLeftInDelegateCall = 0;
@@ -322,7 +322,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
         @throw [NSException exceptionWithName:@"unsupported operation" reason:@"cachedResponseObject is not supported when returnType is not ReturnTypeObject" userInfo:nil];
     }
     [self computeHashCode];
-    
+
     NSDictionary* cached;
     if(evenIfStale) {
         cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] isCache:YES];
@@ -343,11 +343,13 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
     
     @try {
         [self computeHashCode];
-
+        
+        BOOL serverIsReachable = [self.service serverIsReachable];
+        
         NSDictionary* cached = nil;
         
-        if (!self.skipCache) {
-            if (self.returnCacheIfServerIsUnreachable) {
+        if (self.keepInCache && !self.skipCache) {
+            if (self.returnEvenStaleCacheIfServerIsUnreachable && !serverIsReachable) {
                 cached = (NSDictionary*)[ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] isCache:YES];
             } else {
                 cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity isCache:YES];
@@ -390,7 +392,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
             return;
         }
         
-        if (self.service != nil && ![self.service serverIsReachable]) {
+        if (self.service != nil && !serverIsReachable) {
             if (self.shouldRestart) {
                 self.shouldRestart = NO;
                 [self main];

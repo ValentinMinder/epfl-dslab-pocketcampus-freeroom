@@ -491,7 +491,7 @@ static MainController<MainControllerPublic>* instance = nil;
         return;
     }
     
-    if (!identifier) { //means swtich to splash view controller
+    if (!identifier) { //means switch to splash view controller
         if (self.activePluginController) {
             [self.pluginsControllers removeObjectForKey:[self.activePluginController.class identifierName]];
         }
@@ -555,9 +555,19 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (PluginController<PluginControllerProtocol>*)pluginControllerForPluginIdentifier:(NSString*)identifier {
+    NSString* lowerCaseIdentifier = [identifier lowercaseString];
+    
+    if (self.activePluginController) {
+        NSString* activePluginControllerLowerCaseIdentifier = [[[self.activePluginController class] identifierName] lowercaseString];
+        if ([lowerCaseIdentifier isEqualToString:activePluginControllerLowerCaseIdentifier]) {
+            return self.activePluginController;
+        }
+    }
+    
+    
     NSString* identifierName = nil;
     for (NSString* originalIdentifier in self.pluginsList) {
-        if ([[identifier lowercaseString] isEqualToString:[originalIdentifier lowercaseString]]) {
+        if ([lowerCaseIdentifier isEqualToString:[originalIdentifier lowercaseString]]) {
             identifierName = originalIdentifier;
         }
     }

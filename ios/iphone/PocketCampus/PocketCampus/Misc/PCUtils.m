@@ -87,21 +87,21 @@
     return image;
 }
 
-+ (UILabel*)addCenteredLabelInTableView:(UITableView*)tableView withMessage:(NSString*)message {
-    [self removeCenteredLabelInTableView:tableView];
-    UILabel* label = [[UILabel alloc] initWithFrame:tableView.frame];
++ (UILabel*)addCenteredLabelInView:(UIView*)view withMessage:(NSString*)message {
+    [self removeCenteredLabelInView:view];
+    UILabel* label = [[UILabel alloc] initWithFrame:view.frame];
     label.text = message;
     label.tag = 20;
     label.textAlignment = UITextAlignmentCenter;
     label.numberOfLines = 0;
     label.textColor = [UIColor colorWithWhite:0.33 alpha:1.0];
-    [tableView addSubview:label];
+    [view addSubview:label];
     return label;
 }
 
 
-+ (void)removeCenteredLabelInTableView:(UITableView*)tableView {
-    [[tableView viewWithTag:20] removeFromSuperview];
++ (void)removeCenteredLabelInView:(UIView*)view {
+    [[view viewWithTag:20] removeFromSuperview];
 }
 
 

@@ -68,6 +68,7 @@ static NSString* kEventCell = @"EventCell";
     if (self) {
         self.poolId = pool.poolId;
         self.title = pool.poolTitle;
+        self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
         [self initRefreshControl];
     }
     return self;
@@ -77,6 +78,7 @@ static NSString* kEventCell = @"EventCell";
     self = [self init];
     if (self) {
         self.poolId = [eventsConstants CONTAINER_EVENT_ID];
+        self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
         self.title = NSLocalizedStringFromTable(@"PluginName", @"EventsPlugin", nil);
         [self initRefreshControl];
     }
@@ -87,6 +89,10 @@ static NSString* kEventCell = @"EventCell";
     self = [self init];
     if (self) {
         self.poolId = poolId;
+        self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
+        if (self.poolReply) {
+            self.title = self.poolReply.eventPool.poolTitle;
+        }
         [self initRefreshControl];
     }
     return self;
@@ -141,9 +147,12 @@ static NSString* kEventCell = @"EventCell";
     [self startGetEventPoolRequest];
 }
 
-- (void)startGetEventPoolRequest {
-    EventPoolRequest* req = [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_MONTH]; //TODO dynamic period
-    [self.eventsService getEventPoolForRequest:req delegate:self];
+- (EventPoolRequest*)createEventPoolRequest {
+    return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_MONTH]; //TODO dynamic period
+}
+
+- (void)startGetEventPoolRequest { 
+    [self.eventsService getEventPoolForRequest:[self createEventPoolRequest] delegate:self];
 }
 
 #pragma mark - Buttons preparation and actions
@@ -290,6 +299,7 @@ static NSString* kEventCell = @"EventCell";
     switch (reply.status) {
         case 200:
             self.poolReply = reply;
+            self.title = self.poolReply.eventPool.poolTitle;
             [self showButtonsConditionally];
             [self fillSectionsFromReplyForCurrentCategoriesAndTags];
             [self.tableView reloadData];
@@ -416,10 +426,10 @@ static NSString* kEventCell = @"EventCell";
     }
     
     if ([self.poolReply.childrenItems count] == 0 && self.poolReply.eventPool.noResultText) {
-        [PCUtils addCenteredLabelInTableView:self.tableView withMessage:self.poolReply.eventPool.noResultText];
+        [PCUtils addCenteredLabelInView:self.tableView withMessage:self.poolReply.eventPool.noResultText];
         return 1;
     }
-    [PCUtils removeCenteredLabelInTableView:self.tableView];
+    [PCUtils removeCenteredLabelInView:self.tableView];
     return [self.itemsForSection count];
 }
 

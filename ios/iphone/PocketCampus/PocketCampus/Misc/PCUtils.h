@@ -23,8 +23,8 @@
 
 + (UIImage*)strechableEmptyImageForCell;
 
-+ (UILabel*)addCenteredLabelInTableView:(UITableView*)tableView withMessage:(NSString*)message;
-+ (void)removeCenteredLabelInTableView:(UITableView*)tableView;
++ (UILabel*)addCenteredLabelInView:(UIView*)view withMessage:(NSString*)message;
++ (void)removeCenteredLabelInView:(UIView*)view;
 
 + (void)showServerErrorAlert;
 + (void)showConnectionToServerTimedOutAlert;

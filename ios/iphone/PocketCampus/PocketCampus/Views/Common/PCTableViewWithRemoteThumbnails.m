@@ -20,7 +20,8 @@
 
 @property (nonatomic, strong) ASINetworkQueue* networkQueue;
 @property (nonatomic, strong) NSMutableDictionary* requestForIndexPath; //key: NSIndexPath, value: ASIHTTPRequest
-@property (nonatomic, strong) NSMutableDictionary* thumbnails; //key : NSIndexPath , value : UIImage
+@property (nonatomic, strong) NSMutableDictionary* imageForUrlString;
+//@property (nonatomic, strong) NSMutableDictionary* thumbnails; //key : NSIndexPath , value : UIImage
 @property (nonatomic, strong) Reachability* reachability;
 @property (nonatomic, strong) NSMutableSet* failedThumbsIndexPaths;
 @property (nonatomic) BOOL initDone;
@@ -39,14 +40,13 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         self.networkQueue = [[ASINetworkQueue alloc] init];
         self.networkQueue.maxConcurrentOperationCount = 6;
         [self.networkQueue setSuspended:NO];
-        self.thumbnails = [[NSMutableDictionary alloc] init];
         self.requestForIndexPath = [NSMutableDictionary dictionary];
+        self.imageForUrlString = [NSMutableDictionary dictionary];
         self.initDone = YES;
     }
     
     //Only init if user not already set them
     if (!self.temporaryThumnail) {
-        
         self.temporaryThumnail = [PCUtils strechableEmptyImageForCell];
     }
     if (self.thumbnailsCacheSeconds == 0.0) {
@@ -58,39 +58,41 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     
     [self initDefaultValues];
     
+    [PCUtils throughExceptionIfObject:cell notKindOfClass:[UITableViewCell class]];
+    [PCUtils throughExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
+    
     if (!url) {
         cell.imageView.image = self.temporaryThumnail; //Generic image sign
         return;
     }
     
-    [PCUtils throughExceptionIfObject:cell notKindOfClass:[UITableViewCell class]];
-    [PCUtils throughExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
-    
-    if (!self.thumbnails[indexPath]) {
-        cell.imageView.image = self.temporaryThumnail; //Temporary thumbnail until image is loaded
-        ASIHTTPRequest* prevRequest = self.requestForIndexPath[indexPath];
-        
-        if (prevRequest) {
-            [prevRequest cancel];
-            prevRequest.delegate = nil;
-            [self.requestForIndexPath removeObjectForKey:indexPath];
-        }
-        
-        ASIHTTPRequest* thumbnailRequest = [ASIHTTPRequest requestWithURL:url];
-        thumbnailRequest.downloadCache = [ASIDownloadCache sharedCache];
-        thumbnailRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
-        thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
-        thumbnailRequest.secondsToCache = self.thumbnailsCacheSeconds;
-        thumbnailRequest.delegate = self;
-        thumbnailRequest.didFinishSelector = @selector(thumbnailRequestFinished:);
-        thumbnailRequest.didFailSelector = @selector(thumbnailRequestFailed:);
-        thumbnailRequest.userInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:indexPath, kThumbnailIndexPathKey, nil];
-        thumbnailRequest.timeOutSeconds = 10.0; //do not overload network with thumbnails that fail to load
-        self.requestForIndexPath[indexPath] = thumbnailRequest;
-        [self.networkQueue addOperation:thumbnailRequest];
-    } else {
-        cell.imageView.image = self.thumbnails[indexPath];
+    if (self.imageForUrlString[url.absoluteString]) {
+        cell.imageView.image = self.imageForUrlString[url.absoluteString];
+        return;
     }
+    
+    cell.imageView.image = self.temporaryThumnail; //Temporary thumbnail until image is loaded
+    ASIHTTPRequest* prevRequest = self.requestForIndexPath[indexPath];
+    
+    if (prevRequest) {
+        [prevRequest cancel];
+        prevRequest.delegate = nil;
+        [self.requestForIndexPath removeObjectForKey:indexPath];
+    }
+    
+    ASIHTTPRequest* thumbnailRequest = [ASIHTTPRequest requestWithURL:url];
+    thumbnailRequest.downloadCache = [ASIDownloadCache sharedCache];
+    thumbnailRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
+    thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
+    thumbnailRequest.secondsToCache = self.thumbnailsCacheSeconds;
+    thumbnailRequest.delegate = self;
+    thumbnailRequest.didFinishSelector = @selector(thumbnailRequestFinished:);
+    thumbnailRequest.didFailSelector = @selector(thumbnailRequestFailed:);
+    thumbnailRequest.userInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:indexPath, kThumbnailIndexPathKey, nil];
+    thumbnailRequest.timeOutSeconds = 10.0; //do not overload network with thumbnails that fail to load
+    self.requestForIndexPath[indexPath] = thumbnailRequest;
+    [self.networkQueue addOperation:thumbnailRequest];
+
 }
 
 - (void)reloadFailedThumbnailsCells {
@@ -130,9 +132,9 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
             
             image = [image imageScaledToFitSize:[self thumbnailSizeForIndexPath:indexPath]];
             
-            [self.thumbnails setObject:image forKey:indexPath];
+            self.imageForUrlString[request.url.absoluteString] = image;
             
-            cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
+            //cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
             cell.imageView.image = image; //using UIImage+Additions;
             
             [cell layoutSubviews];
@@ -160,6 +162,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 - (void)dealloc
 {
     [self.reachability stopNotifier];
+    [self.networkQueue setSuspended:YES];
     for (ASIHTTPRequest* req in self.networkQueue.operations) {
         req.delegate = nil;
         [req cancel];

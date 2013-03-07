@@ -10,8 +10,6 @@
 
 #import "PCUtils.h"
 
-#import "PCRefreshControl.h"
-
 #import "PCCenterMessageCell.h"
 
 #import "EventItemCell.h"
@@ -32,15 +30,18 @@
 
 #import "PCURLSchemeHandler.h"
 
+#import "PCTableViewWithRemoteThumbnails.h"
+
 @interface EventItemViewController ()
 
 @property (nonatomic) int64_t eventId;
 @property (nonatomic, strong) EventItem* eventItem;
 @property (nonatomic, strong) EventItemReply* itemReply;
-@property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 @property (nonatomic, strong) EventsService* eventsService;
 
 @property (nonatomic, strong) NSArray* childrenPools; //array of EventPool sorted by Id
+
+@property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
 
 @end
 
@@ -123,13 +124,19 @@ static NSString* kPoolCell = @"PoolCell";
 
 - (void)refresh {
     [self.eventsService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingEventItem", @"EventsPlugin", nil)];
     [self startGetEventItemRequest];
 }
 
 - (void)startGetEventItemRequest {
     EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_SIX_MONTHS];
     [self.eventsService getEventItemForRequest:req delegate:self];
+    if (!self.loadingIndicator) {
+        self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.loadingIndicator.color = [UIColor colorWithWhite:0.3 alpha:1.0];
+        [self.scrollView addSubview:self.loadingIndicator];
+        self.loadingIndicator.center = self.scrollView.center;
+        [self.loadingIndicator startAnimating];
+    }
 }
 
 #pragma mark - Collections fill
@@ -277,8 +284,7 @@ static NSString* kPoolCell = @"PoolCell";
 
 - (void)finalizeElementsPositionAndSize {
     self.tableView.scrollEnabled = NO;
-    [self.tableView sizeToFit];
-    self.tableView.frame = CGRectMake(0, self.webView.frame.origin.y + self.webView.frame.size.height, self.tableView.frame.size.width, self.tableView.frame.size.height);
+    self.tableView.frame = CGRectMake(0, self.webView.frame.origin.y + self.webView.frame.size.height, self.tableView.frame.size.width, self.tableView.contentSize.height);
     [self.scrollView setContentSize: CGSizeMake(self.webView.frame.size.width, self.webView.frame.size.height + self.tableView.frame.size.height)];
 }
 
@@ -322,14 +328,13 @@ static NSString* kPoolCell = @"PoolCell";
 - (void)getEventItemForRequest:(EventItemRequest *)request didReturn:(EventItemReply *)reply {
     switch (reply.status) {
         case 200:
+            [self.loadingIndicator stopAnimating];
             self.eventItem = reply.eventItem;
             self.itemReply = reply;
             [self loadEvent];
             [self fillChildrenPools];
             [self.tableView reloadData];
             [self finalizeElementsPositionAndSize];
-            [self.pcRefreshControl endRefreshing];
-            [self.pcRefreshControl markRefreshSuccessful];
             break;
             
         default:
@@ -343,17 +348,15 @@ static NSString* kPoolCell = @"PoolCell";
 }
 
 - (void)error {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
-    [PCUtils showServerErrorAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.loadingIndicator stopAnimating];
+    [PCUtils addCenteredLabelInView:self.scrollView withMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil)];
+    self.tableView.hidden = YES;
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
-    [PCUtils showConnectionToServerTimedOutAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.loadingIndicator stopAnimating];
+    [PCUtils addCenteredLabelInView:self.scrollView withMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil)];
+    self.tableView.hidden = YES;
 }
 
 #pragma mark - UITableViewDelegate
@@ -381,9 +384,7 @@ static NSString* kPoolCell = @"PoolCell";
     cell.textLabel.text = eventPool.poolTitle;
     cell.detailTextLabel.text = eventPool.poolPlace;
     
-    //TODO: asynchronous load picture
-    
-    cell.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:eventPool.poolPicture]]];
+    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setThumbnailURL:[NSURL URLWithString:eventPool.poolPicture] forCell:cell atIndexPath:indexPath];
     
     return cell;
 }
