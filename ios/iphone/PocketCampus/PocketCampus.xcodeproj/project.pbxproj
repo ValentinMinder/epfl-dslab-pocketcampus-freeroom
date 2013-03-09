@@ -240,7 +240,6 @@
 		329D4ACE151F810E000AC339 /* DestinationTransportArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */; };
 		329D4AD2151F86D7000AC339 /* BusTransport.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4AD0151F86D7000AC339 /* BusTransport.png */; };
 		329D4AD3151F86D7000AC339 /* BusTransport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4AD1151F86D7000AC339 /* BusTransport@2x.png */; };
-		329E1B3516E687080054C3A8 /* EventItemInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3716E687080054C3A8 /* EventItemInfo.html */; };
 		329E1B3B16E693130054C3A8 /* FavoriteNavBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3916E693130054C3A8 /* FavoriteNavBarButton.png */; };
 		329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */; };
 		329E1B3F16E696F80054C3A8 /* FavoriteGlowNavBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */; };
@@ -393,6 +392,14 @@
 		32F2F6061678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */; };
 		32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32F3EAB116334DD200DA8902 /* MyEduPlugin.strings */; };
 		32F3EAB61633506900DA8902 /* MyEduServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3EAB51633506900DA8902 /* MyEduServiceTests.m */; };
+		32F5308016EA8D5800F66484 /* NoImageCell_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F5307E16EA8D5800F66484 /* NoImageCell_64.png */; };
+		32F5308116EA8D5800F66484 /* NoImageCell_64@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F5307F16EA8D5800F66484 /* NoImageCell_64@2x.png */; };
+		32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */; };
+		32F5308B16EA9EA000F66484 /* EventsCategorySelectorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308A16EA9EA000F66484 /* EventsCategorySelectorView.xib */; };
+		32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308C16EAB02400F66484 /* EventItemInfo.html */; };
+		32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */; };
+		32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */; };
+		32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F5309316EABA0F00F66484 /* EventsLarge.png */; };
 		32F8E3ED16E1F53000AF365C /* CellNoImageStretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */; };
 		32F8E3EE16E1F53000AF365C /* CellNoImageStretchable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */; };
 		32F8E3F116E1F9D900AF365C /* EventsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F016E1F9D900AF365C /* EventsUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -785,8 +792,6 @@
 		329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DestinationTransportArrow@2x.png"; sourceTree = "<group>"; };
 		329D4AD0151F86D7000AC339 /* BusTransport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BusTransport.png; sourceTree = "<group>"; };
 		329D4AD1151F86D7000AC339 /* BusTransport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BusTransport@2x.png"; sourceTree = "<group>"; };
-		329E1B3616E687080054C3A8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/EventItemInfo.html; sourceTree = "<group>"; };
-		329E1B3816E6870B0054C3A8 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/EventItemInfo.html; sourceTree = "<group>"; };
 		329E1B3916E693130054C3A8 /* FavoriteNavBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteNavBarButton.png; sourceTree = "<group>"; };
 		329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteNavBarButton@2x.png"; sourceTree = "<group>"; };
 		329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteGlowNavBarButton.png; sourceTree = "<group>"; };
@@ -1021,6 +1026,16 @@
 		32F3EAB216334DDB00DA8902 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MyEduPlugin.strings; sourceTree = "<group>"; };
 		32F3EAB41633506900DA8902 /* MyEduServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduServiceTests.h; sourceTree = "<group>"; };
 		32F3EAB51633506900DA8902 /* MyEduServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduServiceTests.m; sourceTree = "<group>"; };
+		32F5307E16EA8D5800F66484 /* NoImageCell_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoImageCell_64.png; sourceTree = "<group>"; };
+		32F5307F16EA8D5800F66484 /* NoImageCell_64@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NoImageCell_64@2x.png"; sourceTree = "<group>"; };
+		32F5308716EA973B00F66484 /* EventsCategorySelectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventsCategorySelectorViewController.h; sourceTree = "<group>"; };
+		32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventsCategorySelectorViewController.m; sourceTree = "<group>"; };
+		32F5308A16EA9EA000F66484 /* EventsCategorySelectorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventsCategorySelectorView.xib; sourceTree = "<group>"; };
+		32F5308C16EAB02400F66484 /* EventItemInfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = EventItemInfo.html; sourceTree = "<group>"; };
+		32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventsSplashDetailView.xib; sourceTree = "<group>"; };
+		32F5309016EAB8F700F66484 /* EventsSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsSplashDetailViewController.h; sourceTree = "<group>"; };
+		32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsSplashDetailViewController.m; sourceTree = "<group>"; };
+		32F5309316EABA0F00F66484 /* EventsLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EventsLarge.png; sourceTree = "<group>"; };
 		32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellNoImageStretchable.png; sourceTree = "<group>"; };
 		32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CellNoImageStretchable@2x.png"; sourceTree = "<group>"; };
 		32F8E3EF16E1F9D900AF365C /* EventsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsUtils.h; sourceTree = "<group>"; };
@@ -1684,6 +1699,10 @@
 				32035FE516E13A020016F03C /* EventPoolViewController.m */,
 				3281AB8016E221F700D8FAD1 /* EventItemViewController.h */,
 				3281AB8116E221F700D8FAD1 /* EventItemViewController.m */,
+				32F5308716EA973B00F66484 /* EventsCategorySelectorViewController.h */,
+				32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */,
+				32F5309016EAB8F700F66484 /* EventsSplashDetailViewController.h */,
+				32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */,
 			);
 			name = Controllers;
 			path = Plugins/EventsPlugin/Controllers;
@@ -2657,6 +2676,9 @@
 			children = (
 				C9574A2CA3E21EEE6B620DE7 /* Events.png */,
 				C0FF44E59AC0FAF424B57744 /* Events@2x.png */,
+				32F5309316EABA0F00F66484 /* EventsLarge.png */,
+				32F5307E16EA8D5800F66484 /* NoImageCell_64.png */,
+				32F5307F16EA8D5800F66484 /* NoImageCell_64@2x.png */,
 			);
 			name = Images;
 			path = Plugins/EventsPlugin/Views/Images;
@@ -2711,7 +2733,9 @@
 				32035FEA16E153860016F03C /* EventItemCell.m */,
 				32035FEC16E153CF0016F03C /* EventItemCell.xib */,
 				3281AB8316E2254600D8FAD1 /* EventItemView.xib */,
-				329E1B3716E687080054C3A8 /* EventItemInfo.html */,
+				32F5308A16EA9EA000F66484 /* EventsCategorySelectorView.xib */,
+				32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */,
+				32F5308C16EAB02400F66484 /* EventItemInfo.html */,
 			);
 			name = Views;
 			path = Plugins/EventsPlugin/Views;
@@ -3045,7 +3069,6 @@
 				32F8E3ED16E1F53000AF365C /* CellNoImageStretchable.png in Resources */,
 				32F8E3EE16E1F53000AF365C /* CellNoImageStretchable@2x.png in Resources */,
 				3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */,
-				329E1B3516E687080054C3A8 /* EventItemInfo.html in Resources */,
 				321CCF9016E37EB6002CBEA2 /* zbar-back.png in Resources */,
 				321CCF9116E37EB6002CBEA2 /* zbar-help.html in Resources */,
 				321CCF9216E37EB6002CBEA2 /* zbar-helpicons.png in Resources */,
@@ -3054,6 +3077,12 @@
 				329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */,
 				329E1B3F16E696F80054C3A8 /* FavoriteGlowNavBarButton.png in Resources */,
 				329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */,
+				32F5308016EA8D5800F66484 /* NoImageCell_64.png in Resources */,
+				32F5308116EA8D5800F66484 /* NoImageCell_64@2x.png in Resources */,
+				32F5308B16EA9EA000F66484 /* EventsCategorySelectorView.xib in Resources */,
+				32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */,
+				32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */,
+				32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3235,6 +3264,8 @@
 				321CCF7016E27357002CBEA2 /* UIImage+Additions.m in Sources */,
 				321CCF9E16E3B537002CBEA2 /* PCURLSchemeHandler.m in Sources */,
 				32617BCE16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m in Sources */,
+				32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */,
+				32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3302,15 +3333,6 @@
 				32969AB515FB93060051EF9A /* fr */,
 			);
 			name = MyStationsHelp.html;
-			sourceTree = "<group>";
-		};
-		329E1B3716E687080054C3A8 /* EventItemInfo.html */ = {
-			isa = PBXVariantGroup;
-			children = (
-				329E1B3616E687080054C3A8 /* en */,
-				329E1B3816E6870B0054C3A8 /* fr */,
-			);
-			name = EventItemInfo.html;
 			sourceTree = "<group>";
 		};
 		32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */ = {

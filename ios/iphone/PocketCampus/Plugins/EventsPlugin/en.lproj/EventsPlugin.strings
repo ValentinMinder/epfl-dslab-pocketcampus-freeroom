@@ -15,3 +15,6 @@
 "Place" = "Location";
 "By" = "By";
 "MoreDetails" = "More details";
+"NoResultPCUnknownViewControllerLoad" = "Impossible to find this person.";
+"SelectCategory" = "Go to category";
+"Categories" = "Categories";

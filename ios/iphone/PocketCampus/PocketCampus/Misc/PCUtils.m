@@ -81,12 +81,6 @@
 }
 
 
-+ (UIImage*)strechableEmptyImageForCell {
-    UIImage* image = [UIImage imageNamed:@"CellNoImageStretchable"];
-    image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(1.0, 1.0, 1.0, 1.0)];
-    return image;
-}
-
 + (UILabel*)addCenteredLabelInView:(UIView*)view withMessage:(NSString*)message {
     [self removeCenteredLabelInView:view];
     UILabel* label = [[UILabel alloc] initWithFrame:view.frame];

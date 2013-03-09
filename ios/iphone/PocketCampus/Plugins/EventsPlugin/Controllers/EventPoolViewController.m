@@ -28,6 +28,10 @@
 
 #import "PCTableViewWithRemoteThumbnails.h"
 
+#import "EventItem+Additions.h"
+
+#import "EventsCategorySelectorViewController.h"
+
 @interface EventPoolViewController ()
 
 @property (nonatomic) int64_t poolId;
@@ -103,9 +107,13 @@ static NSString* kEventCell = @"EventCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.rowHeight = [EventItemCell height];
-    if (self.poolId == -1) {
+    if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/events" withError:NULL];
+    } else {
+        [[GANTracker sharedTracker] trackPageview:[NSString stringWithFormat:@"/v3r1/%lld/subevents", self.poolId] withError:NULL];
     }
+    
+    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setTemporaryThumnail:[UIImage imageNamed:@"NoImageCell_64"]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -114,7 +122,8 @@ static NSString* kEventCell = @"EventCell";
         [self refresh];
     } else {
         //if favorites modified, need to reload
-        [self fillSectionsFromReplyForCurrentCategoriesAndTags];
+        [self showButtonsConditionally];
+        [self fillCollectionsFromReplyAndSelection];
         [self.tableView reloadData];
     }
 }
@@ -161,9 +170,39 @@ static NSString* kEventCell = @"EventCell";
     if (!self.poolReply) {
         return;
     }
+    
+    NSMutableArray* rightElements = [NSMutableArray array];
+    
     if (self.poolReply.eventPool.enableScan) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)];
+        [rightElements addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
     }
+    
+    if (!self.poolReply.eventPool.disableFilterByCateg) {
+        [rightElements addObject:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Categories", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)]];
+    }
+    
+    self.navigationItem.rightBarButtonItems = rightElements;
+}
+
+- (void)filterButtonPressed {
+    
+    
+    EventPoolViewController* controller __weak = self;
+    EventsCategorySelectorViewController* categoryViewController = [[EventsCategorySelectorViewController alloc] initWithCategories:self.sectionsNames selectedInitially:nil userValidatedSelectionBlock:^(NSArray *newlySelected) {
+        if ([newlySelected count] != 1) {
+            @throw [NSException exceptionWithName:@"Unsupported operation" reason:@"only single category selection is supported currently" userInfo:nil];
+        }
+        NSString* selectedCateg = newlySelected[0];
+
+        NSInteger section = [controller.sectionsNames indexOfObject:selectedCateg];
+        
+        if (section != NSNotFound) {
+            [controller.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
+            [controller.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+
+    }];
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:categoryViewController] animated:YES completion:NULL];
 }
 
 - (void)cameraButtonPressed {
@@ -181,9 +220,9 @@ static NSString* kEventCell = @"EventCell";
 }
 
 
-#pragma mark - Sections fill
+#pragma mark - Data fill
 
-- (void)fillSectionsFromReplyForCurrentCategoriesAndTags {
+- (void)fillCollectionsFromReplyAndSelection {
     if (!self.poolReply) {
         return;
     }
@@ -219,9 +258,10 @@ static NSString* kEventCell = @"EventCell";
         }
         [tmpItemsForSection addObject:itemsForCategNumber[categNumber]];
     }
-    self.sectionsNames = [tmpSectionsNames copy];
-    self.itemsForSection = [tmpItemsForSection copy];
+    self.sectionsNames = tmpSectionsNames;
+    self.itemsForSection = tmpItemsForSection;
 }
+
 
 #pragma mark - ZBar and Image picker delegate
 
@@ -299,9 +339,11 @@ static NSString* kEventCell = @"EventCell";
     switch (reply.status) {
         case 200:
             self.poolReply = reply;
-            self.title = self.poolReply.eventPool.poolTitle;
+            if (self.poolReply.eventPool.poolTitle) {
+                self.title = self.poolReply.eventPool.poolTitle;
+            }
             [self showButtonsConditionally];
-            [self fillSectionsFromReplyForCurrentCategoriesAndTags];
+            [self fillCollectionsFromReplyAndSelection];
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
             [self.pcRefreshControl markRefreshSuccessful];
@@ -374,8 +416,14 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     EventItem* eventItem = self.itemsForSection[indexPath.section][indexPath.row];
-    [self.navigationController pushViewController:[[EventItemViewController alloc] initWithEventItem:eventItem] animated:YES];
-    //[self.navigationController pushViewController:[[EventItemViewController alloc] initAndLoadEventItemWithId:eventItem.eventId] animated:YES];
+    
+    EventItemViewController* eventItemViewController = [[EventItemViewController alloc] initWithEventItem:eventItem];
+    
+    if (self.splitViewController && self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
+        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[UINavigationController alloc] initWithRootViewController:eventItemViewController]];
+    } else {
+        [self.navigationController pushViewController:eventItemViewController animated:YES];
+    }
 }
 
 
@@ -403,6 +451,21 @@ static NSString* kEventCell = @"EventCell";
     }
     
     cell.eventItem = eventItem;
+    
+    if ([self.poolReply.eventPool.poolTitle isEqualToString:@"Schedule"]) { //special case to show hour for EDIC open house
+        cell.rightSubtitleLabel.text = [eventItem dateString:EventItemDateStyleLong];
+    }
+    
+    /*UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kEventCell];
+    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kEventCell];
+    }
+    
+    cell.textLabel.text = eventItem.eventTitle;
+    cell.textLabel.numberOfLines = 2;
+    cell.detailTextLabel.text = eventItem.eventPlace;
+     */
     
     [(PCTableViewWithRemoteThumbnails*)(self.tableView) setThumbnailURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
     

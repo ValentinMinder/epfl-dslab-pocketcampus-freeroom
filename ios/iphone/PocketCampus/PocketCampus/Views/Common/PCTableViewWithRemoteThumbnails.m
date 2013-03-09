@@ -46,9 +46,6 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     }
     
     //Only init if user not already set them
-    if (!self.temporaryThumnail) {
-        self.temporaryThumnail = [PCUtils strechableEmptyImageForCell];
-    }
     if (self.thumbnailsCacheSeconds == 0.0) {
         self.thumbnailsCacheSeconds = 86400; //1day
     }
@@ -68,6 +65,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     
     if (self.imageForUrlString[url.absoluteString]) {
         cell.imageView.image = self.imageForUrlString[url.absoluteString];
+        [cell layoutSubviews];
         return;
     }
     
@@ -88,7 +86,10 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     thumbnailRequest.delegate = self;
     thumbnailRequest.didFinishSelector = @selector(thumbnailRequestFinished:);
     thumbnailRequest.didFailSelector = @selector(thumbnailRequestFailed:);
-    thumbnailRequest.userInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:indexPath, kThumbnailIndexPathKey, nil];
+    
+    NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
+    userInfo[kThumbnailIndexPathKey] = indexPath;
+    thumbnailRequest.userInfo = userInfo;
     thumbnailRequest.timeOutSeconds = 10.0; //do not overload network with thumbnails that fail to load
     self.requestForIndexPath[indexPath] = thumbnailRequest;
     [self.networkQueue addOperation:thumbnailRequest];
@@ -128,20 +129,15 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         
         if (image) {
             
-            //NSData* imageData = UIImageJPEGRepresentation(image, 1.0);
-            
-            image = [image imageScaledToFitSize:[self thumbnailSizeForIndexPath:indexPath]];
-            
             self.imageForUrlString[request.url.absoluteString] = image;
-            
-            //cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
-            cell.imageView.image = image; //using UIImage+Additions;
+            cell.imageView.image = image;
             
             [cell layoutSubviews];
         }
     }
 
 }
+
 
 - (void)thumbnailRequestFailed:(ASIHTTPRequest *)request {
     NSIndexPath* reqIndexPath = [request.userInfo objectForKey:kThumbnailIndexPathKey];

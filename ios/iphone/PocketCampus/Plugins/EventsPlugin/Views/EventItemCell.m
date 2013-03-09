@@ -31,7 +31,9 @@
     self = cell;
     if (self) {
         self.customReuseIdentifier = reuseIdentifier;
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (![PCUtils isIdiomPad]) {
+            self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
         self.selectionStyle = UITableViewCellSelectionStyleGray;
         self.titleLabel.text = @"";
         self.subtitleLabel.text = @"";
@@ -61,6 +63,23 @@
         self.rightSubtitleLabel.text = [eventItem dateString:EventItemDateStyleShort];
     }
     [self layoutSubviews];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    CGFloat size = [[self class] height];
+    self.imageView.frame = CGRectMake(0,0,size,size);
+    self.imageView.clipsToBounds = YES;
+    self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    /*CGRect tmpFrame = self.textLabel.frame;
+    tmpFrame.origin.x = 77;
+    self.textLabel.frame = tmpFrame;
+    
+    tmpFrame = self.detailTextLabel.frame;
+    tmpFrame.origin.x = 77;
+    self.detailTextLabel.frame = tmpFrame;*/
+    
 }
 
 

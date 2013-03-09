@@ -306,8 +306,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.reachability stopNotifier];
     for (ASIHTTPRequest* req in self.networkQueue.operations) {
-        req.delegate = nil;
-        [req cancel];
+        [req clearDelegatesAndCancel];
     }
     self.networkQueue.delegate = nil;
     [self.newsService cancelOperationsForDelegate:self];

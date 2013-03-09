@@ -260,6 +260,8 @@
         ABPersonSetImageData(self.displayedPerson, NULL, nil);
         [self loadView]; //reload view content to update picture
     } else {
+        [self.loadingIndicator stopAnimating];
+        self.centerMessageLabel.hidden = NO;
         self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
     }
 }
