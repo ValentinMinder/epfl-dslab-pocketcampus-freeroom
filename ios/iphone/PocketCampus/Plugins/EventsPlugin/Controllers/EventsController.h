@@ -5,6 +5,6 @@
 
 #import "PluginController.h"
 
-@interface EventsController : PluginController<PluginControllerProtocol>
+@interface EventsController : PluginController<PluginControllerProtocol, UISplitViewControllerDelegate>
 
 @end

@@ -84,7 +84,7 @@ static NSString* kPoolCell = @"PoolCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/events/item" withError:NULL];
+    [[GANTracker sharedTracker] trackPageview:[NSString stringWithFormat:@"/v3r1/events/%lld", self.eventId] withError:NULL];
     self.view.backgroundColor = [PCValues backgroundColor1];
     self.tableView.backgroundColor = [UIColor clearColor];
     UIView* backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
@@ -217,6 +217,7 @@ static NSString* kPoolCell = @"PoolCell";
     
     replacements[@"$EVENT_ITEM_THUMBNAIL$"] = @"";
     replacements[@"$EVENT_ITEM_TITLE$"] = @"";
+    replacements[@"$PADDING_LEFT_TITLE_PX$"] = @"0";
     replacements[@"$EVENT_ITEM_SECOND_LINE$"] = @"";
     replacements[@"$EVENT_ITEM_DATE_TIME$"] = @"";
     replacements[@"$EVENT_ITEM_PLACE$"] = @"";
@@ -226,6 +227,7 @@ static NSString* kPoolCell = @"PoolCell";
     
     if (self.eventItem.eventThumbnail && !self.eventItem.hideThumbnail) {
         replacements[@"$EVENT_ITEM_THUMBNAIL$"] = [NSString stringWithFormat:@"<img src='%@'>", self.eventItem.eventThumbnail];
+        replacements[@"$PADDING_LEFT_TITLE_PX$"] = @"6";
     }
     
     if (self.eventItem.eventTitle && !self.eventItem.hideTitle) {
@@ -406,6 +408,7 @@ static NSString* kPoolCell = @"PoolCell";
 #pragma mark - dealloc
 
 - (void)dealloc {
+    self.webView.delegate = nil;
     [self.eventsService cancelOperationsForDelegate:self];
 }
 

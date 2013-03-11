@@ -67,7 +67,11 @@
         
         formatter.dateStyle = NSDateFormatterShortStyle;
         if (dateStyle == EventItemDateStyleLong) {
-            formatter.timeStyle = NSDateFormatterShortStyle; //will show time
+            NSDateComponents* componentsStartDate = [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit | NSHourCalendarUnit fromDate:startDate];
+            
+            if (!([componentsStartDate minute] == 0 && [componentsStartDate hour] == 0)) {
+                formatter.timeStyle = NSDateFormatterShortStyle; //will show time
+            }
         }
         
         

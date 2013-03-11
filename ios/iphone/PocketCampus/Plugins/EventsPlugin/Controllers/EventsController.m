@@ -10,6 +10,10 @@
 
 #import "EventItemViewController.h"
 
+#import "PCUtils.h"
+
+#import "EventsSplashDetailViewController.h"
+
 static EventsController* instance __weak = nil;
 
 @implementation EventsController
@@ -25,9 +29,18 @@ static EventsController* instance __weak = nil;
         
             EventPoolViewController* rootPoolViewController = [[EventPoolViewController alloc] initAndLoadRootPool];
             
-            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:rootPoolViewController];
-            navController.pluginIdentifier = [[self class] identifierName];
-            self.mainNavigationController = navController;
+            /*if ([PCUtils isIdiomPad]) {
+                UINavigationController* navController =  [[UINavigationController alloc] initWithRootViewController:rootPoolViewController];
+                EventsSplashDetailViewController* splashDetailViewController = [[EventsSplashDetailViewController alloc] init];
+                PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:splashDetailViewController];
+                splitViewController.pluginIdentifier = [[self class] identifierName];
+                splitViewController.delegate = self;
+                self.mainSplitViewController = splitViewController;
+            } else {*/
+                PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:rootPoolViewController];
+                navController.pluginIdentifier = [[self class] identifierName];
+                self.mainNavigationController = navController;
+            //}
             
             instance = self;
         }
@@ -75,6 +88,13 @@ static EventsController* instance __weak = nil;
 + (NSString*)identifierName {
     return @"Events";
 }
+
+#pragma mark - UISplitViewControllerDelegate
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
+    return NO;
+}
+
 
 - (void)dealloc
 {

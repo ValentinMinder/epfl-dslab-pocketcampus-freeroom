@@ -26,6 +26,10 @@
 	    	width: 100%;  
 	    }
         
+        #thumbnail {
+            padding: 0px;
+        }
+        
         #thumbnail img {
 	        max-width: 150px;
 	        display: block;
@@ -35,8 +39,9 @@
 		#title {
 			font-size: 13pt;
 			font-weight: bold;
+            text-align: left;
 			padding-top: 2px;
-			padding-left: 6px;
+			padding-left: $PADDING_LEFT_TITLE_PX$px;
 			padding-bottom: 2px;
 			padding-right: 2px;
 		}
@@ -77,7 +82,7 @@
     <table border="0">
         <tr>
             <td id="thumbnail" rowspan="2">$EVENT_ITEM_THUMBNAIL$</td>
-            <td id="title">$EVENT_ITEM_TITLE$</td>
+            <td width="100%" id="title">$EVENT_ITEM_TITLE$</td>
         </tr>
         <tr>
 	        <td id="second_line"><i>$EVENT_ITEM_SECOND_LINE$</i></td>

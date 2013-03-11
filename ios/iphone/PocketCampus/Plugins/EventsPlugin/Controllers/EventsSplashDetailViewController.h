@@ -1,0 +1,13 @@
+//
+//  EventsSplashDetailViewController.h
+//  PocketCampus
+//
+//  Created by Loïc Gardiol on 09.03.13.
+//  Copyright (c) 2013 EPFL. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface EventsSplashDetailViewController : UIViewController
+
+@end
