@@ -603,7 +603,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 			
 			ei.setEventTitle(rs.getString(6));
 			ei.setEventThumbnail("http://pocketcampus.epfl.ch/images/padlock.png");
-			ei.setSecondLine("Use the scan button to exchange contacts with this person");
+			ei.setSecondLine("Use the scan button to exchange contact information with this person");
 			
 			if(level < 100)
 				return ei;
