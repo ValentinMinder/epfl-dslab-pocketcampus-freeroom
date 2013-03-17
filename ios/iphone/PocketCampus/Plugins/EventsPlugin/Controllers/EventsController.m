@@ -29,18 +29,18 @@ static EventsController* instance __weak = nil;
         
             EventPoolViewController* rootPoolViewController = [[EventPoolViewController alloc] initAndLoadRootPool];
             
-            /*if ([PCUtils isIdiomPad]) {
+            if ([PCUtils isIdiomPad]) {
                 UINavigationController* navController =  [[UINavigationController alloc] initWithRootViewController:rootPoolViewController];
                 EventsSplashDetailViewController* splashDetailViewController = [[EventsSplashDetailViewController alloc] init];
                 PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:splashDetailViewController];
                 splitViewController.pluginIdentifier = [[self class] identifierName];
                 splitViewController.delegate = self;
                 self.mainSplitViewController = splitViewController;
-            } else {*/
+            } else {
                 PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:rootPoolViewController];
                 navController.pluginIdentifier = [[self class] identifierName];
                 self.mainNavigationController = navController;
-            //}
+            }
             
             instance = self;
         }

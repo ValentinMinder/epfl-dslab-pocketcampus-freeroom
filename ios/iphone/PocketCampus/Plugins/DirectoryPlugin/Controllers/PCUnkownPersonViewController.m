@@ -81,6 +81,7 @@
         self.loadingIndicator.color = [UIColor colorWithWhite:0.3 alpha:1.0];
         [self.view addSubview:self.loadingIndicator];
         self.loadingIndicator.center = CGPointMake(self.view.center.x, self.view.center.y-35.0);
+        self.loadingIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
         [self.loadingIndicator startAnimating];
     }
 }

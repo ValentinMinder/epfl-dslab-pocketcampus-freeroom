@@ -107,7 +107,13 @@
                 startDateString = [formatter stringFromDate:startDate];
             }
             
-            if ((dateStyle == EventItemDateStyleLong) && self.endDate && self.endDate != self.startDate) {
+            NSCalendar* gmtCal = [NSCalendar currentCalendar];
+            [gmtCal setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]]; //GMT
+            NSDateComponents* gmtStartDateComp = [gmtCal components:NSDayCalendarUnit fromDate:startDate];
+            NSDateComponents* gmtEndDateComp = [gmtCal components:NSDayCalendarUnit fromDate:endDate];
+            BOOL endTimeValid = ([gmtEndDateComp day] >= [gmtStartDateComp day]);
+            
+            if (endTimeValid && (dateStyle == EventItemDateStyleLong) && self.endDate && self.endDate != self.startDate) {
             
                 formatter.dateStyle = NSDateFormatterNoStyle;
                 formatter.timeStyle = NSDateFormatterShortStyle;

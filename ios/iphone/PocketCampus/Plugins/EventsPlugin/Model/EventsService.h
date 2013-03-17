@@ -11,6 +11,8 @@
 
 #import "events.h"
 
+static NSString* kFavoritesEventItemsUpdatedNotification = @"FavoritesEventItemsUpdated";
+
 @interface EventsService : Service <ServiceProtocol>
 
 /* Thrift methods
