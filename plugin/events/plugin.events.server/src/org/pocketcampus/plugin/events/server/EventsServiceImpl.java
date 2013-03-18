@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.events.server;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -458,7 +459,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 		if(tmp.size() > 0 && tmp.get(0).text().length() > 0) {
 			ev.setEventPlace(tmp.get(0).text());
 			if(tmp.get(0).hasAttr("href"))
-				ev.setLocationHref(tmp.get(0).attr("href"));
+				ev.setLocationHref(convertMapUrl(tmp.get(0).attr("href")));
 		}
 		tmp = e.getElementsByAttributeValue("class", "title");
 		if(tmp.size() > 0)
@@ -488,6 +489,27 @@ public class EventsServiceImpl implements EventsService.Iface {
 		if(categ.size() > 0)
 			ev.setEventCateg(getCategFromName(categ.get(0).text()));
 		return ev;
+	}
+	
+	private static String convertMapUrl(String mapUrl) {
+		try {
+			URL url = new URL(mapUrl);
+			if("plan.epfl.ch".equals(url.getHost())) {
+				String qStr = url.getQuery();
+				if(qStr != null) {
+					String[] params = qStr.split("&");
+					for(String p : params) {
+						String[] param = p.split("=");
+						if(param.length == 2 && ("room".equalsIgnoreCase(param[0]) || "q".equalsIgnoreCase(param[0]))) {
+							return "pocketcampus://map.plugin.pocketcampus.org/search?q=" + param[1];
+						}
+					}
+					
+				}
+			}
+		} catch (MalformedURLException e) {
+		}
+		return null;
 	}
 	
 	private static String removeFirstStrong(Element t) {
