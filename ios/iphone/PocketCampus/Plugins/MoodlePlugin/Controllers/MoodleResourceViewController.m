@@ -55,8 +55,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document" withError:NULL];
     
-    self.navigationController.navigationBar.translucent = YES;
-    
     self.webView.hidden = YES;
     
     self.progressView.progress = 0.0;
@@ -94,7 +92,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    self.navigationController.navigationBar.translucent = YES;
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
+    self.navigationController.navigationBar.translucent = NO;
     [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
 }
 

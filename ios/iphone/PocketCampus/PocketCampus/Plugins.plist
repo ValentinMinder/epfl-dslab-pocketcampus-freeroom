@@ -42,7 +42,7 @@
 			<key>hiddenByDefault</key>
 			<false/>
 			<key>supportedIdioms</key>
-			<string>phone</string>
+			<string>phone+pad</string>
 		</dict>
 		<dict>
 			<key>identifierName</key>

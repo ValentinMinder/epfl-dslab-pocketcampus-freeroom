@@ -28,7 +28,7 @@
 		32035FE616E13A020016F03C /* EventPoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FE516E13A020016F03C /* EventPoolViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32035FE816E13F340016F03C /* EventPoolView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035FE716E13F340016F03C /* EventPoolView.xib */; };
 		32035FEB16E153860016F03C /* EventItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FEA16E153860016F03C /* EventItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32035FED16E153CF0016F03C /* EventItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035FEC16E153CF0016F03C /* EventItemCell.xib */; };
+		32035FED16E153CF0016F03C /* EventItemCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035FEC16E153CF0016F03C /* EventItemCell~iphone.xib */; };
 		3203ECD41503C01E004C2A13 /* LoadingIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 3203ECD31503C01E004C2A13 /* LoadingIndicator.png */; };
 		3204C6D01648412D003944D2 /* LightGrayTextureBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */; };
 		3204C6D11648412D003944D2 /* LightGrayTextureBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */; };
@@ -300,6 +300,7 @@
 		32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDB15656D36008415A1 /* CamiproView.xib */; };
 		32BE787216977F0000EC3E64 /* EyeBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 32BE787016977F0000EC3E64 /* EyeBlack.png */; };
 		32BE787316977F0000EC3E64 /* EyeBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32BE787116977F0000EC3E64 /* EyeBlack@2x.png */; };
+		32C36D1416F53F4E00DE1EF4 /* EventItemCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32C36D1316F53F4E00DE1EF4 /* EventItemCell~ipad.xib */; };
 		32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */; };
 		32CAE432153628C100AB17CC /* ConnectionPartsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */; };
 		32CBF04B163447FC00FD92E5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CBF040163447FA00FD92E5 /* Default-568h@2x.png */; };
@@ -454,7 +455,7 @@
 		32035FE716E13F340016F03C /* EventPoolView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventPoolView.xib; sourceTree = "<group>"; };
 		32035FE916E153860016F03C /* EventItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventItemCell.h; sourceTree = "<group>"; };
 		32035FEA16E153860016F03C /* EventItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventItemCell.m; sourceTree = "<group>"; };
-		32035FEC16E153CF0016F03C /* EventItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemCell.xib; sourceTree = "<group>"; };
+		32035FEC16E153CF0016F03C /* EventItemCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "EventItemCell~iphone.xib"; sourceTree = "<group>"; };
 		3203ECD31503C01E004C2A13 /* LoadingIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoadingIndicator.png; sourceTree = "<group>"; };
 		3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LightGrayTextureBackground.png; sourceTree = "<group>"; };
 		3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LightGrayTextureBackground@2x.png"; sourceTree = "<group>"; };
@@ -887,6 +888,7 @@
 		32BCACDB15656D36008415A1 /* CamiproView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproView.xib; sourceTree = "<group>"; };
 		32BE787016977F0000EC3E64 /* EyeBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EyeBlack.png; sourceTree = "<group>"; };
 		32BE787116977F0000EC3E64 /* EyeBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBlack@2x.png"; sourceTree = "<group>"; };
+		32C36D1316F53F4E00DE1EF4 /* EventItemCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "EventItemCell~ipad.xib"; sourceTree = "<group>"; };
 		32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionPartsListViewController.h; sourceTree = "<group>"; };
 		32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionPartsListViewController.m; sourceTree = "<group>"; };
 		32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionPartsListView.xib; sourceTree = "<group>"; };
@@ -2731,7 +2733,8 @@
 				32035FE716E13F340016F03C /* EventPoolView.xib */,
 				32035FE916E153860016F03C /* EventItemCell.h */,
 				32035FEA16E153860016F03C /* EventItemCell.m */,
-				32035FEC16E153CF0016F03C /* EventItemCell.xib */,
+				32035FEC16E153CF0016F03C /* EventItemCell~iphone.xib */,
+				32C36D1316F53F4E00DE1EF4 /* EventItemCell~ipad.xib */,
 				3281AB8316E2254600D8FAD1 /* EventItemView.xib */,
 				32F5308A16EA9EA000F66484 /* EventsCategorySelectorView.xib */,
 				32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */,
@@ -3065,7 +3068,7 @@
 				38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */,
 				32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */,
 				32035FE816E13F340016F03C /* EventPoolView.xib in Resources */,
-				32035FED16E153CF0016F03C /* EventItemCell.xib in Resources */,
+				32035FED16E153CF0016F03C /* EventItemCell~iphone.xib in Resources */,
 				32F8E3ED16E1F53000AF365C /* CellNoImageStretchable.png in Resources */,
 				32F8E3EE16E1F53000AF365C /* CellNoImageStretchable@2x.png in Resources */,
 				3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */,
@@ -3083,6 +3086,7 @@
 				32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */,
 				32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */,
 				32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */,
+				32C36D1416F53F4E00DE1EF4 /* EventItemCell~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

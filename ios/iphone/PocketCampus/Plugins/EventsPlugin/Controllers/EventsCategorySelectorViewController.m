@@ -43,18 +43,22 @@ static NSString* kCategoryCell = @"CategoryCell";
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
-    return UIInterfaceOrientationMaskPortrait;
+    if ([PCUtils isIdiomPad]) {
+        return UIInterfaceOrientationMaskAll;
+    } else {
+        return UIInterfaceOrientationMaskPortrait;
+    }
 }
 
-- (BOOL)shouldAutorotate {
-    //special dynamic conditions for temporary prevent rotation
-    return NO;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation // iOS 5 and earlier
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    if ([PCUtils isIdiomPad]) {
+        return YES;
+    } else {
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
 }
+
 
 #pragma mark - Buttons actions
 

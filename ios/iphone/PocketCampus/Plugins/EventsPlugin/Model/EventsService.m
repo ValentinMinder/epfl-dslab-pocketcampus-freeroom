@@ -102,12 +102,16 @@ static EventsService* instance __weak = nil;
     [self initFavorites];
     [self.favoriteEventItemIds addObject:[EventsUtils nsNumberForEventId:itemId]];
     [self persistFavorites];
+    NSNotification* notif = [NSNotification notificationWithName:kFavoritesEventItemsUpdatedNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
 }
 
 - (void)removeFavoriteEventItemId:(int64_t)itemId {
     [self initFavorites];
     [self.favoriteEventItemIds removeObject:[EventsUtils nsNumberForEventId:itemId]];
     [self persistFavorites];
+    NSNotification* notif = [NSNotification notificationWithName:kFavoritesEventItemsUpdatedNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
 }
 
 - (BOOL)isEventItemIdFavorite:(int64_t)itemId {

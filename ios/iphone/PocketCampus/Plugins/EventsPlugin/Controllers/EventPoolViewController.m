@@ -106,6 +106,7 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoritesWereUpdated) name:kFavoritesEventItemsUpdatedNotification object:self.eventsService];
     self.tableView.rowHeight = [EventItemCell height];
     if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/events" withError:NULL];
@@ -114,36 +115,42 @@ static NSString* kEventCell = @"EventCell";
     }
     
     [(PCTableViewWithRemoteThumbnails*)(self.tableView) setTemporaryThumnail:[UIImage imageNamed:@"NoImageCell_64"]];
+    [self showButtonsConditionally];
+    [self fillCollectionsFromReplyAndSelection];
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (!self.poolReply || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
-    } else {
-        //if favorites modified, need to reload
-        [self showButtonsConditionally];
-        [self fillCollectionsFromReplyAndSelection];
-        [self.tableView reloadData];
     }
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
-    return UIInterfaceOrientationMaskPortrait;
+    if ([PCUtils isIdiomPad]) {
+        return UIInterfaceOrientationMaskAll;
+    } else {
+        return UIInterfaceOrientationMaskPortrait;
+    }
 }
 
-- (BOOL)shouldAutorotate {
-    //special dynamic conditions for temporary prevent rotation
-    return NO;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation // iOS 5 and earlier
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    if ([PCUtils isIdiomPad]) {
+        return YES;
+    } else {
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
 }
 
 #pragma mark - Refresh control
+
+- (void)favoritesWereUpdated {
+    [self fillCollectionsFromReplyAndSelection];
+    [self.tableView reloadData];
+}
 
 - (void)initRefreshControl {
     self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"events" refreshedDataIdentifier:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]];
@@ -202,7 +209,10 @@ static NSString* kEventCell = @"EventCell";
         }
 
     }];
-    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:categoryViewController] animated:YES completion:NULL];
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:categoryViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self presentViewController:navController animated:YES completion:NULL];
 }
 
 - (void)cameraButtonPressed {
@@ -500,6 +510,7 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)dealloc {
     [self.eventsService cancelOperationsForDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

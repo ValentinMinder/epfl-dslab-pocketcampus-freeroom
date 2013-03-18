@@ -187,7 +187,7 @@ static const int kPluginsSection = 0;
     UILabel* pocketCampusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 188.0, 40.0)];
     pocketCampusLabel.backgroundColor = [UIColor clearColor];
 #ifdef DEBUG
-    pocketCampusLabel.text = @"PocketCampus";
+    pocketCampusLabel.text = @"PocketCampus β";
 #else
     pocketCampusLabel.text = @"PocketCampus";
 #endif
