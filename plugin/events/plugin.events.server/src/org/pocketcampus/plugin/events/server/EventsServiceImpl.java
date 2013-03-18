@@ -693,6 +693,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 		stm.setInt(3, period);
 		rs = stm.executeQuery();
 		while(rs.next()) {
+			if(rs.getInt("PERM_LEVEL") == 0)
+				continue;
 			EventItem ei = EventItemDecoderFromDb.decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"), (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
 			ei.setParentPool(parentId);
 			items.put(ei.getEventId(), ei);
