@@ -32,6 +32,8 @@
 
 #import "EventsCategorySelectorViewController.h"
 
+#import "UIActionSheet+Additions.h"
+
 @interface EventPoolViewController ()
 
 @property (nonatomic) int64_t poolId;
@@ -46,9 +48,18 @@
 @property (nonatomic, strong) NSArray* sectionsNames; //array of names of sections, to be used as key in itemsForSectionName
 @property (nonatomic, strong) NSArray* itemsForSection; //array of arrays of EventItem
 
+@property (nonatomic, strong) UIActionSheet* filterSelectionActionSheet;
+@property (nonatomic, strong) UIActionSheet* periodsSelectionActionSheet;
+
 @end
 
 static const NSTimeInterval kRefreshValiditySeconds = 1800; //30 min
+
+static const NSInteger kCategoriesIndex = 0;
+static const NSInteger kPeriodIndex = 1;
+static const NSInteger kOneWeekPeriodIndex = 0;
+static const NSInteger kOneMonthPeriodIndex = 1;
+static const NSInteger kSixMonthsPeriodIndex = 2;
 
 static NSString* kEventCell = @"EventCell";
 
@@ -62,6 +73,10 @@ static NSString* kEventCell = @"EventCell";
     if (self) {
         self.poolId = 0;
         self.eventsService = [EventsService sharedInstanceToRetain];
+        self.selectedPeriod = [self.eventsService lastSelectedPoolPeriod];
+        if (self.selectedPeriod == 0) {
+            self.selectedPeriod = EventsPeriods_ONE_MONTH; //default
+        }
     }
     return self;
 }
@@ -164,7 +179,7 @@ static NSString* kEventCell = @"EventCell";
 }
 
 - (EventPoolRequest*)createEventPoolRequest {
-    return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_MONTH]; //TODO dynamic period
+    return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:self.selectedPeriod];
 }
 
 - (void)startGetEventPoolRequest { 
@@ -184,35 +199,25 @@ static NSString* kEventCell = @"EventCell";
         [rightElements addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
     }
     
-    if (!self.poolReply.eventPool.disableFilterByCateg) {
-        [rightElements addObject:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Categories", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)]];
+    if (!self.poolReply.eventPool.disableFilterByCateg) { //will also disable period filtering
+        [rightElements addObject:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Filter", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)]];
     }
     
     self.navigationItem.rightBarButtonItems = rightElements;
 }
 
 - (void)filterButtonPressed {
+    if (self.periodsSelectionActionSheet.isVisible) {
+        [self.periodsSelectionActionSheet dismissWithClickedButtonIndex:[self.periodsSelectionActionSheet cancelButtonIndex] animated:YES];
+        return;
+    }
     
-    
-    EventPoolViewController* controller __weak = self;
-    EventsCategorySelectorViewController* categoryViewController = [[EventsCategorySelectorViewController alloc] initWithCategories:self.sectionsNames selectedInitially:nil userValidatedSelectionBlock:^(NSArray *newlySelected) {
-        if ([newlySelected count] != 1) {
-            @throw [NSException exceptionWithName:@"Unsupported operation" reason:@"only single category selection is supported currently" userInfo:nil];
-        }
-        NSString* selectedCateg = newlySelected[0];
-
-        NSInteger section = [controller.sectionsNames indexOfObject:selectedCateg];
-        
-        if (section != NSNotFound) {
-            [controller.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
-            [controller.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }
-
-    }];
-    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:categoryViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
-    [self presentViewController:navController animated:YES completion:NULL];
+    if (!self.filterSelectionActionSheet) {
+        NSString* periodString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat", @"EventsPlugin", nil), [EventsUtils periodStringForEventsPeriod:self.selectedPeriod selected:NO]];
+        self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"SelectCategory", @"EventsPlugin", nil), periodString, nil];
+        self.filterSelectionActionSheet.delegate = self;
+    }
+    [self.filterSelectionActionSheet toggleFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
 
 - (void)cameraButtonPressed {
@@ -229,6 +234,76 @@ static NSString* kEventCell = @"EventCell";
     
 }
 
+//resulting actions
+
+- (void)presentCategoriesController {
+    EventPoolViewController* controller __weak = self;
+    EventsCategorySelectorViewController* categoryViewController = [[EventsCategorySelectorViewController alloc] initWithCategories:self.sectionsNames selectedInitially:nil userValidatedSelectionBlock:^(NSArray *newlySelected) {
+        if ([newlySelected count] != 1) {
+            @throw [NSException exceptionWithName:@"Unsupported operation" reason:@"only single category selection is supported currently" userInfo:nil];
+        }
+        NSString* selectedCateg = newlySelected[0];
+        
+        NSInteger section = [controller.sectionsNames indexOfObject:selectedCateg];
+        
+        if (section != NSNotFound) {
+            [controller.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
+            [controller.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+        
+    }];
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:categoryViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self presentViewController:navController animated:YES completion:NULL];
+}
+
+- (void)presentPeriodSelectionActionSheet {
+    if (!self.periodsSelectionActionSheet) {
+
+        self.periodsSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"ShowEventsFor...", @"EventsPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
+                                            [EventsUtils periodStringForEventsPeriod:EventsPeriods_ONE_WEEK selected:(self.selectedPeriod == EventsPeriods_ONE_WEEK)],
+                                            [EventsUtils periodStringForEventsPeriod:EventsPeriods_ONE_MONTH selected:(self.selectedPeriod == EventsPeriods_ONE_MONTH)],
+                                            [EventsUtils periodStringForEventsPeriod:EventsPeriods_SIX_MONTHS selected:(self.selectedPeriod == EventsPeriods_SIX_MONTHS)]
+                                            , nil];
+
+    }
+    [self.periodsSelectionActionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (actionSheet == self.filterSelectionActionSheet) {
+        switch (buttonIndex) {
+            case kCategoriesIndex:
+                [self presentCategoriesController];
+                break;
+            case kPeriodIndex:
+                [self presentPeriodSelectionActionSheet];
+                break;
+        }
+        self.filterSelectionActionSheet = nil;
+    } else if (actionSheet == self.periodsSelectionActionSheet) {
+        switch (buttonIndex) {
+            case kOneWeekPeriodIndex:
+                self.selectedPeriod = EventsPeriods_ONE_WEEK;
+                break;
+            case kOneMonthPeriodIndex:
+                self.selectedPeriod = EventsPeriods_ONE_MONTH;
+                break;
+            case kSixMonthsPeriodIndex:
+                self.selectedPeriod = EventsPeriods_SIX_MONTHS;
+                break;
+        }
+        [self.eventsService saveSelectedPoolPeriod:self.selectedPeriod];
+        if (buttonIndex != [self.periodsSelectionActionSheet cancelButtonIndex]) {
+            [self.tableView scrollsToTop];
+            [self refresh];
+        }
+        self.periodsSelectionActionSheet = nil;
+    }
+}
 
 #pragma mark - Data fill
 

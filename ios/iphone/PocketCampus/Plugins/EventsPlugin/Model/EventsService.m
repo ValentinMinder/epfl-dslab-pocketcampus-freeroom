@@ -23,6 +23,10 @@ static NSString* kUserTokenKey = @"userToken";
 
 static NSString* kFavoriteEventItemIds = @"favoriteEventItemIds";
 
+//static NSString* kEventItemPictureKeyWithFormat = @"picture-eventItem-%ld";
+
+static NSString* kPoolPeriodKey = @"poolPeriod";
+
 @implementation EventsService
 
 static EventsService* instance __weak = nil;
@@ -117,6 +121,36 @@ static EventsService* instance __weak = nil;
 - (BOOL)isEventItemIdFavorite:(int64_t)itemId {
     [self initFavorites];
     return [self.favoriteEventItemIds containsObject:[EventsUtils nsNumberForEventId:itemId]];
+}
+
+#pragma mark - EventItem picture saving
+
+
+/*- (NSString*)keyForPictureDataForEventItem:(EventItem*)eventItem {
+    return [NSString stringWithFormat:kEventItemPictureKeyWithFormat, eventItem.eventId];
+}
+
+- (NSData*)pictureDataForEventItem:(EventItem*)eventItem {
+    return (NSData*)[ObjectArchiver objectForKey:[self keyForPictureDataForEventItem:eventItem] andPluginName:@"events" isCache:YES];
+}
+
+- (BOOL)savePictureData:(NSData*)imageData forEventItem:(EventItem*)eventItem {
+    NSString* savePath = [ObjectArchiver pathForKey:[self keyForPictureDataForEventItem:eventItem] pluginName:@"events" customFileExtension:@"jpg" isCache:YES];
+    NSData* jpgData = UIImageJPEGRepresentation([UIImage imageWithData:imageData], 1.0);
+    return [jpgData writeToFile:savePath atomically:NO];
+}*/
+
+#pragma mark - Events period to display
+
+- (int32_t)lastSelectedPoolPeriod {
+    NSNumber* period = (NSNumber*)[ObjectArchiver objectForKey:kPoolPeriodKey andPluginName:@"events"];
+    if (period) {
+        return [period intValue];
+    }
+    return 0;
+}
+- (BOOL)saveSelectedPoolPeriod:(int32_t)period {
+    return [ObjectArchiver saveObject:[NSNumber numberWithInt:period] forKey:kPoolPeriodKey andPluginName:@"events"];
 }
 
 #pragma mark - Service methods

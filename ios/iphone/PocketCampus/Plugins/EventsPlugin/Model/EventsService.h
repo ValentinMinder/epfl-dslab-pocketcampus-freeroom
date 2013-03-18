@@ -32,6 +32,11 @@ static NSString* kFavoritesEventItemsUpdatedNotification = @"FavoritesEventItems
 - (void)removeFavoriteEventItemId:(int64_t)itemId;
 - (BOOL)isEventItemIdFavorite:(int64_t)itemId;
 
+/*- (NSData*)pictureLocalURLForEventItem:(EventItem*)eventItem;
+- (BOOL)savePictureData:(NSData*)imageData forEventItem:(EventItem*)eventItem;*/
+
+- (int32_t)lastSelectedPoolPeriod;
+- (BOOL)saveSelectedPoolPeriod:(int32_t)period;
 
 
 - (void)getEventItemForRequest:(EventItemRequest*)request delegate:(id)delegate;

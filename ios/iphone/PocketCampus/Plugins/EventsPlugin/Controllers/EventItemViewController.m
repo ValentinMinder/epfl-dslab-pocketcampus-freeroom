@@ -32,12 +32,16 @@
 
 #import "PCTableViewWithRemoteThumbnails.h"
 
+#import "ASIHTTPRequest.h"
+
 @interface EventItemViewController ()
 
 @property (nonatomic) int64_t eventId;
 @property (nonatomic, strong) EventItem* eventItem;
 @property (nonatomic, strong) EventItemReply* itemReply;
 @property (nonatomic, strong) EventsService* eventsService;
+
+//@property (nonatomic, strong) ASIHTTPRequest* pictureRequest __unused;
 
 @property (nonatomic, strong) NSArray* childrenPools; //array of EventPool sorted by Id
 

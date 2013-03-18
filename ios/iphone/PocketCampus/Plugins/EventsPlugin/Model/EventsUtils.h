@@ -21,4 +21,6 @@
 + (NSNumber*)favoriteCategory;
 + (NSNumber*)featuredCategory;
 
++ (NSString*)periodStringForEventsPeriod:(int)period selected:(BOOL)selected;
+
 @end

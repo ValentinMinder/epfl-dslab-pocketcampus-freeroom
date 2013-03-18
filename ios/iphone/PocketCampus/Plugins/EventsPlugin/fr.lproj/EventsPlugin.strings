@@ -17,5 +17,16 @@
 "By" = "Par";
 "MoreDetails" = "Plus de détails";
 "NoResultPCUnknownViewControllerLoad" = "Impossible de trouver cette\npersonne.";
+"Filter" = "Filtrer";
 "SelectCategory" = "Aller à la catégorie";
 "Categories" = "Catégories";
+"PeriodWithFormat" = "Période (%@)";
+"ShowEventsFor..." = "Afficher les événements à venir pour\nla période suivante";
+"Days" = "Jours";
+"OneDay" = "1 jour";
+"TwoDays" = "2 jours";
+"OneMonth" = "1 mois";
+"OneWeek" = "1 semaine";
+"TwoWeeks" = "2 semaines";
+"SixMonths" = "6 mois";
+"OneYear" = "une année";

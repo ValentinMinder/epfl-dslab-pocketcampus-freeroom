@@ -74,4 +74,38 @@ static NSNumber* featuredCategNSNumber = nil;
     return featuredCategNSNumber;
 }
 
++ (NSString*)periodStringForEventsPeriod:(int)period selected:(BOOL)selected {
+    NSString* string = nil;
+    switch (period) {
+        case EventsPeriods_ONE_DAY:
+            string = NSLocalizedStringFromTable(@"OneDay", @"EventsPlugin", nil);
+            break;
+        case EventsPeriods_ONE_WEEK:
+            string = NSLocalizedStringFromTable(@"OneWeek", @"EventsPlugin", nil);
+            break;
+        case EventsPeriods_TWO_DAYS:
+            string = NSLocalizedStringFromTable(@"TwoDays", @"EventsPlugin", nil);
+            break;
+        case EventsPeriods_ONE_MONTH:
+            string = NSLocalizedStringFromTable(@"OneMonth", @"EventsPlugin", nil);
+            break;
+        case EventsPeriods_TWO_WEEKS:
+            string = NSLocalizedStringFromTable(@"TwoWeeks", @"EventsPlugin", nil);
+            break;
+        case EventsPeriods_SIX_MONTHS:
+            string = NSLocalizedStringFromTable(@"SixMonths", @"EventsPlugin", nil);
+            break;
+        case EventsPeriods_ONE_YEAR:
+            string = NSLocalizedStringFromTable(@"OneYear", @"EventsPlugin", nil);
+            break;
+        default:
+            string = [NSString stringWithFormat:@"%d %@",period ,[NSLocalizedStringFromTable(@"Days", @"EventsPlugin", nil) lowercaseString]];
+            break;
+    }
+    if (selected) {
+        string = [string stringByAppendingString:@" ✓"];
+    }
+    return string;
+}
+
 @end
