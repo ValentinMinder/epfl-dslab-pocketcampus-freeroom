@@ -73,8 +73,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     ASIHTTPRequest* prevRequest = self.requestForIndexPath[indexPath];
     
     if (prevRequest) {
-        [prevRequest cancel];
-        prevRequest.delegate = nil;
+        [prevRequest clearDelegatesAndCancel];
         [self.requestForIndexPath removeObjectForKey:indexPath];
     }
     
@@ -116,16 +115,20 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     if (!indexPath) { //should never happen
         return;
     }
-    if (self.failedThumbsIndexPaths) {
-        [self.failedThumbsIndexPaths removeObject:indexPath];
-    }
+    
+    [self.failedThumbsIndexPaths removeObject:indexPath];
     
     [self.requestForIndexPath removeObjectForKey:indexPath];
     
     UITableViewCell* cell = [self cellForRowAtIndexPath:indexPath];
     
     if (request.responseData) {
-        UIImage* image = [[UIImage alloc] initWithCGImage:[UIImage imageWithData:request.responseData].CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
+        
+        UIImage* image = [UIImage imageWithData:request.responseData];
+        
+        if (image && (image.imageOrientation != UIImageOrientationUp)) {
+            image = [UIImage imageWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
+        }
         
         if (image) {
             

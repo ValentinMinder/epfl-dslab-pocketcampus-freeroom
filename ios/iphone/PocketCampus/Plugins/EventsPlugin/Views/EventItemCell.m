@@ -48,20 +48,27 @@
     return 64.0;
 }
 
-- (NSString *) reuseIdentifier {
+- (NSString *)reuseIdentifier {
     return self.customReuseIdentifier;
 }
 
 - (void)setEventItem:(EventItem *)eventItem {
     _eventItem = eventItem;
     self.titleLabel.text = eventItem.eventTitle;
-    self.subtitleLabel.text = eventItem.eventPlace;
     if (eventItem.secondLine) {
         self.subtitleLabel.text = eventItem.secondLine;
+    } else {
+        self.subtitleLabel.text = eventItem.eventPlace;
     }
-    if (eventItem.startDate) {
+    
+    if (eventItem.timeSnippet) {
+        self.rightSubtitleLabel.text = eventItem.timeSnippet;
+    } else if (eventItem.startDate) {
         self.rightSubtitleLabel.text = [eventItem dateString:EventItemDateStyleShort];
+    } else {
+        //nothing to show in rightSubtitleLabel
     }
+    
     [self layoutSubviews];
 }
 
@@ -80,14 +87,6 @@
     tmpFrame.origin.x = 77;
     self.detailTextLabel.frame = tmpFrame;*/
     
-}
-
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 
