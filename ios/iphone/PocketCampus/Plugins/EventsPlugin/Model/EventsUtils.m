@@ -103,7 +103,7 @@ static NSNumber* featuredCategNSNumber = nil;
             break;
     }
     if (selected) {
-        string = [string stringByAppendingString:@" ✓"];
+        string = [NSString stringWithFormat:@"    %@ ✓", string];
     }
     return string;
 }

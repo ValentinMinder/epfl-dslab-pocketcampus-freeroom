@@ -247,8 +247,9 @@ static NSString* kEventCell = @"EventCell";
         NSInteger section = [controller.sectionsNames indexOfObject:selectedCateg];
         
         if (section != NSNotFound) {
-            [controller.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
-            [controller.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            [controller.presentedViewController dismissViewControllerAnimated:YES completion:^{
+                [controller.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }];
         }
         
     }];
