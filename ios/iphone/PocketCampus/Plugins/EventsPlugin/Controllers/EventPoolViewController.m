@@ -51,6 +51,8 @@
 @property (nonatomic, strong) UIActionSheet* filterSelectionActionSheet;
 @property (nonatomic, strong) UIActionSheet* periodsSelectionActionSheet;
 
+@property (nonatomic, strong) EventItem* selectedItem;
+
 @end
 
 static const NSTimeInterval kRefreshValiditySeconds = 1800; //30 min
@@ -165,6 +167,7 @@ static NSString* kEventCell = @"EventCell";
 - (void)favoritesWereUpdated {
     [self fillCollectionsFromReplyAndSelection];
     [self.tableView reloadData];
+    [self reselectLastSelectedItem];
 }
 
 - (void)initRefreshControl {
@@ -184,6 +187,26 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)startGetEventPoolRequest { 
     [self.eventsService getEventPoolForRequest:[self createEventPoolRequest] delegate:self];
+}
+
+- (void)reselectLastSelectedItem {
+    if (self.selectedItem) {
+        BOOL found __block = NO;
+        [self.itemsForSection enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
+            [items enumerateObjectsUsingBlock:^(EventItem* item, NSUInteger row, BOOL *stop2) {
+                if ([item isEqual:self.selectedItem]) {
+                    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                    self.selectedItem = item;
+                    *stop1 = YES;
+                    *stop2 = YES;
+                    found = YES;
+                }
+            }];
+        }];
+        if (!found) {
+            self.selectedItem = nil;
+        }
+    }
 }
 
 #pragma mark - Buttons preparation and actions
@@ -431,6 +454,7 @@ static NSString* kEventCell = @"EventCell";
             [self showButtonsConditionally];
             [self fillCollectionsFromReplyAndSelection];
             [self.tableView reloadData];
+            [self reselectLastSelectedItem];
             [self.pcRefreshControl endRefreshing];
             [self.pcRefreshControl markRefreshSuccessful];
             break;
@@ -506,6 +530,7 @@ static NSString* kEventCell = @"EventCell";
     EventItemViewController* eventItemViewController = [[EventItemViewController alloc] initWithEventItem:eventItem];
     
     if (self.splitViewController && self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
+        self.selectedItem = eventItem;
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[UINavigationController alloc] initWithRootViewController:eventItemViewController]];
     } else {
         [self.navigationController pushViewController:eventItemViewController animated:YES];

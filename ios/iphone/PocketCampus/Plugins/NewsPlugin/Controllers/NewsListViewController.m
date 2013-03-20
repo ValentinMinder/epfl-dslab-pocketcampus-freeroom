@@ -128,14 +128,21 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     [self.tableView reloadData];
     
     if (self.selectedItem) {
+        BOOL found __block = NO;
         [self.sections enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
             [items enumerateObjectsUsingBlock:^(NewsItem* item, NSUInteger row, BOOL *stop2) {
                 if ([item isEqual:self.selectedItem]) {
                     [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
                     self.selectedItem = item;
+                    *stop1 = YES;
+                    *stop2 = YES;
+                    found = YES;
                 }
             }];
         }];
+        if (!found) {
+            self.selectedItem = nil;
+        }
     }
     [self.pcRefreshControl endRefreshing];
     [self.pcRefreshControl markRefreshSuccessful];

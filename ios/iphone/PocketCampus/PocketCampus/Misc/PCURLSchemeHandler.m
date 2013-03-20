@@ -64,6 +64,7 @@
     } else {
         for (NSString* param in [params copy]) {
             params[param] = [params[param] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // convert HTML entities
+            params[param] = [params[param] stringByReplacingOccurrencesOfString:@"+" withString:@" "]; //sometimes + are used for spaces in URLs
         }
         
         params = [params copy]; //non-mutable copy
@@ -79,7 +80,7 @@
 
 #pragma mark - Utilities
 
-- (NSString*)pluginLowerIdentifierIfValidURL:(NSURL*)url { //return nil if not valid plugin identifier found or invalid URL
+- (NSString*)pluginLowerIdentifierIfValidURL:(NSURL*)url { //returns nil if not valid plugin identifier found or invalid URL
     [PCUtils throughExceptionIfObject:url notKindOfClass:[NSURL class]];
     
     if (![url.scheme isEqualToString:@"pocketcampus"]) {
