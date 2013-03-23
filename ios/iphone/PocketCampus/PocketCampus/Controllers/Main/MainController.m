@@ -48,6 +48,7 @@
 @property (nonatomic, strong) SplashViewController* splashViewController;
 @property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
 @property (nonatomic, strong) NSString* initialActivePluginIdentifier;
+@property (nonatomic, strong) NSURL* pcURLToHandle;
 @property (nonatomic, strong) NSMutableDictionary* pluginsControllers; //key: plugin identifier name, value: PluginController subclass.
 @property (nonatomic) BOOL initDone;
 
@@ -183,6 +184,13 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (PCURLSchemeHandler*)urlSchemeHandlerSharedInstance {
     return self.urlSchemeHander;
+}
+
+- (void)handlePocketCampusURL:(NSURL*)url {
+    self.pcURLToHandle = url;
+    if (self.initDone) {
+        //not supported yet
+    }
 }
 
 #pragma mark Private utilities
@@ -390,6 +398,9 @@ static MainController<MainControllerPublic>* instance = nil;
         if (self.revealController.currentFrontViewPosition != FrontViewPositionLeft) {
             [self.revealController showFrontViewCompletely:YES];
         }
+    }
+    if (self.pcURLToHandle) {
+        //not supported yet
     }
 }
 

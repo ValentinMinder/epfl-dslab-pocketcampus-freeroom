@@ -19,6 +19,7 @@
 "Filter" = "Filter";
 "SelectCategory" = "Go to category";
 "Categories" = "Categories";
+"NoCategory" = "No category";
 "PeriodWithFormat" = "Period (%@)";
 "ShowEventsFor..." = "Show upcoming events for the\nfollowing period";
 "Days" = "Days";

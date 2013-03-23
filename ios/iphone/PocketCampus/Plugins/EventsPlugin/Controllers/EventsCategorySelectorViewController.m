@@ -10,6 +10,8 @@
 
 #import "PCUtils.h"
 
+#import "PCCenterMessageCell.h"
+
 @interface EventsCategorySelectorViewController ()
 
 @property (nonatomic, strong) NSArray* allCategories;
@@ -76,6 +78,14 @@ static NSString* kCategoryCell = @"CategoryCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.allCategories && [self.allCategories count] == 0) {
+        if (indexPath.row == 1) {
+            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NoCategory", @"EventsPlugin", nil)];
+        } else {
+            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        }
+    }
+    
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCategoryCell];
     
     if (!cell) {
@@ -91,7 +101,11 @@ static NSString* kCategoryCell = @"CategoryCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
     if (self.allCategories) {
-        return [self.allCategories count];
+        NSInteger count = [self.allCategories count];
+        if (count == 0) {
+            return 2; //no category message a row index 1
+        }
+        return count;
     }
     
     return 0;
@@ -103,7 +117,6 @@ static NSString* kCategoryCell = @"CategoryCell";
     if (self.allCategories) {
         return 1;
     }
-    
     return 0;
 }
 

@@ -13,7 +13,7 @@
 - (void)toggleFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated {
     @try {
         if (self.isVisible) {
-            [self dismissWithClickedButtonIndex:self.cancelButtonIndex animated:animated];
+            [self dismissWithClickedButtonIndex:[self cancelButtonIndex] animated:animated];
         } else {
             [self showFromBarButtonItem:item animated:animated];
         }

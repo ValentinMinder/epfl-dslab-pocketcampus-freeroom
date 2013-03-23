@@ -43,6 +43,8 @@
 		32102B6615050B9D0076537E /* food.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6515050B9D0076537E /* food.m */; };
 		32102B6915050BB50076537E /* common.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6815050BB50076537E /* common.m */; };
 		32102B6C15050C000076537E /* FoodService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6B15050C000076537E /* FoodService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		3212452D16FE174500469113 /* EyeBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452B16FE174500469113 /* EyeBarButton.png */; };
+		3212452E16FE174500469113 /* EyeBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452C16FE174500469113 /* EyeBarButton@2x.png */; };
 		32125BBF1536F215009B8D37 /* FeetConnection.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBD1536F215009B8D37 /* FeetConnection.png */; };
 		32125BC01536F215009B8D37 /* FeetConnection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBE1536F215009B8D37 /* FeetConnection@2x.png */; };
 		3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
@@ -479,6 +481,8 @@
 		32102B6815050BB50076537E /* common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = common.m; sourceTree = "<group>"; };
 		32102B6A15050C000076537E /* FoodService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodService.h; sourceTree = "<group>"; };
 		32102B6B15050C000076537E /* FoodService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodService.m; sourceTree = "<group>"; };
+		3212452B16FE174500469113 /* EyeBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EyeBarButton.png; sourceTree = "<group>"; };
+		3212452C16FE174500469113 /* EyeBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBarButton@2x.png"; sourceTree = "<group>"; };
 		32125BBD1536F215009B8D37 /* FeetConnection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FeetConnection.png; sourceTree = "<group>"; };
 		32125BBE1536F215009B8D37 /* FeetConnection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FeetConnection@2x.png"; sourceTree = "<group>"; };
 		3215425515B5B75F0003C8B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
@@ -1418,6 +1422,8 @@
 				327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */,
 				3295DF0D165BC60B00CA3B9D /* DownloadedRectSmall.png */,
 				3295DF0E165BC60C00CA3B9D /* DownloadedRectSmall@2x.png */,
+				3212452B16FE174500469113 /* EyeBarButton.png */,
+				3212452C16FE174500469113 /* EyeBarButton@2x.png */,
 				323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */,
 				323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */,
 				32BE787016977F0000EC3E64 /* EyeBlack.png */,
@@ -3087,6 +3093,8 @@
 				32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */,
 				32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */,
 				32C36D1416F53F4E00DE1EF4 /* EventItemCell~ipad.xib in Resources */,
+				3212452D16FE174500469113 /* EyeBarButton.png in Resources */,
+				3212452E16FE174500469113 /* EyeBarButton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3511,7 +3519,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "5742E21A-1C29-4B3A-A35D-29BAC860BEE5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1F9A70BB-7DF4-430D-8BBD-F4FDD2B74C81";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5742E21A-1C29-4B3A-A35D-29BAC860BEE5";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

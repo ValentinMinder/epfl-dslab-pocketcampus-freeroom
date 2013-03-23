@@ -87,10 +87,10 @@ static EventsService* instance __weak = nil;
 #pragma mark - Favorites
 
 - (void)initFavorites {
-    if (!self.favoriteEventItemIds) {
+    if (!self.favoriteEventItemIds) { //first try to get it from persistent storage
         self.favoriteEventItemIds = [(NSSet*)[ObjectArchiver objectForKey:kFavoriteEventItemIds andPluginName:@"events"] mutableCopy];
     }
-    if (!self.favoriteEventItemIds) {
+    if (!self.favoriteEventItemIds) { //if not present in persistent storage, create set
         self.favoriteEventItemIds = [NSMutableSet set];
     }
 }

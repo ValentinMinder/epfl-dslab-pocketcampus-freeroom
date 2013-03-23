@@ -84,6 +84,7 @@
 + (UILabel*)addCenteredLabelInView:(UIView*)view withMessage:(NSString*)message {
     [self removeCenteredLabelInView:view];
     UILabel* label = [[UILabel alloc] initWithFrame:view.frame];
+    label.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     label.text = message;
     label.tag = 20;
     label.textAlignment = UITextAlignmentCenter;

@@ -22,6 +22,8 @@
 
 #import "EventsServiceTests.h"
 
+#import "PCURLSchemeHandler.h"
+
 static id test __strong __unused = nil;
 
 @interface AppDelegate ()
@@ -101,6 +103,14 @@ static id test __strong __unused = nil;
 
     return YES;
 }
+
+/*- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    if (![[[MainController publicController] urlSchemeHandlerSharedInstance] isSupportedPocketCampusURLScheme:url]) {
+        return NO;
+    }
+    [self.mainController handlePocketCampusURL:url];
+    return YES;
+}*/
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

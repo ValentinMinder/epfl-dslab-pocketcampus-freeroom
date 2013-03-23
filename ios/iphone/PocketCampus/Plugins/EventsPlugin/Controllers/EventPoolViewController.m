@@ -51,14 +51,15 @@
 @property (nonatomic, strong) UIActionSheet* filterSelectionActionSheet;
 @property (nonatomic, strong) UIActionSheet* periodsSelectionActionSheet;
 
+@property (nonatomic, strong) UIBarButtonItem* filterButton;
+@property (nonatomic, strong) UIBarButtonItem* scanButton;
+
 @property (nonatomic, strong) EventItem* selectedItem;
 
 @end
 
 static const NSTimeInterval kRefreshValiditySeconds = 1800; //30 min
 
-static const NSInteger kCategoriesIndex = 0;
-static const NSInteger kPeriodIndex = 1;
 static const NSInteger kOneWeekPeriodIndex = 0;
 static const NSInteger kOneMonthPeriodIndex = 1;
 static const NSInteger kSixMonthsPeriodIndex = 2;
@@ -219,11 +220,15 @@ static NSString* kEventCell = @"EventCell";
     NSMutableArray* rightElements = [NSMutableArray array];
     
     if (self.poolReply.eventPool.enableScan) {
-        [rightElements addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)]];
+        self.scanButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)];
+        //self.scanButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Scan", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(cameraButtonPressed)];
+        [rightElements addObject:self.scanButton];
     }
     
     if (!self.poolReply.eventPool.disableFilterByCateg) { //will also disable period filtering
-        [rightElements addObject:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Filter", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)]];
+        //self.filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Filter", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)];
+        self.filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"EyeBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)];
+        [rightElements addObject:self.filterButton];
     }
     
     self.navigationItem.rightBarButtonItems = rightElements;
@@ -236,11 +241,34 @@ static NSString* kEventCell = @"EventCell";
     }
     
     if (!self.filterSelectionActionSheet) {
-        NSString* periodString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat", @"EventsPlugin", nil), [EventsUtils periodStringForEventsPeriod:self.selectedPeriod selected:NO]];
-        self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"SelectCategory", @"EventsPlugin", nil), periodString, nil];
+        
+        if ([self periodButtonIndex] > 0) { //check if period selection should be displayed
+            NSString* periodString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat", @"EventsPlugin", nil), [EventsUtils periodStringForEventsPeriod:self.selectedPeriod selected:NO]];
+            
+            self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"SelectCategory", @"EventsPlugin", nil), periodString, nil];
+        } else {
+            self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"SelectCategory", @"EventsPlugin", nil), nil];
+        }
         self.filterSelectionActionSheet.delegate = self;
     }
-    [self.filterSelectionActionSheet toggleFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+    [self.filterSelectionActionSheet toggleFromBarButtonItem:self.filterButton animated:YES];
+}
+
+- (NSInteger)goToCategoryButtonIndex {
+    if (self.poolReply.eventPool.disableFilterByCateg) {
+        return -1; //should not be required
+    }
+    return 0;
+}
+
+- (NSInteger)periodButtonIndex {
+    if (self.poolReply.eventPool.disableFilterByCateg) {
+        return -1; //disableFilterByCateg hides filter button and thus also period selection
+    }
+    if (self.poolId != [eventsConstants CONTAINER_EVENT_ID]) {
+        return -1;
+    }
+    return 1;
 }
 
 - (void)cameraButtonPressed {
@@ -292,20 +320,19 @@ static NSString* kEventCell = @"EventCell";
                                             , nil];
 
     }
-    [self.periodsSelectionActionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+    [self.periodsSelectionActionSheet showFromBarButtonItem:self.filterButton animated:YES];
 }
 
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (actionSheet == self.filterSelectionActionSheet) {
-        switch (buttonIndex) {
-            case kCategoriesIndex:
-                [self presentCategoriesController];
-                break;
-            case kPeriodIndex:
-                [self presentPeriodSelectionActionSheet];
-                break;
+        if (buttonIndex == [self goToCategoryButtonIndex]) {
+            [self presentCategoriesController];
+        } else if (buttonIndex == [self periodButtonIndex]) {
+            [self presentPeriodSelectionActionSheet];
+        } else {
+            //ignore
         }
         self.filterSelectionActionSheet = nil;
     } else if (actionSheet == self.periodsSelectionActionSheet) {
@@ -321,7 +348,7 @@ static NSString* kEventCell = @"EventCell";
                 break;
         }
         [self.eventsService saveSelectedPoolPeriod:self.selectedPeriod];
-        if (buttonIndex != [self.periodsSelectionActionSheet cancelButtonIndex]) {
+        if (buttonIndex >= 0 && (buttonIndex != [self.periodsSelectionActionSheet cancelButtonIndex])) {
             [self.tableView scrollsToTop];
             [self refresh];
         }
@@ -546,7 +573,7 @@ static NSString* kEventCell = @"EventCell";
         if (indexPath.row == 1) {
             NSString* message = self.poolReply.eventPool.noResultText;
             if (!message) {
-                NSLocalizedStringFromTable(@"NoEvent", @"EventsPlugin", nil);
+                message = NSLocalizedStringFromTable(@"NoEvent", @"EventsPlugin", nil);
             }
             return [[PCCenterMessageCell alloc] initWithMessage:message];
         } else {
