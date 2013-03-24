@@ -62,7 +62,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     [fromValueLabel addGestureRecognizer:gestureRecognizer1];
     [fromLabel addGestureRecognizer:gestureRecognizer2];
     infoButton.accessibilityIdentifier = @"BookmarksButton";
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
 }
 
 - (void)viewDidUnload
@@ -85,9 +85,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     }
     schedulesState = SchedulesStateUnset;
     favStationsState = FavStationsStateUnset;
-    if (!needToRefresh && lastRefreshTimestamp != nil && abs([lastRefreshTimestamp timeIntervalSinceNow]) < kSchedulesValidy) {
-        return;
-    }
     [self refresh];
     //[NSTimer scheduledTimerWithTimeInterval:0.85 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
     //refreshTimer = [[NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(refreshButtonPressed) userInfo:nil repeats:YES] retain];
@@ -100,6 +97,13 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         [refreshTimer release];
         refreshTimer = nil;
     }
+}
+
+- (void)refreshIfNeeded {
+    if (!needToRefresh && lastRefreshTimestamp != nil && abs([lastRefreshTimestamp timeIntervalSinceNow]) < kSchedulesValidy) {
+        return;
+    }
+    [self refresh];
 }
 
 - (void)refresh {
