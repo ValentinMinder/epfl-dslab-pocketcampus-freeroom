@@ -55,8 +55,8 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     
     [self initDefaultValues];
     
-    [PCUtils throughExceptionIfObject:cell notKindOfClass:[UITableViewCell class]];
-    [PCUtils throughExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
+    [PCUtils throwExceptionIfObject:cell notKindOfClass:[UITableViewCell class]];
+    [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     
     if (!url) {
         cell.imageView.image = self.temporaryThumnail; //Generic image sign

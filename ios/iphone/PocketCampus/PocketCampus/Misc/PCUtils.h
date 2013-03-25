@@ -34,6 +34,6 @@
  */
 + (BOOL)hasDeviceInternetConnection;
 
-+ (void)throughExceptionIfObject:(id)object notKindOfClass:(Class)class;
++ (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class;
 
 @end

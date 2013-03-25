@@ -60,7 +60,7 @@ static __PluginID__Service* instance __weak = nil;
 //      operation.delegateDidReturnSelector = @selector(getMealsDidReturn:); //corresponding *didReturn* definition
 //      operation.delegateDidFailSelector = @selector(getMealsFailed); //corresponding *Failed* definition
 //      operation.returnType = ReturnTypeObject; //result type. Can be object or any standard primitive types (ReturnTypeInt, ...)
-//      [operationQueue addOperation:operation]; //schedulescall in background
+//      [operationQueue addOperation:operation]; //schedule operation in background
 //      [operation release]; //If you do NOT use ARC: release operation (has been retained by operationQueue)
 //  }
 //
@@ -73,7 +73,7 @@ static __PluginID__Service* instance __weak = nil;
 //      [operation addLongLongArgument:mealId]; //add arguments in order in which they appear
 //      [operation addDoubleArgument:rating];
 //      operation.returnType = ReturnTypeInt; //return type is int this time
-//      [operationQueue addOperation:operation]; //schedule call in background
+//      [operationQueue addOperation:operation]; //schedule operation in background
 //      [operation release]; //If you do NOT use ARC: release operation (has been retained by operationQueue)
 //  } 
 //

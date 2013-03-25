@@ -81,7 +81,7 @@
 #pragma mark - Utilities
 
 - (NSString*)pluginLowerIdentifierIfValidURL:(NSURL*)url { //returns nil if not valid plugin identifier found or invalid URL
-    [PCUtils throughExceptionIfObject:url notKindOfClass:[NSURL class]];
+    [PCUtils throwExceptionIfObject:url notKindOfClass:[NSURL class]];
     
     if (![url.scheme isEqualToString:@"pocketcampus"]) {
         return nil;

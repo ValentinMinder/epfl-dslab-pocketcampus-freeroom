@@ -85,7 +85,7 @@ static NSString* kEventCell = @"EventCell";
 }
 
 - (id)initWithEventPool:(EventPool*)pool {
-    [PCUtils throughExceptionIfObject:pool notKindOfClass:[EventPool class]];
+    [PCUtils throwExceptionIfObject:pool notKindOfClass:[EventPool class]];
     self = [self init];
     if (self) {
         self.poolId = pool.poolId;

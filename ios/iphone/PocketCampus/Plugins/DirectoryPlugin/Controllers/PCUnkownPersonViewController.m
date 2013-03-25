@@ -37,7 +37,7 @@
 
 - (id)initWithPerson:(Person*)person delegate:(id<ABUnknownPersonViewControllerDelegate>)delegate;
 {
-    [PCUtils throughExceptionIfObject:person notKindOfClass:[Person class]];
+    [PCUtils throwExceptionIfObject:person notKindOfClass:[Person class]];
     self = [super init];
     if (self) {
         self.unknownPersonViewDelegate = delegate;
@@ -48,7 +48,7 @@
 }
 
 - (id)initAndLoadPersonWithFullName:(NSString*)fullName delegate:(id<ABUnknownPersonViewControllerDelegate>)delegate {
-    [PCUtils throughExceptionIfObject:fullName notKindOfClass:[NSString class]];
+    [PCUtils throwExceptionIfObject:fullName notKindOfClass:[NSString class]];
     self = [super init];
     if (self) {
         self.unknownPersonViewDelegate = delegate;

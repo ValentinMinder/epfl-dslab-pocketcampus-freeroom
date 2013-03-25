@@ -27,7 +27,7 @@ static NSString* kCategoryCell = @"CategoryCell";
 {
     self = [super initWithNibName:@"EventsCategorySelectorView" bundle:nil];
     if (self) {
-        [PCUtils throughExceptionIfObject:allCategories notKindOfClass:[NSArray class]];
+        [PCUtils throwExceptionIfObject:allCategories notKindOfClass:[NSArray class]];
         self.allCategories = allCategories;
         self.selectedInitially = selectedInitially;
         self.userValidatedSelectionBlock = userValidatedSelectionBlock;

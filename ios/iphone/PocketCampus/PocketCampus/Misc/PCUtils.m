@@ -110,7 +110,7 @@
 
 + (NSDictionary*)urlStringParameters:(NSString*)urlString {
     
-    [self throughExceptionIfObject:urlString notKindOfClass:[NSString class]];
+    [self throwExceptionIfObject:urlString notKindOfClass:[NSString class]];
     
     NSMutableDictionary* queryStringDictionary = [[NSMutableDictionary alloc] init];
     @try {
@@ -136,7 +136,7 @@
     return [[Reachability reachabilityForInternetConnection] isReachable];
 }
 
-+ (void)throughExceptionIfObject:(id)object notKindOfClass:(Class)class; {
++ (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class; {
     if (![object isKindOfClass:class]) {
         @throw [NSException exceptionWithName:@"Illegal argument" reason:[NSString stringWithFormat:@"object '%@' must be kind of class %@", object, NSStringFromClass(class)] userInfo:nil];
     }

@@ -66,7 +66,7 @@ static NSString* kPoolCell = @"PoolCell";
 }
 
 - (id)initWithEventItem:(EventItem*)item {
-    [PCUtils throughExceptionIfObject:item notKindOfClass:[EventItem class]];
+    [PCUtils throwExceptionIfObject:item notKindOfClass:[EventItem class]];
     self = [self init];
     if (self) {
         self.eventId = item.eventId;
