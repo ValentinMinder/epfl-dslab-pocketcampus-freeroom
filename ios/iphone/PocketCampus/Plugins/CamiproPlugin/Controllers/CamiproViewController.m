@@ -55,6 +55,7 @@ static CGFloat kBalanceCellHeight = 70.0;
     self.view.backgroundColor = [PCValues backgroundColor1];
     tableView.contentInset = UIEdgeInsetsMake(0, 0, toolbar.frame.size.height, 0);
     lastUpdateLabel = [[UILabel alloc] initWithFrame:CGRectMake(40.0, 0.0, 240.0, self.toolbar.frame.size.height)];
+    lastUpdateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     lastUpdateLabel.textColor = [UIColor whiteColor];
     lastUpdateLabel.font = [UIFont systemFontOfSize:15.0];
     lastUpdateLabel.textAlignment = UITextAlignmentCenter;
@@ -429,6 +430,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         balanceLabel.backgroundColor = [UIColor clearColor];
         balanceLabel.shadowColor = [PCValues shadowColor1];
         balanceLabel.shadowOffset = [PCValues shadowOffset1];
+        balanceLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [newCell.contentView addSubview:balanceLabel];
         [balanceLabel release];
         return newCell;
@@ -448,7 +450,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         priceLabel.tag = kTransactionPriceViewTag;
         priceLabel.font = [UIFont systemFontOfSize:15.0];
         priceLabel.textAlignment = UITextAlignmentRight;
-        
+        priceLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         [newCell.contentView addSubview:priceLabel];
         [priceLabel release];
     }
