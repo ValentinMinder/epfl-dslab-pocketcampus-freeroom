@@ -16,6 +16,9 @@
  */
 + (void)applyAppearenceProxy;
 
++ (UIImage*)imageForGenericGreyButton;
++ (UIImage*)highlightedForGenericGreyButton;
+
 + (float)defaultCornerRadius;
 + (UIColor*)pocketCampusRed;
 + (UIColor*)backgroundColor1;

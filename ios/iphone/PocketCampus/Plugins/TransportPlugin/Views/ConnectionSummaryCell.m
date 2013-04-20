@@ -81,6 +81,7 @@
         firstLineLabel.textAlignment = UITextAlignmentCenter;
         firstLineLabel.textColor = [UIColor whiteColor];
         firstLineLabel.font = [UIFont systemFontOfSize:16.0];
+        firstLineLabel.adjustsFontSizeToFitWidth = YES;
         [self.contentView addSubview:firstLineLabel];
         
         

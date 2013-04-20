@@ -19,6 +19,14 @@
     navigationBarAppearance.tintColor = [PCValues pocketCampusRed];
 }
 
++ (UIImage*)imageForGenericGreyButton {
+    return [[UIImage imageNamed:@"GenericGreyButton"] resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
+}
+
++ (UIImage*)highlightedForGenericGreyButton {
+    return [[UIImage imageNamed:@"GenericGreyButtonHighlight"] resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
+}
+
 + (float)defaultCornerRadius {
     if ([PCUtils isIdiomPad]) {
         return 5.0;

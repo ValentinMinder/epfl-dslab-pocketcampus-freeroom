@@ -92,11 +92,11 @@ static NSString* URL_ENDING = @".png";
 
 - (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
     NSString* baseUrl = [NSString stringWithFormat:@"%@%d%@", @"http://plan-epfl-tile", [self randomizeTileServer], @".epfl.ch/batiments"];
+    //NSString* baseUrl = [NSString stringWithFormat:@"%@", @"http://plan-dev.epfl.ch/batimentsall-ch"];
     NSString* layerLevel = [NSString stringWithFormat: @"%d%@", self.currentLayerLevel, @"/"];//-ch
     NSString* zoomLevel = [NSString stringWithFormat:@"%d/",zoom];
     NSString* xCoord = [self createCoordString:x];
     NSString* yCoord = [self createCoordString:y];
-    
     //Build the final url string
     NSString* urlString = [NSString stringWithFormat:@"%@%@%@%@%@%@%@",baseUrl,layerLevel,zoomLevel,xCoord,@"/",yCoord,URL_ENDING];
     return urlString;

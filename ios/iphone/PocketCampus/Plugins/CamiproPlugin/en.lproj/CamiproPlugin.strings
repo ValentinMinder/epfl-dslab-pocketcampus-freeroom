@@ -16,6 +16,6 @@
 "Sending..." = "Sending...";
 "Sent" = "Sent";
 "SessionExpiredPleaseRefresh" = "Your session has expired. Please refresh and try again.";
-"StatsWithFormat" = "Last 30 days expenses\nCHF %.2lf\n\nLast 90 days total expenses\nCHF %.2lf (~%.2lf/month)";
+"StatsWithFormat" = "Last 30 days expenses\nCHF %.2lf\n\nLast 90 days expenses\nCHF %.2lf\n\nAverage over 3 months\nCHF %.2lf / month";
 "CamiproDown" = "Sorry, Camipro servers seem to be down. Please try again later.";
 "LastUpdate" = "Last update";

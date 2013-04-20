@@ -11,7 +11,7 @@
 "CenterLabelLoadingText" = "Loading menus";
 "NoMealsToday" = "No menu today.";
 "NoMealsWeekend" = "No menu during the weekend.";
-"MenusForTodayWithFormat" = "Menus for today (%@)";
+"MenusForTodayWithFormat" = "Menus for today – %@";
 "Map" = "Map";
 "NoVote" = "No vote";
 "VoteNameSingular" = "vote";

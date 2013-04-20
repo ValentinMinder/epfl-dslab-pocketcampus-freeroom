@@ -1,8 +1,11 @@
 package org.pocketcampus.plugin.transport.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportLine;
@@ -28,6 +31,18 @@ import de.schildbach.pte.dto.QueryDeparturesResult;
  *
  */
 public class SchildbachToPCConverter {
+	
+	private static final HashMap<String, String> normalLineNameForSchildName;
+	
+	static
+    {
+		normalLineNameForSchildName = new HashMap<String, String>();
+		normalLineNameForSchildName.put("UMm1", "UMetm1");
+		normalLineNameForSchildName.put("UMm2", "UMetm2");
+		//normalLineNameForSchildName.put("UMetm1", "M1");
+		//normalLineNameForSchildName.put("UMetm2", "M2");
+    }
+	
 	static protected QueryTripsResult convertSchToPC(de.schildbach.pte.dto.QueryConnectionsResult s){
 		QueryTripsResult qcr = new QueryTripsResult(
 				convertSchToPC(s.from),
@@ -227,7 +242,25 @@ public class SchildbachToPCConverter {
 		for(int i : sl.colors){
 			al.add(Integer.toString(i));
 		}
-		return new TransportLine(sl.label, al);
+		return new TransportLine(nicerLineName(sl.label), al);
+	}
+	
+	static protected String nicerLineName(String schildlLineName) {
+		
+		if (normalLineNameForSchildName.containsKey(schildlLineName)) {
+			return normalLineNameForSchildName.get(schildlLineName);
+		}
+		
+		Pattern pattern;
+		Matcher matcher;
+		
+		pattern = Pattern.compile("^BNFB(\\d*)");
+		matcher = pattern.matcher(schildlLineName);
+		if (matcher.find() && matcher.group(1) != null) {
+			return "BBus"+matcher.group(1);
+		}
+		
+		return schildlLineName;
 	}
 	
 	//POINTS

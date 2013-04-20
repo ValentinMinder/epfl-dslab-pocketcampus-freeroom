@@ -216,7 +216,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-         timestampString = "381413713.215058"
+         timestampString = "388063974.800702"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "137"
@@ -708,11 +708,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/CamiproPlugin/Controllers/CamiproViewController.m"
-         timestampString = "386025658.071507"
+         timestampString = "388149991.319003"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "371"
-         endingLineNumber = "371"
+         startingLineNumber = "492"
+         endingLineNumber = "492"
          landmarkName = "-alertView:willDismissWithButtonIndex:"
          landmarkType = "5">
          <Actions>
@@ -3981,7 +3981,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-         timestampString = "381413713.215058"
+         timestampString = "388063468.195542"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "94"
@@ -4002,7 +4002,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-         timestampString = "381413736.010214"
+         timestampString = "388063974.800702"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "102"
@@ -4574,6 +4574,28 @@
          endingLineNumber = "245"
          landmarkName = "-filterButtonPressed"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/CamiproPlugin/Controllers/CamiproViewController.m"
+         timestampString = "388149991.319003"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "363"
+         endingLineNumber = "363"
+         landmarkName = "-getStatsAndLoadingInfoForCamiproRequest:didReturn:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "getStatsAndLoadingInfoForCamiproRequest:didReturn:"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
       </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>

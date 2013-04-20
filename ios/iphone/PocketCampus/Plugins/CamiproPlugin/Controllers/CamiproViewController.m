@@ -20,22 +20,50 @@
 
 #import "authentication.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
 static NSUInteger kTransactionPriceViewTag = 15;
-static CGFloat kBalanceCellHeight = 70.0;
+
+@interface CamiproViewController ()
+
+
+
+@property (nonatomic, strong) UILabel* lastUpdateLabel;
+@property (nonatomic, weak) IBOutlet UITableView* tableView;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
+@property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
+@property (nonatomic, weak) IBOutlet UIToolbar* toolbar;
+
+
+// iPad only
+@property (nonatomic, weak) IBOutlet UIView* statsContainerView;
+@property (nonatomic, weak) IBOutlet UILabel* statsLabel;
+@property (nonatomic, weak) IBOutlet UILabel* statsContentLabel;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* statsActivityIndicator;
+@property (nonatomic, weak) IBOutlet UIButton* reloadCardButton;
+
+@property (nonatomic, strong) UIAlertView* sendMailAlertView;
+@property (nonatomic, strong) UIAlertView* statsAlertView;
+@property (nonatomic, strong) AuthenticationController* authController;
+@property (nonatomic, strong) CamiproService* camiproService;
+@property (nonatomic, strong) BalanceAndTransactions* balanceAndTransactions;
+@property (nonatomic, strong) TequilaToken* tequilaKey;
+
+@property (nonatomic, strong) NSTimer* tableViewMasksToBoundsTimer;
+
+@property (nonatomic) BOOL shouldRefresh;
+
+@end
 
 @implementation CamiproViewController
-
-@synthesize tableView, centerActivityIndicator, centerMessageLabel, toolbar, shouldRefresh;
 
 - (id)init
 {
     self = [super initWithNibName:@"CamiproView" bundle:nil];
     if (self) {
-        authController = [[AuthenticationController sharedInstanceToRetain] retain];
-        camiproService = [[CamiproService sharedInstanceToRetain] retain];
-        balanceAndTransactions = nil;
-        tequilaKey = nil;
+        self.authController = [AuthenticationController sharedInstanceToRetain];
+        self.camiproService = [CamiproService sharedInstanceToRetain];
         
         /* TEST */
         
@@ -53,20 +81,45 @@ static CGFloat kBalanceCellHeight = 70.0;
 	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro" withError:NULL];
     self.view.backgroundColor = [PCValues backgroundColor1];
-    tableView.contentInset = UIEdgeInsetsMake(0, 0, toolbar.frame.size.height, 0);
-    lastUpdateLabel = [[UILabel alloc] initWithFrame:CGRectMake(40.0, 0.0, 240.0, self.toolbar.frame.size.height)];
-    lastUpdateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    lastUpdateLabel.textColor = [UIColor whiteColor];
-    lastUpdateLabel.font = [UIFont systemFontOfSize:15.0];
-    lastUpdateLabel.textAlignment = UITextAlignmentCenter;
-    lastUpdateLabel.backgroundColor = [UIColor clearColor];
-    lastUpdateLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    lastUpdateLabel.shadowColor = [UIColor blackColor];
-    [self.toolbar addSubview:lastUpdateLabel];
-    [lastUpdateLabel release];
+    
+    
+    if ([PCUtils isIdiomPad]) {
+        self.tableView.layer.masksToBounds = NO;
+        self.tableView.layer.shadowOffset = CGSizeMake(0, 0);
+        self.tableView.layer.shadowOpacity = 0.5;
+        
+        self.statsLabel.text = NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil);
+        self.statsLabel.textColor = [UIColor colorWithWhite:0.3 alpha:1.0];
+        self.statsLabel.shadowColor = [PCValues shadowColor1];
+        self.statsLabel.shadowOffset = [PCValues shadowOffset1];
+        
+        self.statsContentLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
+        self.statsContentLabel.shadowColor = [PCValues shadowColor1];
+        self.statsContentLabel.shadowOffset = [PCValues shadowOffset1];
+        
+
+        [self.reloadCardButton setTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) forState:UIControlStateNormal];
+
+        [self.reloadCardButton setBackgroundImage:[PCValues imageForGenericGreyButton] forState:UIControlStateNormal];
+        [self.reloadCardButton setBackgroundImage:[PCValues highlightedForGenericGreyButton] forState:UIControlStateHighlighted];
+        
+        [self willAnimateRotationToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation] duration:0.0];
+    }
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, self.toolbar.frame.size.height, 0);
+    self.lastUpdateLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.tableView.frame.size.width/2.0)-120.0, 0, 240.0, self.toolbar.frame.size.height)];
+    //self.lastUpdateLabel.center = self.toolbar.center;
+    self.lastUpdateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    self.lastUpdateLabel.textColor = [UIColor whiteColor];
+    self.lastUpdateLabel.font = [UIFont systemFontOfSize:15.0];
+    self.lastUpdateLabel.textAlignment = UITextAlignmentCenter;
+    self.lastUpdateLabel.backgroundColor = [UIColor clearColor];
+    self.lastUpdateLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    self.lastUpdateLabel.shadowColor = [UIColor blackColor];
+    [self.toolbar addSubview:self.lastUpdateLabel];
+    
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     [self.navigationItem setRightBarButtonItem:refreshButton animated:YES];
-    [refreshButton release];
     [self refresh];
 }
 
@@ -78,20 +131,49 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
-    return UIInterfaceOrientationMaskPortrait;
+    if ([PCUtils isIdiomPad]) {
+        return UIInterfaceOrientationMaskAll;
+    } else {
+        return UIInterfaceOrientationMaskPortrait;
+    }
 }
                                               
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    if ([PCUtils isIdiomPad]) {
+        return YES;
+    } else {
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    if (![PCUtils isIdiomPad]) {
+        return;
+    }
+    self.tableView.layer.masksToBounds = YES;
+    self.tableView.layer.shadowOpacity = 0.0;
+    [self.tableViewMasksToBoundsTimer invalidate];
+    self.tableViewMasksToBoundsTimer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(setTableViewMasksToBoundsNO) userInfo:nil repeats:NO];
+}
+
+- (void)setTableViewMasksToBoundsNO {
+    self.tableView.layer.masksToBounds = NO;
+    self.tableView.layer.shadowOpacity = 0.5;
 }
 
 - (void)refresh {
-    centerMessageLabel.text = @"";
-    [centerActivityIndicator startAnimating];
-    tableView.hidden = YES;
-    toolbar.hidden = YES;
+    self.centerMessageLabel.text = @"";
+    [self.centerActivityIndicator startAnimating];
+    self.tableView.hidden = YES;
+    self.toolbar.hidden = YES;
+    self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    //iPad
+    self.statsContainerView.hidden = YES;
+    self.reloadCardButton.hidden = YES;
+    
     CamiproSession* sessionId = [CamiproService lastSessionId];
     if (sessionId == nil) {
         NSLog(@"-> No previously saved sessionId. Requesting credentials...");
@@ -105,54 +187,62 @@ static CGFloat kBalanceCellHeight = 70.0;
 - (IBAction)othersPressed {
     UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil), NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil), nil];
     [actionSheet showFromToolbar:self.toolbar];
-    [actionSheet release];
+}
+
+//iPad
+- (IBAction)reloadCardPressed {
+    [self actionSheet:nil willDismissWithButtonIndex:0]; //actionSheet var is not checked and 0 is reload. I agree it's not very nice to to like this...
 }
 
 - (void)login {
-    [camiproService getTequilaTokenForCamiproDelegate:self];
+    [self.camiproService getTequilaTokenForCamiproDelegate:self];
 }
 
 - (SessionId*) buildSessionIdFromCamiproSession:(CamiproSession*)camiproSession {
-    return [[[SessionId alloc] initWithTos:TypeOfService_SERVICE_CAMIPRO pocketCampusSessionId:nil moodleCookie:nil camiproCookie:camiproSession.camiproCookie isaCookie:nil] autorelease];
+    return [[SessionId alloc] initWithTos:TypeOfService_SERVICE_CAMIPRO pocketCampusSessionId:nil moodleCookie:nil camiproCookie:camiproSession.camiproCookie isaCookie:nil];
 }
 
 - (void)startBalanceAndTransactionsRequestWithSessionId:(CamiproSession*)sessionId {
     CamiproRequest* request = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:sessionId] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
-    [camiproService getBalanceAndTransactions:request delegate:self];
-    [request release];
+    [self.camiproService getBalanceAndTransactions:request delegate:self];
+}
+
+- (void)startGetStatsRequest {
+    CamiproRequest* statsRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]];
+    [self.camiproService getStatsAndLoadingInfo:statsRequest delegate:self];
 }
 
 /* AuthenticationCallbackDelegate delegation */
 
 - (void)userCancelledAuthentication {
     [CamiproService saveSessionId:nil];
-    [centerActivityIndicator stopAnimating];
+    [self.centerActivityIndicator stopAnimating];
     if (self.navigationController.visibleViewController == self) {
         [self.navigationController popViewControllerAnimated:YES]; //leaving plugin
     }
 }
 
 - (void)authenticationSucceeded {
-    [camiproService getSessionIdForServiceWithTequilaKey:tequilaKey delegate:self];
+    [self.camiproService getSessionIdForServiceWithTequilaKey:self.tequilaKey delegate:self];
 }
 
 - (void)invalidToken {
     NSLog(@"-> invalid token");
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
-    centerMessageLabel.hidden = NO;
-    tableView.hidden = YES;
-    toolbar.hidden = YES;
+    [self.centerActivityIndicator stopAnimating];
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+    self.centerMessageLabel.hidden = NO;
+    self.tableView.hidden = YES;
+    self.toolbar.hidden = YES;
+    self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
     [CamiproService saveSessionId:nil];
 }
 
 /* CamiproServiceDelegate delegation */
 
-- (void)getTequilaTokenForCamiproDidReturn:(TequilaToken*)tequilaKey_ {
-    [tequilaKey release];
-    tequilaKey = [tequilaKey_ retain];
-    [authController authToken:tequilaKey.iTequilaKey presentationViewController:self.navigationController delegate:self];
+- (void)getTequilaTokenForCamiproDidReturn:(TequilaToken*)tequilaKey {
+    self.tequilaKey = tequilaKey;
+    [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.navigationController delegate:self];
 }
 
 - (void)getTequilaTokenForCamiproFailed {
@@ -169,8 +259,8 @@ static CGFloat kBalanceCellHeight = 70.0;
     [CamiproService saveSessionId:nil];
 }
 
-- (void)getBalanceAndTransactionsForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(BalanceAndTransactions*)balanceAndTransactions_ {
-    switch (balanceAndTransactions_.iStatus) {
+- (void)getBalanceAndTransactionsForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(BalanceAndTransactions*)balanceAndTransactions {
+    switch (balanceAndTransactions.iStatus) {
         case 407: //user not authenticated (sessionId expired)
             NSLog(@"-> User session has expired. Requesting credientials...");
             [CamiproService saveSessionId:nil];
@@ -182,64 +272,76 @@ static CGFloat kBalanceCellHeight = 70.0;
             break;
         case 200: //OK
         {
-            [centerActivityIndicator stopAnimating];
+            [self.centerActivityIndicator stopAnimating];
             self.navigationItem.rightBarButtonItem.enabled = YES;
-            centerMessageLabel.hidden = YES;
-            [balanceAndTransactions release];
-            balanceAndTransactions = [balanceAndTransactions_ retain];
-            tableView.alpha = 0.0;
-            tableView.hidden = NO;
-            toolbar.alpha = 0.0;
-            toolbar.hidden = NO;
-            lastUpdateLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"CamiproPlugin", nil),balanceAndTransactions.iDate];
-            [tableView reloadData];
+            self.centerMessageLabel.hidden = YES;
+            self.balanceAndTransactions = balanceAndTransactions;
+            self.tableView.alpha = 0.0;
+            self.tableView.hidden = NO;
+            self.toolbar.alpha = 0.0;
+            self.toolbar.hidden = NO;
+            self.lastUpdateLabel.hidden = NO;
+            self.lastUpdateLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"CamiproPlugin", nil), self.balanceAndTransactions.iDate];
+            [self.tableView reloadData];
+            self.reloadCardButton.hidden = NO;
+            self.reloadCardButton.alpha = 0.0; //iPad
             [UIView animateWithDuration:0.2 animations:^{
-                tableView.alpha = 1.0;
-                toolbar.alpha = 1.0;
+                self.tableView.alpha = 1.0;
+                self.toolbar.alpha = 1.0;
+                self.reloadCardButton.alpha = 1.0; //iPad
             }];
+            if ([PCUtils isIdiomPad]) {
+                self.statsContainerView.hidden = NO;
+                self.statsContentLabel.text = nil;
+                [self.statsActivityIndicator startAnimating];
+                [self startGetStatsRequest];
+            }
             break;
         }
         default:
-            NSLog(@"!! Unknown status code %d in getBalanceAndTransactionsForCamiproRequest:didReturn:", balanceAndTransactions_.iStatus);
+            NSLog(@"!! Unknown status code %d in getBalanceAndTransactionsForCamiproRequest:didReturn:", balanceAndTransactions.iStatus);
             [self getBalanceAndTransactionsFailedForCamiproRequest:camiproRequest];
             break;
     }
 }
 
 - (void)getBalanceAndTransactionsFailedForCamiproRequest:(CamiproRequest*)camiproRequest {
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
-    centerMessageLabel.hidden = NO;
-    tableView.hidden = YES;
-    toolbar.hidden = YES;
+    [self.centerActivityIndicator stopAnimating];
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+    self.centerMessageLabel.hidden = NO;
+    self.tableView.hidden = YES;
+    self.toolbar.hidden = YES;
+    self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
+    self.statsContainerView.hidden = YES; //iPad
+    self.reloadCardButton.hidden = YES; //iPad
     //[CamiproService saveSessionId:nil];
 }
 
 - (void)sendLoadingInfoByEmailForCamiproRequest:(CamiproRequest *)camiproRequest didReturn:(SendMailResult *)sendMailResult {
-    if (sendMailAlertView == nil) {
+    if (!self.sendMailAlertView) {
         return;
     }
     switch (sendMailResult.iStatus) {
         case 407: //user not authenticated (sessionId expired)
         {
-            [sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            [self.sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
             UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"SessionExpiredPleaseRefresh", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [errorAlert show];
-            [errorAlert release];
             break;
         }
         case 404:
+        {
             NSLog(@"-> 404 error in status from sendLoadingInfoByEmailForCamiproRequest:didReturn:");
-            [sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            [self.sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
             UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"CamiproDown", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [errorAlert show];
-            [errorAlert release];
             break;
+        }
         case 200: //OK
         {
-            sendMailAlertView.message = NSLocalizedStringFromTable(@"Sent", @"CamiproPlugin", nil);
-            [sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            self.sendMailAlertView.message = NSLocalizedStringFromTable(@"Sent", @"CamiproPlugin", nil);
+            [self.sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
             break;
         }
         default:
@@ -249,82 +351,103 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (void)sendLoadingInfoByEmailFailedForCamiproRequest:(CamiproRequest *)camiproRequest {
-    if (sendMailAlertView == nil) {
+    if (!self.sendMailAlertView) {
         return;
     }
-    [sendMailAlertView dismissWithClickedButtonIndex:0 animated:NO];
+    [self.sendMailAlertView dismissWithClickedButtonIndex:0 animated:NO];
     [PCUtils showServerErrorAlert];
 }
 
 - (void)getStatsAndLoadingInfoForCamiproRequest:(CamiproRequest *)camiproRequest didReturn:(StatsAndLoadingInfo *)statsAndLoadingInfo {
-    if (statsAlertView == nil) {
+    if (![PCUtils isIdiomPad] && !self.statsAlertView) {
         return;
+    }
+    if ([PCUtils isIdiomPad]) {
+        self.statsContentLabel.alpha = 0.0;
+        [UIView animateWithDuration:0.4 animations:^{
+            self.statsContentLabel.alpha = 1.0;
+        }];
     }
     switch (statsAndLoadingInfo.iStatus) {
         case 407: //user not authenticated (sessionId expired)
         {
-            [statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
-            UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"SessionExpiredPleaseRefresh", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [errorAlert show];
-            [errorAlert release];
+            if ([PCUtils isIdiomPad]) {
+                [self.statsActivityIndicator stopAnimating];
+                self.statsContentLabel.text = NSLocalizedStringFromTable(@"SessionExpiredPleaseRefresh", @"CamiproPlugin", nil);
+            } else {
+                [self.statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
+                UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"SessionExpiredPleaseRefresh", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [errorAlert show];
+            }
             break;
         }
         case 404:
+        {
             NSLog(@"-> 404 error in status from getStatsAndLoadingInfoForCamiproRequest:didReturn:");
-            [statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
-            UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"CamiproDown", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [errorAlert show];
-            [errorAlert release];
-            /* TEST */
-            /*
-            [statsAlertView dismissWithClickedButtonIndex:0 animated:NO];
-            NSString* message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"StatsWithFormat", @"CamiproPlugin", nil), 333.0, 1000.0, 320.0];
-            UIAlertView* statsAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [statsAlert show];
-            [statsAlert release];
-             */
-             /* END OF TEST */
+            
+            if ([PCUtils isIdiomPad]) {
+                [self.statsActivityIndicator stopAnimating];
+                self.statsContentLabel.text = NSLocalizedStringFromTable(@"CamiproDown", @"CamiproPlugin", nil);
+            } else {
+                [self.statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
+                UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"CamiproDown", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [errorAlert show];
+            }
             break;
+        }
         case 200: //OK
         {
-            [statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
-            NSString* message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"StatsWithFormat", @"CamiproPlugin", nil), statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastMonth, statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastThreeMonths, statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastThreeMonths/3.0];
-            UIAlertView* statsAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [statsAlert show];
-            [statsAlert release];
+            if ([PCUtils isIdiomPad]) {
+                [self.statsActivityIndicator stopAnimating];
+                self.statsContentLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"StatsWithFormat", @"CamiproPlugin", nil), statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastMonth, statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastThreeMonths, statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastThreeMonths/3.0];
+            } else {
+                [self.statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
+                NSString* message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"StatsWithFormat", @"CamiproPlugin", nil), statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastMonth, statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastThreeMonths, statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastThreeMonths/3.0];
+                UIAlertView* statsAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [statsAlert show];
+            }
             break;
         }
         default:
             NSLog(@"!! Unknown status code %d in getStatsAndLoadingInfoForCamiproRequest:didReturn:", statsAndLoadingInfo.iStatus);
+            if ([PCUtils isIdiomPad]) {
+                [self.statsActivityIndicator stopAnimating];
+                self.statsContentLabel.text = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
+            } else {
+                [self.statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            }
             break;
     }
 }
 
 - (void)getStatsAndLoadingInfoFailedForCamiproRequest:(CamiproRequest *)camiproRequest {
-    if (statsAlertView == nil) {
+    if (!self.statsAlertView) {
         return;
     }
-    [statsAlertView dismissWithClickedButtonIndex:0 animated:NO];
+    [self.statsAlertView dismissWithClickedButtonIndex:0 animated:NO];
     [PCUtils showServerErrorAlert];
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    if (sendMailAlertView != nil) {
-        [sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
+    if (!self.sendMailAlertView) {
+        [self.sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
         [PCUtils showConnectionToServerTimedOutAlert];
         return;
     }
-    if (statsAlertView != nil) {
-        [statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
+    if (self.statsAlertView) {
+        [self.statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
         [PCUtils showConnectionToServerTimedOutAlert];
         return;
     }
-    shouldRefresh = YES;
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
-    centerMessageLabel.hidden = NO;
-    tableView.hidden = YES;
-    toolbar.hidden = YES;
+    self.shouldRefresh = YES;
+    [self.centerActivityIndicator stopAnimating];
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
+    self.centerMessageLabel.hidden = NO;
+    self.tableView.hidden = YES;
+    self.toolbar.hidden = YES;
+    self.lastUpdateLabel.hidden = YES;
+    self.statsContainerView.hidden = YES; //iPad
+    self.reloadCardButton.hidden = YES; //iPad
     self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
@@ -335,18 +458,16 @@ static CGFloat kBalanceCellHeight = 70.0;
         case 0: //reload instructions
         {
             [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro/click/reload" withError:NULL];
-            sendMailAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"ReloadInstructionsSendMailExplanations", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Send", @"CamiproPlugin", nil), nil];
-            [sendMailAlertView show];
+            self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"ReloadInstructionsSendMailExplanations", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Send", @"CamiproPlugin", nil), nil];
+            [self.sendMailAlertView show];
             break;
         }
         case 1: //statistics
         {
             [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro/click/stats" withError:NULL];
-            statsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:nil];
-            [statsAlertView show];
-            CamiproRequest* statsRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]];
-            [camiproService getStatsAndLoadingInfo:statsRequest delegate:self];
-            [statsRequest release];
+            self.statsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:nil];
+            [self.statsAlertView show];
+            [self startGetStatsRequest];
             break;
         }
         default:
@@ -358,25 +479,22 @@ static CGFloat kBalanceCellHeight = 70.0;
 /* UIAlertViewDelegate delegation */
 
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (alertView == sendMailAlertView) {
-        [sendMailAlertView release];
-        sendMailAlertView = nil;
+    if (alertView == self.sendMailAlertView) {
+        self.sendMailAlertView = nil;
         if (buttonIndex == 0) { //Cancel
-            [camiproService cancelOperationsForDelegate:self];
+            [self.camiproService cancelOperationsForDelegate:self];
             return;
         }
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro/click/email" withError:NULL];
-        sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
-        [sendMailAlertView show];
+        self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
+        [self.sendMailAlertView show];
         
         CamiproRequest* mailRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]];
-        [camiproService sendLoadingInfoByEmail:mailRequest delegate:self];
-        [mailRequest release];
-    } else if (alertView == statsAlertView) {
-        [statsAlertView release];
-        statsAlertView = nil;
+        [self.camiproService sendLoadingInfoByEmail:mailRequest delegate:self];
+    } else if (alertView == self.statsAlertView) {
+        self.statsAlertView = nil;
         if (buttonIndex == 0) { //Cancel
-            [camiproService cancelOperationsForDelegate:self];
+            [self.camiproService cancelOperationsForDelegate:self];
             return;
         }
     } else {
@@ -386,9 +504,16 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 /* UITableViewDelegation delegation */
 
+static const CGFloat kBalanceCellHeightPhone = 70.0;
+static const CGFloat kBalanceCellHeightPad = 120.0;
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        return kBalanceCellHeight;
+        if ([PCUtils isIdiomPad]) {
+            return kBalanceCellHeightPad;
+        } else {
+            return kBalanceCellHeightPhone;
+        }
     }
     return 50.0;
 }
@@ -401,16 +526,17 @@ static CGFloat kBalanceCellHeight = 70.0;
     PCTableViewSectionHeader* headerView = nil;
     switch (section) {
         case 0:
-            headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"CamiproBalance", @"CamiproPlugin", nil) tableView:tableView];
+            headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"CamiproBalance", @"CamiproPlugin", nil) tableView:self.tableView];
             break;
         case 1:
-            headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"TransactionsHistory", @"CamiproPlugin", nil) tableView:tableView];
+            headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"TransactionsHistory", @"CamiproPlugin", nil) tableView:self.tableView];
             break;
         default:
             NSLog(@"!! Unexcepted tableview session");
             break;
     }
-    return [headerView autorelease];
+    headerView.bounds = CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height);
+    return headerView;
     
 }
 
@@ -419,40 +545,44 @@ static CGFloat kBalanceCellHeight = 70.0;
 - (UITableViewCell*)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* newCell = nil;
     if (indexPath.section == 0) {
-        newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+        newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         newCell.selectionStyle = UITableViewCellSelectionStyleNone;
         newCell.backgroundColor = [PCValues backgroundColor1];
-        UILabel* balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeight)];
-        balanceLabel.text = [NSString stringWithFormat:@"CHF %.2lf", balanceAndTransactions.iBalance];
+        UILabel* balanceLabel = nil;
+        if ([PCUtils isIdiomPad]) {
+            balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeightPad)];
+            balanceLabel.font = [UIFont systemFontOfSize:48.0];
+        } else {
+            balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeightPhone)];
+            balanceLabel.font = [UIFont systemFontOfSize:34.0];
+        }
+        balanceLabel.text = [NSString stringWithFormat:@"CHF %.2lf", self.balanceAndTransactions.iBalance];
         balanceLabel.textAlignment = UITextAlignmentCenter;
-        balanceLabel.font = [UIFont systemFontOfSize:34.0];
         balanceLabel.textColor = [PCValues textColor1];
         balanceLabel.backgroundColor = [UIColor clearColor];
         balanceLabel.shadowColor = [PCValues shadowColor1];
         balanceLabel.shadowOffset = [PCValues shadowOffset1];
         balanceLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [newCell.contentView addSubview:balanceLabel];
-        [balanceLabel release];
         return newCell;
     }
     
-    newCell = [tableView dequeueReusableCellWithIdentifier:kHistoryCellIdentifier];
+    newCell = [self.tableView dequeueReusableCellWithIdentifier:kHistoryCellIdentifier];
     
-    Transaction* transcation = [balanceAndTransactions.iTransactions objectAtIndex:indexPath.row];
+    Transaction* transcation = [self.balanceAndTransactions.iTransactions objectAtIndex:indexPath.row];
     
     if (newCell == nil) {
-        newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kHistoryCellIdentifier] autorelease];
+        newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kHistoryCellIdentifier];
         newCell.selectionStyle = UITableViewCellSelectionStyleNone;
         newCell.backgroundColor = [UIColor clearColor];
         newCell.textLabel.textColor = [PCValues textColor1];
-        UILabel* priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(211.0, 27.0, 100.0, 17.0)];
+        UILabel* priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(211.0, 15.0, 100.0, 21.0)];
         priceLabel.backgroundColor = [UIColor clearColor];
         priceLabel.tag = kTransactionPriceViewTag;
-        priceLabel.font = [UIFont systemFontOfSize:15.0];
+        priceLabel.font = [UIFont systemFontOfSize:17.0];
         priceLabel.textAlignment = UITextAlignmentRight;
         priceLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         [newCell.contentView addSubview:priceLabel];
-        [priceLabel release];
     }
     newCell.textLabel.text = transcation.iPlace;
     newCell.detailTextLabel.text = transcation.iDate;
@@ -469,18 +599,17 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (balanceAndTransactions == nil) {
+    if (!self.balanceAndTransactions) {
         return 0;
     }
     switch (section) {
         case 0:
-            return 1;
-            break;
+            return 1; //balance
         case 1:
-            if (balanceAndTransactions.iTransactions == nil) {
+            if (!self.balanceAndTransactions.iTransactions) {
                 return 0;
             }
-            return [balanceAndTransactions.iTransactions count];
+            return [self.balanceAndTransactions.iTransactions count];
         default:
             return 0;
             break;
@@ -488,7 +617,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (balanceAndTransactions == nil) {
+    if (!self.balanceAndTransactions) {
         return 0;
     }
     return 2; //balance and history sections
@@ -496,12 +625,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 - (void)dealloc
 {
-    [authController release];
-    [camiproService cancelOperationsForDelegate:self];
-    [camiproService release];
-    [balanceAndTransactions release];
-    [tequilaKey release];
-    [super dealloc];
+    [self.camiproService cancelOperationsForDelegate:self];
 }
 
 @end

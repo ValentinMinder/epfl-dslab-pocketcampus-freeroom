@@ -106,6 +106,10 @@
 		322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322BA0441643F4510063B632 /* MyEduModuleListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322BA0431643F4510063B632 /* MyEduModuleListView.xib */; };
 		322BA0481643FBEB0063B632 /* MSPullToRefreshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */; };
+		322C07541722A7E6004FDC83 /* GenericGreyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 322C07501722A7E6004FDC83 /* GenericGreyButton.png */; };
+		322C07551722A7E6004FDC83 /* GenericGreyButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322C07511722A7E6004FDC83 /* GenericGreyButton@2x.png */; };
+		322C07561722A7E6004FDC83 /* GenericGreyButtonHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 322C07521722A7E6004FDC83 /* GenericGreyButtonHighlight.png */; };
+		322C07571722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322C07531722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png */; };
 		322C4ACD16E1FD8300DE418E /* EventItem+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F316E1FA1100AF365C /* EventItem+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322F326A1532F06300E53C6F /* BookmarksBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32681532F06300E53C6F /* BookmarksBlue.png */; };
 		322F326B1532F06300E53C6F /* BookmarksBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32691532F06300E53C6F /* BookmarksBlue@2x.png */; };
@@ -190,7 +194,7 @@
 		326B925215027A1400DB4AEE /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B925115027A1400DB4AEE /* AddressBook.framework */; };
 		32704C7C15002F67002BCB75 /* Plugins.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32704C7B15002F67002BCB75 /* Plugins.plist */; };
 		32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E8C1564FC2400DE6984 /* CamiproService.m */; };
-		32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E90156507DA00DE6984 /* CamiproViewController.m */; };
+		32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E90156507DA00DE6984 /* CamiproViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32710E951565129600DE6984 /* CamiproLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32710E941565129600DE6984 /* CamiproLarge.png */; };
 		327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412D8167E776A001E8C62 /* DownloadedCorner.png */; };
 		327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412D9167E776A001E8C62 /* DownloadedCorner@2x.png */; };
@@ -299,7 +303,7 @@
 		32BA30711645D31A00909D82 /* PCCenterMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30701645D31A00909D82 /* PCCenterMessageCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32BA30731645DCB200909D82 /* MyEduCourseInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */; };
 		32BA30761645DF9200909D82 /* MyEduCourseInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDB15656D36008415A1 /* CamiproView.xib */; };
+		32BCACDC15656D36008415A1 /* CamiproView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDB15656D36008415A1 /* CamiproView~iphone.xib */; };
 		32BE787216977F0000EC3E64 /* EyeBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 32BE787016977F0000EC3E64 /* EyeBlack.png */; };
 		32BE787316977F0000EC3E64 /* EyeBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32BE787116977F0000EC3E64 /* EyeBlack@2x.png */; };
 		32C36D1416F53F4E00DE1EF4 /* EventItemCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32C36D1316F53F4E00DE1EF4 /* EventItemCell~ipad.xib */; };
@@ -403,6 +407,7 @@
 		32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */; };
 		32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */; };
 		32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F5309316EABA0F00F66484 /* EventsLarge.png */; };
+		32F7218C171B0BB4005755A2 /* CamiproView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F7218B171B0BB4005755A2 /* CamiproView~ipad.xib */; };
 		32F8E3ED16E1F53000AF365C /* CellNoImageStretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */; };
 		32F8E3EE16E1F53000AF365C /* CellNoImageStretchable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */; };
 		32F8E3F116E1F9D900AF365C /* EventsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F016E1F9D900AF365C /* EventsUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -598,6 +603,10 @@
 		322BA0431643F4510063B632 /* MyEduModuleListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleListView.xib; sourceTree = "<group>"; };
 		322BA0461643FBEB0063B632 /* MSPullToRefreshController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPullToRefreshController.h; sourceTree = "<group>"; };
 		322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPullToRefreshController.m; sourceTree = "<group>"; };
+		322C07501722A7E6004FDC83 /* GenericGreyButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GenericGreyButton.png; sourceTree = "<group>"; };
+		322C07511722A7E6004FDC83 /* GenericGreyButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GenericGreyButton@2x.png"; sourceTree = "<group>"; };
+		322C07521722A7E6004FDC83 /* GenericGreyButtonHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GenericGreyButtonHighlight.png; sourceTree = "<group>"; };
+		322C07531722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GenericGreyButtonHighlight@2x.png"; sourceTree = "<group>"; };
 		322F32681532F06300E53C6F /* BookmarksBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookmarksBlue.png; sourceTree = "<group>"; };
 		322F32691532F06300E53C6F /* BookmarksBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BookmarksBlue@2x.png"; sourceTree = "<group>"; };
 		3235174416A4B5B70022B98E /* MyEduModule+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MyEduModule+Comparison.h"; sourceTree = "<group>"; };
@@ -889,7 +898,7 @@
 		32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduCourseInfoView.xib; sourceTree = "<group>"; };
 		32BA30741645DF9200909D82 /* MyEduCourseInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduCourseInfoViewController.h; sourceTree = "<group>"; };
 		32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduCourseInfoViewController.m; sourceTree = "<group>"; };
-		32BCACDB15656D36008415A1 /* CamiproView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproView.xib; sourceTree = "<group>"; };
+		32BCACDB15656D36008415A1 /* CamiproView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CamiproView~iphone.xib"; sourceTree = "<group>"; };
 		32BE787016977F0000EC3E64 /* EyeBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EyeBlack.png; sourceTree = "<group>"; };
 		32BE787116977F0000EC3E64 /* EyeBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBlack@2x.png"; sourceTree = "<group>"; };
 		32C36D1316F53F4E00DE1EF4 /* EventItemCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "EventItemCell~ipad.xib"; sourceTree = "<group>"; };
@@ -1042,6 +1051,7 @@
 		32F5309016EAB8F700F66484 /* EventsSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsSplashDetailViewController.h; sourceTree = "<group>"; };
 		32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsSplashDetailViewController.m; sourceTree = "<group>"; };
 		32F5309316EABA0F00F66484 /* EventsLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EventsLarge.png; sourceTree = "<group>"; };
+		32F7218B171B0BB4005755A2 /* CamiproView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CamiproView~ipad.xib"; sourceTree = "<group>"; };
 		32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellNoImageStretchable.png; sourceTree = "<group>"; };
 		32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CellNoImageStretchable@2x.png"; sourceTree = "<group>"; };
 		32F8E3EF16E1F9D900AF365C /* EventsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsUtils.h; sourceTree = "<group>"; };
@@ -1434,6 +1444,10 @@
 				329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */,
 				329E1B3916E693130054C3A8 /* FavoriteNavBarButton.png */,
 				329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */,
+				322C07501722A7E6004FDC83 /* GenericGreyButton.png */,
+				322C07511722A7E6004FDC83 /* GenericGreyButton@2x.png */,
+				322C07521722A7E6004FDC83 /* GenericGreyButtonHighlight.png */,
+				322C07531722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png */,
 				3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */,
 				3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */,
 				325368BE164932F600406801 /* StretchableInnerShadow.png */,
@@ -1920,7 +1934,8 @@
 			isa = PBXGroup;
 			children = (
 				32B58719156458FA0051C57E /* Images */,
-				32BCACDB15656D36008415A1 /* CamiproView.xib */,
+				32BCACDB15656D36008415A1 /* CamiproView~iphone.xib */,
+				32F7218B171B0BB4005755A2 /* CamiproView~ipad.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2926,7 +2941,7 @@
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
-				32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */,
+				32BCACDC15656D36008415A1 /* CamiproView~iphone.xib in Resources */,
 				32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */,
 				32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */,
 				32D97C8A15AF160D004384A5 /* README.md in Resources */,
@@ -3095,6 +3110,11 @@
 				32C36D1416F53F4E00DE1EF4 /* EventItemCell~ipad.xib in Resources */,
 				3212452D16FE174500469113 /* EyeBarButton.png in Resources */,
 				3212452E16FE174500469113 /* EyeBarButton@2x.png in Resources */,
+				32F7218C171B0BB4005755A2 /* CamiproView~ipad.xib in Resources */,
+				322C07541722A7E6004FDC83 /* GenericGreyButton.png in Resources */,
+				322C07551722A7E6004FDC83 /* GenericGreyButton@2x.png in Resources */,
+				322C07561722A7E6004FDC83 /* GenericGreyButtonHighlight.png in Resources */,
+				322C07571722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

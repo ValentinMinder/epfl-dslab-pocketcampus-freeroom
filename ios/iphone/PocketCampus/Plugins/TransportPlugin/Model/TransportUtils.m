@@ -329,6 +329,10 @@
         return @"M1";
     }
     
+    if ([currentName isEqualToString:@"UMm1"]) {
+        return @"M1";
+    }
+    
     if ([currentName isEqualToString:@"Ecublens VD, EPFL"]) {
         return @"EPFL";
     }
@@ -342,6 +346,10 @@
     }
     
     if ([currentName isEqualToString:@"UMetm2"]) {
+        return @"M2";
+    }
+    
+    if ([currentName isEqualToString:@"UMm2"]) {
         return @"M2";
     }
     
