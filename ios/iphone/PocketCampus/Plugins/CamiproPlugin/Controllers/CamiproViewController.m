@@ -87,6 +87,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
         self.tableView.layer.masksToBounds = NO;
         self.tableView.layer.shadowOffset = CGSizeMake(0, 0);
         self.tableView.layer.shadowOpacity = 0.5;
+        //self.tableView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.tableView.bounds].CGPath;
         
         self.statsLabel.text = NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil);
         self.statsLabel.textColor = [UIColor colorWithWhite:0.3 alpha:1.0];
@@ -154,7 +155,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     self.tableView.layer.masksToBounds = YES;
     self.tableView.layer.shadowOpacity = 0.0;
     [self.tableViewMasksToBoundsTimer invalidate];
-    self.tableViewMasksToBoundsTimer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(setTableViewMasksToBoundsNO) userInfo:nil repeats:NO];
+    self.tableViewMasksToBoundsTimer = [NSTimer scheduledTimerWithTimeInterval:duration+0.05 target:self selector:@selector(setTableViewMasksToBoundsNO) userInfo:nil repeats:NO];
 }
 
 - (void)setTableViewMasksToBoundsNO {
@@ -285,6 +286,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
             [self.tableView reloadData];
             self.reloadCardButton.hidden = NO;
             self.reloadCardButton.alpha = 0.0; //iPad
+            
             [UIView animateWithDuration:0.2 animations:^{
                 self.tableView.alpha = 1.0;
                 self.toolbar.alpha = 1.0;
