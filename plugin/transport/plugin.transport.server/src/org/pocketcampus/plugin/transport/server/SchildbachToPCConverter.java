@@ -39,6 +39,8 @@ public class SchildbachToPCConverter {
 		normalLineNameForSchildName = new HashMap<String, String>();
 		normalLineNameForSchildName.put("UMm1", "UMetm1");
 		normalLineNameForSchildName.put("UMm2", "UMetm2");
+		normalLineNameForSchildName.put("BNFBm1", "UMetm1");
+		normalLineNameForSchildName.put("BNFBm2", "UMetm2");
 		//normalLineNameForSchildName.put("UMetm1", "M1");
 		//normalLineNameForSchildName.put("UMetm2", "M2");
     }
@@ -246,7 +248,7 @@ public class SchildbachToPCConverter {
 	}
 	
 	static protected String nicerLineName(String schildlLineName) {
-		
+		//System.out.println("Line: "+schildlLineName);
 		if (normalLineNameForSchildName.containsKey(schildlLineName)) {
 			return normalLineNameForSchildName.get(schildlLineName);
 		}
