@@ -14,7 +14,15 @@
 
 #import "EventsSplashDetailViewController.h"
 
+#import "EventsService.h"
+
 static EventsController* instance __weak = nil;
+
+@interface EventsController ()
+
+@property (nonatomic, strong) EventsService* eventsService;
+
+@end
 
 @implementation EventsController
 
@@ -42,6 +50,8 @@ static EventsController* instance __weak = nil;
                 self.mainNavigationController = navController;
             }
             
+            self.eventsService = [EventsService sharedInstanceToRetain];
+            
             instance = self;
         }
         return self;
@@ -61,23 +71,37 @@ static EventsController* instance __weak = nil;
     }
 }
 
-- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
-    if ([action isEqualToString:@"showEventPool"]) {
-        NSString* poolId = parameters[@"eventPoolId"];
-        if (poolId) {
-            //TODO support parameters userToken, exchangeToken and markAsFavorite
-            
-            return [[EventPoolViewController alloc] initAndLoadEventPoolWithId:[poolId longLongValue]];
+- (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
+    
+    BOOL foundSilent = [self handleSilentParameters:parameters];
+    
+    UIViewController* viewController = [self viewControllerForURLQueryAction:action parameters:parameters handleSilent:NO];
+    
+    if (!viewController) {
+        if (foundSilent) {
+            return YES;
         }
-    } else if ([action isEqualToString:@"showEventItem"]) {
-        NSString* eventId = parameters[@"eventItemId"];
-        if (eventId) {
-            return [[EventItemViewController alloc] initAndLoadEventItemWithId:[eventId longLongValue]];
+        return NO;
+    }
+    
+    UINavigationController* navController = nil;
+    
+    if ([PCUtils isIdiomPad]) {
+        navController = self.mainSplitViewController.viewControllers[1];
+        if ([navController isKindOfClass:[UINavigationController class]]) {
+            navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+            self.mainSplitViewController.viewControllers = @[self.mainSplitViewController.viewControllers[0], navController];
         }
     } else {
-        //no other supported actions
+        navController = self.mainNavigationController;
     }
-    return nil;
+    [navController pushViewController:viewController animated:YES];
+    
+    return YES;
+}
+
+- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
+    return [self viewControllerForURLQueryAction:action parameters:parameters handleSilent:YES];
 }
 
 
@@ -87,6 +111,71 @@ static EventsController* instance __weak = nil;
 
 + (NSString*)identifierName {
     return @"Events";
+}
+
+#pragma mark - EventsServiceDelegate
+
+- (void)exchangeContactsForRequest:(ExchangeRequest *)request didReturn:(ExchangeReply *)reply {
+#warning TODO;
+}
+
+- (void)exchangeContactsFailedForRequest:(ExchangeRequest *)request {
+#warning TODO
+}
+
+#pragma mark - Private
+
+- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters handleSilent:(BOOL)handleSilent {
+    
+    NSLog(@"Handling: action:%@ parameters:%@", action, parameters);
+    
+    UIViewController* viewController = nil;
+    
+    if (handleSilent) {
+        [self handleSilentParameters:parameters];
+    }
+    
+    NSString* eventItemIdToMarkFavorite = parameters[@"markFavorite"];
+    if (eventItemIdToMarkFavorite) {
+        int64_t itemId = [eventItemIdToMarkFavorite longLongValue];
+        [self.eventsService addFavoriteEventItemId:itemId];
+        viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:itemId];
+    }
+    
+    if ([action isEqualToString:@"showEventPool"]) {
+        NSString* poolId = parameters[@"eventPoolId"];
+        if (poolId) {
+            viewController = [[EventPoolViewController alloc] initAndLoadEventPoolWithId:[poolId longLongValue]];
+        }
+    } else if ([action isEqualToString:@"showEventItem"]) {
+        NSString* eventId = parameters[@"eventItemId"];
+        if (eventId) {
+            viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:[eventId longLongValue]];
+        }
+    } else {
+        //no other supported actions
+    }
+    
+    return viewController;
+}
+
+- (BOOL)handleSilentParameters:(NSDictionary*)parameters {
+    
+    BOOL found = NO;
+    NSString* userToken = parameters[@"userTicket"];
+    if (userToken) {
+        found = YES;
+        [self.eventsService addUserTicket:userToken];
+    }
+    
+    NSString* exchangeToken = parameters[@"exchangeToken"];
+    if (exchangeToken) {
+        found = YES;
+        ExchangeRequest* req = [[ExchangeRequest alloc] initWithExchangeToken:exchangeToken userToken:nil userTickets:[self.eventsService allUserTickets]];
+        [self.eventsService exchangeContactsForRequest:req delegate:self];
+    }
+    
+    return found;
 }
 
 #pragma mark - UISplitViewControllerDelegate

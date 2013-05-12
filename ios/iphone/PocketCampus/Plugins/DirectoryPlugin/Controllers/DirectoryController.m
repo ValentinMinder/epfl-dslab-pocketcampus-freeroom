@@ -65,6 +65,26 @@ static DirectoryController* instance __weak = nil;
     }
 }
 
+- (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
+    NSLog(@"Handling: action:%@ parameters:%@", action, parameters);
+    UIViewController* viewController = [self viewControllerForURLQueryAction:action parameters:parameters];
+    if (!viewController) {
+        return NO;
+    }
+    UINavigationController* navController = nil;
+    if ([PCUtils isIdiomPad]) {
+        navController = self.mainSplitViewController.viewControllers[1];
+        if (![navController isKindOfClass:[UINavigationController class]]) {
+            navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+            self.mainSplitViewController.viewControllers = @[self.mainSplitViewController.viewControllers[0], navController];
+        }
+    } else {
+        navController = self.mainNavigationController;
+    }
+    [navController pushViewController:viewController animated:YES];
+    return YES;
+}
+
 - (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
     if ([action isEqualToString:@"search"]) {
         NSString* query = parameters[@"q"];

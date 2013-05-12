@@ -18,6 +18,8 @@
 
 @property (nonatomic, weak) MainController* mainController;
 
+@property (nonatomic, strong) NSMutableSet* validURLsCache;
+
 @end
 
 @implementation PCURLSchemeHandler
@@ -30,33 +32,42 @@
     self = [super init];
     if (self) {
         self.mainController = mainController;
+        self.validURLsCache = [NSMutableSet set];
     }
     return self;
 }
 
-- (BOOL)isSupportedPocketCampusURLScheme:(NSURL*)url {
-    return ([self pluginLowerIdentifierIfValidURL:url] != nil);
+- (BOOL)isValidPocketCampusURL:(NSURL*)url {
+    if ([self.validURLsCache containsObject:url]) {
+        return YES;
+    }
+    NSString* pluginIdentifier = [self pluginLowerIdentifierIfValidURL:url];
+    if (pluginIdentifier) {
+        [self.validURLsCache addObject:url];
+        return YES;
+    }
+    return NO;
 }
 
-- (UIViewController*)viewControllerForPocketCampusURLScheme:(NSURL*)url {
-    
-    NSString* pluginLowerIdentifier = [self pluginLowerIdentifierIfValidURL:url];
-    
-    if (!pluginLowerIdentifier) {
+- (NSString*)pluginIdentifierForPocketCampusURL:(NSURL*)url {
+    return [self pluginLowerIdentifierIfValidURL:url];
+}
+
+- (NSString*)actionForPocketCampusURL:(NSURL*)url {
+    if (![self isValidPocketCampusURL:url]) {
         return nil;
     }
-    
-    PluginController<PluginControllerProtocol>* pluginController = [self.mainController pluginControllerForPluginIdentifier:pluginLowerIdentifier];
-    
-    if (!pluginController) {
-        return nil;
-    }
-    
     NSString* action = @"";
     if (url.relativePath.length > 0) {
         action = [[url.relativePath substringFromIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; //remove original slash and convert HTML entities
     }
-    
+    return action;
+}
+
+- (NSDictionary*)parametersForPocketCampusURL:(NSURL*)url {
+    if (![self isValidPocketCampusURL:url]) {
+        return nil;
+    }
     NSMutableDictionary* params = [[PCUtils urlStringParameters:url.absoluteString] mutableCopy];
     
     if (!params) {
@@ -66,16 +77,35 @@
             params[param] = [params[param] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // convert HTML entities
             params[param] = [params[param] stringByReplacingOccurrencesOfString:@"+" withString:@" "]; //sometimes + are used for spaces in URLs
         }
-        
-        params = [params copy]; //non-mutable copy
+    }
+    return [params copy]; //non-mutable copy
+}
+
+- (UIViewController*)viewControllerForPocketCampusURL:(NSURL*)url {
+    
+    NSString* pluginLowerIdentifier = [self pluginLowerIdentifierIfValidURL:url];
+    
+    if (!pluginLowerIdentifier) {
+        return nil;
     }
     
-    if ([pluginController respondsToSelector:@selector(viewControllerForURLQueryAction:parameters:)]) {
-        return [pluginController viewControllerForURLQueryAction:action parameters:params];
+    [self.validURLsCache addObject:url];
+    
+    PluginController<PluginControllerProtocol>* pluginController = [self.mainController pluginControllerForPluginIdentifier:pluginLowerIdentifier];
+    
+    if (!pluginController) {
+        return nil;
     }
     
-    return nil;
+    if (![pluginController respondsToSelector:@selector(viewControllerForURLQueryAction:parameters:)]) {
+        return nil;
+    }
     
+    NSString* action = [self actionForPocketCampusURL:url];
+    
+    NSDictionary* params = [self parametersForPocketCampusURL:url];
+    
+    return [pluginController viewControllerForURLQueryAction:action parameters:params];
 }
 
 #pragma mark - Utilities

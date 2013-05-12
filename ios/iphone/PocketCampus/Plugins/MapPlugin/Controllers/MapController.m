@@ -53,6 +53,21 @@ static MapController* instance __weak = nil;
     }
 }
 
+- (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
+    if ([action isEqualToString:@"search"]) {
+        NSString* query = parameters[@"q"];
+        if (query) {
+            if ([self.mapViewController isViewLoaded]) {
+                [self.mapViewController startSearchForQuery:query];
+            } else {
+                self.mapViewController.initialQueryWithFullControls = query;
+            }
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
     if ([action isEqualToString:@"search"]) {
         NSString* query = parameters[@"q"];

@@ -47,6 +47,8 @@
 
 @property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
 
+@property (nonatomic) BOOL pastMode;
+
 @end
 
 static NSString* kPoolCell = @"PoolCell";
@@ -135,7 +137,10 @@ static NSString* kPoolCell = @"PoolCell";
 }
 
 - (void)startGetEventItemRequest {
-    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_SIX_MONTHS];
+    //EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_SIX_MONTHS];
+    
+    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:nil userTickets:[self.eventsService allUserTickets] starredEventItems:[self.eventsService allFavoriteEventItemIds] lang:[PCUtils userLanguageCode] period:EventsPeriods_SIX_MONTHS fetchPast:self.pastMode];
+    
     [self.eventsService getEventItemForRequest:req delegate:self];
     if (!self.loadingIndicator) {
         self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -321,7 +326,7 @@ static NSString* kPoolCell = @"PoolCell";
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
         id<MainControllerPublic> mainController = [MainController publicController];
-        UIViewController* viewController = [[mainController urlSchemeHandlerSharedInstance] viewControllerForPocketCampusURLScheme:request.URL];
+        UIViewController* viewController = [[mainController urlSchemeHandlerSharedInstance] viewControllerForPocketCampusURL:request.URL];
         if (viewController) {
             [self.navigationController pushViewController:viewController animated:YES];
         } else {

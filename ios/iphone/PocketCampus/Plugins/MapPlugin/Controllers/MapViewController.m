@@ -229,6 +229,10 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [self updateFloorLabel];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Map"];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Map"];
+    
+    if (self.initialQueryWithFullControls && !self.initialQuery) {
+        [self startSearchForQuery:self.initialQueryWithFullControls];
+    }
 }
 
 - (void)willLoseForeground {

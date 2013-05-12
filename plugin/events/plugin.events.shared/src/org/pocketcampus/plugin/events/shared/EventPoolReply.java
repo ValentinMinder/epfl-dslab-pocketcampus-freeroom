@@ -641,16 +641,16 @@ public class EventPoolReply implements org.apache.thrift.TBase<EventPoolReply, E
         case 3: // CHILDREN_ITEMS
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map27 = iprot.readMapBegin();
-              this.childrenItems = new HashMap<Long,EventItem>(2*_map27.size);
-              for (int _i28 = 0; _i28 < _map27.size; ++_i28)
+              org.apache.thrift.protocol.TMap _map43 = iprot.readMapBegin();
+              this.childrenItems = new HashMap<Long,EventItem>(2*_map43.size);
+              for (int _i44 = 0; _i44 < _map43.size; ++_i44)
               {
-                long _key29; // required
-                EventItem _val30; // required
-                _key29 = iprot.readI64();
-                _val30 = new EventItem();
-                _val30.read(iprot);
-                this.childrenItems.put(_key29, _val30);
+                long _key45; // required
+                EventItem _val46; // required
+                _key45 = iprot.readI64();
+                _val46 = new EventItem();
+                _val46.read(iprot);
+                this.childrenItems.put(_key45, _val46);
               }
               iprot.readMapEnd();
             }
@@ -661,15 +661,15 @@ public class EventPoolReply implements org.apache.thrift.TBase<EventPoolReply, E
         case 5: // CATEGS
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map31 = iprot.readMapBegin();
-              this.categs = new HashMap<Integer,String>(2*_map31.size);
-              for (int _i32 = 0; _i32 < _map31.size; ++_i32)
+              org.apache.thrift.protocol.TMap _map47 = iprot.readMapBegin();
+              this.categs = new HashMap<Integer,String>(2*_map47.size);
+              for (int _i48 = 0; _i48 < _map47.size; ++_i48)
               {
-                int _key33; // required
-                String _val34; // required
-                _key33 = iprot.readI32();
-                _val34 = iprot.readString();
-                this.categs.put(_key33, _val34);
+                int _key49; // required
+                String _val50; // required
+                _key49 = iprot.readI32();
+                _val50 = iprot.readString();
+                this.categs.put(_key49, _val50);
               }
               iprot.readMapEnd();
             }
@@ -680,15 +680,15 @@ public class EventPoolReply implements org.apache.thrift.TBase<EventPoolReply, E
         case 6: // TAGS
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map35 = iprot.readMapBegin();
-              this.tags = new HashMap<String,String>(2*_map35.size);
-              for (int _i36 = 0; _i36 < _map35.size; ++_i36)
+              org.apache.thrift.protocol.TMap _map51 = iprot.readMapBegin();
+              this.tags = new HashMap<String,String>(2*_map51.size);
+              for (int _i52 = 0; _i52 < _map51.size; ++_i52)
               {
-                String _key37; // required
-                String _val38; // required
-                _key37 = iprot.readString();
-                _val38 = iprot.readString();
-                this.tags.put(_key37, _val38);
+                String _key53; // required
+                String _val54; // required
+                _key53 = iprot.readString();
+                _val54 = iprot.readString();
+                this.tags.put(_key53, _val54);
               }
               iprot.readMapEnd();
             }
@@ -729,10 +729,10 @@ public class EventPoolReply implements org.apache.thrift.TBase<EventPoolReply, E
         oprot.writeFieldBegin(CHILDREN_ITEMS_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I64, org.apache.thrift.protocol.TType.STRUCT, this.childrenItems.size()));
-          for (Map.Entry<Long, EventItem> _iter39 : this.childrenItems.entrySet())
+          for (Map.Entry<Long, EventItem> _iter55 : this.childrenItems.entrySet())
           {
-            oprot.writeI64(_iter39.getKey());
-            _iter39.getValue().write(oprot);
+            oprot.writeI64(_iter55.getKey());
+            _iter55.getValue().write(oprot);
           }
           oprot.writeMapEnd();
         }
@@ -744,10 +744,10 @@ public class EventPoolReply implements org.apache.thrift.TBase<EventPoolReply, E
         oprot.writeFieldBegin(CATEGS_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRING, this.categs.size()));
-          for (Map.Entry<Integer, String> _iter40 : this.categs.entrySet())
+          for (Map.Entry<Integer, String> _iter56 : this.categs.entrySet())
           {
-            oprot.writeI32(_iter40.getKey());
-            oprot.writeString(_iter40.getValue());
+            oprot.writeI32(_iter56.getKey());
+            oprot.writeString(_iter56.getValue());
           }
           oprot.writeMapEnd();
         }
@@ -759,10 +759,10 @@ public class EventPoolReply implements org.apache.thrift.TBase<EventPoolReply, E
         oprot.writeFieldBegin(TAGS_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, this.tags.size()));
-          for (Map.Entry<String, String> _iter41 : this.tags.entrySet())
+          for (Map.Entry<String, String> _iter57 : this.tags.entrySet())
           {
-            oprot.writeString(_iter41.getKey());
-            oprot.writeString(_iter41.getValue());
+            oprot.writeString(_iter57.getKey());
+            oprot.writeString(_iter57.getValue());
           }
           oprot.writeMapEnd();
         }

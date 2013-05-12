@@ -34,6 +34,10 @@
 
 #import "UIActionSheet+Additions.h"
 
+#import "MainController.h"
+
+#import "PCURLSchemeHandler.h"
+
 @interface EventPoolViewController ()
 
 @property (nonatomic) int64_t poolId;
@@ -55,6 +59,8 @@
 @property (nonatomic, strong) UIBarButtonItem* scanButton;
 
 @property (nonatomic, strong) EventItem* selectedItem;
+
+@property (nonatomic) BOOL pastMode;
 
 @end
 
@@ -183,7 +189,8 @@ static NSString* kEventCell = @"EventCell";
 }
 
 - (EventPoolRequest*)createEventPoolRequest {
-    return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:self.selectedPeriod];
+    //return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:self.selectedPeriod];
+    return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:nil userTickets:[self.eventsService allUserTickets] starredEventItems:[self.eventsService allFavoriteEventItemIds] lang:[PCUtils userLanguageCode] period:self.selectedPeriod fetchPast:self.pastMode];
 }
 
 - (void)startGetEventPoolRequest { 
@@ -401,26 +408,33 @@ static NSString* kEventCell = @"EventCell";
 
 #pragma mark - ZBar and Image picker delegate
 
-- (void) imagePickerController:(UIImagePickerController*)reader didFinishPickingMediaWithInfo:(NSDictionary*)info
+- (void)imagePickerController:(UIImagePickerController*)reader didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
-    // ADD: get the decode results
     id<NSFastEnumeration> results = [info objectForKey: ZBarReaderControllerResults];
     ZBarSymbol *symbol = nil;
     for(symbol in results)
         //just grab the first barcode
         break;
     
-    // EXAMPLE: do something useful with the barcode data
-    
     if (!symbol.data) {
         [self showQRCodeError];
         return;
     }
     
-    NSDictionary* parameters = [PCUtils urlStringParameters:symbol.data];
+    NSString* urlString = symbol.data;
+    
+    NSURL* url = [NSURL URLWithString:urlString];
+    
+    if ([[MainController publicController] handlePocketCampusURL:url]) {
+        [self refresh];
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    }
+    
+    /*NSDictionary* parameters = [PCUtils urlStringParameters:urlString];
     
     if (!parameters) {
         [self showQRCodeError];
+        return;
     }
     
     BOOL found = NO;
@@ -428,17 +442,17 @@ static NSString* kEventCell = @"EventCell";
     NSString* userToken = parameters[@"userToken"];
     if (userToken) {
         found = YES;
-        [self.eventsService saveUserToken:userToken];
+        [self.eventsService addUserTicket:userToken];
         [self refresh];
     }
     
     NSString* exchangeToken = parameters[@"exchangeToken"];
     if (exchangeToken) {
         found = YES;
-        if (![self.eventsService lastUserToken]) {
+        if ([[self.eventsService allUserTickets] count] == 0) {
             [self showNoUserTokenError];
         } else {
-            ExchangeRequest* req = [[ExchangeRequest alloc] initWithUserToken:[self.eventsService lastUserToken] exchangeToken:exchangeToken];
+            ExchangeRequest* req = [[ExchangeRequest alloc] initWithExchangeToken:exchangeToken userToken:nil userTickets:[self.eventsService allUserTickets]];
             [self.eventsService exchangeContactsForRequest:req delegate:self];
         }
     }
@@ -447,9 +461,9 @@ static NSString* kEventCell = @"EventCell";
     if (eventItemIdToMarkFavorite) {
         found = YES;
         int64_t itemId = [eventItemIdToMarkFavorite longLongValue];
-        /*[self.eventsService addFavoriteEventItemId:itemId];
-        [self fillSectionsFromReplyForCurrentCategoriesAndTags];
-        [self.tableView reloadData];*/
+        [self.eventsService addFavoriteEventItemId:itemId];
+        [self fillCollectionsFromReplyAndSelection];
+        [self.tableView reloadData];
         EventItemViewController* viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:itemId];
         [self.navigationController pushViewController:viewController animated:YES];
     }
@@ -458,7 +472,7 @@ static NSString* kEventCell = @"EventCell";
         [self dismissViewControllerAnimated:YES completion:NULL];
     } else {
         [self showQRCodeError];
-    }
+    }*/
 }
 
 - (void)showQRCodeError {
@@ -492,25 +506,6 @@ static NSString* kEventCell = @"EventCell";
 }
 
 - (void)getEventPoolFailedForRequest:(EventPoolRequest *)request {
-    [self error];
-}
-
-- (void)exchangeContactsForRequest:(ExchangeRequest *)request didReturn:(ExchangeReply *)reply {
-    switch (reply.status) {
-        case 200:
-            [self refresh];
-            break;
-        case 400:
-            [self showExchangeContactError];
-            break;
-        case 500:
-            [self exchangeContactsFailedForRequest:request];
-        default:
-            break;
-    }
-}
-
-- (void)exchangeContactsFailedForRequest:(ExchangeRequest *)request {
     [self error];
 }
 

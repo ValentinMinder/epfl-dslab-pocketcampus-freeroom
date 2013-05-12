@@ -14,12 +14,15 @@
 
 @interface EventsService ()
 
-@property (nonatomic, strong) NSString* userToken;
+@property (nonatomic, strong) NSMutableSet* userTickets;
+@property (nonatomic, strong) NSString* userToken __deprecated;
 @property (nonatomic, strong) NSMutableSet* favoriteEventItemIds; //set of NSNumber int64_t
 
 @end
 
-static NSString* kUserTokenKey = @"userToken";
+static NSString* kUserTicketsKey = @"userTickets";
+
+static NSString* kUserTokenKey __deprecated = @"userToken";
 
 static NSString* kFavoriteEventItemIds = @"favoriteEventItemIds";
 
@@ -63,6 +66,43 @@ static EventsService* instance __weak = nil;
 #else
     return [[[EventsServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
 #endif
+}
+
+#pragma mark - User tickets
+
+- (void)initUserTickets {
+    if (!self.userTickets) { //first try to get it from persistent storage
+        self.userTickets = [(NSSet*)[ObjectArchiver objectForKey:kUserTicketsKey andPluginName:@"events"] mutableCopy];
+    }
+    if (!self.userTickets) { //if not present in persistent storage, create set
+        self.userTickets = [NSMutableSet set];
+    }
+    
+    static NSString* kTransitionToUserTicketsDone = @"TransitionToUserTicketsDone";
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults boolForKey:kTransitionToUserTicketsDone]) {
+        if (self.lastUserToken) {
+            //transition period, get back old tokens
+            [self.userTickets addObject:self.lastUserToken];
+            [self deleteUserToken];
+        }
+        [defaults setBool:YES forKey:kTransitionToUserTicketsDone];
+    }
+}
+
+- (void)addUserTicket:(NSString*)ticket {
+    [self initUserTickets];
+    [self.userTickets addObject:ticket];
+}
+
+- (void)removeUserTicket:(NSString*)ticket {
+    [self initUserTickets];
+    [self.userTickets removeObject:ticket];
+}
+
+- (NSArray*)allUserTickets {
+    [self initUserTickets];
+    return [self.userTickets allObjects];
 }
 
 #pragma mark - User token
@@ -116,6 +156,11 @@ static EventsService* instance __weak = nil;
     [self persistFavorites];
     NSNotification* notif = [NSNotification notificationWithName:kFavoritesEventItemsUpdatedNotification object:self];
     [[NSNotificationCenter defaultCenter] postNotification:notif];
+}
+
+- (NSArray*)allFavoriteEventItemIds {
+    [self initFavorites];
+    return [self.favoriteEventItemIds allObjects];
 }
 
 - (BOOL)isEventItemIdFavorite:(int64_t)itemId {
