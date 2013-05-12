@@ -165,8 +165,10 @@ struct EventPoolReply {
 }
 
 struct ExchangeRequest {
-	1: required string userToken;
 	2: required string exchangeToken;
+	
+	1: optional string userToken;
+	3: optional list<string> userTickets;
 }
 
 struct ExchangeReply {
