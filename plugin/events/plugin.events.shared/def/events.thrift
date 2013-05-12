@@ -127,17 +127,23 @@ struct EventPool {
 struct EventItemRequest {
 	1: required i64 eventItemId;
 	2: optional string userToken;
+	3: optional list<string> userTickets;
+	4: optional list<i64> starredEventItems;
 	
 	5: optional string lang;
 	6: optional i32 period;
+	7: optional bool fetchPast;
 }
 
 struct EventPoolRequest {
 	1: required i64 eventPoolId;
 	2: optional string userToken;
+	3: optional list<string> userTickets;
+	4: optional list<i64> starredEventItems;
 	
 	5: optional string lang;
 	6: optional i32 period;
+	7: optional bool fetchPast;
 }
 
 struct EventItemReply {
@@ -167,9 +173,22 @@ struct ExchangeReply {
 	1: required i32 status;
 }
 
+struct SendEmailRequest {
+	1: required list<i64> starredEventItems;
+	2: optional list<string> userTickets;
+	3: optional string emailAddress;
+	
+	5: optional string lang;
+}
+
+struct SendEmailReply {
+	1: required i32 status;
+}
+
 
 service EventsService {
 	EventItemReply getEventItem(1: EventItemRequest iRequest);
 	EventPoolReply getEventPool(1: EventPoolRequest iRequest);
 	ExchangeReply exchangeContacts(1: ExchangeRequest iRequest);
+	SendEmailReply sendStarredItemsByEmail(1: SendEmailRequest iRequest);
 }
