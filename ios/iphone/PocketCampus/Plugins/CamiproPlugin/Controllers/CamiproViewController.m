@@ -152,6 +152,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     if (![PCUtils isIdiomPad]) {
         return;
     }
+    
     self.tableView.layer.masksToBounds = YES;
     self.tableView.layer.shadowOpacity = 0.0;
     [self.tableViewMasksToBoundsTimer invalidate];

@@ -80,8 +80,11 @@ static DirectoryController* instance __weak = nil;
         }
     } else {
         navController = self.mainNavigationController;
+        [navController popToRootViewControllerAnimated:NO];
     }
-    [navController pushViewController:viewController animated:YES];
+    if (!viewController.navigationController) {
+        [navController pushViewController:viewController animated:YES];
+    }
     return YES;
 }
 

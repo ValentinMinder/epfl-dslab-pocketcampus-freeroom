@@ -376,6 +376,9 @@ static NSString* kPoolCell = @"PoolCell";
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!self.childrenPools.count) {
+        return;
+    }
     EventPool* eventPool = self.childrenPools[indexPath.row];
     [self.navigationController pushViewController:[[EventPoolViewController alloc] initWithEventPool:eventPool] animated:YES];
 }

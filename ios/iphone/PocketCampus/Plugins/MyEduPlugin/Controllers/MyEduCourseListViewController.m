@@ -162,6 +162,9 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!self.subscribedCourses.count) {
+        return;
+    }
     MyEduCourse* course = self.subscribedCourses[indexPath.row];
     [self.navigationController pushViewController:[[MyEduSectionListViewController alloc] initWithMyEduCourse:course] animated:YES];
 }

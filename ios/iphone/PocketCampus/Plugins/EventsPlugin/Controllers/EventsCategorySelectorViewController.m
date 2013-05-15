@@ -71,6 +71,9 @@ static NSString* kCategoryCell = @"CategoryCell";
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!self.allCategories.count) {
+        return;
+    }
     self.userValidatedSelectionBlock([NSArray arrayWithObject:self.allCategories[indexPath.row]]);
 }
 

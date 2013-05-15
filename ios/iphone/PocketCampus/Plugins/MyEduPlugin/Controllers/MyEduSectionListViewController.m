@@ -164,6 +164,9 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!self.sections.count) {
+        return;
+    }
     MyEduSection* section = self.sections[indexPath.row];
     [self.navigationController pushViewController:[[MyEduModuleListViewController alloc] initWithMyEduCourse:self.course andSection:section] animated:YES];
 }

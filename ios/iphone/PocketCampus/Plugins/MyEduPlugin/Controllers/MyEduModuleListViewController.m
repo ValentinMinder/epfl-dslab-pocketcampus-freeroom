@@ -223,6 +223,10 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!self.modules.count) {
+        return;
+    }
+    
     NSInteger selectedTabIndex = 0;
     
     MyEduModule* module = self.modules[indexPath.row];

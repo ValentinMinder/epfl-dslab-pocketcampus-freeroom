@@ -95,8 +95,9 @@ static EventsController* instance __weak = nil;
     } else {
         navController = self.mainNavigationController;
     }
-    [navController pushViewController:viewController animated:YES];
-    
+    if (!viewController.navigationController) {
+        [navController pushViewController:viewController animated:YES];
+    }
     return YES;
 }
 
@@ -116,30 +117,37 @@ static EventsController* instance __weak = nil;
 #pragma mark - EventsServiceDelegate
 
 - (void)exchangeContactsForRequest:(ExchangeRequest *)request didReturn:(ExchangeReply *)reply {
-#warning TODO;
+    switch (reply.status) {
+        case 200:
+            //perfect
+            break;
+        case 400:
+            [self showExchangeContactError];
+            break;
+        case 500:
+            [self exchangeContactsFailedForRequest:request];
+        default:
+            break;
+    }
 }
 
 - (void)exchangeContactsFailedForRequest:(ExchangeRequest *)request {
-#warning TODO
+    [PCUtils showServerErrorAlert];
 }
 
 #pragma mark - Private
 
+- (void)showExchangeContactError {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ExchangeContactErrorMessage", @"EventsPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
+
 - (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters handleSilent:(BOOL)handleSilent {
-    
-    NSLog(@"Handling: action:%@ parameters:%@", action, parameters);
     
     UIViewController* viewController = nil;
     
     if (handleSilent) {
         [self handleSilentParameters:parameters];
-    }
-    
-    NSString* eventItemIdToMarkFavorite = parameters[@"markFavorite"];
-    if (eventItemIdToMarkFavorite) {
-        int64_t itemId = [eventItemIdToMarkFavorite longLongValue];
-        [self.eventsService addFavoriteEventItemId:itemId];
-        viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:itemId];
     }
     
     if ([action isEqualToString:@"showEventPool"]) {
@@ -154,6 +162,13 @@ static EventsController* instance __weak = nil;
         }
     } else {
         //no other supported actions
+    }
+    
+    NSString* eventItemIdToMarkFavorite = parameters[@"markFavorite"];
+    if (eventItemIdToMarkFavorite) {
+        int64_t itemId = [eventItemIdToMarkFavorite longLongValue];
+        [self.eventsService addFavoriteEventItemId:itemId];
+        viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:itemId];
     }
     
     return viewController;

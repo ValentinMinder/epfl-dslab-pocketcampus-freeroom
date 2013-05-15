@@ -295,6 +295,9 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!self.sections.count) {
+        return;
+    }
     MoodleSection* section = [self.sections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
     if (self.splitViewController && [resource isEqual:self.selectedResource]) {

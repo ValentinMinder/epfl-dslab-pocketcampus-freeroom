@@ -425,10 +425,25 @@ static NSString* kEventCell = @"EventCell";
     
     NSURL* url = [NSURL URLWithString:urlString];
     
-    if ([[MainController publicController] handlePocketCampusURL:url]) {
-        [self refresh];
-        [self dismissViewControllerAnimated:YES completion:NULL];
+    if (!url) {
+        [self showQRCodeError];
+        return;
     }
+    
+    PCURLSchemeHandler* handler = [[MainController publicController] urlSchemeHandlerSharedInstance];
+    
+    NSDictionary* params = [handler parametersForPocketCampusURL:url];
+    
+    UIViewController* viewController = [handler viewControllerForPocketCampusURL:url];
+    
+    if (!viewController && !params[@"userTicket"] && !params[@"exchangeToken"]) { //those parameter do not provide a view controller
+        [self showQRCodeError];
+        return;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.navigationController pushViewController:viewController animated:YES];
+    }];
     
     /*NSDictionary* parameters = [PCUtils urlStringParameters:urlString];
     
@@ -547,6 +562,9 @@ static NSString* kEventCell = @"EventCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!self.itemsForSection.count) {
+        return;
+    }
     EventItem* eventItem = self.itemsForSection[indexPath.section][indexPath.row];
     
     EventItemViewController* eventItemViewController = [[EventItemViewController alloc] initWithEventItem:eventItem];
