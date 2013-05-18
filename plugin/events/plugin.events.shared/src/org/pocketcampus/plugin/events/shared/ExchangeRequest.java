@@ -437,13 +437,13 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
         case 3: // USER_TICKETS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list58 = iprot.readListBegin();
-              this.userTickets = new ArrayList<String>(_list58.size);
-              for (int _i59 = 0; _i59 < _list58.size; ++_i59)
+              org.apache.thrift.protocol.TList _list54 = iprot.readListBegin();
+              this.userTickets = new ArrayList<String>(_list54.size);
+              for (int _i55 = 0; _i55 < _list54.size; ++_i55)
               {
-                String _elem60; // required
-                _elem60 = iprot.readString();
-                this.userTickets.add(_elem60);
+                String _elem56; // required
+                _elem56 = iprot.readString();
+                this.userTickets.add(_elem56);
               }
               iprot.readListEnd();
             }
@@ -483,9 +483,9 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
         oprot.writeFieldBegin(USER_TICKETS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.userTickets.size()));
-          for (String _iter61 : this.userTickets)
+          for (String _iter57 : this.userTickets)
           {
-            oprot.writeString(_iter61);
+            oprot.writeString(_iter57);
           }
           oprot.writeListEnd();
         }

@@ -515,13 +515,13 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
         case 1: // STARRED_EVENT_ITEMS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list62 = iprot.readListBegin();
-              this.starredEventItems = new ArrayList<Long>(_list62.size);
-              for (int _i63 = 0; _i63 < _list62.size; ++_i63)
+              org.apache.thrift.protocol.TList _list58 = iprot.readListBegin();
+              this.starredEventItems = new ArrayList<Long>(_list58.size);
+              for (int _i59 = 0; _i59 < _list58.size; ++_i59)
               {
-                long _elem64; // required
-                _elem64 = iprot.readI64();
-                this.starredEventItems.add(_elem64);
+                long _elem60; // required
+                _elem60 = iprot.readI64();
+                this.starredEventItems.add(_elem60);
               }
               iprot.readListEnd();
             }
@@ -532,13 +532,13 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
         case 2: // USER_TICKETS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list65 = iprot.readListBegin();
-              this.userTickets = new ArrayList<String>(_list65.size);
-              for (int _i66 = 0; _i66 < _list65.size; ++_i66)
+              org.apache.thrift.protocol.TList _list61 = iprot.readListBegin();
+              this.userTickets = new ArrayList<String>(_list61.size);
+              for (int _i62 = 0; _i62 < _list61.size; ++_i62)
               {
-                String _elem67; // required
-                _elem67 = iprot.readString();
-                this.userTickets.add(_elem67);
+                String _elem63; // required
+                _elem63 = iprot.readString();
+                this.userTickets.add(_elem63);
               }
               iprot.readListEnd();
             }
@@ -579,9 +579,9 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
       oprot.writeFieldBegin(STARRED_EVENT_ITEMS_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I64, this.starredEventItems.size()));
-        for (long _iter68 : this.starredEventItems)
+        for (long _iter64 : this.starredEventItems)
         {
-          oprot.writeI64(_iter68);
+          oprot.writeI64(_iter64);
         }
         oprot.writeListEnd();
       }
@@ -592,9 +592,9 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
         oprot.writeFieldBegin(USER_TICKETS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.userTickets.size()));
-          for (String _iter69 : this.userTickets)
+          for (String _iter65 : this.userTickets)
           {
-            oprot.writeString(_iter69);
+            oprot.writeString(_iter65);
           }
           oprot.writeListEnd();
         }

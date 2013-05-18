@@ -747,13 +747,13 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
         case 3: // USER_TICKETS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list20 = iprot.readListBegin();
-              this.userTickets = new ArrayList<String>(_list20.size);
-              for (int _i21 = 0; _i21 < _list20.size; ++_i21)
+              org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
+              this.userTickets = new ArrayList<String>(_list16.size);
+              for (int _i17 = 0; _i17 < _list16.size; ++_i17)
               {
-                String _elem22; // required
-                _elem22 = iprot.readString();
-                this.userTickets.add(_elem22);
+                String _elem18; // required
+                _elem18 = iprot.readString();
+                this.userTickets.add(_elem18);
               }
               iprot.readListEnd();
             }
@@ -764,13 +764,13 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
         case 4: // STARRED_EVENT_ITEMS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list23 = iprot.readListBegin();
-              this.starredEventItems = new ArrayList<Long>(_list23.size);
-              for (int _i24 = 0; _i24 < _list23.size; ++_i24)
+              org.apache.thrift.protocol.TList _list19 = iprot.readListBegin();
+              this.starredEventItems = new ArrayList<Long>(_list19.size);
+              for (int _i20 = 0; _i20 < _list19.size; ++_i20)
               {
-                long _elem25; // required
-                _elem25 = iprot.readI64();
-                this.starredEventItems.add(_elem25);
+                long _elem21; // required
+                _elem21 = iprot.readI64();
+                this.starredEventItems.add(_elem21);
               }
               iprot.readListEnd();
             }
@@ -834,9 +834,9 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
         oprot.writeFieldBegin(USER_TICKETS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.userTickets.size()));
-          for (String _iter26 : this.userTickets)
+          for (String _iter22 : this.userTickets)
           {
-            oprot.writeString(_iter26);
+            oprot.writeString(_iter22);
           }
           oprot.writeListEnd();
         }
@@ -848,9 +848,9 @@ public class EventPoolRequest implements org.apache.thrift.TBase<EventPoolReques
         oprot.writeFieldBegin(STARRED_EVENT_ITEMS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I64, this.starredEventItems.size()));
-          for (long _iter27 : this.starredEventItems)
+          for (long _iter23 : this.starredEventItems)
           {
-            oprot.writeI64(_iter27);
+            oprot.writeI64(_iter23);
           }
           oprot.writeListEnd();
         }

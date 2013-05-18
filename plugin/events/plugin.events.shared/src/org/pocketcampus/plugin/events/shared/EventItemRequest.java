@@ -27,7 +27,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
   private static final org.apache.thrift.protocol.TField EVENT_ITEM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("eventItemId", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField USER_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("userToken", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField USER_TICKETS_FIELD_DESC = new org.apache.thrift.protocol.TField("userTickets", org.apache.thrift.protocol.TType.LIST, (short)3);
-  private static final org.apache.thrift.protocol.TField STARRED_EVENT_ITEMS_FIELD_DESC = new org.apache.thrift.protocol.TField("starredEventItems", org.apache.thrift.protocol.TType.LIST, (short)4);
   private static final org.apache.thrift.protocol.TField LANG_FIELD_DESC = new org.apache.thrift.protocol.TField("lang", org.apache.thrift.protocol.TType.STRING, (short)5);
   private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.I32, (short)6);
   private static final org.apache.thrift.protocol.TField FETCH_PAST_FIELD_DESC = new org.apache.thrift.protocol.TField("fetchPast", org.apache.thrift.protocol.TType.BOOL, (short)7);
@@ -35,7 +34,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
   public long eventItemId; // required
   public String userToken; // required
   public List<String> userTickets; // required
-  public List<Long> starredEventItems; // required
   public String lang; // required
   public int period; // required
   public boolean fetchPast; // required
@@ -45,7 +43,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     EVENT_ITEM_ID((short)1, "eventItemId"),
     USER_TOKEN((short)2, "userToken"),
     USER_TICKETS((short)3, "userTickets"),
-    STARRED_EVENT_ITEMS((short)4, "starredEventItems"),
     LANG((short)5, "lang"),
     PERIOD((short)6, "period"),
     FETCH_PAST((short)7, "fetchPast");
@@ -69,8 +66,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
           return USER_TOKEN;
         case 3: // USER_TICKETS
           return USER_TICKETS;
-        case 4: // STARRED_EVENT_ITEMS
-          return STARRED_EVENT_ITEMS;
         case 5: // LANG
           return LANG;
         case 6: // PERIOD
@@ -132,9 +127,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     tmpMap.put(_Fields.USER_TICKETS, new org.apache.thrift.meta_data.FieldMetaData("userTickets", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
-    tmpMap.put(_Fields.STARRED_EVENT_ITEMS, new org.apache.thrift.meta_data.FieldMetaData("starredEventItems", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64))));
     tmpMap.put(_Fields.LANG, new org.apache.thrift.meta_data.FieldMetaData("lang", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.PERIOD, new org.apache.thrift.meta_data.FieldMetaData("period", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
@@ -173,13 +165,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
       }
       this.userTickets = __this__userTickets;
     }
-    if (other.isSetStarredEventItems()) {
-      List<Long> __this__starredEventItems = new ArrayList<Long>();
-      for (Long other_element : other.starredEventItems) {
-        __this__starredEventItems.add(other_element);
-      }
-      this.starredEventItems = __this__starredEventItems;
-    }
     if (other.isSetLang()) {
       this.lang = other.lang;
     }
@@ -197,7 +182,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     this.eventItemId = 0;
     this.userToken = null;
     this.userTickets = null;
-    this.starredEventItems = null;
     this.lang = null;
     setPeriodIsSet(false);
     this.period = 0;
@@ -288,45 +272,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
   public void setUserTicketsIsSet(boolean value) {
     if (!value) {
       this.userTickets = null;
-    }
-  }
-
-  public int getStarredEventItemsSize() {
-    return (this.starredEventItems == null) ? 0 : this.starredEventItems.size();
-  }
-
-  public java.util.Iterator<Long> getStarredEventItemsIterator() {
-    return (this.starredEventItems == null) ? null : this.starredEventItems.iterator();
-  }
-
-  public void addToStarredEventItems(long elem) {
-    if (this.starredEventItems == null) {
-      this.starredEventItems = new ArrayList<Long>();
-    }
-    this.starredEventItems.add(elem);
-  }
-
-  public List<Long> getStarredEventItems() {
-    return this.starredEventItems;
-  }
-
-  public EventItemRequest setStarredEventItems(List<Long> starredEventItems) {
-    this.starredEventItems = starredEventItems;
-    return this;
-  }
-
-  public void unsetStarredEventItems() {
-    this.starredEventItems = null;
-  }
-
-  /** Returns true if field starredEventItems is set (has been assigned a value) and false otherwise */
-  public boolean isSetStarredEventItems() {
-    return this.starredEventItems != null;
-  }
-
-  public void setStarredEventItemsIsSet(boolean value) {
-    if (!value) {
-      this.starredEventItems = null;
     }
   }
 
@@ -426,14 +371,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
       }
       break;
 
-    case STARRED_EVENT_ITEMS:
-      if (value == null) {
-        unsetStarredEventItems();
-      } else {
-        setStarredEventItems((List<Long>)value);
-      }
-      break;
-
     case LANG:
       if (value == null) {
         unsetLang();
@@ -472,9 +409,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     case USER_TICKETS:
       return getUserTickets();
 
-    case STARRED_EVENT_ITEMS:
-      return getStarredEventItems();
-
     case LANG:
       return getLang();
 
@@ -501,8 +435,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
       return isSetUserToken();
     case USER_TICKETS:
       return isSetUserTickets();
-    case STARRED_EVENT_ITEMS:
-      return isSetStarredEventItems();
     case LANG:
       return isSetLang();
     case PERIOD:
@@ -550,15 +482,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
       if (!(this_present_userTickets && that_present_userTickets))
         return false;
       if (!this.userTickets.equals(that.userTickets))
-        return false;
-    }
-
-    boolean this_present_starredEventItems = true && this.isSetStarredEventItems();
-    boolean that_present_starredEventItems = true && that.isSetStarredEventItems();
-    if (this_present_starredEventItems || that_present_starredEventItems) {
-      if (!(this_present_starredEventItems && that_present_starredEventItems))
-        return false;
-      if (!this.starredEventItems.equals(that.starredEventItems))
         return false;
     }
 
@@ -610,11 +533,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     builder.append(present_userTickets);
     if (present_userTickets)
       builder.append(userTickets);
-
-    boolean present_starredEventItems = true && (isSetStarredEventItems());
-    builder.append(present_starredEventItems);
-    if (present_starredEventItems)
-      builder.append(starredEventItems);
 
     boolean present_lang = true && (isSetLang());
     builder.append(present_lang);
@@ -668,16 +586,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     }
     if (isSetUserTickets()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.userTickets, typedOther.userTickets);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetStarredEventItems()).compareTo(typedOther.isSetStarredEventItems());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetStarredEventItems()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.starredEventItems, typedOther.starredEventItems);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -761,23 +669,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // STARRED_EVENT_ITEMS
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list15 = iprot.readListBegin();
-              this.starredEventItems = new ArrayList<Long>(_list15.size);
-              for (int _i16 = 0; _i16 < _list15.size; ++_i16)
-              {
-                long _elem17; // required
-                _elem17 = iprot.readI64();
-                this.starredEventItems.add(_elem17);
-              }
-              iprot.readListEnd();
-            }
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         case 5: // LANG
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.lang = iprot.readString();
@@ -834,23 +725,9 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
         oprot.writeFieldBegin(USER_TICKETS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.userTickets.size()));
-          for (String _iter18 : this.userTickets)
+          for (String _iter15 : this.userTickets)
           {
-            oprot.writeString(_iter18);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-    }
-    if (this.starredEventItems != null) {
-      if (isSetStarredEventItems()) {
-        oprot.writeFieldBegin(STARRED_EVENT_ITEMS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I64, this.starredEventItems.size()));
-          for (long _iter19 : this.starredEventItems)
-          {
-            oprot.writeI64(_iter19);
+            oprot.writeString(_iter15);
           }
           oprot.writeListEnd();
         }
@@ -903,16 +780,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
         sb.append("null");
       } else {
         sb.append(this.userTickets);
-      }
-      first = false;
-    }
-    if (isSetStarredEventItems()) {
-      if (!first) sb.append(", ");
-      sb.append("starredEventItems:");
-      if (this.starredEventItems == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.starredEventItems);
       }
       first = false;
     }

@@ -34,17 +34,17 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
   private static final org.apache.thrift.protocol.TField EVENT_SPEAKER_FIELD_DESC = new org.apache.thrift.protocol.TField("eventSpeaker", org.apache.thrift.protocol.TType.STRING, (short)8);
   private static final org.apache.thrift.protocol.TField EVENT_DETAILS_FIELD_DESC = new org.apache.thrift.protocol.TField("eventDetails", org.apache.thrift.protocol.TType.STRING, (short)9);
   private static final org.apache.thrift.protocol.TField EVENT_THUMBNAIL_FIELD_DESC = new org.apache.thrift.protocol.TField("eventThumbnail", org.apache.thrift.protocol.TType.STRING, (short)10);
-  private static final org.apache.thrift.protocol.TField SECOND_LINE_FIELD_DESC = new org.apache.thrift.protocol.TField("secondLine", org.apache.thrift.protocol.TType.STRING, (short)11);
   private static final org.apache.thrift.protocol.TField EVENT_URI_FIELD_DESC = new org.apache.thrift.protocol.TField("eventUri", org.apache.thrift.protocol.TType.STRING, (short)12);
   private static final org.apache.thrift.protocol.TField VCAL_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("vcalUid", org.apache.thrift.protocol.TType.STRING, (short)13);
-  private static final org.apache.thrift.protocol.TField EVENT_CATEG_FIELD_DESC = new org.apache.thrift.protocol.TField("eventCateg", org.apache.thrift.protocol.TType.I32, (short)14);
-  private static final org.apache.thrift.protocol.TField EVENT_TAGS_FIELD_DESC = new org.apache.thrift.protocol.TField("eventTags", org.apache.thrift.protocol.TType.LIST, (short)15);
   private static final org.apache.thrift.protocol.TField LOCATION_HREF_FIELD_DESC = new org.apache.thrift.protocol.TField("locationHref", org.apache.thrift.protocol.TType.STRING, (short)16);
   private static final org.apache.thrift.protocol.TField DETAILS_LINK_FIELD_DESC = new org.apache.thrift.protocol.TField("detailsLink", org.apache.thrift.protocol.TType.STRING, (short)17);
+  private static final org.apache.thrift.protocol.TField SECOND_LINE_FIELD_DESC = new org.apache.thrift.protocol.TField("secondLine", org.apache.thrift.protocol.TType.STRING, (short)11);
   private static final org.apache.thrift.protocol.TField TIME_SNIPPET_FIELD_DESC = new org.apache.thrift.protocol.TField("timeSnippet", org.apache.thrift.protocol.TType.STRING, (short)18);
   private static final org.apache.thrift.protocol.TField HIDE_TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("hideTitle", org.apache.thrift.protocol.TType.BOOL, (short)21);
   private static final org.apache.thrift.protocol.TField HIDE_THUMBNAIL_FIELD_DESC = new org.apache.thrift.protocol.TField("hideThumbnail", org.apache.thrift.protocol.TType.BOOL, (short)22);
   private static final org.apache.thrift.protocol.TField HIDE_EVENT_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("hideEventInfo", org.apache.thrift.protocol.TType.BOOL, (short)23);
+  private static final org.apache.thrift.protocol.TField EVENT_CATEG_FIELD_DESC = new org.apache.thrift.protocol.TField("eventCateg", org.apache.thrift.protocol.TType.I32, (short)14);
+  private static final org.apache.thrift.protocol.TField EVENT_TAGS_FIELD_DESC = new org.apache.thrift.protocol.TField("eventTags", org.apache.thrift.protocol.TType.LIST, (short)15);
   private static final org.apache.thrift.protocol.TField CHILDREN_POOLS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenPools", org.apache.thrift.protocol.TType.LIST, (short)30);
   private static final org.apache.thrift.protocol.TField PARENT_POOL_FIELD_DESC = new org.apache.thrift.protocol.TField("parentPool", org.apache.thrift.protocol.TType.I64, (short)31);
 
@@ -58,17 +58,17 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
   public String eventSpeaker; // required
   public String eventDetails; // required
   public String eventThumbnail; // required
-  public String secondLine; // required
   public String eventUri; // required
   public String vcalUid; // required
-  public int eventCateg; // required
-  public List<String> eventTags; // required
   public String locationHref; // required
   public String detailsLink; // required
+  public String secondLine; // required
   public String timeSnippet; // required
   public boolean hideTitle; // required
   public boolean hideThumbnail; // required
   public boolean hideEventInfo; // required
+  public int eventCateg; // required
+  public List<String> eventTags; // required
   public List<Long> childrenPools; // required
   public long parentPool; // required
 
@@ -84,17 +84,17 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     EVENT_SPEAKER((short)8, "eventSpeaker"),
     EVENT_DETAILS((short)9, "eventDetails"),
     EVENT_THUMBNAIL((short)10, "eventThumbnail"),
-    SECOND_LINE((short)11, "secondLine"),
     EVENT_URI((short)12, "eventUri"),
     VCAL_UID((short)13, "vcalUid"),
-    EVENT_CATEG((short)14, "eventCateg"),
-    EVENT_TAGS((short)15, "eventTags"),
     LOCATION_HREF((short)16, "locationHref"),
     DETAILS_LINK((short)17, "detailsLink"),
+    SECOND_LINE((short)11, "secondLine"),
     TIME_SNIPPET((short)18, "timeSnippet"),
     HIDE_TITLE((short)21, "hideTitle"),
     HIDE_THUMBNAIL((short)22, "hideThumbnail"),
     HIDE_EVENT_INFO((short)23, "hideEventInfo"),
+    EVENT_CATEG((short)14, "eventCateg"),
+    EVENT_TAGS((short)15, "eventTags"),
     CHILDREN_POOLS((short)30, "childrenPools"),
     PARENT_POOL((short)31, "parentPool");
 
@@ -131,20 +131,16 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
           return EVENT_DETAILS;
         case 10: // EVENT_THUMBNAIL
           return EVENT_THUMBNAIL;
-        case 11: // SECOND_LINE
-          return SECOND_LINE;
         case 12: // EVENT_URI
           return EVENT_URI;
         case 13: // VCAL_UID
           return VCAL_UID;
-        case 14: // EVENT_CATEG
-          return EVENT_CATEG;
-        case 15: // EVENT_TAGS
-          return EVENT_TAGS;
         case 16: // LOCATION_HREF
           return LOCATION_HREF;
         case 17: // DETAILS_LINK
           return DETAILS_LINK;
+        case 11: // SECOND_LINE
+          return SECOND_LINE;
         case 18: // TIME_SNIPPET
           return TIME_SNIPPET;
         case 21: // HIDE_TITLE
@@ -153,6 +149,10 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
           return HIDE_THUMBNAIL;
         case 23: // HIDE_EVENT_INFO
           return HIDE_EVENT_INFO;
+        case 14: // EVENT_CATEG
+          return EVENT_CATEG;
+        case 15: // EVENT_TAGS
+          return EVENT_TAGS;
         case 30: // CHILDREN_POOLS
           return CHILDREN_POOLS;
         case 31: // PARENT_POOL
@@ -201,10 +201,10 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
   private static final int __STARTDATE_ISSET_ID = 1;
   private static final int __ENDDATE_ISSET_ID = 2;
   private static final int __FULLDAY_ISSET_ID = 3;
-  private static final int __EVENTCATEG_ISSET_ID = 4;
-  private static final int __HIDETITLE_ISSET_ID = 5;
-  private static final int __HIDETHUMBNAIL_ISSET_ID = 6;
-  private static final int __HIDEEVENTINFO_ISSET_ID = 7;
+  private static final int __HIDETITLE_ISSET_ID = 4;
+  private static final int __HIDETHUMBNAIL_ISSET_ID = 5;
+  private static final int __HIDEEVENTINFO_ISSET_ID = 6;
+  private static final int __EVENTCATEG_ISSET_ID = 7;
   private static final int __PARENTPOOL_ISSET_ID = 8;
   private BitSet __isset_bit_vector = new BitSet(9);
 
@@ -231,20 +231,15 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.EVENT_THUMBNAIL, new org.apache.thrift.meta_data.FieldMetaData("eventThumbnail", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.SECOND_LINE, new org.apache.thrift.meta_data.FieldMetaData("secondLine", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.EVENT_URI, new org.apache.thrift.meta_data.FieldMetaData("eventUri", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.VCAL_UID, new org.apache.thrift.meta_data.FieldMetaData("vcalUid", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.EVENT_CATEG, new org.apache.thrift.meta_data.FieldMetaData("eventCateg", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.EVENT_TAGS, new org.apache.thrift.meta_data.FieldMetaData("eventTags", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.LOCATION_HREF, new org.apache.thrift.meta_data.FieldMetaData("locationHref", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.DETAILS_LINK, new org.apache.thrift.meta_data.FieldMetaData("detailsLink", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.SECOND_LINE, new org.apache.thrift.meta_data.FieldMetaData("secondLine", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.TIME_SNIPPET, new org.apache.thrift.meta_data.FieldMetaData("timeSnippet", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -254,6 +249,11 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.HIDE_EVENT_INFO, new org.apache.thrift.meta_data.FieldMetaData("hideEventInfo", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.EVENT_CATEG, new org.apache.thrift.meta_data.FieldMetaData("eventCateg", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.EVENT_TAGS, new org.apache.thrift.meta_data.FieldMetaData("eventTags", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.CHILDREN_POOLS, new org.apache.thrift.meta_data.FieldMetaData("childrenPools", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64))));
@@ -302,15 +302,27 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     if (other.isSetEventThumbnail()) {
       this.eventThumbnail = other.eventThumbnail;
     }
-    if (other.isSetSecondLine()) {
-      this.secondLine = other.secondLine;
-    }
     if (other.isSetEventUri()) {
       this.eventUri = other.eventUri;
     }
     if (other.isSetVcalUid()) {
       this.vcalUid = other.vcalUid;
     }
+    if (other.isSetLocationHref()) {
+      this.locationHref = other.locationHref;
+    }
+    if (other.isSetDetailsLink()) {
+      this.detailsLink = other.detailsLink;
+    }
+    if (other.isSetSecondLine()) {
+      this.secondLine = other.secondLine;
+    }
+    if (other.isSetTimeSnippet()) {
+      this.timeSnippet = other.timeSnippet;
+    }
+    this.hideTitle = other.hideTitle;
+    this.hideThumbnail = other.hideThumbnail;
+    this.hideEventInfo = other.hideEventInfo;
     this.eventCateg = other.eventCateg;
     if (other.isSetEventTags()) {
       List<String> __this__eventTags = new ArrayList<String>();
@@ -319,18 +331,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       }
       this.eventTags = __this__eventTags;
     }
-    if (other.isSetLocationHref()) {
-      this.locationHref = other.locationHref;
-    }
-    if (other.isSetDetailsLink()) {
-      this.detailsLink = other.detailsLink;
-    }
-    if (other.isSetTimeSnippet()) {
-      this.timeSnippet = other.timeSnippet;
-    }
-    this.hideTitle = other.hideTitle;
-    this.hideThumbnail = other.hideThumbnail;
-    this.hideEventInfo = other.hideEventInfo;
     if (other.isSetChildrenPools()) {
       List<Long> __this__childrenPools = new ArrayList<Long>();
       for (Long other_element : other.childrenPools) {
@@ -361,14 +361,11 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     this.eventSpeaker = null;
     this.eventDetails = null;
     this.eventThumbnail = null;
-    this.secondLine = null;
     this.eventUri = null;
     this.vcalUid = null;
-    setEventCategIsSet(false);
-    this.eventCateg = 0;
-    this.eventTags = null;
     this.locationHref = null;
     this.detailsLink = null;
+    this.secondLine = null;
     this.timeSnippet = null;
     setHideTitleIsSet(false);
     this.hideTitle = false;
@@ -376,6 +373,9 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     this.hideThumbnail = false;
     setHideEventInfoIsSet(false);
     this.hideEventInfo = false;
+    setEventCategIsSet(false);
+    this.eventCateg = 0;
+    this.eventTags = null;
     this.childrenPools = null;
     setParentPoolIsSet(false);
     this.parentPool = 0;
@@ -617,30 +617,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     }
   }
 
-  public String getSecondLine() {
-    return this.secondLine;
-  }
-
-  public EventItem setSecondLine(String secondLine) {
-    this.secondLine = secondLine;
-    return this;
-  }
-
-  public void unsetSecondLine() {
-    this.secondLine = null;
-  }
-
-  /** Returns true if field secondLine is set (has been assigned a value) and false otherwise */
-  public boolean isSetSecondLine() {
-    return this.secondLine != null;
-  }
-
-  public void setSecondLineIsSet(boolean value) {
-    if (!value) {
-      this.secondLine = null;
-    }
-  }
-
   public String getEventUri() {
     return this.eventUri;
   }
@@ -689,68 +665,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     }
   }
 
-  public int getEventCateg() {
-    return this.eventCateg;
-  }
-
-  public EventItem setEventCateg(int eventCateg) {
-    this.eventCateg = eventCateg;
-    setEventCategIsSet(true);
-    return this;
-  }
-
-  public void unsetEventCateg() {
-    __isset_bit_vector.clear(__EVENTCATEG_ISSET_ID);
-  }
-
-  /** Returns true if field eventCateg is set (has been assigned a value) and false otherwise */
-  public boolean isSetEventCateg() {
-    return __isset_bit_vector.get(__EVENTCATEG_ISSET_ID);
-  }
-
-  public void setEventCategIsSet(boolean value) {
-    __isset_bit_vector.set(__EVENTCATEG_ISSET_ID, value);
-  }
-
-  public int getEventTagsSize() {
-    return (this.eventTags == null) ? 0 : this.eventTags.size();
-  }
-
-  public java.util.Iterator<String> getEventTagsIterator() {
-    return (this.eventTags == null) ? null : this.eventTags.iterator();
-  }
-
-  public void addToEventTags(String elem) {
-    if (this.eventTags == null) {
-      this.eventTags = new ArrayList<String>();
-    }
-    this.eventTags.add(elem);
-  }
-
-  public List<String> getEventTags() {
-    return this.eventTags;
-  }
-
-  public EventItem setEventTags(List<String> eventTags) {
-    this.eventTags = eventTags;
-    return this;
-  }
-
-  public void unsetEventTags() {
-    this.eventTags = null;
-  }
-
-  /** Returns true if field eventTags is set (has been assigned a value) and false otherwise */
-  public boolean isSetEventTags() {
-    return this.eventTags != null;
-  }
-
-  public void setEventTagsIsSet(boolean value) {
-    if (!value) {
-      this.eventTags = null;
-    }
-  }
-
   public String getLocationHref() {
     return this.locationHref;
   }
@@ -796,6 +710,30 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
   public void setDetailsLinkIsSet(boolean value) {
     if (!value) {
       this.detailsLink = null;
+    }
+  }
+
+  public String getSecondLine() {
+    return this.secondLine;
+  }
+
+  public EventItem setSecondLine(String secondLine) {
+    this.secondLine = secondLine;
+    return this;
+  }
+
+  public void unsetSecondLine() {
+    this.secondLine = null;
+  }
+
+  /** Returns true if field secondLine is set (has been assigned a value) and false otherwise */
+  public boolean isSetSecondLine() {
+    return this.secondLine != null;
+  }
+
+  public void setSecondLineIsSet(boolean value) {
+    if (!value) {
+      this.secondLine = null;
     }
   }
 
@@ -890,6 +828,68 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
 
   public void setHideEventInfoIsSet(boolean value) {
     __isset_bit_vector.set(__HIDEEVENTINFO_ISSET_ID, value);
+  }
+
+  public int getEventCateg() {
+    return this.eventCateg;
+  }
+
+  public EventItem setEventCateg(int eventCateg) {
+    this.eventCateg = eventCateg;
+    setEventCategIsSet(true);
+    return this;
+  }
+
+  public void unsetEventCateg() {
+    __isset_bit_vector.clear(__EVENTCATEG_ISSET_ID);
+  }
+
+  /** Returns true if field eventCateg is set (has been assigned a value) and false otherwise */
+  public boolean isSetEventCateg() {
+    return __isset_bit_vector.get(__EVENTCATEG_ISSET_ID);
+  }
+
+  public void setEventCategIsSet(boolean value) {
+    __isset_bit_vector.set(__EVENTCATEG_ISSET_ID, value);
+  }
+
+  public int getEventTagsSize() {
+    return (this.eventTags == null) ? 0 : this.eventTags.size();
+  }
+
+  public java.util.Iterator<String> getEventTagsIterator() {
+    return (this.eventTags == null) ? null : this.eventTags.iterator();
+  }
+
+  public void addToEventTags(String elem) {
+    if (this.eventTags == null) {
+      this.eventTags = new ArrayList<String>();
+    }
+    this.eventTags.add(elem);
+  }
+
+  public List<String> getEventTags() {
+    return this.eventTags;
+  }
+
+  public EventItem setEventTags(List<String> eventTags) {
+    this.eventTags = eventTags;
+    return this;
+  }
+
+  public void unsetEventTags() {
+    this.eventTags = null;
+  }
+
+  /** Returns true if field eventTags is set (has been assigned a value) and false otherwise */
+  public boolean isSetEventTags() {
+    return this.eventTags != null;
+  }
+
+  public void setEventTagsIsSet(boolean value) {
+    if (!value) {
+      this.eventTags = null;
+    }
   }
 
   public int getChildrenPoolsSize() {
@@ -1036,14 +1036,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       }
       break;
 
-    case SECOND_LINE:
-      if (value == null) {
-        unsetSecondLine();
-      } else {
-        setSecondLine((String)value);
-      }
-      break;
-
     case EVENT_URI:
       if (value == null) {
         unsetEventUri();
@@ -1060,22 +1052,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       }
       break;
 
-    case EVENT_CATEG:
-      if (value == null) {
-        unsetEventCateg();
-      } else {
-        setEventCateg((Integer)value);
-      }
-      break;
-
-    case EVENT_TAGS:
-      if (value == null) {
-        unsetEventTags();
-      } else {
-        setEventTags((List<String>)value);
-      }
-      break;
-
     case LOCATION_HREF:
       if (value == null) {
         unsetLocationHref();
@@ -1089,6 +1065,14 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         unsetDetailsLink();
       } else {
         setDetailsLink((String)value);
+      }
+      break;
+
+    case SECOND_LINE:
+      if (value == null) {
+        unsetSecondLine();
+      } else {
+        setSecondLine((String)value);
       }
       break;
 
@@ -1121,6 +1105,22 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         unsetHideEventInfo();
       } else {
         setHideEventInfo((Boolean)value);
+      }
+      break;
+
+    case EVENT_CATEG:
+      if (value == null) {
+        unsetEventCateg();
+      } else {
+        setEventCateg((Integer)value);
+      }
+      break;
+
+    case EVENT_TAGS:
+      if (value == null) {
+        unsetEventTags();
+      } else {
+        setEventTags((List<String>)value);
       }
       break;
 
@@ -1175,26 +1175,20 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     case EVENT_THUMBNAIL:
       return getEventThumbnail();
 
-    case SECOND_LINE:
-      return getSecondLine();
-
     case EVENT_URI:
       return getEventUri();
 
     case VCAL_UID:
       return getVcalUid();
 
-    case EVENT_CATEG:
-      return Integer.valueOf(getEventCateg());
-
-    case EVENT_TAGS:
-      return getEventTags();
-
     case LOCATION_HREF:
       return getLocationHref();
 
     case DETAILS_LINK:
       return getDetailsLink();
+
+    case SECOND_LINE:
+      return getSecondLine();
 
     case TIME_SNIPPET:
       return getTimeSnippet();
@@ -1207,6 +1201,12 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
 
     case HIDE_EVENT_INFO:
       return Boolean.valueOf(isHideEventInfo());
+
+    case EVENT_CATEG:
+      return Integer.valueOf(getEventCateg());
+
+    case EVENT_TAGS:
+      return getEventTags();
 
     case CHILDREN_POOLS:
       return getChildrenPools();
@@ -1245,20 +1245,16 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       return isSetEventDetails();
     case EVENT_THUMBNAIL:
       return isSetEventThumbnail();
-    case SECOND_LINE:
-      return isSetSecondLine();
     case EVENT_URI:
       return isSetEventUri();
     case VCAL_UID:
       return isSetVcalUid();
-    case EVENT_CATEG:
-      return isSetEventCateg();
-    case EVENT_TAGS:
-      return isSetEventTags();
     case LOCATION_HREF:
       return isSetLocationHref();
     case DETAILS_LINK:
       return isSetDetailsLink();
+    case SECOND_LINE:
+      return isSetSecondLine();
     case TIME_SNIPPET:
       return isSetTimeSnippet();
     case HIDE_TITLE:
@@ -1267,6 +1263,10 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       return isSetHideThumbnail();
     case HIDE_EVENT_INFO:
       return isSetHideEventInfo();
+    case EVENT_CATEG:
+      return isSetEventCateg();
+    case EVENT_TAGS:
+      return isSetEventTags();
     case CHILDREN_POOLS:
       return isSetChildrenPools();
     case PARENT_POOL:
@@ -1378,15 +1378,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         return false;
     }
 
-    boolean this_present_secondLine = true && this.isSetSecondLine();
-    boolean that_present_secondLine = true && that.isSetSecondLine();
-    if (this_present_secondLine || that_present_secondLine) {
-      if (!(this_present_secondLine && that_present_secondLine))
-        return false;
-      if (!this.secondLine.equals(that.secondLine))
-        return false;
-    }
-
     boolean this_present_eventUri = true && this.isSetEventUri();
     boolean that_present_eventUri = true && that.isSetEventUri();
     if (this_present_eventUri || that_present_eventUri) {
@@ -1405,24 +1396,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         return false;
     }
 
-    boolean this_present_eventCateg = true && this.isSetEventCateg();
-    boolean that_present_eventCateg = true && that.isSetEventCateg();
-    if (this_present_eventCateg || that_present_eventCateg) {
-      if (!(this_present_eventCateg && that_present_eventCateg))
-        return false;
-      if (this.eventCateg != that.eventCateg)
-        return false;
-    }
-
-    boolean this_present_eventTags = true && this.isSetEventTags();
-    boolean that_present_eventTags = true && that.isSetEventTags();
-    if (this_present_eventTags || that_present_eventTags) {
-      if (!(this_present_eventTags && that_present_eventTags))
-        return false;
-      if (!this.eventTags.equals(that.eventTags))
-        return false;
-    }
-
     boolean this_present_locationHref = true && this.isSetLocationHref();
     boolean that_present_locationHref = true && that.isSetLocationHref();
     if (this_present_locationHref || that_present_locationHref) {
@@ -1438,6 +1411,15 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       if (!(this_present_detailsLink && that_present_detailsLink))
         return false;
       if (!this.detailsLink.equals(that.detailsLink))
+        return false;
+    }
+
+    boolean this_present_secondLine = true && this.isSetSecondLine();
+    boolean that_present_secondLine = true && that.isSetSecondLine();
+    if (this_present_secondLine || that_present_secondLine) {
+      if (!(this_present_secondLine && that_present_secondLine))
+        return false;
+      if (!this.secondLine.equals(that.secondLine))
         return false;
     }
 
@@ -1474,6 +1456,24 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       if (!(this_present_hideEventInfo && that_present_hideEventInfo))
         return false;
       if (this.hideEventInfo != that.hideEventInfo)
+        return false;
+    }
+
+    boolean this_present_eventCateg = true && this.isSetEventCateg();
+    boolean that_present_eventCateg = true && that.isSetEventCateg();
+    if (this_present_eventCateg || that_present_eventCateg) {
+      if (!(this_present_eventCateg && that_present_eventCateg))
+        return false;
+      if (this.eventCateg != that.eventCateg)
+        return false;
+    }
+
+    boolean this_present_eventTags = true && this.isSetEventTags();
+    boolean that_present_eventTags = true && that.isSetEventTags();
+    if (this_present_eventTags || that_present_eventTags) {
+      if (!(this_present_eventTags && that_present_eventTags))
+        return false;
+      if (!this.eventTags.equals(that.eventTags))
         return false;
     }
 
@@ -1552,11 +1552,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     if (present_eventThumbnail)
       builder.append(eventThumbnail);
 
-    boolean present_secondLine = true && (isSetSecondLine());
-    builder.append(present_secondLine);
-    if (present_secondLine)
-      builder.append(secondLine);
-
     boolean present_eventUri = true && (isSetEventUri());
     builder.append(present_eventUri);
     if (present_eventUri)
@@ -1567,16 +1562,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     if (present_vcalUid)
       builder.append(vcalUid);
 
-    boolean present_eventCateg = true && (isSetEventCateg());
-    builder.append(present_eventCateg);
-    if (present_eventCateg)
-      builder.append(eventCateg);
-
-    boolean present_eventTags = true && (isSetEventTags());
-    builder.append(present_eventTags);
-    if (present_eventTags)
-      builder.append(eventTags);
-
     boolean present_locationHref = true && (isSetLocationHref());
     builder.append(present_locationHref);
     if (present_locationHref)
@@ -1586,6 +1571,11 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     builder.append(present_detailsLink);
     if (present_detailsLink)
       builder.append(detailsLink);
+
+    boolean present_secondLine = true && (isSetSecondLine());
+    builder.append(present_secondLine);
+    if (present_secondLine)
+      builder.append(secondLine);
 
     boolean present_timeSnippet = true && (isSetTimeSnippet());
     builder.append(present_timeSnippet);
@@ -1606,6 +1596,16 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     builder.append(present_hideEventInfo);
     if (present_hideEventInfo)
       builder.append(hideEventInfo);
+
+    boolean present_eventCateg = true && (isSetEventCateg());
+    builder.append(present_eventCateg);
+    if (present_eventCateg)
+      builder.append(eventCateg);
+
+    boolean present_eventTags = true && (isSetEventTags());
+    builder.append(present_eventTags);
+    if (present_eventTags)
+      builder.append(eventTags);
 
     boolean present_childrenPools = true && (isSetChildrenPools());
     builder.append(present_childrenPools);
@@ -1728,16 +1728,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetSecondLine()).compareTo(typedOther.isSetSecondLine());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetSecondLine()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.secondLine, typedOther.secondLine);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetEventUri()).compareTo(typedOther.isSetEventUri());
     if (lastComparison != 0) {
       return lastComparison;
@@ -1758,26 +1748,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetEventCateg()).compareTo(typedOther.isSetEventCateg());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetEventCateg()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.eventCateg, typedOther.eventCateg);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetEventTags()).compareTo(typedOther.isSetEventTags());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetEventTags()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.eventTags, typedOther.eventTags);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetLocationHref()).compareTo(typedOther.isSetLocationHref());
     if (lastComparison != 0) {
       return lastComparison;
@@ -1794,6 +1764,16 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     }
     if (isSetDetailsLink()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.detailsLink, typedOther.detailsLink);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSecondLine()).compareTo(typedOther.isSetSecondLine());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSecondLine()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.secondLine, typedOther.secondLine);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1834,6 +1814,26 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
     }
     if (isSetHideEventInfo()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.hideEventInfo, typedOther.hideEventInfo);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetEventCateg()).compareTo(typedOther.isSetEventCateg());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetEventCateg()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.eventCateg, typedOther.eventCateg);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetEventTags()).compareTo(typedOther.isSetEventTags());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetEventTags()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.eventTags, typedOther.eventTags);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1949,13 +1949,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 11: // SECOND_LINE
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.secondLine = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         case 12: // EVENT_URI
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.eventUri = iprot.readString();
@@ -1970,31 +1963,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 14: // EVENT_CATEG
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.eventCateg = iprot.readI32();
-            setEventCategIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 15: // EVENT_TAGS
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-              this.eventTags = new ArrayList<String>(_list0.size);
-              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
-              {
-                String _elem2; // required
-                _elem2 = iprot.readString();
-                this.eventTags.add(_elem2);
-              }
-              iprot.readListEnd();
-            }
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         case 16: // LOCATION_HREF
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.locationHref = iprot.readString();
@@ -2005,6 +1973,13 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         case 17: // DETAILS_LINK
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.detailsLink = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 11: // SECOND_LINE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.secondLine = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -2036,6 +2011,31 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
           if (field.type == org.apache.thrift.protocol.TType.BOOL) {
             this.hideEventInfo = iprot.readBool();
             setHideEventInfoIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 14: // EVENT_CATEG
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.eventCateg = iprot.readI32();
+            setEventCategIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 15: // EVENT_TAGS
+          if (field.type == org.apache.thrift.protocol.TType.LIST) {
+            {
+              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+              this.eventTags = new ArrayList<String>(_list0.size);
+              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+              {
+                String _elem2; // required
+                _elem2 = iprot.readString();
+                this.eventTags.add(_elem2);
+              }
+              iprot.readListEnd();
+            }
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -2328,16 +2328,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       }
       first = false;
     }
-    if (isSetSecondLine()) {
-      if (!first) sb.append(", ");
-      sb.append("secondLine:");
-      if (this.secondLine == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.secondLine);
-      }
-      first = false;
-    }
     if (isSetEventUri()) {
       if (!first) sb.append(", ");
       sb.append("eventUri:");
@@ -2358,22 +2348,6 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       }
       first = false;
     }
-    if (isSetEventCateg()) {
-      if (!first) sb.append(", ");
-      sb.append("eventCateg:");
-      sb.append(this.eventCateg);
-      first = false;
-    }
-    if (isSetEventTags()) {
-      if (!first) sb.append(", ");
-      sb.append("eventTags:");
-      if (this.eventTags == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.eventTags);
-      }
-      first = false;
-    }
     if (isSetLocationHref()) {
       if (!first) sb.append(", ");
       sb.append("locationHref:");
@@ -2391,6 +2365,16 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
         sb.append("null");
       } else {
         sb.append(this.detailsLink);
+      }
+      first = false;
+    }
+    if (isSetSecondLine()) {
+      if (!first) sb.append(", ");
+      sb.append("secondLine:");
+      if (this.secondLine == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.secondLine);
       }
       first = false;
     }
@@ -2420,6 +2404,22 @@ public class EventItem implements org.apache.thrift.TBase<EventItem, EventItem._
       if (!first) sb.append(", ");
       sb.append("hideEventInfo:");
       sb.append(this.hideEventInfo);
+      first = false;
+    }
+    if (isSetEventCateg()) {
+      if (!first) sb.append(", ");
+      sb.append("eventCateg:");
+      sb.append(this.eventCateg);
+      first = false;
+    }
+    if (isSetEventTags()) {
+      if (!first) sb.append(", ");
+      sb.append("eventTags:");
+      if (this.eventTags == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.eventTags);
+      }
       first = false;
     }
     if (isSetChildrenPools()) {

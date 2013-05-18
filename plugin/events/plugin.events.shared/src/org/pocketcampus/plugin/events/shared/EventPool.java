@@ -34,8 +34,9 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   private static final org.apache.thrift.protocol.TField DISABLE_FILTER_BY_TAGS_FIELD_DESC = new org.apache.thrift.protocol.TField("disableFilterByTags", org.apache.thrift.protocol.TType.BOOL, (short)12);
   private static final org.apache.thrift.protocol.TField ENABLE_SCAN_FIELD_DESC = new org.apache.thrift.protocol.TField("enableScan", org.apache.thrift.protocol.TType.BOOL, (short)13);
   private static final org.apache.thrift.protocol.TField NO_RESULT_TEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("noResultText", org.apache.thrift.protocol.TType.STRING, (short)14);
-  private static final org.apache.thrift.protocol.TField CHILDREN_EVENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenEvents", org.apache.thrift.protocol.TType.LIST, (short)15);
   private static final org.apache.thrift.protocol.TField REFRESH_ON_BACK_FIELD_DESC = new org.apache.thrift.protocol.TField("refreshOnBack", org.apache.thrift.protocol.TType.BOOL, (short)16);
+  private static final org.apache.thrift.protocol.TField SEND_STARRED_ITEMS_FIELD_DESC = new org.apache.thrift.protocol.TField("sendStarredItems", org.apache.thrift.protocol.TType.BOOL, (short)19);
+  private static final org.apache.thrift.protocol.TField CHILDREN_EVENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenEvents", org.apache.thrift.protocol.TType.LIST, (short)15);
   private static final org.apache.thrift.protocol.TField PARENT_EVENT_FIELD_DESC = new org.apache.thrift.protocol.TField("parentEvent", org.apache.thrift.protocol.TType.I64, (short)17);
 
   public long poolId; // required
@@ -48,8 +49,9 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   public boolean disableFilterByTags; // required
   public boolean enableScan; // required
   public String noResultText; // required
-  public List<Long> childrenEvents; // required
   public boolean refreshOnBack; // required
+  public boolean sendStarredItems; // required
+  public List<Long> childrenEvents; // required
   public long parentEvent; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -64,8 +66,9 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     DISABLE_FILTER_BY_TAGS((short)12, "disableFilterByTags"),
     ENABLE_SCAN((short)13, "enableScan"),
     NO_RESULT_TEXT((short)14, "noResultText"),
-    CHILDREN_EVENTS((short)15, "childrenEvents"),
     REFRESH_ON_BACK((short)16, "refreshOnBack"),
+    SEND_STARRED_ITEMS((short)19, "sendStarredItems"),
+    CHILDREN_EVENTS((short)15, "childrenEvents"),
     PARENT_EVENT((short)17, "parentEvent");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -101,10 +104,12 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
           return ENABLE_SCAN;
         case 14: // NO_RESULT_TEXT
           return NO_RESULT_TEXT;
-        case 15: // CHILDREN_EVENTS
-          return CHILDREN_EVENTS;
         case 16: // REFRESH_ON_BACK
           return REFRESH_ON_BACK;
+        case 19: // SEND_STARRED_ITEMS
+          return SEND_STARRED_ITEMS;
+        case 15: // CHILDREN_EVENTS
+          return CHILDREN_EVENTS;
         case 17: // PARENT_EVENT
           return PARENT_EVENT;
         default:
@@ -153,8 +158,9 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   private static final int __DISABLEFILTERBYTAGS_ISSET_ID = 3;
   private static final int __ENABLESCAN_ISSET_ID = 4;
   private static final int __REFRESHONBACK_ISSET_ID = 5;
-  private static final int __PARENTEVENT_ISSET_ID = 6;
-  private BitSet __isset_bit_vector = new BitSet(7);
+  private static final int __SENDSTARREDITEMS_ISSET_ID = 6;
+  private static final int __PARENTEVENT_ISSET_ID = 7;
+  private BitSet __isset_bit_vector = new BitSet(8);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -179,11 +185,13 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.NO_RESULT_TEXT, new org.apache.thrift.meta_data.FieldMetaData("noResultText", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.REFRESH_ON_BACK, new org.apache.thrift.meta_data.FieldMetaData("refreshOnBack", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.SEND_STARRED_ITEMS, new org.apache.thrift.meta_data.FieldMetaData("sendStarredItems", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.CHILDREN_EVENTS, new org.apache.thrift.meta_data.FieldMetaData("childrenEvents", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64))));
-    tmpMap.put(_Fields.REFRESH_ON_BACK, new org.apache.thrift.meta_data.FieldMetaData("refreshOnBack", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.PARENT_EVENT, new org.apache.thrift.meta_data.FieldMetaData("parentEvent", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -227,6 +235,8 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     if (other.isSetNoResultText()) {
       this.noResultText = other.noResultText;
     }
+    this.refreshOnBack = other.refreshOnBack;
+    this.sendStarredItems = other.sendStarredItems;
     if (other.isSetChildrenEvents()) {
       List<Long> __this__childrenEvents = new ArrayList<Long>();
       for (Long other_element : other.childrenEvents) {
@@ -234,7 +244,6 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       }
       this.childrenEvents = __this__childrenEvents;
     }
-    this.refreshOnBack = other.refreshOnBack;
     this.parentEvent = other.parentEvent;
   }
 
@@ -259,9 +268,11 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     setEnableScanIsSet(false);
     this.enableScan = false;
     this.noResultText = null;
-    this.childrenEvents = null;
     setRefreshOnBackIsSet(false);
     this.refreshOnBack = false;
+    setSendStarredItemsIsSet(false);
+    this.sendStarredItems = false;
+    this.childrenEvents = null;
     setParentEventIsSet(false);
     this.parentEvent = 0;
   }
@@ -501,6 +512,52 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     }
   }
 
+  public boolean isRefreshOnBack() {
+    return this.refreshOnBack;
+  }
+
+  public EventPool setRefreshOnBack(boolean refreshOnBack) {
+    this.refreshOnBack = refreshOnBack;
+    setRefreshOnBackIsSet(true);
+    return this;
+  }
+
+  public void unsetRefreshOnBack() {
+    __isset_bit_vector.clear(__REFRESHONBACK_ISSET_ID);
+  }
+
+  /** Returns true if field refreshOnBack is set (has been assigned a value) and false otherwise */
+  public boolean isSetRefreshOnBack() {
+    return __isset_bit_vector.get(__REFRESHONBACK_ISSET_ID);
+  }
+
+  public void setRefreshOnBackIsSet(boolean value) {
+    __isset_bit_vector.set(__REFRESHONBACK_ISSET_ID, value);
+  }
+
+  public boolean isSendStarredItems() {
+    return this.sendStarredItems;
+  }
+
+  public EventPool setSendStarredItems(boolean sendStarredItems) {
+    this.sendStarredItems = sendStarredItems;
+    setSendStarredItemsIsSet(true);
+    return this;
+  }
+
+  public void unsetSendStarredItems() {
+    __isset_bit_vector.clear(__SENDSTARREDITEMS_ISSET_ID);
+  }
+
+  /** Returns true if field sendStarredItems is set (has been assigned a value) and false otherwise */
+  public boolean isSetSendStarredItems() {
+    return __isset_bit_vector.get(__SENDSTARREDITEMS_ISSET_ID);
+  }
+
+  public void setSendStarredItemsIsSet(boolean value) {
+    __isset_bit_vector.set(__SENDSTARREDITEMS_ISSET_ID, value);
+  }
+
   public int getChildrenEventsSize() {
     return (this.childrenEvents == null) ? 0 : this.childrenEvents.size();
   }
@@ -538,29 +595,6 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     if (!value) {
       this.childrenEvents = null;
     }
-  }
-
-  public boolean isRefreshOnBack() {
-    return this.refreshOnBack;
-  }
-
-  public EventPool setRefreshOnBack(boolean refreshOnBack) {
-    this.refreshOnBack = refreshOnBack;
-    setRefreshOnBackIsSet(true);
-    return this;
-  }
-
-  public void unsetRefreshOnBack() {
-    __isset_bit_vector.clear(__REFRESHONBACK_ISSET_ID);
-  }
-
-  /** Returns true if field refreshOnBack is set (has been assigned a value) and false otherwise */
-  public boolean isSetRefreshOnBack() {
-    return __isset_bit_vector.get(__REFRESHONBACK_ISSET_ID);
-  }
-
-  public void setRefreshOnBackIsSet(boolean value) {
-    __isset_bit_vector.set(__REFRESHONBACK_ISSET_ID, value);
   }
 
   public long getParentEvent() {
@@ -668,19 +702,27 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       }
       break;
 
-    case CHILDREN_EVENTS:
-      if (value == null) {
-        unsetChildrenEvents();
-      } else {
-        setChildrenEvents((List<Long>)value);
-      }
-      break;
-
     case REFRESH_ON_BACK:
       if (value == null) {
         unsetRefreshOnBack();
       } else {
         setRefreshOnBack((Boolean)value);
+      }
+      break;
+
+    case SEND_STARRED_ITEMS:
+      if (value == null) {
+        unsetSendStarredItems();
+      } else {
+        setSendStarredItems((Boolean)value);
+      }
+      break;
+
+    case CHILDREN_EVENTS:
+      if (value == null) {
+        unsetChildrenEvents();
+      } else {
+        setChildrenEvents((List<Long>)value);
       }
       break;
 
@@ -727,11 +769,14 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     case NO_RESULT_TEXT:
       return getNoResultText();
 
-    case CHILDREN_EVENTS:
-      return getChildrenEvents();
-
     case REFRESH_ON_BACK:
       return Boolean.valueOf(isRefreshOnBack());
+
+    case SEND_STARRED_ITEMS:
+      return Boolean.valueOf(isSendStarredItems());
+
+    case CHILDREN_EVENTS:
+      return getChildrenEvents();
 
     case PARENT_EVENT:
       return Long.valueOf(getParentEvent());
@@ -767,10 +812,12 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       return isSetEnableScan();
     case NO_RESULT_TEXT:
       return isSetNoResultText();
-    case CHILDREN_EVENTS:
-      return isSetChildrenEvents();
     case REFRESH_ON_BACK:
       return isSetRefreshOnBack();
+    case SEND_STARRED_ITEMS:
+      return isSetSendStarredItems();
+    case CHILDREN_EVENTS:
+      return isSetChildrenEvents();
     case PARENT_EVENT:
       return isSetParentEvent();
     }
@@ -880,21 +927,30 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         return false;
     }
 
-    boolean this_present_childrenEvents = true && this.isSetChildrenEvents();
-    boolean that_present_childrenEvents = true && that.isSetChildrenEvents();
-    if (this_present_childrenEvents || that_present_childrenEvents) {
-      if (!(this_present_childrenEvents && that_present_childrenEvents))
-        return false;
-      if (!this.childrenEvents.equals(that.childrenEvents))
-        return false;
-    }
-
     boolean this_present_refreshOnBack = true && this.isSetRefreshOnBack();
     boolean that_present_refreshOnBack = true && that.isSetRefreshOnBack();
     if (this_present_refreshOnBack || that_present_refreshOnBack) {
       if (!(this_present_refreshOnBack && that_present_refreshOnBack))
         return false;
       if (this.refreshOnBack != that.refreshOnBack)
+        return false;
+    }
+
+    boolean this_present_sendStarredItems = true && this.isSetSendStarredItems();
+    boolean that_present_sendStarredItems = true && that.isSetSendStarredItems();
+    if (this_present_sendStarredItems || that_present_sendStarredItems) {
+      if (!(this_present_sendStarredItems && that_present_sendStarredItems))
+        return false;
+      if (this.sendStarredItems != that.sendStarredItems)
+        return false;
+    }
+
+    boolean this_present_childrenEvents = true && this.isSetChildrenEvents();
+    boolean that_present_childrenEvents = true && that.isSetChildrenEvents();
+    if (this_present_childrenEvents || that_present_childrenEvents) {
+      if (!(this_present_childrenEvents && that_present_childrenEvents))
+        return false;
+      if (!this.childrenEvents.equals(that.childrenEvents))
         return false;
     }
 
@@ -964,15 +1020,20 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     if (present_noResultText)
       builder.append(noResultText);
 
-    boolean present_childrenEvents = true && (isSetChildrenEvents());
-    builder.append(present_childrenEvents);
-    if (present_childrenEvents)
-      builder.append(childrenEvents);
-
     boolean present_refreshOnBack = true && (isSetRefreshOnBack());
     builder.append(present_refreshOnBack);
     if (present_refreshOnBack)
       builder.append(refreshOnBack);
+
+    boolean present_sendStarredItems = true && (isSetSendStarredItems());
+    builder.append(present_sendStarredItems);
+    if (present_sendStarredItems)
+      builder.append(sendStarredItems);
+
+    boolean present_childrenEvents = true && (isSetChildrenEvents());
+    builder.append(present_childrenEvents);
+    if (present_childrenEvents)
+      builder.append(childrenEvents);
 
     boolean present_parentEvent = true && (isSetParentEvent());
     builder.append(present_parentEvent);
@@ -1090,22 +1151,32 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetChildrenEvents()).compareTo(typedOther.isSetChildrenEvents());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetChildrenEvents()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.childrenEvents, typedOther.childrenEvents);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetRefreshOnBack()).compareTo(typedOther.isSetRefreshOnBack());
     if (lastComparison != 0) {
       return lastComparison;
     }
     if (isSetRefreshOnBack()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.refreshOnBack, typedOther.refreshOnBack);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSendStarredItems()).compareTo(typedOther.isSetSendStarredItems());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSendStarredItems()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sendStarredItems, typedOther.sendStarredItems);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetChildrenEvents()).compareTo(typedOther.isSetChildrenEvents());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetChildrenEvents()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.childrenEvents, typedOther.childrenEvents);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1212,6 +1283,22 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 16: // REFRESH_ON_BACK
+          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+            this.refreshOnBack = iprot.readBool();
+            setRefreshOnBackIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 19: // SEND_STARRED_ITEMS
+          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+            this.sendStarredItems = iprot.readBool();
+            setSendStarredItemsIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         case 15: // CHILDREN_EVENTS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
@@ -1225,14 +1312,6 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
               }
               iprot.readListEnd();
             }
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 16: // REFRESH_ON_BACK
-          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-            this.refreshOnBack = iprot.readBool();
-            setRefreshOnBackIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1345,6 +1424,11 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       oprot.writeI64(this.parentEvent);
       oprot.writeFieldEnd();
     }
+    if (isSetSendStarredItems()) {
+      oprot.writeFieldBegin(SEND_STARRED_ITEMS_FIELD_DESC);
+      oprot.writeBool(this.sendStarredItems);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -1431,6 +1515,18 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       }
       first = false;
     }
+    if (isSetRefreshOnBack()) {
+      if (!first) sb.append(", ");
+      sb.append("refreshOnBack:");
+      sb.append(this.refreshOnBack);
+      first = false;
+    }
+    if (isSetSendStarredItems()) {
+      if (!first) sb.append(", ");
+      sb.append("sendStarredItems:");
+      sb.append(this.sendStarredItems);
+      first = false;
+    }
     if (isSetChildrenEvents()) {
       if (!first) sb.append(", ");
       sb.append("childrenEvents:");
@@ -1439,12 +1535,6 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       } else {
         sb.append(this.childrenEvents);
       }
-      first = false;
-    }
-    if (isSetRefreshOnBack()) {
-      if (!first) sb.append(", ");
-      sb.append("refreshOnBack:");
-      sb.append(this.refreshOnBack);
       first = false;
     }
     if (isSetParentEvent()) {

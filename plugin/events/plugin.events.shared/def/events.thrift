@@ -84,6 +84,7 @@ enum EventsPeriods {
 
 struct EventItem {
 	1: required i64 eventId;
+	
 	2: optional i64 startDate;
 	3: optional i64 endDate;
 	4: optional bool fullDay;
@@ -93,23 +94,26 @@ struct EventItem {
 	8: optional string eventSpeaker;
 	9: optional string eventDetails;
 	10: optional string eventThumbnail;
-	11: optional string secondLine; // if set, overrides the second line in list view
 	12: optional string eventUri;
 	13: optional string vcalUid;
-	14: optional i32 eventCateg;
-	15: optional list<string> eventTags;
 	16: optional string locationHref;
 	17: optional string detailsLink;
+	11: optional string secondLine; // if set, overrides the second line in list view
 	18: optional string timeSnippet; // if set, overrides time snippet
 	21: optional bool hideTitle; // if set, hides the title from event details view
 	22: optional bool hideThumbnail; // if set, hides thumbnail from event details view
 	23: optional bool hideEventInfo; // if set, hides the block containing date, time, location, speaker, link, etc 
+	
+	14: optional i32 eventCateg;
+	15: optional list<string> eventTags;
+	
 	30: optional list<i64> childrenPools;
 	31: optional i64 parentPool;
 }
 
 struct EventPool {
 	1: required i64 poolId;
+	
 	5: optional string poolPicture;
 	6: optional string poolTitle;
 	7: optional string poolPlace;
@@ -119,8 +123,10 @@ struct EventPool {
 	12: optional bool disableFilterByTags;
 	13: optional bool enableScan;
 	14: optional string noResultText;
-	15: optional list<i64> childrenEvents;
 	16: optional bool refreshOnBack;
+	19: optional bool sendStarredItems;
+	
+	15: optional list<i64> childrenEvents;
 	17: optional i64 parentEvent;
 }
 
@@ -128,7 +134,6 @@ struct EventItemRequest {
 	1: required i64 eventItemId;
 	2: optional string userToken;
 	3: optional list<string> userTickets;
-	4: optional list<i64> starredEventItems;
 	
 	5: optional string lang;
 	6: optional i32 period;
