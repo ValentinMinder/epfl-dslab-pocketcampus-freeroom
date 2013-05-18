@@ -32,6 +32,8 @@
 
 #import "EventsCategorySelectorViewController.h"
 
+#import "EventsTagsViewController.h"
+
 #import "UIActionSheet+Additions.h"
 
 #import "MainController.h"
@@ -51,6 +53,8 @@
 
 @property (nonatomic, strong) NSArray* sectionsNames; //array of names of sections, to be used as key in itemsForSectionName
 @property (nonatomic, strong) NSArray* itemsForSection; //array of arrays of EventItem
+
+@property (nonatomic, strong) UISearchBar* searchBar;
 
 @property (nonatomic, strong) UIActionSheet* filterSelectionActionSheet;
 @property (nonatomic, strong) UIActionSheet* periodsSelectionActionSheet;
@@ -130,7 +134,7 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoritesWereUpdated) name:kFavoritesEventItemsUpdatedNotification object:self.eventsService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromCurrentData) name:kFavoritesEventItemsUpdatedNotification object:self.eventsService];
     self.tableView.rowHeight = [EventItemCell height];
     if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/events" withError:NULL];
@@ -171,7 +175,7 @@ static NSString* kEventCell = @"EventCell";
 
 #pragma mark - Refresh control
 
-- (void)favoritesWereUpdated {
+- (void)refreshFromCurrentData {
     [self fillCollectionsFromReplyAndSelection];
     [self.tableView reloadData];
     [self reselectLastSelectedItem];
@@ -232,7 +236,7 @@ static NSString* kEventCell = @"EventCell";
         [rightElements addObject:self.scanButton];
     }
     
-    if (!self.poolReply.eventPool.disableFilterByCateg) { //will also disable period filtering
+    if (!self.poolReply.eventPool.disableFilterByCateg || !self.poolReply.eventPool.disableFilterByTags) { //will also disable period filtering
         //self.filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Filter", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)];
         self.filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"EyeBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)];
         [rightElements addObject:self.filterButton];
@@ -249,14 +253,37 @@ static NSString* kEventCell = @"EventCell";
     
     if (!self.filterSelectionActionSheet) {
         
-        if ([self periodButtonIndex] > 0) { //check if period selection should be displayed
-            NSString* periodString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat", @"EventsPlugin", nil), [EventsUtils periodStringForEventsPeriod:self.selectedPeriod selected:NO]];
-            
-            self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"SelectCategory", @"EventsPlugin", nil), periodString, nil];
-        } else {
-            self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"SelectCategory", @"EventsPlugin", nil), nil];
+        NSMutableArray* buttonTitles = [NSMutableArray arrayWithCapacity:3];
+        
+        if ([self goToCategoryButtonIndex] >= 0) {
+            [buttonTitles addObject:NSLocalizedStringFromTable(@"SelectCategory", @"EventsPlugin", nil)];
         }
-        self.filterSelectionActionSheet.delegate = self;
+        
+        if ([self filterByTagsButtonIndex] >= 0) {
+            NSString* title = nil;
+            if (self.poolReply.tags.count == 0 || (self.selectedTags.count == self.poolReply.tags.count)) {
+                title = NSLocalizedStringFromTable(@"FilterByTags", @"EventsPlugin", nil);
+            } else {
+                title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FilterByTagsWithFormat", @"EventsPlugin", nil), self.selectedTags.count, self.poolReply.tags.count];
+            }
+            [buttonTitles addObject:title];
+        }
+        
+        if ([self periodButtonIndex] >= 0) {
+            NSString* periodString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat", @"EventsPlugin", nil), [EventsUtils periodStringForEventsPeriod:self.selectedPeriod selected:NO]];
+            [buttonTitles addObject:periodString];
+        }
+        
+        [buttonTitles addObject:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
+        
+        self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        
+        for (NSString* title in buttonTitles) {
+            [self.filterSelectionActionSheet addButtonWithTitle:title];
+        }
+        
+        self.filterSelectionActionSheet.cancelButtonIndex = self.filterSelectionActionSheet.numberOfButtons-1;
+        
     }
     [self.filterSelectionActionSheet toggleFromBarButtonItem:self.filterButton animated:YES];
 }
@@ -268,6 +295,16 @@ static NSString* kEventCell = @"EventCell";
     return 0;
 }
 
+- (NSInteger)filterByTagsButtonIndex {
+    if (self.poolReply.eventPool.disableFilterByTags) {
+        return -1;
+    }
+    if (self.poolReply.eventPool.disableFilterByCateg) {
+        return 0;
+    }
+    return 1;
+}
+
 - (NSInteger)periodButtonIndex {
     if (self.poolReply.eventPool.disableFilterByCateg) {
         return -1; //disableFilterByCateg hides filter button and thus also period selection
@@ -275,7 +312,10 @@ static NSString* kEventCell = @"EventCell";
     if (self.poolId != [eventsConstants CONTAINER_EVENT_ID]) {
         return -1;
     }
-    return 1;
+    if (self.poolReply.eventPool.disableFilterByTags) {
+        return 1;
+    }
+    return 2;
 }
 
 - (void)cameraButtonPressed {
@@ -313,7 +353,29 @@ static NSString* kEventCell = @"EventCell";
     }];
     UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:categoryViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
+    [self presentViewController:navController animated:YES completion:NULL];
+}
+
+- (void)presentTagsController {
+    EventPoolViewController* controller __weak = self;
+    NSArray* allTags = [[self.poolReply.tags allValues] sortedArrayUsingSelector:@selector(compare:)]; //alphabetically
+    EventsTagsViewController* tagsViewController = [[EventsTagsViewController alloc] initWithTags:allTags selectedInitially:[self.selectedTags allValues] userValidatedSelectionBlock:^(NSSet *newlySelected) {
+        if (newlySelected.count == 0 && allTags.count > 0) {
+            [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"SelectAtLeastOneTag", @"EventsPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            return;
+        }
+        NSMutableDictionary* selectedTags = [NSMutableDictionary dictionaryWithCapacity:newlySelected.count];
+        [self.poolReply.tags enumerateKeysAndObjectsUsingBlock:^(NSString* tagKey, NSString* tag, BOOL *stop) {
+            if ([newlySelected containsObject:tag]) {
+                selectedTags[tagKey] = tag;
+            }
+        }];
+        self.selectedTags = selectedTags;
+        [controller refreshFromCurrentData];
+        [controller dismissViewControllerAnimated:YES completion:NULL];
+    }];
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:tagsViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navController animated:YES completion:NULL];
 }
 
@@ -336,6 +398,8 @@ static NSString* kEventCell = @"EventCell";
     if (actionSheet == self.filterSelectionActionSheet) {
         if (buttonIndex == [self goToCategoryButtonIndex]) {
             [self presentCategoriesController];
+        } else if (buttonIndex == [self filterByTagsButtonIndex]) {
+            [self presentTagsController];
         } else if (buttonIndex == [self periodButtonIndex]) {
             [self presentPeriodSelectionActionSheet];
         } else {
@@ -590,7 +654,9 @@ static NSString* kEventCell = @"EventCell";
             }
             return [[PCCenterMessageCell alloc] initWithMessage:message];
         } else {
-            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            UITableViewCell* cell =[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
         }
     }
     

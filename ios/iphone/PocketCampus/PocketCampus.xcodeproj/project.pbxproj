@@ -224,6 +224,8 @@
 		328B9EED150B8E7B00B50024 /* JSFavStarControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 328B9EEC150B8E7B00B50024 /* JSFavStarControl.m */; };
 		328B9EF4150B927500B50024 /* RatingStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF2150B927500B50024 /* RatingStar.png */; };
 		328B9EF5150B927500B50024 /* RatingStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF3150B927500B50024 /* RatingStar@2x.png */; };
+		328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; };
+		328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328D38291747A8C9006FE6F3 /* EventsTagView.xib */; };
 		3292C31716402B4F00AE4D51 /* PCRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3292C31616402B4F00AE4D51 /* PCRefreshControl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; };
 		3293AD2315D1BC930097D414 /* AboutPCView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3293AD2215D1BC930097D414 /* AboutPCView.xib */; };
@@ -780,6 +782,9 @@
 		328B9EEC150B8E7B00B50024 /* JSFavStarControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSFavStarControl.m; sourceTree = "<group>"; };
 		328B9EF2150B927500B50024 /* RatingStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RatingStar.png; sourceTree = "<group>"; };
 		328B9EF3150B927500B50024 /* RatingStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RatingStar@2x.png"; sourceTree = "<group>"; };
+		328D3826174794B5006FE6F3 /* EventsTagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsTagsViewController.h; sourceTree = "<group>"; };
+		328D3827174794B5006FE6F3 /* EventsTagsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsTagsViewController.m; sourceTree = "<group>"; };
+		328D38291747A8C9006FE6F3 /* EventsTagView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventsTagView.xib; sourceTree = "<group>"; };
 		3292C31516402B4F00AE4D51 /* PCRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCRefreshControl.h; sourceTree = "<group>"; };
 		3292C31616402B4F00AE4D51 /* PCRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCRefreshControl.m; sourceTree = "<group>"; };
 		3293AD1E15D1BC7C0097D414 /* AboutPCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutPCViewController.h; sourceTree = "<group>"; };
@@ -1723,6 +1728,8 @@
 				3281AB8116E221F700D8FAD1 /* EventItemViewController.m */,
 				32F5308716EA973B00F66484 /* EventsCategorySelectorViewController.h */,
 				32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */,
+				328D3826174794B5006FE6F3 /* EventsTagsViewController.h */,
+				328D3827174794B5006FE6F3 /* EventsTagsViewController.m */,
 				32F5309016EAB8F700F66484 /* EventsSplashDetailViewController.h */,
 				32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */,
 			);
@@ -2758,6 +2765,7 @@
 				32C36D1316F53F4E00DE1EF4 /* EventItemCell~ipad.xib */,
 				3281AB8316E2254600D8FAD1 /* EventItemView.xib */,
 				32F5308A16EA9EA000F66484 /* EventsCategorySelectorView.xib */,
+				328D38291747A8C9006FE6F3 /* EventsTagView.xib */,
 				32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */,
 				32F5308C16EAB02400F66484 /* EventItemInfo.html */,
 			);
@@ -3115,6 +3123,7 @@
 				322C07551722A7E6004FDC83 /* GenericGreyButton@2x.png in Resources */,
 				322C07561722A7E6004FDC83 /* GenericGreyButtonHighlight.png in Resources */,
 				322C07571722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png in Resources */,
+				328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3298,6 +3307,7 @@
 				32617BCE16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m in Sources */,
 				32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */,
 				32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */,
+				328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

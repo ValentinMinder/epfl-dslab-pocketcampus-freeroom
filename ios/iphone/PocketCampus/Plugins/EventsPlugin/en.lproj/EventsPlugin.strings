@@ -17,9 +17,15 @@
 "MoreDetails" = "More details";
 "NoResultPCUnknownViewControllerLoad" = "Impossible to find this person.";
 "Filter" = "Filter";
+"FilterByTags" = "Filter by tags";
+"FilterByTagsWithFormat" = "Filter by tags (%d/%d)";
+"SelectAtLeastOneTag" = "Please select at least one tag";
+"SelectAll" = "Select all";
+"DeselectAll" = "Deselect all";
 "SelectCategory" = "Go to category";
 "Categories" = "Categories";
 "NoCategory" = "No category";
+"NoTag" = "No tag";
 "PeriodWithFormat" = "Period (%@)";
 "ShowEventsFor..." = "Show upcoming events for the\nfollowing period";
 "Days" = "Days";

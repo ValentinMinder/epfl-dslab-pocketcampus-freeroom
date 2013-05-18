@@ -2317,11 +2317,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduModuleListViewController.m"
-         timestampString = "390340392.34664"
+         timestampString = "390573913.483101"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "276"
-         endingLineNumber = "276"
+         startingLineNumber = "278"
+         endingLineNumber = "278"
          landmarkName = "@implementation MyEduModuleListViewController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -2870,11 +2870,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-         timestampString = "390340392.34664"
+         timestampString = "390573913.483101"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "424"
-         endingLineNumber = "424"
+         startingLineNumber = "426"
+         endingLineNumber = "426"
          landmarkName = "-numberOfSectionsInTableView:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2883,11 +2883,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-         timestampString = "390340392.34664"
+         timestampString = "390573913.483101"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "410"
-         endingLineNumber = "410"
+         startingLineNumber = "412"
+         endingLineNumber = "412"
          landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2918,7 +2918,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-         timestampString = "390340392.34664"
+         timestampString = "390573913.483101"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "395"
@@ -4346,11 +4346,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390342839.45162"
+         timestampString = "390576548.158404"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "622"
-         endingLineNumber = "622"
+         startingLineNumber = "688"
+         endingLineNumber = "688"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4450,11 +4450,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390078319.5258"
+         timestampString = "390575204.887097"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "147"
-         endingLineNumber = "147"
+         startingLineNumber = "151"
+         endingLineNumber = "151"
          landmarkName = "-viewWillAppear:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4463,11 +4463,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390078319.5258"
+         timestampString = "390574918.767559"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "82"
-         endingLineNumber = "82"
+         startingLineNumber = "86"
+         endingLineNumber = "86"
          landmarkName = "-init"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4502,11 +4502,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390078319.5258"
+         timestampString = "390576548.158404"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "414"
-         endingLineNumber = "414"
+         startingLineNumber = "478"
+         endingLineNumber = "478"
          landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4515,11 +4515,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390078319.5258"
+         timestampString = "390575204.887097"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "242"
-         endingLineNumber = "242"
+         startingLineNumber = "246"
+         endingLineNumber = "246"
          landmarkName = "-showButtonsConditionally"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4528,12 +4528,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390078319.5258"
+         timestampString = "390576548.158404"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "318"
-         endingLineNumber = "318"
-         landmarkName = "-presentCategoriesController"
+         startingLineNumber = "359"
+         endingLineNumber = "359"
+         landmarkName = "-presentTagsController"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -4554,11 +4554,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390078319.5258"
+         timestampString = "390576548.158404"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "333"
-         endingLineNumber = "333"
+         startingLineNumber = "395"
+         endingLineNumber = "395"
          landmarkName = "@implementation EventPoolViewController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -4567,11 +4567,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390078319.5258"
+         timestampString = "390575204.887097"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "249"
-         endingLineNumber = "249"
+         startingLineNumber = "253"
+         endingLineNumber = "253"
          landmarkName = "-filterButtonPressed"
          landmarkType = "5">
       </FileBreakpoint>
