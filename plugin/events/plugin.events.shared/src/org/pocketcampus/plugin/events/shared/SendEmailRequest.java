@@ -24,11 +24,13 @@ import org.slf4j.LoggerFactory;
 public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailRequest, SendEmailRequest._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SendEmailRequest");
 
+  private static final org.apache.thrift.protocol.TField EVENT_POOL_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("eventPoolId", org.apache.thrift.protocol.TType.I64, (short)4);
   private static final org.apache.thrift.protocol.TField STARRED_EVENT_ITEMS_FIELD_DESC = new org.apache.thrift.protocol.TField("starredEventItems", org.apache.thrift.protocol.TType.LIST, (short)1);
   private static final org.apache.thrift.protocol.TField USER_TICKETS_FIELD_DESC = new org.apache.thrift.protocol.TField("userTickets", org.apache.thrift.protocol.TType.LIST, (short)2);
   private static final org.apache.thrift.protocol.TField EMAIL_ADDRESS_FIELD_DESC = new org.apache.thrift.protocol.TField("emailAddress", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField LANG_FIELD_DESC = new org.apache.thrift.protocol.TField("lang", org.apache.thrift.protocol.TType.STRING, (short)5);
 
+  public long eventPoolId; // required
   public List<Long> starredEventItems; // required
   public List<String> userTickets; // required
   public String emailAddress; // required
@@ -36,6 +38,7 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    EVENT_POOL_ID((short)4, "eventPoolId"),
     STARRED_EVENT_ITEMS((short)1, "starredEventItems"),
     USER_TICKETS((short)2, "userTickets"),
     EMAIL_ADDRESS((short)3, "emailAddress"),
@@ -54,6 +57,8 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
+        case 4: // EVENT_POOL_ID
+          return EVENT_POOL_ID;
         case 1: // STARRED_EVENT_ITEMS
           return STARRED_EVENT_ITEMS;
         case 2: // USER_TICKETS
@@ -102,10 +107,14 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
   }
 
   // isset id assignments
+  private static final int __EVENTPOOLID_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.EVENT_POOL_ID, new org.apache.thrift.meta_data.FieldMetaData("eventPoolId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.STARRED_EVENT_ITEMS, new org.apache.thrift.meta_data.FieldMetaData("starredEventItems", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64))));
@@ -124,9 +133,12 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
   }
 
   public SendEmailRequest(
+    long eventPoolId,
     List<Long> starredEventItems)
   {
     this();
+    this.eventPoolId = eventPoolId;
+    setEventPoolIdIsSet(true);
     this.starredEventItems = starredEventItems;
   }
 
@@ -134,6 +146,9 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
    * Performs a deep copy on <i>other</i>.
    */
   public SendEmailRequest(SendEmailRequest other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    this.eventPoolId = other.eventPoolId;
     if (other.isSetStarredEventItems()) {
       List<Long> __this__starredEventItems = new ArrayList<Long>();
       for (Long other_element : other.starredEventItems) {
@@ -162,10 +177,35 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
 
   @Override
   public void clear() {
+    setEventPoolIdIsSet(false);
+    this.eventPoolId = 0;
     this.starredEventItems = null;
     this.userTickets = null;
     this.emailAddress = null;
     this.lang = null;
+  }
+
+  public long getEventPoolId() {
+    return this.eventPoolId;
+  }
+
+  public SendEmailRequest setEventPoolId(long eventPoolId) {
+    this.eventPoolId = eventPoolId;
+    setEventPoolIdIsSet(true);
+    return this;
+  }
+
+  public void unsetEventPoolId() {
+    __isset_bit_vector.clear(__EVENTPOOLID_ISSET_ID);
+  }
+
+  /** Returns true if field eventPoolId is set (has been assigned a value) and false otherwise */
+  public boolean isSetEventPoolId() {
+    return __isset_bit_vector.get(__EVENTPOOLID_ISSET_ID);
+  }
+
+  public void setEventPoolIdIsSet(boolean value) {
+    __isset_bit_vector.set(__EVENTPOOLID_ISSET_ID, value);
   }
 
   public int getStarredEventItemsSize() {
@@ -296,6 +336,14 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case EVENT_POOL_ID:
+      if (value == null) {
+        unsetEventPoolId();
+      } else {
+        setEventPoolId((Long)value);
+      }
+      break;
+
     case STARRED_EVENT_ITEMS:
       if (value == null) {
         unsetStarredEventItems();
@@ -333,6 +381,9 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case EVENT_POOL_ID:
+      return Long.valueOf(getEventPoolId());
+
     case STARRED_EVENT_ITEMS:
       return getStarredEventItems();
 
@@ -356,6 +407,8 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
     }
 
     switch (field) {
+    case EVENT_POOL_ID:
+      return isSetEventPoolId();
     case STARRED_EVENT_ITEMS:
       return isSetStarredEventItems();
     case USER_TICKETS:
@@ -380,6 +433,15 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
   public boolean equals(SendEmailRequest that) {
     if (that == null)
       return false;
+
+    boolean this_present_eventPoolId = true;
+    boolean that_present_eventPoolId = true;
+    if (this_present_eventPoolId || that_present_eventPoolId) {
+      if (!(this_present_eventPoolId && that_present_eventPoolId))
+        return false;
+      if (this.eventPoolId != that.eventPoolId)
+        return false;
+    }
 
     boolean this_present_starredEventItems = true && this.isSetStarredEventItems();
     boolean that_present_starredEventItems = true && that.isSetStarredEventItems();
@@ -424,6 +486,11 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
+    boolean present_eventPoolId = true;
+    builder.append(present_eventPoolId);
+    if (present_eventPoolId)
+      builder.append(eventPoolId);
+
     boolean present_starredEventItems = true && (isSetStarredEventItems());
     builder.append(present_starredEventItems);
     if (present_starredEventItems)
@@ -455,6 +522,16 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
     int lastComparison = 0;
     SendEmailRequest typedOther = (SendEmailRequest)other;
 
+    lastComparison = Boolean.valueOf(isSetEventPoolId()).compareTo(typedOther.isSetEventPoolId());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetEventPoolId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.eventPoolId, typedOther.eventPoolId);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetStarredEventItems()).compareTo(typedOther.isSetStarredEventItems());
     if (lastComparison != 0) {
       return lastComparison;
@@ -512,6 +589,14 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
         break;
       }
       switch (field.id) {
+        case 4: // EVENT_POOL_ID
+          if (field.type == org.apache.thrift.protocol.TType.I64) {
+            this.eventPoolId = iprot.readI64();
+            setEventPoolIdIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         case 1: // STARRED_EVENT_ITEMS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
@@ -568,6 +653,9 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
+    if (!isSetEventPoolId()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'eventPoolId' was not found in serialized data! Struct: " + toString());
+    }
     validate();
   }
 
@@ -608,6 +696,9 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
         oprot.writeFieldEnd();
       }
     }
+    oprot.writeFieldBegin(EVENT_POOL_ID_FIELD_DESC);
+    oprot.writeI64(this.eventPoolId);
+    oprot.writeFieldEnd();
     if (this.lang != null) {
       if (isSetLang()) {
         oprot.writeFieldBegin(LANG_FIELD_DESC);
@@ -624,6 +715,10 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
     StringBuilder sb = new StringBuilder("SendEmailRequest(");
     boolean first = true;
 
+    sb.append("eventPoolId:");
+    sb.append(this.eventPoolId);
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("starredEventItems:");
     if (this.starredEventItems == null) {
       sb.append("null");
@@ -667,6 +762,7 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    // alas, we cannot check 'eventPoolId' because it's a primitive and you chose the non-beans generator.
     if (starredEventItems == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'starredEventItems' was not present! Struct: " + toString());
     }
@@ -682,6 +778,8 @@ public class SendEmailRequest implements org.apache.thrift.TBase<SendEmailReques
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

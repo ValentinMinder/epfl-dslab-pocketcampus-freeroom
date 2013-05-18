@@ -181,6 +181,7 @@ struct ExchangeReply {
 }
 
 struct SendEmailRequest {
+	4: required i64 eventPoolId;
 	1: required list<i64> starredEventItems;
 	2: optional list<string> userTickets;
 	3: optional string emailAddress;
