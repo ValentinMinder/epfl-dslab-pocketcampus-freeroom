@@ -334,23 +334,32 @@ enum EventsPeriods {
 @interface EventItemRequest : NSObject <NSCoding> {
   int64_t __eventItemId;
   NSString * __userToken;
+  NSArray * __userTickets;
+  NSArray * __starredEventItems;
   NSString * __lang;
   int32_t __period;
+  BOOL __fetchPast;
 
   BOOL __eventItemId_isset;
   BOOL __userToken_isset;
+  BOOL __userTickets_isset;
+  BOOL __starredEventItems_isset;
   BOOL __lang_isset;
   BOOL __period_isset;
+  BOOL __fetchPast_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, getter=eventItemId, setter=setEventItemId:) int64_t eventItemId;
 @property (nonatomic, retain, getter=userToken, setter=setUserToken:) NSString * userToken;
+@property (nonatomic, retain, getter=userTickets, setter=setUserTickets:) NSArray * userTickets;
+@property (nonatomic, retain, getter=starredEventItems, setter=setStarredEventItems:) NSArray * starredEventItems;
 @property (nonatomic, retain, getter=lang, setter=setLang:) NSString * lang;
 @property (nonatomic, getter=period, setter=setPeriod:) int32_t period;
+@property (nonatomic, getter=fetchPast, setter=setFetchPast:) BOOL fetchPast;
 #endif
 
-- (id) initWithEventItemId: (int64_t) eventItemId userToken: (NSString *) userToken lang: (NSString *) lang period: (int32_t) period;
+- (id) initWithEventItemId: (int64_t) eventItemId userToken: (NSString *) userToken userTickets: (NSArray *) userTickets starredEventItems: (NSArray *) starredEventItems lang: (NSString *) lang period: (int32_t) period fetchPast: (BOOL) fetchPast;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -363,6 +372,14 @@ enum EventsPeriods {
 - (void) setUserToken: (NSString *) userToken;
 - (BOOL) userTokenIsSet;
 
+- (NSArray *) userTickets;
+- (void) setUserTickets: (NSArray *) userTickets;
+- (BOOL) userTicketsIsSet;
+
+- (NSArray *) starredEventItems;
+- (void) setStarredEventItems: (NSArray *) starredEventItems;
+- (BOOL) starredEventItemsIsSet;
+
 - (NSString *) lang;
 - (void) setLang: (NSString *) lang;
 - (BOOL) langIsSet;
@@ -371,28 +388,41 @@ enum EventsPeriods {
 - (void) setPeriod: (int32_t) period;
 - (BOOL) periodIsSet;
 
+- (BOOL) fetchPast;
+- (void) setFetchPast: (BOOL) fetchPast;
+- (BOOL) fetchPastIsSet;
+
 @end
 
 @interface EventPoolRequest : NSObject <NSCoding> {
   int64_t __eventPoolId;
   NSString * __userToken;
+  NSArray * __userTickets;
+  NSArray * __starredEventItems;
   NSString * __lang;
   int32_t __period;
+  BOOL __fetchPast;
 
   BOOL __eventPoolId_isset;
   BOOL __userToken_isset;
+  BOOL __userTickets_isset;
+  BOOL __starredEventItems_isset;
   BOOL __lang_isset;
   BOOL __period_isset;
+  BOOL __fetchPast_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, getter=eventPoolId, setter=setEventPoolId:) int64_t eventPoolId;
 @property (nonatomic, retain, getter=userToken, setter=setUserToken:) NSString * userToken;
+@property (nonatomic, retain, getter=userTickets, setter=setUserTickets:) NSArray * userTickets;
+@property (nonatomic, retain, getter=starredEventItems, setter=setStarredEventItems:) NSArray * starredEventItems;
 @property (nonatomic, retain, getter=lang, setter=setLang:) NSString * lang;
 @property (nonatomic, getter=period, setter=setPeriod:) int32_t period;
+@property (nonatomic, getter=fetchPast, setter=setFetchPast:) BOOL fetchPast;
 #endif
 
-- (id) initWithEventPoolId: (int64_t) eventPoolId userToken: (NSString *) userToken lang: (NSString *) lang period: (int32_t) period;
+- (id) initWithEventPoolId: (int64_t) eventPoolId userToken: (NSString *) userToken userTickets: (NSArray *) userTickets starredEventItems: (NSArray *) starredEventItems lang: (NSString *) lang period: (int32_t) period fetchPast: (BOOL) fetchPast;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -405,6 +435,14 @@ enum EventsPeriods {
 - (void) setUserToken: (NSString *) userToken;
 - (BOOL) userTokenIsSet;
 
+- (NSArray *) userTickets;
+- (void) setUserTickets: (NSArray *) userTickets;
+- (BOOL) userTicketsIsSet;
+
+- (NSArray *) starredEventItems;
+- (void) setStarredEventItems: (NSArray *) starredEventItems;
+- (BOOL) starredEventItemsIsSet;
+
 - (NSString *) lang;
 - (void) setLang: (NSString *) lang;
 - (BOOL) langIsSet;
@@ -412,6 +450,10 @@ enum EventsPeriods {
 - (int32_t) period;
 - (void) setPeriod: (int32_t) period;
 - (BOOL) periodIsSet;
+
+- (BOOL) fetchPast;
+- (void) setFetchPast: (BOOL) fetchPast;
+- (BOOL) fetchPastIsSet;
 
 @end
 
@@ -514,30 +556,37 @@ enum EventsPeriods {
 @end
 
 @interface ExchangeRequest : NSObject <NSCoding> {
-  NSString * __userToken;
   NSString * __exchangeToken;
+  NSString * __userToken;
+  NSArray * __userTickets;
 
-  BOOL __userToken_isset;
   BOOL __exchangeToken_isset;
+  BOOL __userToken_isset;
+  BOOL __userTickets_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=userToken, setter=setUserToken:) NSString * userToken;
 @property (nonatomic, retain, getter=exchangeToken, setter=setExchangeToken:) NSString * exchangeToken;
+@property (nonatomic, retain, getter=userToken, setter=setUserToken:) NSString * userToken;
+@property (nonatomic, retain, getter=userTickets, setter=setUserTickets:) NSArray * userTickets;
 #endif
 
-- (id) initWithUserToken: (NSString *) userToken exchangeToken: (NSString *) exchangeToken;
+- (id) initWithExchangeToken: (NSString *) exchangeToken userToken: (NSString *) userToken userTickets: (NSArray *) userTickets;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) exchangeToken;
+- (void) setExchangeToken: (NSString *) exchangeToken;
+- (BOOL) exchangeTokenIsSet;
 
 - (NSString *) userToken;
 - (void) setUserToken: (NSString *) userToken;
 - (BOOL) userTokenIsSet;
 
-- (NSString *) exchangeToken;
-- (void) setExchangeToken: (NSString *) exchangeToken;
-- (BOOL) exchangeTokenIsSet;
+- (NSArray *) userTickets;
+- (void) setUserTickets: (NSArray *) userTickets;
+- (BOOL) userTicketsIsSet;
 
 @end
 
@@ -562,10 +611,74 @@ enum EventsPeriods {
 
 @end
 
+@interface SendEmailRequest : NSObject <NSCoding> {
+  NSArray * __starredEventItems;
+  NSArray * __userTickets;
+  NSString * __emailAddress;
+  NSString * __lang;
+
+  BOOL __starredEventItems_isset;
+  BOOL __userTickets_isset;
+  BOOL __emailAddress_isset;
+  BOOL __lang_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=starredEventItems, setter=setStarredEventItems:) NSArray * starredEventItems;
+@property (nonatomic, retain, getter=userTickets, setter=setUserTickets:) NSArray * userTickets;
+@property (nonatomic, retain, getter=emailAddress, setter=setEmailAddress:) NSString * emailAddress;
+@property (nonatomic, retain, getter=lang, setter=setLang:) NSString * lang;
+#endif
+
+- (id) initWithStarredEventItems: (NSArray *) starredEventItems userTickets: (NSArray *) userTickets emailAddress: (NSString *) emailAddress lang: (NSString *) lang;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSArray *) starredEventItems;
+- (void) setStarredEventItems: (NSArray *) starredEventItems;
+- (BOOL) starredEventItemsIsSet;
+
+- (NSArray *) userTickets;
+- (void) setUserTickets: (NSArray *) userTickets;
+- (BOOL) userTicketsIsSet;
+
+- (NSString *) emailAddress;
+- (void) setEmailAddress: (NSString *) emailAddress;
+- (BOOL) emailAddressIsSet;
+
+- (NSString *) lang;
+- (void) setLang: (NSString *) lang;
+- (BOOL) langIsSet;
+
+@end
+
+@interface SendEmailReply : NSObject <NSCoding> {
+  int32_t __status;
+
+  BOOL __status_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=status, setter=setStatus:) int32_t status;
+#endif
+
+- (id) initWithStatus: (int32_t) status;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int32_t) status;
+- (void) setStatus: (int32_t) status;
+- (BOOL) statusIsSet;
+
+@end
+
 @protocol EventsService <NSObject>
 - (EventItemReply *) getEventItem: (EventItemRequest *) iRequest;  // throws TException
 - (EventPoolReply *) getEventPool: (EventPoolRequest *) iRequest;  // throws TException
 - (ExchangeReply *) exchangeContacts: (ExchangeRequest *) iRequest;  // throws TException
+- (SendEmailReply *) sendStarredItemsByEmail: (SendEmailRequest *) iRequest;  // throws TException
 @end
 
 @interface EventsServiceClient : NSObject <EventsService> {

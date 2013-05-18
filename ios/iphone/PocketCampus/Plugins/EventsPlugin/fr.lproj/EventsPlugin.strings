@@ -18,9 +18,15 @@
 "MoreDetails" = "Plus de détails";
 "NoResultPCUnknownViewControllerLoad" = "Impossible de trouver cette\npersonne.";
 "Filter" = "Filtrer";
+"FilterByTags" = "Filtrer par tags";
+"FilterByTagsWithFormat" = "Filtrer par tags (%d/%d)";
+"SelectAtLeastOneTag" = "Séléctionnez au moins un tag";
+"SelectAll" = "Tout sélect.";
+"DeselectAll" = "Tout désélect.";
 "SelectCategory" = "Aller à la catégorie";
 "Categories" = "Catégories";
 "NoCategory" = "Aucune catégorie";
+"NoTag" = "Aucun tag";
 "PeriodWithFormat" = "Période (%@)";
 "ShowEventsFor..." = "Afficher les événements à venir pour\nla période suivante";
 "Days" = "Jours";

@@ -65,15 +65,27 @@
 
 @optional
 /*
- * If this method is implemented, this means that plugin supports action from URL,
- * i.e. opening app from links of type: pocketcampus://<pluginIdentifier>.plugin.pocketcampus.org/<action>?<parameters>
+ * If either or both of these method(s) is/are implemented, this means that plugin supports
+ * actions from URLs of the form:
+ * 
+ * pocketcampus://<pluginIdentifier>.plugin.pocketcampus.org/<action>?<parameters>
  *
  * Example: pocketcampus://map.plugin.pocketcampus.org/search?q=BC410
  * action = "search", parameters = {"q" => "BC410" }
  *
- * Must return a UIViewController instance corresponding to action or nil if the action is not supported
+ * Some plugin might implement one or both method.
+ * 
+ * viewControllerForURLQueryAction:parameters:
+ * Implement this method to support returning a view controller directly from the action.
+ * This method is typically used internally to PocketCampus, between plugins.
+ * Should return nil if the action/the parameters are not supported.
+ *
+ * handleURLQueryAction:parameters:
+ * Implement this method to support being (the plugin) opened from a call external to the app.
+ * Should return YES if action was successfully handled, NO otherwise.
  */
 - (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters;
+- (BOOL)handleURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters;
 
 
 /* 

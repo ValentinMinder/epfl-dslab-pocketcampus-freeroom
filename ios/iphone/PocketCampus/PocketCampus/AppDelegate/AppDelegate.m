@@ -104,13 +104,13 @@ static id test __strong __unused = nil;
     return YES;
 }
 
-/*- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    if (![[[MainController publicController] urlSchemeHandlerSharedInstance] isSupportedPocketCampusURLScheme:url]) {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    if (![[[MainController publicController] urlSchemeHandlerSharedInstance] isValidPocketCampusURL:url]) {
         return NO;
     }
     [self.mainController handlePocketCampusURL:url];
     return YES;
-}*/
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

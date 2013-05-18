@@ -223,6 +223,10 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!self.modules.count) {
+        return;
+    }
+    
     NSInteger selectedTabIndex = 0;
     
     MyEduModule* module = self.modules[indexPath.row];
@@ -261,7 +265,9 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
         if (indexPath.row == 1) {
             return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NoModule", @"MyEduPlugin", nil)];
         } else {
-            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil]; //two empty cells first
+            UITableViewCell* cell =[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
         }
     }
     

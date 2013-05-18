@@ -42,6 +42,21 @@
 	<string>1.2.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLIconFile</key>
+			<string>Icon</string>
+			<key>CFBundleURLName</key>
+			<string>org.pocketcampus</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>pocketcampus</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1.2.4</string>
 	<key>LSRequiresIPhoneOS</key>

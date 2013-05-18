@@ -14,6 +14,7 @@
 "NoContactSelected" = "No contact selected";
 "PhotoButtonTitle" = "Photo";
 "Details" = "Details";
+"NoResultPCUnknownViewControllerLoad" = "Sorry, this person could not be found\nwithin EPFL's directory.";
 
 /* Accessiblity */
 

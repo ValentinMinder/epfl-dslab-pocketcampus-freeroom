@@ -34,4 +34,6 @@ typedef enum {
 
 - (void)startSearchForQuery:(NSString*)query;
 
+@property (nonatomic, strong) NSString* initialQueryWithFullControls;
+
 @end

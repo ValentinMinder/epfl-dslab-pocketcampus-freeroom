@@ -30,14 +30,14 @@
 }
 
 - (void)tmpTest {
-    EventPoolRequest* req = [[EventPoolRequest alloc] initWithEventPoolId:-1 userToken:nil lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_WEEK];
-    [self.service getEventPoolForRequest:req delegate:self];
+    //EventPoolRequest* req = [[EventPoolRequest alloc] initWithEventPoolId:-1 userToken:nil lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_WEEK];
+    //[self.service getEventPoolForRequest:req delegate:self];
 }
 
 - (void)getEventPoolForRequest:(EventPoolRequest *)request didReturn:(EventPoolReply *)reply {
     //NSLog(@"getEventPoolForRequest:didReturn: %@", reply);
-    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:[reply.eventPool.childrenEvents[0] longLongValue] userToken:nil lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_WEEK];
-    [self.service getEventItemForRequest:req delegate:self];
+    //EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:[reply.eventPool.childrenEvents[0] longLongValue] userToken:nil lang:[PCUtils userLanguageCode] period:EventsPeriods_ONE_WEEK];
+    //[self.service getEventItemForRequest:req delegate:self];
 }
 
 - (void)getEventPoolFailedForRequest:(EventPoolRequest *)request {

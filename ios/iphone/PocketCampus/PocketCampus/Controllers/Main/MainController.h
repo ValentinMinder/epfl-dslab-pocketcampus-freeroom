@@ -60,6 +60,8 @@ typedef enum {
 
 - (PCURLSchemeHandler*)urlSchemeHandlerSharedInstance;
 
+- (BOOL)handlePocketCampusURL:(NSURL*)url;;
+
 @end
 
 
@@ -90,8 +92,6 @@ typedef enum {
 
 - (PluginController<PluginControllerProtocol>*)pluginControllerForPluginIdentifier:(NSString*)identifier;
 - (BOOL)existsPluginWithIdentifier:(NSString*)identifier;
-
-- (void)handlePocketCampusURL:(NSURL*)url;
 
 @property (nonatomic, readonly, strong) MainMenuViewController* mainMenuViewController;
 

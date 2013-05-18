@@ -24,16 +24,19 @@ import org.slf4j.LoggerFactory;
 public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest, ExchangeRequest._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ExchangeRequest");
 
-  private static final org.apache.thrift.protocol.TField USER_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("userToken", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField EXCHANGE_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("exchangeToken", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField USER_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("userToken", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField USER_TICKETS_FIELD_DESC = new org.apache.thrift.protocol.TField("userTickets", org.apache.thrift.protocol.TType.LIST, (short)3);
 
-  public String userToken; // required
   public String exchangeToken; // required
+  public String userToken; // required
+  public List<String> userTickets; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    EXCHANGE_TOKEN((short)2, "exchangeToken"),
     USER_TOKEN((short)1, "userToken"),
-    EXCHANGE_TOKEN((short)2, "exchangeToken");
+    USER_TICKETS((short)3, "userTickets");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +51,12 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // USER_TOKEN
-          return USER_TOKEN;
         case 2: // EXCHANGE_TOKEN
           return EXCHANGE_TOKEN;
+        case 1: // USER_TOKEN
+          return USER_TOKEN;
+        case 3: // USER_TICKETS
+          return USER_TICKETS;
         default:
           return null;
       }
@@ -96,10 +101,13 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.USER_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("userToken", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.EXCHANGE_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("exchangeToken", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.USER_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("userToken", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.USER_TICKETS, new org.apache.thrift.meta_data.FieldMetaData("userTickets", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ExchangeRequest.class, metaDataMap);
   }
@@ -108,11 +116,9 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
   }
 
   public ExchangeRequest(
-    String userToken,
     String exchangeToken)
   {
     this();
-    this.userToken = userToken;
     this.exchangeToken = exchangeToken;
   }
 
@@ -120,11 +126,18 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
    * Performs a deep copy on <i>other</i>.
    */
   public ExchangeRequest(ExchangeRequest other) {
+    if (other.isSetExchangeToken()) {
+      this.exchangeToken = other.exchangeToken;
+    }
     if (other.isSetUserToken()) {
       this.userToken = other.userToken;
     }
-    if (other.isSetExchangeToken()) {
-      this.exchangeToken = other.exchangeToken;
+    if (other.isSetUserTickets()) {
+      List<String> __this__userTickets = new ArrayList<String>();
+      for (String other_element : other.userTickets) {
+        __this__userTickets.add(other_element);
+      }
+      this.userTickets = __this__userTickets;
     }
   }
 
@@ -134,32 +147,9 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
 
   @Override
   public void clear() {
-    this.userToken = null;
     this.exchangeToken = null;
-  }
-
-  public String getUserToken() {
-    return this.userToken;
-  }
-
-  public ExchangeRequest setUserToken(String userToken) {
-    this.userToken = userToken;
-    return this;
-  }
-
-  public void unsetUserToken() {
     this.userToken = null;
-  }
-
-  /** Returns true if field userToken is set (has been assigned a value) and false otherwise */
-  public boolean isSetUserToken() {
-    return this.userToken != null;
-  }
-
-  public void setUserTokenIsSet(boolean value) {
-    if (!value) {
-      this.userToken = null;
-    }
+    this.userTickets = null;
   }
 
   public String getExchangeToken() {
@@ -186,16 +176,71 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
     }
   }
 
+  public String getUserToken() {
+    return this.userToken;
+  }
+
+  public ExchangeRequest setUserToken(String userToken) {
+    this.userToken = userToken;
+    return this;
+  }
+
+  public void unsetUserToken() {
+    this.userToken = null;
+  }
+
+  /** Returns true if field userToken is set (has been assigned a value) and false otherwise */
+  public boolean isSetUserToken() {
+    return this.userToken != null;
+  }
+
+  public void setUserTokenIsSet(boolean value) {
+    if (!value) {
+      this.userToken = null;
+    }
+  }
+
+  public int getUserTicketsSize() {
+    return (this.userTickets == null) ? 0 : this.userTickets.size();
+  }
+
+  public java.util.Iterator<String> getUserTicketsIterator() {
+    return (this.userTickets == null) ? null : this.userTickets.iterator();
+  }
+
+  public void addToUserTickets(String elem) {
+    if (this.userTickets == null) {
+      this.userTickets = new ArrayList<String>();
+    }
+    this.userTickets.add(elem);
+  }
+
+  public List<String> getUserTickets() {
+    return this.userTickets;
+  }
+
+  public ExchangeRequest setUserTickets(List<String> userTickets) {
+    this.userTickets = userTickets;
+    return this;
+  }
+
+  public void unsetUserTickets() {
+    this.userTickets = null;
+  }
+
+  /** Returns true if field userTickets is set (has been assigned a value) and false otherwise */
+  public boolean isSetUserTickets() {
+    return this.userTickets != null;
+  }
+
+  public void setUserTicketsIsSet(boolean value) {
+    if (!value) {
+      this.userTickets = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case USER_TOKEN:
-      if (value == null) {
-        unsetUserToken();
-      } else {
-        setUserToken((String)value);
-      }
-      break;
-
     case EXCHANGE_TOKEN:
       if (value == null) {
         unsetExchangeToken();
@@ -204,16 +249,35 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
       }
       break;
 
+    case USER_TOKEN:
+      if (value == null) {
+        unsetUserToken();
+      } else {
+        setUserToken((String)value);
+      }
+      break;
+
+    case USER_TICKETS:
+      if (value == null) {
+        unsetUserTickets();
+      } else {
+        setUserTickets((List<String>)value);
+      }
+      break;
+
     }
   }
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case EXCHANGE_TOKEN:
+      return getExchangeToken();
+
     case USER_TOKEN:
       return getUserToken();
 
-    case EXCHANGE_TOKEN:
-      return getExchangeToken();
+    case USER_TICKETS:
+      return getUserTickets();
 
     }
     throw new IllegalStateException();
@@ -226,10 +290,12 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
     }
 
     switch (field) {
-    case USER_TOKEN:
-      return isSetUserToken();
     case EXCHANGE_TOKEN:
       return isSetExchangeToken();
+    case USER_TOKEN:
+      return isSetUserToken();
+    case USER_TICKETS:
+      return isSetUserTickets();
     }
     throw new IllegalStateException();
   }
@@ -247,6 +313,15 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
     if (that == null)
       return false;
 
+    boolean this_present_exchangeToken = true && this.isSetExchangeToken();
+    boolean that_present_exchangeToken = true && that.isSetExchangeToken();
+    if (this_present_exchangeToken || that_present_exchangeToken) {
+      if (!(this_present_exchangeToken && that_present_exchangeToken))
+        return false;
+      if (!this.exchangeToken.equals(that.exchangeToken))
+        return false;
+    }
+
     boolean this_present_userToken = true && this.isSetUserToken();
     boolean that_present_userToken = true && that.isSetUserToken();
     if (this_present_userToken || that_present_userToken) {
@@ -256,12 +331,12 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
         return false;
     }
 
-    boolean this_present_exchangeToken = true && this.isSetExchangeToken();
-    boolean that_present_exchangeToken = true && that.isSetExchangeToken();
-    if (this_present_exchangeToken || that_present_exchangeToken) {
-      if (!(this_present_exchangeToken && that_present_exchangeToken))
+    boolean this_present_userTickets = true && this.isSetUserTickets();
+    boolean that_present_userTickets = true && that.isSetUserTickets();
+    if (this_present_userTickets || that_present_userTickets) {
+      if (!(this_present_userTickets && that_present_userTickets))
         return false;
-      if (!this.exchangeToken.equals(that.exchangeToken))
+      if (!this.userTickets.equals(that.userTickets))
         return false;
     }
 
@@ -272,15 +347,20 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
+    boolean present_exchangeToken = true && (isSetExchangeToken());
+    builder.append(present_exchangeToken);
+    if (present_exchangeToken)
+      builder.append(exchangeToken);
+
     boolean present_userToken = true && (isSetUserToken());
     builder.append(present_userToken);
     if (present_userToken)
       builder.append(userToken);
 
-    boolean present_exchangeToken = true && (isSetExchangeToken());
-    builder.append(present_exchangeToken);
-    if (present_exchangeToken)
-      builder.append(exchangeToken);
+    boolean present_userTickets = true && (isSetUserTickets());
+    builder.append(present_userTickets);
+    if (present_userTickets)
+      builder.append(userTickets);
 
     return builder.toHashCode();
   }
@@ -293,6 +373,16 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
     int lastComparison = 0;
     ExchangeRequest typedOther = (ExchangeRequest)other;
 
+    lastComparison = Boolean.valueOf(isSetExchangeToken()).compareTo(typedOther.isSetExchangeToken());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetExchangeToken()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.exchangeToken, typedOther.exchangeToken);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetUserToken()).compareTo(typedOther.isSetUserToken());
     if (lastComparison != 0) {
       return lastComparison;
@@ -303,12 +393,12 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetExchangeToken()).compareTo(typedOther.isSetExchangeToken());
+    lastComparison = Boolean.valueOf(isSetUserTickets()).compareTo(typedOther.isSetUserTickets());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetExchangeToken()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.exchangeToken, typedOther.exchangeToken);
+    if (isSetUserTickets()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.userTickets, typedOther.userTickets);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -330,6 +420,13 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
         break;
       }
       switch (field.id) {
+        case 2: // EXCHANGE_TOKEN
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.exchangeToken = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         case 1: // USER_TOKEN
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.userToken = iprot.readString();
@@ -337,9 +434,19 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // EXCHANGE_TOKEN
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.exchangeToken = iprot.readString();
+        case 3: // USER_TICKETS
+          if (field.type == org.apache.thrift.protocol.TType.LIST) {
+            {
+              org.apache.thrift.protocol.TList _list58 = iprot.readListBegin();
+              this.userTickets = new ArrayList<String>(_list58.size);
+              for (int _i59 = 0; _i59 < _list58.size; ++_i59)
+              {
+                String _elem60; // required
+                _elem60 = iprot.readString();
+                this.userTickets.add(_elem60);
+              }
+              iprot.readListEnd();
+            }
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -360,14 +467,30 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
 
     oprot.writeStructBegin(STRUCT_DESC);
     if (this.userToken != null) {
-      oprot.writeFieldBegin(USER_TOKEN_FIELD_DESC);
-      oprot.writeString(this.userToken);
-      oprot.writeFieldEnd();
+      if (isSetUserToken()) {
+        oprot.writeFieldBegin(USER_TOKEN_FIELD_DESC);
+        oprot.writeString(this.userToken);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.exchangeToken != null) {
       oprot.writeFieldBegin(EXCHANGE_TOKEN_FIELD_DESC);
       oprot.writeString(this.exchangeToken);
       oprot.writeFieldEnd();
+    }
+    if (this.userTickets != null) {
+      if (isSetUserTickets()) {
+        oprot.writeFieldBegin(USER_TICKETS_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.userTickets.size()));
+          for (String _iter61 : this.userTickets)
+          {
+            oprot.writeString(_iter61);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -378,14 +501,6 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
     StringBuilder sb = new StringBuilder("ExchangeRequest(");
     boolean first = true;
 
-    sb.append("userToken:");
-    if (this.userToken == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.userToken);
-    }
-    first = false;
-    if (!first) sb.append(", ");
     sb.append("exchangeToken:");
     if (this.exchangeToken == null) {
       sb.append("null");
@@ -393,15 +508,32 @@ public class ExchangeRequest implements org.apache.thrift.TBase<ExchangeRequest,
       sb.append(this.exchangeToken);
     }
     first = false;
+    if (isSetUserToken()) {
+      if (!first) sb.append(", ");
+      sb.append("userToken:");
+      if (this.userToken == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.userToken);
+      }
+      first = false;
+    }
+    if (isSetUserTickets()) {
+      if (!first) sb.append(", ");
+      sb.append("userTickets:");
+      if (this.userTickets == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.userTickets);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (userToken == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'userToken' was not present! Struct: " + toString());
-    }
     if (exchangeToken == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'exchangeToken' was not present! Struct: " + toString());
     }

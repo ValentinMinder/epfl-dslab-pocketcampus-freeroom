@@ -48,7 +48,7 @@
 @property (nonatomic, strong) SplashViewController* splashViewController;
 @property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
 @property (nonatomic, strong) NSString* initialActivePluginIdentifier;
-@property (nonatomic, strong) NSURL* pcURLToHandle;
+@property (nonatomic, copy) NSURL* pcURLToHandle;
 @property (nonatomic, strong) NSMutableDictionary* pluginsControllers; //key: plugin identifier name, value: PluginController subclass.
 @property (nonatomic) BOOL initDone;
 
@@ -186,14 +186,72 @@ static MainController<MainControllerPublic>* instance = nil;
     return self.urlSchemeHander;
 }
 
-- (void)handlePocketCampusURL:(NSURL*)url {
-    self.pcURLToHandle = url;
-    if (self.initDone) {
-        //not supported yet
+- (BOOL)handlePocketCampusURL:(NSURL*)urlTmp {
+    if (![urlTmp isKindOfClass:[NSURL class]]) {
+        //do that instead of exception to prevent crashes
+        [self showActionNotSupportedAlert];
+        NSLog(@"!! ERROR: tried to handlePocketCampusURL: with URL not kind of class NSURL. Ignoring.");
+        return NO;
     }
+    
+    if (!self.initDone) {
+        //setInitDoneYES will call handlePocketCampusURL: again when ready
+        self.pcURLToHandle = urlTmp;
+        return NO;
+    }
+    
+    NSURL* url = [urlTmp copy];
+    self.pcURLToHandle = nil; //prevent handling same URL twice
+    
+    NSString* pluginIdentifier = [self.urlSchemeHander pluginIdentifierForPocketCampusURL:url];
+    if (!pluginIdentifier) {
+        [self showActionNotSupportedAlert];
+        NSLog(@"!! ERROR: unkown pluginIdentifier in handlePocketCampusURL:");
+        return NO;
+    }
+    PluginController<PluginControllerProtocol>* pluginController = [self pluginControllerForPluginIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:pluginIdentifier]];
+    if (!pluginController) {
+        [self showActionNotSupportedAlert];
+        NSLog(@"!! ERROR: nil pluginController in handlePocketCampusURL:");
+        return NO;
+    }
+    
+    BOOL currentWasLeft = (self.activePluginController && self.revealController.currentFrontViewPosition == FrontViewPositionLeft);
+    
+    if (currentWasLeft) {
+        [self.revealController revealToggle:self];
+    }
+    
+    [self setActivePluginWithIdentifier:[[pluginController class] identifierName]];
+    
+    NSString* action = [self.urlSchemeHander actionForPocketCampusURL:url];
+    NSDictionary* params = [self.urlSchemeHander parametersForPocketCampusURL:url];
+    
+    if (!action || !params) {
+        [self showActionNotSupportedAlert];
+        NSLog(@"!! ERROR: nil action/parameters in handlePocketCampusURL:");
+        return NO;
+    }
+    
+    if (![pluginController respondsToSelector:@selector(handleURLQueryAction:parameters:)]) {
+        [self showActionNotSupportedAlert];
+        NSLog(@"!! ERROR: pluginController does not respond to handleURLQueryAction:parameters:. Ignoring.");
+        return NO;
+    }
+    
+    if (![pluginController handleURLQueryAction:action parameters:params]) {
+        [self showActionNotSupportedAlert];
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark Private utilities
+
+- (void)showActionNotSupportedAlert {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Sorry", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ActionNotSupportedYet", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
 
 - (NSString*)notificiationNameForPluginStateNotification:(PluginStateNotification)notification pluginIdentifierName:(NSString*)pluginIdentifierName {
     return [NSString stringWithFormat:@"%@-%d", pluginIdentifierName, notification];
@@ -400,7 +458,7 @@ static MainController<MainControllerPublic>* instance = nil;
         }
     }
     if (self.pcURLToHandle) {
-        //not supported yet
+        [self handlePocketCampusURL:self.pcURLToHandle];
     }
 }
 
@@ -531,7 +589,7 @@ static MainController<MainControllerPublic>* instance = nil;
         if (!pluginClass) {
             @throw [NSException exceptionWithName:@"Bad plugin identifier" reason:[NSString stringWithFormat:@"Controller class does not exist for idenfier %@", identifier] userInfo:nil];
         }
-        pluginController = [[pluginClass alloc] init];
+        pluginController = [pluginClass sharedInstanceToRetain];
         [self adaptInitializedNavigationOrSplitViewControllerOfPluginController:pluginController];
         UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
         
@@ -565,6 +623,16 @@ static MainController<MainControllerPublic>* instance = nil;
     return [NSString stringWithFormat:@"%@Controller", identifier];
 }
 
+- (NSString*)validPluginIdentifierForAnycasePluginIdentifier:(NSString*)anycaseIdentifier {
+    NSString* lowercaseIdentifier = [anycaseIdentifier lowercaseString];
+    for (NSString* validIdentifier in self.pluginsList){
+        if ([[validIdentifier lowercaseString] isEqualToString:lowercaseIdentifier]) {
+            return validIdentifier;
+        }
+    }
+    return nil;
+}
+
 - (PluginController<PluginControllerProtocol>*)pluginControllerForPluginIdentifier:(NSString*)identifier {
     NSString* lowerCaseIdentifier = [identifier lowercaseString];
     
@@ -592,7 +660,7 @@ static MainController<MainControllerPublic>* instance = nil;
     if (!pluginClass) {
         return nil;
     }
-    pluginController = [[pluginClass alloc] init];
+    pluginController = [pluginClass sharedInstanceToRetain];
     return pluginController;
 }
 

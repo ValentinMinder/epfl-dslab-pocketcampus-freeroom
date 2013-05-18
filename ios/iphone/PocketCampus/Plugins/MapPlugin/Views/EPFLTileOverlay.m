@@ -93,7 +93,7 @@ static NSString* URL_ENDING = @".png";
 /*
  * OLD
  */
-/*- (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
+- (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
     NSString* baseUrl = [NSString stringWithFormat:@"%@%d%@", @"http://plan-epfl-tile", [self randomizeTileServer], @".epfl.ch/batiments"];
     NSString* layerLevel = [NSString stringWithFormat: @"%d%@", self.currentLayerLevel, @"/"];//-ch
     NSString* zoomLevel = [NSString stringWithFormat:@"%d/",zoom];
@@ -102,15 +102,15 @@ static NSString* URL_ENDING = @".png";
     //Build the final url string
     NSString* urlString = [NSString stringWithFormat:@"%@%@%@%@%@%@%@",baseUrl,layerLevel,zoomLevel,xCoord,@"/",yCoord,URL_ENDING];
     return urlString;
-}*/
+}
 
 /*
  * Normal
  */
-- (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
+/*- (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
     NSString* urlString = [NSString stringWithFormat:@"http://plan-epfl-tile1.epfl.ch/batiments%d-merc/%d/%@/%@%@", self.currentLayerLevel, zoom, [self createCoordString:x], [self createCoordString:y], URL_ENDING];
     return urlString;
-}
+}*/
 
 /*
  * NEW
