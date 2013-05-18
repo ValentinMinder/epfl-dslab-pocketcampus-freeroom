@@ -46,6 +46,8 @@ import org.pocketcampus.plugin.events.shared.EventPoolRequest;
 import org.pocketcampus.plugin.events.shared.EventsService;
 import org.pocketcampus.plugin.events.shared.ExchangeReply;
 import org.pocketcampus.plugin.events.shared.ExchangeRequest;
+import org.pocketcampus.plugin.events.shared.SendEmailReply;
+import org.pocketcampus.plugin.events.shared.SendEmailRequest;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
@@ -65,6 +67,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	private String dateLastImport = "";
 	private Runnable importer = new Runnable() {
 		public void run() {
+			if(true) return;
 			System.out.println("Started Async Import from Memento on " + dateLastImport);
 			try {
 				HashMap<String, String> feedsMap = new HashMap<String, String>();
@@ -160,6 +163,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 
 	@Override
+	@Deprecated
 	public ExchangeReply exchangeContacts(ExchangeRequest req) throws TException {
 		System.out.println("exchangeContacts");
 		try {
@@ -179,6 +183,13 @@ public class EventsServiceImpl implements EventsService.Iface {
 			e.printStackTrace();
 			return new ExchangeReply(500);
 		}
+	}
+	
+	@Override
+	public SendEmailReply sendStarredItemsByEmail(SendEmailRequest iRequest) throws TException {
+		System.out.println("sendStarredItemsByEmail");
+		// TODO
+		return new SendEmailReply(500);
 	}
 	
 	/*private void addFeaturedEvents(Map<Long, EventItem> eventItems) throws ParseException {
@@ -872,5 +883,5 @@ public class EventsServiceImpl implements EventsService.Iface {
 		list.add(obj);
 		return list;
 	}
-	
+
 }
