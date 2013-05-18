@@ -9,6 +9,7 @@
 "PluginName" = "Camipro";
 "CamiproBalance" = "Solde Camipro";
 "TransactionsHistory" = "Historique";
+"ReloadCard" = "Recharger la carte";
 "ReloadInstructions" = "Recharger la carte";
 "Statistics" = "Statistiques";
 "ReloadInstructionsSendMailExplanations" = "Voulez-vous recevoir les instructions de recharge de votre carte Camipro par email (adresse EPFL) ?";

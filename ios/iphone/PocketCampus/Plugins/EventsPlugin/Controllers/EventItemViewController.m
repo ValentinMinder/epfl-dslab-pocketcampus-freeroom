@@ -136,10 +136,8 @@ static NSString* kPoolCell = @"PoolCell";
     [self startGetEventItemRequest];
 }
 
-- (void)startGetEventItemRequest {
-    //EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:EventsPeriods_SIX_MONTHS];
-    
-    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:nil userTickets:[self.eventsService allUserTickets] starredEventItems:[self.eventsService allFavoriteEventItemIds] lang:[PCUtils userLanguageCode] period:EventsPeriods_SIX_MONTHS fetchPast:self.pastMode];
+- (void)startGetEventItemRequest {    
+    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:nil userTickets:[self.eventsService allUserTickets] lang:[PCUtils userLanguageCode] period:EventsPeriods_SIX_MONTHS fetchPast:self.pastMode];
     
     [self.eventsService getEventItemForRequest:req delegate:self];
     if (!self.loadingIndicator) {

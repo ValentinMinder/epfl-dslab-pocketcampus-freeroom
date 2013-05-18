@@ -62,17 +62,17 @@ enum EventsPeriods {
   NSString * __eventSpeaker;
   NSString * __eventDetails;
   NSString * __eventThumbnail;
-  NSString * __secondLine;
   NSString * __eventUri;
   NSString * __vcalUid;
-  int32_t __eventCateg;
-  NSArray * __eventTags;
   NSString * __locationHref;
   NSString * __detailsLink;
+  NSString * __secondLine;
   NSString * __timeSnippet;
   BOOL __hideTitle;
   BOOL __hideThumbnail;
   BOOL __hideEventInfo;
+  int32_t __eventCateg;
+  NSArray * __eventTags;
   NSArray * __childrenPools;
   int64_t __parentPool;
 
@@ -86,17 +86,17 @@ enum EventsPeriods {
   BOOL __eventSpeaker_isset;
   BOOL __eventDetails_isset;
   BOOL __eventThumbnail_isset;
-  BOOL __secondLine_isset;
   BOOL __eventUri_isset;
   BOOL __vcalUid_isset;
-  BOOL __eventCateg_isset;
-  BOOL __eventTags_isset;
   BOOL __locationHref_isset;
   BOOL __detailsLink_isset;
+  BOOL __secondLine_isset;
   BOOL __timeSnippet_isset;
   BOOL __hideTitle_isset;
   BOOL __hideThumbnail_isset;
   BOOL __hideEventInfo_isset;
+  BOOL __eventCateg_isset;
+  BOOL __eventTags_isset;
   BOOL __childrenPools_isset;
   BOOL __parentPool_isset;
 }
@@ -112,22 +112,22 @@ enum EventsPeriods {
 @property (nonatomic, retain, getter=eventSpeaker, setter=setEventSpeaker:) NSString * eventSpeaker;
 @property (nonatomic, retain, getter=eventDetails, setter=setEventDetails:) NSString * eventDetails;
 @property (nonatomic, retain, getter=eventThumbnail, setter=setEventThumbnail:) NSString * eventThumbnail;
-@property (nonatomic, retain, getter=secondLine, setter=setSecondLine:) NSString * secondLine;
 @property (nonatomic, retain, getter=eventUri, setter=setEventUri:) NSString * eventUri;
 @property (nonatomic, retain, getter=vcalUid, setter=setVcalUid:) NSString * vcalUid;
-@property (nonatomic, getter=eventCateg, setter=setEventCateg:) int32_t eventCateg;
-@property (nonatomic, retain, getter=eventTags, setter=setEventTags:) NSArray * eventTags;
 @property (nonatomic, retain, getter=locationHref, setter=setLocationHref:) NSString * locationHref;
 @property (nonatomic, retain, getter=detailsLink, setter=setDetailsLink:) NSString * detailsLink;
+@property (nonatomic, retain, getter=secondLine, setter=setSecondLine:) NSString * secondLine;
 @property (nonatomic, retain, getter=timeSnippet, setter=setTimeSnippet:) NSString * timeSnippet;
 @property (nonatomic, getter=hideTitle, setter=setHideTitle:) BOOL hideTitle;
 @property (nonatomic, getter=hideThumbnail, setter=setHideThumbnail:) BOOL hideThumbnail;
 @property (nonatomic, getter=hideEventInfo, setter=setHideEventInfo:) BOOL hideEventInfo;
+@property (nonatomic, getter=eventCateg, setter=setEventCateg:) int32_t eventCateg;
+@property (nonatomic, retain, getter=eventTags, setter=setEventTags:) NSArray * eventTags;
 @property (nonatomic, retain, getter=childrenPools, setter=setChildrenPools:) NSArray * childrenPools;
 @property (nonatomic, getter=parentPool, setter=setParentPool:) int64_t parentPool;
 #endif
 
-- (id) initWithEventId: (int64_t) eventId startDate: (int64_t) startDate endDate: (int64_t) endDate fullDay: (BOOL) fullDay eventPicture: (NSString *) eventPicture eventTitle: (NSString *) eventTitle eventPlace: (NSString *) eventPlace eventSpeaker: (NSString *) eventSpeaker eventDetails: (NSString *) eventDetails eventThumbnail: (NSString *) eventThumbnail secondLine: (NSString *) secondLine eventUri: (NSString *) eventUri vcalUid: (NSString *) vcalUid eventCateg: (int32_t) eventCateg eventTags: (NSArray *) eventTags locationHref: (NSString *) locationHref detailsLink: (NSString *) detailsLink timeSnippet: (NSString *) timeSnippet hideTitle: (BOOL) hideTitle hideThumbnail: (BOOL) hideThumbnail hideEventInfo: (BOOL) hideEventInfo childrenPools: (NSArray *) childrenPools parentPool: (int64_t) parentPool;
+- (id) initWithEventId: (int64_t) eventId startDate: (int64_t) startDate endDate: (int64_t) endDate fullDay: (BOOL) fullDay eventPicture: (NSString *) eventPicture eventTitle: (NSString *) eventTitle eventPlace: (NSString *) eventPlace eventSpeaker: (NSString *) eventSpeaker eventDetails: (NSString *) eventDetails eventThumbnail: (NSString *) eventThumbnail eventUri: (NSString *) eventUri vcalUid: (NSString *) vcalUid locationHref: (NSString *) locationHref detailsLink: (NSString *) detailsLink secondLine: (NSString *) secondLine timeSnippet: (NSString *) timeSnippet hideTitle: (BOOL) hideTitle hideThumbnail: (BOOL) hideThumbnail hideEventInfo: (BOOL) hideEventInfo eventCateg: (int32_t) eventCateg eventTags: (NSArray *) eventTags childrenPools: (NSArray *) childrenPools parentPool: (int64_t) parentPool;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -172,10 +172,6 @@ enum EventsPeriods {
 - (void) setEventThumbnail: (NSString *) eventThumbnail;
 - (BOOL) eventThumbnailIsSet;
 
-- (NSString *) secondLine;
-- (void) setSecondLine: (NSString *) secondLine;
-- (BOOL) secondLineIsSet;
-
 - (NSString *) eventUri;
 - (void) setEventUri: (NSString *) eventUri;
 - (BOOL) eventUriIsSet;
@@ -184,14 +180,6 @@ enum EventsPeriods {
 - (void) setVcalUid: (NSString *) vcalUid;
 - (BOOL) vcalUidIsSet;
 
-- (int32_t) eventCateg;
-- (void) setEventCateg: (int32_t) eventCateg;
-- (BOOL) eventCategIsSet;
-
-- (NSArray *) eventTags;
-- (void) setEventTags: (NSArray *) eventTags;
-- (BOOL) eventTagsIsSet;
-
 - (NSString *) locationHref;
 - (void) setLocationHref: (NSString *) locationHref;
 - (BOOL) locationHrefIsSet;
@@ -199,6 +187,10 @@ enum EventsPeriods {
 - (NSString *) detailsLink;
 - (void) setDetailsLink: (NSString *) detailsLink;
 - (BOOL) detailsLinkIsSet;
+
+- (NSString *) secondLine;
+- (void) setSecondLine: (NSString *) secondLine;
+- (BOOL) secondLineIsSet;
 
 - (NSString *) timeSnippet;
 - (void) setTimeSnippet: (NSString *) timeSnippet;
@@ -215,6 +207,14 @@ enum EventsPeriods {
 - (BOOL) hideEventInfo;
 - (void) setHideEventInfo: (BOOL) hideEventInfo;
 - (BOOL) hideEventInfoIsSet;
+
+- (int32_t) eventCateg;
+- (void) setEventCateg: (int32_t) eventCateg;
+- (BOOL) eventCategIsSet;
+
+- (NSArray *) eventTags;
+- (void) setEventTags: (NSArray *) eventTags;
+- (BOOL) eventTagsIsSet;
 
 - (NSArray *) childrenPools;
 - (void) setChildrenPools: (NSArray *) childrenPools;
@@ -237,8 +237,9 @@ enum EventsPeriods {
   BOOL __disableFilterByTags;
   BOOL __enableScan;
   NSString * __noResultText;
-  NSArray * __childrenEvents;
   BOOL __refreshOnBack;
+  BOOL __sendStarredItems;
+  NSArray * __childrenEvents;
   int64_t __parentEvent;
 
   BOOL __poolId_isset;
@@ -251,8 +252,9 @@ enum EventsPeriods {
   BOOL __disableFilterByTags_isset;
   BOOL __enableScan_isset;
   BOOL __noResultText_isset;
-  BOOL __childrenEvents_isset;
   BOOL __refreshOnBack_isset;
+  BOOL __sendStarredItems_isset;
+  BOOL __childrenEvents_isset;
   BOOL __parentEvent_isset;
 }
 
@@ -267,12 +269,13 @@ enum EventsPeriods {
 @property (nonatomic, getter=disableFilterByTags, setter=setDisableFilterByTags:) BOOL disableFilterByTags;
 @property (nonatomic, getter=enableScan, setter=setEnableScan:) BOOL enableScan;
 @property (nonatomic, retain, getter=noResultText, setter=setNoResultText:) NSString * noResultText;
-@property (nonatomic, retain, getter=childrenEvents, setter=setChildrenEvents:) NSArray * childrenEvents;
 @property (nonatomic, getter=refreshOnBack, setter=setRefreshOnBack:) BOOL refreshOnBack;
+@property (nonatomic, getter=sendStarredItems, setter=setSendStarredItems:) BOOL sendStarredItems;
+@property (nonatomic, retain, getter=childrenEvents, setter=setChildrenEvents:) NSArray * childrenEvents;
 @property (nonatomic, getter=parentEvent, setter=setParentEvent:) int64_t parentEvent;
 #endif
 
-- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText childrenEvents: (NSArray *) childrenEvents refreshOnBack: (BOOL) refreshOnBack parentEvent: (int64_t) parentEvent;
+- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText refreshOnBack: (BOOL) refreshOnBack sendStarredItems: (BOOL) sendStarredItems childrenEvents: (NSArray *) childrenEvents parentEvent: (int64_t) parentEvent;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -317,13 +320,17 @@ enum EventsPeriods {
 - (void) setNoResultText: (NSString *) noResultText;
 - (BOOL) noResultTextIsSet;
 
-- (NSArray *) childrenEvents;
-- (void) setChildrenEvents: (NSArray *) childrenEvents;
-- (BOOL) childrenEventsIsSet;
-
 - (BOOL) refreshOnBack;
 - (void) setRefreshOnBack: (BOOL) refreshOnBack;
 - (BOOL) refreshOnBackIsSet;
+
+- (BOOL) sendStarredItems;
+- (void) setSendStarredItems: (BOOL) sendStarredItems;
+- (BOOL) sendStarredItemsIsSet;
+
+- (NSArray *) childrenEvents;
+- (void) setChildrenEvents: (NSArray *) childrenEvents;
+- (BOOL) childrenEventsIsSet;
 
 - (int64_t) parentEvent;
 - (void) setParentEvent: (int64_t) parentEvent;
@@ -335,7 +342,6 @@ enum EventsPeriods {
   int64_t __eventItemId;
   NSString * __userToken;
   NSArray * __userTickets;
-  NSArray * __starredEventItems;
   NSString * __lang;
   int32_t __period;
   BOOL __fetchPast;
@@ -343,7 +349,6 @@ enum EventsPeriods {
   BOOL __eventItemId_isset;
   BOOL __userToken_isset;
   BOOL __userTickets_isset;
-  BOOL __starredEventItems_isset;
   BOOL __lang_isset;
   BOOL __period_isset;
   BOOL __fetchPast_isset;
@@ -353,13 +358,12 @@ enum EventsPeriods {
 @property (nonatomic, getter=eventItemId, setter=setEventItemId:) int64_t eventItemId;
 @property (nonatomic, retain, getter=userToken, setter=setUserToken:) NSString * userToken;
 @property (nonatomic, retain, getter=userTickets, setter=setUserTickets:) NSArray * userTickets;
-@property (nonatomic, retain, getter=starredEventItems, setter=setStarredEventItems:) NSArray * starredEventItems;
 @property (nonatomic, retain, getter=lang, setter=setLang:) NSString * lang;
 @property (nonatomic, getter=period, setter=setPeriod:) int32_t period;
 @property (nonatomic, getter=fetchPast, setter=setFetchPast:) BOOL fetchPast;
 #endif
 
-- (id) initWithEventItemId: (int64_t) eventItemId userToken: (NSString *) userToken userTickets: (NSArray *) userTickets starredEventItems: (NSArray *) starredEventItems lang: (NSString *) lang period: (int32_t) period fetchPast: (BOOL) fetchPast;
+- (id) initWithEventItemId: (int64_t) eventItemId userToken: (NSString *) userToken userTickets: (NSArray *) userTickets lang: (NSString *) lang period: (int32_t) period fetchPast: (BOOL) fetchPast;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -375,10 +379,6 @@ enum EventsPeriods {
 - (NSArray *) userTickets;
 - (void) setUserTickets: (NSArray *) userTickets;
 - (BOOL) userTicketsIsSet;
-
-- (NSArray *) starredEventItems;
-- (void) setStarredEventItems: (NSArray *) starredEventItems;
-- (BOOL) starredEventItemsIsSet;
 
 - (NSString *) lang;
 - (void) setLang: (NSString *) lang;

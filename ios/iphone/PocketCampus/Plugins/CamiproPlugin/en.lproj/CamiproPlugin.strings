@@ -9,6 +9,7 @@
 "PluginName" = "Camipro";
 "CamiproBalance" = "Camipro balance";
 "TransactionsHistory" = "History";
+"ReloadCard" = "Reload card";
 "ReloadInstructions" = "Reload the card";
 "Statistics" = "Statistics";
 "ReloadInstructionsSendMailExplanations" = "Send reload instructions (banking information) to your default EPFL email address ?";

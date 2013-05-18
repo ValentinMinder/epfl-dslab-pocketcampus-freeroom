@@ -270,6 +270,7 @@
 		32ADC7161659A2BA0039F6A6 /* CancelCrossRound.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7151659A2BA0039F6A6 /* CancelCrossRound.png */; };
 		32ADC7191659AAEB0039F6A6 /* Download.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7171659AAEB0039F6A6 /* Download.png */; };
 		32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7181659AAEB0039F6A6 /* Download@2x.png */; };
+		32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AEEC821747C11C006DBA2F /* CamiproView~iphone.xib */; };
 		32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214515B193A200BB445D /* TransportHelpView.xib */; };
 		32AF214815B197DE00BB445D /* TransportHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214615B197DE00BB445D /* TransportHelp.html */; };
 		32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B13A3D1634B0F4007B54A1 /* MainMenuNavbar.png */; };
@@ -305,7 +306,6 @@
 		32BA30711645D31A00909D82 /* PCCenterMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30701645D31A00909D82 /* PCCenterMessageCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32BA30731645DCB200909D82 /* MyEduCourseInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */; };
 		32BA30761645DF9200909D82 /* MyEduCourseInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32BCACDC15656D36008415A1 /* CamiproView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDB15656D36008415A1 /* CamiproView~iphone.xib */; };
 		32BE787216977F0000EC3E64 /* EyeBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 32BE787016977F0000EC3E64 /* EyeBlack.png */; };
 		32BE787316977F0000EC3E64 /* EyeBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32BE787116977F0000EC3E64 /* EyeBlack@2x.png */; };
 		32C36D1416F53F4E00DE1EF4 /* EventItemCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32C36D1316F53F4E00DE1EF4 /* EventItemCell~ipad.xib */; };
@@ -840,6 +840,7 @@
 		32ADC7151659A2BA0039F6A6 /* CancelCrossRound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CancelCrossRound.png; sourceTree = "<group>"; };
 		32ADC7171659AAEB0039F6A6 /* Download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Download.png; sourceTree = "<group>"; };
 		32ADC7181659AAEB0039F6A6 /* Download@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Download@2x.png"; sourceTree = "<group>"; };
+		32AEEC821747C11C006DBA2F /* CamiproView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CamiproView~iphone.xib"; sourceTree = "<group>"; };
 		32AF214515B193A200BB445D /* TransportHelpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransportHelpView.xib; sourceTree = "<group>"; };
 		32AF214715B197DE00BB445D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/TransportHelp.html; sourceTree = "<group>"; };
 		32AF214915B1AE2000BB445D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/TransportHelp.html; sourceTree = "<group>"; };
@@ -903,7 +904,6 @@
 		32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduCourseInfoView.xib; sourceTree = "<group>"; };
 		32BA30741645DF9200909D82 /* MyEduCourseInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduCourseInfoViewController.h; sourceTree = "<group>"; };
 		32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduCourseInfoViewController.m; sourceTree = "<group>"; };
-		32BCACDB15656D36008415A1 /* CamiproView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CamiproView~iphone.xib"; sourceTree = "<group>"; };
 		32BE787016977F0000EC3E64 /* EyeBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EyeBlack.png; sourceTree = "<group>"; };
 		32BE787116977F0000EC3E64 /* EyeBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBlack@2x.png"; sourceTree = "<group>"; };
 		32C36D1316F53F4E00DE1EF4 /* EventItemCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "EventItemCell~ipad.xib"; sourceTree = "<group>"; };
@@ -1941,7 +1941,7 @@
 			isa = PBXGroup;
 			children = (
 				32B58719156458FA0051C57E /* Images */,
-				32BCACDB15656D36008415A1 /* CamiproView~iphone.xib */,
+				32AEEC821747C11C006DBA2F /* CamiproView~iphone.xib */,
 				32F7218B171B0BB4005755A2 /* CamiproView~ipad.xib */,
 			);
 			path = Views;
@@ -2949,7 +2949,6 @@
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
-				32BCACDC15656D36008415A1 /* CamiproView~iphone.xib in Resources */,
 				32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */,
 				32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */,
 				32D97C8A15AF160D004384A5 /* README.md in Resources */,
@@ -3124,6 +3123,7 @@
 				322C07561722A7E6004FDC83 /* GenericGreyButtonHighlight.png in Resources */,
 				322C07571722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png in Resources */,
 				328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */,
+				32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
