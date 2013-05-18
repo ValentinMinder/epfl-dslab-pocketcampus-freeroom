@@ -380,4 +380,8 @@ public class EventDetailView extends PluginView implements IEventsView {
 	public void exchangeContactsFinished(boolean success) {
 	}
 
+	@Override
+	public void sendEmailRequestFinished(boolean success) {
+	}
+
 }

@@ -61,7 +61,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	
 	public static final String EXTRAS_KEY_EVENTPOOLID = "eventPoolId";
 	public static final String QUERYSTRING_KEY_EVENTPOOLID = "eventPoolId";
-	public static final String QUERYSTRING_KEY_TOKEN = "userToken";
+	public static final String QUERYSTRING_KEY_TICKET = "userTicket";
 	public static final String QUERYSTRING_KEY_EXCHANGETOKEN = "exchangeToken";
 	public static final String QUERYSTRING_KEY_MARKFAVORITE = "markFavorite";
 	public static final String MAP_KEY_EVENTITEMID = "EVENT_ITEM_ID";
@@ -170,10 +170,9 @@ public class EventsMainView extends PluginView implements IEventsView {
 	private void externalCall(Uri aData) {
 		if(aData == null)
 			return;
-		if(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN) != null) {
+		if(aData.getQueryParameter(QUERYSTRING_KEY_TICKET) != null) {
 			System.out.println("Got also a token :-)");
-			if(mModel.getToken() == null)
-				mModel.setToken(aData.getQueryParameter(QUERYSTRING_KEY_TOKEN));
+			mModel.addTicket(aData.getQueryParameter(QUERYSTRING_KEY_TICKET));
 			mController.refreshEventPool(this, eventPoolId, false);
 			return;
 		}
@@ -187,10 +186,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		}
 		if(aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN) != null) {
 			System.out.println("Got request to exchange contacts");
-			if(mModel.getToken() != null)
-				mController.exchangeContacts(this, aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN));
-			else
-				mController.refreshEventPool(this, eventPoolId, false);
+			mController.exchangeContacts(this, aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN));
 			return;
 		}
 		mController.refreshEventPool(this, eventPoolId, false);
@@ -513,6 +509,20 @@ public class EventsMainView extends PluginView implements IEventsView {
 		} else {
 			Toast.makeText(getApplicationContext(), 
 					"Failed to exchange contact information", 
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@Override
+	public void sendEmailRequestFinished(boolean success) {
+		if(success) {
+			mController.refreshEventPool(this, eventPoolId, false);
+			Toast.makeText(getApplicationContext(), 
+					"Email sent successfully", 
+					Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(getApplicationContext(), 
+					"Failed to send email", 
 					Toast.LENGTH_SHORT).show();
 		}
 	}

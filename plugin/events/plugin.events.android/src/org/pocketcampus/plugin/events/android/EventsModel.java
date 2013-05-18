@@ -38,7 +38,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	
 	private static final String EVENTS_PERIOD_KEY = "EVENTS_PERIOD_KEY";
 	private static final String EVENTS_FAVOTITES_LIST_KEY = "EVENTS_FAVOTITES_LIST_KEY";
-	private static final String EVENTS_TOKEN_KEY = "EVENTS_TOKEN_KEY";
+	private static final String EVENTS_TICKETS_LIST_KEY = "EVENTS_TICKETS_LIST_KEY";
 	
 	//private static final String EVENTS_REQUEST_CACHE_PREFIX = "org.pocketcampus.plugin.events.eventscache";
 	
@@ -65,7 +65,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	 */
 	private int iPeriod; // we send
 	private List<Long> iFavorites; // for eventItems only
-	private String iToken; // used to identify users (authentication)
+	private List<String> iTickets; // used to give access to a private event
 	
 	/**
 	 * Constructor with reference to the context.
@@ -81,8 +81,8 @@ public class EventsModel extends PluginModel implements IEventsModel {
 		//cntxt = context;
 		
 		iPeriod = iStorage.getInt(EVENTS_PERIOD_KEY, 30);
-		iFavorites = decodeFavList(iStorage.getString(EVENTS_FAVOTITES_LIST_KEY, ""));
-		iToken = iStorage.getString(EVENTS_TOKEN_KEY, null);
+		iFavorites = decodeFavoritesList(iStorage.getString(EVENTS_FAVOTITES_LIST_KEY, ""));
+		iTickets = decodeTicketsList(iStorage.getString(EVENTS_TICKETS_LIST_KEY, ""));
 		
 		//EventPoolChildrenReply cached = (EventPoolChildrenReply) RequestCache.queryCache(cntxt, EVENTS_REQUEST_CACHE_PREFIX, null);
 		//iEvents = (cached == null ? new HashMap<Long, EventItem>() : cached.getItems());
@@ -103,6 +103,19 @@ public class EventsModel extends PluginModel implements IEventsModel {
 				mListeners.eventItemsUpdated(Arrays.asList(new Long[] {l}));
 			}
 		}
+	}
+	public List<Long> getFavorites() {
+		return iFavorites;
+	}
+	
+	public void addTicket(String ticket) {
+		if(!iTickets.contains(ticket)) {
+			iTickets.add(ticket);
+			savePrefs();
+		}
+	}
+	public List<String> getTickets() {
+		return iTickets;
 	}
 	
 	/**
@@ -151,23 +164,17 @@ public class EventsModel extends PluginModel implements IEventsModel {
 		iPeriod = x;
 		savePrefs();
 	}
-	public String getToken() {
-		return iToken;
-	}
-	public void setToken(String x) {
-		iToken = x;
-		savePrefs();
-	}
 	
 	private void savePrefs() {
 		iStorage.edit()
 				.putInt(EVENTS_PERIOD_KEY, iPeriod)
-				.putString(EVENTS_FAVOTITES_LIST_KEY, encodeFavList(iFavorites))
-				.putString(EVENTS_TOKEN_KEY, iToken)
+				.putString(EVENTS_FAVOTITES_LIST_KEY, encodeFavoritesList(iFavorites))
+				.putString(EVENTS_TICKETS_LIST_KEY, encodeTicketsList(iTickets))
 				.commit();
 	}
 	
-	private String encodeFavList(List<Long> fav) {
+	private String encodeFavoritesList(List<Long> fav) {
+		// itemId does not contain commas
 		if(fav.size() == 0)
 			return "";
 		String[] s = new String[fav.size()];
@@ -175,13 +182,27 @@ public class EventsModel extends PluginModel implements IEventsModel {
 			s[i] = fav.get(i).toString();
 		return TextUtils.join(",", s);
 	}
-	private List<Long> decodeFavList(String fav) {
+	private List<Long> decodeFavoritesList(String fav) {
+		// itemId does not contain commas
 		List<Long> s = new LinkedList<Long>();
 		if("".equals(fav))
 			return s;
 		for(String z : fav.split("[,]"))
 			s.add(Long.parseLong(z));
 		return s;
+	}
+	
+	private String encodeTicketsList(List<?> fav) {
+		// userTicket does not contain commas
+		if(fav.size() == 0)
+			return "";
+		return TextUtils.join(",", fav.toArray());
+	}
+	private List<String> decodeTicketsList(String fav) {
+		// userTicket does not contain commas
+		if("".equals(fav))
+			return new LinkedList<String>();
+		return Arrays.asList(fav.split("[,]"));
 	}
 	
 	/**

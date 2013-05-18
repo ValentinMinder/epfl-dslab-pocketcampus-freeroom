@@ -19,6 +19,7 @@ import org.pocketcampus.plugin.events.android.iface.IEventsView;
 import org.pocketcampus.plugin.events.android.req.ExchangeContactsRequest;
 import org.pocketcampus.plugin.events.android.req.GetEventItemRequest;
 import org.pocketcampus.plugin.events.android.req.GetEventPoolRequest;
+import org.pocketcampus.plugin.events.android.req.SendFavoritesByEmailRequest;
 import org.pocketcampus.plugin.events.shared.Constants;
 import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.events.shared.EventItemRequest;
@@ -27,6 +28,7 @@ import org.pocketcampus.plugin.events.shared.EventPoolRequest;
 import org.pocketcampus.plugin.events.shared.EventsService.Client;
 import org.pocketcampus.plugin.events.shared.EventsService.Iface;
 import org.pocketcampus.plugin.events.shared.ExchangeRequest;
+import org.pocketcampus.plugin.events.shared.SendEmailRequest;
 
 import com.markupartist.android.widget.ActionBar.Action;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -63,6 +65,7 @@ public class EventsController extends PluginController implements IEventsControl
 	private GetEventPoolRequest currEventPoolRequest;
 	private GetEventItemRequest currEventItemRequest;
 	private ExchangeContactsRequest currExchangeContactsRequest;
+	private SendFavoritesByEmailRequest currSendFavoritesByEmailRequest;
 
 	/** The name of the plugin */
 	private String mPluginName = "events";
@@ -101,7 +104,9 @@ public class EventsController extends PluginController implements IEventsControl
 		if(currEventPoolRequest != null)
 			currEventPoolRequest.cancel(true);
 		EventPoolRequest req = new EventPoolRequest(eventPoolId);
-		req.setUserToken(mModel.getToken());
+		req.setUserTickets(mModel.getTickets());
+		req.setStarredEventItems(mModel.getFavorites());
+		req.setFetchPast(false); // TODO
 		req.setLang(Locale.getDefault().getLanguage());
 		req.setPeriod(mModel.getPeriod());
 		currEventPoolRequest = new GetEventPoolRequest(caller);
@@ -115,7 +120,9 @@ public class EventsController extends PluginController implements IEventsControl
 		if(currEventItemRequest != null)
 			currEventItemRequest.cancel(true);
 		EventItemRequest req = new EventItemRequest(eventItemId);
-		req.setUserToken(mModel.getToken());
+		req.setUserTickets(mModel.getTickets());
+		req.setStarredEventItems(mModel.getFavorites());
+		req.setFetchPast(false); // TODO
 		req.setLang(Locale.getDefault().getLanguage());
 		currEventItemRequest = new GetEventItemRequest(caller);
 		currEventItemRequest.setBypassCache(!useCache).start(this, mClientEI, req);
@@ -127,9 +134,23 @@ public class EventsController extends PluginController implements IEventsControl
 	public void exchangeContacts(IEventsView caller, String exchangeToken) {
 		if(currExchangeContactsRequest != null)
 			currExchangeContactsRequest.cancel(true);
-		ExchangeRequest req = new ExchangeRequest(mModel.getToken(), exchangeToken);
+		ExchangeRequest req = new ExchangeRequest(exchangeToken);
+		req.setUserTickets(mModel.getTickets());
 		currExchangeContactsRequest = new ExchangeContactsRequest(caller);
 		currExchangeContactsRequest.start(this, mClientEX, req);
+	}
+
+	/**
+	 * Initiates a request to send favorites by email.
+	 */
+	public void sendFavoritesByEmail(IEventsView caller) {
+		if(currSendFavoritesByEmailRequest != null)
+			currSendFavoritesByEmailRequest.cancel(true);
+		SendEmailRequest req = new SendEmailRequest(mModel.getFavorites());
+		req.setUserTickets(mModel.getTickets());
+		//req.setEmailAddress("");
+		currSendFavoritesByEmailRequest = new SendFavoritesByEmailRequest(caller);
+		currSendFavoritesByEmailRequest.start(this, mClientEX, req);
 	}
 
 

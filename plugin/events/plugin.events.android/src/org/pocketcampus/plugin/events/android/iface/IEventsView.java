@@ -36,5 +36,6 @@ public interface IEventsView extends IView {
 	void networkErrorCacheExists();
 	void mementoServersDown();
 	void exchangeContactsFinished(boolean success);
+	void sendEmailRequestFinished(boolean success);
 	
 }
