@@ -29,7 +29,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
 
 
 
-@property (nonatomic, strong) UILabel* lastUpdateLabel;
+//@property (nonatomic, strong) UILabel* lastUpdateLabel;
 @property (nonatomic, weak) IBOutlet UITableView* tableView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
@@ -42,6 +42,10 @@ static NSUInteger kTransactionPriceViewTag = 15;
 @property (nonatomic, weak) IBOutlet UILabel* statsContentLabel;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* statsActivityIndicator;
 @property (nonatomic, weak) IBOutlet UIButton* reloadCardButton;
+
+// iPhone only
+@property (nonatomic, weak) IBOutlet UIBarButtonItem* reloadCardBarButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem* statsBarButton;
 
 @property (nonatomic, strong) UIAlertView* sendMailAlertView;
 @property (nonatomic, strong) UIAlertView* statsAlertView;
@@ -105,10 +109,13 @@ static NSUInteger kTransactionPriceViewTag = 15;
         [self.reloadCardButton setBackgroundImage:[PCValues highlightedForGenericGreyButton] forState:UIControlStateHighlighted];
         
         [self willAnimateRotationToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation] duration:0.0];
+    } else {
+        self.reloadCardBarButton.title = NSLocalizedStringFromTable(@"ReloadCard", @"CamiproPlugin", nil);
+        self.statsBarButton.title = NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil);
     }
     
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, self.toolbar.frame.size.height, 0);
-    self.lastUpdateLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.tableView.frame.size.width/2.0)-120.0, 0, 240.0, self.toolbar.frame.size.height)];
+    /*self.lastUpdateLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.tableView.frame.size.width/2.0)-120.0, 0, 240.0, self.toolbar.frame.size.height)];
     //self.lastUpdateLabel.center = self.toolbar.center;
     self.lastUpdateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     self.lastUpdateLabel.textColor = [UIColor whiteColor];
@@ -117,7 +124,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     self.lastUpdateLabel.backgroundColor = [UIColor clearColor];
     self.lastUpdateLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     self.lastUpdateLabel.shadowColor = [UIColor blackColor];
-    [self.toolbar addSubview:self.lastUpdateLabel];
+    [self.toolbar addSubview:self.lastUpdateLabel];*/
     
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     [self.navigationItem setRightBarButtonItem:refreshButton animated:YES];
@@ -169,7 +176,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     [self.centerActivityIndicator startAnimating];
     self.tableView.hidden = YES;
     self.toolbar.hidden = YES;
-    self.lastUpdateLabel.hidden = YES;
+    //self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     //iPad
@@ -191,7 +198,10 @@ static NSUInteger kTransactionPriceViewTag = 15;
     [actionSheet showFromToolbar:self.toolbar];
 }
 
-//iPad
+- (IBAction)statsPressed {
+    [self actionSheet:nil willDismissWithButtonIndex:1]; //actionSheet var is not checked and 0 is reload. I agree it's not very nice to to like this...
+}
+
 - (IBAction)reloadCardPressed {
     [self actionSheet:nil willDismissWithButtonIndex:0]; //actionSheet var is not checked and 0 is reload. I agree it's not very nice to to like this...
 }
@@ -235,7 +245,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     self.centerMessageLabel.hidden = NO;
     self.tableView.hidden = YES;
     self.toolbar.hidden = YES;
-    self.lastUpdateLabel.hidden = YES;
+    //self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
     [CamiproService saveSessionId:nil];
 }
@@ -282,8 +292,8 @@ static NSUInteger kTransactionPriceViewTag = 15;
             self.tableView.hidden = NO;
             self.toolbar.alpha = 0.0;
             self.toolbar.hidden = NO;
-            self.lastUpdateLabel.hidden = NO;
-            self.lastUpdateLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"CamiproPlugin", nil), self.balanceAndTransactions.iDate];
+            //self.lastUpdateLabel.hidden = NO;
+            //self.lastUpdateLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"CamiproPlugin", nil), self.balanceAndTransactions.iDate];
             [self.tableView reloadData];
             self.reloadCardButton.hidden = NO;
             self.reloadCardButton.alpha = 0.0; //iPad
@@ -314,7 +324,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     self.centerMessageLabel.hidden = NO;
     self.tableView.hidden = YES;
     self.toolbar.hidden = YES;
-    self.lastUpdateLabel.hidden = YES;
+    //self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
     self.statsContainerView.hidden = YES; //iPad
     self.reloadCardButton.hidden = YES; //iPad
@@ -448,7 +458,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     self.centerMessageLabel.hidden = NO;
     self.tableView.hidden = YES;
     self.toolbar.hidden = YES;
-    self.lastUpdateLabel.hidden = YES;
+    //self.lastUpdateLabel.hidden = YES;
     self.statsContainerView.hidden = YES; //iPad
     self.reloadCardButton.hidden = YES; //iPad
     self.navigationItem.rightBarButtonItem.enabled = YES;

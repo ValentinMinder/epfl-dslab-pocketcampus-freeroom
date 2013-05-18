@@ -43,6 +43,7 @@
 @interface EventPoolViewController ()
 
 @property (nonatomic) int64_t poolId;
+@property (nonatomic, strong) EventPool* eventPool;
 @property (nonatomic, strong) EventPoolReply* poolReply;
 @property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 @property (nonatomic, strong) EventsService* eventsService;
@@ -98,6 +99,7 @@ static NSString* kEventCell = @"EventCell";
     [PCUtils throwExceptionIfObject:pool notKindOfClass:[EventPool class]];
     self = [self init];
     if (self) {
+        self.eventPool = pool;
         self.poolId = pool.poolId;
         self.title = pool.poolTitle;
         self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
@@ -193,8 +195,11 @@ static NSString* kEventCell = @"EventCell";
 }
 
 - (EventPoolRequest*)createEventPoolRequest {
-    //return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:[self.eventsService lastUserToken] lang:[PCUtils userLanguageCode] period:self.selectedPeriod];
-    return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:nil userTickets:[self.eventsService allUserTickets] starredEventItems:[self.eventsService allFavoriteEventItemIds] lang:[PCUtils userLanguageCode] period:self.selectedPeriod fetchPast:self.pastMode];
+    NSArray* starredItems = nil;
+    if (self.eventPool.sendStarredItems) {
+        starredItems = [self.eventsService allFavoriteEventItemIds];
+    }
+    return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:nil userTickets:[self.eventsService allUserTickets] starredEventItems:starredItems lang:[PCUtils userLanguageCode] period:self.selectedPeriod fetchPast:self.pastMode];
 }
 
 - (void)startGetEventPoolRequest { 

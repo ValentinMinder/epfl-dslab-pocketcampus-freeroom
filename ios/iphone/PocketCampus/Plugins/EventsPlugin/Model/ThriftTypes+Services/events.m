@@ -41,7 +41,7 @@ static NSDictionary * EVENTS_PERIODS;
 
 @implementation EventItem
 
-- (id) initWithEventId: (int64_t) eventId startDate: (int64_t) startDate endDate: (int64_t) endDate fullDay: (BOOL) fullDay eventPicture: (NSString *) eventPicture eventTitle: (NSString *) eventTitle eventPlace: (NSString *) eventPlace eventSpeaker: (NSString *) eventSpeaker eventDetails: (NSString *) eventDetails eventThumbnail: (NSString *) eventThumbnail secondLine: (NSString *) secondLine eventUri: (NSString *) eventUri vcalUid: (NSString *) vcalUid eventCateg: (int32_t) eventCateg eventTags: (NSArray *) eventTags locationHref: (NSString *) locationHref detailsLink: (NSString *) detailsLink timeSnippet: (NSString *) timeSnippet hideTitle: (BOOL) hideTitle hideThumbnail: (BOOL) hideThumbnail hideEventInfo: (BOOL) hideEventInfo childrenPools: (NSArray *) childrenPools parentPool: (int64_t) parentPool
+- (id) initWithEventId: (int64_t) eventId startDate: (int64_t) startDate endDate: (int64_t) endDate fullDay: (BOOL) fullDay eventPicture: (NSString *) eventPicture eventTitle: (NSString *) eventTitle eventPlace: (NSString *) eventPlace eventSpeaker: (NSString *) eventSpeaker eventDetails: (NSString *) eventDetails eventThumbnail: (NSString *) eventThumbnail eventUri: (NSString *) eventUri vcalUid: (NSString *) vcalUid locationHref: (NSString *) locationHref detailsLink: (NSString *) detailsLink secondLine: (NSString *) secondLine timeSnippet: (NSString *) timeSnippet hideTitle: (BOOL) hideTitle hideThumbnail: (BOOL) hideThumbnail hideEventInfo: (BOOL) hideEventInfo eventCateg: (int32_t) eventCateg eventTags: (NSArray *) eventTags childrenPools: (NSArray *) childrenPools parentPool: (int64_t) parentPool
 {
   self = [super init];
   __eventId = eventId;
@@ -64,20 +64,16 @@ static NSDictionary * EVENTS_PERIODS;
   __eventDetails_isset = YES;
   __eventThumbnail = [eventThumbnail retain];
   __eventThumbnail_isset = YES;
-  __secondLine = [secondLine retain];
-  __secondLine_isset = YES;
   __eventUri = [eventUri retain];
   __eventUri_isset = YES;
   __vcalUid = [vcalUid retain];
   __vcalUid_isset = YES;
-  __eventCateg = eventCateg;
-  __eventCateg_isset = YES;
-  __eventTags = [eventTags retain];
-  __eventTags_isset = YES;
   __locationHref = [locationHref retain];
   __locationHref_isset = YES;
   __detailsLink = [detailsLink retain];
   __detailsLink_isset = YES;
+  __secondLine = [secondLine retain];
+  __secondLine_isset = YES;
   __timeSnippet = [timeSnippet retain];
   __timeSnippet_isset = YES;
   __hideTitle = hideTitle;
@@ -86,6 +82,10 @@ static NSDictionary * EVENTS_PERIODS;
   __hideThumbnail_isset = YES;
   __hideEventInfo = hideEventInfo;
   __hideEventInfo_isset = YES;
+  __eventCateg = eventCateg;
+  __eventCateg_isset = YES;
+  __eventTags = [eventTags retain];
+  __eventTags_isset = YES;
   __childrenPools = [childrenPools retain];
   __childrenPools_isset = YES;
   __parentPool = parentPool;
@@ -146,11 +146,6 @@ static NSDictionary * EVENTS_PERIODS;
     __eventThumbnail = [[decoder decodeObjectForKey: @"eventThumbnail"] retain];
     __eventThumbnail_isset = YES;
   }
-  if ([decoder containsValueForKey: @"secondLine"])
-  {
-    __secondLine = [[decoder decodeObjectForKey: @"secondLine"] retain];
-    __secondLine_isset = YES;
-  }
   if ([decoder containsValueForKey: @"eventUri"])
   {
     __eventUri = [[decoder decodeObjectForKey: @"eventUri"] retain];
@@ -161,16 +156,6 @@ static NSDictionary * EVENTS_PERIODS;
     __vcalUid = [[decoder decodeObjectForKey: @"vcalUid"] retain];
     __vcalUid_isset = YES;
   }
-  if ([decoder containsValueForKey: @"eventCateg"])
-  {
-    __eventCateg = [decoder decodeInt32ForKey: @"eventCateg"];
-    __eventCateg_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"eventTags"])
-  {
-    __eventTags = [[decoder decodeObjectForKey: @"eventTags"] retain];
-    __eventTags_isset = YES;
-  }
   if ([decoder containsValueForKey: @"locationHref"])
   {
     __locationHref = [[decoder decodeObjectForKey: @"locationHref"] retain];
@@ -180,6 +165,11 @@ static NSDictionary * EVENTS_PERIODS;
   {
     __detailsLink = [[decoder decodeObjectForKey: @"detailsLink"] retain];
     __detailsLink_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"secondLine"])
+  {
+    __secondLine = [[decoder decodeObjectForKey: @"secondLine"] retain];
+    __secondLine_isset = YES;
   }
   if ([decoder containsValueForKey: @"timeSnippet"])
   {
@@ -200,6 +190,16 @@ static NSDictionary * EVENTS_PERIODS;
   {
     __hideEventInfo = [decoder decodeBoolForKey: @"hideEventInfo"];
     __hideEventInfo_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"eventCateg"])
+  {
+    __eventCateg = [decoder decodeInt32ForKey: @"eventCateg"];
+    __eventCateg_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"eventTags"])
+  {
+    __eventTags = [[decoder decodeObjectForKey: @"eventTags"] retain];
+    __eventTags_isset = YES;
   }
   if ([decoder containsValueForKey: @"childrenPools"])
   {
@@ -256,10 +256,6 @@ static NSDictionary * EVENTS_PERIODS;
   {
     [encoder encodeObject: __eventThumbnail forKey: @"eventThumbnail"];
   }
-  if (__secondLine_isset)
-  {
-    [encoder encodeObject: __secondLine forKey: @"secondLine"];
-  }
   if (__eventUri_isset)
   {
     [encoder encodeObject: __eventUri forKey: @"eventUri"];
@@ -268,14 +264,6 @@ static NSDictionary * EVENTS_PERIODS;
   {
     [encoder encodeObject: __vcalUid forKey: @"vcalUid"];
   }
-  if (__eventCateg_isset)
-  {
-    [encoder encodeInt32: __eventCateg forKey: @"eventCateg"];
-  }
-  if (__eventTags_isset)
-  {
-    [encoder encodeObject: __eventTags forKey: @"eventTags"];
-  }
   if (__locationHref_isset)
   {
     [encoder encodeObject: __locationHref forKey: @"locationHref"];
@@ -283,6 +271,10 @@ static NSDictionary * EVENTS_PERIODS;
   if (__detailsLink_isset)
   {
     [encoder encodeObject: __detailsLink forKey: @"detailsLink"];
+  }
+  if (__secondLine_isset)
+  {
+    [encoder encodeObject: __secondLine forKey: @"secondLine"];
   }
   if (__timeSnippet_isset)
   {
@@ -299,6 +291,14 @@ static NSDictionary * EVENTS_PERIODS;
   if (__hideEventInfo_isset)
   {
     [encoder encodeBool: __hideEventInfo forKey: @"hideEventInfo"];
+  }
+  if (__eventCateg_isset)
+  {
+    [encoder encodeInt32: __eventCateg forKey: @"eventCateg"];
+  }
+  if (__eventTags_isset)
+  {
+    [encoder encodeObject: __eventTags forKey: @"eventTags"];
   }
   if (__childrenPools_isset)
   {
@@ -318,13 +318,13 @@ static NSDictionary * EVENTS_PERIODS;
   [__eventSpeaker release];
   [__eventDetails release];
   [__eventThumbnail release];
-  [__secondLine release];
   [__eventUri release];
   [__vcalUid release];
-  [__eventTags release];
   [__locationHref release];
   [__detailsLink release];
+  [__secondLine release];
   [__timeSnippet release];
+  [__eventTags release];
   [__childrenPools release];
   [super dealloc];
 }
@@ -523,27 +523,6 @@ static NSDictionary * EVENTS_PERIODS;
   __eventThumbnail_isset = NO;
 }
 
-- (NSString *) secondLine {
-  return [[__secondLine retain] autorelease];
-}
-
-- (void) setSecondLine: (NSString *) secondLine {
-  [secondLine retain];
-  [__secondLine release];
-  __secondLine = secondLine;
-  __secondLine_isset = YES;
-}
-
-- (BOOL) secondLineIsSet {
-  return __secondLine_isset;
-}
-
-- (void) unsetSecondLine {
-  [__secondLine release];
-  __secondLine = nil;
-  __secondLine_isset = NO;
-}
-
 - (NSString *) eventUri {
   return [[__eventUri retain] autorelease];
 }
@@ -586,44 +565,6 @@ static NSDictionary * EVENTS_PERIODS;
   __vcalUid_isset = NO;
 }
 
-- (int32_t) eventCateg {
-  return __eventCateg;
-}
-
-- (void) setEventCateg: (int32_t) eventCateg {
-  __eventCateg = eventCateg;
-  __eventCateg_isset = YES;
-}
-
-- (BOOL) eventCategIsSet {
-  return __eventCateg_isset;
-}
-
-- (void) unsetEventCateg {
-  __eventCateg_isset = NO;
-}
-
-- (NSArray *) eventTags {
-  return [[__eventTags retain] autorelease];
-}
-
-- (void) setEventTags: (NSArray *) eventTags {
-  [eventTags retain];
-  [__eventTags release];
-  __eventTags = eventTags;
-  __eventTags_isset = YES;
-}
-
-- (BOOL) eventTagsIsSet {
-  return __eventTags_isset;
-}
-
-- (void) unsetEventTags {
-  [__eventTags release];
-  __eventTags = nil;
-  __eventTags_isset = NO;
-}
-
 - (NSString *) locationHref {
   return [[__locationHref retain] autorelease];
 }
@@ -664,6 +605,27 @@ static NSDictionary * EVENTS_PERIODS;
   [__detailsLink release];
   __detailsLink = nil;
   __detailsLink_isset = NO;
+}
+
+- (NSString *) secondLine {
+  return [[__secondLine retain] autorelease];
+}
+
+- (void) setSecondLine: (NSString *) secondLine {
+  [secondLine retain];
+  [__secondLine release];
+  __secondLine = secondLine;
+  __secondLine_isset = YES;
+}
+
+- (BOOL) secondLineIsSet {
+  return __secondLine_isset;
+}
+
+- (void) unsetSecondLine {
+  [__secondLine release];
+  __secondLine = nil;
+  __secondLine_isset = NO;
 }
 
 - (NSString *) timeSnippet {
@@ -736,6 +698,44 @@ static NSDictionary * EVENTS_PERIODS;
 
 - (void) unsetHideEventInfo {
   __hideEventInfo_isset = NO;
+}
+
+- (int32_t) eventCateg {
+  return __eventCateg;
+}
+
+- (void) setEventCateg: (int32_t) eventCateg {
+  __eventCateg = eventCateg;
+  __eventCateg_isset = YES;
+}
+
+- (BOOL) eventCategIsSet {
+  return __eventCateg_isset;
+}
+
+- (void) unsetEventCateg {
+  __eventCateg_isset = NO;
+}
+
+- (NSArray *) eventTags {
+  return [[__eventTags retain] autorelease];
+}
+
+- (void) setEventTags: (NSArray *) eventTags {
+  [eventTags retain];
+  [__eventTags release];
+  __eventTags = eventTags;
+  __eventTags_isset = YES;
+}
+
+- (BOOL) eventTagsIsSet {
+  return __eventTags_isset;
+}
+
+- (void) unsetEventTags {
+  [__eventTags release];
+  __eventTags = nil;
+  __eventTags_isset = NO;
 }
 
 - (NSArray *) childrenPools {
@@ -871,14 +871,6 @@ static NSDictionary * EVENTS_PERIODS;
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 11:
-        if (fieldType == TType_STRING) {
-          NSString * fieldValue = [inProtocol readString];
-          [self setSecondLine: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
       case 12:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
@@ -895,32 +887,6 @@ static NSDictionary * EVENTS_PERIODS;
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 14:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
-          [self setEventCateg: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 15:
-        if (fieldType == TType_LIST) {
-          int _size0;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size0];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size0];
-          int _i1;
-          for (_i1 = 0; _i1 < _size0; ++_i1)
-          {
-            NSString * _elem2 = [inProtocol readString];
-            [fieldValue addObject: _elem2];
-          }
-          [inProtocol readListEnd];
-          [self setEventTags: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
       case 16:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
@@ -933,6 +899,14 @@ static NSDictionary * EVENTS_PERIODS;
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setDetailsLink: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 11:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setSecondLine: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -965,6 +939,32 @@ static NSDictionary * EVENTS_PERIODS;
         if (fieldType == TType_BOOL) {
           BOOL fieldValue = [inProtocol readBool];
           [self setHideEventInfo: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 14:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setEventCateg: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 15:
+        if (fieldType == TType_LIST) {
+          int _size0;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size0];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size0];
+          int _i1;
+          for (_i1 = 0; _i1 < _size0; ++_i1)
+          {
+            NSString * _elem2 = [inProtocol readString];
+            [fieldValue addObject: _elem2];
+          }
+          [inProtocol readListEnd];
+          [self setEventTags: fieldValue];
+          [fieldValue release];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -1068,13 +1068,6 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldEnd];
     }
   }
-  if (__secondLine_isset) {
-    if (__secondLine != nil) {
-      [outProtocol writeFieldBeginWithName: @"secondLine" type: TType_STRING fieldID: 11];
-      [outProtocol writeString: __secondLine];
-      [outProtocol writeFieldEnd];
-    }
-  }
   if (__eventUri_isset) {
     if (__eventUri != nil) {
       [outProtocol writeFieldBeginWithName: @"eventUri" type: TType_STRING fieldID: 12];
@@ -1089,26 +1082,6 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldEnd];
     }
   }
-  if (__eventCateg_isset) {
-    [outProtocol writeFieldBeginWithName: @"eventCateg" type: TType_I32 fieldID: 14];
-    [outProtocol writeI32: __eventCateg];
-    [outProtocol writeFieldEnd];
-  }
-  if (__eventTags_isset) {
-    if (__eventTags != nil) {
-      [outProtocol writeFieldBeginWithName: @"eventTags" type: TType_LIST fieldID: 15];
-      {
-        [outProtocol writeListBeginWithElementType: TType_STRING size: [__eventTags count]];
-        int i7;
-        for (i7 = 0; i7 < [__eventTags count]; i7++)
-        {
-          [outProtocol writeString: [__eventTags objectAtIndex: i7]];
-        }
-        [outProtocol writeListEnd];
-      }
-      [outProtocol writeFieldEnd];
-    }
-  }
   if (__locationHref_isset) {
     if (__locationHref != nil) {
       [outProtocol writeFieldBeginWithName: @"locationHref" type: TType_STRING fieldID: 16];
@@ -1120,6 +1093,13 @@ static NSDictionary * EVENTS_PERIODS;
     if (__detailsLink != nil) {
       [outProtocol writeFieldBeginWithName: @"detailsLink" type: TType_STRING fieldID: 17];
       [outProtocol writeString: __detailsLink];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__secondLine_isset) {
+    if (__secondLine != nil) {
+      [outProtocol writeFieldBeginWithName: @"secondLine" type: TType_STRING fieldID: 11];
+      [outProtocol writeString: __secondLine];
       [outProtocol writeFieldEnd];
     }
   }
@@ -1144,6 +1124,26 @@ static NSDictionary * EVENTS_PERIODS;
     [outProtocol writeFieldBeginWithName: @"hideEventInfo" type: TType_BOOL fieldID: 23];
     [outProtocol writeBool: __hideEventInfo];
     [outProtocol writeFieldEnd];
+  }
+  if (__eventCateg_isset) {
+    [outProtocol writeFieldBeginWithName: @"eventCateg" type: TType_I32 fieldID: 14];
+    [outProtocol writeI32: __eventCateg];
+    [outProtocol writeFieldEnd];
+  }
+  if (__eventTags_isset) {
+    if (__eventTags != nil) {
+      [outProtocol writeFieldBeginWithName: @"eventTags" type: TType_LIST fieldID: 15];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRING size: [__eventTags count]];
+        int i7;
+        for (i7 = 0; i7 < [__eventTags count]; i7++)
+        {
+          [outProtocol writeString: [__eventTags objectAtIndex: i7]];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
   }
   if (__childrenPools_isset) {
     if (__childrenPools != nil) {
@@ -1191,20 +1191,16 @@ static NSDictionary * EVENTS_PERIODS;
   [ms appendFormat: @"\"%@\"", __eventDetails];
   [ms appendString: @",eventThumbnail:"];
   [ms appendFormat: @"\"%@\"", __eventThumbnail];
-  [ms appendString: @",secondLine:"];
-  [ms appendFormat: @"\"%@\"", __secondLine];
   [ms appendString: @",eventUri:"];
   [ms appendFormat: @"\"%@\"", __eventUri];
   [ms appendString: @",vcalUid:"];
   [ms appendFormat: @"\"%@\"", __vcalUid];
-  [ms appendString: @",eventCateg:"];
-  [ms appendFormat: @"%i", __eventCateg];
-  [ms appendString: @",eventTags:"];
-  [ms appendFormat: @"%@", __eventTags];
   [ms appendString: @",locationHref:"];
   [ms appendFormat: @"\"%@\"", __locationHref];
   [ms appendString: @",detailsLink:"];
   [ms appendFormat: @"\"%@\"", __detailsLink];
+  [ms appendString: @",secondLine:"];
+  [ms appendFormat: @"\"%@\"", __secondLine];
   [ms appendString: @",timeSnippet:"];
   [ms appendFormat: @"\"%@\"", __timeSnippet];
   [ms appendString: @",hideTitle:"];
@@ -1213,6 +1209,10 @@ static NSDictionary * EVENTS_PERIODS;
   [ms appendFormat: @"%i", __hideThumbnail];
   [ms appendString: @",hideEventInfo:"];
   [ms appendFormat: @"%i", __hideEventInfo];
+  [ms appendString: @",eventCateg:"];
+  [ms appendFormat: @"%i", __eventCateg];
+  [ms appendString: @",eventTags:"];
+  [ms appendFormat: @"%@", __eventTags];
   [ms appendString: @",childrenPools:"];
   [ms appendFormat: @"%@", __childrenPools];
   [ms appendString: @",parentPool:"];
@@ -1225,7 +1225,7 @@ static NSDictionary * EVENTS_PERIODS;
 
 @implementation EventPool
 
-- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText childrenEvents: (NSArray *) childrenEvents refreshOnBack: (BOOL) refreshOnBack parentEvent: (int64_t) parentEvent
+- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText refreshOnBack: (BOOL) refreshOnBack sendStarredItems: (BOOL) sendStarredItems childrenEvents: (NSArray *) childrenEvents parentEvent: (int64_t) parentEvent
 {
   self = [super init];
   __poolId = poolId;
@@ -1248,10 +1248,12 @@ static NSDictionary * EVENTS_PERIODS;
   __enableScan_isset = YES;
   __noResultText = [noResultText retain];
   __noResultText_isset = YES;
-  __childrenEvents = [childrenEvents retain];
-  __childrenEvents_isset = YES;
   __refreshOnBack = refreshOnBack;
   __refreshOnBack_isset = YES;
+  __sendStarredItems = sendStarredItems;
+  __sendStarredItems_isset = YES;
+  __childrenEvents = [childrenEvents retain];
+  __childrenEvents_isset = YES;
   __parentEvent = parentEvent;
   __parentEvent_isset = YES;
   return self;
@@ -1310,15 +1312,20 @@ static NSDictionary * EVENTS_PERIODS;
     __noResultText = [[decoder decodeObjectForKey: @"noResultText"] retain];
     __noResultText_isset = YES;
   }
-  if ([decoder containsValueForKey: @"childrenEvents"])
-  {
-    __childrenEvents = [[decoder decodeObjectForKey: @"childrenEvents"] retain];
-    __childrenEvents_isset = YES;
-  }
   if ([decoder containsValueForKey: @"refreshOnBack"])
   {
     __refreshOnBack = [decoder decodeBoolForKey: @"refreshOnBack"];
     __refreshOnBack_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"sendStarredItems"])
+  {
+    __sendStarredItems = [decoder decodeBoolForKey: @"sendStarredItems"];
+    __sendStarredItems_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"childrenEvents"])
+  {
+    __childrenEvents = [[decoder decodeObjectForKey: @"childrenEvents"] retain];
+    __childrenEvents_isset = YES;
   }
   if ([decoder containsValueForKey: @"parentEvent"])
   {
@@ -1370,13 +1377,17 @@ static NSDictionary * EVENTS_PERIODS;
   {
     [encoder encodeObject: __noResultText forKey: @"noResultText"];
   }
-  if (__childrenEvents_isset)
-  {
-    [encoder encodeObject: __childrenEvents forKey: @"childrenEvents"];
-  }
   if (__refreshOnBack_isset)
   {
     [encoder encodeBool: __refreshOnBack forKey: @"refreshOnBack"];
+  }
+  if (__sendStarredItems_isset)
+  {
+    [encoder encodeBool: __sendStarredItems forKey: @"sendStarredItems"];
+  }
+  if (__childrenEvents_isset)
+  {
+    [encoder encodeObject: __childrenEvents forKey: @"childrenEvents"];
   }
   if (__parentEvent_isset)
   {
@@ -1585,6 +1596,40 @@ static NSDictionary * EVENTS_PERIODS;
   __noResultText_isset = NO;
 }
 
+- (BOOL) refreshOnBack {
+  return __refreshOnBack;
+}
+
+- (void) setRefreshOnBack: (BOOL) refreshOnBack {
+  __refreshOnBack = refreshOnBack;
+  __refreshOnBack_isset = YES;
+}
+
+- (BOOL) refreshOnBackIsSet {
+  return __refreshOnBack_isset;
+}
+
+- (void) unsetRefreshOnBack {
+  __refreshOnBack_isset = NO;
+}
+
+- (BOOL) sendStarredItems {
+  return __sendStarredItems;
+}
+
+- (void) setSendStarredItems: (BOOL) sendStarredItems {
+  __sendStarredItems = sendStarredItems;
+  __sendStarredItems_isset = YES;
+}
+
+- (BOOL) sendStarredItemsIsSet {
+  return __sendStarredItems_isset;
+}
+
+- (void) unsetSendStarredItems {
+  __sendStarredItems_isset = NO;
+}
+
 - (NSArray *) childrenEvents {
   return [[__childrenEvents retain] autorelease];
 }
@@ -1604,23 +1649,6 @@ static NSDictionary * EVENTS_PERIODS;
   [__childrenEvents release];
   __childrenEvents = nil;
   __childrenEvents_isset = NO;
-}
-
-- (BOOL) refreshOnBack {
-  return __refreshOnBack;
-}
-
-- (void) setRefreshOnBack: (BOOL) refreshOnBack {
-  __refreshOnBack = refreshOnBack;
-  __refreshOnBack_isset = YES;
-}
-
-- (BOOL) refreshOnBackIsSet {
-  return __refreshOnBack_isset;
-}
-
-- (void) unsetRefreshOnBack {
-  __refreshOnBack_isset = NO;
 }
 
 - (int64_t) parentEvent {
@@ -1735,6 +1763,22 @@ static NSDictionary * EVENTS_PERIODS;
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 16:
+        if (fieldType == TType_BOOL) {
+          BOOL fieldValue = [inProtocol readBool];
+          [self setRefreshOnBack: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 19:
+        if (fieldType == TType_BOOL) {
+          BOOL fieldValue = [inProtocol readBool];
+          [self setSendStarredItems: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       case 15:
         if (fieldType == TType_LIST) {
           int _size10;
@@ -1749,14 +1793,6 @@ static NSDictionary * EVENTS_PERIODS;
           [inProtocol readListEnd];
           [self setChildrenEvents: fieldValue];
           [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 16:
-        if (fieldType == TType_BOOL) {
-          BOOL fieldValue = [inProtocol readBool];
-          [self setRefreshOnBack: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -1840,6 +1876,16 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldEnd];
     }
   }
+  if (__refreshOnBack_isset) {
+    [outProtocol writeFieldBeginWithName: @"refreshOnBack" type: TType_BOOL fieldID: 16];
+    [outProtocol writeBool: __refreshOnBack];
+    [outProtocol writeFieldEnd];
+  }
+  if (__sendStarredItems_isset) {
+    [outProtocol writeFieldBeginWithName: @"sendStarredItems" type: TType_BOOL fieldID: 19];
+    [outProtocol writeBool: __sendStarredItems];
+    [outProtocol writeFieldEnd];
+  }
   if (__childrenEvents_isset) {
     if (__childrenEvents != nil) {
       [outProtocol writeFieldBeginWithName: @"childrenEvents" type: TType_LIST fieldID: 15];
@@ -1854,11 +1900,6 @@ static NSDictionary * EVENTS_PERIODS;
       }
       [outProtocol writeFieldEnd];
     }
-  }
-  if (__refreshOnBack_isset) {
-    [outProtocol writeFieldBeginWithName: @"refreshOnBack" type: TType_BOOL fieldID: 16];
-    [outProtocol writeBool: __refreshOnBack];
-    [outProtocol writeFieldEnd];
   }
   if (__parentEvent_isset) {
     [outProtocol writeFieldBeginWithName: @"parentEvent" type: TType_I64 fieldID: 17];
@@ -1891,10 +1932,12 @@ static NSDictionary * EVENTS_PERIODS;
   [ms appendFormat: @"%i", __enableScan];
   [ms appendString: @",noResultText:"];
   [ms appendFormat: @"\"%@\"", __noResultText];
-  [ms appendString: @",childrenEvents:"];
-  [ms appendFormat: @"%@", __childrenEvents];
   [ms appendString: @",refreshOnBack:"];
   [ms appendFormat: @"%i", __refreshOnBack];
+  [ms appendString: @",sendStarredItems:"];
+  [ms appendFormat: @"%i", __sendStarredItems];
+  [ms appendString: @",childrenEvents:"];
+  [ms appendFormat: @"%@", __childrenEvents];
   [ms appendString: @",parentEvent:"];
   [ms appendFormat: @"%qi", __parentEvent];
   [ms appendString: @")"];
@@ -1905,7 +1948,7 @@ static NSDictionary * EVENTS_PERIODS;
 
 @implementation EventItemRequest
 
-- (id) initWithEventItemId: (int64_t) eventItemId userToken: (NSString *) userToken userTickets: (NSArray *) userTickets starredEventItems: (NSArray *) starredEventItems lang: (NSString *) lang period: (int32_t) period fetchPast: (BOOL) fetchPast
+- (id) initWithEventItemId: (int64_t) eventItemId userToken: (NSString *) userToken userTickets: (NSArray *) userTickets lang: (NSString *) lang period: (int32_t) period fetchPast: (BOOL) fetchPast
 {
   self = [super init];
   __eventItemId = eventItemId;
@@ -1914,8 +1957,6 @@ static NSDictionary * EVENTS_PERIODS;
   __userToken_isset = YES;
   __userTickets = [userTickets retain];
   __userTickets_isset = YES;
-  __starredEventItems = [starredEventItems retain];
-  __starredEventItems_isset = YES;
   __lang = [lang retain];
   __lang_isset = YES;
   __period = period;
@@ -1942,11 +1983,6 @@ static NSDictionary * EVENTS_PERIODS;
   {
     __userTickets = [[decoder decodeObjectForKey: @"userTickets"] retain];
     __userTickets_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"starredEventItems"])
-  {
-    __starredEventItems = [[decoder decodeObjectForKey: @"starredEventItems"] retain];
-    __starredEventItems_isset = YES;
   }
   if ([decoder containsValueForKey: @"lang"])
   {
@@ -1980,10 +2016,6 @@ static NSDictionary * EVENTS_PERIODS;
   {
     [encoder encodeObject: __userTickets forKey: @"userTickets"];
   }
-  if (__starredEventItems_isset)
-  {
-    [encoder encodeObject: __starredEventItems forKey: @"starredEventItems"];
-  }
   if (__lang_isset)
   {
     [encoder encodeObject: __lang forKey: @"lang"];
@@ -2002,7 +2034,6 @@ static NSDictionary * EVENTS_PERIODS;
 {
   [__userToken release];
   [__userTickets release];
-  [__starredEventItems release];
   [__lang release];
   [super dealloc];
 }
@@ -2064,27 +2095,6 @@ static NSDictionary * EVENTS_PERIODS;
   [__userTickets release];
   __userTickets = nil;
   __userTickets_isset = NO;
-}
-
-- (NSArray *) starredEventItems {
-  return [[__starredEventItems retain] autorelease];
-}
-
-- (void) setStarredEventItems: (NSArray *) starredEventItems {
-  [starredEventItems retain];
-  [__starredEventItems release];
-  __starredEventItems = starredEventItems;
-  __starredEventItems_isset = YES;
-}
-
-- (BOOL) starredEventItemsIsSet {
-  return __starredEventItems_isset;
-}
-
-- (void) unsetStarredEventItems {
-  [__starredEventItems release];
-  __starredEventItems = nil;
-  __starredEventItems_isset = NO;
 }
 
 - (NSString *) lang {
@@ -2191,24 +2201,6 @@ static NSDictionary * EVENTS_PERIODS;
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 4:
-        if (fieldType == TType_LIST) {
-          int _size18;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size18];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size18];
-          int _i19;
-          for (_i19 = 0; _i19 < _size18; ++_i19)
-          {
-            int64_t _elem20 = [inProtocol readI64];
-            [fieldValue addObject: [NSNumber numberWithLongLong: _elem20]];
-          }
-          [inProtocol readListEnd];
-          [self setStarredEventItems: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
       case 5:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
@@ -2261,25 +2253,10 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"userTickets" type: TType_LIST fieldID: 3];
       {
         [outProtocol writeListBeginWithElementType: TType_STRING size: [__userTickets count]];
-        int i22;
-        for (i22 = 0; i22 < [__userTickets count]; i22++)
+        int i19;
+        for (i19 = 0; i19 < [__userTickets count]; i19++)
         {
-          [outProtocol writeString: [__userTickets objectAtIndex: i22]];
-        }
-        [outProtocol writeListEnd];
-      }
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__starredEventItems_isset) {
-    if (__starredEventItems != nil) {
-      [outProtocol writeFieldBeginWithName: @"starredEventItems" type: TType_LIST fieldID: 4];
-      {
-        [outProtocol writeListBeginWithElementType: TType_I64 size: [__starredEventItems count]];
-        int i24;
-        for (i24 = 0; i24 < [__starredEventItems count]; i24++)
-        {
-          [outProtocol writeI64: [[__starredEventItems objectAtIndex: i24] longLongValue]];
+          [outProtocol writeString: [__userTickets objectAtIndex: i19]];
         }
         [outProtocol writeListEnd];
       }
@@ -2315,8 +2292,6 @@ static NSDictionary * EVENTS_PERIODS;
   [ms appendFormat: @"\"%@\"", __userToken];
   [ms appendString: @",userTickets:"];
   [ms appendFormat: @"%@", __userTickets];
-  [ms appendString: @",starredEventItems:"];
-  [ms appendFormat: @"%@", __starredEventItems];
   [ms appendString: @",lang:"];
   [ms appendFormat: @"\"%@\"", __lang];
   [ms appendString: @",period:"];
@@ -2601,14 +2576,14 @@ static NSDictionary * EVENTS_PERIODS;
         break;
       case 3:
         if (fieldType == TType_LIST) {
-          int _size25;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size25];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size25];
-          int _i26;
-          for (_i26 = 0; _i26 < _size25; ++_i26)
+          int _size20;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size20];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size20];
+          int _i21;
+          for (_i21 = 0; _i21 < _size20; ++_i21)
           {
-            NSString * _elem27 = [inProtocol readString];
-            [fieldValue addObject: _elem27];
+            NSString * _elem22 = [inProtocol readString];
+            [fieldValue addObject: _elem22];
           }
           [inProtocol readListEnd];
           [self setUserTickets: fieldValue];
@@ -2619,14 +2594,14 @@ static NSDictionary * EVENTS_PERIODS;
         break;
       case 4:
         if (fieldType == TType_LIST) {
-          int _size28;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size28];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size28];
-          int _i29;
-          for (_i29 = 0; _i29 < _size28; ++_i29)
+          int _size23;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size23];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size23];
+          int _i24;
+          for (_i24 = 0; _i24 < _size23; ++_i24)
           {
-            int64_t _elem30 = [inProtocol readI64];
-            [fieldValue addObject: [NSNumber numberWithLongLong: _elem30]];
+            int64_t _elem25 = [inProtocol readI64];
+            [fieldValue addObject: [NSNumber numberWithLongLong: _elem25]];
           }
           [inProtocol readListEnd];
           [self setStarredEventItems: fieldValue];
@@ -2687,10 +2662,10 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"userTickets" type: TType_LIST fieldID: 3];
       {
         [outProtocol writeListBeginWithElementType: TType_STRING size: [__userTickets count]];
-        int i32;
-        for (i32 = 0; i32 < [__userTickets count]; i32++)
+        int i27;
+        for (i27 = 0; i27 < [__userTickets count]; i27++)
         {
-          [outProtocol writeString: [__userTickets objectAtIndex: i32]];
+          [outProtocol writeString: [__userTickets objectAtIndex: i27]];
         }
         [outProtocol writeListEnd];
       }
@@ -2702,10 +2677,10 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"starredEventItems" type: TType_LIST fieldID: 4];
       {
         [outProtocol writeListBeginWithElementType: TType_I64 size: [__starredEventItems count]];
-        int i34;
-        for (i34 = 0; i34 < [__starredEventItems count]; i34++)
+        int i29;
+        for (i29 = 0; i29 < [__starredEventItems count]; i29++)
         {
-          [outProtocol writeI64: [[__starredEventItems objectAtIndex: i34] longLongValue]];
+          [outProtocol writeI64: [[__starredEventItems objectAtIndex: i29] longLongValue]];
         }
         [outProtocol writeListEnd];
       }
@@ -2973,17 +2948,17 @@ static NSDictionary * EVENTS_PERIODS;
         break;
       case 3:
         if (fieldType == TType_MAP) {
-          int _size35;
-          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size35];
-          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size35];
-          int _i36;
-          for (_i36 = 0; _i36 < _size35; ++_i36)
+          int _size30;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size30];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size30];
+          int _i31;
+          for (_i31 = 0; _i31 < _size30; ++_i31)
           {
-            int64_t _key37 = [inProtocol readI64];
-            EventPool *_val38 = [[EventPool alloc] init];
-            [_val38 read: inProtocol];
-            [fieldValue setObject: _val38 forKey: [NSNumber numberWithLongLong: _key37]];
-            [_val38 release];
+            int64_t _key32 = [inProtocol readI64];
+            EventPool *_val33 = [[EventPool alloc] init];
+            [_val33 read: inProtocol];
+            [fieldValue setObject: _val33 forKey: [NSNumber numberWithLongLong: _key32]];
+            [_val33 release];
           }
           [inProtocol readMapEnd];
           [self setChildrenPools: fieldValue];
@@ -2994,15 +2969,15 @@ static NSDictionary * EVENTS_PERIODS;
         break;
       case 5:
         if (fieldType == TType_MAP) {
-          int _size39;
-          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size39];
-          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size39];
-          int _i40;
-          for (_i40 = 0; _i40 < _size39; ++_i40)
+          int _size34;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size34];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size34];
+          int _i35;
+          for (_i35 = 0; _i35 < _size34; ++_i35)
           {
-            int32_t _key41 = [inProtocol readI32];
-            NSString * _val42 = [inProtocol readString];
-            [fieldValue setObject: _val42 forKey: [NSNumber numberWithLong: _key41]];
+            int32_t _key36 = [inProtocol readI32];
+            NSString * _val37 = [inProtocol readString];
+            [fieldValue setObject: _val37 forKey: [NSNumber numberWithLong: _key36]];
           }
           [inProtocol readMapEnd];
           [self setCategs: fieldValue];
@@ -3013,15 +2988,15 @@ static NSDictionary * EVENTS_PERIODS;
         break;
       case 6:
         if (fieldType == TType_MAP) {
-          int _size43;
-          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size43];
-          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size43];
-          int _i44;
-          for (_i44 = 0; _i44 < _size43; ++_i44)
+          int _size38;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size38];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size38];
+          int _i39;
+          for (_i39 = 0; _i39 < _size38; ++_i39)
           {
-            NSString * _key45 = [inProtocol readString];
-            NSString * _val46 = [inProtocol readString];
-            [fieldValue setObject: _val46 forKey: _key45];
+            NSString * _key40 = [inProtocol readString];
+            NSString * _val41 = [inProtocol readString];
+            [fieldValue setObject: _val41 forKey: _key40];
           }
           [inProtocol readMapEnd];
           [self setTags: fieldValue];
@@ -3058,12 +3033,12 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"childrenPools" type: TType_MAP fieldID: 3];
       {
         [outProtocol writeMapBeginWithKeyType: TType_I64 valueType: TType_STRUCT size: [__childrenPools count]];
-        NSEnumerator * _iter47 = [__childrenPools keyEnumerator];
-        id key48;
-        while ((key48 = [_iter47 nextObject]))
+        NSEnumerator * _iter42 = [__childrenPools keyEnumerator];
+        id key43;
+        while ((key43 = [_iter42 nextObject]))
         {
-          [outProtocol writeI64: [key48 longLongValue]];
-          [[__childrenPools objectForKey: key48] write: outProtocol];
+          [outProtocol writeI64: [key43 longLongValue]];
+          [[__childrenPools objectForKey: key43] write: outProtocol];
         }
         [outProtocol writeMapEnd];
       }
@@ -3075,12 +3050,12 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"categs" type: TType_MAP fieldID: 5];
       {
         [outProtocol writeMapBeginWithKeyType: TType_I32 valueType: TType_STRING size: [__categs count]];
-        NSEnumerator * _iter49 = [__categs keyEnumerator];
-        id key50;
-        while ((key50 = [_iter49 nextObject]))
+        NSEnumerator * _iter44 = [__categs keyEnumerator];
+        id key45;
+        while ((key45 = [_iter44 nextObject]))
         {
-          [outProtocol writeI32: [key50 longValue]];
-          [outProtocol writeString: [__categs objectForKey: key50]];
+          [outProtocol writeI32: [key45 longValue]];
+          [outProtocol writeString: [__categs objectForKey: key45]];
         }
         [outProtocol writeMapEnd];
       }
@@ -3092,12 +3067,12 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"tags" type: TType_MAP fieldID: 6];
       {
         [outProtocol writeMapBeginWithKeyType: TType_STRING valueType: TType_STRING size: [__tags count]];
-        NSEnumerator * _iter51 = [__tags keyEnumerator];
-        id key52;
-        while ((key52 = [_iter51 nextObject]))
+        NSEnumerator * _iter46 = [__tags keyEnumerator];
+        id key47;
+        while ((key47 = [_iter46 nextObject]))
         {
-          [outProtocol writeString: key52];
-          [outProtocol writeString: [__tags objectForKey: key52]];
+          [outProtocol writeString: key47];
+          [outProtocol writeString: [__tags objectForKey: key47]];
         }
         [outProtocol writeMapEnd];
       }
@@ -3344,17 +3319,17 @@ static NSDictionary * EVENTS_PERIODS;
         break;
       case 3:
         if (fieldType == TType_MAP) {
-          int _size53;
-          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size53];
-          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size53];
-          int _i54;
-          for (_i54 = 0; _i54 < _size53; ++_i54)
+          int _size48;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size48];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size48];
+          int _i49;
+          for (_i49 = 0; _i49 < _size48; ++_i49)
           {
-            int64_t _key55 = [inProtocol readI64];
-            EventItem *_val56 = [[EventItem alloc] init];
-            [_val56 read: inProtocol];
-            [fieldValue setObject: _val56 forKey: [NSNumber numberWithLongLong: _key55]];
-            [_val56 release];
+            int64_t _key50 = [inProtocol readI64];
+            EventItem *_val51 = [[EventItem alloc] init];
+            [_val51 read: inProtocol];
+            [fieldValue setObject: _val51 forKey: [NSNumber numberWithLongLong: _key50]];
+            [_val51 release];
           }
           [inProtocol readMapEnd];
           [self setChildrenItems: fieldValue];
@@ -3365,15 +3340,15 @@ static NSDictionary * EVENTS_PERIODS;
         break;
       case 5:
         if (fieldType == TType_MAP) {
-          int _size57;
-          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size57];
-          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size57];
-          int _i58;
-          for (_i58 = 0; _i58 < _size57; ++_i58)
+          int _size52;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size52];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size52];
+          int _i53;
+          for (_i53 = 0; _i53 < _size52; ++_i53)
           {
-            int32_t _key59 = [inProtocol readI32];
-            NSString * _val60 = [inProtocol readString];
-            [fieldValue setObject: _val60 forKey: [NSNumber numberWithLong: _key59]];
+            int32_t _key54 = [inProtocol readI32];
+            NSString * _val55 = [inProtocol readString];
+            [fieldValue setObject: _val55 forKey: [NSNumber numberWithLong: _key54]];
           }
           [inProtocol readMapEnd];
           [self setCategs: fieldValue];
@@ -3384,15 +3359,15 @@ static NSDictionary * EVENTS_PERIODS;
         break;
       case 6:
         if (fieldType == TType_MAP) {
-          int _size61;
-          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size61];
-          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size61];
-          int _i62;
-          for (_i62 = 0; _i62 < _size61; ++_i62)
+          int _size56;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size56];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size56];
+          int _i57;
+          for (_i57 = 0; _i57 < _size56; ++_i57)
           {
-            NSString * _key63 = [inProtocol readString];
-            NSString * _val64 = [inProtocol readString];
-            [fieldValue setObject: _val64 forKey: _key63];
+            NSString * _key58 = [inProtocol readString];
+            NSString * _val59 = [inProtocol readString];
+            [fieldValue setObject: _val59 forKey: _key58];
           }
           [inProtocol readMapEnd];
           [self setTags: fieldValue];
@@ -3429,12 +3404,12 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"childrenItems" type: TType_MAP fieldID: 3];
       {
         [outProtocol writeMapBeginWithKeyType: TType_I64 valueType: TType_STRUCT size: [__childrenItems count]];
-        NSEnumerator * _iter65 = [__childrenItems keyEnumerator];
-        id key66;
-        while ((key66 = [_iter65 nextObject]))
+        NSEnumerator * _iter60 = [__childrenItems keyEnumerator];
+        id key61;
+        while ((key61 = [_iter60 nextObject]))
         {
-          [outProtocol writeI64: [key66 longLongValue]];
-          [[__childrenItems objectForKey: key66] write: outProtocol];
+          [outProtocol writeI64: [key61 longLongValue]];
+          [[__childrenItems objectForKey: key61] write: outProtocol];
         }
         [outProtocol writeMapEnd];
       }
@@ -3446,12 +3421,12 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"categs" type: TType_MAP fieldID: 5];
       {
         [outProtocol writeMapBeginWithKeyType: TType_I32 valueType: TType_STRING size: [__categs count]];
-        NSEnumerator * _iter67 = [__categs keyEnumerator];
-        id key68;
-        while ((key68 = [_iter67 nextObject]))
+        NSEnumerator * _iter62 = [__categs keyEnumerator];
+        id key63;
+        while ((key63 = [_iter62 nextObject]))
         {
-          [outProtocol writeI32: [key68 longValue]];
-          [outProtocol writeString: [__categs objectForKey: key68]];
+          [outProtocol writeI32: [key63 longValue]];
+          [outProtocol writeString: [__categs objectForKey: key63]];
         }
         [outProtocol writeMapEnd];
       }
@@ -3463,12 +3438,12 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"tags" type: TType_MAP fieldID: 6];
       {
         [outProtocol writeMapBeginWithKeyType: TType_STRING valueType: TType_STRING size: [__tags count]];
-        NSEnumerator * _iter69 = [__tags keyEnumerator];
-        id key70;
-        while ((key70 = [_iter69 nextObject]))
+        NSEnumerator * _iter64 = [__tags keyEnumerator];
+        id key65;
+        while ((key65 = [_iter64 nextObject]))
         {
-          [outProtocol writeString: key70];
-          [outProtocol writeString: [__tags objectForKey: key70]];
+          [outProtocol writeString: key65];
+          [outProtocol writeString: [__tags objectForKey: key65]];
         }
         [outProtocol writeMapEnd];
       }
@@ -3652,14 +3627,14 @@ static NSDictionary * EVENTS_PERIODS;
         break;
       case 3:
         if (fieldType == TType_LIST) {
-          int _size71;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size71];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size71];
-          int _i72;
-          for (_i72 = 0; _i72 < _size71; ++_i72)
+          int _size66;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size66];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size66];
+          int _i67;
+          for (_i67 = 0; _i67 < _size66; ++_i67)
           {
-            NSString * _elem73 = [inProtocol readString];
-            [fieldValue addObject: _elem73];
+            NSString * _elem68 = [inProtocol readString];
+            [fieldValue addObject: _elem68];
           }
           [inProtocol readListEnd];
           [self setUserTickets: fieldValue];
@@ -3698,10 +3673,10 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"userTickets" type: TType_LIST fieldID: 3];
       {
         [outProtocol writeListBeginWithElementType: TType_STRING size: [__userTickets count]];
-        int i75;
-        for (i75 = 0; i75 < [__userTickets count]; i75++)
+        int i70;
+        for (i70 = 0; i70 < [__userTickets count]; i70++)
         {
-          [outProtocol writeString: [__userTickets objectAtIndex: i75]];
+          [outProtocol writeString: [__userTickets objectAtIndex: i70]];
         }
         [outProtocol writeListEnd];
       }
@@ -4002,14 +3977,14 @@ static NSDictionary * EVENTS_PERIODS;
     {
       case 1:
         if (fieldType == TType_LIST) {
-          int _size76;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size76];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size76];
-          int _i77;
-          for (_i77 = 0; _i77 < _size76; ++_i77)
+          int _size71;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size71];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size71];
+          int _i72;
+          for (_i72 = 0; _i72 < _size71; ++_i72)
           {
-            int64_t _elem78 = [inProtocol readI64];
-            [fieldValue addObject: [NSNumber numberWithLongLong: _elem78]];
+            int64_t _elem73 = [inProtocol readI64];
+            [fieldValue addObject: [NSNumber numberWithLongLong: _elem73]];
           }
           [inProtocol readListEnd];
           [self setStarredEventItems: fieldValue];
@@ -4020,14 +3995,14 @@ static NSDictionary * EVENTS_PERIODS;
         break;
       case 2:
         if (fieldType == TType_LIST) {
-          int _size79;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size79];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size79];
-          int _i80;
-          for (_i80 = 0; _i80 < _size79; ++_i80)
+          int _size74;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size74];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size74];
+          int _i75;
+          for (_i75 = 0; _i75 < _size74; ++_i75)
           {
-            NSString * _elem81 = [inProtocol readString];
-            [fieldValue addObject: _elem81];
+            NSString * _elem76 = [inProtocol readString];
+            [fieldValue addObject: _elem76];
           }
           [inProtocol readListEnd];
           [self setUserTickets: fieldValue];
@@ -4068,10 +4043,10 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"starredEventItems" type: TType_LIST fieldID: 1];
       {
         [outProtocol writeListBeginWithElementType: TType_I64 size: [__starredEventItems count]];
-        int i83;
-        for (i83 = 0; i83 < [__starredEventItems count]; i83++)
+        int i78;
+        for (i78 = 0; i78 < [__starredEventItems count]; i78++)
         {
-          [outProtocol writeI64: [[__starredEventItems objectAtIndex: i83] longLongValue]];
+          [outProtocol writeI64: [[__starredEventItems objectAtIndex: i78] longLongValue]];
         }
         [outProtocol writeListEnd];
       }
@@ -4083,10 +4058,10 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldBeginWithName: @"userTickets" type: TType_LIST fieldID: 2];
       {
         [outProtocol writeListBeginWithElementType: TType_STRING size: [__userTickets count]];
-        int i85;
-        for (i85 = 0; i85 < [__userTickets count]; i85++)
+        int i80;
+        for (i80 = 0; i80 < [__userTickets count]; i80++)
         {
-          [outProtocol writeString: [__userTickets objectAtIndex: i85]];
+          [outProtocol writeString: [__userTickets objectAtIndex: i80]];
         }
         [outProtocol writeListEnd];
       }
