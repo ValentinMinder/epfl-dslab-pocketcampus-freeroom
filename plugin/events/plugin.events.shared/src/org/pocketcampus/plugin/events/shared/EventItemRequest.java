@@ -28,24 +28,18 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
   private static final org.apache.thrift.protocol.TField USER_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("userToken", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField USER_TICKETS_FIELD_DESC = new org.apache.thrift.protocol.TField("userTickets", org.apache.thrift.protocol.TType.LIST, (short)3);
   private static final org.apache.thrift.protocol.TField LANG_FIELD_DESC = new org.apache.thrift.protocol.TField("lang", org.apache.thrift.protocol.TType.STRING, (short)5);
-  private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.I32, (short)6);
-  private static final org.apache.thrift.protocol.TField FETCH_PAST_FIELD_DESC = new org.apache.thrift.protocol.TField("fetchPast", org.apache.thrift.protocol.TType.BOOL, (short)7);
 
   public long eventItemId; // required
   public String userToken; // required
   public List<String> userTickets; // required
   public String lang; // required
-  public int period; // required
-  public boolean fetchPast; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     EVENT_ITEM_ID((short)1, "eventItemId"),
     USER_TOKEN((short)2, "userToken"),
     USER_TICKETS((short)3, "userTickets"),
-    LANG((short)5, "lang"),
-    PERIOD((short)6, "period"),
-    FETCH_PAST((short)7, "fetchPast");
+    LANG((short)5, "lang");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -68,10 +62,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
           return USER_TICKETS;
         case 5: // LANG
           return LANG;
-        case 6: // PERIOD
-          return PERIOD;
-        case 7: // FETCH_PAST
-          return FETCH_PAST;
         default:
           return null;
       }
@@ -113,9 +103,7 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
 
   // isset id assignments
   private static final int __EVENTITEMID_ISSET_ID = 0;
-  private static final int __PERIOD_ISSET_ID = 1;
-  private static final int __FETCHPAST_ISSET_ID = 2;
-  private BitSet __isset_bit_vector = new BitSet(3);
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -129,10 +117,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.LANG, new org.apache.thrift.meta_data.FieldMetaData("lang", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.PERIOD, new org.apache.thrift.meta_data.FieldMetaData("period", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.FETCH_PAST, new org.apache.thrift.meta_data.FieldMetaData("fetchPast", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(EventItemRequest.class, metaDataMap);
   }
@@ -168,8 +152,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     if (other.isSetLang()) {
       this.lang = other.lang;
     }
-    this.period = other.period;
-    this.fetchPast = other.fetchPast;
   }
 
   public EventItemRequest deepCopy() {
@@ -183,10 +165,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     this.userToken = null;
     this.userTickets = null;
     this.lang = null;
-    setPeriodIsSet(false);
-    this.period = 0;
-    setFetchPastIsSet(false);
-    this.fetchPast = false;
   }
 
   public long getEventItemId() {
@@ -299,52 +277,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     }
   }
 
-  public int getPeriod() {
-    return this.period;
-  }
-
-  public EventItemRequest setPeriod(int period) {
-    this.period = period;
-    setPeriodIsSet(true);
-    return this;
-  }
-
-  public void unsetPeriod() {
-    __isset_bit_vector.clear(__PERIOD_ISSET_ID);
-  }
-
-  /** Returns true if field period is set (has been assigned a value) and false otherwise */
-  public boolean isSetPeriod() {
-    return __isset_bit_vector.get(__PERIOD_ISSET_ID);
-  }
-
-  public void setPeriodIsSet(boolean value) {
-    __isset_bit_vector.set(__PERIOD_ISSET_ID, value);
-  }
-
-  public boolean isFetchPast() {
-    return this.fetchPast;
-  }
-
-  public EventItemRequest setFetchPast(boolean fetchPast) {
-    this.fetchPast = fetchPast;
-    setFetchPastIsSet(true);
-    return this;
-  }
-
-  public void unsetFetchPast() {
-    __isset_bit_vector.clear(__FETCHPAST_ISSET_ID);
-  }
-
-  /** Returns true if field fetchPast is set (has been assigned a value) and false otherwise */
-  public boolean isSetFetchPast() {
-    return __isset_bit_vector.get(__FETCHPAST_ISSET_ID);
-  }
-
-  public void setFetchPastIsSet(boolean value) {
-    __isset_bit_vector.set(__FETCHPAST_ISSET_ID, value);
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case EVENT_ITEM_ID:
@@ -379,22 +311,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
       }
       break;
 
-    case PERIOD:
-      if (value == null) {
-        unsetPeriod();
-      } else {
-        setPeriod((Integer)value);
-      }
-      break;
-
-    case FETCH_PAST:
-      if (value == null) {
-        unsetFetchPast();
-      } else {
-        setFetchPast((Boolean)value);
-      }
-      break;
-
     }
   }
 
@@ -411,12 +327,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
 
     case LANG:
       return getLang();
-
-    case PERIOD:
-      return Integer.valueOf(getPeriod());
-
-    case FETCH_PAST:
-      return Boolean.valueOf(isFetchPast());
 
     }
     throw new IllegalStateException();
@@ -437,10 +347,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
       return isSetUserTickets();
     case LANG:
       return isSetLang();
-    case PERIOD:
-      return isSetPeriod();
-    case FETCH_PAST:
-      return isSetFetchPast();
     }
     throw new IllegalStateException();
   }
@@ -494,24 +400,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
         return false;
     }
 
-    boolean this_present_period = true && this.isSetPeriod();
-    boolean that_present_period = true && that.isSetPeriod();
-    if (this_present_period || that_present_period) {
-      if (!(this_present_period && that_present_period))
-        return false;
-      if (this.period != that.period)
-        return false;
-    }
-
-    boolean this_present_fetchPast = true && this.isSetFetchPast();
-    boolean that_present_fetchPast = true && that.isSetFetchPast();
-    if (this_present_fetchPast || that_present_fetchPast) {
-      if (!(this_present_fetchPast && that_present_fetchPast))
-        return false;
-      if (this.fetchPast != that.fetchPast)
-        return false;
-    }
-
     return true;
   }
 
@@ -538,16 +426,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     builder.append(present_lang);
     if (present_lang)
       builder.append(lang);
-
-    boolean present_period = true && (isSetPeriod());
-    builder.append(present_period);
-    if (present_period)
-      builder.append(period);
-
-    boolean present_fetchPast = true && (isSetFetchPast());
-    builder.append(present_fetchPast);
-    if (present_fetchPast)
-      builder.append(fetchPast);
 
     return builder.toHashCode();
   }
@@ -596,26 +474,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
     }
     if (isSetLang()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.lang, typedOther.lang);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetPeriod()).compareTo(typedOther.isSetPeriod());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetPeriod()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.period, typedOther.period);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetFetchPast()).compareTo(typedOther.isSetFetchPast());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetFetchPast()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.fetchPast, typedOther.fetchPast);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -676,22 +534,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 6: // PERIOD
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.period = iprot.readI32();
-            setPeriodIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 7: // FETCH_PAST
-          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-            this.fetchPast = iprot.readBool();
-            setFetchPastIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -741,16 +583,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
         oprot.writeFieldEnd();
       }
     }
-    if (isSetPeriod()) {
-      oprot.writeFieldBegin(PERIOD_FIELD_DESC);
-      oprot.writeI32(this.period);
-      oprot.writeFieldEnd();
-    }
-    if (isSetFetchPast()) {
-      oprot.writeFieldBegin(FETCH_PAST_FIELD_DESC);
-      oprot.writeBool(this.fetchPast);
-      oprot.writeFieldEnd();
-    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -791,18 +623,6 @@ public class EventItemRequest implements org.apache.thrift.TBase<EventItemReques
       } else {
         sb.append(this.lang);
       }
-      first = false;
-    }
-    if (isSetPeriod()) {
-      if (!first) sb.append(", ");
-      sb.append("period:");
-      sb.append(this.period);
-      first = false;
-    }
-    if (isSetFetchPast()) {
-      if (!first) sb.append(", ");
-      sb.append("fetchPast:");
-      sb.append(this.fetchPast);
       first = false;
     }
     sb.append(")");

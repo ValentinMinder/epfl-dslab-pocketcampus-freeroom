@@ -136,14 +136,13 @@ struct EventItemRequest {
 	3: optional list<string> userTickets;
 	
 	5: optional string lang;
-	6: optional i32 period;
-	7: optional bool fetchPast;
 }
 
 struct EventPoolRequest {
 	1: required i64 eventPoolId;
 	2: optional string userToken;
 	3: optional list<string> userTickets;
+	
 	4: optional list<i64> starredEventItems;
 	
 	5: optional string lang;
