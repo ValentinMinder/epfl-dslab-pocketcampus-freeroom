@@ -113,14 +113,17 @@ public class EventsServiceImpl implements EventsService.Iface {
 		System.out.println("getEventItem id=" + req.getEventItemId());
 		importFromMemento();
 		long parentId = req.getEventItemId();
+		List<String> tokens = new LinkedList<String>();
+		//if(req.isSetUserToken()) tokens = oneItemList(req.getUserToken()); // backward compatibility
+		if(req.isSetUserTickets() && req.getUserTickets().size() > 0) tokens = req.getUserTickets();
 		try {
 			Connection conn = connMgr.getConnection();
-			EventItem item = eventItemFromDb(conn, parentId, (req.isSetUserToken() ? req.getUserToken() : ""));
+			EventItem item = eventItemFromDb(conn, parentId, tokens);
 			if(item == null)
 				return new EventItemReply(400);
 			fixCategAndTags(item);
 			Map<Long, EventPool> childrenPools = eventPoolsFromDb(conn, parentId);
-			item.setChildrenPools(new LinkedList<Long>(childrenPools.keySet()));
+			//item.setChildrenPools(new LinkedList<Long>(childrenPools.keySet()));
 			EventItemReply reply = new EventItemReply(200);
 			reply.setEventItem(item);
 			reply.setChildrenPools(childrenPools);
@@ -140,15 +143,28 @@ public class EventsServiceImpl implements EventsService.Iface {
 		importFromMemento();
 		long parentId = req.getEventPoolId();
 		int period = (req.isSetPeriod() ? req.getPeriod() : 1);
+		if(req.isFetchPast()) period = -period;
+		if(parentId != Constants.CONTAINER_EVENT_ID) period = 0;
+		List<String> tokens = new LinkedList<String>();
+		//if(req.isSetUserToken()) tokens = oneItemList(req.getUserToken()); // backward compatibility
+		if(req.isSetUserTickets() && req.getUserTickets().size() > 0) tokens = req.getUserTickets();
 		try {
 			Connection conn = connMgr.getConnection();
 			EventPool pool = eventPoolFromDb(conn, parentId);
 			if(pool == null)
 				return new EventPoolReply(400);
-			Map<Long, EventItem> childrenItems = eventItemsFromDb(conn, parentId, period, (req.isSetUserToken() ? req.getUserToken() : ""));
+			Map<Long, EventItem> childrenItems;
+			if(pool.isSendStarredItems()) {
+				if(!req.isSetStarredEventItems() || !pool.isSetParentEvent())
+					return new EventPoolReply(400);
+				pool.setChildrenEvents(filterStarred(conn, req.getStarredEventItems(), pool.getParentEvent()));
+				childrenItems = eventItemsByIds(conn, pool.getChildrenEvents(), tokens);
+			} else {
+				childrenItems = eventItemsFromDb(conn, parentId, period, tokens);
+			}
 			for(EventItem e : childrenItems.values())
 				fixCategAndTags(e);
-			pool.setChildrenEvents(new LinkedList<Long>(childrenItems.keySet()));
+			//pool.setChildrenEvents(new LinkedList<Long>(childrenItems.keySet()));
 			EventPoolReply reply = new EventPoolReply(200);
 			reply.setEventPool(pool);
 			reply.setChildrenItems(childrenItems);
@@ -186,10 +202,25 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 	
 	@Override
-	public SendEmailReply sendStarredItemsByEmail(SendEmailRequest iRequest) throws TException {
+	public SendEmailReply sendStarredItemsByEmail(SendEmailRequest req) throws TException {
 		System.out.println("sendStarredItemsByEmail");
-		// TODO
-		return new SendEmailReply(500);
+		try {
+			Connection conn = connMgr.getConnection();
+			EventPool pool = eventPoolFromDb(conn, req.getEventPoolId());
+			if(pool == null || !pool.isSendStarredItems() || !req.isSetStarredEventItems() || !pool.isSetParentEvent())
+				return new SendEmailReply(400);
+			pool.setChildrenEvents(filterStarred(conn, req.getStarredEventItems(), pool.getParentEvent()));
+			List<String> tokens = new LinkedList<String>();
+			if(req.isSetUserTickets() && req.getUserTickets().size() > 0) tokens = req.getUserTickets();
+			Map<Long, EventItem> childrenItems = eventItemsByIds(conn, pool.getChildrenEvents(), tokens);
+			req.getEmailAddress();
+			// TODO send email with childrenItems
+			System.out.println("send email with " + childrenItems.size() + " items");
+			return new SendEmailReply(200);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return new SendEmailReply(500);
+		}
 	}
 	
 	/*private void addFeaturedEvents(Map<Long, EventItem> eventItems) throws ParseException {
@@ -611,16 +642,53 @@ public class EventsServiceImpl implements EventsService.Iface {
 		return categs;
 	}
 	
-	private static class EventItemDecoderFromDb {
-		private static final String SELECT_FIELDS = "eventId,startDate,endDate,fullDay,eventPicture,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink,secondLine,timeSnippet,hideEventInfo,hideTitle,eventThumbnail,hideThumbnail";
-		public static String getSelectFields() {
-			return SELECT_FIELDS;
+	private static class MyQuery {
+		StringBuilder query = new StringBuilder();
+		List<Object> values = new LinkedList<Object>();
+		MyQuery addPart(String part) {
+			query.append(part);
+			return this;
 		}
-		public static EventItem decodeFromResultSet(ResultSet rs, int level, String exchangeToken) throws SQLException {
+		MyQuery addPartWithValue(String part, Object arg) {
+			query.append(part);
+			values.add(arg);
+			return this;
+		}
+		MyQuery addPartWithList(String part, List<? extends Object> arg) {
+			List<String> placeholders = new LinkedList<String>();
+			for(Object o : arg){
+				values.add(o);
+				placeholders.add("?");
+			}
+			query.append(part.replace("?", "(" + join(placeholders, ", ") + ")"));
+			return this;
+		}
+		String getQuery() {
+			return query.toString();
+		}
+		PreparedStatement getPreparedStatement(Connection conn) throws SQLException {
+			PreparedStatement stm = conn.prepareStatement(getQuery());
+			int index = 1;
+			for(Object arg : values) {
+				if(arg instanceof Integer)
+					stm.setInt(index++, ((Integer) arg));
+				else if(arg instanceof Long)
+					stm.setLong(index++, ((Long) arg));
+				else if(arg instanceof String)
+					stm.setString(index++, ((String) arg));
+				else if(arg instanceof Boolean)
+					stm.setBoolean(index++, ((Boolean) arg));
+				else
+					throw new RuntimeException("Hey, are you kidding me? What kind of obj is that?");
+			}
+			return stm;
+		}
+	};
+	
+	private static class EventItemDecoderFromDb {
+		private static final String EVENTITEMS_SELECT_FIELDS = "eventId,startDate,endDate,fullDay,eventPicture,eventTitle,eventPlace,eventSpeaker,eventDetails,parentPool,eventUri,vcalUid,eventCateg,broadcastInFeeds,locationHref,detailsLink,secondLine,timeSnippet,hideEventInfo,hideTitle,eventThumbnail,hideThumbnail";
+		private static EventItem decodeFromResultSet(ResultSet rs, int level) throws SQLException {
 			EventItem ei = new EventItem();
-			
-			if(exchangeToken != null) // self-event
-				level = 100; // full trust
 			
 			ei.setEventId(rs.getLong(1));
 			if(rs.wasNull()) ei.unsetEventId(); // should never happen
@@ -666,104 +734,123 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ei.setHideTitle(rs.getBoolean(20));
 			ei.setHideThumbnail(rs.getBoolean(22));
 			
-			if(exchangeToken != null) {
-				// force categ to Me
-				ei.setEventCateg(-3);
-				// force big picture to QR-code 
-				ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=14000003%26exchangeToken=" + exchangeToken + "%26markFavorite=" + ei.getEventId());
-				// remove details
-				ei.setEventDetails(null);
-				// show help
-				ei.setSecondLine("Allow others to scan your barcode to exchange contact information with them");
+			return ei;
+		}
+		private static void makeSelfEvent(EventItem ei, String exchangeToken) {
+			// force categ to Me
+			ei.setEventCateg(-3);
+			// force big picture to QR-code 
+			ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=" + ei.getParentPool() + "%26exchangeToken=" + exchangeToken + "%26markFavorite=" + ei.getEventId());
+			// remove details
+			ei.setEventDetails(null);
+			// show help
+			ei.setSecondLine("Allow others to scan your barcode to exchange contact information with them");
+		}
+		public static MyQuery getSelectPublicEventItemsQuery() {
+			return new MyQuery().
+					addPart("SELECT " + EVENTITEMS_SELECT_FIELDS + ",userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems LEFT JOIN eventusers ON eventId=mappedEvent WHERE (isProtected IS NULL)");
+		}
+		public static MyQuery getSelectAccessibleEventItemsQuery(List<String> token) {
+			return new MyQuery().
+					addPart("SELECT " + EVENTITEMS_SELECT_FIELDS + ",permLevel AS PERM_LEVEL,userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems INNER JOIN eventperms ON eventItemId=eventId LEFT JOIN eventusers ON eventId=mappedEvent").
+					addPartWithList(" WHERE (userToken IN ?)", token);
+		}
+		public static MyQuery getFillChildrenEventPoolsQuery() {
+			return new MyQuery().
+					addPart("SELECT eventId,poolId FROM eventitems,eventpools WHERE (eventId=parentEvent)");
+		}
+		public static Map<Long, EventItem> getEventItemsUsingQueries(Connection conn, MyQuery publicItemsQuery, MyQuery accessibleItemsQuery, MyQuery fillChildrenQuery, List<String> token) throws SQLException {
+			PreparedStatement stm;
+			ResultSet rs;
+			Map<Long, EventItem> items = new HashMap<Long, EventItem>();
+			
+			stm = publicItemsQuery.getPreparedStatement(conn);
+			rs = stm.executeQuery();
+			while(rs.next()) {
+				EventItem ei = decodeFromResultSet(rs, 100);
+				if(token.contains(rs.getString("USER_ID")))
+					makeSelfEvent(ei, rs.getString("EXCHANGE_TOKEN"));
+				items.put(ei.getEventId(), ei);
+			}
+			rs.close();
+			stm.close();
+			
+			if(token.size() > 0) {
+				stm = accessibleItemsQuery.getPreparedStatement(conn);
+				rs = stm.executeQuery();
+				while(rs.next()) {
+					if(rs.getInt("PERM_LEVEL") == 0)
+						continue;
+					EventItem ei = decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"));
+					if(token.contains(rs.getString("USER_ID")))
+						makeSelfEvent(ei, rs.getString("EXCHANGE_TOKEN"));
+					items.put(ei.getEventId(), ei);
+				}
+				rs.close();
+				stm.close();
 			}
 			
-			return ei;
-		}
-	}
-	
-	private static Map<Long, EventItem> eventItemsFromDb(Connection conn, long parentId, int period, String token) throws SQLException {
-		PreparedStatement stm;
-		ResultSet rs;
-		
-		Map<Long, EventItem> items = new HashMap<Long, EventItem>();
-		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + ",userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems LEFT JOIN eventusers ON eventId=mappedEvent WHERE (parentPool=?) AND (isProtected IS NULL) AND ( (DATEDIFF(startDate,NOW())<? AND DATEDIFF(endDate,NOW())>=0) OR (startDate IS NULL AND endDate IS NULL) );");
-		stm.setLong(1, parentId);
-		stm.setInt(2, period);
-		rs = stm.executeQuery();
-		while(rs.next()) {
-			EventItem ei = EventItemDecoderFromDb.decodeFromResultSet(rs, 100, (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
-			ei.setParentPool(parentId);
-			items.put(ei.getEventId(), ei);
-		}
-		rs.close();
-		stm.close();
-		
-		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + ",permLevel AS PERM_LEVEL,userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems INNER JOIN eventperms ON eventItemId=eventId LEFT JOIN eventusers ON eventId=mappedEvent WHERE (parentPool=?) AND (userToken=?) AND ( (DATEDIFF(startDate,NOW())<? AND DATEDIFF(endDate,NOW())>=0) OR (startDate IS NULL AND endDate IS NULL) );");
-		stm.setLong(1, parentId);
-		stm.setString(2, token);
-		stm.setInt(3, period);
-		rs = stm.executeQuery();
-		while(rs.next()) {
-			if(rs.getInt("PERM_LEVEL") == 0)
-				continue;
-			EventItem ei = EventItemDecoderFromDb.decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"), (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
-			ei.setParentPool(parentId);
-			items.put(ei.getEventId(), ei);
-		}
-		rs.close();
-		stm.close();
-		
-		// Now fill children
-		stm = conn.prepareStatement("SELECT eventId,poolId FROM eventitems,eventpools WHERE (eventId=parentEvent) AND (parentPool=?) AND ( (DATEDIFF(startDate,NOW())<? AND DATEDIFF(endDate,NOW())>=0) OR (startDate IS NULL AND endDate IS NULL) );");
-		stm.setLong(1, parentId);
-		stm.setInt(2, period);
-		rs = stm.executeQuery();
-		while(rs.next()) {
-			if(items.get(rs.getLong(1)) != null)
-				items.get(rs.getLong(1)).getChildrenPools().add(rs.getLong(2));
-		}
-		rs.close();
-		stm.close();
+			// Now fill children
+			stm = fillChildrenQuery.getPreparedStatement(conn);
+			rs = stm.executeQuery();
+			while(rs.next()) {
+				if(items.get(rs.getLong(1)) != null)
+					items.get(rs.getLong(1)).getChildrenPools().add(rs.getLong(2));
+			}
+			rs.close();
+			stm.close();
 
-		return items;
+			return items;
+		}
 	}
 	
-	private static EventItem eventItemFromDb(Connection conn, long id, String token) throws SQLException {
-		PreparedStatement stm;
-		ResultSet rs;
-		
-		EventItem ei = null;
-		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + ",userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems LEFT JOIN eventusers ON eventId=mappedEvent WHERE eventId=? AND isProtected IS NULL;");
-		stm.setLong(1, id);
-		rs = stm.executeQuery();
-		if(rs.next()) {
-			ei = EventItemDecoderFromDb.decodeFromResultSet(rs, 100, (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
+	private static Map<Long, EventItem> eventItemsFromDb(Connection conn, long parentId, int period, List<String> token) throws SQLException {
+		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery().
+				addPartWithValue(" AND (parentPool=?)", new Long(parentId));
+		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token).
+				addPartWithValue(" AND (parentPool=?)", new Long(parentId));
+		MyQuery fillChildren = EventItemDecoderFromDb.getFillChildrenEventPoolsQuery().
+				addPartWithValue(" AND (parentPool=?)", new Long(parentId));
+		if(period > 0) {
+			String timeConstraint = " AND (DATEDIFF(startDate,NOW())<? AND DATEDIFF(endDate,NOW())>=0)";
+			publicEvents.addPartWithValue(timeConstraint, new Integer(period));
+			accessibleEvents.addPartWithValue(timeConstraint, new Integer(period));
+			fillChildren.addPartWithValue(timeConstraint, new Integer(period));
+		} else if(period < 0) {
+			String timeConstraint = " AND (DATEDIFF(endDate,NOW())<0 AND DATEDIFF(endDate,NOW())>=?)";
+			publicEvents.addPartWithValue(timeConstraint, new Integer(period));
+			accessibleEvents.addPartWithValue(timeConstraint, new Integer(period));
+			fillChildren.addPartWithValue(timeConstraint, new Integer(period));
 		}
-		rs.close();
-		stm.close();
-		
-		if(ei != null)
-			return ei;
-		
-		stm = conn.prepareStatement("SELECT " + EventItemDecoderFromDb.getSelectFields() + ",permLevel AS PERM_LEVEL,userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems INNER JOIN eventperms ON eventItemId=eventId LEFT JOIN eventusers ON eventId=mappedEvent WHERE eventId=? AND userToken=?;");
-		stm.setLong(1, id);
-		stm.setString(2, token);
-		rs = stm.executeQuery();
-		if(rs.next()) {
-			ei = EventItemDecoderFromDb.decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"), (token.equals(rs.getString("USER_ID")) ? rs.getString("EXCHANGE_TOKEN") : null));
-		}
-		rs.close();
-		stm.close();
-		
-		return ei;
+		return EventItemDecoderFromDb.getEventItemsUsingQueries(conn, publicEvents, accessibleEvents, fillChildren, token);
+	}
+	
+	private static EventItem eventItemFromDb(Connection conn, long id, List<String> token) throws SQLException {
+		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery().
+				addPartWithValue(" AND (eventId=?)", new Long(id));
+		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token).
+				addPartWithValue(" AND (eventId=?)", new Long(id));
+		MyQuery fillChildren = EventItemDecoderFromDb.getFillChildrenEventPoolsQuery().
+				addPartWithValue(" AND (eventId=?)", new Long(id));
+		Map<Long, EventItem> res = EventItemDecoderFromDb.getEventItemsUsingQueries(conn, publicEvents, accessibleEvents, fillChildren, token);
+		if(res.size() == 0)
+			return null;
+		return res.get(res.keySet().iterator().next());
+	}
+	
+	private static Map<Long, EventItem> eventItemsByIds(Connection conn, List<Long> ids, List<String> token) throws SQLException {
+		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery().
+				addPartWithList(" AND (eventId IN ?)", ids);
+		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token).
+				addPartWithList(" AND (eventId IN ?)", ids);
+		MyQuery fillChildren = EventItemDecoderFromDb.getFillChildrenEventPoolsQuery().
+				addPartWithList(" AND (eventId IN ?)", ids);
+		return EventItemDecoderFromDb.getEventItemsUsingQueries(conn, publicEvents, accessibleEvents, fillChildren, token);
 	}
 	
 	private static class EventPoolDecoderFromDb {
-		private static final String SELECT_FIELDS = "poolId,poolPicture,poolTitle,poolPlace,poolDetails,disableStar,disableFilterByCateg,disableFilterByTags,enableScan,refreshOnBack,noResultText,parentEvent";
-		public static String getSelectFields() {
-			return SELECT_FIELDS;
-		}
-		public static EventPool decodeFromResultSet(ResultSet rs) throws SQLException {
+		private static final String EVENTPOOLS_SELECT_FIELDS = "poolId,poolPicture,poolTitle,poolPlace,poolDetails,disableStar,disableFilterByCateg,disableFilterByTags,enableScan,refreshOnBack,sendStarred,noResultText,parentEvent";
+		private static EventPool decodeFromResultSet(ResultSet rs) throws SQLException {
 			EventPool ep = new EventPool();
 			
 			ep.setPoolId(rs.getLong(1));
@@ -778,61 +865,107 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ep.setDisableFilterByTags(rs.getBoolean(8));
 			ep.setEnableScan(rs.getBoolean(9));
 			ep.setRefreshOnBack(rs.getBoolean(10));
-			ep.setNoResultText(rs.getString(11));
-			ep.setParentEvent(rs.getLong(12));
+			ep.setSendStarredItems(rs.getBoolean(11));
+			ep.setNoResultText(rs.getString(12));
+			ep.setParentEvent(rs.getLong(13));
 			ep.setChildrenEvents(new LinkedList<Long>());
 			
 			return ep;
 		}
+		public static MyQuery getSelectEventPoolsQuery() {
+			return new MyQuery().
+					addPart("SELECT " + EVENTPOOLS_SELECT_FIELDS + " FROM eventpools");
+		}
+		public static MyQuery getFillChildrenEventItemsQuery() {
+			return new MyQuery().
+					addPart("SELECT poolId,eventId FROM eventpools,eventitems WHERE (parentPool=poolId)");
+		}
+		public static Map<Long, EventPool> getEventPoolsUsingQueries(Connection conn, MyQuery selectPoolsQuery, MyQuery fillChildrenItemsQuery) throws SQLException {
+			PreparedStatement stm;
+			ResultSet rs;
+			Map<Long, EventPool> pools = new HashMap<Long, EventPool>();
+			
+			stm = selectPoolsQuery.getPreparedStatement(conn);
+			rs = stm.executeQuery();
+			while(rs.next()) {
+				EventPool ep = decodeFromResultSet(rs);
+				pools.put(ep.getPoolId(), ep);
+			}
+			rs.close();
+			stm.close();
+			
+			// Now fill children
+			stm = fillChildrenItemsQuery.getPreparedStatement(conn);
+			rs = stm.executeQuery();
+			while(rs.next()) {
+				if(pools.get(rs.getLong(1)) != null)
+					pools.get(rs.getLong(1)).getChildrenEvents().add(rs.getLong(2));
+			}
+			rs.close();
+			stm.close();
+
+			return pools;
+		}
 	}
 	
 	private static Map<Long, EventPool> eventPoolsFromDb(Connection conn, long parentId) throws SQLException {
-		PreparedStatement stm;
-		ResultSet rs;
-		
-		Map<Long, EventPool> pools = new HashMap<Long, EventPool>();
-		stm = conn.prepareStatement("SELECT " + EventPoolDecoderFromDb.getSelectFields() + " FROM eventpools WHERE (parentEvent=?);");
-		stm.setLong(1, parentId);
-		rs = stm.executeQuery();
-		while(rs.next()) {
-			EventPool ep = EventPoolDecoderFromDb.decodeFromResultSet(rs);
-			ep.setParentEvent(parentId);
-			pools.put(ep.getPoolId(), ep);
-		}
-		rs.close();
-		stm.close();
-		
-		// Now fill children
-		stm = conn.prepareStatement("SELECT poolId,eventId FROM eventpools,eventitems WHERE (parentPool=poolId) AND (parentEvent=?);");
-		stm.setLong(1, parentId);
-		rs = stm.executeQuery();
-		while(rs.next()) {
-			if(pools.get(rs.getLong(1)) != null)
-				pools.get(rs.getLong(1)).getChildrenEvents().add(rs.getLong(2));
-		}
-		rs.close();
-		stm.close();
-
-		return pools;
+		MyQuery publicEvents = EventPoolDecoderFromDb.getSelectEventPoolsQuery().
+				addPartWithValue(" WHERE (parentEvent=?)", new Long(parentId));
+		MyQuery fillChildren = EventPoolDecoderFromDb.getFillChildrenEventItemsQuery().
+				addPartWithValue(" AND (parentEvent=?)", new Long(parentId));
+		return EventPoolDecoderFromDb.getEventPoolsUsingQueries(conn, publicEvents, fillChildren);
 	}
 	
 	private static EventPool eventPoolFromDb(Connection conn, long id) throws SQLException {
+		MyQuery publicEvents = EventPoolDecoderFromDb.getSelectEventPoolsQuery().
+				addPartWithValue(" WHERE (poolId=?)", new Long(id));
+		MyQuery fillChildren = EventPoolDecoderFromDb.getFillChildrenEventItemsQuery().
+				addPartWithValue(" AND (poolId=?)", new Long(id));
+		Map<Long, EventPool> res = EventPoolDecoderFromDb.getEventPoolsUsingQueries(conn, publicEvents, fillChildren);
+		if(res.size() == 0)
+			return null;
+		return res.get(res.keySet().iterator().next());
+	}
+
+	private static List<Long> filterStarred(Connection conn, List<Long> starred, long parentEvent) throws SQLException {
+		List<Long> filtered = new LinkedList<Long>();
+		for(Long l : starred) {
+			if(isSubeventOf(conn, l, parentEvent, new HashSet<Long>()))
+				filtered.add(l);
+		}
+		return filtered;
+	}
+	
+	private static boolean isSubeventOf(Connection conn, long event, long parent, Set<Long> history) throws SQLException {
+		if(event == parent)
+			return true;
+		event = getGrandParentEventItemId(conn, event);
+		if(history.contains(event))
+			return false; // get rid of loops
+		history.add(event);
+		if(history.size() > 20)
+			return false; // limit recursion depth (screw it if it is more than 20)
+		if(event == 0)
+			return false;
+		return isSubeventOf(conn, event, parent, history);
+	}
+
+	private static long getGrandParentEventItemId(Connection conn, long id) throws SQLException {
 		PreparedStatement stm;
 		ResultSet rs;
 		
-		EventPool ep = null;
-		stm = conn.prepareStatement("SELECT " + EventPoolDecoderFromDb.getSelectFields() + " FROM eventpools WHERE (poolId=?);");
+		long grandParent = 0;
+		stm = conn.prepareStatement("SELECT parentEvent FROM eventitems INNER JOIN eventpools ON parentPool = poolId WHERE eventId = ?;");
 		stm.setLong(1, id);
 		rs = stm.executeQuery();
 		if(rs.next()) {
-			ep = EventPoolDecoderFromDb.decodeFromResultSet(rs);
+			grandParent = rs.getLong(1);
 		}
 		rs.close();
 		stm.close();
 		
-		return ep;
+		return grandParent;
 	}
-
 
 	private static String userTokenFromExchangeToken(Connection conn, String exchangeToken) throws SQLException {
 		PreparedStatement stm;
