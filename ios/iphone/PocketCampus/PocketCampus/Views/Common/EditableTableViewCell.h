@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EditableTableViewCell : UITableViewCell {
-    UITextField* textField;
-}
+@interface EditableTableViewCell : UITableViewCell
 
 @property (nonatomic, assign) IBOutlet UITextField* textField;
 

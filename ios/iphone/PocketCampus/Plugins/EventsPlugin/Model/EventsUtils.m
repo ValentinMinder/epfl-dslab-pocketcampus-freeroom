@@ -15,7 +15,7 @@ static NSNumber* featuredCategNSNumber = nil;
 
 @implementation EventsUtils
 
-+ (NSDictionary*)sectionsOfEventItem:(NSArray*)eventItems forCategories:(NSDictionary*)categs andTags:(NSDictionary*)tags {
++ (NSDictionary*)sectionsOfEventItem:(NSArray*)eventItems forCategories:(NSDictionary*)categs andTags:(NSDictionary*)tags inverseSort:(BOOL)inverseSort; {
     NSMutableDictionary* itemsForCategs = [NSMutableDictionary dictionaryWithCapacity:[categs count]];
     NSSet* tagSet = [NSSet setWithArray:[tags allKeys]]; //set of NSString (tags shortname)
     
@@ -44,7 +44,12 @@ static NSNumber* featuredCategNSNumber = nil;
     
     [[itemsForCategs copy] enumerateKeysAndObjectsUsingBlock:^(NSNumber* categNumber, NSMutableSet* items, BOOL *stop) {
         //NSLog(@"%d -> %@", [categNumber intValue], NSStringFromClass([items class]));
-        itemsForCategs[categNumber] = [[items allObjects] sortedArrayUsingSelector:@selector(compare:)]; //[items array] returns a proxy object (see doc.), I prefer to have a real array for debugging (console).
+        if (inverseSort) {
+            itemsForCategs[categNumber] = [[items allObjects] sortedArrayUsingSelector:@selector(inverseCompare:)];
+        } else {
+            itemsForCategs[categNumber] = [[items allObjects] sortedArrayUsingSelector:@selector(compare:)];
+        }
+        //[items array] returns a proxy object (see doc.), I prefer to have a real array for debugging (console).
     }];
     
    /* NSLog(@"AFTER");

@@ -89,10 +89,21 @@ static DirectoryController* instance __weak = nil;
 }
 
 - (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
-    if ([action isEqualToString:@"search"]) {
+    if ([action isEqualToString:@"search"]) { //search in EPFL directory
         NSString* query = parameters[@"q"];
         if (query) {
-            return [[PCUnkownPersonViewController alloc] initAndLoadPersonWithFullName:query delegate:nil];
+            return [[PCUnkownPersonViewController alloc] initAndLoadPersonWithFullName:query];
+        }
+    } else if ([action isEqualToString:@"view"]) {
+        @try {
+            if (parameters.count > 0) {
+                Person* person = [Person new];
+                [person setValuesForKeysWithDictionary:parameters];
+                return [[PCUnkownPersonViewController alloc] initWithPerson:person];
+            }
+        }
+        @catch (NSException *exception) {
+            NSLog(@"!! ERROR when converting parameters to Person object: %@", exception);
         }
     }
     return nil;

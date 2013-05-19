@@ -239,6 +239,17 @@ static EventsService* instance __weak = nil;
     [operationQueue addOperation:operation];
 }
 
+- (void)sendStarredItemsByEmail:(SendEmailRequest *)request delegate:(id)delegate {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[SendEmailRequest class]];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(sendStarredItemsByEmail:);
+    operation.delegateDidReturnSelector = @selector(sendStarredItemsByEmailForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(sendStarredItemsByEmailFailedForRequest:);
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+}
+
 - (EventPoolReply*)getFromCacheEventPoolForRequest:(EventPoolRequest*)request {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[EventPoolRequest class]];
     //NSLog(@"cached: %@", request);

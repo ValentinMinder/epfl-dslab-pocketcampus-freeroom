@@ -56,6 +56,17 @@
     }
 }
 
+- (NSComparisonResult)inverseCompare:(EventItem*)object {
+    NSComparisonResult result = [self compare: object];
+    if (result == NSOrderedAscending) {
+        return NSOrderedDescending;
+    } else if (result == NSOrderedDescending) {
+        return NSOrderedAscending;
+    } else {
+        return NSOrderedSame;
+    }
+}
+
 - (NSString*)dateString:(EventItemDateStyle)dateStyle {
     
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];

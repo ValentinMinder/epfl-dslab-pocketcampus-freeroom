@@ -22,7 +22,7 @@ typedef enum {
     ResultsModeFailed = 4
 } ResultsMode;
 
-@interface DirectorySearchViewController : UIViewController<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, ABUnknownPersonViewControllerDelegate, DirectoryServiceDelegate>
+@interface DirectorySearchViewController : UIViewController<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, DirectoryServiceDelegate>
 
 @property (nonatomic, weak) IBOutlet UISearchBar* searchBar;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* barActivityIndicator;

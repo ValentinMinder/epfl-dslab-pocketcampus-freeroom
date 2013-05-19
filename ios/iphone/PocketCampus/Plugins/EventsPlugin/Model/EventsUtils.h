@@ -13,9 +13,9 @@
 @interface EventsUtils : NSObject
 
 /*
- * Key = NSNumber of category id, value = array of EventItem, sorted by date, that are in this category and have one or more tags
+ * Key = NSNumber of category id, value = array of EventItem, sorted by date (or inverse), that are in this category and have one or more tags
  */
-+ (NSDictionary*)sectionsOfEventItem:(NSArray*)eventItems forCategories:(NSDictionary*)categs andTags:(NSDictionary*)tags;
++ (NSDictionary*)sectionsOfEventItem:(NSArray*)eventItems forCategories:(NSDictionary*)categs andTags:(NSDictionary*)tags inverseSort:(BOOL)inverseSort;
 
 + (NSNumber*)nsNumberForEventId:(int64_t)eventId;
 + (NSNumber*)favoriteCategory;

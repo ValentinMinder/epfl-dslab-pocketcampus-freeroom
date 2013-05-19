@@ -21,6 +21,7 @@ static NSString* kFavoritesEventItemsUpdatedNotification __unused = @"FavoritesE
  - (EventItemReply *) getEventItem: (EventItemRequest *) iRequest;  // throws TException
  - (EventPoolReply *) getEventPool: (EventPoolRequest *) iRequest;  // throws TException
  - (ExchangeReply *) exchangeContacts: (ExchangeRequest *) iRequest;  // throws TException
+ - (SendEmailReply *) sendStarredItemsByEmail: (SendEmailRequest *) iRequest;  // throws TException
  
  */
 
@@ -48,11 +49,10 @@ static NSString* kFavoritesEventItemsUpdatedNotification __unused = @"FavoritesE
 
 - (void)getEventItemForRequest:(EventItemRequest*)request delegate:(id)delegate;
 - (void)getEventPoolForRequest:(EventPoolRequest*)request delegate:(id)delegate;
+- (void)exchangeContactsForRequest:(ExchangeRequest*)request delegate:(id)delegate;
+- (void)sendStarredItemsByEmail:(SendEmailRequest *)request delegate:(id)delegate;
 
 - (EventPoolReply*)getFromCacheEventPoolForRequest:(EventPoolRequest*)request;
-
-- (void)exchangeContactsForRequest:(ExchangeRequest*)request delegate:(id)delegate;
-
 
 @end
 
@@ -67,5 +67,8 @@ static NSString* kFavoritesEventItemsUpdatedNotification __unused = @"FavoritesE
 - (void)getEventPoolFailedForRequest:(EventPoolRequest*)request;
 - (void)exchangeContactsForRequest:(ExchangeRequest*)request didReturn:(ExchangeReply*)reply;
 - (void)exchangeContactsFailedForRequest:(ExchangeRequest*)request;
+- (void)sendStarredItemsByEmailForRequest:(SendEmailRequest*)request didReturn:(SendEmailReply*)reply;
+- (void)sendStarredItemsByEmailFailedForRequest:(SendEmailRequest*)request;
+
 
 @end
