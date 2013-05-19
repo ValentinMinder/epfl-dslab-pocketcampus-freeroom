@@ -42,6 +42,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 
 /**
@@ -100,13 +101,13 @@ public class EventsController extends PluginController implements IEventsControl
 	/**
 	 * Initiates a request to the server to get the events items.
 	 */
-	public void refreshEventPool(IEventsView caller, long eventPoolId, boolean useCache) {
+	public void refreshEventPool(IEventsView caller, long eventPoolId, boolean fetchPast, boolean useCache) {
 		if(currEventPoolRequest != null)
 			currEventPoolRequest.cancel(true);
 		EventPoolRequest req = new EventPoolRequest(eventPoolId);
 		req.setUserTickets(mModel.getTickets());
 		req.setStarredEventItems(mModel.getFavorites());
-		req.setFetchPast(false); // TODO
+		req.setFetchPast(fetchPast);
 		req.setLang(Locale.getDefault().getLanguage());
 		req.setPeriod(mModel.getPeriod());
 		currEventPoolRequest = new GetEventPoolRequest(caller);
@@ -121,8 +122,6 @@ public class EventsController extends PluginController implements IEventsControl
 			currEventItemRequest.cancel(true);
 		EventItemRequest req = new EventItemRequest(eventItemId);
 		req.setUserTickets(mModel.getTickets());
-		req.setStarredEventItems(mModel.getFavorites());
-		req.setFetchPast(false); // TODO
 		req.setLang(Locale.getDefault().getLanguage());
 		currEventItemRequest = new GetEventItemRequest(caller);
 		currEventItemRequest.setBypassCache(!useCache).start(this, mClientEI, req);
@@ -143,12 +142,13 @@ public class EventsController extends PluginController implements IEventsControl
 	/**
 	 * Initiates a request to send favorites by email.
 	 */
-	public void sendFavoritesByEmail(IEventsView caller) {
+	public void sendFavoritesByEmail(IEventsView caller, long eventPoolId, String emailAddress) {
 		if(currSendFavoritesByEmailRequest != null)
 			currSendFavoritesByEmailRequest.cancel(true);
-		SendEmailRequest req = new SendEmailRequest(mModel.getFavorites());
+		SendEmailRequest req = new SendEmailRequest(eventPoolId, mModel.getFavorites());
 		req.setUserTickets(mModel.getTickets());
-		//req.setEmailAddress("");
+		req.setEmailAddress(emailAddress);
+		req.setLang(Locale.getDefault().getLanguage());
 		currSendFavoritesByEmailRequest = new SendFavoritesByEmailRequest(caller);
 		currSendFavoritesByEmailRequest.start(this, mClientEX, req);
 	}
@@ -207,6 +207,10 @@ public class EventsController extends PluginController implements IEventsControl
 	
 	public static interface MultiChoiceHandler<T> {
 		void saveSelection(T t, boolean isChecked);
+	}
+	
+	public static interface TextInputHandler {
+		void gotText(String s);
 	}
 	
 	public static <T extends Comparable<? super T>> OnMenuItemClickListener buildMenuListenerSingleChoiceDialog(
@@ -283,6 +287,30 @@ public class EventsController extends PluginController implements IEventsControl
 								new OnMultiChoiceClickListener() {
 									public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 										handler.saveSelection(keysList.get(which), isChecked);
+									}
+								})
+						.create();
+				dialog.setCanceledOnTouchOutside(true);
+				dialog.show();
+				return true;
+			}
+		};
+	}
+
+	public static OnMenuItemClickListener buildMenuListenerTextInputDialog(
+			final Context context, final String title, final String message, final String buttonText, final TextInputHandler handler) {
+		final EditText input = new EditText(context);
+		return new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				AlertDialog dialog = new AlertDialog.Builder(context)
+						.setTitle(title)
+					    .setMessage(message)
+					    .setView(input)
+						.setPositiveButton(
+								buttonText, 
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int which) {
+										handler.gotText(input.getText().toString());
 									}
 								})
 						.create();
