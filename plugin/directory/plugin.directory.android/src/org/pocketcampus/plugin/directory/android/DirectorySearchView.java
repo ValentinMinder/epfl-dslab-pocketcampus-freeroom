@@ -111,8 +111,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 			if(aData.getQueryParameter("OrganisationalUnit") != null) oU.add(aData.getQueryParameter("OrganisationalUnit"));
 			p.setOrganisationalUnit(oU);
 			if(aData.getQueryParameter("pictureUrl") != null) p.setPictureUrl(aData.getQueryParameter("pictureUrl"));
-			mController.getProfilePicture("dummy");
-			mDialog = new PersonDetailsDialog(this, p);
+			mDialog = new PersonDetailsDialog(this, p, true);
 			mDialog.show();
 		}
 	}
@@ -243,7 +242,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		if(mModel.getResults().size() == 1){
 			mModel.selectPerson(mModel.getResults().get(0));
 			mController.getProfilePicture(mModel.getResults().get(0).sciper);
-			mDialog = new PersonDetailsDialog(this, mModel.getSelectedPerson());
+			mDialog = new PersonDetailsDialog(this, mModel.getSelectedPerson(), false);
 			mDialog.show();
 		}else
 			startActivity(new Intent(getApplicationContext(), DirectoryResultListView.class));

@@ -179,7 +179,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		//Tracker
 		Tracker.getInstance().trackPageView("directory/ResultView/person/" + mModel.getSelectedPerson().sciper);
 	
-		dialog = new PersonDetailsDialog(this, mModel.getSelectedPerson());
+		dialog = new PersonDetailsDialog(this, mModel.getSelectedPerson(), false);
 		//TODO make fade in if necessary		
 		//http://stackoverflow.com/questions/4817014/animate-a-custom-dialog/5591827#5591827
 		dialog.show();

@@ -50,7 +50,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	 * @param context Application context to use for this dialog
 	 * @param person Person to display in this dialog
 	 */
-	public PersonDetailsDialog(Context context, Person person) {
+	public PersonDetailsDialog(Context context, Person person, boolean pictureKnown) {
 		super(context);
 
 		ctx_ = context;
@@ -60,6 +60,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		build();
 		setContent(person);
 		setClickListener();
+
+		if(pictureKnown)
+			loadPicture();
 
 	}
 
