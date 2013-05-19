@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.events.server;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,7 +21,20 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
+
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
@@ -205,15 +219,15 @@ public class EventsServiceImpl implements EventsService.Iface {
 		try {
 			Connection conn = connMgr.getConnection();
 			EventPool pool = eventPoolFromDb(conn, req.getEventPoolId());
-			if(pool == null || !pool.isSendStarredItems() || !req.isSetStarredEventItems() || !pool.isSetParentEvent())
+			if(pool == null || !pool.isSendStarredItems() || !req.isSetStarredEventItems() || !pool.isSetParentEvent() || !req.isSetEmailAddress())
 				return new SendEmailReply(400);
 			pool.setChildrenEvents(filterStarred(conn, req.getStarredEventItems(), pool.getParentEvent()));
 			List<String> tokens = new LinkedList<String>();
 			if(req.isSetUserTickets() && req.getUserTickets().size() > 0) tokens = req.getUserTickets();
 			Map<Long, EventItem> childrenItems = eventItemsByIds(conn, pool.getChildrenEvents(), tokens);
-			req.getEmailAddress();
-			// TODO send email with childrenItems
-			System.out.println("send email with " + childrenItems.size() + " items");
+			// TODO build html out of items in childrenItems
+			boolean res = GmailSender.sendEmail(req.getEmailAddress(), "Your Favorites", "You must see your favorites here");
+			System.out.println("send email with " + childrenItems.size() + " items, success=" + res);
 			return new SendEmailReply(200);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1015,4 +1029,61 @@ public class EventsServiceImpl implements EventsService.Iface {
 		return list;
 	}
 
+	private static class GmailSender {
+
+		public static boolean sendEmail(String to, String subject, String htmlBody) {
+			final String username = PC_SRV_CONFIG.getString("BOT_EMAIL_ACCOUNT_USERNAME");
+			final String password = PC_SRV_CONFIG.getString("BOT_EMAIL_ACCOUNT_PASSWORD");
+			if(username == null || password == null)
+				return false;
+
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.port", "587");
+
+			Session session = Session.getInstance(props,
+					new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(username,
+									password);
+						}
+					});
+
+			try {
+
+				Message message = new MimeMessage(session);
+				message.setFrom(new InternetAddress("noreply@pocketcampus.org", "PocketCampus"));
+				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+				message.setSubject(subject);
+				//message.setText("Dear Mail Crawler," + "\n\n No spam to my email, please!");
+				
+				// Create a multi-part to combine the parts
+				Multipart multipart = new MimeMultipart("alternative");
+				// Create your text message part
+				BodyPart messageBodyPart = new MimeBodyPart();
+				messageBodyPart.setText("Your browser does not support the format of this email. Please open it in a browser that supports HTML.");
+				// Add the text part to the multipart
+				multipart.addBodyPart(messageBodyPart);
+				// Create the html part
+				messageBodyPart = new MimeBodyPart();
+				String htmlMessage = htmlBody;
+				messageBodyPart.setContent(htmlMessage, "text/html");
+				// Add html part to multi part
+				multipart.addBodyPart(messageBodyPart);
+				// Associate multi-part with message
+				message.setContent(multipart);
+				
+				Transport.send(message);
+				return true;
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+	}
+	
 }
