@@ -8,6 +8,14 @@
 
 #import "DirectoryService.h"
 
+@interface ProfilePictureRequest : NSOperationWithDelegate<ASIHTTPRequestDelegate>
+
+- (id)initWithPerson:(Person*)person delegate:(id)delegate;
+
+@property (retain) Person* person;
+
+@end
+
 @implementation DirectoryService
 
 static DirectoryService* instance __weak = nil;
@@ -39,7 +47,7 @@ static DirectoryService* instance __weak = nil;
 }
 
 - (id)thriftServiceClientInstance {
-    return [[[DirectoryServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
+    return [[DirectoryServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 - (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate {
@@ -55,19 +63,17 @@ static DirectoryService* instance __weak = nil;
     [operation addObjectArgument:nameOrSciper];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
-- (void)getProfilePicture:(NSString *)sciper delegate:(id)delegate {
-    if (![sciper isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad sciper" reason:@"sciper is either nil or not of class NSString" userInfo:nil];
+- (void)getProfilePicture:(Person*)person delegate:(id)delegate {
+    if (![person isKindOfClass:[Person class]]) {
+        @throw [NSException exceptionWithName:@"bad person" reason:@"person is either nil or not of class Person" userInfo:nil];
     }
     ProfilePictureRequest* operation = [[ProfilePictureRequest alloc] initWithDelegate:delegate];
     operation.delegateDidReturnSelector = @selector(profilePictureFor:didReturn:);
     operation.delegateDidFailSelector = @selector(profilePictureFailedFor:);
-    operation.sciper = sciper;
+    operation.person = person;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)autocomplete:(NSString *)constraint delegate:(id)delegate {
@@ -81,7 +87,6 @@ static DirectoryService* instance __weak = nil;
     [operation addObjectArgument:constraint];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)dealloc
@@ -192,15 +197,13 @@ static DirectoryService* instance __weak = nil;
 
 static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people/getPhoto?id=";
 
-@synthesize sciper;
-
-- (id)initWithSciper:(NSString*)sciper_ delegate:(id)delegate_ {
-    if (![sciper_ isKindOfClass:[NSString class]]) {
+- (id)initWithPerson:(Person *)person delegate:(id)delegate {
+    if (![person isKindOfClass:[Person class]]) {
         @throw [NSException exceptionWithName:@"bad sciper argument" reason:@"sciper is not kind of class NSString" userInfo:nil];
     }
-    self = [super initWithDelegate:delegate_];
+    self = [super initWithDelegate:delegate];
     if (self) {
-        self.sciper = sciper;
+        self.person = person;
     }
     return self;
 }
@@ -209,7 +212,14 @@ static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people
     [self willChangeValueForKey:@"isExecuting"];
     executing = YES;
     [self didChangeValueForKey:@"isExecuting"];
-    NSString* fullURLStringWithSciper = [NSString stringWithFormat:@"%@%@", kProfilePictureURLbase, self.sciper];
+    
+    NSString* fullURLStringWithSciper = nil;
+    if (self.person.pictureUrl) {
+        fullURLStringWithSciper = self.person.pictureUrl;
+    } else {
+        //because of cashing, cached Person may not have pictureURL field for some time
+        fullURLStringWithSciper = [NSString stringWithFormat:@"%@%@", kProfilePictureURLbase, self.person.sciper];
+    }
     ASIHTTPRequest* pictureRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLStringWithSciper]];
     pictureRequest.delegate = self;
     pictureRequest.downloadCache = [ASIDownloadCache sharedCache];
@@ -226,20 +236,19 @@ static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people
         [self requestFailed:request];
         return;
     }
-    if ([self.delegate respondsToSelector:self.delegateDidReturnSelector]) {
+    if ([self.delegate respondsToSelector:@selector(profilePictureFor:didReturn:)]) {
         UIImage* image = [UIImage imageWithData:request.responseData];
         image = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
         NSData* imageData = UIImageJPEGRepresentation(image, 1.0);
-        [image release];
-        [self.delegate performSelector:self.delegateDidReturnSelector withObject:self.sciper withObject:imageData];
+        [self.delegate profilePictureFor:self.person didReturn:imageData];
     }
     [self finish];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
     request.delegate = nil;
-    if ([self.delegate respondsToSelector:self.delegateDidFailSelector]) {
-        [self.delegate performSelector:self.delegateDidFailSelector withObject:self.sciper];
+    if ([self.delegate respondsToSelector:@selector(profilePictureFailedFor:)]) {
+        [self.delegate profilePictureFailedFor:self.person];
     }
     [self finish];
 }
@@ -251,12 +260,6 @@ static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people
     finished = YES;
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-}
-
-- (void)dealloc
-{
-    [sciper release];
-    [super dealloc];
 }
 
 @end

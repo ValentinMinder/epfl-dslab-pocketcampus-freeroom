@@ -47,8 +47,6 @@
 
 @property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
 
-@property (nonatomic) BOOL pastMode;
-
 @end
 
 static NSString* kPoolCell = @"PoolCell";
@@ -137,7 +135,7 @@ static NSString* kPoolCell = @"PoolCell";
 }
 
 - (void)startGetEventItemRequest {    
-    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:nil userTickets:[self.eventsService allUserTickets] lang:[PCUtils userLanguageCode] period:EventsPeriods_SIX_MONTHS fetchPast:self.pastMode];
+    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:nil userTickets:[self.eventsService allUserTickets] lang:[PCUtils userLanguageCode]];
     
     [self.eventsService getEventItemForRequest:req delegate:self];
     if (!self.loadingIndicator) {

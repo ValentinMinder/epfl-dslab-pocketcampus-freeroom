@@ -129,7 +129,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         [self showEmptyDetailViewController];
         return;
     }
-    self.personViewController = [[PCUnkownPersonViewController alloc] initWithPerson:person delegate:self];
+    self.personViewController = [[PCUnkownPersonViewController alloc] initWithPerson:person];
 
     //self.personViewController = [[PCUnkownPersonViewController alloc] initAndLoadPersonWithFullName:@"fdgkjdfhglkjdfhsg" delegate:self]; //TEST
     
@@ -504,24 +504,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     }
 }
 
-
-#pragma mark - ABUnknownPersonViewControllerDelegate
-
-- (BOOL)unknownPersonViewController:(ABUnknownPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
-    if (property == kABPersonAddressProperty) { //office was clicked
-        /*NSString* firstName = (NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-        NSString* lastName = (NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);*/
-        if (self.displayedPerson != nil) {
-            [self.personViewController.navigationController pushViewController:[MapController viewControllerWithInitialSearchQuery:self.displayedPerson.office pinLabelText:[NSString stringWithFormat:@"%@ %@", self.displayedPerson.firstName, self.displayedPerson.lastName]] animated:YES];
-        }
-        return NO;
-    }
-    return YES;
-}
-
-- (void)unknownPersonViewController:(ABUnknownPersonViewController *)unknownPersonView didResolveToPerson:(ABRecordRef)person {
-    //Nothing
-}
 
 #pragma mark - dealloc
 

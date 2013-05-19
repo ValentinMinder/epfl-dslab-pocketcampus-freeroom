@@ -138,7 +138,7 @@
 		324151E615375BDD00CCFB22 /* Map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E415375BDD00CCFB22 /* Map@2x.png */; };
 		324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151F315377B4C00CCFB22 /* MapItemAnnotation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3241F1D615B4AB2400C7DF3A /* EditableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */; };
-		3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */; };
+		3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3242DE1F150577050082D720 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* Service.m */; };
 		3242F40B1655A5B900A8C3D7 /* MyEduDrawersNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3242F4091655A5B900A8C3D7 /* MyEduDrawersNavbar.png */; };
 		3242F40C1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3242F40A1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png */; };
@@ -224,7 +224,7 @@
 		328B9EED150B8E7B00B50024 /* JSFavStarControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 328B9EEC150B8E7B00B50024 /* JSFavStarControl.m */; };
 		328B9EF4150B927500B50024 /* RatingStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF2150B927500B50024 /* RatingStar.png */; };
 		328B9EF5150B927500B50024 /* RatingStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF3150B927500B50024 /* RatingStar@2x.png */; };
-		328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; };
+		328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; settings = {COMPILER_FLAGS = "-fobc-arc"; }; };
 		328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328D38291747A8C9006FE6F3 /* EventsTagView.xib */; };
 		3292C31716402B4F00AE4D51 /* PCRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3292C31616402B4F00AE4D51 /* PCRefreshControl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; };
@@ -271,6 +271,7 @@
 		32ADC7191659AAEB0039F6A6 /* Download.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7171659AAEB0039F6A6 /* Download.png */; };
 		32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7181659AAEB0039F6A6 /* Download@2x.png */; };
 		32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AEEC821747C11C006DBA2F /* CamiproView~iphone.xib */; };
+		32AEEC861747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AEEC851747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214515B193A200BB445D /* TransportHelpView.xib */; };
 		32AF214815B197DE00BB445D /* TransportHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214615B197DE00BB445D /* TransportHelp.html */; };
 		32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B13A3D1634B0F4007B54A1 /* MainMenuNavbar.png */; };
@@ -403,11 +404,11 @@
 		32F3EAB61633506900DA8902 /* MyEduServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3EAB51633506900DA8902 /* MyEduServiceTests.m */; };
 		32F5308016EA8D5800F66484 /* NoImageCell_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F5307E16EA8D5800F66484 /* NoImageCell_64.png */; };
 		32F5308116EA8D5800F66484 /* NoImageCell_64@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F5307F16EA8D5800F66484 /* NoImageCell_64@2x.png */; };
-		32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */; };
+		32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32F5308B16EA9EA000F66484 /* EventsCategorySelectorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308A16EA9EA000F66484 /* EventsCategorySelectorView.xib */; };
 		32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308C16EAB02400F66484 /* EventItemInfo.html */; };
 		32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */; };
-		32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */; };
+		32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F5309316EABA0F00F66484 /* EventsLarge.png */; };
 		32F7218C171B0BB4005755A2 /* CamiproView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F7218B171B0BB4005755A2 /* CamiproView~ipad.xib */; };
 		32F8E3ED16E1F53000AF365C /* CellNoImageStretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */; };
@@ -416,7 +417,7 @@
 		32FAC0F51500F40700925180 /* DirectoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E31500F40700925180 /* DirectoryController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E51500F40700925180 /* DirectorySearchViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0F81500F40700925180 /* DirectoryPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FAC0E81500F40700925180 /* DirectoryPlugin.strings */; };
-		32FAC0F91500F40700925180 /* DirectoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0ED1500F40700925180 /* DirectoryService.m */; };
+		32FAC0F91500F40700925180 /* DirectoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0ED1500F40700925180 /* DirectoryService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0FA1500F40700925180 /* directory.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0F01500F40700925180 /* directory.m */; };
 		32FAC0FD1500F40700925180 /* DirectorySearchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FAC0F41500F40700925180 /* DirectorySearchView.xib */; };
 		32FB2E0915179014007AE82B /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FB2DFE15179014007AE82B /* TransportPlugin.strings */; };
@@ -841,6 +842,8 @@
 		32ADC7171659AAEB0039F6A6 /* Download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Download.png; sourceTree = "<group>"; };
 		32ADC7181659AAEB0039F6A6 /* Download@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Download@2x.png"; sourceTree = "<group>"; };
 		32AEEC821747C11C006DBA2F /* CamiproView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CamiproView~iphone.xib"; sourceTree = "<group>"; };
+		32AEEC841747DA61006DBA2F /* EventsShareFavoriteItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsShareFavoriteItemsViewController.h; sourceTree = "<group>"; };
+		32AEEC851747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsShareFavoriteItemsViewController.m; sourceTree = "<group>"; };
 		32AF214515B193A200BB445D /* TransportHelpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransportHelpView.xib; sourceTree = "<group>"; };
 		32AF214715B197DE00BB445D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/TransportHelp.html; sourceTree = "<group>"; };
 		32AF214915B1AE2000BB445D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/TransportHelp.html; sourceTree = "<group>"; };
@@ -1730,6 +1733,8 @@
 				32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */,
 				328D3826174794B5006FE6F3 /* EventsTagsViewController.h */,
 				328D3827174794B5006FE6F3 /* EventsTagsViewController.m */,
+				32AEEC841747DA61006DBA2F /* EventsShareFavoriteItemsViewController.h */,
+				32AEEC851747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m */,
 				32F5309016EAB8F700F66484 /* EventsSplashDetailViewController.h */,
 				32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */,
 			);
@@ -3308,6 +3313,7 @@
 				32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */,
 				32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */,
 				328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */,
+				32AEEC861747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3549,7 +3555,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "5742E21A-1C29-4B3A-A35D-29BAC860BEE5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A4A3A581-4ED9-40B9-86DC-B5A21302A8F2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1F9A70BB-7DF4-430D-8BBD-F4FDD2B74C81";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

@@ -1948,7 +1948,7 @@ static NSDictionary * EVENTS_PERIODS;
 
 @implementation EventItemRequest
 
-- (id) initWithEventItemId: (int64_t) eventItemId userToken: (NSString *) userToken userTickets: (NSArray *) userTickets lang: (NSString *) lang period: (int32_t) period fetchPast: (BOOL) fetchPast
+- (id) initWithEventItemId: (int64_t) eventItemId userToken: (NSString *) userToken userTickets: (NSArray *) userTickets lang: (NSString *) lang
 {
   self = [super init];
   __eventItemId = eventItemId;
@@ -1959,10 +1959,6 @@ static NSDictionary * EVENTS_PERIODS;
   __userTickets_isset = YES;
   __lang = [lang retain];
   __lang_isset = YES;
-  __period = period;
-  __period_isset = YES;
-  __fetchPast = fetchPast;
-  __fetchPast_isset = YES;
   return self;
 }
 
@@ -1989,16 +1985,6 @@ static NSDictionary * EVENTS_PERIODS;
     __lang = [[decoder decodeObjectForKey: @"lang"] retain];
     __lang_isset = YES;
   }
-  if ([decoder containsValueForKey: @"period"])
-  {
-    __period = [decoder decodeInt32ForKey: @"period"];
-    __period_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"fetchPast"])
-  {
-    __fetchPast = [decoder decodeBoolForKey: @"fetchPast"];
-    __fetchPast_isset = YES;
-  }
   return self;
 }
 
@@ -2019,14 +2005,6 @@ static NSDictionary * EVENTS_PERIODS;
   if (__lang_isset)
   {
     [encoder encodeObject: __lang forKey: @"lang"];
-  }
-  if (__period_isset)
-  {
-    [encoder encodeInt32: __period forKey: @"period"];
-  }
-  if (__fetchPast_isset)
-  {
-    [encoder encodeBool: __fetchPast forKey: @"fetchPast"];
   }
 }
 
@@ -2118,40 +2096,6 @@ static NSDictionary * EVENTS_PERIODS;
   __lang_isset = NO;
 }
 
-- (int32_t) period {
-  return __period;
-}
-
-- (void) setPeriod: (int32_t) period {
-  __period = period;
-  __period_isset = YES;
-}
-
-- (BOOL) periodIsSet {
-  return __period_isset;
-}
-
-- (void) unsetPeriod {
-  __period_isset = NO;
-}
-
-- (BOOL) fetchPast {
-  return __fetchPast;
-}
-
-- (void) setFetchPast: (BOOL) fetchPast {
-  __fetchPast = fetchPast;
-  __fetchPast_isset = YES;
-}
-
-- (BOOL) fetchPastIsSet {
-  return __fetchPast_isset;
-}
-
-- (void) unsetFetchPast {
-  __fetchPast_isset = NO;
-}
-
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -2209,22 +2153,6 @@ static NSDictionary * EVENTS_PERIODS;
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 6:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
-          [self setPeriod: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 7:
-        if (fieldType == TType_BOOL) {
-          BOOL fieldValue = [inProtocol readBool];
-          [self setFetchPast: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -2270,16 +2198,6 @@ static NSDictionary * EVENTS_PERIODS;
       [outProtocol writeFieldEnd];
     }
   }
-  if (__period_isset) {
-    [outProtocol writeFieldBeginWithName: @"period" type: TType_I32 fieldID: 6];
-    [outProtocol writeI32: __period];
-    [outProtocol writeFieldEnd];
-  }
-  if (__fetchPast_isset) {
-    [outProtocol writeFieldBeginWithName: @"fetchPast" type: TType_BOOL fieldID: 7];
-    [outProtocol writeBool: __fetchPast];
-    [outProtocol writeFieldEnd];
-  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -2294,10 +2212,6 @@ static NSDictionary * EVENTS_PERIODS;
   [ms appendFormat: @"%@", __userTickets];
   [ms appendString: @",lang:"];
   [ms appendFormat: @"\"%@\"", __lang];
-  [ms appendString: @",period:"];
-  [ms appendFormat: @"%i", __period];
-  [ms appendString: @",fetchPast:"];
-  [ms appendFormat: @"%i", __fetchPast];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -3807,9 +3721,11 @@ static NSDictionary * EVENTS_PERIODS;
 
 @implementation SendEmailRequest
 
-- (id) initWithStarredEventItems: (NSArray *) starredEventItems userTickets: (NSArray *) userTickets emailAddress: (NSString *) emailAddress lang: (NSString *) lang
+- (id) initWithEventPoolId: (int64_t) eventPoolId starredEventItems: (NSArray *) starredEventItems userTickets: (NSArray *) userTickets emailAddress: (NSString *) emailAddress lang: (NSString *) lang
 {
   self = [super init];
+  __eventPoolId = eventPoolId;
+  __eventPoolId_isset = YES;
   __starredEventItems = [starredEventItems retain];
   __starredEventItems_isset = YES;
   __userTickets = [userTickets retain];
@@ -3824,6 +3740,11 @@ static NSDictionary * EVENTS_PERIODS;
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
+  if ([decoder containsValueForKey: @"eventPoolId"])
+  {
+    __eventPoolId = [decoder decodeInt64ForKey: @"eventPoolId"];
+    __eventPoolId_isset = YES;
+  }
   if ([decoder containsValueForKey: @"starredEventItems"])
   {
     __starredEventItems = [[decoder decodeObjectForKey: @"starredEventItems"] retain];
@@ -3849,6 +3770,10 @@ static NSDictionary * EVENTS_PERIODS;
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
+  if (__eventPoolId_isset)
+  {
+    [encoder encodeInt64: __eventPoolId forKey: @"eventPoolId"];
+  }
   if (__starredEventItems_isset)
   {
     [encoder encodeObject: __starredEventItems forKey: @"starredEventItems"];
@@ -3874,6 +3799,23 @@ static NSDictionary * EVENTS_PERIODS;
   [__emailAddress release];
   [__lang release];
   [super dealloc];
+}
+
+- (int64_t) eventPoolId {
+  return __eventPoolId;
+}
+
+- (void) setEventPoolId: (int64_t) eventPoolId {
+  __eventPoolId = eventPoolId;
+  __eventPoolId_isset = YES;
+}
+
+- (BOOL) eventPoolIdIsSet {
+  return __eventPoolId_isset;
+}
+
+- (void) unsetEventPoolId {
+  __eventPoolId_isset = NO;
 }
 
 - (NSArray *) starredEventItems {
@@ -3975,6 +3917,14 @@ static NSDictionary * EVENTS_PERIODS;
     }
     switch (fieldID)
     {
+      case 4:
+        if (fieldType == TType_I64) {
+          int64_t fieldValue = [inProtocol readI64];
+          [self setEventPoolId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       case 1:
         if (fieldType == TType_LIST) {
           int _size71;
@@ -4038,6 +3988,11 @@ static NSDictionary * EVENTS_PERIODS;
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"SendEmailRequest"];
+  if (__eventPoolId_isset) {
+    [outProtocol writeFieldBeginWithName: @"eventPoolId" type: TType_I64 fieldID: 4];
+    [outProtocol writeI64: __eventPoolId];
+    [outProtocol writeFieldEnd];
+  }
   if (__starredEventItems_isset) {
     if (__starredEventItems != nil) {
       [outProtocol writeFieldBeginWithName: @"starredEventItems" type: TType_LIST fieldID: 1];
@@ -4088,7 +4043,9 @@ static NSDictionary * EVENTS_PERIODS;
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"SendEmailRequest("];
-  [ms appendString: @"starredEventItems:"];
+  [ms appendString: @"eventPoolId:"];
+  [ms appendFormat: @"%qi", __eventPoolId];
+  [ms appendString: @",starredEventItems:"];
   [ms appendFormat: @"%@", __starredEventItems];
   [ms appendString: @",userTickets:"];
   [ms appendFormat: @"%@", __userTickets];

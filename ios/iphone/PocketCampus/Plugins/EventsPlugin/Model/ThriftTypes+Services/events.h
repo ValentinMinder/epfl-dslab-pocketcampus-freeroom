@@ -343,15 +343,11 @@ enum EventsPeriods {
   NSString * __userToken;
   NSArray * __userTickets;
   NSString * __lang;
-  int32_t __period;
-  BOOL __fetchPast;
 
   BOOL __eventItemId_isset;
   BOOL __userToken_isset;
   BOOL __userTickets_isset;
   BOOL __lang_isset;
-  BOOL __period_isset;
-  BOOL __fetchPast_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -359,11 +355,9 @@ enum EventsPeriods {
 @property (nonatomic, retain, getter=userToken, setter=setUserToken:) NSString * userToken;
 @property (nonatomic, retain, getter=userTickets, setter=setUserTickets:) NSArray * userTickets;
 @property (nonatomic, retain, getter=lang, setter=setLang:) NSString * lang;
-@property (nonatomic, getter=period, setter=setPeriod:) int32_t period;
-@property (nonatomic, getter=fetchPast, setter=setFetchPast:) BOOL fetchPast;
 #endif
 
-- (id) initWithEventItemId: (int64_t) eventItemId userToken: (NSString *) userToken userTickets: (NSArray *) userTickets lang: (NSString *) lang period: (int32_t) period fetchPast: (BOOL) fetchPast;
+- (id) initWithEventItemId: (int64_t) eventItemId userToken: (NSString *) userToken userTickets: (NSArray *) userTickets lang: (NSString *) lang;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -383,14 +377,6 @@ enum EventsPeriods {
 - (NSString *) lang;
 - (void) setLang: (NSString *) lang;
 - (BOOL) langIsSet;
-
-- (int32_t) period;
-- (void) setPeriod: (int32_t) period;
-- (BOOL) periodIsSet;
-
-- (BOOL) fetchPast;
-- (void) setFetchPast: (BOOL) fetchPast;
-- (BOOL) fetchPastIsSet;
 
 @end
 
@@ -612,11 +598,13 @@ enum EventsPeriods {
 @end
 
 @interface SendEmailRequest : NSObject <NSCoding> {
+  int64_t __eventPoolId;
   NSArray * __starredEventItems;
   NSArray * __userTickets;
   NSString * __emailAddress;
   NSString * __lang;
 
+  BOOL __eventPoolId_isset;
   BOOL __starredEventItems_isset;
   BOOL __userTickets_isset;
   BOOL __emailAddress_isset;
@@ -624,16 +612,21 @@ enum EventsPeriods {
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=eventPoolId, setter=setEventPoolId:) int64_t eventPoolId;
 @property (nonatomic, retain, getter=starredEventItems, setter=setStarredEventItems:) NSArray * starredEventItems;
 @property (nonatomic, retain, getter=userTickets, setter=setUserTickets:) NSArray * userTickets;
 @property (nonatomic, retain, getter=emailAddress, setter=setEmailAddress:) NSString * emailAddress;
 @property (nonatomic, retain, getter=lang, setter=setLang:) NSString * lang;
 #endif
 
-- (id) initWithStarredEventItems: (NSArray *) starredEventItems userTickets: (NSArray *) userTickets emailAddress: (NSString *) emailAddress lang: (NSString *) lang;
+- (id) initWithEventPoolId: (int64_t) eventPoolId starredEventItems: (NSArray *) starredEventItems userTickets: (NSArray *) userTickets emailAddress: (NSString *) emailAddress lang: (NSString *) lang;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (int64_t) eventPoolId;
+- (void) setEventPoolId: (int64_t) eventPoolId;
+- (BOOL) eventPoolIdIsSet;
 
 - (NSArray *) starredEventItems;
 - (void) setStarredEventItems: (NSArray *) starredEventItems;

@@ -4,7 +4,6 @@
 */
 
 "PluginName" = "Événements";
-
 "LoadingEventPool" = "Chargement des éléments...";
 "Favorites" = "Favoris";
 "QRCodeErrorMessage" = "Ce QR code n'est pas supporté ou une erreur est survenue lors du scan. Essayez à nouveau.";
@@ -37,3 +36,8 @@
 "TwoWeeks" = "2 semaines";
 "SixMonths" = "6 mois";
 "OneYear" = "une année";
+"Share" = "Partager";
+"SendByEmailInstructions" = "Envoyer votre liste d'éléments\n favoris par email.";
+"BackToUpcomingEvents" = "Retour aux évenements à venir";
+"PastEvents" = "Événements passés";
+"ShowPastEventsFor..." = "Voir les événements passés jusqu'à";

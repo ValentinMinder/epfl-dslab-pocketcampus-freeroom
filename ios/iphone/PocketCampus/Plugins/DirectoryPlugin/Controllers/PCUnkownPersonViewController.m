@@ -18,6 +18,8 @@
 
 #import "PCValues.h"
 
+#import "MapController.h"
+
 @interface PCUnkownPersonViewController ()
 
 @property (nonatomic, strong) NSString* fullNameToSearch;
@@ -35,23 +37,24 @@
 
 #pragma mark - Inits
 
-- (id)initWithPerson:(Person*)person delegate:(id<ABUnknownPersonViewControllerDelegate>)delegate;
-{
+- (id)initWithPerson:(Person*)person {
     [PCUtils throwExceptionIfObject:person notKindOfClass:[Person class]];
     self = [super init];
     if (self) {
-        self.unknownPersonViewDelegate = delegate;
+        self.unknownPersonViewDelegate = self;
+        self.allowShowOfficeOnMap = YES; //default
         self.directoryService = [DirectoryService sharedInstanceToRetain];
         self.person = person;
     }
     return self;
 }
 
-- (id)initAndLoadPersonWithFullName:(NSString*)fullName delegate:(id<ABUnknownPersonViewControllerDelegate>)delegate {
+- (id)initAndLoadPersonWithFullName:(NSString*)fullName {
     [PCUtils throwExceptionIfObject:fullName notKindOfClass:[NSString class]];
     self = [super init];
     if (self) {
-        self.unknownPersonViewDelegate = delegate;
+        self.unknownPersonViewDelegate = self;
+        self.allowShowOfficeOnMap = YES; //default
         self.directoryService = [DirectoryService sharedInstanceToRetain];
         self.fullNameToSearch = fullName;
     }
@@ -89,6 +92,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Details", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
+    //NSLog(@"Person picture url: %@", self.person.pictureUrl);
 }
 
 
@@ -124,9 +128,11 @@
     self.allowsActions = YES;
     self.title = [NSString stringWithFormat:@"%@ %@", self.person.firstName, self.person.lastName];
     
-    UIImage* loadingImage = [UIImage imageNamed:@"LoadingIndicator"];
-    NSData* imageData = UIImagePNGRepresentation(loadingImage);
-    ABPersonSetImageData(self.displayedPerson,(__bridge CFDataRef)imageData, nil);
+    if (self.person.pictureUrl) {
+        UIImage* loadingImage = [UIImage imageNamed:@"LoadingIndicator"];
+        NSData* imageData = UIImagePNGRepresentation(loadingImage);
+        ABPersonSetImageData(self.displayedPerson,(__bridge CFDataRef)imageData, nil);
+    }
     
 	CFErrorRef anError = NULL;
     BOOL couldCreate = true;
@@ -180,11 +186,15 @@
         CFRelease(web);
     }
     
-    if (self.person.office && self.unknownPersonViewDelegate) { //won't show office as row if no delegate to receive the map call
+    if (self.person.office) {
         ABMultiValueRef office = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
         NSMutableDictionary *addressDictionary = [NSMutableDictionary dictionaryWithCapacity:2];
         NSString* label = NSLocalizedStringFromTable(@"OfficeLabel", @"DirectoryPlugin", @"Short name to describe label of office room");
-        [addressDictionary setObject:[NSString stringWithFormat:@"%@ %@", self.person.office, NSLocalizedStringFromTable(@"(showOnMap)", @"DirectoryPlugin", nil)] forKey:(NSString *)kABPersonAddressCityKey];
+        if (self.allowShowOfficeOnMap) {
+            [addressDictionary setObject:[NSString stringWithFormat:@"%@ %@", self.person.office, NSLocalizedStringFromTable(@"(showOnMap)", @"DirectoryPlugin", nil)] forKey:(NSString *)kABPersonAddressCityKey];
+        } else {
+            [addressDictionary setObject:[NSString stringWithFormat:@"%@", self.person.office] forKey:(NSString *)kABPersonAddressCityKey];
+        }
         [addressDictionary setObject:@"" forKey:(NSString *)kABPersonAddressCountryKey];
         couldCreate = ABMultiValueAddValueAndLabel(office, (__bridge CFTypeRef)(addressDictionary), (__bridge CFStringRef)label, NULL);
         if (couldCreate) {
@@ -199,9 +209,6 @@
             message = [message stringByAppendingFormat:@"%@ ", unit];
         }
     }
-    if (self.person.office && !self.unknownPersonViewDelegate) {
-        message = [message stringByAppendingFormat:@"\n%@", self.person.office];
-    }
     self.message = message;
     
     
@@ -215,7 +222,9 @@
     
     [self loadView];
     
-    [self.directoryService getProfilePicture:self.person.sciper delegate:self];
+    if (self.person.sciper) {
+        [self.directoryService getProfilePicture:self.person delegate:self];
+    }
 }
 
 #pragma mark - DirectoryServiceDelegate
@@ -237,7 +246,7 @@
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", @"Message that says that connection to server throw an error");
 }
 
-- (void)profilePictureFor:(NSString*)sciper didReturn:(NSData*)data {
+- (void)profilePictureFor:(Person*)person didReturn:(NSData*)data {
     if (data) {
         ABPersonSetImageData(self.displayedPerson,(__bridge CFDataRef)data, nil);
         [self loadView]; //reload view content to update picture
@@ -245,11 +254,11 @@
         UIBarButtonItem* photoButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"PhotoButtonTitle", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(photoButtonPressed)];
         [self.navigationItem setRightBarButtonItem:photoButton animated:YES];
     } else {
-        [self profilePictureFailedFor:sciper];
+        [self profilePictureFailedFor:person];
     }
 }
 
-- (void)profilePictureFailedFor:(NSString*)sciper {
+- (void)profilePictureFailedFor:(Person*)person {
     NSLog(@"-> Profile picture request failed (possibly no picture available)");
     ABPersonSetImageData(self.displayedPerson,NULL, nil);
     [self loadView]; //reload view content to update picture
@@ -265,6 +274,24 @@
         self.centerMessageLabel.hidden = NO;
         self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
     }
+}
+
+#pragma mark - ABUnknownPersonViewControllerDelegate
+
+- (BOOL)unknownPersonViewController:(ABUnknownPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
+    if (property == kABPersonAddressProperty) { //office was clicked
+        /*NSString* firstName = (NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+         NSString* lastName = (NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);*/
+        if (self.allowShowOfficeOnMap) {
+            [self.navigationController pushViewController:[MapController viewControllerWithInitialSearchQuery:self.person.office pinLabelText:[NSString stringWithFormat:@"%@ %@", self.person.firstName, self.person.lastName]] animated:YES];
+        }
+        return NO;
+    }
+    return YES;
+}
+
+- (void)unknownPersonViewController:(ABUnknownPersonViewController *)unknownPersonView didResolveToPerson:(ABRecordRef)person {
+    //Nothing
 }
 
 #pragma mark dealloc
