@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -101,7 +102,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	 */
 	private void setContent(Person p) {
 		title_ = (TextView) findViewById(R.id.directory_person_details_title_dialog);
-		title_.setText(p.getFirstName() + " " + p.getLastName());
+		title_.setText((p.isSetFirstName() ? p.getFirstName() : "") + " " + (p.isSetLastName() ? p.getLastName() : ""));
 
 		// lname_ = (TextView)
 		// findViewById(R.id.directory_person_details_dialog_lname);
@@ -133,14 +134,10 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		// web_.setText(p.web);
 
 		ou_ = (TextView) findViewById(R.id.directory_person_details_dialog_ou);
-		ou_.setVisibility(visibility(p.isSetOrganisationalUnit()));
-		String multipleLinesOU = "";
-		for (String s : p.OrganisationalUnit) {
-			multipleLinesOU += (s + "\n");
-			System.out.println(s);
+		if(p.isSetOrganisationalUnit() && p.getOrganisationalUnitIterator().hasNext()) {
+			ou_.setVisibility(visibility(true));
+			ou_.setText(TextUtils.join("\n", p.getOrganisationalUnit()));
 		}
-		multipleLinesOU.substring(0, multipleLinesOU.length() - 1);
-		ou_.setText(multipleLinesOU);
 	}
 
 	/**
@@ -312,13 +309,18 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	private void performImport() {
 		Intent addContactIntent = new Intent(Intent.ACTION_INSERT);
 		addContactIntent.setType(ContactsContract.Contacts.CONTENT_TYPE);
-		addContactIntent.putExtra(ContactsContract.Intents.Insert.NAME, displayedPerson_.getFirstName() + " " + displayedPerson_.getLastName());
-		addContactIntent.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.StructuredPostal.TYPE_WORK);
-		addContactIntent.putExtra(ContactsContract.Intents.Insert.PHONE, displayedPerson_.getPrivatePhoneNumber());
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.NAME, (displayedPerson_.isSetFirstName() ? displayedPerson_.getFirstName() : "") + " " + (displayedPerson_.isSetLastName() ? displayedPerson_.getLastName() : ""));
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.PHONE, displayedPerson_.getOfficePhoneNumber());
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME);
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, displayedPerson_.getPrivatePhoneNumber());
 		addContactIntent.putExtra(ContactsContract.Intents.Insert.POSTAL_TYPE, ContactsContract.CommonDataKinds.StructuredPostal.TYPE_WORK);
 		addContactIntent.putExtra(ContactsContract.Intents.Insert.POSTAL, displayedPerson_.getOffice());
-		addContactIntent.putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.StructuredPostal.TYPE_WORK);
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK);
 		addContactIntent.putExtra(ContactsContract.Intents.Insert.EMAIL, displayedPerson_.getEmail());
+		if(displayedPerson_.isSetOrganisationalUnit() && displayedPerson_.getOrganisationalUnitIterator().hasNext())
+			addContactIntent.putExtra(ContactsContract.Intents.Insert.COMPANY, TextUtils.join(" - ", displayedPerson_.getOrganisationalUnit()));
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.NOTES, displayedPerson_.getWeb());
 		ctx_.startActivity(addContactIntent);
 	}
 	

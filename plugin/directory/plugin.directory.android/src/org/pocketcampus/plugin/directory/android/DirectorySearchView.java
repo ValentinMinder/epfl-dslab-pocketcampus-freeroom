@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.directory.android;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -96,12 +98,20 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 			if(aData.getQueryParameter("q") != null) search(aData.getQueryParameter("q"));
 		} else if("/view".equals(aData.getPath())) {
 			Person p = new Person();
-			p.setFirstName(aData.getQueryParameter("name"));
+			if(aData.getQueryParameter("firstName") != null) p.setFirstName(aData.getQueryParameter("firstName"));
+			if(aData.getQueryParameter("lastName") != null) p.setLastName(aData.getQueryParameter("lastName"));
+			if(aData.getQueryParameter("sciper") != null) p.setSciper(aData.getQueryParameter("sciper"));
 			p.setEmail(aData.getQueryParameter("email"));
-			p.setOffice(aData.getQueryParameter("address"));
-			p.setPictureUrl(aData.getQueryParameter("pic"));
-			p.setPrivatePhoneNumber(aData.getQueryParameter("phone"));
-			p.setWeb(aData.getQueryParameter("url"));
+			p.setWeb(aData.getQueryParameter("web"));
+			p.setPrivatePhoneNumber(aData.getQueryParameter("privatePhoneNumber"));
+			p.setOfficePhoneNumber(aData.getQueryParameter("officePhoneNumber"));
+			p.setOffice(aData.getQueryParameter("office"));
+			p.setGaspar(aData.getQueryParameter("gaspar"));
+			List<String> oU = new LinkedList<String>();
+			if(aData.getQueryParameter("OrganisationalUnit") != null) oU.add(aData.getQueryParameter("OrganisationalUnit"));
+			p.setOrganisationalUnit(oU);
+			if(aData.getQueryParameter("pictureUrl") != null) p.setPictureUrl(aData.getQueryParameter("pictureUrl"));
+			mController.getProfilePicture("dummy");
 			mDialog = new PersonDetailsDialog(this, p);
 			mDialog.show();
 		}

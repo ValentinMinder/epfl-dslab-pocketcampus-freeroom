@@ -82,7 +82,7 @@ public class DirectoryModel extends PluginModel implements IDirectoryModel{
 	 * @param result Url of the picture.
 	 */
 	public void setProfilePicture(String result) {
-		mSelectedPerson.pictureUrl = result;
+		if(mSelectedPerson != null && result != null) mSelectedPerson.pictureUrl = result;
 		mListeners.pictureUpdated();
 	}
 
