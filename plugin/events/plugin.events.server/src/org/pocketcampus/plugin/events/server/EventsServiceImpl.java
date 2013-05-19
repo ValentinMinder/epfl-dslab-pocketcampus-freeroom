@@ -113,9 +113,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 		System.out.println("getEventItem id=" + req.getEventItemId());
 		importFromMemento();
 		long parentId = req.getEventItemId();
-		List<String> tokens = new LinkedList<String>();
-		//if(req.isSetUserToken()) tokens = oneItemList(req.getUserToken()); // backward compatibility
-		if(req.isSetUserTickets() && req.getUserTickets().size() > 0) tokens = req.getUserTickets();
+		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
+		//if(req.isSetUserToken()) tokens.add(req.getUserToken()); // backward compatibility
 		try {
 			Connection conn = connMgr.getConnection();
 			EventItem item = eventItemFromDb(conn, parentId, tokens);
@@ -145,9 +144,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 		int period = (req.isSetPeriod() ? req.getPeriod() : 1);
 		if(req.isFetchPast()) period = -period;
 		if(parentId != Constants.CONTAINER_EVENT_ID) period = 0;
-		List<String> tokens = new LinkedList<String>();
-		//if(req.isSetUserToken()) tokens = oneItemList(req.getUserToken()); // backward compatibility
-		if(req.isSetUserTickets() && req.getUserTickets().size() > 0) tokens = req.getUserTickets();
+		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
+		//if(req.isSetUserToken()) tokens.add(req.getUserToken()); // backward compatibility
 		try {
 			Connection conn = connMgr.getConnection();
 			EventPool pool = eventPoolFromDb(conn, parentId);
@@ -654,7 +652,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 			values.add(arg);
 			return this;
 		}
-		MyQuery addPartWithList(String part, List<? extends Object> arg) {
+		MyQuery addPartWithList(String part, List<? extends Object> arg, String partIfEmptyList) {
+			if(arg.size() == 0)
+				return addPart(partIfEmptyList);
 			List<String> placeholders = new LinkedList<String>();
 			for(Object o : arg){
 				values.add(o);
@@ -753,7 +753,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 		public static MyQuery getSelectAccessibleEventItemsQuery(List<String> token) {
 			return new MyQuery().
 					addPart("SELECT " + EVENTITEMS_SELECT_FIELDS + ",permLevel AS PERM_LEVEL,userId AS USER_ID,exchangeToken AS EXCHANGE_TOKEN FROM eventitems INNER JOIN eventperms ON eventItemId=eventId LEFT JOIN eventusers ON eventId=mappedEvent").
-					addPartWithList(" WHERE (userToken IN ?)", token);
+					addPartWithList(" WHERE (userToken IN ?)", token, " WHERE (1=0)");
 		}
 		public static MyQuery getFillChildrenEventPoolsQuery() {
 			return new MyQuery().
@@ -775,20 +775,18 @@ public class EventsServiceImpl implements EventsService.Iface {
 			rs.close();
 			stm.close();
 			
-			if(token.size() > 0) {
-				stm = accessibleItemsQuery.getPreparedStatement(conn);
-				rs = stm.executeQuery();
-				while(rs.next()) {
-					if(rs.getInt("PERM_LEVEL") == 0)
-						continue;
-					EventItem ei = decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"));
-					if(token.contains(rs.getString("USER_ID")))
-						makeSelfEvent(ei, rs.getString("EXCHANGE_TOKEN"));
-					items.put(ei.getEventId(), ei);
-				}
-				rs.close();
-				stm.close();
+			stm = accessibleItemsQuery.getPreparedStatement(conn);
+			rs = stm.executeQuery();
+			while(rs.next()) {
+				if(rs.getInt("PERM_LEVEL") == 0)
+					continue;
+				EventItem ei = decodeFromResultSet(rs, rs.getInt("PERM_LEVEL"));
+				if(token.contains(rs.getString("USER_ID")))
+					makeSelfEvent(ei, rs.getString("EXCHANGE_TOKEN"));
+				items.put(ei.getEventId(), ei);
 			}
+			rs.close();
+			stm.close();
 			
 			// Now fill children
 			stm = fillChildrenQuery.getPreparedStatement(conn);
@@ -840,11 +838,11 @@ public class EventsServiceImpl implements EventsService.Iface {
 	
 	private static Map<Long, EventItem> eventItemsByIds(Connection conn, List<Long> ids, List<String> token) throws SQLException {
 		MyQuery publicEvents = EventItemDecoderFromDb.getSelectPublicEventItemsQuery().
-				addPartWithList(" AND (eventId IN ?)", ids);
+				addPartWithList(" AND (eventId IN ?)", ids, " AND (1=0)");
 		MyQuery accessibleEvents = EventItemDecoderFromDb.getSelectAccessibleEventItemsQuery(token).
-				addPartWithList(" AND (eventId IN ?)", ids);
+				addPartWithList(" AND (eventId IN ?)", ids, " AND (1=0)");
 		MyQuery fillChildren = EventItemDecoderFromDb.getFillChildrenEventPoolsQuery().
-				addPartWithList(" AND (eventId IN ?)", ids);
+				addPartWithList(" AND (eventId IN ?)", ids, " AND (1=0)");
 		return EventItemDecoderFromDb.getEventItemsUsingQueries(conn, publicEvents, accessibleEvents, fillChildren, token);
 	}
 	
