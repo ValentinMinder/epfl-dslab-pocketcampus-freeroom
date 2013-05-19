@@ -313,7 +313,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 			List<EventItem> categEvents = eventsByCateg.get(i);
 			if(categEvents == null) // if category becomes empty (filtering by tags)
 				continue; // then skip it
-			Collections.sort(categEvents, eventItemComp4sort);
+			Collections.sort(categEvents, getEventItemComp4sort(fetchPast));
 			Preparated<EventItem> p = new Preparated<EventItem>(categEvents, new Preparator<EventItem>() {
 				public int[] resources() {
 					return new int[] { R.id.event_title, R.id.event_speaker, R.id.event_thumbnail, R.id.event_time, R.id.event_fav_star };

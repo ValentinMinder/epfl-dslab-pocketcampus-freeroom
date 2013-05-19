@@ -339,22 +339,29 @@ public class EventsController extends PluginController implements IEventsControl
 	
 	public static SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", Locale.US);
 	
-	public static Comparator<EventItem> eventItemComp4sort = new Comparator<EventItem>() {
-		public int compare(EventItem lhs, EventItem rhs) {
-			if(lhs.isSetStartDate() && rhs.isSetStartDate())
-				return Long.valueOf(lhs.getStartDate()).compareTo(rhs.getStartDate());
-			if(lhs.isSetEventTitle() && rhs.isSetEventTitle())
-				return lhs.getEventTitle().compareTo(rhs.getEventTitle());
-			return 0;
-		}
-	};
-
-	public static Comparator<EventPool> eventPoolComp4sort = new Comparator<EventPool>() {
-		public int compare(EventPool lhs, EventPool rhs) {
-			return Long.valueOf(lhs.getPoolId()).compareTo(rhs.getPoolId());
-		}
-	};
-
+	public static Comparator<EventItem> getEventItemComp4sort(final boolean decr) {
+		return new Comparator<EventItem>() {
+			public int compare(EventItem lhs, EventItem rhs) {
+				if(lhs.isSetStartDate() && rhs.isSetStartDate()) {
+					if(decr)	return Long.valueOf(rhs.getStartDate()).compareTo(lhs.getStartDate());
+					else 		return Long.valueOf(lhs.getStartDate()).compareTo(rhs.getStartDate());
+				}
+				if(lhs.isSetEventTitle() && rhs.isSetEventTitle()) {
+					return lhs.getEventTitle().compareTo(rhs.getEventTitle());
+				}
+				return 0;
+			}
+		};
+	}
+	
+	public static Comparator<EventPool> getEventPoolComp4sort() {
+		return new Comparator<EventPool>() {
+			public int compare(EventPool lhs, EventPool rhs) {
+				return Long.valueOf(lhs.getPoolId()).compareTo(rhs.getPoolId());
+			}
+		};
+	}
+	
 	public static <T> List<T> intersect(List<T> l1, List<T> l2) {
 		List<T> nl = new LinkedList<T>(l1);
 		nl.retainAll(l2);

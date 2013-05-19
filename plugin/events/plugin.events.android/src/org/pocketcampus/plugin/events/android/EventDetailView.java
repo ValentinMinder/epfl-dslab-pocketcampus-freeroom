@@ -264,7 +264,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 				displayedPools.add(poolId);
 				eventPools.add(pool);
 			}
-			Collections.sort(eventPools, eventPoolComp4sort);
+			Collections.sort(eventPools, getEventPoolComp4sort());
 			Preparated<EventPool> p4 = new Preparated<EventPool>(eventPools, new Preparator<EventPool>() {
 				public int[] resources() {
 					return new int[] { R.id.event_title, R.id.event_place, R.id.event_thumbnail };

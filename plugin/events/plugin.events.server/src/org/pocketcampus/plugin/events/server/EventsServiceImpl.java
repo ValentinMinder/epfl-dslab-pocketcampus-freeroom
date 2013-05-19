@@ -123,7 +123,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 				return new EventItemReply(400);
 			fixCategAndTags(item);
 			Map<Long, EventPool> childrenPools = eventPoolsFromDb(conn, parentId);
-			//item.setChildrenPools(new LinkedList<Long>(childrenPools.keySet()));
+			item.setChildrenPools(new LinkedList<Long>(childrenPools.keySet())); // over-ride children (must be the same)
 			EventItemReply reply = new EventItemReply(200);
 			reply.setEventItem(item);
 			reply.setChildrenPools(childrenPools);
@@ -164,7 +164,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 			}
 			for(EventItem e : childrenItems.values())
 				fixCategAndTags(e);
-			//pool.setChildrenEvents(new LinkedList<Long>(childrenItems.keySet()));
+			pool.setChildrenEvents(new LinkedList<Long>(childrenItems.keySet())); // override children because of filtering logic
 			EventPoolReply reply = new EventPoolReply(200);
 			reply.setEventPool(pool);
 			reply.setChildrenItems(childrenItems);
