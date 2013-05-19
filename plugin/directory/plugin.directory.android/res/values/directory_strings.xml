@@ -9,7 +9,8 @@
      <string name="directory_dialog_button_web">Web</string>
      <string name="directory_dialog_button_map">Find on Map</string>
      <string name="directory_dialog_button_mail">Email</string>
-    
+     <string name="directory_dialog_button_import">Import</string>
+     
      <string name="directory_call">Call</string>
      <string name="directory_yes">yes</string>
      <string name="directory_no">no</string>

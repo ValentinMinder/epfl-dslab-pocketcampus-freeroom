@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -157,18 +158,21 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	private void setClickListener() {
 		Button mailButton = (Button) findViewById(R.id.directory_imageButton_mail);
 		Button phoneButton = (Button) findViewById(R.id.directory_imageButton_call);
-//		Button mapButton = (Button)findViewById(R.id.directory_imageButton_map);
+		//Button mapButton = (Button)findViewById(R.id.directory_imageButton_map);
+		Button importButton = (Button)findViewById(R.id.directory_imageButton_import);
 		Button webButton = (Button) findViewById(R.id.directory_imageButton_web);
 
 		mailButton.setVisibility(visibility(displayedPerson_.isSetEmail()));
 		phoneButton.setVisibility(visibility(displayedPerson_.isSetOfficePhoneNumber()));
 //		System.out.println(mapButton);
 //		mapButton.setVisibility(visibility(displayedPerson_.isSetOffice()));
+		importButton.setVisibility(visibility(true));
 		webButton.setVisibility(visibility(displayedPerson_.isSetWeb()));
 
 		mailButton.setOnClickListener(this);
 		phoneButton.setOnClickListener(this);
 //		mapButton.setOnClickListener(this);
+		importButton.setOnClickListener(this);
 		webButton.setOnClickListener(this);
 	}
 
@@ -184,6 +188,8 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 			performDial();
 		} else if (v.getId() == R.id.directory_imageButton_web) {
 			performWeb();
+		} else if (v.getId() == R.id.directory_imageButton_import) {
+			performImport();
 		}
 //		else if (v.getId() == R.id.directory_imageButton_map){
 //			performMap();
@@ -299,6 +305,23 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		ctx_.startActivity(WebIntent);
 	}
 
+
+	/**
+	 * Opens the native insert new contact activity on the phone 
+	 */
+	private void performImport() {
+		Intent addContactIntent = new Intent(Intent.ACTION_INSERT);
+		addContactIntent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.NAME, displayedPerson_.getFirstName() + " " + displayedPerson_.getLastName());
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.StructuredPostal.TYPE_WORK);
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.PHONE, displayedPerson_.getPrivatePhoneNumber());
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.POSTAL_TYPE, ContactsContract.CommonDataKinds.StructuredPostal.TYPE_WORK);
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.POSTAL, displayedPerson_.getOffice());
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.StructuredPostal.TYPE_WORK);
+		addContactIntent.putExtra(ContactsContract.Intents.Insert.EMAIL, displayedPerson_.getEmail());
+		ctx_.startActivity(addContactIntent);
+	}
+	
 	/**
 	 * Get a displayed text via his ressource id
 	 * @param resId The id of the wanted ressource.

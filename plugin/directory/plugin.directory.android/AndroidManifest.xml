@@ -37,8 +37,7 @@
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="pocketcampus" 
-				    android:host="directory.plugin.pocketcampus.org"  
-				    android:pathPrefix="/search" />
+				    android:host="directory.plugin.pocketcampus.org"   />
 			</intent-filter>
                         
                         

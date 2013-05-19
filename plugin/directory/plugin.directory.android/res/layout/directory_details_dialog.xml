@@ -149,7 +149,16 @@
             android:singleLine="true"
             android:text="@string/directory_dialog_button_map"
             android:visibility="gone" />
-            
+
+        <Button
+            android:id="@+id/directory_imageButton_import"
+            android:layout_width="0px"
+            android:layout_weight="33"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="@string/directory_dialog_button_import"
+            android:visibility="gone" />
+        
     </LinearLayout>
 
 </LinearLayout>

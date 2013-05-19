@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.directory.android;
 
 import java.util.ArrayList;
 
-import org.pocketcampus.plugin.directory.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -10,20 +9,19 @@ import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
 import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
+import org.pocketcampus.plugin.directory.R;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.android.ui.PersonDetailsDialog;
+import org.pocketcampus.plugin.directory.shared.Person;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -92,10 +90,21 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	@Override
 	protected void handleIntent(Intent intent) {
 		Uri aData = intent.getData();
-		if(aData != null && aData.getQueryParameter("q") != null) {
-			search(aData.getQueryParameter("q"));
+		if(aData == null)
+			return;
+		if("/search".equals(aData.getPath())) {
+			if(aData.getQueryParameter("q") != null) search(aData.getQueryParameter("q"));
+		} else if("/view".equals(aData.getPath())) {
+			Person p = new Person();
+			p.setFirstName(aData.getQueryParameter("name"));
+			p.setEmail(aData.getQueryParameter("email"));
+			p.setOffice(aData.getQueryParameter("address"));
+			p.setPictureUrl(aData.getQueryParameter("pic"));
+			p.setPrivatePhoneNumber(aData.getQueryParameter("phone"));
+			p.setWeb(aData.getQueryParameter("url"));
+			mDialog = new PersonDetailsDialog(this, p);
+			mDialog.show();
 		}
-
 	}
 	
 	/** 
