@@ -88,7 +88,7 @@ static EventsController* instance __weak = nil;
     
     if ([PCUtils isIdiomPad]) {
         navController = self.mainSplitViewController.viewControllers[1];
-        if ([navController isKindOfClass:[UINavigationController class]]) {
+        if (![navController isKindOfClass:[UINavigationController class]]) {
             navController = [[UINavigationController alloc] initWithRootViewController:viewController];
             self.mainSplitViewController.viewControllers = @[self.mainSplitViewController.viewControllers[0], navController];
         }
@@ -103,6 +103,18 @@ static EventsController* instance __weak = nil;
             if ([poolControllerCurrent poolId] == [poolControllerNew poolId]) {
                 //already present, just refresh
                 [poolControllerCurrent refresh];
+                return YES;
+            }
+        }
+    }
+    
+    if ([viewController isKindOfClass:[EventItemViewController class]]) {
+        EventItemViewController* itemControllerNew = (EventItemViewController*)viewController;
+        if ([navController.topViewController isKindOfClass:[EventItemViewController class]]) {
+            EventItemViewController* itemControllerCurrent = (EventItemViewController*)navController.topViewController;
+            if ([itemControllerCurrent itemId] == [itemControllerNew itemId]) {
+                //already present, just refresh
+                [itemControllerCurrent refresh];
                 return YES;
             }
         }

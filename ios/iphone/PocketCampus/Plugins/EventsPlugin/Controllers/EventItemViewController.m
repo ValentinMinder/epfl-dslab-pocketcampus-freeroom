@@ -127,6 +127,12 @@ static NSString* kPoolCell = @"PoolCell";
     }
 }
 
+#pragma mark - Public methods
+
+- (int64_t)itemId {
+    return self.eventId;
+}
+
 #pragma mark - Refresh control
 
 - (void)refresh {
@@ -182,6 +188,7 @@ static NSString* kPoolCell = @"PoolCell";
         return;
     }
     
+    self.title = self.eventItem.eventTitle;
     [self refreshFavoriteButton];
     
     if ([self.eventItem.childrenPools count] == 0) {
@@ -344,6 +351,7 @@ static NSString* kPoolCell = @"PoolCell";
     switch (reply.status) {
         case 200:
             [self.loadingIndicator stopAnimating];
+            self.eventId = reply.eventItem.eventId;
             self.eventItem = reply.eventItem;
             self.itemReply = reply;
             [self loadEvent];

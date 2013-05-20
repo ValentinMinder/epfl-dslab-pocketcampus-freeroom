@@ -4229,7 +4229,7 @@
          landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
@@ -4320,11 +4320,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventItemViewController.m"
-         timestampString = "390736032.109822"
+         timestampString = "390762370.266616"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "269"
-         endingLineNumber = "269"
+         startingLineNumber = "275"
+         endingLineNumber = "275"
          landmarkName = "-loadWebView"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4333,11 +4333,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390746513.453077"
+         timestampString = "390764973.858557"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "783"
-         endingLineNumber = "783"
+         startingLineNumber = "785"
+         endingLineNumber = "785"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4476,11 +4476,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390746513.453077"
+         timestampString = "390764973.858557"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "567"
-         endingLineNumber = "567"
+         startingLineNumber = "569"
+         endingLineNumber = "569"
          landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4502,11 +4502,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390746513.453077"
+         timestampString = "390764973.858557"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "432"
-         endingLineNumber = "432"
+         startingLineNumber = "434"
+         endingLineNumber = "434"
          landmarkName = "-presentTagsController"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4528,11 +4528,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390746513.453077"
+         timestampString = "390764973.858557"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "474"
-         endingLineNumber = "474"
+         startingLineNumber = "476"
+         endingLineNumber = "476"
          landmarkName = "@implementation EventPoolViewController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -4541,11 +4541,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390742665.077487"
+         timestampString = "390764973.858557"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "301"
-         endingLineNumber = "301"
+         startingLineNumber = "303"
+         endingLineNumber = "303"
          landmarkName = "-filterButtonPressed"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4679,11 +4679,11 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/EventsPlugin/Controllers/EventsShareFavoriteItemsViewController.m"
-         timestampString = "390652362.74522"
+         timestampString = "390764973.858557"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "132"
@@ -4739,11 +4739,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-         timestampString = "390746513.453077"
+         timestampString = "390764973.858557"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "663"
-         endingLineNumber = "663"
+         startingLineNumber = "665"
+         endingLineNumber = "665"
          landmarkName = "-getEventPoolForRequest:didReturn:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4800,11 +4800,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/EventsPlugin/Controllers/EventItemViewController.m"
-         timestampString = "390740540.113094"
+         timestampString = "390762370.266616"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "383"
-         endingLineNumber = "383"
+         startingLineNumber = "390"
+         endingLineNumber = "390"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -4822,7 +4822,7 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
@@ -4838,6 +4838,27 @@
                ActionType = "Xcode.BreakpointAction.DebuggerCommand">
                <ActionContent
                   consoleCommand = "po zoomScale">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/EventsPlugin/Controllers/EventItemViewController.m"
+         timestampString = "390761788.078192"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "99"
+         endingLineNumber = "99"
+         landmarkName = "-viewDidLoad"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "po self.eventItem.eventId">
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>

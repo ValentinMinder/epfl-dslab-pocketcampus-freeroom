@@ -162,7 +162,7 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.poolReply || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
+    if (!self.poolReply || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || self.eventPool.sendStarredItems) { //if sendStarredItems then list can change anytime and should be refreshed
         [self refresh];
     }
 }
@@ -290,7 +290,9 @@ static NSString* kEventCell = @"EventCell";
         return;
     }
     EventsShareFavoriteItemsViewController* viewController = [[EventsShareFavoriteItemsViewController alloc] initWithRelatedEventPool:self.eventPool];
-    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:viewController] animated:YES completion:NULL];
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:NULL];
 }
 
 - (void)filterButtonPressed {

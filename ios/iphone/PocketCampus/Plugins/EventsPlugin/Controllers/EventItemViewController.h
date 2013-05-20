@@ -21,4 +21,7 @@
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 @property (nonatomic, weak) IBOutlet UITableView* tableView;
 
+- (int64_t)itemId;
+- (void)refresh;
+
 @end
