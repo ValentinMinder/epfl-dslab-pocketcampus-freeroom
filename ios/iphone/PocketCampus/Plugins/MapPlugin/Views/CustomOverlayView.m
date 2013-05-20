@@ -149,7 +149,7 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
         /* END OF TEST */
         
         UIGraphicsPushContext(context);
-        [image drawInRect:[self rectForMapRect:mapRect] blendMode:kCGBlendModeNormal alpha:1.0];
+        [image drawInRect:[self rectForMapRect:mapRect] blendMode:kCGBlendModeNormal alpha:0.85];
         UIGraphicsPopContext();
     }
 }

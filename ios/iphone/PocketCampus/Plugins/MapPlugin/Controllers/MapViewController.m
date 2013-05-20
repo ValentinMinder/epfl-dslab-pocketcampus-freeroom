@@ -246,6 +246,11 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self mapView:self.mapView regionDidChangeAnimated:NO];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     if (self.navBarLoadingIndicator) {
         [self.navBarLoadingIndicator removeFromSuperview];
@@ -450,6 +455,18 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     self.floorLabel.text = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"Floor", @"MapPlugin", nil), self.epflTileOverlay.currentLayerLevel];
 }
 
+- (void)setLayersLevel:(NSInteger)level {
+    if (level == self.epflTileOverlay.currentLayerLevel) {
+        return;
+    }
+    for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) {
+        [self.mapView deselectAnnotation:annotation animated:YES];
+    }
+    [self.epflTileOverlay setLayerLevel:level];
+    [self.epflLayersOverlay setLayerLevel:level];
+    [self updateFloorLabel];
+}
+
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -603,6 +620,16 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
      }
      }*/
     
+    //NSLog(@"%f", zoomScale);
+    
+    MKZoomScale thresholdZoomScale;
+    
+    if ([PCUtils isRetinaDevice]) {
+        thresholdZoomScale = 0.0885;
+    } else {
+        thresholdZoomScale = 0.177;
+    }
+    
     if (![self.epflTileOverlay canDrawMapRect:self.mapView.visibleMapRect zoomScale:zoomScale] || !self.showBuildingsInterior) {
         if ([self.mapView.overlays count] > 0) {
             [self.mapView removeOverlay:self.epflTileOverlay];
@@ -613,6 +640,11 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         if ([self.mapView.overlays count] == 0) {
             [self.mapView addOverlay:self.epflTileOverlay];
             //[mapView addOverlay:epflLayersOverlay];
+        }
+        if (zoomScale < thresholdZoomScale) {
+            [self setLayersLevel:1]; //back to normal floor because other floors might display nothing at low zoom scale
+            self.floorManagementSuperview.hidden = YES;
+        } else {
             self.floorManagementSuperview.hidden = NO;
         }
     } else {
