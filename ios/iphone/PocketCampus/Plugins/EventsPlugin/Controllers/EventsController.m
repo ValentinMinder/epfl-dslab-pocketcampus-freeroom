@@ -95,6 +95,19 @@ static EventsController* instance __weak = nil;
     } else {
         navController = self.mainNavigationController;
     }
+    
+    if ([viewController isKindOfClass:[EventPoolViewController class]]) {
+        EventPoolViewController* poolControllerNew = (EventPoolViewController*)viewController;
+        if ([navController.topViewController isKindOfClass:[EventPoolViewController class]]) {
+            EventPoolViewController* poolControllerCurrent = (EventPoolViewController*)navController.topViewController;
+            if ([poolControllerCurrent poolId] == [poolControllerNew poolId]) {
+                //already present, just refresh
+                [poolControllerCurrent refresh];
+                return YES;
+            }
+        }
+    }
+    
     if (!viewController.navigationController) {
         [navController pushViewController:viewController animated:YES];
     }

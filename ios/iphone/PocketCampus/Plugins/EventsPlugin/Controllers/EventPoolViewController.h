@@ -19,4 +19,7 @@
 - (id)initAndLoadRootPool;
 - (id)initAndLoadEventPoolWithId:(int64_t)poolId;
 
+- (int64_t)poolId;
+- (void)refresh;
+
 @end

@@ -132,6 +132,7 @@
     self.operationInProgress = NO;
     switch (reply.status) {
         case 200:
+            self.operationInProgress = NO;
             [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
             break;
         default:

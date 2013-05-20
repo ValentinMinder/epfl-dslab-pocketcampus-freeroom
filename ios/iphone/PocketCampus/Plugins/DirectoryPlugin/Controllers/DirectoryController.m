@@ -66,7 +66,6 @@ static DirectoryController* instance __weak = nil;
 }
 
 - (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
-    NSLog(@"Handling: action:%@ parameters:%@", action, parameters);
     UIViewController* viewController = [self viewControllerForURLQueryAction:action parameters:parameters];
     if (!viewController) {
         return NO;

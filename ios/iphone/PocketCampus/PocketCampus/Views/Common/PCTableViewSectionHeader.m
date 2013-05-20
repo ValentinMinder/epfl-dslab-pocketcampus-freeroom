@@ -13,13 +13,13 @@ static float SEPARATOR_HEIGHT = 1.0;
 
 @implementation PCTableViewSectionHeader
 
-- (id)initWithSectionTitle:(NSString*)sectionTitle tableView:(UITableView*)tableView_
+- (id)initWithSectionTitle:(NSString*)sectionTitle tableView:(UITableView*)tableView
 {
     float VIEW_HEIGHT = [PCValues tableViewSectionHeaderHeight];
-    self = [super initWithFrame:CGRectMake(0, 0, tableView_.frame.size.width, VIEW_HEIGHT)]; //screen height so that landscape orientation is directly supported
+    self = [super initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, VIEW_HEIGHT)]; //screen height so that landscape orientation is directly supported
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     if (self) {
-        tableView = tableView_;
+        _tableView = tableView;
         self.alpha = 0.85;
         self.backgroundColor = [PCValues backgroundColor1];
         UIView* separator1 = [[UIView alloc] initWithFrame:CGRectMake(0, -1.0, self.frame.size.width, SEPARATOR_HEIGHT)];
@@ -44,9 +44,6 @@ static float SEPARATOR_HEIGHT = 1.0;
         [self addSubview:separator1];
         [self addSubview:label];
         [self addSubview:separator2];
-        [separator1 release];
-        [label release];
-        [separator2 release];
     }
     return self;
 }

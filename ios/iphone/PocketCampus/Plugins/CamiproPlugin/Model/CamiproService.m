@@ -44,7 +44,7 @@ static CamiproService* instance __weak = nil;
 
 
 - (id)thriftServiceClientInstance {
-    return [[[CamiproServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
+    return [[CamiproServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 + (CamiproSession*)lastSessionId {
@@ -62,7 +62,6 @@ static CamiproService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(getTequilaTokenForCamiproFailed);
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate {
@@ -73,7 +72,6 @@ static CamiproService* instance __weak = nil;
     [operation addObjectArgument:tequilaKey];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getBalanceAndTransactions:(CamiproRequest*)camiproRequest delegate:(id)delegate {
@@ -87,7 +85,6 @@ static CamiproService* instance __weak = nil;
     [operation addObjectArgument:camiproRequest];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getStatsAndLoadingInfo:(CamiproRequest*)camiproRequest delegate:(id)delegate {
@@ -101,7 +98,6 @@ static CamiproService* instance __weak = nil;
     [operation addObjectArgument:camiproRequest];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)sendLoadingInfoByEmail:(CamiproRequest*)camiproRequest delegate:(id)delegate {
@@ -115,7 +111,6 @@ static CamiproService* instance __weak = nil;
     [operation addObjectArgument:camiproRequest];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)dealloc

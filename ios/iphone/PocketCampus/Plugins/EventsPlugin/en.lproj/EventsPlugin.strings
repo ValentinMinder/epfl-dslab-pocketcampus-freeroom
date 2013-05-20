@@ -37,7 +37,7 @@
 "SixMonths" = "6 months";
 "OneYear" = "1 year";
 "Share" = "Share";
-"SendByEmailInstructions" = "Send your list of starred\nelements by email.";
+"SendByEmailInstructions" = "Send your list of favorite\nelements by email.";
 "BackToUpcomingEvents" = "Back to upcoming events";
 "PastEvents" = "Past events";
 "ShowPastEventsFor..." = "Show past events back to";

@@ -91,18 +91,29 @@ static EventsService* instance __weak = nil;
 }
 
 - (void)addUserTicket:(NSString*)ticket {
+    NSLog(@"-> Add user ticket: %@", ticket);
     [self initUserTickets];
     [self.userTickets addObject:ticket];
+    [self persistUserTickets];
 }
 
 - (void)removeUserTicket:(NSString*)ticket {
+    NSLog(@"-> Remove user ticket: %@", ticket);
     [self initUserTickets];
     [self.userTickets removeObject:ticket];
+    [self persistUserTickets];
 }
 
 - (NSArray*)allUserTickets {
     [self initUserTickets];
     return [self.userTickets allObjects];
+}
+
+- (BOOL)persistUserTickets {
+    if (!self.userTickets) {
+        return YES;
+    }
+    return [ObjectArchiver saveObject:self.userTickets forKey:kUserTicketsKey andPluginName:@"events"];
 }
 
 #pragma mark - User token
@@ -216,7 +227,6 @@ static EventsService* instance __weak = nil;
 
 - (void)getEventPoolForRequest:(EventPoolRequest*)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[EventPoolRequest class]];
-    //NSLog(@"original: %@", request);
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.skipCache = YES;
@@ -252,7 +262,6 @@ static EventsService* instance __weak = nil;
 
 - (EventPoolReply*)getFromCacheEventPoolForRequest:(EventPoolRequest*)request {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[EventPoolRequest class]];
-    //NSLog(@"cached: %@", request);
     ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
     operation.serviceClientSelector = @selector(getEventPool:);
     operation.delegateDidReturnSelector = @selector(getEventPoolForRequest:didReturn:);
