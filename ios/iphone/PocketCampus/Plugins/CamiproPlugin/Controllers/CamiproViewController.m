@@ -25,6 +25,8 @@
 static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
 static NSUInteger kTransactionPriceViewTag = 15;
 
+static const CGFloat kShadowViewAlpha = 0.7;
+
 @interface CamiproViewController ()
 
 
@@ -42,6 +44,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
 @property (nonatomic, weak) IBOutlet UILabel* statsContentLabel;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* statsActivityIndicator;
 @property (nonatomic, weak) IBOutlet UIButton* reloadCardButton;
+@property (nonatomic, strong) UIView* shadowView;
 
 // iPhone only
 @property (nonatomic, weak) IBOutlet UIBarButtonItem* reloadCardBarButton;
@@ -88,9 +91,9 @@ static NSUInteger kTransactionPriceViewTag = 15;
     
     
     if ([PCUtils isIdiomPad]) {
-        self.tableView.layer.masksToBounds = NO;
-        self.tableView.layer.shadowOffset = CGSizeMake(0, 0);
-        self.tableView.layer.shadowOpacity = 0.5;
+        //self.tableView.layer.masksToBounds = NO;
+        //self.tableView.layer.shadowOffset = CGSizeMake(0, 0);
+        //self.tableView.layer.shadowOpacity = 0.5;
         //self.tableView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.tableView.bounds].CGPath;
         
         self.statsLabel.text = NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil);
@@ -108,7 +111,13 @@ static NSUInteger kTransactionPriceViewTag = 15;
         [self.reloadCardButton setBackgroundImage:[PCValues imageForGenericGreyButton] forState:UIControlStateNormal];
         [self.reloadCardButton setBackgroundImage:[PCValues highlightedForGenericGreyButton] forState:UIControlStateHighlighted];
         
-        [self willAnimateRotationToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation] duration:0.0];
+        self.shadowView = [[UIImageView alloc] initWithImage:[PCValues imageForGenericResizableShadow]];
+        self.shadowView.alpha = kShadowViewAlpha;
+        self.shadowView.autoresizingMask = self.tableView.autoresizingMask;
+        //[self.view addSubview:shadowView];
+        [self.view insertSubview:self.shadowView atIndex:0];
+        
+        //[self willAnimateRotationToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation] duration:0.0];
     } else {
         self.reloadCardBarButton.title = NSLocalizedStringFromTable(@"ReloadCard", @"CamiproPlugin", nil);
         self.statsBarButton.title = NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil);
@@ -137,6 +146,11 @@ static NSUInteger kTransactionPriceViewTag = 15;
     // Release any retained subviews of the main view.
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self didRotateFromInterfaceOrientation:UIInterfaceOrientationPortrait];
+}
+
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
     if ([PCUtils isIdiomPad]) {
@@ -155,15 +169,22 @@ static NSUInteger kTransactionPriceViewTag = 15;
     }
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+/*- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     if (![PCUtils isIdiomPad]) {
         return;
     }
-    
     self.tableView.layer.masksToBounds = YES;
     self.tableView.layer.shadowOpacity = 0.0;
     [self.tableViewMasksToBoundsTimer invalidate];
     self.tableViewMasksToBoundsTimer = [NSTimer scheduledTimerWithTimeInterval:duration+0.05 target:self selector:@selector(setTableViewMasksToBoundsNO) userInfo:nil repeats:NO];
+}*/
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    if (![PCUtils isIdiomPad]) {
+        return;
+    }
+    CGRect frame = self.tableView.frame;
+    self.shadowView.frame = CGRectMake(frame.origin.x-24.0, frame.origin.y-24.0, frame.size.width+46.0, frame.size.height+48.0);
 }
 
 - (void)setTableViewMasksToBoundsNO {
@@ -175,6 +196,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     self.centerMessageLabel.text = @"";
     [self.centerActivityIndicator startAnimating];
     self.tableView.hidden = YES;
+    self.shadowView.hidden = YES;
     self.toolbar.hidden = YES;
     //self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -244,6 +266,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
     self.tableView.hidden = YES;
+    self.shadowView.hidden = YES;
     self.toolbar.hidden = YES;
     //self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
@@ -290,6 +313,8 @@ static NSUInteger kTransactionPriceViewTag = 15;
             self.balanceAndTransactions = balanceAndTransactions;
             self.tableView.alpha = 0.0;
             self.tableView.hidden = NO;
+            self.shadowView.alpha = 0.0;
+            self.shadowView.hidden = NO;
             self.toolbar.alpha = 0.0;
             self.toolbar.hidden = NO;
             //self.lastUpdateLabel.hidden = NO;
@@ -300,6 +325,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
             
             [UIView animateWithDuration:0.2 animations:^{
                 self.tableView.alpha = 1.0;
+                self.shadowView.alpha = kShadowViewAlpha;
                 self.toolbar.alpha = 1.0;
                 self.reloadCardButton.alpha = 1.0; //iPad
             }];
@@ -323,6 +349,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
     self.tableView.hidden = YES;
+    self.shadowView.hidden = YES;
     self.toolbar.hidden = YES;
     //self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
@@ -457,6 +484,7 @@ static NSUInteger kTransactionPriceViewTag = 15;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
     self.tableView.hidden = YES;
+    self.shadowView.hidden = YES;
     self.toolbar.hidden = YES;
     //self.lastUpdateLabel.hidden = YES;
     self.statsContainerView.hidden = YES; //iPad

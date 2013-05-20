@@ -159,6 +159,8 @@
 		324A5998151DFDD200977F33 /* AddStationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A5997151DFDD200977F33 /* AddStationViewController.m */; };
 		324A599A151DFDF700977F33 /* AddStationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5999151DFDF700977F33 /* AddStationView.xib */; };
 		324A59A0151E453300977F33 /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; };
+		324C7A23174A627C00ED19FD /* GenericResizableShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A21174A627C00ED19FD /* GenericResizableShadow.png */; };
+		324C7A24174A627C00ED19FD /* GenericResizableShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */; };
 		324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */; };
 		324CB5821671585B008C7B3D /* MoodleSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		324F6B3015D7B55F00CFB8B5 /* MapServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */; };
@@ -678,6 +680,8 @@
 		324A5999151DFDF700977F33 /* AddStationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStationView.xib; sourceTree = "<group>"; };
 		324A599E151E453300977F33 /* TransportUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportUtils.h; sourceTree = "<group>"; };
 		324A599F151E453300977F33 /* TransportUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportUtils.m; sourceTree = "<group>"; };
+		324C7A21174A627C00ED19FD /* GenericResizableShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GenericResizableShadow.png; sourceTree = "<group>"; };
+		324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GenericResizableShadow@2x.png"; sourceTree = "<group>"; };
 		324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleSplashDetailView.xib; sourceTree = "<group>"; };
 		324CB5801671585B008C7B3D /* MoodleSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleSplashDetailViewController.h; sourceTree = "<group>"; };
 		324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSplashDetailViewController.m; sourceTree = "<group>"; };
@@ -1456,6 +1460,8 @@
 				322C07511722A7E6004FDC83 /* GenericGreyButton@2x.png */,
 				322C07521722A7E6004FDC83 /* GenericGreyButtonHighlight.png */,
 				322C07531722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png */,
+				324C7A21174A627C00ED19FD /* GenericResizableShadow.png */,
+				324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */,
 				3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */,
 				3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */,
 				325368BE164932F600406801 /* StretchableInnerShadow.png */,
@@ -3129,6 +3135,8 @@
 				322C07571722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png in Resources */,
 				328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */,
 				32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */,
+				324C7A23174A627C00ED19FD /* GenericResizableShadow.png in Resources */,
+				324C7A24174A627C00ED19FD /* GenericResizableShadow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

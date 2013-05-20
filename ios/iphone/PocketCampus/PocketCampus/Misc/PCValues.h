@@ -19,6 +19,8 @@
 + (UIImage*)imageForGenericGreyButton;
 + (UIImage*)highlightedForGenericGreyButton;
 
++ (UIImage*)imageForGenericResizableShadow;
+
 + (float)defaultCornerRadius;
 + (UIColor*)pocketCampusRed;
 + (UIColor*)backgroundColor1;
