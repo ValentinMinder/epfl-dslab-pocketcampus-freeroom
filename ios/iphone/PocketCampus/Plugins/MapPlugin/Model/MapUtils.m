@@ -135,7 +135,7 @@ double WGStoCHy(double lat, double lng) {
     
     retAnnotations = [annotations mutableCopy];
     
-    return [retAnnotations autorelease];
+    return retAnnotations;
 }
 
 + (id<MKAnnotation>)annotationThatShouldBeSelectedOnMapView:(MKMapView*)mapView forQuery:(NSString*)query {

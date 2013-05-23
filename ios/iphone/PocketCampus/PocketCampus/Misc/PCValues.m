@@ -27,6 +27,10 @@
     return [[UIImage imageNamed:@"GenericGreyButtonHighlight"] resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
 }
 
++ (UIImage*)imageForGenericResizableShadow {
+    return [[UIImage imageNamed:@"GenericResizableShadow"] resizableImageWithCapInsets:UIEdgeInsetsMake(60, 60, 60, 60)];
+}
+
 + (float)defaultCornerRadius {
     if ([PCUtils isIdiomPad]) {
         return 5.0;

@@ -137,6 +137,12 @@ static NSString* kEventCell = @"EventCell";
     return self;
 }
 
+#pragma mark - Public methods
+
+- (int64_t)poolId {
+    return _poolId;
+}
+
 #pragma mark - View load and visibility
 
 - (void)viewDidLoad {
@@ -152,12 +158,11 @@ static NSString* kEventCell = @"EventCell";
     [(PCTableViewWithRemoteThumbnails*)(self.tableView) setTemporaryThumnail:[UIImage imageNamed:@"NoImageCell_64"]];
     [self showButtonsConditionally];
     [self fillCollectionsFromReplyAndSelection];
-    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.poolReply || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
+    if (!self.poolReply || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || self.eventPool.sendStarredItems) { //if sendStarredItems then list can change anytime and should be refreshed
         [self refresh];
     }
 }
@@ -191,7 +196,9 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)setPoolReply:(EventPoolReply *)poolReply {
     _poolReply = poolReply;
-    self.eventPool = self.poolReply.eventPool;
+    if (poolReply.eventPool) {
+        self.eventPool = self.poolReply.eventPool;
+    }
 }
 
 #pragma mark - Refresh control
@@ -221,8 +228,9 @@ static NSString* kEventCell = @"EventCell";
     return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:nil userTickets:[self.eventsService allUserTickets] starredEventItems:starredItems lang:[PCUtils userLanguageCode] period:self.selectedPeriod fetchPast:self.pastMode];
 }
 
-- (void)startGetEventPoolRequest { 
-    [self.eventsService getEventPoolForRequest:[self createEventPoolRequest] delegate:self];
+- (void)startGetEventPoolRequest {
+    EventPoolRequest* request = [self createEventPoolRequest];
+    [self.eventsService getEventPoolForRequest:request delegate:self];
 }
 
 - (void)reselectLastSelectedItem {
@@ -268,6 +276,9 @@ static NSString* kEventCell = @"EventCell";
     
     if (self.eventPool.sendStarredItems) {
         self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
+        if (self.poolReply.childrenItems.count == 0) {
+            self.actionButton.enabled = NO;
+        }
         [rightElements addObject:self.actionButton];
     }
     
@@ -279,7 +290,9 @@ static NSString* kEventCell = @"EventCell";
         return;
     }
     EventsShareFavoriteItemsViewController* viewController = [[EventsShareFavoriteItemsViewController alloc] initWithRelatedEventPool:self.eventPool];
-    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:viewController] animated:YES completion:NULL];
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:NULL];
 }
 
 - (void)filterButtonPressed {
@@ -288,50 +301,48 @@ static NSString* kEventCell = @"EventCell";
         return;
     }
     
-    if (self.filterSelectionActionSheet) {
-        [self.filterSelectionActionSheet dismissWithClickedButtonIndex:self.filterSelectionActionSheet.cancelButtonIndex animated:NO];
-    }
+    if (!self.filterSelectionActionSheet) {
+        NSMutableArray* buttonTitles = [NSMutableArray arrayWithCapacity:3];
         
-    NSMutableArray* buttonTitles = [NSMutableArray arrayWithCapacity:3];
-    
-    if ([self goToCategoryButtonIndex] >= 0) {
-        [buttonTitles addObject:NSLocalizedStringFromTable(@"SelectCategory", @"EventsPlugin", nil)];
-    }
-    
-    if ([self filterByTagsButtonIndex] >= 0) {
-        NSString* title = nil;
-        if (self.poolReply.tags.count == 0 || (self.selectedTags.count == self.poolReply.tags.count)) {
-            title = NSLocalizedStringFromTable(@"FilterByTags", @"EventsPlugin", nil);
-        } else {
-            title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FilterByTagsWithFormat", @"EventsPlugin", nil), self.selectedTags.count, self.poolReply.tags.count];
+        if ([self goToCategoryButtonIndex] >= 0) {
+            [buttonTitles addObject:NSLocalizedStringFromTable(@"SelectCategory", @"EventsPlugin", nil)];
         }
-        [buttonTitles addObject:title];
-    }
-    
-    if ([self pastModeButtonIndex] >= 0) {
-        NSString* title = nil;
-        if (self.pastMode) {
-            title = NSLocalizedStringFromTable(@"BackToUpcomingEvents", @"EventsPlugin", nil);
-        } else {
-            title = NSLocalizedStringFromTable(@"PastEvents", @"EventsPlugin", nil);
+        
+        if ([self filterByTagsButtonIndex] >= 0) {
+            NSString* title = nil;
+            if (self.poolReply.tags.count == 0 || (self.selectedTags.count == self.poolReply.tags.count)) {
+                title = NSLocalizedStringFromTable(@"FilterByTags", @"EventsPlugin", nil);
+            } else {
+                title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FilterByTagsWithFormat", @"EventsPlugin", nil), self.selectedTags.count, self.poolReply.tags.count];
+            }
+            [buttonTitles addObject:title];
         }
-        [buttonTitles addObject:title];
+        
+        if ([self pastModeButtonIndex] >= 0) {
+            NSString* title = nil;
+            if (self.pastMode) {
+                title = NSLocalizedStringFromTable(@"BackToUpcomingEvents", @"EventsPlugin", nil);
+            } else {
+                title = NSLocalizedStringFromTable(@"PastEvents", @"EventsPlugin", nil);
+            }
+            [buttonTitles addObject:title];
+        }
+        
+        if ([self periodButtonIndex] >= 0) {
+            NSString* periodString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat", @"EventsPlugin", nil), [EventsUtils periodStringForEventsPeriod:self.selectedPeriod selected:NO]];
+            [buttonTitles addObject:periodString];
+        }
+        
+        [buttonTitles addObject:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
+        
+        self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        
+        for (NSString* title in buttonTitles) {
+            [self.filterSelectionActionSheet addButtonWithTitle:title];
+        }
+        
+        self.filterSelectionActionSheet.cancelButtonIndex = self.filterSelectionActionSheet.numberOfButtons-1;
     }
-    
-    if ([self periodButtonIndex] >= 0) {
-        NSString* periodString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat", @"EventsPlugin", nil), [EventsUtils periodStringForEventsPeriod:self.selectedPeriod selected:NO]];
-        [buttonTitles addObject:periodString];
-    }
-    
-    [buttonTitles addObject:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
-    
-    self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-    
-    for (NSString* title in buttonTitles) {
-        [self.filterSelectionActionSheet addButtonWithTitle:title];
-    }
-    
-    self.filterSelectionActionSheet.cancelButtonIndex = self.filterSelectionActionSheet.numberOfButtons-1;
     
     [self.filterSelectionActionSheet toggleFromBarButtonItem:self.filterButton animated:YES];
 }
@@ -451,7 +462,7 @@ static NSString* kEventCell = @"EventCell";
     if (self.pastMode) {
         title = NSLocalizedStringFromTable(@"ShowPastEventsFor...", @"EventsPlugin", nil);
     } else {
-        title = NSLocalizedStringFromTable(@"ShowEventsFor", @"EventsPlugin", nil);
+        title = NSLocalizedStringFromTable(@"ShowEventsFor...", @"EventsPlugin", nil);
     }
     self.periodsSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
                                         [EventsUtils periodStringForEventsPeriod:EventsPeriods_ONE_WEEK selected:(self.selectedPeriod == EventsPeriods_ONE_WEEK)],
@@ -585,9 +596,15 @@ static NSString* kEventCell = @"EventCell";
         return;
     }
     
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self.navigationController pushViewController:viewController animated:YES];
-    }];
+    if ([viewController isKindOfClass:[EventPoolViewController class]]) {
+        if ([(EventPoolViewController*)viewController poolId] == self.poolId) {
+            [self refresh];
+        }
+    } else {
+        [self.navigationController pushViewController:viewController animated:NO];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:NULL];
     
     /*NSDictionary* parameters = [PCUtils urlStringParameters:urlString];
     

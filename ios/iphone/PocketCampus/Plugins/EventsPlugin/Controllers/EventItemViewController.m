@@ -127,6 +127,12 @@ static NSString* kPoolCell = @"PoolCell";
     }
 }
 
+#pragma mark - Public methods
+
+- (int64_t)itemId {
+    return self.eventId;
+}
+
 #pragma mark - Refresh control
 
 - (void)refresh {
@@ -182,6 +188,7 @@ static NSString* kPoolCell = @"PoolCell";
         return;
     }
     
+    self.title = self.eventItem.eventTitle;
     [self refreshFavoriteButton];
     
     if ([self.eventItem.childrenPools count] == 0) {
@@ -231,6 +238,7 @@ static NSString* kPoolCell = @"PoolCell";
     replacements[@"$EVENT_ITEM_PLACE$"] = @"";
     replacements[@"$EVENT_ITEM_SPEAKER$"] = @"";
     replacements[@"$EVENT_ITEM_MORE$"] = @"";
+    replacements[@"$EVENT_ITEM_TAGS$"] = @"";
     
     
     if (self.eventItem.eventThumbnail && !self.eventItem.hideThumbnail) {
@@ -269,8 +277,12 @@ static NSString* kPoolCell = @"PoolCell";
         }
         
         if (self.eventItem.detailsLink) {
-            replacements[@"$EVENT_ITEM_MORE$"] = [NSString stringWithFormat:@"<a href='%@'>%@</a>", self.eventItem.detailsLink, NSLocalizedStringFromTable(@"MoreDetails", @"EventsPlugin", nil)];
+            replacements[@"$EVENT_ITEM_MORE$"] = [NSString stringWithFormat:@"<a href='%@'>%@</a><br>", self.eventItem.detailsLink, NSLocalizedStringFromTable(@"MoreDetails", @"EventsPlugin", nil)];
         }
+        
+        /*if (self.eventItem.eventTags.count > 0) {
+            replacements[@"$EVENT_ITEM_TAGS$"] = [NSString stringWithFormat:@"<b>%@:</b> %@<br>", NSLocalizedStringFromTable(@"Tags", @"EventsPlugin", nil), self.eventItem.eventTags];
+        }*/
     }
     
     replacements[@"$EVENT_ITEM_CENTER_IMAGE$"] = @"";
@@ -339,6 +351,7 @@ static NSString* kPoolCell = @"PoolCell";
     switch (reply.status) {
         case 200:
             [self.loadingIndicator stopAnimating];
+            self.eventId = reply.eventItem.eventId;
             self.eventItem = reply.eventItem;
             self.itemReply = reply;
             [self loadEvent];
@@ -353,7 +366,7 @@ static NSString* kPoolCell = @"PoolCell";
     }
 }
 
-- (void)getEventItemFailedForRequest:(EventPoolRequest *)request {
+- (void)getEventItemFailedForRequest:(EventItemRequest *)request {
     [self error];
 }
 

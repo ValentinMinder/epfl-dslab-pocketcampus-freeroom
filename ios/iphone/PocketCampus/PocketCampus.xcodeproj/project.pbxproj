@@ -71,7 +71,7 @@
 		3219EF9614FCE08300A271CD /* TSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219EF8614FCE08300A271CD /* TSocketClient.m */; };
 		3219EF9714FCE08300A271CD /* TTransportException.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219EF8914FCE08300A271CD /* TTransportException.m */; };
 		3219EF9814FCE08300A271CD /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219EF8B14FCE08300A271CD /* TSharedProcessorFactory.m */; };
-		321CCF7016E27357002CBEA2 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */; };
+		321CCF7016E27357002CBEA2 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		321CCF8F16E37EB6002CBEA2 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 321CCF8916E37EB6002CBEA2 /* libzbar.a */; };
 		321CCF9016E37EB6002CBEA2 /* zbar-back.png in Resources */ = {isa = PBXBuildFile; fileRef = 321CCF8B16E37EB6002CBEA2 /* zbar-back.png */; };
 		321CCF9116E37EB6002CBEA2 /* zbar-help.html in Resources */ = {isa = PBXBuildFile; fileRef = 321CCF8C16E37EB6002CBEA2 /* zbar-help.html */; };
@@ -152,13 +152,15 @@
 		3244B3E816A36976006A7E37 /* MoodleResource+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3247C3B71504F2E10079522A /* FoodPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3247C3B01504F2E10079522A /* FoodPlugin.strings */; };
-		3247CAF815135FD800105A71 /* PCTableViewSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */; };
+		3247CAF815135FD800105A71 /* PCTableViewSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32488C921535F31B00BA49AB /* ConnectionSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */; };
 		324A5990151DC6A800977F33 /* FavoriteStationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A598F151DC6A800977F33 /* FavoriteStationsViewController.m */; };
 		324A5993151DC73A00977F33 /* FavoriteStationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5992151DC73A00977F33 /* FavoriteStationsView.xib */; };
 		324A5998151DFDD200977F33 /* AddStationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A5997151DFDD200977F33 /* AddStationViewController.m */; };
 		324A599A151DFDF700977F33 /* AddStationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5999151DFDF700977F33 /* AddStationView.xib */; };
 		324A59A0151E453300977F33 /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; };
+		324C7A23174A627C00ED19FD /* GenericResizableShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A21174A627C00ED19FD /* GenericResizableShadow.png */; };
+		324C7A24174A627C00ED19FD /* GenericResizableShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */; };
 		324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */; };
 		324CB5821671585B008C7B3D /* MoodleSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		324F6B3015D7B55F00CFB8B5 /* MapServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */; };
@@ -193,7 +195,7 @@
 		326B9250150279E900DB4AEE /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B924F150279E900DB4AEE /* AddressBookUI.framework */; };
 		326B925215027A1400DB4AEE /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B925115027A1400DB4AEE /* AddressBook.framework */; };
 		32704C7C15002F67002BCB75 /* Plugins.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32704C7B15002F67002BCB75 /* Plugins.plist */; };
-		32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E8C1564FC2400DE6984 /* CamiproService.m */; };
+		32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E8C1564FC2400DE6984 /* CamiproService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E90156507DA00DE6984 /* CamiproViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32710E951565129600DE6984 /* CamiproLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32710E941565129600DE6984 /* CamiproLarge.png */; };
 		327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412D8167E776A001E8C62 /* DownloadedCorner.png */; };
@@ -201,7 +203,7 @@
 		327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412DF167E7E56001E8C62 /* DownloadedCornerSelected.png */; };
 		327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */; };
 		327412E5167E824F001E8C62 /* PCTableViewCellAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		3275435F153872DF00C94F3D /* MapUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3275435E153872DF00C94F3D /* MapUtils.m */; };
+		3275435F153872DF00C94F3D /* MapUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3275435E153872DF00C94F3D /* MapUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32763231166511B700C33DF9 /* MapView-pad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32763230166511B600C33DF9 /* MapView-pad.xib */; };
 		3276BE0B150BBA77001F2A88 /* RatingStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE09150BBA77001F2A88 /* RatingStarEmpty.png */; };
 		3276BE0C150BBA77001F2A88 /* RatingStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE0A150BBA77001F2A88 /* RatingStarEmpty@2x.png */; };
@@ -224,7 +226,7 @@
 		328B9EED150B8E7B00B50024 /* JSFavStarControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 328B9EEC150B8E7B00B50024 /* JSFavStarControl.m */; };
 		328B9EF4150B927500B50024 /* RatingStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF2150B927500B50024 /* RatingStar.png */; };
 		328B9EF5150B927500B50024 /* RatingStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF3150B927500B50024 /* RatingStar@2x.png */; };
-		328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; settings = {COMPILER_FLAGS = "-fobc-arc"; }; };
+		328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328D38291747A8C9006FE6F3 /* EventsTagView.xib */; };
 		3292C31716402B4F00AE4D51 /* PCRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3292C31616402B4F00AE4D51 /* PCRefreshControl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; };
@@ -678,6 +680,8 @@
 		324A5999151DFDF700977F33 /* AddStationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStationView.xib; sourceTree = "<group>"; };
 		324A599E151E453300977F33 /* TransportUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportUtils.h; sourceTree = "<group>"; };
 		324A599F151E453300977F33 /* TransportUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportUtils.m; sourceTree = "<group>"; };
+		324C7A21174A627C00ED19FD /* GenericResizableShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GenericResizableShadow.png; sourceTree = "<group>"; };
+		324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GenericResizableShadow@2x.png"; sourceTree = "<group>"; };
 		324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleSplashDetailView.xib; sourceTree = "<group>"; };
 		324CB5801671585B008C7B3D /* MoodleSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleSplashDetailViewController.h; sourceTree = "<group>"; };
 		324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSplashDetailViewController.m; sourceTree = "<group>"; };
@@ -1456,6 +1460,8 @@
 				322C07511722A7E6004FDC83 /* GenericGreyButton@2x.png */,
 				322C07521722A7E6004FDC83 /* GenericGreyButtonHighlight.png */,
 				322C07531722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png */,
+				324C7A21174A627C00ED19FD /* GenericResizableShadow.png */,
+				324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */,
 				3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */,
 				3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */,
 				325368BE164932F600406801 /* StretchableInnerShadow.png */,
@@ -3129,6 +3135,8 @@
 				322C07571722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png in Resources */,
 				328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */,
 				32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */,
+				324C7A23174A627C00ED19FD /* GenericResizableShadow.png in Resources */,
+				324C7A24174A627C00ED19FD /* GenericResizableShadow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,7 +14,7 @@
 
 #import "MapItemAnnotation.h"
 
-#define MINIMUM_ZOOM_ARC 0.0015
+#define MINIMUM_ZOOM_ARC 0.00085
 #define ANNOTATION_REGION_PAD_FACTOR 1.15
 #define MAX_DEGREES_ARC 360
 

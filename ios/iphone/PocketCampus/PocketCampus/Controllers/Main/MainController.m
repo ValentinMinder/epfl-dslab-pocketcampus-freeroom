@@ -233,6 +233,8 @@ static MainController<MainControllerPublic>* instance = nil;
         return NO;
     }
     
+    NSLog(@"-> Handling PocketCampus URL with action: %@, parameters: %@", action, params);
+    
     if (![pluginController respondsToSelector:@selector(handleURLQueryAction:parameters:)]) {
         [self showActionNotSupportedAlert];
         NSLog(@"!! ERROR: pluginController does not respond to handleURLQueryAction:parameters:. Ignoring.");

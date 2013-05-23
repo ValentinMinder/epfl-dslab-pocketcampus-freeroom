@@ -46,6 +46,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView.backgroundColor = [UIColor clearColor];
+    UIView* backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
+    backgroundView.backgroundColor = [PCValues backgroundColor1];;
+    self.tableView.backgroundView = backgroundView;
+    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];
     if (self.allTags.count > 0) {
