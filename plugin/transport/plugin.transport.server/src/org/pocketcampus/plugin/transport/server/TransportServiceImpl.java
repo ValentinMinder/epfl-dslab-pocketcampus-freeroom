@@ -36,7 +36,7 @@ public class TransportServiceImpl implements TransportService.Iface {
 	 */
 	public TransportServiceImpl() {
 		mSbbProvider = new SbbProvider(
-				"MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
+				"YJpyuPISerpXNNRTo50fNMP0yVu7L6IMuOaBgS0Xz89l3f6I3WhAjnto4kS9oz1");
 
 		System.out.println("Transport started.");
 
