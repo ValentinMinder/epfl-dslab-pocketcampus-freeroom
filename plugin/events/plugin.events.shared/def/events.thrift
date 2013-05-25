@@ -125,6 +125,7 @@ struct EventPool {
 	14: optional string noResultText;
 	16: optional bool refreshOnBack;
 	19: optional bool sendStarredItems;
+	21: optional string overrideLink;
 	
 	15: optional list<i64> childrenEvents;
 	17: optional i64 parentEvent;

@@ -36,6 +36,7 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   private static final org.apache.thrift.protocol.TField NO_RESULT_TEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("noResultText", org.apache.thrift.protocol.TType.STRING, (short)14);
   private static final org.apache.thrift.protocol.TField REFRESH_ON_BACK_FIELD_DESC = new org.apache.thrift.protocol.TField("refreshOnBack", org.apache.thrift.protocol.TType.BOOL, (short)16);
   private static final org.apache.thrift.protocol.TField SEND_STARRED_ITEMS_FIELD_DESC = new org.apache.thrift.protocol.TField("sendStarredItems", org.apache.thrift.protocol.TType.BOOL, (short)19);
+  private static final org.apache.thrift.protocol.TField OVERRIDE_LINK_FIELD_DESC = new org.apache.thrift.protocol.TField("overrideLink", org.apache.thrift.protocol.TType.STRING, (short)21);
   private static final org.apache.thrift.protocol.TField CHILDREN_EVENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("childrenEvents", org.apache.thrift.protocol.TType.LIST, (short)15);
   private static final org.apache.thrift.protocol.TField PARENT_EVENT_FIELD_DESC = new org.apache.thrift.protocol.TField("parentEvent", org.apache.thrift.protocol.TType.I64, (short)17);
 
@@ -51,6 +52,7 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
   public String noResultText; // required
   public boolean refreshOnBack; // required
   public boolean sendStarredItems; // required
+  public String overrideLink; // required
   public List<Long> childrenEvents; // required
   public long parentEvent; // required
 
@@ -68,6 +70,7 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     NO_RESULT_TEXT((short)14, "noResultText"),
     REFRESH_ON_BACK((short)16, "refreshOnBack"),
     SEND_STARRED_ITEMS((short)19, "sendStarredItems"),
+    OVERRIDE_LINK((short)21, "overrideLink"),
     CHILDREN_EVENTS((short)15, "childrenEvents"),
     PARENT_EVENT((short)17, "parentEvent");
 
@@ -108,6 +111,8 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
           return REFRESH_ON_BACK;
         case 19: // SEND_STARRED_ITEMS
           return SEND_STARRED_ITEMS;
+        case 21: // OVERRIDE_LINK
+          return OVERRIDE_LINK;
         case 15: // CHILDREN_EVENTS
           return CHILDREN_EVENTS;
         case 17: // PARENT_EVENT
@@ -189,6 +194,8 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.SEND_STARRED_ITEMS, new org.apache.thrift.meta_data.FieldMetaData("sendStarredItems", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.OVERRIDE_LINK, new org.apache.thrift.meta_data.FieldMetaData("overrideLink", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.CHILDREN_EVENTS, new org.apache.thrift.meta_data.FieldMetaData("childrenEvents", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64))));
@@ -237,6 +244,9 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     }
     this.refreshOnBack = other.refreshOnBack;
     this.sendStarredItems = other.sendStarredItems;
+    if (other.isSetOverrideLink()) {
+      this.overrideLink = other.overrideLink;
+    }
     if (other.isSetChildrenEvents()) {
       List<Long> __this__childrenEvents = new ArrayList<Long>();
       for (Long other_element : other.childrenEvents) {
@@ -272,6 +282,7 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     this.refreshOnBack = false;
     setSendStarredItemsIsSet(false);
     this.sendStarredItems = false;
+    this.overrideLink = null;
     this.childrenEvents = null;
     setParentEventIsSet(false);
     this.parentEvent = 0;
@@ -558,6 +569,30 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     __isset_bit_vector.set(__SENDSTARREDITEMS_ISSET_ID, value);
   }
 
+  public String getOverrideLink() {
+    return this.overrideLink;
+  }
+
+  public EventPool setOverrideLink(String overrideLink) {
+    this.overrideLink = overrideLink;
+    return this;
+  }
+
+  public void unsetOverrideLink() {
+    this.overrideLink = null;
+  }
+
+  /** Returns true if field overrideLink is set (has been assigned a value) and false otherwise */
+  public boolean isSetOverrideLink() {
+    return this.overrideLink != null;
+  }
+
+  public void setOverrideLinkIsSet(boolean value) {
+    if (!value) {
+      this.overrideLink = null;
+    }
+  }
+
   public int getChildrenEventsSize() {
     return (this.childrenEvents == null) ? 0 : this.childrenEvents.size();
   }
@@ -718,6 +753,14 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       }
       break;
 
+    case OVERRIDE_LINK:
+      if (value == null) {
+        unsetOverrideLink();
+      } else {
+        setOverrideLink((String)value);
+      }
+      break;
+
     case CHILDREN_EVENTS:
       if (value == null) {
         unsetChildrenEvents();
@@ -775,6 +818,9 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     case SEND_STARRED_ITEMS:
       return Boolean.valueOf(isSendStarredItems());
 
+    case OVERRIDE_LINK:
+      return getOverrideLink();
+
     case CHILDREN_EVENTS:
       return getChildrenEvents();
 
@@ -816,6 +862,8 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       return isSetRefreshOnBack();
     case SEND_STARRED_ITEMS:
       return isSetSendStarredItems();
+    case OVERRIDE_LINK:
+      return isSetOverrideLink();
     case CHILDREN_EVENTS:
       return isSetChildrenEvents();
     case PARENT_EVENT:
@@ -945,6 +993,15 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         return false;
     }
 
+    boolean this_present_overrideLink = true && this.isSetOverrideLink();
+    boolean that_present_overrideLink = true && that.isSetOverrideLink();
+    if (this_present_overrideLink || that_present_overrideLink) {
+      if (!(this_present_overrideLink && that_present_overrideLink))
+        return false;
+      if (!this.overrideLink.equals(that.overrideLink))
+        return false;
+    }
+
     boolean this_present_childrenEvents = true && this.isSetChildrenEvents();
     boolean that_present_childrenEvents = true && that.isSetChildrenEvents();
     if (this_present_childrenEvents || that_present_childrenEvents) {
@@ -1029,6 +1086,11 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
     builder.append(present_sendStarredItems);
     if (present_sendStarredItems)
       builder.append(sendStarredItems);
+
+    boolean present_overrideLink = true && (isSetOverrideLink());
+    builder.append(present_overrideLink);
+    if (present_overrideLink)
+      builder.append(overrideLink);
 
     boolean present_childrenEvents = true && (isSetChildrenEvents());
     builder.append(present_childrenEvents);
@@ -1171,6 +1233,16 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetOverrideLink()).compareTo(typedOther.isSetOverrideLink());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetOverrideLink()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.overrideLink, typedOther.overrideLink);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetChildrenEvents()).compareTo(typedOther.isSetChildrenEvents());
     if (lastComparison != 0) {
       return lastComparison;
@@ -1295,6 +1367,13 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
           if (field.type == org.apache.thrift.protocol.TType.BOOL) {
             this.sendStarredItems = iprot.readBool();
             setSendStarredItemsIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 21: // OVERRIDE_LINK
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.overrideLink = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1429,6 +1508,13 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       oprot.writeBool(this.sendStarredItems);
       oprot.writeFieldEnd();
     }
+    if (this.overrideLink != null) {
+      if (isSetOverrideLink()) {
+        oprot.writeFieldBegin(OVERRIDE_LINK_FIELD_DESC);
+        oprot.writeString(this.overrideLink);
+        oprot.writeFieldEnd();
+      }
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -1525,6 +1611,16 @@ public class EventPool implements org.apache.thrift.TBase<EventPool, EventPool._
       if (!first) sb.append(", ");
       sb.append("sendStarredItems:");
       sb.append(this.sendStarredItems);
+      first = false;
+    }
+    if (isSetOverrideLink()) {
+      if (!first) sb.append(", ");
+      sb.append("overrideLink:");
+      if (this.overrideLink == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.overrideLink);
+      }
       first = false;
     }
     if (isSetChildrenEvents()) {

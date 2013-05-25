@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.events.server;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -81,7 +80,6 @@ public class EventsServiceImpl implements EventsService.Iface {
 	private String dateLastImport = "";
 	private Runnable importer = new Runnable() {
 		public void run() {
-			if(true) return;
 			System.out.println("Started Async Import from Memento on " + dateLastImport);
 			try {
 				HashMap<String, String> feedsMap = new HashMap<String, String>();
@@ -861,7 +859,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 	
 	private static class EventPoolDecoderFromDb {
-		private static final String EVENTPOOLS_SELECT_FIELDS = "poolId,poolPicture,poolTitle,poolPlace,poolDetails,disableStar,disableFilterByCateg,disableFilterByTags,enableScan,refreshOnBack,sendStarred,noResultText,parentEvent";
+		private static final String EVENTPOOLS_SELECT_FIELDS = "poolId,poolPicture,poolTitle,poolPlace,poolDetails,disableStar,disableFilterByCateg,disableFilterByTags,enableScan,refreshOnBack,sendStarred,noResultText,overrideLink,parentEvent";
 		private static EventPool decodeFromResultSet(ResultSet rs) throws SQLException {
 			EventPool ep = new EventPool();
 			
@@ -879,7 +877,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 			ep.setRefreshOnBack(rs.getBoolean(10));
 			ep.setSendStarredItems(rs.getBoolean(11));
 			ep.setNoResultText(rs.getString(12));
-			ep.setParentEvent(rs.getLong(13));
+			ep.setOverrideLink(rs.getString(13));
+			ep.setParentEvent(rs.getLong(14));
 			ep.setChildrenEvents(new LinkedList<Long>());
 			
 			return ep;

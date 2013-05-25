@@ -47,7 +47,8 @@ public class EventDetailView extends PluginView implements IEventsView {
 	
 	public static final String EXTRAS_KEY_EVENTITEMID = "eventItemId";
 	public static final String QUERYSTRING_KEY_EVENTITEMID = "eventItemId";
-    public final static String MAP_KEY_EVENTPOOLID = "EVENT_POOL_ID";  
+    public final static String MAP_KEY_EVENTPOOLID = "EVENT_POOL_ID";
+    public final static String MAP_KEY_EVENTPOOLCLICKLINK = "EVENT_POOL_CLICKLINK";  
 	
 	private ListView mList;
 	
@@ -282,7 +283,10 @@ public class EventDetailView extends PluginView implements IEventsView {
 					}
 				}
 				public void finalize(Map<String, Object> map, EventPool item) {
-					map.put(MAP_KEY_EVENTPOOLID, item.getPoolId() + "");
+					if(item.isSetOverrideLink())
+						map.put(MAP_KEY_EVENTPOOLCLICKLINK, item.getOverrideLink());
+					else
+						map.put(MAP_KEY_EVENTPOOLID, item.getPoolId() + "");
 				}
 			});
 			adapter.addSection( new LazyAdapter(this, p4.getMap(),
@@ -336,7 +340,11 @@ public class EventDetailView extends PluginView implements IEventsView {
 		mList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				Object o = arg0.getItemAtPosition(arg2);
-				if(o instanceof Map<?, ?> && ((Map<?, ?>) o).containsKey(MAP_KEY_EVENTPOOLID)) {
+				if(o instanceof Map<?, ?> && ((Map<?, ?>) o).containsKey(MAP_KEY_EVENTPOOLCLICKLINK)) {
+					Intent i = new Intent(Intent.ACTION_VIEW);
+					i.setData(Uri.parse(((Map<?, ?>) o).get(MAP_KEY_EVENTPOOLCLICKLINK).toString()));
+					EventDetailView.this.startActivity(i);
+				} else if(o instanceof Map<?, ?> && ((Map<?, ?>) o).containsKey(MAP_KEY_EVENTPOOLID)) {
 					Intent i = new Intent(EventDetailView.this, EventsMainView.class);
 					i.putExtra(EXTRAS_KEY_EVENTPOOLID, ((Map<?, ?>) o).get(MAP_KEY_EVENTPOOLID).toString());
 					EventDetailView.this.startActivity(i);
