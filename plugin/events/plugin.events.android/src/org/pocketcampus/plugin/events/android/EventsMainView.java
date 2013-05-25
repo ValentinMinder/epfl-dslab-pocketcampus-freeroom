@@ -120,6 +120,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	@Override
 	protected void handleIntent(Intent aIntent) {
 		eventPoolId = Constants.CONTAINER_EVENT_ID;
+		boolean processedIntent = false;
 		if(aIntent != null) {
 			Bundle aExtras = aIntent.getExtras();
 			Uri aData = aIntent.getData();
@@ -127,19 +128,20 @@ public class EventsMainView extends PluginView implements IEventsView {
 				eventPoolId = Long.parseLong(aExtras.getString(EXTRAS_KEY_EVENTPOOLID));
 				System.out.println("Started with intent to display pool " + eventPoolId);
 				mController.refreshEventPool(this, eventPoolId, fetchPast, false);
+				processedIntent = true;
 			} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID) != null) {
 				eventPoolId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTPOOLID));
 				System.out.println("External start with intent to display pool " + eventPoolId);
 				externalCall(aData);
+				processedIntent = true;
 			}
 		}
+		if(!processedIntent)
+			mController.refreshEventPool(this, eventPoolId, fetchPast, false);
 		
 		//Tracker
 		if(eventPoolId == Constants.CONTAINER_EVENT_ID) Tracker.getInstance().trackPageView("events");
 		else Tracker.getInstance().trackPageView("events/" + eventPoolId + "/subevents");
-		
-		if(eventPoolId == Constants.CONTAINER_EVENT_ID)
-			mController.refreshEventPool(this, eventPoolId, fetchPast, false);
 	}
 
 	@Override
