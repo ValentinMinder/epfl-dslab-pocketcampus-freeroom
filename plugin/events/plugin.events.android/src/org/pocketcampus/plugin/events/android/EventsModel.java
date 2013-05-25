@@ -80,7 +80,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 		iStorage = context.getSharedPreferences(EVENTS_STORAGE_NAME, 0);
 		//cntxt = context;
 		
-		iPeriod = iStorage.getInt(EVENTS_PERIOD_KEY, 30);
+		iPeriod = iStorage.getInt(EVENTS_PERIOD_KEY, 14);
 		iFavorites = decodeFavoritesList(iStorage.getString(EVENTS_FAVOTITES_LIST_KEY, ""));
 		iTickets = decodeTicketsList(iStorage.getString(EVENTS_TICKETS_LIST_KEY, ""));
 		
@@ -173,7 +173,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 				.commit();
 	}
 	
-	private String encodeFavoritesList(List<Long> fav) {
+	private static String encodeFavoritesList(List<Long> fav) {
 		// itemId does not contain commas
 		if(fav.size() == 0)
 			return "";
@@ -182,7 +182,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 			s[i] = fav.get(i).toString();
 		return TextUtils.join(",", s);
 	}
-	private List<Long> decodeFavoritesList(String fav) {
+	private static List<Long> decodeFavoritesList(String fav) {
 		// itemId does not contain commas
 		List<Long> s = new LinkedList<Long>();
 		if("".equals(fav))
@@ -192,17 +192,20 @@ public class EventsModel extends PluginModel implements IEventsModel {
 		return s;
 	}
 	
-	private String encodeTicketsList(List<?> fav) {
+	private static String encodeTicketsList(List<?> fav) {
 		// userTicket does not contain commas
 		if(fav.size() == 0)
 			return "";
 		return TextUtils.join(",", fav.toArray());
 	}
-	private List<String> decodeTicketsList(String fav) {
+	private static List<String> decodeTicketsList(String fav) {
 		// userTicket does not contain commas
+		List<String> s = new LinkedList<String>();
 		if("".equals(fav))
-			return new LinkedList<String>();
-		return Arrays.asList(fav.split("[,]"));
+			return s;
+		// Can't return Arrays.asList directly!
+		s.addAll(Arrays.asList(fav.split("[,]")));
+		return s;
 	}
 	
 	/**
