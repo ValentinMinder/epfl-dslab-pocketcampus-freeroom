@@ -1225,7 +1225,7 @@ static NSDictionary * EVENTS_PERIODS;
 
 @implementation EventPool
 
-- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText refreshOnBack: (BOOL) refreshOnBack sendStarredItems: (BOOL) sendStarredItems childrenEvents: (NSArray *) childrenEvents parentEvent: (int64_t) parentEvent
+- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText refreshOnBack: (BOOL) refreshOnBack sendStarredItems: (BOOL) sendStarredItems overrideLink: (NSString *) overrideLink childrenEvents: (NSArray *) childrenEvents parentEvent: (int64_t) parentEvent
 {
   self = [super init];
   __poolId = poolId;
@@ -1252,6 +1252,8 @@ static NSDictionary * EVENTS_PERIODS;
   __refreshOnBack_isset = YES;
   __sendStarredItems = sendStarredItems;
   __sendStarredItems_isset = YES;
+  __overrideLink = [overrideLink retain];
+  __overrideLink_isset = YES;
   __childrenEvents = [childrenEvents retain];
   __childrenEvents_isset = YES;
   __parentEvent = parentEvent;
@@ -1322,6 +1324,11 @@ static NSDictionary * EVENTS_PERIODS;
     __sendStarredItems = [decoder decodeBoolForKey: @"sendStarredItems"];
     __sendStarredItems_isset = YES;
   }
+  if ([decoder containsValueForKey: @"overrideLink"])
+  {
+    __overrideLink = [[decoder decodeObjectForKey: @"overrideLink"] retain];
+    __overrideLink_isset = YES;
+  }
   if ([decoder containsValueForKey: @"childrenEvents"])
   {
     __childrenEvents = [[decoder decodeObjectForKey: @"childrenEvents"] retain];
@@ -1385,6 +1392,10 @@ static NSDictionary * EVENTS_PERIODS;
   {
     [encoder encodeBool: __sendStarredItems forKey: @"sendStarredItems"];
   }
+  if (__overrideLink_isset)
+  {
+    [encoder encodeObject: __overrideLink forKey: @"overrideLink"];
+  }
   if (__childrenEvents_isset)
   {
     [encoder encodeObject: __childrenEvents forKey: @"childrenEvents"];
@@ -1402,6 +1413,7 @@ static NSDictionary * EVENTS_PERIODS;
   [__poolPlace release];
   [__poolDetails release];
   [__noResultText release];
+  [__overrideLink release];
   [__childrenEvents release];
   [super dealloc];
 }
@@ -1630,6 +1642,27 @@ static NSDictionary * EVENTS_PERIODS;
   __sendStarredItems_isset = NO;
 }
 
+- (NSString *) overrideLink {
+  return [[__overrideLink retain] autorelease];
+}
+
+- (void) setOverrideLink: (NSString *) overrideLink {
+  [overrideLink retain];
+  [__overrideLink release];
+  __overrideLink = overrideLink;
+  __overrideLink_isset = YES;
+}
+
+- (BOOL) overrideLinkIsSet {
+  return __overrideLink_isset;
+}
+
+- (void) unsetOverrideLink {
+  [__overrideLink release];
+  __overrideLink = nil;
+  __overrideLink_isset = NO;
+}
+
 - (NSArray *) childrenEvents {
   return [[__childrenEvents retain] autorelease];
 }
@@ -1779,6 +1812,14 @@ static NSDictionary * EVENTS_PERIODS;
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 21:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setOverrideLink: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       case 15:
         if (fieldType == TType_LIST) {
           int _size10;
@@ -1886,6 +1927,13 @@ static NSDictionary * EVENTS_PERIODS;
     [outProtocol writeBool: __sendStarredItems];
     [outProtocol writeFieldEnd];
   }
+  if (__overrideLink_isset) {
+    if (__overrideLink != nil) {
+      [outProtocol writeFieldBeginWithName: @"overrideLink" type: TType_STRING fieldID: 21];
+      [outProtocol writeString: __overrideLink];
+      [outProtocol writeFieldEnd];
+    }
+  }
   if (__childrenEvents_isset) {
     if (__childrenEvents != nil) {
       [outProtocol writeFieldBeginWithName: @"childrenEvents" type: TType_LIST fieldID: 15];
@@ -1936,6 +1984,8 @@ static NSDictionary * EVENTS_PERIODS;
   [ms appendFormat: @"%i", __refreshOnBack];
   [ms appendString: @",sendStarredItems:"];
   [ms appendFormat: @"%i", __sendStarredItems];
+  [ms appendString: @",overrideLink:"];
+  [ms appendFormat: @"\"%@\"", __overrideLink];
   [ms appendString: @",childrenEvents:"];
   [ms appendFormat: @"%@", __childrenEvents];
   [ms appendString: @",parentEvent:"];

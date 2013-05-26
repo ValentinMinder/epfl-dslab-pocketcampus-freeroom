@@ -317,7 +317,7 @@ static NSString* kPoolCell = @"PoolCell";
         return;
     }
     aWebView.scrollView.scrollEnabled = NO;    // Property available in iOS 5.0 and later
-    CGRect frame = aWebView.frame;
+    /*CGRect frame = aWebView.frame;
     
     frame.size.width = self.view.frame.size.width;       // Your desired width here.
     frame.size.height = 1;        // Set the height to a small one.
@@ -326,9 +326,16 @@ static NSString* kPoolCell = @"PoolCell";
     
     frame.size.height = aWebView.scrollView.contentSize.height;  // Get the corresponding height from the webView's embedded scrollView.
     
-    aWebView.frame = frame;
+    aWebView.frame = frame;*/
+    
+    CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:
+                         @"document.body.scrollHeight"] floatValue];
+    
+    self.webView.frame = CGRectMake(0, 0, self.webView.frame.size.width, height);
 
     self.webView.hidden = NO;
+    
+    [self finalizeElementsPositionAndSize];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -389,7 +396,24 @@ static NSString* kPoolCell = @"PoolCell";
         return;
     }
     EventPool* eventPool = self.childrenPools[indexPath.row];
-    [self.navigationController pushViewController:[[EventPoolViewController alloc] initWithEventPool:eventPool] animated:YES];
+    
+    UIViewController* viewController;
+    
+    if (eventPool.overrideLink) {
+        NSURL* url = [NSURL URLWithString:eventPool.overrideLink];
+        id<MainControllerPublic> mainController = [MainController publicController];
+        UIViewController* viewController = [[mainController urlSchemeHandlerSharedInstance] viewControllerForPocketCampusURL:url];
+        if (viewController) {
+            [self.navigationController pushViewController:viewController animated:YES];
+        } else {
+            [[UIApplication sharedApplication] openURL:url];
+            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
+    } else {
+        viewController = [[EventPoolViewController alloc] initWithEventPool:eventPool];
+    }
+    
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
@@ -409,6 +433,14 @@ static NSString* kPoolCell = @"PoolCell";
     
     cell.textLabel.text = eventPool.poolTitle;
     cell.detailTextLabel.text = eventPool.poolPlace;
+    
+    if (eventPool.overrideLink) {
+        id<MainControllerPublic> mainController = [MainController publicController];
+        PCURLSchemeHandler* handler = [mainController urlSchemeHandlerSharedInstance];
+        if (![handler isValidPocketCampusURL:[NSURL URLWithString:eventPool.overrideLink]]) {
+            cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ArrowUpRightCircleAccessory"]];
+        }
+    }
     
     [(PCTableViewWithRemoteThumbnails*)(self.tableView) setThumbnailURL:[NSURL URLWithString:eventPool.poolPicture] forCell:cell atIndexPath:indexPath];
     

@@ -239,6 +239,7 @@ enum EventsPeriods {
   NSString * __noResultText;
   BOOL __refreshOnBack;
   BOOL __sendStarredItems;
+  NSString * __overrideLink;
   NSArray * __childrenEvents;
   int64_t __parentEvent;
 
@@ -254,6 +255,7 @@ enum EventsPeriods {
   BOOL __noResultText_isset;
   BOOL __refreshOnBack_isset;
   BOOL __sendStarredItems_isset;
+  BOOL __overrideLink_isset;
   BOOL __childrenEvents_isset;
   BOOL __parentEvent_isset;
 }
@@ -271,11 +273,12 @@ enum EventsPeriods {
 @property (nonatomic, retain, getter=noResultText, setter=setNoResultText:) NSString * noResultText;
 @property (nonatomic, getter=refreshOnBack, setter=setRefreshOnBack:) BOOL refreshOnBack;
 @property (nonatomic, getter=sendStarredItems, setter=setSendStarredItems:) BOOL sendStarredItems;
+@property (nonatomic, retain, getter=overrideLink, setter=setOverrideLink:) NSString * overrideLink;
 @property (nonatomic, retain, getter=childrenEvents, setter=setChildrenEvents:) NSArray * childrenEvents;
 @property (nonatomic, getter=parentEvent, setter=setParentEvent:) int64_t parentEvent;
 #endif
 
-- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText refreshOnBack: (BOOL) refreshOnBack sendStarredItems: (BOOL) sendStarredItems childrenEvents: (NSArray *) childrenEvents parentEvent: (int64_t) parentEvent;
+- (id) initWithPoolId: (int64_t) poolId poolPicture: (NSString *) poolPicture poolTitle: (NSString *) poolTitle poolPlace: (NSString *) poolPlace poolDetails: (NSString *) poolDetails disableStar: (BOOL) disableStar disableFilterByCateg: (BOOL) disableFilterByCateg disableFilterByTags: (BOOL) disableFilterByTags enableScan: (BOOL) enableScan noResultText: (NSString *) noResultText refreshOnBack: (BOOL) refreshOnBack sendStarredItems: (BOOL) sendStarredItems overrideLink: (NSString *) overrideLink childrenEvents: (NSArray *) childrenEvents parentEvent: (int64_t) parentEvent;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -327,6 +330,10 @@ enum EventsPeriods {
 - (BOOL) sendStarredItems;
 - (void) setSendStarredItems: (BOOL) sendStarredItems;
 - (BOOL) sendStarredItemsIsSet;
+
+- (NSString *) overrideLink;
+- (void) setOverrideLink: (NSString *) overrideLink;
+- (BOOL) overrideLinkIsSet;
 
 - (NSArray *) childrenEvents;
 - (void) setChildrenEvents: (NSArray *) childrenEvents;
