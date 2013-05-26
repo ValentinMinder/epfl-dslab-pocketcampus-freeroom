@@ -278,6 +278,16 @@ public class EventsMainView extends PluginView implements IEventsView {
 		if(thisEventPool.isEnableScan()) {
 			addActionToActionBar(scanBarcodeAction);
 		}
+		if(thisEventPool.isSendStarredItems()) {
+			addActionToActionBar(buildActionTextInputDialog(this, R.drawable.events_email, 
+					"Send by email", "Email address to send starred items", "OK", 
+					new TextInputHandler() {
+						public void gotText(String s) {
+							mController.sendFavoritesByEmail(EventsMainView.this, eventPoolId, s);
+						}
+					}
+			));
+		}
 		
 		updateDisplay(false);
 	}
@@ -489,7 +499,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 				}
 			});
 		}
-		if(thisEventPool != null && thisEventPool.isSendStarredItems()) {
+		/*if(thisEventPool != null && thisEventPool.isSendStarredItems()) {
 			MenuItem emailMenu = menu.add("Send by email");
 			emailMenu.setOnMenuItemClickListener(buildMenuListenerTextInputDialog(this, 
 					"Send by email", "Email address to send starred items", "OK", 
@@ -499,7 +509,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 						}
 					}
 			));
-		}
+		}*/
 		return true;
 	}
 	

@@ -297,11 +297,37 @@ public class EventsController extends PluginController implements IEventsControl
 		};
 	}
 
+	public static Action buildActionTextInputDialog(
+			final Context context, final int res, final String title, final String message, final String buttonText, final TextInputHandler handler) {
+		return new Action() {
+			public void performAction(View view) {
+				final EditText input = new EditText(context);
+				AlertDialog dialog = new AlertDialog.Builder(context)
+						.setTitle(title)
+					    .setMessage(message)
+					    .setView(input)
+						.setPositiveButton(
+								buttonText, 
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int which) {
+										handler.gotText(input.getText().toString());
+									}
+								})
+						.create();
+				dialog.setCanceledOnTouchOutside(true);
+				dialog.show();
+			}
+			public int getDrawable() {
+				return res;
+			}
+		};
+	}
+
 	public static OnMenuItemClickListener buildMenuListenerTextInputDialog(
 			final Context context, final String title, final String message, final String buttonText, final TextInputHandler handler) {
-		final EditText input = new EditText(context);
 		return new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
+				final EditText input = new EditText(context);
 				AlertDialog dialog = new AlertDialog.Builder(context)
 						.setTitle(title)
 					    .setMessage(message)
