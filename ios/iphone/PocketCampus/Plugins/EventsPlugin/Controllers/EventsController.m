@@ -87,10 +87,14 @@ static EventsController* instance __weak = nil;
     UINavigationController* navController = nil;
     
     if ([PCUtils isIdiomPad]) {
-        navController = self.mainSplitViewController.viewControllers[1];
-        if (![navController isKindOfClass:[UINavigationController class]]) {
-            navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-            self.mainSplitViewController.viewControllers = @[self.mainSplitViewController.viewControllers[0], navController];
+        if ([viewController isKindOfClass:[EventPoolViewController class]] && [(EventPoolViewController*)viewController poolId] == [eventsConstants CONTAINER_EVENT_ID]) {
+            navController = self.mainSplitViewController.viewControllers[0];
+        } else {
+            navController = self.mainSplitViewController.viewControllers[1];
+            if (![navController isKindOfClass:[UINavigationController class]]) {
+                navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+                self.mainSplitViewController.viewControllers = @[self.mainSplitViewController.viewControllers[0], navController];
+            }
         }
     } else {
         navController = self.mainNavigationController;
