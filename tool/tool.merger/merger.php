@@ -21,6 +21,8 @@ $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
 $path_to_lib_dir = "../../platform/sdk/platform.sdk.shared/lib";
 
+$versionCode = "21";
+$versionName = "0.3.$versionCode";
 
 function import_nodes($file, $tag, $doc, $parent_node, $nodes_to_remove) {
 	$doc2 = new DOMDocument();
@@ -51,6 +53,9 @@ function import_nodes($file, $tag, $doc, $parent_node, $nodes_to_remove) {
 function generate_android_manifest($output_dir, $is_lib){
 	global $plugins_to_merge;
 	global $path_to_plugin_dir;
+	
+	global $versionCode;
+	global $versionName;
 
 	$doc = new DOMDocument("1.0", "utf-8");
 	$doc->formatOutput = true;
@@ -59,8 +64,8 @@ function generate_android_manifest($output_dir, $is_lib){
 	$doc->appendChild($manif);
 	$manif->setAttribute("xmlns:android", "http://schemas.android.com/apk/res/android");
 	$manif->setAttribute("package", "org.pocketcampus");
-	$manif->setAttribute("android:versionCode", "19");
-	$manif->setAttribute("android:versionName", "0.3.19");
+	$manif->setAttribute("android:versionCode", "$versionCode");
+	$manif->setAttribute("android:versionName", "$versionName");
 
 	$app = $doc->createElement("application");
 	$manif->appendChild($app);
@@ -97,6 +102,7 @@ function generate_ant_properties($output_dir){
 	$content .= "key.alias=mykey\n";
 	//$content .= "key.store.password=XXXXXXXXXXXXXXXXXXXXXXXXX\n";
 	//$content .= "key.alias.password=XXXXXXXXXXXXXXXXXXXXXXXXX\n";
+	// If you dont specify passwords here, you will be asked to provide them on the command line. Great!
 	file_put_contents("$output_dir/ant.properties", $content);
 }
 
