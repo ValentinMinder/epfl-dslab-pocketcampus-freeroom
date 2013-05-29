@@ -730,6 +730,8 @@ static NSString* kEventCell = @"EventCell";
     
     EventItemViewController* eventItemViewController = [[EventItemViewController alloc] initWithEventItem:eventItem];
     
+    eventItemViewController.showFavoriteButton = !self.eventPool.disableStar;
+    
     if (self.splitViewController && self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
         self.selectedItem = eventItem;
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[UINavigationController alloc] initWithRootViewController:eventItemViewController]];
