@@ -13,6 +13,8 @@ import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -222,11 +224,60 @@ public class EventsServiceImpl implements EventsService.Iface {
 			pool.setChildrenEvents(filterStarred(conn, req.getStarredEventItems(), pool.getParentEvent()));
 			List<String> tokens = new LinkedList<String>();
 			if(req.isSetUserTickets() && req.getUserTickets().size() > 0) tokens = req.getUserTickets();
+			EventItem mainEvent = eventItemFromDb(conn, pool.getParentEvent(), tokens);
 			Map<Long, EventItem> childrenItems = eventItemsByIds(conn, pool.getChildrenEvents(), tokens);
-			// TODO build html out of items in childrenItems
-			boolean res = GmailSender.sendEmail(req.getEmailAddress(), "Your Favorites", "You must see your favorites here");
+			for(EventItem e : childrenItems.values())
+				fixCategAndTags(e);
+			Map<Integer, String> categMap = getCategsFromDb(conn);
+			Map<Integer, List<EventItem>> eventsByCateg = new HashMap<Integer, List<EventItem>>();
+			for(EventItem e : childrenItems.values()) {
+				if(!eventsByCateg.containsKey(e.getEventCateg()))
+					eventsByCateg.put(e.getEventCateg(), new LinkedList<EventItem>());
+				eventsByCateg.get(e.getEventCateg()).add(e);
+			}
+			List<Integer> categs = new LinkedList<Integer>(eventsByCateg.keySet());
+			Collections.sort(categs);
+			StringBuilder emailBuilder = new StringBuilder();
+			emailBuilder.append("<table style=\"background-color: #F1F1F1; border-spacing: 5px 5px; border: 1px solid #E0E0E0; width: 100%;\">\n");
+			for(int c : categs) {
+				List<EventItem> categEvents = eventsByCateg.get(c);
+				Collections.sort(categEvents, new Comparator<EventItem>() {
+					public int compare(EventItem lhs, EventItem rhs) {
+						if(lhs.isSetStartDate() && rhs.isSetStartDate()) {
+							return Long.valueOf(lhs.getStartDate()).compareTo(rhs.getStartDate());
+						}
+						if(lhs.isSetEventTitle() && rhs.isSetEventTitle()) {
+							return lhs.getEventTitle().compareTo(rhs.getEventTitle());
+						}
+						return 0;
+					}
+				});
+				StringBuilder categBuilder = new StringBuilder();
+				categBuilder.append("<tr><td style=\"border: 0px; height: 20px; padding: 0px; background-color: #F1F1F1; font:1em Georgia,serif;\">" + categMap.get(c) + "</td></tr>\n");
+				for(EventItem e : categEvents) {
+					categBuilder.append("<tr>\n");
+					categBuilder.append("<td style=\"border: 0px; background-color: #F1F1F1; padding-top: 6px; vertical-align: top;\">\n");
+					categBuilder.append("<div><img style=\"width: 80px\" src=\"" + (e.isSetEventThumbnail() ? e.getEventThumbnail() : "") + "\"></div>\n");
+					categBuilder.append("</td>\n");
+					categBuilder.append("<td><table style=\"background-color: #F1F1F1; border-spacing: 0px 5px; width: 100%;\">\n");
+					
+					categBuilder.append("<tr><td style=\"background-color: #FFFFFF; border: 1px solid #E0E0E0; padding:10px;\">\n");
+					categBuilder.append("<div style=\"font:1.1em Georgia,serif; font-weight:bold;\">" + (e.isSetEventTitle() ? e.getEventTitle() : "") + "</div>\n");
+					categBuilder.append("<div style=\"font:1em Georgia,serif; text-align: left;\">" + (e.isSetSecondLine() ? e.getSecondLine() : (e.isSetEventSpeaker() ? e.getEventSpeaker() : "")) + "</div>\n");
+					categBuilder.append("</td></tr>\n");
+					categBuilder.append("<tr><td style=\"background-color: #FFFFFF; border: 1px solid #E0E0E0; padding:10px;\">\n");
+					categBuilder.append("<div style=\"font:1em Georgia,serif; text-align: left;\">" + (e.isSetEventDetails() ? e.getEventDetails() : "") + "</div>\n");
+					categBuilder.append("</td></tr>\n");
+					
+					categBuilder.append("</table></td>\n");
+					categBuilder.append("</tr>\n");
+				}
+				emailBuilder.append(categBuilder.toString());
+			}
+			emailBuilder.append("</table>\n");
+			boolean res = GmailSender.sendEmail(req.getEmailAddress(), "Your Starred Items in " + mainEvent.getEventTitle(), emailBuilder.toString());
 			System.out.println("send email with " + childrenItems.size() + " items, success=" + res);
-			return new SendEmailReply(200);
+			return new SendEmailReply(res ? 200 : 500);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return new SendEmailReply(500);
@@ -752,7 +803,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 			// force categ to Me
 			ei.setEventCateg(-3);
 			// force big picture to QR-code 
-			ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=" + ei.getParentPool() + "%26exchangeToken=" + exchangeToken + "%26markFavorite=" + ei.getEventId());
+			ei.setEventPicture("http://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=" + ei.getParentPool() + "%26markFavorite=" + ei.getEventId());
 			// remove details
 			ei.setEventDetails(null);
 			// show help
