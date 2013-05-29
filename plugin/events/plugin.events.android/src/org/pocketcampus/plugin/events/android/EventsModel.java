@@ -38,7 +38,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	
 	private static final String EVENTS_PERIOD_KEY = "EVENTS_PERIOD_KEY";
 	private static final String EVENTS_FAVOTITES_LIST_KEY = "EVENTS_FAVOTITES_LIST_KEY";
-	private static final String EVENTS_TICKETS_LIST_KEY = "EVENTS_TICKETS_LIST_KEY";
+	private static final String EVENTS_TICKETS_LIST_KEY = "EVENTS_TOKEN_KEY"; // backward compatibility 
 	
 	//private static final String EVENTS_REQUEST_CACHE_PREFIX = "org.pocketcampus.plugin.events.eventscache";
 	
