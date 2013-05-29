@@ -64,6 +64,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	public static final String QUERYSTRING_KEY_EVENTPOOLID = "eventPoolId";
 	public static final String QUERYSTRING_KEY_TICKET = "userTicket";
 	public static final String QUERYSTRING_KEY_EXCHANGETOKEN = "exchangeToken";
+	public static final String QUERYSTRING_KEY_TEMPLATEID = "templateId";
 	public static final String QUERYSTRING_KEY_MARKFAVORITE = "markFavorite";
 	public static final String MAP_KEY_EVENTITEMID = "EVENT_ITEM_ID";
 	
@@ -192,6 +193,10 @@ public class EventsMainView extends PluginView implements IEventsView {
 			System.out.println("Got request to exchange contacts");
 			mController.exchangeContacts(this, aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN));
 			return;
+		}
+		if(aData.getQueryParameter(QUERYSTRING_KEY_TEMPLATEID) != null) {
+			System.out.println("Got request to send reg emails");
+			mController.adminSendRegEmails(this, aData.getQueryParameter(QUERYSTRING_KEY_TEMPLATEID));
 		}
 		mController.refreshEventPool(this, eventPoolId, fetchPast, false);
 	}
@@ -557,6 +562,11 @@ public class EventsMainView extends PluginView implements IEventsView {
 					"Failed to send email", 
 					Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	@Override
+	public void sendAdminRegEmailFinished(boolean success) {
+		Toast.makeText(getApplicationContext(), (success ? "Emails sent successfully" : "Error while sending emails"), Toast.LENGTH_SHORT).show();
 	}
 
 }

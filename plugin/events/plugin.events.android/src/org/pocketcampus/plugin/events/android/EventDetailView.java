@@ -392,4 +392,8 @@ public class EventDetailView extends PluginView implements IEventsView {
 	public void sendEmailRequestFinished(boolean success) {
 	}
 
+	@Override
+	public void sendAdminRegEmailFinished(boolean success) {
+	}
+
 }
