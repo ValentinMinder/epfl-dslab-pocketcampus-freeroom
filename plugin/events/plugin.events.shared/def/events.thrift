@@ -193,10 +193,20 @@ struct SendEmailReply {
 	1: required i32 status;
 }
 
+struct AdminSendRegEmailRequest {
+	1: required string templateId;
+	2: optional list<string> sendOnlyTo;
+}
+
+struct AdminSendRegEmailReply {
+	1: required i32 status;
+}
+
 
 service EventsService {
 	EventItemReply getEventItem(1: EventItemRequest iRequest);
 	EventPoolReply getEventPool(1: EventPoolRequest iRequest);
 	ExchangeReply exchangeContacts(1: ExchangeRequest iRequest);
 	SendEmailReply sendStarredItemsByEmail(1: SendEmailRequest iRequest);
+	AdminSendRegEmailReply adminSendRegistrationEmail(1: AdminSendRegEmailRequest iRequest);
 }

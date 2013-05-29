@@ -51,6 +51,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.plugin.events.shared.AdminSendRegEmailReply;
+import org.pocketcampus.plugin.events.shared.AdminSendRegEmailRequest;
 import org.pocketcampus.plugin.events.shared.Constants;
 import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.events.shared.EventItemReply;
@@ -281,6 +283,48 @@ public class EventsServiceImpl implements EventsService.Iface {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return new SendEmailReply(500);
+		}
+	}
+	
+	@Override
+	public AdminSendRegEmailReply adminSendRegistrationEmail(AdminSendRegEmailRequest iRequest) throws TException {
+		System.out.println("adminSendRegistrationEmail");
+		try {
+			Connection conn = connMgr.getConnection();
+			PreparedStatement stm;
+			ResultSet rs;
+			EmailTemplateInfo template = null;
+			stm = conn.prepareStatement("SELECT participantsPool,emailTitle,emailBody FROM eventemails WHERE templateId=?;");
+			stm.setString(1, iRequest.getTemplateId());
+			rs = stm.executeQuery();
+			if(rs.next())
+				template = new EmailTemplateInfo(rs.getLong(1), rs.getString(2), rs.getString(3));
+			rs.close();
+			stm.close();
+			if(template == null)
+				return new AdminSendRegEmailReply(400);
+			List<SendEmailInfo> emails = new LinkedList<EventsServiceImpl.SendEmailInfo>();
+			stm = conn.prepareStatement("SELECT emailAddress,userId,addressingName FROM eventusers WHERE mappedEvent IN (SELECT eventId FROM eventitems WHERE parentPool=?);");
+			stm.setLong(1, template.getParticipantsPool());
+			rs = stm.executeQuery();
+			while(rs.next())
+				emails.add(new SendEmailInfo(rs.getString(1), rs.getString(2), rs.getString(3)));
+			rs.close();
+			stm.close();
+			System.out.println("Should send " + emails.size() + " emails.");
+			boolean succ = true;
+			for(SendEmailInfo sei : emails) {
+				if(iRequest.isSetSendOnlyTo() && !iRequest.getSendOnlyTo().contains(sei.getEmailAddress()))
+					continue;
+				String emailBody = template.getEmailBody().replace("PARTICIPANT_NAME", sei.getAddressingName()).replace("PARTICIPANT_TOKEN", sei.getUserToken());
+				boolean res = GmailSender.sendEmail(sei.getEmailAddress(), template.getEmailTitle(), emailBody);
+				succ = succ && res;
+				System.out.println("send email to " + sei.getEmailAddress() + ", success=" + res);
+			}
+			return new AdminSendRegEmailReply(succ ? 200 : 500);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return new AdminSendRegEmailReply(500);
 		}
 	}
 	
@@ -1136,4 +1180,24 @@ public class EventsServiceImpl implements EventsService.Iface {
 		}
 	}
 	
+	private static class SendEmailInfo {
+		private String emailAddress;
+		private String userToken;
+		private String addressingName;
+		public SendEmailInfo(String ea, String ut, String an) { emailAddress = ea; userToken = ut; addressingName = an; }
+		public String getEmailAddress() { return emailAddress; }
+		public String getUserToken() { return userToken; }
+		public String getAddressingName() { return addressingName; }
+	}
+
+	private static class EmailTemplateInfo {
+		private long participantsPool;
+		private String emailTitle;
+		private String emailBody;
+		public EmailTemplateInfo(long pp, String et, String eb) { participantsPool = pp; emailTitle = et; emailBody = eb; }
+		public long getParticipantsPool() { return participantsPool; }
+		public String getEmailTitle() { return emailTitle; }
+		public String getEmailBody() { return emailBody; }
+	}
+
 }
