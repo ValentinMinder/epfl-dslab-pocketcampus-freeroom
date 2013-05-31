@@ -16,10 +16,12 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.events.android.iface.IEventsController;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
+import org.pocketcampus.plugin.events.android.req.SendRegEmailRequest;
 import org.pocketcampus.plugin.events.android.req.ExchangeContactsRequest;
 import org.pocketcampus.plugin.events.android.req.GetEventItemRequest;
 import org.pocketcampus.plugin.events.android.req.GetEventPoolRequest;
 import org.pocketcampus.plugin.events.android.req.SendFavoritesByEmailRequest;
+import org.pocketcampus.plugin.events.shared.AdminSendRegEmailRequest;
 import org.pocketcampus.plugin.events.shared.Constants;
 import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.events.shared.EventItemRequest;
@@ -151,6 +153,14 @@ public class EventsController extends PluginController implements IEventsControl
 		req.setLang(Locale.getDefault().getLanguage());
 		currSendFavoritesByEmailRequest = new SendFavoritesByEmailRequest(caller);
 		currSendFavoritesByEmailRequest.start(this, mClientEX, req);
+	}
+
+	/**
+	 * Initiates a request to send reg emails.
+	 */
+	public void adminSendRegEmails(IEventsView caller, String templateId) {
+		AdminSendRegEmailRequest req = new AdminSendRegEmailRequest(templateId);
+		new SendRegEmailRequest(caller).start(this, mClientEX, req);
 	}
 
 
