@@ -24,4 +24,6 @@
 - (int64_t)itemId;
 - (void)refresh;
 
+@property (nonatomic) BOOL showFavoriteButton; //default: NO
+
 @end

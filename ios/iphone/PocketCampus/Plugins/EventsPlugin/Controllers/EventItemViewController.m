@@ -127,10 +127,15 @@ static NSString* kPoolCell = @"PoolCell";
     }
 }
 
-#pragma mark - Public methods
+#pragma mark - Public methods et properties
 
 - (int64_t)itemId {
     return self.eventId;
+}
+
+- (void)setShowFavoriteButton:(BOOL)showFavoriteButton {
+    _showFavoriteButton = showFavoriteButton;
+    [self refreshFavoriteButton];
 }
 
 #pragma mark - Refresh control
@@ -199,6 +204,10 @@ static NSString* kPoolCell = @"PoolCell";
 }
 
 - (void)refreshFavoriteButton {
+    if (!self.showFavoriteButton) {
+        self.navigationItem.rightBarButtonItem = nil;
+        return;
+    }
     UIImage* image = nil;
     if ([self.eventsService isEventItemIdFavorite:self.eventItem.eventId]) {
         image = [UIImage imageNamed:@"FavoriteGlowNavBarButton"];
