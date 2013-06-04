@@ -294,11 +294,11 @@ public class EventsServiceImpl implements EventsService.Iface {
 			PreparedStatement stm;
 			ResultSet rs;
 			EmailTemplateInfo template = null;
-			stm = conn.prepareStatement("SELECT participantsPool,emailTitle,emailBody FROM eventemails WHERE templateId=?;");
+			stm = conn.prepareStatement("SELECT participantsPool,emailTitle,emailBody,sendOnlyTo FROM eventemails WHERE templateId=?;");
 			stm.setString(1, iRequest.getTemplateId());
 			rs = stm.executeQuery();
 			if(rs.next())
-				template = new EmailTemplateInfo(rs.getLong(1), rs.getString(2), rs.getString(3));
+				template = new EmailTemplateInfo(rs.getLong(1), rs.getString(2), rs.getString(3), (rs.getString(4) == null ? null : arrayToList(rs.getString(4).split("[,]"))));
 			rs.close();
 			stm.close();
 			if(template == null)
@@ -307,20 +307,24 @@ public class EventsServiceImpl implements EventsService.Iface {
 			stm = conn.prepareStatement("SELECT emailAddress,userId,addressingName FROM eventusers WHERE mappedEvent IN (SELECT eventId FROM eventitems WHERE parentPool=?);");
 			stm.setLong(1, template.getParticipantsPool());
 			rs = stm.executeQuery();
-			while(rs.next())
+			while(rs.next()) {
+				if(iRequest.isSetSendOnlyTo() && !iRequest.getSendOnlyTo().contains(rs.getString(1)))
+					continue;
+				if(template.getSendOnlyTo() != null && !template.getSendOnlyTo().contains(rs.getString(1)))
+					continue;
 				emails.add(new SendEmailInfo(rs.getString(1), rs.getString(2), rs.getString(3)));
+			}
 			rs.close();
 			stm.close();
 			System.out.println("Should send " + emails.size() + " emails.");
 			boolean succ = true;
 			for(SendEmailInfo sei : emails) {
-				if(iRequest.isSetSendOnlyTo() && !iRequest.getSendOnlyTo().contains(sei.getEmailAddress()))
-					continue;
 				String emailBody = template.getEmailBody().replace("PARTICIPANT_NAME", sei.getAddressingName()).replace("PARTICIPANT_TOKEN", sei.getUserToken());
 				boolean res = GmailSender.sendEmail(sei.getEmailAddress(), template.getEmailTitle(), emailBody);
 				succ = succ && res;
 				System.out.println("send email to " + sei.getEmailAddress() + ", success=" + res);
 			}
+			System.out.println("Finished sending reg emails, success=" + succ);
 			return new AdminSendRegEmailReply(succ ? 200 : 500);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1123,6 +1127,11 @@ public class EventsServiceImpl implements EventsService.Iface {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
+	private static <T> List<T> arrayToList(T[] a) {
+		return Arrays.asList(a);
+	}
+	
 	private static class GmailSender {
 
 		public static boolean sendEmail(String to, String subject, String htmlBody) {
@@ -1194,10 +1203,12 @@ public class EventsServiceImpl implements EventsService.Iface {
 		private long participantsPool;
 		private String emailTitle;
 		private String emailBody;
-		public EmailTemplateInfo(long pp, String et, String eb) { participantsPool = pp; emailTitle = et; emailBody = eb; }
+		private List<String> sendOnlyTo;
+		public EmailTemplateInfo(long pp, String et, String eb, List<String> sot) { participantsPool = pp; emailTitle = et; emailBody = eb; sendOnlyTo = sot; }
 		public long getParticipantsPool() { return participantsPool; }
 		public String getEmailTitle() { return emailTitle; }
 		public String getEmailBody() { return emailBody; }
+		public List<String> getSendOnlyTo() { return sendOnlyTo; }
 	}
 
 }
