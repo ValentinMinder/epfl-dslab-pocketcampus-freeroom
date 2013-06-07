@@ -3,7 +3,7 @@ namespace java org.pocketcampus.platform.sdk.shared.pushnotif
 struct PushNotifRequest {
 	1: required string pluginName;
 	2: required list<string> gasparList;
-	3: required string message;
+	3: required map<string, string> message;
 }
 
 struct PushNotifResponse {

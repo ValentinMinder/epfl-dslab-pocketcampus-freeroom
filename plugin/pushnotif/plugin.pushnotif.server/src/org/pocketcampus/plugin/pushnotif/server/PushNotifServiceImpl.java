@@ -1,7 +1,9 @@
 package org.pocketcampus.plugin.pushnotif.server;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.authentication.TequilaToken;
@@ -47,7 +49,10 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		List<String> iosTokens = dataStore.selectTokens(req.getGasparList(), PlatformType.PC_PLATFORM_IOS);
 		if(androidTokens == null || iosTokens == null)
 			return;
-		PushNotifMsgSender.sendToDevices(dataStore, androidTokens, iosTokens, req.getPluginName(), req.getMessage());
+		Map<String, String> pluginMessage = new HashMap<String, String>(req.getMessage());
+		// Override pluginName 
+		pluginMessage.put("pluginName", req.getPluginName());
+		PushNotifMsgSender.sendToDevices(dataStore, androidTokens, iosTokens, pluginMessage);
 	}
 	
 	@Override

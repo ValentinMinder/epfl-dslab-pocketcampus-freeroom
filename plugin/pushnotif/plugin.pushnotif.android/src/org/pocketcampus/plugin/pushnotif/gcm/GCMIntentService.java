@@ -15,9 +15,6 @@
  */
 package org.pocketcampus.plugin.pushnotif.gcm;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -64,9 +61,9 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context context, Intent intent) {
         Log.i(TAG, "Received message");
         Bundle extras = intent.getExtras();
-        if(extras != null && extras.getString("pluginName") != null && extras.getString("pluginMessage") != null) {
+        if(extras != null && extras.getString("pluginName") != null) {
         	Log.i(TAG, "Fwding it to plugin");
-        	sendPluginMessage(context, extras.getString("pluginName"), extras.getString("pluginMessage"));
+        	sendPluginMessage(context, extras.getString("pluginName"), intent);
         } else {
         	Log.i(TAG, "Couldn't understand it");
         	// don't understand this msg
@@ -101,11 +98,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 		context.startService(regIntent);
 	}
 	
-	private void sendPluginMessage(Context context, String plugin, String message) {
-		Log.i(TAG, "Sending '" + message + "' to '" + plugin + "'");
+	private void sendPluginMessage(Context context, String plugin, Intent message) {
+		Log.i(TAG, "Sending message to '" + plugin + "' plugin");
 		Intent regIntent = new Intent("org.pocketcampus.plugin.pushnotif.PUSHNOTIF_MESSAGE",
 				Uri.parse("pocketcampus://" + plugin + ".plugin.pocketcampus.org/pushnotif_message"));
-		regIntent.putExtra("servermsg", message);
+		regIntent.putExtras(message);
 		context.startService(regIntent);
 	}
 	

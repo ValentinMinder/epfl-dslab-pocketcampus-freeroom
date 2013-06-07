@@ -279,13 +279,13 @@ public class PushNotifResponse implements org.apache.thrift.TBase<PushNotifRespo
         case 1: // FAILED_LIST
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-              this.failedList = new ArrayList<String>(_list4.size);
-              for (int _i5 = 0; _i5 < _list4.size; ++_i5)
+              org.apache.thrift.protocol.TList _list9 = iprot.readListBegin();
+              this.failedList = new ArrayList<String>(_list9.size);
+              for (int _i10 = 0; _i10 < _list9.size; ++_i10)
               {
-                String _elem6; // required
-                _elem6 = iprot.readString();
-                this.failedList.add(_elem6);
+                String _elem11; // required
+                _elem11 = iprot.readString();
+                this.failedList.add(_elem11);
               }
               iprot.readListEnd();
             }
@@ -312,9 +312,9 @@ public class PushNotifResponse implements org.apache.thrift.TBase<PushNotifRespo
       oprot.writeFieldBegin(FAILED_LIST_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.failedList.size()));
-        for (String _iter7 : this.failedList)
+        for (String _iter12 : this.failedList)
         {
-          oprot.writeString(_iter7);
+          oprot.writeString(_iter12);
         }
         oprot.writeListEnd();
       }

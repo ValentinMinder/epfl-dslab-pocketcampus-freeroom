@@ -8,6 +8,7 @@ import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -61,12 +62,15 @@ public class PushNotifMsgSender {
 			.getLogger(PushNotifServiceImpl.class.getName());
 
 	public static void sendToDevices(PushNotifDataStore dataStore,
-			List<String> androidDevices, List<String> iosDevices, String plugin, String msg) {
+			List<String> androidDevices, List<String> iosDevices, Map<String, String> msg) {
 		
 		/* Android */
 		
-		Message message = new Message.Builder().addData("pluginName", plugin)
-				.addData("pluginMessage", msg).build();
+		Message.Builder messageBldr = new Message.Builder();
+		for(String k : msg.keySet())
+			messageBldr.addData(k, msg.get(k));
+		Message message = messageBldr.build();
+		
 		// send a multicast message using JSON
 		// must split in chunks of 1000 devices (GCM limit)
 		int total = androidDevices.size();
@@ -89,7 +93,7 @@ public class PushNotifMsgSender {
 		/* iOS */
 		/* No need to chunk iOS tokens (JAVAPNS takes care of it) */
 		
-		asyncSendiOS(dataStore, iosDevices, plugin, msg);
+		asyncSendiOS(dataStore, iosDevices, msg);
 		logger.info("Asynchronously sending notification to "+iosDevices.size()+" iOS devices");
 	}
 
@@ -176,26 +180,32 @@ public class PushNotifMsgSender {
 	}
 	
 	private static void asyncSendiOS(PushNotifDataStore dataStore_,
-			List<String> devices_, String plugin_, String msg_) {
+			List<String> devices_, Map<String, String> msg_) {
 		
 		if (devices_.size() > 0) {
 			
 			final PushNotifDataStore dataStore = dataStore_;
 			final List<String> devices = devices_;
-			final String plugin = plugin_;
-			final String msg = msg_;
+			final Map<String, String> msg = msg_;
 			
 			threadPool.execute(new Runnable() {
 				
 				@Override
 				public void run() {
-					logger.info("Sending notifications to iOS devices (plugin: "+plugin+", msg: "+msg+")...");
+					logger.info("Sending notifications to iOS devices...");
 					LinkedList<String> failed = new LinkedList<String>();
 					PushNotificationPayload payload = PushNotificationPayload.complex();
 					try {
-						payload.addAlert(msg);
-						payload.addSound("default");
-						payload.addCustomDictionary("pluginName", plugin);
+						for(String k : msg.keySet()) {
+							if(k.equals("alert"))
+								payload.addAlert(msg.get(k));
+							else if(k.equals("sound"))
+								payload.addSound(msg.get(k)); // "default"
+							else if(k.equals("badge"))
+								payload.addBadge(Integer.parseInt(msg.get(k)));
+							else
+								payload.addCustomDictionary(k, msg.get(k));
+						}
 						List<PushedNotification> notifications = Push.payload(payload,
 								APNS_P12_PATH, APNS_P12_PASSWORD, APNS_PROD, devices);
 						for (PushedNotification notif : notifications) {
@@ -215,16 +225,13 @@ public class PushNotifMsgSender {
 						}
 
 					} catch (JSONException e) {
-						logger.info("JSONException while creating notification payload "
-								+ msg + " for plugin " + plugin);
+						logger.info("JSONException while creating notification payload");
 						e.printStackTrace();
 					} catch (CommunicationException e) {
-						logger.info("CommunicationException while sending notification "
-								+ msg + " for plugin " + plugin);
+						logger.info("CommunicationException while sending notification");
 						e.printStackTrace();
 					} catch (KeystoreException e) {
-						logger.info("Keystore while creating notification " + msg
-								+ " for plugin " + plugin);
+						logger.info("Keystore while creating notification");
 						e.printStackTrace();
 					}
 					
@@ -238,7 +245,7 @@ public class PushNotifMsgSender {
 					if (failed.size() == 0)
 						return;
 					try {
-						PocketCampusServer.invokeOnPlugin(plugin,"appendToFailedDevicesList", new PushNotifResponse(failed));
+						PocketCampusServer.invokeOnPlugin(msg.get("pluginName"),"appendToFailedDevicesList", new PushNotifResponse(failed));
 						// fail silently because if the caller doesn't care about
 						// who fails, then screw him
 						// @Amer: Copy-pasting this comment made me happy :D

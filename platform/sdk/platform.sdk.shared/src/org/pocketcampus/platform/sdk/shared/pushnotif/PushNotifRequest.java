@@ -26,11 +26,11 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
 
   private static final org.apache.thrift.protocol.TField PLUGIN_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("pluginName", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField GASPAR_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("gasparList", org.apache.thrift.protocol.TType.LIST, (short)2);
-  private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.MAP, (short)3);
 
   public String pluginName; // required
   public List<String> gasparList; // required
-  public String message; // required
+  public Map<String,String> message; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -107,7 +107,9 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+        new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(PushNotifRequest.class, metaDataMap);
   }
@@ -118,7 +120,7 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
   public PushNotifRequest(
     String pluginName,
     List<String> gasparList,
-    String message)
+    Map<String,String> message)
   {
     this();
     this.pluginName = pluginName;
@@ -141,7 +143,19 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
       this.gasparList = __this__gasparList;
     }
     if (other.isSetMessage()) {
-      this.message = other.message;
+      Map<String,String> __this__message = new HashMap<String,String>();
+      for (Map.Entry<String, String> other_element : other.message.entrySet()) {
+
+        String other_element_key = other_element.getKey();
+        String other_element_value = other_element.getValue();
+
+        String __this__message_copy_key = other_element_key;
+
+        String __this__message_copy_value = other_element_value;
+
+        __this__message.put(__this__message_copy_key, __this__message_copy_value);
+      }
+      this.message = __this__message;
     }
   }
 
@@ -219,11 +233,22 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
     }
   }
 
-  public String getMessage() {
+  public int getMessageSize() {
+    return (this.message == null) ? 0 : this.message.size();
+  }
+
+  public void putToMessage(String key, String val) {
+    if (this.message == null) {
+      this.message = new HashMap<String,String>();
+    }
+    this.message.put(key, val);
+  }
+
+  public Map<String,String> getMessage() {
     return this.message;
   }
 
-  public PushNotifRequest setMessage(String message) {
+  public PushNotifRequest setMessage(Map<String,String> message) {
     this.message = message;
     return this;
   }
@@ -265,7 +290,7 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
       if (value == null) {
         unsetMessage();
       } else {
-        setMessage((String)value);
+        setMessage((Map<String,String>)value);
       }
       break;
 
@@ -449,8 +474,20 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
           }
           break;
         case 3: // MESSAGE
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.message = iprot.readString();
+          if (field.type == org.apache.thrift.protocol.TType.MAP) {
+            {
+              org.apache.thrift.protocol.TMap _map3 = iprot.readMapBegin();
+              this.message = new HashMap<String,String>(2*_map3.size);
+              for (int _i4 = 0; _i4 < _map3.size; ++_i4)
+              {
+                String _key5; // required
+                String _val6; // required
+                _key5 = iprot.readString();
+                _val6 = iprot.readString();
+                this.message.put(_key5, _val6);
+              }
+              iprot.readMapEnd();
+            }
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -479,9 +516,9 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
       oprot.writeFieldBegin(GASPAR_LIST_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.gasparList.size()));
-        for (String _iter3 : this.gasparList)
+        for (String _iter7 : this.gasparList)
         {
-          oprot.writeString(_iter3);
+          oprot.writeString(_iter7);
         }
         oprot.writeListEnd();
       }
@@ -489,7 +526,15 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
     }
     if (this.message != null) {
       oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-      oprot.writeString(this.message);
+      {
+        oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, this.message.size()));
+        for (Map.Entry<String, String> _iter8 : this.message.entrySet())
+        {
+          oprot.writeString(_iter8.getKey());
+          oprot.writeString(_iter8.getValue());
+        }
+        oprot.writeMapEnd();
+      }
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
