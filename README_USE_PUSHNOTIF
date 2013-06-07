@@ -30,10 +30,7 @@ Then in your onStartCommand function you should handle
 		}
 	}
 	if("org.pocketcampus.plugin.pushnotif.PUSHNOTIF_MESSAGE".equals(aIntent.getAction())) {
-		Bundle extras = aIntent.getExtras();
-		if(extras != null && extras.getString("servermsg") != null) {
-		} else {
-		}
+		Bundle extras = aIntent.getExtras(); // this will be the dict that was sent by the server
 	}
 
 
@@ -48,7 +45,7 @@ Then to make sure the phone is registered, use
 On the server when you want to send a message, use
 
 	try {
-		PocketCampusServer.invokeOnPlugin("pushnotif", "pushMessage", new PushNotifRequest("<your_plugin_name>", Arrays.asList("<list_of_gaspar_usernames>"), "<message_to_send>"));
+		PocketCampusServer.invokeOnPlugin("pushnotif", "pushMessage", new PushNotifRequest("<your_plugin_name>", Arrays.asList("<list_of_gaspar_usernames>"), "<string_to_string_map_containing_dictionary_to_fwd_to_client>")); // dict cannot contain key pluginName
 	} catch (NoSuchObjectException e) {
 	} catch (SecurityException e) {
 	} catch (IllegalArgumentException e) {
