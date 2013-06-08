@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -148,7 +149,11 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		/*TEST*/
 		/*
 		try {
-			PocketCampusServer.invokeOnPlugin("pushnotif", "pushMessage", new PushNotifRequest("myedu", Arrays.asList("gardiol"), "Hello, world!"));
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("alert", "Hello, world !");
+			map.put("myCustomToken", "123456789");
+			map.put("badge", "3");
+			PocketCampusServer.invokeOnPlugin("pushnotif", "pushMessage", new PushNotifRequest("myedu", Arrays.asList("gardiol"), map));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
