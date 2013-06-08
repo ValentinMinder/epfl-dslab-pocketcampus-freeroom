@@ -58,13 +58,11 @@ static MyEduController* instance __weak = nil;
             
             /* TEST */
             /*
-             self.pushController = [PushNotifController sharedInstance];
-            [self.pushController addAuthentifiedUserDeviceRegistrationObserver:self presentationViewControllerForAutentication:courseListViewController successBlock:^{
-                NSLog(@"OK");
-            } failureBlock:^(PushNotifDeviceRegistrationError error) {
-                NSLog(@"Failed");
+            self.pushController = [PushNotifController sharedInstanceToRetain];
+            [self.pushController addNotificationObserverWithPluginLowerIdentifier:@"myedu" newNotificationBlock:^(NSString *notifMessage, NSDictionary* notifCompleteDictionary) {
+                NSLog(@"IN MyEdu: %@ %@", notifMessage, notifCompleteDictionary);
             }];
-             */
+            */
             /* */
             
             instance = self;

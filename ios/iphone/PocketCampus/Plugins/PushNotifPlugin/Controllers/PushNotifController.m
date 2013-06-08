@@ -126,7 +126,7 @@ static PushNotifController* instance __weak = nil;
 
 - (void)addNotificationObserverWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(NewNotificationBlock)newNotificationBlock {
     [[NSNotificationCenter defaultCenter] addObserverForName:[AppDelegate nsNotificationNameForPluginLowerIdentifier:pluginLowerIdentifier] object:nil queue:nil usingBlock:^(NSNotification *notif) {
-        newNotificationBlock(notif.userInfo[@"aps"][@"alert"]);
+        newNotificationBlock(notif.userInfo[@"aps"][@"alert"], notif.userInfo);
     }];
 }
 
@@ -184,7 +184,7 @@ static PushNotifController* instance __weak = nil;
 }
 
 - (void)registrationFailureNotification:(NSNotification*)notif {
-    [self cleanAndNotifiyFailureToObserversWithError:PushNotifDeviceRegistrationErrorUserCancelledAuthentication];
+    [self cleanAndNotifiyFailureToObserversWithError:PushNotifDeviceRegistrationErrorUserDeniedPush];
 }
 
 

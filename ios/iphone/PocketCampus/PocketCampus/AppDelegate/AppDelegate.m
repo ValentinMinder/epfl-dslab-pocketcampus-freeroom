@@ -74,7 +74,6 @@ static id test __strong __unused = nil;
     
     //test = [[PushNotifControllerTests alloc] init];
     //[test testRegistrationAuthenticated];
-
     
     //[[[PocketCampusLogicTests alloc] init] testAll];
     
@@ -86,7 +85,7 @@ static id test __strong __unused = nil;
     
     //test = [[EventsServiceTests alloc] init];
     
-    //[test tmpTest];
+    //[test tmpTest]
     
     /* END OF TESTS */
     
@@ -162,7 +161,7 @@ static id test __strong __unused = nil;
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSString* pluginName = userInfo[@"pluginName"];
     NSString* message = userInfo[@"aps"][@"alert"];
-    NSLog(@"-> Notification received for plugin %@: %@", pluginName, message);
+    NSLog(@"-> Notification received for plugin %@: %@  (userInfo:%@)", pluginName, message, userInfo);
     [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:pluginName] object:nil userInfo:userInfo];
 }
 

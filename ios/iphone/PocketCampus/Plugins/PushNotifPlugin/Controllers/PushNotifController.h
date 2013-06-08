@@ -18,7 +18,7 @@ typedef enum {
 
 typedef void (^PushNotifDeviceRegistrationFailureBlock)(PushNotifDeviceRegistrationError error);
 
-typedef void (^NewNotificationBlock)(NSString* notificationMessage);
+typedef void (^NewNotificationBlock)(NSString* notifMessage, NSDictionary* notifFullDictionary);
 
 @interface PushNotifDeviceRegistrationObserver : NSObject
 
