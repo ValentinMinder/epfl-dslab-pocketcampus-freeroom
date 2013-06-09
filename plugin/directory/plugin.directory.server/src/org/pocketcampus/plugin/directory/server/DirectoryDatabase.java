@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.directory.server;
 
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,13 +18,7 @@ import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerE
  * @author Florian <florian.laurent@gmail.com>
  */
 public class DirectoryDatabase {	
-	/** url of the database */
-	private static final String DB_URL = "jdbc:mysql://pocketcampus.epfl.ch:3306/pocketcampus";
-	/** username of the database*/
-	private static final String DB_USERNAME = "pocketcampus";
-	/** password of the database*/
-	private static final String DB_PASSWORD = "pHEcNhrKAZMS5Hdp";
-	
+
 	/** Name of the table containing the first names*/
 	private static final String TABLE_FIRSTNAME = "directory_firstname";
 	/** Name of the table containing the last names*/
@@ -42,7 +38,8 @@ public class DirectoryDatabase {
 	 */
 	public DirectoryDatabase() {
 		try {
-			this.connectionManager_ = new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD);
+			this.connectionManager_ = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
+					PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}
