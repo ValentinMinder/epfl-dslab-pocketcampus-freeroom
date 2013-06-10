@@ -24,4 +24,6 @@
 
 @property (nonatomic, strong) EventItem* eventItem;
 
+@property (nonatomic) BOOL glowIfEventItemIsNow;
+
 @end

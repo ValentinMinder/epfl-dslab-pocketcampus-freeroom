@@ -217,6 +217,8 @@ static EventsService* instance __weak = nil;
     operation.keepInCache = YES;
     operation.returnEvenStaleCacheIfServerIsUnreachable = YES;
     operation.cacheValidity = 43200; //half-day
+//#warning TO REMOVE
+    //operation.cacheValidity = 432000;
     operation.serviceClientSelector = @selector(getEventItem:);
     operation.delegateDidReturnSelector = @selector(getEventItemForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getEventItemFailedForRequest:);

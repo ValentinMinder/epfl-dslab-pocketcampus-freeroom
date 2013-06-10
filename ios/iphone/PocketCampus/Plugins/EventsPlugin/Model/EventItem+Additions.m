@@ -8,6 +8,8 @@
 
 #import "EventItem+Additions.h"
 
+#import "NSDate+Addtions.h"
+
 @implementation EventItem (Additions)
 
 - (BOOL)isEqual:(id)object {
@@ -156,8 +158,21 @@
         }
         
     }
-    
 
+}
+
+- (BOOL)isNow {
+    NSDate* startDate = [NSDate dateWithTimestampInt64_t:self.startDate];
+    NSDate* endDate = [NSDate dateWithTimestampInt64_t:self.endDate];
+    NSDate* now = [NSDate date];
+    if (self.startDate && self.endDate) {
+        return [now isBetweenEarlyDate:startDate andLateDate:endDate];
+    }
+    if (self.startDate) {
+        return [now isSameDayAsDate:startDate];
+    }
+    //might only have endDate but that's weird, return NO
+    return NO;
 }
 
 

@@ -31,4 +31,9 @@ typedef enum {
 
 - (NSString*)dateString:(EventItemDateStyle)dateStyle;
 
+/*
+ * Returns YES if now is in range [startDate, endDate], NO otherwise
+ */
+- (BOOL)isNow;
+
 @end

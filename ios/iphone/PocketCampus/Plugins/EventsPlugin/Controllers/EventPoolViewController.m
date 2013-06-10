@@ -54,7 +54,10 @@
 @property (nonatomic, strong) NSMutableDictionary* selectedCategories; //key = categId (NSNumber with int32), value = name string of categ
 @property (nonatomic, strong) NSMutableDictionary* selectedTags; //key = tag short name, value = tag full name
 
-@property (nonatomic, strong) NSArray* sectionsNames; //array of names of sections, to be used as key in itemsForSectionName
+@property (nonatomic, strong) NSArray* sectionsNames; //array of names of sections, to be used as key in itemsForSection
+
+@property (nonatomic, strong) NSDictionary* tagsInPresentItems; //tags that are present in items of poolReply. key = tag short name, value = tag full name
+
 @property (nonatomic, strong) NSArray* itemsForSection; //array of arrays of EventItem
 
 @property (nonatomic, strong) UISearchBar* searchBar;
@@ -71,6 +74,8 @@
 @property (nonatomic, copy) NSString* normalTitle;
 
 @property (nonatomic) BOOL pastMode;
+
+@property (nonatomic) BOOL highlightNowCells;
 
 @end
 
@@ -90,6 +95,8 @@ static NSString* kEventCell = @"EventCell";
 {
     self = [super initWithNibName:@"EventPoolView" bundle:nil];
     if (self) {
+//#warning TO REMOVE
+        //self.pastMode = YES;
         self.poolId = 0;
         self.eventsService = [EventsService sharedInstanceToRetain];
         self.selectedPeriod = [self.eventsService lastSelectedPoolPeriod];
@@ -313,7 +320,7 @@ static NSString* kEventCell = @"EventCell";
             if (self.poolReply.tags.count == 0 || (self.selectedTags.count == self.poolReply.tags.count)) {
                 title = NSLocalizedStringFromTable(@"FilterByTags", @"EventsPlugin", nil);
             } else {
-                title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FilterByTagsWithFormat", @"EventsPlugin", nil), self.selectedTags.count, self.poolReply.tags.count];
+                title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FilterByTagsWithFormat", @"EventsPlugin", nil), self.selectedTags.count, self.tagsInPresentItems.count];
             }
             [buttonTitles addObject:title];
         }
@@ -433,19 +440,37 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)presentTagsController {
     EventPoolViewController* controller __weak = self;
-    NSArray* allTags = [[self.poolReply.tags allValues] sortedArrayUsingSelector:@selector(compare:)]; //alphabetically
-    EventsTagsViewController* tagsViewController = [[EventsTagsViewController alloc] initWithTags:allTags selectedInitially:[self.selectedTags allValues] userValidatedSelectionBlock:^(NSSet *newlySelected) {
-        if (newlySelected.count == 0 && allTags.count > 0) {
+    NSArray* selectableTags = [[self.tagsInPresentItems allValues] sortedArrayUsingSelector:@selector(compare:)]; //alphabetically
+    NSMutableSet* selectedInitially = [NSMutableSet setWithCapacity:selectableTags.count];
+    
+    NSSet* selectableTagsSet = [NSSet setWithArray:selectableTags];
+    NSSet* selectedTagsSet = [NSSet setWithArray:[self.selectedTags allValues]];
+    for (NSString* tag in selectedTagsSet) {
+        if ([selectableTagsSet containsObject:tag]) {
+            [selectedInitially addObject:tag];
+        }
+    }
+    
+    EventsTagsViewController* tagsViewController = [[EventsTagsViewController alloc] initWithTags:selectableTags selectedInitially:selectedInitially userValidatedSelectionBlock:^(NSSet *newlySelected) {
+        if (newlySelected.count == 0 && selectableTags.count > 0) {
             [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"SelectAtLeastOneTag", @"EventsPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             return;
         }
-        NSMutableDictionary* selectedTags = [NSMutableDictionary dictionaryWithCapacity:newlySelected.count];
-        [self.poolReply.tags enumerateKeysAndObjectsUsingBlock:^(NSString* tagKey, NSString* tag, BOOL *stop) {
-            if ([newlySelected containsObject:tag]) {
-                selectedTags[tagKey] = tag;
-            }
-        }];
-        self.selectedTags = selectedTags;
+
+        if (newlySelected.count == selectableTags.count) {
+            //then, user selected everything, meaning "I want to show everything"
+            //so select all possible from reply, so that if refresh, new items with
+            //tags not present before will not be hidden
+            self.selectedTags = [self.poolReply.tags mutableCopy];
+        } else {
+            NSMutableDictionary* selectedTags = [NSMutableDictionary dictionaryWithCapacity:newlySelected.count];
+            [self.poolReply.tags enumerateKeysAndObjectsUsingBlock:^(NSString* tagKey, NSString* tag, BOOL *stop) {
+                if ([newlySelected containsObject:tag]) {
+                    selectedTags[tagKey] = tag;
+                }
+            }];
+            self.selectedTags = selectedTags;
+        }
         [controller refreshFromCurrentData];
         [controller dismissViewControllerAnimated:YES completion:NULL];
     }];
@@ -532,6 +557,18 @@ static NSString* kEventCell = @"EventCell";
     if (!self.selectedTags) { //select all tags (available in reply) by default
         self.selectedTags = [self.poolReply.tags mutableCopy];
     }
+    
+    NSMutableDictionary* tmpTagsInPresentItems = [NSMutableDictionary dictionary];
+    
+    for (EventItem* item in [self.poolReply.childrenItems allValues]) {
+        for (NSString* tagKey in item.eventTags) {
+            if (!tmpTagsInPresentItems[tagKey]) {
+                tmpTagsInPresentItems[tagKey] = self.poolReply.tags[tagKey];
+            }
+        }
+    }
+    
+    self.tagsInPresentItems = tmpTagsInPresentItems;
     
     //Force Favorites and Features to be always selected
     self.selectedCategories[[EventsUtils favoriteCategory]] = self.poolReply.categs[[EventsUtils favoriteCategory]];
@@ -764,6 +801,7 @@ static NSString* kEventCell = @"EventCell";
     
     if (!cell) {
         cell = [[EventItemCell alloc] initWithEventItem:eventItem reuseIdentifier:kEventCell];
+        //cell.glowIfEventItemIsNow = YES;
     }
     
     cell.eventItem = eventItem;
@@ -772,21 +810,11 @@ static NSString* kEventCell = @"EventCell";
         cell.rightSubtitleLabel.text = [eventItem dateString:EventItemDateStyleLong];
     }
     
-    /*UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kEventCell];
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kEventCell];
-    }
-    
-    cell.textLabel.text = eventItem.eventTitle;
-    cell.textLabel.numberOfLines = 2;
-    cell.detailTextLabel.text = eventItem.eventPlace;
-     */
-    
     [(PCTableViewWithRemoteThumbnails*)(self.tableView) setThumbnailURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
     
     return cell;
 }
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

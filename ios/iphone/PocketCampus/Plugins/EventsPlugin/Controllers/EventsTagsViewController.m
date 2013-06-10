@@ -21,7 +21,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* deselectAllButton;
 
 @property (nonatomic, strong) NSArray* allTags;
-@property (nonatomic, strong) NSArray* selectedInitially;
+@property (nonatomic, strong) NSSet* selectedInitially;
 
 @property (nonatomic, strong) NSMutableSet* newlySelected;
 
@@ -29,7 +29,7 @@
 
 @implementation EventsTagsViewController
 
-- (id)initWithTags:(NSArray*)allTags selectedInitially:(NSArray*)selectedInitially userValidatedSelectionBlock:(void (^)(NSSet* newlySelected))userValidatedSelectionBlock;
+- (id)initWithTags:(NSArray*)allTags selectedInitially:(NSSet*)selectedInitially userValidatedSelectionBlock:(void (^)(NSSet* newlySelected))userValidatedSelectionBlock;
 {
     self = [super initWithNibName:@"EventsTagView" bundle:nil];
     if (self) {
@@ -37,7 +37,7 @@
         self.allTags = allTags;
         self.selectedInitially = selectedInitially;
         self.userValidatedSelectionBlock = userValidatedSelectionBlock;
-        self.newlySelected = [NSMutableSet setWithArray:selectedInitially];
+        self.newlySelected = [NSMutableSet setWithSet:selectedInitially];
         self.title = NSLocalizedStringFromTable(@"FilterByTags", @"EventsPlugin", nil);
     }
     return self;

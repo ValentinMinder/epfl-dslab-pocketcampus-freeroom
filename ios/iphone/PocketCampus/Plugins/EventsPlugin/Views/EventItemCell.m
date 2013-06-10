@@ -20,6 +20,8 @@
 
 @property (nonatomic, strong) NSString* customReuseIdentifier;
 
+@property (nonatomic, strong) NSTimer* glowTimer;
+
 @end
 
 @implementation EventItemCell
@@ -89,5 +91,42 @@
     
 }
 
+- (void)setGlowIfEventItemIsNow:(BOOL)glowIfEventItemIsNow {
+    _glowIfEventItemIsNow = glowIfEventItemIsNow;
+    if (glowIfEventItemIsNow) {
+        if (!self.glowTimer) {
+            self.glowTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(glowIfNow) userInfo:nil repeats:YES];
+        }
+    } else {
+        [self.glowTimer invalidate];
+        self.glowTimer = nil;
+        self.backgroundView = nil;
+    }
+}
+
+- (void)glowIfNow {
+    if (!self.backgroundView) {
+        UIView* backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+        backgroundView.backgroundColor = [UIColor colorWithRed:0.760784 green:0.811765 blue:1.000000 alpha:1.0];
+        self.backgroundView = backgroundView;
+        self.backgroundView.alpha = 0.0;
+    }
+    CGFloat targetAlpha;
+    if (![self.eventItem isNow]) {
+        targetAlpha = 0.0;
+    } else if (self.backgroundView.alpha < 0.5) {
+        targetAlpha = 1.0;
+    } else {
+        targetAlpha = 0.0;
+    }
+    //NSLog(@"TargetAlpha: %f", targetAlpha);
+    [UIView animateWithDuration:1.0 animations:^{
+        self.backgroundView.alpha = targetAlpha;
+    }];
+}
+
+- (void)dealloc {
+    [self.glowTimer invalidate];
+}
 
 @end

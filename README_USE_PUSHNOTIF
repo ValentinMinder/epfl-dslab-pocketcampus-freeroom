@@ -60,3 +60,33 @@ And finally on the server implement the following function if you want to know w
 	public void appendToFailedDevicesList(PushNotifResponse resp) {
 	}
 
+
+
+
+
+========================== IOS =======================
+ 
+The first time you start your plugin, you need to make sure the device has been registered on the server. Theoretically it is required once only during the lifetime of the device. But this should be done periodically if the server loses the registration after a problem for example.
+
+To do so, use the PushNotifController:
+
+[self.pushNotifController addAuthentifiedUserDeviceRegistrationObserver:self presentationViewControllerForAutentication:anyCurrentlyVisibleViewController successBlock:^{
+	NSLog(@"Registration suceeded");
+} failureBlock:^(PushNotifDeviceRegistrationError error) {
+	NSLog(@"Registration failed with error : %d", error);
+}];
+
+Then, when pushMessage is called server side on the PushNotif plugin, it will send a push notification to the newly registered device.
+
+To handle a notification within the app:
+
+[[PushNotifController sharedInstance] addNotificationObserverWithPluginLowerIdentifier:@"pluginNameInLowerCase" newNotificationBlock:^(NSString* notifMessage, NSDictionary* notifFullDictionary) {
+	//do wathever you want
+	//for example, request that your plugin goes foreground:
+	//[[MainController publicController] requestPluginToForeground:@"pluginNameInLowerCase"];
+	//refresh your data
+}];
+
+Finally, you need to copy the file etc/pocketcampus-pushnotif-dev.p12 in /etc on your server
+
+

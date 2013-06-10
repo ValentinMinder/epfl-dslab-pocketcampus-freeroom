@@ -10,7 +10,7 @@
 
 @interface EventsTagsViewController : UITableViewController
 
-- (id)initWithTags:(NSArray*)allTags selectedInitially:(NSArray*)selectedInitially userValidatedSelectionBlock:(void (^)(NSSet* newlySelected))userValidatedSelectionBlock;
+- (id)initWithTags:(NSArray*)allTags selectedInitially:(NSSet*)selectedInitially userValidatedSelectionBlock:(void (^)(NSSet* newlySelected))userValidatedSelectionBlock;
 
 @property (nonatomic, copy) void (^userValidatedSelectionBlock)(NSSet*);
 

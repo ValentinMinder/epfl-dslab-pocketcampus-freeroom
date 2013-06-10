@@ -113,6 +113,84 @@
 		322C4ACD16E1FD8300DE418E /* EventItem+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F316E1FA1100AF365C /* EventItem+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322F326A1532F06300E53C6F /* BookmarksBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32681532F06300E53C6F /* BookmarksBlue.png */; };
 		322F326B1532F06300E53C6F /* BookmarksBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32691532F06300E53C6F /* BookmarksBlue@2x.png */; };
+		323414D6176558F300527895 /* AcceptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234145A176558F300527895 /* AcceptViewController.m */; };
+		323414D7176558F300527895 /* AnswerListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234145D176558F300527895 /* AnswerListViewController.m */; };
+		323414D8176558F300527895 /* AnswerRecViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234145F176558F300527895 /* AnswerRecViewController.m */; };
+		323414D9176558F300527895 /* AnswerRecViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32341460176558F300527895 /* AnswerRecViewController.xib */; };
+		323414DA176558F300527895 /* AnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341462176558F300527895 /* AnswerViewController.m */; };
+		323414DB176558F300527895 /* AskQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341464176558F300527895 /* AskQuestionViewController.m */; };
+		323414DC176558F300527895 /* FeedbackListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341466176558F300527895 /* FeedbackListViewController.m */; };
+		323414DD176558F300527895 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341468176558F300527895 /* FeedbackViewController.m */; };
+		323414DE176558F300527895 /* ForumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234146A176558F300527895 /* ForumTableCell.m */; };
+		323414DF176558F300527895 /* CompundTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234146D176558F300527895 /* CompundTableCell.m */; };
+		323414E0176558F300527895 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234146F176558F300527895 /* JSONKit.m */; };
+		323414E1176558F300527895 /* QAFListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341471176558F300527895 /* QAFListCell.m */; };
+		323414E2176558F300527895 /* TableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341473176558F300527895 /* TableCell.m */; };
+		323414E3176558F300527895 /* UIPlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341475176558F300527895 /* UIPlaceHolderTextView.m */; };
+		323414E4176558F300527895 /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341477176558F300527895 /* IntroViewController.m */; };
+		323414E5176558F300527895 /* IntroViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32341478176558F300527895 /* IntroViewController.xib */; };
+		323414E6176558F300527895 /* LatestForumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234147A176558F300527895 /* LatestForumViewController.m */; };
+		323414E7176558F300527895 /* MatchingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234147C176558F300527895 /* MatchingViewController.m */; };
+		323414E8176558F300527895 /* MatchingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3234147D176558F300527895 /* MatchingViewController.xib */; };
+		323414E9176558F300527895 /* MyAnswerListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234147F176558F300527895 /* MyAnswerListViewController.m */; };
+		323414EA176558F300527895 /* MyAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341481176558F300527895 /* MyAnswerViewController.m */; };
+		323414EB176558F300527895 /* MyQuestionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341483176558F300527895 /* MyQuestionListViewController.m */; };
+		323414EC176558F300527895 /* MyQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341485176558F300527895 /* MyQuestionViewController.m */; };
+		323414ED176558F300527895 /* PendingTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341487176558F300527895 /* PendingTableCell.m */; };
+		323414EE176558F300527895 /* PendingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341489176558F300527895 /* PendingViewController.m */; };
+		323414EF176558F300527895 /* AbstractActionSheetPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234148C176558F300527895 /* AbstractActionSheetPicker.m */; };
+		323414F0176558F300527895 /* ActionSheetDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234148E176558F300527895 /* ActionSheetDatePicker.m */; };
+		323414F1176558F300527895 /* ActionSheetDistancePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341490176558F300527895 /* ActionSheetDistancePicker.m */; };
+		323414F2176558F300527895 /* ActionSheetStringPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341492176558F300527895 /* ActionSheetStringPicker.m */; };
+		323414F3176558F300527895 /* DistancePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341494176558F300527895 /* DistancePickerView.m */; };
+		323414F4176558F300527895 /* QAForumController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341496176558F300527895 /* QAForumController.m */; };
+		323414F5176558F300527895 /* QAForumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341498176558F300527895 /* QAForumViewController.m */; };
+		323414F6176558F300527895 /* QuestionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234149A176558F300527895 /* QuestionListViewController.m */; };
+		323414F7176558F300527895 /* QuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234149C176558F300527895 /* QuestionViewController.m */; };
+		323414F8176558F300527895 /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234149E176558F300527895 /* RateView.m */; };
+		323414F9176558F300527895 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323414A0176558F300527895 /* ReportViewController.m */; };
+		323414FA176558F300527895 /* RequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323414A2176558F300527895 /* RequestViewController.m */; };
+		323414FB176558F300527895 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323414A4176558F300527895 /* SettingViewController.m */; };
+		323414FC176558F300527895 /* QAForumPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 323414A5176558F300527895 /* QAForumPlugin.strings */; };
+		323414FD176558F300527895 /* kermit_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414A9176558F300527895 /* kermit_empty.png */; };
+		323414FE176558F300527895 /* kermit_full.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414AA176558F300527895 /* kermit_full.png */; };
+		323414FF176558F300527895 /* kermit_half.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414AB176558F300527895 /* kermit_half.png */; };
+		32341500176558F300527895 /* QAForumService.m in Sources */ = {isa = PBXBuildFile; fileRef = 323414AE176558F300527895 /* QAForumService.m */; };
+		32341501176558F300527895 /* qaforum.m in Sources */ = {isa = PBXBuildFile; fileRef = 323414B1176558F300527895 /* qaforum.m */; };
+		32341502176558F300527895 /* AcceptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B3176558F300527895 /* AcceptViewController.xib */; };
+		32341503176558F300527895 /* AnswerListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B4176558F300527895 /* AnswerListViewController.xib */; };
+		32341504176558F300527895 /* AnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B5176558F300527895 /* AnswerViewController.xib */; };
+		32341505176558F300527895 /* AskQuestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B6176558F300527895 /* AskQuestionViewController.xib */; };
+		32341506176558F300527895 /* FeedbackListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B7176558F300527895 /* FeedbackListViewController.xib */; };
+		32341507176558F300527895 /* FeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B8176558F300527895 /* FeedbackViewController.xib */; };
+		32341508176558F300527895 /* ForumTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B9176558F300527895 /* ForumTableCell.xib */; };
+		32341509176558F300527895 /* QAForum.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414BB176558F300527895 /* QAForum.png */; };
+		3234150A176558F300527895 /* QAForum@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414BC176558F300527895 /* QAForum@2x.png */; };
+		3234150B176558F300527895 /* qaforum_ask.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414BD176558F300527895 /* qaforum_ask.png */; };
+		3234150C176558F300527895 /* qaforum_forum.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414BE176558F300527895 /* qaforum_forum.png */; };
+		3234150D176558F300527895 /* qaforum_intro1.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414BF176558F300527895 /* qaforum_intro1.png */; };
+		3234150E176558F300527895 /* qaforum_intro2.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C0176558F300527895 /* qaforum_intro2.png */; };
+		3234150F176558F300527895 /* qaforum_intro3.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C1176558F300527895 /* qaforum_intro3.png */; };
+		32341510176558F300527895 /* qaforum_intro4.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C2176558F300527895 /* qaforum_intro4.png */; };
+		32341511176558F300527895 /* qaforum_intro5.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C3176558F300527895 /* qaforum_intro5.png */; };
+		32341512176558F300527895 /* qaforum_pending.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C4176558F300527895 /* qaforum_pending.png */; };
+		32341513176558F300527895 /* qaforum_question.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C5176558F300527895 /* qaforum_question.png */; };
+		32341514176558F300527895 /* qaforum_record.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C6176558F300527895 /* qaforum_record.png */; };
+		32341515176558F300527895 /* qaforum_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C7176558F300527895 /* qaforum_right.png */; };
+		32341516176558F300527895 /* qaforum_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C8176558F300527895 /* qaforum_selected.png */; };
+		32341517176558F300527895 /* LatestForumViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414C9176558F300527895 /* LatestForumViewController.xib */; };
+		32341518176558F300527895 /* MyAnswerListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CA176558F300527895 /* MyAnswerListViewController.xib */; };
+		32341519176558F300527895 /* MyAnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CB176558F300527895 /* MyAnswerViewController.xib */; };
+		3234151A176558F300527895 /* MyQuestionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CC176558F300527895 /* MyQuestionListViewController.xib */; };
+		3234151B176558F300527895 /* MyQuestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CD176558F300527895 /* MyQuestionViewController.xib */; };
+		3234151C176558F300527895 /* PendingTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CE176558F300527895 /* PendingTableCell.xib */; };
+		3234151D176558F300527895 /* PendingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CF176558F300527895 /* PendingViewController.xib */; };
+		3234151E176558F300527895 /* QAForumView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D0176558F300527895 /* QAForumView.xib */; };
+		3234151F176558F300527895 /* QuestionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D1176558F300527895 /* QuestionListViewController.xib */; };
+		32341520176558F300527895 /* QuestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D2176558F300527895 /* QuestionViewController.xib */; };
+		32341521176558F300527895 /* ReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D3176558F300527895 /* ReportViewController.xib */; };
+		32341522176558F300527895 /* RequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D4176558F300527895 /* RequestViewController.xib */; };
+		32341523176558F400527895 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D5176558F300527895 /* SettingViewController.xib */; };
 		3235174616A4B5B70022B98E /* MyEduModule+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 3235174516A4B5B70022B98E /* MyEduModule+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		323586E416381BF700872ECE /* MyEduCourseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323586E316381BF700872ECE /* MyEduCourseListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		323586E816381E1200872ECE /* MyEduCourseListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323586E716381E1200872ECE /* MyEduCourseListView.xib */; };
@@ -427,6 +505,7 @@
 		32FB2E0915179014007AE82B /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FB2DFE15179014007AE82B /* TransportPlugin.strings */; };
 		32FB2E0A15179014007AE82B /* transport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0415179014007AE82B /* transport.m */; };
 		32FB2E0B15179014007AE82B /* TransportService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0615179014007AE82B /* TransportService.m */; };
+		32FB442017650268008C8282 /* NSDate+Addtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB441F17650268008C8282 /* NSDate+Addtions.m */; };
 		32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0FF44E59AC0FAF424B57744 /* Events@2x.png */; };
 		3D60403F97790317C691C8A4 /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; };
@@ -616,6 +695,123 @@
 		322C07531722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GenericGreyButtonHighlight@2x.png"; sourceTree = "<group>"; };
 		322F32681532F06300E53C6F /* BookmarksBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookmarksBlue.png; sourceTree = "<group>"; };
 		322F32691532F06300E53C6F /* BookmarksBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BookmarksBlue@2x.png"; sourceTree = "<group>"; };
+		32341459176558F300527895 /* AcceptViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcceptViewController.h; sourceTree = "<group>"; };
+		3234145A176558F300527895 /* AcceptViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcceptViewController.m; sourceTree = "<group>"; };
+		3234145B176558F300527895 /* ActionSheetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetPicker.h; sourceTree = "<group>"; };
+		3234145C176558F300527895 /* AnswerListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerListViewController.h; sourceTree = "<group>"; };
+		3234145D176558F300527895 /* AnswerListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerListViewController.m; sourceTree = "<group>"; };
+		3234145E176558F300527895 /* AnswerRecViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerRecViewController.h; sourceTree = "<group>"; };
+		3234145F176558F300527895 /* AnswerRecViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerRecViewController.m; sourceTree = "<group>"; };
+		32341460176558F300527895 /* AnswerRecViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnswerRecViewController.xib; sourceTree = "<group>"; };
+		32341461176558F300527895 /* AnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerViewController.h; sourceTree = "<group>"; };
+		32341462176558F300527895 /* AnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerViewController.m; sourceTree = "<group>"; };
+		32341463176558F300527895 /* AskQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AskQuestionViewController.h; sourceTree = "<group>"; };
+		32341464176558F300527895 /* AskQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AskQuestionViewController.m; sourceTree = "<group>"; };
+		32341465176558F300527895 /* FeedbackListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackListViewController.h; sourceTree = "<group>"; };
+		32341466176558F300527895 /* FeedbackListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackListViewController.m; sourceTree = "<group>"; };
+		32341467176558F300527895 /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
+		32341468176558F300527895 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
+		32341469176558F300527895 /* ForumTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumTableCell.h; sourceTree = "<group>"; };
+		3234146A176558F300527895 /* ForumTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumTableCell.m; sourceTree = "<group>"; };
+		3234146C176558F300527895 /* CompundTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompundTableCell.h; sourceTree = "<group>"; };
+		3234146D176558F300527895 /* CompundTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompundTableCell.m; sourceTree = "<group>"; };
+		3234146E176558F300527895 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		3234146F176558F300527895 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		32341470176558F300527895 /* QAFListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAFListCell.h; sourceTree = "<group>"; };
+		32341471176558F300527895 /* QAFListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QAFListCell.m; sourceTree = "<group>"; };
+		32341472176558F300527895 /* TableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableCell.h; sourceTree = "<group>"; };
+		32341473176558F300527895 /* TableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableCell.m; sourceTree = "<group>"; };
+		32341474176558F300527895 /* UIPlaceHolderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPlaceHolderTextView.h; sourceTree = "<group>"; };
+		32341475176558F300527895 /* UIPlaceHolderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPlaceHolderTextView.m; sourceTree = "<group>"; };
+		32341476176558F300527895 /* IntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroViewController.h; sourceTree = "<group>"; };
+		32341477176558F300527895 /* IntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
+		32341478176558F300527895 /* IntroViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IntroViewController.xib; sourceTree = "<group>"; };
+		32341479176558F300527895 /* LatestForumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LatestForumViewController.h; sourceTree = "<group>"; };
+		3234147A176558F300527895 /* LatestForumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LatestForumViewController.m; sourceTree = "<group>"; };
+		3234147B176558F300527895 /* MatchingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchingViewController.h; sourceTree = "<group>"; };
+		3234147C176558F300527895 /* MatchingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchingViewController.m; sourceTree = "<group>"; };
+		3234147D176558F300527895 /* MatchingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatchingViewController.xib; sourceTree = "<group>"; };
+		3234147E176558F300527895 /* MyAnswerListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnswerListViewController.h; sourceTree = "<group>"; };
+		3234147F176558F300527895 /* MyAnswerListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnswerListViewController.m; sourceTree = "<group>"; };
+		32341480176558F300527895 /* MyAnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnswerViewController.h; sourceTree = "<group>"; };
+		32341481176558F300527895 /* MyAnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnswerViewController.m; sourceTree = "<group>"; };
+		32341482176558F300527895 /* MyQuestionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyQuestionListViewController.h; sourceTree = "<group>"; };
+		32341483176558F300527895 /* MyQuestionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyQuestionListViewController.m; sourceTree = "<group>"; };
+		32341484176558F300527895 /* MyQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyQuestionViewController.h; sourceTree = "<group>"; };
+		32341485176558F300527895 /* MyQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyQuestionViewController.m; sourceTree = "<group>"; };
+		32341486176558F300527895 /* PendingTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PendingTableCell.h; sourceTree = "<group>"; };
+		32341487176558F300527895 /* PendingTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PendingTableCell.m; sourceTree = "<group>"; };
+		32341488176558F300527895 /* PendingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PendingViewController.h; sourceTree = "<group>"; };
+		32341489176558F300527895 /* PendingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PendingViewController.m; sourceTree = "<group>"; };
+		3234148B176558F300527895 /* AbstractActionSheetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractActionSheetPicker.h; sourceTree = "<group>"; };
+		3234148C176558F300527895 /* AbstractActionSheetPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractActionSheetPicker.m; sourceTree = "<group>"; };
+		3234148D176558F300527895 /* ActionSheetDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetDatePicker.h; sourceTree = "<group>"; };
+		3234148E176558F300527895 /* ActionSheetDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetDatePicker.m; sourceTree = "<group>"; };
+		3234148F176558F300527895 /* ActionSheetDistancePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetDistancePicker.h; sourceTree = "<group>"; };
+		32341490176558F300527895 /* ActionSheetDistancePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetDistancePicker.m; sourceTree = "<group>"; };
+		32341491176558F300527895 /* ActionSheetStringPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetStringPicker.h; sourceTree = "<group>"; };
+		32341492176558F300527895 /* ActionSheetStringPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetStringPicker.m; sourceTree = "<group>"; };
+		32341493176558F300527895 /* DistancePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistancePickerView.h; sourceTree = "<group>"; };
+		32341494176558F300527895 /* DistancePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistancePickerView.m; sourceTree = "<group>"; };
+		32341495176558F300527895 /* QAForumController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAForumController.h; sourceTree = "<group>"; };
+		32341496176558F300527895 /* QAForumController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QAForumController.m; sourceTree = "<group>"; };
+		32341497176558F300527895 /* QAForumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAForumViewController.h; sourceTree = "<group>"; };
+		32341498176558F300527895 /* QAForumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QAForumViewController.m; sourceTree = "<group>"; };
+		32341499176558F300527895 /* QuestionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionListViewController.h; sourceTree = "<group>"; };
+		3234149A176558F300527895 /* QuestionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionListViewController.m; sourceTree = "<group>"; };
+		3234149B176558F300527895 /* QuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionViewController.h; sourceTree = "<group>"; };
+		3234149C176558F300527895 /* QuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionViewController.m; sourceTree = "<group>"; };
+		3234149D176558F300527895 /* RateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RateView.h; sourceTree = "<group>"; };
+		3234149E176558F300527895 /* RateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RateView.m; sourceTree = "<group>"; };
+		3234149F176558F300527895 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
+		323414A0176558F300527895 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
+		323414A1176558F300527895 /* RequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestViewController.h; sourceTree = "<group>"; };
+		323414A2176558F300527895 /* RequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestViewController.m; sourceTree = "<group>"; };
+		323414A3176558F300527895 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		323414A4176558F300527895 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		323414A6176558F300527895 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/QAForumPlugin.strings; sourceTree = "<group>"; };
+		323414A7176558F300527895 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/QAForumPlugin.strings; sourceTree = "<group>"; };
+		323414A9176558F300527895 /* kermit_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kermit_empty.png; sourceTree = "<group>"; };
+		323414AA176558F300527895 /* kermit_full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kermit_full.png; sourceTree = "<group>"; };
+		323414AB176558F300527895 /* kermit_half.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kermit_half.png; sourceTree = "<group>"; };
+		323414AD176558F300527895 /* QAForumService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAForumService.h; sourceTree = "<group>"; };
+		323414AE176558F300527895 /* QAForumService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QAForumService.m; sourceTree = "<group>"; };
+		323414B0176558F300527895 /* qaforum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qaforum.h; sourceTree = "<group>"; };
+		323414B1176558F300527895 /* qaforum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = qaforum.m; sourceTree = "<group>"; };
+		323414B3176558F300527895 /* AcceptViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AcceptViewController.xib; sourceTree = "<group>"; };
+		323414B4176558F300527895 /* AnswerListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnswerListViewController.xib; sourceTree = "<group>"; };
+		323414B5176558F300527895 /* AnswerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnswerViewController.xib; sourceTree = "<group>"; };
+		323414B6176558F300527895 /* AskQuestionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AskQuestionViewController.xib; sourceTree = "<group>"; };
+		323414B7176558F300527895 /* FeedbackListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedbackListViewController.xib; sourceTree = "<group>"; };
+		323414B8176558F300527895 /* FeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedbackViewController.xib; sourceTree = "<group>"; };
+		323414B9176558F300527895 /* ForumTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForumTableCell.xib; sourceTree = "<group>"; };
+		323414BB176558F300527895 /* QAForum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QAForum.png; sourceTree = "<group>"; };
+		323414BC176558F300527895 /* QAForum@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QAForum@2x.png"; sourceTree = "<group>"; };
+		323414BD176558F300527895 /* qaforum_ask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_ask.png; sourceTree = "<group>"; };
+		323414BE176558F300527895 /* qaforum_forum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_forum.png; sourceTree = "<group>"; };
+		323414BF176558F300527895 /* qaforum_intro1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_intro1.png; sourceTree = "<group>"; };
+		323414C0176558F300527895 /* qaforum_intro2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_intro2.png; sourceTree = "<group>"; };
+		323414C1176558F300527895 /* qaforum_intro3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_intro3.png; sourceTree = "<group>"; };
+		323414C2176558F300527895 /* qaforum_intro4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_intro4.png; sourceTree = "<group>"; };
+		323414C3176558F300527895 /* qaforum_intro5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_intro5.png; sourceTree = "<group>"; };
+		323414C4176558F300527895 /* qaforum_pending.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_pending.png; sourceTree = "<group>"; };
+		323414C5176558F300527895 /* qaforum_question.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_question.png; sourceTree = "<group>"; };
+		323414C6176558F300527895 /* qaforum_record.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_record.png; sourceTree = "<group>"; };
+		323414C7176558F300527895 /* qaforum_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_right.png; sourceTree = "<group>"; };
+		323414C8176558F300527895 /* qaforum_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qaforum_selected.png; sourceTree = "<group>"; };
+		323414C9176558F300527895 /* LatestForumViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LatestForumViewController.xib; sourceTree = "<group>"; };
+		323414CA176558F300527895 /* MyAnswerListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyAnswerListViewController.xib; sourceTree = "<group>"; };
+		323414CB176558F300527895 /* MyAnswerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyAnswerViewController.xib; sourceTree = "<group>"; };
+		323414CC176558F300527895 /* MyQuestionListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyQuestionListViewController.xib; sourceTree = "<group>"; };
+		323414CD176558F300527895 /* MyQuestionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyQuestionViewController.xib; sourceTree = "<group>"; };
+		323414CE176558F300527895 /* PendingTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PendingTableCell.xib; sourceTree = "<group>"; };
+		323414CF176558F300527895 /* PendingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PendingViewController.xib; sourceTree = "<group>"; };
+		323414D0176558F300527895 /* QAForumView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QAForumView.xib; sourceTree = "<group>"; };
+		323414D1176558F300527895 /* QuestionListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuestionListViewController.xib; sourceTree = "<group>"; };
+		323414D2176558F300527895 /* QuestionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuestionViewController.xib; sourceTree = "<group>"; };
+		323414D3176558F300527895 /* ReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportViewController.xib; sourceTree = "<group>"; };
+		323414D4176558F300527895 /* RequestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestViewController.xib; sourceTree = "<group>"; };
+		323414D5176558F300527895 /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
 		3235174416A4B5B70022B98E /* MyEduModule+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MyEduModule+Comparison.h"; sourceTree = "<group>"; };
 		3235174516A4B5B70022B98E /* MyEduModule+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MyEduModule+Comparison.m"; sourceTree = "<group>"; };
 		323586E216381BF700872ECE /* MyEduCourseListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduCourseListViewController.h; sourceTree = "<group>"; };
@@ -1091,6 +1287,8 @@
 		32FB2E0415179014007AE82B /* transport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = transport.m; sourceTree = "<group>"; };
 		32FB2E0515179014007AE82B /* TransportService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportService.h; sourceTree = "<group>"; };
 		32FB2E0615179014007AE82B /* TransportService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportService.m; sourceTree = "<group>"; };
+		32FB441E17650268008C8282 /* NSDate+Addtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Addtions.h"; sourceTree = "<group>"; };
+		32FB441F17650268008C8282 /* NSDate+Addtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Addtions.m"; sourceTree = "<group>"; };
 		32FF46531636FB2400932FF5 /* PluginNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginNavigationController.h; sourceTree = "<group>"; };
 		32FF46541636FB2500932FF5 /* PluginNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginNavigationController.m; sourceTree = "<group>"; };
 		39424C568B2FFD2731E4DCAE /* PushNotifService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PushNotifService.h; path = Plugins/PushNotifPlugin/Model/PushNotifService.h; sourceTree = SOURCE_ROOT; };
@@ -1514,6 +1712,8 @@
 				321CCF9D16E3B537002CBEA2 /* PCURLSchemeHandler.m */,
 				321CCF6E16E27357002CBEA2 /* UIImage+Additions.h */,
 				321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */,
+				32FB441E17650268008C8282 /* NSDate+Addtions.h */,
+				32FB441F17650268008C8282 /* NSDate+Addtions.m */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -1525,6 +1725,201 @@
 				322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */,
 			);
 			path = MSPullToRefresh;
+			sourceTree = "<group>";
+		};
+		32341457176558F300527895 /* QAForumPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				32341458176558F300527895 /* Controllers */,
+				323414A8176558F300527895 /* kermitStars */,
+				323414AC176558F300527895 /* Model */,
+				323414B2176558F300527895 /* Views */,
+				323415241765590600527895 /* Supporting Files */,
+			);
+			path = QAForumPlugin;
+			sourceTree = "<group>";
+		};
+		32341458176558F300527895 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				32341459176558F300527895 /* AcceptViewController.h */,
+				3234145A176558F300527895 /* AcceptViewController.m */,
+				3234145B176558F300527895 /* ActionSheetPicker.h */,
+				3234145C176558F300527895 /* AnswerListViewController.h */,
+				3234145D176558F300527895 /* AnswerListViewController.m */,
+				3234145E176558F300527895 /* AnswerRecViewController.h */,
+				3234145F176558F300527895 /* AnswerRecViewController.m */,
+				32341460176558F300527895 /* AnswerRecViewController.xib */,
+				32341461176558F300527895 /* AnswerViewController.h */,
+				32341462176558F300527895 /* AnswerViewController.m */,
+				32341463176558F300527895 /* AskQuestionViewController.h */,
+				32341464176558F300527895 /* AskQuestionViewController.m */,
+				32341465176558F300527895 /* FeedbackListViewController.h */,
+				32341466176558F300527895 /* FeedbackListViewController.m */,
+				32341467176558F300527895 /* FeedbackViewController.h */,
+				32341468176558F300527895 /* FeedbackViewController.m */,
+				32341469176558F300527895 /* ForumTableCell.h */,
+				3234146A176558F300527895 /* ForumTableCell.m */,
+				3234146B176558F300527895 /* HelperClass */,
+				32341476176558F300527895 /* IntroViewController.h */,
+				32341477176558F300527895 /* IntroViewController.m */,
+				32341478176558F300527895 /* IntroViewController.xib */,
+				32341479176558F300527895 /* LatestForumViewController.h */,
+				3234147A176558F300527895 /* LatestForumViewController.m */,
+				3234147B176558F300527895 /* MatchingViewController.h */,
+				3234147C176558F300527895 /* MatchingViewController.m */,
+				3234147D176558F300527895 /* MatchingViewController.xib */,
+				3234147E176558F300527895 /* MyAnswerListViewController.h */,
+				3234147F176558F300527895 /* MyAnswerListViewController.m */,
+				32341480176558F300527895 /* MyAnswerViewController.h */,
+				32341481176558F300527895 /* MyAnswerViewController.m */,
+				32341482176558F300527895 /* MyQuestionListViewController.h */,
+				32341483176558F300527895 /* MyQuestionListViewController.m */,
+				32341484176558F300527895 /* MyQuestionViewController.h */,
+				32341485176558F300527895 /* MyQuestionViewController.m */,
+				32341486176558F300527895 /* PendingTableCell.h */,
+				32341487176558F300527895 /* PendingTableCell.m */,
+				32341488176558F300527895 /* PendingViewController.h */,
+				32341489176558F300527895 /* PendingViewController.m */,
+				3234148A176558F300527895 /* Pickers */,
+				32341495176558F300527895 /* QAForumController.h */,
+				32341496176558F300527895 /* QAForumController.m */,
+				32341497176558F300527895 /* QAForumViewController.h */,
+				32341498176558F300527895 /* QAForumViewController.m */,
+				32341499176558F300527895 /* QuestionListViewController.h */,
+				3234149A176558F300527895 /* QuestionListViewController.m */,
+				3234149B176558F300527895 /* QuestionViewController.h */,
+				3234149C176558F300527895 /* QuestionViewController.m */,
+				3234149D176558F300527895 /* RateView.h */,
+				3234149E176558F300527895 /* RateView.m */,
+				3234149F176558F300527895 /* ReportViewController.h */,
+				323414A0176558F300527895 /* ReportViewController.m */,
+				323414A1176558F300527895 /* RequestViewController.h */,
+				323414A2176558F300527895 /* RequestViewController.m */,
+				323414A3176558F300527895 /* SettingViewController.h */,
+				323414A4176558F300527895 /* SettingViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		3234146B176558F300527895 /* HelperClass */ = {
+			isa = PBXGroup;
+			children = (
+				3234146C176558F300527895 /* CompundTableCell.h */,
+				3234146D176558F300527895 /* CompundTableCell.m */,
+				3234146E176558F300527895 /* JSONKit.h */,
+				3234146F176558F300527895 /* JSONKit.m */,
+				32341470176558F300527895 /* QAFListCell.h */,
+				32341471176558F300527895 /* QAFListCell.m */,
+				32341472176558F300527895 /* TableCell.h */,
+				32341473176558F300527895 /* TableCell.m */,
+				32341474176558F300527895 /* UIPlaceHolderTextView.h */,
+				32341475176558F300527895 /* UIPlaceHolderTextView.m */,
+			);
+			path = HelperClass;
+			sourceTree = "<group>";
+		};
+		3234148A176558F300527895 /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				3234148B176558F300527895 /* AbstractActionSheetPicker.h */,
+				3234148C176558F300527895 /* AbstractActionSheetPicker.m */,
+				3234148D176558F300527895 /* ActionSheetDatePicker.h */,
+				3234148E176558F300527895 /* ActionSheetDatePicker.m */,
+				3234148F176558F300527895 /* ActionSheetDistancePicker.h */,
+				32341490176558F300527895 /* ActionSheetDistancePicker.m */,
+				32341491176558F300527895 /* ActionSheetStringPicker.h */,
+				32341492176558F300527895 /* ActionSheetStringPicker.m */,
+				32341493176558F300527895 /* DistancePickerView.h */,
+				32341494176558F300527895 /* DistancePickerView.m */,
+			);
+			path = Pickers;
+			sourceTree = "<group>";
+		};
+		323414A8176558F300527895 /* kermitStars */ = {
+			isa = PBXGroup;
+			children = (
+				323414A9176558F300527895 /* kermit_empty.png */,
+				323414AA176558F300527895 /* kermit_full.png */,
+				323414AB176558F300527895 /* kermit_half.png */,
+			);
+			path = kermitStars;
+			sourceTree = "<group>";
+		};
+		323414AC176558F300527895 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				323414AD176558F300527895 /* QAForumService.h */,
+				323414AE176558F300527895 /* QAForumService.m */,
+				323414AF176558F300527895 /* ThriftTypes+Services */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		323414AF176558F300527895 /* ThriftTypes+Services */ = {
+			isa = PBXGroup;
+			children = (
+				323414B0176558F300527895 /* qaforum.h */,
+				323414B1176558F300527895 /* qaforum.m */,
+			);
+			path = "ThriftTypes+Services";
+			sourceTree = "<group>";
+		};
+		323414B2176558F300527895 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				323414B3176558F300527895 /* AcceptViewController.xib */,
+				323414B4176558F300527895 /* AnswerListViewController.xib */,
+				323414B5176558F300527895 /* AnswerViewController.xib */,
+				323414B6176558F300527895 /* AskQuestionViewController.xib */,
+				323414B7176558F300527895 /* FeedbackListViewController.xib */,
+				323414B8176558F300527895 /* FeedbackViewController.xib */,
+				323414B9176558F300527895 /* ForumTableCell.xib */,
+				323414BA176558F300527895 /* Images */,
+				323414C9176558F300527895 /* LatestForumViewController.xib */,
+				323414CA176558F300527895 /* MyAnswerListViewController.xib */,
+				323414CB176558F300527895 /* MyAnswerViewController.xib */,
+				323414CC176558F300527895 /* MyQuestionListViewController.xib */,
+				323414CD176558F300527895 /* MyQuestionViewController.xib */,
+				323414CE176558F300527895 /* PendingTableCell.xib */,
+				323414CF176558F300527895 /* PendingViewController.xib */,
+				323414D0176558F300527895 /* QAForumView.xib */,
+				323414D1176558F300527895 /* QuestionListViewController.xib */,
+				323414D2176558F300527895 /* QuestionViewController.xib */,
+				323414D3176558F300527895 /* ReportViewController.xib */,
+				323414D4176558F300527895 /* RequestViewController.xib */,
+				323414D5176558F300527895 /* SettingViewController.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		323414BA176558F300527895 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				323414BB176558F300527895 /* QAForum.png */,
+				323414BC176558F300527895 /* QAForum@2x.png */,
+				323414BD176558F300527895 /* qaforum_ask.png */,
+				323414BE176558F300527895 /* qaforum_forum.png */,
+				323414BF176558F300527895 /* qaforum_intro1.png */,
+				323414C0176558F300527895 /* qaforum_intro2.png */,
+				323414C1176558F300527895 /* qaforum_intro3.png */,
+				323414C2176558F300527895 /* qaforum_intro4.png */,
+				323414C3176558F300527895 /* qaforum_intro5.png */,
+				323414C4176558F300527895 /* qaforum_pending.png */,
+				323414C5176558F300527895 /* qaforum_question.png */,
+				323414C6176558F300527895 /* qaforum_record.png */,
+				323414C7176558F300527895 /* qaforum_right.png */,
+				323414C8176558F300527895 /* qaforum_selected.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		323415241765590600527895 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				323414A5176558F300527895 /* QAForumPlugin.strings */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		324151C415373A1700CCFB22 /* MapPlugin */ = {
@@ -2435,6 +2830,7 @@
 				F7814A8EA4833D3869C259E7 /* MyEduPlugin */,
 				32CCB4F5155546C100220282 /* NewsPlugin */,
 				45F64094AC7F521F7FD1B828 /* PushNotifPlugin */,
+				32341457176558F300527895 /* QAForumPlugin */,
 				32FB2DFC15179014007AE82B /* TransportPlugin */,
 			);
 			path = Plugins;
@@ -3145,6 +3541,47 @@
 				324C7A24174A627C00ED19FD /* GenericResizableShadow@2x.png in Resources */,
 				327B0C24175199590011D81E /* ArrowUpRightCircleAccessory.png in Resources */,
 				327B0C25175199590011D81E /* ArrowUpRightCircleAccessory@2x.png in Resources */,
+				323414D9176558F300527895 /* AnswerRecViewController.xib in Resources */,
+				323414E5176558F300527895 /* IntroViewController.xib in Resources */,
+				323414E8176558F300527895 /* MatchingViewController.xib in Resources */,
+				323414FC176558F300527895 /* QAForumPlugin.strings in Resources */,
+				323414FD176558F300527895 /* kermit_empty.png in Resources */,
+				323414FE176558F300527895 /* kermit_full.png in Resources */,
+				323414FF176558F300527895 /* kermit_half.png in Resources */,
+				32341502176558F300527895 /* AcceptViewController.xib in Resources */,
+				32341503176558F300527895 /* AnswerListViewController.xib in Resources */,
+				32341504176558F300527895 /* AnswerViewController.xib in Resources */,
+				32341505176558F300527895 /* AskQuestionViewController.xib in Resources */,
+				32341506176558F300527895 /* FeedbackListViewController.xib in Resources */,
+				32341507176558F300527895 /* FeedbackViewController.xib in Resources */,
+				32341508176558F300527895 /* ForumTableCell.xib in Resources */,
+				32341509176558F300527895 /* QAForum.png in Resources */,
+				3234150A176558F300527895 /* QAForum@2x.png in Resources */,
+				3234150B176558F300527895 /* qaforum_ask.png in Resources */,
+				3234150C176558F300527895 /* qaforum_forum.png in Resources */,
+				3234150D176558F300527895 /* qaforum_intro1.png in Resources */,
+				3234150E176558F300527895 /* qaforum_intro2.png in Resources */,
+				3234150F176558F300527895 /* qaforum_intro3.png in Resources */,
+				32341510176558F300527895 /* qaforum_intro4.png in Resources */,
+				32341511176558F300527895 /* qaforum_intro5.png in Resources */,
+				32341512176558F300527895 /* qaforum_pending.png in Resources */,
+				32341513176558F300527895 /* qaforum_question.png in Resources */,
+				32341514176558F300527895 /* qaforum_record.png in Resources */,
+				32341515176558F300527895 /* qaforum_right.png in Resources */,
+				32341516176558F300527895 /* qaforum_selected.png in Resources */,
+				32341517176558F300527895 /* LatestForumViewController.xib in Resources */,
+				32341518176558F300527895 /* MyAnswerListViewController.xib in Resources */,
+				32341519176558F300527895 /* MyAnswerViewController.xib in Resources */,
+				3234151A176558F300527895 /* MyQuestionListViewController.xib in Resources */,
+				3234151B176558F300527895 /* MyQuestionViewController.xib in Resources */,
+				3234151C176558F300527895 /* PendingTableCell.xib in Resources */,
+				3234151D176558F300527895 /* PendingViewController.xib in Resources */,
+				3234151E176558F300527895 /* QAForumView.xib in Resources */,
+				3234151F176558F300527895 /* QuestionListViewController.xib in Resources */,
+				32341520176558F300527895 /* QuestionViewController.xib in Resources */,
+				32341521176558F300527895 /* ReportViewController.xib in Resources */,
+				32341522176558F300527895 /* RequestViewController.xib in Resources */,
+				32341523176558F400527895 /* SettingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3330,6 +3767,44 @@
 				32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */,
 				328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */,
 				32AEEC861747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m in Sources */,
+				32FB442017650268008C8282 /* NSDate+Addtions.m in Sources */,
+				323414D6176558F300527895 /* AcceptViewController.m in Sources */,
+				323414D7176558F300527895 /* AnswerListViewController.m in Sources */,
+				323414D8176558F300527895 /* AnswerRecViewController.m in Sources */,
+				323414DA176558F300527895 /* AnswerViewController.m in Sources */,
+				323414DB176558F300527895 /* AskQuestionViewController.m in Sources */,
+				323414DC176558F300527895 /* FeedbackListViewController.m in Sources */,
+				323414DD176558F300527895 /* FeedbackViewController.m in Sources */,
+				323414DE176558F300527895 /* ForumTableCell.m in Sources */,
+				323414DF176558F300527895 /* CompundTableCell.m in Sources */,
+				323414E0176558F300527895 /* JSONKit.m in Sources */,
+				323414E1176558F300527895 /* QAFListCell.m in Sources */,
+				323414E2176558F300527895 /* TableCell.m in Sources */,
+				323414E3176558F300527895 /* UIPlaceHolderTextView.m in Sources */,
+				323414E4176558F300527895 /* IntroViewController.m in Sources */,
+				323414E6176558F300527895 /* LatestForumViewController.m in Sources */,
+				323414E7176558F300527895 /* MatchingViewController.m in Sources */,
+				323414E9176558F300527895 /* MyAnswerListViewController.m in Sources */,
+				323414EA176558F300527895 /* MyAnswerViewController.m in Sources */,
+				323414EB176558F300527895 /* MyQuestionListViewController.m in Sources */,
+				323414EC176558F300527895 /* MyQuestionViewController.m in Sources */,
+				323414ED176558F300527895 /* PendingTableCell.m in Sources */,
+				323414EE176558F300527895 /* PendingViewController.m in Sources */,
+				323414EF176558F300527895 /* AbstractActionSheetPicker.m in Sources */,
+				323414F0176558F300527895 /* ActionSheetDatePicker.m in Sources */,
+				323414F1176558F300527895 /* ActionSheetDistancePicker.m in Sources */,
+				323414F2176558F300527895 /* ActionSheetStringPicker.m in Sources */,
+				323414F3176558F300527895 /* DistancePickerView.m in Sources */,
+				323414F4176558F300527895 /* QAForumController.m in Sources */,
+				323414F5176558F300527895 /* QAForumViewController.m in Sources */,
+				323414F6176558F300527895 /* QuestionListViewController.m in Sources */,
+				323414F7176558F300527895 /* QuestionViewController.m in Sources */,
+				323414F8176558F300527895 /* RateView.m in Sources */,
+				323414F9176558F300527895 /* ReportViewController.m in Sources */,
+				323414FA176558F300527895 /* RequestViewController.m in Sources */,
+				323414FB176558F300527895 /* SettingViewController.m in Sources */,
+				32341500176558F300527895 /* QAForumService.m in Sources */,
+				32341501176558F300527895 /* qaforum.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3343,6 +3818,15 @@
 				3215425715B5B7670003C8B2 /* en */,
 			);
 			name = AuthenticationPlugin.strings;
+			sourceTree = "<group>";
+		};
+		323414A5176558F300527895 /* QAForumPlugin.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				323414A6176558F300527895 /* en */,
+				323414A7176558F300527895 /* fr */,
+			);
+			name = QAForumPlugin.strings;
 			sourceTree = "<group>";
 		};
 		324151C615373A1700CCFB22 /* MapPlugin.strings */ = {
