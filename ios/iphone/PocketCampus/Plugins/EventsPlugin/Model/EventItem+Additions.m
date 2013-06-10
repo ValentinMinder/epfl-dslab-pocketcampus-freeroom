@@ -112,7 +112,7 @@
         if ([componentsStartDate day] == [componentsEndDate day] && [componentsStartDate month] == [componentsEndDate month] && [componentsStartDate year] == [componentsEndDate year]) { //same day
             formatter.dateStyle = NSDateFormatterShortStyle;
             
-            if (dateStyle == EventItemDateStyleLong) {
+            if (dateStyle == EventItemDateStyleLong || dateStyle == EventItemDateStyleMedium) {
                 formatter.timeStyle = NSDateFormatterShortStyle; //will show time
             }
             

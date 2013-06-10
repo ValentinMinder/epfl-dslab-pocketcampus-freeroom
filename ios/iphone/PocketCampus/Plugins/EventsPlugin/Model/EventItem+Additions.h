@@ -10,7 +10,8 @@
 
 typedef enum {
     EventItemDateStyleShort = 0,
-    EventItemDateStyleLong = 1
+    EventItemDateStyleMedium = 1,
+    EventItemDateStyleLong = 2
 } EventItemDateStyle;
 
 @interface EventItem (Additions)

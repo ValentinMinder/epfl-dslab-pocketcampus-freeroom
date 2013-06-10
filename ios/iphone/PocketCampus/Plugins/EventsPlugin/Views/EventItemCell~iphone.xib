@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -79,7 +79,7 @@
 							<object class="IBUILabel" id="241628502">
 								<reference key="NSNextResponder" ref="1071966374"/>
 								<int key="NSvFlags">270</int>
-								<string key="NSFrame">{{72, 41}, {138, 21}}</string>
+								<string key="NSFrame">{{72, 41}, {130, 21}}</string>
 								<reference key="NSSuperview" ref="1071966374"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="65250025"/>
@@ -110,7 +110,7 @@
 							<object class="IBUILabel" id="65250025">
 								<reference key="NSNextResponder" ref="1071966374"/>
 								<int key="NSvFlags">265</int>
-								<string key="NSFrame">{{220, 41}, {111, 21}}</string>
+								<string key="NSFrame">{{204, 41}, {127, 21}}</string>
 								<reference key="NSSuperview" ref="1071966374"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -126,7 +126,7 @@
 								</object>
 								<reference key="IBUIHighlightedColor" ref="217279169"/>
 								<int key="IBUIBaselineAdjustment">0</int>
-								<float key="IBUIMinimumFontSize">12</float>
+								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">2</int>
 								<reference key="IBUIFontDescription" ref="669467586"/>
 								<reference key="IBUIFont" ref="368369919"/>

@@ -807,7 +807,7 @@ static NSString* kEventCell = @"EventCell";
     cell.eventItem = eventItem;
     
     if ([self.eventPool.poolTitle isEqualToString:@"Schedule"]) { //special case to show hour for EDIC open house
-        cell.rightSubtitleLabel.text = [eventItem dateString:EventItemDateStyleLong];
+        cell.rightSubtitleLabel.text = [eventItem dateString:EventItemDateStyleMedium];
     }
     
     [(PCTableViewWithRemoteThumbnails*)(self.tableView) setThumbnailURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
