@@ -242,6 +242,8 @@
 		324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */; };
 		324CB5821671585B008C7B3D /* MoodleSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		324F6B3015D7B55F00CFB8B5 /* MapServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */; };
+		324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */; };
+		324FD736176574FE0003EE30 /* CamiproTransactionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 324FD735176574FE0003EE30 /* CamiproTransactionCell.m */; };
 		325368C0164932F600406801 /* StretchableInnerShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 325368BE164932F600406801 /* StretchableInnerShadow.png */; };
 		325368C1164932F600406801 /* StretchableInnerShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325368BF164932F600406801 /* StretchableInnerShadow@2x.png */; };
 		325368C41649638B00406801 /* MyEduModuleMaterialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325368C31649638B00406801 /* MyEduModuleMaterialsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -885,6 +887,9 @@
 		324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSplashDetailViewController.m; sourceTree = "<group>"; };
 		324F6B2E15D7B55F00CFB8B5 /* MapServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapServiceTests.h; sourceTree = "<group>"; };
 		324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapServiceTests.m; sourceTree = "<group>"; };
+		324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproTransactionCell.xib; sourceTree = "<group>"; };
+		324FD734176574FE0003EE30 /* CamiproTransactionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamiproTransactionCell.h; sourceTree = "<group>"; };
+		324FD735176574FE0003EE30 /* CamiproTransactionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproTransactionCell.m; sourceTree = "<group>"; };
 		325368BE164932F600406801 /* StretchableInnerShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StretchableInnerShadow.png; sourceTree = "<group>"; };
 		325368BF164932F600406801 /* StretchableInnerShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "StretchableInnerShadow@2x.png"; sourceTree = "<group>"; };
 		325368C21649638A00406801 /* MyEduModuleMaterialsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleMaterialsViewController.h; sourceTree = "<group>"; };
@@ -2355,6 +2360,9 @@
 				32B58719156458FA0051C57E /* Images */,
 				32AEEC821747C11C006DBA2F /* CamiproView~iphone.xib */,
 				32F7218B171B0BB4005755A2 /* CamiproView~ipad.xib */,
+				324FD734176574FE0003EE30 /* CamiproTransactionCell.h */,
+				324FD735176574FE0003EE30 /* CamiproTransactionCell.m */,
+				324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3582,6 +3590,7 @@
 				32341521176558F300527895 /* ReportViewController.xib in Resources */,
 				32341522176558F300527895 /* RequestViewController.xib in Resources */,
 				32341523176558F400527895 /* SettingViewController.xib in Resources */,
+				324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3805,6 +3814,7 @@
 				323414FB176558F300527895 /* SettingViewController.m in Sources */,
 				32341500176558F300527895 /* QAForumService.m in Sources */,
 				32341501176558F300527895 /* qaforum.m in Sources */,
+				324FD736176574FE0003EE30 /* CamiproTransactionCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

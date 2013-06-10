@@ -708,11 +708,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/CamiproPlugin/Controllers/CamiproViewController.m"
-         timestampString = "390753535.665476"
+         timestampString = "392526127.018122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "532"
-         endingLineNumber = "532"
+         startingLineNumber = "534"
+         endingLineNumber = "534"
          landmarkName = "-alertView:willDismissWithButtonIndex:"
          landmarkType = "5">
          <Actions>
@@ -4554,11 +4554,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/CamiproPlugin/Controllers/CamiproViewController.m"
-         timestampString = "390753535.665476"
+         timestampString = "392526127.018122"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "402"
-         endingLineNumber = "402"
+         startingLineNumber = "404"
+         endingLineNumber = "404"
          landmarkName = "-getStatsAndLoadingInfoForCamiproRequest:didReturn:"
          landmarkType = "5">
          <Actions>
@@ -4903,7 +4903,7 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/EventsPlugin/Controllers/EventsTagsViewController.m"
@@ -4981,7 +4981,7 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/EventsPlugin/Model/EventItem+Additions.m"
@@ -5003,7 +5003,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/EventsPlugin/Model/EventItem+Additions.m"

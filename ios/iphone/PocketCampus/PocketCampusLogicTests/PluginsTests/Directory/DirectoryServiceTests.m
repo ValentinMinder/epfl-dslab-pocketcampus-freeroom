@@ -60,7 +60,9 @@ static int NB_TESTS = 30;
                 break;
             case 2:
                 NSLog(@"starting getProfilePicture");
-                [directoryService getProfilePicture:@"185853" delegate:self];
+                Person* person = [Person new];
+                person.sciper = @"185853";
+                [directoryService getProfilePicture:person delegate:self];
                 break;
             default:
                 break;

@@ -20,6 +20,8 @@
 
 #import "authentication.h"
 
+#import "CamiproTransactionCell.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
@@ -584,11 +586,11 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
 /* UITableViewDataSource delegation */
 
 - (UITableViewCell*)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell* newCell = nil;
+    UITableViewCell* cell = nil;
     if (indexPath.section == 0) {
-        newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        newCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        newCell.backgroundColor = [PCValues backgroundColor1];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [PCValues backgroundColor1];
         UILabel* balanceLabel = nil;
         if ([PCUtils isIdiomPad]) {
             balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeightPad)];
@@ -604,39 +606,19 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
         balanceLabel.shadowColor = [PCValues shadowColor1];
         balanceLabel.shadowOffset = [PCValues shadowOffset1];
         balanceLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [newCell.contentView addSubview:balanceLabel];
-        return newCell;
+        [cell.contentView addSubview:balanceLabel];
+        
+        return cell;
     }
     
-    newCell = [self.tableView dequeueReusableCellWithIdentifier:kHistoryCellIdentifier];
     
-    Transaction* transcation = [self.balanceAndTransactions.iTransactions objectAtIndex:indexPath.row];
-    
-    if (newCell == nil) {
-        newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kHistoryCellIdentifier];
-        newCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        newCell.backgroundColor = [UIColor clearColor];
-        newCell.textLabel.textColor = [PCValues textColor1];
-        UILabel* priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(211.0, 15.0, 100.0, 21.0)];
-        priceLabel.backgroundColor = [UIColor clearColor];
-        priceLabel.tag = kTransactionPriceViewTag;
-        priceLabel.font = [UIFont systemFontOfSize:17.0];
-        priceLabel.textAlignment = UITextAlignmentRight;
-        priceLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        [newCell.contentView addSubview:priceLabel];
+    Transaction* transaction = [self.balanceAndTransactions.iTransactions objectAtIndex:indexPath.row];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:kHistoryCellIdentifier];
+    if (!cell) {
+        cell = [[CamiproTransactionCell alloc] initWithRuseIdentifier:kHistoryCellIdentifier];
     }
-    newCell.textLabel.text = transcation.iPlace;
-    newCell.detailTextLabel.text = transcation.iDate;
-    UILabel* priceLabel = (UILabel*)[newCell.contentView viewWithTag:kTransactionPriceViewTag];
-    priceLabel.text = [NSString stringWithFormat:@"CHF %.2lf", transcation.iAmount];
-    
-    if (transcation.iAmount > 0.0) {
-        priceLabel.textColor = [UIColor colorWithRed:0.09 green:0.79 blue:0 alpha:1.0]; //light green
-    } else {
-        priceLabel.textColor = [PCValues pocketCampusRed];
-    }
-    
-    return newCell;
+    ((CamiproTransactionCell*)cell).transaction = transaction;
+    return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
