@@ -25,7 +25,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
-static NSUInteger kTransactionPriceViewTag = 15;
 
 static const CGFloat kShadowViewAlpha = 0.7;
 
