@@ -287,6 +287,10 @@ static const int kPluginsSection = 0;
         } else if (menuItem.type == MainMenuItemTypeButton) {
             cell = [MainMenuItemCell cellWithMainMenuItem:menuItem reuseIdentifier:kMenuItemButtonIdentifier];
             cell.titleLabel.text = menuItem.title;
+            if (menuItem.subtitle) {
+                cell.showsSubtitle = YES;
+                cell.subtitleLabel.text = menuItem.subtitle;
+            }
             cell.leftImageView.image = menuItem.leftImage;
         } else {
             //No other supported types

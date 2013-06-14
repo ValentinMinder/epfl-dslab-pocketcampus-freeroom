@@ -321,6 +321,20 @@ static MainController<MainControllerPublic>* instance = nil;
             pluginEnabled = [pluginsFromServer containsObject:identifierName];
         }
         
+        NSString* minOSVersion = pluginDic[@"minOSVersion"];
+        if (minOSVersion) {
+            float minVersion = [minOSVersion floatValue];
+            if (minVersion == 0.0) {
+                NSLog(@"!! WARNING: minOSVersion '%@' is not valid. Disabling plugin '%@'.", minOSVersion, identifierName);
+                pluginEnabled = NO;
+            } else {
+                if ([PCUtils isOSVersionSmallerThan:minVersion]) {
+                    NSLog(@"-> Plugin '%@' requires %.1f (%.1f running) and will be thus disabled.", identifierName, minVersion, [PCUtils OSVersion]);
+                    pluginEnabled = NO;
+                }
+            }
+        }
+        
         if (pluginEnabled) { //plugin is enabled
             NSString* idiom = [pluginDic objectForKey:@"supportedIdioms"];
             if (idiom &&
@@ -368,6 +382,10 @@ static MainController<MainControllerPublic>* instance = nil;
         MainMenuItem* item = [MainMenuItem menuItemButtonWithTitle:localizedName leftImage:[UIImage imageNamed:pluginIdentifier] identifier:pluginIdentifier];
         NSNumber* hiddenByDefault = self.plistDicForPluginIdentifier[item.identifier][@"hiddenByDefault"];
         item.hidden = [hiddenByDefault boolValue];
+        NSString* devTeam = self.plistDicForPluginIdentifier[item.identifier][@"devTeam"];
+        if (devTeam) {
+            item.subtitle = [NSString stringWithFormat:@"%@ %@",NSLocalizedStringFromTable(@"By", @"PocketCampus", nil), devTeam];
+        }
         [menuItems addObject:item];
     }
     return menuItems;

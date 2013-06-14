@@ -103,6 +103,10 @@
 			<false/>
 			<key>supportedIdioms</key>
 			<string>phone</string>
+			<key>devTeam</key>
+			<string>Artificial Intelligence Lab (LIA)</string>
+			<key>minOSVersion</key>
+			<string>6.0</string>
 		</dict>
 	</array>
 </dict>

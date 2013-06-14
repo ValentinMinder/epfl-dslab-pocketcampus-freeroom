@@ -40,4 +40,5 @@
 "SendByEmailInstructions" = "Send your list of favorite\nelements by email.";
 "BackToUpcomingEvents" = "Back to upcoming events";
 "PastEvents" = "Past events";
+"PastEventsShort" = "Past events";
 "ShowPastEventsFor..." = "Show past events back to";

@@ -13,7 +13,8 @@
 + (BOOL)isRetinaDevice;
 + (BOOL)is4inchDevice;
 + (BOOL)isIdiomPad;
-+ (BOOL)isOSVersionSmallerThan:(CGFloat)version;
++ (BOOL)isOSVersionSmallerThan:(float)version;
++ (float)OSVersion;
 + (NSString*)userLanguageCode;
 + (NSString*)lastUpdateNowString;
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration;

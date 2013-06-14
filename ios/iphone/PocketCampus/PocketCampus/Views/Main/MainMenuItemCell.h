@@ -27,8 +27,14 @@ typedef enum {
 
 @property (nonatomic, copy) NSString* reuseIdentifier;
 
+/*
+ * Default: NO
+ */
+@property (nonatomic) BOOL showsSubtitle;
+
 @property (nonatomic, weak) IBOutlet UIImageView* leftImageView;
 @property (nonatomic, weak) IBOutlet UILabel* titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel* subtitleLabel;
 @property (nonatomic, weak) IBOutlet UIButton* eyeButton;
 
 @property (nonatomic) EyeButtonState eyeButtonState; //Eye button can only appear during in editing mode

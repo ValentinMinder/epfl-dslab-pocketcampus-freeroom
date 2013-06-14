@@ -40,4 +40,5 @@
 "SendByEmailInstructions" = "Envoyer votre liste d'éléments\n favoris par email.";
 "BackToUpcomingEvents" = "Retour aux évenements à venir";
 "PastEvents" = "Événements passés";
+"PastEventsShort" = "Évén. passés";
 "ShowPastEventsFor..." = "Voir les événements passés jusqu'à";

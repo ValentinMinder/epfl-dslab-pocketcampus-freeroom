@@ -100,4 +100,16 @@
     self.eyeButton.hidden = !editing;
 }
 
+- (void)setShowsSubtitle:(BOOL)showsSubtitle {
+    _showsSubtitle = showsSubtitle;
+    self.subtitleLabel.hidden = !showsSubtitle;
+    CGRect newFrame = self.titleLabel.frame;
+    if (showsSubtitle) {
+        newFrame.origin.y = -2.0;
+    } else {
+        newFrame.origin.y = 5.0;
+    }
+    self.titleLabel.frame = newFrame;
+}
+
 @end

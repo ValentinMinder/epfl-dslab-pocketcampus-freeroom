@@ -22,6 +22,7 @@ typedef enum {
 
 /* will be ignored if type is MainMenuItemTypeThinSeparator */
 @property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSString* subtitle;
 
 /* will be ignored if type is MainMenuItemTypeThinSeparator or MainMenuItemTypeSectionHeader */
 @property (nonatomic, strong) UIImage* leftImage;

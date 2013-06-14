@@ -268,7 +268,7 @@ static NSString* kEventCell = @"EventCell";
     }
     
     NSMutableArray* rightElements = [NSMutableArray array];
-    
+
     if (self.eventPool.enableScan) {
         self.scanButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)];
         //self.scanButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Scan", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(cameraButtonPressed)];
@@ -513,7 +513,7 @@ static NSString* kEventCell = @"EventCell";
             } else {
                 self.pastMode = YES;
                 self.normalTitle = self.title;
-                self.title = NSLocalizedStringFromTable(@"PastEvents", @"EventsPlugin", nil);
+                self.title = NSLocalizedStringFromTable(@"PastEventsShort", @"EventsPlugin", nil);
             }
             [self refresh];
         } else if (buttonIndex == [self periodButtonIndex]) {
@@ -559,7 +559,6 @@ static NSString* kEventCell = @"EventCell";
     }
     
     NSMutableDictionary* tmpTagsInPresentItems = [NSMutableDictionary dictionary];
-    
     for (EventItem* item in [self.poolReply.childrenItems allValues]) {
         for (NSString* tagKey in item.eventTags) {
             if (!tmpTagsInPresentItems[tagKey]) {

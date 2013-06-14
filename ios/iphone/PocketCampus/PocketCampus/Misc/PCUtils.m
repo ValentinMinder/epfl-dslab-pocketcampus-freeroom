@@ -35,6 +35,10 @@
     return [[UIDevice currentDevice].systemVersion floatValue] < version;
 }
 
++ (float)OSVersion {
+   return [[UIDevice currentDevice].systemVersion floatValue];
+}
+
 + (NSString*)userLanguageCode {
     return [[NSLocale preferredLanguages] objectAtIndex:0];
 }
