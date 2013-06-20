@@ -1,11 +1,15 @@
 namespace java org.pocketcampus.platform.sdk.shared.pushnotif
 
-struct PushNotifRequest {
+struct PushNotifMapRequest {
 	1: required string pluginName;
-	2: required list<string> gasparList;
-	3: required map<string, string> message;
+	2: required string userId;
+	3: required string deviceOs;
+	4: required string pushToken;
 }
 
-struct PushNotifResponse {
-	1: required list<string> failedList;
+struct PushNotifSendRequest {
+	1: required string pluginName;
+	2: required list<string> userIds;
+	3: required map<string, string> messageMap;
 }
+

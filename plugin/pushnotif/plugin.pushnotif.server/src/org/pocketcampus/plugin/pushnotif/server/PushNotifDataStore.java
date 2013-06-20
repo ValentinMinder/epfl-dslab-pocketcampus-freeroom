@@ -11,9 +11,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.pushnotif.shared.PlatformType;
-
-import ch.epfl.tequila.client.model.TequilaPrincipal;
 
 public class PushNotifDataStore {
 	private ConnectionManager mConnectionManager;
@@ -28,43 +25,14 @@ public class PushNotifDataStore {
 
 	}
 
-	public boolean insertUser(TequilaPrincipal principal) {
-		if (principal == null)
-			return false;
+	public boolean insertMapping(String plugin, String userid, String platform, String pushtoken) {
 		PreparedStatement sqlStm = null;
 		try {
-			sqlStm = mConnectionManager.getConnection().prepareStatement("REPLACE INTO users (gaspar, org, host, sciper, email, first, last, path, unit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			sqlStm.setString(1, principal.getUser());
-			sqlStm.setString(2, principal.getOrg());
-			sqlStm.setString(3, principal.getHost());
-			sqlStm.setString(4, principal.getAttribute("uniqueid"));
-			sqlStm.setString(5, principal.getAttribute("email"));
-			sqlStm.setString(6, principal.getAttribute("firstname"));
-			sqlStm.setString(7, principal.getAttribute("name"));
-			sqlStm.setString(8, principal.getAttribute("where"));
-			sqlStm.setString(9, principal.getAttribute("unit"));
-			sqlStm.executeUpdate();
-			return true;
-		} catch (SQLException e) {
-			System.out.println("[pushnotif] Problem in insert user");
-			return false;
-		} finally {
-			try {
-				if (sqlStm != null)
-					sqlStm.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public boolean insertPushToken(String gaspar, PlatformType platform, String pushkey) {
-		PreparedStatement sqlStm = null;
-		try {
-			sqlStm = mConnectionManager.getConnection().prepareStatement("REPLACE INTO pushnotif (gaspar, platform, pushkey) VALUES (?, ?, ?)");
-			sqlStm.setString(1, gaspar);
-			sqlStm.setString(2, translatePlatformType(platform));
-			sqlStm.setString(3, pushkey);
+			sqlStm = mConnectionManager.getConnection().prepareStatement("REPLACE INTO pc_pushnotif (plugin, userid, platform, pushtoken) VALUES (?, ?, ?, ?)");
+			sqlStm.setString(1, plugin);
+			sqlStm.setString(2, userid);
+			sqlStm.setString(3, platform);
+			sqlStm.setString(4, pushtoken);
 			sqlStm.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -80,12 +48,12 @@ public class PushNotifDataStore {
 		}
 	}
 	
-	public boolean updatePushToken(PlatformType platform, String oldPushkey, String newPushkey) {
+	public boolean updatePushToken(String platform, String oldPushkey, String newPushkey) {
 		PreparedStatement sqlStm = null;
 		try {
-			sqlStm = mConnectionManager.getConnection().prepareStatement("UPDATE pushnotif SET pushkey = ? WHERE platform = ? AND pushkey = ?");
+			sqlStm = mConnectionManager.getConnection().prepareStatement("UPDATE pc_pushnotif SET pushtoken = ? WHERE platform = ? AND pushtoken = ?");
 			sqlStm.setString(1, newPushkey);
-			sqlStm.setString(2, translatePlatformType(platform));
+			sqlStm.setString(2, platform);
 			sqlStm.setString(3, oldPushkey);
 			sqlStm.executeUpdate();
 			return true;
@@ -102,12 +70,12 @@ public class PushNotifDataStore {
 		}
 	}
 	
-	public boolean deletePushToken(PlatformType platform, String pushkey) {
+	public boolean deletePushToken(String platform, String pushtoken) {
 		PreparedStatement sqlStm = null;
 		try {
-			sqlStm = mConnectionManager.getConnection().prepareStatement("DELETE FROM pushnotif WHERE platform = ? AND pushkey = ?");
-			sqlStm.setString(1, translatePlatformType(platform));
-			sqlStm.setString(2, pushkey);
+			sqlStm = mConnectionManager.getConnection().prepareStatement("DELETE FROM pc_pushnotif WHERE platform = ? AND pushtoken = ?");
+			sqlStm.setString(1, platform);
+			sqlStm.setString(2, pushtoken);
 			sqlStm.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -123,19 +91,20 @@ public class PushNotifDataStore {
 		}
 	}
 	
-	public List<String> selectTokens(List<String> gaspars, PlatformType platform) {
+	public List<String> selectTokens(String plugin, List<String> userIds, String platform) {
 		PreparedStatement sqlStm = null;
 		try {
-			String markers = StringUtils.repeat(", ?", gaspars.size()).substring(2);
-			sqlStm = mConnectionManager.getConnection().prepareStatement("SELECT pushkey FROM pushnotif WHERE platform = ? AND gaspar IN (" + markers + ")");
-			sqlStm.setString(1, translatePlatformType(platform));
+			String markers = StringUtils.repeat(", ?", userIds.size()).substring(2);
+			sqlStm = mConnectionManager.getConnection().prepareStatement("SELECT pushtoken FROM pc_pushnotif WHERE plugin = ? AND platform = ? AND userid IN (" + markers + ")");
+			sqlStm.setString(1, plugin);
+			sqlStm.setString(2, platform);
 			LinkedList<String> tokens = new LinkedList<String>();
-			for(int i = 0; i < gaspars.size(); i++) {
-				sqlStm.setString(i + 2, gaspars.get(i));
+			for(int i = 0; i < userIds.size(); i++) {
+				sqlStm.setString(i + 3, userIds.get(i));
 			}
 			ResultSet rs = sqlStm.executeQuery();
 			while(rs.next()) {
-				tokens.add(rs.getString("pushkey"));
+				tokens.add(rs.getString("pushtoken"));
 			}
 			return tokens;
 		} catch (SQLException e) {
@@ -152,16 +121,7 @@ public class PushNotifDataStore {
 		}
 	}
 	
-	private String translatePlatformType(PlatformType platform) {
-		switch(platform) {
-		case PC_PLATFORM_ANDROID:
-			return "ANDROID";
-		case PC_PLATFORM_IOS:
-			return "IOS";
-		default:
-			return "X";
-		}
-	}
+
 	
 	/*public void updateCookie(String colName, String cookieVal, String sciper) {
 		PreparedStatement sqlStm = null;

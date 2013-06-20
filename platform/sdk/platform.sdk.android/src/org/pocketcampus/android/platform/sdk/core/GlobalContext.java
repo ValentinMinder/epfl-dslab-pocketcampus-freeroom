@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +35,7 @@ public class GlobalContext extends Application {
 
 	private int mRequestCounter = 0;
 	private RequestActivityListener mRequestActivityListener;
+	private String pushNotifToken = null;
 	
 	@Override
 	public void onCreate() {
@@ -110,6 +110,14 @@ public class GlobalContext extends Application {
 			intent.putExtras(extras);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		ctx.startActivity(intent);
+	}
+	
+	public void setPushNotifToken(String tok) {
+		pushNotifToken = tok;
+	}
+	
+	public String getPushNotifToken() {
+		return pushNotifToken;
 	}
 
 	public void incrementRequestCounter() {
