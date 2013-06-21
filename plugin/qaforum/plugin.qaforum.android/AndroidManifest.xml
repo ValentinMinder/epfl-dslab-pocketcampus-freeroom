@@ -22,56 +22,49 @@
 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 			</intent-filter>    
 			    
-<!-- 			Communication with authentication plugin     -->
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="pocketcampus-authenticate" android:host="qaforum.plugin.pocketcampus.org" />
-			</intent-filter>
 		</activity>
 		
 		
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.MessageActivity" android:noHistory="true" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.MessageActivity" android:noHistory="true"  android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.HelpActivity" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.HelpActivity"  android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.LatestQuestionListActivity" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.LatestQuestionListActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.PendingNotificationActivity" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.PendingNotificationActivity" android:screenOrientation="nosensor"/>
 
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.SettingActivity" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.SettingActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.RelationActivity" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.RelationActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.MyQuestionActivity" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.MyQuestionActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.MyQuestionListActivity" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.MyQuestionListActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.MyAnswerActivity" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.MyAnswerActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.MyAnswerListActivity" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.MyAnswerListActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.InformationActivity" />
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.InformationActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.ReportActivity"/>
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.ReportActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.AskActivity"/>
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.AskActivity" android:screenOrientation="nosensor"/>
 			
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.AnswerActivity"/>
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.AnswerActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.QuestionActivity"/>
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.QuestionActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.QuestionListActivity"/>
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.QuestionListActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.FeedbackListActivity"/>
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.FeedbackListActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.AnswerListActivity"/>
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.AnswerListActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.FeedbackActivity"/>
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.FeedbackActivity" android:screenOrientation="nosensor"/>
 		
-		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.RequestActivity"/>
+		<activity android:name="org.pocketcampus.plugin.qaforum.android.activity.RequestActivity" android:screenOrientation="nosensor"/>
 		
 		
 						    

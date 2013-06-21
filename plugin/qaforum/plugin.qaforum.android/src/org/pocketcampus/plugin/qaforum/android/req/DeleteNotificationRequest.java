@@ -18,7 +18,7 @@ public class DeleteNotificationRequest extends Request<QAforumController, Iface,
 	@Override
 	protected void onResult(QAforumController controller, Integer result) {
 		if (result==1) {
-			((QAforumModel) controller.getModel()).getListenersToNotify().gotRequestReturn();	
+			((QAforumModel) controller.getModel()).getListenersToNotify().messageDeleted();
 		}
 		else {
 			controller.notLoggedIn();

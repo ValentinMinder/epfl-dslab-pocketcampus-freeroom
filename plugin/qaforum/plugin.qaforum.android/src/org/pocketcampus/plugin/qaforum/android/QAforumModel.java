@@ -20,7 +20,7 @@ import android.content.SharedPreferences.Editor;
  * Some data is persistent. e.g.qaforumCookie.
  * Other data are temporary.
  * 
- * @author Amer <amer.chamseddine@epfl.ch>
+ * @author Susheng <susheng.shi@epfl.ch>
  *
  */
 public class QAforumModel extends PluginModel implements IQAforumModel {

@@ -42,7 +42,6 @@
     <string name="qaforum_answer_feedback">S\'il vous plaît donnez vos commentaires.</string>
     <string name="qaforum_answer_rate">S\'il vous plaît donner note de la réponse.</string>
     <string name="qaforum_feedback_long">Votre commentaire est trop long.</string>
-    <string name="qaforum_answer_long">Votre réponse est trop long.</string>
     
     <string name="qaforum_question_question">Question: </string>
     <string name="qaforum_question_hint">Tapez votre question ici.</string>

@@ -305,15 +305,16 @@ public class PendingNotificationActivity extends PluginView implements IQAforumV
 	
 	@Override
 	public void gotRequestReturn() {
-		
+	}
+	
+	@Override
+	public void messageDeleted() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.qaforum_message_delelted), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void loadingFinished() {
-		
-		
 	}
 	@Override
 	public void authenticationFailed() {

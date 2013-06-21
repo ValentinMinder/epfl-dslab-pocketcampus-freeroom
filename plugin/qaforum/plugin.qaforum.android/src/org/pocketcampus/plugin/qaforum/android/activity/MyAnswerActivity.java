@@ -139,6 +139,10 @@ public class MyAnswerActivity extends PluginView implements IQAforumView {
 	}
 
 	@Override
+	public void messageDeleted() {
+	}
+	
+	@Override
 	public void loadingFinished() {
 	}
 

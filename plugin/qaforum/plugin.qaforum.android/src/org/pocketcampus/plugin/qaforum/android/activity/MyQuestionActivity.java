@@ -134,13 +134,16 @@ public class MyQuestionActivity extends PluginView implements IQAforumView {
 
 	@Override
 	public void gotRequestReturn() {
-
+	}
+	
+	@Override
+	public void messageDeleted() {
 	}
 
 	@Override
 	public void loadingFinished() {
-		
 	}
+	
 	@Override
 	public void authenticationFailed() {
 		Toast.makeText(getApplicationContext(), getResources().getString(

@@ -205,6 +205,10 @@ public class QAforumMainView extends PluginView implements IQAforumView {
 	}
 	
 	@Override
+	public void messageDeleted() {
+	}
+	
+	@Override
 	public void authenticationFailed() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.sdk_authentication_failed), Toast.LENGTH_SHORT).show();

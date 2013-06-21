@@ -95,6 +95,10 @@ public class MessageActivity extends PluginView implements IQAforumView {
 	}
 
 	@Override
+	public void messageDeleted() {
+	}
+	
+	@Override
 	public void loadingFinished() {
 	}
 	@Override
@@ -107,4 +111,6 @@ public class MessageActivity extends PluginView implements IQAforumView {
 	public void userCancelledAuthentication() {
 		finish();
 	}
+
+	
 }

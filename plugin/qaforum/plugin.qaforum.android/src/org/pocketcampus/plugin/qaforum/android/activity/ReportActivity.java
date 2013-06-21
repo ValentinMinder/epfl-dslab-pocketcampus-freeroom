@@ -91,6 +91,10 @@ public void gotRequestReturn() {
 }
 
 @Override
+public void messageDeleted() {
+}
+
+@Override
 public void loadingFinished() {
 	Toast.makeText(getApplicationContext(), getResources().getString(R.string.qaforum_report_rece), Toast.LENGTH_SHORT).show();
 	reportButton.setEnabled(true);

@@ -20,6 +20,6 @@ public interface IQAforumView extends IView {
 	
 	void gotRequestReturn();
 	void loadingFinished();
-	
+	void messageDeleted();
 	
 }

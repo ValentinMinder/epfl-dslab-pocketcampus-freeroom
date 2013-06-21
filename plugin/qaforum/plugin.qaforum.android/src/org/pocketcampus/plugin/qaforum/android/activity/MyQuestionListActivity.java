@@ -320,7 +320,10 @@ public class MyQuestionListActivity extends PluginView implements IQAforumView {
 
 	@Override
 	public void gotRequestReturn() {
-		
+	}
+	
+	@Override
+	public void messageDeleted() {
 	}
 
 	@Override

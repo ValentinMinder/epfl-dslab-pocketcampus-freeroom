@@ -98,6 +98,10 @@ public class AnswerListActivity extends PluginView implements IQAforumView {
 	@Override
 	public void gotRequestReturn() {
 	}
+	
+	@Override
+	public void messageDeleted() {
+	}
 
 	@Override
 	public void loadingFinished() {

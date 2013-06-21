@@ -111,6 +111,11 @@ public class FeedbackListActivity extends PluginView implements IQAforumView {
 	@Override
 	public void loadingFinished() {
 	}
+	
+	@Override
+	public void messageDeleted() {
+	}
+	
 	@Override
 	public void authenticationFailed() {
 		Toast.makeText(getApplicationContext(), getResources().getString(

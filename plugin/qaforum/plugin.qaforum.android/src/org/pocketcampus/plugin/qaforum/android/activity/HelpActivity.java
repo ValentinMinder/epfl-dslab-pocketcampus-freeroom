@@ -45,6 +45,10 @@ public void gotRequestReturn() {
 }
 
 @Override
+public void messageDeleted() {
+}
+
+@Override
 public void loadingFinished() {
 }
 @Override

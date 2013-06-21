@@ -107,7 +107,10 @@ public void networkErrorHappened() {
 
 @Override
 public void gotRequestReturn() {
-	
+}
+
+@Override
+public void messageDeleted() {
 }
 
 @Override
