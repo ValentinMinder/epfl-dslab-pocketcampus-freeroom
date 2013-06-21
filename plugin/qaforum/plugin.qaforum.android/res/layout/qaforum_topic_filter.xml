@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/qaforum_setting_travel" />
+
+    <CheckBox
+        android:id="@+id/checkBox3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/checkBox1"
+        android:layout_below="@+id/checkBox1"
+        android:layout_marginTop="33dp"
+        android:text="@string/qaforum_setting_living" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/checkBox3"
+        android:layout_below="@+id/checkBox3"
+        android:layout_marginTop="31dp"
+        android:text="@string/qaforum_cancel" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkBox3"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="33dp"
+        android:text="@string/qaforum_setting_study" />
+
+    <CheckBox
+        android:id="@+id/checkBox4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_alignLeft="@+id/checkBox2"
+        android:text="@string/qaforum_setting_other" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button1"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_alignRight="@+id/checkBox4"
+        android:minWidth="65dp"
+        android:text="@string/qaforum_ok" />
+
+</RelativeLayout>
