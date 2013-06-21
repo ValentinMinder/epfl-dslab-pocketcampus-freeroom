@@ -13,7 +13,7 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif", "Sunrise", "Events");
+$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif", "Sunrise", "Events", "QAforum");
 
 $libs_to_export = array("commons-lang-2.6.jar", "gcm.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar", "universal-image-loader-1.8.0.jar");
 
