@@ -57,6 +57,8 @@ public class PushNotifController extends PluginController implements IPushNotifC
 	 * Use thrift to transport the data.
 	 */
 	private Iface mClient;
+
+	private String callbackUrl = null;
 	
 	@Override
 	public void onCreate() {
@@ -73,14 +75,18 @@ public class PushNotifController extends PluginController implements IPushNotifC
 		} else if("org.pocketcampus.plugin.pushnotif.GCM_INTENT".equals(aIntent.getAction())) {
 			if(extras != null && extras.getString("registrationid") != null) {
 				Log.v("DEBUG", "PushNotifController::onStartCommand regisration_id ok");
-				setRegistrationId(extras.getString("registrationid"));
+				setRegistrationIdAndStop(extras.getString("registrationid"));
 			} else if(extras != null && extras.getInt("error") != 0) {
 				Log.v("DEBUG", "PushNotifController::onStartCommand GCM Intent error");
+				pingBackAndStop("failed");
 			} else {
 				Log.v("DEBUG", "PushNotifController::onStartCommand malformed gcm intent");
+				pingBackAndStop("failed");
 			}
 		} else if("org.pocketcampus.plugin.pushnotif.REGISTER_FOR_PUSH".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "PushNotifController::onStartCommand received request to register");
+			if(extras != null && extras.getString("callbackurl") != null)
+				callbackUrl = extras.getString("callbackurl");
 			startRegistrationProcess();
 		} else {
 			Log.v("DEBUG", "PushNotifController::onStartCommand malformed action");
@@ -111,16 +117,30 @@ public class PushNotifController extends PluginController implements IPushNotifC
         } else {
 			Log.v("DEBUG", "PushNotifMainView::onDisplay reg with gcm");
             // Device is already registered on GCM, check server.
-			setRegistrationId(regId);
+			setRegistrationIdAndStop(regId);
         }
 	}
 	
-	public void setRegistrationId(String val) {
+	public void setRegistrationIdAndStop(String val) {
 		((GlobalContext) getApplicationContext()).setPushNotifToken(val);
+		pingBackAndStop("succeeded");
 	}
 	
 	public void deleteMappingReqFinished() {
 		Log.v("DEBUG", "PushNotifController::deleteMappingReqFinished");
+		stopSelf();
+	}
+	
+	private void pingBackAndStop(String extra) {
+		if(callbackUrl == null) {
+			Log.v("DEBUG", "PushNotifController::pingBack SORRY we don't have a callbackUrl");
+			stopSelf();
+			return;
+		}
+		Intent intenteye = new Intent("org.pocketcampus.plugin.pushnotif.REGISTRATION_FINISHED", Uri.parse(callbackUrl));
+		if(extra != null)
+			intenteye.putExtra(extra, 1); // failed or succeeded
+		startService(intenteye);
 		stopSelf();
 	}
 
