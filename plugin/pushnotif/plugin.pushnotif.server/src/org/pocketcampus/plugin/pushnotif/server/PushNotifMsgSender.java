@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -24,8 +25,6 @@ import javapns.notification.ResponsePacket;
 
 import org.json.JSONException;
 import org.pocketcampus.platform.launcher.server.PocketCampusServer;
-import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifResponse;
-import org.pocketcampus.plugin.pushnotif.shared.PlatformType;
 
 import com.google.android.gcm.server.Constants;
 import com.google.android.gcm.server.Message;
@@ -61,10 +60,8 @@ public class PushNotifMsgSender {
 	private static final Logger logger = Logger
 			.getLogger(PushNotifServiceImpl.class.getName());
 
-	public static void sendToDevices(PushNotifDataStore dataStore,
-			List<String> androidDevices, List<String> iosDevices, Map<String, String> msg) {
-		
-		/* Android */
+	public static void sendToAndroidDevices(PushNotifDataStore dataStore,
+			Set<String> androidDevices, Map<String, String> msg) {
 		
 		Message.Builder messageBldr = new Message.Builder();
 		for(String k : msg.keySet())
@@ -90,11 +87,7 @@ public class PushNotifMsgSender {
 		logger.info("Asynchronously sending " + tasks
 				+ " multicast messages to " + total + " Android devices");
 		
-		/* iOS */
-		/* No need to chunk iOS tokens (JAVAPNS takes care of it) */
-		
-		asyncSendiOS(dataStore, iosDevices, msg);
-		logger.info("Asynchronously sending notification to "+iosDevices.size()+" iOS devices");
+
 	}
 
 
@@ -137,7 +130,7 @@ public class PushNotifMsgSender {
 							// Datastore.updateRegistration(regId,
 							// canonicalRegId);
 							dataStore.updatePushToken(
-									PlatformType.PC_PLATFORM_ANDROID, regId,
+									"ANDROID", regId,
 									canonicalRegId);
 						}
 					} else {
@@ -149,7 +142,7 @@ public class PushNotifMsgSender {
 							logger.info("Unregistered device: " + regId);
 							// Datastore.unregister(regId);
 							dataStore.deletePushToken(
-									PlatformType.PC_PLATFORM_ANDROID, regId);
+									"ANDROID", regId);
 						} else {
 							logger.severe("Error sending message to " + regId
 									+ ": " + error);
@@ -163,8 +156,7 @@ public class PushNotifMsgSender {
 				try {
 					PocketCampusServer.invokeOnPlugin(
 							message.getData().get("pluginName"),
-							"appendToFailedDevicesList", new PushNotifResponse(
-									failed));
+							"appendToFailedDevicesList", failed);
 					// fail silently because if the caller doesn't care about
 					// who fails, then screw him
 				} catch (NoSuchObjectException e) {
@@ -179,13 +171,15 @@ public class PushNotifMsgSender {
 		});
 	}
 	
-	private static void asyncSendiOS(PushNotifDataStore dataStore_,
-			List<String> devices_, Map<String, String> msg_) {
+	public static void sendToiOSDevices(PushNotifDataStore dataStore_,
+			Set<String> devices_, Map<String, String> msg_) {
+		
+		logger.info("Asynchronously sending notification to "+devices_.size()+" iOS devices");
 		
 		if (devices_.size() > 0) {
 			
 			final PushNotifDataStore dataStore = dataStore_;
-			final List<String> devices = devices_;
+			final Set<String> devices = devices_;
 			final Map<String, String> msg = msg_;
 			
 			threadPool.execute(new Runnable() {
@@ -217,7 +211,7 @@ public class PushNotifMsgSender {
 			                    if (errorResponse != null) {
 			                            errorMessage += "\nError:"+errorResponse.getMessage();
 			                    }
-			                    dataStore.deletePushToken(PlatformType.PC_PLATFORM_IOS, notif.getDevice().getToken());
+			                    dataStore.deletePushToken("IOS", notif.getDevice().getToken());
 			                    errorMessage += "\n deviceToken removed from DB ("+notif.getDevice().getToken()+")";
 								logger.info(errorMessage);
 								failed.add(notif.getDevice().getToken());
@@ -245,7 +239,7 @@ public class PushNotifMsgSender {
 					if (failed.size() == 0)
 						return;
 					try {
-						PocketCampusServer.invokeOnPlugin(msg.get("pluginName"),"appendToFailedDevicesList", new PushNotifResponse(failed));
+						PocketCampusServer.invokeOnPlugin(msg.get("pluginName"),"appendToFailedDevicesList", failed);
 						// fail silently because if the caller doesn't care about
 						// who fails, then screw him
 						// @Amer: Copy-pasting this comment made me happy :D
@@ -270,7 +264,7 @@ public class PushNotifMsgSender {
 			List<Device> inactiveDevices = Push.feedback(APNS_P12_PATH, APNS_P12_PASSWORD, APNS_PROD);
 			LinkedList<String> retInactiveDevices = new LinkedList<String>();
 			for (Device device : inactiveDevices) {
-				dataStore.deletePushToken(PlatformType.PC_PLATFORM_IOS, device.getToken());
+				dataStore.deletePushToken("IOS", device.getToken());
 				retInactiveDevices.add(device.getToken());
 			}
 			logger.info(inactiveDevices.size()+" device(s) removed from DB");

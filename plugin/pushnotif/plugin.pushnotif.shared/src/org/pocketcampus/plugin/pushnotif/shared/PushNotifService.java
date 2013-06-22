@@ -25,17 +25,13 @@ public class PushNotifService {
 
   public interface Iface {
 
-    public org.pocketcampus.platform.sdk.shared.authentication.TequilaToken getTequilaTokenForPushNotif() throws org.apache.thrift.TException;
-
-    public PushNotifReply registerPushNotif(PushNotifRegReq aPushNotifRequest) throws org.apache.thrift.TException;
+    public int deleteMapping(String dummy) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getTequilaTokenForPushNotif(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTequilaTokenForPushNotif_call> resultHandler) throws org.apache.thrift.TException;
-
-    public void registerPushNotif(PushNotifRegReq aPushNotifRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.registerPushNotif_call> resultHandler) throws org.apache.thrift.TException;
+    public void deleteMapping(String dummy, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.deleteMapping_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -59,49 +55,27 @@ public class PushNotifService {
       super(iprot, oprot);
     }
 
-    public org.pocketcampus.platform.sdk.shared.authentication.TequilaToken getTequilaTokenForPushNotif() throws org.apache.thrift.TException
+    public int deleteMapping(String dummy) throws org.apache.thrift.TException
     {
-      send_getTequilaTokenForPushNotif();
-      return recv_getTequilaTokenForPushNotif();
+      send_deleteMapping(dummy);
+      return recv_deleteMapping();
     }
 
-    public void send_getTequilaTokenForPushNotif() throws org.apache.thrift.TException
+    public void send_deleteMapping(String dummy) throws org.apache.thrift.TException
     {
-      getTequilaTokenForPushNotif_args args = new getTequilaTokenForPushNotif_args();
-      sendBase("getTequilaTokenForPushNotif", args);
+      deleteMapping_args args = new deleteMapping_args();
+      args.setDummy(dummy);
+      sendBase("deleteMapping", args);
     }
 
-    public org.pocketcampus.platform.sdk.shared.authentication.TequilaToken recv_getTequilaTokenForPushNotif() throws org.apache.thrift.TException
+    public int recv_deleteMapping() throws org.apache.thrift.TException
     {
-      getTequilaTokenForPushNotif_result result = new getTequilaTokenForPushNotif_result();
-      receiveBase(result, "getTequilaTokenForPushNotif");
+      deleteMapping_result result = new deleteMapping_result();
+      receiveBase(result, "deleteMapping");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTequilaTokenForPushNotif failed: unknown result");
-    }
-
-    public PushNotifReply registerPushNotif(PushNotifRegReq aPushNotifRequest) throws org.apache.thrift.TException
-    {
-      send_registerPushNotif(aPushNotifRequest);
-      return recv_registerPushNotif();
-    }
-
-    public void send_registerPushNotif(PushNotifRegReq aPushNotifRequest) throws org.apache.thrift.TException
-    {
-      registerPushNotif_args args = new registerPushNotif_args();
-      args.setAPushNotifRequest(aPushNotifRequest);
-      sendBase("registerPushNotif", args);
-    }
-
-    public PushNotifReply recv_registerPushNotif() throws org.apache.thrift.TException
-    {
-      registerPushNotif_result result = new registerPushNotif_result();
-      receiveBase(result, "registerPushNotif");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "registerPushNotif failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "deleteMapping failed: unknown result");
     }
 
   }
@@ -122,64 +96,35 @@ public class PushNotifService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getTequilaTokenForPushNotif(org.apache.thrift.async.AsyncMethodCallback<getTequilaTokenForPushNotif_call> resultHandler) throws org.apache.thrift.TException {
+    public void deleteMapping(String dummy, org.apache.thrift.async.AsyncMethodCallback<deleteMapping_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getTequilaTokenForPushNotif_call method_call = new getTequilaTokenForPushNotif_call(resultHandler, this, ___protocolFactory, ___transport);
+      deleteMapping_call method_call = new deleteMapping_call(dummy, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getTequilaTokenForPushNotif_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getTequilaTokenForPushNotif_call(org.apache.thrift.async.AsyncMethodCallback<getTequilaTokenForPushNotif_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class deleteMapping_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String dummy;
+      public deleteMapping_call(String dummy, org.apache.thrift.async.AsyncMethodCallback<deleteMapping_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.dummy = dummy;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getTequilaTokenForPushNotif", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getTequilaTokenForPushNotif_args args = new getTequilaTokenForPushNotif_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("deleteMapping", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        deleteMapping_args args = new deleteMapping_args();
+        args.setDummy(dummy);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public org.pocketcampus.platform.sdk.shared.authentication.TequilaToken getResult() throws org.apache.thrift.TException {
+      public int getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getTequilaTokenForPushNotif();
-      }
-    }
-
-    public void registerPushNotif(PushNotifRegReq aPushNotifRequest, org.apache.thrift.async.AsyncMethodCallback<registerPushNotif_call> resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      registerPushNotif_call method_call = new registerPushNotif_call(aPushNotifRequest, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class registerPushNotif_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private PushNotifRegReq aPushNotifRequest;
-      public registerPushNotif_call(PushNotifRegReq aPushNotifRequest, org.apache.thrift.async.AsyncMethodCallback<registerPushNotif_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.aPushNotifRequest = aPushNotifRequest;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("registerPushNotif", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        registerPushNotif_args args = new registerPushNotif_args();
-        args.setAPushNotifRequest(aPushNotifRequest);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public PushNotifReply getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_registerPushNotif();
+        return (new Client(prot)).recv_deleteMapping();
       }
     }
 
@@ -196,53 +141,39 @@ public class PushNotifService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("getTequilaTokenForPushNotif", new getTequilaTokenForPushNotif());
-      processMap.put("registerPushNotif", new registerPushNotif());
+      processMap.put("deleteMapping", new deleteMapping());
       return processMap;
     }
 
-    private static class getTequilaTokenForPushNotif<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getTequilaTokenForPushNotif_args> {
-      public getTequilaTokenForPushNotif() {
-        super("getTequilaTokenForPushNotif");
+    private static class deleteMapping<I extends Iface> extends org.apache.thrift.ProcessFunction<I, deleteMapping_args> {
+      public deleteMapping() {
+        super("deleteMapping");
       }
 
-      protected getTequilaTokenForPushNotif_args getEmptyArgsInstance() {
-        return new getTequilaTokenForPushNotif_args();
+      protected deleteMapping_args getEmptyArgsInstance() {
+        return new deleteMapping_args();
       }
 
-      protected getTequilaTokenForPushNotif_result getResult(I iface, getTequilaTokenForPushNotif_args args) throws org.apache.thrift.TException {
-        getTequilaTokenForPushNotif_result result = new getTequilaTokenForPushNotif_result();
-        result.success = iface.getTequilaTokenForPushNotif();
-        return result;
-      }
-    }
-
-    private static class registerPushNotif<I extends Iface> extends org.apache.thrift.ProcessFunction<I, registerPushNotif_args> {
-      public registerPushNotif() {
-        super("registerPushNotif");
-      }
-
-      protected registerPushNotif_args getEmptyArgsInstance() {
-        return new registerPushNotif_args();
-      }
-
-      protected registerPushNotif_result getResult(I iface, registerPushNotif_args args) throws org.apache.thrift.TException {
-        registerPushNotif_result result = new registerPushNotif_result();
-        result.success = iface.registerPushNotif(args.aPushNotifRequest);
+      protected deleteMapping_result getResult(I iface, deleteMapping_args args) throws org.apache.thrift.TException {
+        deleteMapping_result result = new deleteMapping_result();
+        result.success = iface.deleteMapping(args.dummy);
+        result.setSuccessIsSet(true);
         return result;
       }
     }
 
   }
 
-  public static class getTequilaTokenForPushNotif_args implements org.apache.thrift.TBase<getTequilaTokenForPushNotif_args, getTequilaTokenForPushNotif_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTequilaTokenForPushNotif_args");
+  public static class deleteMapping_args implements org.apache.thrift.TBase<deleteMapping_args, deleteMapping_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("deleteMapping_args");
 
+    private static final org.apache.thrift.protocol.TField DUMMY_FIELD_DESC = new org.apache.thrift.protocol.TField("dummy", org.apache.thrift.protocol.TType.STRING, (short)1);
 
+    public String dummy; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      DUMMY((short)1, "dummy");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -257,6 +188,8 @@ public class PushNotifService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
+          case 1: // DUMMY
+            return DUMMY;
           default:
             return null;
         }
@@ -295,37 +228,88 @@ public class PushNotifService {
         return _fieldName;
       }
     }
+
+    // isset id assignments
+
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.DUMMY, new org.apache.thrift.meta_data.FieldMetaData("dummy", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTequilaTokenForPushNotif_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(deleteMapping_args.class, metaDataMap);
     }
 
-    public getTequilaTokenForPushNotif_args() {
+    public deleteMapping_args() {
+    }
+
+    public deleteMapping_args(
+      String dummy)
+    {
+      this();
+      this.dummy = dummy;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getTequilaTokenForPushNotif_args(getTequilaTokenForPushNotif_args other) {
+    public deleteMapping_args(deleteMapping_args other) {
+      if (other.isSetDummy()) {
+        this.dummy = other.dummy;
+      }
     }
 
-    public getTequilaTokenForPushNotif_args deepCopy() {
-      return new getTequilaTokenForPushNotif_args(this);
+    public deleteMapping_args deepCopy() {
+      return new deleteMapping_args(this);
     }
 
     @Override
     public void clear() {
+      this.dummy = null;
+    }
+
+    public String getDummy() {
+      return this.dummy;
+    }
+
+    public deleteMapping_args setDummy(String dummy) {
+      this.dummy = dummy;
+      return this;
+    }
+
+    public void unsetDummy() {
+      this.dummy = null;
+    }
+
+    /** Returns true if field dummy is set (has been assigned a value) and false otherwise */
+    public boolean isSetDummy() {
+      return this.dummy != null;
+    }
+
+    public void setDummyIsSet(boolean value) {
+      if (!value) {
+        this.dummy = null;
+      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
+      case DUMMY:
+        if (value == null) {
+          unsetDummy();
+        } else {
+          setDummy((String)value);
+        }
+        break;
+
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
+      case DUMMY:
+        return getDummy();
+
       }
       throw new IllegalStateException();
     }
@@ -337,6 +321,8 @@ public class PushNotifService {
       }
 
       switch (field) {
+      case DUMMY:
+        return isSetDummy();
       }
       throw new IllegalStateException();
     }
@@ -345,14 +331,23 @@ public class PushNotifService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getTequilaTokenForPushNotif_args)
-        return this.equals((getTequilaTokenForPushNotif_args)that);
+      if (that instanceof deleteMapping_args)
+        return this.equals((deleteMapping_args)that);
       return false;
     }
 
-    public boolean equals(getTequilaTokenForPushNotif_args that) {
+    public boolean equals(deleteMapping_args that) {
       if (that == null)
         return false;
+
+      boolean this_present_dummy = true && this.isSetDummy();
+      boolean that_present_dummy = true && that.isSetDummy();
+      if (this_present_dummy || that_present_dummy) {
+        if (!(this_present_dummy && that_present_dummy))
+          return false;
+        if (!this.dummy.equals(that.dummy))
+          return false;
+      }
 
       return true;
     }
@@ -361,17 +356,32 @@ public class PushNotifService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
+      boolean present_dummy = true && (isSetDummy());
+      builder.append(present_dummy);
+      if (present_dummy)
+        builder.append(dummy);
+
       return builder.toHashCode();
     }
 
-    public int compareTo(getTequilaTokenForPushNotif_args other) {
+    public int compareTo(deleteMapping_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getTequilaTokenForPushNotif_args typedOther = (getTequilaTokenForPushNotif_args)other;
+      deleteMapping_args typedOther = (deleteMapping_args)other;
 
+      lastComparison = Boolean.valueOf(isSetDummy()).compareTo(typedOther.isSetDummy());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetDummy()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.dummy, typedOther.dummy);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -389,6 +399,13 @@ public class PushNotifService {
           break;
         }
         switch (field.id) {
+          case 1: // DUMMY
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.dummy = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -404,15 +421,27 @@ public class PushNotifService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      if (this.dummy != null) {
+        oprot.writeFieldBegin(DUMMY_FIELD_DESC);
+        oprot.writeString(this.dummy);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getTequilaTokenForPushNotif_args(");
+      StringBuilder sb = new StringBuilder("deleteMapping_args(");
       boolean first = true;
 
+      sb.append("dummy:");
+      if (this.dummy == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.dummy);
+      }
+      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -439,12 +468,12 @@ public class PushNotifService {
 
   }
 
-  public static class getTequilaTokenForPushNotif_result implements org.apache.thrift.TBase<getTequilaTokenForPushNotif_result, getTequilaTokenForPushNotif_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTequilaTokenForPushNotif_result");
+  public static class deleteMapping_result implements org.apache.thrift.TBase<deleteMapping_result, deleteMapping_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("deleteMapping_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.I32, (short)0);
 
-    public org.pocketcampus.platform.sdk.shared.authentication.TequilaToken success; // required
+    public int success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -505,66 +534,69 @@ public class PushNotifService {
     }
 
     // isset id assignments
+    private static final int __SUCCESS_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
 
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.platform.sdk.shared.authentication.TequilaToken.class)));
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTequilaTokenForPushNotif_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(deleteMapping_result.class, metaDataMap);
     }
 
-    public getTequilaTokenForPushNotif_result() {
+    public deleteMapping_result() {
     }
 
-    public getTequilaTokenForPushNotif_result(
-      org.pocketcampus.platform.sdk.shared.authentication.TequilaToken success)
+    public deleteMapping_result(
+      int success)
     {
       this();
       this.success = success;
+      setSuccessIsSet(true);
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getTequilaTokenForPushNotif_result(getTequilaTokenForPushNotif_result other) {
-      if (other.isSetSuccess()) {
-        this.success = new org.pocketcampus.platform.sdk.shared.authentication.TequilaToken(other.success);
-      }
+    public deleteMapping_result(deleteMapping_result other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
+      this.success = other.success;
     }
 
-    public getTequilaTokenForPushNotif_result deepCopy() {
-      return new getTequilaTokenForPushNotif_result(this);
+    public deleteMapping_result deepCopy() {
+      return new deleteMapping_result(this);
     }
 
     @Override
     public void clear() {
-      this.success = null;
+      setSuccessIsSet(false);
+      this.success = 0;
     }
 
-    public org.pocketcampus.platform.sdk.shared.authentication.TequilaToken getSuccess() {
+    public int getSuccess() {
       return this.success;
     }
 
-    public getTequilaTokenForPushNotif_result setSuccess(org.pocketcampus.platform.sdk.shared.authentication.TequilaToken success) {
+    public deleteMapping_result setSuccess(int success) {
       this.success = success;
+      setSuccessIsSet(true);
       return this;
     }
 
     public void unsetSuccess() {
-      this.success = null;
+      __isset_bit_vector.clear(__SUCCESS_ISSET_ID);
     }
 
     /** Returns true if field success is set (has been assigned a value) and false otherwise */
     public boolean isSetSuccess() {
-      return this.success != null;
+      return __isset_bit_vector.get(__SUCCESS_ISSET_ID);
     }
 
     public void setSuccessIsSet(boolean value) {
-      if (!value) {
-        this.success = null;
-      }
+      __isset_bit_vector.set(__SUCCESS_ISSET_ID, value);
     }
 
     public void setFieldValue(_Fields field, Object value) {
@@ -573,7 +605,7 @@ public class PushNotifService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((org.pocketcampus.platform.sdk.shared.authentication.TequilaToken)value);
+          setSuccess((Integer)value);
         }
         break;
 
@@ -583,7 +615,7 @@ public class PushNotifService {
     public Object getFieldValue(_Fields field) {
       switch (field) {
       case SUCCESS:
-        return getSuccess();
+        return Integer.valueOf(getSuccess());
 
       }
       throw new IllegalStateException();
@@ -606,21 +638,21 @@ public class PushNotifService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getTequilaTokenForPushNotif_result)
-        return this.equals((getTequilaTokenForPushNotif_result)that);
+      if (that instanceof deleteMapping_result)
+        return this.equals((deleteMapping_result)that);
       return false;
     }
 
-    public boolean equals(getTequilaTokenForPushNotif_result that) {
+    public boolean equals(deleteMapping_result that) {
       if (that == null)
         return false;
 
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
+      boolean this_present_success = true;
+      boolean that_present_success = true;
       if (this_present_success || that_present_success) {
         if (!(this_present_success && that_present_success))
           return false;
-        if (!this.success.equals(that.success))
+        if (this.success != that.success)
           return false;
       }
 
@@ -631,7 +663,7 @@ public class PushNotifService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_success = true && (isSetSuccess());
+      boolean present_success = true;
       builder.append(present_success);
       if (present_success)
         builder.append(success);
@@ -639,13 +671,13 @@ public class PushNotifService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getTequilaTokenForPushNotif_result other) {
+    public int compareTo(deleteMapping_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getTequilaTokenForPushNotif_result typedOther = (getTequilaTokenForPushNotif_result)other;
+      deleteMapping_result typedOther = (deleteMapping_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -675,9 +707,9 @@ public class PushNotifService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new org.pocketcampus.platform.sdk.shared.authentication.TequilaToken();
-              this.success.read(iprot);
+            if (field.type == org.apache.thrift.protocol.TType.I32) {
+              this.success = iprot.readI32();
+              setSuccessIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -698,7 +730,7 @@ public class PushNotifService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        this.success.write(oprot);
+        oprot.writeI32(this.success);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -707,624 +739,11 @@ public class PushNotifService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getTequilaTokenForPushNotif_result(");
+      StringBuilder sb = new StringBuilder("deleteMapping_result(");
       boolean first = true;
 
       sb.append("success:");
-      if (this.success == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.success);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class registerPushNotif_args implements org.apache.thrift.TBase<registerPushNotif_args, registerPushNotif_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("registerPushNotif_args");
-
-    private static final org.apache.thrift.protocol.TField A_PUSH_NOTIF_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("aPushNotifRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-
-    public PushNotifRegReq aPushNotifRequest; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      A_PUSH_NOTIF_REQUEST((short)1, "aPushNotifRequest");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // A_PUSH_NOTIF_REQUEST
-            return A_PUSH_NOTIF_REQUEST;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.A_PUSH_NOTIF_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("aPushNotifRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, PushNotifRegReq.class)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(registerPushNotif_args.class, metaDataMap);
-    }
-
-    public registerPushNotif_args() {
-    }
-
-    public registerPushNotif_args(
-      PushNotifRegReq aPushNotifRequest)
-    {
-      this();
-      this.aPushNotifRequest = aPushNotifRequest;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public registerPushNotif_args(registerPushNotif_args other) {
-      if (other.isSetAPushNotifRequest()) {
-        this.aPushNotifRequest = new PushNotifRegReq(other.aPushNotifRequest);
-      }
-    }
-
-    public registerPushNotif_args deepCopy() {
-      return new registerPushNotif_args(this);
-    }
-
-    @Override
-    public void clear() {
-      this.aPushNotifRequest = null;
-    }
-
-    public PushNotifRegReq getAPushNotifRequest() {
-      return this.aPushNotifRequest;
-    }
-
-    public registerPushNotif_args setAPushNotifRequest(PushNotifRegReq aPushNotifRequest) {
-      this.aPushNotifRequest = aPushNotifRequest;
-      return this;
-    }
-
-    public void unsetAPushNotifRequest() {
-      this.aPushNotifRequest = null;
-    }
-
-    /** Returns true if field aPushNotifRequest is set (has been assigned a value) and false otherwise */
-    public boolean isSetAPushNotifRequest() {
-      return this.aPushNotifRequest != null;
-    }
-
-    public void setAPushNotifRequestIsSet(boolean value) {
-      if (!value) {
-        this.aPushNotifRequest = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case A_PUSH_NOTIF_REQUEST:
-        if (value == null) {
-          unsetAPushNotifRequest();
-        } else {
-          setAPushNotifRequest((PushNotifRegReq)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case A_PUSH_NOTIF_REQUEST:
-        return getAPushNotifRequest();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case A_PUSH_NOTIF_REQUEST:
-        return isSetAPushNotifRequest();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof registerPushNotif_args)
-        return this.equals((registerPushNotif_args)that);
-      return false;
-    }
-
-    public boolean equals(registerPushNotif_args that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_aPushNotifRequest = true && this.isSetAPushNotifRequest();
-      boolean that_present_aPushNotifRequest = true && that.isSetAPushNotifRequest();
-      if (this_present_aPushNotifRequest || that_present_aPushNotifRequest) {
-        if (!(this_present_aPushNotifRequest && that_present_aPushNotifRequest))
-          return false;
-        if (!this.aPushNotifRequest.equals(that.aPushNotifRequest))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_aPushNotifRequest = true && (isSetAPushNotifRequest());
-      builder.append(present_aPushNotifRequest);
-      if (present_aPushNotifRequest)
-        builder.append(aPushNotifRequest);
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(registerPushNotif_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      registerPushNotif_args typedOther = (registerPushNotif_args)other;
-
-      lastComparison = Boolean.valueOf(isSetAPushNotifRequest()).compareTo(typedOther.isSetAPushNotifRequest());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetAPushNotifRequest()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aPushNotifRequest, typedOther.aPushNotifRequest);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 1: // A_PUSH_NOTIF_REQUEST
-            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.aPushNotifRequest = new PushNotifRegReq();
-              this.aPushNotifRequest.read(iprot);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.aPushNotifRequest != null) {
-        oprot.writeFieldBegin(A_PUSH_NOTIF_REQUEST_FIELD_DESC);
-        this.aPushNotifRequest.write(oprot);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("registerPushNotif_args(");
-      boolean first = true;
-
-      sb.append("aPushNotifRequest:");
-      if (this.aPushNotifRequest == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.aPushNotifRequest);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class registerPushNotif_result implements org.apache.thrift.TBase<registerPushNotif_result, registerPushNotif_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("registerPushNotif_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
-
-    public PushNotifReply success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, PushNotifReply.class)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(registerPushNotif_result.class, metaDataMap);
-    }
-
-    public registerPushNotif_result() {
-    }
-
-    public registerPushNotif_result(
-      PushNotifReply success)
-    {
-      this();
-      this.success = success;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public registerPushNotif_result(registerPushNotif_result other) {
-      if (other.isSetSuccess()) {
-        this.success = new PushNotifReply(other.success);
-      }
-    }
-
-    public registerPushNotif_result deepCopy() {
-      return new registerPushNotif_result(this);
-    }
-
-    @Override
-    public void clear() {
-      this.success = null;
-    }
-
-    public PushNotifReply getSuccess() {
-      return this.success;
-    }
-
-    public registerPushNotif_result setSuccess(PushNotifReply success) {
-      this.success = success;
-      return this;
-    }
-
-    public void unsetSuccess() {
-      this.success = null;
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
-        this.success = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((PushNotifReply)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return getSuccess();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof registerPushNotif_result)
-        return this.equals((registerPushNotif_result)that);
-      return false;
-    }
-
-    public boolean equals(registerPushNotif_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!this.success.equals(that.success))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(registerPushNotif_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      registerPushNotif_result typedOther = (registerPushNotif_result)other;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new PushNotifReply();
-              this.success.read(iprot);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-
-      if (this.isSetSuccess()) {
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        this.success.write(oprot);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("registerPushNotif_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      if (this.success == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.success);
-      }
+      sb.append(this.success);
       first = false;
       sb.append(")");
       return sb.toString();

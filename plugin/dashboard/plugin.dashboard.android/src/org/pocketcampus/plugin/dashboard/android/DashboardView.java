@@ -50,6 +50,7 @@ public class DashboardView extends PluginView {
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		mainLayout.addView(mDashboard.getView(), layoutParams);
 		
+		mController.registerPushNotif();
 		mController.fetchDynamicConfig();
 	}
 

@@ -80,12 +80,14 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	@Override
 	public CamiproSession getCamiproSession(TequilaToken iTequilaToken) throws TException {
 		System.out.println("getCamiproSession");
+		//PocketCampusServer.pushNotifMap(iTequilaToken, "camipro", "chamsedd");
 		return new CamiproSession(iTequilaToken.getLoginCookie());
 	}
 
 	@Override
 	public BalanceAndTransactions getBalanceAndTransactions(CamiproRequest iRequest) throws TException {
 		System.out.println("getBalanceAndTransactions");
+		//PocketCampusServer.pushNotifSend("camipro", Arrays.asList(new String[]{"chamsedd"}), new HashMap<String, String>());
 		if(useAPI)
 			return getBalanceAndTransactionsWAPI(iRequest);
 		

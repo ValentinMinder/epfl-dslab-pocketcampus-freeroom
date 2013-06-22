@@ -50,6 +50,8 @@ public abstract class PluginController extends Service {
 			THttpClient httpClient = new THttpClient(url, httpInitialClient);
 			httpClient.setConnectTimeout(5000);
 			httpClient.setReadTimeout(60000);
+			httpClient.setCustomHeader("X-PC-PUSHNOTIF-OS", "ANDROID");
+			httpClient.setCustomHeader("X-PC-PUSHNOTIF-TOKEN", ((GlobalContext) getApplicationContext()).getPushNotifToken());
 
 			TProtocol protocol = new TBinaryProtocol(httpClient);
 			client = clientFactory.getClient(protocol);

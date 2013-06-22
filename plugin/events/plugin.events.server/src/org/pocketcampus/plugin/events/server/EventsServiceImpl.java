@@ -44,11 +44,13 @@ import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.util.CompatibilityHints;
 
+import org.apache.thrift.TBase;
 import org.apache.thrift.TException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.events.shared.AdminSendRegEmailReply;
@@ -81,7 +83,7 @@ import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CO
 public class EventsServiceImpl implements EventsService.Iface {
 	
 	private ConnectionManager connMgr;
-	private String dateLastImport = "";
+	private String dateLastImport = null;
 	private Runnable importer = new Runnable() {
 		public void run() {
 			System.out.println("Started Async Import from Memento on " + dateLastImport);
@@ -127,7 +129,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	@Override
 	public EventItemReply getEventItem(EventItemRequest req) throws TException {
 		System.out.println("getEventItem id=" + req.getEventItemId());
-		importFromMemento();
+		importFromMemento(req);
 		long parentId = req.getEventItemId();
 		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
 		//if(req.isSetUserToken()) tokens.add(req.getUserToken()); // backward compatibility
@@ -155,7 +157,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 	@Override
 	public EventPoolReply getEventPool(EventPoolRequest req) throws TException {
 		System.out.println("getEventPool id=" + req.getEventPoolId());
-		importFromMemento();
+		importFromMemento(req);
 		long parentId = req.getEventPoolId();
 		int period = (req.isSetPeriod() ? req.getPeriod() : 1);
 		if(req.isFetchPast()) period = -period;
@@ -486,8 +488,14 @@ public class EventsServiceImpl implements EventsService.Iface {
 	 * HELPER FUNCTIONS
 	 */
 	
-	private synchronized void importFromMemento() {
+	private synchronized void importFromMemento(TBase<?, ?> req) {
+		if(!PocketCampusServer.getServerIp(req).equals("128.178.132.3"))
+			return;
 		String date = new SimpleDateFormat("yyyyMMdd").format(new Date().getTime());
+		if(dateLastImport == null) {
+			dateLastImport = date;
+			return;
+		}
 		if(!dateLastImport.equals(date)) {
 			dateLastImport = date;
 			new Thread(importer).start();

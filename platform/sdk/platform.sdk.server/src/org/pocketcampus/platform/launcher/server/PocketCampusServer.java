@@ -8,12 +8,19 @@ import java.lang.reflect.Method;
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.thrift.TProcessor;
+import org.apache.thrift.server.TServlet;
+import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifMapRequest;
+import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifSendRequest;
 
 public class PocketCampusServer extends ServerBase {
 
-	private static HashMap<String, Object> pluginsImpl = new HashMap<String, Object>(); 
+	private static Map<String, Object> pluginsImpl = new HashMap<String, Object>(); 
 	
 	@Override
 	protected ArrayList<Processor> getServiceProcessors() {
@@ -48,6 +55,10 @@ public class PocketCampusServer extends ServerBase {
 		return processors;
 	}
 
+	/***
+	 * STATIC FUNCTIONS
+	 */
+	
 	public static Object invokeOnPlugin(String pluginName, String methodName, Object arg) throws NoSuchObjectException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		if(!pluginsImpl.containsKey(pluginName.toLowerCase())) {
 			throw new NoSuchObjectException("Plugin not found: " + pluginName);
@@ -57,4 +68,53 @@ public class PocketCampusServer extends ServerBase {
 		return m.invoke(obj, arg);
 	}
 	
+	public static String getClientIp(Object firstArg) {
+		HttpServletRequest req = (HttpServletRequest) TServlet.requestsMap.get(firstArg);
+		if(req == null) return null;
+		return req.getRemoteAddr();
+	}
+
+	public static String getServerIp(Object firstArg) {
+		HttpServletRequest req = (HttpServletRequest) TServlet.requestsMap.get(firstArg);
+		if(req == null) return null;
+		return req.getLocalAddr();
+	}
+
+	public static HttpServletRequest getHttpRequest(Object firstArg) {
+		System.out.println("requestsMap has " + TServlet.requestsMap.size() + " items");
+		return (HttpServletRequest) TServlet.requestsMap.get(firstArg);
+	}
+	
+	public static boolean pushNotifMap(Object firstArg, String plugin, String userId) {
+		HttpServletRequest req = (HttpServletRequest) TServlet.requestsMap.get(firstArg);
+		if(req == null) return false;
+		String os = req.getHeader("X-PC-PUSHNOTIF-OS");
+		String token = req.getHeader("X-PC-PUSHNOTIF-TOKEN");
+		if(os == null || token == null || plugin == null || userId == null) return false;
+		try {
+			return (Boolean) invokeOnPlugin("pushnotif", "addMapping", new PushNotifMapRequest(plugin, userId, os, token));
+		} catch (NoSuchObjectException e) {
+		} catch (SecurityException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+		return false;
+	}
+
+	public static boolean pushNotifSend(String plugin, List<String> userIds, Map<String, String> msg) {
+		if(msg == null || plugin == null || userIds == null) return false;
+		try {
+			return (Boolean) invokeOnPlugin("pushnotif", "sendMessage", new PushNotifSendRequest(plugin, userIds, msg));
+		} catch (NoSuchObjectException e) {
+		} catch (SecurityException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+		return false;
+	}
+
 }
