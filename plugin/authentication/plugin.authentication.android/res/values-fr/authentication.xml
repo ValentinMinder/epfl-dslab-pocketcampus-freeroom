@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="authentication_plugin_title">Authentification Tequila</string>
+    <string name="authentication_plugin_title">Authentification Gaspar</string>
     <string name="authentication_authenticating_title">Authentification en cours</string>
     
     <string name="authentication_string_username_hint">Nom d\'utilisateur</string>
