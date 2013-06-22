@@ -8,16 +8,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.rmi.NoSuchObjectException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 
 
@@ -25,8 +24,6 @@ import java.util.HashMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.launcher.server.PocketCampusServer;
-import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifRequest;
-import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifResponse;
 
 import org.pocketcampus.plugin.qaforum.shared.QATequilaToken;
 import org.pocketcampus.plugin.qaforum.shared.QAforumService;
@@ -76,19 +73,10 @@ public class QAforumServiceImpl implements QAforumService.Iface {
 	}
 
 	private void pushnotification(java.util.List<String> gasparList, String messageString, String notificationid) {
-		try {
-			HashMap<String, String> hashMap = new HashMap<String, String>();
-			hashMap.put("alert", messageString);
-			hashMap.put("notificationid", notificationid);
-			PocketCampusServer.invokeOnPlugin("pushnotif", "pushMessage", new PushNotifRequest("qaforum", gasparList, hashMap));
-			System.out.println(gasparList);
-		} catch (NoSuchObjectException e) {
-		} catch (SecurityException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (NoSuchMethodException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
-		}
+		HashMap<String, String> hashMap = new HashMap<String, String>();
+		hashMap.put("alert", messageString);
+		hashMap.put("notificationid", notificationid);
+		PocketCampusServer.pushNotifSend("qaforum", gasparList, hashMap);
 	}
 
 	private ArrayList<JSONObject> requestQAserver(JSONObject input){
@@ -142,11 +130,11 @@ public class QAforumServiceImpl implements QAforumService.Iface {
 	    return messageJsonObjects;
 	}
 	
-	public void appendToFailedDevicesList(PushNotifResponse resp) {
+	public void appendToFailedDevicesList(List<String> resp) {
 		JSONObject dataJsonObject=new JSONObject();
 		try {
 			dataJsonObject.put("type", "failedDevice");
-			dataJsonObject.put("devices", resp.failedList);
+			dataJsonObject.put("devices", resp);
 			System.out.println(dataJsonObject.toString());
 			ArrayList<JSONObject> messageArrayList=requestQAserver(dataJsonObject);
 			dealwithmessage(messageArrayList);
@@ -183,6 +171,7 @@ public class QAforumServiceImpl implements QAforumService.Iface {
 			if (messageJsonObject.getString("userid").equals("invalid")) {
 				return null;
 			}
+			PocketCampusServer.pushNotifMap(token, "qaforum", messageJsonObject.getString("gaspar"));
 			dataJsonObject.put("type", "online");
 			dataJsonObject.put("userid", messageJsonObject.getString("userid"));
 			dataJsonObject.put("online", 1);
