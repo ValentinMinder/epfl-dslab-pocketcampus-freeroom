@@ -2,6 +2,9 @@
            @Author:    Amer C (amer.chamseddine@epfl.ch)
  ========================================================================
 
+
+ =============================== ANDROID ================================
+
 To use the pushnotif plugin:
 
 You should handle 2 extra actions in your controller; you do so by adding them to the intent-filter in the service tag
@@ -42,29 +45,31 @@ Then to make sure the phone is registered, use
 	startService(authIntent);
 
 
-On the server when you want to send a message, use
+ =============================== SERVER ================================
 
-	try {
-		PocketCampusServer.invokeOnPlugin("pushnotif", "pushMessage", new PushNotifRequest("<your_plugin_name>", Arrays.asList("<list_of_gaspar_usernames>"), "<string_to_string_map_containing_dictionary_to_fwd_to_client>")); // dict cannot contain key pluginName
-	} catch (NoSuchObjectException e) {
-	} catch (SecurityException e) {
-	} catch (IllegalArgumentException e) {
-	} catch (NoSuchMethodException e) {
-	} catch (IllegalAccessException e) {
-	} catch (InvocationTargetException e) {
-	}
+On the server, after successful login, call
 
+	PocketCampusServer.pushNotifMap(firstArg, pluginName, userId);
+
+	where firstArg is the first argument in the thrift request, pluginName is the name of the plugin, and userId is the ID of the user who has just logged in
+
+
+On the server, when you want to send a message, use
+
+	PocketCampusServer.pushNotifSend(pluginName, userIdList, msgMap);
+
+	where pluginName is the name of the plugin, userIdList is the list od IDs of users to send the msg to, and msgMap is the dict to be pushed (cannot contain key pluginName)
 
 And finally on the server implement the following function if you want to know which devices failed
 
-	public void appendToFailedDevicesList(PushNotifResponse resp) {
+	public void appendToFailedDevicesList(List<String> failed) {
 	}
 
 
 
 
 
-========================== IOS =======================
+ ========================== IOS =======================
  
 The first time you start your plugin, you need to make sure the device has been registered on the server. Theoretically it is required once only during the lifetime of the device. But this should be done periodically if the server loses the registration after a problem for example.
 
