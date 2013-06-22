@@ -130,8 +130,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 	public EventItemReply getEventItem(EventItemRequest req) throws TException {
 		System.out.println("getEventItem id=" + req.getEventItemId());
 		importFromMemento(req);
-		long parentId = req.getEventItemId();
 		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
+		registerForPush(req, tokens);
+		long parentId = req.getEventItemId();
 		//if(req.isSetUserToken()) tokens.add(req.getUserToken()); // backward compatibility
 		try {
 			Connection conn = connMgr.getConnection();
@@ -158,12 +159,12 @@ public class EventsServiceImpl implements EventsService.Iface {
 	public EventPoolReply getEventPool(EventPoolRequest req) throws TException {
 		System.out.println("getEventPool id=" + req.getEventPoolId());
 		importFromMemento(req);
+		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
+		registerForPush(req, tokens);
 		long parentId = req.getEventPoolId();
 		int period = (req.isSetPeriod() ? req.getPeriod() : 1);
 		if(req.isFetchPast()) period = -period;
 		if(parentId != Constants.CONTAINER_EVENT_ID) period = 0;
-		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
-		//if(req.isSetUserToken()) tokens.add(req.getUserToken()); // backward compatibility
 		try {
 			Connection conn = connMgr.getConnection();
 			EventPool pool = eventPoolFromDb(conn, parentId);
@@ -487,6 +488,11 @@ public class EventsServiceImpl implements EventsService.Iface {
 	/**
 	 * HELPER FUNCTIONS
 	 */
+	
+	private void registerForPush(TBase<?, ?> req, List<String> tokens) {
+		for(String t : tokens)
+			PocketCampusServer.pushNotifMap(req, "events", t);
+	}
 	
 	private synchronized void importFromMemento(TBase<?, ?> req) {
 		if(!PocketCampusServer.getServerIp(req).equals("128.178.132.3"))
