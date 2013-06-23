@@ -152,6 +152,17 @@
         [alert release];
         return;
     }
+    if (![[self languageForString:QuestionText.text] isEqualToString:@"en"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Invalidinput", @"QAForumPlugin", nil)
+                                                        message:NSLocalizedStringFromTable(@"EnglishQuestion", @"QAForumPlugin", nil)
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"QAForumPlugin", nil)
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+        return;
+    }
+    
     
     if ([topicTextView.text isEqualToString:@""]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Invalidinput", @"QAForumPlugin", nil)
@@ -210,6 +221,17 @@
 
 - (void)QuestionMatchingFailed {
     [self error];
+}
+
+- (NSString *)languageForString:(NSString *) text{
+    
+    if (text.length < 100) {
+        
+        return (NSString *)CFStringTokenizerCopyBestStringLanguage((CFStringRef)text, CFRangeMake(0, text.length));
+    } else {
+        
+        return (NSString *)CFStringTokenizerCopyBestStringLanguage((CFStringRef)text, CFRangeMake(0, 100));
+    }
 }
 
 - (void)QuestionMatchingWithQuestion:(NSString *)question didReturn:(NSString *)result {
@@ -367,7 +389,7 @@
     
     else if(textField == self.topicTextView){
         [self.topicTextView endEditing:YES];
-        NSArray* expiryOptions= [[NSArray alloc] initWithObjects:@"Travel",@"Study",@"Living",@"Others", nil];
+        NSArray* expiryOptions= [[NSArray alloc] initWithObjects:NSLocalizedStringFromTable(@"Travel", @"QAForumPlugin", nil),NSLocalizedStringFromTable(@"Study", @"QAForumPlugin", nil),NSLocalizedStringFromTable(@"Living", @"QAForumPlugin", nil),NSLocalizedStringFromTable(@"Other", @"QAForumPlugin", nil), nil];
         [self showPickerViewer :expiryOptions :NSLocalizedStringFromTable(@"Topics", @"QAForumPlugin", nil) :textField];
         return NO;
     }

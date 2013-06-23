@@ -75,7 +75,7 @@
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         int width = cell.contentView.frame.size.width;
         btn.frame = CGRectMake(20,10,width-40,50);
-        [btn setTitle:@"Submit my question" forState:UIControlStateNormal];
+        [btn setTitle:NSLocalizedStringFromTable(@"SubmitQuestion", @"QAForumPlugin", nil) forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(bnSubmitQuestion) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:btn];
     }

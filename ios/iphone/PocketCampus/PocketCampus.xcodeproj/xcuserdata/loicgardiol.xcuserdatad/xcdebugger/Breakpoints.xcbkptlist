@@ -290,13 +290,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "384287236.853066"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "189"
-         endingLineNumber = "189"
-         landmarkName = "@implementation DirectorySearchViewController"
-         landmarkType = "3">
+         startingLineNumber = "197"
+         endingLineNumber = "197"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
@@ -312,13 +312,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "384287236.853066"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "198"
-         endingLineNumber = "198"
-         landmarkName = "@implementation DirectorySearchViewController"
-         landmarkType = "3">
+         startingLineNumber = "206"
+         endingLineNumber = "206"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
@@ -334,13 +334,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "384287236.853066"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "279"
-         endingLineNumber = "279"
-         landmarkName = "-autocompleteFor:didReturn:"
-         landmarkType = "5">
+         startingLineNumber = "287"
+         endingLineNumber = "287"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
@@ -356,13 +356,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "384287236.853066"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "211"
-         endingLineNumber = "211"
-         landmarkName = "-searchBar:textDidChange:"
-         landmarkType = "5">
+         startingLineNumber = "219"
+         endingLineNumber = "219"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
@@ -2923,26 +2923,26 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "384287236.853066"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "388"
-         endingLineNumber = "388"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
-         landmarkType = "5">
+         startingLineNumber = "396"
+         endingLineNumber = "396"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "384287236.853066"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "363"
-         endingLineNumber = "363"
-         landmarkName = "-serviceConnectionToServerTimedOut"
-         landmarkType = "5">
+         startingLineNumber = "371"
+         endingLineNumber = "371"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -3249,13 +3249,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066873.320394"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "89"
-         endingLineNumber = "89"
-         landmarkName = "-didEnterForeground"
-         landmarkType = "5">
+         startingLineNumber = "92"
+         endingLineNumber = "92"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
@@ -3271,13 +3271,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "380066873.320394"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "84"
-         endingLineNumber = "84"
-         landmarkName = "-willLoseForeground"
-         landmarkType = "5">
+         startingLineNumber = "87"
+         endingLineNumber = "87"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
@@ -3765,13 +3765,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "384287236.853066"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "416"
-         endingLineNumber = "416"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
-         landmarkType = "5">
+         startingLineNumber = "424"
+         endingLineNumber = "424"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.DebuggerCommand">
@@ -4133,13 +4133,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "384287236.853066"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "398"
-         endingLineNumber = "398"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
-         landmarkType = "5">
+         startingLineNumber = "406"
+         endingLineNumber = "406"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
@@ -4155,13 +4155,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "384287236.853066"
+         timestampString = "393719460.22251"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "207"
-         endingLineNumber = "207"
-         landmarkName = "-searchBar:textDidChange:"
-         landmarkType = "5">
+         startingLineNumber = "215"
+         endingLineNumber = "215"
+         landmarkName = "@interface DirectorySearchViewController()"
+         landmarkType = "2">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">

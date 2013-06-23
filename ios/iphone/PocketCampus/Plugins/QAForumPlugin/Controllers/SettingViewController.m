@@ -119,6 +119,10 @@
     [bnTravel setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     [bnOther setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     
+    [bnLiving setTitle:NSLocalizedStringFromTable(@"Living", @"QAForumPlugin",nil) forState:UIControlStateNormal];
+    [bnStudy setTitle:NSLocalizedStringFromTable(@"Study", @"QAForumPlugin",nil) forState:UIControlStateNormal];
+    [bnOther setTitle:NSLocalizedStringFromTable(@"Other", @"QAForumPlugin",nil) forState:UIControlStateNormal];
+    [bnTravel setTitle:NSLocalizedStringFromTable(@"Travel", @"QAForumPlugin",nil) forState:UIControlStateNormal];
 
 }
 
@@ -194,30 +198,30 @@
 - (IBAction)bnConfirmAction:(UIButton *)sender {
     NSString* language = @"";
     if (bn_English.selected) {
-        language = [NSString stringWithFormat:@"%@ %@", language,NSLocalizedStringFromTable(@"English", @"QAForumPlugin",nil)];
+        language = [NSString stringWithFormat:@"%@ %@", language,@"English"];
     }
     if (bnFrench.selected) {
-        language = [NSString stringWithFormat:@"%@ %@", language,NSLocalizedStringFromTable(@"French", @"QAForumPlugin",nil)];
+        language = [NSString stringWithFormat:@"%@ %@", language,@"French"];
     }
     if (bnDeutsch.selected) {
-        language = [NSString stringWithFormat:@"%@ %@", language,NSLocalizedStringFromTable(@"Deutsch", @"QAForumPlugin",nil)];
+        language = [NSString stringWithFormat:@"%@ %@", language,@"Deutsch"];
     }
     if (bnItalian.selected) {
-        language = [NSString stringWithFormat:@"%@ %@", language,NSLocalizedStringFromTable(@"Italian", @"QAForumPlugin",nil)];
+        language = [NSString stringWithFormat:@"%@ %@", language,@"Italian"];
     }
     
     NSString* topics = @"";
     if (bnTravel.selected) {
-        topics = [NSString stringWithFormat:@"%@ %@", topics,NSLocalizedStringFromTable(@"Travel", @"QAForumPlugin",nil)];
+        topics = [NSString stringWithFormat:@"%@ %@", topics,@"Travel"];
     }
     if (bnStudy.selected) {
-        topics = [NSString stringWithFormat:@"%@ %@", topics,NSLocalizedStringFromTable(@"Study", @"QAForumPlugin",nil)];
+        topics = [NSString stringWithFormat:@"%@ %@", topics,@"Study"];
     }
     if (bnLiving.selected) {
-        topics = [NSString stringWithFormat:@"%@ %@", topics,NSLocalizedStringFromTable(@"Living", @"QAForumPlugin",nil)];
+        topics = [NSString stringWithFormat:@"%@ %@", topics,@"Living"];
     }
     if (bnOther.selected) {
-        topics = [NSString stringWithFormat:@"%@ %@", topics,NSLocalizedStringFromTable(@"Other", @"QAForumPlugin",nil)];
+        topics = [NSString stringWithFormat:@"%@ %@", topics,@"Other"];
     }
     int expritytime;
     

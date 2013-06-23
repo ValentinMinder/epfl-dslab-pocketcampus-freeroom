@@ -127,6 +127,16 @@
         [alert release];
         return;
     }
+    if (![[self languageForString:feedback] isEqualToString:@"en"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Invalidinput", @"QAForumPlugin", nil)
+                                                        message:NSLocalizedStringFromTable(@"EnglishFeedback", @"QAForumPlugin", nil)
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"QAForumPlugin", nil)
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+        return;
+    }
     
         //send the answer
         s_feedback* feedbackData = [[s_feedback alloc] initWithSessionid:[QAForumService lastSessionId].sessionid forwardid:forwardid feedback:feedback rate:rate];
@@ -141,6 +151,17 @@
 
 - (void)feedbackQuestionWithFeedback:(s_feedback *)data didReturn:(int32_t)result {
     //
+}
+
+- (NSString *)languageForString:(NSString *) text{
+    
+    if (text.length < 100) {
+        
+        return (NSString *)CFStringTokenizerCopyBestStringLanguage((CFStringRef)text, CFRangeMake(0, text.length));
+    } else {
+        
+        return (NSString *)CFStringTokenizerCopyBestStringLanguage((CFStringRef)text, CFRangeMake(0, 100));
+    }
 }
 
 - (IBAction)report:(UIButton *)sender {

@@ -21,6 +21,8 @@
 @property (retain, nonatomic) IBOutlet UITableView *tableview;
 @property (nonatomic,retain) NSDictionary *tableContents;
 @property (nonatomic,retain) NSArray *sortedKeys;
+@property (retain, nonatomic) IBOutlet UIBarButtonItem *lbMyquestion;
+@property (retain, nonatomic) IBOutlet UIBarButtonItem *lbMyanswer;
 
 @property (strong, nonatomic) NSString* data;
 - (IBAction)MyQuestionsList:(UIBarButtonItem *)sender;

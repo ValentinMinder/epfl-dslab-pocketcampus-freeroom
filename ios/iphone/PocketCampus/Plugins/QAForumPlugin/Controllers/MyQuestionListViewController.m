@@ -15,7 +15,7 @@
 @end
 
 @implementation MyQuestionListViewController
-@synthesize tableContents, sortedKeys, data, tableview;
+@synthesize tableContents, sortedKeys, data, tableview, lbMyanswer, lbMyquestion;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -30,6 +30,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = NSLocalizedStringFromTable(@"MyQuestion", @"QAForumPlugin", nil);
+    [lbMyanswer setTitle:NSLocalizedStringFromTable(@"MyAnswer", @"QAForumPlugin", nil)];
+    [lbMyquestion setTitle:NSLocalizedStringFromTable(@"MyQuestion", @"QAForumPlugin", nil)];
     qaforumService = [[QAForumService sharedInstanceToRetain] retain];
     NSMutableArray* topic1 = [[NSMutableArray alloc] init];
     NSMutableArray* topic2 = [[NSMutableArray alloc] init];
@@ -191,10 +193,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 - (void)dealloc {
     [tableview release];
+    [lbMyanswer release];
+    [lbMyquestion release];
     [super dealloc];
 }
 - (void)viewDidUnload {
     [self setTableview:nil];
+    [self setLbMyanswer:nil];
+    [self setLbMyquestion:nil];
     [super viewDidUnload];
 }
 @end

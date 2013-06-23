@@ -18,8 +18,10 @@
 }
 @property (retain, nonatomic) IBOutlet UIScrollView *scrollView;
 
+@property (retain, nonatomic) IBOutlet UILabel *reportContent;
 - (IBAction)submit:(UIButton *)sender;
 @property (retain, nonatomic) IBOutlet UITextView *contentTextView;
+@property (retain, nonatomic) IBOutlet UIButton *bnSubmit;
 @property int forwardid;
 @property int type;
 @property (retain, nonatomic) UITextField *activeField;

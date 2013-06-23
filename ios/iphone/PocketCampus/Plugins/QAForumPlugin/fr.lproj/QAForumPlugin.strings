@@ -9,7 +9,7 @@
 "StartNotif" = "Etes-vous sûr de vouloir arrêter de recevoir les messages?";
 "StopNotif" = "Etes-vous sûr de vouloir commencer à recevoir les messages?";
 "NotifSetting" = "Paramètres de notification";
-"OK" = "Ok";
+"OK" = "OK";
 "Cancel" = "Annuler";
 "Submit" = "Envoyer";
 "CenterMsg" = "Impossible de se connecter au serveur.\nVérifiez votre connexion internet.";
@@ -60,6 +60,7 @@
 "PendingDelete" = "Supprimer le message";
 "ToDelete" = "Pour supprimer?";
 "MyQuestion" = "Mes questions";
+"MyAnswer" = "Mes Réponses";
 "Question" = "Question";
 "Question:" = "Question:";
 "Questions" = "Questions";
@@ -84,3 +85,8 @@
 "GiveAnswer" = "S'il vous plaît donner votre réponse";
 "Feedback" = "Commentaires";
 "Answer" = "Réponse";
+"ReportContent" = "Si vous avez un problème avec le message que nous t'avons envoyé, s'il vous plaît nous le signaler.";
+"SubmitQuestion" = "Soumettre ma question";
+"EnglishQuestion" = "S'il vous plaît poser des questions en anglais.";
+"EnglishAnswer" = "S'il vous plaît donner des réponses en anglais.";
+"EnglishFeedback" = "S'il vous plaît donner des commentaires en anglais.";

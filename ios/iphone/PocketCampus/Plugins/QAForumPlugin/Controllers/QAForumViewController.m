@@ -49,6 +49,7 @@
     labForum.text = NSLocalizedStringFromTable(@"Forum", @"QAForumPlugin", nil);
     labPending.text = NSLocalizedStringFromTable(@"Pending", @"QAForumPlugin", nil);
     labRecord.text = NSLocalizedStringFromTable(@"Record", @"QAForumPlugin", nil);
+    bnSettings.title = NSLocalizedStringFromTable(@"Settings", @"QAForumPlugin", nil);
     [self refresh];
 }
 
@@ -166,12 +167,12 @@
     [QAForumService saveSessionId:session];
     
     self.pushController = [PushNotifController sharedInstanceToRetain];
-    [self.pushController addAuthentifiedUserDeviceRegistrationObserver:self
-                                             presentationViewControllerForAutentication:self successBlock:^{
-                                                 NSLog(@"push OK");
-                                             } failureBlock:^(PushNotifDeviceRegistrationError error) {
-                                                 NSLog(@"push failed");
-                                             }];
+    
+    [self.pushController registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"qaforum" reason:@"TODO" success:^{
+        NSLog(@"push OK");
+    } failure:^(PushNotifDeviceRegistrationError error) {
+        NSLog(@"push failed");
+    }];
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
     [self waitForDataDidReturn];

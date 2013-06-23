@@ -52,6 +52,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
              * self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
              *
              */
+            [[self class] deleteSessionIfNecessary];
             QAForumViewController* qaforumViewController = [[QAForumViewController alloc] init];
             qaforumViewController.title = [[self class] localizedName];
             PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:qaforumViewController];
@@ -63,6 +64,14 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     }
 }
 
++ (void)deleteSessionIfNecessary {
+    NSNumber* deleteSession = (NSNumber*)[ObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"qaforum"];
+    if (deleteSession && [deleteSession boolValue]) {
+        NSLog(@"-> Delayed logout notification on QAForum now applied : deleting sessionId");
+        [QAForumService saveSessionId:nil];
+        [ObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"qaforum"];
+    }
+}
 
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
@@ -83,13 +92,13 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
             return;
         }
         
-        [[PushNotifController sharedInstanceToRetain] addNotificationObserverWithPluginLowerIdentifier:@"qaforum" newNotificationBlock:^(NSString *notifMessage, NSDictionary* notifCompleteDictionary) {
+        [[PushNotifController sharedInstanceToRetain] addPushNotificationObserver:self forPluginLowerIdentifier:@"qaforum" newNotificationBlock:^(NSString *notifMessage, NSDictionary *notifFullDictionary) {
             [[MainController publicController] requestPluginToForeground:@"QAForum"];
             
             //login and invalid notification
             if ([QAForumService lastSessionId].sessionid!=nil) {
-                NSString* notificaionid = notifCompleteDictionary[@"notificationid"];
-                NSDictionary* aps = [notifCompleteDictionary objectForKey:@"aps"];
+                NSString* notificaionid = notifFullDictionary[@"notificationid"];
+                NSDictionary* aps = [notifFullDictionary objectForKey:@"aps"];
                 NSString* notificationMessage = aps[@"alert"];
                 AcceptViewController* viewController = [AcceptViewController alloc];
                 viewController.data = notificationMessage;
@@ -98,7 +107,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
             }
             else {
                 //not login, so save the message
-                [QAForumService saveLastNotif:notifCompleteDictionary];
+                [QAForumService saveLastNotif:notifFullDictionary];
             }
         }];
         
@@ -137,6 +146,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (void)dealloc
 {
+    [[self class] deleteSessionIfNecessary];
     @synchronized(self) {
         instance = nil;
     }

@@ -13,7 +13,7 @@
 @end
 
 @implementation ReportViewController
-@synthesize forwardid, type, contentTextView, scrollView, activeField;
+@synthesize forwardid, type, contentTextView, scrollView, activeField, reportContent, bnSubmit;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -28,6 +28,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = NSLocalizedStringFromTable(@"Report", @"QAForumPlugin", nil);
+    [reportContent setText:NSLocalizedStringFromTable(@"ReportContent", @"QAForumPlugin", nil)];
+    [bnSubmit setTitle:NSLocalizedStringFromTable(@"Submit", @"QAForumPlugin", nil) forState: UIControlStateNormal];
     qaforumService = [[QAForumService sharedInstanceToRetain] retain];
     [contentTextView.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
     [contentTextView.layer setBorderWidth:2.0];
@@ -46,12 +48,16 @@
     [contentTextView release];
     [scrollView release];
     [scrollView release];
+    [reportContent release];
+    [bnSubmit release];
     [super dealloc];
 }
 - (void)viewDidUnload {
     [self setContentTextView:nil];
     [self setScrollView:nil];
     [self setScrollView:nil];
+    [self setReportContent:nil];
+    [self setBnSubmit:nil];
     [super viewDidUnload];
 }
 - (IBAction)submit:(UIButton *)sender {

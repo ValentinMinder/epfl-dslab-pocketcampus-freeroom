@@ -60,6 +60,7 @@
 "PendingDelete" = "Delete Message";
 "ToDelete" = "TO DELETE?";
 "MyQuestion" = "My Questions";
+"MyAnswer" = "My Answers";
 "Question" = "Question";
 "Question:" = "Question:";
 "Questions" = "Questions";
@@ -84,3 +85,8 @@
 "GiveAnswer" = "Please give your answer";
 "Feedback" = "Feedback";
 "Answer" = "Answer";
+"ReportContent" = "If you have any problem with the message we sent to you, please report it to us.";
+"SubmitQuestion" = "Submit my question";
+"EnglishQuestion" = "Please ask questions in English.";
+"EnglishAnswer" = "Please give answers in English.";
+"EnglishFeedback" = "Please give feedbacks in English.";
