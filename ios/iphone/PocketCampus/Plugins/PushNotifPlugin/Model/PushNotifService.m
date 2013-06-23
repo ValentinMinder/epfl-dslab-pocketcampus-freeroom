@@ -45,22 +45,13 @@ static PushNotifService* instance __weak = nil;
 #endif
 }
 
-- (void)getTequilaTokenForPushNotifWithDelegate:(id)delegate {
+- (void)deleteMappingWithDummy:(NSString*)dummy delegate:(id)delegate; {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getTequilaTokenForPushNotif);
-    operation.delegateDidReturnSelector = @selector(getTequilaTokenForPushNotifDidReturn:);
-    operation.delegateDidFailSelector = @selector(getTequilaTokenForPushNotifFailed);
-    operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
-}
-
-- (void)registerPushNotif:(PushNotifRegReq*)request delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(registerPushNotif:);
-    operation.delegateDidReturnSelector = @selector(registerPushNotifForRequest:didReturn:);
-    operation.delegateDidFailSelector = @selector(registerPushNotifFailedForRequest:);
-    [operation addObjectArgument:request];
-    operation.returnType = ReturnTypeObject;
+    operation.serviceClientSelector = @selector(deleteMapping:);
+    operation.delegateDidReturnSelector = @selector(deleteMappingForDummy:didReturn:);
+    operation.delegateDidFailSelector = @selector(deleteMappingFailedForDummy:);
+    [operation addObjectArgument:dummy];
+    operation.returnType = ReturnTypeInt;
     [operationQueue addOperation:operation];
 }
 

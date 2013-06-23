@@ -13,21 +13,17 @@
 @interface PushNotifService : Service <ServiceProtocol>
 
 /*
- - (TequilaToken *) getTequilaTokenForPushNotif;  // throws TException
- - (PushNotifReply *) registerPushNotif: (PushNotifRegReq *) aPushNotifRequest;  // throws TException
+- (int32_t) deleteMapping: (NSString *) dummy;  // throws TException
 */
 
-- (void)getTequilaTokenForPushNotifWithDelegate:(id)delegate;
-- (void)registerPushNotif:(PushNotifRegReq*)request delegate:(id)delegate;
+- (void)deleteMappingWithDummy:(NSString*)dummy delegate:(id)delegate;
 
 @end
 
 @protocol PushNotifServiceDelegate <ServiceDelegate>
 
 @optional
-- (void)getTequilaTokenForPushNotifDidReturn:(TequilaToken*)token;
-- (void)getTequilaTokenForPushNotifFailed;
-- (void)registerPushNotifForRequest:(PushNotifRegReq*)request didReturn:(PushNotifReply*)reply;
-- (void)registerPushNotifFailedForRequest:(PushNotifRegReq*)request;
+- (void)deleteMappingForDummy:(NSString*)dummy didReturn:(int32_t)status;
+- (void)deleteMappingFailedForDummy:(NSString*)dummy;
 
 @end

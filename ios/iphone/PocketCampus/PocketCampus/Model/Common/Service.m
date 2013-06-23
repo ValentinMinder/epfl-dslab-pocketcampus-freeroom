@@ -16,6 +16,8 @@
 
 #import "PCConfig.h"
 
+#import "PushNotifController.h"
+
 static NSTimeInterval kThriftRequestTimeout = 75.0; //is the minimum for POST request prior the iOS 6. A timer with requestTimeoutInterval is used to remove this limitation and timeout () a request before the system API times out
 static NSTimeInterval kRequestTimeout = 15.0; //is official timeout time for all ServiceRequest that do not have customTimeout specified
 static NSTimeInterval kConnectivityCheckTimeout = 15.0;
@@ -45,7 +47,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
         NSString* serviceURLString = [NSString stringWithFormat:@"%@/%@/%@", serverAddressWithPort, serverVersion, serviceName];
         NSLog(@"-> Initializing service '%@' on server (%@)", serviceName, serviceURLString);
         serverURL = [[NSURL URLWithString:serviceURLString] retain];
-        THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:10];
+        THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:[Service requestTimeoutInterval]];
         thriftProtocol = [[TBinaryProtocol alloc] initWithTransport:client strictRead:YES strictWrite:YES];
         [client release];
         operationQueue = [[NSOperationQueue alloc] init];
@@ -178,6 +180,11 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
 
 - (id)thriftProtocolInstance {
     THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:kThriftRequestTimeout];
+    NSString* deviceToken = [PushNotifController notificationsDeviceToken];
+    if (deviceToken) {
+        [client->mRequest setValue:@"IOS" forHTTPHeaderField:@"X-PC-PUSHNOTIF-OS"];
+        [client->mRequest setValue:deviceToken forHTTPHeaderField:@"X-PC-PUSHNOTIF-TOKEN"];
+    }
     TBinaryProtocol* thriftProtocol_ = [[TBinaryProtocol alloc] initWithTransport:client strictRead:YES strictWrite:YES];
     [client release];
     return [thriftProtocol_ autorelease];

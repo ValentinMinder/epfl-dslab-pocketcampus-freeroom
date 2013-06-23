@@ -22,12 +22,13 @@
 
 @interface THTTPClient : NSObject <TTransport> {
   NSURL * mURL;
-  NSMutableURLRequest * mRequest;
   NSMutableData * mRequestData;
   NSData * mResponseData;
   int mResponseDataOffset;
   NSString * mUserAgent;
   int mTimeout;
+    @public
+    NSMutableURLRequest * mRequest;
 }
 
 - (id) initWithURL: (NSURL *) aURL;

@@ -32,6 +32,7 @@
     // Do any additional setup after loading the view from its nib.
     
     qaforumService = [[QAForumService sharedInstanceToRetain] retain];
+#warning TO_REVIEW
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 

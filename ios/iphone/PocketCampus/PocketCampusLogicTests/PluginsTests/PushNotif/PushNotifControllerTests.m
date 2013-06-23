@@ -27,14 +27,4 @@
     return self;
 }
 
-- (void)testRegistrationAuthenticated {
-    UIWindow* window = [[UIApplication sharedApplication] windows][0];
-    UIViewController* viewController = window.rootViewController;
-    [self.pushNotifController addAuthentifiedUserDeviceRegistrationObserver:self presentationViewControllerForAutentication:viewController successBlock:^{
-        NSLog(@"Registration suceeded");
-    } failureBlock:^(PushNotifDeviceRegistrationError error) {
-        NSLog(@"Registration failed with error : %d", error);
-    }];
-}
-
 @end

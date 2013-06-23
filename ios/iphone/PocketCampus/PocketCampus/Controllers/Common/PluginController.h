@@ -53,6 +53,7 @@
 + (NSString*)identifierName;
 
 @optional
+
 /*
  * This method is called for each plugin at app startup.
  * Plugins can implement this method to register observers

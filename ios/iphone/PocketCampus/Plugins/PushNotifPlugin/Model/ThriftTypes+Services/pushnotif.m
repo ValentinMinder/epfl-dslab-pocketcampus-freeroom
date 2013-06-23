@@ -11,7 +11,6 @@
 #import <TProtocolUtil.h>
 #import <TProcessor.h>
 
-#import "authentication.h"
 
 #import "pushnotif.h"
 
@@ -21,121 +20,81 @@
 }
 @end
 
-@implementation PushNotifRegReq
+@interface deleteMapping_args : NSObject <NSCoding> {
+  NSString * __dummy;
 
-- (id) initWithIAuthenticatedToken: (TequilaToken *) iAuthenticatedToken iPlatformType: (int) iPlatformType RegistrationId: (NSString *) RegistrationId
+  BOOL __dummy_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=dummy, setter=setDummy:) NSString * dummy;
+#endif
+
+- (id) initWithDummy: (NSString *) dummy;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) dummy;
+- (void) setDummy: (NSString *) dummy;
+- (BOOL) dummyIsSet;
+
+@end
+
+@implementation deleteMapping_args
+
+- (id) initWithDummy: (NSString *) dummy
 {
   self = [super init];
-  __iAuthenticatedToken = [iAuthenticatedToken retain];
-  __iAuthenticatedToken_isset = YES;
-  __iPlatformType = iPlatformType;
-  __iPlatformType_isset = YES;
-  __RegistrationId = [RegistrationId retain];
-  __RegistrationId_isset = YES;
+  __dummy = [dummy retain];
+  __dummy_isset = YES;
   return self;
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"iAuthenticatedToken"])
+  if ([decoder containsValueForKey: @"dummy"])
   {
-    __iAuthenticatedToken = [[decoder decodeObjectForKey: @"iAuthenticatedToken"] retain];
-    __iAuthenticatedToken_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"iPlatformType"])
-  {
-    __iPlatformType = [decoder decodeIntForKey: @"iPlatformType"];
-    __iPlatformType_isset = YES;
-  }
-  if ([decoder containsValueForKey: @"RegistrationId"])
-  {
-    __RegistrationId = [[decoder decodeObjectForKey: @"RegistrationId"] retain];
-    __RegistrationId_isset = YES;
+    __dummy = [[decoder decodeObjectForKey: @"dummy"] retain];
+    __dummy_isset = YES;
   }
   return self;
 }
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__iAuthenticatedToken_isset)
+  if (__dummy_isset)
   {
-    [encoder encodeObject: __iAuthenticatedToken forKey: @"iAuthenticatedToken"];
-  }
-  if (__iPlatformType_isset)
-  {
-    [encoder encodeInt: __iPlatformType forKey: @"iPlatformType"];
-  }
-  if (__RegistrationId_isset)
-  {
-    [encoder encodeObject: __RegistrationId forKey: @"RegistrationId"];
+    [encoder encodeObject: __dummy forKey: @"dummy"];
   }
 }
 
 - (void) dealloc
 {
-  [__iAuthenticatedToken release];
-  [__RegistrationId release];
+  [__dummy release];
   [super dealloc];
 }
 
-- (TequilaToken *) iAuthenticatedToken {
-  return [[__iAuthenticatedToken retain] autorelease];
+- (NSString *) dummy {
+  return [[__dummy retain] autorelease];
 }
 
-- (void) setIAuthenticatedToken: (TequilaToken *) iAuthenticatedToken {
-  [iAuthenticatedToken retain];
-  [__iAuthenticatedToken release];
-  __iAuthenticatedToken = iAuthenticatedToken;
-  __iAuthenticatedToken_isset = YES;
+- (void) setDummy: (NSString *) dummy {
+  [dummy retain];
+  [__dummy release];
+  __dummy = dummy;
+  __dummy_isset = YES;
 }
 
-- (BOOL) iAuthenticatedTokenIsSet {
-  return __iAuthenticatedToken_isset;
+- (BOOL) dummyIsSet {
+  return __dummy_isset;
 }
 
-- (void) unsetIAuthenticatedToken {
-  [__iAuthenticatedToken release];
-  __iAuthenticatedToken = nil;
-  __iAuthenticatedToken_isset = NO;
-}
-
-- (int) iPlatformType {
-  return __iPlatformType;
-}
-
-- (void) setIPlatformType: (int) iPlatformType {
-  __iPlatformType = iPlatformType;
-  __iPlatformType_isset = YES;
-}
-
-- (BOOL) iPlatformTypeIsSet {
-  return __iPlatformType_isset;
-}
-
-- (void) unsetIPlatformType {
-  __iPlatformType_isset = NO;
-}
-
-- (NSString *) RegistrationId {
-  return [[__RegistrationId retain] autorelease];
-}
-
-- (void) setRegistrationId: (NSString *) RegistrationId {
-  [RegistrationId retain];
-  [__RegistrationId release];
-  __RegistrationId = RegistrationId;
-  __RegistrationId_isset = YES;
-}
-
-- (BOOL) RegistrationIdIsSet {
-  return __RegistrationId_isset;
-}
-
-- (void) unsetRegistrationId {
-  [__RegistrationId release];
-  __RegistrationId = nil;
-  __RegistrationId_isset = NO;
+- (void) unsetDummy {
+  [__dummy release];
+  __dummy = nil;
+  __dummy_isset = NO;
 }
 
 - (void) read: (id <TProtocol>) inProtocol
@@ -154,27 +113,9 @@
     switch (fieldID)
     {
       case 1:
-        if (fieldType == TType_STRUCT) {
-          TequilaToken *fieldValue = [[TequilaToken alloc] init];
-          [fieldValue read: inProtocol];
-          [self setIAuthenticatedToken: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 2:
-        if (fieldType == TType_I32) {
-          int fieldValue = [inProtocol readI32];
-          [self setIPlatformType: fieldValue];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      case 3:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
-          [self setRegistrationId: fieldValue];
+          [self setDummy: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -189,23 +130,11 @@
 }
 
 - (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"PushNotifRegReq"];
-  if (__iAuthenticatedToken_isset) {
-    if (__iAuthenticatedToken != nil) {
-      [outProtocol writeFieldBeginWithName: @"iAuthenticatedToken" type: TType_STRUCT fieldID: 1];
-      [__iAuthenticatedToken write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  if (__iPlatformType_isset) {
-    [outProtocol writeFieldBeginWithName: @"iPlatformType" type: TType_I32 fieldID: 2];
-    [outProtocol writeI32: __iPlatformType];
-    [outProtocol writeFieldEnd];
-  }
-  if (__RegistrationId_isset) {
-    if (__RegistrationId != nil) {
-      [outProtocol writeFieldBeginWithName: @"RegistrationId" type: TType_STRING fieldID: 3];
-      [outProtocol writeString: __RegistrationId];
+  [outProtocol writeStructBeginWithName: @"deleteMapping_args"];
+  if (__dummy_isset) {
+    if (__dummy != nil) {
+      [outProtocol writeFieldBeginWithName: @"dummy" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __dummy];
       [outProtocol writeFieldEnd];
     }
   }
@@ -214,45 +143,62 @@
 }
 
 - (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"PushNotifRegReq("];
-  [ms appendString: @"iAuthenticatedToken:"];
-  [ms appendFormat: @"%@", __iAuthenticatedToken];
-  [ms appendString: @",iPlatformType:"];
-  [ms appendFormat: @"%i", __iPlatformType];
-  [ms appendString: @",RegistrationId:"];
-  [ms appendFormat: @"\"%@\"", __RegistrationId];
+  NSMutableString * ms = [NSMutableString stringWithString: @"deleteMapping_args("];
+  [ms appendString: @"dummy:"];
+  [ms appendFormat: @"\"%@\"", __dummy];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
 
 @end
 
-@implementation PushNotifReply
+@interface DeleteMapping_result : NSObject <NSCoding> {
+  int32_t __success;
 
-- (id) initWithIStatus: (int32_t) iStatus
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=success, setter=setSuccess:) int32_t success;
+#endif
+
+- (id) initWithSuccess: (int32_t) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int32_t) success;
+- (void) setSuccess: (int32_t) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation DeleteMapping_result
+
+- (id) initWithSuccess: (int32_t) success
 {
   self = [super init];
-  __iStatus = iStatus;
-  __iStatus_isset = YES;
+  __success = success;
+  __success_isset = YES;
   return self;
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"iStatus"])
+  if ([decoder containsValueForKey: @"success"])
   {
-    __iStatus = [decoder decodeInt32ForKey: @"iStatus"];
-    __iStatus_isset = YES;
+    __success = [decoder decodeInt32ForKey: @"success"];
+    __success_isset = YES;
   }
   return self;
 }
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__iStatus_isset)
+  if (__success_isset)
   {
-    [encoder encodeInt32: __iStatus forKey: @"iStatus"];
+    [encoder encodeInt32: __success forKey: @"success"];
   }
 }
 
@@ -261,21 +207,21 @@
   [super dealloc];
 }
 
-- (int32_t) iStatus {
-  return __iStatus;
+- (int32_t) success {
+  return __success;
 }
 
-- (void) setIStatus: (int32_t) iStatus {
-  __iStatus = iStatus;
-  __iStatus_isset = YES;
+- (void) setSuccess: (int32_t) success {
+  __success = success;
+  __success_isset = YES;
 }
 
-- (BOOL) iStatusIsSet {
-  return __iStatus_isset;
+- (BOOL) successIsSet {
+  return __success_isset;
 }
 
-- (void) unsetIStatus {
-  __iStatus_isset = NO;
+- (void) unsetSuccess {
+  __success_isset = NO;
 }
 
 - (void) read: (id <TProtocol>) inProtocol
@@ -293,10 +239,10 @@
     }
     switch (fieldID)
     {
-      case 1:
+      case 0:
         if (fieldType == TType_I32) {
           int32_t fieldValue = [inProtocol readI32];
-          [self setIStatus: fieldValue];
+          [self setSuccess: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
@@ -311,10 +257,11 @@
 }
 
 - (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"PushNotifReply"];
-  if (__iStatus_isset) {
-    [outProtocol writeFieldBeginWithName: @"iStatus" type: TType_I32 fieldID: 1];
-    [outProtocol writeI32: __iStatus];
+  [outProtocol writeStructBeginWithName: @"DeleteMapping_result"];
+
+  if (__success_isset) {
+    [outProtocol writeFieldBeginWithName: @"success" type: TType_I32 fieldID: 0];
+    [outProtocol writeI32: __success];
     [outProtocol writeFieldEnd];
   }
   [outProtocol writeFieldStop];
@@ -322,472 +269,9 @@
 }
 
 - (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"PushNotifReply("];
-  [ms appendString: @"iStatus:"];
-  [ms appendFormat: @"%i", __iStatus];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@interface getTequilaTokenForPushNotif_args : NSObject <NSCoding> {
-}
-
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-@end
-
-@implementation getTequilaTokenForPushNotif_args
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"getTequilaTokenForPushNotif_args"];
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"getTequilaTokenForPushNotif_args("];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@interface GetTequilaTokenForPushNotif_result : NSObject <NSCoding> {
-  TequilaToken * __success;
-
-  BOOL __success_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=success, setter=setSuccess:) TequilaToken * success;
-#endif
-
-- (id) initWithSuccess: (TequilaToken *) success;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (TequilaToken *) success;
-- (void) setSuccess: (TequilaToken *) success;
-- (BOOL) successIsSet;
-
-@end
-
-@implementation GetTequilaTokenForPushNotif_result
-
-- (id) initWithSuccess: (TequilaToken *) success
-{
-  self = [super init];
-  __success = [success retain];
-  __success_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"success"])
-  {
-    __success = [[decoder decodeObjectForKey: @"success"] retain];
-    __success_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__success_isset)
-  {
-    [encoder encodeObject: __success forKey: @"success"];
-  }
-}
-
-- (void) dealloc
-{
-  [__success release];
-  [super dealloc];
-}
-
-- (TequilaToken *) success {
-  return [[__success retain] autorelease];
-}
-
-- (void) setSuccess: (TequilaToken *) success {
-  [success retain];
-  [__success release];
-  __success = success;
-  __success_isset = YES;
-}
-
-- (BOOL) successIsSet {
-  return __success_isset;
-}
-
-- (void) unsetSuccess {
-  [__success release];
-  __success = nil;
-  __success_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 0:
-        if (fieldType == TType_STRUCT) {
-          TequilaToken *fieldValue = [[TequilaToken alloc] init];
-          [fieldValue read: inProtocol];
-          [self setSuccess: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"GetTequilaTokenForPushNotif_result"];
-
-  if (__success_isset) {
-    if (__success != nil) {
-      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
-      [__success write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"GetTequilaTokenForPushNotif_result("];
+  NSMutableString * ms = [NSMutableString stringWithString: @"DeleteMapping_result("];
   [ms appendString: @"success:"];
-  [ms appendFormat: @"%@", __success];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@interface registerPushNotif_args : NSObject <NSCoding> {
-  PushNotifRegReq * __aPushNotifRequest;
-
-  BOOL __aPushNotifRequest_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=aPushNotifRequest, setter=setAPushNotifRequest:) PushNotifRegReq * aPushNotifRequest;
-#endif
-
-- (id) initWithAPushNotifRequest: (PushNotifRegReq *) aPushNotifRequest;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (PushNotifRegReq *) aPushNotifRequest;
-- (void) setAPushNotifRequest: (PushNotifRegReq *) aPushNotifRequest;
-- (BOOL) aPushNotifRequestIsSet;
-
-@end
-
-@implementation registerPushNotif_args
-
-- (id) initWithAPushNotifRequest: (PushNotifRegReq *) aPushNotifRequest
-{
-  self = [super init];
-  __aPushNotifRequest = [aPushNotifRequest retain];
-  __aPushNotifRequest_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"aPushNotifRequest"])
-  {
-    __aPushNotifRequest = [[decoder decodeObjectForKey: @"aPushNotifRequest"] retain];
-    __aPushNotifRequest_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__aPushNotifRequest_isset)
-  {
-    [encoder encodeObject: __aPushNotifRequest forKey: @"aPushNotifRequest"];
-  }
-}
-
-- (void) dealloc
-{
-  [__aPushNotifRequest release];
-  [super dealloc];
-}
-
-- (PushNotifRegReq *) aPushNotifRequest {
-  return [[__aPushNotifRequest retain] autorelease];
-}
-
-- (void) setAPushNotifRequest: (PushNotifRegReq *) aPushNotifRequest {
-  [aPushNotifRequest retain];
-  [__aPushNotifRequest release];
-  __aPushNotifRequest = aPushNotifRequest;
-  __aPushNotifRequest_isset = YES;
-}
-
-- (BOOL) aPushNotifRequestIsSet {
-  return __aPushNotifRequest_isset;
-}
-
-- (void) unsetAPushNotifRequest {
-  [__aPushNotifRequest release];
-  __aPushNotifRequest = nil;
-  __aPushNotifRequest_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 1:
-        if (fieldType == TType_STRUCT) {
-          PushNotifRegReq *fieldValue = [[PushNotifRegReq alloc] init];
-          [fieldValue read: inProtocol];
-          [self setAPushNotifRequest: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"registerPushNotif_args"];
-  if (__aPushNotifRequest_isset) {
-    if (__aPushNotifRequest != nil) {
-      [outProtocol writeFieldBeginWithName: @"aPushNotifRequest" type: TType_STRUCT fieldID: 1];
-      [__aPushNotifRequest write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"registerPushNotif_args("];
-  [ms appendString: @"aPushNotifRequest:"];
-  [ms appendFormat: @"%@", __aPushNotifRequest];
-  [ms appendString: @")"];
-  return [NSString stringWithString: ms];
-}
-
-@end
-
-@interface RegisterPushNotif_result : NSObject <NSCoding> {
-  PushNotifReply * __success;
-
-  BOOL __success_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=success, setter=setSuccess:) PushNotifReply * success;
-#endif
-
-- (id) initWithSuccess: (PushNotifReply *) success;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (PushNotifReply *) success;
-- (void) setSuccess: (PushNotifReply *) success;
-- (BOOL) successIsSet;
-
-@end
-
-@implementation RegisterPushNotif_result
-
-- (id) initWithSuccess: (PushNotifReply *) success
-{
-  self = [super init];
-  __success = [success retain];
-  __success_isset = YES;
-  return self;
-}
-
-- (id) initWithCoder: (NSCoder *) decoder
-{
-  self = [super init];
-  if ([decoder containsValueForKey: @"success"])
-  {
-    __success = [[decoder decodeObjectForKey: @"success"] retain];
-    __success_isset = YES;
-  }
-  return self;
-}
-
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-  if (__success_isset)
-  {
-    [encoder encodeObject: __success forKey: @"success"];
-  }
-}
-
-- (void) dealloc
-{
-  [__success release];
-  [super dealloc];
-}
-
-- (PushNotifReply *) success {
-  return [[__success retain] autorelease];
-}
-
-- (void) setSuccess: (PushNotifReply *) success {
-  [success retain];
-  [__success release];
-  __success = success;
-  __success_isset = YES;
-}
-
-- (BOOL) successIsSet {
-  return __success_isset;
-}
-
-- (void) unsetSuccess {
-  [__success release];
-  __success = nil;
-  __success_isset = NO;
-}
-
-- (void) read: (id <TProtocol>) inProtocol
-{
-  NSString * fieldName;
-  int fieldType;
-  int fieldID;
-
-  [inProtocol readStructBeginReturningName: NULL];
-  while (true)
-  {
-    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
-    if (fieldType == TType_STOP) { 
-      break;
-    }
-    switch (fieldID)
-    {
-      case 0:
-        if (fieldType == TType_STRUCT) {
-          PushNotifReply *fieldValue = [[PushNotifReply alloc] init];
-          [fieldValue read: inProtocol];
-          [self setSuccess: fieldValue];
-          [fieldValue release];
-        } else { 
-          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        }
-        break;
-      default:
-        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
-        break;
-    }
-    [inProtocol readFieldEnd];
-  }
-  [inProtocol readStructEnd];
-}
-
-- (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"RegisterPushNotif_result"];
-
-  if (__success_isset) {
-    if (__success != nil) {
-      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
-      [__success write: outProtocol];
-      [outProtocol writeFieldEnd];
-    }
-  }
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-}
-
-- (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"RegisterPushNotif_result("];
-  [ms appendString: @"success:"];
-  [ms appendFormat: @"%@", __success];
+  [ms appendFormat: @"%i", __success];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -815,48 +299,13 @@
   [super dealloc];
 }
 
-- (void) send_getTequilaTokenForPushNotif
+- (void) send_deleteMapping: (NSString *) dummy
 {
-  [outProtocol writeMessageBeginWithName: @"getTequilaTokenForPushNotif" type: TMessageType_CALL sequenceID: 0];
-  [outProtocol writeStructBeginWithName: @"getTequilaTokenForPushNotif_args"];
-  [outProtocol writeFieldStop];
-  [outProtocol writeStructEnd];
-  [outProtocol writeMessageEnd];
-  [[outProtocol transport] flush];
-}
-
-- (TequilaToken *) recv_getTequilaTokenForPushNotif
-{
-  int msgType = 0;
-  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
-  if (msgType == TMessageType_EXCEPTION) {
-    TApplicationException * x = [TApplicationException read: inProtocol];
-    [inProtocol readMessageEnd];
-    @throw x;
-  }
-  GetTequilaTokenForPushNotif_result * result = [[[GetTequilaTokenForPushNotif_result alloc] init] autorelease];
-  [result read: inProtocol];
-  [inProtocol readMessageEnd];
-  if ([result successIsSet]) {
-    return [result success];
-  }
-  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
-                                           reason: @"getTequilaTokenForPushNotif failed: unknown result"];
-}
-
-- (TequilaToken *) getTequilaTokenForPushNotif
-{
-  [self send_getTequilaTokenForPushNotif];
-  return [self recv_getTequilaTokenForPushNotif];
-}
-
-- (void) send_registerPushNotif: (PushNotifRegReq *) aPushNotifRequest
-{
-  [outProtocol writeMessageBeginWithName: @"registerPushNotif" type: TMessageType_CALL sequenceID: 0];
-  [outProtocol writeStructBeginWithName: @"registerPushNotif_args"];
-  if (aPushNotifRequest != nil)  {
-    [outProtocol writeFieldBeginWithName: @"aPushNotifRequest" type: TType_STRUCT fieldID: 1];
-    [aPushNotifRequest write: outProtocol];
+  [outProtocol writeMessageBeginWithName: @"deleteMapping" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"deleteMapping_args"];
+  if (dummy != nil)  {
+    [outProtocol writeFieldBeginWithName: @"dummy" type: TType_STRING fieldID: 1];
+    [outProtocol writeString: dummy];
     [outProtocol writeFieldEnd];
   }
   [outProtocol writeFieldStop];
@@ -865,7 +314,7 @@
   [[outProtocol transport] flush];
 }
 
-- (PushNotifReply *) recv_registerPushNotif
+- (int32_t) recv_deleteMapping
 {
   int msgType = 0;
   [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
@@ -874,20 +323,20 @@
     [inProtocol readMessageEnd];
     @throw x;
   }
-  RegisterPushNotif_result * result = [[[RegisterPushNotif_result alloc] init] autorelease];
+  DeleteMapping_result * result = [[[DeleteMapping_result alloc] init] autorelease];
   [result read: inProtocol];
   [inProtocol readMessageEnd];
   if ([result successIsSet]) {
     return [result success];
   }
   @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
-                                           reason: @"registerPushNotif failed: unknown result"];
+                                           reason: @"deleteMapping failed: unknown result"];
 }
 
-- (PushNotifReply *) registerPushNotif: (PushNotifRegReq *) aPushNotifRequest
+- (int32_t) deleteMapping: (NSString *) dummy
 {
-  [self send_registerPushNotif: aPushNotifRequest];
-  return [self recv_registerPushNotif];
+  [self send_deleteMapping: dummy];
+  return [self recv_deleteMapping];
 }
 
 @end
@@ -903,20 +352,12 @@
   mService = [service retain];
   mMethodMap = [[NSMutableDictionary dictionary] retain];
   {
-    SEL s = @selector(process_getTequilaTokenForPushNotif_withSequenceID:inProtocol:outProtocol:);
+    SEL s = @selector(process_deleteMapping_withSequenceID:inProtocol:outProtocol:);
     NSMethodSignature * sig = [self methodSignatureForSelector: s];
     NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
     [invocation setSelector: s];
     [invocation retainArguments];
-    [mMethodMap setValue: invocation forKey: @"getTequilaTokenForPushNotif"];
-  }
-  {
-    SEL s = @selector(process_registerPushNotif_withSequenceID:inProtocol:outProtocol:);
-    NSMethodSignature * sig = [self methodSignatureForSelector: s];
-    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
-    [invocation setSelector: s];
-    [invocation retainArguments];
-    [mMethodMap setValue: invocation forKey: @"registerPushNotif"];
+    [mMethodMap setValue: invocation forKey: @"deleteMapping"];
   }
   return self;
 }
@@ -959,31 +400,14 @@
   return YES;
 }
 
-- (void) process_getTequilaTokenForPushNotif_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+- (void) process_deleteMapping_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
 {
-  getTequilaTokenForPushNotif_args * args = [[getTequilaTokenForPushNotif_args alloc] init];
+  deleteMapping_args * args = [[deleteMapping_args alloc] init];
   [args read: inProtocol];
   [inProtocol readMessageEnd];
-  GetTequilaTokenForPushNotif_result * result = [[GetTequilaTokenForPushNotif_result alloc] init];
-  [result setSuccess: [mService getTequilaTokenForPushNotif]];
-  [outProtocol writeMessageBeginWithName: @"getTequilaTokenForPushNotif"
-                                    type: TMessageType_REPLY
-                              sequenceID: seqID];
-  [result write: outProtocol];
-  [outProtocol writeMessageEnd];
-  [[outProtocol transport] flush];
-  [result release];
-  [args release];
-}
-
-- (void) process_registerPushNotif_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
-{
-  registerPushNotif_args * args = [[registerPushNotif_args alloc] init];
-  [args read: inProtocol];
-  [inProtocol readMessageEnd];
-  RegisterPushNotif_result * result = [[RegisterPushNotif_result alloc] init];
-  [result setSuccess: [mService registerPushNotif: [args aPushNotifRequest]]];
-  [outProtocol writeMessageBeginWithName: @"registerPushNotif"
+  DeleteMapping_result * result = [[DeleteMapping_result alloc] init];
+  [result setSuccess: [mService deleteMapping: [args dummy]]];
+  [outProtocol writeMessageBeginWithName: @"deleteMapping"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

@@ -10,32 +10,56 @@
 #import "AuthenticationController.h"
 
 typedef enum {
-    PushNotifDeviceRegistrationErrorUnknown = 0,
-    PushNotifDeviceRegistrationErrorServerCommunication = 1,
-    PushNotifDeviceRegistrationErrorUserDeniedPush = 2,
-    PushNotifDeviceRegistrationErrorUserCancelledAuthentication = 3,
+    PushNotifRegistrationErrorInternal = 0,
 } PushNotifDeviceRegistrationError;
 
 typedef void (^PushNotifDeviceRegistrationFailureBlock)(PushNotifDeviceRegistrationError error);
 
 typedef void (^NewNotificationBlock)(NSString* notifMessage, NSDictionary* notifFullDictionary);
 
-@interface PushNotifDeviceRegistrationObserver : NSObject
+/*
+ * This class is used both as observer for registration and delegate for unregistration
+ */
+@interface PushNotifDeviceRegistrationObserver: NSObject<PushNotifServiceDelegate> 
 
-@property (nonatomic, unsafe_unretained) id observer;
-@property (nonatomic) BOOL authentified;
 @property (nonatomic, copy) VoidBlock successBlock;
 @property (nonatomic, copy) PushNotifDeviceRegistrationFailureBlock failureBlock;
 
 @end
 
-@interface PushNotifController : PluginController<PluginControllerProtocol, PushNotifServiceDelegate, AuthenticationCallbackDelegate>
+@interface PushNotifController : PluginController<PluginControllerProtocol, UIAlertViewDelegate>
 
-- (void)addDeviceRegistrationObserver:(id)observer successBlock:(VoidBlock)successBlock failureBlock:(PushNotifDeviceRegistrationFailureBlock)failureBlock; //will start registration procedure of device token on PC server. Gaspar will not be linked to device token on PC server.
-- (void)addAuthentifiedUserDeviceRegistrationObserver:(id)observer presentationViewControllerForAutentication:(UIViewController*)presController successBlock:(VoidBlock)successBlock failureBlock:(PushNotifDeviceRegistrationFailureBlock)failureBlock; //will start registration procedure of device on PC server, and will link device token to gaspar on PC server. presentationViewControllerForAutentication (give self usually) will be used to present GasparViewController if credentials not saved.
-- (void)addDeviceUnregistrationObserver:(id)observer successBlock:(VoidBlock)successBlock failureBlock:(PushNotifDeviceRegistrationFailureBlock)failureBlock; //will start unregistration procedure of device token on PC server.
-- (void)removeObserver:(id)observer;
 
-- (void)addNotificationObserverWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(NewNotificationBlock)newNotificationBlock;
+/*
+ * Returns token of the device, when notifications were accepted
+ * nil otherwise
+ */
++ (NSString*)notificationsDeviceToken;
+
+/*
+ * Each plugin that needs push notifications should call this method to be sure that the
+ * device is registered for push notifications. If the plugin is the first one to register
+ * and <reason> != nil, <reason> will be displayed to the user before prompting the 
+ * accept/reject iOS notifications message. If plugin is not the first, the device is already
+ * registered and success or failure is immediately executed, user having accepted or 
+ * rejected the first time respectively.
+ * You may display a message telling the user what he is missing in your failure message.
+ */
+- (void)registerDeviceForPushNotificationsWithPluginLowerIdentifier:(NSString*)pluginLowerIdentifier reason:(NSString*)reason success:(VoidBlock)success failure:(PushNotifDeviceRegistrationFailureBlock)failure;
+
+/*
+ * Any class from <pluginLowerIdentifier> can observe arrival of new notifications destinated
+ * to <pluginLowerIdentifier>.
+ * observer and pluginLowerIdentifier cannot be nil.
+ * WARNING: classes must remove themselves with removeObserver:forPluginLowerIdentifier:
+ * when being deallocated.
+ */
+- (void)addPushNotificationObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier newNotificationBlock:(NewNotificationBlock)newNotificationBlock;
+
+/*
+ * Classes that observe arrival of notifications (previous method) must use this method
+ * to remove themselves as observers before being deallocated.
+ */
+- (void)removeObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier;
 
 @end

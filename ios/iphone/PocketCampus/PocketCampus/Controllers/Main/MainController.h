@@ -60,7 +60,21 @@ typedef enum {
 
 - (PCURLSchemeHandler*)urlSchemeHandlerSharedInstance;
 
-- (BOOL)handlePocketCampusURL:(NSURL*)url;;
+- (BOOL)handlePocketCampusURL:(NSURL*)url;
+
+
+/*
+ * Returns wether plugin identifier (case insenstive) is valid
+ * i.e. exists in this PocketCampus implementation
+ */
+- (BOOL)isPluginAnycaseIdentifierValid:(NSString*)anycaseIdentifier;
+
+
+/*
+ * Returns localized plugin identifier for anycaseIdentifier (i.e. ignoring case)
+ * nil if not valid
+ */
+- (NSString*)localizedPluginIdentifierForAnycaseIdentifier:(NSString*)anycaseIdentifier;
 
 @end
 

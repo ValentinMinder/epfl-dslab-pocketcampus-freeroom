@@ -249,6 +249,18 @@ static MainController<MainControllerPublic>* instance = nil;
     return YES;
 }
 
+- (BOOL)isPluginAnycaseIdentifierValid:(NSString*)anycaseIdentifier {
+    return [self existsPluginWithIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:anycaseIdentifier]];
+}
+
+- (NSString*)localizedPluginIdentifierForAnycaseIdentifier:(NSString*)anycaseIdentifier {
+    if (![self isPluginAnycaseIdentifierValid:anycaseIdentifier]) {
+        return nil;
+    }
+    Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:anycaseIdentifier]]);
+    return [pluginClass localizedName];
+}
+
 #pragma mark Private utilities
 
 - (void)showActionNotSupportedAlert {

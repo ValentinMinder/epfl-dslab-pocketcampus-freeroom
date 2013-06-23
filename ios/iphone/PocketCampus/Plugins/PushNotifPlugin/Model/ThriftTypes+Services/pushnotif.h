@@ -11,72 +11,9 @@
 #import <TProtocolUtil.h>
 #import <TProcessor.h>
 
-#import "authentication.h"
-
-enum PlatformType {
-  PlatformType_PC_PLATFORM_ANDROID = 0,
-  PlatformType_PC_PLATFORM_IOS = 1
-};
-
-@interface PushNotifRegReq : NSObject <NSCoding> {
-  TequilaToken * __iAuthenticatedToken;
-  int __iPlatformType;
-  NSString * __RegistrationId;
-
-  BOOL __iAuthenticatedToken_isset;
-  BOOL __iPlatformType_isset;
-  BOOL __RegistrationId_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iAuthenticatedToken, setter=setIAuthenticatedToken:) TequilaToken * iAuthenticatedToken;
-@property (nonatomic, getter=iPlatformType, setter=setIPlatformType:) int iPlatformType;
-@property (nonatomic, retain, getter=registrationId, setter=setRegistrationId:) NSString * RegistrationId;
-#endif
-
-- (id) initWithIAuthenticatedToken: (TequilaToken *) iAuthenticatedToken iPlatformType: (int) iPlatformType RegistrationId: (NSString *) RegistrationId;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (TequilaToken *) iAuthenticatedToken;
-- (void) setIAuthenticatedToken: (TequilaToken *) iAuthenticatedToken;
-- (BOOL) iAuthenticatedTokenIsSet;
-
-- (int) iPlatformType;
-- (void) setIPlatformType: (int) iPlatformType;
-- (BOOL) iPlatformTypeIsSet;
-
-- (NSString *) registrationId;
-- (void) setRegistrationId: (NSString *) RegistrationId;
-- (BOOL) RegistrationIdIsSet;
-
-@end
-
-@interface PushNotifReply : NSObject <NSCoding> {
-  int32_t __iStatus;
-
-  BOOL __iStatus_isset;
-}
-
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, getter=iStatus, setter=setIStatus:) int32_t iStatus;
-#endif
-
-- (id) initWithIStatus: (int32_t) iStatus;
-
-- (void) read: (id <TProtocol>) inProtocol;
-- (void) write: (id <TProtocol>) outProtocol;
-
-- (int32_t) iStatus;
-- (void) setIStatus: (int32_t) iStatus;
-- (BOOL) iStatusIsSet;
-
-@end
 
 @protocol PushNotifService <NSObject>
-- (TequilaToken *) getTequilaTokenForPushNotif;  // throws TException
-- (PushNotifReply *) registerPushNotif: (PushNotifRegReq *) aPushNotifRequest;  // throws TException
+- (int32_t) deleteMapping: (NSString *) dummy;  // throws TException
 @end
 
 @interface PushNotifServiceClient : NSObject <PushNotifService> {

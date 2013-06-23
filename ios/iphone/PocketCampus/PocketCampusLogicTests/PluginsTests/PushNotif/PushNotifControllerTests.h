@@ -10,6 +10,5 @@
 
 @interface PushNotifControllerTests : NSObject
 
-- (void)testRegistrationAuthenticated;
 
 @end
