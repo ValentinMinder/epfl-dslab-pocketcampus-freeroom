@@ -5,8 +5,9 @@ import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CO
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
@@ -91,20 +92,21 @@ public class PushNotifDataStore {
 		}
 	}
 	
-	public List<String> selectTokens(String plugin, List<String> userIds, String platform) {
+	public Map<String, String> selectTokens(String plugin, List<String> userIds, String platform) {
+		// TODO WARNING query size is proportional to userList size, we might hit a limit on the query size!!
 		PreparedStatement sqlStm = null;
 		try {
 			String markers = StringUtils.repeat(", ?", userIds.size()).substring(2);
-			sqlStm = mConnectionManager.getConnection().prepareStatement("SELECT pushtoken FROM pc_pushnotif WHERE plugin = ? AND platform = ? AND userid IN (" + markers + ")");
+			sqlStm = mConnectionManager.getConnection().prepareStatement("SELECT pushtoken, userid FROM pc_pushnotif WHERE plugin = ? AND platform = ? AND userid IN (" + markers + ")");
 			sqlStm.setString(1, plugin);
 			sqlStm.setString(2, platform);
-			LinkedList<String> tokens = new LinkedList<String>();
+			Map<String, String> tokens = new HashMap<String, String>();
 			for(int i = 0; i < userIds.size(); i++) {
 				sqlStm.setString(i + 3, userIds.get(i));
 			}
 			ResultSet rs = sqlStm.executeQuery();
 			while(rs.next()) {
-				tokens.add(rs.getString("pushtoken"));
+				tokens.put(rs.getString("pushtoken"), rs.getString("userid"));
 			}
 			return tokens;
 		} catch (SQLException e) {
