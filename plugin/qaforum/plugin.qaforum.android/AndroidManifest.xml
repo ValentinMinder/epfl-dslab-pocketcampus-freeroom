@@ -5,6 +5,9 @@
       android:versionName="1.0">
     <uses-sdk android:minSdkVersion="8" />
 
+    
+    
+        
     <application android:label="@string/app_name"
         android:theme="@style/PocketCampusTheme"
         android:icon="@drawable/qaforum_icon"
@@ -99,5 +102,6 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="org.pocketcampus.permissions.USE_PC_PUSHNOTIF" />
 	<uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
-					
+	<uses-permission android:name="android.permission.INTERNET" />
+						
 </manifest>
