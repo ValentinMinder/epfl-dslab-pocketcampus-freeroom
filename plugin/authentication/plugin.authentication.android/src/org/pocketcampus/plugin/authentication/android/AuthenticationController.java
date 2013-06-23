@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.authentication.android;
 
 import java.net.URI;
-import java.util.LinkedList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.RedirectHandler;
@@ -16,8 +15,6 @@ import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationContr
 import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithTequilaRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetServiceDetailsRequest;
 import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
-import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
-import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -113,18 +110,6 @@ public class AuthenticationController extends PluginController implements IAuthe
 	private AuthenticationModel mModel;
 	
 	/**
-	 * HTTP Client used to communicate with the PocketCampus server.
-	 * Uses thrift to transport the data.
-	 */
-	private Iface mClient;
-	
-	/**
-	 *  This name must match given in the Server.java file in plugin.launcher.server.
-	 *  It's used to route the request to the right server implementation.
-	 */
-	private String mPluginName = "authentication";
-
-	/**
 	 * HTTP Client used to communicate directly with servers.
 	 * Used to communicate with Tequila Server, ISA Server, etc.
 	 */
@@ -151,9 +136,6 @@ public class AuthenticationController extends PluginController implements IAuthe
 		// Initializing the model is part of the controller's job...
 		mModel = new AuthenticationModel(getApplicationContext());
 		
-		// ...as well as initializing the client.
-		// The "client" is the connection we use to access the service.
-		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 		threadSafeClient = getThreadSafeClient();
 		threadSafeClient.setRedirectHandler(redirectNoFollow);
 	}
