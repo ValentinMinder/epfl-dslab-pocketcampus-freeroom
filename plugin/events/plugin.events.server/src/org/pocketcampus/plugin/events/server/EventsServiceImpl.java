@@ -1170,6 +1170,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 
 			try {
 
+				session.getTransport("smtp").connect();
 				Message message = new MimeMessage(session);
 				message.setFrom(new InternetAddress("noreply@pocketcampus.org", "PocketCampus"));
 				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
@@ -1193,6 +1194,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 				message.setContent(multipart);
 				
 				Transport.send(message);
+				session.getTransport("smtp").close();
 				return true;
 			} catch (MessagingException e) {
 				e.printStackTrace();
