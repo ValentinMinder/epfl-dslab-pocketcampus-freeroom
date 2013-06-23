@@ -19,7 +19,7 @@
             style="@style/DialogText.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/authentication_authenticating_title" />
+            android:text="@string/authentication_plugin_title" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,26 +46,5 @@
 	    
     </LinearLayout>
 
-
-    <LinearLayout
-        android:id="@+id/authentication_dialog_bottom"
-        style="@style/Dialog.Bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/authentication_dialog_middle"
-        android:orientation="horizontal" >
-
-	    <Button
-	        android:id="@+id/authentication_loginbutton"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_centerHorizontal="true"
-	        android:layout_marginTop="3dp"
-	        android:layout_marginLeft="100dp"
-	        android:layout_marginRight="100dp"
-	        android:enabled="false"
-	        android:text="@string/authentication_string_login" />
-    </LinearLayout>
-        
 
 </RelativeLayout>

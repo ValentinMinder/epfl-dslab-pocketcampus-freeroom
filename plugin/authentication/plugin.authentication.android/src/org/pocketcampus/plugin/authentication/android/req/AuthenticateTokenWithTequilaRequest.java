@@ -1,10 +1,12 @@
 package org.pocketcampus.plugin.authentication.android.req;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
+import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCookieComplex;
 
 /**
@@ -17,19 +19,23 @@ import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenC
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class AuthenticateTokenWithTequilaRequest extends Request<AuthenticationController, DefaultHttpClient, TokenCookieComplex, Boolean> {
+public class AuthenticateTokenWithTequilaRequest extends Request<AuthenticationController, DefaultHttpClient, TokenCookieComplex, Header> {
 	
 	@Override
-	protected Boolean runInBackground(DefaultHttpClient client, TokenCookieComplex param) throws Exception {
+	protected Header runInBackground(DefaultHttpClient client, TokenCookieComplex param) throws Exception {
 		HttpGet get = new HttpGet(String.format(AuthenticationController.tequilaAuthTokenUrl, param.token));
 		get.addHeader("Cookie", param.cookie);
 		HttpResponse resp = client.execute(get);
-		return (resp.getFirstHeader("Location") != null);
+		Header location = resp.getFirstHeader("Location");
+		resp.getEntity().getContent().close();
+		return location;
 	}
 
 	@Override
-	protected void onResult(AuthenticationController controller, Boolean result) {
-		if(result) {
+	protected void onResult(AuthenticationController controller, Header result) {
+		if(result != null) {
+			if(((AuthenticationModel) controller.getModel()).getFromBrowser())
+				((AuthenticationModel) controller.getModel()).setCallbackUrl(result.getValue());
 			controller.tokenAuthenticationFinished();
 		} else {
 			controller.notifyInvalidToken();

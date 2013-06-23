@@ -28,16 +28,14 @@ public class LoginToTequilaRequest extends Request<AuthenticationController, Def
 	
 	@Override
 	protected String runInBackground(DefaultHttpClient client, LocalCredentials param) throws Exception {
-		client.setRedirectHandler(AuthenticationController.redirectNoFollow);
 		HttpPost post = new HttpPost(AuthenticationController.tequilaLoginUrl);
 		List<NameValuePair> l = new LinkedList<NameValuePair>();
 		l.add(new BasicNameValuePair("username", param.username));
 		l.add(new BasicNameValuePair("password", param.password));
 		post.setEntity(new UrlEncodedFormEntity(l));
-		client.execute(post);
+		client.execute(post).getEntity().getContent().close();
 		List<Cookie> lc = client.getCookieStore().getCookies();
 		for(Cookie c : lc) {
-			//System.out.println("cookie=" + c.getName() + ": " + c.getValue());
 			if(AuthenticationController.tequilaCookieName.equals(c.getName())) {
 				return AuthenticationController.tequilaCookieName + "=" + c.getValue();
 			}

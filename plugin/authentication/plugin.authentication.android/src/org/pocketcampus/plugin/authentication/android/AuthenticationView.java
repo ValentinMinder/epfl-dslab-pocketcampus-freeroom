@@ -7,7 +7,10 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -103,9 +106,33 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		 */
 		if(aIntent == null)
 			return;
+		
+		
+		Uri data = aIntent.getData();
+		if(data != null && data.getQueryParameter("requestkey") != null) {
+			mModel.setTequilaToken(data.getQueryParameter("requestkey"));
+			mModel.setCallbackUrl(null);
+			mModel.setFromBrowser(true);
+			
+			
+			if(mModel.getSavedGasparPassword() != null) {
+				// use saved password
+				mModel.setTempGasparPassword(mModel.getSavedGasparPassword());
+				showLoading();
+				mController.startPreLogin();
+			} else  {
+				displayForm();
+				
+			}
+			return;
+		}
+		
+		
 		Bundle extras = aIntent.getExtras();
 		if(extras != null && extras.getInt("askpermission") != 0) {
 			askPermission();
+		} else if(extras != null && extras.getInt("showloading") != 0) {
+			showLoading();
 		} else {
 			displayForm();
 		}
@@ -227,8 +254,8 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 				mModel.setTempGasparPassword(passwordField.getText().toString());
 				CheckBox storePasswordField = (CheckBox) findViewById(R.id.authentication_staylogged_cb);
 				mModel.setStorePassword(storePasswordField.isChecked());
-				mController.startLogin();
-				finish();
+				mController.startPreLogin();
+				done();
 			}
 		});
 		//loginButton.setEnabled(true);
@@ -237,44 +264,46 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	private void askPermission() {
 		setContentView(R.layout.authentication_askpermissionpage);
 		TextView serviceName = (TextView) findViewById(R.id.authentication_servicelongname);
-		serviceName.setText(mModel.getLongName());
+		serviceName.setText(mModel.getServiceName());
+		TextView accessTo = (TextView) findViewById(R.id.authentication_serviceaccessto);
+		accessTo.setText(Html.fromHtml("<i>" + TextUtils.join(", ", mModel.getServiceAccess()) + "</i>"));
 		Button button;
 		button = (Button) findViewById(R.id.authentication_alwaysallowbutton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				mController.allowService(true);
-				finish();
+				done();
 			}
 		});
 		button = (Button) findViewById(R.id.authentication_allowbutton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				mController.allowService(false);
-				finish();
+				done();
 			}
 		});
 		button = (Button) findViewById(R.id.authentication_denybutton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				mController.denyService(false);
-				finish();
+				done();
 			}
 		});
 		button = (Button) findViewById(R.id.authentication_alwaysdenybutton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				mController.denyService(true);
-				finish();
+				done();
 			}
 		});
 	}
 
 	/**
-	 * Displays the waiting (while authentication) screen.
+	 * Displays the waiting screen.
 	 */
-	/*private void displayWait() {
+	private void showLoading() {
 		setContentView(R.layout.authentication_redirectionpage);
-	}*/
+	}
 
 	/**
 	 * Called when we successfully login the user to Tequila.
@@ -362,6 +391,10 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		displayForm();
 	}*/
 
+	private void done() {
+		showLoading();
+	}
+	
 	/**
 	 * Called when an IOException occurs.
 	 * 
@@ -380,6 +413,11 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	@Override
 	public void onBackPressed() {
 		mController.cancelAuth();
+		finish();
+	}
+
+	@Override
+	public void shouldFinish() {
 		finish();
 	}
 

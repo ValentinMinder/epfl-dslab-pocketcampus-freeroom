@@ -36,6 +36,13 @@
 <!-- 				<action android:name="pocketcampus.intent.action.AUTHENTICATION_LAUNCH" /> -->
 			</intent-filter>
 			
+			
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="https" android:host="tequila.epfl.ch" android:path="/cgi-bin/tequila/requestauth" />
+			</intent-filter>			
 			    
 <!-- 			Communication with Tequila     -->
 			<intent-filter>
