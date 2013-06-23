@@ -1,19 +1,24 @@
 package org.pocketcampus.platform.sdk.shared.utils;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ListUtils {
 
-	public static <T> List<List<T>> partitionList(List<T> collection, int batchSize) {
-		int i = 0;
-		List<List<T>> batches = new LinkedList<List<T>>();
-		while (i < collection.size()) {
-			int nextInc = Math.min(collection.size() - i, batchSize);
-			List<T> batch = collection.subList(i, i + nextInc);
-			batches.add(batch);
+	public static <T> List<List<T>> chunkList(List<T> bigList, int size) {
+		List<List<T>> chunks = new LinkedList<List<T>>();
+		List<T> chunk = new ArrayList<T>(size);
+		for(T t : bigList) {
+			chunk.add(t);
+			if(chunk.size() == size) {
+				chunks.add(chunk);
+				chunk = new ArrayList<T>(size);
+			}
 		}
-		return batches;
+		if(chunk.size() > 0)
+			chunks.add(chunk);
+		return chunks;
 	}
     
 }

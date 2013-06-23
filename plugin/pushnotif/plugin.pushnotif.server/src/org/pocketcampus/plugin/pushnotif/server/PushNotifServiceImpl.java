@@ -45,11 +45,11 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		// Chunk list into 50 users batches so that
 		// (1) we limit the size of the query that gets generated in selectTokens
 		// (2) we don't exceed the limit of GCM in sendToAndroidDevices
-		List<List<String>> chunks = ListUtils.partitionList(req.getUserIds(), 50);
+		List<List<String>> chunks = ListUtils.chunkList(req.getUserIds(), 50);
 		boolean result = true;
 		for(List<String> c : chunks)
 			result = result && sendMessageInChunks(req.getPluginName(), c, req.getMessageMap());
-		return true;
+		return result;
 	}
 
 	private Boolean sendMessageInChunks(String pluginName, List<String> userIds, Map<String, String> msg) {
