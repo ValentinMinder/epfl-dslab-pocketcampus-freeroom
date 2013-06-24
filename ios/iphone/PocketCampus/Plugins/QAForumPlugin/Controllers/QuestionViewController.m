@@ -107,7 +107,7 @@
         [alert release];
         return;
     }
-    if (![[self languageForString:answerText.text] isEqualToString:@"en"]) {
+    if (![answerText.text canBeConvertedToEncoding:NSISOLatin1StringEncoding]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Invalidinput", @"QAForumPlugin", nil)
                                                         message:NSLocalizedStringFromTable(@"EnglishAnswer", @"QAForumPlugin", nil)
                                                        delegate:nil

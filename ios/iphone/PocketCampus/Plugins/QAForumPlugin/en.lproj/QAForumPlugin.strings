@@ -90,3 +90,4 @@
 "EnglishQuestion" = "Please ask questions in English.";
 "EnglishAnswer" = "Please give answers in English.";
 "EnglishFeedback" = "Please give feedbacks in English.";
+"NotificationReason" = "You will get a notification for the messages for which you are the recipient, so that you can see them immediately.";

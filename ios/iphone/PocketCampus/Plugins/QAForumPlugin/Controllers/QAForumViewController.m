@@ -156,7 +156,7 @@
     } else {
         self.pushController = [PushNotifController sharedInstanceToRetain];
         
-        [self.pushController registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"qaforum" reason:@"TODO" success:^{
+        [self.pushController registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"qaforum" reason:NSLocalizedStringFromTable(@"NotificationReason", @"QAForumPlugin", nil) success:^{
             NSLog(@"push OK");
             [qaforumService getSessionIdWithTequilaToken:self.tequilaToken delegate:self];
         } failure:^(PushNotifDeviceRegistrationError error) {

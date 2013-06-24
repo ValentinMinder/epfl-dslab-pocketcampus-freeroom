@@ -90,3 +90,4 @@
 "EnglishQuestion" = "S'il vous plaît poser des questions en anglais.";
 "EnglishAnswer" = "S'il vous plaît donner des réponses en anglais.";
 "EnglishFeedback" = "S'il vous plaît donner des commentaires en anglais.";
+"NotificationReason" = "Vous recevrez une notification pour les messages vous étant destinées, afin que vous puissiez les voir immédiatement.";
