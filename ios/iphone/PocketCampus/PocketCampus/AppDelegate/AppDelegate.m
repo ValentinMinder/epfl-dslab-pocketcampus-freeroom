@@ -162,7 +162,7 @@ static id test __strong __unused = nil;
     NSString* pluginName = userInfo[@"pluginName"];
     NSString* message = userInfo[@"aps"][@"alert"];
     NSLog(@"-> Notification received for plugin %@: %@  (userInfo:%@)", pluginName, message, userInfo);
-    [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:pluginName] object:nil userInfo:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:[pluginName lowercaseString]] object:nil userInfo:userInfo];
 }
 
 + (NSString*)nsNotificationNameForPluginLowerIdentifier:(NSString*)pluginLowerIdentifier {

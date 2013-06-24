@@ -44,7 +44,8 @@
 @property (nonatomic, strong) ZUUIRevealController* revealController;
 @property (nonatomic) CGFloat revealWidth;
 @property (nonatomic, strong) NSDictionary* plistDicForPluginIdentifier;
-@property (nonatomic, strong) NSArray* pluginsList;
+@property (nonatomic, strong) NSArray* logicOnlyPluginsList; //plugin identifiers of plugins that have no UI (logicOnly is YES)
+@property (nonatomic, strong) NSArray* pluginsList; //plugin identifiers of plugins that have a UI (logicOnly is NO)
 @property (nonatomic, strong) SplashViewController* splashViewController;
 @property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
 @property (nonatomic, strong) NSString* initialActivePluginIdentifier;
@@ -85,7 +86,6 @@ static MainController<MainControllerPublic>* instance = nil;
         self.activePluginController = nil;
         [self initPluginsList];
         self.pluginsControllers = [NSMutableDictionary dictionaryWithCapacity:self.pluginsList.count];
-        [self initPluginObservers];
         [self initMainMenu];
         if ([PCUtils isIdiomPad]) {
             self.revealWidth = 320.0;
@@ -102,6 +102,7 @@ static MainController<MainControllerPublic>* instance = nil;
         self.revealController.delegate = self;
         self.window.rootViewController = self.revealController;
         instance = self;
+        [self initPluginObservers];
         //[NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(test) userInfo:nil repeats:NO];
     }
     return self;
@@ -315,8 +316,9 @@ static MainController<MainControllerPublic>* instance = nil;
     //Loading plugins list from Plugins.plist
     NSDictionary* plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Plugins" ofType:@"plist"]];
     NSArray* pluginsFromPlist = [plist objectForKey:@"Plugins"];
-    NSMutableArray* pluginsTempArray = [NSMutableArray arrayWithCapacity:pluginsFromPlist.count];
-    NSMutableDictionary* tempPlistDicForPluginIdentifier = [NSMutableDictionary dictionaryWithCapacity:pluginsFromPlist.count];
+    NSMutableArray* logicOnlyPluginsListTmp = [NSMutableArray array];
+    NSMutableArray* pluginsListTmp = [NSMutableArray arrayWithCapacity:pluginsFromPlist.count];
+    NSMutableDictionary* tmpPlistDicForPluginIdentifier = [NSMutableDictionary dictionaryWithCapacity:pluginsFromPlist.count];
     
     //Plugins list gotten from server
     NSArray* pluginsFromServer = [[PCConfig defaults] objectForKey:PC_CONFIG_ENABLED_PLUGINS_ARRAY_KEY];
@@ -355,9 +357,21 @@ static MainController<MainControllerPublic>* instance = nil;
                  || (isPadIdiom && [idiom isEqualToString:kSupportedIdiomPad])
                  || (!isPadIdiom && [idiom isEqualToString:kSupportedIdiomPhone]))
                 ) {
-                NSLog(@"-> Detected enabled idiom-compatible plugin: '%@' (idiom '%@')", identifierName, idiom);
-                [pluginsTempArray addObject:identifierName];
-                tempPlistDicForPluginIdentifier[identifierName] = pluginDic;
+                NSNumber* logicOnly = [pluginDic objectForKey:@"logicOnly"];
+                BOOL logicOnlyBool = NO;
+                if (logicOnly && ![logicOnly isKindOfClass:[NSNumber class]]) {
+                    NSLog(@"!! ERROR: logicOnly key must be of type BOOL (found %@). Assuming logicOnly = NO.", logicOnly);
+                } else {
+                    logicOnlyBool = [logicOnly boolValue];
+                }
+                if (logicOnlyBool) {
+                    NSLog(@"-> Detected enabled logic only plugin: '%@'", identifierName);
+                    [logicOnlyPluginsListTmp addObject:identifierName];
+                } else {
+                    NSLog(@"-> Detected enabled idiom-compatible plugin: '%@' (idiom '%@')", identifierName, idiom);
+                    [pluginsListTmp addObject:identifierName];
+                }
+                tmpPlistDicForPluginIdentifier[identifierName] = pluginDic;
             }
         }
     }
@@ -369,13 +383,15 @@ static MainController<MainControllerPublic>* instance = nil;
      return [name1 compare:name2];
      }];*/
     
-    self.pluginsList = [NSArray arrayWithArray:pluginsTempArray]; //creates a non-mutable copy of the array
-    self.plistDicForPluginIdentifier = [tempPlistDicForPluginIdentifier copy]; //creates a non-mutable copy of the dictionary
+    self.logicOnlyPluginsList = [logicOnlyPluginsListTmp copy]; //creates a non-mutable copy of the array
+    self.pluginsList = [pluginsListTmp copy]; //creates a non-mutable copy of the array
+    self.plistDicForPluginIdentifier = [tmpPlistDicForPluginIdentifier copy]; //creates a non-mutable copy of the dictionary
 }
 
 - (void)initPluginObservers {
-    for (int i = 0; i<self.pluginsList.count; i++) {
-        Class pluginClass = NSClassFromString([self pluginControllerNameForIndex:i]);
+    NSArray* allPlugins = [self.pluginsList arrayByAddingObjectsFromArray:self.logicOnlyPluginsList];
+    for (NSString* identifier in allPlugins) {
+        Class pluginClass = NSClassFromString([self pluginControllerNameForIdentifier:identifier]);
         if (class_getClassMethod(pluginClass, @selector(initObservers))) {
             NSLog(@"-> Found PluginController with observers : %@", pluginClass);
             [pluginClass initObservers];

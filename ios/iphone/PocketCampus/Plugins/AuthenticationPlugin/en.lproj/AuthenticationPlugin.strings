@@ -11,7 +11,7 @@
 "Login" = "Login";
 "Logout" = "Logout";
 "LoggedInExplanationLong" = "Your password is stored securely\nin the iOS keychain.\n\n";
-"GasparAccountRequiredFor" = "Your Gaspar account is required\nfor Moodle and Camipro.\n\n Your password will be stored\nsecurely in the iOS keychain.";
+"GasparAccountRequiredFor" = "Your Gaspar account is required\nfor some services like Moodle and Camipro.\n\n Your password will be stored\nsecurely in the iOS keychain.";
 "LoggedInAs" = "Logged in as";
 "UsernameCannotBeEmpty" = "Username cannot be empty.";
 "PasswordCannotBeEmpty" = "Password cannot be empty.";

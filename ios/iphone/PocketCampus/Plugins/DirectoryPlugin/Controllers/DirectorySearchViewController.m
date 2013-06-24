@@ -22,6 +22,8 @@
 
 #import "MainController.h"
 
+#import "PushNotifController.h"
+
 @interface DirectorySearchViewController ()
  
 @property (nonatomic, strong) DirectoryService* directoryService;
@@ -34,6 +36,9 @@
 @property (nonatomic, strong) Person* displayedPerson;
 @property (nonatomic) BOOL skipNextSearchBarValueChange;
 @property (nonatomic) BOOL searchBarWasFirstResponder;
+
+//#warning TO REMOVE, tests for PushNotif
+//@property (nonatomic, strong) PushNotifController* pushController;
 
 @end
 
@@ -96,6 +101,17 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     self.displayedPerson = nil;
     self.personViewController = nil; //so that profile picture request does not try to set picture for personViewController that is no longer displayed (and thus released)
+    
+    
+/*#warning TO REMOVE, tests for PushNotif
+    self.pushController = [PushNotifController sharedInstanceToRetain];
+    
+    [self.pushController registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"directory" reason:@"This is test" success:^{
+        NSLog(@"Registration success %@", [PushNotifController notificationsDeviceToken]);
+        
+    } failure:^(PushNotifDeviceRegistrationError error) {
+        NSLog(@"Registration success");
+    }];*/
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

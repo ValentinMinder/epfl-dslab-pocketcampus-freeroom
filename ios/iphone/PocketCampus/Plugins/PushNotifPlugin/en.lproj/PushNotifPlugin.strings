@@ -4,4 +4,4 @@
 */
 
 "PluginName" = "Push notifications";
-"PushNotifsAlertTitle" = "Push notifications for %@";
+"PushNotifsAlertTitleWithFormat" = "Push notifications for %@";

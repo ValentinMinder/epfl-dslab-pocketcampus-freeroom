@@ -89,42 +89,20 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
             return;
         }
         [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            if ([self notificationsDeviceToken] == nil) {
+                NSLog(@"-> PushNotif received %@ notification. No saved device token to unregister, returning.", [AuthenticationService logoutNotificationName]);
+                return;
+            }
             NSNumber* delayed = [notification.userInfo objectForKey:[AuthenticationService delayedUserInfoKey]];
             if ([delayed boolValue]) {
                 NSLog(@"-> PushNotif received %@ notification delayed", [AuthenticationService logoutNotificationName]);
                 NSLog(@"WARNING: delayed logout is not supported in PushNotif. Unregistration for push notifs will be immediate. Users that login with a non-persitent state (not saving credentials) will thus not receive notifications.");
             } else {
-                NSLog(@"-> PushNotif received %@ notification. Now unregistrating from push notifs.", [AuthenticationService logoutNotificationName]);
+                NSLog(@"-> PushNotif received %@ notification. Now unregistrating from push notifs...", [AuthenticationService logoutNotificationName]);
             }
             [self unregisterAfterLogout];
         }];
         initObserversDone = YES;
-    }
-}
-
-+ (void)unregisterAfterLogout {
-    [[UIApplication sharedApplication] unregisterForRemoteNotifications]; //even though doc says it should be used in rare occasions only, we really want to prevent newly logged in user from receiving old notifications. This is a good way (if unregistraton to server fails).
-    NSString* tokenToUnregister = [self notificationsDeviceToken];
-    if (tokenToUnregister) {
-        [pushNotifService cancelOperationsForDelegate:unregistrationDelegate];
-        if (!pushNotifService) {
-            pushNotifService = [PushNotifService sharedInstanceToRetain];
-        }
-        if (!unregistrationDelegate) {
-            unregistrationDelegate = [PushNotifDeviceRegistrationObserver new];
-            unregistrationDelegate.successBlock = ^{
-                //token has been successfully demapped server-side, we can delete the token
-                //and release service
-                [self deleteNotificationsDeviceToken];
-                pushNotifService = nil;
-                unregistrationDelegate = nil;
-            };
-            unregistrationDelegate.failureBlock = ^(PushNotifDeviceRegistrationError error){
-                //we absolutely need to keep going, add just a time to not be too fast
-                [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(unregisterAfterLogout) userInfo:nil repeats:NO];
-            };
-        }
-        [pushNotifService deleteMappingWithDummy:@"dummy" delegate:unregistrationDelegate];
     }
 }
 
@@ -158,7 +136,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
                 //should register directly then
                 //possibly just updating or re-registering for the same token to iOS
                 //re-registration is not bad practice and is even advised in doc
-                [self observereAndStartDeviceRegistrationProcessOnOS];
+                [self observeAndStartDeviceRegistrationProcessOnOS];
             }
 		}
 	}
@@ -183,8 +161,6 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 }
 
 - (void)removeObserver:(id)observer forPluginLowerIdentifier:(NSString*)pluginLowerIdentifier {
-    NSString* key = [NSString stringWithFormat:@"%p", observer];
-    id nsObserver = observerInstanceForNSNotificationCenterObserver[key];
     if (!observer) {
         [NSException raise:@"Illegal argument" format:@"observer parameter cannot be nil"];
     }
@@ -192,7 +168,9 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     if (![[MainController publicController] isPluginAnycaseIdentifierValid:pluginLowerIdentifier]) {
         [NSException raise:@"Illegal argument" format:@"%@ is not a valid plugin identifier", pluginLowerIdentifier];
     }
-    
+    NSString* key = [NSString stringWithFormat:@"%p", observer];
+    id nsObserver = observerInstanceForNSNotificationCenterObserver[key];
+
     [[NSNotificationCenter defaultCenter] removeObserver:nsObserver name:[AppDelegate nsNotificationNameForPluginLowerIdentifier:pluginLowerIdentifier] object:nil];
     
     [observerInstanceForNSNotificationCenterObserver removeObjectForKey:key];
@@ -202,7 +180,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (alertView == self.pushNotifsReasonAlert) {
-        [self observereAndStartDeviceRegistrationProcessOnOS];
+        [self observeAndStartDeviceRegistrationProcessOnOS];
         //now starting registration to iOS
         self.pushNotifsReasonAlert = nil;
     }
@@ -235,15 +213,46 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 
 #pragma mark - Private utils
 
-- (void)cleanUpAfterRegistrationProcess {
-    [self.regObservers removeAllObjects];
-    self.pushNotifsReasonAlert = nil; //should be done already
++ (void)unregisterAfterLogout {
+    [[UIApplication sharedApplication] unregisterForRemoteNotifications]; //even though doc says it should be used in rare occasions only, we really want to prevent newly logged in user from receiving old notifications. This is a good way (if unregistraton to server fails).
+    NSString* tokenToUnregister = [self notificationsDeviceToken];
+    if (tokenToUnregister) {
+        [pushNotifService cancelOperationsForDelegate:unregistrationDelegate];
+        if (!pushNotifService) {
+            pushNotifService = [PushNotifService sharedInstanceToRetain];
+        }
+        if (!unregistrationDelegate) {
+            unregistrationDelegate = [PushNotifDeviceRegistrationObserver new];
+            unregistrationDelegate.successBlock = ^{
+                //token has been successfully demapped server-side, we can delete the token
+                //and release service
+                [self deleteNotificationsDeviceToken];
+                pushNotifService = nil;
+                unregistrationDelegate = nil;
+                NSLog(@"-> PushNotif device token was successfully unregistered on server and locally after logout");
+            };
+            unregistrationDelegate.failureBlock = ^(PushNotifDeviceRegistrationError error){
+                //we absolutely need to keep going, add just a time to not be too fast
+                NSLog(@"!! ERROR: PushNotif device token unregistration request to server failed, retrying in 2 seconds...");
+                [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(unregisterAfterLogout) userInfo:nil repeats:NO];
+            };
+        }
+        NSLog(@"-> PushNotif: starting unregistration request to server (token: %@).....", tokenToUnregister);
+        [pushNotifService deleteMappingWithDummy:@"dummy" delegate:unregistrationDelegate];
+    }
 }
 
-- (void)observereAndStartDeviceRegistrationProcessOnOS {
+- (void)observeAndStartDeviceRegistrationProcessOnOS {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationSuccessNotification:) name:AppDidSucceedToRegisterToNotifications object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationFailureNotification:) name:AppDidFailToRegisterToNotifications object:nil];
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+}
+
+- (void)cleanUpAfterRegistrationProcess {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AppDidSucceedToRegisterToNotifications object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AppDidFailToRegisterToNotifications object:nil];
+    [self.regObservers removeAllObjects];
+    self.pushNotifsReasonAlert = nil; //should be done already
 }
 
 - (BOOL)notificationsEnabled {
@@ -277,6 +286,8 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [pushNotifService cancelOperationsForDelegate:unregistrationDelegate];
     @synchronized(self) {
         instance = nil;
     }
