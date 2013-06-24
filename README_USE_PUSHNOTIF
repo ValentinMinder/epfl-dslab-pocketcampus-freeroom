@@ -69,29 +69,43 @@ And finally on the server implement the following function if you want to know w
 
 
 
- ========================== IOS =======================
+========================== IOS =======================
  
-The first time you start your plugin, you need to make sure the device has been registered on the server. Theoretically it is required once only during the lifetime of the device. But this should be done periodically if the server loses the registration after a problem for example.
+The first time you start your plugin, you need to make sure the notifications have been enabled. Theoretically it is required once only during the lifetime of the device, but this should be done periodically to keep the registration token up-to-date (even though it should not change). The Apple documentation encourages repeated registration.
 
-To do so, use the PushNotifController:
 
-[self.pushNotifController addAuthentifiedUserDeviceRegistrationObserver:self presentationViewControllerForAutentication:anyCurrentlyVisibleViewController successBlock:^{
-	NSLog(@"Registration suceeded");
-} failureBlock:^(PushNotifDeviceRegistrationError error) {
-	NSLog(@"Registration failed with error : %d", error);
+To register, use the PushNotifController class.
+
+self.pushController = [PushNotifController sharedInstanceToRetain];
+    
+[self.pushController registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"<your_plugin_name_in_lowercase>" reason:@"<notifications_are_used_for_this_and_that_bla_bla" success:^{
+        
+        //from this point, all requests to your thrift backend will include the device token
+        
+    } failure:^(PushNotifDeviceRegistrationError error) {
+
+        //you might want to try again later
+        //Note: this is normal in the simulator
+
 }];
 
-Then, when pushMessage is called server side on the PushNotif plugin, it will send a push notification to the newly registered device.
+Then, when pushNotifSend is called server side on the PushNotif plugin, it will send a push notification to mapped devices.
 
-To handle a notification within the app:
+To handle a notification in the app, use the following code. You might want to do it in your main controller + (void)initObservers method. This way, your plugin can be opened directly when a notification is pushed (see comments)
 
-[[PushNotifController sharedInstance] addNotificationObserverWithPluginLowerIdentifier:@"pluginNameInLowerCase" newNotificationBlock:^(NSString* notifMessage, NSDictionary* notifFullDictionary) {
-	//do wathever you want
+[[PushNotifController sharedInstance] addPushNotificationObserver:self forPluginLowerIdentifier:@"<your_plugin_name_in_lowercase>" newNotificationBlock:^(NSString *notifMessage, NSDictionary *notifFullDictionary) {
+        
+       	//do wathever you want
 	//for example, request that your plugin goes foreground:
-	//[[MainController publicController] requestPluginToForeground:@"pluginNameInLowerCase"];
+	//[[MainController publicController] requestPluginToForeground:@"<your_plugin_name_in_lowercase>"];
 	//refresh your data
+    
 }];
+
+VERY IMPORTANT: each class that called the addPushNotificationObserver:self method must call the removeObserver method before being deallocated:
+
+[[PushNotifController sharedInstance] removeObserver:self forPluginLowerIdentifier:@"<your_plugin_name_in_lowercase>"];
+
+Otherwise, the app will crash the next time a notification arrives with this class not being present in memory anymore.
 
 Finally, you need to copy the file etc/pocketcampus-pushnotif-dev.p12 in /etc on your server
-
-

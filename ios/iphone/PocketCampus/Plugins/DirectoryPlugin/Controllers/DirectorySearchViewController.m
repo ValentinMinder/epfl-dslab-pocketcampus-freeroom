@@ -106,12 +106,22 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 /*#warning TO REMOVE, tests for PushNotif
     self.pushController = [PushNotifController sharedInstanceToRetain];
     
-    [self.pushController registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"directory" reason:@"This is test" success:^{
-        NSLog(@"Registration success %@", [PushNotifController notificationsDeviceToken]);
+    [self.pushController registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"<your_plugin>" reason:@"<notifications_are_used_for_this_and_that_bla_bla" success:^{
+        
+        //from this point, all requests to your thrift backend will include the device token
         
     } failure:^(PushNotifDeviceRegistrationError error) {
-        NSLog(@"Registration success");
-    }];*/
+        //you might want to try again later
+        //Note: this is normal in the simulator
+    }];
+    
+    [self.pushController addPushNotificationObserver:self forPluginLowerIdentifier:@"<your_plugin_name_in_lowercase>" newNotificationBlock:^(NSString *notifMessage, NSDictionary *notifFullDictionary) {
+        
+        //
+        
+    }];
+    
+    [self.pushController removeObserver:self forPluginLowerIdentifier:@"<your_plugin_name_in_lowercase>"];*/
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

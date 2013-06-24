@@ -317,7 +317,11 @@ static NSString* kEventCell = @"EventCell";
         
         if ([self filterByTagsButtonIndex] >= 0) {
             NSString* title = nil;
-            if (self.poolReply.tags.count == 0 || (self.selectedTags.count == self.poolReply.tags.count)) {
+            
+            NSSet* selectedTagsSet = [NSSet setWithArray:[self.selectedTags allKeys]];
+            NSSet* selectableTagsSet = [NSSet setWithArray:[self.tagsInPresentItems allKeys]];
+            
+            if (self.poolReply.tags.count == 0 || [selectedTagsSet isEqualToSet:selectableTagsSet] || [selectableTagsSet isSubsetOfSet:selectedTagsSet]) {
                 title = NSLocalizedStringFromTable(@"FilterByTags", @"EventsPlugin", nil);
             } else {
                 title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FilterByTagsWithFormat", @"EventsPlugin", nil), self.selectedTags.count, self.tagsInPresentItems.count];
