@@ -17,6 +17,8 @@ import org.pocketcampus.android.platform.sdk.core.IView;
  */
 public interface IAuthenticationView extends IView {
 	
+	void shouldFinish();
+	
 	/**
 	 * Methods called from the Model when data is updated.
 	 */

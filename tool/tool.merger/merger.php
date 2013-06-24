@@ -16,7 +16,7 @@ chdir(dirname(__FILE__));
 $plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif", "Sunrise", "Events", "QAforum");
 
 $libs_to_export = array(
-		"commons-lang-2.6.jar", 
+		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", 
 		"gcm.jar", 
 		"libGoogleAnalytics.jar", 
 		"osmdroid-android-3.0.3.jar", 
@@ -27,7 +27,7 @@ $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
 $path_to_lib_dir = "../../platform/sdk/platform.sdk.shared/lib";
 
-$versionCode = "21";
+$versionCode = "22";
 $versionName = "0.3.$versionCode";
 
 function import_nodes($file, $tag, $doc, $parent_node, $nodes_to_remove) {

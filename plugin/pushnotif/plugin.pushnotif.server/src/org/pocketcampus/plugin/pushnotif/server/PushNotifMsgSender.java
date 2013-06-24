@@ -3,9 +3,8 @@ package org.pocketcampus.plugin.pushnotif.server;
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -60,43 +59,23 @@ public class PushNotifMsgSender {
 	private static final Logger logger = Logger
 			.getLogger(PushNotifServiceImpl.class.getName());
 
-	public static void sendToAndroidDevices(PushNotifDataStore dataStore,
-			Set<String> androidDevices, Map<String, String> msg) {
+	public static void sendToAndroidDevices(final PushNotifDataStore dataStore,
+			final Map<String, String> androidDevices, Map<String, String> msg) {
+		// must not send to more than 1000 devices at a time (GCM limit)
 		
 		Message.Builder messageBldr = new Message.Builder();
 		for(String k : msg.keySet())
 			messageBldr.addData(k, msg.get(k));
-		Message message = messageBldr.build();
+		final Message message = messageBldr.build();
+				
+		if(androidDevices.size() > MULTICAST_SIZE)
+			logger.log(Level.SEVERE, "Cannot send more than " + MULTICAST_SIZE + "messages at a time, please chunk request");
+
+		logger.info("Asynchronously sending " + androidDevices.size() + " ANDROID push notification messages");
+				
+		if(androidDevices.size() == 0)
+			return;
 		
-		// send a multicast message using JSON
-		// must split in chunks of 1000 devices (GCM limit)
-		int total = androidDevices.size();
-		List<String> partialAndroidDevices = new ArrayList<String>(total);
-		int counter = 0;
-		int tasks = 0;
-		for (String device : androidDevices) {
-			counter++;
-			partialAndroidDevices.add(device);
-			int partialSize = partialAndroidDevices.size();
-			if (partialSize == MULTICAST_SIZE || counter == total) {
-				asyncSendAndroid(dataStore, partialAndroidDevices, message);
-				partialAndroidDevices.clear();
-				tasks++;
-			}
-		}
-		logger.info("Asynchronously sending " + tasks
-				+ " multicast messages to " + total + " Android devices");
-		
-
-	}
-
-
-	private static void asyncSendAndroid(PushNotifDataStore tempDataStore,
-			List<String> partialAndroidDevices, Message dupMessage) {
-		// make a copy
-		final List<String> androidDevices = new ArrayList<String>(partialAndroidDevices);
-		final Message message = dupMessage;
-		final PushNotifDataStore dataStore = tempDataStore;
 		threadPool.execute(new Runnable() {
 
 			public void run() {
@@ -105,20 +84,22 @@ public class PushNotifMsgSender {
 				/* Android */
 				
 				MulticastResult multicastResult;
+				List<String> deviceList = new ArrayList<String>(androidDevices.keySet());
+				Set<String> users = new HashSet<String>(androidDevices.values());
 				try {
-					multicastResult = sender.send(message, androidDevices, 5);
+					multicastResult = sender.send(message, deviceList, 5);
 				} catch (IOException e) {
 					logger.log(Level.SEVERE, "Error posting messages", e);
 					return;
 				}
 				List<Result> results = multicastResult.getResults();
-				LinkedList<String> failed = new LinkedList<String>();
 				// analyze the results
-				for (int i = 0; i < androidDevices.size(); i++) {
-					String regId = androidDevices.get(i);
+				for (int i = 0; i < deviceList.size(); i++) {
+					String regId = deviceList.get(i);
 					Result result = results.get(i);
 					String messageId = result.getMessageId();
 					if (messageId != null) {
+						users.remove(androidDevices.get(regId));
 						logger.fine("Succesfully sent message to device: "
 								+ regId + "; messageId = " + messageId);
 						String canonicalRegId = result
@@ -134,7 +115,6 @@ public class PushNotifMsgSender {
 									canonicalRegId);
 						}
 					} else {
-						failed.add(regId);
 						String error = result.getErrorCodeName();
 						if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
 							// application has been removed from device -
@@ -151,111 +131,91 @@ public class PushNotifMsgSender {
 				}
 				
 				
-				if (failed.size() == 0)
-					return;
-				try {
-					PocketCampusServer.invokeOnPlugin(
-							message.getData().get("pluginName"),
-							"appendToFailedDevicesList", failed);
-					// fail silently because if the caller doesn't care about
-					// who fails, then screw him
-				} catch (NoSuchObjectException e) {
-				} catch (SecurityException e) {
-				} catch (IllegalArgumentException e) {
-				} catch (NoSuchMethodException e) {
-				} catch (IllegalAccessException e) {
-				} catch (InvocationTargetException e) {
-				}
+				if (users.size() > 0)
+					PocketCampusServer.pushNotifNotifyFailedUsers(message.getData().get("pluginName"), new ArrayList<String>(users));
 				
 			}
 		});
 	}
 	
-	public static void sendToiOSDevices(PushNotifDataStore dataStore_,
-			Set<String> devices_, Map<String, String> msg_) {
+	public static void sendToiOSDevices(final PushNotifDataStore dataStore,
+			final Map<String, String> devices, final Map<String, String> msg) {
+	
+		logger.info("Asynchronously sending " + devices.size() + " IOS push notification messages");
 		
-		logger.info("Asynchronously sending notification to "+devices_.size()+" iOS devices");
-		
-		if (devices_.size() > 0) {
+		if(devices.size() == 0)
+			return;
 			
-			final PushNotifDataStore dataStore = dataStore_;
-			final Set<String> devices = devices_;
-			final Map<String, String> msg = msg_;
+		threadPool.execute(new Runnable() {
 			
-			threadPool.execute(new Runnable() {
-				
-				@Override
-				public void run() {
-					logger.info("Sending notifications to iOS devices...");
-					LinkedList<String> failed = new LinkedList<String>();
-					PushNotificationPayload payload = PushNotificationPayload.complex();
-					try {
-						for(String k : msg.keySet()) {
-							if(k.equals("alert"))
-								payload.addAlert(msg.get(k));
-							else if(k.equals("sound"))
-								payload.addSound(msg.get(k)); // "default"
-							else if(k.equals("badge"))
-								payload.addBadge(Integer.parseInt(msg.get(k)));
-							else
-								payload.addCustomDictionary(k, msg.get(k));
+			@Override
+			public void run() {
+				logger.info("Sending notifications to iOS devices...");
+				PushNotificationPayload payload = PushNotificationPayload.complex();
+				List<String> deviceList = new ArrayList<String>(devices.keySet());
+				Set<String> users = new HashSet<String>(devices.values());
+				try {
+					for(String k : msg.keySet()) {
+						if(k.equals("alert"))
+							payload.addAlert(msg.get(k));
+						else if(k.equals("sound"))
+							payload.addSound(msg.get(k)); // "default"
+						else if(k.equals("badge"))
+							payload.addBadge(Integer.parseInt(msg.get(k)));
+						else
+							payload.addCustomDictionary(k, msg.get(k));
+					}
+					List<PushedNotification> notifications = Push.payload(payload,
+							APNS_P12_PATH, APNS_P12_PASSWORD, APNS_PROD, deviceList);
+					for (PushedNotification notif : notifications) {
+						if (notif.isSuccessful()) {
+							users.remove(devices.get(notif.getDevice().getToken()));
+						} else {
+							String errorMessage = "Failed:" + notif.getDevice().getToken();
+							
+							ResponsePacket errorResponse = notif.getResponse();
+		                    if (errorResponse != null) {
+		                            errorMessage += "\nError:"+errorResponse.getMessage();
+		                    }
+		                    dataStore.deletePushToken("IOS", notif.getDevice().getToken());
+		                    errorMessage += "\n deviceToken removed from DB ("+notif.getDevice().getToken()+")";
+							logger.info(errorMessage);
 						}
-						List<PushedNotification> notifications = Push.payload(payload,
-								APNS_P12_PATH, APNS_P12_PASSWORD, APNS_PROD, devices);
-						for (PushedNotification notif : notifications) {
-							if (notif.isSuccessful()) {
-							} else {
-								String errorMessage = "Failed:" + notif.getDevice().getToken();
-								
-								ResponsePacket errorResponse = notif.getResponse();
-			                    if (errorResponse != null) {
-			                            errorMessage += "\nError:"+errorResponse.getMessage();
-			                    }
-			                    dataStore.deletePushToken("IOS", notif.getDevice().getToken());
-			                    errorMessage += "\n deviceToken removed from DB ("+notif.getDevice().getToken()+")";
-								logger.info(errorMessage);
-								failed.add(notif.getDevice().getToken());
-							}
-						}
+					}
 
-					} catch (JSONException e) {
-						logger.info("JSONException while creating notification payload");
-						e.printStackTrace();
-					} catch (CommunicationException e) {
-						logger.info("CommunicationException while sending notification");
-						e.printStackTrace();
-					} catch (KeystoreException e) {
-						logger.info("Keystore while creating notification");
-						e.printStackTrace();
-					}
-					
-					/* Contact APNS Feedback Service if necessary */
-					if ((System.currentTimeMillis() / 1000)
-							- apnsFeedbackServiceLastCheckTimestamp > APNS_FEEDBACK_SERVICE_REQ_MIN_PERIOD) {
-						List<String> failedFeedback = contactAPNSFeedbackServiceAndPurgeDB(dataStore);
-						failed.addAll(failedFeedback);
-					}
-					
-					if (failed.size() == 0)
-						return;
-					try {
-						PocketCampusServer.invokeOnPlugin(msg.get("pluginName"),"appendToFailedDevicesList", failed);
-						// fail silently because if the caller doesn't care about
-						// who fails, then screw him
-						// @Amer: Copy-pasting this comment made me happy :D
-					} catch (NoSuchObjectException e) {
-					} catch (SecurityException e) {
-					} catch (IllegalArgumentException e) {
-					} catch (NoSuchMethodException e) {
-					} catch (IllegalAccessException e) {
-					} catch (InvocationTargetException e) {
-					}
-					
+				} catch (JSONException e) {
+					logger.info("JSONException while creating notification payload");
+					e.printStackTrace();
+				} catch (CommunicationException e) {
+					logger.info("CommunicationException while sending notification");
+					e.printStackTrace();
+				} catch (KeystoreException e) {
+					logger.info("Keystore while creating notification");
+					e.printStackTrace();
 				}
-			});
+				
+				/* Contact APNS Feedback Service if necessary */
+				if ((System.currentTimeMillis() / 1000) - apnsFeedbackServiceLastCheckTimestamp > APNS_FEEDBACK_SERVICE_REQ_MIN_PERIOD) {
+					// We do not announce the failed token list that we get here because
+					// (1) they might be old and we don't know to which user they correspond
+					// (2) the corresponding user might be a user of another plugin (not the plugin that issued this call)
+					// Nevertheless we keep the function call in order to cleanup the DB 
+					// TODO check if there's a better way to do it
+					contactAPNSFeedbackServiceAndPurgeDB(dataStore);
+					//List<String> failedFeedback = contactAPNSFeedbackServiceAndPurgeDB(dataStore);
+					//failed.addAll(failedFeedback);
+				}
+				
+
+				if (users.size() > 0)
+					PocketCampusServer.pushNotifNotifyFailedUsers(msg.get("pluginName"), new ArrayList<String>(users));
+				
+				
+			}
+		});
+		
 			
-			
-		}
+		
 	}
 	
 	private static List<String> contactAPNSFeedbackServiceAndPurgeDB(PushNotifDataStore dataStore) {

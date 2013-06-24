@@ -116,5 +116,21 @@ public class PocketCampusServer extends ServerBase {
 		}
 		return false;
 	}
+	
+	public static boolean pushNotifNotifyFailedUsers(String plugin, List<String> failedUsers) {
+		if(plugin == null || failedUsers == null)
+			return false;
+		try {
+			PocketCampusServer.invokeOnPlugin(plugin, "appendToFailedDevicesList", failedUsers);
+			return true;
+		} catch (NoSuchObjectException e) {
+		} catch (SecurityException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+		return false;
+	}
 
 }

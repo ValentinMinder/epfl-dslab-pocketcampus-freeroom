@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="qaforum_plugin_title">QAForum (bêta)</string>
+    <string name="qaforum_plugin_title">QAForum</string>
     
     <string name="qaforum_courses_view_title">Liste des Cours QAforum inscrits</string>
     <string name="qaforum_events_view_title">Événements QAforum Actuels</string>

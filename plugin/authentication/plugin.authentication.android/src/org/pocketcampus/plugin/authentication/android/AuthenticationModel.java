@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.authentication.android;
 
+import java.util.List;
+
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel;
@@ -66,8 +68,9 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	//private SessionId iSessionId;
 	private String tequilaToken;
 	private String callbackUrl;
-	private String shortName;
-	private String longName;
+	private String serviceName;
+	private List<String> serviceAccess;
+	private boolean fromBrowser;
 	
 	private String tequilaCookie;
 	private String tempPassword;
@@ -99,13 +102,18 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		storePassword = iStorage.getBoolean(AUTH_STORE_PASSWORD_KEY, true);
 		//staySignedIn = iStorage.getBoolean(STAYSIGNEDIN_KEY, false);
 		
+		
 		// WHITELIST
-		setServiceAllowedLevel("moodle", 1);
-		setServiceAllowedLevel("camipro", 1);
-		setServiceAllowedLevel("isacademia", 1);
-		setServiceAllowedLevel("pushnotif", 1);
+		setServiceAllowedLevel("CAMIPRO WS", 1);
+		setServiceAllowedLevel("Moodle", 1);
+		setServiceAllowedLevel("QAforum", 1);
+		//setServiceAllowedLevel("moodle", 1);
+		//setServiceAllowedLevel("camipro", 1);
+		//setServiceAllowedLevel("isacademia", 1);
+		//setServiceAllowedLevel("pushnotif", 1);
+		
 		// BLACKLIST
-		setServiceAllowedLevel("attacker", -1);
+		//setServiceAllowedLevel("attacker", -1);
 	}
 
 	/**
@@ -125,20 +133,27 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		callbackUrl = value;
 	}
 
-	public String getShortName() {
-		return shortName;
+	public String getServiceName() {
+		return serviceName;
 	}
-	public void setShortName(String value) {
-		shortName = value;
+	public void setServiceName(String value) {
+		serviceName = value;
 	}
 
-	public String getLongName() {
-		return longName;
+	public List<String> getServiceAccess() {
+		return serviceAccess;
 	}
-	public void setLongName(String value) {
-		longName = value;
+	public void setServiceAccess(List<String> value) {
+		serviceAccess = value;
 	}
 	
+	public boolean getFromBrowser() {
+		return fromBrowser;
+	}
+	public void setFromBrowser(boolean value) {
+		fromBrowser = value;
+	}
+
 	public String getTequilaCookie() {
 		return tequilaCookie;
 	}
@@ -242,12 +257,12 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	
 	public void setServiceAllowedLevel(String shortName, int level) {
 		Editor editor = iStorage.edit();
-		editor.putInt(TEQUILA_SERVICE_PREFIX + shortName, level);
+		editor.putInt(TEQUILA_SERVICE_PREFIX + shortName.hashCode(), level);
 		editor.commit();
 	}
 	
 	public int getServiceAllowedLevel(String shortName) {
-		return iStorage.getInt(TEQUILA_SERVICE_PREFIX + shortName, 0);
+		return iStorage.getInt(TEQUILA_SERVICE_PREFIX + shortName.hashCode(), 0);
 	}
 	
 }
