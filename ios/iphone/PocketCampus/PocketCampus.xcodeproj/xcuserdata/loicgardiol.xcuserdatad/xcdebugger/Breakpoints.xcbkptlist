@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "393726200.121251"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "648"
-         endingLineNumber = "648"
+         startingLineNumber = "651"
+         endingLineNumber = "651"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -86,11 +86,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "393726200.121251"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "728"
-         endingLineNumber = "728"
+         startingLineNumber = "731"
+         endingLineNumber = "731"
          landmarkName = "-addUnsignedCharArgument:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -99,11 +99,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "393726200.121251"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "794"
-         endingLineNumber = "794"
+         startingLineNumber = "797"
+         endingLineNumber = "797"
          landmarkName = "+wrapArgumentBool:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -164,11 +164,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "393726200.121251"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "602"
-         endingLineNumber = "602"
+         startingLineNumber = "605"
+         endingLineNumber = "605"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -268,11 +268,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "393726200.121251"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "994"
-         endingLineNumber = "994"
+         startingLineNumber = "997"
+         endingLineNumber = "997"
          landmarkName = "-didTimeout"
          landmarkType = "5">
          <Actions>
@@ -912,11 +912,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "393726200.121251"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "403"
-         endingLineNumber = "403"
+         startingLineNumber = "406"
+         endingLineNumber = "406"
          landmarkName = "-main"
          landmarkType = "5">
          <Actions>
@@ -1488,11 +1488,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "393726200.121251"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "399"
-         endingLineNumber = "399"
+         startingLineNumber = "402"
+         endingLineNumber = "402"
          landmarkName = "-main"
          landmarkType = "5">
          <Actions>
@@ -2148,11 +2148,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "393726200.121251"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "422"
-         endingLineNumber = "422"
+         startingLineNumber = "425"
+         endingLineNumber = "425"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -5012,7 +5012,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
-         timestampString = "393724841.211938"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "120"
@@ -5038,11 +5038,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
-         timestampString = "393724841.211938"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "192"
-         endingLineNumber = "192"
+         startingLineNumber = "193"
+         endingLineNumber = "193"
          landmarkName = "-registrationSuccessNotification:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -5086,11 +5086,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
-         timestampString = "393725613.400527"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "147"
-         endingLineNumber = "147"
+         startingLineNumber = "148"
+         endingLineNumber = "148"
          landmarkName = "-addPushNotificationObserver:forPluginLowerIdentifier:newNotificationBlock:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -5099,11 +5099,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
-         timestampString = "393725756.988266"
+         timestampString = "393780276.875321"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "164"
-         endingLineNumber = "164"
+         startingLineNumber = "165"
+         endingLineNumber = "165"
          landmarkName = "-removeObserver:forPluginLowerIdentifier:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -5144,6 +5144,32 @@
          startingLineNumber = "482"
          endingLineNumber = "482"
          landmarkName = "-presentTagsController"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "PocketCampus/Model/Common/Service.m"
+         timestampString = "393780306.308339"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "183"
+         endingLineNumber = "183"
+         landmarkName = "-thriftProtocolInstance"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/QAForumPlugin/Controllers/QAForumViewController.m"
+         timestampString = "393782770.597163"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "150"
+         endingLineNumber = "150"
+         landmarkName = "-authenticationSucceeded"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

@@ -148,7 +148,22 @@
 
 - (void)authenticationSucceeded {
     NSLog(@"authen succ");
-    [qaforumService getSessionIdWithTequilaToken:self.tequilaToken delegate:self];
+    
+    NSString *model = [[UIDevice currentDevice] model];
+    if ([model isEqualToString:@"iPhone Simulator"]) {
+        NSLog(@"Will not register for push notif because simulator");
+        [qaforumService getSessionIdWithTequilaToken:self.tequilaToken delegate:self];
+    } else {
+        self.pushController = [PushNotifController sharedInstanceToRetain];
+        
+        [self.pushController registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"qaforum" reason:@"TODO" success:^{
+            NSLog(@"push OK");
+            [qaforumService getSessionIdWithTequilaToken:self.tequilaToken delegate:self];
+        } failure:^(PushNotifDeviceRegistrationError error) {
+            NSLog(@"push failed");
+            [qaforumService getSessionIdWithTequilaToken:self.tequilaToken delegate:self];
+        }];
+    }
 }
 
 - (void)userCancelledAuthentication {
@@ -165,14 +180,6 @@
 - (void)getSessionIdWithTequilaToken:(QATequilaToken *)token didReturn:(s_session *)session {
     NSLog(@"%@", session);
     [QAForumService saveSessionId:session];
-    
-    self.pushController = [PushNotifController sharedInstanceToRetain];
-    
-    [self.pushController registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"qaforum" reason:@"TODO" success:^{
-        NSLog(@"push OK");
-    } failure:^(PushNotifDeviceRegistrationError error) {
-        NSLog(@"push failed");
-    }];
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
     [self waitForDataDidReturn];
