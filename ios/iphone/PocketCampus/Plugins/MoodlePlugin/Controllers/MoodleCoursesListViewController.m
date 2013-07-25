@@ -160,6 +160,9 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.courses.count == 0) {
+        return;
+    }
     MoodleCourse* course = self.courses[indexPath.row];
     MoodleCourseSectionsViewController* viewController = [[MoodleCourseSectionsViewController alloc] initWithCourse:course];
     [self.navigationController pushViewController:viewController animated:YES];
