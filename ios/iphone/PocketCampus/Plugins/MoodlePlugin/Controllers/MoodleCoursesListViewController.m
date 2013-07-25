@@ -171,7 +171,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 {
     if (self.courses && [self.courses count] == 0) {
         if (indexPath.row == 1) {
-            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NotSubscribedToAnyCourse", @"MyEduPlugin", nil)];
+            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"MoodleNoCourse", @"MoodlePlugin", nil)];
         } else {
             UITableViewCell* cell =[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
