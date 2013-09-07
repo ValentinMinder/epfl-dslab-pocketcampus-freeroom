@@ -56,7 +56,9 @@
     <string name="qaforum_feedback_rate">The rate you got for your answer.</string>
     
     <string name="qaforum_reply_hint">Input Answer Here</string>
-    <string name="qaforum_reply_answer">Please give your answer!</string>
+    <string name="qaforum_reply_answer">Your answer</string>
+    <string name="qaforum_other_answer">Other answers</string>
+    
     
     <string name="qaforum_record_q">Questions</string>
     <string name="qaforum_record_a">Answers</string>

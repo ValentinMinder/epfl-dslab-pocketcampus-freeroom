@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
  <resources>
+   <color name="qaforum_Purple_Solid">#FF6C0486</color>
    <color name="qaforum_yellow">#22FFFF00</color>
    <color name="qaforum_yellow_inverse">#FFFFFF00</color>
    <color name="qaforum_Purple">#55FF00FF</color>
@@ -7,4 +8,7 @@
    <color name="qaforum_Red">#FFFF0000</color>
    <color name="qaforum_White">#FFFFFFFF</color>
    <color name="qaforum_Gray">#918E8E</color>
+   <color name="qaforum_Green">#248D09</color>
+   <color name="qaforum_brown">#C9C900</color>
+   
  </resources>

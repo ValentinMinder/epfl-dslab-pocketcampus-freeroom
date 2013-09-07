@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
->
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:background="@drawable/qaforum_tablerow_border_gray">
 
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/qaforum_Gray" >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/TextView01"
@@ -18,23 +15,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_marginBottom="4dp"
-            android:layout_weight="1"
             android:gravity="left"
             android:text="@+id/TextView01"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/qaforum_White" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    </TableRow>
+    </RelativeLayout>
     
-    <TableRow
-        android:layout_width="fill_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginRight="130dp"
             android:gravity="left"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -42,8 +37,10 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    </TableRow>
+    </RelativeLayout>
 
-    </TableLayout>
+    </LinearLayout>

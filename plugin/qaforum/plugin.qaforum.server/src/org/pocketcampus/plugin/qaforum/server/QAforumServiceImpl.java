@@ -600,7 +600,13 @@ public class QAforumServiceImpl implements QAforumService.Iface {
 			e.printStackTrace();
 		}
 		if (validCheck) {
-			return 1;
+			//new version changes(handling with logging out)
+			System.out.println("Logging out request...");
+			if(deleteinfo.type==-1)
+				return -1;
+			else {
+				return 1;
+			}
 		}
 		else {
 			return 0;
