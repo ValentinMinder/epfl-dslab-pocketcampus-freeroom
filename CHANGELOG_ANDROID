@@ -1,0 +1,17 @@
+0.3.22:
+- NEW: QAForum plugin
+Brought to you by the Artificial Intelligence Lab (LIA), QAForum provides a platform where you can freely ask questions, especially about campus life at EPFL. Your question will be intelligently forwarded to some of your colleagues. They will be selected based on the likelihood that they will be able to provide relevant answers. The community will also need your help in answering questions. There must be something Google doesn't know, but you do. Join us!
+- Mobile Single-Sign On: You can now use PocketCampus to securely sign-in to any service/website that uses your Gaspar account.
+
+0.3.21:
+- Ability to view past events
+- Bug fixes
+
+0.3.20:
+- Fixed small UI glitch 
+
+0.3.19:
+- Fixed a bug in the Events plugin that caused the app to crash
+
+0.3.18:
+- NEW: Events plugin
