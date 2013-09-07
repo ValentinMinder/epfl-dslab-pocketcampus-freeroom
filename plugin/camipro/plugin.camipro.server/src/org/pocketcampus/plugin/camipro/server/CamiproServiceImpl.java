@@ -81,7 +81,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	public CamiproSession getCamiproSession(TequilaToken iTequilaToken) throws TException {
 		System.out.println("getCamiproSession");
 		//PocketCampusServer.pushNotifMap(iTequilaToken, "camipro", "chamsedd");
-		return new CamiproSession(iTequilaToken.getLoginCookie());
+		return new CamiproSession(iTequilaToken == null ? "" : iTequilaToken.getLoginCookie());
 	}
 
 	@Override
