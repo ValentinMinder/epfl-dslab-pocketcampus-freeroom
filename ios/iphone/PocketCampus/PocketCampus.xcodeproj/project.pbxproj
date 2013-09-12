@@ -4076,8 +4076,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Loic Gardiol";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Loic Gardiol";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Loic Gardiol (7KPBSVCYLZ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Loic Gardiol (7KPBSVCYLZ)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
 				INFOPLIST_FILE = "PocketCampus/PocketCampus-Info.plist";
@@ -4088,8 +4088,8 @@
 					"\"$(SRCROOT)/ZBarSDK\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "810B6314-8519-41FE-AFE0-CFEB0B277914";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "810B6314-8519-41FE-AFE0-CFEB0B277914";
+				PROVISIONING_PROFILE = "1688CD38-8163-49D3-8F84-B540EE4460AE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1688CD38-8163-49D3-8F84-B540EE4460AE";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

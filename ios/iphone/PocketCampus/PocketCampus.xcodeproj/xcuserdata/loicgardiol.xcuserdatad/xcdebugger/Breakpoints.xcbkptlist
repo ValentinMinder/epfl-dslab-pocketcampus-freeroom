@@ -91,7 +91,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "731"
          endingLineNumber = "731"
-         landmarkName = "-addUnsignedCharArgument:"
+         landmarkName = "-addDoubleArgument:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -104,7 +104,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "797"
          endingLineNumber = "797"
-         landmarkName = "+wrapArgumentBool:"
+         landmarkName = "+wrapArgumentChar:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -273,7 +273,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "997"
          endingLineNumber = "997"
-         landmarkName = "-didTimeout"
+         landmarkName = "-dealloc"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy

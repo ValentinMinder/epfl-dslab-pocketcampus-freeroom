@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>SERVER_PROTOCOL</key>
-	<string>http</string>
+	<string>https</string>
 	<key>SERVER_ADDRESS</key>
 	<string>pocketcampus.epfl.ch</string>
 	<key>SERVER_PORT</key>
-	<string>9090</string>
+	<string>443</string>
 	<key>SERVER_URI</key>
 	<string>v3r1</string>
 	<key>GA_TRACKING_CODE</key>
