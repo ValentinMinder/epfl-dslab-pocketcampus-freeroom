@@ -180,6 +180,9 @@ public class SbbProvider extends AbstractHafasProvider
 		if ("NFO".equals(ucType))
 			return 'B';
 
+		if ("NFT".equals(ucType))
+			return 'T';
+
 		final char t = super.normalizeType(type);
 		if (t != 0)
 			return t;
