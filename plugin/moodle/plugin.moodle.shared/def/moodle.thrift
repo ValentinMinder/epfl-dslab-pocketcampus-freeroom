@@ -1,4 +1,5 @@
 namespace java org.pocketcampus.plugin.moodle.shared
+namespace csharp org.pocketcampus.plugin.moodle.shared
 
 struct TequilaToken {
 	1: required string iTequilaKey;

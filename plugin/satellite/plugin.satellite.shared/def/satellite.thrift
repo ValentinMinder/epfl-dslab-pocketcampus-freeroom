@@ -1,4 +1,5 @@
 namespace java org.pocketcampus.plugin.satellite.shared
+namespace csharp org.pocketcampus.plugin.satellite.shared
 
 include "../../../../platform/sdk/platform.sdk.shared/def/common.thrift"
 

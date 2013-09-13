@@ -1,4 +1,5 @@
 namespace java org.pocketcampus.plugin.camipro.shared
+namespace csharp org.pocketcampus.plugin.camipro.shared
 
 struct TequilaToken {
 	1: required string iTequilaKey;
