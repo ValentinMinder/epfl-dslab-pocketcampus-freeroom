@@ -8,11 +8,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.plugin.qaforum.android.QAforumController;
 import org.pocketcampus.plugin.qaforum.android.iface.IQAforumView;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -46,7 +42,40 @@ public class MyAnswerActivity extends PluginView implements IQAforumView {
 				e.printStackTrace();
 			}
 		}
-
+		//new version, which displays the view in three parts: question, answer, feedback
+		setContentView(R.layout.qaforum_my_answer);
+		
+		TextView questionContent = (TextView) findViewById(R.id.TextView01);
+		TextView questionTopic = (TextView) findViewById(R.id.textView3);
+		TextView questionTag = (TextView) findViewById(R.id.textView4);
+		TextView questionAuthor = (TextView) findViewById(R.id.textView5);
+		TextView questionTime = (TextView) findViewById(R.id.textView6);
+		
+		TextView answerContent= (TextView) findViewById(R.id.textView7);
+		TextView answerTime = (TextView) findViewById(R.id.textView8);
+		
+		TextView feedbackContent = (TextView) findViewById(R.id.textView10);
+		TextView feedbackRate = (TextView) findViewById(R.id.textView11);
+		
+		try {
+			questionContent.setText(dataJsonObject.getString("content"));
+			questionTopic.setText(getResources().getString(R.string.qaforum_detail_topic)+": "+dataJsonObject.getString("topicid"));
+			questionTag.setText(getResources().getString(R.string.qaforum_question_tags)+dataJsonObject.getString("tags"));
+			questionAuthor.setText(getResources().getString(R.string.qaforum_by)+dataJsonObject.getString("asker"));
+			questionTime.setText(dataJsonObject.getString("time"));
+			
+			answerContent.setText(dataJsonObject.getString("answer"));
+			answerTime.setText(dataJsonObject.getString("answertime"));
+			
+			feedbackContent.setText(dataJsonObject.getString("feedback"));
+			feedbackRate.setText(dataJsonObject.getString("rate"));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Old version, which is inconsistant to other views.
+		/*
 		setContentView(R.layout.qaforum_list_main);
 
 		TextView subTitleTextView = (TextView) findViewById(R.id.standard_titled_layout_title);
@@ -118,6 +147,7 @@ public class MyAnswerActivity extends PluginView implements IQAforumView {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	@Override

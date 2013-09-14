@@ -47,7 +47,59 @@ public class MyQuestionActivity extends PluginView implements IQAforumView {
 				e.printStackTrace();
 			}
 		}
+		
+		setContentView(R.layout.qaforum_my_question);
+		TextView tvQuestion = (TextView) findViewById(R.id.TextView01);
+		TextView tvAnswer = (TextView) findViewById(R.id.textView2);
+		TextView tvAuthor = (TextView) findViewById(R.id.textView5);
+		TextView tvDate = (TextView) findViewById(R.id.textView6);
+		TextView tvTopic = (TextView) findViewById(R.id.textView3);
+		TextView tvTags = (TextView) findViewById(R.id.textView4);
+		try {
+			tvQuestion.setText(dataJsonObject.getString("content"));
+			tvAuthor.setText(getResources().getString(R.string.qaforum_by)+dataJsonObject.getString("userid"));
+			tvDate.setText(dataJsonObject.getString("time"));
+			tvTopic.setText(getResources().getString(R.string.qaforum_detail_topic)+": "+dataJsonObject.getString("topicid"));
+			tvTags.setText(getResources().getString(R.string.qaforum_question_tags)+dataJsonObject.getString("tags"));
+			
+			LinearLayout l = (LinearLayout) findViewById(R.id.mylayout1);
+			LayoutInflater linflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+			JSONArray answerlistArray = dataJsonObject
+					.getJSONArray("answerlist");
+			if (answerlistArray.length()==0) {
+				tvAnswer.setVisibility(View.GONE);
+			}
+			for (int i = 0; i < answerlistArray.length(); i++) {
+				View customView2 = linflater.inflate(
+						R.layout.qaforum_one_item_answer, null);
 
+				TextView answerTextView = (TextView) customView2
+						.findViewById(R.id.TextView01);
+				TextView userTextView = (TextView) customView2
+						.findViewById(R.id.textView1);
+				TextView timeTextView = (TextView) customView2
+						.findViewById(R.id.textView2);
+
+				answerTextView
+						.setText((i + 1)
+								+ ": "
+								+ answerlistArray.getJSONObject(i).getString(
+										"content"));
+				userTextView.setText(getResources().getString(R.string.qaforum_by)
+						+ answerlistArray.getJSONObject(i).getString("name"));
+				timeTextView.setText(answerlistArray.getJSONObject(i)
+						.getString("time"));
+				l.addView(customView2);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		/*
 		setContentView(R.layout.qaforum_list_main);
 		TextView subTitleTextView = (TextView) findViewById(R.id.standard_titled_layout_title);
 		subTitleTextView.setText(getString(R.string.qaforum_details_title));
@@ -89,6 +141,14 @@ public class MyQuestionActivity extends PluginView implements IQAforumView {
 			}
 			JSONArray answerlistArray = dataJsonObject
 					.getJSONArray("answerlist");
+			if (answerlistArray.length()>0) {
+				View customView = linflater.inflate(R.layout.qaforum_one_item_answertitle,
+						null);
+				TextView titleTextView = (TextView) customView
+						.findViewById(R.id.TextView01);
+				titleTextView.setText(getResources().getString(R.string.qaforum_answer));
+				l.addView(customView);
+			}
 			for (int i = 0; i < answerlistArray.length(); i++) {
 				View customView2 = linflater.inflate(
 						R.layout.qaforum_one_item_answer, null);
@@ -101,8 +161,7 @@ public class MyQuestionActivity extends PluginView implements IQAforumView {
 						.findViewById(R.id.textView2);
 
 				answerTextView
-						.setText(getResources().getString(R.string.qaforum_answer)+" "
-								+ (i + 1)
+						.setText((i + 1)
 								+ ": "
 								+ answerlistArray.getJSONObject(i).getString(
 										"content"));
@@ -116,6 +175,8 @@ public class MyQuestionActivity extends PluginView implements IQAforumView {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		
+		*/
 	}
 
 	@Override

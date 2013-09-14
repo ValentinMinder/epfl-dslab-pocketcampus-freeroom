@@ -1,4 +1,5 @@
 namespace java org.pocketcampus.plugin.food.shared
+namespace csharp org.pocketcampus.plugin.food.shared
 
 include "../../../../platform/sdk/platform.sdk.shared/def/common.thrift"
 

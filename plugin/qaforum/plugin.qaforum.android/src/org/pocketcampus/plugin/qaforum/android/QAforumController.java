@@ -131,7 +131,10 @@ public class QAforumController extends PluginController implements IQAforumContr
 		
 		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "QAforumController::onStartCommand logout");
-			mModel.clearQAforumCookie();
+			//request to delete the sessionid in the server.
+			s_delete deleteInfo = new s_delete(mModel.getSessionid(), 0, -1);
+        	deleteNotification(deleteInfo);
+			//mModel.clearQAforumCookie();
 		}
 		
 		if("org.pocketcampus.plugin.pushnotif.REGISTRATION_FINISHED".equals(aIntent.getAction())) {

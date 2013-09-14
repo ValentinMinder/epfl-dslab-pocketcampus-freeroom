@@ -20,6 +20,10 @@ public class DeleteNotificationRequest extends Request<QAforumController, Iface,
 		if (result==1) {
 			((QAforumModel) controller.getModel()).getListenersToNotify().messageDeleted();
 		}
+		else if(result==-1){
+			//logging out
+			((QAforumModel) controller.getModel()).clearQAforumCookie();
+		}
 		else {
 			controller.notLoggedIn();
 		}

@@ -1,4 +1,5 @@
 namespace java org.pocketcampus.plugin.transport.shared
+namespace csharp org.pocketcampus.plugin.transport.shared
 
 /**
 * Service definition for the Transport plugin.

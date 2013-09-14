@@ -1,34 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
 xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:descendantFocusability="beforeDescendants"
-android:focusableInTouchMode="true">
+android:layout_height="fill_parent">
+
 	<TextView
-        android:id="@+id/standard_titled_layout_title"
-        android:text="@string/qaforum_question_open_title"
-        style="@style/PocketCampusTheme.Secondary.Title" />
+	    android:id="@+id/standard_titled_layout_title"
+	    style="@style/PocketCampusTheme.Secondary.Title"
+	    android:text="@string/qaforum_details_title" />
 
-<ScrollView
-    android:id="@+id/scrollView1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@+id/standard_titled_layout_title" >
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/standard_titled_layout_title"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-	android:layout_marginLeft="20dp"
-	android:layout_marginRight="20dp"
-    android:onClick="layoutClick"
-    android:orientation="vertical"
-    android:weightSum="1" >
-    
-    <TextView
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="fill_parent" android:id="@+id/mylayout1"
+            android:layout_height="wrap_content">
+
+            <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:text="@string/qaforum_question_single"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/qaforum_Purple_Solid" />
@@ -89,73 +85,60 @@ android:focusableInTouchMode="true">
     </RelativeLayout>
 
     </LinearLayout>
-    
-<LinearLayout android:orientation="vertical"
-            android:layout_width="fill_parent" 
-            android:id="@+id/answersLayout"
-            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/qaforum_other_answer"
+                android:text="@string/qaforum_answer"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/qaforum_brown"
-                android:visibility="gone" />
-
-        </LinearLayout>
-        <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/qaforum_reply_answer"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/qaforum_Green"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-<LinearLayout
+                android:textColor="@color/qaforum_Green" />
+            
+            <LinearLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
 	    android:background="@drawable/qaforum_tablerow_border_gray">
+    <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="@string/qaforum_reply_hint"
-        android:inputType="textMultiLine" >
-    </EditText>
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    		</LinearLayout>
     
-   <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="50dp" >
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/qaforum_feedback"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/qaforum_Red" />
+            
+            <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:background="@drawable/qaforum_tablerow_border_gray">
+    <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:onClick="report"
-        android:text="@string/qaforum_report" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="5dp"
-        android:onClick="submitAnswer"
-        android:text="@string/qaforum_submit" />
-
-</RelativeLayout>
-</LinearLayout>
-</LinearLayout>
-
-</ScrollView>
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    		</LinearLayout>
+    
+    </LinearLayout>
+        
+    </ScrollView>
+    </RelativeLayout>

@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
+import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl.NodeJson.ItemJson;
 import org.pocketcampus.plugin.moodle.shared.TequilaToken;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
@@ -31,6 +33,13 @@ import org.pocketcampus.plugin.moodle.shared.MoodleService;
 import org.pocketcampus.plugin.moodle.shared.MoodleSession;
 import org.pocketcampus.plugin.moodle.shared.MoodleUserEvent;
 import org.pocketcampus.plugin.moodle.shared.SectionsListReply;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * MoodleServiceImpl
@@ -87,6 +96,68 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		}
 	}
 	
+
+	
+	public static class NodeJson {
+		public List<ItemJson> children;
+		public static class ItemJson {
+			public String key;
+			public String name;
+			public String title;
+			public int type;
+			public String link;
+		}
+	}
+	
+	static Gson gson = new Gson();
+	static JsonParser jsonParser = new JsonParser();
+	
+	private List<ItemJson> fetchNode(Cookie cookie, String reqKey, int reqType, int filterType) {
+		//System.out.println("fetching id=" + reqKey + "&type=" + reqType);
+		try {
+			
+			List<ItemJson> children = new LinkedList<ItemJson>();
+			String page = getPageWithCookie("http://moodle.epfl.ch/lib/ajax/getnavbranch.php?id=" + reqKey + "&type=" + reqType, cookie);
+			
+			
+			JsonObject jo = jsonParser.parse(page).getAsJsonObject();
+			if(jo.has("children")) {
+				JsonArray ja = jo.get("children").getAsJsonArray();
+				for(int i = 0; i < ja.size(); i++) {
+					if(!ja.get(i).isJsonObject())
+						continue;
+					JsonObject jo2 = ja.get(i).getAsJsonObject();
+					if(!jo2.has("type"))
+						continue;
+					if(jo2.get("type").getAsInt() != filterType) 
+						continue;
+					ItemJson ij = new ItemJson();
+					ij.type = filterType;
+					if(jo2.has("key")) ij.key = jo2.get("key").getAsString();
+					if(jo2.has("name")) ij.name = jo2.get("name").getAsString();
+					if(jo2.has("title")) ij.title = jo2.get("title").getAsString();
+					if(jo2.has("link")) ij.link = jo2.get("link").getAsString();
+					children.add(ij);
+				}
+			}
+			
+			/*NodeJson node = gson.fromJson(page, NodeJson.class);
+			if(node.children != null) {
+				for(ItemJson i : node.children) {
+					if(i.type == filterType)
+						children.add(i);
+				}
+			}*/
+			
+			return children;
+		} catch (JsonSyntaxException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@Override
 	public CoursesListReply getCoursesList(MoodleRequest iRequest) throws TException {
 		//iRequest.setICourseId(523);//tcpip
@@ -99,11 +170,14 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		
 		System.out.println("getCoursesList");
 		String page = null;
+		Gson gson = new Gson();
+		//NodeJson courses = null;
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getMoodleCookie());
 		
 		try {
 			page = getPageWithCookie("http://moodle.epfl.ch/?redirect=0", cookie);
+			//page2 = getPageWithCookie("http://moodle.epfl.ch/lib/ajax/getnavbranch.php?id=mycourses&type=0", cookie);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new CoursesListReply(404);
@@ -113,14 +187,16 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			return new CoursesListReply(407);
 		}
 		
-		//page = getSubstringBetween(page, "block_course_overview", "block_course_list");
+		List<ItemJson> courses = fetchNode(cookie, "mycourses", 0, 20);
+		if(courses == null) {
+			return new CoursesListReply(404);
+		}
+		
 		LinkedList<MoodleCourse> tCourses = new LinkedList<MoodleCourse>();
-		for (String i : getAllSubstringsBetween(page, "<a", "course/view.php", "a>")) {
+		for(ItemJson mcj : courses) {
 			MoodleCourse mc = new MoodleCourse();
-			//mc.setITitle(StringEscapeUtils.unescapeHtml4(getLastSubstringBetween(i, ">", "</a>")));
-			//String data = getSubstringBetween(i, "course/view.php", "</a>");
-			mc.setITitle(getSubstringBetween(i, "title=\"", "\""));
-			mc.setIId(Integer.parseInt(getSubstringBetween(i, "id=", "\"")));
+			mc.setITitle(StringEscapeUtils.unescapeHtml4(mcj.title));
+			mc.setIId(Integer.parseInt(mcj.key));
 			tCourses.add(mc);
 		}
 		
@@ -185,27 +261,32 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			return new SectionsListReply(407);
 		}
 		
+		List<ItemJson> sections = fetchNode(cookie, "" + iRequest.getICourseId(), 20, 30);
+		if(sections == null) {
+			return new SectionsListReply(404);
+		}
 		LinkedList<MoodleSection> msl = new LinkedList<MoodleSection>();
-		// don't close the quote because some sections have more style classes such as hidden
-		for (String i : getAllSubstringsBetween(page, "class=\"section main clearfix", "<!--class='section'-->")) {
+		for(ItemJson sj : sections) {
 			LinkedList<MoodleResource> mrl = new LinkedList<MoodleResource>();
-			for (MoodleResource j : getLinks(i)) {
-				if(j.getIUrl().indexOf("/pluginfile.php/") != -1) {
-					// if it is a Moodle file, perfect
-					mrl.add(j);
-				} else if(j.getIUrl().indexOf("/mod/resource/view.php?") != -1 || j.getIUrl().indexOf("/mod/folder/view.php?") != -1) {
+			List<ItemJson> resources = fetchNode(cookie, sj.key, 30, 40);
+			if(resources == null) {
+				continue;
+			}
+			for(ItemJson rj : resources) {
+				if(rj.link.indexOf("/mod/resource/view.php?") != -1 || rj.link.indexOf("/mod/folder/view.php?") != -1) {
 					// if it is a Moodle resource, get all files from it
-					LinkedList<String> urls = getAllFilesFromMoodleResource(j.getIUrl(), cookie);
+					LinkedList<String> urls = getAllFilesFromMoodleResource(rj.link, cookie);
 					for(String k : urls) {
-						mrl.add(new MoodleResource(j.getIName(), k));
+						mrl.add(new MoodleResource(rj.name, k));
 					}
 				}
 			}
-			MoodleSection ms = new MoodleSection(mrl, stripHtmlTags("<" + i + ">"));
-			// TODO add optional fields (start date and end date)
-			ms.setICurrent(i.startsWith(" current"));
+			
+			MoodleSection ms = new MoodleSection(mrl, sj.name);
 			msl.add(ms);
+			
 		}
+
 		
 		SectionsListReply sl = new SectionsListReply(200);
 		sl.setISections(msl);

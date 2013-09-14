@@ -4,13 +4,8 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
 >
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/qaforum_Gray" >
-
         <TextView
+            android:background="@color/qaforum_Gray" 
             android:id="@+id/TextView01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,21 +16,5 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/qaforum_White" />
 
-    </TableRow>
-    
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="left"
-            android:paddingRight="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    </TableRow>
 
     </TableLayout>

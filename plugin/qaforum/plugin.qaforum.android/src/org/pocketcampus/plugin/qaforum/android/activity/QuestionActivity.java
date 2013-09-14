@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.qaforum.android.activity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.pocketcampus.plugin.qaforum.R;
@@ -12,14 +13,17 @@ import org.pocketcampus.plugin.qaforum.shared.s_answer;
 import org.pocketcampus.plugin.qaforum.shared.s_relation;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -62,19 +66,62 @@ private Button reportButton;
 			String dataString=getIntent().getExtras().getString("data");
 			try {
 				m_JsonObject=new JSONObject(dataString);
-				mContentTextView=(TextView)findViewById(R.id.textView1);
-				mContentTextView.setText("Question: "+m_JsonObject.getString("content"));
-				mAskerTextView=(TextView)findViewById(R.id.textView3);
-				mAskerTextView.setText(m_JsonObject.getString("askername"));
+				mContentTextView=(TextView)findViewById(R.id.TextView01);
+				mContentTextView.setText(m_JsonObject.getString("content"));
+				mAskerTextView=(TextView)findViewById(R.id.textView5);
+				mAskerTextView.setText(getResources().getString(R.string.qaforum_by)+m_JsonObject.getString("askername"));
 				mAskerTextView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 				mAskerTextView.setOnClickListener(new View.OnClickListener() {
 			        @Override
 			        public void onClick(View v) {
 			        	//see the profile of the user
-			        	mController.relationship(new s_relation(mModel.getSessionid(), mAskerTextView.getText().toString()));
+			        	try {
+							mController.relationship(new s_relation(mModel.getSessionid(), m_JsonObject.getString("askername")));
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 			        }
 			        });
+				TextView topicTextView = (TextView)findViewById(R.id.textView3);
+				TextView tagsTextView = (TextView)findViewById(R.id.textView4);
+				TextView asktimeTextView = (TextView)findViewById(R.id.textView6);
+				topicTextView.setText(getResources().getString(R.string.qaforum_detail_topic)+": "+m_JsonObject.getString("topic"));
+				tagsTextView.setText(getResources().getString(R.string.qaforum_question_tags)+m_JsonObject.getString("tags"));
+				asktimeTextView.setText(m_JsonObject.getString("time"));
+				
 				mforwardid=m_JsonObject.getInt("forwardid");
+				
+				//display answers when the question has answers already
+				LinearLayout l = (LinearLayout) findViewById(R.id.answersLayout);
+				LayoutInflater linflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				JSONArray answerlistArray = m_JsonObject
+						.getJSONArray("answerlist");
+				if (answerlistArray.length()!=0) {
+					TextView answerTitleTextView = (TextView)findViewById(R.id.textView10);
+					answerTitleTextView.setVisibility(View.VISIBLE);
+				}
+				for (int i = 0; i < answerlistArray.length(); i++) {
+					View customView = linflater.inflate(
+							R.layout.qaforum_one_item_answer, null);
+					TextView answerTextView = (TextView) customView
+							.findViewById(R.id.TextView01);
+					TextView userTextView = (TextView) customView
+							.findViewById(R.id.textView1);
+					TextView timeTextView = (TextView) customView
+							.findViewById(R.id.textView2);
+
+					answerTextView
+							.setText((i + 1)
+									+ ": "
+									+ answerlistArray.getJSONObject(i).getString(
+											"content"));
+					userTextView.setText(getResources().getString(R.string.qaforum_by)
+							+ answerlistArray.getJSONObject(i).getString("name"));
+					timeTextView.setText(answerlistArray.getJSONObject(i)
+							.getString("time"));
+					l.addView(customView);
+				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

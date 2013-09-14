@@ -57,7 +57,8 @@
     <string name="qaforum_feedback_rate">Le score que tu as pour ta réponse.</string>
     
     <string name="qaforum_reply_hint">S\'il vous plaît donner votre réponse.</string>
-    <string name="qaforum_reply_answer">S\'il vous plaît donner votre réponse.</string>
+    <string name="qaforum_reply_answer">Votre réponse.</string>
+    <string name="qaforum_other_answer">Autres réponses</string>
     
     <string name="qaforum_record_q">Questions</string>
     <string name="qaforum_record_a">Réponses</string>
