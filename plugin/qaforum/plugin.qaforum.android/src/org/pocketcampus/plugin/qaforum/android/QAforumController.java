@@ -11,7 +11,7 @@ import org.pocketcampus.plugin.qaforum.android.activity.AnswerListActivity;
 import org.pocketcampus.plugin.qaforum.android.activity.AskActivity;
 import org.pocketcampus.plugin.qaforum.android.activity.FeedbackActivity;
 import org.pocketcampus.plugin.qaforum.android.activity.FeedbackListActivity;
-import org.pocketcampus.plugin.qaforum.android.activity.HelpActivity;
+import org.pocketcampus.plugin.qaforum.android.activity.GuideActivity;
 import org.pocketcampus.plugin.qaforum.android.activity.LatestQuestionListActivity;
 import org.pocketcampus.plugin.qaforum.android.activity.MyAnswerActivity;
 import org.pocketcampus.plugin.qaforum.android.activity.MyQuestionActivity;
@@ -400,7 +400,11 @@ public class QAforumController extends PluginController implements IQAforumContr
 	}
 	
 	public void callactivityRelation(String data) throws JSONException {
-		((QuestionActivity) mModel.currentActivity).showRelation(data);
+
+        if(mModel.currentActivity.getClass() == MyQuestionActivity.class)
+		    ((MyQuestionActivity) mModel.currentActivity).showRelation(data);
+        else
+		    ((QuestionActivity) mModel.currentActivity).showRelation(data);
 	}
 	
 	public void showMatching(String tempString) {
@@ -408,7 +412,12 @@ public class QAforumController extends PluginController implements IQAforumContr
 	}
 	
 	public void callactivityHelp() {
+		/*
 		Intent intent=new Intent(getApplicationContext(), HelpActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	    startActivity(intent);
+	    */
+		Intent intent=new Intent(getApplicationContext(), GuideActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	    startActivity(intent);
 	}

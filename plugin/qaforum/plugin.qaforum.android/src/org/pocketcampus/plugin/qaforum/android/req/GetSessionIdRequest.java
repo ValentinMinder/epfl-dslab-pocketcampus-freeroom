@@ -23,7 +23,7 @@ public class GetSessionIdRequest extends Request<QAforumController, Iface, QATeq
 		((QAforumModel) controller.getModel()).getListenersToNotify().gotRequestReturn();
 		((QAforumModel) controller.getModel()).setQAforumCookie(result);
 		((QAforumController) controller).pushnotification();
-		if (result.intro==1) {
+		if (result.intro==0) {
 			((QAforumController) controller).callactivityHelp();
 		}
 	}

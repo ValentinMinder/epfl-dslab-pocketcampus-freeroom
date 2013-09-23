@@ -118,6 +118,15 @@ private Button reportButton;
 											"content"));
 					userTextView.setText(getResources().getString(R.string.qaforum_by)
 							+ answerlistArray.getJSONObject(i).getString("name"));
+                    userTextView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+                    final String username = answerlistArray.getJSONObject(i).getString("name");
+				    userTextView.setOnClickListener(new View.OnClickListener() {
+			           @Override
+			            public void onClick(View v) {
+							    mController.relationship(new s_relation(mModel.getSessionid(), username));
+			            }
+			        });
+
 					timeTextView.setText(answerlistArray.getJSONObject(i)
 							.getString("time"));
 					l.addView(customView);

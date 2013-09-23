@@ -23,8 +23,8 @@
     <string name="qaforum_myanswer_title">Mes réponses</string>
     <string name="qaforum_pending_title">Messages non-lus</string>
     
-    <string name="qaforum_question_closed_title">Question(Fermé)</string>
-    <string name="qaforum_question_open_title">Question(Ouverte)</string>
+    <string name="qaforum_question_closed_title">Question (Fermé)</string>
+    <string name="qaforum_question_open_title">Question (Ouverte)</string>
     
     <string name="qaforum_answer_title">Réponse pour vous</string>
     <string name="qaforum_feedback_title">Commentaires pour vousu</string>
@@ -132,7 +132,7 @@
     <string name="qaforum_no_pending">Pas de message en attente.</string>
     <string name="qaforum_no_meaning">Votre question n\'a pas de sens.</string>
     <string name="qaforum_from">&#160;de&#160;</string>
-    <string name="qaforum_by">&#160;&#160;par&#160;</string>
+    <string name="qaforum_by">Par&#160;</string>
     
     <string name="qaforum_relation_language">Langue:&#160;</string>
     <string name="qaforum_relation_answer_me">Nombre de fois de me répondre:&#160;</string>
@@ -157,6 +157,13 @@
     <string name="qaforum_help_record">3.Journal. Au cas où vous ne seriez pas disponible pour répondre à vos messages, les messages en attente peuvent être trouvé ici.</string>
     <string name="qaforum_help_pending">4.En attente. Si vous ne voulez pas de notifications, elles peuvent être désactivée ici. Les autres réglages sont également ici.</string>
     
+    <string name="qaforum_intro_ask">Une question? Posez là ici.</string>
+    <string name="qaforum_intro_forum">Trouver des questions que vos collègues ont demandé.</string>
+    <string name="qaforum_intro_record">Consultez l\'historique de vos questions et de réponses.</string>
+    <string name="qaforum_intro_pending">Vos messages en attente.</string>
+    
+    <string name="qaforum_arrow_description">Arrow pour les présentations.</string>
+    <string name="qaforum_introduction">Présentation</string>
     
 	<string-array name="qaforum_topics_array">
         <item>Voyage</item>

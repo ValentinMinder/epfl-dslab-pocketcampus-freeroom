@@ -182,7 +182,13 @@ public class LatestQuestionListActivity extends PluginView implements IQAforumVi
 				 if(typeofquestion==1){
 					 customView = linflater.inflate(R.layout.qaforum_list_item_closed, null); 
 				 } else {
-					 customView = linflater.inflate(R.layout.qaforum_list_item_open, null);
+					 if (m_queslistArray.getJSONObject(i).getInt("answeredtimes")>0) {
+						 customView = linflater.inflate(R.layout.qaforum_list_item_open_withanswers, null);
+					}
+					 else {
+						 customView = linflater.inflate(R.layout.qaforum_list_item_open, null);	
+					}
+					 
 				 }
 			        TextView tv = (TextView) customView.findViewById(R.id.TextView01);
 			        TextView topictext = (TextView) customView.findViewById(R.id.textView1);
@@ -281,7 +287,13 @@ public class LatestQuestionListActivity extends PluginView implements IQAforumVi
 					 if(typeofquestion==1){
 						 customView = linflater.inflate(R.layout.qaforum_list_item_closed, null); 
 					 } else {
-						 customView = linflater.inflate(R.layout.qaforum_list_item_open, null);
+						 if (m_queslistArray.getJSONObject(i).getInt("answeredtimes")>0) {
+							 customView = linflater.inflate(R.layout.qaforum_list_item_open_withanswers, null);
+						}
+						 else {
+							 customView = linflater.inflate(R.layout.qaforum_list_item_open, null);	
+						}
+						 
 					 }
 				        TextView tv = (TextView) customView.findViewById(R.id.TextView01);
 				        TextView topictext = (TextView) customView.findViewById(R.id.textView1);
@@ -375,7 +387,13 @@ public class LatestQuestionListActivity extends PluginView implements IQAforumVi
 						 if(typeofquestion==1){
 							 customView = linflater.inflate(R.layout.qaforum_list_item_closed, null); 
 						 } else {
-							 customView = linflater.inflate(R.layout.qaforum_list_item_open, null);
+							 if (m_queslistArray.getJSONObject(i).getInt("answeredtimes")>0) {
+								 customView = linflater.inflate(R.layout.qaforum_list_item_open_withanswers, null);
+							}
+							 else {
+								 customView = linflater.inflate(R.layout.qaforum_list_item_open, null);	
+							}
+							 
 						 }
 					        TextView tv = (TextView) customView.findViewById(R.id.TextView01);
 					        TextView topictext = (TextView) customView.findViewById(R.id.textView1);
@@ -454,7 +472,13 @@ public class LatestQuestionListActivity extends PluginView implements IQAforumVi
 			 if(typeofquestion==1){
 				 customView = linflater.inflate(R.layout.qaforum_list_item_closed, null); 
 			 } else {
-				 customView = linflater.inflate(R.layout.qaforum_list_item_open, null);
+				 if (m_queslistArray.getJSONObject(i).getInt("answeredtimes")>0) {
+					 customView = linflater.inflate(R.layout.qaforum_list_item_open_withanswers, null);
+				}
+				 else {
+					 customView = linflater.inflate(R.layout.qaforum_list_item_open, null);	
+				}
+				 
 			 }
 		        TextView tv = (TextView) customView.findViewById(R.id.TextView01);
 		        TextView topictext = (TextView) customView.findViewById(R.id.textView1);

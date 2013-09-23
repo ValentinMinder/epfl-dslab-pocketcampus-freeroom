@@ -21,8 +21,8 @@
     <string name="qaforum_myanswer_title">My answers</string>
     <string name="qaforum_pending_title">Pending messages</string>
     
-    <string name="qaforum_question_closed_title">Question(closed)</string>
-    <string name="qaforum_question_open_title">Question(open)</string>
+    <string name="qaforum_question_closed_title">Question (closed)</string>
+    <string name="qaforum_question_open_title">Question (open)</string>
     
     <string name="qaforum_answer_title">Answer for you</string>
     <string name="qaforum_feedback_title">Feedback for you</string>
@@ -132,7 +132,7 @@
     <string name="qaforum_no_pending">No pending message.</string>
     <string name="qaforum_no_meaning">Your question has no real meaning.</string>
     <string name="qaforum_from">&#160;from&#160;</string>
-    <string name="qaforum_by">&#160;by&#160;</string>
+    <string name="qaforum_by">By&#160;</string>
     
     <string name="qaforum_relation_language">Language: </string>
     <string name="qaforum_relation_answer_me">Times of answering me: </string>
@@ -156,6 +156,14 @@
     <string name="qaforum_help_forum">2.Forum. Here you could find latest questions of others. We need your help.</string>
     <string name="qaforum_help_record">3.Record. Here you could find the whole history of your quetsions and answers.</string>
     <string name="qaforum_help_pending">4.Pending. In case that you are not available to deal with messages forwarded to you, all the pending messages could be found here.</string>
+    
+    <string name="qaforum_intro_ask">Any question? Ask it here.</string>
+    <string name="qaforum_intro_forum">Find questions your colleagues asked. Maybe you can give a favor.</string>
+    <string name="qaforum_intro_record">Check the history of your questions and answers.</string>
+    <string name="qaforum_intro_pending">Pending messages for you.</string>
+    
+    <string name="qaforum_arrow_description">Arrow for the introductions.</string>
+    <string name="qaforum_introduction">Introduction</string>
     
 	<string-array name="qaforum_topics_array">
         <item>Travel</item>
@@ -184,5 +192,6 @@
         <item>30 mins</item>
         <item>1hour</item>
         <item>12 hour</item>
-    </string-array>    
+    </string-array>
+	   
 </resources>

@@ -45,7 +45,9 @@ public class QAforumMainView extends PluginView implements IQAforumView {
 	private TextView textView3;
 	private TextView textView4;
 	private TextView textView5;
+
 	private TextView titleView;
+
 	
 	
 	@Override
@@ -74,14 +76,18 @@ public class QAforumMainView extends PluginView implements IQAforumView {
 		textView3=(TextView)findViewById(R.id.textView3);
 		textView4=(TextView)findViewById(R.id.textView4);
 		textView5=(TextView)findViewById(R.id.textView5);
+		
 		titleView=(TextView)findViewById(R.id.standard_titled_layout_title);
 		
 		textView5.setVisibility(View.GONE);
+		
 		titleView.setVisibility(View.GONE);
 		if (mModel.getSessionid()==null) {
 			loadingSession();
 		}
 	}
+	
+	
 	
 	private void normalState() {
 		button1.setVisibility(View.VISIBLE);
@@ -94,6 +100,7 @@ public class QAforumMainView extends PluginView implements IQAforumView {
 		textView4.setVisibility(View.VISIBLE);
 		textView5.setVisibility(View.GONE);
 		titleView.setVisibility(View.VISIBLE);
+		
 	}
 	
 	private void loadingState() {

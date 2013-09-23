@@ -2,10 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-	<TextView
+
+    <TextView
         android:id="@+id/standard_titled_layout_title"
-        android:text="@string/qaforum_plugin_title"
-        style="@style/PocketCampusTheme.Secondary.Title" />
+        style="@style/PocketCampusTheme.Secondary.Title"
+        android:text="@string/qaforum_plugin_title" />
+
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
@@ -15,6 +17,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginTop="90dp"
         android:background="@drawable/qaforum_ask"
+        android:contentDescription="@string/qaforum_arrow_description"
         android:onClick="ask" />
 
     <Button

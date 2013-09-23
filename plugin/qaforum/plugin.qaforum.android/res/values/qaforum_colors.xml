@@ -10,5 +10,6 @@
    <color name="qaforum_Gray">#918E8E</color>
    <color name="qaforum_Green">#248D09</color>
    <color name="qaforum_brown">#C9C900</color>
+   <color name="qaforum_light_grey">#DFDFDF</color>
    
  </resources>

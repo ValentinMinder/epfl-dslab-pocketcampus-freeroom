@@ -7,10 +7,15 @@ import org.pocketcampus.plugin.qaforum.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.plugin.qaforum.android.QAforumController;
+import org.pocketcampus.plugin.qaforum.android.QAforumModel;
 import org.pocketcampus.plugin.qaforum.android.iface.IQAforumView;
+import org.pocketcampus.plugin.qaforum.shared.s_relation;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.graphics.Paint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -28,6 +33,8 @@ import android.widget.Toast;
 public class MyQuestionActivity extends PluginView implements IQAforumView {
 	private String msg;
 	private JSONObject dataJsonObject;
+    private QAforumController mController;
+    private QAforumModel mModel;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -37,6 +44,9 @@ public class MyQuestionActivity extends PluginView implements IQAforumView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+        mController = (QAforumController) controller;
+		mModel = (QAforumModel) controller.getModel();
+        mModel.currentActivity = this;
 
 		if (getIntent().getExtras() != null) {
 			msg = getIntent().getStringExtra("data");
@@ -58,6 +68,19 @@ public class MyQuestionActivity extends PluginView implements IQAforumView {
 		try {
 			tvQuestion.setText(dataJsonObject.getString("content"));
 			tvAuthor.setText(getResources().getString(R.string.qaforum_by)+dataJsonObject.getString("userid"));
+            	tvAuthor.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+				tvAuthor.setOnClickListener(new View.OnClickListener() {
+			        @Override
+			        public void onClick(View v) {
+			        	//see the profile of the user
+			        	try {
+							mController.relationship(new s_relation(mModel.getSessionid(), dataJsonObject.getString("userid")));
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			        }
+			        });
 			tvDate.setText(dataJsonObject.getString("time"));
 			tvTopic.setText(getResources().getString(R.string.qaforum_detail_topic)+": "+dataJsonObject.getString("topicid"));
 			tvTags.setText(getResources().getString(R.string.qaforum_question_tags)+dataJsonObject.getString("tags"));
@@ -88,6 +111,14 @@ public class MyQuestionActivity extends PluginView implements IQAforumView {
 										"content"));
 				userTextView.setText(getResources().getString(R.string.qaforum_by)
 						+ answerlistArray.getJSONObject(i).getString("name"));
+                userTextView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+                final String username = answerlistArray.getJSONObject(i).getString("name");
+				userTextView.setOnClickListener(new View.OnClickListener() {
+			        @Override
+			        public void onClick(View v) {
+							mController.relationship(new s_relation(mModel.getSessionid(), username));
+			        }
+			        });
 				timeTextView.setText(answerlistArray.getJSONObject(i)
 						.getString("time"));
 				l.addView(customView2);
@@ -178,6 +209,49 @@ public class MyQuestionActivity extends PluginView implements IQAforumView {
 		
 		*/
 	}
+
+
+    	public void showRelation(String resultString) throws JSONException {
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		JSONObject dataJsonObject=new JSONObject(resultString);
+		// set title
+		alertDialogBuilder.setTitle(dataJsonObject.getString("name"));
+		String message = "";
+		String pathString = dataJsonObject.getString("path");
+		String questionString =getResources().getString(R.string.qaforum_relation_question)+dataJsonObject.getString("question");
+		int count = dataJsonObject.length();
+		if (count==3) {
+			message+=(questionString+"\n"+pathString);
+		}
+		else{
+			String lanuage = getResources().getString(R.string.qaforum_relation_language)+dataJsonObject.getString("language");
+			String answerme = getResources().getString(R.string.qaforum_relation_answer_me)+dataJsonObject.getString("answerme");
+			String answerall = getResources().getString(R.string.qaforum_relation_answer_all)+ dataJsonObject.getString("answerall");
+			String reputation = getResources().getString(R.string.qaforum_relation_reputation)+dataJsonObject.getString("reputation");
+			String onlineString;
+			if (dataJsonObject.getInt("online")==1) {
+				onlineString=getResources().getString(R.string.qaforum_relation_status_on);
+			}else {
+				onlineString=getResources().getString(R.string.qaforum_relation_status_off);
+			}
+			String topic = getResources().getString(R.string.qaforum_relation_topics)+dataJsonObject.getString("topic");
+			message +=(reputation+"\n"+questionString+"\n"+answerme+"\n"+answerall+"\n"+lanuage+"\n"+topic+"\n"+onlineString+"\n"+pathString);
+		}
+		// set dialog message
+		alertDialogBuilder
+			.setMessage(message)
+			.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// if this button is clicked, close current activity, so just do noting
+				}
+			  });
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
+			// show it
+			alertDialog.show();
+	}
+
+
 
 	@Override
 	public void onResume() {
