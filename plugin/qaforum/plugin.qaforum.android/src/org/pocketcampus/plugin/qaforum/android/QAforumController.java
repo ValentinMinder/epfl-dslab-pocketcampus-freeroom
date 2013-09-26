@@ -165,8 +165,7 @@ public class QAforumController extends PluginController implements IQAforumContr
 	  private Notification prepareNotification(Context context, String msg, String notificationid) {
 		    long when = System.currentTimeMillis();
 		    
-		    Notification notification = new Notification(R.drawable.qaforum_icon, msg,
-		        when);
+		    Notification notification = new Notification(R.drawable.qaforum_notification, msg, when);
 		    notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
 		    Intent intent = new Intent(context, MessageActivity.class);

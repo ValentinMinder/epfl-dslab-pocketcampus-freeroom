@@ -240,7 +240,7 @@ public class MyQuestionActivity extends PluginView implements IQAforumView {
 		// set dialog message
 		alertDialogBuilder
 			.setMessage(message)
-			.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+			.setPositiveButton("OK",new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
 					// if this button is clicked, close current activity, so just do noting
 				}
