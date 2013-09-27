@@ -22,7 +22,7 @@ public class FetchDynamicConfigRequest extends Request<DashboardController, Defa
 	@Override
 	protected Boolean runInBackground(DefaultHttpClient client, Context param) throws Exception {
 		String appVersion = DashboardController.getAppVersion(param);
-		HttpGet get = new HttpGet("http://pocketcampus.epfl.ch/backend/get_config.php?" +
+		HttpGet get = new HttpGet("https://pocketcampus.epfl.ch/backend/get_config.php?" +
 				"app_version=" + appVersion + "&platform=android");
 		HttpResponse resp = client.execute(get);
 		InputStream in = resp.getEntity().getContent();
