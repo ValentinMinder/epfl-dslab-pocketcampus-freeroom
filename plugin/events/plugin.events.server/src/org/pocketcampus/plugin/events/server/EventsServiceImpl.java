@@ -280,7 +280,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 				emailBuilder.append(categBuilder.toString());
 			}
 			emailBuilder.append("</table>\n");
-			boolean res = GmailSender.sendEmail(req.getEmailAddress(), "Your Starred Items in " + mainEvent.getEventTitle(), emailBuilder.toString());
+			boolean res = GmailSender.openSession();
+			res = res && GmailSender.sendEmail(req.getEmailAddress(), "Your Starred Items in " + mainEvent.getEventTitle(), emailBuilder.toString());
+			res = res && GmailSender.closeSession();
 			System.out.println("send email with " + childrenItems.size() + " items, success=" + res);
 			return new SendEmailReply(res ? 200 : 500);
 		} catch (SQLException e) {
@@ -290,49 +292,56 @@ public class EventsServiceImpl implements EventsService.Iface {
 	}
 	
 	@Override
-	public AdminSendRegEmailReply adminSendRegistrationEmail(AdminSendRegEmailRequest iRequest) throws TException {
+	public AdminSendRegEmailReply adminSendRegistrationEmail(final AdminSendRegEmailRequest iRequest) throws TException {
 		System.out.println("adminSendRegistrationEmail");
-		try {
-			Connection conn = connMgr.getConnection();
-			PreparedStatement stm;
-			ResultSet rs;
-			EmailTemplateInfo template = null;
-			stm = conn.prepareStatement("SELECT participantsPool,emailTitle,emailBody,sendOnlyTo FROM eventemails WHERE templateId=?;");
-			stm.setString(1, iRequest.getTemplateId());
-			rs = stm.executeQuery();
-			if(rs.next())
-				template = new EmailTemplateInfo(rs.getLong(1), rs.getString(2), rs.getString(3), (rs.getString(4) == null ? null : arrayToList(rs.getString(4).split("[,]"))));
-			rs.close();
-			stm.close();
-			if(template == null)
-				return new AdminSendRegEmailReply(400);
-			List<SendEmailInfo> emails = new LinkedList<EventsServiceImpl.SendEmailInfo>();
-			stm = conn.prepareStatement("SELECT emailAddress,userId,addressingName FROM eventusers WHERE mappedEvent IN (SELECT eventId FROM eventitems WHERE parentPool=?);");
-			stm.setLong(1, template.getParticipantsPool());
-			rs = stm.executeQuery();
-			while(rs.next()) {
-				if(iRequest.isSetSendOnlyTo() && !iRequest.getSendOnlyTo().contains(rs.getString(1)))
-					continue;
-				if(template.getSendOnlyTo() != null && !template.getSendOnlyTo().contains(rs.getString(1)))
-					continue;
-				emails.add(new SendEmailInfo(rs.getString(1), rs.getString(2), rs.getString(3)));
+		Runnable sender = new Runnable() {
+			public void run() {
+				try {
+					Connection conn = connMgr.getConnection();
+					PreparedStatement stm;
+					ResultSet rs;
+					EmailTemplateInfo template = null;
+					stm = conn.prepareStatement("SELECT participantsPool,emailTitle,emailBody,sendOnlyTo FROM eventemails WHERE templateId=?;");
+					stm.setString(1, iRequest.getTemplateId());
+					rs = stm.executeQuery();
+					if(rs.next())
+						template = new EmailTemplateInfo(rs.getLong(1), rs.getString(2), rs.getString(3), (rs.getString(4) == null ? null : arrayToList(rs.getString(4).split("[,]"))));
+					rs.close();
+					stm.close();
+					if(template == null) {
+						System.out.println("ERROR invalid template id");
+						return;
+					}
+					List<SendEmailInfo> emails = new LinkedList<EventsServiceImpl.SendEmailInfo>();
+					stm = conn.prepareStatement("SELECT emailAddress,userId,addressingName FROM eventusers WHERE mappedEvent IN (SELECT eventId FROM eventitems WHERE parentPool=?);");
+					stm.setLong(1, template.getParticipantsPool());
+					rs = stm.executeQuery();
+					while(rs.next()) {
+						if(iRequest.isSetSendOnlyTo() && !iRequest.getSendOnlyTo().contains(rs.getString(1)))
+							continue;
+						if(template.getSendOnlyTo() != null && !template.getSendOnlyTo().contains(rs.getString(1)))
+							continue;
+						emails.add(new SendEmailInfo(rs.getString(1), rs.getString(2), rs.getString(3)));
+					}
+					rs.close();
+					stm.close();
+					System.out.println("Should send " + emails.size() + " registration emails.");
+					int count = 0;
+					GmailSender.openSession();
+					for(SendEmailInfo sei : emails) {
+						String emailBody = template.getEmailBody().replace("PARTICIPANT_NAME", sei.getAddressingName()).replace("PARTICIPANT_TOKEN", sei.getUserToken());
+						GmailSender.sendEmailP(sei.getEmailAddress(), template.getEmailTitle(), emailBody);
+						System.out.println(++count + ". sent email to " + sei.getEmailAddress());
+					}
+					GmailSender.closeSession();
+					System.out.println("Finished sending " + emails.size() + " registration emails");
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-			rs.close();
-			stm.close();
-			System.out.println("Should send " + emails.size() + " emails.");
-			boolean succ = true;
-			for(SendEmailInfo sei : emails) {
-				String emailBody = template.getEmailBody().replace("PARTICIPANT_NAME", sei.getAddressingName()).replace("PARTICIPANT_TOKEN", sei.getUserToken());
-				boolean res = GmailSender.sendEmail(sei.getEmailAddress(), template.getEmailTitle(), emailBody);
-				succ = succ && res;
-				System.out.println("send email to " + sei.getEmailAddress() + ", success=" + res);
-			}
-			System.out.println("Finished sending reg emails, success=" + succ);
-			return new AdminSendRegEmailReply(succ ? 200 : 500);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return new AdminSendRegEmailReply(500);
-		}
+		};
+		new Thread(sender).start();
+		return new AdminSendRegEmailReply(200);
 	}
 	
 	/*private void addFeaturedEvents(Map<Long, EventItem> eventItems) throws ParseException {
@@ -1148,7 +1157,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 	
 	private static class GmailSender {
 
-		public static boolean sendEmail(String to, String subject, String htmlBody) {
+		static Session session;
+		
+		public static boolean openSession() {
 			final String username = PC_SRV_CONFIG.getString("BOT_EMAIL_ACCOUNT_USERNAME");
 			final String password = PC_SRV_CONFIG.getString("BOT_EMAIL_ACCOUNT_PASSWORD");
 			if(username == null || password == null)
@@ -1160,17 +1171,50 @@ public class EventsServiceImpl implements EventsService.Iface {
 			props.put("mail.smtp.host", "smtp.gmail.com");
 			props.put("mail.smtp.port", "587");
 
-			Session session = Session.getInstance(props,
+			session = Session.getInstance(props,
 					new javax.mail.Authenticator() {
 						protected PasswordAuthentication getPasswordAuthentication() {
 							return new PasswordAuthentication(username,
 									password);
 						}
 					});
-
+			
 			try {
-
 				session.getTransport("smtp").connect();
+				return true;
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		
+		public static boolean closeSession() {
+			try {
+				session.getTransport("smtp").close();
+				session = null;
+				return true;
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+
+		public static void sendEmailP(String to, String subject, String htmlBody) {
+			long delay = 30000;
+			while(!sendEmail(to, subject, htmlBody)) {
+				delay <<= 1;
+				System.out.println("sending failed, waiting " + delay / 1000 + " seconds");
+				try {
+					Thread.sleep(delay);
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+
+		public static boolean sendEmail(String to, String subject, String htmlBody) {
+			if(session == null)
+				return false;
+			try {
 				Message message = new MimeMessage(session);
 				message.setFrom(new InternetAddress("noreply@pocketcampus.org", "PocketCampus"));
 				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
@@ -1194,7 +1238,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 				message.setContent(multipart);
 				
 				Transport.send(message);
-				session.getTransport("smtp").close();
+				
 				return true;
 			} catch (MessagingException e) {
 				e.printStackTrace();
