@@ -1,1 +1,1 @@
-Put in this folder all graphical elements (PSDs, PDFs, PNGs, ..) that are *common* to all platforms
+Put in this folder all graphical elements (PSDs, PDFs, PNGs, ..) that are *common* to all platforms, or marketing material
