@@ -1,0 +1,39 @@
+/* 
+  Localizable.strings
+  PocketCampus
+
+  Created by Loïc Gardiol on 01.03.12.
+  Copyright (c) 2012 EPFL. All rights reserved.
+*/
+
+"HomeViewControllerTitle" = "PocketCampus EPFL";
+"ConnectionToServerTimedOut" = "Cannot connect to server.\nCheck your internet connection.";
+"ConnectionToServerTimedOutAlert" = "Cannot connect to server.\nCheck your internet connection.";
+"ConnectionToServerTimedOutShort" = "Cannot connect to server";
+"ServerError" = "Sorry, an error occured. Try to reload.";
+"ServerErrorShort" = "Sorry, an error occured"; 
+"Cancel" = "Cancel";
+"Error" = "Error";
+"Loading..." = "Loading...";
+"Help" = "Help";
+"Settings" = "Settings";
+"Done" = "Done";
+"Accounts" = "Accounts";
+"About" = "About";
+"Delete" = "Delete";
+"Settings" = "Settings";
+"LastUpdate" = "Last update";
+"LastUpdateNever" = "Last update: never";
+"Clear" = "Clear";
+"MainMenu" = "Main menu";
+"EditMainMenu" = "Edit main menu";
+"RestoreDefaultMainMenu" = "Default main menu";
+"Close" = "Close";
+"RatePCAppStore" = "Rate on App Store";
+"RatePCAppStoreSubtitle" = "Many thanks in advance :)";
+"LikePConFB" = "Facebook page";
+"LikePConFBSubtitle" = "Join the community !";
+"Sorry" = "Sorry";
+"ActionNotSupportedYet" = "This action is not supported yet";
+"Send" = "Send";
+"By" = "By";

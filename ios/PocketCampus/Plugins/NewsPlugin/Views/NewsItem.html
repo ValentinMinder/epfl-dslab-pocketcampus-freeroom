@@ -1,0 +1,67 @@
+<html>
+	<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'>
+	<style type='text/css'>
+		html {
+            -webkit-text-size-adjust: none; /* prevent text from being resized in landscape */
+        }
+        
+        body {
+			font-family: Helvetica;
+			font-size: 11pt;
+			word-wrap:break-word;
+			text-align:left;
+			margin-left: 8px;
+            margin-right: 8px;
+		}
+		
+		a { 
+			color:#B80000;
+			text-decoration:none;
+		}
+        
+        .feed_name {
+            font-style: italic;
+            font-size: 11pt;
+            color: #616161;
+        }
+        
+        hr {
+            border: 0px;
+            width: 100%;
+            color: #808080;
+            background-color: #808080;
+            height: 2px;
+            margin-top: 3px;
+        }
+        
+        .pub_date {
+            font-size: 11pt;
+            color: #7E0000;
+            margin-top: -4px;
+        }
+        
+		h1 {
+			font-size: 13pt;
+			margin-top: 5px;
+			margin-bottom: 10px;
+		}
+		
+		img {
+			float: left;
+			margin-right: 10px;
+			margin-bottom: 10px;
+			box-shadow: 0px 0px 2px #888888;
+		}
+	</style>
+	</head>
+<body>
+    <div class="feed_name">$NEWS_ITEM_FEED_NAME$</div>
+    <hr>
+    <div class="pub_date">$NEW_ITEM_PUB_DATE$</div>
+	<h1>$NEWS_ITEM_TITLE$</h1>
+	<img width="300" src="$NEW_ITEM_IMAGE_SRC$" style="display:$NEWS_ITEM_IMAGE_DISPLAY_CSS$;">
+	$NEWS_ITEM_CONTENT$
+</body>
+</html>

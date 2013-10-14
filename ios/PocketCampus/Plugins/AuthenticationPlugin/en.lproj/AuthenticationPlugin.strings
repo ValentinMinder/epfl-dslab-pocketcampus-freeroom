@@ -1,0 +1,17 @@
+"PluginName" = "Authentication";
+"GasparLogin" = "Gaspar login";
+"Error" = "Error";
+"BadCredentials" = " Wrong username or password";
+"ErrorOccuredTryAgain" = "Sorry, an error occured";
+"SessionExpired" = "Your session has expired";
+"Username" = "Username";
+"Password" = "Password";
+"SavePassword" = "Save password";
+"GasparAccount" = "Gaspar account";
+"Login" = "Login";
+"Logout" = "Logout";
+"LoggedInExplanationLong" = "Your password is stored securely\nin the iOS keychain.\n\n";
+"GasparAccountRequiredFor" = "Your Gaspar account is required\nfor some services like Moodle and Camipro.\n\n Your password will be stored\nsecurely in the iOS keychain.";
+"LoggedInAs" = "Logged in as";
+"UsernameCannotBeEmpty" = "Username cannot be empty.";
+"PasswordCannotBeEmpty" = "Password cannot be empty.";
