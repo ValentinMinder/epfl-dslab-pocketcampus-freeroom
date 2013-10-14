@@ -14,6 +14,10 @@ php tool/tool.merger/merger.php
 ant -f android/PocketCampus/build.xml clean
 ant -f android/PocketCampus/build.xml debug
 
+# TO RELEASE
+cp android/PocketCampus/res/raw/pocketcampus-prod.config android/PocketCampus/res/raw/pocketcampus.config
+ant -f android/PocketCampus/build.xml release
+
 # BUILD THE SERVER
 php tool/tool.merger/merger_server.php 
 ant -f server/PocketCampusServer/build.xml clean

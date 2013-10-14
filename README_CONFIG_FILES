@@ -1,0 +1,19 @@
+# ============================================================
+#      @Author:    Amer C (amer.chamseddine@epfl.ch)
+# ============================================================
+#
+# The Android config file is here 
+# platform/sdk/platform.sdk.android/res/raw/pocketcampus.config
+# take a copy of it, modify it according to your needs, 
+# and place it on the phone at /sdcard/pocketcampus.config
+#
+#
+#
+#
+# The server config file is here
+# platform/sdk/platform.sdk.server/src/org/pocketcampus/platform/launcher/server/pocketcampus-server.config
+# take a copy  of it, modify it according to your needs,
+# and place it on your computer at /etc/pocketcampus-server.config
+#
+#
+
