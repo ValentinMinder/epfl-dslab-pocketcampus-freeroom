@@ -3,13 +3,11 @@ namespace csharp org.pocketcampus.plugin.map.shared
 
 include "../../../../platform/sdk/platform.sdk.shared/def/common.thrift"
 
-typedef i32 int
-
 struct MapLayer {
 	1: required string name;
 	2: string drawableUrl;
 	3: required common.Id layerId;
-	5: required int cacheInSeconds;
+	5: required i32 cacheInSeconds;
 	6: required bool displayable;
 }
 
@@ -20,6 +18,8 @@ struct MapItem {
 	4: required double longitude;
 	5: required common.Id layerId;
 	6: required common.Id itemId;
+	7: optional i32 floor;
+	8: optional string category;
 }
 
 service MapService {

@@ -109,10 +109,16 @@ public class Search {
 							description = properties.room;
 						}
 						Position p = CoordinateConverter.convertEPSG4326ToLatLong(geometry.coordinates[0], geometry.coordinates[1], 0);
-//						MapElementBean meb = new MapElementBean(properties.text, description, p.getLatitude(), p.getLongitude(), 0, -1, -1);
-						MapItem meb = new MapItem(properties.text, description, p.getLatitude(), p.getLongitude(), -1, -1);
+						MapItem mapItem = new MapItem(properties.text, description, p.getLatitude(), p.getLongitude(), -1, -1);
 						
-						list.add(meb);
+						try {
+							int floor = Integer.parseInt(properties.floor);
+							mapItem.setFloor(floor);	
+						} catch (Exception e){};
+						
+						mapItem.setCategory(properties.category);
+						
+						list.add(mapItem);
 					}
 				}
 			}

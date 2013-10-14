@@ -30,6 +30,8 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
   private static final org.apache.thrift.protocol.TField LONGITUDE_FIELD_DESC = new org.apache.thrift.protocol.TField("longitude", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
   private static final org.apache.thrift.protocol.TField LAYER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("layerId", org.apache.thrift.protocol.TType.I64, (short)5);
   private static final org.apache.thrift.protocol.TField ITEM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("itemId", org.apache.thrift.protocol.TType.I64, (short)6);
+  private static final org.apache.thrift.protocol.TField FLOOR_FIELD_DESC = new org.apache.thrift.protocol.TField("floor", org.apache.thrift.protocol.TType.I32, (short)7);
+  private static final org.apache.thrift.protocol.TField CATEGORY_FIELD_DESC = new org.apache.thrift.protocol.TField("category", org.apache.thrift.protocol.TType.STRING, (short)8);
 
   public String title; // required
   public String description; // required
@@ -37,6 +39,8 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
   public double longitude; // required
   public long layerId; // required
   public long itemId; // required
+  public int floor; // required
+  public String category; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -45,7 +49,9 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
     LATITUDE((short)3, "latitude"),
     LONGITUDE((short)4, "longitude"),
     LAYER_ID((short)5, "layerId"),
-    ITEM_ID((short)6, "itemId");
+    ITEM_ID((short)6, "itemId"),
+    FLOOR((short)7, "floor"),
+    CATEGORY((short)8, "category");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -72,6 +78,10 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
           return LAYER_ID;
         case 6: // ITEM_ID
           return ITEM_ID;
+        case 7: // FLOOR
+          return FLOOR;
+        case 8: // CATEGORY
+          return CATEGORY;
         default:
           return null;
       }
@@ -116,7 +126,8 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
   private static final int __LONGITUDE_ISSET_ID = 1;
   private static final int __LAYERID_ISSET_ID = 2;
   private static final int __ITEMID_ISSET_ID = 3;
-  private BitSet __isset_bit_vector = new BitSet(4);
+  private static final int __FLOOR_ISSET_ID = 4;
+  private BitSet __isset_bit_vector = new BitSet(5);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -133,6 +144,10 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
     tmpMap.put(_Fields.ITEM_ID, new org.apache.thrift.meta_data.FieldMetaData("itemId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
+    tmpMap.put(_Fields.FLOOR, new org.apache.thrift.meta_data.FieldMetaData("floor", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.CATEGORY, new org.apache.thrift.meta_data.FieldMetaData("category", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MapItem.class, metaDataMap);
   }
@@ -177,6 +192,10 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
     this.longitude = other.longitude;
     this.layerId = other.layerId;
     this.itemId = other.itemId;
+    this.floor = other.floor;
+    if (other.isSetCategory()) {
+      this.category = other.category;
+    }
   }
 
   public MapItem deepCopy() {
@@ -195,6 +214,9 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
     this.layerId = 0;
     setItemIdIsSet(false);
     this.itemId = 0;
+    setFloorIsSet(false);
+    this.floor = 0;
+    this.category = null;
   }
 
   public String getTitle() {
@@ -337,6 +359,53 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
     __isset_bit_vector.set(__ITEMID_ISSET_ID, value);
   }
 
+  public int getFloor() {
+    return this.floor;
+  }
+
+  public MapItem setFloor(int floor) {
+    this.floor = floor;
+    setFloorIsSet(true);
+    return this;
+  }
+
+  public void unsetFloor() {
+    __isset_bit_vector.clear(__FLOOR_ISSET_ID);
+  }
+
+  /** Returns true if field floor is set (has been assigned a value) and false otherwise */
+  public boolean isSetFloor() {
+    return __isset_bit_vector.get(__FLOOR_ISSET_ID);
+  }
+
+  public void setFloorIsSet(boolean value) {
+    __isset_bit_vector.set(__FLOOR_ISSET_ID, value);
+  }
+
+  public String getCategory() {
+    return this.category;
+  }
+
+  public MapItem setCategory(String category) {
+    this.category = category;
+    return this;
+  }
+
+  public void unsetCategory() {
+    this.category = null;
+  }
+
+  /** Returns true if field category is set (has been assigned a value) and false otherwise */
+  public boolean isSetCategory() {
+    return this.category != null;
+  }
+
+  public void setCategoryIsSet(boolean value) {
+    if (!value) {
+      this.category = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case TITLE:
@@ -387,6 +456,22 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
       }
       break;
 
+    case FLOOR:
+      if (value == null) {
+        unsetFloor();
+      } else {
+        setFloor((Integer)value);
+      }
+      break;
+
+    case CATEGORY:
+      if (value == null) {
+        unsetCategory();
+      } else {
+        setCategory((String)value);
+      }
+      break;
+
     }
   }
 
@@ -409,6 +494,12 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
 
     case ITEM_ID:
       return Long.valueOf(getItemId());
+
+    case FLOOR:
+      return Integer.valueOf(getFloor());
+
+    case CATEGORY:
+      return getCategory();
 
     }
     throw new IllegalStateException();
@@ -433,6 +524,10 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
       return isSetLayerId();
     case ITEM_ID:
       return isSetItemId();
+    case FLOOR:
+      return isSetFloor();
+    case CATEGORY:
+      return isSetCategory();
     }
     throw new IllegalStateException();
   }
@@ -504,6 +599,24 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
         return false;
     }
 
+    boolean this_present_floor = true && this.isSetFloor();
+    boolean that_present_floor = true && that.isSetFloor();
+    if (this_present_floor || that_present_floor) {
+      if (!(this_present_floor && that_present_floor))
+        return false;
+      if (this.floor != that.floor)
+        return false;
+    }
+
+    boolean this_present_category = true && this.isSetCategory();
+    boolean that_present_category = true && that.isSetCategory();
+    if (this_present_category || that_present_category) {
+      if (!(this_present_category && that_present_category))
+        return false;
+      if (!this.category.equals(that.category))
+        return false;
+    }
+
     return true;
   }
 
@@ -540,6 +653,16 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
     builder.append(present_itemId);
     if (present_itemId)
       builder.append(itemId);
+
+    boolean present_floor = true && (isSetFloor());
+    builder.append(present_floor);
+    if (present_floor)
+      builder.append(floor);
+
+    boolean present_category = true && (isSetCategory());
+    builder.append(present_category);
+    if (present_category)
+      builder.append(category);
 
     return builder.toHashCode();
   }
@@ -612,6 +735,26 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetFloor()).compareTo(typedOther.isSetFloor());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetFloor()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.floor, typedOther.floor);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetCategory()).compareTo(typedOther.isSetCategory());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetCategory()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.category, typedOther.category);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -675,6 +818,21 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 7: // FLOOR
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.floor = iprot.readI32();
+            setFloorIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 8: // CATEGORY
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.category = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -724,6 +882,18 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
     oprot.writeFieldBegin(ITEM_ID_FIELD_DESC);
     oprot.writeI64(this.itemId);
     oprot.writeFieldEnd();
+    if (isSetFloor()) {
+      oprot.writeFieldBegin(FLOOR_FIELD_DESC);
+      oprot.writeI32(this.floor);
+      oprot.writeFieldEnd();
+    }
+    if (this.category != null) {
+      if (isSetCategory()) {
+        oprot.writeFieldBegin(CATEGORY_FIELD_DESC);
+        oprot.writeString(this.category);
+        oprot.writeFieldEnd();
+      }
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -764,6 +934,22 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
     sb.append("itemId:");
     sb.append(this.itemId);
     first = false;
+    if (isSetFloor()) {
+      if (!first) sb.append(", ");
+      sb.append("floor:");
+      sb.append(this.floor);
+      first = false;
+    }
+    if (isSetCategory()) {
+      if (!first) sb.append(", ");
+      sb.append("category:");
+      if (this.category == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.category);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
