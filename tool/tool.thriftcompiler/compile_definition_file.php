@@ -16,7 +16,7 @@ chdir(dirname(__FILE__));
 
 // ARGUMENTS: SET THE PLUGIN NAME HERE (set to "sdk" to compile common thrift definition files)
 
-$plugin_name = "Events";
+$plugin_name = "Map";
 
 // LOGIC: DONT TOUCH THE CODE BELOW
 
@@ -26,12 +26,12 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 } elseif (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
 	$thrift_bin = "binaries/thrift-mac-0.7.0";
 }
-$plugin_ios_dir = "../../ios/iphone/PocketCampus/Plugins/{$plugin_name}Plugin/Model/ThriftTypes+Services";
+$plugin_ios_dir = "../../ios/PocketCampus/Plugins/{$plugin_name}Plugin/Model/ThriftTypes+Services";
 $plugin_name = strtolower($plugin_name);
 $string_plugin = "plugin";
 if($plugin_name == "sdk") {
 	$string_plugin = "platform";
-	$plugin_ios_dir = "../../ios/iphone/PocketCampus/PocketCampus/Model/SharedThriftTypes+Services";
+	$plugin_ios_dir = "../../ios/PocketCampus/PocketCampus/Model/SharedThriftTypes+Services";
 }
 $plugin_shared_dir = "../../$string_plugin/$plugin_name/$string_plugin.$plugin_name.shared";
 
