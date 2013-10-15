@@ -10,8 +10,6 @@
 
 #import "MainController.h"
 
-#import "GANTracker.h"
-
 /* __unsued put to remove warnings, Xcode is just stupid and does not see that they are used */
 
 static NSString* AppDidSucceedToRegisterToNotifications __unused = @"AppDidSucceedToRegisterToNotifications";
@@ -20,7 +18,7 @@ static NSString* AppDidFailToRegisterToNotifications __unused = @"AppDidFailToRe
 
 static NSString* RemoteNotifForPluginName __unused = @"AppDidReceiveRemoteNotificationForPlugin";
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, GANTrackerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

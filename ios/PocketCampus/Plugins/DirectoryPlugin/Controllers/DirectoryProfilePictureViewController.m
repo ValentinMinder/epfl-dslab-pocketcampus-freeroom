@@ -16,6 +16,8 @@
 
 @property (nonatomic, strong) UIImage* image;
 
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* imageViewTopLayoutConstraint;
+
 @end
 
 @implementation DirectoryProfilePictureViewController
@@ -33,27 +35,34 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.view.backgroundColor = [PCValues backgroundColor1];
-    
-    
-    self.imageView.layer.masksToBounds = NO;
-    //self.imageView.layer.cornerRadius = 3; // if you like rounded corners
-    self.imageView.layer.shadowOffset = CGSizeMake(0, 0);
-    self.imageView.layer.shadowRadius = 3;
-    self.imageView.layer.shadowOpacity = 0.45;
-    self.imageView.hidden = YES;
-    
+    if (!self.navigationController) {
+        self.imageViewTopLayoutConstraint.constant = 0.0;
+    }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
+    self.preferredContentSize = CGSizeMake(self.image.size.width < 500 ? self.image.size.width : 500.0, self.image.size.height < 500 ? self.image.size.height : 500.0);
     self.imageView.image = self.image;
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.imageView.center = self.view.center;
-    self.contentSizeForViewInPopover = self.view.frame.size;
+    self.preferredContentSize = self.imageView.frame.size;
     
     self.imageView.userInteractionEnabled = YES;
     UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(saveProfilePictureToCameraRoll)];
     gesture.numberOfTouchesRequired = 2;
     gesture.numberOfTapsRequired = 3;
     [self.imageView addGestureRecognizer:gesture];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/directory/personPicture"];
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (void)dismiss {
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)saveProfilePictureToCameraRoll {
@@ -68,36 +77,6 @@
         [[[UIAlertView alloc] initWithTitle:@"Image saved" message:@"Image correctly saved\nto camera roll" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }
     
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    if (self.imageView.hidden) {
-        [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(showImage) userInfo:nil repeats:NO];
-    }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
-{
-    return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation // iOS 5 and earlier
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void)showImage {
-    self.imageView.alpha = 0.0;
-    self.imageView.hidden = NO;
-    [UIView animateWithDuration:0.2 animations:^{
-        self.imageView.alpha = 1.0;
-    }];
 }
 
 @end

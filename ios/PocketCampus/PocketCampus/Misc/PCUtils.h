@@ -15,8 +15,10 @@
 + (BOOL)isIdiomPad;
 + (BOOL)isOSVersionSmallerThan:(float)version;
 + (float)OSVersion;
++ (NSString*)appVersion;
 + (NSString*)userLanguageCode;
 + (NSString*)lastUpdateNowString;
++ (UIEdgeInsets)edgeInsetsForViewController:(UIViewController*)viewController;
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration;
 + (void)printFrame:(CGRect)frame;
 + (NSString*)stringFromFileSize:(unsigned long long)size;
@@ -36,5 +38,8 @@
 + (BOOL)hasDeviceInternetConnection;
 
 + (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class;
+
+
+
 
 @end

@@ -42,16 +42,20 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         [self.networkQueue setSuspended:NO];
         self.requestForIndexPath = [NSMutableDictionary dictionary];
         self.imageForUrlString = [NSMutableDictionary dictionary];
+        
         self.initDone = YES;
     }
     
     //Only init if user not already set them
-    if (self.thumbnailsCacheSeconds == 0.0) {
-        self.thumbnailsCacheSeconds = 86400; //1day
+    if (self.imagesCacheSeconds == 0.0) {
+        self.imagesCacheSeconds = 86400; //1day
+    }
+    if (!self.cellsImageViewSelectorString) {
+        self.cellsImageViewSelectorString = @"imageView";
     }
 }
 
-- (void)setThumbnailURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
+- (void)setImageURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
     
     [self initDefaultValues];
     
@@ -59,17 +63,17 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     
     if (!url) {
-        cell.imageView.image = self.temporaryThumnail; //Generic image sign
+        [self imageViewForCell:cell].image = self.temporaryImage; //Generic image sign
         return;
     }
     
     if (self.imageForUrlString[url.absoluteString]) {
-        cell.imageView.image = self.imageForUrlString[url.absoluteString];
+        [self imageViewForCell:cell].image = self.imageForUrlString[url.absoluteString];
         [cell layoutSubviews];
         return;
     }
     
-    cell.imageView.image = self.temporaryThumnail; //Temporary thumbnail until image is loaded
+    [self imageViewForCell:cell].image = self.temporaryImage; //Temporary thumbnail until image is loaded
     ASIHTTPRequest* prevRequest = self.requestForIndexPath[indexPath];
     
     if (prevRequest) {
@@ -81,7 +85,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     thumbnailRequest.downloadCache = [ASIDownloadCache sharedCache];
     thumbnailRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
     thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
-    thumbnailRequest.secondsToCache = self.thumbnailsCacheSeconds;
+    thumbnailRequest.secondsToCache = self.imagesCacheSeconds;
     thumbnailRequest.delegate = self;
     thumbnailRequest.didFinishSelector = @selector(thumbnailRequestFinished:);
     thumbnailRequest.didFailSelector = @selector(thumbnailRequestFailed:);
@@ -93,6 +97,11 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     self.requestForIndexPath[indexPath] = thumbnailRequest;
     [self.networkQueue addOperation:thumbnailRequest];
 
+}
+
+- (UIImage*)imageAtIndexPath:(NSIndexPath*)indexPath {
+#warning TODO
+    return nil;
 }
 
 - (void)reloadFailedThumbnailsCells {
@@ -132,8 +141,12 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         
         if (image) {
             
+            if (self.thumbnailProcessingBlock) {
+                image = self.thumbnailProcessingBlock(indexPath, cell, image);
+            }
+            
             self.imageForUrlString[request.url.absoluteString] = image;
-            cell.imageView.image = image;
+            [self imageViewForCell:cell].image = image;
             
             [cell layoutSubviews];
         }
@@ -156,6 +169,13 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadFailedThumbnailsCells) name:kReachabilityChangedNotification object:self.reachability];
         [self.reachability startNotifier];
     }
+}
+
+- (UIImageView*)imageViewForCell:(UITableViewCell*)cell {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    return (UIImageView*)[cell performSelector:NSSelectorFromString(self.cellsImageViewSelectorString)];
+#pragma clang diagnostic pop
 }
 
 - (void)dealloc

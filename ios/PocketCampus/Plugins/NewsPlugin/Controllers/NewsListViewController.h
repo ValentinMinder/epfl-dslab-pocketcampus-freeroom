@@ -6,16 +6,6 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-#import "NewsService.h"
-
-#import "ASIHTTPRequest.h"
-
-#import "ASINetworkQueue.h"
-
-#import "Reachability.h"
-
-@interface NewsListViewController : UITableViewController<NewsServiceDelegate, ASIHTTPRequestDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface NewsListViewController : UITableViewController
 
 @end

@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
-
 #import "DestinationConnectionsListViewController.h"
 
 #import "PCValues.h"
@@ -38,7 +36,7 @@ static NSString* kConnectionCellIdentifier = @"ConnectionCell";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/connections" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/transport/connections"];
     tableView.backgroundColor = [UIColor clearColor];
     UIView* backgroundView = [[UIView alloc] initWithFrame:tableView.frame];
     backgroundView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];

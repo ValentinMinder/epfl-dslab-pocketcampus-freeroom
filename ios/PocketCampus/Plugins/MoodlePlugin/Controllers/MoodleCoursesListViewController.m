@@ -8,13 +8,9 @@
 
 #import "MoodleCoursesListViewController.h"
 
-#import "PCRefreshControl.h"
-
 #import "MoodleController.h"
 
 #import "PCCenterMessageCell.h"
-
-#import "GANTracker.h"
 
 #import "MoodleCourseSectionsViewController.h"
 
@@ -26,7 +22,7 @@
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) NSArray* courses;
-@property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
+@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 
 @end
 
@@ -43,20 +39,20 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
         self.title = NSLocalizedStringFromTable(@"MyCourses", @"MoodlePlugin", nil);
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.courses = [self.moodleService getFromCacheCourseListReply].iCourses;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"moodle" refreshedDataIdentifier:@"moodleCoursesList"];
-        [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+        self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:@"coursesList"]];
+        [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/moodle"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.courses || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
+    if (!self.courses || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
 }
@@ -82,7 +78,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 
 - (void)refresh {
     [self.moodleService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingCourseList", @"MoodlePlugin", nil)];
+    [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingCourseList", @"MoodlePlugin", nil)];
     [self startGetCoursesListRequest];
 }
 
@@ -95,7 +91,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
     } else {
         NSLog(@"-> No saved session, loggin in...");
         [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
-            [self.pcRefreshControl endRefreshing];
+            [self.lgRefreshControl endRefreshing];
         } failureBlock:^{
             [self error];
         }];
@@ -117,8 +113,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
             self.courses = coursesListReply.iCourses;
             [self.moodleService saveToCacheCourseListReply:coursesListReply];
             [self.tableView reloadData];
-            [self.pcRefreshControl endRefreshing];
-            [self.pcRefreshControl markRefreshSuccessful];
+            [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             break;
         case 407:
             [self.moodleService deleteSession];
@@ -129,7 +124,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
             break;
         case 404:
         {
-            [self.pcRefreshControl endRefreshing];
+            [self.lgRefreshControl endRefreshing];
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
         }
@@ -144,17 +139,13 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 }
 
 - (void)error {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
     [PCUtils showServerErrorAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
     [PCUtils showConnectionToServerTimedOutAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
 #pragma mark - UITableViewDelegate

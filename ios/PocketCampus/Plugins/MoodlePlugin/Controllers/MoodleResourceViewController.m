@@ -8,7 +8,7 @@
 
 #import "MoodleResourceViewController.h"
 
-#import "GANTracker.h"
+
 
 #import "PCUtils.h"
 
@@ -53,7 +53,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/moodle/course/document"];
     
     self.webView.hidden = YES;
     
@@ -286,7 +286,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
             [errorAlert show];
             return;
         }
-        [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document/delete" withError:NULL];
+        [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/moodle/course/document/delete"];
         if (![PCUtils isIdiomPad]) { /*iPhone*/
             [self.navigationController popViewControllerAnimated:YES];
         }

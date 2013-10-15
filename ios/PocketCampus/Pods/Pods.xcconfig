@@ -1,0 +1,7 @@
+EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*][arch=*] = ZBarReaderViewImpl_Simulator.m
+EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*][arch=*] = ZBarReaderViewImpl_Capture.m ZBarCaptureReader.m
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 NDEBUG=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/ASIHTTPRequest" "${PODS_ROOT}/Headers/GoogleAnalytics-iOS-SDK" "${PODS_ROOT}/Headers/NSTimer-Blocks" "${PODS_ROOT}/Headers/Reachability" "${PODS_ROOT}/Headers/SBJson" "${PODS_ROOT}/Headers/SSKeychain" "${PODS_ROOT}/Headers/TUSafariActivity" "${PODS_ROOT}/Headers/ZBarSDK" "$(SDKROOT)/usr/include/libxml2" $(SDKROOT)/usr/include/libz
+LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/GoogleAnalytics-iOS-SDK"
+OTHER_LDFLAGS = -ObjC -lGoogleAnalyticsServices -liconv -lxml2.2 -lz -lz.1 -framework AVFoundation -framework CFNetwork -framework CoreData -framework CoreGraphics -framework CoreMedia -framework CoreVideo -framework MobileCoreServices -framework QuartzCore -framework Security -framework SystemConfiguration -weak_framework AdSupport
+PODS_ROOT = ${SRCROOT}/Pods

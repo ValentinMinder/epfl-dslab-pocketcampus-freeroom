@@ -14,7 +14,21 @@
 "NoContactSelected" = "Aucun contact séléctionné";
 "PhotoButtonTitle" = "Photo";
 "Details" = "Détails";
+"LoadingPersonInfo" = "Chargement des informations sur la personne";
 "NoResultPCUnknownViewControllerLoad" = "Désolé, cette personne n'a pas pu\nêtre trouvée dans l'annuaire de l'EPFL.";
+
+"PrivatePhone" = "Tél. privé";
+"OfficePhone" = "Tél. EPFL";
+"Email" = "Email";
+"Webpage" = "Page web";
+"EPFLWebpage" = "Page web EPFL";
+"Office" = "Bureau";
+"EPFLOffice" = "Bureau EPFL";
+"Sciper" = "Sciper";
+"TapToSeeOnMap" = "voir sur le plan";
+
+"AddToExistingContact" = "Ajouter à un contact existant";
+"CreateNewContact" = "Créer un nouveau contact";
 
 /* Accessiblity */
 

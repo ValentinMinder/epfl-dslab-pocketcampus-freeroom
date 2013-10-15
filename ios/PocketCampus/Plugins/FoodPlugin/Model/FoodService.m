@@ -8,9 +8,21 @@
 
 #import "FoodService.h"
 
+#import "ObjectArchiver.h"
+
+static NSString* kFavoriteRestaurantIds = @"favoriteRestaurantIds";
+
+@interface FoodService ()
+
+@property (nonatomic, strong) NSMutableSet* favoriteRestaurantIds; //set of NSNumber int64_t
+
+@end
+
 @implementation FoodService
 
 static FoodService* instance __weak = nil;
+
+#pragma mark - Init
 
 - (id)init {
     @synchronized(self) {
@@ -41,6 +53,57 @@ static FoodService* instance __weak = nil;
 - (id)thriftServiceClientInstance {
     return [[FoodServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
+
+#pragma mark - Favorite restaurants
+
+- (void)initFavorites {
+    if (!self.favoriteRestaurantIds) { //first try to get it from persistent storage
+        self.favoriteRestaurantIds = [(NSSet*)[ObjectArchiver objectForKey:kFavoriteRestaurantIds andPluginName:@"food"] mutableCopy];
+    }
+    if (!self.favoriteRestaurantIds) { //if not present in persistent storage, create set
+        self.favoriteRestaurantIds = [NSMutableSet set];
+    }
+}
+
+- (BOOL)persistFavorites {
+    if (!self.favoriteRestaurantIds) {
+        return YES;
+    }
+    return [ObjectArchiver saveObject:self.favoriteRestaurantIds forKey:kFavoriteRestaurantIds andPluginName:@"food"];
+}
+
+- (NSNumber*)nsNumberForRestaurantId:(int64_t)restaurantId {
+    return [NSNumber numberWithInt:restaurantId];
+}
+
+- (void)addFavoriteRestaurant:(Restaurant*)restaurant {
+    [self initFavorites];
+    [self.favoriteRestaurantIds addObject:[self nsNumberForRestaurantId:restaurant.restaurantId]];
+    [self persistFavorites];
+    NSNotification* notif = [NSNotification notificationWithName:kFavoritesRestaurantsUpdatedNotificationName object:self];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
+
+}
+
+- (void)removeFavoritRestaurant:(Restaurant*)restaurant {
+    [self initFavorites];
+    [self.favoriteRestaurantIds removeObject:[self nsNumberForRestaurantId:restaurant.restaurantId]];
+    [self persistFavorites];
+    NSNotification* notif = [NSNotification notificationWithName:kFavoritesRestaurantsUpdatedNotificationName object:self];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
+}
+
+- (NSArray*)allFavoriteRestaurantIds {
+    [self initFavorites];
+    return [self.favoriteRestaurantIds allObjects];
+}
+
+- (BOOL)isRestaurantFavorite:(Restaurant*)restaurant {
+    [self initFavorites];
+    return [self.favoriteRestaurantIds containsObject:[self nsNumberForRestaurantId:restaurant.restaurantId]];
+}
+
+#pragma mark - Thrift requests
 
 - (void)getMealsWithDelegate:(id)delegate {    
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];

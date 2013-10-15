@@ -14,37 +14,21 @@
 
 @implementation MainMenuItem
 
-- (id)initWithType:(MainMenuItemType)type
-{
-    self = [super init];
-    if (self) {
-        _type = type;
-        _identifier = nil;
-    }
-    return self;
++ (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image identifier:(NSString*)identifier __attribute__ ((deprecated)) {
+    return [self menuItemButtonWithTitle:title leftImage:image highlightedLeftImage:nil identifier:identifier];
 }
 
-+ (MainMenuItem*)menuItemThinSeparator {
-    MainMenuItem* instance = [[[self class] alloc] initWithType:MainMenuItemTypeThinSeparator];
-    return instance;
-}
-
-+ (MainMenuItem*)menuItemSectionHeaderWithTitle:(NSString*)title {
-    MainMenuItem* instance = [[[self class] alloc] initWithType:MainMenuItemTypeSectionHeader];
-    instance.title = title;
-    return instance;
-}
-
-+ (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image identifier:(NSString*)identifier {
-    MainMenuItem* instance = [[[self class] alloc] initWithType:MainMenuItemTypeButton];
++ (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image highlightedLeftImage:(UIImage*)highlightedImage identifier:(NSString*)identifier; {
+    MainMenuItem* instance = [[[self class] alloc] init];
     instance.title = title;
     instance.leftImage = image;
+    instance.highlightedLeftImage = highlightedImage;
     instance.identifier = identifier;
     return instance;
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat:@"<MainMenuItem> type:%d title:%@ leftImage:%@ identifier:%@", self.type, self.title, self.leftImage, self.identifier];
+    return [NSString stringWithFormat:@"<MainMenuItem> title:%@ subtitle:%@ leftImage:%@ identifier:%@", self.title, self.subtitle, self.leftImage, self.identifier];
 }
 
 @end

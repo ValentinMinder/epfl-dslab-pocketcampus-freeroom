@@ -14,7 +14,7 @@
 
 #import "UIPopoverController+Additions.h"
 
-#import "GANTracker.h"
+
 
 @interface MyEduModuleMaterialsViewController ()
 
@@ -52,7 +52,7 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/myedu/sections/modules/material" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/myedu/sections/modules/material"];
     
     self.webView.scalesPageToFit = YES;
     

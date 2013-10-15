@@ -56,11 +56,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];
     if (self.allTags.count > 0) {
         [self.selectAllButton setTitle:NSLocalizedStringFromTable(@"SelectAll", @"EventsPlugin", nil) forState:UIControlStateNormal];
-        [self.selectAllButton setBackgroundImage:[PCValues imageForGenericGreyButton] forState:UIControlStateNormal];
-        [self.selectAllButton setBackgroundImage:[PCValues highlightedForGenericGreyButton] forState:UIControlStateHighlighted];
         [self.deselectAllButton setTitle:NSLocalizedStringFromTable(@"DeselectAll", @"EventsPlugin", nil) forState:UIControlStateNormal];
-        [self.deselectAllButton setBackgroundImage:[PCValues imageForGenericGreyButton] forState:UIControlStateNormal];
-        [self.deselectAllButton setBackgroundImage:[PCValues highlightedForGenericGreyButton] forState:UIControlStateHighlighted];
         self.tableView.tableHeaderView = self.headerView;
     }
 }
@@ -71,15 +67,6 @@
         return UIInterfaceOrientationMaskAll;
     } else {
         return UIInterfaceOrientationMaskPortrait;
-    }
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
-{
-    if ([PCUtils isIdiomPad]) {
-        return YES;
-    } else {
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
     }
 }
 

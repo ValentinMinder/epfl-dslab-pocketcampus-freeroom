@@ -8,23 +8,33 @@
         }
         
         body {
-			font-family: Helvetica;
-			background-color: #ededed;
+			font: -apple-system-body;
 			word-wrap:break-word;
 			text-align:left;
-			margin-left: 8px;
-            margin-right: 8px;
-            color: #424242;
-            text-shadow: 0px 1px 0px white;
+            margin: 0px;
+			padding: 10px;
 		}
 		
 		a {
-			color: #c20002;
+			color: #DC1010;
 		}
         
         table {
-	    	width: 100%;  
+	    	width: 100%;
+            margin: 0px;
+            padding: 0px;
+            border: 0px solid black;
 	    }
+    
+        tr {
+            margin: 0px;
+            padding: 0px;
+        }
+    
+        td {
+            margin: 0px;
+            padding: 0px;
+        }
         
         #thumbnail {
             padding: 0px;
@@ -33,12 +43,10 @@
         #thumbnail img {
 	        max-width: 150px;
 	        display: block;
-            box-shadow: 1px 1px 5px #888888;
         }
 		
 		#title {
-			font-size: 13pt;
-			font-weight: bold;
+			font: -apple-system-headline;
             text-align: left;
 			padding-top: 2px;
 			padding-left: $PADDING_LEFT_TITLE_PX$px;
@@ -47,32 +55,22 @@
 		}
 		
 		#second_line {
-			font-size: 12pt;
-			font-style: italic;
+			font: -apple-syste-subheadline;
+            color: gray;
 			padding-top: 2px;
 			padding-left: 6px;
 			padding-bottom: 2px;
 			padding-right: 2px;
 		}
-		
-		#infos {
-			padding-left: 3px;
-			padding-top: 8px;
-			font-size: 11pt;
-			line-height: 13pt;
-		}
+    
+        #infos {
+            padding-top: 3px;
+        }
 		
 		#center_image img {
 			max-width: 300px;
 			margin: auto;
 			display: block;
-			box-shadow: 1px 1px 5px #888888;
-		}
-		
-		#details {
-			padding-left: 3px;
-			font-size: 11pt;
-			padding-top: 5px;
 		}
 		
 	</style>
@@ -85,7 +83,7 @@
             <td width="100%" id="title">$EVENT_ITEM_TITLE$</td>
         </tr>
         <tr>
-	        <td id="second_line"><i>$EVENT_ITEM_SECOND_LINE$</i></td>
+	        <td id="second_line">$EVENT_ITEM_SECOND_LINE$</td>
 	    </tr>
         <tr>
             <td colspan="2" id="infos">

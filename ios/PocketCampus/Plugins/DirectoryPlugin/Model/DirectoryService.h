@@ -10,6 +10,8 @@
 #import "Service.h"
 #import "directory.h"
 
+#import "Person+Extras.h"
+
 #import "ASIHTTPRequest.h"
 
 #import "ASIDownloadCache.h"

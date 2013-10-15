@@ -14,4 +14,6 @@
 
 @property (nonatomic, copy) void (^userValidatedSelectionBlock)(NSSet*);
 
+//- (IBAction)selectAllPressed;
+
 @end

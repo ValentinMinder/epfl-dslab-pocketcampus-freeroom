@@ -14,7 +14,7 @@
 
 #import "SBJson.h"
 
-static NSString* GET_CONFIG_URL __unused = @"http://pocketcampus.epfl.ch/backend/get_config.php";
+static NSString* GET_CONFIG_URL __unused = @"https://pocketcampus.epfl.ch/backend/get_config.php";
 
 @implementation PCConfig
 
@@ -68,7 +68,7 @@ static NSString* GET_CONFIG_URL __unused = @"http://pocketcampus.epfl.ch/backend
     } else {
         NSDictionary* config = nil;
         @try {
-            config = [request.responseString JSONValue];
+            config = [[SBJsonParser new] objectWithString:request.responseString];
             [[self defaults] registerDefaults:config];
             [[self defaults] setBool:YES forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
             NSLog(@"   2. Config loaded from server");

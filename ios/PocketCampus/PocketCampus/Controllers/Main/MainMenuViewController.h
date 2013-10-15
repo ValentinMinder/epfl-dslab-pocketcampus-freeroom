@@ -20,9 +20,8 @@
  * Array of MenuItems of plugins in main menu.
  * Can be accessed by MainController after main menu ends editing
  * to save order of plugins in this array
- * WARNING: array must not be modified
  */
-@property (nonatomic, readonly, strong) NSMutableArray* pluginsMenuItems;
+@property (nonatomic, readonly) NSArray* pluginsMenuItems;
 
 @property (nonatomic, weak, readonly) MainController* mainController;
 

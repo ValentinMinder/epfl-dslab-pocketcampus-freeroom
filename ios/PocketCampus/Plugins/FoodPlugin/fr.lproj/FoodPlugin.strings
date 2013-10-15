@@ -8,8 +8,8 @@
 
 "PluginName" = "Restaurants";
 "MenusTableViewSectionName" = "Menus";
-"CenterLabelLoadingText" = "Chargement des menus";
-"NoMealsToday" = "Aucun menu aujourd'hui.";
+"LoadingMenus" = "Chargement des menus";
+"NoMealsToday" = "Aucun menu aujourd'hui";
 "NoMealsWeekend" = "Aucun menu pendant le weekend.";
 "MenusForTodayWithFormat" = "Menus du jour – %@";
 "Map" = "Plan";

@@ -82,6 +82,7 @@ static MainController<MainControllerPublic>* instance = nil;
     self = [super init];
     if (self) {
         self.window = window;
+        self.window.tintColor = [PCValues pocketCampusRed];
         self.urlSchemeHander = [[PCURLSchemeHandler alloc] initWithMainController:self];
         self.activePluginController = nil;
         [self initPluginsList];
@@ -90,7 +91,7 @@ static MainController<MainControllerPublic>* instance = nil;
         if ([PCUtils isIdiomPad]) {
             self.revealWidth = 320.0;
         } else {
-            self.revealWidth = 261.0;
+            self.revealWidth = 280.0;
         }
         [self initRevealController];
         self.revealController.maxRearViewRevealOverdraw = 0.0;
@@ -407,7 +408,9 @@ static MainController<MainControllerPublic>* instance = nil;
     for (NSString* pluginIdentifier in self.pluginsList) {
         Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:pluginIdentifier]);
         NSString* localizedName = [pluginClass localizedName];
-        MainMenuItem* item = [MainMenuItem menuItemButtonWithTitle:localizedName leftImage:[UIImage imageNamed:pluginIdentifier] identifier:pluginIdentifier];
+        UIImage* image = [UIImage imageNamed:pluginIdentifier];
+        UIImage* highlightedImage = [UIImage imageNamed:[pluginIdentifier stringByAppendingString:@"Highlighted"]];
+        MainMenuItem* item = [MainMenuItem menuItemButtonWithTitle:localizedName leftImage:image highlightedLeftImage:highlightedImage identifier:pluginIdentifier];
         NSNumber* hiddenByDefault = self.plistDicForPluginIdentifier[item.identifier][@"hiddenByDefault"];
         item.hidden = [hiddenByDefault boolValue];
         NSString* devTeam = self.plistDicForPluginIdentifier[item.identifier][@"devTeam"];
@@ -457,21 +460,15 @@ static MainController<MainControllerPublic>* instance = nil;
         menuItems = menuItemsCopy; //if anything bad happens during recovery, go back to standard order.
     }
     
-    /* Adding section at beginning */
-    
-    MainMenuItem* pluginSectionHeader = [MainMenuItem menuItemSectionHeaderWithTitle:@"Plugins"];
-    pluginSectionHeader.hidden = YES;
-    
-    [menuItems insertObject:pluginSectionHeader atIndex:0];
-    
     MainMenuViewController* mainMenuViewController = [[MainMenuViewController alloc] initWithMenuItems:menuItems mainController:self];
     self.mainMenuViewController = mainMenuViewController;
 }
 
 - (void)initRevealController {
     self.splashViewController = [[SplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
-    self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:[[UINavigationController alloc] initWithRootViewController:self.mainMenuViewController]];
+    self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:[[PCNavigationController alloc] initWithRootViewController:self.mainMenuViewController]];
     self.revealController.rearViewRevealWidth = self.revealWidth;
+    self.revealController.frontViewShadowRadius = 1.0;
 }
 
 - (void)revealMenuAfterSplash {
@@ -579,9 +576,6 @@ static MainController<MainControllerPublic>* instance = nil;
         return;
     }
     NSMutableArray* menuItems = [self defaultMainMenuItemsWithoutTopSection];
-    MainMenuItem* pluginSectionHeader = [MainMenuItem menuItemSectionHeaderWithTitle:@"Plugins"];
-    pluginSectionHeader.hidden = YES;
-    [menuItems insertObject:pluginSectionHeader atIndex:0];
     
     [self.mainMenuViewController reloadWithMenuItems:menuItems];
     
@@ -589,7 +583,7 @@ static MainController<MainControllerPublic>* instance = nil;
         [self.revealController showFrontViewCompletely:NO];
     }
     
-    [NSTimer scheduledTimerWithTimeInterval:0.0 target:self selector:@selector(selectActivePluginInMainMenuIfNecessary) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(selectActivePluginInMainMenuIfNecessary) userInfo:nil repeats:NO];
 }
 
 - (void)showGlobalSettings {
@@ -850,6 +844,9 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - ZUUIRevealControllerDelegate
 
 - (void)revealController:(ZUUIRevealController *)revealController willRevealRearViewController:(UIViewController *)rearViewController {
+    //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    
     if (self.activePluginController) {
         [self postNotificationWithState:PluginWillLoseForegroundNotification pluginIdentifier:[self identifierNameForPluginController:self.activePluginController]];
     }
@@ -869,7 +866,8 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController willHideRearViewController:(UIViewController *)rearViewController {
-    
+    //[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController didHideRearViewController:(UIViewController *)rearViewController {

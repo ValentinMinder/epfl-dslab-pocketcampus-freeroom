@@ -16,9 +16,28 @@
 
 @interface PCTableViewWithRemoteThumbnails : UITableView<ASIHTTPRequestDelegate>
 
-- (void)setThumbnailURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
+- (void)setImageURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
-@property (nonatomic, strong) UIImage* temporaryThumnail;
-@property (nonatomic) NSTimeInterval thumbnailsCacheSeconds;
+/*
+ * If image as been downloaded, returns it, nil otherwise.
+ */
+- (UIImage*)imageAtIndexPath:(NSIndexPath*)indexPath;
+
+/*
+ * Specify the keypath of the UIImageView in the cells.
+ * Default: @"imageView"
+ */
+@property (nonatomic, strong) NSString* cellsImageViewSelectorString;
+
+/*
+ * This block will be executed when image is downloaded but before caching it.
+ * If this block is not NULL, returned image replaces downloaded image. 
+ * Default: NULL
+ */
+typedef UIImage* (^ImageProcessingBlock)(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image);
+@property (nonatomic, copy) ImageProcessingBlock thumbnailProcessingBlock;
+
+@property (nonatomic, strong) UIImage* temporaryImage;
+@property (nonatomic) NSTimeInterval imagesCacheSeconds;
 
 @end

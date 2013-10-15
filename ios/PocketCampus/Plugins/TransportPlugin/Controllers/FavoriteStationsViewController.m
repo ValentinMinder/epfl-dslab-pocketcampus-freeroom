@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
+
 
 #import "FavoriteStationsViewController.h"
 
@@ -45,7 +45,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/mystations" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/transport/mystations"];
     tableView.editing = NO;
     tableView.sectionHeaderHeight = 0.0;
     tableView.sectionFooterHeight = 10.0;

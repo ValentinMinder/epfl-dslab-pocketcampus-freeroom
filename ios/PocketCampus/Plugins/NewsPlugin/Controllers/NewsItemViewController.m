@@ -1,5 +1,5 @@
 //
-//  NewsItemViewController2.m
+//  NewsItemViewController.m
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 24.12.12.
@@ -7,12 +7,6 @@
 //
 
 #import "NewsItemViewController.h"
-
-#import "GANTracker.h"
-
-#import "PCValues.h"
-
-#import "PCUtils.h"
 
 #import "NewsUtils.h"
 
@@ -24,15 +18,23 @@
 
 #import "UIActionSheet+Additions.h"
 
-@interface NewsItemViewController ()
+#import "TUSafariActivity.h"
+
+@interface NewsItemViewController ()<NewsServiceDelegate, ASIHTTPRequestDelegate, UIAlertViewDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) UIImage* image;
-@property (nonatomic, strong) UIActionSheet* actionButtonSheet;
+@property (nonatomic, strong) UIPopoverController* actionsPopover;
 @property (nonatomic, strong) NewsItem* newsItem;
 @property (nonatomic, strong) NewsService* newsService;
 @property (nonatomic, strong) ASIHTTPRequest* imageRequest;
 @property (nonatomic, strong) NSURL* urlClicked;
 @property (nonatomic, strong) Reachability* reachability;
+    
+@property (nonatomic, strong) IBOutlet UIWebView* webView;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, strong) IBOutlet UILabel* centerMessageLabel;
+    
+@property (nonatomic) CGFloat lastVerticalOffset;
 
 @end
 
@@ -45,7 +47,7 @@
         self.newsService = [NewsService sharedInstanceToRetain];
         self.newsItem = newsItem;
         self.image = image;
-        self.title = self.newsItem.title;
+        self.title = [PCUtils isIdiomPad] ? self.newsItem.title : nil;
     }
     return self;
 }
@@ -53,7 +55,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[[GANTracker sharedTracker] trackPageview:@"/v3r1/news/item" withError:NULL];
     
     if (self.splitViewController) {
         self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
@@ -66,6 +67,11 @@
     [self saveImageToDisk];
     
     [self loadNewsItem];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/news/item"];
 }
 
 - (void)loadNewsItem {
@@ -86,35 +92,30 @@
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
-{
-    return UIInterfaceOrientationIsLandscape(interfaceOrientation) || (UIInterfaceOrientationPortrait);
-}
-
 #pragma mark - Actions
 
 - (void)actionButtonPressed {
+    NSURL* newsItemURL = [NSURL URLWithString:self.newsItem.link];
+    UIActivityViewController* viewController = [[UIActivityViewController alloc] initWithActivityItems:@[newsItemURL] applicationActivities:@[[TUSafariActivity new]]];
+    
+    if (self.splitViewController) {
+        if (!self.actionsPopover) {
+            self.actionsPopover = [[UIPopoverController alloc] initWithContentViewController:viewController];
+            self.actionsPopover.popoverContentSize = viewController.preferredContentSize;
+        }
+        [self.actionsPopover togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    } else {
+        [self presentViewController:viewController animated:YES completion:NULL];
+    }
+    
+    /*
     if (!self.actionButtonSheet) {
         self.actionButtonSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"OpenInSafari", @"NewsPlugin", nil), nil];
         self.actionButtonSheet.accessibilityIdentifier = @"NewsItemActionSheet";
     }
     
     [self.actionButtonSheet toggleFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
-}
-
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (actionSheet == self.actionButtonSheet) {
-        switch (buttonIndex) {
-            case 0:
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.newsItem.link]];
-                break;
-            default:
-                break;
-        }
-        self.actionButtonSheet = nil;
-    }
+     */
 }
 
 #pragma mark - Image management
@@ -147,6 +148,7 @@
         [self error];
         return;
     }
+    
     html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_FEED_NAME$" withString:self.newsItem.feed];
     html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_PUB_DATE$" withString:[NewsUtils dateLocaleStringForTimestamp:self.newsItem.pubDate/1000.0]];
     html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_TITLE$" withString:self.newsItem.title];
@@ -164,7 +166,7 @@
     }
     html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_CONTENT$" withString:content];
     
-    html = [NewsUtils htmlReplaceWidthWith100PercentInContent:html ifWidthHeigherThan:self.webView.frame.size.width-20.0];
+    html = [NewsUtils htmlReplaceWidthWith100PercentInContent:html ifWidthHeigherThan:self.webView.frame.size.width];
     
     [self.webView loadHTMLString:html baseURL:[NSURL fileURLWithPath:@"/"]];
     self.webView.hidden = NO;

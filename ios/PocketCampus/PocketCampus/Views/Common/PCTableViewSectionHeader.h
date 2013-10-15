@@ -14,4 +14,6 @@
 
 @property (nonatomic, readonly) UITableView* tableView;
 
++ (CGFloat)preferredHeight;
+
 @end

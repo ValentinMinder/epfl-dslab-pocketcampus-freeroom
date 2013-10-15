@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
-
 #import "GlobalSettingsViewController.h"
 
 #import "PCValues.h"
@@ -38,7 +36,7 @@ static const int kRatePCRow = 0;
 static const int kLikePCFBRow = 1;
 static const int kAboutRow = 2;
 
-@interface GlobalSettingsViewController ()
+@interface GlobalSettingsViewController () <UITextFieldDelegate>
 
 @property (nonatomic, weak) MainController* mainController;
 
@@ -48,7 +46,7 @@ static const int kAboutRow = 2;
 
 - (id)initWithMainController:(MainController*)mainController
 {
-    self = [super initWithNibName:@"GlobalSettingsView" bundle:nil];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.mainController = mainController;
     }
@@ -59,12 +57,8 @@ static const int kAboutRow = 2;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/dashboard/settings" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/dashboard/settings"];
     self.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
-    self.tableView.backgroundColor = [UIColor clearColor];
-    UIView* backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
-    backgroundView.backgroundColor = [PCValues backgroundColor1];;
-    self.tableView.backgroundView = backgroundView;
     UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(doneBarButtonPressed)];
     [self.navigationItem setRightBarButtonItem:button animated:YES];
 
@@ -72,14 +66,9 @@ static const int kAboutRow = 2;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -92,24 +81,11 @@ static const int kAboutRow = 2;
     
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
-{
-    if ([PCUtils isIdiomPad]) {
-        return YES;
-    } else {
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
-    }
-}
-
 - (void)doneBarButtonPressed {
-    if ([self.presentingViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) { // >= iOS 5.0
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-    } else {
-        [self.presentingViewController dismissModalViewControllerAnimated:YES];
-    }  
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
-/* UITableViewDelegate delegation */
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
@@ -174,7 +150,7 @@ static const int kAboutRow = 2;
     }
 }
 
-/* UITableViewDataSource delegation */
+#pragma mark - UITableViewDataSource
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
@@ -199,7 +175,6 @@ static const int kAboutRow = 2;
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
             cell.textLabel.text = [GasparViewController localizedTitle];
             NSString* username = [AuthenticationService savedUsername];
             if (username) {

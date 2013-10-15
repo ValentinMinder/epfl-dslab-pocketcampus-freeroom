@@ -21,7 +21,6 @@
 
 + (UIImage*)imageForGenericResizableShadow;
 
-+ (float)defaultCornerRadius;
 + (UIColor*)pocketCampusRed;
 + (UIColor*)backgroundColor1;
 + (UIColor*)textColor1;
@@ -29,6 +28,8 @@
 + (CGSize)shadowOffset1;
 + (UIColor*)shadowColor1;
 + (CGFloat)totalSubviewsHeight:(UIView*)view;
-+ (CGFloat)tableViewSectionHeaderHeight;
+
+
++ (CGFloat)tableViewSectionHeaderHeight __attribute__((deprecated));
 
 @end

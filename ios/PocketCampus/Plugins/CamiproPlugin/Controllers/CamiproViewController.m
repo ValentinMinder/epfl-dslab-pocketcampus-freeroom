@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
-
 #import "CamiproViewController.h"
 
 #import "PCValues.h"
@@ -87,7 +85,7 @@ static const CGFloat kShadowViewAlpha = 0.7;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/camipro"];
     self.view.backgroundColor = [PCValues backgroundColor1];
     
     
@@ -499,14 +497,14 @@ static const CGFloat kShadowViewAlpha = 0.7;
     switch (buttonIndex) {
         case 0: //reload instructions
         {
-            [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro/click/reload" withError:NULL];
+            [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/camipro/click/reload"];
             self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"ReloadInstructionsSendMailExplanations", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Send", @"CamiproPlugin", nil), nil];
             [self.sendMailAlertView show];
             break;
         }
         case 1: //statistics
         {
-            [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro/click/stats" withError:NULL];
+            [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/camipro/click/stats"];
             self.statsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:nil];
             [self.statsAlertView show];
             [self startGetStatsRequest];
@@ -527,7 +525,7 @@ static const CGFloat kShadowViewAlpha = 0.7;
             [self.camiproService cancelOperationsForDelegate:self];
             return;
         }
-        [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro/click/email" withError:NULL];
+        [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/camipro/click/email"];
         self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
         [self.sendMailAlertView show];
         

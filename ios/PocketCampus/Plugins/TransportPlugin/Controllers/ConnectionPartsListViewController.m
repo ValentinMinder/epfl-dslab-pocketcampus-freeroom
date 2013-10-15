@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
+
 
 #import "ConnectionPartsListViewController.h"
 
@@ -30,7 +30,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/connections/parts" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/transport/connections/parts"];
     
     UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin

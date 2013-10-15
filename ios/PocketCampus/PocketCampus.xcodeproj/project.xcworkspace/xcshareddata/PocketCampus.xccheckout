@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>80E24DA4-2CCC-4DC0-8F0F-28800CFF0DFC</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PocketCampus</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>F49A26D5-4687-4FB0-BAB1-D47A8A1A01B9</key>
+		<string>ssh://dslabgit.epfl.ch/pocketcampus/pocketcampus-epfl.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ios/iphone/PocketCampus/PocketCampus.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>F49A26D5-4687-4FB0-BAB1-D47A8A1A01B9</key>
+		<string>../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://dslabgit.epfl.ch/pocketcampus/pocketcampus-epfl.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>F49A26D5-4687-4FB0-BAB1-D47A8A1A01B9</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F49A26D5-4687-4FB0-BAB1-D47A8A1A01B9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PocketCampus_2</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -39,6 +39,10 @@
    return [[UIDevice currentDevice].systemVersion floatValue];
 }
 
++ (NSString*)appVersion {
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+}
+
 + (NSString*)userLanguageCode {
     return [[NSLocale preferredLanguages] objectAtIndex:0];
 }
@@ -50,6 +54,12 @@
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     [dateFormatter setDateStyle:NSDateFormatterShortStyle];
     return [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"PocketCampus", nil),[dateFormatter stringFromDate:[NSDate date]]];
+}
+
++ (UIEdgeInsets)edgeInsetsForViewController:(UIViewController*)viewController {
+    CGFloat top = viewController.navigationController ? viewController.navigationController.navigationBar.frame.size.height : 0.0;
+    CGFloat bottom = viewController.tabBarController ? viewController.tabBarController.tabBarController.tabBar.frame.size.height : 0.0;
+    return UIEdgeInsetsMake(top, 0, bottom, 0);
 }
 
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration {

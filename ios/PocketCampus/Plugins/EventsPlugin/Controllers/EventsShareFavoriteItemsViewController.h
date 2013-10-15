@@ -10,7 +10,7 @@
 
 #import "EventsService.h"
 
-@interface EventsShareFavoriteItemsViewController : UITableViewController<EventsServiceDelegate>
+@interface EventsShareFavoriteItemsViewController : UITableViewController
 
 - (id)initWithRelatedEventPool:(EventPool*)eventPool;
 

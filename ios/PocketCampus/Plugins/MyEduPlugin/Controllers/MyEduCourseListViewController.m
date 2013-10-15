@@ -12,7 +12,6 @@
 
 #import "PCUtils.h"
 
-#import "PCRefreshControl.h"
 
 #import "PCCenterMessageCell.h"
 
@@ -24,8 +23,6 @@
 
 #import "PushNotifController.h"
 
-#import "GANTracker.h"
-
 static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
 @interface MyEduCourseListViewController ()
@@ -33,7 +30,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 @property (nonatomic, strong) MyEduService* myEduService;
 @property (nonatomic, strong) NSArray* subscribedCourses;
 @property (nonatomic, strong) MyEduTequilaToken* tequilaToken;
-@property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
+@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 
 @end
 
@@ -48,8 +45,8 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
         // Custom initialization
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.subscribedCourses = [self.myEduService getFromCacheSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest]].iSubscribedCourses;
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"myedu"  refreshedDataIdentifier:@"myEduSubscribedCourseList"];
-        [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+        self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self  refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"myEdu" dataName:@"myEduSubscribedCourseList"]];
+        [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
 }
@@ -57,7 +54,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/myedu" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/myedu"];
     /*UIView* backgroundView = [[UIView alloc] init];
     backgroundView.backgroundColor = [UIColor whiteColor];
     self.tableView.backgroundView = backgroundView;
@@ -66,7 +63,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.subscribedCourses || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
+    if (!self.subscribedCourses || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
 }
@@ -93,7 +90,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 
 - (void)refresh {
     [self.myEduService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"DownloadingCourseList", @"MyEduPlugin", nil)];
+    [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"DownloadingCourseList", @"MyEduPlugin", nil)];
     [self startGetSubscribedCoursesListRequest];
 }
 
@@ -106,7 +103,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     } else {
         NSLog(@"-> No saved session, loggin in...");
         [[MyEduController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
-            [self.pcRefreshControl endRefreshing];
+            [self.lgRefreshControl endRefreshing];
         } failureBlock:^{
             [self error];
         }];
@@ -127,8 +124,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
         case 200:
             self.subscribedCourses = reply.iSubscribedCourses;
             [self.tableView reloadData];
-            [self.pcRefreshControl endRefreshing];
-            [self.pcRefreshControl markRefreshSuccessful];
+            [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             break;
         case 407:
             [self.myEduService deleteSession];
@@ -145,17 +141,13 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 }
 
 - (void)error {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
     [PCUtils showServerErrorAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
     [PCUtils showConnectionToServerTimedOutAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
 #pragma mark - UITableViewDelegate

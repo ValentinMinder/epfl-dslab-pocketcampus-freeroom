@@ -10,6 +10,8 @@
 
 #import "ObjectArchiver.h"
 
+#import <float.h>
+
 @implementation TransportService
 
 static TransportService* instance __weak = nil;

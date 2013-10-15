@@ -16,11 +16,7 @@
 
 - (id)initWithEventItem:(EventItem*)eventItem reuseIdentifier:(NSString*)reuseIdentifier;
 
-+ (CGFloat)height;
-
-@property (nonatomic, weak) IBOutlet UILabel* titleLabel;
-@property (nonatomic, weak) IBOutlet UILabel* subtitleLabel;
-@property (nonatomic, weak) IBOutlet UILabel* rightSubtitleLabel;
++ (CGFloat)preferredHeight;
 
 @property (nonatomic, strong) EventItem* eventItem;
 

@@ -10,18 +10,13 @@
 
 #import "EventsService.h"
 
-#import "ZBarSDK.h"
-
-@interface EventItemViewController : UIViewController<EventsServiceDelegate, UIWebViewDelegate>
+@interface EventItemViewController : UIViewController
 
 - (id)initWithEventItem:(EventItem*)item;
 - (id)initAndLoadEventItemWithId:(int64_t)eventId;
 
-@property (nonatomic, weak) IBOutlet UIScrollView* scrollView;
-@property (nonatomic, weak) IBOutlet UIWebView* webView;
-@property (nonatomic, weak) IBOutlet UITableView* tableView;
+@property (nonatomic, readonly) int64_t itemId;
 
-- (int64_t)itemId;
 - (void)refresh;
 
 @property (nonatomic) BOOL showFavoriteButton; //default: NO

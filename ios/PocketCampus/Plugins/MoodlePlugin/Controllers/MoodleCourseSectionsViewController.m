@@ -8,8 +8,6 @@
 
 #import "MoodleCourseSectionsViewController.h"
 
-#import "PCRefreshControl.h"
-
 #import "MoodleController.h"
 
 #import "PCUtils.h"
@@ -28,7 +26,7 @@
 
 #import "PluginSplitViewController.h"
 
-#import "GANTracker.h"
+
 
 static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
@@ -39,7 +37,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 @property (nonatomic, strong) NSDictionary* cellForMoodleResource;
 @property (nonatomic) int currentWeek;
 @property (nonatomic, strong) MoodleCourse* course;
-@property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
+@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 @property (nonatomic, strong) MoodleResource* selectedResource;
 
 @end
@@ -55,8 +53,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.sections = [self.moodleService getFromCacheSectionsListReplyForCourse:self.course].iSections;
         [self fillCellsFromSections];
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"moodle"refreshedDataIdentifier:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]];
-        [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+        self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]]];
+        [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
         
         //[self.moodleService saveSession:[[MoodleSession alloc] initWithMoodleCookie:@"sdfgjskjdfhgjshdfg"]]; //TEST ONLY
     }
@@ -65,14 +63,14 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/moodle/course"];
     [self showToggleButtonIfPossible];
     self.tableView.allowsMultipleSelection = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.sections || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
+    if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
 }
@@ -98,7 +96,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
 - (void)refresh {
     [self.moodleService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingCourse", @"MoodlePlugin", nil)];
+    [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingCourse", @"MoodlePlugin", nil)];
     [self startGetCourseSectionsRequest];
 }
 
@@ -111,7 +109,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
     } else {
         NSLog(@"-> No saved session, loggin in...");
         [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
-            [self.pcRefreshControl endRefreshing];
+            [self.lgRefreshControl endRefreshing];
         } failureBlock:^{
             [self error];
         }];
@@ -250,8 +248,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
             [self showToggleButtonIfPossible];
             [self fillCellsFromSections];
             [self.tableView reloadData];
-            [self.pcRefreshControl endRefreshing];
-            [self.pcRefreshControl markRefreshSuccessful];
+            [self.lgRefreshControl endRefreshing];
+            [self.lgRefreshControl markRefreshSuccessful];
             break;
         case 407:
             [self.moodleService deleteSession];
@@ -262,7 +260,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
             break;
         case 404:
         {
-            [self.pcRefreshControl endRefreshing];
+            [self.lgRefreshControl endRefreshing];
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
         }
@@ -278,17 +276,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
 
 - (void)error {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
     [PCUtils showServerErrorAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
     [PCUtils showConnectionToServerTimedOutAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
 #pragma mark - UITableViewDelegate
@@ -332,7 +326,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
             [errorAlert show];
             return;
         }
-        [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document/delete" withError:NULL];
+        [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/moodle/course/document/delete"];
     }
 }
 

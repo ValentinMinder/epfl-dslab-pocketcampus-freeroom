@@ -12,6 +12,14 @@
 
 @interface MainMenuItemCell ()
 
+@property (nonatomic, weak) IBOutlet UIImageView* leftImageView;
+@property (nonatomic, weak) IBOutlet UILabel* titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel* subtitleLabel;
+@property (nonatomic, weak) IBOutlet UIButton* eyeButton;
+
+@property (nonatomic, weak) IBOutlet UIView* line1;
+@property (nonatomic, weak) IBOutlet UIView* line2;
+
 @property (nonatomic, readwrite, strong) MainMenuItem* menuItem;
 
 @end
@@ -24,21 +32,13 @@
     MainMenuItemCell* instance = [topLevelObjects objectAtIndex:0];
     instance.menuItem = menuItem;
     instance.reuseIdentifier = reuseIdentifier;
-    [instance load];
+    instance.selectionStyle = UITableViewCellSelectionStyleDefault;
+    instance.titleLabel.textColor = [PCValues textColor1];
     return instance;
 }
 
-+ (CGFloat)heightForMainMenuItemType:(MainMenuItemType)type {
-    if (type == MainMenuItemTypeButton) {
-        return 55.0;
-    } else if (type == MainMenuItemTypeSectionHeader) {
-        return 55.0;
-    } else if (type == MainMenuItemTypeThinSeparator) {
-        return 3.0;
-    } else {
-        @throw [NSException exceptionWithName:@"Illegal argument" reason:@"unsupported MainMenuItem type" userInfo:nil];
-        return 0.0;
-    }
++ (CGFloat)height {
+    return 55.0;
 }
 
 - (void)setEyeButtonState:(EyeButtonState)state {
@@ -60,33 +60,12 @@
     }
 }
 
-- (void)load
-{
-    UIView* colorView = [[UIView alloc] init];
-    if (self.menuItem.type == MainMenuItemTypeButton) {
-        colorView.backgroundColor = [UIColor clearColor];
-        self.titleLabel.textColor = [PCValues textColor1];
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:19.0];
-        self.titleLabel.shadowColor = [UIColor whiteColor];
-        self.titleLabel.shadowOffset = [PCValues shadowOffset1];
-        UIView* selectedBackgroundView = [[UIView alloc] initWithFrame:self.frame];
-        selectedBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1.0];
-        self.selectedBackgroundView = selectedBackgroundView;
-    } else if (self.menuItem.type == MainMenuItemTypeSectionHeader) {
-        //Nothing, not supported yet
-    } else if (self.menuItem.type == MainMenuItemTypeThinSeparator) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        colorView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:1.0];
-    } else {
-        NSLog(@"!! ERROR: unsupported MainMenuItem type property at loads");
-    }
-    self.backgroundView = colorView;
-    /*CGRect colorFrame = self.backgroundView.frame;
-    colorFrame.origin.y = -10.0;
-    colorFrame.size.height += 10.0;
-    colorView.frame = colorFrame;*/
-    
+- (void)setMenuItem:(MainMenuItem *)menuItem {
+    [PCUtils throwExceptionIfObject:menuItem notKindOfClass:[MainMenuItem class]];
+    _menuItem = menuItem;
+    self.titleLabel.text = menuItem.title;
+    self.subtitleLabel.text = menuItem.subtitle;
+    self.leftImageView.image = menuItem.leftImage;
 }
 
 - (IBAction)eyeButtonPressed {
@@ -100,16 +79,14 @@
     self.eyeButton.hidden = !editing;
 }
 
-- (void)setShowsSubtitle:(BOOL)showsSubtitle {
-    _showsSubtitle = showsSubtitle;
-    self.subtitleLabel.hidden = !showsSubtitle;
-    CGRect newFrame = self.titleLabel.frame;
-    if (showsSubtitle) {
-        newFrame.origin.y = -2.0;
-    } else {
-        newFrame.origin.y = 5.0;
-    }
-    self.titleLabel.frame = newFrame;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+    self.leftImageView.image = highlighted && self.menuItem.highlightedLeftImage ? self.menuItem.highlightedLeftImage : self.menuItem.leftImage;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    self.leftImageView.image = selected && self.menuItem.highlightedLeftImage ? self.menuItem.highlightedLeftImage : self.menuItem.leftImage;
 }
 
 @end

@@ -10,6 +10,4 @@
 
 @interface DirectoryEmptyDetailViewController : UIViewController
 
-@property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
-
 @end

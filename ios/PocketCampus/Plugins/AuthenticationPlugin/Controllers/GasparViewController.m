@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
+
 
 #import "GasparViewController.h"
 
@@ -51,13 +51,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/authentication" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/authentication"];
     self.title = [[self class] localizedTitle];
-    tableView.backgroundColor = [UIColor clearColor];
-    UIView* backgroundView = [[UIView alloc] initWithFrame:tableView.frame];
-    backgroundView.backgroundColor = [PCValues backgroundColor1];;
-    tableView.backgroundView = backgroundView;
-    [backgroundView release];
+    
     if (presentationMode == PresentationModeModal || presentationMode == PresentationModeTryHidden) {
         UIBarButtonItem* cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
         self.navigationItem.leftBarButtonItem = cancelButton;
@@ -168,7 +164,7 @@
 /* UITextFieldDelegate delegation */
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, 220.0, 0.0);
+    tableView.contentInset = UIEdgeInsetsMake(tableView.contentInset.top, tableView.contentInset.left, tableView.contentInset.bottom+220.0, tableView.contentInset.right);
     /*if (textField == passwordTextField) {
         [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }*/
@@ -176,7 +172,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+    tableView.contentInset = UIEdgeInsetsMake(tableView.contentInset.top, tableView.contentInset.left, tableView.contentInset.bottom-220.0, tableView.contentInset.right);
 }
 
 
@@ -211,7 +207,7 @@
         }
     } else {
         if (indexPath.section == 1 && loginCell.textLabel.enabled) { //login button
-            [[GANTracker sharedTracker] trackPageview:@"/v3r1/authentication/click/login" withError:NULL];
+            [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/authentication/click/login"];
             [loadingIndicator startAnimating];
             [usernameTextField resignFirstResponder];
             [passwordTextField resignFirstResponder];
@@ -241,7 +237,7 @@
     return 0.0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+/*- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     
     NSString* text;
     if (isLoggedIn && section == 0) {
@@ -308,6 +304,28 @@
     }
     
     return nil;
+}*/
+
+- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    if ((section == 0 && isLoggedIn) || (section == 1 && !isLoggedIn)) {
+        NSString* text;
+        if (isLoggedIn) {
+            text = NSLocalizedStringFromTable(@"LoggedInExplanationLong", @"AuthenticationPlugin", nil);
+        } else {
+            if (errorMessage) {
+                text = errorMessage;
+            } else {
+                if (!hideGasparUsageAccountMessage) {
+                    text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"AuthenticationPlugin", nil);
+                } else {
+                    text = @"";
+                }
+            }
+        }
+        
+        return text;
+    }
+    return nil;
 }
 
 /* UITableViewDataSource delegation */
@@ -316,8 +334,8 @@
     switch (section) {
         case 0: //gaspar account
         {
-            if (isLoggedIn) {
-                return [NSString stringWithFormat:@"%@ « %@ »",NSLocalizedStringFromTable(@"LoggedInAs", @"AuthenticationPlugin", nil), [AuthenticationService savedUsername]];
+            if (isLoggedIn) { 
+                return [NSString stringWithFormat:NSLocalizedStringFromTable(@"LoggedInAsWithFormat", @"AuthenticationPlugin", nil), [AuthenticationService savedUsername]];
             }
             break;
         }
@@ -335,9 +353,7 @@
             if (isLoggedIn) { //logout button
                 UITableViewCell* logoutCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
                 logoutCell.textLabel.text = NSLocalizedStringFromTable(@"Logout", @"AuthenticationPlugin", nil);
-                logoutCell.textLabel.textAlignment = UITextAlignmentCenter;
-                //logoutCell.textLabel.textColor = [UIColor colorWithRed:81.0/255.0 green:102.0/255.0 blue:145.0/255.0 alpha:1.0];
-                logoutCell.selectionStyle = UITableViewCellSelectionStyleGray;
+                logoutCell.textLabel.textColor = [PCValues pocketCampusRed];
                 return logoutCell;
             } else { //username, password
                 switch (indexPath.row) {
@@ -394,13 +410,12 @@
             [loginCell release];
             loginCell = [cell retain];
             loginCell.textLabel.text = NSLocalizedStringFromTable(@"Login", @"AuthenticationPlugin", nil);
-            loginCell.textLabel.textAlignment = UITextAlignmentCenter;
-            //loginCell.textLabel.textColor = [UIColor colorWithRed:81.0/255.0 green:102.0/255.0 blue:145.0/255.0 alpha:1.0];
-            loginCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            loginCell.textLabel.textColor = [PCValues pocketCampusRed];
             loginCell.textLabel.enabled = NO;
             loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             [loginCell.contentView addSubview:loadingIndicator];
-            loadingIndicator.center = CGPointMake(30.0, 22.0);
+            loadingIndicator.center = CGPointMake(294.0, 22.0);
+            loadingIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
             [loadingIndicator release];
             [self inputFieldsDidChange];
             return cell;

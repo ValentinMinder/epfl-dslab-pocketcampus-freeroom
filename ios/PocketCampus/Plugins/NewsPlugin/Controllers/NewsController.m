@@ -30,9 +30,9 @@ static NewsController* instance __weak = nil;
             newsListViewController.title = [[self class] localizedName];
             
             if ([PCUtils isIdiomPad]) {
-                UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:newsListViewController];
+                PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:newsListViewController];
                 NewsSplashViewController* splashViewController = [[NewsSplashViewController alloc] init];
-                self.mainSplitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:splashViewController];
+                self.mainSplitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:[[PCNavigationController alloc] initWithRootViewController:splashViewController]];
                 self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
                 self.mainSplitViewController.delegate = self;
                 

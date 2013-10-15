@@ -10,8 +10,9 @@
 
 #import "map.h"
 
-@interface MapService : Service<ServiceProtocol>
+static NSString* kPersonsMapItemCategoryName = @"persons";
 
+@interface MapService : Service<ServiceProtocol>
 
 /*
  

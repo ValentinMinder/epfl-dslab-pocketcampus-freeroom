@@ -12,4 +12,15 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     typedef void (^VoidBlock)();
+    #import "PCConfig.h"
+    #import "PCUtils.h"
+    #import "PCValues.h"
+    #import "PCGAITracker.h"
+    #import "PCNavigationController.h"
+
+    #import "NSLayoutConstraint+Extras.h"
+    #import "UIActionSheet+Additions.h"
+    #import "UIPopoverController+Additions.h"
+    #import "LGRefreshControl+PCAdditions.h"
+
 #endif

@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import <QuartzCore/QuartzCore.h>
+#import "PCNavigationController.h"
 
-@interface PluginNavigationController : UINavigationController
+@interface PluginNavigationController : PCNavigationController
 
 @property (nonatomic, copy) NSString* pluginIdentifier;
 

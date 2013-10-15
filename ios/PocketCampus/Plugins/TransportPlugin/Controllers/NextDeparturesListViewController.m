@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
+
 
 #import "NextDeparturesListViewController.h"
 
@@ -50,7 +50,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/transport"];
     tableView.hidden = YES;
     tableView.rowHeight = 60.0;
     tableView.contentInset = tableView.contentInset = UIEdgeInsetsMake(0, 0, toolbar.frame.size.height, 0);

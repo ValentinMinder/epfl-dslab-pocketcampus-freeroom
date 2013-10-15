@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
+
 
 #import "AboutPCViewController.h"
 
@@ -33,7 +33,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/dashboard/settings/about" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/dashboard/settings/about"];
 	self.title = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
     self.view.backgroundColor = [PCValues backgroundColor1];
     webView.delegate = self;

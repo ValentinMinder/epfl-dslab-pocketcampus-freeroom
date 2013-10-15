@@ -10,13 +10,11 @@
 
 #import "PCUtils.h"
 
-#import "PCRefreshControl.h"
-
 #import "PCCenterMessageCell.h"
 
-#import "EventItemCell.h"
+#import "ZBarSDK.h"
 
-#import "GANTracker.h"
+#import "EventItemCell.h"
 
 #import "EventsUtils.h"
 
@@ -42,12 +40,14 @@
 
 #import "EventsShareFavoriteItemsViewController.h"
 
-@interface EventPoolViewController ()
+#import "UIImage+Additions.h"
+
+@interface EventPoolViewController ()<UIActionSheetDelegate, EventsServiceDelegate, ZBarReaderDelegate>
 
 @property (nonatomic) int64_t poolId;
 @property (nonatomic, strong) EventPool* eventPool;
 @property (nonatomic, strong) EventPoolReply* poolReply;
-@property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
+@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 @property (nonatomic, strong) EventsService* eventsService;
 
 @property (nonatomic) int32_t selectedPeriod; //see enum EventsPeriod in events.h
@@ -93,7 +93,7 @@ static NSString* kEventCell = @"EventCell";
 
 - (id)init
 {
-    self = [super initWithNibName:@"EventPoolView" bundle:nil];
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
 //#warning TO REMOVE
         //self.pastMode = YES;
@@ -115,7 +115,6 @@ static NSString* kEventCell = @"EventCell";
         self.poolId = pool.poolId;
         self.title = pool.poolTitle;
         self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
-        [self initRefreshControl];
     }
     return self;
 }
@@ -126,7 +125,6 @@ static NSString* kEventCell = @"EventCell";
         self.poolId = [eventsConstants CONTAINER_EVENT_ID];
         self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
         self.title = NSLocalizedStringFromTable(@"PluginName", @"EventsPlugin", nil);
-        [self initRefreshControl];
     }
     return self;
 }
@@ -139,7 +137,6 @@ static NSString* kEventCell = @"EventCell";
         if (self.eventPool) {
             self.title = self.eventPool.poolTitle;
         }
-        [self initRefreshControl];
     }
     return self;
 }
@@ -155,21 +152,26 @@ static NSString* kEventCell = @"EventCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromCurrentData) name:kFavoritesEventItemsUpdatedNotification object:self.eventsService];
-    self.tableView.rowHeight = [EventItemCell height];
-    if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
-        [[GANTracker sharedTracker] trackPageview:@"/v3r1/events" withError:NULL];
-    } else {
-        [[GANTracker sharedTracker] trackPageview:[NSString stringWithFormat:@"/v3r1/%lld/subevents", self.poolId] withError:NULL];
-    }
-    
-    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setTemporaryThumnail:[UIImage imageNamed:@"NoImageCell_64"]];
+    self.tableView = [[PCTableViewWithRemoteThumbnails alloc] init];
+    ((PCTableViewWithRemoteThumbnails*)(self.tableView)).thumbnailProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image) {
+        return [image imageByScalingAndCroppingForSize:CGSizeMake([EventItemCell preferredHeight], [EventItemCell preferredHeight]) applyDeviceScreenMultiplyingFactor:YES];
+    };
+    self.tableView.rowHeight = [EventItemCell preferredHeight];
+    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"events" dataName:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]]];
+    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     [self showButtonsConditionally];
     [self fillCollectionsFromReplyAndSelection];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.poolReply || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || self.eventPool.sendStarredItems) { //if sendStarredItems then list can change anytime and should be refreshed
+    if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
+        [[PCGAITracker sharedTracker] trackScreenWithName:@"/events"];
+    } else {
+#warning TODO
+        [[PCGAITracker sharedTracker] trackScreenWithName:[NSString stringWithFormat:@"/v3r1/%lld/subevents", self.poolId]];
+    }
+    if (!self.poolReply || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || self.eventPool.sendStarredItems) { //if sendStarredItems then list can change anytime and should be refreshed
         [self refresh];
     }
 }
@@ -180,15 +182,6 @@ static NSString* kEventCell = @"EventCell";
         return UIInterfaceOrientationMaskAll;
     } else {
         return UIInterfaceOrientationMaskPortrait;
-    }
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
-{
-    if ([PCUtils isIdiomPad]) {
-        return YES;
-    } else {
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
     }
 }
 
@@ -216,14 +209,9 @@ static NSString* kEventCell = @"EventCell";
     [self reselectLastSelectedItem];
 }
 
-- (void)initRefreshControl {
-    self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"events" refreshedDataIdentifier:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]];
-    [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
-}
-
 - (void)refresh {
     [self.eventsService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingEventPool", @"EventsPlugin", nil)];
+    [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingEventPool", @"EventsPlugin", nil)];
     [self startGetEventPoolRequest];
 }
 
@@ -270,14 +258,14 @@ static NSString* kEventCell = @"EventCell";
     NSMutableArray* rightElements = [NSMutableArray array];
 
     if (self.eventPool.enableScan) {
-        self.scanButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed)];
+        self.scanButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"CameraBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonPressed)];
         //self.scanButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Scan", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(cameraButtonPressed)];
         [rightElements addObject:self.scanButton];
     }
     
     if (!self.eventPool.disableFilterByCateg || !self.eventPool.disableFilterByTags) { //will also disable period filtering
         //self.filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Filter", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)];
-        self.filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"EyeBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)];
+        self.filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SortBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonPressed)];
         [rightElements addObject:self.filterButton];
     }
     
@@ -297,7 +285,7 @@ static NSString* kEventCell = @"EventCell";
         return;
     }
     EventsShareFavoriteItemsViewController* viewController = [[EventsShareFavoriteItemsViewController alloc] initWithRelatedEventPool:self.eventPool];
-    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navController animated:YES completion:NULL];
 }
@@ -712,8 +700,7 @@ static NSString* kEventCell = @"EventCell";
             [self fillCollectionsFromReplyAndSelection];
             [self.tableView reloadData];
             [self reselectLastSelectedItem];
-            [self.pcRefreshControl endRefreshing];
-            [self.pcRefreshControl markRefreshSuccessful];
+            [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             break;
         default:
             [self getEventPoolFailedForRequest:request];
@@ -730,30 +717,26 @@ static NSString* kEventCell = @"EventCell";
 }
 
 - (void)error {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
     [PCUtils showServerErrorAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
     [PCUtils showConnectionToServerTimedOutAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if ([self.itemsForSection count] == 0 || [self.itemsForSection[section] count] == 0) {
+    if ([self.itemsForSection count] == 0 || [(NSArray*)(self.itemsForSection[section]) count] == 0) {
         return 0.0;
     }
-    return [PCValues tableViewSectionHeaderHeight];
+    return [PCTableViewSectionHeader preferredHeight];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if ([self.itemsForSection[section] count] == 0) {
+    if ([(NSArray*)(self.itemsForSection[section]) count] == 0) {
         return nil;
     }
     
@@ -809,11 +792,7 @@ static NSString* kEventCell = @"EventCell";
     
     cell.eventItem = eventItem;
     
-    if ([self.eventPool.poolTitle isEqualToString:@"Schedule"]) { //special case to show hour for EDIC open house
-        cell.rightSubtitleLabel.text = [eventItem dateString:EventItemDateStyleMedium];
-    }
-    
-    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setThumbnailURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
+    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setImageURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
     
     return cell;
 }
@@ -825,7 +804,7 @@ static NSString* kEventCell = @"EventCell";
     if ([self.poolReply.childrenItems count] == 0 && self.eventPool.noResultText) {
         return 2; //first empty cell, second cell says no content
     }
-    return [self.itemsForSection[section] count];
+    return [(NSArray*)(self.itemsForSection[section]) count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -836,10 +815,8 @@ static NSString* kEventCell = @"EventCell";
     }
     
     if ([self.poolReply.childrenItems count] == 0 && self.eventPool.noResultText) {
-        [PCUtils addCenteredLabelInView:self.tableView withMessage:self.eventPool.noResultText];
         return 1;
     }
-    [PCUtils removeCenteredLabelInView:self.tableView];
     return [self.itemsForSection count];
 }
 

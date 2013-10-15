@@ -8,7 +8,7 @@
 
 #import "EPFLTileOverlay.h"
 
-#import "CustomOverlayView.h"
+#import "RemoteOverlayRenderer.h"
 
 #import "MapUtils.h"
 
@@ -28,7 +28,7 @@ static NSString* URL_ENDING = @".png";
     self = [super init];
     
     if (self) {
-        self.currentLayerLevel = 1;
+        self.currentLayerLevel = DEFAULT_LAYER_LEVEL;
         // I am still not well-versed in map projections, but the Google Mercator projection
         // is slightly off from the "standard" Mercator projection, used by MapKit. (GMerc is used
         // by the demo tileserver to serve to the Google Maps API script in a user's
@@ -65,7 +65,7 @@ static NSString* URL_ENDING = @".png";
     // Roughly within (48, 4), (44, 10), in degrees.
     // Turn center to bounds
     
-    if (zoomScale < MIN_ZOOM_SCALE) {
+    if (self.mapView.camera.altitude > MAX_ALTITUDE) {
         return NO;
     }
     
@@ -112,7 +112,7 @@ static NSString* URL_ENDING = @".png";
 }
 
 /*
- * NEW
+ * Dev tiles
  */
 
 /*- (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
@@ -162,11 +162,16 @@ static NSString* URL_ENDING = @".png";
     
     for(NSObject<MKOverlay>* overlay in self.mapView.overlays) {
         if([overlay isKindOfClass:self.class]){
-            CustomOverlayView* customOverlayView = (CustomOverlayView*)[self.mapView viewForOverlay:overlay];
-            [customOverlayView cancelTilesDownload:NO];
-            [customOverlayView setNeedsDisplayInMapRect:MKMapRectWorld];
+            RemoteOverlayRenderer* remoteOverlayRenderer = (RemoteOverlayRenderer*)[self.mapView rendererForOverlay:overlay];
+            [remoteOverlayRenderer cancelTilesDownload:NO];
+            [remoteOverlayRenderer setNeedsDisplayInMapRect:MKMapRectWorld];
         }
     }
+}
+
+- (BOOL)shouldAllowLayerChange {
+    CLLocationDistance altitude = self.mapView.camera.altitude/cos(self.mapView.camera.pitch*M_PI/180.0);
+    return altitude < 1200.0;
 }
 
 - (NSString*)identifier {

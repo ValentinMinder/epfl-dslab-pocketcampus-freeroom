@@ -6,7 +6,7 @@
 
 #import "ObjectArchiver.h"
 
-#import "STKeychain.h"
+#import "SSKeychain.h"
 
 @implementation AuthenticationService
 
@@ -61,7 +61,7 @@ static AuthenticationService* instance __weak = nil;
 
 + (NSString*)savedPasswordForUsername:(NSString*)username {
     NSError* error = nil;
-    NSString* password = [STKeychain getPasswordForUsername:username andServiceName:kKeychainServiceKey error:&error];
+    NSString* password = [SSKeychain passwordForService:kKeychainServiceKey account:username error:&error];
     if (error) {
         return nil;
     }
@@ -69,22 +69,11 @@ static AuthenticationService* instance __weak = nil;
 }
 
 + (BOOL)savePassword:(NSString*)password forUsername:(NSString*)username {
-    //return [ObjectArchiver saveObject:password forKey:kSavedPasswordKey andPluginName:@"authentication"];
-    NSError* error = nil;
-    [STKeychain storeUsername:username andPassword:password forServiceName:kKeychainServiceKey updateExisting:YES error:&error];
-    if (error) {
-        return NO;
-    }
-    return YES;
+    return [SSKeychain setPassword:password forService:kKeychainServiceKey account:username];
 }
 
 + (BOOL)deleteSavedPasswordForUsername:(NSString*)username {
-    NSError* error = nil;
-    [STKeychain deleteItemForUsername:username andServiceName:kKeychainServiceKey error:&error];
-    if (error) {
-        return NO;
-    }
-    return YES;
+    return [SSKeychain deletePasswordForService:kKeychainServiceKey account:username];
 }
 
 + (NSNumber*)savePasswordSwitchWasOn {

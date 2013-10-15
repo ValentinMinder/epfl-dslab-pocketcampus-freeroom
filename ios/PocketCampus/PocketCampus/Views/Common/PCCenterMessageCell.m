@@ -25,9 +25,9 @@ static CGFloat kTopBottomMargins = 6.0;
     if (self) {
         self.messageTextLabel = [[UILabel alloc] init];
         self.messageTextLabel.text = message;
-        self.messageTextLabel.textColor = [UIColor colorWithRed:0.521569 green:0.521569 blue:0.521569 alpha:1.0]; //pretty light gray
-        self.messageTextLabel.font = [UIFont boldSystemFontOfSize:16.0];
-        self.messageTextLabel.textAlignment = UITextAlignmentCenter;
+        self.messageTextLabel.textColor = [UIColor grayColor];
+        self.messageTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        self.messageTextLabel.textAlignment = NSTextAlignmentCenter;
         self.messageTextLabel.numberOfLines = 0;
         self.messageTextLabel.adjustsFontSizeToFitWidth = YES;
         self.messageTextLabel.backgroundColor = [UIColor clearColor];

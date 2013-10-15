@@ -10,7 +10,9 @@
 #import "PCUtils.h"
 #import "PluginNavigationController.h"
 #import "DirectorySearchViewController.h"
+#import "DirectoryPersonViewController.h"
 #import "DirectoryEmptyDetailViewController.h"
+#import "DirectoryService.h"
 
 static DirectoryController* instance __weak = nil;
 
@@ -35,9 +37,9 @@ static DirectoryController* instance __weak = nil;
             self.directorySearchViewController.title = [[self class] localizedName];
             
             if ([PCUtils isIdiomPad]) {
-                UINavigationController* navController =  [[UINavigationController alloc] initWithRootViewController:self.directorySearchViewController];
+                PCNavigationController* navController =  [[PCNavigationController alloc] initWithRootViewController:self.directorySearchViewController];
                 DirectoryEmptyDetailViewController* emptyDetailViewController = [[DirectoryEmptyDetailViewController alloc] init];
-                PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:emptyDetailViewController];
+                PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:[[PCNavigationController alloc] initWithRootViewController:emptyDetailViewController]];
                 splitViewController.pluginIdentifier = [[self class] identifierName];
                 splitViewController.delegate = self;
                 self.mainSplitViewController = splitViewController;
@@ -91,14 +93,14 @@ static DirectoryController* instance __weak = nil;
     if ([action isEqualToString:@"search"]) { //search in EPFL directory
         NSString* query = parameters[@"q"];
         if (query) {
-            return [[PCUnkownPersonViewController alloc] initAndLoadPersonWithFullName:query];
+            return [[DirectoryPersonViewController alloc] initAndLoadPersonWithFullName:query];
         }
     } else if ([action isEqualToString:@"view"]) {
         @try {
             if (parameters.count > 0) {
                 Person* person = [Person new];
                 [person setValuesForKeysWithDictionary:parameters];
-                return [[PCUnkownPersonViewController alloc] initWithPerson:person];
+                return [[DirectoryPersonViewController alloc] initWithPerson:person];
             }
         }
         @catch (NSException *exception) {

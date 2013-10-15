@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
+
 
 #import "TransportSettingsViewController.h"
 
@@ -35,7 +35,7 @@ static int kBestResultSwitchTag = 2;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/settings" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/transport/settings"];
     self.title = NSLocalizedStringFromTable(@"TransportSettings", @"TransportPlugin", nil);
     tableView.backgroundColor = [UIColor clearColor];
     UIView* backgroundView = [[UIView alloc] initWithFrame:tableView.frame];

@@ -10,8 +10,14 @@
 
 @implementation UIImage (Additions)
 
-- (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize
+- (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
 {
+    
+    if (applyFactor && [PCUtils isRetinaDevice]) {
+        targetSize.width = targetSize.width * 2.0;
+        targetSize.height = targetSize.height * 2.0;
+    }
+    
     UIImage *sourceImage = self;
     UIImage *newImage = nil;
     CGSize imageSize = sourceImage.size;

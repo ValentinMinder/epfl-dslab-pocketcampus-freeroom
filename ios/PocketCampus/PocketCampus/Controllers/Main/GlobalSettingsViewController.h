@@ -10,9 +10,7 @@
 
 @class MainController;
 
-@interface GlobalSettingsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
-
-@property (nonatomic, assign) IBOutlet UITableView* tableView;
+@interface GlobalSettingsViewController : UITableViewController
 
 - (id)initWithMainController:(MainController*)mainController;
 

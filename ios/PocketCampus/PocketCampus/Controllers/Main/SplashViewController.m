@@ -36,9 +36,6 @@
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)]; //any non-null size. AutoresizingMask will stretch to full screen size
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view.autoresizesSubviews = YES;
-
-    self.view.layer.cornerRadius = [PCValues defaultCornerRadius];
-    self.view.layer.masksToBounds = YES;
     
     self.splashViewImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PocketCampusDrawing"]];
     self.splashViewImage.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin
@@ -47,7 +44,8 @@
     | UIViewAutoresizingFlexibleBottomMargin;
     self.splashViewImage.center = self.view.center;
     self.view.backgroundColor = [UIColor colorWithRed:0.961 green:0.957 blue:0.941 alpha:1.0];
-
+    //self.view.backgroundColor = [UIColor colorWithRed:0.400000 green:0.400000 blue:0.400000 alpha:1.0];
+    
     [self.view addSubview:self.splashViewImage];
 }
 
@@ -60,6 +58,15 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.splashViewImage.center = self.view.center;
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    if ([PCUtils isIdiomPad]) {
+        return UIInterfaceOrientationMaskAll;
+    } else {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    
 }
 
 - (void)willMoveToRightWithDuration:(NSTimeInterval)duration hideDrawingOnIdiomPhone:(BOOL)hideDrawingOnIdiomPhone {
@@ -75,28 +82,4 @@
         }
     }
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if ([PCUtils isIdiomPad]) {
-        return YES;
-    } else {
-        return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
-    }
-}
-
-- (NSUInteger)supportedInterfaceOrientations {
-    if ([PCUtils isIdiomPad]) {
-        return UIInterfaceOrientationMaskAll;
-    } else {
-        return UIInterfaceOrientationMaskPortrait;
-    }
-    
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 @end

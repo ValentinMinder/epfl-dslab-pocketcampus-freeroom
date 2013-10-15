@@ -25,10 +25,4 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	self.view.backgroundColor = [PCValues backgroundColor1];
-}
-
 @end

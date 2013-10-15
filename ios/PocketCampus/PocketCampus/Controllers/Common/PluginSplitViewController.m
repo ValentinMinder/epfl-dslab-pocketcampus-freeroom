@@ -34,19 +34,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.layer.cornerRadius = [PCValues defaultCornerRadius];
-    self.view.layer.masksToBounds = YES;
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
     return UIInterfaceOrientationMaskAll; //always force support of all orientations on iPad (split view controller)
     
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS<=5
-{
-    return YES; //always force support of all orientations on iPad (split view controller)
 }
 
 #pragma mark - Toggle button generation

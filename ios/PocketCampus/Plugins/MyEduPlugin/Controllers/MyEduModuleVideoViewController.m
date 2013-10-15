@@ -22,7 +22,7 @@
 
 #import "UIPopoverController+Additions.h"
 
-#import "GANTracker.h"
+
 
 @interface MyEduModuleVideoViewController ()
 
@@ -57,7 +57,7 @@ static NSTimeInterval kSaveLastPlaybackTimePeriod = 2.0; //seconds
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/myedu/sections/modules/video" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/myedu/sections/modules/video"];
 	// Do any additional setup after loading the view.
     //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LightGrayTextureBackground"]];
     

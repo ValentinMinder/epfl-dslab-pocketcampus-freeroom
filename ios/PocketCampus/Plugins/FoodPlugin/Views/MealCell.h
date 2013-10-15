@@ -11,7 +11,6 @@
 #import "FoodService.h"
 #import "PCValues.h"
 #import "JSFavStarControl.h"
-#import "UIDevice+IdentifierAddition.h"
 
 @class MenusListViewController;
 

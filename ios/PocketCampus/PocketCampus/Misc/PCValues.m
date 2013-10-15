@@ -10,13 +10,14 @@
 
 #import "PCUtils.h"
 
+#import "PCTableViewSectionHeader.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 @implementation PCValues
 
 + (void)applyAppearenceProxy {
-    UINavigationBar *navigationBarAppearance = [UINavigationBar appearance];
-    navigationBarAppearance.tintColor = [PCValues pocketCampusRed];
+    //nothing for now
 }
 
 + (UIImage*)imageForGenericGreyButton {
@@ -31,24 +32,19 @@
     return [[UIImage imageNamed:@"GenericResizableShadow"] resizableImageWithCapInsets:UIEdgeInsetsMake(60, 60, 60, 60)];
 }
 
-+ (float)defaultCornerRadius {
-    if ([PCUtils isIdiomPad]) {
-        return 5.0;
-    } else {
-        return 2.0;
-    }
-}
-
 + (UIColor*)pocketCampusRed {
-    return [UIColor colorWithRed:0.66666 green:0 blue:0.101960 alpha:1.0]; //170, 0, 26
+    //return [UIColor redColor];
+    return [UIColor colorWithRed:0.858824 green:0.062745 blue:0.062745 alpha:1.0]; //220, 16, 16
+    //return [UIColor colorWithRed:0.66666 green:0 blue:0.101960 alpha:1.0]; //170, 0, 26
 }
 
 + (UIColor*)backgroundColor1 {
-    return [UIColor colorWithWhite:0.93 alpha:1.0];
+    return [UIColor whiteColor];
+    //return [UIColor colorWithWhite:0.93 alpha:1.0];
 }
 
 + (UIColor*)textColor1 {
-    return [UIColor colorWithWhite:0.2 alpha:1.0];;
+    return [UIColor colorWithWhite:0.25 alpha:1.0];;
 }
 
 + (UIColor*)textColorLocationBlue {
@@ -56,7 +52,8 @@
 }
 
 + (CGSize)shadowOffset1 {
-    return CGSizeMake(0.0, 1.0);
+    return CGSizeMake(0, 0);
+    //return CGSizeMake(0.0, 1.0);
 }
 
 + (UIColor*)shadowColor1 {
@@ -72,7 +69,7 @@
 }
 
 + (CGFloat)tableViewSectionHeaderHeight {
-    return 28.0;
+    return [PCTableViewSectionHeader preferredHeight];
 }
 
 @end

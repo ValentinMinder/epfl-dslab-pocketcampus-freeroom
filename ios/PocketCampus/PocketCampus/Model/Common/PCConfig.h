@@ -65,6 +65,7 @@ static NSString* PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT __unused = @"CONFIG_LOADE
 
 static NSInteger PC_PROD_GAN_DISPATCH_PERIOD_SEC __unused = 10; // The constant is used in AppDelegate when starting the GAN tracker
 
+static NSString* PC_PROD_APP_VERSION_KEY __unused = @"APP_VERSION";
 
 @interface PCConfig : NSObject
 

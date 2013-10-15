@@ -34,13 +34,12 @@ static EventsController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
-        
             EventPoolViewController* rootPoolViewController = [[EventPoolViewController alloc] initAndLoadRootPool];
             
             if ([PCUtils isIdiomPad]) {
-                UINavigationController* navController =  [[UINavigationController alloc] initWithRootViewController:rootPoolViewController];
+                PCNavigationController* navController =  [[PCNavigationController alloc] initWithRootViewController:rootPoolViewController];
                 EventsSplashDetailViewController* splashDetailViewController = [[EventsSplashDetailViewController alloc] init];
-                PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:splashDetailViewController];
+                PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:[[PCNavigationController alloc] initWithRootViewController:splashDetailViewController]];
                 splitViewController.pluginIdentifier = [[self class] identifierName];
                 splitViewController.delegate = self;
                 self.mainSplitViewController = splitViewController;
@@ -51,6 +50,8 @@ static EventsController* instance __weak = nil;
             }
             
             self.eventsService = [EventsService sharedInstanceToRetain];
+            //#warning TO REMOVE
+            //[self.eventsService addUserTicket:@"amer"];
             
             instance = self;
         }

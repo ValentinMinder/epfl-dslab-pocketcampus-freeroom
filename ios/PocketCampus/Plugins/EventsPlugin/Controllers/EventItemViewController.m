@@ -8,19 +8,11 @@
 
 #import "EventItemViewController.h"
 
-#import "PCUtils.h"
-
 #import "PCCenterMessageCell.h"
-
-#import "EventItemCell.h"
-
-#import "GANTracker.h"
 
 #import "EventsUtils.h"
 
 #import "PCTableViewSectionHeader.h"
-
-#import "PCValues.h"
 
 #import "EventItem+Additions.h"
 
@@ -34,7 +26,9 @@
 
 #import "ASIHTTPRequest.h"
 
-@interface EventItemViewController ()
+#import "ZBarSDK.h"
+
+@interface EventItemViewController ()<EventsServiceDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic) int64_t eventId;
 @property (nonatomic, strong) EventItem* eventItem;
@@ -45,7 +39,10 @@
 
 @property (nonatomic, strong) NSArray* childrenPools; //array of EventPool sorted by Id
 
-@property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, strong) IBOutlet UILabel* centerMessageLabel;
+@property (nonatomic, strong) IBOutlet UITableView* tableView;
+@property (nonatomic, strong) UIWebView* webView;
 
 @end
 
@@ -88,25 +85,18 @@ static NSString* kPoolCell = @"PoolCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[GANTracker sharedTracker] trackPageview:[NSString stringWithFormat:@"/v3r1/events/%lld", self.eventId] withError:NULL];
-    self.view.backgroundColor = [PCValues backgroundColor1];
     self.tableView.backgroundColor = [UIColor clearColor];
-    UIView* backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
-    backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    backgroundView.backgroundColor = [PCValues backgroundColor1];;
-    self.tableView.backgroundView = backgroundView;
-    
-    if (self.eventItem) {
+    if (self.eventItem && self.eventItem.childrenPools.count == 0) {
         [self loadEvent];
+    } else {
+        [self refresh];
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+        [[PCGAITracker sharedTracker] trackScreenWithName:[NSString stringWithFormat:@"/v3r1/events/%lld", self.eventId]];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-    if (!self.eventItem || ([self.eventItem.childrenPools count] > 0 && !self.itemReply)) {
-        [self refresh];
-    }
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -115,15 +105,6 @@ static NSString* kPoolCell = @"PoolCell";
         return UIInterfaceOrientationMaskAll;
     } else {
         return UIInterfaceOrientationMaskPortrait;
-    }
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
-{
-    if ([PCUtils isIdiomPad]) {
-        return YES;
-    } else {
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
     }
 }
 
@@ -147,15 +128,9 @@ static NSString* kPoolCell = @"PoolCell";
 
 - (void)startGetEventItemRequest {    
     EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:nil userTickets:[self.eventsService allUserTickets] lang:[PCUtils userLanguageCode]];
-    
     [self.eventsService getEventItemForRequest:req delegate:self];
-    if (!self.loadingIndicator) {
-        self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        self.loadingIndicator.color = [UIColor colorWithWhite:0.3 alpha:1.0];
-        [self.scrollView addSubview:self.loadingIndicator];
-        self.loadingIndicator.center = self.scrollView.center;
-        [self.loadingIndicator startAnimating];
-    }
+    [self.loadingIndicator startAnimating];
+    self.tableView.hidden = YES;
 }
 
 #pragma mark - Collections fill
@@ -185,7 +160,6 @@ static NSString* kPoolCell = @"PoolCell";
     }
 }
 
-
 #pragma mark - Views loads
 
 - (void)loadEvent {
@@ -195,11 +169,6 @@ static NSString* kPoolCell = @"PoolCell";
     
     self.title = self.eventItem.eventTitle;
     [self refreshFavoriteButton];
-    
-    if ([self.eventItem.childrenPools count] == 0) {
-        self.webView.frame = self.view.frame;
-        self.tableView.hidden = YES;
-    }
     [self loadWebView];
 }
 
@@ -208,24 +177,8 @@ static NSString* kPoolCell = @"PoolCell";
         self.navigationItem.rightBarButtonItem = nil;
         return;
     }
-    UIImage* image = nil;
-    if ([self.eventsService isEventItemIdFavorite:self.eventItem.eventId]) {
-        image = [UIImage imageNamed:@"FavoriteGlowNavBarButton"];
-    } else {
-        image = [UIImage imageNamed:@"FavoriteNavBarButton"];
-    }
-    
-    if (!self.navigationItem.rightBarButtonItem) {        
-        UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 42.0, 42.0)];
-        [button setImage:image forState:UIControlStateNormal];
-        button.adjustsImageWhenHighlighted = NO;
-        button.showsTouchWhenHighlighted = NO;
-        [button addTarget:self action:@selector(addRemoveFavoritesButtonPressed) forControlEvents:UIControlEventTouchDown];        
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:button] animated:NO];
-        
-    } else {
-        [(UIButton*)(self.navigationItem.rightBarButtonItem.customView) setImage:image forState:UIControlStateNormal];
-    }
+    UIImage* image = [UIImage imageNamed:[self.eventsService isEventItemIdFavorite:self.eventItem.eventId] ? @"FavoriteGlowNavBarButton" : @"FavoriteNavBarButton"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(addRemoveFavoritesButtonPressed)];
 }
 
 - (void)loadWebView {
@@ -308,43 +261,23 @@ static NSString* kPoolCell = @"PoolCell";
         html = [html stringByReplacingOccurrencesOfString:key withString:replacement];
     }];
     
-    self.webView.delegate = self;
-    
+    if (!self.webView) {
+        self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 1.0)];
+        self.webView.delegate = self;
+        self.webView.scrollView.scrollEnabled = NO;
+        self.tableView.tableHeaderView = self.webView;
+    }
     [self.webView loadHTMLString:html baseURL:[NSURL fileURLWithPath:@"/"]];
-}
-
-- (void)finalizeElementsPositionAndSize {
-    self.tableView.scrollEnabled = NO;
-    self.tableView.frame = CGRectMake(0, self.webView.frame.origin.y + self.webView.frame.size.height, self.tableView.frame.size.width, self.tableView.contentSize.height);
-    [self.scrollView setContentSize: CGSizeMake(self.webView.frame.size.width, self.webView.frame.size.height + self.tableView.frame.size.height)];
 }
 
 #pragma mark - UIWebViewDelegate
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
-    if ([self.eventItem.childrenPools count] == 0) {
-        return;
-    }
-    aWebView.scrollView.scrollEnabled = NO;    // Property available in iOS 5.0 and later
-    /*CGRect frame = aWebView.frame;
-    
-    frame.size.width = self.view.frame.size.width;       // Your desired width here.
-    frame.size.height = 1;        // Set the height to a small one.
-    
-    aWebView.frame = frame;       // Set webView's Frame, forcing the Layout of its embedded scrollView with current Frame's constraints (Width set above).
-    
-    frame.size.height = aWebView.scrollView.contentSize.height;  // Get the corresponding height from the webView's embedded scrollView.
-    
-    aWebView.frame = frame;*/
-    
-    CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:
-                         @"document.body.scrollHeight"] floatValue];
+    CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
     
     self.webView.frame = CGRectMake(0, 0, self.webView.frame.size.width, height);
-
-    self.webView.hidden = NO;
     
-    [self finalizeElementsPositionAndSize];
+    self.tableView.tableHeaderView = self.webView; //makes table view look at webview's frame again and adapt first section y
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -367,15 +300,14 @@ static NSString* kPoolCell = @"PoolCell";
     switch (reply.status) {
         case 200:
             [self.loadingIndicator stopAnimating];
+            self.tableView.hidden = NO;
             self.eventId = reply.eventItem.eventId;
             self.eventItem = reply.eventItem;
             self.itemReply = reply;
-            [self loadEvent];
             [self fillChildrenPools];
             [self.tableView reloadData];
-            [self finalizeElementsPositionAndSize];
+            [self loadEvent];
             break;
-            
         default:
             [self getEventItemFailedForRequest:request];
             break;
@@ -388,17 +320,23 @@ static NSString* kPoolCell = @"PoolCell";
 
 - (void)error {
     [self.loadingIndicator stopAnimating];
-    [PCUtils addCenteredLabelInView:self.scrollView withMessage:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil)];
+    self.centerMessageLabel.hidden = YES;
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
     self.tableView.hidden = YES;
 }
 
 - (void)serviceConnectionToServerTimedOut {
     [self.loadingIndicator stopAnimating];
-    [PCUtils addCenteredLabelInView:self.scrollView withMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil)];
+    self.centerMessageLabel.hidden = YES;
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     self.tableView.hidden = YES;
 }
 
 #pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 1.0;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!self.childrenPools.count) {
@@ -451,7 +389,7 @@ static NSString* kPoolCell = @"PoolCell";
         }
     }
     
-    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setThumbnailURL:[NSURL URLWithString:eventPool.poolPicture] forCell:cell atIndexPath:indexPath];
+    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setImageURL:[NSURL URLWithString:eventPool.poolPicture] forCell:cell atIndexPath:indexPath];
     
     return cell;
 }

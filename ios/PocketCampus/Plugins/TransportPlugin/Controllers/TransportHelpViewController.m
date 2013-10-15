@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
+
 
 #import "TransportHelpViewController.h"
 
@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/help" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/transport/help"];
 	self.title = NSLocalizedStringFromTable(@"TransportHelp", @"TransportPlugin", nil);
     self.view.backgroundColor = [PCValues backgroundColor1];
     webView.backgroundColor = [UIColor clearColor];

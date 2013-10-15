@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "GANTracker.h"
-
 #import "DirectorySearchViewController.h"
 
 #import "MapController.h"
@@ -24,7 +22,19 @@
 
 #import "PushNotifController.h"
 
-@interface DirectorySearchViewController ()
+#import "DirectoryPersonViewController.h"
+
+#import "DirectoryService.h"
+
+typedef enum {
+    ResutlsModeNotStarted = 0,
+    ResultsModeSearch = 1,
+    ResultsModeAutocomplete = 2,
+    ResultsModeRecentSearches = 3,
+    ResultsModeFailed = 4
+} ResultsMode;
+
+@interface DirectorySearchViewController ()<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, DirectoryServiceDelegate>
  
 @property (nonatomic, strong) DirectoryService* directoryService;
 @property (nonatomic, strong) NSTimer* typingTimer;
@@ -32,10 +42,17 @@
 @property (nonatomic, strong) NSArray* searchResults; //array of Person*
 @property (nonatomic, strong) NSMutableOrderedSet* recentSearches; //ordered mutable set of NSString*  (most recent at index 0)
 @property (nonatomic) ResultsMode resultsMode;
-@property (nonatomic, strong) PCUnkownPersonViewController* personViewController;
+@property (nonatomic, strong) DirectoryPersonViewController* personViewController;
 @property (nonatomic, strong) Person* displayedPerson;
 @property (nonatomic) BOOL skipNextSearchBarValueChange;
 @property (nonatomic) BOOL searchBarWasFirstResponder;
+
+@property (nonatomic, weak) IBOutlet UISearchBar* searchBar;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* barActivityIndicator;
+@property (nonatomic, weak) IBOutlet UITableView* tableView;
+@property (nonatomic, weak) IBOutlet UILabel* messageLabel;
+@property (nonatomic, weak) IBOutlet UIImageView* backgroundIcon;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* backgroundIconCenterYConstraint;
 
 //#warning TO REMOVE, tests for PushNotif
 //@property (nonatomic, strong) PushNotifController* pushController;
@@ -70,12 +87,14 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/directory" withError:NULL];
-    if ([PCUtils isIdiomPad]) {
+    /*if ([PCUtils isIdiomPad]) {
         self.barActivityIndicator.frame = CGRectOffset(self.barActivityIndicator.frame, 0, 1.0);
+    }*/
+    if ([PCUtils isIdiomPad]) {
+        self.backgroundIconCenterYConstraint.constant = 130.0;
     }
-    
+    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length+self.searchBar.frame.size.height, 0.0, 0.0, 0.0);
+    self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchFieldPlaceholder", @"DirectoryPlugin", @"");
     [self.searchBar setIsAccessibilityElement:YES];
     self.searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
@@ -98,6 +117,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/directory"];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     self.displayedPerson = nil;
     self.personViewController = nil; //so that profile picture request does not try to set picture for personViewController that is no longer displayed (and thus released)
@@ -137,11 +157,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 - (void)showNoResultMessage {
     [self.barActivityIndicator stopAnimating];
     self.tableView.hidden = YES;
@@ -155,12 +170,12 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         [self showEmptyDetailViewController];
         return;
     }
-    self.personViewController = [[PCUnkownPersonViewController alloc] initWithPerson:person];
+    self.personViewController = [[DirectoryPersonViewController alloc] initWithPerson:person];
 
-    //self.personViewController = [[PCUnkownPersonViewController alloc] initAndLoadPersonWithFullName:@"fdgkjdfhglkjdfhsg" delegate:self]; //TEST
+    //self.personViewController = [[DirectoryPersonViewController alloc] initAndLoadPersonWithFullName:person.fullFirstnameLastname]; //TEST
     
     if (self.splitViewController) {
-        UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:self.personViewController];
+        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:self.personViewController];
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], navController];
     } else {
         [self.navigationController pushViewController:self.personViewController animated:YES];
@@ -170,7 +185,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (void)showEmptyDetailViewController {
     if (self.splitViewController) {
-        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[DirectoryEmptyDetailViewController alloc] init]];
+        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:[DirectoryEmptyDetailViewController new]]];
     }
     self.displayedPerson = nil;
 }
@@ -455,7 +470,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         UITableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kAutocompleteResultCellIdentifier];
         if (newCell == nil) {
             newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kAutocompleteResultCellIdentifier];
-            newCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
             newCell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         } else {
             [(UIActivityIndicatorView*)(newCell.accessoryView) stopAnimating];
@@ -466,7 +481,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         UITableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kSearchResultCellIdentifier];
         if (newCell == nil) {
             newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSearchResultCellIdentifier];
-            newCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         }
         /* Remove secondary first names */
         Person* person = [self.searchResults objectAtIndex:indexPath.row];
@@ -491,7 +506,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         PCRecentResultTableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kRecentSearchCellIdentifier];
         if (newCell == nil) {
             newCell = [[PCRecentResultTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRecentSearchCellIdentifier];
-            newCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
             newCell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         } else {
             [(UIActivityIndicatorView*)(newCell.accessoryView) stopAnimating];

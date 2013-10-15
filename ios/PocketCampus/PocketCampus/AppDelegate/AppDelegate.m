@@ -14,7 +14,7 @@
 
 #import "PCValues.h"
 
-#import "GANTracker.h"
+#import "PCGAITracker.h"
 
 #import "MyEduServiceTests.h"
 
@@ -36,10 +36,6 @@ static id test __strong __unused = nil;
 
 @synthesize window = _window;
 
-- (void)dealloc
-{
-    [[GANTracker sharedTracker] stopTracker];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -49,26 +45,14 @@ static id test __strong __unused = nil;
     /* Initialize defaults with PC config */
     [PCConfig initConfig];
     
-    /* Start Google Analytics tracker if enabled in config */
-    if ([[PCConfig defaults] boolForKey:PC_CONFIG_GAN_ENABLED_KEY]) {
-        NSLog(@"-> Starting Google Analytics tracker");
-        NSString* ganId = (NSString*)[[PCConfig defaults] objectForKey:PC_CONFIG_GAN_TRACKING_CODE_KEY];
-        if (ganId) {
-            [[GANTracker sharedTracker] startTrackerWithAccountID:ganId dispatchPeriod:10 delegate:self];
-        } else {
-            NSLog(@"!! ERROR: could not start Google Analytics tracker because tracking code is absent from config.");
-        }
+    NSURLCache* cache = [[NSURLCache alloc] initWithMemoryCapacity:4*1024*1024 diskCapacity:100*1024*1024 diskPath:nil];
+    [NSURLCache setSharedURLCache:cache];
         
-    } else {
-        NSLog(@"-> Google Analytics disabled (config)");
-    }
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
     
     self.mainController = [[MainController alloc] initWithWindow:self.window];
-    
     
     /* TESTS */
     
@@ -167,16 +151,6 @@ static id test __strong __unused = nil;
 
 + (NSString*)nsNotificationNameForPluginLowerIdentifier:(NSString*)pluginLowerIdentifier {
     return [NSString stringWithFormat:@"%@_%@", RemoteNotifForPluginName, pluginLowerIdentifier];
-}
-
-/* Google Analytics Delegation */
-
-- (void)trackerDispatchDidComplete:(GANTracker *)tracker eventsDispatched:(NSUInteger)eventsDispatched eventsFailedDispatch:(NSUInteger)eventsFailedDispatch {
-    NSLog(@"-> Google Analytics Dispatch: succeeded:%i, failed:%i",eventsDispatched,eventsFailedDispatch);
-}
-
-- (void)hitDispatched:(NSString *)hitString {
-    //NSLog(@"Google Analytics hitDispatched: %@",hitString);
 }
 
 @end

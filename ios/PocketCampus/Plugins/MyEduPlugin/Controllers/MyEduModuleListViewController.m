@@ -12,8 +12,6 @@
 
 #import "PCUtils.h"
 
-#import "PCRefreshControl.h"
-
 #import "PCCenterMessageCell.h"
 
 #import "MyEduController.h"
@@ -22,7 +20,7 @@
 
 #import "PCTableViewCellAdditions.h"
 
-#import "GANTracker.h"
+
 
 static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
 
@@ -33,7 +31,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
 @property (nonatomic, strong) MyEduSection* section;
 @property (nonatomic, strong) NSArray* modules;
 @property (nonatomic, strong) MyEduTequilaToken* tequilaToken;
-@property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
+@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 @property (nonatomic, strong) MyEduModule* selectedMyEduModule;
 @property (nonatomic, strong) NSDictionary* cellForMyEduModule;
 
@@ -54,8 +52,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
         if (self.modules) {
             [self initCellsWithModules];
         }
-        self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self pluginName:@"myedu" refreshedDataIdentifier:[NSString stringWithFormat:@"myEduSectionList-%d-%d", self.course.iId, self.section.iId]];
-        [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+        self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"myEdu" dataName:[NSString stringWithFormat:@"myEduSectionList-%d-%d", self.course.iId, self.section.iId]]];
+        [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
 }
@@ -63,7 +61,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/myedu/sections/modules" withError:NULL];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/myedu/sections/modules"];
     /*UIView* backgroundView = [[UIView alloc] init];
      backgroundView.backgroundColor = [UIColor whiteColor];
      self.tableView.backgroundView = backgroundView;
@@ -72,7 +70,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.modules || [self.pcRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
+    if (!self.modules || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
 }
@@ -99,7 +97,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
 
 - (void)refresh {
     [self.myEduService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"DownloadingModuleList", @"MyEduPlugin", nil)];
+    [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"DownloadingModuleList", @"MyEduPlugin", nil)];
     [self startGetSectionDetailsRequest];
 }
 
@@ -112,7 +110,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
     } else {
         NSLog(@"-> No saved session, loggin in...");
         [[MyEduController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
-            [self.pcRefreshControl endRefreshing];
+            [self.lgRefreshControl endRefreshing];
         } failureBlock:^{
             [self error];
         }];
@@ -187,8 +185,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
             self.modules = [modulesWithoutHidden copy]; //non-mutable
             [self initCellsWithModules];
             [self.tableView reloadData];
-            [self.pcRefreshControl endRefreshing];
-            [self.pcRefreshControl markRefreshSuccessful];
+            [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             break;
         }
         case 407:
@@ -206,17 +203,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 86400.0; //1 day
 }
 
 - (void)error {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil);
     [PCUtils showServerErrorAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
     [PCUtils showConnectionToServerTimedOutAlert];
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
 #pragma mark - UITableViewDelegate

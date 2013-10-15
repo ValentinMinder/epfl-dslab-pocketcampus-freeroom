@@ -25,7 +25,7 @@ static NSString* kCategoryCell = @"CategoryCell";
 
 - (id)initWithCategories:(NSArray*)allCategories selectedInitially:(NSArray*)selectedInitially userValidatedSelectionBlock:(void (^)(NSArray* newlySelected))userValidatedSelectionBlock
 {
-    self = [super initWithNibName:@"EventsCategorySelectorView" bundle:nil];
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         [PCUtils throwExceptionIfObject:allCategories notKindOfClass:[NSArray class]];
         self.allCategories = allCategories;
@@ -49,15 +49,6 @@ static NSString* kCategoryCell = @"CategoryCell";
         return UIInterfaceOrientationMaskAll;
     } else {
         return UIInterfaceOrientationMaskPortrait;
-    }
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
-{
-    if ([PCUtils isIdiomPad]) {
-        return YES;
-    } else {
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
     }
 }
 

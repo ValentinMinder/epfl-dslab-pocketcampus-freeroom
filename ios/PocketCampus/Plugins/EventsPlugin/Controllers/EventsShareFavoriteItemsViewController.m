@@ -10,11 +10,7 @@
 
 #import "EditableTableViewCell.h"
 
-#import "PCUtils.h"
-
-#import "PCValues.h"
-
-@interface EventsShareFavoriteItemsViewController ()
+@interface EventsShareFavoriteItemsViewController ()<EventsServiceDelegate>
 
 @property (nonatomic, strong) EventsService* eventsService;
 
@@ -43,15 +39,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.tableView.backgroundColor = [UIColor clearColor];
-    UIView* backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
-    backgroundView.backgroundColor = [PCValues backgroundColor1];;
-    self.tableView.backgroundView = backgroundView;
-    
-	
-    
-    //self.tableView.tableHeaderView = headerLabel;
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Send", @"PocketCampus", nil) style:UIBarButtonItemStyleDone target:self action:@selector(sendPressed)];
@@ -166,11 +153,8 @@
         headerLabel.text = NSLocalizedStringFromTable(@"SendByEmailInstructions", @"EventsPlugin", nil);
         headerLabel.backgroundColor = [UIColor clearColor];
         headerLabel.numberOfLines = 0;
-        headerLabel.textAlignment = UITextAlignmentCenter;
-        headerLabel.font = [UIFont systemFontOfSize:16.0];
-        headerLabel.textColor = [PCValues textColor1];
-        headerLabel.shadowColor = [PCValues shadowColor1];
-        headerLabel.shadowOffset = [PCValues shadowOffset1];
+        headerLabel.textAlignment = NSTextAlignmentCenter;
+        headerLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         return headerLabel;
     }
     return nil;

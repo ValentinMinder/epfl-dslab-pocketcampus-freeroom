@@ -10,6 +10,9 @@
 
 #import "food.h"
 
+//actually used, Xcode deos not simply see it, do not remove.
+static NSString* kFavoritesRestaurantsUpdatedNotificationName __unused = @"FavoritesRestaurantsUpdated";
+
 @interface FoodService : Service<ServiceProtocol>
 
 /*
@@ -24,6 +27,12 @@
  - (int) setRating: (Id) mealId : (double) rating : (NSString *) deviceId;  // throws TException
 */
 
+- (void)addFavoriteRestaurant:(Restaurant*)restaurant;
+- (void)removeFavoritRestaurant:(Restaurant*)restaurant;
+- (NSArray*)allFavoriteRestaurantIds; //array of NSNumber of int64_t (unspecifed order) of restaurant that are favorite
+- (BOOL)isRestaurantFavorite:(Restaurant*)restaurant;
+
+
 - (void)getMealsWithDelegate:(id)delegate;
 - (void)getRestaurantsWithDelegate:(id)delegate;
 - (void)getSandwichesWithDelegate:(id)delegate;
@@ -35,6 +44,7 @@
 /* Cached versions */
 
 - (NSArray*)getFromCacheMeals;
+
 
 @end
 

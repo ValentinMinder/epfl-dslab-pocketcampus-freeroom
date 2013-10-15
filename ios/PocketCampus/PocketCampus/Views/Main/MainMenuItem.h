@@ -8,15 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
-    MainMenuItemTypeButton = 0,
-    MainMenuItemTypeThinSeparator,
-    MainMenuItemTypeSectionHeader //NOT SUPPORTED YET
-} MainMenuItemType;
-
 @interface MainMenuItem : NSObject
-
-@property (nonatomic, readonly) MainMenuItemType type;
 
 @property (nonatomic, copy) NSString* identifier;
 
@@ -26,13 +18,12 @@ typedef enum {
 
 /* will be ignored if type is MainMenuItemTypeThinSeparator or MainMenuItemTypeSectionHeader */
 @property (nonatomic, strong) UIImage* leftImage;
+@property (nonatomic, strong) UIImage* highlightedLeftImage;
 
 @property (nonatomic) BOOL hidden;
 
-- (id)initWithType:(MainMenuItemType)type;
++ (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image identifier:(NSString*)identifier __attribute__ ((deprecated));
 
-+ (MainMenuItem*)menuItemThinSeparator;
-+ (MainMenuItem*)menuItemSectionHeaderWithTitle:(NSString*)title;
-+ (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image identifier:(NSString*)identifier;
++ (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image highlightedLeftImage:(UIImage*)highlightedImage identifier:(NSString*)identifier;
 
 @end
