@@ -470,13 +470,17 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
                 weakSelf.searchBar.text = searchPattern;
                 [weakSelf startSearchForQuery:searchPattern];
             }];
+            self.recentSearchesListViewController.showClearButtonWithinTableView = [PCUtils isIdiomPad] ? NO : YES;
         }
         if ([PCUtils isIdiomPad]) {
             if (!self.recentSearchesListPopoverController) {
-                self.recentSearchesListPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.recentSearchesListViewController];
+                self.recentSearchesListPopoverController = [[UIPopoverController alloc] initWithContentViewController:[[PCNavigationController alloc] initWithRootViewController:self.recentSearchesListViewController]];
+                self.recentSearchesListPopoverController.delegate = self;
             }
             if (!self.recentSearchesListPopoverController.isPopoverVisible) {
-                [self.recentSearchesListPopoverController togglePopoverFromBarButtonItem:self.searchBarItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+                //[NSTimer scheduledTimerWithTimeInterval:0.1 block:^{
+                    [self.recentSearchesListPopoverController togglePopoverFromBarButtonItem:self.searchBarItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+                //} repeats:NO];
             }
         } else {
             self.searchBar.showsCancelButton = YES;
@@ -559,6 +563,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
             self.resultsListPopOverController.contentViewController = resultsViewController;
         } else {
             self.resultsListPopOverController = [[UIPopoverController alloc] initWithContentViewController:resultsViewController];
+            self.resultsListPopOverController.delegate = self;
         }
         [self.resultsListPopOverController togglePopoverFromBarButtonItem:self.resultsListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
@@ -665,9 +670,8 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     [self manageRecentSearchesControllerVisibilityAnimated:YES];
 }
 
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
     [self manageRecentSearchesControllerVisibilityAnimated:YES];
-    return YES;
 }
 
 #pragma mark - MKMapViewDelegate
@@ -873,6 +877,8 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
         self.personPopOverController = nil;
     } else if (popoverController == self.resultsListPopOverController) {
         self.resultsListPopOverController = nil;
+    } else if (popoverController == self.recentSearchesListPopoverController) {
+        [self.searchBar resignFirstResponder];
     }
 }
 

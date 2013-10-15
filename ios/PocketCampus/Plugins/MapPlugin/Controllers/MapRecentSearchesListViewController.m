@@ -35,12 +35,20 @@
 {
     [super viewDidLoad];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    
+    self.title = NSLocalizedStringFromTable(@"Recents", @"PocketCampus", nil);
+    if (!self.showClearButtonWithinTableView) {
+        self.title = NSLocalizedStringFromTable(@"Recents", @"PocketCampus", nil);
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Clear", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(clearPressed)];
+    }
     MapRecentSearchesListViewController* weakSelf __weak = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotificationName object:self.mapService queue:nil usingBlock:^(NSNotification *note) {
         weakSelf.recentSearches = [weakSelf.mapService recentSearches];
         [weakSelf.tableView reloadData];
     }];
+}
+
+- (void)clearPressed {
+    [self.mapService clearRecentSearches];
 }
 
 #pragma mark - UITableViewDelegate
@@ -49,19 +57,19 @@
     if (!self.recentSearches.count) {
         return;
     }
-    if (indexPath.row == 0) { //clear button row
-        [self.mapService clearRecentSearches];
+    if (self.showClearButtonWithinTableView && indexPath.row == 0) {
+        [self clearPressed];
         return;
     }
     if (self.userSelectedRecentSearchBlock) {
-        self.userSelectedRecentSearchBlock(self.recentSearches[indexPath.row-1]);
+        self.userSelectedRecentSearchBlock(self.recentSearches[indexPath.row - self.showClearButtonWithinTableView ? 1 : 0]);
     }
 }
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
+    if (self.showClearButtonWithinTableView && indexPath.row == 0) {
         UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.textLabel.textColor = [PCValues pocketCampusRed];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -69,7 +77,7 @@
         cell.textLabel.text = NSLocalizedStringFromTable(@"ClearHistory", @"MapPlugin", nil);
         return cell;
     }
-    NSString* pattern = self.recentSearches[indexPath.row-1];
+    NSString* pattern = self.recentSearches[indexPath.row - (self.showClearButtonWithinTableView ? 1 : 0)];
     static NSString* kRecentSearchCell = @"RecentSearchCell";
     PCRecentResultTableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:kRecentSearchCell];
     if (!cell) {
@@ -84,7 +92,7 @@
     if (!self.recentSearches.count) {
         return 0;
     }
-    return self.recentSearches.count+1; //clear cell at index 0,0
+    return self.recentSearches.count + (self.showClearButtonWithinTableView ? 1 : 0);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
