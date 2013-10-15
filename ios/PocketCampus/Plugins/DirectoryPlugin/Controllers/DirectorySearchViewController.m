@@ -192,11 +192,11 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (void)putPersonAtTopOfRecentSearches:(Person*)person {
     NSString* firstLast = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
-    NSUInteger currentIntex = [self.recentSearches indexOfObject:firstLast];
-    if (currentIntex == NSNotFound) { //this stupid logic needs to be done because there is now way to do in one step: add the object to top if it's not in the set already or move it if it is.
+    NSUInteger currentIndex = [self.recentSearches indexOfObject:firstLast];
+    if (currentIndex == NSNotFound) { //this stupid logic needs to be done because there is no way to do in one step: add the object to top if it's not in the set already or move it if it is.
         [self.recentSearches insertObject:firstLast atIndex:0]; // adding to top (works only if object not in set)
     } else {
-        [self.recentSearches moveObjectsAtIndexes:[NSIndexSet indexSetWithIndex:currentIntex] toIndex:0]; //moving to top
+        [self.recentSearches moveObjectsAtIndexes:[NSIndexSet indexSetWithIndex:currentIndex] toIndex:0]; //moving to top
     }
     
     /* Cleaning old results */

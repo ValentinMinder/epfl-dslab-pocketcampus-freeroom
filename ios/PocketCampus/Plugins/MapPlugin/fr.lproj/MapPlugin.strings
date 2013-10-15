@@ -18,6 +18,8 @@
 "NarrowSearch" = "Précisez votre recherche.";
 "Floor" = "Étage";
 "Details" = "Détails";
+"AllSearchResults" = "Tous les résultats";
+"ClearHistory" = "Effacer l'historique";
 
 /* Accessibility */
 

@@ -440,6 +440,8 @@
 		32E67DC91684D62300E5CFF6 /* ClockCellSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */; };
 		32E67DCA1684D62300E5CFF6 /* ClockCellSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DC81684D62300E5CFF6 /* ClockCellSelected@2x.png */; };
 		32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32EB617F180D5A3C001AE852 /* MapResultsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB617E180D5A3C001AE852 /* MapResultsListViewController.m */; };
+		32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */; };
 		32EC303E164B18A600D2112D /* MyEduModuleMaterial.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */; };
 		32EC303F164B18A600D2112D /* MyEduModuleMaterial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */; };
 		32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -1115,6 +1117,10 @@
 		32E67DC81684D62300E5CFF6 /* ClockCellSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCellSelected@2x.png"; sourceTree = "<group>"; };
 		32E9A22116394F6D00188AE0 /* PluginSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginSplitViewController.h; sourceTree = "<group>"; };
 		32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginSplitViewController.m; sourceTree = "<group>"; };
+		32EB617D180D5A3C001AE852 /* MapResultsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapResultsListViewController.h; sourceTree = "<group>"; };
+		32EB617E180D5A3C001AE852 /* MapResultsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapResultsListViewController.m; sourceTree = "<group>"; };
+		32EB6180180D7CC4001AE852 /* MapRecentSearchesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapRecentSearchesListViewController.h; sourceTree = "<group>"; };
+		32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapRecentSearchesListViewController.m; sourceTree = "<group>"; };
 		32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduModuleMaterial.png; sourceTree = "<group>"; };
 		32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduModuleMaterial@2x.png"; sourceTree = "<group>"; };
 		32EE9621166E19D5005B0F65 /* MoodleCoursesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleCoursesListViewController.h; sourceTree = "<group>"; };
@@ -1665,6 +1671,10 @@
 				324151D015373A5B00CCFB22 /* MapController.m */,
 				3256175616A89C7D00F52D24 /* MapViewController.h */,
 				3256175716A89C7D00F52D24 /* MapViewController.m */,
+				32EB617D180D5A3C001AE852 /* MapResultsListViewController.h */,
+				32EB617E180D5A3C001AE852 /* MapResultsListViewController.m */,
+				32EB6180180D7CC4001AE852 /* MapRecentSearchesListViewController.h */,
+				32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -3362,6 +3372,7 @@
 				322207E81688E62E003F6622 /* NewsSplashViewController.m in Sources */,
 				322207EF1688F097003F6622 /* NewsItemViewController.m in Sources */,
 				32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */,
+				32EB617F180D5A3C001AE852 /* MapResultsListViewController.m in Sources */,
 				322207F91689E3A3003F6622 /* PCUtils.m in Sources */,
 				32930AB217F898910025F864 /* TMemoryBuffer.m in Sources */,
 				322207FA1689E3A3003F6622 /* PCValues.m in Sources */,
@@ -3417,6 +3428,7 @@
 				323414E7176558F300527895 /* MatchingViewController.m in Sources */,
 				323414E9176558F300527895 /* MyAnswerListViewController.m in Sources */,
 				323414EA176558F300527895 /* MyAnswerViewController.m in Sources */,
+				32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */,
 				323414EB176558F300527895 /* MyQuestionListViewController.m in Sources */,
 				323414EC176558F300527895 /* MyQuestionViewController.m in Sources */,
 				323414ED176558F300527895 /* PendingTableCell.m in Sources */,

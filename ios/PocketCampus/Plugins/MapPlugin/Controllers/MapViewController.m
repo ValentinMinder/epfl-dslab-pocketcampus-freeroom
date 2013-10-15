@@ -34,6 +34,10 @@
 
 #import "EPFLTileOverlay2.h"
 
+#import "MapResultsListViewController.h"
+
+#import "MapRecentSearchesListViewController.h"
+
 typedef enum  {
     SearchStateReady = 0, //no search yet, bar empty and ready for a new search
     SearchStateLoading,
@@ -67,6 +71,8 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 //@property (nonatomic, strong) MKOverlayRenderer* tilesOverlayRenderer2;
 @property (nonatomic, strong) RemoteOverlayRenderer* layersOverlayRenderer; //not initialized for now (disabled feature)
 
+@property (nonatomic, strong) NSArray* mapItemsAllResults; //raw result from map service for a search. Nil if searchState is != SearchStateResults
+
 @property (nonatomic, strong) NSString* initialQuery;
 @property (nonatomic, strong) NSString* initialQueryManualPinLabelText;
 
@@ -86,7 +92,10 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 @property (nonatomic, strong) UIBarButtonItem* centerOnEPFLButton;
 @property (nonatomic) MapControlsState mapControlsState;
 
+@property (nonatomic, strong) MapRecentSearchesListViewController* recentSearchesListViewController;
+@property (nonatomic, strong) UIPopoverController* recentSearchesListPopoverController;
 @property (nonatomic, strong) UIPopoverController* personPopOverController;
+@property (nonatomic, strong) UIPopoverController* resultsListPopOverController;
 @property (nonatomic, strong) UIAlertView* noResultAlert;
 @property (nonatomic, strong) UIAlertView* internetConnectionAlert;
 
@@ -154,6 +163,11 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     self.epflLayersOverlay.mapView = self.mapView;
     
     self.searchState = SearchStateReady; //will set nav bar elements, see implementation
+    [self manageRecentSearchesControllerVisibilityAnimated:NO];
+    MapViewController* weakSelf __weak = self;
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotificationName object:self.mapService queue:Nil usingBlock:^(NSNotification *note) {
+        [weakSelf manageRecentSearchesControllerVisibilityAnimated:YES];
+    }];
     self.mapControlsState = MapControlsStateAllAvailable;
     
     UITapGestureRecognizer* mapTap = [[UITapGestureRecognizer alloc] initWithTarget:self.searchBar action:@selector(resignFirstResponder)];
@@ -239,7 +253,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     return YES;
 }
 
-#pragma mark - Buttons and bars management
+#pragma mark - Buttons bars and recent searches UI management
 
 - (void)setSearchState:(SearchState)searchState {
     [self setSearchState:searchState animated:NO];
@@ -250,6 +264,13 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
         return;
     }
     _searchState = searchState;
+    
+    if (self.searchState != SearchStateResults) {
+        if (self.resultsListPopOverController.isPopoverVisible) {
+            [self.resultsListPopOverController dismissPopoverAnimated:NO];
+        }
+        self.mapItemsAllResults = nil;
+    }
     
     if (!self.searchBarItem) {
         if (!self.searchBar) {
@@ -278,8 +299,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     }
     
     if (!self.resultsListButton) {
-        self.resultsListButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ListBarButton"] style:UIBarButtonItemStylePlain target:nil action:nil];
-#warning TODO set target to show results list
+        self.resultsListButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ListBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(resultsListPressed)];
     }
     
     NSArray* items = nil;
@@ -319,6 +339,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
             switch (searchState) {
                 case SearchStateReady:
                     items = @[self.searchBarItem];
+                    self.searchBar.showsCancelButton = YES;
                     searchBarTargetFrame = CGRectMake(-2.0, 0, 264.0, kSearchBarHeightPortrait);
                     searchBarContainerViewTargetFrame = CGRectMake(0, 0, searchBarTargetFrame.size.width-11.0, searchBarTargetFrame.size.height);
                     break;
@@ -355,6 +376,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     if (searchBarWasFirstResponder) {
         [self.searchBar becomeFirstResponder];
     }
+    
 }
 
 - (void)setMapControlsState:(MapControlsState)mapControlsState {
@@ -440,6 +462,57 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     }
 }
 
+- (void)manageRecentSearchesControllerVisibilityAnimated:(BOOL)animated {
+    if (self.searchState == SearchStateReady && self.searchBar.isFirstResponder && [self.mapService recentSearches].count > 0) { //recent searches view management
+        if (!self.recentSearchesListViewController) {
+            MapViewController* weakSelf __weak = self;
+            self.recentSearchesListViewController = [[MapRecentSearchesListViewController alloc] initWithUserSelectedRecentSearchBlock:^(NSString *searchPattern) {
+                weakSelf.searchBar.text = searchPattern;
+                [weakSelf startSearchForQuery:searchPattern];
+            }];
+        }
+        if ([PCUtils isIdiomPad]) {
+            if (!self.recentSearchesListPopoverController) {
+                self.recentSearchesListPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.recentSearchesListViewController];
+            }
+            if (!self.recentSearchesListPopoverController.isPopoverVisible) {
+                [self.recentSearchesListPopoverController togglePopoverFromBarButtonItem:self.searchBarItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+            }
+        } else {
+            self.searchBar.showsCancelButton = YES;
+            if (!self.recentSearchesListViewController.parentViewController) {
+                [self addChildViewController:self.recentSearchesListViewController];
+                [self.view addSubview:self.recentSearchesListViewController.view];
+                self.recentSearchesListViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+                self.recentSearchesListViewController.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, self.recentSearchesListViewController.tableView.contentInset.bottom, 0); //216.0 is keyboard height, no way to get it dynmically
+                self.recentSearchesListViewController.tableView.scrollIndicatorInsets = self.recentSearchesListViewController.tableView.contentInset;
+                [self.view addConstraints:[NSLayoutConstraint constraintsToSuperview:self.view forView:self.recentSearchesListViewController.view edgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
+                self.recentSearchesListViewController.view.alpha = 0.0;
+                [UIView animateWithDuration:animated ? 0.25 : 0.0 animations:^() {
+                    self.recentSearchesListViewController.view.alpha = 1.0;
+                } completion:NULL];
+            }
+        }
+    } else {
+        self.searchBar.showsCancelButton = NO;
+        if ([PCUtils isIdiomPad]) {
+            if (self.recentSearchesListPopoverController.isPopoverVisible) {
+                [self.recentSearchesListPopoverController dismissPopoverAnimated:animated];
+            }
+        } else {
+            if (self.recentSearchesListViewController.parentViewController) {
+                [self.recentSearchesListViewController removeFromParentViewController];
+                [UIView animateWithDuration:animated ? 0.25 : 0.0 animations:^() {
+                    self.recentSearchesListViewController.view.alpha = 0.0;
+                } completion:^(BOOL finished) {
+                    [self.recentSearchesListViewController.view removeFromSuperview];
+                    self.recentSearchesListViewController.view.alpha = 1.0;
+                }];
+            }
+        }
+    }
+}
+
 /*- (void)setMyLocationButtonSateForTrackingMode:(MKUserTrackingMode)mode {
     switch (mode) {
         case MKUserTrackingModeNone:
@@ -458,6 +531,41 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 }*/
 
 #pragma mark - Actions
+
+- (void)resultsListPressed {
+    MapViewController* weakSelf __weak = self;
+    MapResultsListViewController* resultsViewController = [[MapResultsListViewController alloc] initWithMapItems:self.mapItemsAllResults selectedInitially:nil userValidatedSelectionBlock:^(NSArray *newlySelected) {
+        [weakSelf.mapView removeAnnotations:[MapUtils mapItemAnnotations:weakSelf.mapView.annotations]];
+        
+        void (^block)() = ^ {
+            NSArray* mapItemsAnnotations = [weakSelf mapItemAnnotationsForMapItems:newlySelected];
+            if (mapItemsAnnotations.count > 0) {
+                [weakSelf.mapView showAnnotations:mapItemsAnnotations animated:YES];
+                if (mapItemsAnnotations.count == 1) {
+                    [weakSelf.mapView selectAnnotation:mapItemsAnnotations[0] animated:YES];
+                }
+            }
+        };
+        
+        if ([PCUtils isIdiomPad]) {
+            [weakSelf.resultsListPopOverController togglePopoverFromBarButtonItem:weakSelf.resultsListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            block();
+        } else {
+            [weakSelf dismissViewControllerAnimated:YES completion:block];
+        }
+    }];
+    if ([PCUtils isIdiomPad]) {
+        if (self.resultsListPopOverController) {
+            self.resultsListPopOverController.contentViewController = resultsViewController;
+        } else {
+            self.resultsListPopOverController = [[UIPopoverController alloc] initWithContentViewController:resultsViewController];
+        }
+        [self.resultsListPopOverController togglePopoverFromBarButtonItem:self.resultsListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:resultsViewController];
+        [self presentViewController:navController animated:YES completion:NULL];
+    }
+}
 
 - (void)myLocationPressed {
     if (self.mapView.userTrackingMode == MKUserTrackingModeNone) {
@@ -530,14 +638,36 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     [self startSearchForQuery:self.searchBar.text];
 }
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self.searchBar resignFirstResponder];
+    [self manageRecentSearchesControllerVisibilityAnimated:YES];
+}
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    if (self.searchState == SearchStateLoading) {
-        [self.mapService cancelOperationsForDelegate:self];
-        [self setSearchState:SearchStateReady animated:YES];
-    } else if (self.searchState == SearchStateResults) {
-        [self setSearchState:SearchStateReady animated:YES];
-        [MapUtils removeMapItemAnnotationsOnMapView:self.mapView];
+    switch (self.searchState) {
+        case SearchStateReady:
+            [self manageRecentSearchesControllerVisibilityAnimated:YES];
+            break;
+        case SearchStateLoading:
+            [self.mapService cancelOperationsForDelegate:self];
+            [self setSearchState:SearchStateReady animated:YES];
+            break;
+        case SearchStateResults:
+            [self setSearchState:SearchStateReady animated:YES];
+            [MapUtils removeMapItemAnnotationsOnMapView:self.mapView];
+            break;
+        default:
+            break;
     }
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [self manageRecentSearchesControllerVisibilityAnimated:YES];
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    [self manageRecentSearchesControllerVisibilityAnimated:YES];
+    return YES;
 }
 
 #pragma mark - MKMapViewDelegate
@@ -648,14 +778,18 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     */
     /* END OF TEST */
     
-    [self setSearchState:SearchStateResults animated:YES];
-    
     if (results.count == 0) { //no result
         self.noResultAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"NoResult", @"MapPlugin", nil) message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [self.noResultAlert show];
         [self setSearchState:SearchStateReady animated:YES];
         return;
     }
+    
+    if (!self.initialQuery) {
+        [self.mapService addOrPromoteRecentSearch:query];
+    }
+    
+    self.mapItemsAllResults = results;
     
     NSArray* mapItemAnnotations = [MapUtils mapItemAnnotationsThatShouldBeDisplayed:[self mapItemAnnotationsForMapItems:results] forQuery:query];
     
@@ -665,6 +799,8 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
         [alert show];
         return;
     }
+    
+    [self setSearchState:SearchStateResults animated:YES];
     
     [self.mapView showAnnotations:mapItemAnnotations animated:YES];
     
@@ -730,8 +866,14 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     }
 }
 
+#pragma mark - UIPopoverControllerDelegate
+
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    self.personPopOverController = nil;
+    if (popoverController == self.personPopOverController) {
+        self.personPopOverController = nil;
+    } else if (popoverController == self.resultsListPopOverController) {
+        self.resultsListPopOverController = nil;
+    }
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -779,7 +921,21 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
         if (self.initialQuery && self.initialQueryManualPinLabelText && ![self.initialQueryManualPinLabelText isEqualToString:item.title]) {
             item = [[MapItem alloc] initWithTitle:self.initialQueryManualPinLabelText description:item.title latitude:item.latitude longitude:item.longitude layerId:item.layerId itemId:item.itemId floor:item.floor category:item.category];
         }
-        MapItemAnnotation* annotation = [[MapItemAnnotation alloc] initWithMapItem:item];
+        
+        MapItemAnnotation* annotation = nil;
+        
+        for (MapItemAnnotation* annot in self.mapView.annotations) {
+            if (![annot isKindOfClass:[MapItemAnnotation class]]) {
+                continue;
+            }
+            if ([annot.mapItem isEqual:item]) {
+                annotation = annot;
+                break;
+            }
+        }
+        if (!annotation) {
+            annotation = [[MapItemAnnotation alloc] initWithMapItem:item];
+        }
         [annotations addObject:annotation];
     }
     return annotations;
@@ -791,6 +947,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 {
     [self.mapService cancelOperationsForDelegate:self];
     [[MainController publicController] removePluginStateObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.mapView.delegate = nil;
     [self.tilesOverlayRenderer cancelTilesDownload:YES];
     self.tilesOverlayRenderer.delegate = nil;

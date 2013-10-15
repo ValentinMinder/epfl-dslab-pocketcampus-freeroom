@@ -18,6 +18,8 @@
 "NarrowSearch" = "Try with a more precise request.";
 "Floor" = "Floor";
 "Details" = "Details";
+"AllSearchResults" = "All search results";
+"ClearHistory" = "Clear history";
 
 
 /* Accessibility */

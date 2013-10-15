@@ -10,6 +10,17 @@
 
 #import "map.h"
 
+#import "ObjectArchiver.h"
+
+static NSString* kRecentSearchesKey = @"recentSearches";
+static NSUInteger kMaxRecentSearches = 15;
+
+@interface MapService ()
+
+@property (nonatomic, strong) NSMutableOrderedSet* recentSearchesInternal;
+
+@end
+
 @implementation MapService
 
 static MapService* instance __weak = nil;
@@ -77,6 +88,47 @@ static MapService* instance __weak = nil;
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
 }
+
+
+#pragma mark - Recent searches
+
+- (NSMutableOrderedSet*)recentSearchesInternal {
+    if (!_recentSearchesInternal) {
+        _recentSearchesInternal = [(NSOrderedSet*)[ObjectArchiver objectForKey:kRecentSearchesKey andPluginName:@"map" isCache:YES] mutableCopy]; //archived object are always returned as copy => immutable
+    }
+    if (!_recentSearchesInternal) {
+        _recentSearchesInternal = [NSMutableOrderedSet orderedSet]; //guarentee non-nil empty ordered set
+    }
+    return _recentSearchesInternal;
+}
+
+- (NSOrderedSet*)recentSearches {
+    return self.recentSearchesInternal;
+}
+
+- (void)addOrPromoteRecentSearch:(NSString*)pattern {
+    NSUInteger currentIndex = [self.recentSearches indexOfObject:pattern];
+    if (currentIndex == NSNotFound) { //this stupid logic needs to be done because there is no way to do in one step: add the object to top if it's not in the set already or move it if it is.
+        [self.recentSearchesInternal insertObject:pattern atIndex:0]; // adding to top (works only if object not in set)
+    } else {
+        [self.recentSearchesInternal moveObjectsAtIndexes:[NSIndexSet indexSetWithIndex:currentIndex] toIndex:0]; //moving to top
+    }
+    
+    /* Cleaning old results */
+    if (self.recentSearches.count > kMaxRecentSearches) {
+        [self.recentSearchesInternal removeObjectsInRange:NSMakeRange(kMaxRecentSearches, self.recentSearches.count - kMaxRecentSearches)];
+    }
+    [ObjectArchiver saveObject:self.recentSearchesInternal forKey:kRecentSearchesKey andPluginName:@"map" isCache:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMapRecentSearchesModifiedNotificationName object:self];
+}
+
+- (void)clearRecentSearches {
+    [self.recentSearchesInternal removeAllObjects];
+    [ObjectArchiver saveObject:nil forKey:kRecentSearchesKey andPluginName:@"map" isCache:YES]; //deleted cached recent searches
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMapRecentSearchesModifiedNotificationName object:self];
+}
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

@@ -39,4 +39,8 @@
     return CLLocationCoordinate2DMake(self.mapItem.latitude, self.mapItem.longitude);
 }
 
+- (BOOL)isEqualToMapItemAnnotation:(MapItemAnnotation*)annotation {
+    return [self.mapItem isEqual:annotation.mapItem];
+}
+
 @end

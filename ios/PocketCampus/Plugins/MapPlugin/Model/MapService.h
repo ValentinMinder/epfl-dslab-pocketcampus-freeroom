@@ -10,7 +10,9 @@
 
 #import "map.h"
 
-static NSString* kPersonsMapItemCategoryName = @"persons";
+//actually used in MapViewController, Xcode simply does not see it
+static NSString* kPersonsMapItemCategoryName __unused = @"persons";
+static NSString* kMapRecentSearchesModifiedNotificationName = @"MapRecentSearchesModified"; //posted by self on default notification center
 
 @interface MapService : Service<ServiceProtocol>
 
@@ -27,6 +29,27 @@ static NSString* kPersonsMapItemCategoryName = @"persons";
 - (void)getLayerListWithDelegate:(id)delegate;
 - (void)getLayerItemsForLayerId:(Id)layerId delegate:(id)delegate;
 - (void)searchFor:(NSString*)query delegate:(id)delegate;
+
+
+#pragma mark - Recent searches
+
+/*
+ * Returns ordered set of string of recent search pattern, with most recent at beginning.
+ * recentSearches are persisted.
+ * Returns empty array if not recent search.
+ */
+- (NSOrderedSet*)recentSearches;
+
+/*
+ * Adds pattern to top of recent searches. If pattern
+ * already exists in recentSearches, it is put at beginnig of ordered set.
+ */
+- (void)addOrPromoteRecentSearch:(NSString*)pattern;
+
+/*
+ * Clears in memory and persisted recent searches.
+ */
+- (void)clearRecentSearches;
 
 @end
 
