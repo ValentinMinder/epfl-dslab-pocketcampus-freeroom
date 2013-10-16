@@ -15,12 +15,6 @@ import org.pocketcampus.plugin.food.shared.Meal;
 public interface IFoodController {
 
 	/**
-	 * Initiates a request to the server to get the restaurants whose menus are
-	 * going to be displayed.
-	 */
-	public void getRestaurants();
-
-	/**
 	 * Initiates a request to the server to get the meals of all restaurants.
 	 */
 	public void getMeals();
@@ -48,10 +42,5 @@ public interface IFoodController {
 	 */
 	public void setRating(double rating, Meal meal);
 
-	/**
-	 * Initiates a request to the server to check whether the user has already
-	 * voted for a meal today.
-	 */
-	public void getHasVoted();
 
 }

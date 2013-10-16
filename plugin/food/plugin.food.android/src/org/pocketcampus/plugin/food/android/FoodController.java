@@ -7,9 +7,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodController;
 import org.pocketcampus.plugin.food.android.req.MealsRequest;
 import org.pocketcampus.plugin.food.android.req.RatingsRequest;
-import org.pocketcampus.plugin.food.android.req.RestaurantsRequest;
 import org.pocketcampus.plugin.food.android.req.SetRatingRequest;
-import org.pocketcampus.plugin.food.android.req.VotedRequest;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.shared.FoodService.Client;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
@@ -50,18 +48,6 @@ public class FoodController extends PluginController implements IFoodController 
 	@Override
 	public PluginModel getModel() {
 		return mModel;
-	}
-
-	/**
-	 * Initiates a request to the server to get the restaurants whose menus are
-	 * going to be displayed
-	 */
-	@Override
-	public void getRestaurants() {
-		Log.d("RESTAURANT", "Sending Restaurants request");
-		new RestaurantsRequest().start(this,
-				(Iface) getClient(new Client.Factory(), mPluginName),
-				(Object) null);
 	}
 
 	/**
@@ -116,16 +102,4 @@ public class FoodController extends PluginController implements IFoodController 
 				ratingArgs);
 	}
 
-	/**
-	 * Initiates a request to the server to check whether the user has already
-	 * voted for a meal today
-	 */
-	@Override
-	public void getHasVoted() {
-		String deviceID = Secure.getString(this.getContentResolver(),
-				Secure.ANDROID_ID);
-
-		new VotedRequest().start(this,
-				(Iface) getClient(new Client.Factory(), mPluginName), deviceID);
-	}
 }
