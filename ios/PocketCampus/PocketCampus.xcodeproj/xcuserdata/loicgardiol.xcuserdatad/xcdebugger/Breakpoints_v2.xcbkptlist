@@ -1149,11 +1149,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "403551135.181709"
+            timestampString = "403622957.415281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1508"
-            endingLineNumber = "1508">
+            startingLineNumber = "1515"
+            endingLineNumber = "1515">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
@@ -1171,11 +1171,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "403551135.181709"
+            timestampString = "403622957.415281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1512"
-            endingLineNumber = "1512">
+            startingLineNumber = "1519"
+            endingLineNumber = "1519">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -1266,11 +1266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "403551135.181709"
+            timestampString = "403622957.415281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "988"
-            endingLineNumber = "988">
+            startingLineNumber = "995"
+            endingLineNumber = "995">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1280,11 +1280,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "403551135.181709"
+            timestampString = "403622957.415281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1452"
-            endingLineNumber = "1452">
+            startingLineNumber = "1459"
+            endingLineNumber = "1459">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -1303,11 +1303,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "403551135.181709"
+            timestampString = "403622957.415281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1541"
-            endingLineNumber = "1541">
+            startingLineNumber = "1548"
+            endingLineNumber = "1548">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1342,11 +1342,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "403551135.181709"
+            timestampString = "403622957.415281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1634"
-            endingLineNumber = "1634">
+            startingLineNumber = "1641"
+            endingLineNumber = "1641">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1372,11 +1372,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "403551135.181709"
+            timestampString = "403622957.415281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1568"
-            endingLineNumber = "1568">
+            startingLineNumber = "1575"
+            endingLineNumber = "1575">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
@@ -1394,11 +1394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "403551135.181709"
+            timestampString = "403622957.415281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1395"
-            endingLineNumber = "1395">
+            startingLineNumber = "1402"
+            endingLineNumber = "1402">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -1417,11 +1417,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "403551135.181709"
+            timestampString = "403622957.415281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1401"
-            endingLineNumber = "1401">
+            startingLineNumber = "1408"
+            endingLineNumber = "1408">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -2405,11 +2405,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "403551135.181709"
+            timestampString = "403622957.415281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1735"
-            endingLineNumber = "1735">
+            startingLineNumber = "1742"
+            endingLineNumber = "1742">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -4048,7 +4048,7 @@
                   symbolName = "-[MyEduModuleVideoViewController destroyVideoPlayer]"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus-private/ios/PocketCampus/Plugins/MyEduPlugin/Controllers/MyEduModuleVideoViewController.m"
-                  timestampString = "403552107.811274"
+                  timestampString = "403623072.771745"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "169"
@@ -4062,7 +4062,7 @@
                   symbolName = "-[MyEduModuleVideoViewController destroyVideoPlayer]"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus-private/ios/PocketCampus/Plugins/MyEduPlugin/Controllers/MyEduModuleVideoViewController.m"
-                  timestampString = "403552107.811673"
+                  timestampString = "403623072.773091"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "169"

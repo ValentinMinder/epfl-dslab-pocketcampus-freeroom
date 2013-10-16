@@ -78,6 +78,8 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 
 @property (nonatomic, readonly) MKCoordinateRegion epflRegion;
 
+@property (nonatomic, copy) NSArray* leftBarButtonItemsAtLoad;
+
 @property (nonatomic, strong) UISearchBar* searchBar;
 @property (nonatomic, strong) UIBarButtonItem* searchBarItem;
 @property (nonatomic, strong) UIBarButtonItem* resultsListButton;
@@ -155,6 +157,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.leftBarButtonItemsAtLoad = self.navigationItem.leftBarButtonItems;
     //self.mapView.mapType = MKMapTypeHybrid;
     self.tilesOverlayRenderer.delegate = self;
     //self.layersOverlayView.delegate = self;
@@ -178,7 +181,8 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     if (self.initialQuery) {
         /*searchBar.text = initialQuery;
          [self setSearchBarState:SearchBarStateVisible];*/
-        self.title = self.initialQuery;
+        self.title = [PCUtils isIdiomPad] ? nil : self.initialQuery;
+        self.navigationItem.leftItemsSupplementBackButton = YES;
         [self startSearchForQuery:self.initialQuery];
     }
     [self mapView:self.mapView regionDidChangeAnimated:NO]; //to refresh UI controls and add overlays
@@ -424,18 +428,21 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
         switch (mapControlsState) {
             case MapControlsStateAllAvailable:
             {
-                items = @[self.navigationItem.leftBarButtonItem, fspace1, self.floorDownButton, self.floorLabelItem, self.floorUpButton, fspace2, self.myLocationButton, space1, self.centerOnEPFLButton, space2];
+                items = @[fspace1, self.floorDownButton, self.floorLabelItem, self.floorUpButton, fspace2, self.myLocationButton, space1, self.centerOnEPFLButton, space2];
                 break;
             }
             case MapControlsStateNoFloorControl:
             {
-                items = @[self.navigationItem.leftBarButtonItem, fspace1, self.myLocationButton, space1, self.centerOnEPFLButton, space2];
+                items = @[fspace1, self.myLocationButton, space1, self.centerOnEPFLButton, space2];
                 break;
             }
             default:
                 break;
         }
         if (items) {
+            if (self.leftBarButtonItemsAtLoad) {
+                items = [self.leftBarButtonItemsAtLoad arrayByAddingObjectsFromArray:items];
+            }
             self.navigationItem.leftBarButtonItems = items;
         }
     } else {
