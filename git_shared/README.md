@@ -1,0 +1,1 @@
+Put in this folder all elements that are user generated but that would take place in the .git folder (like hooks for example). Please keep the same hierarchy as in .git.

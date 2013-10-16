@@ -1,0 +1,17 @@
+#!/bin/sh
+
+##########iOS###########
+#Checks whether iOS project contains files with TO REMOVE warnings
+probFiles=`grep -r -e "^\(\t\| \)*#warning TO REMOVE" "$GIT_DIR/../ios"`
+
+wcount=`echo "$probFiles" | wc -w`
+wcount=$((wcount+0)) #be sure wcount is int (trim whitespaces from wc)
+
+if [ $wcount -gt 0 ] 
+then
+	echo "$probFiles"
+	exit 1
+fi
+##########END OF iOS###########
+
+exit 0
