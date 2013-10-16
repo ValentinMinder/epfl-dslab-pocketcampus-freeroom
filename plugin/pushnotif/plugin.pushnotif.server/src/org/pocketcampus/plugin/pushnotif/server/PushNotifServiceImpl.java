@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.launcher.server.PocketCampusServer;
-import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifMapRequest;
-import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifSendRequest;
+import org.pocketcampus.platform.launcher.server.PocketCampusServer.PushNotifMapReq;
+import org.pocketcampus.platform.launcher.server.PocketCampusServer.PushNotifSendReq;
 import org.pocketcampus.platform.sdk.shared.utils.ListUtils;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService;
 
@@ -35,20 +35,20 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		dataStore = new PushNotifDataStore();
 	}
 
-	public Boolean addMapping(PushNotifMapRequest req) {
+	public Boolean addMapping(PushNotifMapReq req) {
 		System.out.println("addMapping");
-		return dataStore.insertMapping(req.getPluginName(), req.getUserId(), req.getDeviceOs(), req.getPushToken());
+		return dataStore.insertMapping(req.pluginName, req.userId, req.deviceOs, req.pushToken);
 	}
 
-	public Boolean sendMessage(PushNotifSendRequest req) {
+	public Boolean sendMessage(PushNotifSendReq req) {
 		System.out.println("sendMessage");
 		// Chunk list into 50 users batches so that
 		// (1) we limit the size of the query that gets generated in selectTokens
 		// (2) we don't exceed the limit of GCM in sendToAndroidDevices
-		List<List<String>> chunks = ListUtils.chunkList(req.getUserIds(), 50);
+		List<List<String>> chunks = ListUtils.chunkList(req.userIds, 50);
 		boolean result = true;
 		for(List<String> c : chunks)
-			result = result && sendMessageInChunks(req.getPluginName(), c, req.getMessageMap());
+			result = result && sendMessageInChunks(req.pluginName, c, req.messageMap);
 		return result;
 	}
 

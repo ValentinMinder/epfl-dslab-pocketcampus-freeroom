@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TServlet;
-import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifMapRequest;
-import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifSendRequest;
 
 public class PocketCampusServer extends ServerBase {
 
@@ -85,6 +83,36 @@ public class PocketCampusServer extends ServerBase {
 		return (HttpServletRequest) TServlet.requestsMap.get(firstArg);
 	}
 	
+	/*****
+	 * PUSH NOTIF CRAP 
+	 * @author amer
+	 *
+	 */
+	
+	public static class PushNotifMapReq {
+		public PushNotifMapReq(String pluginName, String userId, String deviceOs, String pushToken) {
+			this.pluginName = pluginName;
+			this.userId = userId;
+			this.deviceOs = deviceOs;
+			this.pushToken = pushToken;
+		}
+		public String pluginName;
+		public String userId;
+		public String deviceOs;
+		public String pushToken;
+	}
+	
+	public static class PushNotifSendReq {
+		public PushNotifSendReq(String pluginName, List<String> userIds, Map<String, String> messageMap) {
+			this.pluginName = pluginName;
+			this.userIds = userIds;
+			this.messageMap = messageMap;
+		}
+		public String pluginName;
+		public List<String> userIds;
+		public Map<String, String> messageMap;
+	}
+
 	public static boolean pushNotifMap(Object firstArg, String plugin, String userId) {
 		HttpServletRequest req = (HttpServletRequest) TServlet.requestsMap.get(firstArg);
 		if(req == null) return false;
@@ -92,7 +120,7 @@ public class PocketCampusServer extends ServerBase {
 		String token = req.getHeader("X-PC-PUSHNOTIF-TOKEN");
 		if(os == null || token == null || plugin == null || userId == null) return false;
 		try {
-			return (Boolean) invokeOnPlugin("pushnotif", "addMapping", new PushNotifMapRequest(plugin, userId, os, token));
+			return (Boolean) invokeOnPlugin("pushnotif", "addMapping", new PushNotifMapReq(plugin, userId, os, token));
 		} catch (NoSuchObjectException e) {
 		} catch (SecurityException e) {
 		} catch (IllegalArgumentException e) {
@@ -102,11 +130,11 @@ public class PocketCampusServer extends ServerBase {
 		}
 		return false;
 	}
-
+	
 	public static boolean pushNotifSend(String plugin, List<String> userIds, Map<String, String> msg) {
 		if(msg == null || plugin == null || userIds == null) return false;
 		try {
-			return (Boolean) invokeOnPlugin("pushnotif", "sendMessage", new PushNotifSendRequest(plugin, userIds, msg));
+			return (Boolean) invokeOnPlugin("pushnotif", "sendMessage", new PushNotifSendReq(plugin, userIds, msg));
 		} catch (NoSuchObjectException e) {
 		} catch (SecurityException e) {
 		} catch (IllegalArgumentException e) {
