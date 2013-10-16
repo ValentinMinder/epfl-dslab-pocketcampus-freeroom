@@ -12,7 +12,7 @@
 
 //actually used in MapViewController, Xcode simply does not see it
 static NSString* kPersonsMapItemCategoryName __unused = @"persons";
-static NSString* kMapRecentSearchesModifiedNotificationName = @"MapRecentSearchesModified"; //posted by self on default notification center
+static NSString* kMapRecentSearchesModifiedNotificationName __unused = @"MapRecentSearchesModified"; //posted by self on default notification center
 
 @interface MapService : Service<ServiceProtocol>
 

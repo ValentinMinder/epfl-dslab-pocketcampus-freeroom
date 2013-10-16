@@ -29,7 +29,7 @@
 typedef enum {
     ResutlsModeNotStarted = 0,
     ResultsModeSearch = 1,
-    ResultsModeAutocomplete = 2,
+    ResultsModeAutocomplete = 2, //deprecated, we are not using autocomplete, but search directly
     ResultsModeRecentSearches = 3,
     ResultsModeFailed = 4
 } ResultsMode;
@@ -38,7 +38,7 @@ typedef enum {
  
 @property (nonatomic, strong) DirectoryService* directoryService;
 @property (nonatomic, strong) NSTimer* typingTimer;
-@property (nonatomic, strong) NSArray* autocompleteResults; //array of NSString*
+//@property (nonatomic, strong) NSArray* autocompleteResults; //array of NSString*
 @property (nonatomic, strong) NSArray* searchResults; //array of Person*
 @property (nonatomic, strong) NSMutableOrderedSet* recentSearches; //ordered mutable set of NSString*  (most recent at index 0)
 @property (nonatomic) ResultsMode resultsMode;
@@ -61,7 +61,7 @@ typedef enum {
 
 @implementation DirectorySearchViewController
 
-static NSString* kAutocompleteResultCellIdentifier = @"autocompleteResultCell";
+//static NSString* kAutocompleteResultCellIdentifier = @"autocompleteResultCell";
 static NSString* kSearchResultCellIdentifier = @"searchResultCell";
 static NSString* kRecentSearchCellIdentifier = @"recentSearchCell";
 
@@ -161,7 +161,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     [self.barActivityIndicator stopAnimating];
     self.tableView.hidden = YES;
     self.backgroundIcon.hidden = NO;
-    self.messageLabel.text = NSLocalizedStringFromTable(@"SearchNoResult", @"DirectoryPlugin", @"Message that says the autocomplete/search returned empty result.");
+    self.messageLabel.text = NSLocalizedStringFromTable(@"SearchNoResult", @"DirectoryPlugin", nil);
     self.messageLabel.hidden = NO;
 }
 
@@ -219,14 +219,14 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 #pragma mark - Requests start
 
-- (void)startAutocompleteRequest {
+/*- (void)startAutocompleteRequest {
     [self.directoryService cancelOperationsForDelegate:self];
     if (self.searchBar.text.length == 0) {
         return;
     }
     [self.barActivityIndicator startAnimating];
     [self.directoryService autocomplete:self.searchBar.text delegate:self];
-}
+}*/
 
 - (void)startSearchRequest {
     [self.directoryService cancelOperationsForDelegate:self];
@@ -273,19 +273,22 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     }
     [self.typingTimer invalidate];
     
-    NSNumber* potentatialSciper = [[[NSNumberFormatter alloc] init] numberFromString:searchText];
+    //NSNumber* potentatialSciper = [[[NSNumberFormatter alloc] init] numberFromString:searchText];
     NSArray* words = [searchText componentsSeparatedByString:@" "];
-    if (words.count > 1 || potentatialSciper) { //would actually start an LDAP search on server instead of autocomplete anyway
+    /*if (YES || words.count > 1 || potentatialSciper) { //would actually start an LDAP search on server instead of autocomplete anyway
         self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO];
     } else {
         self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutocompleteRequest) userInfo:nil repeats:NO];
+    }*/
+    if (searchText.length > 2 || words.count > 1) {
+        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO];
     }
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar_ {
     if (self.resultsMode == ResutlsModeNotStarted || self.resultsMode == ResultsModeRecentSearches || self.resultsMode == ResultsModeFailed) {
         self.messageLabel.text = @"";
-        [self startAutocompleteRequest];
+        [self startSearchRequest];
     }
     [self.searchBar resignFirstResponder];
 }
@@ -299,7 +302,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 #pragma mark - DirectoryServiceDelegate
 
-- (void)autocompleteFor:(NSString *)constraint didReturn:(NSArray*)results {
+/*- (void)autocompleteFor:(NSString *)constraint didReturn:(NSArray*)results {
     [self.barActivityIndicator stopAnimating];
     if (results.count == 0) {
         [self showNoResultMessage];
@@ -328,7 +331,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (void)autocompleteFailedFor:(NSString *)constraint {
     [self resultsError];
-}
+}*/
 
 - (void)searchDirectoryFor:(NSString*)searchPattern didReturn:(NSArray*)results {
     [self.barActivityIndicator stopAnimating];
@@ -421,7 +424,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.resultsMode == ResultsModeAutocomplete) {
+    /*if (self.resultsMode == ResultsModeAutocomplete) {
         UIActivityIndicatorView* activityIndicatorView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:indexPath] accessoryView];
         if ([activityIndicatorView isAnimating]) {
             return; //means cell was already selected
@@ -434,7 +437,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         }
         [self.directoryService searchPersons:searchString delegate:self];
         [self.searchBar resignFirstResponder];
-    } else if (self.resultsMode == ResultsModeSearch) {
+    } else*/ if (self.resultsMode == ResultsModeSearch) {
         Person* person = [self.searchResults objectAtIndex:indexPath.row];
         if (self.splitViewController && [person.sciper isEqualToString:self.displayedPerson.sciper]) { //isEqual not implemented in Thrift
             [self.personViewController.navigationController popToRootViewControllerAnimated:YES]; //return to contact info if in map for example
@@ -466,7 +469,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (self.resultsMode == ResultsModeAutocomplete) {
+    /*if (self.resultsMode == ResultsModeAutocomplete) {
         UITableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kAutocompleteResultCellIdentifier];
         if (newCell == nil) {
             newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kAutocompleteResultCellIdentifier];
@@ -477,7 +480,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         }
         newCell.textLabel.text = [self.autocompleteResults objectAtIndex:indexPath.row];
         return newCell;
-    } else if (self.resultsMode == ResultsModeSearch) {
+    } else*/ if (self.resultsMode == ResultsModeSearch) {
         UITableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kSearchResultCellIdentifier];
         if (newCell == nil) {
             newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSearchResultCellIdentifier];
@@ -521,12 +524,12 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (self.resultsMode) {
-        case ResultsModeAutocomplete:
+        /*case ResultsModeAutocomplete:
             if (!self.autocompleteResults) { //should not happen in such mode
                 return 0;
             }
             return self.autocompleteResults.count;
-            break;
+            break;*/
         case ResultsModeSearch:
             if (!self.searchResults) { //should not happen in such mode
                 return 0;

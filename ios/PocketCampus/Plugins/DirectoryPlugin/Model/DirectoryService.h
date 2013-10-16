@@ -20,7 +20,7 @@
 
 - (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate;
 - (void)getProfilePicture:(Person *)person delegate:(id)delegate;
-- (void)autocomplete:(NSString *)constraint delegate:(id)delegate;
+- (void)autocomplete:(NSString *)constraint delegate:(id)delegate __attribute((deprecated)); //used searchPersons instead
 
 @end
 
