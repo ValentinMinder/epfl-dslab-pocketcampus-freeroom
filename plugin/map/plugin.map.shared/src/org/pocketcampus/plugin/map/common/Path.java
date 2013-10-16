@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.map.shared;
+package org.pocketcampus.plugin.map.common;
 
 import java.util.List;
 import java.util.ArrayList;

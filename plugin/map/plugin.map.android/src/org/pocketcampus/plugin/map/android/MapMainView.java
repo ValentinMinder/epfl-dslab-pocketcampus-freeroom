@@ -33,9 +33,9 @@ import org.pocketcampus.plugin.map.android.iface.IMapView;
 import org.pocketcampus.plugin.map.android.search.MapSearchActivity;
 import org.pocketcampus.plugin.map.android.ui.LevelBar;
 import org.pocketcampus.plugin.map.android.ui.OnLevelBarChangeListener;
+import org.pocketcampus.plugin.map.common.Position;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
-import org.pocketcampus.plugin.map.shared.Position;
 
 import android.app.SearchManager;
 import android.content.DialogInterface;
