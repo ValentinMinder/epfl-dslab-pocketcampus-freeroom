@@ -49,5 +49,5 @@ service DirectoryService {
 	
 	DirectoryToken getTequilaTokenForDirectory();
 	string getDirectorySession(1: DirectoryToken dirToken);
-	DirectoryResponse search(1: DirectoryRequest req);
+	DirectoryResponse searchDirectory(1: DirectoryRequest req);
 }
