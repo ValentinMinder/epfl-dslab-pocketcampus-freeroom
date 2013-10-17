@@ -11,7 +11,6 @@ import java.util.Vector;
 
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
-import org.pocketcampus.plugin.food.shared.Sandwich;
 
 /**
  * 
@@ -102,55 +101,6 @@ public class MenuSorter {
 		}
 
 		return map;
-	}
-
-	/**
-	 * Sorts the sandwiches by Cafeteria, alphabetically.
-	 * 
-	 * @param sandwiches
-	 *            the collection of Sandwiches to sort.
-	 * @return a sorted list of Sandwiches.
-	 */
-	public HashMap<String, Vector<Sandwich>> sortByCafeterias(
-			Collection<Sandwich> sandwiches) {
-
-		if (sandwiches == null) {
-			throw new IllegalArgumentException(
-					"The meals list cannot be null !");
-		}
-
-		HashMap<String, Vector<Sandwich>> map = new HashMap<String, Vector<Sandwich>>();
-
-		for (Sandwich sandwich : sandwiches) {
-			String resto = sandwich.getRestaurant().getName();
-
-			if (!sandwich.getName().matches("\\s+")) {
-				if (map.containsKey(resto)) {
-					map.get(resto).add(sandwich);
-				} else {
-					Vector<Sandwich> vector = new Vector<Sandwich>();
-					vector.add(sandwich);
-					map.put(resto, vector);
-				}
-			} else {
-				System.out.println("SortingSanwiches: Skip empty - Name: "
-						+ sandwich.getName() + " Resto: "
-						+ sandwich.getRestaurant().getName());
-			}
-		}
-		Set<String> restos = map.keySet();
-
-		// Sort menus alphabetically
-		for (String resto : restos) {
-			Collections.sort(map.get(resto), new Comparator<Sandwich>() {
-				public int compare(Sandwich one, Sandwich other) {
-					return one.getName().compareTo(other.getName());
-				}
-			});
-		}
-
-		return map;
-
 	}
 
 	/**

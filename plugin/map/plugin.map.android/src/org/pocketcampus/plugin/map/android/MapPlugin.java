@@ -34,7 +34,7 @@ import org.pocketcampus.plugin.map.android.elements.MapElementsList;
 import org.pocketcampus.plugin.map.android.elements.MapPathOverlay;
 import org.pocketcampus.plugin.map.android.ui.LevelBar;
 import org.pocketcampus.plugin.map.android.ui.OnLevelBarChangeListener;
-import org.pocketcampus.plugin.map.shared.Position;
+import org.pocketcampus.plugin.map.common.Position;
 
 import android.app.Notification;
 import android.content.DialogInterface;

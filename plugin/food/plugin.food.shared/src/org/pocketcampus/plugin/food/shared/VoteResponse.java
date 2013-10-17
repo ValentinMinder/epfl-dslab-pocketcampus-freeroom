@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.platform.sdk.shared.restaurant;
+package org.pocketcampus.plugin.food.shared;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
@@ -21,16 +21,24 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, PendingOrders._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("PendingOrders");
+public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteResponse._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("VoteResponse");
 
-  private static final org.apache.thrift.protocol.TField ORDERS_FIELD_DESC = new org.apache.thrift.protocol.TField("orders", org.apache.thrift.protocol.TType.LIST, (short)1);
+  private static final org.apache.thrift.protocol.TField SUBMIT_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("submitStatus", org.apache.thrift.protocol.TType.I32, (short)1);
 
-  public List<CookReceivedOrder> orders; // required
+  /**
+   * 
+   * @see SubmitStatus
+   */
+  public SubmitStatus submitStatus; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ORDERS((short)1, "orders");
+    /**
+     * 
+     * @see SubmitStatus
+     */
+    SUBMIT_STATUS((short)1, "submitStatus");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -45,8 +53,8 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // ORDERS
-          return ORDERS;
+        case 1: // SUBMIT_STATUS
+          return SUBMIT_STATUS;
         default:
           return null;
       }
@@ -91,91 +99,79 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ORDERS, new org.apache.thrift.meta_data.FieldMetaData("orders", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CookReceivedOrder.class))));
+    tmpMap.put(_Fields.SUBMIT_STATUS, new org.apache.thrift.meta_data.FieldMetaData("submitStatus", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, SubmitStatus.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(PendingOrders.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(VoteResponse.class, metaDataMap);
   }
 
-  public PendingOrders() {
+  public VoteResponse() {
   }
 
-  public PendingOrders(
-    List<CookReceivedOrder> orders)
+  public VoteResponse(
+    SubmitStatus submitStatus)
   {
     this();
-    this.orders = orders;
+    this.submitStatus = submitStatus;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public PendingOrders(PendingOrders other) {
-    if (other.isSetOrders()) {
-      List<CookReceivedOrder> __this__orders = new ArrayList<CookReceivedOrder>();
-      for (CookReceivedOrder other_element : other.orders) {
-        __this__orders.add(new CookReceivedOrder(other_element));
-      }
-      this.orders = __this__orders;
+  public VoteResponse(VoteResponse other) {
+    if (other.isSetSubmitStatus()) {
+      this.submitStatus = other.submitStatus;
     }
   }
 
-  public PendingOrders deepCopy() {
-    return new PendingOrders(this);
+  public VoteResponse deepCopy() {
+    return new VoteResponse(this);
   }
 
   @Override
   public void clear() {
-    this.orders = null;
+    this.submitStatus = null;
   }
 
-  public int getOrdersSize() {
-    return (this.orders == null) ? 0 : this.orders.size();
+  /**
+   * 
+   * @see SubmitStatus
+   */
+  public SubmitStatus getSubmitStatus() {
+    return this.submitStatus;
   }
 
-  public java.util.Iterator<CookReceivedOrder> getOrdersIterator() {
-    return (this.orders == null) ? null : this.orders.iterator();
-  }
-
-  public void addToOrders(CookReceivedOrder elem) {
-    if (this.orders == null) {
-      this.orders = new ArrayList<CookReceivedOrder>();
-    }
-    this.orders.add(elem);
-  }
-
-  public List<CookReceivedOrder> getOrders() {
-    return this.orders;
-  }
-
-  public PendingOrders setOrders(List<CookReceivedOrder> orders) {
-    this.orders = orders;
+  /**
+   * 
+   * @see SubmitStatus
+   */
+  public VoteResponse setSubmitStatus(SubmitStatus submitStatus) {
+    this.submitStatus = submitStatus;
     return this;
   }
 
-  public void unsetOrders() {
-    this.orders = null;
+  public void unsetSubmitStatus() {
+    this.submitStatus = null;
   }
 
-  /** Returns true if field orders is set (has been assigned a value) and false otherwise */
-  public boolean isSetOrders() {
-    return this.orders != null;
+  /** Returns true if field submitStatus is set (has been assigned a value) and false otherwise */
+  public boolean isSetSubmitStatus() {
+    return this.submitStatus != null;
   }
 
-  public void setOrdersIsSet(boolean value) {
+  public void setSubmitStatusIsSet(boolean value) {
     if (!value) {
-      this.orders = null;
+      this.submitStatus = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ORDERS:
+    case SUBMIT_STATUS:
       if (value == null) {
-        unsetOrders();
+        unsetSubmitStatus();
       } else {
-        setOrders((List<CookReceivedOrder>)value);
+        setSubmitStatus((SubmitStatus)value);
       }
       break;
 
@@ -184,8 +180,8 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ORDERS:
-      return getOrders();
+    case SUBMIT_STATUS:
+      return getSubmitStatus();
 
     }
     throw new IllegalStateException();
@@ -198,8 +194,8 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
     }
 
     switch (field) {
-    case ORDERS:
-      return isSetOrders();
+    case SUBMIT_STATUS:
+      return isSetSubmitStatus();
     }
     throw new IllegalStateException();
   }
@@ -208,21 +204,21 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof PendingOrders)
-      return this.equals((PendingOrders)that);
+    if (that instanceof VoteResponse)
+      return this.equals((VoteResponse)that);
     return false;
   }
 
-  public boolean equals(PendingOrders that) {
+  public boolean equals(VoteResponse that) {
     if (that == null)
       return false;
 
-    boolean this_present_orders = true && this.isSetOrders();
-    boolean that_present_orders = true && that.isSetOrders();
-    if (this_present_orders || that_present_orders) {
-      if (!(this_present_orders && that_present_orders))
+    boolean this_present_submitStatus = true && this.isSetSubmitStatus();
+    boolean that_present_submitStatus = true && that.isSetSubmitStatus();
+    if (this_present_submitStatus || that_present_submitStatus) {
+      if (!(this_present_submitStatus && that_present_submitStatus))
         return false;
-      if (!this.orders.equals(that.orders))
+      if (!this.submitStatus.equals(that.submitStatus))
         return false;
     }
 
@@ -233,28 +229,28 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_orders = true && (isSetOrders());
-    builder.append(present_orders);
-    if (present_orders)
-      builder.append(orders);
+    boolean present_submitStatus = true && (isSetSubmitStatus());
+    builder.append(present_submitStatus);
+    if (present_submitStatus)
+      builder.append(submitStatus.getValue());
 
     return builder.toHashCode();
   }
 
-  public int compareTo(PendingOrders other) {
+  public int compareTo(VoteResponse other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    PendingOrders typedOther = (PendingOrders)other;
+    VoteResponse typedOther = (VoteResponse)other;
 
-    lastComparison = Boolean.valueOf(isSetOrders()).compareTo(typedOther.isSetOrders());
+    lastComparison = Boolean.valueOf(isSetSubmitStatus()).compareTo(typedOther.isSetSubmitStatus());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetOrders()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.orders, typedOther.orders);
+    if (isSetSubmitStatus()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.submitStatus, typedOther.submitStatus);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -276,20 +272,9 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
         break;
       }
       switch (field.id) {
-        case 1: // ORDERS
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list50 = iprot.readListBegin();
-              this.orders = new ArrayList<CookReceivedOrder>(_list50.size);
-              for (int _i51 = 0; _i51 < _list50.size; ++_i51)
-              {
-                CookReceivedOrder _elem52; // required
-                _elem52 = new CookReceivedOrder();
-                _elem52.read(iprot);
-                this.orders.add(_elem52);
-              }
-              iprot.readListEnd();
-            }
+        case 1: // SUBMIT_STATUS
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.submitStatus = SubmitStatus.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -309,16 +294,9 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.orders != null) {
-      oprot.writeFieldBegin(ORDERS_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.orders.size()));
-        for (CookReceivedOrder _iter53 : this.orders)
-        {
-          _iter53.write(oprot);
-        }
-        oprot.writeListEnd();
-      }
+    if (this.submitStatus != null) {
+      oprot.writeFieldBegin(SUBMIT_STATUS_FIELD_DESC);
+      oprot.writeI32(this.submitStatus.getValue());
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -327,14 +305,14 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("PendingOrders(");
+    StringBuilder sb = new StringBuilder("VoteResponse(");
     boolean first = true;
 
-    sb.append("orders:");
-    if (this.orders == null) {
+    sb.append("submitStatus:");
+    if (this.submitStatus == null) {
       sb.append("null");
     } else {
-      sb.append(this.orders);
+      sb.append(this.submitStatus);
     }
     first = false;
     sb.append(")");
@@ -343,6 +321,9 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (submitStatus == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'submitStatus' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

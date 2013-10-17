@@ -2,8 +2,8 @@ package org.pocketcampus.plugin.map.android.elements;
 
 import java.util.ArrayList;
 
+import org.pocketcampus.plugin.map.common.MapLayerBean;
 import org.pocketcampus.plugin.map.shared.MapLayer;
-import org.pocketcampus.plugin.map.shared.MapLayerBean;
 
 /**
  * Custom List class for <code>MapElement</code>s.

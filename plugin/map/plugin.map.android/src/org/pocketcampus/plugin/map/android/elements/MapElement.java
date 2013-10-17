@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.map.android.elements;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.OverlayItem;
-import org.pocketcampus.plugin.map.shared.MapElementBean;
+import org.pocketcampus.plugin.map.common.MapElementBean;
 
 /**
  * Represents an element on the map (AKA POI).

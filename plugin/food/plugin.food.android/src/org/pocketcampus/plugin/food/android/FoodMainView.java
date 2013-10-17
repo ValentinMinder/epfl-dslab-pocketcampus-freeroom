@@ -79,9 +79,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	/** Listener for when you click on a rating in the list */
 	private OnItemClickListener mOnRatingClickListener;
 
-	/** The action bar displayed in the food plugin */
-	private ActionBar mActionBar;
-
 	/** The action shown in action bar to toggle menus by restaurants or ratings */
 	private ShowAllAction mShowAllMenusAction;
 	/** The action shown in action bar to toggle menus by restaurants or ratings */
@@ -159,9 +156,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	private void displayData() {
 		mLayout.setText(getResources().getString(R.string.food_loading));
-		mController.getRestaurants();
 		mController.getMeals();
-		mController.getHasVoted();
 	}
 
 	/**
@@ -451,12 +446,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		final HashMap<String, Vector<Meal>> mealHashMap = mModel
 				.getMealsByRestaurants(this);
 		if (mealHashMap != null) {
-			if (mActionBar == null) {
-				mActionBar = getActionBar();
-			}
 
 			// Removes everything
-			mActionBar.removeAllActions();
+			removeAllActionsFromActionBar();
 
 			// Add the action bar's button to expand all menus
 			if (mShowAllMenusAction == null) {
@@ -464,7 +456,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			} else {
 				mShowAllMenusAction.setIsShown(false);
 			}
-			mActionBar.addAction(mShowAllMenusAction, 0);
+			addActionToActionBar(mShowAllMenusAction, 0);
 
 			// Add the action bar's button to show menus sorted by ratings
 			if (mShowMenusOrRatingAction == null
@@ -473,7 +465,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			} else {
 				mShowMenusOrRatingAction.setIsRestaurant(true);
 			}
-			mActionBar.addAction(mShowMenusOrRatingAction, 1);
+			addActionToActionBar(mShowMenusOrRatingAction, 1);
 
 			// Iterate over the different restaurant menus
 			mLayout.removeFillerView();
@@ -515,7 +507,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		List<Meal> mealsByRatings = mModel.getMealsByRatings();
 
 		// Remove the action bar's button to expand all menus
-		mActionBar.removeAction(mShowAllMenusAction);
+		removeActionFromActionBar(mShowAllMenusAction);
 
 		// Add the action bar's button to show the menus sorted by restaurants
 		if (mShowMenusOrRatingAction == null) {
@@ -563,13 +555,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		if (mLayout == null) {
 			mLayout = new StandardTitledLayout(this);
 		}
-		if (mActionBar == null) {
-			mActionBar = getActionBar();
-		}
 
 		mShowSuggestionsAction = new ShowBySuggestionsAction();
-		mActionBar.removeAllActions();
-		mActionBar.addAction(mShowSuggestionsAction);
+		removeAllActionsFromActionBar();
+		addActionToActionBar(mShowSuggestionsAction);
 
 		if (mealsBySuggestions != null && !mealsBySuggestions.isEmpty()) {
 			mLayout.removeFillerView();
@@ -602,11 +591,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * ratings.
 	 */
 	public void removeOtherActions() {
-		if (mActionBar == null) {
-			mActionBar = getActionBar();
-		}
 
-		mActionBar.removeAllActions();
+		removeAllActionsFromActionBar();
 
 		// // Remove the expand action
 		// mActionBar.removeActionAt(0);
@@ -973,11 +959,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		@Override
 		public void performAction(View view) {
 			mButtonByRestaurants = !mButtonByRestaurants;
-			mActionBar.removeAction(this);
+			removeActionFromActionBar(this);
 			if (mButtonByRestaurants)
-				mActionBar.addAction(this, 0);
+				addActionToActionBar(this, 0);
 			else
-				mActionBar.addAction(this, 1);
+				addActionToActionBar(this, 1);
 
 			if (mButtonByRestaurants) {
 				Tracker.getInstance().trackPageView(
@@ -1049,7 +1035,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		public void performAction(View view) {
 			Tracker.getInstance().trackPageView(
 					"food/actionbar/suggestions/back");
-			mActionBar.removeAction(this);
+			removeActionFromActionBar(this);
 			showMenusByRestaurants();
 		}
 	}
@@ -1116,8 +1102,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			}
 
 			mIsAllShown = !mIsAllShown;
-			mActionBar.removeActionAt(0);
-			mActionBar.addAction(this, 0);
+			removeActionFromActionBar(0);
+			addActionToActionBar(this, 0);
 		}
 
 		/**

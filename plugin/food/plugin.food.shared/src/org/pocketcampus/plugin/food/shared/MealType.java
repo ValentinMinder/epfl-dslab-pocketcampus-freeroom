@@ -3,30 +3,29 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.platform.sdk.shared.common;
+package org.pocketcampus.plugin.food.shared;
 
 
 import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum Rating implements org.apache.thrift.TEnum {
-  UNKNOWN(0),
-  ZERO(1),
-  HALF(2),
-  ONE(3),
-  ONE_AND_A_HALF(4),
-  TWO(5),
-  TWO_AND_A_HALF(6),
-  THREE(7),
-  THREE_AND_A_HALF(8),
-  FOUR(9),
-  FOUR_AND_A_HALF(10),
-  FIVE(11);
+public enum MealType implements org.apache.thrift.TEnum {
+  UNKNOWN(1),
+  FISH(2),
+  MEAT(3),
+  POULTRY(4),
+  VEGETARIAN(5),
+  GREEN_FORK(6),
+  PASTA(7),
+  PIZZA(8),
+  THAI(9),
+  INDIAN(10),
+  LEBANESE(11);
 
   private final int value;
 
-  private Rating(int value) {
+  private MealType(int value) {
     this.value = value;
   }
 
@@ -41,32 +40,30 @@ public enum Rating implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static Rating findByValue(int value) { 
+  public static MealType findByValue(int value) { 
     switch (value) {
-      case 0:
-        return UNKNOWN;
       case 1:
-        return ZERO;
+        return UNKNOWN;
       case 2:
-        return HALF;
+        return FISH;
       case 3:
-        return ONE;
+        return MEAT;
       case 4:
-        return ONE_AND_A_HALF;
+        return POULTRY;
       case 5:
-        return TWO;
+        return VEGETARIAN;
       case 6:
-        return TWO_AND_A_HALF;
+        return GREEN_FORK;
       case 7:
-        return THREE;
+        return PASTA;
       case 8:
-        return THREE_AND_A_HALF;
+        return PIZZA;
       case 9:
-        return FOUR;
+        return THAI;
       case 10:
-        return FOUR_AND_A_HALF;
+        return INDIAN;
       case 11:
-        return FIVE;
+        return LEBANESE;
       default:
         return null;
     }

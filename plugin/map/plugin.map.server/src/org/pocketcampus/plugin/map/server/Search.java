@@ -8,12 +8,12 @@ import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.pocketcampus.plugin.map.common.CoordinateConverter;
+import org.pocketcampus.plugin.map.common.Position;
 import org.pocketcampus.plugin.map.server.jsonitems.BasicSearchResponse;
 import org.pocketcampus.plugin.map.server.jsonitems.GeometryR;
 import org.pocketcampus.plugin.map.server.jsonitems.SearchProperties;
-import org.pocketcampus.plugin.map.shared.CoordinateConverter;
 import org.pocketcampus.plugin.map.shared.MapItem;
-import org.pocketcampus.plugin.map.shared.Position;
 
 import com.google.gson.Gson;
 
@@ -27,7 +27,6 @@ import com.google.gson.Gson;
  *
  */
 public class Search {
-	private static MapDatabase mapDB_ = new MapDatabase();
 
 	/**
 	 * Returns the POI ID closest to the given position

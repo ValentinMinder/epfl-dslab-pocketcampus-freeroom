@@ -3,25 +3,20 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.platform.sdk.shared.restaurant;
+package org.pocketcampus.plugin.food.shared;
 
 
 import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum RestaurantCategory implements org.apache.thrift.TEnum {
-  UNKNOWN(0),
-  PUB(1),
-  FAST_FOOD(2),
-  AFFORDABLE(3),
-  MEDIUM(4),
-  EXPENSIVE(5),
-  HIGHEST(6);
+public enum MealTime implements org.apache.thrift.TEnum {
+  LUNCH(1),
+  DINNER(2);
 
   private final int value;
 
-  private RestaurantCategory(int value) {
+  private MealTime(int value) {
     this.value = value;
   }
 
@@ -36,22 +31,12 @@ public enum RestaurantCategory implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static RestaurantCategory findByValue(int value) { 
+  public static MealTime findByValue(int value) { 
     switch (value) {
-      case 0:
-        return UNKNOWN;
       case 1:
-        return PUB;
+        return LUNCH;
       case 2:
-        return FAST_FOOD;
-      case 3:
-        return AFFORDABLE;
-      case 4:
-        return MEDIUM;
-      case 5:
-        return EXPENSIVE;
-      case 6:
-        return HIGHEST;
+        return DINNER;
       default:
         return null;
     }

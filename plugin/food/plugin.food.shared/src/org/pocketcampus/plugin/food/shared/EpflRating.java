@@ -21,19 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restaurant._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Restaurant");
+public class EpflRating implements org.apache.thrift.TBase<EpflRating, EpflRating._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("EpflRating");
 
-  private static final org.apache.thrift.protocol.TField RESTAURANT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("restaurantId", org.apache.thrift.protocol.TType.I64, (short)1);
-  private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField RATING_VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("ratingValue", org.apache.thrift.protocol.TType.DOUBLE, (short)1);
+  private static final org.apache.thrift.protocol.TField VOTE_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("voteCount", org.apache.thrift.protocol.TType.I32, (short)2);
 
-  public long restaurantId; // required
-  public String name; // required
+  public double ratingValue; // required
+  public int voteCount; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    RESTAURANT_ID((short)1, "restaurantId"),
-    NAME((short)2, "name");
+    RATING_VALUE((short)1, "ratingValue"),
+    VOTE_COUNT((short)2, "voteCount");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +48,10 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // RESTAURANT_ID
-          return RESTAURANT_ID;
-        case 2: // NAME
-          return NAME;
+        case 1: // RATING_VALUE
+          return RATING_VALUE;
+        case 2: // VOTE_COUNT
+          return VOTE_COUNT;
         default:
           return null;
       }
@@ -92,118 +92,118 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
   }
 
   // isset id assignments
-  private static final int __RESTAURANTID_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __RATINGVALUE_ISSET_ID = 0;
+  private static final int __VOTECOUNT_ISSET_ID = 1;
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.RESTAURANT_ID, new org.apache.thrift.meta_data.FieldMetaData("restaurantId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
-    tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.RATING_VALUE, new org.apache.thrift.meta_data.FieldMetaData("ratingValue", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.VOTE_COUNT, new org.apache.thrift.meta_data.FieldMetaData("voteCount", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Restaurant.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(EpflRating.class, metaDataMap);
   }
 
-  public Restaurant() {
+  public EpflRating() {
   }
 
-  public Restaurant(
-    long restaurantId,
-    String name)
+  public EpflRating(
+    double ratingValue,
+    int voteCount)
   {
     this();
-    this.restaurantId = restaurantId;
-    setRestaurantIdIsSet(true);
-    this.name = name;
+    this.ratingValue = ratingValue;
+    setRatingValueIsSet(true);
+    this.voteCount = voteCount;
+    setVoteCountIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Restaurant(Restaurant other) {
+  public EpflRating(EpflRating other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.restaurantId = other.restaurantId;
-    if (other.isSetName()) {
-      this.name = other.name;
-    }
+    this.ratingValue = other.ratingValue;
+    this.voteCount = other.voteCount;
   }
 
-  public Restaurant deepCopy() {
-    return new Restaurant(this);
+  public EpflRating deepCopy() {
+    return new EpflRating(this);
   }
 
   @Override
   public void clear() {
-    setRestaurantIdIsSet(false);
-    this.restaurantId = 0;
-    this.name = null;
+    setRatingValueIsSet(false);
+    this.ratingValue = 0.0;
+    setVoteCountIsSet(false);
+    this.voteCount = 0;
   }
 
-  public long getRestaurantId() {
-    return this.restaurantId;
+  public double getRatingValue() {
+    return this.ratingValue;
   }
 
-  public Restaurant setRestaurantId(long restaurantId) {
-    this.restaurantId = restaurantId;
-    setRestaurantIdIsSet(true);
+  public EpflRating setRatingValue(double ratingValue) {
+    this.ratingValue = ratingValue;
+    setRatingValueIsSet(true);
     return this;
   }
 
-  public void unsetRestaurantId() {
-    __isset_bit_vector.clear(__RESTAURANTID_ISSET_ID);
+  public void unsetRatingValue() {
+    __isset_bit_vector.clear(__RATINGVALUE_ISSET_ID);
   }
 
-  /** Returns true if field restaurantId is set (has been assigned a value) and false otherwise */
-  public boolean isSetRestaurantId() {
-    return __isset_bit_vector.get(__RESTAURANTID_ISSET_ID);
+  /** Returns true if field ratingValue is set (has been assigned a value) and false otherwise */
+  public boolean isSetRatingValue() {
+    return __isset_bit_vector.get(__RATINGVALUE_ISSET_ID);
   }
 
-  public void setRestaurantIdIsSet(boolean value) {
-    __isset_bit_vector.set(__RESTAURANTID_ISSET_ID, value);
+  public void setRatingValueIsSet(boolean value) {
+    __isset_bit_vector.set(__RATINGVALUE_ISSET_ID, value);
   }
 
-  public String getName() {
-    return this.name;
+  public int getVoteCount() {
+    return this.voteCount;
   }
 
-  public Restaurant setName(String name) {
-    this.name = name;
+  public EpflRating setVoteCount(int voteCount) {
+    this.voteCount = voteCount;
+    setVoteCountIsSet(true);
     return this;
   }
 
-  public void unsetName() {
-    this.name = null;
+  public void unsetVoteCount() {
+    __isset_bit_vector.clear(__VOTECOUNT_ISSET_ID);
   }
 
-  /** Returns true if field name is set (has been assigned a value) and false otherwise */
-  public boolean isSetName() {
-    return this.name != null;
+  /** Returns true if field voteCount is set (has been assigned a value) and false otherwise */
+  public boolean isSetVoteCount() {
+    return __isset_bit_vector.get(__VOTECOUNT_ISSET_ID);
   }
 
-  public void setNameIsSet(boolean value) {
-    if (!value) {
-      this.name = null;
-    }
+  public void setVoteCountIsSet(boolean value) {
+    __isset_bit_vector.set(__VOTECOUNT_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case RESTAURANT_ID:
+    case RATING_VALUE:
       if (value == null) {
-        unsetRestaurantId();
+        unsetRatingValue();
       } else {
-        setRestaurantId((Long)value);
+        setRatingValue((Double)value);
       }
       break;
 
-    case NAME:
+    case VOTE_COUNT:
       if (value == null) {
-        unsetName();
+        unsetVoteCount();
       } else {
-        setName((String)value);
+        setVoteCount((Integer)value);
       }
       break;
 
@@ -212,11 +212,11 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case RESTAURANT_ID:
-      return Long.valueOf(getRestaurantId());
+    case RATING_VALUE:
+      return Double.valueOf(getRatingValue());
 
-    case NAME:
-      return getName();
+    case VOTE_COUNT:
+      return Integer.valueOf(getVoteCount());
 
     }
     throw new IllegalStateException();
@@ -229,10 +229,10 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
     }
 
     switch (field) {
-    case RESTAURANT_ID:
-      return isSetRestaurantId();
-    case NAME:
-      return isSetName();
+    case RATING_VALUE:
+      return isSetRatingValue();
+    case VOTE_COUNT:
+      return isSetVoteCount();
     }
     throw new IllegalStateException();
   }
@@ -241,30 +241,30 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Restaurant)
-      return this.equals((Restaurant)that);
+    if (that instanceof EpflRating)
+      return this.equals((EpflRating)that);
     return false;
   }
 
-  public boolean equals(Restaurant that) {
+  public boolean equals(EpflRating that) {
     if (that == null)
       return false;
 
-    boolean this_present_restaurantId = true;
-    boolean that_present_restaurantId = true;
-    if (this_present_restaurantId || that_present_restaurantId) {
-      if (!(this_present_restaurantId && that_present_restaurantId))
+    boolean this_present_ratingValue = true;
+    boolean that_present_ratingValue = true;
+    if (this_present_ratingValue || that_present_ratingValue) {
+      if (!(this_present_ratingValue && that_present_ratingValue))
         return false;
-      if (this.restaurantId != that.restaurantId)
+      if (this.ratingValue != that.ratingValue)
         return false;
     }
 
-    boolean this_present_name = true && this.isSetName();
-    boolean that_present_name = true && that.isSetName();
-    if (this_present_name || that_present_name) {
-      if (!(this_present_name && that_present_name))
+    boolean this_present_voteCount = true;
+    boolean that_present_voteCount = true;
+    if (this_present_voteCount || that_present_voteCount) {
+      if (!(this_present_voteCount && that_present_voteCount))
         return false;
-      if (!this.name.equals(that.name))
+      if (this.voteCount != that.voteCount)
         return false;
     }
 
@@ -275,43 +275,43 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_restaurantId = true;
-    builder.append(present_restaurantId);
-    if (present_restaurantId)
-      builder.append(restaurantId);
+    boolean present_ratingValue = true;
+    builder.append(present_ratingValue);
+    if (present_ratingValue)
+      builder.append(ratingValue);
 
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
+    boolean present_voteCount = true;
+    builder.append(present_voteCount);
+    if (present_voteCount)
+      builder.append(voteCount);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(Restaurant other) {
+  public int compareTo(EpflRating other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Restaurant typedOther = (Restaurant)other;
+    EpflRating typedOther = (EpflRating)other;
 
-    lastComparison = Boolean.valueOf(isSetRestaurantId()).compareTo(typedOther.isSetRestaurantId());
+    lastComparison = Boolean.valueOf(isSetRatingValue()).compareTo(typedOther.isSetRatingValue());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetRestaurantId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.restaurantId, typedOther.restaurantId);
+    if (isSetRatingValue()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ratingValue, typedOther.ratingValue);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetName()).compareTo(typedOther.isSetName());
+    lastComparison = Boolean.valueOf(isSetVoteCount()).compareTo(typedOther.isSetVoteCount());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetName()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.name, typedOther.name);
+    if (isSetVoteCount()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.voteCount, typedOther.voteCount);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -333,17 +333,18 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
         break;
       }
       switch (field.id) {
-        case 1: // RESTAURANT_ID
-          if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.restaurantId = iprot.readI64();
-            setRestaurantIdIsSet(true);
+        case 1: // RATING_VALUE
+          if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
+            this.ratingValue = iprot.readDouble();
+            setRatingValueIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // NAME
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.name = iprot.readString();
+        case 2: // VOTE_COUNT
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.voteCount = iprot.readI32();
+            setVoteCountIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -356,8 +357,11 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetRestaurantId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'restaurantId' was not found in serialized data! Struct: " + toString());
+    if (!isSetRatingValue()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'ratingValue' was not found in serialized data! Struct: " + toString());
+    }
+    if (!isSetVoteCount()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'voteCount' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -366,33 +370,27 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(RESTAURANT_ID_FIELD_DESC);
-    oprot.writeI64(this.restaurantId);
+    oprot.writeFieldBegin(RATING_VALUE_FIELD_DESC);
+    oprot.writeDouble(this.ratingValue);
     oprot.writeFieldEnd();
-    if (this.name != null) {
-      oprot.writeFieldBegin(NAME_FIELD_DESC);
-      oprot.writeString(this.name);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(VOTE_COUNT_FIELD_DESC);
+    oprot.writeI32(this.voteCount);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Restaurant(");
+    StringBuilder sb = new StringBuilder("EpflRating(");
     boolean first = true;
 
-    sb.append("restaurantId:");
-    sb.append(this.restaurantId);
+    sb.append("ratingValue:");
+    sb.append(this.ratingValue);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("name:");
-    if (this.name == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.name);
-    }
+    sb.append("voteCount:");
+    sb.append(this.voteCount);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -400,10 +398,8 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'restaurantId' because it's a primitive and you chose the non-beans generator.
-    if (name == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
-    }
+    // alas, we cannot check 'ratingValue' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'voteCount' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

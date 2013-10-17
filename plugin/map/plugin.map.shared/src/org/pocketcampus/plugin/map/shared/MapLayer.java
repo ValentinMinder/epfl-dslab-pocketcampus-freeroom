@@ -120,7 +120,7 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     tmpMap.put(_Fields.DRAWABLE_URL, new org.apache.thrift.meta_data.FieldMetaData("drawableUrl", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.LAYER_ID, new org.apache.thrift.meta_data.FieldMetaData("layerId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.CACHE_IN_SECONDS, new org.apache.thrift.meta_data.FieldMetaData("cacheInSeconds", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.DISPLAYABLE, new org.apache.thrift.meta_data.FieldMetaData("displayable", org.apache.thrift.TFieldRequirementType.REQUIRED, 

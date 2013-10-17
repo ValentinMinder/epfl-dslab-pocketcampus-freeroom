@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.utils.Utils;
@@ -14,12 +13,15 @@ import org.pocketcampus.plugin.food.server.db.FoodDB;
 import org.pocketcampus.plugin.food.server.parse.FeedUrlParser;
 import org.pocketcampus.plugin.food.server.parse.RssParser;
 import org.pocketcampus.plugin.food.server.parse.RssParser.RssFeed;
+import org.pocketcampus.plugin.food.shared.FoodRequest;
+import org.pocketcampus.plugin.food.shared.FoodResponse;
 import org.pocketcampus.plugin.food.shared.FoodService;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
-import org.pocketcampus.plugin.food.shared.Sandwich;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
+import org.pocketcampus.plugin.food.shared.VoteRequest;
+import org.pocketcampus.plugin.food.shared.VoteResponse;
 
 /**
  * Takes care of handling the requests for information concerning the Food
@@ -50,9 +52,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	/** The list of DeviceIds that have already voted for a meal today. */
 	private ArrayList<String> mDeviceIds;
 
-	/** The list of Sandwiches for all Cafeterias. */
-	private List<Sandwich> mSandwiches;
-
 	// Character to filter because doesn't show right.
 	private final static int BAD_CHAR = 65533;
 
@@ -70,7 +69,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 		mDatabase = new FoodDB();
 
 		mAllMeals = new ArrayList<Meal>();
-		mSandwiches = new ArrayList<Sandwich>();
 		mMealRatings = new HashMap<Long, Rating>();
 		mDeviceIds = new ArrayList<String>();
 		mRestaurantList = new ArrayList<Restaurant>();
@@ -80,7 +78,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 		mFeed = fup.getFeed();
 
 		importMenus();
-		importSandwiches();
 	}
 
 	/**
@@ -114,17 +111,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Get all restaurants on campus.
-	 * 
-	 * @return mRestaurantList The list of restaurants.
-	 */
-	@Override
-	public List<Restaurant> getRestaurants() throws TException {
-		System.out.println("<getRestaurants>: getting restaurants");
-		return mRestaurantList;
-	}
-
-	/**
 	 * Checks whether the user has already voted today
 	 */
 	public boolean hasVoted(String deviceId) throws TException {
@@ -135,25 +121,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 		System.out.println("<setRating>: Not yet in mDeviceIds.");
 		return false;
-	}
-
-	/**
-	 * Get the Rating of a particular Meal.
-	 * 
-	 * @param meal
-	 *            The Meal for which we want the Rating.
-	 * @return rating The Meal's Rating.
-	 */
-	@Override
-	public Rating getRating(Meal meal) throws TException {
-		updateMenus();
-		System.out.println("<getRating>: Rating Request");
-
-		if (mMealRatings != null) {
-			return mMealRatings.get(meal.getMealId());
-		}
-
-		return null;
 	}
 
 	/**
@@ -251,22 +218,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 
 		return SubmitStatus.ERROR;
-	}
-
-	/**
-	 * Gets all Sandwiches on campus.
-	 * 
-	 * @return mSandwiches the list of sandwiches
-	 */
-	@Override
-	public List<Sandwich> getSandwiches() throws TException {
-		if (mSandwiches == null || mSandwiches.isEmpty()) {
-			importSandwiches();
-			System.out.println("<getSandwiches>: Reimporting sandwiches.");
-		} else {
-			System.out.println("<getSandwiches>: Not reimporting sandwiches");
-		}
-		return mSandwiches;
 	}
 
 	/**
@@ -434,215 +385,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Import all Sandwiches on campus from a hardcoded list
-	 */
-	private void importSandwiches() {
-		/* Cafeteria INM */
-		Restaurant cafeteriaINM = new Restaurant(("Cafeteria INM").hashCode(),
-				"Cafeteria INM");
-		mSandwiches.add(new Sandwich(
-				(cafeteriaINM.getName() + "Poulet au Curry").hashCode(),
-				cafeteriaINM, "Poulet au Curry"));
-		mSandwiches.add(new Sandwich((cafeteriaINM.getName() + "Thon")
-				.hashCode(), cafeteriaINM, "Thon"));
-		mSandwiches.add(new Sandwich((cafeteriaINM.getName() + "Jambon")
-				.hashCode(), cafeteriaINM, "Jambon"));
-		mSandwiches.add(new Sandwich((cafeteriaINM.getName() + "Fromage")
-				.hashCode(), cafeteriaINM, "Fromage"));
-		mSandwiches.add(new Sandwich(
-				(cafeteriaINM.getName() + "Tomate Mozzarella").hashCode(),
-				cafeteriaINM, "Tomate Mozzarella"));
-		mSandwiches.add(new Sandwich((cafeteriaINM.getName() + "Jambon Cru")
-				.hashCode(), cafeteriaINM, "Jambon Cru"));
-		mSandwiches.add(new Sandwich((cafeteriaINM.getName() + "Salami")
-				.hashCode(), cafeteriaINM, "Salami"));
-
-		/* Cafeteria BM */
-		mSandwiches.addAll(defaultSandwichList("Cafeteria BM"));
-
-		/* Cafeteria BC */
-		mSandwiches.addAll(defaultSandwichList("Cafeteria BC"));
-
-		/* Cafeteria SV */
-		mSandwiches.addAll(defaultSandwichList("Cafeteria SV"));
-
-		/* Cafeteria MX */
-		mSandwiches.addAll(defaultSandwichList("Cafeteria MX"));
-
-		/* Cafeteria PH */
-		mSandwiches.addAll(defaultSandwichList("Cafeteria PH"));
-
-		/* Cafeteria ELA */
-		mSandwiches.addAll(defaultSandwichList("Cafeteria ELA"));
-
-		/* Le Giacometti (Cafeteria SG) */
-		Restaurant leGiacometti = new Restaurant(("Le Giacometti").hashCode(),
-				"Le Giacometti");
-		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Jambon")
-				.hashCode(), leGiacometti, "Jambon"));
-		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Salami")
-				.hashCode(), leGiacometti, "Salami"));
-		mSandwiches.add(new Sandwich(
-				(leGiacometti.getName() + "Jambon de dinde").hashCode(),
-				leGiacometti, "Jambon de dinde"));
-		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Gruyère")
-				.hashCode(), leGiacometti, "Gruyière"));
-		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Viande Séchée")
-				.hashCode(), leGiacometti, "Viande Séchée"));
-		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Jambon Cru")
-				.hashCode(), leGiacometti, "Jambon Cru"));
-		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Roast-Beef")
-				.hashCode(), leGiacometti, "Roast-Beef"));
-		mSandwiches.add(new Sandwich(
-				(leGiacometti.getName() + "Poulet Jijommaise").hashCode(),
-				leGiacometti, "Poulet Jijommaise"));
-		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Crevettes")
-				.hashCode(), leGiacometti, "Crevettes"));
-		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Saumon Fumé")
-				.hashCode(), leGiacometti, "Saumon Fumé"));
-		mSandwiches.add(new Sandwich(
-				(leGiacometti.getName() + "Poulet au Curry").hashCode(),
-				leGiacometti, "Poulet au Curry"));
-
-		/* L'Esplanade */
-		Restaurant lEsplanade = new Restaurant(("L'Esplanade").hashCode(),
-				"L'Esplanade");
-		mSandwiches
-				.add(new Sandwich((lEsplanade.getName() + "Thon").hashCode(),
-						lEsplanade, "Thon"));
-		mSandwiches.add(new Sandwich((lEsplanade.getName() + "Poulet au Curry")
-				.hashCode(), lEsplanade, "Poulet au Curry"));
-		mSandwiches.add(new Sandwich((lEsplanade.getName() + "Aubergine")
-				.hashCode(), lEsplanade, "Aubergine"));
-		mSandwiches.add(new Sandwich((lEsplanade.getName() + "Roast-Beef")
-				.hashCode(), lEsplanade, "Roast-Beef"));
-		mSandwiches.add(new Sandwich((lEsplanade.getName() + "Jambon Cru")
-				.hashCode(), lEsplanade, "Jambon Cru"));
-		mSandwiches.add(new Sandwich((lEsplanade.getName() + "Viande Séchée")
-				.hashCode(), lEsplanade, "Viande Séchée"));
-		mSandwiches.add(new Sandwich((lEsplanade.getName() + "Saumon Fumé")
-				.hashCode(), lEsplanade, "Saumon Fumé"));
-
-		/* L'Arcadie */
-		mSandwiches.addAll(defaultSandwichList("L'Arcadie"));
-
-		/* Atlantide */
-		Restaurant lAtlantide = new Restaurant(("L'Atlantide").hashCode(),
-				"L'Atlantide");
-		mSandwiches.add(new Sandwich((lAtlantide.getName() + "Sandwich long")
-				.hashCode(), lAtlantide, "Sandwich long"));
-		mSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Sandwich au pavot").hashCode(),
-				lAtlantide, "Sandwich au pavot"));
-		mSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Sandwich intégral").hashCode(),
-				lAtlantide, "Sandwich intégral"));
-		mSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Sandwich provençal").hashCode(),
-				lAtlantide, "Sandwich provençal"));
-		mSandwiches.add(new Sandwich((lAtlantide.getName() + "Parisette")
-				.hashCode(), lAtlantide, "Parisette"));
-		mSandwiches.add(new Sandwich((lAtlantide.getName() + "Jambon")
-				.hashCode(), lAtlantide, "Jambon"));
-		mSandwiches.add(new Sandwich((lAtlantide.getName() + "Salami")
-				.hashCode(), lAtlantide, "Salami"));
-		mSandwiches.add(new Sandwich((lAtlantide.getName() + "Dinde")
-				.hashCode(), lAtlantide, "Dinde"));
-		mSandwiches
-				.add(new Sandwich((lAtlantide.getName() + "Thon").hashCode(),
-						lAtlantide, "Thon"));
-		mSandwiches.add(new Sandwich((lAtlantide.getName() + "Mozzarella")
-				.hashCode(), lAtlantide, "Mozzarella"));
-		mSandwiches.add(new Sandwich((lAtlantide.getName() + "Saumon Fumé")
-				.hashCode(), lAtlantide, "Saumon Fumé"));
-		mSandwiches.add(new Sandwich((lAtlantide.getName() + "Viande Séchée")
-				.hashCode(), lAtlantide, "Viande Séchée"));
-		mSandwiches.add(new Sandwich((lAtlantide.getName() + "Jambon Cru")
-				.hashCode(), lAtlantide, "Jambon Cru"));
-		mSandwiches.add(new Sandwich((lAtlantide.getName() + "Roast-Beef")
-				.hashCode(), lAtlantide, "Roast-Beef"));
-
-		/* Satellite */
-		Restaurant satellite = new Restaurant(("Satellite").hashCode(),
-				"Satellite");
-		mSandwiches.add(new Sandwich((satellite.getName() + "Jambon")
-				.hashCode(), satellite, "Jambon"));
-		mSandwiches.add(new Sandwich((satellite.getName() + "Thon").hashCode(),
-				satellite, "Thon"));
-		mSandwiches.add(new Sandwich((satellite.getName() + "Jambon Fromage")
-				.hashCode(), satellite, "Jambon Fromage"));
-		mSandwiches.add(new Sandwich((satellite.getName() + "Roast-Beef")
-				.hashCode(), satellite, "Roast-Beef"));
-		mSandwiches.add(new Sandwich((satellite.getName() + "Poulet au Curry")
-				.hashCode(), satellite, "Poulet au Curry"));
-		mSandwiches.add(new Sandwich((satellite.getName() + "Jambon Cru")
-				.hashCode(), satellite, "Jambon Cru"));
-		mSandwiches.add(new Sandwich(
-				(satellite.getName() + "Tomate Mozzarella").hashCode(),
-				satellite, "Tomate Mozzarella"));
-		mSandwiches.add(new Sandwich((satellite.getName() + "Salami")
-				.hashCode(), satellite, "Salami"));
-		mSandwiches.add(new Sandwich((satellite.getName() + "Parmesan")
-				.hashCode(), satellite, "Parmesan"));
-		mSandwiches.add(new Sandwich(
-				(satellite.getName() + "Aubergine grillée").hashCode(),
-				satellite, "Aubergine grillée"));
-		mSandwiches.add(new Sandwich((satellite.getName() + "Viande séchée")
-				.hashCode(), satellite, "Viande séchée"));
-
-		/* Négoce */
-		Restaurant negoce = new Restaurant(("Négoce").hashCode(), "Négoce");
-		mSandwiches.add(new Sandwich((negoce.getName() + "Dinde").hashCode(),
-				negoce, "Dinde"));
-		mSandwiches.add(new Sandwich((negoce.getName() + "Thon").hashCode(),
-				negoce, "Thon"));
-		mSandwiches.add(new Sandwich((negoce.getName() + "Gratiné Jambon")
-				.hashCode(), negoce, "Gratiné Jambon"));
-		mSandwiches.add(new Sandwich((negoce.getName() + "Mozzarella Olives")
-				.hashCode(), negoce, "Mozzarella Olives"));
-		mSandwiches.add(new Sandwich((negoce.getName() + "Poulet au Curry")
-				.hashCode(), negoce, "Poulet au Curry"));
-		mSandwiches.add(new Sandwich((negoce.getName() + "Jambon Fromage")
-				.hashCode(), negoce, "Jambon Fromage"));
-		mSandwiches.add(new Sandwich((negoce.getName() + "Jambon").hashCode(),
-				negoce, "Jambon"));
-		mSandwiches.add(new Sandwich((negoce.getName() + "Salami").hashCode(),
-				negoce, "Salami"));
-		mSandwiches.add(new Sandwich((negoce.getName() + "Roast-Beef")
-				.hashCode(), negoce, "Roast-Beef"));
-		mSandwiches.add(new Sandwich((negoce.getName() + "Mozarrella")
-				.hashCode(), negoce, "Mozzarella"));
-	}
-
-	/**
-	 * The default sandwich list
-	 * 
-	 * @param name
-	 *            The name of the list
-	 * @return the sandwich list
-	 */
-	private Vector<Sandwich> defaultSandwichList(String name) {
-
-		Vector<Sandwich> defaultSandwichList = new Vector<Sandwich>();
-		Restaurant r = new Restaurant(name.hashCode(), name);
-
-		defaultSandwichList.add(new Sandwich((name + "Thon").hashCode(), r,
-				"Thon"));
-		defaultSandwichList.add(new Sandwich((name + "Jambon").hashCode(), r,
-				"Jambon"));
-		defaultSandwichList.add(new Sandwich((name + "Fromage").hashCode(), r,
-				"Fromage"));
-		defaultSandwichList.add(new Sandwich((name + "Tomate Mozzarella")
-				.hashCode(), r, "Tomate Mozzarella"));
-		defaultSandwichList.add(new Sandwich((name + "Jambon Cru").hashCode(),
-				r, "Jambon Cru"));
-		defaultSandwichList.add(new Sandwich((name + "Salami").hashCode(), r,
-				"Salami"));
-
-		return defaultSandwichList;
-	}
-
-	/**
 	 * Checks whether the last date the user had is today
 	 * 
 	 * @param oldDate
@@ -698,5 +440,17 @@ public class FoodServiceImpl implements FoodService.Iface {
 		long diff = now.getTime() - then.getTime();
 		long realDiff = diff / (60000);
 		return realDiff;
+	}
+
+	@Override
+	public FoodResponse getFood(FoodRequest foodReq) throws TException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public VoteResponse vote(VoteRequest voteReq) throws TException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
