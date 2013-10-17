@@ -1,13 +1,10 @@
 package org.pocketcampus.plugin.directory.server;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,46 +12,47 @@ import java.util.List;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.utils.NetworkUtil;
 import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
+import org.pocketcampus.plugin.directory.shared.DirectoryRequest;
+import org.pocketcampus.plugin.directory.shared.DirectoryResponse;
 import org.pocketcampus.plugin.directory.shared.DirectoryService;
+import org.pocketcampus.plugin.directory.shared.DirectoryToken;
 import org.pocketcampus.plugin.directory.shared.NoPictureFound;
 import org.pocketcampus.plugin.directory.shared.Person;
 
+import com.unboundid.asn1.ASN1OctetString;
+import com.unboundid.ldap.sdk.Control;
 import com.unboundid.ldap.sdk.DereferencePolicy;
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPException;
 import com.unboundid.ldap.sdk.LDAPSearchException;
+import com.unboundid.ldap.sdk.SearchRequest;
 import com.unboundid.ldap.sdk.SearchResult;
 import com.unboundid.ldap.sdk.SearchResultEntry;
 import com.unboundid.ldap.sdk.SearchScope;
+import com.unboundid.ldap.sdk.controls.SimplePagedResultsControl;
 
 /**
  * Class that manages the services the server side of Directory provides to the client.
- * @author Pascal <pascal.scheiben@gmail.com>
+ *
+ * @author amer
+ *
  */
 public class DirectoryServiceImpl implements DirectoryService.Iface {
 
 	/** The connection to the EPFL ldap server */
 	private LDAPConnection ldap;
 	
-	//LDAP SETTINGS
-	/** hostname of the ldap server */
-	private static final String LDAP_ADDRESS= "ldap.epfl.ch";
-	/** port of the ldap server */
-	private static int LDAP_PORT = 389;
 	
 	//LDAP search params
 	/** Limit of max result */
 	private static final int NB_RESULT_LIMIT = 500;
+	/** Page size */
+	private static final int PAGE_SIZE = 30;
 	/** Set of wanted attributes: first name, lastname, mail, url, phone number, office, gaspar account, sciper, organizational units*/
 	private String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier", "uid", "ou" };
 	/** Limited set of attributes */
 	private String[] onlyNameWanted = {"givenName", "sn"};
 	
-	//stuff to get the picture
-	private static final String pictureCamiproBase = "http://people.epfl.ch/cache/photos/camipro/";
-	private static final String pictureExtBase = "http://people.epfl.ch/cache/photos/ext/";
-	private static final String pictureExtension = ".jpg";
-
 	/** Maximum number of result for the autocompletion*/
 	private static final int MAX_SUGGESTION_NUMBER = 25;
 	
@@ -79,21 +77,15 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 		
 		getNamesFromDatabase();
-		
-		
-		connectLdap();
-	}
-	
-	/**
-	 * Initiates the connection to the ldap server
-	 */
-	private void connectLdap(){
 		try {
-			ldap.connect(LDAP_ADDRESS, LDAP_PORT);
+			ldap.connect("ldap.epfl.ch", 389);
 		}catch (LDAPException e) {
 			System.err.println("Ldap exception");
 		}
+		
+		
 	}
+	
 	
 	/**
 	 * Obtain all the names (first and last) from the database
@@ -146,12 +138,12 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 		//exact first or last name search
 		String searchQuery = "(|(sn=" +param+ ")(givenName=" +param+ "))";
-		results = searchOnLDAP(searchQuery);
+		results = searchOnLDAP(searchQuery, null);
 		Collections.sort(results);
 		
 		//adding more people with *param* in their diplay name
 		searchQuery = "(displayName=*"+param+"*)";
-		LinkedList<Person> tmp = searchOnLDAP(searchQuery);
+		LinkedList<Person> tmp = searchOnLDAP(searchQuery, null);
 		Collections.sort(tmp);
 		for(Person sup : tmp){
 			if(!results.contains(sup))
@@ -190,45 +182,12 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	@Override
 	public String getProfilePicture(String sciper) throws TException, NoPictureFound {
 		getNamesFromDatabase();
-		byte[] sciperBytes = null;
-		byte[] digest = null;
 		
 		//special case for ironman
 		if(sciper.equals(">9000"))
 			return "http://1.bp.blogspot.com/_8GJbAAr1DY8/TLymwhZs-5I/AAAAAAAABzA/11t3g4HmSuI/s1600/ironman_movie.jpg";
 		
-		//normal people part
-		try {
-			sciperBytes = sciper.getBytes("UTF-8");
-			
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		}
-		
-		MessageDigest md;
-		try {
-			md = MessageDigest.getInstance("MD5");
-			digest = md.digest(sciperBytes);
-			
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		
-		BigInteger bigInt = new BigInteger(1, digest);
-		String hashedSciper = bigInt.toString(16);
-		
-		while(hashedSciper.length() < 32 ){
-		  hashedSciper = "0"+hashedSciper;
-		}
-		
-		String pictureCamiproUrl = pictureCamiproBase + hashedSciper + pictureExtension;
-		String pictureExtUrl = pictureExtBase + hashedSciper + pictureExtension;
-		pictureExtUrl = "http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + sciper;
-		
-		if(NetworkUtil.checkUrlStatus(pictureCamiproUrl)) {
-			System.out.println(pictureCamiproUrl);
-			return pictureCamiproUrl;
-		}
+		String pictureExtUrl = "http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + sciper;
 		
 		if(NetworkUtil.checkUrlImage(pictureExtUrl)) {
 			System.out.println(pictureExtUrl);
@@ -297,6 +256,9 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		}
 	}
 	
+	class Pagination {
+		ASN1OctetString cookie = null;
+	}
 	
 	/**
 	 * This is one of the method called by all the others searchSomething of the class.
@@ -308,18 +270,41 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	 * @return List of <code>Person</code>s without duplicates.
 	 * @throws org.pocketcampus.plugin.directory.shared.LDAPException
 	 */
-	private LinkedList<Person> searchOnLDAP(String searchQuery) throws org.pocketcampus.plugin.directory.shared.LDAPException{
+	private LinkedList<Person> searchOnLDAP(String searchQuery, Pagination pag) throws org.pocketcampus.plugin.directory.shared.LDAPException{
 		LinkedList<Person> results = new LinkedList<Person>();
 		
 		SearchResult searchResult;
 		try {
 			if( !ldap.isConnected())
 				ldap.reconnect();
+
 			
-			//search the ldap
-			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted); 
-			//if attWanted is null, this will print out all the info the ldap can give
-			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString()); 
+			if(pag != null) {
+				
+				// search with pagination
+				// http://snipplr.com/view/52024/
+				SearchRequest searchRequest = new SearchRequest("o=epfl,c=ch", SearchScope.SUB, searchQuery, attWanted);
+				searchRequest.setControls(new Control[] { new SimplePagedResultsControl(PAGE_SIZE, pag.cookie) });
+				searchResult = ldap.search(searchRequest);
+				pag.cookie = null;
+				for (Control c : searchResult.getResponseControls()) {
+					if (c instanceof SimplePagedResultsControl) {
+						pag.cookie = ((SimplePagedResultsControl) c).getCookie();
+						if((pag.cookie != null) && (pag.cookie.getValueLength() == 0))
+							pag.cookie = null;
+					}
+				}
+				
+			} else {
+				
+				//search the ldap
+				searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted); 
+				//if attWanted is null, this will print out all the info the ldap can give
+				//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString()); 
+				
+			}
+			
+			
 			
 			//adding persons from the search to our result list
 			for (SearchResultEntry e : searchResult.getSearchEntries())
@@ -345,6 +330,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 				ArrayList<String> ouList = new ArrayList<String>();
 				ouList.add(e.getAttributeValue("ou"));
 				p.setOrganisationalUnit(ouList);
+				p.setPictureUrl("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + p.getSciper());
 				
 				//no duplicates!
 				if( !results.contains(p))
@@ -387,7 +373,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	 * @throws org.pocketcampus.plugin.directory.shared.LDAPException
 	 */
 	private LinkedList<Person> searchSciper(String sciper) throws org.pocketcampus.plugin.directory.shared.LDAPException{
-		return searchOnLDAP("(uniqueIdentifier="+sciper+")");
+		return searchOnLDAP("(uniqueIdentifier="+sciper+")", null);
 	}
 	
 	/**
@@ -445,4 +431,137 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		else
 			return searchForName("(&(sn=" +lastName+")(givenName=" + partialFirstName +"*))");
 	}
+
+	@Override
+	public DirectoryToken getTequilaTokenForDirectory() throws TException {
+		return null;
+	}
+
+	@Override
+	public String getDirectorySession(DirectoryToken dirToken) throws TException {
+		return null;
+	}
+
+	@Override
+	public DirectoryResponse search(DirectoryRequest req) throws TException {
+		try {
+			Pagination pag = new Pagination();
+			if(req.isSetResultSetCookie())
+				pag.cookie = new ASN1OctetString(req.getResultSetCookie());
+			String q = StringUtils.removeAccents(req.getQuery()).trim();
+			String [] query = q.split(" ");
+			for(int i = 0; i < query.length; i++)
+				query[i] = "(|(cn=*" + query[i] + "*)(ou=*" + query[i] + "*))";
+			String q2 = org.apache.commons.lang3.StringUtils.join(query, "");
+			LinkedList<Person> tmp = searchOnLDAP2("(|(&" + q2 + ")(mail=" + q + "*)(uid=" + q + "*)(uniqueidentifier=" + q + "))", pag);
+			DirectoryResponse resp = new DirectoryResponse(200);
+			resp.setResults(tmp);
+			if(pag.cookie != null)
+				resp.setResultSetCookie(pag.cookie.getValue());
+			return resp;
+		} catch (org.pocketcampus.plugin.directory.shared.LDAPException e) {
+			e.printStackTrace();
+			return new DirectoryResponse(500);
+		}
+	}
+	
+	
+	
+	
+	private LinkedList<Person> searchOnLDAP2(String searchQuery, Pagination pag) throws org.pocketcampus.plugin.directory.shared.LDAPException{
+		//LinkedList<Person> results = new LinkedList<Person>();
+		HashMap<String, Person> results = new HashMap<String, Person>();
+		
+		SearchResult searchResult;
+		do {
+		try {
+			if( !ldap.isConnected())
+				ldap.reconnect();
+
+			
+			if(pag != null) {
+				
+				// search with pagination
+				// http://snipplr.com/view/52024/
+				SearchRequest searchRequest = new SearchRequest("o=epfl,c=ch", SearchScope.SUB, searchQuery, attWanted);
+				searchRequest.setControls(new Control[] { new SimplePagedResultsControl(PAGE_SIZE, pag.cookie) });
+				searchResult = ldap.search(searchRequest);
+				pag.cookie = null;
+				for (Control c : searchResult.getResponseControls()) {
+					if (c instanceof SimplePagedResultsControl) {
+						pag.cookie = ((SimplePagedResultsControl) c).getCookie();
+						if((pag.cookie != null) && (pag.cookie.getValueLength() == 0))
+							pag.cookie = null;
+					}
+				}
+				
+			} else {
+				
+				//search the ldap
+				searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted); 
+				//if attWanted is null, this will print out all the info the ldap can give
+				//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString()); 
+				
+			}
+			
+			
+			
+			//adding persons from the search to our result list
+			for (SearchResultEntry e : searchResult.getSearchEntries())
+			{
+				//getting the interessant part of the url
+				String t[] = new String[2];
+				String web = e.getAttributeValue("labeledURI");
+				if(web != null){
+					t =  web.split(" ");
+					web = t[0];
+				}
+				
+				//creating the new person
+				Person p = new Person(
+						e.getAttributeValue("givenName"),
+						e.getAttributeValue("sn"),
+						e.getAttributeValue("uniqueIdentifier"));
+				if(p.getFirstName() == null || p.getLastName() == null || p.getSciper() == null)
+					continue;
+				p.setEmail(e.getAttributeValue("mail"));
+				p.setWeb(web);
+				p.setOfficePhoneNumber(e.getAttributeValue("telephoneNumber"));
+				p.setOffice(e.getAttributeValue("roomNumber"));
+				p.setGaspar(e.getAttributeValue("uid"));
+				ArrayList<String> ouList = new ArrayList<String>();
+				ouList.add(e.getAttributeValue("ou"));
+				p.setOrganisationalUnit(ouList);
+				p.setPictureUrl("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + p.getSciper());
+				
+				//no duplicates!
+				if( !results.containsKey(p.getSciper()))
+					results.put(p.sciper, p);
+				else{
+					results.get(p.sciper).OrganisationalUnit.addAll(p.OrganisationalUnit);
+				}
+				
+			}
+			
+		} catch (LDAPSearchException e1) {
+			if(e1.getMessage().equals("size limit exceeded")){
+				System.err.println("ldap search problem: " + e1.getMessage());
+				throw new org.pocketcampus.plugin.directory.shared.LDAPException("too many results");
+			}
+					
+		} catch (LDAPException e) {
+			System.err.println("ldap reconnection problem");
+			throw new org.pocketcampus.plugin.directory.shared.LDAPException("EPFL LDAP Problem, try again later");
+		}
+		
+		}while(results.size() < PAGE_SIZE && pag != null && pag.cookie != null);
+		
+
+		return new LinkedList<Person>(results.values());
+	
+	}
+	
+	
+	
+	
 }
