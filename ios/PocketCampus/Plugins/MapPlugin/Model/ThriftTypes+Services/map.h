@@ -11,12 +11,11 @@
 #import <TProtocolUtil.h>
 #import <TProcessor.h>
 
-#import "common.h"
 
 @interface MapLayer : NSObject <NSCoding> {
   NSString * __name;
   NSString * __drawableUrl;
-  Id __layerId;
+  int64_t __layerId;
   int32_t __cacheInSeconds;
   BOOL __displayable;
 
@@ -30,12 +29,12 @@
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, retain, getter=name, setter=setName:) NSString * name;
 @property (nonatomic, retain, getter=drawableUrl, setter=setDrawableUrl:) NSString * drawableUrl;
-@property (nonatomic, getter=layerId, setter=setLayerId:) Id layerId;
+@property (nonatomic, getter=layerId, setter=setLayerId:) int64_t layerId;
 @property (nonatomic, getter=cacheInSeconds, setter=setCacheInSeconds:) int32_t cacheInSeconds;
 @property (nonatomic, getter=displayable, setter=setDisplayable:) BOOL displayable;
 #endif
 
-- (id) initWithName: (NSString *) name drawableUrl: (NSString *) drawableUrl layerId: (Id) layerId cacheInSeconds: (int32_t) cacheInSeconds displayable: (BOOL) displayable;
+- (id) initWithName: (NSString *) name drawableUrl: (NSString *) drawableUrl layerId: (int64_t) layerId cacheInSeconds: (int32_t) cacheInSeconds displayable: (BOOL) displayable;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -48,8 +47,8 @@
 - (void) setDrawableUrl: (NSString *) drawableUrl;
 - (BOOL) drawableUrlIsSet;
 
-- (Id) layerId;
-- (void) setLayerId: (Id) layerId;
+- (int64_t) layerId;
+- (void) setLayerId: (int64_t) layerId;
 - (BOOL) layerIdIsSet;
 
 - (int32_t) cacheInSeconds;
@@ -67,8 +66,8 @@
   NSString * __description;
   double __latitude;
   double __longitude;
-  Id __layerId;
-  Id __itemId;
+  int64_t __layerId;
+  int64_t __itemId;
   int32_t __floor;
   NSString * __category;
 
@@ -87,13 +86,13 @@
 @property (nonatomic, retain, getter=description, setter=setDescription:) NSString * description;
 @property (nonatomic, getter=latitude, setter=setLatitude:) double latitude;
 @property (nonatomic, getter=longitude, setter=setLongitude:) double longitude;
-@property (nonatomic, getter=layerId, setter=setLayerId:) Id layerId;
-@property (nonatomic, getter=itemId, setter=setItemId:) Id itemId;
+@property (nonatomic, getter=layerId, setter=setLayerId:) int64_t layerId;
+@property (nonatomic, getter=itemId, setter=setItemId:) int64_t itemId;
 @property (nonatomic, getter=floor, setter=setFloor:) int32_t floor;
 @property (nonatomic, retain, getter=category, setter=setCategory:) NSString * category;
 #endif
 
-- (id) initWithTitle: (NSString *) title description: (NSString *) description latitude: (double) latitude longitude: (double) longitude layerId: (Id) layerId itemId: (Id) itemId floor: (int32_t) floor category: (NSString *) category;
+- (id) initWithTitle: (NSString *) title description: (NSString *) description latitude: (double) latitude longitude: (double) longitude layerId: (int64_t) layerId itemId: (int64_t) itemId floor: (int32_t) floor category: (NSString *) category;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -114,12 +113,12 @@
 - (void) setLongitude: (double) longitude;
 - (BOOL) longitudeIsSet;
 
-- (Id) layerId;
-- (void) setLayerId: (Id) layerId;
+- (int64_t) layerId;
+- (void) setLayerId: (int64_t) layerId;
 - (BOOL) layerIdIsSet;
 
-- (Id) itemId;
-- (void) setItemId: (Id) itemId;
+- (int64_t) itemId;
+- (void) setItemId: (int64_t) itemId;
 - (BOOL) itemIdIsSet;
 
 - (int32_t) floor;
@@ -130,13 +129,11 @@
 - (void) setCategory: (NSString *) category;
 - (BOOL) categoryIsSet;
 
-- (NSString*)descriptionObject;
-
 @end
 
 @protocol MapService <NSObject>
 - (NSArray *) getLayerList;  // throws TException
-- (NSArray *) getLayerItems: (Id) layerId;  // throws TException
+- (NSArray *) getLayerItems: (int64_t) layerId;  // throws TException
 - (NSArray *) search: (NSString *) query;  // throws TException
 @end
 

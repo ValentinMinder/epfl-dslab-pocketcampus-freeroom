@@ -234,7 +234,8 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         return;
     }
     [self.barActivityIndicator startAnimating];
-    [self.directoryService searchPersons:self.searchBar.text delegate:self];
+    DirectoryRequest* request = [[DirectoryRequest alloc] initWithQuery:self.searchBar.text directorySession:nil resultSetCookie:nil];
+    [self.directoryService searchForRequest:request delegate:self];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -333,11 +334,12 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     [self resultsError];
 }*/
 
-- (void)searchDirectoryFor:(NSString*)searchPattern didReturn:(NSArray*)results {
+- (void)searchForRequest:(DirectoryRequest *)request didReturn:(DirectoryResponse *)response {
+    NSArray* results = response.results;
     [self.barActivityIndicator stopAnimating];
     if (results.count == 0) {
         if (self.resultsMode == ResultsModeRecentSearches && self.searchBar.text.length == 0) {
-            [self.recentSearches removeObject:searchPattern]; //means this recent result is not longer in directory (ex. left EPFL)
+            [self.recentSearches removeObject:request.query]; //means this recent result is not longer in directory (ex. left EPFL)
         }
         [self showNoResultMessage];
         return;
@@ -370,9 +372,10 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
+
 }
 
-- (void)searchDirectoryFailedFor:(NSString*)searchPattern {
+- (void)searchFailedForRequest:(DirectoryRequest *)request {
     [self resultsError];
 }
 
@@ -457,7 +460,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         }
         [activityIndicatorView startAnimating];
         [self.directoryService cancelOperationsForDelegate:self];
-        [self.directoryService searchPersons:searchString delegate:self];
+        [self.directoryService searchForRequest:[[DirectoryRequest alloc] initWithQuery:searchString directorySession:nil resultSetCookie:nil] delegate:self];
         [self.searchBar resignFirstResponder];
     } else {
         //Unsupported mode

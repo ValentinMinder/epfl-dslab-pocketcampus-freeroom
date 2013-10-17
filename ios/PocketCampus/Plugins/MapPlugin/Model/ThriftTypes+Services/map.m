@@ -11,7 +11,6 @@
 #import <TProtocolUtil.h>
 #import <TProcessor.h>
 
-#import "common.h"
 
 #import "map.h"
 
@@ -23,7 +22,7 @@
 
 @implementation MapLayer
 
-- (id) initWithName: (NSString *) name drawableUrl: (NSString *) drawableUrl layerId: (Id) layerId cacheInSeconds: (int32_t) cacheInSeconds displayable: (BOOL) displayable
+- (id) initWithName: (NSString *) name drawableUrl: (NSString *) drawableUrl layerId: (int64_t) layerId cacheInSeconds: (int32_t) cacheInSeconds displayable: (BOOL) displayable
 {
   self = [super init];
   __name = [name retain];
@@ -313,7 +312,7 @@
 
 @implementation MapItem
 
-- (id) initWithTitle: (NSString *) title description: (NSString *) description latitude: (double) latitude longitude: (double) longitude layerId: (Id) layerId itemId: (Id) itemId floor: (int32_t) floor category: (NSString *) category
+- (id) initWithTitle: (NSString *) title description: (NSString *) description latitude: (double) latitude longitude: (double) longitude layerId: (int64_t) layerId itemId: (int64_t) itemId floor: (int32_t) floor category: (NSString *) category
 {
   self = [super init];
   __title = [title retain];
@@ -950,29 +949,29 @@
 @end
 
 @interface getLayerItems_args : NSObject <NSCoding> {
-  Id __layerId;
+  int64_t __layerId;
 
   BOOL __layerId_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, getter=layerId, setter=setLayerId:) Id layerId;
+@property (nonatomic, getter=layerId, setter=setLayerId:) int64_t layerId;
 #endif
 
-- (id) initWithLayerId: (Id) layerId;
+- (id) initWithLayerId: (int64_t) layerId;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (Id) layerId;
-- (void) setLayerId: (Id) layerId;
+- (int64_t) layerId;
+- (void) setLayerId: (int64_t) layerId;
 - (BOOL) layerIdIsSet;
 
 @end
 
 @implementation getLayerItems_args
 
-- (id) initWithLayerId: (Id) layerId
+- (id) initWithLayerId: (int64_t) layerId
 {
   self = [super init];
   __layerId = layerId;
@@ -1568,7 +1567,7 @@
   return [self recv_getLayerList];
 }
 
-- (void) send_getLayerItems: (Id) layerId
+- (void) send_getLayerItems: (int64_t) layerId
 {
   [outProtocol writeMessageBeginWithName: @"getLayerItems" type: TMessageType_CALL sequenceID: 0];
   [outProtocol writeStructBeginWithName: @"getLayerItems_args"];
@@ -1600,7 +1599,7 @@
                                            reason: @"getLayerItems failed: unknown result"];
 }
 
-- (NSArray *) getLayerItems: (Id) layerId
+- (NSArray *) getLayerItems: (int64_t) layerId
 {
   [self send_getLayerItems: layerId];
   return [self recv_getLayerItems];

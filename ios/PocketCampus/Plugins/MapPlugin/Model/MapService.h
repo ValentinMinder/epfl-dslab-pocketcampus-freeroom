@@ -21,13 +21,13 @@ static NSString* kMapRecentSearchesModifiedNotificationName __unused = @"MapRece
  THRIFT SERVICE
  
  - (NSArray *) getLayerList;  // throws TException
- - (NSArray *) getLayerItems: (Id) layerId;  // throws TException
+ - (NSArray *) getLayerItems: (int64_t) layerId;  // throws TException
  - (NSArray *) search: (NSString *) query;  // throws TException
  
 */
 
 - (void)getLayerListWithDelegate:(id)delegate;
-- (void)getLayerItemsForLayerId:(Id)layerId delegate:(id)delegate;
+- (void)getLayerItemsForLayerId:(int64_t)layerId delegate:(id)delegate;
 - (void)searchFor:(NSString*)query delegate:(id)delegate;
 
 
@@ -58,8 +58,8 @@ static NSString* kMapRecentSearchesModifiedNotificationName __unused = @"MapRece
 @optional
 - (void)getLayerListDidReturn:(NSArray*)layerList; //array of MapLayer
 - (void)getLayerListFailed;
-- (void)getLayerItemsForLayerId:(Id)layerID didReturn:(NSArray*)layerItems; //array of MapItem
-- (void)getLayerItemsFailedForLayerId:(Id)layerID;
+- (void)getLayerItemsForLayerId:(int64_t)layerID didReturn:(NSArray*)layerItems; //array of MapItem
+- (void)getLayerItemsFailedForLayerId:(int64_t)layerID;
 - (void)searchMapFor:(NSString*)query didReturn:(NSArray*)results; //array of MapItem
 - (void)searchMapFailedFor:(NSString*)query;
 

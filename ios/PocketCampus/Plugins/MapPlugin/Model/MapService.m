@@ -64,7 +64,7 @@ static MapService* instance __weak = nil;
     [operationQueue addOperation:operation];
 }
 
-- (void)getLayerItemsForLayerId:(Id)layerId delegate:(id)delegate {
+- (void)getLayerItemsForLayerId:(int64_t)layerId delegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getLayerItems:);
     operation.delegateDidReturnSelector = @selector(getLayerItemsForLayerId:didReturn:);

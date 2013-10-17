@@ -3715,11 +3715,7 @@
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
 				INFOPLIST_FILE = "PocketCampus/PocketCampus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\\\"$(SRCROOT)/ZBarSDK\\\"",
-					"/Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus_2.0/ios/iphone/PocketCampus/External\\ frameworks/GoogleAnalytics",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "F9E0CCE5-A4E2-42C4-8EB9-B8B437E5641C";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F9E0CCE5-A4E2-42C4-8EB9-B8B437E5641C";
@@ -3745,11 +3741,7 @@
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
 				INFOPLIST_FILE = "PocketCampus/PocketCampus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\\\"$(SRCROOT)/ZBarSDK\\\"",
-					"/Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus_2.0/ios/iphone/PocketCampus/External\\ frameworks/GoogleAnalytics",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "1688CD38-8163-49D3-8F84-B540EE4460AE";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1688CD38-8163-49D3-8F84-B540EE4460AE";
