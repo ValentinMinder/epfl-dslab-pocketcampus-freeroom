@@ -178,8 +178,6 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     [self.mapView addGestureRecognizer:mapTap];
     
     if (self.initialQuery) {
-        /*searchBar.text = initialQuery;
-         [self setSearchBarState:SearchBarStateVisible];*/
         self.title = [PCUtils isIdiomPad] ? nil : self.initialQuery;
         self.navigationItem.leftItemsSupplementBackButton = YES;
         [self startSearchForQuery:self.initialQuery];
@@ -207,13 +205,16 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (self.initialQuery) {
-        [[PCGAITracker sharedTracker] trackScreenWithName:@"/map/searchResults"];
-    } else {
-        [[PCGAITracker sharedTracker] trackScreenWithName:@"/map"];
-    }
-    [self mapView:self.mapView regionDidChangeAnimated:NO];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/map"];
 }
+
+/*- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    MKMapCamera* cam = self.mapView.camera;
+    cam.altitude = 2.0;
+    [self.mapView setCamera:cam animated:YES];
+}*/
 
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -583,23 +584,6 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     }
 }
 
-- (void)myLocationPressed {
-    if (self.mapView.userTrackingMode == MKUserTrackingModeNone) {
-        [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
-        self.mapView.showsUserLocation = YES;
-        [self.mapView setRegion:MKCoordinateRegionMake(self.mapView.userLocation.coordinate, MKCoordinateSpanMake(0.003, 0.003)) animated:YES];
-    } else if (self.mapView.userTrackingMode == MKUserTrackingModeFollow) {
-        [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
-        if (self.mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading) { //means heading not supported
-            [self.mapView setUserTrackingMode:MKUserTrackingModeNone];
-            self.mapView.showsUserLocation = NO;
-        }
-    } else {
-        [self.mapView setUserTrackingMode:MKUserTrackingModeNone animated:YES];
-        self.mapView.showsUserLocation = NO;
-    }
-}
-
 - (void)floorDownPressed {
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) { //copy in case they are modified in the meantime (highly unlikely though)
         [self.mapView deselectAnnotation:annotation animated:YES];
@@ -740,6 +724,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     if (mapItemAnnotations.count == 1) {
         [self.mapView selectAnnotation:mapItemAnnotations[0] animated:YES];
     }
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/map/searchResults"];
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {

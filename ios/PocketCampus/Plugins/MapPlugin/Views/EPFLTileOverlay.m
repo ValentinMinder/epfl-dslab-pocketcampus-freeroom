@@ -65,7 +65,7 @@ static NSString* URL_ENDING = @".png";
     // Roughly within (48, 4), (44, 10), in degrees.
     // Turn center to bounds
     
-    if (self.mapView.camera.altitude > MAX_ALTITUDE) {
+    if (self.mapView.camera.altitude > MAX_ALTITUDE ||self.mapView.camera.altitude < MIN_ALTITUDE) {
         return NO;
     }
     

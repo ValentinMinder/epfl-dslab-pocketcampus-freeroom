@@ -9,10 +9,9 @@
 #define DEFAULT_LAYER_LEVEL 1
 #define MAX_LAYER_LEVEL 8
 #define MIN_LAYER_LEVEL -4
-#define MIN_ZOOM_SCALE 0.03
 #define MAX_ALTITUDE_ALLOW_LAYER_CHANGE 1200
 #define MAX_ALTITUDE 3800
-
+#define MIN_ALTITUDE 0
 
 #import <Foundation/Foundation.h>
 
