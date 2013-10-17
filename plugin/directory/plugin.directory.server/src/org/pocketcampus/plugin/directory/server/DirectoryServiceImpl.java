@@ -451,9 +451,9 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			String q = StringUtils.removeAccents(req.getQuery()).trim();
 			String [] query = q.split(" ");
 			for(int i = 0; i < query.length; i++)
-				query[i] = "(|(cn=*" + query[i] + "*)(ou=*" + query[i] + "*))";
+				query[i] = "(|(cn=" + query[i] + "*)(cn=* " + query[i] + "*)(ou=" + query[i] + "))";
 			String q2 = org.apache.commons.lang3.StringUtils.join(query, "");
-			LinkedList<Person> tmp = searchOnLDAP2("(|(&" + q2 + ")(mail=" + q + "*)(uid=" + q + "*)(uniqueidentifier=" + q + "))", pag);
+			LinkedList<Person> tmp = searchOnLDAP2("(|(&" + q2 + ")(mail=" + q + "*)(uid=" + q + ")(uniqueidentifier=" + q + "))", pag);
 			DirectoryResponse resp = new DirectoryResponse(200);
 			resp.setResults(tmp);
 			if(pag.cookie != null)
