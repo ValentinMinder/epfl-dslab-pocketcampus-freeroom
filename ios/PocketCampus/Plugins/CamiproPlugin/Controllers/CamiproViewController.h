@@ -8,12 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "CamiproService.h"
-
-#import "AuthenticationController.h"
-
-#import "authentication.h"
-
-@interface CamiproViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIAlertViewDelegate, AuthenticationCallbackDelegate, CamiproServiceDelegate>
+@interface CamiproViewController : UIViewController
 
 @end

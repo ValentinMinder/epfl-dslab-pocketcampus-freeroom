@@ -22,14 +22,13 @@
 
 @implementation CamiproTransactionCell
 
-- (id)initWithRuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"CamiproTransactionCell" owner:self options:nil];
     self = (CamiproTransactionCell*)elements[0];
     if (self) {
         self.reuseIdentifier = reuseIdentifier;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.placeLabel.textColor = [PCValues textColor1];
     }
     return self;
 }
@@ -38,11 +37,12 @@
     _transaction = transaction;
     self.placeLabel.text = self.transaction.iPlace;
     self.dateLabel.text = self.transaction.iDate;
-    self.priceLabel.text = [NSString stringWithFormat:@"CHF %.2lf", self.transaction.iAmount];
     if (self.transaction.iAmount > 0.0) {
         self.priceLabel.textColor = [UIColor colorWithRed:0.09 green:0.79 blue:0 alpha:1.0]; //light green
+        self.priceLabel.text = [NSString stringWithFormat:@"+ CHF %.2lf", self.transaction.iAmount];
     } else {
-        self.priceLabel.textColor = [PCValues pocketCampusRed];
+        self.priceLabel.textColor = [UIColor darkGrayColor];
+        self.priceLabel.text = [NSString stringWithFormat:@"- CHF %.2lf", fabs(self.transaction.iAmount)];
     }
 }
 

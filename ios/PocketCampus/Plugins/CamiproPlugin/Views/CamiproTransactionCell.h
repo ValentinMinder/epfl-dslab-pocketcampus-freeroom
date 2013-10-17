@@ -12,7 +12,7 @@
 
 @interface CamiproTransactionCell : UITableViewCell
 
-- (id)initWithRuseIdentifier:(NSString *)reuseIdentifier;
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
 @property (nonatomic, strong) Transaction* transaction;
 

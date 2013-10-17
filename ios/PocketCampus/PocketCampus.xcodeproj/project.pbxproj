@@ -43,6 +43,7 @@
 		3212452E16FE174500469113 /* EyeBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452C16FE174500469113 /* EyeBarButton@2x.png */; };
 		32125BBF1536F215009B8D37 /* FeetConnection.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBD1536F215009B8D37 /* FeetConnection.png */; };
 		32125BC01536F215009B8D37 /* FeetConnection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBE1536F215009B8D37 /* FeetConnection@2x.png */; };
+		32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */; };
 		3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
 		3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */; };
@@ -537,6 +538,7 @@
 		3212452C16FE174500469113 /* EyeBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBarButton@2x.png"; sourceTree = "<group>"; };
 		32125BBD1536F215009B8D37 /* FeetConnection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FeetConnection.png; sourceTree = "<group>"; };
 		32125BBE1536F215009B8D37 /* FeetConnection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FeetConnection@2x.png"; sourceTree = "<group>"; };
+		32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CamiproLarge@2x.png"; sourceTree = "<group>"; };
 		3215425515B5B75F0003C8B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		3215425715B5B7670003C8B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		3216C95616A6098C0050D17D /* DirectoryProfilePictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryProfilePictureViewController.h; sourceTree = "<group>"; };
@@ -2148,6 +2150,7 @@
 			isa = PBXGroup;
 			children = (
 				32710E941565129600DE6984 /* CamiproLarge.png */,
+				32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */,
 				32B5871A156458FA0051C57E /* Camipro.png */,
 				32B5871B156458FA0051C57E /* Camipro@2x.png */,
 			);
@@ -2970,6 +2973,7 @@
 				328B9EF5150B927500B50024 /* RatingStar@2x.png in Resources */,
 				3276BE0B150BBA77001F2A88 /* RatingStarEmpty.png in Resources */,
 				3276BE0C150BBA77001F2A88 /* RatingStarEmpty@2x.png in Resources */,
+				32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */,
 				3276BE10150BBEE9001F2A88 /* RatingPoint.png in Resources */,
 				3276BE11150BBEE9001F2A88 /* RatingPoint@2x.png in Resources */,
 				32FB2E0915179014007AE82B /* TransportPlugin.strings in Resources */,

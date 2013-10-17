@@ -12,6 +12,10 @@
 
 #import "ObjectArchiver.h"
 
+#import "CamiproService.h"
+
+#import "AuthenticationService.h"
+
 @implementation CamiproController
 
 static BOOL initObserversDone = NO;

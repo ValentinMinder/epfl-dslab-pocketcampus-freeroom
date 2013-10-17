@@ -8,13 +8,13 @@
 
 #import "CamiproViewController.h"
 
-#import "PCValues.h"
-
-#import "PCUtils.h"
-
 #import "PCTableViewSectionHeader.h"
 
 #import "ObjectArchiver.h"
+
+#import "CamiproService.h"
+
+#import "AuthenticationController.h"
 
 #import "authentication.h"
 
@@ -24,13 +24,10 @@
 
 static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
 
-static const CGFloat kShadowViewAlpha = 0.7;
-
-@interface CamiproViewController ()
+@interface CamiproViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, AuthenticationCallbackDelegate, CamiproServiceDelegate>
 
 
 
-//@property (nonatomic, strong) UILabel* lastUpdateLabel;
 @property (nonatomic, weak) IBOutlet UITableView* tableView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
@@ -38,12 +35,11 @@ static const CGFloat kShadowViewAlpha = 0.7;
 
 
 // iPad only
-@property (nonatomic, weak) IBOutlet UIView* statsContainerView;
-@property (nonatomic, weak) IBOutlet UILabel* statsLabel;
-@property (nonatomic, weak) IBOutlet UILabel* statsContentLabel;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* statsActivityIndicator;
-@property (nonatomic, weak) IBOutlet UIButton* reloadCardButton;
-@property (nonatomic, strong) UIView* shadowView;
+@property (nonatomic, strong) IBOutlet UILabel* statsLabel;
+@property (nonatomic, strong) IBOutlet UILabel* statsContentLabel;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* statsActivityIndicator;
+@property (nonatomic, strong) IBOutlet UIButton* reloadCardButton;
+@property (nonatomic, strong) IBOutlet UIView* verticalLine;
 
 // iPhone only
 @property (nonatomic, weak) IBOutlet UIBarButtonItem* reloadCardBarButton;
@@ -64,6 +60,8 @@ static const CGFloat kShadowViewAlpha = 0.7;
 
 @implementation CamiproViewController
 
+#pragma mark - Init
+
 - (id)init
 {
     self = [super initWithNibName:@"CamiproView" bundle:nil];
@@ -81,129 +79,57 @@ static const CGFloat kShadowViewAlpha = 0.7;
     return self;
 }
 
+#pragma mark - UIViewController overrides
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/camipro"];
-    self.view.backgroundColor = [PCValues backgroundColor1];
     
+    UIEdgeInsets insets = [PCUtils edgeInsetsForViewController:self];
+    insets.bottom = self.toolbar.frame.size.height;
+    self.tableView.contentInset = insets;
+    self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     
     if ([PCUtils isIdiomPad]) {
-        //self.tableView.layer.masksToBounds = NO;
-        //self.tableView.layer.shadowOffset = CGSizeMake(0, 0);
-        //self.tableView.layer.shadowOpacity = 0.5;
-        //self.tableView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.tableView.bounds].CGPath;
-        
         self.statsLabel.text = NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil);
-        self.statsLabel.textColor = [UIColor colorWithWhite:0.3 alpha:1.0];
-        self.statsLabel.shadowColor = [PCValues shadowColor1];
-        self.statsLabel.shadowOffset = [PCValues shadowOffset1];
-        
-        self.statsContentLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
-        self.statsContentLabel.shadowColor = [PCValues shadowColor1];
-        self.statsContentLabel.shadowOffset = [PCValues shadowOffset1];
-        
-
         [self.reloadCardButton setTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) forState:UIControlStateNormal];
-
-        [self.reloadCardButton setBackgroundImage:[PCValues imageForGenericGreyButton] forState:UIControlStateNormal];
-        [self.reloadCardButton setBackgroundImage:[PCValues highlightedForGenericGreyButton] forState:UIControlStateHighlighted];
-        
-        self.shadowView = [[UIImageView alloc] initWithImage:[PCValues imageForGenericResizableShadow]];
-        self.shadowView.alpha = kShadowViewAlpha;
-        self.shadowView.autoresizingMask = self.tableView.autoresizingMask;
-        //[self.view addSubview:shadowView];
-        [self.view insertSubview:self.shadowView atIndex:0];
-        
-        //[self willAnimateRotationToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation] duration:0.0];
+        self.verticalLine.backgroundColor = self.tableView.separatorColor;
     } else {
         self.reloadCardBarButton.title = NSLocalizedStringFromTable(@"ReloadCard", @"CamiproPlugin", nil);
         self.statsBarButton.title = NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil);
     }
-    
-    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, self.toolbar.frame.size.height, 0);
-    /*self.lastUpdateLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.tableView.frame.size.width/2.0)-120.0, 0, 240.0, self.toolbar.frame.size.height)];
-    //self.lastUpdateLabel.center = self.toolbar.center;
-    self.lastUpdateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    self.lastUpdateLabel.textColor = [UIColor whiteColor];
-    self.lastUpdateLabel.font = [UIFont systemFontOfSize:15.0];
-    self.lastUpdateLabel.textAlignment = UITextAlignmentCenter;
-    self.lastUpdateLabel.backgroundColor = [UIColor clearColor];
-    self.lastUpdateLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    self.lastUpdateLabel.shadowColor = [UIColor blackColor];
-    [self.toolbar addSubview:self.lastUpdateLabel];*/
     
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     [self.navigationItem setRightBarButtonItem:refreshButton animated:YES];
     [self refresh];
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self didRotateFromInterfaceOrientation:UIInterfaceOrientationPortrait];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/camipro"];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
-    if ([PCUtils isIdiomPad]) {
-        return UIInterfaceOrientationMaskAll;
-    } else {
-        return UIInterfaceOrientationMaskPortrait;
-    }
-}
-                                              
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    if ([PCUtils isIdiomPad]) {
-        return YES;
-    } else {
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
-    }
+    return [PCUtils isIdiomPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
-/*- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if (![PCUtils isIdiomPad]) {
-        return;
-    }
-    self.tableView.layer.masksToBounds = YES;
-    self.tableView.layer.shadowOpacity = 0.0;
-    [self.tableViewMasksToBoundsTimer invalidate];
-    self.tableViewMasksToBoundsTimer = [NSTimer scheduledTimerWithTimeInterval:duration+0.05 target:self selector:@selector(setTableViewMasksToBoundsNO) userInfo:nil repeats:NO];
-}*/
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    if (![PCUtils isIdiomPad]) {
-        return;
-    }
-    CGRect frame = self.tableView.frame;
-    self.shadowView.frame = CGRectMake(frame.origin.x-24.0, frame.origin.y-24.0, frame.size.width+46.0, frame.size.height+48.0);
-}
-
-- (void)setTableViewMasksToBoundsNO {
-    self.tableView.layer.masksToBounds = NO;
-    self.tableView.layer.shadowOpacity = 0.5;
-}
+#pragma mark - Refresh, login and requests
 
 - (void)refresh {
     self.centerMessageLabel.text = @"";
     [self.centerActivityIndicator startAnimating];
     self.tableView.hidden = YES;
-    self.shadowView.hidden = YES;
+    self.verticalLine.hidden = YES;
     self.toolbar.hidden = YES;
-    //self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     //iPad
-    self.statsContainerView.hidden = YES;
+    self.statsLabel.hidden = YES;
+    self.statsContentLabel.hidden = YES;
     self.reloadCardButton.hidden = YES;
     
+//#warning TO REMOVE
     CamiproSession* sessionId = [CamiproService lastSessionId];
     if (sessionId == nil) {
         NSLog(@"-> No previously saved sessionId. Requesting credentials...");
@@ -214,24 +140,11 @@ static const CGFloat kShadowViewAlpha = 0.7;
     }
 }
 
-- (IBAction)othersPressed {
-    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil), NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil), nil];
-    [actionSheet showFromToolbar:self.toolbar];
-}
-
-- (IBAction)statsPressed {
-    [self actionSheet:nil willDismissWithButtonIndex:1]; //actionSheet var is not checked and 0 is reload. I agree it's not very nice to to like this...
-}
-
-- (IBAction)reloadCardPressed {
-    [self actionSheet:nil willDismissWithButtonIndex:0]; //actionSheet var is not checked and 0 is reload. I agree it's not very nice to to like this...
-}
-
 - (void)login {
     [self.camiproService getTequilaTokenForCamiproDelegate:self];
 }
 
-- (SessionId*) buildSessionIdFromCamiproSession:(CamiproSession*)camiproSession {
+- (SessionId*)buildSessionIdFromCamiproSession:(CamiproSession*)camiproSession {
     return [[SessionId alloc] initWithTos:TypeOfService_SERVICE_CAMIPRO pocketCampusSessionId:nil moodleCookie:nil camiproCookie:camiproSession.camiproCookie isaCookie:nil];
 }
 
@@ -245,7 +158,23 @@ static const CGFloat kShadowViewAlpha = 0.7;
     [self.camiproService getStatsAndLoadingInfo:statsRequest delegate:self];
 }
 
-/* AuthenticationCallbackDelegate delegation */
+#pragma mark - Actions
+
+- (IBAction)statsPressed {
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/camipro/stats"];
+    self.statsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:nil];
+    [self.statsAlertView show];
+    [self startGetStatsRequest];
+}
+
+- (IBAction)reloadCardPressed {
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/camipro/charge"];
+    self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"ReloadInstructionsSendMailExplanations", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Send", @"CamiproPlugin", nil), nil];
+    [self.sendMailAlertView show];
+}
+
+
+#pragma mark - AuthenticationCallbackDelegate
 
 - (void)userCancelledAuthentication {
     [CamiproService saveSessionId:nil];
@@ -265,14 +194,13 @@ static const CGFloat kShadowViewAlpha = 0.7;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
     self.tableView.hidden = YES;
-    self.shadowView.hidden = YES;
+    self.verticalLine.hidden = YES;
     self.toolbar.hidden = YES;
-    //self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
     [CamiproService saveSessionId:nil];
 }
 
-/* CamiproServiceDelegate delegation */
+#pragma mark - CamiproServiceDelegate
 
 - (void)getTequilaTokenForCamiproDidReturn:(TequilaToken*)tequilaKey {
     self.tequilaKey = tequilaKey;
@@ -312,24 +240,23 @@ static const CGFloat kShadowViewAlpha = 0.7;
             self.balanceAndTransactions = balanceAndTransactions;
             self.tableView.alpha = 0.0;
             self.tableView.hidden = NO;
-            self.shadowView.alpha = 0.0;
-            self.shadowView.hidden = NO;
+            self.verticalLine.alpha = 0.0;
+            self.verticalLine.hidden = NO;
             self.toolbar.alpha = 0.0;
             self.toolbar.hidden = NO;
-            //self.lastUpdateLabel.hidden = NO;
-            //self.lastUpdateLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"CamiproPlugin", nil), self.balanceAndTransactions.iDate];
             [self.tableView reloadData];
             self.reloadCardButton.hidden = NO;
             self.reloadCardButton.alpha = 0.0; //iPad
             
             [UIView animateWithDuration:0.2 animations:^{
                 self.tableView.alpha = 1.0;
-                self.shadowView.alpha = kShadowViewAlpha;
+                self.verticalLine.alpha = 1.0;
                 self.toolbar.alpha = 1.0;
                 self.reloadCardButton.alpha = 1.0; //iPad
             }];
             if ([PCUtils isIdiomPad]) {
-                self.statsContainerView.hidden = NO;
+                self.statsLabel.hidden = NO;
+                self.statsContentLabel.hidden = NO;
                 self.statsContentLabel.text = nil;
                 [self.statsActivityIndicator startAnimating];
                 [self startGetStatsRequest];
@@ -348,13 +275,13 @@ static const CGFloat kShadowViewAlpha = 0.7;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
     self.tableView.hidden = YES;
-    self.shadowView.hidden = YES;
+    self.verticalLine.hidden = YES;
     self.toolbar.hidden = YES;
-    //self.lastUpdateLabel.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
-    self.statsContainerView.hidden = YES; //iPad
-    self.reloadCardButton.hidden = YES; //iPad
-    //[CamiproService saveSessionId:nil];
+    //iPad
+    self.statsLabel.hidden = YES;
+    self.statsContentLabel.hidden = YES;
+    self.reloadCardButton.hidden = YES;
 }
 
 - (void)sendLoadingInfoByEmailForCamiproRequest:(CamiproRequest *)camiproRequest didReturn:(SendMailResult *)sendMailResult {
@@ -483,40 +410,16 @@ static const CGFloat kShadowViewAlpha = 0.7;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
     self.tableView.hidden = YES;
-    self.shadowView.hidden = YES;
+    self.verticalLine.hidden = YES;
     self.toolbar.hidden = YES;
-    //self.lastUpdateLabel.hidden = YES;
-    self.statsContainerView.hidden = YES; //iPad
-    self.reloadCardButton.hidden = YES; //iPad
+    //iPad
+    self.statsLabel.hidden = YES;
+    self.statsContentLabel.hidden = YES;
+    self.reloadCardButton.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
-/* UIActionSheetDelegate delegation */
-
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 0: //reload instructions
-        {
-            [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/camipro/click/reload"];
-            self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"ReloadInstructionsSendMailExplanations", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Send", @"CamiproPlugin", nil), nil];
-            [self.sendMailAlertView show];
-            break;
-        }
-        case 1: //statistics
-        {
-            [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/camipro/click/stats"];
-            self.statsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:nil];
-            [self.statsAlertView show];
-            [self startGetStatsRequest];
-            break;
-        }
-        default:
-            break;
-    }
-    
-}
-
-/* UIAlertViewDelegate delegation */
+#pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (alertView == self.sendMailAlertView) {
@@ -542,7 +445,7 @@ static const CGFloat kShadowViewAlpha = 0.7;
     }
 }
 
-/* UITableViewDelegation delegation */
+#pragma mark - UITableViewDelegate
 
 static const CGFloat kBalanceCellHeightPhone = 70.0;
 static const CGFloat kBalanceCellHeightPad = 120.0;
@@ -559,7 +462,7 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return [PCValues tableViewSectionHeaderHeight];
+    return [PCTableViewSectionHeader preferredHeight];
 }
 
 - (UIView *)tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section {
@@ -575,44 +478,42 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
             NSLog(@"!! Unexcepted tableview session");
             break;
     }
-    headerView.bounds = CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height);
+    //headerView.bounds = CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height);
     return headerView;
     
 }
 
-/* UITableViewDataSource delegation */
+#pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = nil;
-    if (indexPath.section == 0) {
+    
+    if (indexPath.section == 0) { //balance cell
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [PCValues backgroundColor1];
         UILabel* balanceLabel = nil;
         if ([PCUtils isIdiomPad]) {
             balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeightPad)];
-            balanceLabel.font = [UIFont systemFontOfSize:48.0];
+            balanceLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:48.0];
         } else {
             balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeightPhone)];
-            balanceLabel.font = [UIFont systemFontOfSize:34.0];
+            balanceLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:34.0];
         }
         balanceLabel.text = [NSString stringWithFormat:@"CHF %.2lf", self.balanceAndTransactions.iBalance];
-        balanceLabel.textAlignment = UITextAlignmentCenter;
-        balanceLabel.textColor = [PCValues textColor1];
+        balanceLabel.textAlignment = NSTextAlignmentCenter;
         balanceLabel.backgroundColor = [UIColor clearColor];
-        balanceLabel.shadowColor = [PCValues shadowColor1];
-        balanceLabel.shadowOffset = [PCValues shadowOffset1];
+        //balanceLabel.textColor = [UIColor darkGrayColor];
         balanceLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [cell.contentView addSubview:balanceLabel];
         
         return cell;
     }
     
-    
+    //transactions cells
     Transaction* transaction = [self.balanceAndTransactions.iTransactions objectAtIndex:indexPath.row];
     cell = [self.tableView dequeueReusableCellWithIdentifier:kHistoryCellIdentifier];
     if (!cell) {
-        cell = [[CamiproTransactionCell alloc] initWithRuseIdentifier:kHistoryCellIdentifier];
+        cell = [[CamiproTransactionCell alloc] initWithReuseIdentifier:kHistoryCellIdentifier];
     }
     ((CamiproTransactionCell*)cell).transaction = transaction;
     return cell;
@@ -629,11 +530,9 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
             if (!self.balanceAndTransactions.iTransactions) {
                 return 0;
             }
-            return [self.balanceAndTransactions.iTransactions count];
-        default:
-            return 0;
-            break;
+            return self.balanceAndTransactions.iTransactions.count;
     }
+    return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -642,6 +541,8 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
     }
     return 2; //balance and history sections
 }
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

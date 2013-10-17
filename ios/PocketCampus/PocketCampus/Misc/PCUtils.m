@@ -57,7 +57,8 @@
 }
 
 + (UIEdgeInsets)edgeInsetsForViewController:(UIViewController*)viewController {
-    CGFloat top = viewController.navigationController ? viewController.navigationController.navigationBar.frame.size.height : 0.0;
+    CGFloat topBar = [viewController prefersStatusBarHidden] ? 0.0 : 20.0;
+    CGFloat top = viewController.navigationController ? topBar + viewController.navigationController.navigationBar.frame.size.height : topBar;
     CGFloat bottom = viewController.tabBarController ? viewController.tabBarController.tabBarController.tabBar.frame.size.height : 0.0;
     return UIEdgeInsetsMake(top, 0, bottom, 0);
 }
