@@ -500,8 +500,8 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         
         newCell.textLabel.text = firstLastName;
         
-        if (person.organisationalUnit) {
-            newCell.detailTextLabel.text = [person.organisationalUnit objectAtIndex:0];
+        if (person.organisationalUnits) {
+            newCell.detailTextLabel.text = [person.organisationalUnits objectAtIndex:0];
         }
         
         return newCell;

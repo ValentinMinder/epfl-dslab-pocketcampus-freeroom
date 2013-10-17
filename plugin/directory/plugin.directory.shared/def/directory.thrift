@@ -1,4 +1,5 @@
 namespace java org.pocketcampus.plugin.directory.shared
+namespace csharp org.pocketcampus.plugin.directory.shared
 
 
 struct Person {
@@ -11,7 +12,7 @@ struct Person {
 	7: optional string officePhoneNumber;
 	8: optional string office;
 	9: optional string gaspar;
-	10: optional list<string> OrganisationalUnit;
+	10: optional list<string> organisationalUnits;
 	11: optional string pictureUrl;
 	
 }
@@ -27,11 +28,6 @@ exception NoPictureFound{
 struct DirectoryToken {
 	1: required string iTequilaKey;
 	2: optional string loginCookie;
-}
-
-struct DirectoryRequest {
-	1: required string query;
-	2: optional string sessionId;
 }
 
 struct DirectoryRequest {

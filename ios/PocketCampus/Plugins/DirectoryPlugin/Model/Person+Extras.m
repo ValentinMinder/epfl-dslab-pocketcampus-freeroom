@@ -24,8 +24,8 @@
 
 - (NSString*)organizationsString {
     NSString* ret __block = @"";
-    [self.OrganisationalUnit enumerateObjectsUsingBlock:^(NSString* unit, NSUInteger index, BOOL *stop) {
-        if (index < self.OrganisationalUnit.count - 1) {
+    [self.organisationalUnits enumerateObjectsUsingBlock:^(NSString* unit, NSUInteger index, BOOL *stop) {
+        if (index < self.organisationalUnits.count - 1) {
             ret = [ret stringByAppendingFormat:@"%@ ", unit];
         } else {
             ret = [ret stringByAppendingString:unit];

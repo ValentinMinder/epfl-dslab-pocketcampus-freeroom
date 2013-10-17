@@ -50,17 +50,13 @@ static DirectoryService* instance __weak = nil;
     return [[DirectoryServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
-- (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate {
-    if (![nameOrSciper isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad nameOrSciper" reason:@"nameOrSciper is either nil or not of class NSString" userInfo:nil];
-    }
+- (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[DirectoryRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.keepInCache = YES;
-    operation.cacheValidity = 60; //1 min
-    operation.serviceClientSelector = @selector(searchPersons:);
-    operation.delegateDidReturnSelector = @selector(searchDirectoryFor:didReturn:);
-    operation.delegateDidFailSelector = @selector(searchDirectoryFailedFor:);
-    [operation addObjectArgument:nameOrSciper];
+    operation.serviceClientSelector = @selector(search:);
+    operation.delegateDidReturnSelector = @selector(searchForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(searchFailedForRequest:);
+    [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
 }
@@ -73,6 +69,21 @@ static DirectoryService* instance __weak = nil;
     operation.delegateDidReturnSelector = @selector(profilePictureFor:didReturn:);
     operation.delegateDidFailSelector = @selector(profilePictureFailedFor:);
     operation.person = person;
+    [operationQueue addOperation:operation];
+}
+
+- (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate {
+    if (![nameOrSciper isKindOfClass:[NSString class]]) {
+        @throw [NSException exceptionWithName:@"bad nameOrSciper" reason:@"nameOrSciper is either nil or not of class NSString" userInfo:nil];
+    }
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = YES;
+    operation.cacheValidity = 60; //1 min
+    operation.serviceClientSelector = @selector(searchPersons:);
+    operation.delegateDidReturnSelector = @selector(searchDirectoryFor:didReturn:);
+    operation.delegateDidFailSelector = @selector(searchDirectoryFailedFor:);
+    [operation addObjectArgument:nameOrSciper];
+    operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
 }
 

@@ -155,7 +155,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 					Person duplicatePerson = it.next();
 					
 					if(duplicatePerson.equals(sup)){
-						sup.OrganisationalUnit.addAll(duplicatePerson.OrganisationalUnit);
+						sup.organisationalUnits.addAll(duplicatePerson.organisationalUnits);
 						break;
 					}
 				}
@@ -166,7 +166,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		ArrayList<String> ouList = new ArrayList<String>();
 		ouList.add("Stark Labs");
 		ouList.add("S.H.I.E.L.D.");
-		if(param.equals("ironman"))results.add(new Person("Iron", "Man", ">9000").setEmail("Tony@Stark.com").setWeb("http://www.google.ch").setPrivatePhoneNumber("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOrganisationalUnit(ouList));
+		if(param.equals("ironman"))results.add(new Person("Iron", "Man", ">9000").setEmail("Tony@Stark.com").setWeb("http://www.google.ch").setPrivatePhoneNumber("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOrganisationalUnits(ouList));
 					
 
 		System.out.println("Directory: " + results.size() + " person(s) found for param: " + param);
@@ -329,7 +329,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 				p.setGaspar(e.getAttributeValue("uid"));
 				ArrayList<String> ouList = new ArrayList<String>();
 				ouList.add(e.getAttributeValue("ou"));
-				p.setOrganisationalUnit(ouList);
+				p.setOrganisationalUnits(ouList);
 				p.setPictureUrl("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + p.getSciper());
 				
 				//no duplicates!
@@ -342,7 +342,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 						Person duplicatePerson = it.next();
 						
 						if(duplicatePerson.equals(p)){
-							duplicatePerson.OrganisationalUnit.addAll(p.OrganisationalUnit);
+							duplicatePerson.organisationalUnits.addAll(p.organisationalUnits);
 							break;
 						}
 					}
@@ -531,14 +531,14 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 				p.setGaspar(e.getAttributeValue("uid"));
 				ArrayList<String> ouList = new ArrayList<String>();
 				ouList.add(e.getAttributeValue("ou"));
-				p.setOrganisationalUnit(ouList);
+				p.setOrganisationalUnits(ouList);
 				p.setPictureUrl("http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + p.getSciper());
 				
 				//no duplicates!
 				if( !results.containsKey(p.getSciper()))
 					results.put(p.sciper, p);
 				else{
-					results.get(p.sciper).OrganisationalUnit.addAll(p.OrganisationalUnit);
+					results.get(p.sciper).organisationalUnits.addAll(p.organisationalUnits);
 				}
 				
 			}

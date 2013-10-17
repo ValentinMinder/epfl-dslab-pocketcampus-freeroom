@@ -109,7 +109,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 			p.setGaspar(aData.getQueryParameter("gaspar"));
 			List<String> oU = new LinkedList<String>();
 			if(aData.getQueryParameter("OrganisationalUnit") != null) oU.add(aData.getQueryParameter("OrganisationalUnit"));
-			p.setOrganisationalUnit(oU);
+			p.setOrganisationalUnits(oU);
 			if(aData.getQueryParameter("pictureUrl") != null) p.setPictureUrl(aData.getQueryParameter("pictureUrl"));
 			mDialog = new PersonDetailsDialog(this, p, true);
 			mDialog.show();
