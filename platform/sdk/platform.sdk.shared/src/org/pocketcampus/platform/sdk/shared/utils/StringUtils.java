@@ -59,7 +59,7 @@ public class StringUtils {
 
 	public static String removeAccents(String string) {
 		String temp = Normalizer.normalize(string, Normalizer.Form.NFD);
-		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		Pattern pattern = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 		return pattern.matcher(temp).replaceAll("");
 	}
 

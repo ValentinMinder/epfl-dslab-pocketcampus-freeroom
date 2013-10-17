@@ -1,18 +1,6 @@
 namespace java org.pocketcampus.plugin.directory.shared
-namespace csharp org.pocketcampus.plugin.directory.shared
-
-typedef i32 int
 
 
-//useless but to remember how to do an enum if needed
-enum status {
-	STUDENT;
-	PHD_CANDIDATE;
-	PROFESSOR;
-	COWORKER;
-}
-
-// COMMENTED SO THE MODIFICATIONS IN SHARED WONT BE LOST
 struct Person {
 	1: required string firstName;
 	2: required string lastName;
@@ -36,8 +24,34 @@ exception NoPictureFound{
 	1: string message;
 }
 
+struct DirectoryToken {
+	1: required string iTequilaKey;
+	2: optional string loginCookie;
+}
+
+struct DirectoryRequest {
+	1: required string query;
+	2: optional string sessionId;
+}
+
+struct DirectoryRequest {
+	1: required string query;
+	2: optional string directorySession;
+	3: optional binary resultSetCookie;
+}
+
+struct DirectoryResponse {
+	1: required i32 status;
+	2: optional list<Person> results;
+	3: optional binary resultSetCookie;
+}
+
 service DirectoryService {
 	list<Person> searchPersons(1: string nameOrSciper) throws (1: LDAPException le);
 	string getProfilePicture(1: string sciper) throws (1: NoPictureFound npf);
 	list<string> autocomplete(1:string constraint);
+	
+	DirectoryToken getTequilaTokenForDirectory();
+	string getDirectorySession(1: DirectoryToken dirToken);
+	DirectoryResponse search(1: DirectoryRequest req);
 }

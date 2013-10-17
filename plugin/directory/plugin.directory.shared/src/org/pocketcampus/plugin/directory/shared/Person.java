@@ -701,6 +701,23 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     if (that == null)
       return false;
 
+    boolean this_present_firstName = true && this.isSetFirstName();
+    boolean that_present_firstName = true && that.isSetFirstName();
+    if (this_present_firstName || that_present_firstName) {
+      if (!(this_present_firstName && that_present_firstName))
+        return false;
+      if (!this.firstName.equals(that.firstName))
+        return false;
+    }
+
+    boolean this_present_lastName = true && this.isSetLastName();
+    boolean that_present_lastName = true && that.isSetLastName();
+    if (this_present_lastName || that_present_lastName) {
+      if (!(this_present_lastName && that_present_lastName))
+        return false;
+      if (!this.lastName.equals(that.lastName))
+        return false;
+    }
 
     boolean this_present_sciper = true && this.isSetSciper();
     boolean that_present_sciper = true && that.isSetSciper();
@@ -708,6 +725,78 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       if (!(this_present_sciper && that_present_sciper))
         return false;
       if (!this.sciper.equals(that.sciper))
+        return false;
+    }
+
+    boolean this_present_email = true && this.isSetEmail();
+    boolean that_present_email = true && that.isSetEmail();
+    if (this_present_email || that_present_email) {
+      if (!(this_present_email && that_present_email))
+        return false;
+      if (!this.email.equals(that.email))
+        return false;
+    }
+
+    boolean this_present_web = true && this.isSetWeb();
+    boolean that_present_web = true && that.isSetWeb();
+    if (this_present_web || that_present_web) {
+      if (!(this_present_web && that_present_web))
+        return false;
+      if (!this.web.equals(that.web))
+        return false;
+    }
+
+    boolean this_present_privatePhoneNumber = true && this.isSetPrivatePhoneNumber();
+    boolean that_present_privatePhoneNumber = true && that.isSetPrivatePhoneNumber();
+    if (this_present_privatePhoneNumber || that_present_privatePhoneNumber) {
+      if (!(this_present_privatePhoneNumber && that_present_privatePhoneNumber))
+        return false;
+      if (!this.privatePhoneNumber.equals(that.privatePhoneNumber))
+        return false;
+    }
+
+    boolean this_present_officePhoneNumber = true && this.isSetOfficePhoneNumber();
+    boolean that_present_officePhoneNumber = true && that.isSetOfficePhoneNumber();
+    if (this_present_officePhoneNumber || that_present_officePhoneNumber) {
+      if (!(this_present_officePhoneNumber && that_present_officePhoneNumber))
+        return false;
+      if (!this.officePhoneNumber.equals(that.officePhoneNumber))
+        return false;
+    }
+
+    boolean this_present_office = true && this.isSetOffice();
+    boolean that_present_office = true && that.isSetOffice();
+    if (this_present_office || that_present_office) {
+      if (!(this_present_office && that_present_office))
+        return false;
+      if (!this.office.equals(that.office))
+        return false;
+    }
+
+    boolean this_present_gaspar = true && this.isSetGaspar();
+    boolean that_present_gaspar = true && that.isSetGaspar();
+    if (this_present_gaspar || that_present_gaspar) {
+      if (!(this_present_gaspar && that_present_gaspar))
+        return false;
+      if (!this.gaspar.equals(that.gaspar))
+        return false;
+    }
+
+    boolean this_present_OrganisationalUnit = true && this.isSetOrganisationalUnit();
+    boolean that_present_OrganisationalUnit = true && that.isSetOrganisationalUnit();
+    if (this_present_OrganisationalUnit || that_present_OrganisationalUnit) {
+      if (!(this_present_OrganisationalUnit && that_present_OrganisationalUnit))
+        return false;
+      if (!this.OrganisationalUnit.equals(that.OrganisationalUnit))
+        return false;
+    }
+
+    boolean this_present_pictureUrl = true && this.isSetPictureUrl();
+    boolean that_present_pictureUrl = true && that.isSetPictureUrl();
+    if (this_present_pictureUrl || that_present_pictureUrl) {
+      if (!(this_present_pictureUrl && that_present_pictureUrl))
+        return false;
+      if (!this.pictureUrl.equals(that.pictureUrl))
         return false;
     }
 
