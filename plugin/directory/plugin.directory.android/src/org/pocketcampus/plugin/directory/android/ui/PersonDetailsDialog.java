@@ -137,9 +137,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		// web_.setText(p.web);
 
 		ou_ = (TextView) findViewById(R.id.directory_person_details_dialog_ou);
-		if(p.isSetOrganisationalUnit() && p.getOrganisationalUnitIterator().hasNext()) {
+		if(p.isSetOrganisationalUnits() && p.getOrganisationalUnitsIterator().hasNext()) {
 			ou_.setVisibility(visibility(true));
-			ou_.setText(TextUtils.join("\n", p.getOrganisationalUnit()));
+			ou_.setText(TextUtils.join("\n", p.getOrganisationalUnits()));
 		}
 	}
 
@@ -321,8 +321,8 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		addContactIntent.putExtra(ContactsContract.Intents.Insert.POSTAL, displayedPerson_.getOffice());
 		addContactIntent.putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK);
 		addContactIntent.putExtra(ContactsContract.Intents.Insert.EMAIL, displayedPerson_.getEmail());
-		if(displayedPerson_.isSetOrganisationalUnit() && displayedPerson_.getOrganisationalUnitIterator().hasNext())
-			addContactIntent.putExtra(ContactsContract.Intents.Insert.COMPANY, TextUtils.join(" - ", displayedPerson_.getOrganisationalUnit()));
+		if(displayedPerson_.isSetOrganisationalUnits() && displayedPerson_.getOrganisationalUnitsIterator().hasNext())
+			addContactIntent.putExtra(ContactsContract.Intents.Insert.COMPANY, TextUtils.join(" - ", displayedPerson_.getOrganisationalUnits()));
 		addContactIntent.putExtra(ContactsContract.Intents.Insert.NOTES, displayedPerson_.getWeb());
 		ctx_.startActivity(addContactIntent);
 	}
