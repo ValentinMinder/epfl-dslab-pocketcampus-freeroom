@@ -4750,7 +4750,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "212"
             endingLineNumber = "212"
-            landmarkName = "-main"
+            landmarkName = "-initWithPerson:delegate:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

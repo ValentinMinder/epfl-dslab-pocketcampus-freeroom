@@ -2887,7 +2887,7 @@
 
 @end
 
-@interface search_args : NSObject <NSCoding> {
+@interface searchDirectory_args : NSObject <NSCoding> {
   DirectoryRequest * __req;
 
   BOOL __req_isset;
@@ -2908,7 +2908,7 @@
 
 @end
 
-@implementation search_args
+@implementation searchDirectory_args
 
 - (id) initWithReq: (DirectoryRequest *) req
 {
@@ -2999,7 +2999,7 @@
 }
 
 - (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"search_args"];
+  [outProtocol writeStructBeginWithName: @"searchDirectory_args"];
   if (__req_isset) {
     if (__req != nil) {
       [outProtocol writeFieldBeginWithName: @"req" type: TType_STRUCT fieldID: 1];
@@ -3012,7 +3012,7 @@
 }
 
 - (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"search_args("];
+  NSMutableString * ms = [NSMutableString stringWithString: @"searchDirectory_args("];
   [ms appendString: @"req:"];
   [ms appendFormat: @"%@", __req];
   [ms appendString: @")"];
@@ -3021,7 +3021,7 @@
 
 @end
 
-@interface Search_result : NSObject <NSCoding> {
+@interface SearchDirectory_result : NSObject <NSCoding> {
   DirectoryResponse * __success;
 
   BOOL __success_isset;
@@ -3042,7 +3042,7 @@
 
 @end
 
-@implementation Search_result
+@implementation SearchDirectory_result
 
 - (id) initWithSuccess: (DirectoryResponse *) success
 {
@@ -3133,7 +3133,7 @@
 }
 
 - (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"Search_result"];
+  [outProtocol writeStructBeginWithName: @"SearchDirectory_result"];
 
   if (__success_isset) {
     if (__success != nil) {
@@ -3147,7 +3147,7 @@
 }
 
 - (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"Search_result("];
+  NSMutableString * ms = [NSMutableString stringWithString: @"SearchDirectory_result("];
   [ms appendString: @"success:"];
   [ms appendFormat: @"%@", __success];
   [ms appendString: @")"];
@@ -3378,10 +3378,10 @@
   return [self recv_getDirectorySession];
 }
 
-- (void) send_search: (DirectoryRequest *) req
+- (void) send_searchDirectory: (DirectoryRequest *) req
 {
-  [outProtocol writeMessageBeginWithName: @"search" type: TMessageType_CALL sequenceID: 0];
-  [outProtocol writeStructBeginWithName: @"search_args"];
+  [outProtocol writeMessageBeginWithName: @"searchDirectory" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"searchDirectory_args"];
   if (req != nil)  {
     [outProtocol writeFieldBeginWithName: @"req" type: TType_STRUCT fieldID: 1];
     [req write: outProtocol];
@@ -3393,7 +3393,7 @@
   [[outProtocol transport] flush];
 }
 
-- (DirectoryResponse *) recv_search
+- (DirectoryResponse *) recv_searchDirectory
 {
   int msgType = 0;
   [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
@@ -3402,20 +3402,20 @@
     [inProtocol readMessageEnd];
     @throw x;
   }
-  Search_result * result = [[[Search_result alloc] init] autorelease];
+  SearchDirectory_result * result = [[[SearchDirectory_result alloc] init] autorelease];
   [result read: inProtocol];
   [inProtocol readMessageEnd];
   if ([result successIsSet]) {
     return [result success];
   }
   @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
-                                           reason: @"search failed: unknown result"];
+                                           reason: @"searchDirectory failed: unknown result"];
 }
 
-- (DirectoryResponse *) search: (DirectoryRequest *) req
+- (DirectoryResponse *) searchDirectory: (DirectoryRequest *) req
 {
-  [self send_search: req];
-  return [self recv_search];
+  [self send_searchDirectory: req];
+  return [self recv_searchDirectory];
 }
 
 @end
@@ -3471,12 +3471,12 @@
     [mMethodMap setValue: invocation forKey: @"getDirectorySession"];
   }
   {
-    SEL s = @selector(process_search_withSequenceID:inProtocol:outProtocol:);
+    SEL s = @selector(process_searchDirectory_withSequenceID:inProtocol:outProtocol:);
     NSMethodSignature * sig = [self methodSignatureForSelector: s];
     NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
     [invocation setSelector: s];
     [invocation retainArguments];
-    [mMethodMap setValue: invocation forKey: @"search"];
+    [mMethodMap setValue: invocation forKey: @"searchDirectory"];
   }
   return self;
 }
@@ -3604,14 +3604,14 @@
   [args release];
 }
 
-- (void) process_search_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+- (void) process_searchDirectory_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
 {
-  search_args * args = [[search_args alloc] init];
+  searchDirectory_args * args = [[searchDirectory_args alloc] init];
   [args read: inProtocol];
   [inProtocol readMessageEnd];
-  Search_result * result = [[Search_result alloc] init];
-  [result setSuccess: [mService search: [args req]]];
-  [outProtocol writeMessageBeginWithName: @"search"
+  SearchDirectory_result * result = [[SearchDirectory_result alloc] init];
+  [result setSuccess: [mService searchDirectory: [args req]]];
+  [outProtocol writeMessageBeginWithName: @"searchDirectory"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

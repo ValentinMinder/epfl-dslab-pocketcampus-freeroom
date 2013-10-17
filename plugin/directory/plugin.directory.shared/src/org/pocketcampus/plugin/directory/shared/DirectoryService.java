@@ -35,7 +35,7 @@ public class DirectoryService {
 
     public String getDirectorySession(DirectoryToken dirToken) throws org.apache.thrift.TException;
 
-    public DirectoryResponse search(DirectoryRequest req) throws org.apache.thrift.TException;
+    public DirectoryResponse searchDirectory(DirectoryRequest req) throws org.apache.thrift.TException;
 
   }
 
@@ -51,7 +51,7 @@ public class DirectoryService {
 
     public void getDirectorySession(DirectoryToken dirToken, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getDirectorySession_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void search(DirectoryRequest req, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.search_call> resultHandler) throws org.apache.thrift.TException;
+    public void searchDirectory(DirectoryRequest req, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.searchDirectory_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -195,27 +195,27 @@ public class DirectoryService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getDirectorySession failed: unknown result");
     }
 
-    public DirectoryResponse search(DirectoryRequest req) throws org.apache.thrift.TException
+    public DirectoryResponse searchDirectory(DirectoryRequest req) throws org.apache.thrift.TException
     {
-      send_search(req);
-      return recv_search();
+      send_searchDirectory(req);
+      return recv_searchDirectory();
     }
 
-    public void send_search(DirectoryRequest req) throws org.apache.thrift.TException
+    public void send_searchDirectory(DirectoryRequest req) throws org.apache.thrift.TException
     {
-      search_args args = new search_args();
+      searchDirectory_args args = new searchDirectory_args();
       args.setReq(req);
-      sendBase("search", args);
+      sendBase("searchDirectory", args);
     }
 
-    public DirectoryResponse recv_search() throws org.apache.thrift.TException
+    public DirectoryResponse recv_searchDirectory() throws org.apache.thrift.TException
     {
-      search_result result = new search_result();
-      receiveBase(result, "search");
+      searchDirectory_result result = new searchDirectory_result();
+      receiveBase(result, "searchDirectory");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "search failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "searchDirectory failed: unknown result");
     }
 
   }
@@ -393,23 +393,23 @@ public class DirectoryService {
       }
     }
 
-    public void search(DirectoryRequest req, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler) throws org.apache.thrift.TException {
+    public void searchDirectory(DirectoryRequest req, org.apache.thrift.async.AsyncMethodCallback<searchDirectory_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      search_call method_call = new search_call(req, resultHandler, this, ___protocolFactory, ___transport);
+      searchDirectory_call method_call = new searchDirectory_call(req, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class search_call extends org.apache.thrift.async.TAsyncMethodCall {
+    public static class searchDirectory_call extends org.apache.thrift.async.TAsyncMethodCall {
       private DirectoryRequest req;
-      public search_call(DirectoryRequest req, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      public searchDirectory_call(DirectoryRequest req, org.apache.thrift.async.AsyncMethodCallback<searchDirectory_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.req = req;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("search", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        search_args args = new search_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("searchDirectory", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        searchDirectory_args args = new searchDirectory_args();
         args.setReq(req);
         args.write(prot);
         prot.writeMessageEnd();
@@ -421,7 +421,7 @@ public class DirectoryService {
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_search();
+        return (new Client(prot)).recv_searchDirectory();
       }
     }
 
@@ -443,7 +443,7 @@ public class DirectoryService {
       processMap.put("autocomplete", new autocomplete());
       processMap.put("getTequilaTokenForDirectory", new getTequilaTokenForDirectory());
       processMap.put("getDirectorySession", new getDirectorySession());
-      processMap.put("search", new search());
+      processMap.put("searchDirectory", new searchDirectory());
       return processMap;
     }
 
@@ -535,18 +535,18 @@ public class DirectoryService {
       }
     }
 
-    private static class search<I extends Iface> extends org.apache.thrift.ProcessFunction<I, search_args> {
-      public search() {
-        super("search");
+    private static class searchDirectory<I extends Iface> extends org.apache.thrift.ProcessFunction<I, searchDirectory_args> {
+      public searchDirectory() {
+        super("searchDirectory");
       }
 
-      protected search_args getEmptyArgsInstance() {
-        return new search_args();
+      protected searchDirectory_args getEmptyArgsInstance() {
+        return new searchDirectory_args();
       }
 
-      protected search_result getResult(I iface, search_args args) throws org.apache.thrift.TException {
-        search_result result = new search_result();
-        result.success = iface.search(args.req);
+      protected searchDirectory_result getResult(I iface, searchDirectory_args args) throws org.apache.thrift.TException {
+        searchDirectory_result result = new searchDirectory_result();
+        result.success = iface.searchDirectory(args.req);
         return result;
       }
     }
@@ -3753,8 +3753,8 @@ public class DirectoryService {
 
   }
 
-  public static class search_args implements org.apache.thrift.TBase<search_args, search_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("search_args");
+  public static class searchDirectory_args implements org.apache.thrift.TBase<searchDirectory_args, searchDirectory_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchDirectory_args");
 
     private static final org.apache.thrift.protocol.TField REQ_FIELD_DESC = new org.apache.thrift.protocol.TField("req", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
@@ -3826,13 +3826,13 @@ public class DirectoryService {
       tmpMap.put(_Fields.REQ, new org.apache.thrift.meta_data.FieldMetaData("req", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, DirectoryRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(search_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchDirectory_args.class, metaDataMap);
     }
 
-    public search_args() {
+    public searchDirectory_args() {
     }
 
-    public search_args(
+    public searchDirectory_args(
       DirectoryRequest req)
     {
       this();
@@ -3842,14 +3842,14 @@ public class DirectoryService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public search_args(search_args other) {
+    public searchDirectory_args(searchDirectory_args other) {
       if (other.isSetReq()) {
         this.req = new DirectoryRequest(other.req);
       }
     }
 
-    public search_args deepCopy() {
-      return new search_args(this);
+    public searchDirectory_args deepCopy() {
+      return new searchDirectory_args(this);
     }
 
     @Override
@@ -3861,7 +3861,7 @@ public class DirectoryService {
       return this.req;
     }
 
-    public search_args setReq(DirectoryRequest req) {
+    public searchDirectory_args setReq(DirectoryRequest req) {
       this.req = req;
       return this;
     }
@@ -3920,12 +3920,12 @@ public class DirectoryService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof search_args)
-        return this.equals((search_args)that);
+      if (that instanceof searchDirectory_args)
+        return this.equals((searchDirectory_args)that);
       return false;
     }
 
-    public boolean equals(search_args that) {
+    public boolean equals(searchDirectory_args that) {
       if (that == null)
         return false;
 
@@ -3953,13 +3953,13 @@ public class DirectoryService {
       return builder.toHashCode();
     }
 
-    public int compareTo(search_args other) {
+    public int compareTo(searchDirectory_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      search_args typedOther = (search_args)other;
+      searchDirectory_args typedOther = (searchDirectory_args)other;
 
       lastComparison = Boolean.valueOf(isSetReq()).compareTo(typedOther.isSetReq());
       if (lastComparison != 0) {
@@ -4022,7 +4022,7 @@ public class DirectoryService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("search_args(");
+      StringBuilder sb = new StringBuilder("searchDirectory_args(");
       boolean first = true;
 
       sb.append("req:");
@@ -4058,8 +4058,8 @@ public class DirectoryService {
 
   }
 
-  public static class search_result implements org.apache.thrift.TBase<search_result, search_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("search_result");
+  public static class searchDirectory_result implements org.apache.thrift.TBase<searchDirectory_result, searchDirectory_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchDirectory_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
@@ -4131,13 +4131,13 @@ public class DirectoryService {
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, DirectoryResponse.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(search_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchDirectory_result.class, metaDataMap);
     }
 
-    public search_result() {
+    public searchDirectory_result() {
     }
 
-    public search_result(
+    public searchDirectory_result(
       DirectoryResponse success)
     {
       this();
@@ -4147,14 +4147,14 @@ public class DirectoryService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public search_result(search_result other) {
+    public searchDirectory_result(searchDirectory_result other) {
       if (other.isSetSuccess()) {
         this.success = new DirectoryResponse(other.success);
       }
     }
 
-    public search_result deepCopy() {
-      return new search_result(this);
+    public searchDirectory_result deepCopy() {
+      return new searchDirectory_result(this);
     }
 
     @Override
@@ -4166,7 +4166,7 @@ public class DirectoryService {
       return this.success;
     }
 
-    public search_result setSuccess(DirectoryResponse success) {
+    public searchDirectory_result setSuccess(DirectoryResponse success) {
       this.success = success;
       return this;
     }
@@ -4225,12 +4225,12 @@ public class DirectoryService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof search_result)
-        return this.equals((search_result)that);
+      if (that instanceof searchDirectory_result)
+        return this.equals((searchDirectory_result)that);
       return false;
     }
 
-    public boolean equals(search_result that) {
+    public boolean equals(searchDirectory_result that) {
       if (that == null)
         return false;
 
@@ -4258,13 +4258,13 @@ public class DirectoryService {
       return builder.toHashCode();
     }
 
-    public int compareTo(search_result other) {
+    public int compareTo(searchDirectory_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      search_result typedOther = (search_result)other;
+      searchDirectory_result typedOther = (searchDirectory_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -4326,7 +4326,7 @@ public class DirectoryService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("search_result(");
+      StringBuilder sb = new StringBuilder("searchDirectory_result(");
       boolean first = true;
 
       sb.append("success:");

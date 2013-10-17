@@ -138,12 +138,12 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 		//exact first or last name search
 		String searchQuery = "(|(sn=" +param+ ")(givenName=" +param+ "))";
-		results = searchOnLDAP(searchQuery, null);
+		results = searchOnLDAP2(searchQuery, null);
 		Collections.sort(results);
 		
 		//adding more people with *param* in their diplay name
 		searchQuery = "(displayName=*"+param+"*)";
-		LinkedList<Person> tmp = searchOnLDAP(searchQuery, null);
+		LinkedList<Person> tmp = searchOnLDAP2(searchQuery, null);
 		Collections.sort(tmp);
 		for(Person sup : tmp){
 			if(!results.contains(sup))
@@ -270,7 +270,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	 * @return List of <code>Person</code>s without duplicates.
 	 * @throws org.pocketcampus.plugin.directory.shared.LDAPException
 	 */
-	private LinkedList<Person> searchOnLDAP(String searchQuery, Pagination pag) throws org.pocketcampus.plugin.directory.shared.LDAPException{
+	private LinkedList<Person> searchOnLDAP1(String searchQuery, Pagination pag) throws org.pocketcampus.plugin.directory.shared.LDAPException{
 		LinkedList<Person> results = new LinkedList<Person>();
 		
 		SearchResult searchResult;
@@ -373,7 +373,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	 * @throws org.pocketcampus.plugin.directory.shared.LDAPException
 	 */
 	private LinkedList<Person> searchSciper(String sciper) throws org.pocketcampus.plugin.directory.shared.LDAPException{
-		return searchOnLDAP("(uniqueIdentifier="+sciper+")", null);
+		return searchOnLDAP2("(uniqueIdentifier="+sciper+")", null);
 	}
 	
 	/**
@@ -443,7 +443,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	}
 
 	@Override
-	public DirectoryResponse search(DirectoryRequest req) throws TException {
+	public DirectoryResponse searchDirectory(DirectoryRequest req) throws TException {
 		try {
 			Pagination pag = new Pagination();
 			if(req.isSetResultSetCookie())

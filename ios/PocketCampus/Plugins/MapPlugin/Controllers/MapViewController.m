@@ -158,7 +158,6 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 {
     [super viewDidLoad];
     self.leftBarButtonItemsAtLoad = self.navigationItem.leftBarButtonItems;
-    //self.mapView.mapType = MKMapTypeHybrid;
     self.tilesOverlayRenderer.delegate = self;
     //self.layersOverlayView.delegate = self;
     [self.mapView setRegion:self.epflRegion animated:NO];
@@ -215,6 +214,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     }
     [self mapView:self.mapView regionDidChangeAnimated:NO];
 }
+
 
 - (NSUInteger)supportedInterfaceOrientations
 {
@@ -572,10 +572,14 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
             self.resultsListPopOverController = [[UIPopoverController alloc] initWithContentViewController:resultsViewController];
             self.resultsListPopOverController.delegate = self;
         }
+        if (!self.resultsListPopOverController.isPopoverVisible) {
+            [[PCGAITracker sharedTracker] trackScreenWithName:@"/map/searchResultsList"];
+        }
         [self.resultsListPopOverController togglePopoverFromBarButtonItem:self.resultsListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:resultsViewController];
         [self presentViewController:navController animated:YES completion:NULL];
+        [[PCGAITracker sharedTracker] trackScreenWithName:@"/map/searchResultsList"];
     }
 }
 

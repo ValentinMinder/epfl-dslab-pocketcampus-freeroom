@@ -53,7 +53,7 @@ static DirectoryService* instance __weak = nil;
 - (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[DirectoryRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(search:);
+    operation.serviceClientSelector = @selector(searchDirectory:);
     operation.delegateDidReturnSelector = @selector(searchForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(searchFailedForRequest:);
     [operation addObjectArgument:request];

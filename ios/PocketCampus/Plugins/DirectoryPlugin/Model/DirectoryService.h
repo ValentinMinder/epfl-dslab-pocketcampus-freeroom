@@ -24,7 +24,7 @@
  - (NSArray *) autocomplete: (NSString *) constraint;  // throws TException
  - (DirectoryToken *) getTequilaTokenForDirectory;  // throws TException
  - (NSString *) getDirectorySession: (DirectoryToken *) dirToken;  // throws TException
- - (DirectoryResponse *) search: (DirectoryRequest *) req;  // throws TException
+ - (DirectoryResponse *) searchDirectory: (DirectoryRequest *) req;  // throws TException
  */
 
 - (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate;
