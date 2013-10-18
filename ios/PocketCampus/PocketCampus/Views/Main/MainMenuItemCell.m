@@ -37,6 +37,10 @@
     return instance;
 }
 
+- (void)awakeFromNib {
+    self.contentView.userInteractionEnabled = YES;
+}
+
 + (CGFloat)height {
     return 55.0;
 }
@@ -47,12 +51,12 @@
             self.eyeButton.alpha = 0.0;
             break;
         case EyeButtonStateDataHidden:
-            self.eyeButton.alpha = 0.4;
-            [self.eyeButton setImage:[UIImage imageNamed:@"EyeBlackCrossed"] forState:UIControlStateNormal];
+            self.eyeButton.alpha = 0.5;
+            [self.eyeButton setImage:[UIImage imageNamed:@"CheckmarkRoundedSquareEmpty"] forState:UIControlStateNormal];
             break;
         case EyeButtonStateDataVisible:
-            self.eyeButton.alpha = 0.8;
-            [self.eyeButton setImage:[UIImage imageNamed:@"EyeBlack"] forState:UIControlStateNormal];
+            self.eyeButton.alpha = 1.0;
+            [self.eyeButton setImage:[UIImage imageNamed:@"CheckmarkRoundedSquare"] forState:UIControlStateNormal];
             break;
         default:
             @throw [NSException exceptionWithName:@"Illegal argument" reason:@"unsupported EyeButtonState" userInfo:nil];
@@ -77,6 +81,7 @@
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
     self.eyeButton.hidden = !editing;
+    self.subtitleLabel.hidden = editing;
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {

@@ -33,7 +33,6 @@ static const int kPluginsSection = 0;
 
 @property (nonatomic, strong) UIBarButtonItem* settingsButton;
 @property (nonatomic, strong) UIBarButtonItem* doneButton;
-@property (nonatomic, strong) UIBarButtonItem* pocketCampusTitle;
 
 @end
 
@@ -55,11 +54,14 @@ static const int kPluginsSection = 0;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/dashboard"];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/dashboard"];
     self.navigationController.navigationBar.translucent = NO;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     self.tableView.scrollsToTop = NO; //if not set to NO, front view controllers cannot be scrolled to top by tapping the status bar
-    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil];
+    
+    //self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil];
+    self.navigationItem.leftBarButtonItem = self.settingsButton;
+    self.navigationItem.titleView = self.pocketCampusLabel;
     [self.mainController mainMenuIsReady];
 }
 
@@ -86,13 +88,17 @@ static const int kPluginsSection = 0;
     if (self.tableView.editing == editing) {
         return;
     }
+    self.tableView.editing = editing;
+    NSArray* items = nil;
     if (editing) {
-        self.tableView.editing = YES;
-        [self.navigationItem setLeftBarButtonItems:[NSArray arrayWithObjects:self.doneButton, self.pocketCampusTitle, nil] animated:NO];
+        UIBarButtonItem* space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:NULL];
+        space.width = 13.0;
+        items = @[space, self.doneButton];
     } else {
-        self.tableView.editing = NO;
-        [self.navigationItem setLeftBarButtonItems:[NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil] animated:NO];
+        items = @[self.settingsButton];
     }
+    [self.navigationItem setLeftBarButtonItems:items animated:YES];
+    self.navigationItem.titleView = [self pocketCampusLabel];
     [PCUtils reloadTableView:self.tableView withFadingDuration:0.5];
     
     /* 
@@ -141,23 +147,19 @@ static const int kPluginsSection = 0;
 
 #pragma mark - Buttons
 
-- (UIBarButtonItem*)pocketCampusTitle {
-    if (_pocketCampusTitle) {
-        return _pocketCampusTitle;
-    }
-    UILabel* pocketCampusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 170.0, 40.0)];
-    pocketCampusLabel.backgroundColor = [UIColor clearColor];
+- (UILabel*)pocketCampusLabel {
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120.0, 40.0)];
+    label.backgroundColor = [UIColor clearColor];
 #ifdef DEBUG
-    pocketCampusLabel.text = @"PocketCampus";
+    label.text = @"PocketCampus";
 #else
-    pocketCampusLabel.text = @"PocketCampus";
+    label.text = @"PocketCampus";
 #endif
-    pocketCampusLabel.textAlignment = NSTextAlignmentCenter;
-    pocketCampusLabel.textColor = [PCValues pocketCampusRed];
-    pocketCampusLabel.font = [UIFont systemFontOfSize:23.0];
-    UIBarButtonItem* pocketCampusTitle = [[UIBarButtonItem alloc] initWithCustomView:pocketCampusLabel];
-    _pocketCampusTitle = pocketCampusTitle;
-    return _pocketCampusTitle;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = self.tableView.editing ? [PCValues textColor1] : [PCValues pocketCampusRed];
+    label.font = [UIFont systemFontOfSize:23.0];
+    [label sizeToFit];
+    return label;
 }
 
 - (UIBarButtonItem*)settingsButton {
@@ -172,7 +174,7 @@ static const int kPluginsSection = 0;
     if (_doneButton) {
         return _doneButton;
     }
-    _doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];;
+    _doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];
     return _doneButton;
 }
 
@@ -200,6 +202,10 @@ static const int kPluginsSection = 0;
 }
 
 #pragma mark - UITableViewDelegate
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MainMenuItem* item = self.menuItems[indexPath.row];

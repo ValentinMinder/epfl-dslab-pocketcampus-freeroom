@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		1997124D15EFC9CA00E2A679 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322515C206F30091757D /* libsqlite3.dylib */; };
 		1D0F4A038721DEB98C2AC34A /* MyEdu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB5245679D4E9E9B9F64BAC1 /* MyEdu@2x.png */; };
+		320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */; };
+		320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */; };
+		3200375518118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */; };
+		3200375618118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */; };
 		320073571646C51E002AD7BA /* MyEduModuleDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320073561646C51E002AD7BA /* MyEduModuleDetailView.xib */; };
 		3200735A1646CBF0002AD7BA /* MyEduModuleVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073581646CBF0002AD7BA /* MyEduModuleVideo.png */; };
 		3200735B1646CBF0002AD7BA /* MyEduModuleVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073591646CBF0002AD7BA /* MyEduModuleVideo@2x.png */; };
@@ -179,8 +183,6 @@
 		323676C916BDB6620004D5AD /* FacebookLikeCellImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */; };
 		323676CC16BDD1420004D5AD /* WhiteDisclosureIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676CA16BDD1420004D5AD /* WhiteDisclosureIndicator.png */; };
 		323676CD16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676CB16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png */; };
-		323676D016BDE2520004D5AD /* EyeBlackCrossed.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676CE16BDE2510004D5AD /* EyeBlackCrossed.png */; };
-		323676D116BDE2520004D5AD /* EyeBlackCrossed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676CF16BDE2520004D5AD /* EyeBlackCrossed@2x.png */; };
 		3236B5B3151F746100C43769 /* NextDeparturesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3236B5B2151F746100C43769 /* NextDeparturesCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		323A913C1640783F007A63D3 /* TopDown1pxShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 323A913B1640783F007A63D3 /* TopDown1pxShadow.png */; };
 		323A913F164078FF007A63D3 /* TopDown1pxShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323A913E164078FF007A63D3 /* TopDown1pxShadow@2x.png */; };
@@ -377,8 +379,6 @@
 		32BA30711645D31A00909D82 /* PCCenterMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30701645D31A00909D82 /* PCCenterMessageCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32BA30731645DCB200909D82 /* MyEduCourseInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */; };
 		32BA30761645DF9200909D82 /* MyEduCourseInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32BE787216977F0000EC3E64 /* EyeBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 32BE787016977F0000EC3E64 /* EyeBlack.png */; };
-		32BE787316977F0000EC3E64 /* EyeBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32BE787116977F0000EC3E64 /* EyeBlack@2x.png */; };
 		32C509E617FC60B0005A5635 /* CameraBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C509E417FC60B0005A5635 /* CameraBarButton.png */; };
 		32C509E717FC60B0005A5635 /* CameraBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C509E517FC60B0005A5635 /* CameraBarButton@2x.png */; };
 		32C509EA17FC6D73005A5635 /* SortBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C509E817FC6D73005A5635 /* SortBarButton.png */; };
@@ -493,6 +493,10 @@
 		108747F4A9B8A8CE3F473774 /* MyEduController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MyEduController.h; path = Plugins/MyEduPlugin/Controllers/MyEduController.h; sourceTree = SOURCE_ROOT; };
 		14D146FF839137578105D4C3 /* EventsService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventsService.h; path = Plugins/EventsPlugin/Model/EventsService.h; sourceTree = SOURCE_ROOT; };
 		2A2F4A5AA559021373171E91 /* PushNotifService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PushNotifService.m; path = Plugins/PushNotifPlugin/Model/PushNotifService.m; sourceTree = SOURCE_ROOT; };
+		3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CheckmarkRoundedSquare.png; sourceTree = "<group>"; };
+		320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckmarkRoundedSquare@2x.png"; sourceTree = "<group>"; };
+		3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CheckmarkRoundedSquareEmpty.png; sourceTree = "<group>"; };
+		3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckmarkRoundedSquareEmpty@2x.png"; sourceTree = "<group>"; };
 		320073561646C51E002AD7BA /* MyEduModuleDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleDetailView.xib; sourceTree = "<group>"; };
 		320073581646CBF0002AD7BA /* MyEduModuleVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduModuleVideo.png; sourceTree = "<group>"; };
 		320073591646CBF0002AD7BA /* MyEduModuleVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduModuleVideo@2x.png"; sourceTree = "<group>"; };
@@ -730,8 +734,6 @@
 		323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookLikeCellImage@2x.png"; sourceTree = "<group>"; };
 		323676CA16BDD1420004D5AD /* WhiteDisclosureIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WhiteDisclosureIndicator.png; sourceTree = "<group>"; };
 		323676CB16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteDisclosureIndicator@2x.png"; sourceTree = "<group>"; };
-		323676CE16BDE2510004D5AD /* EyeBlackCrossed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EyeBlackCrossed.png; sourceTree = "<group>"; };
-		323676CF16BDE2520004D5AD /* EyeBlackCrossed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBlackCrossed@2x.png"; sourceTree = "<group>"; };
 		3236B5B1151F746100C43769 /* NextDeparturesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextDeparturesCell.h; sourceTree = "<group>"; };
 		3236B5B2151F746100C43769 /* NextDeparturesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextDeparturesCell.m; sourceTree = "<group>"; };
 		323A913B1640783F007A63D3 /* TopDown1pxShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TopDown1pxShadow.png; sourceTree = "<group>"; };
@@ -1026,8 +1028,6 @@
 		32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduCourseInfoView.xib; sourceTree = "<group>"; };
 		32BA30741645DF9200909D82 /* MyEduCourseInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduCourseInfoViewController.h; sourceTree = "<group>"; };
 		32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduCourseInfoViewController.m; sourceTree = "<group>"; };
-		32BE787016977F0000EC3E64 /* EyeBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EyeBlack.png; sourceTree = "<group>"; };
-		32BE787116977F0000EC3E64 /* EyeBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBlack@2x.png"; sourceTree = "<group>"; };
 		32C509E417FC60B0005A5635 /* CameraBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CameraBarButton.png; sourceTree = "<group>"; };
 		32C509E517FC60B0005A5635 /* CameraBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CameraBarButton@2x.png"; sourceTree = "<group>"; };
 		32C509E817FC6D73005A5635 /* SortBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SortBarButton.png; sourceTree = "<group>"; };
@@ -1370,6 +1370,10 @@
 				32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */,
 				32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */,
 				32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */,
+				3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */,
+				320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */,
+				3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */,
+				3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */,
 				32E67DBA16847A0900E5CFF6 /* ClockCell.png */,
 				32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */,
 				32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */,
@@ -1386,10 +1390,6 @@
 				3212452C16FE174500469113 /* EyeBarButton@2x.png */,
 				323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */,
 				323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */,
-				32BE787016977F0000EC3E64 /* EyeBlack.png */,
-				32BE787116977F0000EC3E64 /* EyeBlack@2x.png */,
-				323676CE16BDE2510004D5AD /* EyeBlackCrossed.png */,
-				323676CF16BDE2520004D5AD /* EyeBlackCrossed@2x.png */,
 				329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */,
 				329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */,
 				329E1B3916E693130054C3A8 /* FavoriteNavBarButton.png */,
@@ -2959,6 +2959,7 @@
 			files = (
 				3247495017F33B0D00698A9D /* DirectoryPersonBaseInfoCell.xib in Resources */,
 				3296570B14FF9DDB00C44C12 /* PocketCampus.strings in Resources */,
+				3200375518118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png in Resources */,
 				32704C7C15002F67002BCB75 /* Plugins.plist in Resources */,
 				32FAC0F81500F40700925180 /* DirectoryPlugin.strings in Resources */,
 				32FAC0FD1500F40700925180 /* DirectorySearchView.xib in Resources */,
@@ -2970,6 +2971,7 @@
 				3289D28F1509474A008DD299 /* Food@2x.png in Resources */,
 				32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */,
 				328B9ED0150B705200B50024 /* MenusListView.xib in Resources */,
+				320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */,
 				328B9EF4150B927500B50024 /* RatingStar.png in Resources */,
 				328B9EF5150B927500B50024 /* RatingStar@2x.png in Resources */,
 				3276BE0B150BBA77001F2A88 /* RatingStarEmpty.png in Resources */,
@@ -3095,6 +3097,7 @@
 				3242F40B1655A5B900A8C3D7 /* MyEduDrawersNavbar.png in Resources */,
 				3242F40C1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png in Resources */,
 				32ADC70E165995050039F6A6 /* MyEduModuleVideoDownloadView.xib in Resources */,
+				320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */,
 				32ADC710165999820039F6A6 /* CancelCrossRound@2x.png in Resources */,
 				32ADC7161659A2BA0039F6A6 /* CancelCrossRound.png in Resources */,
 				32ADC7191659AAEB0039F6A6 /* Download.png in Resources */,
@@ -3144,8 +3147,6 @@
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
 				32A46DE2168B975C0023F37C /* MyEduLarge.png in Resources */,
-				32BE787216977F0000EC3E64 /* EyeBlack.png in Resources */,
-				32BE787316977F0000EC3E64 /* EyeBlack@2x.png in Resources */,
 				3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */,
 				323676C316BDB42D0004D5AD /* AppLogoCellImage@2x.png in Resources */,
 				323676C516BDB5300004D5AD /* AppLogoCellImage.png in Resources */,
@@ -3153,8 +3154,6 @@
 				323676C916BDB6620004D5AD /* FacebookLikeCellImage@2x.png in Resources */,
 				323676CC16BDD1420004D5AD /* WhiteDisclosureIndicator.png in Resources */,
 				323676CD16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png in Resources */,
-				323676D016BDE2520004D5AD /* EyeBlackCrossed.png in Resources */,
-				323676D116BDE2520004D5AD /* EyeBlackCrossed@2x.png in Resources */,
 				8D964F08A876C676D9337E69 /* Events.png in Resources */,
 				38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */,
 				32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */,
@@ -3195,6 +3194,7 @@
 				32341502176558F300527895 /* AcceptViewController.xib in Resources */,
 				32341503176558F300527895 /* AnswerListViewController.xib in Resources */,
 				32341504176558F300527895 /* AnswerViewController.xib in Resources */,
+				3200375618118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png in Resources */,
 				32341505176558F300527895 /* AskQuestionViewController.xib in Resources */,
 				32341506176558F300527895 /* FeedbackListViewController.xib in Resources */,
 				32341507176558F300527895 /* FeedbackViewController.xib in Resources */,
