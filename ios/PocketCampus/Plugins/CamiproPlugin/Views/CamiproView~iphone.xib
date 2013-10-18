@@ -8,8 +8,8 @@
             <connections>
                 <outlet property="centerActivityIndicator" destination="13" id="16"/>
                 <outlet property="centerMessageLabel" destination="14" id="17"/>
-                <outlet property="reloadCardBarButton" destination="41" id="45"/>
-                <outlet property="statsBarButton" destination="42" id="46"/>
+                <outlet property="reloadCardBarButton" destination="9NJ-95-f2S" id="tN2-Qa-eCI"/>
+                <outlet property="statsBarButton" destination="GVo-16-yH4" id="h0G-Eg-87R"/>
                 <outlet property="tableView" destination="6" id="9"/>
                 <outlet property="toolbar" destination="26" id="30"/>
                 <outlet property="view" destination="1" id="8"/>
@@ -55,15 +55,15 @@
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem title="Reload card" width="130" id="41">
+                        <barButtonItem title="Reload card" id="9NJ-95-f2S">
                             <connections>
-                                <action selector="reloadCardPressed" destination="-1" id="43"/>
+                                <action selector="reloadCardPressed" destination="-1" id="5Tn-hN-yd6"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="29"/>
-                        <barButtonItem title="Statistics" width="130" id="42">
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="RIu-jF-XNE"/>
+                        <barButtonItem title="Stats" id="GVo-16-yH4">
                             <connections>
-                                <action selector="statsPressed" destination="-1" id="44"/>
+                                <action selector="statsPressed" destination="-1" id="R1a-Dm-ma9"/>
                             </connections>
                         </barButtonItem>
                     </items>
