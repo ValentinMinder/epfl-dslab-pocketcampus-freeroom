@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AboutPCViewController : UIViewController<UIWebViewDelegate> {
-    UIWebView* webView;
-}
-
-@property (nonatomic, assign) IBOutlet  UIWebView* webView;
+@interface AboutPCViewController: UIViewController
 
 @end

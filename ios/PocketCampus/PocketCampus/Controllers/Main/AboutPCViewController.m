@@ -7,18 +7,20 @@
 //
 
 
-
 #import "AboutPCViewController.h"
-
-#import "PCValues.h"
 
 #import "PCConfig.h"
 
-#import "PCUtils.h"
+@interface AboutPCViewController() <UIWebViewDelegate>
+
+@property (nonatomic, strong) IBOutlet UIWebView* webView;
+
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* webViewCenterYConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* webViewHeightConstraint;
+
+@end
 
 @implementation AboutPCViewController
-
-@synthesize webView;
 
 - (id)init
 {
@@ -33,12 +35,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/dashboard/settings/about"];
 	self.title = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
-    self.view.backgroundColor = [PCValues backgroundColor1];
-    webView.delegate = self;
-    webView.scrollView.scrollEnabled = NO;
-    webView.alpha = 0.0;
+    self.webView.delegate = self;
+    self.webView.scrollView.scrollEnabled = NO;
+    self.webView.alpha = 0.0;
     NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"AboutPC" ofType:@"html"];
     NSError* error = nil;
     NSString* htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
@@ -48,39 +48,23 @@
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"$PC_VERSION$" withString:version];
     
     if (!error) {
-        [webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
+        [self.webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
     }
     
     UITapGestureRecognizer* gestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInfos)];
     gestureRec.numberOfTapsRequired = 3;
     gestureRec.numberOfTouchesRequired = 2;
-    [webView addGestureRecognizer:gestureRec];
-    [gestureRec release];
+    [self.webView addGestureRecognizer:gestureRec];
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/dashboard/settings/about"];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
-    if ([PCUtils isIdiomPad]) {
-        return UIInterfaceOrientationMaskAll;
-    } else {
-        return UIInterfaceOrientationMaskPortrait;
-    }
-    
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
-{
-    if ([PCUtils isIdiomPad]) {
-        return YES;
-    } else {
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
-    }
+    return [PCUtils isIdiomPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)showInfos {
@@ -92,48 +76,17 @@
     NSString* message = [NSString stringWithFormat:@"%@:%d\n%@:%d\n%@:%d\n\nServer address:\n%@", @"Bundle", loadedFromBundle, @"Server", loadedFromServer, @"AppSupport", loadedFromAppSupport, serverAddress];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"PCConfig state" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
-    [alert release];
 }
 
 /* UIWebViewDelegate delegation */
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView_ {
-    [webView sizeToFit];
-    
-    BOOL pad = [PCUtils isIdiomPad];
-    BOOL fourInch = [PCUtils is4inchDevice];
-    BOOL retina = [PCUtils isRetinaDevice];
-    BOOL ios5 = [PCUtils isOSVersionSmallerThan:6.0];
-    BOOL ios6_0 = !ios5 && [PCUtils isOSVersionSmallerThan:6.1];
-    
-    
-    if (pad) {
-        webView.frame = CGRectOffset(webView.frame, 0, -20.0);
-    } else {
-        if (fourInch) {
-            webView.frame = CGRectOffset(webView.frame, 0, -10.0);
-        } else {
-            if (retina) {
-                if (ios5) {
-                    webView.frame = CGRectOffset(webView.frame, 0, +15.0);
-                } else if (ios6_0) {
-                    webView.frame = CGRectOffset(webView.frame, 0, 0.0);
-                } else {
-                    webView.frame = CGRectOffset(webView.frame, 0, +15.0);
-                }
-            } else {
-                if (ios5) {
-                    webView.frame = CGRectOffset(webView.frame, 0, 0.0);
-                } else if (ios6_0) {
-                    webView.frame = CGRectOffset(webView.frame, 0, 0.0);
-                } else {
-                    webView.frame = CGRectOffset(webView.frame, 0, 0.0);
-                }
-            }
-        }
-    }
-    
-    webView.alpha = 1.0;
+    CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
+    self.webViewHeightConstraint.constant = height+50.0;
+    self.webViewCenterYConstraint.constant = 5.0;
+    [UIView animateWithDuration:0.1 animations:^{
+        self.webView.alpha = 1.0;
+    }];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -146,9 +99,8 @@
 
 - (void)dealloc
 {
-    webView.delegate = nil;
-    [webView stopLoading];
-    [super dealloc];
+    self.webView.delegate = nil;
+    [self.webView stopLoading];
 }
 
 @end

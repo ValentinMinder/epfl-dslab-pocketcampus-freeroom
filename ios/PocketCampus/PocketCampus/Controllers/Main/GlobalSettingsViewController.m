@@ -49,6 +49,7 @@ static const int kAboutRow = 2;
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.mainController = mainController;
+        self.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
     }
     return self;
 }
@@ -57,8 +58,6 @@ static const int kAboutRow = 2;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/dashboard/settings"];
-    self.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
     UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(doneBarButtonPressed)];
     [self.navigationItem setRightBarButtonItem:button animated:YES];
 
@@ -67,6 +66,7 @@ static const int kAboutRow = 2;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/dashboard/settings"];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 }
@@ -212,13 +212,13 @@ static const int kAboutRow = 2;
                 case kRestoreDefaultMainMenuRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
                     cell.textLabel.text = NSLocalizedStringFromTable(@"LikePConFB", @"PocketCampus", nil);
-                    //cell.detailTextLabel.text = NSLocalizedStringFromTable(@"LikePConFBSubtitle", @"PocketCampus", nil);
                     cell.imageView.image = [UIImage imageNamed:@"FacebookLikeCellImage"];
                     break;
                 case kAboutRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"Info"];
                     break;
                 default:
                     break;

@@ -13,6 +13,8 @@
 		320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */; };
 		3200375518118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */; };
 		3200375618118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */; };
+		3200375918119B4100901F6A /* Info.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375718119B4100901F6A /* Info.png */; };
+		3200375A18119B4100901F6A /* Info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375818119B4100901F6A /* Info@2x.png */; };
 		320073571646C51E002AD7BA /* MyEduModuleDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320073561646C51E002AD7BA /* MyEduModuleDetailView.xib */; };
 		3200735A1646CBF0002AD7BA /* MyEduModuleVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073581646CBF0002AD7BA /* MyEduModuleVideo.png */; };
 		3200735B1646CBF0002AD7BA /* MyEduModuleVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073591646CBF0002AD7BA /* MyEduModuleVideo@2x.png */; };
@@ -305,7 +307,7 @@
 		32930AB617F898910025F864 /* TTransportException.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930AA117F898910025F864 /* TTransportException.m */; };
 		32930AB717F898910025F864 /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930AA317F898910025F864 /* TSharedProcessorFactory.m */; };
 		32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930AA717F898910025F864 /* ZUUIRevealController.m */; };
-		3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; };
 		3293AD2315D1BC930097D414 /* AboutPCView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3293AD2215D1BC930097D414 /* AboutPCView.xib */; };
 		3295DF0F165BC60D00CA3B9D /* DownloadedRectSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 3295DF0D165BC60B00CA3B9D /* DownloadedRectSmall.png */; };
 		3295DF10165BC60D00CA3B9D /* DownloadedRectSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3295DF0E165BC60C00CA3B9D /* DownloadedRectSmall@2x.png */; };
@@ -497,6 +499,8 @@
 		320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckmarkRoundedSquare@2x.png"; sourceTree = "<group>"; };
 		3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CheckmarkRoundedSquareEmpty.png; sourceTree = "<group>"; };
 		3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckmarkRoundedSquareEmpty@2x.png"; sourceTree = "<group>"; };
+		3200375718119B4100901F6A /* Info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Info.png; sourceTree = "<group>"; };
+		3200375818119B4100901F6A /* Info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info@2x.png"; sourceTree = "<group>"; };
 		320073561646C51E002AD7BA /* MyEduModuleDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleDetailView.xib; sourceTree = "<group>"; };
 		320073581646CBF0002AD7BA /* MyEduModuleVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduModuleVideo.png; sourceTree = "<group>"; };
 		320073591646CBF0002AD7BA /* MyEduModuleVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduModuleVideo@2x.png"; sourceTree = "<group>"; };
@@ -1400,6 +1404,8 @@
 				322C07531722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png */,
 				324C7A21174A627C00ED19FD /* GenericResizableShadow.png */,
 				324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */,
+				3200375718119B4100901F6A /* Info.png */,
+				3200375818119B4100901F6A /* Info@2x.png */,
 				3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */,
 				3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */,
 				3270B7EF18056E6F007EE85B /* ListBarButton.png */,
@@ -3053,6 +3059,7 @@
 				325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */,
 				325C47B4162200E8006752B4 /* BlankPluginView.xib in Resources */,
 				1D0F4A038721DEB98C2AC34A /* MyEdu@2x.png in Resources */,
+				3200375918119B4100901F6A /* Info.png in Resources */,
 				E6C544C6812266BE16AC628D /* MyEdu.png in Resources */,
 				32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */,
 				32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */,
@@ -3166,6 +3173,7 @@
 				329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */,
 				32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */,
 				32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */,
+				3200375A18119B4100901F6A /* Info@2x.png in Resources */,
 				32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */,
 				32C509E717FC60B0005A5635 /* CameraBarButton@2x.png in Resources */,
 				3212452D16FE174500469113 /* EyeBarButton.png in Resources */,
