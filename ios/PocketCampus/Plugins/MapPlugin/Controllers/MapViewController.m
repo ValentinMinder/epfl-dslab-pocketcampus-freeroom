@@ -566,11 +566,12 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
             [weakSelf dismissViewControllerAnimated:YES completion:block];
         }
     }];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:resultsViewController];
     if ([PCUtils isIdiomPad]) {
         if (self.resultsListPopOverController) {
-            self.resultsListPopOverController.contentViewController = resultsViewController;
+            self.resultsListPopOverController.contentViewController = navController;
         } else {
-            self.resultsListPopOverController = [[UIPopoverController alloc] initWithContentViewController:resultsViewController];
+            self.resultsListPopOverController = [[UIPopoverController alloc] initWithContentViewController:navController];
             self.resultsListPopOverController.delegate = self;
         }
         if (!self.resultsListPopOverController.isPopoverVisible) {
@@ -578,7 +579,6 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
         }
         [self.resultsListPopOverController togglePopoverFromBarButtonItem:self.resultsListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
-        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:resultsViewController];
         [self presentViewController:navController animated:YES completion:NULL];
         [[PCGAITracker sharedTracker] trackScreenWithName:@"/map/searchResultsList"];
     }

@@ -22,7 +22,7 @@
             <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" image="CamiproLarge.png" translatesAutoresizingMaskIntoConstraints="NO" id="15">
+                <imageView userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleToFill" image="CamiproLarge.png" translatesAutoresizingMaskIntoConstraints="NO" id="15">
                     <rect key="frame" x="306" y="392" width="150" height="150"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
@@ -33,7 +33,7 @@
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="13">
                     <rect key="frame" x="366" y="602" width="37" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="color" white="0.0" alpha="0.40000000000000002" colorSpace="calibratedWhite"/>
+                    <color key="color" white="0.0" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
                 </activityIndicatorView>
                 <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Center message label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="10" preferredMaxLayoutWidth="162" translatesAutoresizingMaskIntoConstraints="NO" id="14">
                     <rect key="frame" x="303" y="610" width="162" height="21"/>

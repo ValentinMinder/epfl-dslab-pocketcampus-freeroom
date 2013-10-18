@@ -267,6 +267,7 @@
 		327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327BF2351666043100C67937 /* PushNotifPlugin.strings */; };
 		3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3281AB8116E221F700D8FAD1 /* EventItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
+		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
 		328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3288699214FE5AF300CC97DB /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		328872C71534D82C00330B54 /* DestinationConnectionsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		328872C91534D85400330B54 /* DestinationConnectionsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328872C81534D85400330B54 /* DestinationConnectionsListView.xib */; };
@@ -858,6 +859,7 @@
 		3281AB8016E221F700D8FAD1 /* EventItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventItemViewController.h; sourceTree = "<group>"; };
 		3281AB8116E221F700D8FAD1 /* EventItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventItemViewController.m; sourceTree = "<group>"; };
 		3281AB8316E2254600D8FAD1 /* EventItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemView.xib; sourceTree = "<group>"; };
+		3282C283181179E2002A4FAE /* EventsLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EventsLarge@2x.png"; sourceTree = "<group>"; };
 		3288699114FE5AF300CC97DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AppDelegate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		3288699214FE5AF300CC97DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		328872C51534D82C00330B54 /* DestinationConnectionsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationConnectionsListViewController.h; sourceTree = "<group>"; };
@@ -943,7 +945,6 @@
 		3297E01A15557FE10054F790 /* NewsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsUtils.m; sourceTree = "<group>"; };
 		3297E02215558BE40054F790 /* BackgroundNewsThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackgroundNewsThumbnail.png; sourceTree = "<group>"; };
 		3297E02315558BE40054F790 /* BackgroundNewsThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundNewsThumbnail@2x.png"; sourceTree = "<group>"; };
-		3297E364180818860047AD07 /* PocketCampus copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PocketCampus copy-Info.plist"; path = "/Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus/ios/PocketCampus/PocketCampus copy-Info.plist"; sourceTree = "<absolute>"; };
 		3297E365180826D20047AD07 /* CenterOnEPFL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CenterOnEPFL@2x.png"; sourceTree = "<group>"; };
 		3297E367180856E60047AD07 /* EPFLTileOverlay2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPFLTileOverlay2.h; sourceTree = "<group>"; };
 		3297E368180856E60047AD07 /* EPFLTileOverlay2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPFLTileOverlay2.m; sourceTree = "<group>"; };
@@ -1284,7 +1285,6 @@
 				3219EF4F14FCDE4900A271CD /* Frameworks */,
 				3219EF4D14FCDE4900A271CD /* Products */,
 				43F74C41A62B4C69936087B0 /* Pods.xcconfig */,
-				3297E364180818860047AD07 /* PocketCampus copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2771,6 +2771,7 @@
 				C9574A2CA3E21EEE6B620DE7 /* Events.png */,
 				C0FF44E59AC0FAF424B57744 /* Events@2x.png */,
 				32F5309316EABA0F00F66484 /* EventsLarge.png */,
+				3282C283181179E2002A4FAE /* EventsLarge@2x.png */,
 			);
 			name = Images;
 			path = Plugins/EventsPlugin/Views/Images;
@@ -3211,6 +3212,7 @@
 				32341513176558F300527895 /* qaforum_question.png in Resources */,
 				32341514176558F300527895 /* qaforum_record.png in Resources */,
 				32341515176558F300527895 /* qaforum_right.png in Resources */,
+				3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */,
 				32449D5D17C3F248003269E5 /* DirectoryLarge@2x.png in Resources */,
 				32341516176558F300527895 /* qaforum_selected.png in Resources */,
 				32341517176558F300527895 /* LatestForumViewController.xib in Resources */,
