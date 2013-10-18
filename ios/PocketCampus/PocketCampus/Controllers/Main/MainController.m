@@ -466,7 +466,8 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (void)initRevealController {
     self.splashViewController = [[SplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
-    self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:[[PCNavigationController alloc] initWithRootViewController:self.mainMenuViewController]];
+    PCNavigationController* mainMenuNavController = [[PCNavigationController alloc] initWithRootViewController:self.mainMenuViewController];
+    self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:mainMenuNavController];
     self.revealController.rearViewRevealWidth = self.revealWidth;
     self.revealController.frontViewShadowRadius = 1.0;
 }

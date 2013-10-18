@@ -62,6 +62,10 @@ static const int kPluginsSection = 0;
     //self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil];
     self.navigationItem.leftBarButtonItem = self.settingsButton;
     self.navigationItem.titleView = self.pocketCampusLabel;
+    CGRect frame = self.navigationController.view.frame;
+    frame.size.width = 320.0;
+    self.navigationController.view.frame = frame;
+    self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask (we want constant 320.0 width)
     [self.mainController mainMenuIsReady];
 }
 
@@ -92,7 +96,7 @@ static const int kPluginsSection = 0;
     NSArray* items = nil;
     if (editing) {
         UIBarButtonItem* space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:NULL];
-        space.width = 13.0;
+        space.width = [PCUtils isIdiomPad] ? 6.0 : 13.0;
         items = @[space, self.doneButton];
     } else {
         items = @[self.settingsButton];
