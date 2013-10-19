@@ -84,7 +84,7 @@
     CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
     self.webViewHeightConstraint.constant = height+50.0;
     self.webViewCenterYConstraint.constant = [PCUtils is4inchDevice] ? 15.0 : 5.0;
-    [UIView animateWithDuration:0.1 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         self.webView.alpha = 1.0;
     }];
 }
