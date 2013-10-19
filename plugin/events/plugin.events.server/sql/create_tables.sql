@@ -1,0 +1,149 @@
+-- phpMyAdmin SQL Dump
+-- version 3.3.7deb5build0.10.10.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Sep 24, 2013 at 04:00 PM
+-- Server version: 5.1.61
+-- PHP Version: 5.3.3-1ubuntu9.10
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Database: `pocketcampus`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventcategs`
+--
+
+CREATE TABLE IF NOT EXISTS `eventcategs` (
+  `categKey` int(11) NOT NULL,
+  `categValue` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`categKey`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventemails`
+--
+
+CREATE TABLE IF NOT EXISTS `eventemails` (
+  `templateId` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `participantsPool` bigint(20) NOT NULL,
+  `sendOnlyTo` text COLLATE utf8_unicode_ci,
+  `emailTitle` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `emailBody` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`templateId`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventitems`
+--
+
+CREATE TABLE IF NOT EXISTS `eventitems` (
+  `eventId` bigint(20) NOT NULL,
+  `startDate` timestamp NULL DEFAULT NULL,
+  `endDate` timestamp NULL DEFAULT NULL,
+  `fullDay` tinyint(1) DEFAULT NULL,
+  `eventPicture` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `eventThumbnail` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `eventTitle` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `eventPlace` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `eventSpeaker` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `eventDetails` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `parentPool` bigint(20) DEFAULT NULL,
+  `eventUri` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `vcalUid` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `eventCateg` int(11) DEFAULT NULL,
+  `broadcastInFeeds` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `locationHref` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `detailsLink` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `secondLine` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `timeSnippet` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `hideEventInfo` tinyint(1) DEFAULT NULL,
+  `hideTitle` tinyint(1) DEFAULT NULL,
+  `hideThumbnail` tinyint(1) DEFAULT NULL,
+  `isProtected` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`eventId`),
+  UNIQUE KEY `VCAL` (`vcalUid`),
+  UNIQUE KEY `URI` (`eventUri`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventperms`
+--
+
+CREATE TABLE IF NOT EXISTS `eventperms` (
+  `userToken` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `eventItemId` bigint(20) NOT NULL,
+  `permLevel` int(11) NOT NULL,
+  `remark` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`userToken`,`eventItemId`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventpools`
+--
+
+CREATE TABLE IF NOT EXISTS `eventpools` (
+  `poolId` bigint(20) NOT NULL,
+  `poolPicture` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `poolTitle` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `poolPlace` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `poolDetails` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `disableStar` tinyint(1) DEFAULT NULL,
+  `disableFilterByCateg` tinyint(1) DEFAULT NULL,
+  `disableFilterByTags` tinyint(1) DEFAULT NULL,
+  `enableScan` tinyint(1) DEFAULT NULL,
+  `refreshOnBack` tinyint(1) DEFAULT NULL,
+  `sendStarred` tinyint(1) DEFAULT NULL,
+  `noResultText` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `overrideLink` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parentEvent` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`poolId`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventtags`
+--
+
+CREATE TABLE IF NOT EXISTS `eventtags` (
+  `feedKey` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `feedValue` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `isMemento` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`feedKey`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventusers`
+--
+
+CREATE TABLE IF NOT EXISTS `eventusers` (
+  `userId` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `mappedEvent` bigint(20) NOT NULL,
+  `exchangeToken` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `addressingName` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `emailAddress` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`userId`),
+  UNIQUE KEY `EXCHANGE_TOKEN` (`exchangeToken`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
