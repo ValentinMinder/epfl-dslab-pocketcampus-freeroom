@@ -1,14 +1,5 @@
 
 --
--- Table structure for table `not_capitalized`
---
-
-CREATE TABLE IF NOT EXISTS `not_capitalized` (
-  `not_capitalized` varchar(3) NOT NULL,
-  PRIMARY KEY (`not_capitalized`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
 -- Table structure for table `dailyratings`
 --
 

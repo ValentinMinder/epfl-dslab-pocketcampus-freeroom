@@ -1,3 +1,0 @@
-<Menu>
-	<rssfeed>http://menus.epfl.ch/cgi-bin/rssMenus</rssfeed>
-</Menu>
