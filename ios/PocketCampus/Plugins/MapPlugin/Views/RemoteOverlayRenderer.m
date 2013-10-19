@@ -138,7 +138,10 @@
 - (void)dealloc {
     [self.callDelegateTimer invalidate];
     [self.operationQueue cancelAllOperations];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
 }
 
 

@@ -824,7 +824,10 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)dealloc {
     [self.eventsService cancelOperationsForDelegate:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end

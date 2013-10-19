@@ -104,6 +104,7 @@ static MainController<MainControllerPublic>* instance = nil;
         self.window.rootViewController = self.revealController;
         instance = self;
         [self initPluginObservers];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:[UIApplication sharedApplication]];
         //[NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(test) userInfo:nil repeats:NO];
     }
     return self;
@@ -508,7 +509,7 @@ static MainController<MainControllerPublic>* instance = nil;
     }
 }
 
-#pragma mark - Called by AppDelegate
+#pragma mark - Memory warning handler
 
 - (void)appDidReceiveMemoryWarning {
     /* release backgrounded plugins */

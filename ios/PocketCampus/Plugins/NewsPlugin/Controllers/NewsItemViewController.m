@@ -233,7 +233,10 @@
 
 - (void)dealloc {
     [self.reachability stopNotifier];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:self.reachability];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:self.reachability];
+    }
+    @catch (NSException *exception) {}
     self.webView.delegate = nil;
     [self.webView stopLoading];
     [self.newsService cancelOperationsForDelegate:self];

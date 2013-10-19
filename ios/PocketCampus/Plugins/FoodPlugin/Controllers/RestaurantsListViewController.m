@@ -229,7 +229,10 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 #pragma mark - dealloc
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
     [self.foodService cancelOperationsForDelegate:self];
 }
 

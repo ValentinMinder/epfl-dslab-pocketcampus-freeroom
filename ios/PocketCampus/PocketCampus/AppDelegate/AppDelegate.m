@@ -37,17 +37,9 @@ static id test __strong __unused = nil;
 @synthesize window = _window;
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    /* Apply appearence proxy => specified UI elements will defaut to PC defined look&feel, eg. red navigation bar */
-    [PCValues applyAppearenceProxy];
-    
-    /* Initialize defaults with PC config */
-    [PCConfig initConfig];
-    
-    NSURLCache* cache = [[NSURLCache alloc] initWithMemoryCapacity:4*1024*1024 diskCapacity:100*1024*1024 diskPath:nil];
-    [NSURLCache setSharedURLCache:cache];
-        
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
@@ -80,9 +72,6 @@ static id test __strong __unused = nil;
     if (userInfo) {
         [self application:[UIApplication sharedApplication] didReceiveRemoteNotification:userInfo];
     }
-    
-    //test
-    //[self application:[UIApplication sharedApplication] didReceiveRemoteNotification:[NSDictionary dictionaryWithObject:@"myedu" forKey:@"pluginName"]];
 
     return YES;
 }
@@ -122,10 +111,6 @@ static id test __strong __unused = nil;
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
-    [self.mainController appDidReceiveMemoryWarning];
 }
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {

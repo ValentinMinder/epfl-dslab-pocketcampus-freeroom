@@ -95,7 +95,6 @@ typedef enum {
  * Should not be used by plugins. 
  */
 - (id)initWithWindow:(UIWindow*)window;
-- (void)appDidReceiveMemoryWarning;
 - (void)setActivePluginWithIdentifier:(NSString*)identifier;
 - (void)mainMenuIsReady;
 - (void)showGlobalSettings;

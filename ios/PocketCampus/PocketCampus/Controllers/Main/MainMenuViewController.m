@@ -93,15 +93,16 @@ static const int kPluginsSection = 0;
         return;
     }
     self.tableView.editing = editing;
-    NSArray* items = nil;
     if (editing) {
         UIBarButtonItem* space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:NULL];
         space.width = [PCUtils isIdiomPad] ? 6.0 : 13.0;
-        items = @[space, self.doneButton];
+        [self.navigationItem setRightBarButtonItems:@[self.doneButton] animated:YES];
+        [self.navigationItem setLeftBarButtonItems:nil animated:YES];
     } else {
-        items = @[self.settingsButton];
+        [self.navigationItem setRightBarButtonItems:nil animated:YES];
+        [self.navigationItem setLeftBarButtonItems:@[self.settingsButton] animated:YES];
     }
-    [self.navigationItem setLeftBarButtonItems:items animated:YES];
+    
     self.navigationItem.titleView = [self pocketCampusLabel];
     [PCUtils reloadTableView:self.tableView withFadingDuration:0.5];
     
@@ -178,7 +179,7 @@ static const int kPluginsSection = 0;
     if (_doneButton) {
         return _doneButton;
     }
-    _doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];
+    _doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed)];
     return _doneButton;
 }
 

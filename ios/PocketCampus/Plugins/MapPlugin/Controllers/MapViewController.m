@@ -949,7 +949,10 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 {
     [self.mapService cancelOperationsForDelegate:self];
     [[MainController publicController] removePluginStateObserver:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
     self.mapView.delegate = nil;
     [self.tilesOverlayRenderer cancelTilesDownload:YES];
     self.tilesOverlayRenderer.delegate = nil;

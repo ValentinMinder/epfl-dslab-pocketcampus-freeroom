@@ -36,7 +36,10 @@
 }
 
 - (void)dealloc {
-    [self.textLabel removeObserver:self forKeyPath:@"text"];
+    @try {
+        [self.textLabel removeObserver:self forKeyPath:@"text"];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end
