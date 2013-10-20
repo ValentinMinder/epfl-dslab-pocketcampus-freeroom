@@ -168,6 +168,7 @@ public final class MealListImpl implements MealList {
 			restaurant.setRId(restaurantName.hashCode());
 			restaurant.setRName(restaurantName);
 			restaurant.setRMeals(new ArrayList<EpflMeal>());
+			restaurants.add(restaurant);
 		}
 
 		restaurant.getRMeals().add(meal);
