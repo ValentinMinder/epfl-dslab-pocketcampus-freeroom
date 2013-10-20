@@ -1,6 +1,6 @@
 
 --
--- Table structure for table `dailyratings`
+-- Table structure for table `dailyratings` (OLD)
 --
 
 CREATE TABLE IF NOT EXISTS `dailyratings` (
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `dailyratings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Table structure for table `campusmenus`
+-- Table structure for table `campusmenus` (OLD)
 --
 
 CREATE TABLE IF NOT EXISTS `campusmenus` (
@@ -24,4 +24,25 @@ CREATE TABLE IF NOT EXISTS `campusmenus` (
   `MealId` bigint(20) NOT NULL,
   `stamp_created` date NOT NULL DEFAULT '0000-00-00',
   PRIMARY KEY (`Title`,`Restaurant`,`stamp_created`,`MealId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table 'Meals'
+--
+
+CREATE TABLE IF NOT EXISTS Meals (
+  MealId bigint NOT NULL,
+  RestaurantId bigint NOT NULL,
+  PRIMARY KEY (MealId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table 'MealRatings'
+--
+
+CREATE TABLE IF NOT EXISTS MealRatings (
+  MealId bigint NOT NULL,
+  RatingTotal float NOT NULL,
+  RatingCount int UNSIGNED NOT NULL,
+  PRIMARY KEY (MealId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

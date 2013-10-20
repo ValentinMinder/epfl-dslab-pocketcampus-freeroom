@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -25,17 +24,17 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("VoteRequest");
 
   private static final org.apache.thrift.protocol.TField MEAL_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("mealId", org.apache.thrift.protocol.TType.I64, (short)1);
-  private static final org.apache.thrift.protocol.TField MEAL_RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("mealRating", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
+  private static final org.apache.thrift.protocol.TField RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rating", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
   private static final org.apache.thrift.protocol.TField DEVICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceId", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  public long mealId; // required
-  public double mealRating; // required
-  public String deviceId; // required
+  private long mealId; // required
+  private double rating; // required
+  private String deviceId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     MEAL_ID((short)1, "mealId"),
-    MEAL_RATING((short)2, "mealRating"),
+    RATING((short)2, "rating"),
     DEVICE_ID((short)3, "deviceId");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -53,8 +52,8 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
       switch(fieldId) {
         case 1: // MEAL_ID
           return MEAL_ID;
-        case 2: // MEAL_RATING
-          return MEAL_RATING;
+        case 2: // RATING
+          return RATING;
         case 3: // DEVICE_ID
           return DEVICE_ID;
         default:
@@ -98,7 +97,7 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
 
   // isset id assignments
   private static final int __MEALID_ISSET_ID = 0;
-  private static final int __MEALRATING_ISSET_ID = 1;
+  private static final int __RATING_ISSET_ID = 1;
   private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
@@ -106,7 +105,7 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.MEAL_ID, new org.apache.thrift.meta_data.FieldMetaData("mealId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
-    tmpMap.put(_Fields.MEAL_RATING, new org.apache.thrift.meta_data.FieldMetaData("mealRating", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.RATING, new org.apache.thrift.meta_data.FieldMetaData("rating", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.DEVICE_ID, new org.apache.thrift.meta_data.FieldMetaData("deviceId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -119,14 +118,14 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
 
   public VoteRequest(
     long mealId,
-    double mealRating,
+    double rating,
     String deviceId)
   {
     this();
     this.mealId = mealId;
     setMealIdIsSet(true);
-    this.mealRating = mealRating;
-    setMealRatingIsSet(true);
+    this.rating = rating;
+    setRatingIsSet(true);
     this.deviceId = deviceId;
   }
 
@@ -137,7 +136,7 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.mealId = other.mealId;
-    this.mealRating = other.mealRating;
+    this.rating = other.rating;
     if (other.isSetDeviceId()) {
       this.deviceId = other.deviceId;
     }
@@ -151,8 +150,8 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
   public void clear() {
     setMealIdIsSet(false);
     this.mealId = 0;
-    setMealRatingIsSet(false);
-    this.mealRating = 0.0;
+    setRatingIsSet(false);
+    this.rating = 0.0;
     this.deviceId = null;
   }
 
@@ -179,27 +178,27 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
     __isset_bit_vector.set(__MEALID_ISSET_ID, value);
   }
 
-  public double getMealRating() {
-    return this.mealRating;
+  public double getRating() {
+    return this.rating;
   }
 
-  public VoteRequest setMealRating(double mealRating) {
-    this.mealRating = mealRating;
-    setMealRatingIsSet(true);
+  public VoteRequest setRating(double rating) {
+    this.rating = rating;
+    setRatingIsSet(true);
     return this;
   }
 
-  public void unsetMealRating() {
-    __isset_bit_vector.clear(__MEALRATING_ISSET_ID);
+  public void unsetRating() {
+    __isset_bit_vector.clear(__RATING_ISSET_ID);
   }
 
-  /** Returns true if field mealRating is set (has been assigned a value) and false otherwise */
-  public boolean isSetMealRating() {
-    return __isset_bit_vector.get(__MEALRATING_ISSET_ID);
+  /** Returns true if field rating is set (has been assigned a value) and false otherwise */
+  public boolean isSetRating() {
+    return __isset_bit_vector.get(__RATING_ISSET_ID);
   }
 
-  public void setMealRatingIsSet(boolean value) {
-    __isset_bit_vector.set(__MEALRATING_ISSET_ID, value);
+  public void setRatingIsSet(boolean value) {
+    __isset_bit_vector.set(__RATING_ISSET_ID, value);
   }
 
   public String getDeviceId() {
@@ -236,11 +235,11 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
       }
       break;
 
-    case MEAL_RATING:
+    case RATING:
       if (value == null) {
-        unsetMealRating();
+        unsetRating();
       } else {
-        setMealRating((Double)value);
+        setRating((Double)value);
       }
       break;
 
@@ -260,8 +259,8 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
     case MEAL_ID:
       return Long.valueOf(getMealId());
 
-    case MEAL_RATING:
-      return Double.valueOf(getMealRating());
+    case RATING:
+      return Double.valueOf(getRating());
 
     case DEVICE_ID:
       return getDeviceId();
@@ -279,8 +278,8 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
     switch (field) {
     case MEAL_ID:
       return isSetMealId();
-    case MEAL_RATING:
-      return isSetMealRating();
+    case RATING:
+      return isSetRating();
     case DEVICE_ID:
       return isSetDeviceId();
     }
@@ -309,12 +308,12 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
         return false;
     }
 
-    boolean this_present_mealRating = true;
-    boolean that_present_mealRating = true;
-    if (this_present_mealRating || that_present_mealRating) {
-      if (!(this_present_mealRating && that_present_mealRating))
+    boolean this_present_rating = true;
+    boolean that_present_rating = true;
+    if (this_present_rating || that_present_rating) {
+      if (!(this_present_rating && that_present_rating))
         return false;
-      if (this.mealRating != that.mealRating)
+      if (this.rating != that.rating)
         return false;
     }
 
@@ -332,24 +331,7 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_mealId = true;
-    builder.append(present_mealId);
-    if (present_mealId)
-      builder.append(mealId);
-
-    boolean present_mealRating = true;
-    builder.append(present_mealRating);
-    if (present_mealRating)
-      builder.append(mealRating);
-
-    boolean present_deviceId = true && (isSetDeviceId());
-    builder.append(present_deviceId);
-    if (present_deviceId)
-      builder.append(deviceId);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(VoteRequest other) {
@@ -370,12 +352,12 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetMealRating()).compareTo(typedOther.isSetMealRating());
+    lastComparison = Boolean.valueOf(isSetRating()).compareTo(typedOther.isSetRating());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetMealRating()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.mealRating, typedOther.mealRating);
+    if (isSetRating()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.rating, typedOther.rating);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -415,10 +397,10 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // MEAL_RATING
+        case 2: // RATING
           if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
-            this.mealRating = iprot.readDouble();
-            setMealRatingIsSet(true);
+            this.rating = iprot.readDouble();
+            setRatingIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -441,8 +423,8 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
     if (!isSetMealId()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'mealId' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetMealRating()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'mealRating' was not found in serialized data! Struct: " + toString());
+    if (!isSetRating()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'rating' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -454,8 +436,8 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
     oprot.writeFieldBegin(MEAL_ID_FIELD_DESC);
     oprot.writeI64(this.mealId);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(MEAL_RATING_FIELD_DESC);
-    oprot.writeDouble(this.mealRating);
+    oprot.writeFieldBegin(RATING_FIELD_DESC);
+    oprot.writeDouble(this.rating);
     oprot.writeFieldEnd();
     if (this.deviceId != null) {
       oprot.writeFieldBegin(DEVICE_ID_FIELD_DESC);
@@ -475,8 +457,8 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
     sb.append(this.mealId);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("mealRating:");
-    sb.append(this.mealRating);
+    sb.append("rating:");
+    sb.append(this.rating);
     first = false;
     if (!first) sb.append(", ");
     sb.append("deviceId:");
@@ -493,7 +475,7 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     // alas, we cannot check 'mealId' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'mealRating' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'rating' because it's a primitive and you chose the non-beans generator.
     if (deviceId == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'deviceId' was not present! Struct: " + toString());
     }

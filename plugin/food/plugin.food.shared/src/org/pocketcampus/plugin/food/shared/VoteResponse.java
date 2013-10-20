@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -26,11 +25,7 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
 
   private static final org.apache.thrift.protocol.TField SUBMIT_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("submitStatus", org.apache.thrift.protocol.TType.I32, (short)1);
 
-  /**
-   * 
-   * @see SubmitStatus
-   */
-  public SubmitStatus submitStatus; // required
+  private SubmitStatus submitStatus; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -227,14 +222,7 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_submitStatus = true && (isSetSubmitStatus());
-    builder.append(present_submitStatus);
-    if (present_submitStatus)
-      builder.append(submitStatus.getValue());
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(VoteResponse other) {

@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -32,13 +31,13 @@ public class EpflMeal implements org.apache.thrift.TBase<EpflMeal, EpflMeal._Fie
   private static final org.apache.thrift.protocol.TField M_TYPES_FIELD_DESC = new org.apache.thrift.protocol.TField("mTypes", org.apache.thrift.protocol.TType.LIST, (short)6);
   private static final org.apache.thrift.protocol.TField M_RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("mRating", org.apache.thrift.protocol.TType.STRUCT, (short)7);
 
-  public long mId; // required
-  public String mName; // required
-  public String mDescription; // required
-  public Map<PriceTarget,Double> mPrices; // required
-  public double mHalfPortionPrice; // required
-  public List<MealType> mTypes; // required
-  public EpflRating mRating; // required
+  private long mId; // required
+  private String mName; // required
+  private String mDescription; // required
+  private Map<PriceTarget,Double> mPrices; // required
+  private double mHalfPortionPrice; // required
+  private List<MealType> mTypes; // required
+  private EpflRating mRating; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -610,44 +609,7 @@ public class EpflMeal implements org.apache.thrift.TBase<EpflMeal, EpflMeal._Fie
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_mId = true;
-    builder.append(present_mId);
-    if (present_mId)
-      builder.append(mId);
-
-    boolean present_mName = true && (isSetMName());
-    builder.append(present_mName);
-    if (present_mName)
-      builder.append(mName);
-
-    boolean present_mDescription = true && (isSetMDescription());
-    builder.append(present_mDescription);
-    if (present_mDescription)
-      builder.append(mDescription);
-
-    boolean present_mPrices = true && (isSetMPrices());
-    builder.append(present_mPrices);
-    if (present_mPrices)
-      builder.append(mPrices);
-
-    boolean present_mHalfPortionPrice = true && (isSetMHalfPortionPrice());
-    builder.append(present_mHalfPortionPrice);
-    if (present_mHalfPortionPrice)
-      builder.append(mHalfPortionPrice);
-
-    boolean present_mTypes = true && (isSetMTypes());
-    builder.append(present_mTypes);
-    if (present_mTypes)
-      builder.append(mTypes);
-
-    boolean present_mRating = true && (isSetMRating());
-    builder.append(present_mRating);
-    if (present_mRating)
-      builder.append(mRating);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(EpflMeal other) {

@@ -378,9 +378,9 @@ public final class OldFoodService {
 
 				Meal newMeal = new Meal(id, name, description, newResto,
 						mealRating);
-				if (!Utils.containsSpecialAscii(newMeal.mealDescription,
+				if (!Utils.containsSpecialAscii(newMeal.getMealDescription(),
 						BAD_CHAR)
-						&& !Utils.containsSpecialAscii(newMeal.name, BAD_CHAR)) {
+						&& !Utils.containsSpecialAscii(newMeal.getName(), BAD_CHAR)) {
 					if (!alreadyExist(newMeal)) {
 						mAllMeals.add(newMeal);
 						mMealRatings.put(newMeal.getMealId(), mealRating);
