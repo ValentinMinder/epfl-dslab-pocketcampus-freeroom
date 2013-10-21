@@ -38,7 +38,6 @@ typedef enum {
  
 @property (nonatomic, strong) DirectoryService* directoryService;
 @property (nonatomic, strong) NSTimer* typingTimer;
-//@property (nonatomic, strong) NSArray* autocompleteResults; //array of NSString*
 @property (nonatomic, strong) NSArray* searchResults; //array of Person*
 @property (nonatomic, strong) NSMutableOrderedSet* recentSearches; //ordered mutable set of NSString*  (most recent at index 0)
 @property (nonatomic) ResultsMode resultsMode;
@@ -61,7 +60,6 @@ typedef enum {
 
 @implementation DirectorySearchViewController
 
-//static NSString* kAutocompleteResultCellIdentifier = @"autocompleteResultCell";
 static NSString* kSearchResultCellIdentifier = @"searchResultCell";
 static NSString* kRecentSearchCellIdentifier = @"recentSearchCell";
 
@@ -87,9 +85,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    /*if ([PCUtils isIdiomPad]) {
-        self.barActivityIndicator.frame = CGRectOffset(self.barActivityIndicator.frame, 0, 1.0);
-    }*/
     if ([PCUtils isIdiomPad]) {
         self.backgroundIconCenterYConstraint.constant = 130.0;
     }
@@ -219,15 +214,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 #pragma mark - Requests start
 
-/*- (void)startAutocompleteRequest {
-    [self.directoryService cancelOperationsForDelegate:self];
-    if (self.searchBar.text.length == 0) {
-        return;
-    }
-    [self.barActivityIndicator startAnimating];
-    [self.directoryService autocomplete:self.searchBar.text delegate:self];
-}*/
-
 - (void)startSearchRequest {
     [self.directoryService cancelOperationsForDelegate:self];
     if (self.searchBar.text.length == 0) {
@@ -273,17 +259,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         return;
     }
     [self.typingTimer invalidate];
-    
-    //NSNumber* potentatialSciper = [[[NSNumberFormatter alloc] init] numberFromString:searchText];
-    NSArray* words = [searchText componentsSeparatedByString:@" "];
-    /*if (YES || words.count > 1 || potentatialSciper) { //would actually start an LDAP search on server instead of autocomplete anyway
-        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO];
-    } else {
-        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutocompleteRequest) userInfo:nil repeats:NO];
-    }*/
-    if (searchText.length > 2 || words.count > 1) {
-        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO];
-    }
+    self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar_ {
@@ -300,39 +276,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     [self.searchBar resignFirstResponder];
 }
 
-
 #pragma mark - DirectoryServiceDelegate
-
-/*- (void)autocompleteFor:(NSString *)constraint didReturn:(NSArray*)results {
-    [self.barActivityIndicator stopAnimating];
-    if (results.count == 0) {
-        [self showNoResultMessage];
-        return;
-    }
-    
-    if (self.searchBar.text.length == 0) { //result from previous non-empty search returned => return to initial state
-        return;
-    }
-    
-    self.autocompleteResults = [[NSSet setWithArray:results] allObjects]; //eliminate duplicates
-    self.resultsMode = ResultsModeAutocomplete;
-    self.navigationItem.rightBarButtonItem = nil;
-    if (results.count == 1) {
-        [self.barActivityIndicator startAnimating];
-        NSString* searchString = [NSString stringWithFormat:@"%@", [results objectAtIndex:0]];
-        [self.directoryService searchPersons:searchString delegate:self];
-    } else {
-        self.tableView.hidden = NO;
-        self.backgroundIcon.hidden = YES;
-        self.messageLabel.hidden = YES;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    
-}
-
-- (void)autocompleteFailedFor:(NSString *)constraint {
-    [self resultsError];
-}*/
 
 - (void)searchForRequest:(DirectoryRequest *)request didReturn:(DirectoryResponse *)response {
     NSArray* results = response.results;
@@ -427,20 +371,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    /*if (self.resultsMode == ResultsModeAutocomplete) {
-        UIActivityIndicatorView* activityIndicatorView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:indexPath] accessoryView];
-        if ([activityIndicatorView isAnimating]) {
-            return; //means cell was already selected
-        }
-        [activityIndicatorView startAnimating];
-        NSString* searchString = [NSString stringWithFormat:@"%@", [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
-        if (![PCUtils isOSVersionSmallerThan:6.0]) {
-            //in iOS < 6.0, programatically setting search bar text triggers searchBar:textDidChange: we do not want it
-            self.searchBar.text = searchString;
-        }
-        [self.directoryService searchPersons:searchString delegate:self];
-        [self.searchBar resignFirstResponder];
-    } else*/ if (self.resultsMode == ResultsModeSearch) {
+    if (self.resultsMode == ResultsModeSearch) {
         Person* person = [self.searchResults objectAtIndex:indexPath.row];
         if (self.splitViewController && [person.sciper isEqualToString:self.displayedPerson.sciper]) { //isEqual not implemented in Thrift
             [self.personViewController.navigationController popToRootViewControllerAnimated:YES]; //return to contact info if in map for example
@@ -471,19 +402,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    /*if (self.resultsMode == ResultsModeAutocomplete) {
-        UITableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kAutocompleteResultCellIdentifier];
-        if (newCell == nil) {
-            newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kAutocompleteResultCellIdentifier];
-            newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-            newCell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        } else {
-            [(UIActivityIndicatorView*)(newCell.accessoryView) stopAnimating];
-        }
-        newCell.textLabel.text = [self.autocompleteResults objectAtIndex:indexPath.row];
-        return newCell;
-    } else*/ if (self.resultsMode == ResultsModeSearch) {
+    if (self.resultsMode == ResultsModeSearch) {
         UITableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kSearchResultCellIdentifier];
         if (newCell == nil) {
             newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSearchResultCellIdentifier];
@@ -527,12 +446,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (self.resultsMode) {
-        /*case ResultsModeAutocomplete:
-            if (!self.autocompleteResults) { //should not happen in such mode
-                return 0;
-            }
-            return self.autocompleteResults.count;
-            break;*/
         case ResultsModeSearch:
             if (!self.searchResults) { //should not happen in such mode
                 return 0;
@@ -556,6 +469,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (void)dealloc
 {
+    [self.typingTimer invalidate];
     [[MainController publicController] removePluginStateObserver:self];
     [self.directoryService cancelOperationsForDelegate:self];
 }
