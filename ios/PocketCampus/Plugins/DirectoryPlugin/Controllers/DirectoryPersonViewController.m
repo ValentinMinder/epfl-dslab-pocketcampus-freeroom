@@ -97,7 +97,8 @@ static const int kAddToExistingContactActionIndex = 1;
             self.tableView.hidden = YES;
             return;
         }
-        [self.directoryService searchPersons:self.fullNameToSearch delegate:self];
+        DirectoryRequest* req = [[DirectoryRequest alloc] initWithQuery:self.fullNameToSearch directorySession:nil resultSetCookie:nil];
+        [self.directoryService searchForRequest:req delegate:self];
         [self.loadingIndicator startAnimating];
         self.tableView.hidden = YES;
         self.centerMessageLabel.hidden = NO;
@@ -234,9 +235,10 @@ static const int kAddToExistingContactActionIndex = 1;
 
 #pragma mark - DirectoryServiceDelegate
 
-- (void)searchDirectoryFor:(NSString *)searchPattern didReturn:(NSArray *)results {
+- (void)searchForRequest:(DirectoryRequest *)request didReturn:(DirectoryResponse *)response {
     [self.loadingIndicator stopAnimating];
-    if ([results count] == 0) {
+    NSArray* results = response.results;
+    if (results.count == 0) {
         self.centerMessageLabel.hidden = NO;
         self.centerMessageLabel.text = NSLocalizedStringFromTable(@"NoResultPCUnknownViewControllerLoad", @"DirectoryPlugin", nil);
         return;
@@ -246,7 +248,7 @@ static const int kAddToExistingContactActionIndex = 1;
     self.person = person;
 }
 
-- (void)searchDirectoryFailedFor:(NSString *)searchPattern {
+- (void)searchFailedForRequest:(DirectoryRequest *)request {
     [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.hidden = NO;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);

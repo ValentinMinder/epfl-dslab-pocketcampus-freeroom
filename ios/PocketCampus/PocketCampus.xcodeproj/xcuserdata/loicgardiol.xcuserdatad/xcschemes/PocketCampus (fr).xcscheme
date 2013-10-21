@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3297E180180818850047AD07"
-               BuildableName = "PocketCampus copy.app"
-               BlueprintName = "PocketCampus NSZombie enabled"
+               BlueprintIdentifier = "3219EF4B14FCDE4900A271CD"
+               BuildableName = "PocketCampus.app"
+               BlueprintName = "PocketCampus"
                ReferencedContainer = "container:PocketCampus.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3297E180180818850047AD07"
-            BuildableName = "PocketCampus copy.app"
-            BlueprintName = "PocketCampus NSZombie enabled"
+            BlueprintIdentifier = "3219EF4B14FCDE4900A271CD"
+            BuildableName = "PocketCampus.app"
+            BlueprintName = "PocketCampus"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -51,12 +51,18 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3297E180180818850047AD07"
-            BuildableName = "PocketCampus copy.app"
-            BlueprintName = "PocketCampus NSZombie enabled"
+            BlueprintIdentifier = "3219EF4B14FCDE4900A271CD"
+            BuildableName = "PocketCampus.app"
+            BlueprintName = "PocketCampus"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-AppleLanguages &quot;(fr)&quot;"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -64,17 +70,23 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       debugDocumentVersioning = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3297E180180818850047AD07"
-            BuildableName = "PocketCampus copy.app"
-            BlueprintName = "PocketCampus NSZombie enabled"
+            BlueprintIdentifier = "3219EF4B14FCDE4900A271CD"
+            BuildableName = "PocketCampus.app"
+            BlueprintName = "PocketCampus"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-w -t /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate -e /Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus/AutomationScripts/News.js"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

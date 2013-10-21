@@ -7,12 +7,12 @@
 		<key>PocketCampus (NSZombie).xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
-		<key>PocketCampus copy.xcscheme</key>
+		<key>PocketCampus (fr).xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>11</integer>
+			<integer>1</integer>
 		</dict>
 		<key>PocketCampus.xcscheme</key>
 		<dict>
