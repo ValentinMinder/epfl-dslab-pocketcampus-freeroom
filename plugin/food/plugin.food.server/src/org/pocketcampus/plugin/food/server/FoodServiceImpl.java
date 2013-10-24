@@ -33,20 +33,22 @@ public class FoodServiceImpl implements FoodService.Iface {
 	@Override
 	public FoodResponse getFood(FoodRequest foodReq) throws TException {
 		Date date = getDateFromTimestamp(foodReq.getMealDate());
-		
+
 		List<EpflRestaurant> menu = null;
-		
+
 		try {
 			MealList.MenuResult result = _mealList.getMenu(foodReq.getMealTime(), date);
 			menu = result.menu;
-			
-			if(result.hasChanged){
+
+			if (result.hasChanged) {
 				_ratingDatabase.insert(menu);
-			}		
+			}
 		} catch (Exception e) {
 			menu = new ArrayList<EpflRestaurant>();
 		}
-		
+
+		_ratingDatabase.setRatings(menu);
+
 		return new FoodResponse(menu);
 	}
 
@@ -92,21 +94,33 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 	// OLD STUFF - DO NOT TOUCH
 
-	private final org.pocketcampus.plugin.food.server.old.OldFoodService oldService = new org.pocketcampus.plugin.food.server.old.OldFoodService();
+	private org.pocketcampus.plugin.food.server.old.OldFoodService _oldService;
+
+	/**
+	 * OBSOLETE.
+	 * Gets the old version of this service, using lazy initialization
+	 * to avoid initializing it during unit tests since it does stuff with databases.
+	 */
+	private org.pocketcampus.plugin.food.server.old.OldFoodService getOldService() {
+		if (_oldService == null) {
+			_oldService = new org.pocketcampus.plugin.food.server.old.OldFoodService();
+		}
+		return _oldService;
+	}
 
 	/**
 	 * OBSOLETE. Gets all menus for today.
 	 */
 	@Override
 	public List<Meal> getMeals() throws TException {
-		return oldService.getMeals();
+		return getOldService().getMeals();
 	}
 
 	/**
 	 * OBSOLETE. Checks whether the user has already voted today
 	 */
 	public boolean hasVoted(String deviceId) throws TException {
-		return oldService.hasVoted(deviceId);
+		return getOldService().hasVoted(deviceId);
 	}
 
 	/**
@@ -114,7 +128,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 */
 	@Override
 	public Map<Long, Rating> getRatings() throws TException {
-		return oldService.getRatings();
+		return getOldService().getRatings();
 	}
 
 	/**
@@ -122,6 +136,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 */
 	@Override
 	public SubmitStatus setRating(long mealId, double rating, String deviceId) throws TException {
-		return oldService.setRating(mealId, rating, deviceId);
+		return getOldService().setRating(mealId, rating, deviceId);
 	}
 }
