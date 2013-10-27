@@ -18,6 +18,8 @@
 
 #import "MoodleController.h"
 
+#import "NSTimer+Blocks.h"
+
 static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 @interface MoodleResourceViewController ()<UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
@@ -25,19 +27,22 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, weak) IBOutlet UIProgressView* progressView;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* loadingIndicator;
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) MoodleResource* moodleResource;
-@property (nonatomic, strong) UIDocumentInteractionController* docInteractionController;
 @property (nonatomic, strong) UIActionSheet* deleteActionSheet;
+@property (nonatomic, strong) UIDocumentInteractionController* docController;
 @property (nonatomic) CGFloat navbarOriginalAlpha;
 @property (nonatomic, strong) NSTimer* hideNavbarTimer;
 @property (nonatomic) BOOL isShowingActionMenu;
 
+@property (nonatomic, weak) UISplitViewController* splitViewControllerPtr; //used to keep a pointer to splitViewController that is not nillified before being able to remove observers on it
+
 @end
 
 @implementation MoodleResourceViewController
+
+#pragma mark - Init
 
 - (id)initWithMoodleResource:(MoodleResource*)moodleResource {
     self = [super initWithNibName:@"MoodleResourceView" bundle:nil];
@@ -47,19 +52,15 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
             self.title = moodleResource.iName; //enough space to display title if iPad
         }
         self.moodleService = [MoodleService sharedInstanceToRetain];
-        if ([self.moodleService isMoodleResourceDownloaded:moodleResource]) {
-            NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:moodleResource]];
-            self.docInteractionController = [UIDocumentInteractionController interactionControllerWithURL:localFileURL];
-            self.docInteractionController.delegate = self;
-        }
     }
     return self;
 }
 
+#pragma mark - UIViewController overrides
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.webView.hidden = YES;
     
     self.progressView.progress = 0.0;
@@ -83,7 +84,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
     self.navigationItem.rightBarButtonItems = rightButtons;
     
-    if (self.docInteractionController) { //means resource already downloaded, see init
+    if ([self.moodleService isMoodleResourceDownloaded:self.moodleResource]) {
         self.centerMessageLabel.hidden = YES;
         self.progressView.hidden = YES;
         [self deleteButton].enabled = YES;
@@ -94,18 +95,20 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         [self actionButton].enabled = NO;
         [self startMoodleResourceDownload];
     }
-    
+    self.splitViewControllerPtr = self.splitViewController;
+    [self.splitViewController addObserver:self forKeyPath:NSStringFromSelector(@selector(isMasterViewControllerHidden)) options:0 context:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [[PCGAITracker sharedTracker] trackScreenWithName:@"/moodle/course/document"];
-    self.navigationController.navigationBar.translucent = YES;
+    self.webView.scrollView.contentInset = [PCUtils edgeInsetsForViewController:self];
+    self.webView.scrollView.scrollIndicatorInsets = [PCUtils edgeInsetsForViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.translucent = NO;
+    [self showNavbar];
     [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
 }
 
@@ -118,6 +121,150 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return self.navigationController.navigationBarHidden;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    return UIStatusBarAnimationSlide;
+}
+
+#pragma mark - Observers
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == self.splitViewController && [keyPath isEqualToString:NSStringFromSelector(@selector(isMasterViewControllerHidden))]) {
+        if (![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
+            [self showNavbar];
+        }
+        [self rescheduleHideNavbarTimer];
+    }
+}
+
+- (void)removeSplitViewControllerObserver {
+    @try {
+        [self.splitViewControllerPtr removeObserver:self forKeyPath:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
+    }
+    @catch (NSException *exception) {}
+}
+
+#pragma mark - Navbar visibility
+
+- (void)rescheduleHideNavbarTimer {
+    [self.hideNavbarTimer invalidate];
+    MoodleResourceViewController* weakSelf __weak = self;
+    self.hideNavbarTimer = [NSTimer scheduledTimerWithTimeInterval:kHideNavbarSeconds block:^{
+        [weakSelf hideNavbar];
+    } repeats:YES];
+}
+
+- (void)hideNavbar {
+    if (self.navigationController.navigationBarHidden) {
+        return;
+    }
+    if (self.deleteActionSheet.isVisible || self.docController) {
+        return;
+    }
+    if (![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
+        return; //always show nav bar when master view controller not hidden
+    }
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
+    self.webView.scrollView.contentInset = UIEdgeInsetsZero;
+    self.webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+}
+
+- (void)showNavbar {
+    if (!self.navigationController.navigationBarHidden) {
+        return;
+    }
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNeedsStatusBarAppearanceUpdate];
+    self.webView.scrollView.contentInset = [PCUtils edgeInsetsForViewController:self];
+    self.webView.scrollView.scrollIndicatorInsets = [PCUtils edgeInsetsForViewController:self];
+    [self rescheduleHideNavbarTimer];
+}
+
+- (void)toggleNavbarVisibility {
+    [self rescheduleHideNavbarTimer];
+    if (self.navigationController.isNavigationBarHidden) {
+        [self showNavbar];
+    } else {
+        [self hideNavbar];
+    }
+}
+
+
+#pragma mark - Buttons access
+
+- (UIBarButtonItem*)actionButton {
+    if (self.navigationItem.rightBarButtonItems.count < 1) {
+        return nil;
+    }
+    return self.navigationItem.rightBarButtonItems[0];
+}
+
+- (UIBarButtonItem*)deleteButton {
+    if (self.navigationItem.rightBarButtonItems.count < 2) {
+        return nil;
+    }
+    return self.navigationItem.rightBarButtonItems[1];
+}
+
+#pragma mark - Buttons actions
+
+- (void)deleteButtonPressed {
+    if (!self.deleteActionSheet) {
+        self.deleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"DeleteFileFromCacheQuestion", @"MoodlePlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"PocketCampus", nil) otherButtonTitles:nil];
+    }
+    if (self.docController) {
+        [self.docController dismissMenuAnimated:NO];
+    }
+    [self.deleteActionSheet toggleFromBarButtonItem:[self deleteButton] animated:YES];
+}
+
+- (void)actionButtonPressed {
+    if (self.deleteActionSheet.isVisible) {
+        [self.deleteActionSheet dismissWithClickedButtonIndex:self.deleteActionSheet.cancelButtonIndex animated:NO];
+    }
+    if (self.docController) {
+        [self.docController dismissMenuAnimated:YES];
+        self.docController = nil;
+    } else {
+        NSURL* resourceLocalURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:self.moodleResource]];
+        self.docController = [UIDocumentInteractionController interactionControllerWithURL:resourceLocalURL];
+        self.docController.delegate = self;
+        [self.docController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
+    }
+}
+
+#pragma mark - Moodle Resource loading
+
+- (void)startMoodleResourceDownload {
+    
+    VoidBlock successBlock = ^{
+        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
+        self.centerMessageLabel.hidden = NO;
+        self.progressView.hidden = NO;
+        [self.moodleService downloadMoodleResource:self.moodleResource progressView:self.progressView delegate:self];
+    };
+    
+    if ([self.moodleService lastSession]) {
+        successBlock();
+    } else {
+        NSLog(@"-> No saved session, loggin in...");
+        [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
+            if (self.splitViewController) {
+                MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
+                self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
+            } else {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        } failureBlock:^{
+            [self serviceConnectionToServerTimedOut];
+        }];
+    }
 }
 
 - (void)loadDownloadedMoodleResourceInWebView {
@@ -143,113 +290,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self rescheduleHideNavbarTimer];
 }
 
-- (void)rescheduleHideNavbarTimer {
-    [self.hideNavbarTimer invalidate];
-    self.hideNavbarTimer = [NSTimer scheduledTimerWithTimeInterval:kHideNavbarSeconds target:self selector:@selector(hideNavbar) userInfo:nil repeats:NO];
-}
-
-- (void)startMoodleResourceDownload {
-    
-    VoidBlock successBlock = ^{
-        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
-        self.centerMessageLabel.hidden = NO;
-        self.progressView.hidden = NO;
-        [self.moodleService downloadMoodleResource:self.moodleResource progressView:self.progressView delegate:self];
-    };
-    
-    if ([self.moodleService lastSession]) {
-        successBlock();
-    } else {
-        NSLog(@"-> No saved session, loggin in...");
-        [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
-            if (self.splitViewController) {
-                MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
-                self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], splashViewController];
-            } else {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-        } failureBlock:^{
-            [self serviceConnectionToServerTimedOut];
-        }];
-    }
-}
-
-#pragma - buttons access
-
-- (UIBarButtonItem*)actionButton {
-    if (self.navigationItem.rightBarButtonItems.count < 1) {
-        return nil;
-    }
-    return [self.navigationItem.rightBarButtonItems objectAtIndex:0];
-}
-
-- (UIBarButtonItem*)deleteButton {
-    if (self.navigationItem.rightBarButtonItems.count < 2) {
-        return nil;
-    }
-    return [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-}
-
-#pragma mark - Gestures actions
-
-- (void)hideNavbar {
-    if (self.navigationController.navigationBar.alpha == 0.0) {
-        return; //already hidden
-    }
-    self.navbarOriginalAlpha = self.navigationController.navigationBar.alpha;
-    [UIView animateWithDuration:0.3 animations:^{
-        self.navigationController.navigationBar.alpha = 0.0;
-    }];
-}
-
-- (void)showNavbar {
-    if (self.navigationController.navigationBar.alpha > 0.0) {
-        return; //already visible
-    }
-    [UIView animateWithDuration:0.1 animations:^{
-        self.navigationController.navigationBar.alpha = self.navbarOriginalAlpha;
-    }];
-    [self rescheduleHideNavbarTimer];
-}
-
-- (void)toggleNavbarVisibility {
-    if (self.navigationController.navigationBar.alpha > 0.0) {
-        [self hideNavbar];
-    } else {
-        [self showNavbar];
-    }
-}
-
-#pragma mark - Button actions
-
-- (void)deleteButtonPressed {
-    if (!self.deleteActionSheet) {
-        self.deleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"DeleteFileFromCacheQuestion", @"MoodlePlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"PocketCampus", nil) otherButtonTitles:nil];
-    }
-    [self.docInteractionController dismissMenuAnimated:NO];
-    [self.deleteActionSheet toggleFromBarButtonItem:[self deleteButton] animated:YES];
-}
-
-- (void)actionButtonPressed {
-    if (self.isShowingActionMenu) {
-        [self.docInteractionController dismissMenuAnimated:YES];
-        return;
-    }
-    [self.deleteActionSheet dismissWithClickedButtonIndex:self.deleteActionSheet.cancelButtonIndex animated:NO];
-    BOOL couldShowMenu = [self.docInteractionController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
-    if (!couldShowMenu) {
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Sorry", @"MoodlePlugin", nil) message:NSLocalizedStringFromTable(@"NoActionForThisFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    }
-}
 
 #pragma mark - MoodleServiceDelegate
 
 - (void)downloadOfMoodleResource:(MoodleResource *)moodleResource didFinish:(NSURL *)localFileURL {
     self.centerMessageLabel.hidden = YES;
     self.progressView.hidden = YES;
-    self.docInteractionController = [UIDocumentInteractionController interactionControllerWithURL:localFileURL];
-    self.docInteractionController.delegate = self;
     [self deleteButton].enabled = YES;
     [self actionButton].enabled = YES;
     [self loadDownloadedMoodleResourceInWebView];
@@ -271,7 +317,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    [self.loadingIndicator stopAnimating];
     self.webView.hidden = YES;
     self.progressView.hidden = YES;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil);
@@ -283,12 +328,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) { //delete button, starts from the top, cancel button not included
+        [self removeSplitViewControllerObserver];
         if (![self.moodleService deleteDownloadedMoodleResource:self.moodleResource]) {
             UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleDeleteFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [errorAlert show];
             return;
         }
-        [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/moodle/course/document/delete"];
         if (![PCUtils isIdiomPad]) { /*iPhone*/
             [self.navigationController popViewControllerAnimated:YES];
         }
@@ -304,47 +349,14 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 #pragma mark - UIDocumentInteractionControllerDelegate
 
-/* deprecated - required for iOS<=5 devices */
-- (BOOL)documentInteractionController:(UIDocumentInteractionController *)controller canPerformAction:(SEL)action
-{
-    
-    if (action == @selector (print:) && [UIPrintInteractionController canPrintURL:controller.URL]) {
-        return YES;
-    }
-    return NO;
-}
-
-/* deprecated - required for iOS<=5 devices */
-- (BOOL)documentInteractionController:(UIDocumentInteractionController *)controller performAction:(SEL)action
-{
-    
-    bool __block success = NO;
-    if (action == @selector(print:)) {
-        UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];
-        printController.printingItem = controller.URL;
-        [printController presentAnimated:YES completionHandler:^(UIPrintInteractionController *printInteractionController, BOOL completed, NSError *error){
-            if (completed) {
-                success = YES;
-            }
-        }];
-    }
-    return success;
-}
-
-- (void)documentInteractionControllerWillPresentOptionsMenu:(UIDocumentInteractionController *)controller {
-    self.isShowingActionMenu = YES;
-}
-
 - (void)documentInteractionControllerDidDismissOptionsMenu:(UIDocumentInteractionController *)controller {
-    self.isShowingActionMenu = NO;
+    self.docController = nil;
 }
 
 #pragma mark - UIWebViewDelegate
 
-
 - (void)webView:(UIWebView *)webView_ didFailLoadWithError:(NSError *)error {
     self.webView.hidden = YES;
-    [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"FileCouldNotBeDisplayedTryOpenIn", @"MoodlePlugin", nil);
     self.centerMessageLabel.hidden = NO;
 }
@@ -358,16 +370,17 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     return NO;
 }
 
-#pragma mark - dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
+    [self removeSplitViewControllerObserver];
     [self.hideNavbarTimer invalidate];
     [self.moodleService cancelOperationsForDelegate:self];
     [self.webView stopLoading];
     self.webView.delegate = nil; //docs says so
-    self.docInteractionController.delegate = nil;
     self.deleteActionSheet.delegate = nil;
+    self.docController.delegate = nil;
 }
 
 @end

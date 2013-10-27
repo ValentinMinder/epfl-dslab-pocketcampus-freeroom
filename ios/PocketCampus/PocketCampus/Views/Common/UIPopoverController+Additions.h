@@ -17,6 +17,11 @@
 - (void)togglePopoverFromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated;
 
 /*
+ * Same as previous, but will also first dismiss (not animated) any UIPopoverController or UIActionSheet that is in othersToDismiss (if not nil)
+ */
+- (void)togglePopoverFromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections othersToDismiss:(NSArray*)othersToDismiss animated:(BOOL)animated;
+
+/*
  * Call this method from action handler of view to show popover or automatically dismiss it
  * if it is already visible.
  */

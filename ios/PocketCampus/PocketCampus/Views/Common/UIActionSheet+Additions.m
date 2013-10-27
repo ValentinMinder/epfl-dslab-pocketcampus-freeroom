@@ -11,7 +11,24 @@
 @implementation UIActionSheet (Additions)
 
 - (void)toggleFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated {
+    [self toggleFromBarButtonItem:item othersToDismiss:nil animated:animated];
+}
+
+- (void)toggleFromBarButtonItem:(UIBarButtonItem *)item othersToDismiss:(NSArray*)othersToDismiss animated:(BOOL)animated {
     @try {
+        for (id presentedElement in othersToDismiss) {
+            if ([presentedElement isKindOfClass:[UIPopoverController class]]) {
+                UIPopoverController* popover = (UIPopoverController*)(presentedElement);
+                if (popover.isPopoverVisible) {
+                    [popover dismissPopoverAnimated:NO];
+                }
+            } else if ([presentedElement isKindOfClass:[UIActionSheet class]]) {
+                UIActionSheet* actionSheet = (UIActionSheet*)(presentedElement);
+                if (actionSheet.isVisible) {
+                    [actionSheet dismissWithClickedButtonIndex:actionSheet.cancelButtonIndex animated:NO];
+                }
+            }
+        }
         if (self.isVisible) {
             [self dismissWithClickedButtonIndex:[self cancelButtonIndex] animated:animated];
         } else {

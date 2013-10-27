@@ -42,6 +42,24 @@
     
 }
 
+#pragma mark - Master and detail properties
+
+- (UIViewController*)masterViewController {
+    return self.viewControllers[0];
+}
+
+- (void)setMasterViewController:(UIViewController *)masterViewController {
+    self.viewControllers = @[masterViewController, self.detailViewController];
+}
+
+- (UIViewController*)detailViewController {
+    return self.viewControllers[1];
+}
+
+- (void)setDetailViewController:(UIViewController *)detailViewController {
+    self.viewControllers = @[self.masterViewController, detailViewController];
+}
+
 #pragma mark - Toggle button generation
 
 - (UIBarButtonItem*)toggleMasterViewBarButtonItem {
@@ -78,6 +96,9 @@
     if ((_masterViewControllerHidden && hidden) || (!_masterViewControllerHidden && !hidden)) {
         return;
     }
+    [self willChangeValueForKey:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
+    _masterViewControllerHidden = hidden;
+    [self didChangeValueForKey:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
     CGRect newFrame = self.view.frame;
     UIViewController* masterViewController = self.viewControllers[0];
     UIViewController* detailViewControler = self.viewControllers[1];
@@ -116,8 +137,18 @@
         detailViewControler.view.frame = CGRectMake(detailFrame.origin.x, detailFrame.origin.y, detailNewWidth, detailFrame.size.height);
     } completion:NULL];
     
-    _masterViewControllerHidden = hidden;
-    
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return self.masterViewControllerHidden ? [self.detailViewController prefersStatusBarHidden] : [self.masterViewController prefersStatusBarHidden] && [self.detailViewController prefersStatusBarHidden];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return self.masterViewControllerHidden ? [self.detailViewController preferredStatusBarStyle] : [self.masterViewController preferredStatusBarStyle];
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    return self.masterViewControllerHidden ? [self.detailViewController preferredStatusBarUpdateAnimation] : [self.masterViewController preferredStatusBarUpdateAnimation];
 }
 
 #pragma mark - UINavigationControllerDelegate

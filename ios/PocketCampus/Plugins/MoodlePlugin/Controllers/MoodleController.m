@@ -35,7 +35,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
             MoodleCoursesListViewController* coursesListViewController = [[MoodleCoursesListViewController alloc] init];
             
             if ([PCUtils isIdiomPad]) {
-                UINavigationController* navController =  [[UINavigationController alloc] initWithRootViewController:coursesListViewController];
+                PCNavigationController* navController =  [[PCNavigationController alloc] initWithRootViewController:coursesListViewController];
                 UIViewController* emptyDetailViewController = [[UIViewController alloc] init]; //splash view controller will be returned by coursesListViewController as PluginSplitViewControllerDelegate
                 PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:emptyDetailViewController];
                 splitViewController.pluginIdentifier = [[self class] identifierName];

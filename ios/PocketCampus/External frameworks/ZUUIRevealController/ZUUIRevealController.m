@@ -718,11 +718,27 @@
 
 #pragma mark - Status bar
 
+- (BOOL)prefersStatusBarHidden {
+    if (self.currentFrontViewPosition == FrontViewPositionLeft) {
+        return [self.frontViewController prefersStatusBarHidden];
+    } else {
+        return [self.rearViewController prefersStatusBarHidden] && [self.frontViewController prefersStatusBarHidden];
+    }
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
     if (self.currentFrontViewPosition == FrontViewPositionLeft) {
         return [self.frontViewController preferredStatusBarStyle];
     } else {
         return [self.rearViewController preferredStatusBarStyle];
+    }
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    if (self.currentFrontViewPosition == FrontViewPositionLeft) {
+        return [self.frontViewController preferredStatusBarUpdateAnimation];
+    } else {
+        return [self.rearViewController preferredStatusBarUpdateAnimation];
     }
 }
 
@@ -775,35 +791,6 @@
 	
 	[self _addRearViewControllerToHierarchy:self.rearViewController];
 	[self _addFrontViewControllerToHierarchy:self.frontViewController];	
-}
-
-- (void)viewDidUnload
-{
-	[self _removeViewControllerFromHierarchy:self.frontViewController];
-	[self _removeViewControllerFromHierarchy:self.rearViewController];
-	
-	self.frontView = nil;
-	self.rearView = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    
-    if ([PCUtils isIdiomPad]) {
-        return YES;
-        if (self.frontViewController && [self.frontViewController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
-            return [self.frontViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation]; 
-        } else {
-            return YES; //By default, support all orientations on iPad
-        }
-    } else { //iPhone, iPod touch
-        if (self.frontViewController && [self.frontViewController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
-            return [self.frontViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
-        } else {
-            return (toInterfaceOrientation == UIInterfaceOrientationPortrait); //By default, only support portrait on iPhone
-        }
-    }
-    
 }
 
 - (NSUInteger)supportedInterfaceOrientations {

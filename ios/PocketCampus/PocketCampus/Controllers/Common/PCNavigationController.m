@@ -28,18 +28,25 @@
     return NO; //default portait only on idiom phone
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    if ([self.topViewController respondsToSelector:@selector(preferredStatusBarStyle)]) {
-        return [self.topViewController preferredStatusBarStyle];
-    }
-    return UIStatusBarStyleDefault;
-}
-
 - (BOOL)prefersStatusBarHidden {
     if ([self.topViewController respondsToSelector:@selector(prefersStatusBarHidden)]) {
         return [self.topViewController prefersStatusBarHidden];
     }
-    return NO;
+    return [super prefersStatusBarHidden];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    if ([self.topViewController respondsToSelector:@selector(preferredStatusBarStyle)]) {
+        return [self.topViewController preferredStatusBarStyle];
+    }
+    return [super preferredStatusBarStyle];
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    if ([self.topViewController respondsToSelector:@selector(preferredStatusBarUpdateAnimation)]) {
+        return [self.topViewController preferredStatusBarUpdateAnimation];
+    }
+    return [super preferredStatusBarUpdateAnimation];
 }
 
 @end

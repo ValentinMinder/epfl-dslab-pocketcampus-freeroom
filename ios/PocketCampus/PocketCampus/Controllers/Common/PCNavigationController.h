@@ -10,4 +10,25 @@
 
 @interface PCNavigationController : UINavigationController
 
+/*
+ * UIViewController override
+ * Returns top view controller prefersStatusBarHidden if top view controller implements it
+ * Returns super otherwise
+ */
+- (BOOL)prefersStatusBarHidden;
+
+/*
+ * UIViewController override
+ * Returns top view controller preferredStatusBarStyle if top view controller implements it
+ * Returns super otherwise
+ */
+- (UIStatusBarStyle)preferredStatusBarStyle;
+
+/*
+ * UIViewController override
+ * Returns top view controller preferredStatusBarUpdateAnimation if top view controller implements it
+ * Returns super otherwise
+ */
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation;
+
 @end

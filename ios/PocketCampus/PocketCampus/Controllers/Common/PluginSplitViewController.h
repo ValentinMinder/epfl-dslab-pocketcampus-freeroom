@@ -14,9 +14,11 @@
 
 @interface PluginSplitViewController : UISplitViewController<UINavigationControllerDelegate>
 
+@property (nonatomic, strong) UIViewController* masterViewController;
+@property (nonatomic, strong) UIViewController* detailViewController;
 @property (nonatomic, copy) NSString* pluginIdentifier;
 @property (nonatomic, readonly, weak) UINavigationController* masterNavigationController; //nil if master view controller is not kind of class UINavigationController
-@property (nonatomic) BOOL masterViewControllerHidden;
+@property (nonatomic, getter = isMasterViewControllerHidden) BOOL masterViewControllerHidden;
 
 - (id)initWithMasterViewController:(UIViewController*)masterViewController detailViewController:(UIViewController*)detailViewController;
 - (void)setMasterViewControllerHidden:(BOOL)hidden animated:(BOOL)animated;
@@ -32,5 +34,26 @@
  *
  */
 - (UIBarButtonItem*)toggleMasterViewBarButtonItem;
+
+/*
+ * UIViewController override
+ * Returns YES if both master view and controller and detail view controller return YES
+ * If masterViewControllerHidden is YES, returns result of detail view controller only
+ */
+- (BOOL)prefersStatusBarHidden;
+
+/*
+ * UIViewController override
+ * Returns detail view controller preferredStatusBarStyle if isMasterViewControllerHidden is YES
+ * returns master view controller preferredStatusBarStyle otherwise
+ */
+- (UIStatusBarStyle)preferredStatusBarStyle;
+
+/*
+ * UIViewController override
+ * Returns detail view controller preferredStatusBarUpdateAnimation if isMasterViewControllerHidden is YES
+ * returns master view controller preferredStatusBarUpdateAnimation otherwise
+ */
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation;
 
 @end

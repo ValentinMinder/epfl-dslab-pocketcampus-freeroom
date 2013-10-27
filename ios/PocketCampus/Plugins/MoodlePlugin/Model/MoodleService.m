@@ -150,8 +150,9 @@ static NSString* kMoodleResourceKey = @"moodleResource";
 }
 
 - (BOOL)deleteDownloadedMoodleResource:(MoodleResource*)moodleResource {
-    BOOL success = [[NSFileManager defaultManager] removeItemAtPath:[self localPathForMoodleResource:moodleResource] error:nil]; //OK to pass nil for error, method returns aleary YES/NO is case of success/failure
-    if (success) {
+    NSError* error = nil;
+    [[NSFileManager defaultManager] removeItemAtPath:[self localPathForMoodleResource:moodleResource] error:&error]; //OK to pass nil for error, method returns aleary YES/NO is case of success/failure
+    if (!error) {
         /* Execute observers block */
         for (MoodleResourceObserver* observer in self.resourcesObserversForResourceKey[[self keyForMoodleResource:moodleResource]]) {
             if (observer.observer && observer.eventBlock) {
@@ -276,7 +277,7 @@ static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%
             self.resourcesObserversForResourceKey = [NSMutableDictionary dictionary];
         }
         
-        NSMutableArray* currentObservers = self.resourcesObserversForResourceKey[key];
+        NSMutableSet* currentObservers = self.resourcesObserversForResourceKey[key];
         if (!currentObservers) {
             currentObservers = [NSMutableSet set];
             self.resourcesObserversForResourceKey[key] = currentObservers;
