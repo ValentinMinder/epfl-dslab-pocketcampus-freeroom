@@ -14,6 +14,11 @@ import static org.junit.Assert.*;
 import org.pocketcampus.plugin.food.server.*;
 import org.pocketcampus.plugin.food.shared.*;
 
+/**
+ * Tests for MealListImpl
+ * 
+ * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ */
 public final class MealListTests {
 	// Simple meal
 	@Test

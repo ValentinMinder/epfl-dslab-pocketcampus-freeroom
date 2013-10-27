@@ -19,8 +19,12 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	private ConnectionManager _connectionManager;
 
 	public RatingDatabaseImpl() {
+		this(PC_SRV_CONFIG.getString("DB_URL"), PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
+	}
+
+	public RatingDatabaseImpl(String databaseUrl, String userName, String password) {
 		try {
-			_connectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"), PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
+			_connectionManager = new ConnectionManager(databaseUrl, userName, password);
 		} catch (ServerException e) {
 			throw new RuntimeException(e);
 		}
@@ -30,7 +34,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	public void insert(List<EpflRestaurant> menu) {
 		try {
 			Connection connection = _connectionManager.getConnection();
-			String insertCommand = "INSERT INTO Meals VALUES (?, ?) " +
+			String insertCommand = "INSERT INTO meals VALUES (?, ?) " +
 					"ON DUPLICATE KEY UPDATE MealId = MealId"; // i.e. do nothing
 
 			for (EpflRestaurant restaurant : menu) {
@@ -63,7 +67,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 		try {
 			try {
 				Connection connection = _connectionManager.getConnection();
-				String command = "INSERT INTO MealRatings VALUES (?, ?, 1) " +
+				String command = "INSERT INTO mealratings VALUES (?, ?, 1) " +
 						"ON DUPLICATE KEY UPDATE RatingTotal = RatingTotal + ?, RatingCount = RatingCount + 1";
 
 				statement = connection.prepareStatement(command);
@@ -88,20 +92,22 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 			Connection connection = _connectionManager.getConnection();
 
 			for (EpflRestaurant restaurant : menu) {
-
 				for (EpflMeal meal : restaurant.getRMeals()) {
 					PreparedStatement mealQuery = null;
 					try {
 						String query = "SELECT RatingTotal / RatingCount, RatingCount " +
-								"FROM MealRatings " +
+								"FROM mealratings " +
 								"WHERE MealId = ?";
 
 						mealQuery = connection.prepareStatement(query);
 						mealQuery.setLong(1, meal.getMId());
-						mealQuery.setLong(2, restaurant.getRId());
 
 						ResultSet result = mealQuery.executeQuery();
-						meal.setMRating(new EpflRating(result.getDouble(1), result.getInt(2)));
+						if (result.next()) {
+							meal.setMRating(new EpflRating(result.getDouble(1), result.getInt(2)));
+						} else {
+							meal.setMRating(new EpflRating(0.0, 0));
+						}
 					} finally {
 						mealQuery.close();
 					}
@@ -110,16 +116,44 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 				PreparedStatement restaurantQuery = null;
 				try {
 					String query = "SELECT SUM(RatingTotal) / SUM(RatingCount), SUM(RatingCount) " +
-							"FROM MealRatings JOIN Meals ON MealRatings.MealId = Meals.MealId " +
+							"FROM mealratings JOIN meals ON mealratings.MealId = meals.MealId " +
 							"WHERE RestaurantId = ?";
 
 					restaurantQuery = connection.prepareStatement(query);
-					restaurantQuery.setLong(0, restaurant.getRId());
+					restaurantQuery.setLong(1, restaurant.getRId());
 
 					ResultSet result = restaurantQuery.executeQuery();
-					restaurant.setRRating(new EpflRating(result.getDouble(1), result.getInt(2)));
+					if (result.next()) {
+						restaurant.setRRating(new EpflRating(result.getDouble(1), result.getInt(2)));
+					} else {
+						restaurant.setRRating(new EpflRating(0.0, 0));
+					}
 				} finally {
 					restaurantQuery.close();
+				}
+			}
+		} catch (Exception e) {
+			// TODO: What to do?
+			e.printStackTrace();
+		}
+	}
+
+	/** Cleans the databases. Not part of the RatingDatabase interface, but used for unit tests. */
+	public void clean() {
+		try {
+			Connection connection = _connectionManager.getConnection();
+			String[] deleteCommands = new String[] { "TRUNCATE TABLE meals", "TRUNCATE TABLE mealratings" };
+
+			for (String command : deleteCommands) {
+				PreparedStatement statement = null;
+
+				try {
+					statement = connection.prepareStatement(command);
+					statement.execute();
+				} finally {
+					if (statement != null) {
+						statement.close();
+					}
 				}
 			}
 		} catch (Exception e) {

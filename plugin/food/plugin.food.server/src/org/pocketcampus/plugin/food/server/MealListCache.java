@@ -10,18 +10,19 @@ import org.pocketcampus.plugin.food.shared.*;
 /**
  * Caches a MealList for an hour.
  * The list for days other than the current one is not cached.
- * TODO: If it gets used a lot, maybe we should cache it? (we'd need a weak list or something to avoid excess memory usage)
+ * TODO: If non-current days get requested a lot, maybe we should cache them? 
+ * (we'd need a weak map or something to avoid excess memory usage)
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
-public class CachedMealList implements MealList {
+public class MealListCache implements MealList {
 	private static final int CACHE_DURATION = 1; // in hours
 
 	private final MealList _wrapped;
 	private Date _lastFetchDate;
 	private Map<MealTime, List<EpflRestaurant>> _lastMenus;
 
-	public CachedMealList(MealList wrapped) {
+	public MealListCache(MealList wrapped) {
 		_wrapped = wrapped;
 		_lastFetchDate = new Date(0); // min value
 	}

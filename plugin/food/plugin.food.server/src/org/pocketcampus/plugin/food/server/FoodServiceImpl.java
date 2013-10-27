@@ -27,7 +27,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	public FoodServiceImpl() {
-		this(new DeviceDatabaseImpl(), new RatingDatabaseImpl(), new CachedMealList(new MealListImpl(new HttpClientImpl())));
+		this(new DeviceDatabaseImpl(), new RatingDatabaseImpl(), new MealListCache(new MealListImpl(new HttpClientImpl())));
 	}
 
 	@Override
