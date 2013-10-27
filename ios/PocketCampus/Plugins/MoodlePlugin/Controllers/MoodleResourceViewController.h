@@ -8,14 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "MoodleController.h"
+@class MoodleResource;
 
-@interface MoodleResourceViewController : UIViewController<UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
-
-@property (nonatomic, weak) IBOutlet UIWebView* webView;
-@property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
-@property (nonatomic, weak) IBOutlet UIProgressView* progressView;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* loadingIndicator;
+@interface MoodleResourceViewController : UIViewController
 
 - (id)initWithMoodleResource:(MoodleResource*)moodleResource;
 

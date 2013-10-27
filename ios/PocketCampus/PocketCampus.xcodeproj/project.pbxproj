@@ -231,6 +231,7 @@
 		324F6B3015D7B55F00CFB8B5 /* MapServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */; };
 		324FD736176574FE0003EE30 /* CamiproTransactionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 324FD735176574FE0003EE30 /* CamiproTransactionCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32506CFD181D4195003F08D7 /* MoodleLarge@2x.png */; };
 		325368C0164932F600406801 /* StretchableInnerShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 325368BE164932F600406801 /* StretchableInnerShadow.png */; };
 		325368C1164932F600406801 /* StretchableInnerShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325368BF164932F600406801 /* StretchableInnerShadow@2x.png */; };
 		325368C41649638B00406801 /* MyEduModuleMaterialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325368C31649638B00406801 /* MyEduModuleMaterialsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -449,9 +450,7 @@
 		32EC303E164B18A600D2112D /* MyEduModuleMaterial.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */; };
 		32EC303F164B18A600D2112D /* MyEduModuleMaterial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */; };
 		32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32EE9625166E1FE7005B0F65 /* MoodleCoursesListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EE9624166E1FE7005B0F65 /* MoodleCoursesListView.xib */; };
 		32EE9628166E25BD005B0F65 /* MoodleCourseSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32EE962A166E3053005B0F65 /* MoodleCourseSectionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EE9629166E3053005B0F65 /* MoodleCourseSectionsView.xib */; };
 		32F2F6051678C9BE00A32983 /* MyEduMovieSpeed1_2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6031678C9BE00A32983 /* MyEduMovieSpeed1_2X.png */; };
 		32F2F6061678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */; };
 		32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32F3EAB116334DD200DA8902 /* MyEduPlugin.strings */; };
@@ -807,6 +806,7 @@
 		324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproTransactionCell.xib; sourceTree = "<group>"; };
 		324FD734176574FE0003EE30 /* CamiproTransactionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamiproTransactionCell.h; sourceTree = "<group>"; };
 		324FD735176574FE0003EE30 /* CamiproTransactionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproTransactionCell.m; sourceTree = "<group>"; };
+		32506CFD181D4195003F08D7 /* MoodleLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoodleLarge@2x.png"; sourceTree = "<group>"; };
 		325368BE164932F600406801 /* StretchableInnerShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StretchableInnerShadow.png; sourceTree = "<group>"; };
 		325368BF164932F600406801 /* StretchableInnerShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "StretchableInnerShadow@2x.png"; sourceTree = "<group>"; };
 		325368C21649638A00406801 /* MyEduModuleMaterialsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleMaterialsViewController.h; sourceTree = "<group>"; };
@@ -1132,10 +1132,8 @@
 		32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduModuleMaterial@2x.png"; sourceTree = "<group>"; };
 		32EE9621166E19D5005B0F65 /* MoodleCoursesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleCoursesListViewController.h; sourceTree = "<group>"; };
 		32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleCoursesListViewController.m; sourceTree = "<group>"; };
-		32EE9624166E1FE7005B0F65 /* MoodleCoursesListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleCoursesListView.xib; sourceTree = "<group>"; };
 		32EE9626166E25BD005B0F65 /* MoodleCourseSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleCourseSectionsViewController.h; sourceTree = "<group>"; };
 		32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleCourseSectionsViewController.m; sourceTree = "<group>"; };
-		32EE9629166E3053005B0F65 /* MoodleCourseSectionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleCourseSectionsView.xib; sourceTree = "<group>"; };
 		32F2F6031678C9BE00A32983 /* MyEduMovieSpeed1_2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduMovieSpeed1_2X.png; sourceTree = "<group>"; };
 		32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduMovieSpeed1_2X@2x.png"; sourceTree = "<group>"; };
 		32F3EAB016334DD200DA8902 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MyEduPlugin.strings; sourceTree = "<group>"; };
@@ -2299,8 +2297,6 @@
 			isa = PBXGroup;
 			children = (
 				32CCB4E41555237500220282 /* Images */,
-				32EE9624166E1FE7005B0F65 /* MoodleCoursesListView.xib */,
-				32EE9629166E3053005B0F65 /* MoodleCourseSectionsView.xib */,
 				324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */,
 				32035BB4166E988600E134DD /* MoodleResourceView.xib */,
 			);
@@ -2313,6 +2309,7 @@
 				32CCB4E51555237500220282 /* Moodle.png */,
 				32CCB4E61555237500220282 /* Moodle@2x.png */,
 				3218CD2315B8359F00CEB238 /* MoodleLarge.png */,
+				32506CFD181D4195003F08D7 /* MoodleLarge@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2990,6 +2987,7 @@
 				32442FEF151CFDED00685D10 /* Transport@2x.png in Resources */,
 				32442FF1151D0F3000685D10 /* NextDeparturesListView.xib in Resources */,
 				32442FF3151D141200685D10 /* TopTableViewInnerShadow@2x.png in Resources */,
+				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
 				32442FF6151D2BF700685D10 /* LocationArrowActiveLight.png in Resources */,
 				32442FF7151D2BF700685D10 /* LocationArrowActiveLight@2x.png in Resources */,
 				324A5993151DC73A00977F33 /* FavoriteStationsView.xib in Resources */,
@@ -3129,8 +3127,6 @@
 				32D0B267166AC86100F68304 /* EyeMap@2x.png in Resources */,
 				329CA503166D452E00F7B1AE /* SettingsNavBarButton.png in Resources */,
 				329CA504166D452E00F7B1AE /* SettingsNavBarButton@2x.png in Resources */,
-				32EE9625166E1FE7005B0F65 /* MoodleCoursesListView.xib in Resources */,
-				32EE962A166E3053005B0F65 /* MoodleCourseSectionsView.xib in Resources */,
 				32035BB5166E988600E134DD /* MoodleResourceView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 				3221933016788F520072CE86 /* MyEduMovieSpeed1X@2x.png in Resources */,

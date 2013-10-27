@@ -16,7 +16,7 @@
 
 static DirectoryController* instance __weak = nil;
 
-@interface DirectoryController ()
+@interface DirectoryController ()<UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) DirectorySearchViewController* directorySearchViewController;
 

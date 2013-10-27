@@ -49,9 +49,7 @@
 - (void)setDurablySelected:(BOOL)durablySelected {
     _durablySelected = durablySelected;
     if (durablySelected) {
-        self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1.0];
-        self.textLabel.textColor = [UIColor whiteColor];
-        self.detailTextLabel.textColor = [UIColor whiteColor];
+        self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
     } else {
         self.backgroundView.backgroundColor = self.originalBackgroundColor;
         self.textLabel.textColor = self.originalTextLabelColor;

@@ -18,7 +18,7 @@
 
 static EventsController* instance __weak = nil;
 
-@interface EventsController ()
+@interface EventsController ()<UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) EventsService* eventsService;
 

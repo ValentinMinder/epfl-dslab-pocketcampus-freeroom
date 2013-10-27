@@ -18,7 +18,6 @@
 
 @interface PluginController : NSObject
 
-@property (readonly) NSArray* toolbarItems;
 /* Either mainNavigationController or mainSplitViewController can be instantiated. Not both. */
 @property (strong) PluginNavigationController* mainNavigationController;
 @property (strong) PluginSplitViewController* mainSplitViewController;

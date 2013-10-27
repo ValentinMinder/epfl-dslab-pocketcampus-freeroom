@@ -8,7 +8,8 @@
 
 #import "MoodleSplashDetailViewController.h"
 
-#import "PCValues.h"
+#import "MoodleController.h"
+
 
 @interface MoodleSplashDetailViewController ()
 
@@ -20,7 +21,7 @@
 {
     self = [super initWithNibName:@"MoodleSplashDetailView" bundle:nil];
     if (self) {
-        // Custom initialization
+        self.title = [MoodleController localizedName];
     }
     return self;
 }
@@ -28,14 +29,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    self.view.backgroundColor = [PCValues backgroundColor1];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

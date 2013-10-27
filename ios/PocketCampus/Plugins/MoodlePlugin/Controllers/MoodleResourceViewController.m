@@ -8,17 +8,24 @@
 
 #import "MoodleResourceViewController.h"
 
-
-
-#import "PCUtils.h"
-
 #import "UIActionSheet+Additions.h"
 
 #import "MoodleSplashDetailViewController.h"
 
+#import "MoodleService.h"
+
+#import "PluginSplitViewController.h"
+
+#import "MoodleController.h"
+
 static NSTimeInterval kHideNavbarSeconds = 5.0;
 
-@interface MoodleResourceViewController ()
+@interface MoodleResourceViewController ()<UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
+
+@property (nonatomic, weak) IBOutlet UIWebView* webView;
+@property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
+@property (nonatomic, weak) IBOutlet UIProgressView* progressView;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* loadingIndicator;
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) MoodleResource* moodleResource;
@@ -52,8 +59,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/moodle/course/document"];
     
     self.webView.hidden = YES;
     
@@ -93,10 +98,13 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/moodle/course/document"];
     self.navigationController.navigationBar.translucent = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     self.navigationController.navigationBar.translucent = NO;
     [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
 }
@@ -111,12 +119,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
-{
-    return UIInterfaceOrientationIsLandscape(interfaceOrientation) || (UIInterfaceOrientationPortrait);
-}
-
 
 - (void)loadDownloadedMoodleResourceInWebView {
     self.webView.hidden = NO;

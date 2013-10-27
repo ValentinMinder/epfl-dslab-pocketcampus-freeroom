@@ -16,9 +16,11 @@
 
 #import "MoodleSplashDetailViewController.h"
 
-#import "PCUtils.h"
+#import "MoodleService.h"
 
-@interface MoodleCoursesListViewController ()
+#import "PluginSplitViewController.h"
+
+@interface MoodleCoursesListViewController ()<PCMasterSplitDelegate, MoodleServiceDelegate>
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) NSArray* courses;
@@ -34,44 +36,34 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 
 - (id)init
 {
-    self = [super initWithNibName:@"MoodleCoursesListView" bundle:nil];
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.title = NSLocalizedStringFromTable(@"MyCourses", @"MoodlePlugin", nil);
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.courses = [self.moodleService getFromCacheCourseListReply].iCourses;
-        self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:@"coursesList"]];
-        [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/moodle"];
+    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:@"coursesList"]];
+    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
+    self.tableView.rowHeight = 65.0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/moodle"];
     if (!self.courses || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
     
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
-{
-    return UIInterfaceOrientationIsLandscape(interfaceOrientation) || (UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - refresh control
@@ -102,7 +94,7 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 
 - (UIViewController*)detailViewControllerThatShouldBeDisplayed {
     MoodleSplashDetailViewController* detailViewController = [[MoodleSplashDetailViewController alloc] init];
-    return detailViewController;
+    return [[PCNavigationController alloc] initWithRootViewController:detailViewController];
 }
 
 #pragma mark - MoodleServiceDelegate
@@ -178,9 +170,8 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
     
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMoodleCourseListCell];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         cell.textLabel.numberOfLines = 2;
         cell.textLabel.adjustsFontSizeToFitWidth = YES;
     }

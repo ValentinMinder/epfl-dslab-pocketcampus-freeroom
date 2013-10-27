@@ -5,11 +5,11 @@
 
 #import "ObjectArchiver.h"
 
-#import "PluginSplitViewController.h"
+#import "AuthenticationController.h"
 
-#import "PCUtils.h"
+#import "MoodleService.h"
 
-@interface MoodleController ()
+@interface MoodleController ()<UISplitViewControllerDelegate, AuthenticationCallbackDelegate, MoodleServiceDelegate>
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) TequilaToken* tequilaToken;

@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "MoodleService.h"
-
-#import "PluginSplitViewController.h"
-
-@interface MoodleCoursesListViewController : UITableViewController<PCMasterSplitDelegate, MoodleServiceDelegate>
+@interface MoodleCoursesListViewController : UITableViewController
 
 @end

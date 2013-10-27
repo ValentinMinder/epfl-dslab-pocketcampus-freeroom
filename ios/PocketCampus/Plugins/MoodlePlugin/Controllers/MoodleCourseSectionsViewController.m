@@ -46,15 +46,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
 - (id)initWithCourse:(MoodleCourse*)course;
 {
-    self = [super initWithNibName:@"MoodleCourseSectionsView" bundle:nil];
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.course = course;
         self.title = self.course.iTitle;
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.sections = [self.moodleService getFromCacheSectionsListReplyForCourse:self.course].iSections;
         [self fillCellsFromSections];
-        self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]]];
-        [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
         
         //[self.moodleService saveSession:[[MoodleSession alloc] initWithMoodleCookie:@"sdfgjskjdfhgjshdfg"]]; //TEST ONLY
     }
@@ -63,13 +61,16 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/moodle/course"];
-    [self showToggleButtonIfPossible];
+    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]]];
+    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
+    self.tableView.rowHeight = 65.0;
     self.tableView.allowsMultipleSelection = NO;
+    [self showToggleButtonIfPossible];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/moodle/course"];
     if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
@@ -85,11 +86,6 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
     
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
-{
-    return UIInterfaceOrientationIsLandscape(interfaceOrientation) || (UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - refresh control
@@ -187,10 +183,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
             
             
             PCTableViewCellAdditions* newCell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
-            newCell.selectionStyle = UITableViewCellSelectionStyleGray;
-            newCell.textLabel.font = [UIFont boldSystemFontOfSize:14.0];
+            newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
             newCell.textLabel.adjustsFontSizeToFitWidth = YES;
-            newCell.textLabel.minimumFontSize = 11.0;
             
 
             newCell.textLabel.text = resource.iName;
@@ -349,7 +343,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
     if (secObj.iResources.count == 0) {
         return 0.0;
     }
-    return [PCValues tableViewSectionHeaderHeight];
+    return [PCTableViewSectionHeader preferredHeight];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

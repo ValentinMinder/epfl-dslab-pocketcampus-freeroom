@@ -1,10 +1,7 @@
 
 #import "PluginControllerAuthentified.h"
 
-#import "AuthenticationController.h"
+@interface MoodleController : PluginControllerAuthentified<PluginControllerProtocol>
 
-#import "MoodleService.h"
-
-@interface MoodleController : PluginControllerAuthentified<UISplitViewControllerDelegate, PluginControllerProtocol, AuthenticationCallbackDelegate, MoodleServiceDelegate>
 
 @end
