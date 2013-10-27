@@ -3833,36 +3833,6 @@
                   </ActionContent>
                </BreakpointActionProxy>
             </Actions>
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MyEduModuleVideoViewController destroyVideoPlayer]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus-private/ios/PocketCampus/Plugins/MyEduPlugin/Controllers/MyEduModuleVideoViewController.m"
-                  timestampString = "404607053.952386"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "169"
-                  endingLineNumber = "169"
-                  offsetFromSymbolStart = "54">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MyEduModuleVideoViewController destroyVideoPlayer]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus-private/ios/PocketCampus/Plugins/MyEduPlugin/Controllers/MyEduModuleVideoViewController.m"
-                  timestampString = "404607053.952596"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "169"
-                  endingLineNumber = "169"
-                  offsetFromSymbolStart = "784">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

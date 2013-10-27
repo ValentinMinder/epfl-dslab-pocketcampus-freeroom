@@ -166,8 +166,8 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     if (self.deleteActionSheet.isVisible || self.docController) {
         return;
     }
-    if (![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
-        return; //always show nav bar when master view controller not hidden
+    if ([PCUtils isIdiomPad] && ![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
+        return; //on iPad only hide nav bar when in full screen mode (master hidden)
     }
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setNeedsStatusBarAppearanceUpdate];
