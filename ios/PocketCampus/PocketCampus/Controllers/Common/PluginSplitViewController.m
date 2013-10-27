@@ -63,28 +63,16 @@
 #pragma mark - Toggle button generation
 
 - (UIBarButtonItem*)toggleMasterViewBarButtonItem {
-    UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 25.0, 25.0)];
-    if (self.masterViewControllerHidden) {
-        [button setImage:[UIImage imageNamed:@"ArrowShow"] forState:UIControlStateNormal];
-    } else {
-        [button setImage:[UIImage imageNamed:@"ArrowHide"] forState:UIControlStateNormal];
-    }
-    button.adjustsImageWhenHighlighted = NO;
-    button.showsTouchWhenHighlighted = YES;
-    [button addTarget:self action:@selector(toggleMasterVideoControllerHidden:) forControlEvents:UIControlEventTouchUpInside];
-    return [[UIBarButtonItem alloc] initWithCustomView:button];
+    UIImage* image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterHidden" : @"MasterVisible"];
+    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(toggleMasterVideoControllerHidden:)];
+    return button;
 }
 
 #pragma mark - Master view controller visibility management
 
-- (void)toggleMasterVideoControllerHidden:(UIButton*)sender {
-    if (self.masterViewControllerHidden) {
-        [sender setImage:[UIImage imageNamed:@"ArrowHide"] forState:UIControlStateNormal];
-        [self setMasterViewControllerHidden:NO animated:YES];
-    } else {
-        [sender setImage:[UIImage imageNamed:@"ArrowShow"] forState:UIControlStateNormal];
-        [self setMasterViewControllerHidden:YES animated:YES];
-    }
+- (void)toggleMasterVideoControllerHidden:(UIBarButtonItem*)sender {
+    sender.image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterVisible" : @"MasterHidden"];
+    [self setMasterViewControllerHidden:!self.isMasterViewControllerHidden animated:YES];
 }
 
 - (void)setMasterViewControllerHidden:(BOOL)hidden {
