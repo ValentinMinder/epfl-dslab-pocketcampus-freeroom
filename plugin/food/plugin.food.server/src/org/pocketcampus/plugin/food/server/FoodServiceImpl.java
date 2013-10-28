@@ -32,12 +32,19 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 	@Override
 	public FoodResponse getFood(FoodRequest foodReq) throws TException {
-		Date date = getDateFromTimestamp(foodReq.getMealDate());
+		Date date = new Date();
+		if (foodReq.isSetMealDate()) {
+			date = getDateFromTimestamp(foodReq.getMealDate());
+		}
+		MealTime time = MealTime.LUNCH;
+		if (foodReq.isSetMealTime()) {
+			time = foodReq.getMealTime();
+		}
 
 		List<EpflRestaurant> menu = null;
 
 		try {
-			MealList.MenuResult result = _mealList.getMenu(foodReq.getMealTime(), date);
+			MealList.MenuResult result = _mealList.getMenu(time, date);
 			menu = result.menu;
 
 			if (result.hasChanged) {
@@ -76,7 +83,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 	}
 
-	private static Date getDateFromTimestamp(int timestamp) {
+	private static Date getDateFromTimestamp(long timestamp) {
 		if (timestamp == TIMESTAMP_NOW) {
 			return new Date();
 		}

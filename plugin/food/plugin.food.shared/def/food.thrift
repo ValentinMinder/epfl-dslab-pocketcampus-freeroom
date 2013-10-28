@@ -85,9 +85,13 @@ struct EpflRestaurant {
 }
 
 struct FoodRequest {
-	1: required string deviceLanguage = "fr";
-	2: required MealTime mealTime = MealTime.LUNCH;
-	3: required i64 mealDate = -1; // -1 == "now"
+    // default: "fr" (not currently used)
+	1: optional string deviceLanguage = "fr";
+	// default: LUNCH
+	2: optional MealTime mealTime;
+	// default: now
+	3: optional i64 mealDate;
+	// not currently used
 	4: optional string deviceId;
 }
 
