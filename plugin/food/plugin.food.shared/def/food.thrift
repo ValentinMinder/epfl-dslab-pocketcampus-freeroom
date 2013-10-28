@@ -61,8 +61,6 @@ enum MealTime {
     DINNER = 2
 }
 
-typedef i32 timestamp
-
 struct EpflRating {
     1: required double ratingValue;
     2: required i32 voteCount;
@@ -89,7 +87,7 @@ struct EpflRestaurant {
 struct FoodRequest {
 	1: required string deviceLanguage = "fr";
 	2: required MealTime mealTime = MealTime.LUNCH;
-	3: required timestamp mealDate = -1; // "now"
+	3: required i64 mealDate = -1; // -1 == "now"
 	4: optional string deviceId;
 }
 
