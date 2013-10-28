@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -26,7 +25,7 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
 
   private static final org.apache.thrift.protocol.TField MATCHING_FOOD_FIELD_DESC = new org.apache.thrift.protocol.TField("matchingFood", org.apache.thrift.protocol.TType.LIST, (short)1);
 
-  public List<EpflRestaurant> matchingFood; // required
+  private List<EpflRestaurant> matchingFood; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -231,14 +230,7 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_matchingFood = true && (isSetMatchingFood());
-    builder.append(present_matchingFood);
-    if (present_matchingFood)
-      builder.append(matchingFood);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(FoodResponse other) {

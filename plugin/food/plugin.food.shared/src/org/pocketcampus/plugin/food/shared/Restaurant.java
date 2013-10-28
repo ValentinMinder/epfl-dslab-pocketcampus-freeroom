@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -27,8 +26,8 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
   private static final org.apache.thrift.protocol.TField RESTAURANT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("restaurantId", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)2);
 
-  public long restaurantId; // required
-  public String name; // required
+  private long restaurantId; // required
+  private String name; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -273,19 +272,7 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_restaurantId = true;
-    builder.append(present_restaurantId);
-    if (present_restaurantId)
-      builder.append(restaurantId);
-
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(Restaurant other) {

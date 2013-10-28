@@ -1,11 +1,10 @@
-package org.pocketcampus.plugin.food.server.parse;
+package org.pocketcampus.plugin.food.server.old;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -15,13 +14,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Parses the RSS Feeds containing the Meals for a restaurant
+ * Old RSS-based meal parser.
+ * Do not touch.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
-public class RssParser extends DefaultHandler {
+public class OldRssParser extends DefaultHandler {
 	/** The Url to the RSS Feed to be parsed. */
 	private String urlString;
 
@@ -37,18 +37,14 @@ public class RssParser extends DefaultHandler {
 	/** Tells whether the object being parsed is an image. */
 	private boolean imgStatus;
 
-	/** List of strings that should not be capitalized. */
-	private List<String> notCapitalized;
-
 	/**
 	 * Constructor for the Parser.
 	 * 
 	 * @param url
 	 *            The Url to the feed to parse.
 	 */
-	public RssParser(String url, List<String> notCapitalized) {
+	public OldRssParser(String url) {
 		this.urlString = url;
-		this.notCapitalized = notCapitalized;
 		this.text = new StringBuilder();
 	}
 
@@ -251,103 +247,6 @@ public class RssParser extends DefaultHandler {
 			}
 		}
 		return s.trim();
-	}
-
-	/**
-	 * Capitalizes a String. The first letter of each word containing more than
-	 * 2 letters will be capitalized, the rest will not
-	 * 
-	 * @param string
-	 *            the string to capitalize
-	 * @return the capitalized string
-	 */
-	private String capitalize(String string) {
-		String result = "";
-		if (string != null) {
-			if (string.contains(" ,")) {
-				string = string.replace(" ,", ", ");
-			}
-			if(string.contains("\n ")){
-				string = string.replace("\n ", "\n");
-			}
-			string = string.replace("( ", "(");
-			string = string.replace(" )", ")");
-			String[] lines = string.split("\n");
-
-			for (int i = 0; i < lines.length; i++) {
-
-				String[] words = lines[i].split("\\s+");
-				String capString = "";
-
-				for (int j = 0; j < words.length; j++) {
-					String s = words[j];
-
-					if ((s.length() > 2 || j == 0)
-							&& (notCapitalized != null && !notCapitalized
-									.contains(s))) {
-						String begin = "";
-						String sub = "";
-
-						if (s.length() > 1) {
-							begin = s.substring(0, 1);
-							if (begin.equals("-") || begin.equals(" ")) {
-								begin = s.substring(1, 2);
-								sub = s.substring(2);
-							} else if (begin.equals("(") || begin.equals("-")) {
-								// System.out.println(s);
-								begin = begin.concat(s.substring(1, 2)
-										.toUpperCase());
-								sub = s.substring(2);
-							} else {
-								begin = begin.toUpperCase();
-								sub = s.substring(1);
-							}
-
-							sub = sub.toLowerCase();
-
-							if (sub.contains("'") || sub.contains("-")) {
-								int toCapitalize = 0;
-								if (sub.contains("'")) {
-									toCapitalize = sub.indexOf("'") + 1;
-								} else if (sub.contains("-")) {
-									toCapitalize = sub.indexOf("-") + 1;
-								}
-								if ((toCapitalize) <= sub.length()) {
-									sub = sub.substring(0, toCapitalize)
-											+ sub.substring(toCapitalize,
-													toCapitalize + 1)
-													.toUpperCase()
-											+ sub.substring(toCapitalize + 1,
-													sub.length());
-								}
-							}
-						} else {
-							begin = s;
-							begin = begin.toUpperCase();
-						}
-
-						if (j == words.length - 1)
-							capString = capString.concat(begin + sub);
-						else
-							capString = capString.concat(begin + sub + " ");
-					} else {
-						s = s.toLowerCase();
-						if (j == words.length - 1)
-							capString = capString.concat(s);
-						else
-							capString = capString.concat(s + " ");
-					}
-				}
-
-				if (i == lines.length - 1) {
-					result = result.concat(capString);
-				} else {
-					result = result.concat(capString + "\n");
-				}
-			}
-		}
-
-		return result;
 	}
 
 	/**
