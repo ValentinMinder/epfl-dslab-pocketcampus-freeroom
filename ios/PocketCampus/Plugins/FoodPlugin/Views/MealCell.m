@@ -173,7 +173,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     }
 }
 
-- (void)setRatingForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId didReturn:(int)status {
+- (void)setRatingForMeal:(int64_t)mealId rating:(double)rating deviceId:(NSString*)deviceId didReturn:(int)status {
     
     [ratingActivityIndicator stopAnimating];
     
@@ -308,7 +308,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     [ratingView setEditable:NO resetRating:NO];
 }
 
-- (void)setRatingFailedForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId {
+- (void)setRatingFailedForMeal:(int64_t)mealId rating:(double)rating deviceId:(NSString*)deviceId {
     [ratingActivityIndicator stopAnimating];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"RatingSendingError", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];

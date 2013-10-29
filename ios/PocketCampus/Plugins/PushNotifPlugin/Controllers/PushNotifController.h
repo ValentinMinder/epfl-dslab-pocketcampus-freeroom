@@ -32,7 +32,7 @@ typedef void (^NewNotificationBlock)(NSString* notifMessage, NSDictionary* notif
 
 /*
  * Returns token of the device, when notifications were accepted
- * nil otherwise
+ * nil otherwise (or in simulator)
  */
 + (NSString*)notificationsDeviceToken;
 

@@ -18,8 +18,8 @@
 
 #import "PushNotifController.h"
 
-static NSTimeInterval kThriftRequestTimeout = 75.0; //is the minimum for POST request prior the iOS 6. A timer with requestTimeoutInterval is used to remove this limitation and timeout () a request before the system API times out
-static NSTimeInterval kRequestTimeout = 15.0; //is official timeout time for all ServiceRequest that do not have customTimeout specified
+static NSTimeInterval kThriftRequestTimeout = 75.0; //long timeout so that ServiceRequest can have customTimeout longer than kRequestTimeout
+static NSTimeInterval kDefaultServiceRequestTimeout = 15.0; //is default timeout time for all ServiceRequest that do not have customTimeout specified
 static NSTimeInterval kConnectivityCheckTimeout = 15.0;
 
 @implementation Service
@@ -61,7 +61,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
 }
 
 + (NSTimeInterval)requestTimeoutInterval {
-    return kRequestTimeout;
+    return kDefaultServiceRequestTimeout;
 }
 
 - (BOOL)serverIsReachable {

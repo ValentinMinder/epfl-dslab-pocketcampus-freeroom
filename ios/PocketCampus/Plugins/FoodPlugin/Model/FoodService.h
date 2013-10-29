@@ -15,35 +15,35 @@ static NSString* kFavoritesRestaurantsUpdatedNotificationName __unused = @"Favor
 
 @interface FoodService : Service<ServiceProtocol>
 
+- (void)addFavoriteRestaurant:(EpflRestaurant*)restaurant;
+- (void)removeFavoritRestaurant:(EpflRestaurant*)restaurant;
+- (NSSet*)allFavoriteRestaurantIds; //set of NSNumber of int64_t of restaurant that are favorite
+- (BOOL)isRestaurantFavorite:(EpflRestaurant*)restaurant;
+
 /*
  food service methods
  
  - (NSArray *) getMeals;  // throws TException
- - (NSArray *) getRestaurants;  // throws TException
- - (NSArray *) getSandwiches;  // throws TException
- - (Rating *) getRating: (Meal *) meal;  // throws TException
- - (BOOL) hasVoted: (NSString *) deviceId;  // throws TException
  - (NSDictionary *) getRatings;  // throws TException
- - (int) setRating: (Id) mealId : (double) rating : (NSString *) deviceId;  // throws TException
+ - (int) setRating: (int64_t) mealId : (double) rating : (NSString *) deviceId;  // throws TException
+ - (FoodResponse *) getFood: (FoodRequest *) foodReq;  // throws TException
+ - (VoteResponse *) vote: (VoteRequest *) voteReq;  // throws TException
 */
 
-- (void)addFavoriteRestaurant:(Restaurant*)restaurant;
-- (void)removeFavoritRestaurant:(Restaurant*)restaurant;
-- (NSArray*)allFavoriteRestaurantIds; //array of NSNumber of int64_t (unspecifed order) of restaurant that are favorite
-- (BOOL)isRestaurantFavorite:(Restaurant*)restaurant;
+- (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate;
+- (void)voteForRequest:(VoteRequest*)request delegate:(id)delegate;
 
 
-- (void)getMealsWithDelegate:(id)delegate;
-- (void)getRestaurantsWithDelegate:(id)delegate;
-- (void)getSandwichesWithDelegate:(id)delegate;
-- (void)getRating:(Meal*)meal delegate:(id)delegate;
-- (void)hasVoted:(NSString*)deviceId delegate:(id)delegate;
-- (void)getRatingsWithDelegate:(id)delegate;
-- (void)setRatingForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId delegate:(id)delegate;
+- (void)getMealsWithDelegate:(id)delegate __attribute__((deprecated)); //use getFoodForRequest:delegate:
+- (void)getRatingsWithDelegate:(id)delegate __attribute__((deprecated)); //rating are actually in the Meal objects
+- (void)setRatingForMeal:(int64_t)mealId rating:(double)rating deviceId:(NSString*)deviceId delegate:(id)delegate __attribute__((deprecated)); //use voteForRequest:delegate:
+
 
 /* Cached versions */
 
-- (NSArray*)getFromCacheMeals;
+- (FoodResponse*)getFoodFromCacheForRequest:(FoodRequest*)request;
+
+- (NSArray*)getFromCacheMeals __attribute__((deprecated));
 
 
 @end
@@ -51,19 +51,18 @@ static NSString* kFavoritesRestaurantsUpdatedNotificationName __unused = @"Favor
 @protocol FoodServiceDelegate <ServiceDelegate>
 
 @optional
-- (void)getMealsDidReturn:(NSArray*)meals;
-- (void)getMealsFailed;
-- (void)getRestaurantsDidReturn:(NSArray*)restaurants;
-- (void)getRestaurantsFailed;
-- (void)getSandwichesDidReturn:(NSArray*)sandwiches;
-- (void)getSandwichesFailed;
-- (void)getRatingFor:(Meal*)meal didReturn:(Rating*)rating;
-- (void)getRatingFailedFor:(Meal*)meal;
-- (void)hasVotedFor:(NSString*)deviceId didReturn:(BOOL)hasVoted;
-- (void)hasVotedFailedFor:(NSString*)deviceId;
-- (void)getRatingsDidReturn:(NSDictionary*)ratings;
-- (void)getRatingsFailed;
-- (void)setRatingForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId didReturn:(int)status;
-- (void)setRatingFailedForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId;
+
+- (void)getFoodForRequest:(FoodRequest*)request didReturn:(FoodResponse*)response;
+- (void)getFoodFailedForRequest:(FoodRequest *)request;
+- (void)voteForRequest:(VoteRequest*)request didReturn:(VoteResponse*)response;
+- (void)voteFailedForRequest:(VoteRequest*)request;
+
+
+- (void)getRatingsDidReturn:(NSDictionary*)ratings __attribute__((deprecated));
+- (void)getRatingsFailed __attribute__((deprecated));
+- (void)getMealsDidReturn:(NSArray*)meals __attribute__((deprecated));
+- (void)getMealsFailed __attribute__((deprecated));
+- (void)setRatingForMeal:(int64_t)mealId rating:(double)rating deviceId:(NSString*)deviceId didReturn:(int)status __attribute__((deprecated));
+- (void)setRatingFailedForMeal:(int64_t)mealId rating:(double)rating deviceId:(NSString*)deviceId __attribute__((deprecated));
 
 @end

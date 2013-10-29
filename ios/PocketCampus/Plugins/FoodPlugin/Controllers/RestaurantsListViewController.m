@@ -38,10 +38,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 @interface RestaurantsListViewController ()<FoodServiceDelegate> 
 
 @property (nonatomic, strong) FoodService* foodService;
-@property (nonatomic, strong) NSArray* meals; //Array of Meal as returned by FoodService
-@property (nonatomic, strong) NSArray* restaurants; //Array of Restaurant for which menus are available
-@property (nonatomic, strong) NSDictionary* restaurantsAndMeals; //key : restaurant name, value : NSArray of corresponding meals
-
+@property (nonatomic, strong) FoodResponse* foodResponse;
+@property (nonatomic, strong) NSArray* restaurantsSorted; //sorted first by favorite on top, then by name
 @property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 
 @end
@@ -53,7 +51,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.foodService = [FoodService sharedInstanceToRetain];
-        self.meals = [self.foodService getFromCacheMeals];
+        self.foodResponse = [self.foodService getFoodFromCacheForRequest:[self createFoodRequest]];
     }
     return self;
 }
@@ -78,9 +76,18 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
 #pragma  mark - Refresh and data
 
+- (FoodRequest*)createFoodRequest {
+    FoodRequest* req = [FoodRequest new];
+    req.deviceLanguage = [PCUtils userLanguageCode];
+    req.mealTime = MealTime_LUNCH;
+    req.mealDate = -1; //now
+    req.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    return req;
+}
+
 - (void)refreshIfNeeded {
-    if (!self.meals.count || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || ![[NSDate date] isSameDayAsDate:self.lgRefreshControl.lastSuccessfulRefreshDate]) {
-        if (self.navigationController.topViewController != self) {
+    if (!self.foodResponse || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || ![[NSDate date] isSameDayAsDate:self.lgRefreshControl.lastSuccessfulRefreshDate]) {
+        if (!self.splitViewController && self.navigationController.topViewController != self) {
             [self.navigationController popToViewController:self animated:NO];
         }
         [self refresh];
@@ -91,7 +98,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 - (void)refresh {
     [self.foodService cancelOperationsForDelegate:self];
     [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingMenus", @"FoodPlugin", nil)];
-    [self.foodService getMealsWithDelegate:self];
+    [self.foodService getFoodForRequest:[self createFoodRequest] delegate:self];
 }
 - (void)fillCollectionsAndReloadTableView {
     [self fillCollections];
@@ -100,29 +107,20 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 }
 
 - (void)fillCollections {
-    if (!self.meals) {
-        self.restaurantsAndMeals = nil;
-        self.restaurants = nil;
+    if (!self.foodResponse) {
+        self.restaurantsSorted = nil;
         return;
     }
-    
-    NSMutableDictionary* temp = [NSMutableDictionary dictionary];
-    NSMutableSet* tempRestaurantsSet = [NSMutableSet set];
-    for (Meal* meal in self.meals) {
-        if ([temp objectForKey:meal.restaurant.name] == nil) {
-            [tempRestaurantsSet addObject:meal.restaurant];
-        }
-        
-        NSMutableArray* mealsOfRestaurant = [temp objectForKey:meal.restaurant.name];
-        if (mealsOfRestaurant == nil) {
-            [temp setObject:[NSMutableArray arrayWithObject:meal] forKey:meal.restaurant.name];
+    self.restaurantsSorted = [self.foodResponse.matchingFood sortedArrayUsingComparator:^NSComparisonResult(EpflRestaurant* rest1, EpflRestaurant* rest2) {
+        BOOL fav1 = [self.foodService isRestaurantFavorite:rest1];
+        BOOL fav2 = [self.foodService isRestaurantFavorite:rest2];
+        if (fav1 && !fav2) {
+            return NSOrderedAscending;
+        } else if (!fav1 && fav2) {
+            return NSOrderedDescending;
         } else {
-            [mealsOfRestaurant addObject:meal];
+            return [rest1.rName compare:rest2.rName];
         }
-    }
-    self.restaurantsAndMeals = [NSDictionary dictionaryWithDictionary:temp]; //creates non-mutable copy
-    self.restaurants = [[tempRestaurantsSet allObjects] sortedArrayUsingComparator:^(Restaurant* rest1, Restaurant* rest2) {
-        return [rest1.name localizedCaseInsensitiveCompare:rest2.name];
     }];
 }
 
@@ -132,13 +130,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
 #pragma mark - FoodServiceDelegate
 
-- (void)getMealsDidReturn:(NSArray*)meals {
-    self.meals = meals;
+- (void)getFoodForRequest:(FoodRequest *)request didReturn:(FoodResponse *)response {
+    self.foodResponse = response;
     [self fillCollectionsAndReloadTableView];
     [self.lgRefreshControl endRefreshingAndMarkSuccessful];
 }
 
-- (void)getMealsFailed {
+- (void)getFoodFailedForRequest:(FoodRequest *)request {
     [PCUtils showServerErrorAlert];
     [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
 }
@@ -151,10 +149,17 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (!self.restaurantsSorted.count) {
+        return 0.0;
+    }
     return [PCTableViewSectionHeader preferredHeight];
 }
 
 - (UIView *)tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section {
+    if (!self.restaurantsSorted.count) {
+        return nil;
+    }
+    
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     
@@ -168,12 +173,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!self.restaurants.count) {
+    if (!self.restaurantsSorted.count) {
         return;
     }
-    Restaurant* restaurant = self.restaurants[indexPath.row];
-    MenusListViewController* controller = [[MenusListViewController alloc] initWithRestaurantName:restaurant.name andMeals:self.restaurantsAndMeals[restaurant.name]]; //must not give a copy but current reference, so that rating can be updated on this instance directly
-    [self.navigationController pushViewController:controller animated:YES];
+    Restaurant* restaurant = self.restaurantsSorted[indexPath.row];
+#warning TODO
+    //MenusListViewController* controller = [[MenusListViewController alloc] initWithRestaurantName:restaurant.name andMeals:self.restaurantsAndMeals[restaurant.name]]; //must not give a copy but current reference, so that rating can be updated on this instance directly
+    //[self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - UITableViewDataSource
@@ -190,7 +196,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (self.restaurants && self.restaurants.count == 0) {
+    if (self.restaurantsSorted && self.restaurantsSorted.count == 0) {
         if (indexPath.row == 1) {
             return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NoMealsToday", @"FoodPlugin", nil)];
         } else {
@@ -200,7 +206,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         }
     }
     
-    Restaurant* restaurant = self.restaurants[indexPath.row];
+    Restaurant* restaurant = self.restaurantsSorted[indexPath.row];
     static NSString* kRestaurantCellIdentifier = @"RestaurantCell";
     UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:kRestaurantCellIdentifier];
     if (!cell) {
@@ -213,13 +219,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (!self.restaurants) {
+    if (!self.restaurantsSorted) {
         return 0;
     }
-    if (self.restaurants.count == 0) {
+    if (self.restaurantsSorted.count == 0) {
         return 2; //no restaurant message in second cell
     }
-    return self.restaurants.count;
+    return self.restaurantsSorted.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
