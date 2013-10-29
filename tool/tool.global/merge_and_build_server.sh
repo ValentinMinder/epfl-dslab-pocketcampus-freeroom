@@ -20,6 +20,6 @@ ant -f server/PocketCampusServer/build.xml create_run_jar
 
 if [ $? -ne 0 ]; then
 	echo "!! ant create_run_har failed. Aborting.";
+else	
+	echo "Done. JAR is ready.";
 fi
-	
-echo "Done. JAR is ready.";
