@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -27,8 +26,8 @@ public class EpflRating implements org.apache.thrift.TBase<EpflRating, EpflRatin
   private static final org.apache.thrift.protocol.TField RATING_VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("ratingValue", org.apache.thrift.protocol.TType.DOUBLE, (short)1);
   private static final org.apache.thrift.protocol.TField VOTE_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("voteCount", org.apache.thrift.protocol.TType.I32, (short)2);
 
-  public double ratingValue; // required
-  public int voteCount; // required
+  private double ratingValue; // required
+  private int voteCount; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -273,19 +272,7 @@ public class EpflRating implements org.apache.thrift.TBase<EpflRating, EpflRatin
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_ratingValue = true;
-    builder.append(present_ratingValue);
-    if (present_ratingValue)
-      builder.append(ratingValue);
-
-    boolean present_voteCount = true;
-    builder.append(present_voteCount);
-    if (present_voteCount)
-      builder.append(voteCount);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(EpflRating other) {

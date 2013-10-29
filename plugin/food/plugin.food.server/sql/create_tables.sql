@@ -1,15 +1,5 @@
-
 --
--- Table structure for table `not_capitalized`
---
-
-CREATE TABLE IF NOT EXISTS `not_capitalized` (
-  `not_capitalized` varchar(3) NOT NULL,
-  PRIMARY KEY (`not_capitalized`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `dailyratings`
+-- Table structure for table `dailyratings` (OLD)
 --
 
 CREATE TABLE IF NOT EXISTS `dailyratings` (
@@ -21,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `dailyratings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Table structure for table `campusmenus`
+-- Table structure for table `campusmenus` (OLD)
 --
 
 CREATE TABLE IF NOT EXISTS `campusmenus` (
@@ -33,4 +23,25 @@ CREATE TABLE IF NOT EXISTS `campusmenus` (
   `MealId` bigint(20) NOT NULL,
   `stamp_created` date NOT NULL DEFAULT '0000-00-00',
   PRIMARY KEY (`Title`,`Restaurant`,`stamp_created`,`MealId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table 'meals'
+--
+
+CREATE TABLE IF NOT EXISTS `meals` (
+  `MealId` bigint(20) NOT NULL,
+  `RestaurantId` bigint(20) NOT NULL,
+  PRIMARY KEY (`MealId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table 'mealratings'
+--
+
+CREATE TABLE IF NOT EXISTS `mealratings` (
+  `MealId` bigint(20) NOT NULL,
+  `RatingTotal` float NOT NULL,
+  `RatingCount` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`MealId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

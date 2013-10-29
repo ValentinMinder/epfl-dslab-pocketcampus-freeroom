@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -30,11 +29,11 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
   private static final org.apache.thrift.protocol.TField R_LOCATION_FIELD_DESC = new org.apache.thrift.protocol.TField("rLocation", org.apache.thrift.protocol.TType.STRUCT, (short)4);
   private static final org.apache.thrift.protocol.TField R_RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rRating", org.apache.thrift.protocol.TType.STRUCT, (short)5);
 
-  public long rId; // required
-  public String rName; // required
-  public List<EpflMeal> rMeals; // required
-  public org.pocketcampus.plugin.map.shared.MapItem rLocation; // required
-  public EpflRating rRating; // required
+  private long rId; // required
+  private String rName; // required
+  private List<EpflMeal> rMeals; // required
+  private org.pocketcampus.plugin.map.shared.MapItem rLocation; // required
+  private EpflRating rRating; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -468,34 +467,7 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_rId = true;
-    builder.append(present_rId);
-    if (present_rId)
-      builder.append(rId);
-
-    boolean present_rName = true && (isSetRName());
-    builder.append(present_rName);
-    if (present_rName)
-      builder.append(rName);
-
-    boolean present_rMeals = true && (isSetRMeals());
-    builder.append(present_rMeals);
-    if (present_rMeals)
-      builder.append(rMeals);
-
-    boolean present_rLocation = true && (isSetRLocation());
-    builder.append(present_rLocation);
-    if (present_rLocation)
-      builder.append(rLocation);
-
-    boolean present_rRating = true && (isSetRRating());
-    builder.append(present_rRating);
-    if (present_rRating)
-      builder.append(rRating);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(EpflRestaurant other) {

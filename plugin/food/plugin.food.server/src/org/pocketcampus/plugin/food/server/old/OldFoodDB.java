@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.food.server.db;
+package org.pocketcampus.plugin.food.server.old;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,14 +18,13 @@ import org.pocketcampus.plugin.food.shared.Restaurant;
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 /**
- * Class that handles interactions with the test database to store and retrieve
- * meals, user ids and ratings
+ * The old food database.
+ * Do not touch.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
- * 
  */
-public class FoodDB {
+public class OldFoodDB {
 	/** The connection to the database */
 	private ConnectionManager mConnectionManager;
 
@@ -35,7 +34,7 @@ public class FoodDB {
 	/**
 	 * Constructor for the Food Database Handler
 	 */
-	public FoodDB() {
+	public OldFoodDB() {
 		try {
 			this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
 					PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
@@ -153,8 +152,7 @@ public class FoodDB {
 
 				// Create a new meal from the info we got in the database
 				Rating mealRating = new Rating(
-						FoodUtils.totalRatingToRatingValue(totalRating,
-								numberOfVotes), numberOfVotes, totalRating);
+						numberOfVotes == 0 ? 0 : totalRating / numberOfVotes, numberOfVotes, totalRating);
 				Restaurant mealResto = new Restaurant(restaurant.hashCode(),
 						restaurant);
 
