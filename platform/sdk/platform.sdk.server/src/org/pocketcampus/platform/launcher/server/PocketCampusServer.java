@@ -48,6 +48,8 @@ public class PocketCampusServer extends ServerBase {
 			}
 			if(skipped) {
 				System.out.println("Not found: " + plugin + " plugin, skipping ...");
+			} else {
+				System.out.println("Started: " + plugin + " plugin.");
 			}
 		}
 		return processors;
