@@ -229,6 +229,7 @@ static EventsController* instance __weak = nil;
     return NO;
 }
 
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

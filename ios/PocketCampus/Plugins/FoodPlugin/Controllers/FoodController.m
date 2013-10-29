@@ -8,8 +8,13 @@
 
 #import "FoodController.h"
 #import "RestaurantsListViewController.h"
+#import "FoodSplashDetailViewController.h"
 
 static FoodController* instance __weak = nil;
+
+@interface FoodController ()<UISplitViewControllerDelegate>
+
+@end
 
 @implementation FoodController
 
@@ -23,10 +28,20 @@ static FoodController* instance __weak = nil;
         if (self) {
             RestaurantsListViewController* restaurantsListViewController = [[RestaurantsListViewController alloc] init];
             restaurantsListViewController.title = [[self class] localizedName];
-            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:restaurantsListViewController];
-            navController.pluginIdentifier = [[self class] identifierName];
-            self.mainNavigationController = navController;
+            if ([PCUtils isIdiomPad]) {
+                PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:restaurantsListViewController];
+                FoodSplashDetailViewController* splashDetailViewController = [FoodSplashDetailViewController new];
+                PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:[[PCNavigationController alloc] initWithRootViewController:splashDetailViewController]];
+                splitViewController.pluginIdentifier = [[self class] identifierName];
+                splitViewController.delegate = self;
+                self.mainSplitViewController = splitViewController;
+            } else {
+                PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:restaurantsListViewController];
+                navController.pluginIdentifier = [[self class] identifierName];
+                self.mainNavigationController = navController;
+            }
             instance = self;
+            
         }
         return self;
     }
@@ -56,6 +71,14 @@ static FoodController* instance __weak = nil;
 - (NSString*)localizedStringForKey:(NSString*)key {
     return NSLocalizedStringFromTable(key, [[self class] identifierName], @"");
 }
+
+#pragma mark - UISplitViewControllerDelegate
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
+    return NO;
+}
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

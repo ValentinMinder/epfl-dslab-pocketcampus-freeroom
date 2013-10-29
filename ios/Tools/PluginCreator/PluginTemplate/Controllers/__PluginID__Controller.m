@@ -8,6 +8,10 @@
 
 static __PluginID__Controller* instance __weak = nil;
 
+@interface __PluginID__Controller ()
+
+@end
+
 @implementation __PluginID__Controller
 
 - (id)init
