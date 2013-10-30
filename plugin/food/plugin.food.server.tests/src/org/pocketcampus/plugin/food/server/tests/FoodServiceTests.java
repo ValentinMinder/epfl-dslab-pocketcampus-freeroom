@@ -166,7 +166,7 @@ public final class FoodServiceTests {
 
 		return new RatingDatabase() {
 			@Override
-			public void insert(List<EpflRestaurant> menu) {
+			public void insertMenu(List<EpflRestaurant> menu) {
 				// nothing
 			}
 
