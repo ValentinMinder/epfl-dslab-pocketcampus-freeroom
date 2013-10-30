@@ -22,5 +22,6 @@
     #import "UIActionSheet+Additions.h"
     #import "UIPopoverController+Additions.h"
     #import "LGRefreshControl+PCAdditions.h"
+    #import "UIImage+Additions.h"
 
 #endif

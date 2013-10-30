@@ -244,6 +244,8 @@
 		325368C41649638B00406801 /* MyEduModuleMaterialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325368C31649638B00406801 /* MyEduModuleMaterialsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325368C616496F8000406801 /* MyEduModuleMaterialsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325368C516496F7F00406801 /* MyEduModuleMaterialsView.xib */; };
 		3256175816A89C7D00F52D24 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3256175716A89C7D00F52D24 /* MapViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 32574ED4182140AE008F3163 /* DirectoryEmptyPictureSmall.png */; };
+		32574ED7182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32574ED5182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png */; };
 		3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3258D65116AF1FE20040DAE3 /* PCConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3258D65016AF1FE20040DAE3 /* PCConfig.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325C47A61621D63E006752B4 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47A51621D63E006752B4 /* MainMenuItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -829,6 +831,8 @@
 		325368C516496F7F00406801 /* MyEduModuleMaterialsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleMaterialsView.xib; sourceTree = "<group>"; };
 		3256175616A89C7D00F52D24 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		3256175716A89C7D00F52D24 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		32574ED4182140AE008F3163 /* DirectoryEmptyPictureSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DirectoryEmptyPictureSmall.png; sourceTree = "<group>"; };
+		32574ED5182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DirectoryEmptyPictureSmall@2x.png"; sourceTree = "<group>"; };
 		3257C20B1570F99C00E626A4 /* TransportHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportHelpViewController.h; sourceTree = "<group>"; };
 		3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportHelpViewController.m; sourceTree = "<group>"; };
 		3258D64F16AF1FE20040DAE3 /* PCConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCConfig.h; sourceTree = "<group>"; };
@@ -2586,6 +2590,8 @@
 				32449D5C17C3F248003269E5 /* DirectoryLarge@2x.png */,
 				32342A7E17F43347009C05FA /* DirectoryEmptyPicture.png */,
 				32342A7F17F43347009C05FA /* DirectoryEmptyPicture@2x.png */,
+				32574ED4182140AE008F3163 /* DirectoryEmptyPictureSmall.png */,
+				32574ED5182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -3088,6 +3094,7 @@
 				E6C544C6812266BE16AC628D /* MyEdu.png in Resources */,
 				32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */,
 				32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */,
+				32574ED7182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png in Resources */,
 				32CBF05A163450E500FD92E5 /* PocketCampusDrawing@2x.png in Resources */,
 				32C509E617FC60B0005A5635 /* CameraBarButton.png in Resources */,
 				32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */,
@@ -3105,6 +3112,7 @@
 				329FD30616449C67003FF9BE /* WarningSignRed@2x.png in Resources */,
 				32BA30731645DCB200909D82 /* MyEduCourseInfoView.xib in Resources */,
 				320DFC2616469A2300849907 /* MyEduSplashDetailView.xib in Resources */,
+				32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */,
 				320DFC331646B3A200849907 /* MyEduModuleVideoView.xib in Resources */,
 				320073571646C51E002AD7BA /* MyEduModuleDetailView.xib in Resources */,
 				3200735A1646CBF0002AD7BA /* MyEduModuleVideo.png in Resources */,

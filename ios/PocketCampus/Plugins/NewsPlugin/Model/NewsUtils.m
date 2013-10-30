@@ -58,13 +58,6 @@ static NSTimeInterval kOneMonthSeconds = 2592000;
     return sections;
 }
 
-+ (NSString*)dateLocaleStringForTimestamp:(NSTimeInterval)timestamp {
-    NSDate* date = [NSDate dateWithTimeIntervalSince1970:timestamp];
-    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-    formatter.dateStyle = NSDateFormatterMediumStyle;
-    return [formatter stringFromDate:date];
-}
-
 + (NSString*)htmlReplaceWidthWith100PercentInContent:(NSString*)content ifWidthHeigherThan:(NSInteger)maxWidth {
     NSError* error = nil;
     

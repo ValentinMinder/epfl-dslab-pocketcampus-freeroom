@@ -26,10 +26,12 @@
 
 #import "DirectoryService.h"
 
+#import "PCTableViewWithRemoteThumbnails.h"
+
 typedef enum {
     ResutlsModeNotStarted = 0,
     ResultsModeSearch = 1,
-    ResultsModeAutocomplete = 2, //deprecated, we are not using autocomplete, but search directly
+    ResultsModeAutocomplete = 2, //deprecated, we are not using autocomplete anymore, but search directly
     ResultsModeRecentSearches = 3,
     ResultsModeFailed = 4
 } ResultsMode;
@@ -46,12 +48,12 @@ typedef enum {
 @property (nonatomic) BOOL skipNextSearchBarValueChange;
 @property (nonatomic) BOOL searchBarWasFirstResponder;
 
-@property (nonatomic, weak) IBOutlet UISearchBar* searchBar;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* barActivityIndicator;
-@property (nonatomic, weak) IBOutlet UITableView* tableView;
-@property (nonatomic, weak) IBOutlet UILabel* messageLabel;
-@property (nonatomic, weak) IBOutlet UIImageView* backgroundIcon;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint* backgroundIconCenterYConstraint;
+@property (nonatomic, strong) IBOutlet UISearchBar* searchBar;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* barActivityIndicator;
+@property (nonatomic, strong) IBOutlet PCTableViewWithRemoteThumbnails* tableView;
+@property (nonatomic, strong) IBOutlet UILabel* messageLabel;
+@property (nonatomic, strong) IBOutlet UIImageView* backgroundIcon;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* backgroundIconCenterYConstraint;
 
 //#warning TO REMOVE, tests for PushNotif
 //@property (nonatomic, strong) PushNotifController* pushController;
@@ -88,6 +90,12 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     if ([PCUtils isIdiomPad]) {
         self.backgroundIconCenterYConstraint.constant = 130.0;
     }
+    CGFloat rowHeight = self.tableView.rowHeight;
+    self.tableView.temporaryImage = [UIImage imageNamed:@"DirectoryEmptyPictureSmall"];
+    self.tableView.imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image) {
+        //cell.imageView.layer.cornerRadius = (int)(rowHeight / 2.0);
+        return [image imageByScalingAndCroppingForSize:CGSizeMake(rowHeight, rowHeight) applyDeviceScreenMultiplyingFactor:YES];
+    };
     self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length+self.searchBar.frame.size.height, 0.0, 0.0, 0.0);
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchFieldPlaceholder", @"DirectoryPlugin", @"");
@@ -403,10 +411,11 @@ static NSString* kRecentSearchesKey = @"recentSearches";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.resultsMode == ResultsModeSearch) {
-        UITableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kSearchResultCellIdentifier];
-        if (newCell == nil) {
-            newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSearchResultCellIdentifier];
-            newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        UITableViewCell* cell =  [self.tableView dequeueReusableCellWithIdentifier:kSearchResultCellIdentifier];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSearchResultCellIdentifier];
+            cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+            //cell.imageView.layer.masksToBounds = YES;
         }
         /* Remove secondary first names */
         Person* person = [self.searchResults objectAtIndex:indexPath.row];
@@ -416,17 +425,20 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         
         NSString* firstLastName = [NSString stringWithFormat:@"%@ %@", firstNameOnly, person.lastName];
         
-        if (firstLastName.length > 24) { //prevent textLabel hiding detailTextLabel
-            firstLastName = [firstLastName stringByReplacingCharactersInRange:NSMakeRange(24, firstLastName.length-24) withString:@"..."];
+        static NSInteger maxNbChars = 17;
+        if (firstLastName.length > maxNbChars) { //prevent textLabel hiding detailTextLabel
+            firstLastName = [firstLastName stringByReplacingCharactersInRange:NSMakeRange(maxNbChars, firstLastName.length-maxNbChars) withString:@"..."];
         }
         
-        newCell.textLabel.text = firstLastName;
+        cell.textLabel.text = firstLastName;
         
         if (person.organisationalUnits) {
-            newCell.detailTextLabel.text = [person.organisationalUnits objectAtIndex:0];
+            cell.detailTextLabel.text = [person.organisationalUnits objectAtIndex:0];
         }
         
-        return newCell;
+        [self.tableView setImageURL:[NSURL URLWithString:person.pictureUrl] forCell:cell atIndexPath:indexPath];
+        
+        return cell;
     } else if (self.resultsMode == ResultsModeRecentSearches) {
         PCRecentResultTableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kRecentSearchCellIdentifier];
         if (newCell == nil) {

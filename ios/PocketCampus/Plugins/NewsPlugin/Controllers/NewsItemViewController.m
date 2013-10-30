@@ -150,7 +150,13 @@
     }
     
     html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_FEED_NAME$" withString:self.newsItem.feed];
-    html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_PUB_DATE$" withString:[NewsUtils dateLocaleStringForTimestamp:self.newsItem.pubDate/1000.0]];
+    
+    NSDate* date = [NSDate dateWithTimeIntervalSince1970:self.newsItem.pubDate/1000.0];
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    formatter.dateStyle = NSDateFormatterLongStyle;
+    NSString* dateString = [formatter stringFromDate:date];
+    html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_PUB_DATE$" withString:dateString];
+    
     html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_TITLE$" withString:self.newsItem.title];
     
     if (self.newsItem.imageUrl) {

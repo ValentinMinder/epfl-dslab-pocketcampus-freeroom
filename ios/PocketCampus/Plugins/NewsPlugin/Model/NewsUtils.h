@@ -23,7 +23,6 @@
  */
 + (NSArray*)newsItemsSectionsSortedByDate:(NSArray*)newsItems;
 
-+ (NSString*)dateLocaleStringForTimestamp:(NSTimeInterval)timestamp;
 + (NSString*)htmlReplaceWidthWith100PercentInContent:(NSString*)content ifWidthHeigherThan:(NSInteger)maxWidth;
 
 @end

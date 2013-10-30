@@ -829,8 +829,8 @@ static MainController<MainControllerPublic>* instance = nil;
              * Little hack found on http://ev3r.tumblr.com/post/3854315796/uinavigationcontroller-pushviewcontroller-from 
              * Will actually make view controller retest for supported operations and rotate if necessary.
              */
-            [viewController presentModalViewController:[[UIViewController alloc] init] animated:NO];
-            [viewController dismissModalViewControllerAnimated:NO];
+            [viewController presentViewController:[[UIViewController alloc] init] animated:NO completion:NULL];
+            [viewController dismissViewControllerAnimated:NO completion:NULL];
         }
     }
 }
