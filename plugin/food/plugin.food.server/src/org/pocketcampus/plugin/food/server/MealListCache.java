@@ -1,64 +1,67 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.WeakHashMap;
 
 import org.pocketcampus.plugin.food.shared.*;
+
+import org.joda.time.*;
 
 /**
  * Caches a MealList for an hour.
  * The list for days other than the current one is not cached.
- * TODO: If non-current days get requested a lot, maybe we should cache them? 
- * (we'd need a weak map or something to avoid excess memory usage)
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public class MealListCache implements MealList {
-	private static final int CACHE_DURATION = 1; // in hours
+	private static final Hours CACHE_DURATION = Hours.ONE;
 
 	private final MealList _wrapped;
-	private Date _lastFetchDate;
-	private Map<MealTime, List<EpflRestaurant>> _lastMenus;
+	// using a WeakHashMap is important to avoid out-of-memory exceptions
+	private final Map<MealTime, WeakHashMap<LocalDate, CachedResult>> _cache;
 
 	public MealListCache(MealList wrapped) {
 		_wrapped = wrapped;
-		_lastFetchDate = new Date(0); // min value
+
+		_cache = new HashMap<MealTime, WeakHashMap<LocalDate, CachedResult>>();
+
+		for (MealTime time : MealTime.values()) {
+			_cache.put(time, new WeakHashMap<LocalDate, CachedResult>());
+		}
 	}
 
 	@Override
-	public MenuResult getMenu(MealTime time, Date date) throws Exception {
-		if (!areSameDay(date, new Date())) {
-			return _wrapped.getMenu(time, date);
-		}
-
-		if (!isUpToDate(_lastFetchDate)) {
-			for (MealTime t : MealTime.values()) {
-				MenuResult result = _wrapped.getMenu(t, date);
-				_lastMenus.put(t, result.menu);
+	public MenuResult getMenu(MealTime time, LocalDate date) throws Exception {
+		// don't use containsKey then get, it might cause a race condition
+		// since the GC can kick in at any time and remove stuff from the WeakHashMap
+		CachedResult cached = _cache.get(time).get(date);
+		if (cached != null) {
+			if (isUpToDate(cached.date)) {
+				return new MenuResult(false, cached.menu);
 			}
-			_lastFetchDate = new Date();
 		}
-
-		return new MenuResult(false, _lastMenus.get(time));
+		
+		MenuResult result = _wrapped.getMenu(time, date);
+		_cache.get(time).put(date, new CachedResult(DateTime.now(), result.menu));
+		return result;
 	}
 
-	private static boolean isUpToDate(Date date) {
-		Date now = new Date();
-		return areSameDay(date, now) && getHoursBetween(date, new Date()) < CACHE_DURATION;
+	private static boolean isUpToDate(DateTime date) {
+		DateTime now = new DateTime();
+		return Days.daysBetween(now, date).getDays() == 0
+				&& Hours.hoursBetween(date, now).isLessThan(CACHE_DURATION);
 	}
 
-	private static boolean areSameDay(Date d1, Date d2) {
-		Calendar c1 = Calendar.getInstance();
-		c1.setTime(d1);
-		Calendar c2 = Calendar.getInstance();
-		c2.setTime(d2);
+	private static class CachedResult
+	{
+		public final DateTime date;
+		public final List<EpflRestaurant> menu;
 
-		return c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
-	}
-
-	private static int getHoursBetween(Date d1, Date d2) {
-		return (int) ((d2.getTime() - d1.getTime()) / (60 * 60 * 1000));
+		public CachedResult(DateTime date, List<EpflRestaurant> menu) {
+			this.date = date;
+			this.menu = menu;
+		}
 	}
 }

@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -14,17 +13,14 @@ import java.util.HashSet;
 import org.pocketcampus.plugin.food.server.*;
 import org.pocketcampus.plugin.food.shared.*;
 
-// TODO: Add time-sensitive tests.
-// Adding a time service with DI could work but it's a bit cumbersome;
-// could we take a dependency on Joda Time, which is 1000x better than Java's date API anyway?
-// It allows us to override the current time.
+import org.joda.time.*;
 
 /** 
  * Tests for FoodServiceImpl.
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
-public class FoodServiceTests {
+public final class FoodServiceTests {
 	// getFood returns the menu returned by MealList
 	@Test
 	public void getFoodWorks() throws Exception {
@@ -33,7 +29,7 @@ public class FoodServiceTests {
 
 		FoodResponse response = service.getFood(new FoodRequest("fr", MealTime.LUNCH, 0));
 
-		assertEquals(mealList.getMenu(MealTime.LUNCH, new Date(0)).menu, response.getMatchingFood());
+		assertEquals(mealList.getMenu(MealTime.LUNCH, LocalDate.now()).menu, response.getMatchingFood());
 	}
 
 	// getFood sets the ratings on the meals
@@ -81,6 +77,7 @@ public class FoodServiceTests {
 	public void voteWorks() throws Exception {
 		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), getTestRatingDatabase(), getTestMealList());
 
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 11, 00).getMillis());
 		VoteResponse response = service.vote(new VoteRequest(11, 4.0, "12345"));
 
 		assertEquals(SubmitStatus.VALID, response.getSubmitStatus());
@@ -93,8 +90,9 @@ public class FoodServiceTests {
 		MealList mealList = getTestMealList();
 		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), ratingDatabase, mealList);
 
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 12, 30).getMillis());
 		service.vote(new VoteRequest(11, 4.0, "12345"));
-		List<EpflRestaurant> menu = mealList.getMenu(MealTime.LUNCH, new Date()).menu;
+		List<EpflRestaurant> menu = mealList.getMenu(MealTime.LUNCH, LocalDate.now()).menu;
 		ratingDatabase.setRatings(menu);
 
 		assertEquals(new EpflRating(4.0, 1), menu.get(1).getRMeals().get(0).getMRating());
@@ -106,6 +104,7 @@ public class FoodServiceTests {
 		DeviceDatabase deviceDatabase = getTestDeviceDatabase();
 		FoodServiceImpl service = new FoodServiceImpl(deviceDatabase, getTestRatingDatabase(), getTestMealList());
 
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 12, 30).getMillis());
 		service.vote(new VoteRequest(11, 4.0, "12345"));
 
 		assertTrue(deviceDatabase.hasVotedToday("12345"));
@@ -116,18 +115,42 @@ public class FoodServiceTests {
 	public void voteTwiceReturnsAlreadyVoted() throws Exception {
 		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), getTestRatingDatabase(), getTestMealList());
 
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 12, 30).getMillis());
 		service.vote(new VoteRequest(11, 4.0, "12345"));
 		VoteResponse response = service.vote(new VoteRequest(12, 2.0, "12345"));
 
 		assertEquals(SubmitStatus.ALREADY_VOTED, response.getSubmitStatus());
 	}
 
+	// voting before 11am returns TOO_EARLY
+	@Test
+	public void voteBefore11isTooEarly() throws Exception {
+		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), getTestRatingDatabase(), getTestMealList());
+
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 10, 59).getMillis());
+		VoteResponse response = service.vote(new VoteRequest(11, 4.0, "12345"));
+
+		assertEquals(SubmitStatus.TOO_EARLY, response.getSubmitStatus());
+	}
+	
+	// voting twice (different device ID) on the same day
+	@Test
+	public void voteWithDifferentIdOnSameDayWorks() throws Exception {
+		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), getTestRatingDatabase(), getTestMealList());
+
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 12, 30).getMillis());
+		service.vote(new VoteRequest(11, 4.0, "12345"));
+		VoteResponse response = service.vote(new VoteRequest(11, 4.0, "67890"));
+
+		assertEquals(SubmitStatus.VALID, response.getSubmitStatus());
+	}
+	
 	private static DeviceDatabase getTestDeviceDatabase() {
 		final Set<String> HAVE_VOTED = new HashSet<String>();
 
 		return new DeviceDatabase() {
 			@Override
-			public void insert(String deviceId) {
+			public void vote(String deviceId) {
 				HAVE_VOTED.add(deviceId);
 			}
 
@@ -183,7 +206,7 @@ public class FoodServiceTests {
 	private static MealList getTestMealList() {
 		return new MealList() {
 			@Override
-			public MenuResult getMenu(MealTime time, Date date) throws Exception {
+			public MenuResult getMenu(MealTime time, LocalDate date) throws Exception {
 				return new MenuResult(true, Arrays.asList(new EpflRestaurant[] {
 						new EpflRestaurant(100, "R100", Arrays.asList(new EpflMeal[] {
 								makeMeal(1),
