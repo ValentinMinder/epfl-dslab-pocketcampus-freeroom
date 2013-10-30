@@ -2,19 +2,19 @@ package org.pocketcampus.plugin.food.server;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.pocketcampus.plugin.food.shared.*;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
-import org.pocketcampus.plugin.food.shared.*;
+import org.joda.time.LocalDate;
 
 /**
  * Parses meals from the official meal list's HTML.
@@ -65,7 +65,8 @@ public final class MealListImpl implements MealList {
 		PRICE_TARGETS.put("C", PriceTarget.STAFF);
 		PRICE_TARGETS.put("V", PriceTarget.VISITOR);
 		PRICE_TARGETS.put("", PriceTarget.ALL);
-		PRICE_TARGETS.put("P", PriceTarget.ALL); // The "Copernic" restaurant uses this - it stands for "Plat" ("Main course").
+		// The "Copernic" restaurant uses this - it stands for "Plat" ("Main course").
+		PRICE_TARGETS.put("P", PriceTarget.ALL);
 
 		MEAL_PRIMARY_TYPES.put(1, MealType.THAI);
 		MEAL_PRIMARY_TYPES.put(2, MealType.INDIAN);
@@ -85,11 +86,11 @@ public final class MealListImpl implements MealList {
 	}
 
 	/** Parses the menu from the official meal list's HTML. */
-	public MenuResult getMenu(MealTime time, Date date) throws Exception {
+	public MenuResult getMenu(MealTime time, LocalDate date) throws Exception {
 		List<EpflRestaurant> menu = new ArrayList<EpflRestaurant>();
 
 		String timeVal = time == MealTime.LUNCH ? URL_TIME_VALUE_LUNCH : URL_TIME_VALUE_DINNER;
-		String dateVal = DateFormatUtils.format(date, URL_DATE_VALUE_FORMAT);
+		String dateVal = date.toString(URL_DATE_VALUE_FORMAT);
 		String url = String.format("%s?%s=%s&%s=%s", MEAL_LIST_URL, URL_TIME_PARAMETER, timeVal, URL_DATE_PARAMETER, dateVal);
 
 		Document doc = Jsoup.parse(_client.getString(url, MEAL_LIST_CHARSET));
@@ -186,8 +187,7 @@ public final class MealListImpl implements MealList {
 
 	/** Indicates whether the specified meal is valid. */
 	private static boolean isValid(EpflMeal meal, String restaurantName) {
-		return !restaurantName.equals("Le Vinci"); // De facto duplicate of
-													// "Le Parmentier"
+		return !restaurantName.equals("Le Vinci"); // De facto duplicate of "Le Parmentier"
 	}
 
 	/** If necessary, fixes the specified meal. */

@@ -16,7 +16,7 @@ import org.pocketcampus.plugin.food.shared.*;
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
-public class RatingDatabaseTests {
+public final class RatingDatabaseTests {
 	// change this to whatever you're using (just don't use the production database)
 	private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/pocketcampus_test", DB_USERNAME = "root", DB_PASSWORD = "MySQL";
 

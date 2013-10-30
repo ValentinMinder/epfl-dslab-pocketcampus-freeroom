@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -9,12 +7,13 @@ import java.util.Map;
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.food.shared.*;
 
+import org.joda.time.*;
+
 /**
  * Provides information about the meals, and allows users to rate them.
  */
 public class FoodServiceImpl implements FoodService.Iface {
-	private static final int TIMESTAMP_NOW = -1;
-	private static final int VOTING_MIN_HOUR = 11;
+	private static final Hours VOTING_MIN = Hours.hours(11);
 
 	private final DeviceDatabase _deviceDatabase;
 	private final RatingDatabase _ratingDatabase;
@@ -32,12 +31,19 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 	@Override
 	public FoodResponse getFood(FoodRequest foodReq) throws TException {
-		Date date = getDateFromTimestamp(foodReq.getMealDate());
+		LocalDate date = LocalDate.now();
+		if (foodReq.isSetMealDate()) {
+			date = getDateFromTimestamp(foodReq.getMealDate());
+		}
+		MealTime time = MealTime.LUNCH;
+		if (foodReq.isSetMealTime()) {
+			time = foodReq.getMealTime();
+		}
 
 		List<EpflRestaurant> menu = null;
 
 		try {
-			MealList.MenuResult result = _mealList.getMenu(foodReq.getMealTime(), date);
+			MealList.MenuResult result = _mealList.getMenu(time, date);
 			menu = result.menu;
 
 			if (result.hasChanged) {
@@ -63,12 +69,12 @@ public class FoodServiceImpl implements FoodService.Iface {
 				return new VoteResponse(SubmitStatus.ALREADY_VOTED);
 			}
 
-			if (getCurrentHour() <= VOTING_MIN_HOUR) {
+			if (DateTime.now().getHourOfDay() < VOTING_MIN.getHours()) {
 				return new VoteResponse(SubmitStatus.TOO_EARLY);
 			}
 
 			_ratingDatabase.vote(voteReq.getMealId(), voteReq.getRating());
-			_deviceDatabase.insert(voteReq.getDeviceId());
+			_deviceDatabase.vote(voteReq.getDeviceId());
 
 			return new VoteResponse(SubmitStatus.VALID);
 		} catch (Exception _) {
@@ -76,20 +82,12 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 	}
 
-	private static Date getDateFromTimestamp(int timestamp) {
-		if (timestamp == TIMESTAMP_NOW) {
-			return new Date();
+	private static LocalDate getDateFromTimestamp(long timestamp) {
+		if (timestamp < 0) {
+			return LocalDate.now();
 		}
-		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(timestamp * 1000L);
-		return c.getTime();
-	}
-
-	private static int getCurrentHour() {
-		// and then people ask why I think Java is verbose...
-		Calendar c = Calendar.getInstance();
-		c.setTime(new Date());
-		return c.get(Calendar.HOUR_OF_DAY);
+		
+		return new LocalDate(timestamp);
 	}
 
 	// OLD STUFF - DO NOT TOUCH

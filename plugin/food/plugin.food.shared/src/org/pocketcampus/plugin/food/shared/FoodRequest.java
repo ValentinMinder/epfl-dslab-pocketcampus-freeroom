@@ -25,12 +25,12 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
 
   private static final org.apache.thrift.protocol.TField DEVICE_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceLanguage", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField MEAL_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("mealTime", org.apache.thrift.protocol.TType.I32, (short)2);
-  private static final org.apache.thrift.protocol.TField MEAL_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("mealDate", org.apache.thrift.protocol.TType.I32, (short)3);
+  private static final org.apache.thrift.protocol.TField MEAL_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("mealDate", org.apache.thrift.protocol.TType.I64, (short)3);
   private static final org.apache.thrift.protocol.TField DEVICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceId", org.apache.thrift.protocol.TType.STRING, (short)4);
 
   private String deviceLanguage; // required
   private MealTime mealTime; // required
-  private int mealDate; // required
+  private long mealDate; // required
   private String deviceId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -116,7 +116,7 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
     tmpMap.put(_Fields.MEAL_TIME, new org.apache.thrift.meta_data.FieldMetaData("mealTime", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, MealTime.class)));
     tmpMap.put(_Fields.MEAL_DATE, new org.apache.thrift.meta_data.FieldMetaData("mealDate", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "timestamp")));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.DEVICE_ID, new org.apache.thrift.meta_data.FieldMetaData("deviceId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -128,14 +128,14 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
 
     this.mealTime = org.pocketcampus.plugin.food.shared.MealTime.LUNCH;
 
-    this.mealDate = -1;
+    this.mealDate = -1L;
 
   }
 
   public FoodRequest(
     String deviceLanguage,
     MealTime mealTime,
-    int mealDate)
+    long mealDate)
   {
     this();
     this.deviceLanguage = deviceLanguage;
@@ -172,7 +172,7 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
 
     this.mealTime = org.pocketcampus.plugin.food.shared.MealTime.LUNCH;
 
-    this.mealDate = -1;
+    this.mealDate = -1L;
 
     this.deviceId = null;
   }
@@ -233,11 +233,11 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
     }
   }
 
-  public int getMealDate() {
+  public long getMealDate() {
     return this.mealDate;
   }
 
-  public FoodRequest setMealDate(int mealDate) {
+  public FoodRequest setMealDate(long mealDate) {
     this.mealDate = mealDate;
     setMealDateIsSet(true);
     return this;
@@ -302,7 +302,7 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
       if (value == null) {
         unsetMealDate();
       } else {
-        setMealDate((Integer)value);
+        setMealDate((Long)value);
       }
       break;
 
@@ -326,7 +326,7 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
       return getMealTime();
 
     case MEAL_DATE:
-      return Integer.valueOf(getMealDate());
+      return Long.valueOf(getMealDate());
 
     case DEVICE_ID:
       return getDeviceId();
@@ -491,8 +491,8 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
           }
           break;
         case 3: // MEAL_DATE
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.mealDate = iprot.readI32();
+          if (field.type == org.apache.thrift.protocol.TType.I64) {
+            this.mealDate = iprot.readI64();
             setMealDateIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -534,7 +534,7 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
       oprot.writeFieldEnd();
     }
     oprot.writeFieldBegin(MEAL_DATE_FIELD_DESC);
-    oprot.writeI32(this.mealDate);
+    oprot.writeI64(this.mealDate);
     oprot.writeFieldEnd();
     if (this.deviceId != null) {
       if (isSetDeviceId()) {

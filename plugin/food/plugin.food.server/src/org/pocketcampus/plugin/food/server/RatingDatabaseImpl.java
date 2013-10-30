@@ -11,7 +11,6 @@ import org.pocketcampus.plugin.food.shared.*;
 
 /**
  * The database holding the ratings.
- * TODO: Review this code; I've never written SQL or JDBC stuff before.
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
@@ -34,8 +33,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	public void insert(List<EpflRestaurant> menu) {
 		try {
 			Connection connection = _connectionManager.getConnection();
-			String insertCommand = "INSERT INTO meals VALUES (?, ?) " +
-					"ON DUPLICATE KEY UPDATE MealId = MealId"; // i.e. do nothing
+			String insertCommand = "REPLACE INTO meals (MealId, RestaurantId) VALUES (?, ?)";
 
 			for (EpflRestaurant restaurant : menu) {
 				PreparedStatement statement = null;
@@ -67,7 +65,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 		try {
 			try {
 				Connection connection = _connectionManager.getConnection();
-				String command = "INSERT INTO mealratings VALUES (?, ?, 1) " +
+				String command = "INSERT INTO mealratings (MealId, RatingTotal, RatingCount) VALUES (?, ?, 1) " +
 						"ON DUPLICATE KEY UPDATE RatingTotal = RatingTotal + ?, RatingCount = RatingCount + 1";
 
 				statement = connection.prepareStatement(command);
@@ -116,7 +114,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 				PreparedStatement restaurantQuery = null;
 				try {
 					String query = "SELECT SUM(RatingTotal) / SUM(RatingCount), SUM(RatingCount) " +
-							"FROM mealratings JOIN meals ON mealratings.MealId = meals.MealId " +
+							"FROM mealratings INNER JOIN meals ON mealratings.MealId = meals.MealId " +
 							"WHERE RestaurantId = ?";
 
 					restaurantQuery = connection.prepareStatement(query);
