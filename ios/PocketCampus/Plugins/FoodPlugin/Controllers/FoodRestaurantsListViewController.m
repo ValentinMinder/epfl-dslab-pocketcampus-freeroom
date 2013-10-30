@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "RestaurantsListViewController.h"
+#import "FoodRestaurantsListViewController.h"
 
 #import "MealCell.h"
 
@@ -35,7 +35,7 @@ static NSString* kLastRefreshDateKey = @"lastRefreshDate";
  */
 static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
-@interface RestaurantsListViewController ()<FoodServiceDelegate> 
+@interface FoodRestaurantsListViewController ()<FoodServiceDelegate> 
 
 @property (nonatomic, strong) FoodService* foodService;
 @property (nonatomic, strong) FoodResponse* foodResponse;
@@ -44,7 +44,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
 @end
 
-@implementation RestaurantsListViewController
+@implementation FoodRestaurantsListViewController
 
 - (id)init
 {
@@ -176,7 +176,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     if (!self.restaurantsSorted.count) {
         return;
     }
-    Restaurant* restaurant = self.restaurantsSorted[indexPath.row];
+    EpflRestaurant* restaurant = self.restaurantsSorted[indexPath.row];
 #warning TODO
     //MenusListViewController* controller = [[MenusListViewController alloc] initWithRestaurantName:restaurant.name andMeals:self.restaurantsAndMeals[restaurant.name]]; //must not give a copy but current reference, so that rating can be updated on this instance directly
     //[self.navigationController pushViewController:controller animated:YES];
@@ -206,7 +206,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         }
     }
     
-    Restaurant* restaurant = self.restaurantsSorted[indexPath.row];
+    EpflRestaurant* restaurant = self.restaurantsSorted[indexPath.row];
     static NSString* kRestaurantCellIdentifier = @"RestaurantCell";
     UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:kRestaurantCellIdentifier];
     if (!cell) {
@@ -214,7 +214,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     }
-    cell.textLabel.text = restaurant.name;
+    cell.textLabel.text = restaurant.rName;
     return cell;
 }
 

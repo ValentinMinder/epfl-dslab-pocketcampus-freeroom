@@ -98,9 +98,9 @@ static FoodService* instance __weak = nil;
     return self.favoriteRestaurantIds;
 }
 
-- (BOOL)isRestaurantFavorite:(Restaurant*)restaurant {
+- (BOOL)isRestaurantFavorite:(EpflRestaurant*)restaurant {
     [self initFavorites];
-    return [self.favoriteRestaurantIds containsObject:[self nsNumberForRestaurantId:restaurant.restaurantId]];
+    return [self.favoriteRestaurantIds containsObject:[self nsNumberForRestaurantId:restaurant.rId]];
 }
 
 #pragma mark - Service methods

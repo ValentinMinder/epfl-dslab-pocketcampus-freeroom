@@ -1588,7 +1588,7 @@
 
 @implementation FoodRequest
 
-- (id) initWithDeviceLanguage: (NSString *) deviceLanguage mealTime: (int) mealTime mealDate: (timestamp) mealDate deviceId: (NSString *) deviceId
+- (id) initWithDeviceLanguage: (NSString *) deviceLanguage mealTime: (int) mealTime mealDate: (int64_t) mealDate deviceId: (NSString *) deviceId
 {
   self = [super init];
   __deviceLanguage = [deviceLanguage retain];
@@ -1617,7 +1617,7 @@
   }
   if ([decoder containsValueForKey: @"mealDate"])
   {
-    __mealDate = [decoder decodeInt32ForKey: @"mealDate"];
+    __mealDate = [decoder decodeInt64ForKey: @"mealDate"];
     __mealDate_isset = YES;
   }
   if ([decoder containsValueForKey: @"deviceId"])
@@ -1640,7 +1640,7 @@
   }
   if (__mealDate_isset)
   {
-    [encoder encodeInt32: __mealDate forKey: @"mealDate"];
+    [encoder encodeInt64: __mealDate forKey: @"mealDate"];
   }
   if (__deviceId_isset)
   {
@@ -1693,11 +1693,11 @@
   __mealTime_isset = NO;
 }
 
-- (int32_t) mealDate {
+- (int64_t) mealDate {
   return __mealDate;
 }
 
-- (void) setMealDate: (int32_t) mealDate {
+- (void) setMealDate: (int64_t) mealDate {
   __mealDate = mealDate;
   __mealDate_isset = YES;
 }
@@ -1763,8 +1763,8 @@
         }
         break;
       case 3:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
+        if (fieldType == TType_I64) {
+          int64_t fieldValue = [inProtocol readI64];
           [self setMealDate: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
@@ -1802,8 +1802,8 @@
     [outProtocol writeFieldEnd];
   }
   if (__mealDate_isset) {
-    [outProtocol writeFieldBeginWithName: @"mealDate" type: TType_I32 fieldID: 3];
-    [outProtocol writeI32: __mealDate];
+    [outProtocol writeFieldBeginWithName: @"mealDate" type: TType_I64 fieldID: 3];
+    [outProtocol writeI64: __mealDate];
     [outProtocol writeFieldEnd];
   }
   if (__deviceId_isset) {
@@ -1824,7 +1824,7 @@
   [ms appendString: @",mealTime:"];
   [ms appendFormat: @"%i", __mealTime];
   [ms appendString: @",mealDate:"];
-  [ms appendFormat: @"%i", __mealDate];
+  [ms appendFormat: @"%qi", __mealDate];
   [ms appendString: @",deviceId:"];
   [ms appendFormat: @"\"%@\"", __deviceId];
   [ms appendString: @")"];

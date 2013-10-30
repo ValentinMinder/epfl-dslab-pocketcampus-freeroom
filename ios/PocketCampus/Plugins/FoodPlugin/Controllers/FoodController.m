@@ -7,7 +7,7 @@
 //
 
 #import "FoodController.h"
-#import "RestaurantsListViewController.h"
+#import "FoodRestaurantsListViewController.h"
 #import "FoodSplashDetailViewController.h"
 
 static FoodController* instance __weak = nil;
@@ -26,7 +26,7 @@ static FoodController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
-            RestaurantsListViewController* restaurantsListViewController = [[RestaurantsListViewController alloc] init];
+            FoodRestaurantsListViewController* restaurantsListViewController = [[FoodRestaurantsListViewController alloc] init];
             restaurantsListViewController.title = [[self class] localizedName];
             if ([PCUtils isIdiomPad]) {
                 PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:restaurantsListViewController];

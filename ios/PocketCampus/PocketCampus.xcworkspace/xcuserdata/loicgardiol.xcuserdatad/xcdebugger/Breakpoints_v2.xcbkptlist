@@ -449,7 +449,7 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/FoodPlugin/Controllers/RestaurantsListViewController.m"
+            filePath = "Plugins/FoodPlugin/Controllers/FoodRestaurantsListViewController.m"
             timestampString = "404733868.524932"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
@@ -720,36 +720,6 @@
                   </ActionContent>
                </BreakpointActionProxy>
             </Actions>
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MapViewController mapView:regionDidChangeAnimated:]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MapPlugin/Controllers/MapViewController.m"
-                  timestampString = "404832862.875595"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "743"
-                  endingLineNumber = "743"
-                  offsetFromSymbolStart = "76">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MapViewController mapView:regionDidChangeAnimated:]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MapPlugin/Controllers/MapViewController.m"
-                  timestampString = "404832862.87593"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "743"
-                  endingLineNumber = "743"
-                  offsetFromSymbolStart = "354">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1435,10 +1405,10 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
-            filePath = "Plugins/FoodPlugin/Controllers/RestaurantsListViewController.m"
+            filePath = "Plugins/FoodPlugin/Controllers/FoodRestaurantsListViewController.m"
             timestampString = "404733945.930117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"

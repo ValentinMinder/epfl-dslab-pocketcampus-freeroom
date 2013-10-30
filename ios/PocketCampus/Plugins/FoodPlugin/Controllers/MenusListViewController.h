@@ -12,7 +12,7 @@
 
 #import "MealCell.h"
 
-@class RestaurantsListViewController;
+@class FoodRestaurantsListViewController;
 
 @interface MenusListViewController : UIViewController {
     UITableView* tableView;

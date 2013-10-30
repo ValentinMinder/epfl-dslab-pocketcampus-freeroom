@@ -14,7 +14,7 @@
 
 #import "MapController.h"
 
-#import "RestaurantsListViewController.h"
+#import "FoodRestaurantsListViewController.h"
 
 @implementation MenusListViewController
 

@@ -47,8 +47,6 @@ enum MealTime {
   MealTime_DINNER = 2
 };
 
-typedef int32_t timestamp;
-
 @interface Restaurant : NSObject <NSCoding> {
   int64_t __restaurantId;
   NSString * __name;
@@ -304,7 +302,7 @@ typedef int32_t timestamp;
 @interface FoodRequest : NSObject <NSCoding> {
   NSString * __deviceLanguage;
   int __mealTime;
-  timestamp __mealDate;
+  int64_t __mealDate;
   NSString * __deviceId;
 
   BOOL __deviceLanguage_isset;
@@ -316,11 +314,11 @@ typedef int32_t timestamp;
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, retain, getter=deviceLanguage, setter=setDeviceLanguage:) NSString * deviceLanguage;
 @property (nonatomic, getter=mealTime, setter=setMealTime:) int mealTime;
-@property (nonatomic, getter=mealDate, setter=setMealDate:) timestamp mealDate;
+@property (nonatomic, getter=mealDate, setter=setMealDate:) int64_t mealDate;
 @property (nonatomic, retain, getter=deviceId, setter=setDeviceId:) NSString * deviceId;
 #endif
 
-- (id) initWithDeviceLanguage: (NSString *) deviceLanguage mealTime: (int) mealTime mealDate: (timestamp) mealDate deviceId: (NSString *) deviceId;
+- (id) initWithDeviceLanguage: (NSString *) deviceLanguage mealTime: (int) mealTime mealDate: (int64_t) mealDate deviceId: (NSString *) deviceId;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -333,8 +331,8 @@ typedef int32_t timestamp;
 - (void) setMealTime: (int) mealTime;
 - (BOOL) mealTimeIsSet;
 
-- (timestamp) mealDate;
-- (void) setMealDate: (timestamp) mealDate;
+- (int64_t) mealDate;
+- (void) setMealDate: (int64_t) mealDate;
 - (BOOL) mealDateIsSet;
 
 - (NSString *) deviceId;

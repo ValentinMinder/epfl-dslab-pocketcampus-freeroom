@@ -54,7 +54,7 @@
 		3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */; };
 		3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE091508E31200BF94F7 /* FoodController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		3217CE0F1508F92700BF94F7 /* RestaurantsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE0E1508F92700BF94F7 /* RestaurantsListViewController.m */; };
+		3217CE0F1508F92700BF94F7 /* FoodRestaurantsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE0E1508F92700BF94F7 /* FoodRestaurantsListViewController.m */; };
 		3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3218CD2315B8359F00CEB238 /* MoodleLarge.png */; };
 		3219EF5114FCDE4900A271CD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5014FCDE4900A271CD /* UIKit.framework */; };
 		3219EF5314FCDE4900A271CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5214FCDE4900A271CD /* Foundation.framework */; };
@@ -206,6 +206,9 @@
 		3242DE1F150577050082D720 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* Service.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3242F40B1655A5B900A8C3D7 /* MyEduDrawersNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3242F4091655A5B900A8C3D7 /* MyEduDrawersNavbar.png */; };
 		3242F40C1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3242F40A1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png */; };
+		3243FB9D18215CEC000F3CB5 /* FoodRestaurantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3243FB9C18215CEC000F3CB5 /* FoodRestaurantViewController.m */; };
+		3243FBA018216B95000F3CB5 /* FoodRestaurantInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3243FB9F18216B95000F3CB5 /* FoodRestaurantInfoCell.m */; };
+		3243FBA218216BBC000F3CB5 /* FoodRestaurantInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3243FBA118216BBC000F3CB5 /* FoodRestaurantInfoCell.xib */; };
 		32442FEB151CF87100685D10 /* NextDeparturesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32442FEE151CFDED00685D10 /* Transport.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FEC151CFDED00685D10 /* Transport.png */; };
 		32442FEF151CFDED00685D10 /* Transport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FED151CFDED00685D10 /* Transport@2x.png */; };
@@ -563,8 +566,8 @@
 		3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryProfilePictureView.xib; sourceTree = "<group>"; };
 		3217CE081508E31200BF94F7 /* FoodController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodController.h; sourceTree = "<group>"; };
 		3217CE091508E31200BF94F7 /* FoodController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodController.m; sourceTree = "<group>"; };
-		3217CE0D1508F92700BF94F7 /* RestaurantsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestaurantsListViewController.h; sourceTree = "<group>"; };
-		3217CE0E1508F92700BF94F7 /* RestaurantsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestaurantsListViewController.m; sourceTree = "<group>"; };
+		3217CE0D1508F92700BF94F7 /* FoodRestaurantsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodRestaurantsListViewController.h; sourceTree = "<group>"; };
+		3217CE0E1508F92700BF94F7 /* FoodRestaurantsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodRestaurantsListViewController.m; sourceTree = "<group>"; };
 		3218CD2315B8359F00CEB238 /* MoodleLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoodleLarge.png; sourceTree = "<group>"; };
 		3219EF4C14FCDE4900A271CD /* PocketCampus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketCampus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3219EF5014FCDE4900A271CD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -775,6 +778,11 @@
 		3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableTableViewCell.m; sourceTree = "<group>"; };
 		3242F4091655A5B900A8C3D7 /* MyEduDrawersNavbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduDrawersNavbar.png; sourceTree = "<group>"; };
 		3242F40A1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduDrawersNavbar@2x.png"; sourceTree = "<group>"; };
+		3243FB9B18215CEC000F3CB5 /* FoodRestaurantViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodRestaurantViewController.h; sourceTree = "<group>"; };
+		3243FB9C18215CEC000F3CB5 /* FoodRestaurantViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodRestaurantViewController.m; sourceTree = "<group>"; };
+		3243FB9E18216B95000F3CB5 /* FoodRestaurantInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodRestaurantInfoCell.h; sourceTree = "<group>"; };
+		3243FB9F18216B95000F3CB5 /* FoodRestaurantInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodRestaurantInfoCell.m; sourceTree = "<group>"; };
+		3243FBA118216BBC000F3CB5 /* FoodRestaurantInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FoodRestaurantInfoCell.xib; sourceTree = "<group>"; };
 		32442FE9151CF87100685D10 /* NextDeparturesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextDeparturesListViewController.h; sourceTree = "<group>"; };
 		32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextDeparturesListViewController.m; sourceTree = "<group>"; };
 		32442FEC151CFDED00685D10 /* Transport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transport.png; sourceTree = "<group>"; };
@@ -1820,8 +1828,10 @@
 			children = (
 				3217CE081508E31200BF94F7 /* FoodController.h */,
 				3217CE091508E31200BF94F7 /* FoodController.m */,
-				3217CE0D1508F92700BF94F7 /* RestaurantsListViewController.h */,
-				3217CE0E1508F92700BF94F7 /* RestaurantsListViewController.m */,
+				3217CE0D1508F92700BF94F7 /* FoodRestaurantsListViewController.h */,
+				3217CE0E1508F92700BF94F7 /* FoodRestaurantsListViewController.m */,
+				3243FB9B18215CEC000F3CB5 /* FoodRestaurantViewController.h */,
+				3243FB9C18215CEC000F3CB5 /* FoodRestaurantViewController.m */,
 				328B9ED1150B77DD00B50024 /* MenusListViewController.h */,
 				328B9ED2150B77DD00B50024 /* MenusListViewController.m */,
 				32290ACD18200A0A005869E7 /* FoodSplashDetailViewController.h */,
@@ -1853,8 +1863,11 @@
 			isa = PBXGroup;
 			children = (
 				3247C3B61504F2E10079522A /* Images */,
-				328B9ECF150B705200B50024 /* MenusListView.xib */,
+				3243FB9E18216B95000F3CB5 /* FoodRestaurantInfoCell.h */,
+				3243FB9F18216B95000F3CB5 /* FoodRestaurantInfoCell.m */,
+				3243FBA118216BBC000F3CB5 /* FoodRestaurantInfoCell.xib */,
 				32290AD018200A25005869E7 /* FoodSplashDetailView.xib */,
+				328B9ECF150B705200B50024 /* MenusListView.xib */,
 				328B9EDC150B7DDE00B50024 /* MealCell.h */,
 				328B9EDD150B7DDE00B50024 /* MealCell.m */,
 				328B9EEB150B8E7A00B50024 /* JSFavStarControl.h */,
@@ -2995,6 +3008,7 @@
 				32704C7C15002F67002BCB75 /* Plugins.plist in Resources */,
 				32FAC0F81500F40700925180 /* DirectoryPlugin.strings in Resources */,
 				32FAC0FD1500F40700925180 /* DirectorySearchView.xib in Resources */,
+				3243FBA218216BBC000F3CB5 /* FoodRestaurantInfoCell.xib in Resources */,
 				32930A5B17F85FA70025F864 /* Icon76.png in Resources */,
 				3247C3B71504F2E10079522A /* FoodPlugin.strings in Resources */,
 				3289D28A15094739008DD299 /* Directory.png in Resources */,
@@ -3325,7 +3339,7 @@
 				32102B6C15050C000076537E /* FoodService.m in Sources */,
 				3242DE1F150577050082D720 /* Service.m in Sources */,
 				3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */,
-				3217CE0F1508F92700BF94F7 /* RestaurantsListViewController.m in Sources */,
+				3217CE0F1508F92700BF94F7 /* FoodRestaurantsListViewController.m in Sources */,
 				328B9ED3150B77DD00B50024 /* MenusListViewController.m in Sources */,
 				328B9EDE150B7DDE00B50024 /* MealCell.m in Sources */,
 				328B9EED150B8E7B00B50024 /* JSFavStarControl.m in Sources */,
@@ -3396,11 +3410,13 @@
 				322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */,
 				32BA30711645D31A00909D82 /* PCCenterMessageCell.m in Sources */,
 				32BA30761645DF9200909D82 /* MyEduCourseInfoViewController.m in Sources */,
+				3243FB9D18215CEC000F3CB5 /* FoodRestaurantViewController.m in Sources */,
 				320DFC291646A25A00849907 /* MyEduSplashDetailViewController.m in Sources */,
 				320DFC311646B35900849907 /* MyEduModuleVideoViewController.m in Sources */,
 				320DFC361646C03700849907 /* MyEduModuleDetailViewController.m in Sources */,
 				320073601646DDB9002AD7BA /* MyEduModuleTextViewController.m in Sources */,
 				325368C41649638B00406801 /* MyEduModuleMaterialsViewController.m in Sources */,
+				3243FBA018216B95000F3CB5 /* FoodRestaurantInfoCell.m in Sources */,
 				3247495317F33E3400698A9D /* DirectoryPersonBaseInfoCell.m in Sources */,
 				32ADC70A165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m in Sources */,
 				435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */,

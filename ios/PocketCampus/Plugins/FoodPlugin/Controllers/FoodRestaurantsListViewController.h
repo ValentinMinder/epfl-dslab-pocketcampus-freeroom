@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RestaurantsListViewController : UITableViewController
+@interface FoodRestaurantsListViewController : UITableViewController
 
 
 @end
