@@ -68,9 +68,7 @@
     if (!self.userValidatedSelectionBlock) {
         return;
     }
-    if (self.userValidatedSelectionBlock) {
-        self.userValidatedSelectionBlock([NSArray arrayWithObject:self.mapItems[indexPath.row]]);
-    }
+    self.userValidatedSelectionBlock(@[self.mapItems[indexPath.row]]);
 }
 
 #pragma mark - UITableViewDataSource

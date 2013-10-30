@@ -15,7 +15,8 @@
 "HideBuildingsInterior" = "Hide buildings interior";
 "NoResult" = "No results";
 "TooManyResults" = "Too many results";
-"NarrowSearch" = "Try with a more precise request.";
+"CannotDisplayOnMap" = "Cannot display them on the map";
+"PickFromList" = "Pick from list";
 "Floor" = "Floor";
 "Details" = "Details";
 "AllSearchResults" = "All search results";

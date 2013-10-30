@@ -15,7 +15,8 @@
 "HideBuildingsInterior" = "Masquer l'int. des bâtiments";
 "NoResult" = "Aucun résultat";
 "TooManyResults" = "Trop de résultats";
-"NarrowSearch" = "Précisez votre recherche.";
+"CannotDisplayOnMap" = "Impossible de les afficher sur le plan";
+"PickFromList" = "Liste des résultats";
 "Floor" = "Étage";
 "Details" = "Détails";
 "AllSearchResults" = "Tous les résultats";

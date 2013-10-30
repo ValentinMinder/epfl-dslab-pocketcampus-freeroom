@@ -235,10 +235,8 @@ double WGStoCHy(double lat, double lng) {
 }
 
 + (NSArray*)mapItemAnnotations:(NSArray*)annotations {
-    if (annotations == nil || ![annotations isKindOfClass:[NSArray class]]) {
-        @throw [NSException exceptionWithName:@"bad annotations argument in mapItemAnnotations:" reason:@"annotations is not kind of class NSArray" userInfo:nil];
-    }
-    NSMutableArray* mapItemAnnotations = [NSMutableArray arrayWithCapacity:annotations.count-1]; //usually, all annotations except user location. Size will adapt if not the case
+    [PCUtils throwExceptionIfObject:annotations notKindOfClass:[NSArray class]];
+    NSMutableArray* mapItemAnnotations = [NSMutableArray arrayWithCapacity:(annotations.count > 0 ? annotations.count-1 : annotations.count)]; //usually, all annotations except user location. Size will adapt if not the case
     for (id<MKAnnotation> annotation in annotations) {
         if ([annotation isKindOfClass:[MapItemAnnotation class]]) {
             [mapItemAnnotations addObject:annotation];
