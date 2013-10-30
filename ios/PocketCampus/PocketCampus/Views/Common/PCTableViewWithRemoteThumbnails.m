@@ -20,8 +20,9 @@
 
 @property (nonatomic, strong) ASINetworkQueue* networkQueue;
 @property (nonatomic, strong) NSMutableDictionary* requestForIndexPath; //key: NSIndexPath, value: ASIHTTPRequest
-@property (nonatomic, strong) NSMutableDictionary* imageForUrlString;
-//@property (nonatomic, strong) NSMutableDictionary* thumbnails; //key : NSIndexPath , value : UIImage
+@property (nonatomic, strong) NSMutableDictionary* urlForIndexPath; //key: NSIndexPath, value: NSURL
+@property (nonatomic, strong) NSMutableDictionary* rawImageForUrlString; //key: NSURL.absoluteString, value: UIImage
+@property (nonatomic, strong) NSMutableDictionary* imageForUrlString; //key: NSURL.absoluteString, value: UIImage (processed by imageProcessingBlock)
 @property (nonatomic, strong) Reachability* reachability;
 @property (nonatomic, strong) NSMutableSet* failedThumbsIndexPaths;
 @property (nonatomic) BOOL initDone;
@@ -41,7 +42,9 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         self.networkQueue.maxConcurrentOperationCount = 6;
         [self.networkQueue setSuspended:NO];
         self.requestForIndexPath = [NSMutableDictionary dictionary];
+        self.urlForIndexPath = [NSMutableDictionary dictionary];
         self.imageForUrlString = [NSMutableDictionary dictionary];
+        self.rawImageForUrlString = [NSMutableDictionary dictionary];
         
         self.initDone = YES;
     }
@@ -63,9 +66,17 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     
     if (!url) {
+        NSURL* url = self.urlForIndexPath[indexPath];
+        if (url) {
+            [self.imageForUrlString removeObjectForKey:url];
+            [self.rawImageForUrlString removeObjectForKey:url];
+        }
+        [self.urlForIndexPath removeObjectForKey:indexPath];
         [self imageViewForCell:cell].image = self.temporaryImage; //Generic image sign
         return;
     }
+    
+    self.urlForIndexPath[indexPath] = url;
     
     if (self.imageForUrlString[url.absoluteString]) {
         [self imageViewForCell:cell].image = self.imageForUrlString[url.absoluteString];
@@ -100,8 +111,15 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 }
 
 - (UIImage*)imageAtIndexPath:(NSIndexPath*)indexPath {
-#warning TODO
-    return nil;
+    [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
+    NSURL* url = self.urlForIndexPath[indexPath];
+    return self.imageForUrlString[url.absoluteString];
+}
+
+- (UIImage*)rawImageAtIndexPath:(NSIndexPath*)indexPath {
+    [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
+    NSURL* url = self.urlForIndexPath[indexPath];
+    return self.rawImageForUrlString[url.absoluteString];
 }
 
 - (void)reloadFailedThumbnailsCells {
@@ -126,29 +144,30 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     }
     
     [self.failedThumbsIndexPaths removeObject:indexPath];
-    
     [self.requestForIndexPath removeObjectForKey:indexPath];
     
     UITableViewCell* cell = [self cellForRowAtIndexPath:indexPath];
     
     if (request.responseData) {
         
-        UIImage* image = [UIImage imageWithData:request.responseData];
-        
-        if (image && (image.imageOrientation != UIImageOrientationUp)) {
-            image = [UIImage imageWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
-        }
+        UIImage* image __block = [UIImage imageWithData:request.responseData];
         
         if (image) {
-            
-            if (self.thumbnailProcessingBlock) {
-                image = self.thumbnailProcessingBlock(indexPath, cell, image);
-            }
-            
-            self.imageForUrlString[request.url.absoluteString] = image;
-            [self imageViewForCell:cell].image = image;
-            
-            [cell layoutSubviews];
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+                if (image && (image.imageOrientation != UIImageOrientationUp)) {
+                    image = [UIImage imageWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
+                }
+                UIImage* rawImage = image;
+                if (self.imageProcessingBlock) {
+                    image = self.imageProcessingBlock(indexPath, cell, image);
+                }
+                dispatch_async(dispatch_get_main_queue(), ^(void){
+                    self.imageForUrlString[request.url.absoluteString] = image;
+                    self.rawImageForUrlString[request.url.absoluteString] = rawImage;
+                    [self imageViewForCell:cell].image = image;
+                    [cell layoutSubviews];
+                });
+            });
         }
     }
 

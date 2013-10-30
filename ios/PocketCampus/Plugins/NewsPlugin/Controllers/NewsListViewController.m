@@ -20,6 +20,8 @@
 
 #import "PCTableViewWithRemoteThumbnails.h"
 
+#import "UIImage+Additions.h"
+
 static NSString* kNewsCellIdentifier = @"NewsCell";
 static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
@@ -54,6 +56,9 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 {
     [super viewDidLoad];
     self.tableView = [[PCTableViewWithRemoteThumbnails alloc] init];
+    ((PCTableViewWithRemoteThumbnails*)(self.tableView)).imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image) {
+        return [image imageByScalingAndCroppingForSize:CGSizeMake(106.0, 60.0) applyDeviceScreenMultiplyingFactor:YES];
+    };
     self.tableView.rowHeight = 60.0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"news" dataName:@"newsList"]];
@@ -169,7 +174,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         return;
     }
     
-    NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:[(PCTableViewWithRemoteThumbnails*)(self.tableView) imageAtIndexPath:indexPath]];
+    NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:[(PCTableViewWithRemoteThumbnails*)(self.tableView) rawImageAtIndexPath:indexPath]];
     
     if (self.splitViewController) { // iPad
         self.selectedItem = newsItem;

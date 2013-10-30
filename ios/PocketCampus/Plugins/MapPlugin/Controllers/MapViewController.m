@@ -57,7 +57,6 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 
 @interface MapViewController ()<MKMapViewDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, RemoteOverlayRendererDelegate, UIPopoverControllerDelegate>
 
-/* Outlets */
 
 @property (nonatomic, strong) IBOutlet MKMapView* mapView;
 @property (nonatomic, strong) IBOutlet UIToolbar* toolBar;

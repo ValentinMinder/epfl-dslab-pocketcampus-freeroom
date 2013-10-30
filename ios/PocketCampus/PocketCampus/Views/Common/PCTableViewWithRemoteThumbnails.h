@@ -20,8 +20,14 @@
 
 /*
  * If image as been downloaded, returns it, nil otherwise.
+ * If imageProcessingBlock is not NULL, this method returns the processed image.
  */
 - (UIImage*)imageAtIndexPath:(NSIndexPath*)indexPath;
+
+/*
+ * Same as previous but returns image as it was before being processed by imageProcessingBlock
+ */
+- (UIImage*)rawImageAtIndexPath:(NSIndexPath*)indexPath;
 
 /*
  * Specify the keypath of the UIImageView in the cells.
@@ -35,7 +41,7 @@
  * Default: NULL
  */
 typedef UIImage* (^ImageProcessingBlock)(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image);
-@property (nonatomic, copy) ImageProcessingBlock thumbnailProcessingBlock;
+@property (nonatomic, copy) ImageProcessingBlock imageProcessingBlock;
 
 @property (nonatomic, strong) UIImage* temporaryImage;
 @property (nonatomic) NSTimeInterval imagesCacheSeconds;

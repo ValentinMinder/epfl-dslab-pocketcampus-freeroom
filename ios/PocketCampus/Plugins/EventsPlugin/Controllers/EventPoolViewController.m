@@ -153,7 +153,7 @@ static NSString* kEventCell = @"EventCell";
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromCurrentData) name:kFavoritesEventItemsUpdatedNotification object:self.eventsService];
     self.tableView = [[PCTableViewWithRemoteThumbnails alloc] init];
-    ((PCTableViewWithRemoteThumbnails*)(self.tableView)).thumbnailProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image) {
+    ((PCTableViewWithRemoteThumbnails*)(self.tableView)).imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image) {
         return [image imageByScalingAndCroppingForSize:CGSizeMake([EventItemCell preferredHeight], [EventItemCell preferredHeight]) applyDeviceScreenMultiplyingFactor:YES];
     };
     self.tableView.rowHeight = [EventItemCell preferredHeight];

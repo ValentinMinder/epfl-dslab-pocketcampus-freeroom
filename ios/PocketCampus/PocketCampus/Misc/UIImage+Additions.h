@@ -11,7 +11,7 @@
 @interface UIImage (Additions)
 
 - (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
-- (UIImage *)imageScaledToSize:(CGSize)size;
-- (UIImage *)imageScaledToFitSize:(CGSize)size;
+- (UIImage *)imageScaledToSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
+- (UIImage *)imageScaledToFitSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
 
 @end

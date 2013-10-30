@@ -14,8 +14,8 @@
 {
     
     if (applyFactor && [PCUtils isRetinaDevice]) {
-        targetSize.width = targetSize.width * 2.0;
-        targetSize.height = targetSize.height * 2.0;
+        targetSize.width *= 2.0;
+        targetSize.height *= 2.0;
     }
     
     UIImage *sourceImage = self;
@@ -83,8 +83,13 @@
     return newImage;
 }
 
-- (UIImage *)imageScaledToSize:(CGSize)size
+- (UIImage *)imageScaledToSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
 {
+    if (applyFactor && [PCUtils isRetinaDevice]) {
+        size.width *= 2.0;
+        size.height *= 2.0;
+    }
+    
     //create drawing context
     UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
     
@@ -99,17 +104,17 @@
     return image;
 }
 
-- (UIImage *)imageScaledToFitSize:(CGSize)size
+- (UIImage *)imageScaledToFitSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
 {
     //calculate rect
     CGFloat aspect = self.size.width / self.size.height;
     if (size.width / aspect <= size.height)
     {
-        return [self imageScaledToSize:CGSizeMake(size.width, size.width / aspect)];
+        return [self imageScaledToSize:CGSizeMake(size.width, size.width / aspect) applyDeviceScreenMultiplyingFactor:applyFactor];
     }
     else
     {
-        return [self imageScaledToSize:CGSizeMake(size.height * aspect, size.height)];
+        return [self imageScaledToSize:CGSizeMake(size.height * aspect, size.height) applyDeviceScreenMultiplyingFactor:applyFactor];
     }
 }
 
