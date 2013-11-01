@@ -34,28 +34,28 @@ public final class RatingDatabaseTests {
 
 	// Inserting the menu works
 	@Test
-	public void insertWorks() {
-		_database.insert(getTestMenu());
+	public void insertMenuWorks() {
+		_database.insertMenu(getTestMenu());
 	}
 
 	// Duplicate menu insertions work
 	@Test
-	public void insertDuplicateWorks() {
-		_database.insert(getTestMenu());
-		_database.insert(getTestMenu());
+	public void insertMenuDuplicateWorks() {
+		_database.insertMenu(getTestMenu());
+		_database.insertMenu(getTestMenu());
 	}
 
 	// Voting works
 	@Test
 	public void voteWorks() {
-		_database.insert(getTestMenu());
+		_database.insertMenu(getTestMenu());
 		_database.vote(101, 4.0);
 	}
 
 	// Voting multiple times works
 	@Test
 	public void multipleVoteWorks() {
-		_database.insert(getTestMenu());
+		_database.insertMenu(getTestMenu());
 		_database.vote(101, 4.0);
 		_database.vote(101, 2.0);
 	}
@@ -65,7 +65,7 @@ public final class RatingDatabaseTests {
 	public void restaurantVotesAreSet() {
 		List<EpflRestaurant> menu = getTestMenu();
 
-		_database.insert(menu);
+		_database.insertMenu(menu);
 		_database.vote(101, 4.0);
 		_database.vote(101, 2.0);
 		_database.vote(102, 2.0);
@@ -79,7 +79,7 @@ public final class RatingDatabaseTests {
 	public void mealVotesAreSet() {
 		List<EpflRestaurant> menu = getTestMenu();
 
-		_database.insert(menu);
+		_database.insertMenu(menu);
 		_database.vote(101, 4.0);
 		_database.vote(101, 2.0);
 		_database.vote(102, 2.0);

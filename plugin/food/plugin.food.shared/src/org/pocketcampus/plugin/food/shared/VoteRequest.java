@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -27,9 +28,9 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
   private static final org.apache.thrift.protocol.TField RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rating", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
   private static final org.apache.thrift.protocol.TField DEVICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceId", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  private long mealId; // required
-  private double rating; // required
-  private String deviceId; // required
+  public long mealId; // required
+  public double rating; // required
+  public String deviceId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -331,7 +332,24 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_mealId = true;
+    builder.append(present_mealId);
+    if (present_mealId)
+      builder.append(mealId);
+
+    boolean present_rating = true;
+    builder.append(present_rating);
+    if (present_rating)
+      builder.append(rating);
+
+    boolean present_deviceId = true && (isSetDeviceId());
+    builder.append(present_deviceId);
+    if (present_deviceId)
+      builder.append(deviceId);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(VoteRequest other) {

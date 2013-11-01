@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -590,7 +591,9 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getMeals_args other) {
@@ -673,7 +676,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
 
-    private List<Meal> success; // required
+    public List<Meal> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -878,7 +881,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getMeals_result other) {
@@ -1126,7 +1136,9 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRatings_args other) {
@@ -1209,7 +1221,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.MAP, (short)0);
 
-    private Map<Long,Rating> success; // required
+    public Map<Long,Rating> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1419,7 +1431,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRatings_result other) {
@@ -1553,9 +1572,9 @@ public class FoodService {
     private static final org.apache.thrift.protocol.TField RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rating", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
     private static final org.apache.thrift.protocol.TField DEVICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceId", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-    private long mealId; // required
-    private double rating; // required
-    private String deviceId; // required
+    public long mealId; // required
+    public double rating; // required
+    public String deviceId; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1857,7 +1876,24 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_mealId = true;
+      builder.append(present_mealId);
+      if (present_mealId)
+        builder.append(mealId);
+
+      boolean present_rating = true;
+      builder.append(present_rating);
+      if (present_rating)
+        builder.append(rating);
+
+      boolean present_deviceId = true && (isSetDeviceId());
+      builder.append(present_deviceId);
+      if (present_deviceId)
+        builder.append(deviceId);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(setRating_args other) {
@@ -2021,7 +2057,11 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.I32, (short)0);
 
-    private SubmitStatus success; // required
+    /**
+     * 
+     * @see SubmitStatus
+     */
+    public SubmitStatus success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2218,7 +2258,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success.getValue());
+
+      return builder.toHashCode();
     }
 
     public int compareTo(setRating_result other) {
@@ -2329,7 +2376,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField FOOD_REQ_FIELD_DESC = new org.apache.thrift.protocol.TField("foodReq", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    private FoodRequest foodReq; // required
+    public FoodRequest foodReq; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2514,7 +2561,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_foodReq = true && (isSetFoodReq());
+      builder.append(present_foodReq);
+      if (present_foodReq)
+        builder.append(foodReq);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getFood_args other) {
@@ -2627,7 +2681,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    private FoodResponse success; // required
+    public FoodResponse success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2812,7 +2866,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getFood_result other) {
@@ -2924,7 +2985,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField VOTE_REQ_FIELD_DESC = new org.apache.thrift.protocol.TField("voteReq", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    private VoteRequest voteReq; // required
+    public VoteRequest voteReq; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -3109,7 +3170,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_voteReq = true && (isSetVoteReq());
+      builder.append(present_voteReq);
+      if (present_voteReq)
+        builder.append(voteReq);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(vote_args other) {
@@ -3222,7 +3290,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    private VoteResponse success; // required
+    public VoteResponse success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -3407,7 +3475,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(vote_result other) {

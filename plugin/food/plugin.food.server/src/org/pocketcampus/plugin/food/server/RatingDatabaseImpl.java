@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.food.server;
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import java.sql.*;
+import java.util.Calendar;
 import java.util.List;
 
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
@@ -30,27 +31,44 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	}
 
 	@Override
-	public void insert(List<EpflRestaurant> menu) {
+	public void insertMenu(List<EpflRestaurant> menu) {
 		try {
 			Connection connection = _connectionManager.getConnection();
-			String insertCommand = "REPLACE INTO meals (MealId, RestaurantId) VALUES (?, ?)";
+			String restaurantCommand = "REPLACE INTO restaurants (Id, Name) VALUES (?, ?)";
+			String mealCommand = "REPLACE INTO meals (Id, Name, RestaurantId) VALUES (?, ?, ?)";
 
-			for (EpflRestaurant restaurant : menu) {
-				PreparedStatement statement = null;
-				try {
-					statement = connection.prepareStatement(insertCommand);
+			PreparedStatement restaurantStatement = null;
+			try {
+				restaurantStatement = connection.prepareStatement(restaurantCommand);
 
-					for (EpflMeal meal : restaurant.getRMeals()) {
-						statement.setLong(1, meal.getMId());
-						statement.setLong(2, restaurant.getRId());
-						statement.addBatch();
+				for (EpflRestaurant restaurant : menu) {
+					restaurantStatement.setLong(1, restaurant.getRId());
+					restaurantStatement.setString(2, restaurant.getRName());
+					restaurantStatement.addBatch();
+
+					PreparedStatement mealStatement = null;
+					try {
+						mealStatement = connection.prepareStatement(mealCommand);
+
+						for (EpflMeal meal : restaurant.getRMeals()) {
+							mealStatement.setLong(1, meal.getMId());
+							mealStatement.setString(2, meal.getMName());
+							mealStatement.setLong(3, restaurant.getRId());
+							mealStatement.addBatch();
+						}
+
+						mealStatement.executeBatch();
+					} finally {
+						if (mealStatement != null) {
+							mealStatement.close();
+						}
 					}
-
-					statement.executeBatch();
-				} finally {
-					if (statement != null) {
-						statement.close();
-					}
+				}
+				
+				restaurantStatement.executeBatch();
+			} finally {
+				if (restaurantStatement != null) {
+					restaurantStatement.close();
 				}
 			}
 		} catch (Exception e) {
@@ -64,14 +82,14 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 		PreparedStatement statement = null;
 		try {
 			try {
+				Date now = new Date(Calendar.getInstance().getTimeInMillis()); // sql.Date, not util.Date
 				Connection connection = _connectionManager.getConnection();
-				String command = "INSERT INTO mealratings (MealId, RatingTotal, RatingCount) VALUES (?, ?, 1) " +
-						"ON DUPLICATE KEY UPDATE RatingTotal = RatingTotal + ?, RatingCount = RatingCount + 1";
+				String command = "INSERT INTO mealratings (MealId, Rating, Date) VALUES (?, ?, ?)";
 
 				statement = connection.prepareStatement(command);
 				statement.setLong(1, mealId);
 				statement.setDouble(2, rating);
-				statement.setDouble(3, rating);
+				statement.setDate(3, now);
 				statement.executeUpdate();
 			} finally {
 				if (statement != null) {
@@ -93,7 +111,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 				for (EpflMeal meal : restaurant.getRMeals()) {
 					PreparedStatement mealQuery = null;
 					try {
-						String query = "SELECT RatingTotal / RatingCount, RatingCount " +
+						String query = "SELECT SUM(Rating) / COUNT(*), COUNT(*) " +
 								"FROM mealratings " +
 								"WHERE MealId = ?";
 
@@ -113,8 +131,8 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 
 				PreparedStatement restaurantQuery = null;
 				try {
-					String query = "SELECT SUM(RatingTotal) / SUM(RatingCount), SUM(RatingCount) " +
-							"FROM mealratings INNER JOIN meals ON mealratings.MealId = meals.MealId " +
+					String query = "SELECT SUM(Rating) / COUNT(*), COUNT(*) " +
+							"FROM mealratings INNER JOIN meals ON mealratings.MealId = meals.Id " +
 							"WHERE RestaurantId = ?";
 
 					restaurantQuery = connection.prepareStatement(query);
@@ -140,7 +158,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	public void clean() {
 		try {
 			Connection connection = _connectionManager.getConnection();
-			String[] deleteCommands = new String[] { "TRUNCATE TABLE meals", "TRUNCATE TABLE mealratings" };
+			String[] deleteCommands = new String[] { "TRUNCATE TABLE meals", "TRUNCATE TABLE restaurants", "TRUNCATE TABLE mealratings" };
 
 			for (String command : deleteCommands) {
 				PreparedStatement statement = null;
