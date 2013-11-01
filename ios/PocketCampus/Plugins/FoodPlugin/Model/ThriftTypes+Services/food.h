@@ -256,12 +256,14 @@ enum MealTime {
   NSArray * __rMeals;
   MapItem * __rLocation;
   EpflRating * __rRating;
+  NSString * __rPictureUrl;
 
   BOOL __rId_isset;
   BOOL __rName_isset;
   BOOL __rMeals_isset;
   BOOL __rLocation_isset;
   BOOL __rRating_isset;
+  BOOL __rPictureUrl_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -270,9 +272,10 @@ enum MealTime {
 @property (nonatomic, retain, getter=rMeals, setter=setRMeals:) NSArray * rMeals;
 @property (nonatomic, retain, getter=rLocation, setter=setRLocation:) MapItem * rLocation;
 @property (nonatomic, retain, getter=rRating, setter=setRRating:) EpflRating * rRating;
+@property (nonatomic, retain, getter=rPictureUrl, setter=setRPictureUrl:) NSString * rPictureUrl;
 #endif
 
-- (id) initWithRId: (int64_t) rId rName: (NSString *) rName rMeals: (NSArray *) rMeals rLocation: (MapItem *) rLocation rRating: (EpflRating *) rRating;
+- (id) initWithRId: (int64_t) rId rName: (NSString *) rName rMeals: (NSArray *) rMeals rLocation: (MapItem *) rLocation rRating: (EpflRating *) rRating rPictureUrl: (NSString *) rPictureUrl;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -296,6 +299,10 @@ enum MealTime {
 - (EpflRating *) rRating;
 - (void) setRRating: (EpflRating *) rRating;
 - (BOOL) rRatingIsSet;
+
+- (NSString *) rPictureUrl;
+- (void) setRPictureUrl: (NSString *) rPictureUrl;
+- (BOOL) rPictureUrlIsSet;
 
 @end
 

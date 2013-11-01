@@ -1260,7 +1260,7 @@
 
 @implementation EpflRestaurant
 
-- (id) initWithRId: (int64_t) rId rName: (NSString *) rName rMeals: (NSArray *) rMeals rLocation: (MapItem *) rLocation rRating: (EpflRating *) rRating
+- (id) initWithRId: (int64_t) rId rName: (NSString *) rName rMeals: (NSArray *) rMeals rLocation: (MapItem *) rLocation rRating: (EpflRating *) rRating rPictureUrl: (NSString *) rPictureUrl
 {
   self = [super init];
   __rId = rId;
@@ -1273,6 +1273,8 @@
   __rLocation_isset = YES;
   __rRating = [rRating retain];
   __rRating_isset = YES;
+  __rPictureUrl = [rPictureUrl retain];
+  __rPictureUrl_isset = YES;
   return self;
 }
 
@@ -1304,6 +1306,11 @@
     __rRating = [[decoder decodeObjectForKey: @"rRating"] retain];
     __rRating_isset = YES;
   }
+  if ([decoder containsValueForKey: @"rPictureUrl"])
+  {
+    __rPictureUrl = [[decoder decodeObjectForKey: @"rPictureUrl"] retain];
+    __rPictureUrl_isset = YES;
+  }
   return self;
 }
 
@@ -1329,6 +1336,10 @@
   {
     [encoder encodeObject: __rRating forKey: @"rRating"];
   }
+  if (__rPictureUrl_isset)
+  {
+    [encoder encodeObject: __rPictureUrl forKey: @"rPictureUrl"];
+  }
 }
 
 - (void) dealloc
@@ -1337,6 +1348,7 @@
   [__rMeals release];
   [__rLocation release];
   [__rRating release];
+  [__rPictureUrl release];
   [super dealloc];
 }
 
@@ -1441,6 +1453,27 @@
   __rRating_isset = NO;
 }
 
+- (NSString *) rPictureUrl {
+  return [[__rPictureUrl retain] autorelease];
+}
+
+- (void) setRPictureUrl: (NSString *) rPictureUrl {
+  [rPictureUrl retain];
+  [__rPictureUrl release];
+  __rPictureUrl = rPictureUrl;
+  __rPictureUrl_isset = YES;
+}
+
+- (BOOL) rPictureUrlIsSet {
+  return __rPictureUrl_isset;
+}
+
+- (void) unsetRPictureUrl {
+  [__rPictureUrl release];
+  __rPictureUrl = nil;
+  __rPictureUrl_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -1512,6 +1545,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 6:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setRPictureUrl: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -1564,6 +1605,13 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__rPictureUrl_isset) {
+    if (__rPictureUrl != nil) {
+      [outProtocol writeFieldBeginWithName: @"rPictureUrl" type: TType_STRING fieldID: 6];
+      [outProtocol writeString: __rPictureUrl];
+      [outProtocol writeFieldEnd];
+    }
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -1580,6 +1628,8 @@
   [ms appendFormat: @"%@", __rLocation];
   [ms appendString: @",rRating:"];
   [ms appendFormat: @"%@", __rRating];
+  [ms appendString: @",rPictureUrl:"];
+  [ms appendFormat: @"\"%@\"", __rPictureUrl];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
