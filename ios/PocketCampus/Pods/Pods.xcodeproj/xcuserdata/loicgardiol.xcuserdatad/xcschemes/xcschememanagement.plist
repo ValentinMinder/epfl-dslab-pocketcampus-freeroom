@@ -8,121 +8,101 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>4</integer>
 		</dict>
 		<key>Pods-ASIHTTPRequest.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>5</integer>
 		</dict>
 		<key>Pods-GoogleAnalytics-iOS-SDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>6</integer>
 		</dict>
 		<key>Pods-NSTimer-Blocks.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>7</integer>
 		</dict>
 		<key>Pods-Reachability.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>8</integer>
 		</dict>
 		<key>Pods-SBJson.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>9</integer>
 		</dict>
 		<key>Pods-SSKeychain.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>10</integer>
 		</dict>
 		<key>Pods-TUSafariActivity.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>11</integer>
 		</dict>
 		<key>Pods-ZBarSDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>12</integer>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>3</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>28ECD21CC7254E6F8B98093A</key>
+		<key>0B3914DA769D49BAB94EC195</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5FB4E576407D4205A7011FEA</key>
+		<key>25DDA6531C654FFEAE499F49</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>71E449FFABD04F089FFD66FA</key>
+		<key>29A7A0FDB5D6405EA47043EA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7989622CE7D2444CB144C0B4</key>
+		<key>38B044A5ECFD4B0F88E501F1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7D44E186A0E14066873BD678</key>
+		<key>7E610D8D350547CE9487AF80</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8FDF64E359454889878D7CBA</key>
+		<key>83914078632646EFAA5BD475</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9B8951B5FE084730A40C1A56</key>
+		<key>AC63FA6E4BAF442D942E08C8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A9F3A16473F1454D896E8B31</key>
+		<key>B308E9EF3F094576BE9B29D3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D31A7ED2BB8E4B72B59B4A6A</key>
+		<key>F50199D306994D1D99EBE196</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DA9DDC1C8C7849EB88E62DC5</key>
+		<key>FB55577FC3BF4CCBABAF655F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

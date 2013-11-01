@@ -8,6 +8,8 @@
 
 #import "FoodRestaurantsListViewController.h"
 
+#import "FoodRestaurantViewController.h"
+
 #import "MealCell.h"
 
 #import "PCUtils.h"
@@ -177,9 +179,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         return;
     }
     EpflRestaurant* restaurant = self.restaurantsSorted[indexPath.row];
-#warning TODO
-    //MenusListViewController* controller = [[MenusListViewController alloc] initWithRestaurantName:restaurant.name andMeals:self.restaurantsAndMeals[restaurant.name]]; //must not give a copy but current reference, so that rating can be updated on this instance directly
-    //[self.navigationController pushViewController:controller animated:YES];
+    FoodRestaurantViewController* viewController = [[FoodRestaurantViewController alloc] initWithEpflRestaurant:restaurant];
+    if (self.splitViewController) {
+        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
+        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], navController];
+    } else {
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
 }
 
 #pragma mark - UITableViewDataSource

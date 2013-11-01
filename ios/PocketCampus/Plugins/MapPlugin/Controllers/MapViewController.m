@@ -72,6 +72,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 
 @property (nonatomic, strong) NSArray* mapItemsAllResults; //raw result from map service for a search. Nil if searchState is != SearchStateResults
 
+@property (nonatomic, strong) MapItem* initialMapItem;
 @property (nonatomic, strong) NSString* initialQuery;
 @property (nonatomic, strong) NSString* initialQueryManualPinLabelText;
 
@@ -130,6 +131,15 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
 
 }
 
+- (instancetype)initWithInitialMapItem:(MapItem*)mapItem {
+    [PCUtils throwExceptionIfObject:mapItem notKindOfClass:[MapItem class]];
+    self = [self init];
+    if (self) {
+        self.initialMapItem = mapItem;
+    }
+    return self;
+}
+
 - (id)initWithInitialQuery:(NSString*)query {
     self = [self init];
     if (self) {
@@ -177,7 +187,11 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     mapTap.delegate = self;
     [self.mapView addGestureRecognizer:mapTap];
     
-    if (self.initialQuery) {
+    if (self.initialMapItem) {
+        self.title = [PCUtils isIdiomPad] ? nil : self.initialMapItem.title;
+        self.navigationItem.leftItemsSupplementBackButton = YES;
+        [self searchMapFor:self.initialMapItem.title didReturn:@[self.initialMapItem]];
+    } else if (self.initialQuery) {
         self.title = [PCUtils isIdiomPad] ? nil : self.initialQuery;
         self.navigationItem.leftItemsSupplementBackButton = YES;
         [self startSearchForQuery:self.initialQuery];

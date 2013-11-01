@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class EpflRestaurant;
+@class FoodRestaurantViewController;
 
 @interface FoodRestaurantInfoCell : UITableViewCell
 
@@ -17,5 +18,7 @@
 + (CGFloat)preferredHeight;
 
 @property (nonatomic, strong) EpflRestaurant* restaurant;
+
+@property (nonatomic, weak) FoodRestaurantViewController* restaurantViewController;
 
 @end

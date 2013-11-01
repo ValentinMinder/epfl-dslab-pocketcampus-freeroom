@@ -543,7 +543,7 @@ static NSString* kLastLocationKey = @"lastLocation";
 //does not take accuracy of location into parameter
 - (TransportStation*)nearestStationFromLocation:(CLLocation*)newLocation {
     TransportStation* retStation = nil;
-    CLLocationDistance minDistance = DBL_MAX;
+    CLLocationDistance minDistance = CGFLOAT_MAX;
     for (TransportStation* station in stations) {
         CLLocation* location = [[CLLocation alloc] initWithLatitude:station.latitude/1000000.0 longitude:station.longitude/1000000.0];
         CLLocationDistance distance = [location distanceFromLocation:newLocation];
@@ -557,7 +557,7 @@ static NSString* kLastLocationKey = @"lastLocation";
 }
 
 - (CLLocationDistance)minimumDistanceBetweenStations {
-    CLLocationDistance minDistance = DBL_MAX; //in meters
+    CLLocationDistance minDistance = CGFLOAT_MAX; //in meters
     
     for (TransportStation* station1 in stations) {
         if (![station1 isKindOfClass:[TransportStation class]]) {

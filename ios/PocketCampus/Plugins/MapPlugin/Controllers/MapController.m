@@ -83,6 +83,10 @@ static MapController* instance __weak = nil;
     return nil;
 }
 
++ (UIViewController*)viewControllerWithInitialMapItem:(MapItem*)mapItem {
+    return [[MapViewController alloc] initWithInitialMapItem:mapItem];
+}
+
 + (UIViewController*)viewControllerWithInitialSearchQuery:(NSString*)query {
     return [[MapViewController alloc] initWithInitialQuery:query];
 }

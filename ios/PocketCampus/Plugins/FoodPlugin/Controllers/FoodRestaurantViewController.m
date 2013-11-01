@@ -7,8 +7,9 @@
 //
 
 #import "FoodRestaurantViewController.h"
-
 #import "FoodService.h"
+#import "FoodRestaurantInfoCell.h"
+#import "FoodMealCell.h"
 
 static const NSInteger kRestaurantInfoSection = 0;
 static const NSInteger kMealsSection = 1;
@@ -16,6 +17,8 @@ static const NSInteger kMealsSection = 1;
 @interface FoodRestaurantViewController ()
 
 @property (nonatomic, strong) EpflRestaurant* restaurant;
+
+@property (nonatomic, strong) FoodRestaurantInfoCell* restaurantInfoCell;
 
 @end
 
@@ -44,22 +47,47 @@ static const NSInteger kMealsSection = 1;
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case kRestaurantInfoSection:
+            return [FoodRestaurantInfoCell preferredHeight];
+        case kMealsSection:
+        {
+            EpflMeal* meal = self.restaurant.rMeals[indexPath.row];
+            return [FoodMealCell preferredHeightForMeal:meal];
+        }
+    }
+    return 0.0;
 }
+
+/*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}*/
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = nil;
     switch (indexPath.section) {
-#warning TODO
         case kRestaurantInfoSection:
-            
+            if (!self.restaurantInfoCell) {
+                self.restaurantInfoCell = [[FoodRestaurantInfoCell alloc] initWithEpflRestaurant:self.restaurant];
+                self.restaurantInfoCell.restaurantViewController = self;
+            }
+            cell = self.restaurantInfoCell;
             break;
         case kMealsSection:
-            
+        {
+            EpflMeal* meal = self.restaurant.rMeals[indexPath.row];
+            static NSString* kMealCell = @"MealCell";
+            FoodMealCell* mealCell = [self.tableView dequeueReusableCellWithIdentifier:kMealCell];
+            if (!mealCell) {
+                mealCell = [[FoodMealCell alloc] initWithReuseIdentifier:kMealCell];
+            }
+            mealCell.meal = meal;
+            cell = mealCell;
             break;
+        }
     }
     return cell;
 }

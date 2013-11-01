@@ -450,11 +450,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Controllers/FoodRestaurantsListViewController.m"
-            timestampString = "404733868.524932"
+            timestampString = "405020849.83012"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "-refreshIfNeeded"
             landmarkType = "5">
          </BreakpointContent>
@@ -631,7 +631,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "610"
             endingLineNumber = "610"
-            landmarkName = "-updateControls"
+            landmarkName = "-floorUpPressed"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -647,7 +647,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "597"
             endingLineNumber = "597"
-            landmarkName = "-floorUpPressed"
+            landmarkName = "-resultsListPressed"
             landmarkType = "5">
             <Locations>
                <Location
@@ -709,8 +709,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "743"
             endingLineNumber = "743"
-            landmarkName = "-mapView:regionDidChangeAnimated:"
-            landmarkType = "5">
+            landmarkName = "@implementation MapViewController"
+            landmarkType = "3">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -750,7 +750,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "679"
             endingLineNumber = "679"
-            landmarkName = "-mapView:rendererForOverlay:"
+            landmarkName = "-searchBarTextDidBeginEditing:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -766,7 +766,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "747"
             endingLineNumber = "747"
-            landmarkName = "-mapView:regionDidChangeAnimated:"
+            landmarkName = "-mapView:didSelectAnnotationView:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -782,7 +782,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "826"
             endingLineNumber = "826"
-            landmarkName = "-annotationAccessoryTapped:"
+            landmarkName = "-serviceConnectionToServerTimedOut"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -814,7 +814,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "905"
             endingLineNumber = "905"
-            landmarkName = "-remoteOverlayRendererDidStartLoading:"
+            landmarkName = "-alertView:didDismissWithButtonIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -862,7 +862,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "723"
             endingLineNumber = "723"
-            landmarkName = "-mapView:didAddAnnotationViews:"
+            landmarkName = "-mapView:viewForAnnotation:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -878,8 +878,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "550"
             endingLineNumber = "550"
-            landmarkName = "-resultsListPressed"
-            landmarkType = "5">
+            landmarkName = "@implementation MapViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -894,7 +894,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "665"
             endingLineNumber = "665"
-            landmarkName = "-searchBarTextDidBeginEditing:"
+            landmarkName = "-searchBar:textDidChange:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -910,7 +910,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "647"
             endingLineNumber = "647"
-            landmarkName = "-searchBar:textDidChange:"
+            landmarkName = "-setLayersLevel:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -926,7 +926,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "870"
             endingLineNumber = "870"
-            landmarkName = "-popoverControllerDidDismissPopover:"
+            landmarkName = "-annotationAccessoryTapped:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -990,7 +990,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "391"
             endingLineNumber = "391"
-            landmarkName = "-setMapControlsState:"
+            landmarkName = "-setSearchState:animated:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -1409,11 +1409,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/FoodPlugin/Controllers/FoodRestaurantsListViewController.m"
-            timestampString = "404733945.930117"
+            timestampString = "405020849.83012"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "-getFoodForRequest:didReturn:"
             landmarkType = "5">
             <Actions>
