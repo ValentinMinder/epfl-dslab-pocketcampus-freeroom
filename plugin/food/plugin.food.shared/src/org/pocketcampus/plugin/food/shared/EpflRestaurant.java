@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -28,12 +29,14 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
   private static final org.apache.thrift.protocol.TField R_MEALS_FIELD_DESC = new org.apache.thrift.protocol.TField("rMeals", org.apache.thrift.protocol.TType.LIST, (short)3);
   private static final org.apache.thrift.protocol.TField R_LOCATION_FIELD_DESC = new org.apache.thrift.protocol.TField("rLocation", org.apache.thrift.protocol.TType.STRUCT, (short)4);
   private static final org.apache.thrift.protocol.TField R_RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rRating", org.apache.thrift.protocol.TType.STRUCT, (short)5);
+  private static final org.apache.thrift.protocol.TField R_PICTURE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("rPictureUrl", org.apache.thrift.protocol.TType.STRING, (short)6);
 
-  private long rId; // required
-  private String rName; // required
-  private List<EpflMeal> rMeals; // required
-  private org.pocketcampus.plugin.map.shared.MapItem rLocation; // required
-  private EpflRating rRating; // required
+  public long rId; // required
+  public String rName; // required
+  public List<EpflMeal> rMeals; // required
+  public org.pocketcampus.plugin.map.shared.MapItem rLocation; // required
+  public EpflRating rRating; // required
+  public String rPictureUrl; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -41,7 +44,8 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
     R_NAME((short)2, "rName"),
     R_MEALS((short)3, "rMeals"),
     R_LOCATION((short)4, "rLocation"),
-    R_RATING((short)5, "rRating");
+    R_RATING((short)5, "rRating"),
+    R_PICTURE_URL((short)6, "rPictureUrl");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -66,6 +70,8 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
           return R_LOCATION;
         case 5: // R_RATING
           return R_RATING;
+        case 6: // R_PICTURE_URL
+          return R_PICTURE_URL;
         default:
           return null;
       }
@@ -123,6 +129,8 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.map.shared.MapItem.class)));
     tmpMap.put(_Fields.R_RATING, new org.apache.thrift.meta_data.FieldMetaData("rRating", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, EpflRating.class)));
+    tmpMap.put(_Fields.R_PICTURE_URL, new org.apache.thrift.meta_data.FieldMetaData("rPictureUrl", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(EpflRestaurant.class, metaDataMap);
   }
@@ -167,6 +175,9 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
     if (other.isSetRRating()) {
       this.rRating = new EpflRating(other.rRating);
     }
+    if (other.isSetRPictureUrl()) {
+      this.rPictureUrl = other.rPictureUrl;
+    }
   }
 
   public EpflRestaurant deepCopy() {
@@ -181,6 +192,7 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
     this.rMeals = null;
     this.rLocation = null;
     this.rRating = null;
+    this.rPictureUrl = null;
   }
 
   public long getRId() {
@@ -317,6 +329,30 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
     }
   }
 
+  public String getRPictureUrl() {
+    return this.rPictureUrl;
+  }
+
+  public EpflRestaurant setRPictureUrl(String rPictureUrl) {
+    this.rPictureUrl = rPictureUrl;
+    return this;
+  }
+
+  public void unsetRPictureUrl() {
+    this.rPictureUrl = null;
+  }
+
+  /** Returns true if field rPictureUrl is set (has been assigned a value) and false otherwise */
+  public boolean isSetRPictureUrl() {
+    return this.rPictureUrl != null;
+  }
+
+  public void setRPictureUrlIsSet(boolean value) {
+    if (!value) {
+      this.rPictureUrl = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case R_ID:
@@ -359,6 +395,14 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
       }
       break;
 
+    case R_PICTURE_URL:
+      if (value == null) {
+        unsetRPictureUrl();
+      } else {
+        setRPictureUrl((String)value);
+      }
+      break;
+
     }
   }
 
@@ -378,6 +422,9 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
 
     case R_RATING:
       return getRRating();
+
+    case R_PICTURE_URL:
+      return getRPictureUrl();
 
     }
     throw new IllegalStateException();
@@ -400,6 +447,8 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
       return isSetRLocation();
     case R_RATING:
       return isSetRRating();
+    case R_PICTURE_URL:
+      return isSetRPictureUrl();
     }
     throw new IllegalStateException();
   }
@@ -462,12 +511,53 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
         return false;
     }
 
+    boolean this_present_rPictureUrl = true && this.isSetRPictureUrl();
+    boolean that_present_rPictureUrl = true && that.isSetRPictureUrl();
+    if (this_present_rPictureUrl || that_present_rPictureUrl) {
+      if (!(this_present_rPictureUrl && that_present_rPictureUrl))
+        return false;
+      if (!this.rPictureUrl.equals(that.rPictureUrl))
+        return false;
+    }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_rId = true;
+    builder.append(present_rId);
+    if (present_rId)
+      builder.append(rId);
+
+    boolean present_rName = true && (isSetRName());
+    builder.append(present_rName);
+    if (present_rName)
+      builder.append(rName);
+
+    boolean present_rMeals = true && (isSetRMeals());
+    builder.append(present_rMeals);
+    if (present_rMeals)
+      builder.append(rMeals);
+
+    boolean present_rLocation = true && (isSetRLocation());
+    builder.append(present_rLocation);
+    if (present_rLocation)
+      builder.append(rLocation);
+
+    boolean present_rRating = true && (isSetRRating());
+    builder.append(present_rRating);
+    if (present_rRating)
+      builder.append(rRating);
+
+    boolean present_rPictureUrl = true && (isSetRPictureUrl());
+    builder.append(present_rPictureUrl);
+    if (present_rPictureUrl)
+      builder.append(rPictureUrl);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(EpflRestaurant other) {
@@ -524,6 +614,16 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
     }
     if (isSetRRating()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.rRating, typedOther.rRating);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetRPictureUrl()).compareTo(typedOther.isSetRPictureUrl());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetRPictureUrl()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.rPictureUrl, typedOther.rPictureUrl);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -594,6 +694,13 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 6: // R_PICTURE_URL
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.rPictureUrl = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -644,6 +751,13 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
       this.rRating.write(oprot);
       oprot.writeFieldEnd();
     }
+    if (this.rPictureUrl != null) {
+      if (isSetRPictureUrl()) {
+        oprot.writeFieldBegin(R_PICTURE_URL_FIELD_DESC);
+        oprot.writeString(this.rPictureUrl);
+        oprot.writeFieldEnd();
+      }
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -690,6 +804,16 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
       sb.append(this.rRating);
     }
     first = false;
+    if (isSetRPictureUrl()) {
+      if (!first) sb.append(", ");
+      sb.append("rPictureUrl:");
+      if (this.rPictureUrl == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.rPictureUrl);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }

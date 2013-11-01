@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -28,10 +29,14 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
   private static final org.apache.thrift.protocol.TField MEAL_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("mealDate", org.apache.thrift.protocol.TType.I64, (short)3);
   private static final org.apache.thrift.protocol.TField DEVICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceId", org.apache.thrift.protocol.TType.STRING, (short)4);
 
-  private String deviceLanguage; // required
-  private MealTime mealTime; // required
-  private long mealDate; // required
-  private String deviceId; // required
+  public String deviceLanguage; // required
+  /**
+   * 
+   * @see MealTime
+   */
+  public MealTime mealTime; // required
+  public long mealDate; // required
+  public String deviceId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -111,11 +116,11 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.DEVICE_LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("deviceLanguage", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.DEVICE_LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("deviceLanguage", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.MEAL_TIME, new org.apache.thrift.meta_data.FieldMetaData("mealTime", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.MEAL_TIME, new org.apache.thrift.meta_data.FieldMetaData("mealTime", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, MealTime.class)));
-    tmpMap.put(_Fields.MEAL_DATE, new org.apache.thrift.meta_data.FieldMetaData("mealDate", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.MEAL_DATE, new org.apache.thrift.meta_data.FieldMetaData("mealDate", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.DEVICE_ID, new org.apache.thrift.meta_data.FieldMetaData("deviceId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -126,22 +131,6 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
   public FoodRequest() {
     this.deviceLanguage = "fr";
 
-    this.mealTime = org.pocketcampus.plugin.food.shared.MealTime.LUNCH;
-
-    this.mealDate = -1L;
-
-  }
-
-  public FoodRequest(
-    String deviceLanguage,
-    MealTime mealTime,
-    long mealDate)
-  {
-    this();
-    this.deviceLanguage = deviceLanguage;
-    this.mealTime = mealTime;
-    this.mealDate = mealDate;
-    setMealDateIsSet(true);
   }
 
   /**
@@ -170,10 +159,9 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
   public void clear() {
     this.deviceLanguage = "fr";
 
-    this.mealTime = org.pocketcampus.plugin.food.shared.MealTime.LUNCH;
-
-    this.mealDate = -1L;
-
+    this.mealTime = null;
+    setMealDateIsSet(false);
+    this.mealDate = 0;
     this.deviceId = null;
   }
 
@@ -385,8 +373,8 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
         return false;
     }
 
-    boolean this_present_mealDate = true;
-    boolean that_present_mealDate = true;
+    boolean this_present_mealDate = true && this.isSetMealDate();
+    boolean that_present_mealDate = true && that.isSetMealDate();
     if (this_present_mealDate || that_present_mealDate) {
       if (!(this_present_mealDate && that_present_mealDate))
         return false;
@@ -408,7 +396,29 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_deviceLanguage = true && (isSetDeviceLanguage());
+    builder.append(present_deviceLanguage);
+    if (present_deviceLanguage)
+      builder.append(deviceLanguage);
+
+    boolean present_mealTime = true && (isSetMealTime());
+    builder.append(present_mealTime);
+    if (present_mealTime)
+      builder.append(mealTime.getValue());
+
+    boolean present_mealDate = true && (isSetMealDate());
+    builder.append(present_mealDate);
+    if (present_mealDate)
+      builder.append(mealDate);
+
+    boolean present_deviceId = true && (isSetDeviceId());
+    builder.append(present_deviceId);
+    if (present_deviceId)
+      builder.append(deviceId);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(FoodRequest other) {
@@ -513,9 +523,6 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetMealDate()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'mealDate' was not found in serialized data! Struct: " + toString());
-    }
     validate();
   }
 
@@ -524,18 +531,24 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
 
     oprot.writeStructBegin(STRUCT_DESC);
     if (this.deviceLanguage != null) {
-      oprot.writeFieldBegin(DEVICE_LANGUAGE_FIELD_DESC);
-      oprot.writeString(this.deviceLanguage);
-      oprot.writeFieldEnd();
+      if (isSetDeviceLanguage()) {
+        oprot.writeFieldBegin(DEVICE_LANGUAGE_FIELD_DESC);
+        oprot.writeString(this.deviceLanguage);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.mealTime != null) {
-      oprot.writeFieldBegin(MEAL_TIME_FIELD_DESC);
-      oprot.writeI32(this.mealTime.getValue());
+      if (isSetMealTime()) {
+        oprot.writeFieldBegin(MEAL_TIME_FIELD_DESC);
+        oprot.writeI32(this.mealTime.getValue());
+        oprot.writeFieldEnd();
+      }
+    }
+    if (isSetMealDate()) {
+      oprot.writeFieldBegin(MEAL_DATE_FIELD_DESC);
+      oprot.writeI64(this.mealDate);
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(MEAL_DATE_FIELD_DESC);
-    oprot.writeI64(this.mealDate);
-    oprot.writeFieldEnd();
     if (this.deviceId != null) {
       if (isSetDeviceId()) {
         oprot.writeFieldBegin(DEVICE_ID_FIELD_DESC);
@@ -552,25 +565,31 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
     StringBuilder sb = new StringBuilder("FoodRequest(");
     boolean first = true;
 
-    sb.append("deviceLanguage:");
-    if (this.deviceLanguage == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.deviceLanguage);
+    if (isSetDeviceLanguage()) {
+      sb.append("deviceLanguage:");
+      if (this.deviceLanguage == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.deviceLanguage);
+      }
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("mealTime:");
-    if (this.mealTime == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.mealTime);
+    if (isSetMealTime()) {
+      if (!first) sb.append(", ");
+      sb.append("mealTime:");
+      if (this.mealTime == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.mealTime);
+      }
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("mealDate:");
-    sb.append(this.mealDate);
-    first = false;
+    if (isSetMealDate()) {
+      if (!first) sb.append(", ");
+      sb.append("mealDate:");
+      sb.append(this.mealDate);
+      first = false;
+    }
     if (isSetDeviceId()) {
       if (!first) sb.append(", ");
       sb.append("deviceId:");
@@ -587,13 +606,6 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (deviceLanguage == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'deviceLanguage' was not present! Struct: " + toString());
-    }
-    if (mealTime == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'mealTime' was not present! Struct: " + toString());
-    }
-    // alas, we cannot check 'mealDate' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

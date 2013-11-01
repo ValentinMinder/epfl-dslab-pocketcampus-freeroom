@@ -82,6 +82,7 @@ struct EpflRestaurant {
     3: required list<EpflMeal> rMeals;
     4: optional map.MapItem rLocation;
     5: required EpflRating rRating;
+    6: optional string rPictureUrl;
 }
 
 struct FoodRequest {

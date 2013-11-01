@@ -16,7 +16,7 @@ chdir(dirname(__FILE__));
 
 // ARGUMENTS: SET THE PLUGIN NAME HERE (set to "sdk" to compile common thrift definition files)
 
-$plugin_name = "Map";
+$plugin_name = "Food";
 
 // LOGIC: DONT TOUCH THE CODE BELOW
 
