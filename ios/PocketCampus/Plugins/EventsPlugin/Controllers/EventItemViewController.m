@@ -153,11 +153,10 @@ static NSString* kPoolCell = @"PoolCell";
 - (void)addRemoveFavoritesButtonPressed {
     if ([self.eventsService isEventItemIdFavorite:self.eventItem.eventId]) {
         [self.eventsService removeFavoriteEventItemId:self.eventItem.eventId];
-        [self refreshFavoriteButton];
     } else {
         [self.eventsService addFavoriteEventItemId:self.eventItem.eventId];
-        [self refreshFavoriteButton];
     }
+    [self refreshFavoriteButton];
 }
 
 #pragma mark - Views loads

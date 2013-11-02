@@ -271,6 +271,10 @@
 		327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412DF167E7E56001E8C62 /* DownloadedCornerSelected.png */; };
 		327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */; };
 		327412E5167E824F001E8C62 /* PCTableViewCellAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		327513311825465D0037FE00 /* FavoriteCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132D1825465D0037FE00 /* FavoriteCorner.png */; };
+		327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132E1825465D0037FE00 /* FavoriteCorner@2x.png */; };
+		327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132F1825465D0037FE00 /* FavoriteCornerSelected.png */; };
+		327513341825465D0037FE00 /* FavoriteCornerSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327513301825465D0037FE00 /* FavoriteCornerSelected@2x.png */; };
 		3275435F153872DF00C94F3D /* MapUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3275435E153872DF00C94F3D /* MapUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32763231166511B700C33DF9 /* MapView-pad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32763230166511B600C33DF9 /* MapView-pad.xib */; };
 		3276BE0B150BBA77001F2A88 /* RatingStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE09150BBA77001F2A88 /* RatingStarEmpty.png */; };
@@ -876,6 +880,10 @@
 		327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownloadedCornerSelected@2x.png"; sourceTree = "<group>"; };
 		327412E3167E824F001E8C62 /* PCTableViewCellAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCTableViewCellAdditions.h; sourceTree = "<group>"; };
 		327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTableViewCellAdditions.m; sourceTree = "<group>"; };
+		3275132D1825465D0037FE00 /* FavoriteCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteCorner.png; sourceTree = "<group>"; };
+		3275132E1825465D0037FE00 /* FavoriteCorner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteCorner@2x.png"; sourceTree = "<group>"; };
+		3275132F1825465D0037FE00 /* FavoriteCornerSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteCornerSelected.png; sourceTree = "<group>"; };
+		327513301825465D0037FE00 /* FavoriteCornerSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteCornerSelected@2x.png"; sourceTree = "<group>"; };
 		3275435D153872DF00C94F3D /* MapUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapUtils.h; sourceTree = "<group>"; };
 		3275435E153872DF00C94F3D /* MapUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapUtils.m; sourceTree = "<group>"; };
 		32763230166511B600C33DF9 /* MapView-pad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MapView-pad.xib"; sourceTree = "<group>"; };
@@ -1424,6 +1432,10 @@
 				3212452C16FE174500469113 /* EyeBarButton@2x.png */,
 				323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */,
 				323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */,
+				3275132D1825465D0037FE00 /* FavoriteCorner.png */,
+				3275132E1825465D0037FE00 /* FavoriteCorner@2x.png */,
+				3275132F1825465D0037FE00 /* FavoriteCornerSelected.png */,
+				327513301825465D0037FE00 /* FavoriteCornerSelected@2x.png */,
 				329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */,
 				329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */,
 				329E1B3916E693130054C3A8 /* FavoriteNavBarButton.png */,
@@ -3044,6 +3056,7 @@
 				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
 				32442FF6151D2BF700685D10 /* LocationArrowActiveLight.png in Resources */,
 				32442FF7151D2BF700685D10 /* LocationArrowActiveLight@2x.png in Resources */,
+				327513311825465D0037FE00 /* FavoriteCorner.png in Resources */,
 				324A5993151DC73A00977F33 /* FavoriteStationsView.xib in Resources */,
 				324A599A151DFDF700977F33 /* AddStationView.xib in Resources */,
 				329D4ACD151F810E000AC339 /* DestinationTransportArrow.png in Resources */,
@@ -3108,11 +3121,13 @@
 				32969ABC15FBA9150051EF9A /* Compass@2x.png in Resources */,
 				32969ABF15FBBB170051EF9A /* BookmarksBlueHighlighted.png in Resources */,
 				32969AC015FBBB170051EF9A /* BookmarksBlueHighlighted@2x.png in Resources */,
+				327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */,
 				32B3F3941621956C007A75C7 /* MainMenuView.xib in Resources */,
 				325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */,
 				325C47B4162200E8006752B4 /* BlankPluginView.xib in Resources */,
 				1D0F4A038721DEB98C2AC34A /* MyEdu@2x.png in Resources */,
 				3200375918119B4100901F6A /* Info.png in Resources */,
+				327513341825465D0037FE00 /* FavoriteCornerSelected@2x.png in Resources */,
 				E6C544C6812266BE16AC628D /* MyEdu.png in Resources */,
 				32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */,
 				32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */,
@@ -3135,6 +3150,7 @@
 				32BA30731645DCB200909D82 /* MyEduCourseInfoView.xib in Resources */,
 				320DFC2616469A2300849907 /* MyEduSplashDetailView.xib in Resources */,
 				32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */,
+				327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */,
 				320DFC331646B3A200849907 /* MyEduModuleVideoView.xib in Resources */,
 				320073571646C51E002AD7BA /* MyEduModuleDetailView.xib in Resources */,
 				3200735A1646CBF0002AD7BA /* MyEduModuleVideo.png in Resources */,

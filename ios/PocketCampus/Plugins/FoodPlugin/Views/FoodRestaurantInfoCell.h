@@ -19,6 +19,4 @@
 
 @property (nonatomic, strong) EpflRestaurant* restaurant;
 
-@property (nonatomic, weak) FoodRestaurantViewController* restaurantViewController;
-
 @end

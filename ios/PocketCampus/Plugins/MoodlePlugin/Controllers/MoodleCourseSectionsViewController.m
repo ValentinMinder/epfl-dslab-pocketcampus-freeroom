@@ -185,9 +185,9 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
             PCTableViewCellAdditions* newCell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
             newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
             newCell.textLabel.adjustsFontSizeToFitWidth = YES;
-            
-
             newCell.textLabel.text = resource.iName;
+            
+            newCell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
             
             NSArray* pathComponents = [resource.iUrl pathComponents];
             newCell.detailTextLabel.text = [pathComponents objectAtIndex:pathComponents.count-1];

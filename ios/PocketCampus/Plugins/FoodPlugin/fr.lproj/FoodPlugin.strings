@@ -13,6 +13,7 @@
 "NoMealsWeekend" = "Aucun menu pendant le weekend.";
 "MenusForTodayWithFormat" = "Menus du jour – %@";
 "Map" = "Plan";
+"ShowOnMap" = "Voir sur le Plan";
 "NoVote" = "Aucun vote";
 "VoteNameSingular" = "vote";
 "VoteNamePlural" = "votes";
@@ -20,6 +21,7 @@
 "RatingSendingError" = "Désolé, une erreur est survenue. Veuillez réessayer.";
 "RatingTooEarly" = "Désolé, il est trop tôt pour voter.";
 "RatingAlreadyDone" = "Vous ne pouvez voter qu'une fois par jour";
+"SatisfactionRate" = "taux de satisfaction";
 
 
 /* Accessiblity */

@@ -10,14 +10,15 @@
 #import "FoodService.h"
 #import "FoodRestaurantInfoCell.h"
 #import "FoodMealCell.h"
+#import "MapController.h"
 
 static const NSInteger kRestaurantInfoSection = 0;
 static const NSInteger kMealsSection = 1;
 
 @interface FoodRestaurantViewController ()
 
+@property (nonatomic, strong) FoodService* foodService;
 @property (nonatomic, strong) EpflRestaurant* restaurant;
-
 @property (nonatomic, strong) FoodRestaurantInfoCell* restaurantInfoCell;
 
 @end
@@ -31,7 +32,11 @@ static const NSInteger kMealsSection = 1;
     [PCUtils throwExceptionIfObject:restaurant notKindOfClass:[EpflRestaurant class]];
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
+        self.foodService = [FoodService sharedInstanceToRetain];
         self.restaurant = restaurant;
+#warning TO REMOVE
+        self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurants-pics/vallotton.png";
+        self.restaurant.rRating.ratingValue = 0.83;
     }
     return self;
 }
@@ -41,7 +46,27 @@ static const NSInteger kMealsSection = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self refreshFavoriteButton];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kFavoritesRestaurantsUpdatedNotificationName object:self.foodService];
+}
 
+- (NSUInteger)supportedInterfaceOrientations {
+    return [PCUtils isIdiomPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - Actions
+
+- (void)refreshFavoriteButton {
+    UIImage* image = [UIImage imageNamed:[self.foodService isRestaurantFavorite:self.restaurant] ? @"FavoriteGlowNavBarButton" : @"FavoriteNavBarButton"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(favoritePressed)];
+}
+
+- (void)favoritePressed {
+    if ([self.foodService isRestaurantFavorite:self.restaurant]) {
+        [self.foodService removeFavoritRestaurant:self.restaurant];
+    } else {
+        [self.foodService addFavoriteRestaurant:self.restaurant];
+    }
 }
 
 
@@ -72,7 +97,6 @@ static const NSInteger kMealsSection = 1;
         case kRestaurantInfoSection:
             if (!self.restaurantInfoCell) {
                 self.restaurantInfoCell = [[FoodRestaurantInfoCell alloc] initWithEpflRestaurant:self.restaurant];
-                self.restaurantInfoCell.restaurantViewController = self;
             }
             cell = self.restaurantInfoCell;
             break;
@@ -107,6 +131,16 @@ static const NSInteger kMealsSection = 1;
         return 0;
     }
     return 2; //retaurant info + meals
+}
+
+#pragma mark - Dealloc
+
+- (void)dealloc
+{
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end

@@ -13,12 +13,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iTf-At-wnc">
-                        <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iTf-At-wnc" userLabel="Meal Type Image View">
+                        <rect key="frame" x="10" y="5" width="50" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="70" id="Ji5-8H-esh"/>
-                            <constraint firstAttribute="width" constant="70" id="t3c-lg-wRN"/>
+                            <constraint firstAttribute="height" constant="50" id="Ji5-8H-esh"/>
+                            <constraint firstAttribute="width" constant="50" id="t3c-lg-wRN"/>
                         </constraints>
                     </imageView>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D9T-6y-12Z">
@@ -35,14 +35,14 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="D9T-6y-12Z" firstAttribute="top" secondItem="JEL-xE-pIh" secondAttribute="top" id="1Jv-dp-igd"/>
-                    <constraint firstItem="iTf-At-wnc" firstAttribute="top" secondItem="JEL-xE-pIh" secondAttribute="top" id="28i-nJ-Gwe"/>
+                    <constraint firstItem="iTf-At-wnc" firstAttribute="top" secondItem="JEL-xE-pIh" secondAttribute="top" constant="5" id="28i-nJ-Gwe"/>
                     <constraint firstAttribute="trailing" secondItem="D9T-6y-12Z" secondAttribute="trailing" id="ZFc-oc-Wm6"/>
-                    <constraint firstItem="iTf-At-wnc" firstAttribute="leading" secondItem="JEL-xE-pIh" secondAttribute="leading" id="of1-6u-EZf"/>
+                    <constraint firstItem="iTf-At-wnc" firstAttribute="leading" secondItem="JEL-xE-pIh" secondAttribute="leading" constant="10" id="of1-6u-EZf"/>
                     <constraint firstAttribute="bottom" secondItem="D9T-6y-12Z" secondAttribute="bottom" id="rbV-Ph-Fv6"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="imageView" destination="iTf-At-wnc" id="2ug-We-IrG"/>
+                <outlet property="mealTypeImageView" destination="iTf-At-wnc" id="yjB-EC-rrN"/>
                 <outlet property="textView" destination="D9T-6y-12Z" id="nCG-wf-GcO"/>
                 <outlet property="textViewWidthConstraint" destination="3rd-Gk-enm" id="zEG-0P-U6R"/>
             </connections>

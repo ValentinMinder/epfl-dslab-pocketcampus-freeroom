@@ -23,9 +23,9 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.icon = [[UIImageView alloc]  initWithImage:[UIImage imageNamed:@"DownloadedCorner"]];
-        self.icon.frame = CGRectMake(self.contentView.frame.size.width-self.icon.frame.size.width, 0, self.icon.frame.size.width, self.icon.frame.size.height);
-        [self.contentView addSubview:self.icon];
-        self.icon.hidden = YES; //not downloaded by default
+        self.icon.frame = CGRectMake(self.frame.size.width-self.icon.frame.size.width, 0, self.icon.frame.size.width, self.icon.frame.size.height);
+        [self addSubview:self.icon];
+        self.icon.hidden = YES; //no indication by default
         self.originalBackgroundColor = self.backgroundColor;
         self.originalTextLabelColor = self.textLabel.textColor;
         self.originalDetailTextLabelColor = self.detailTextLabel.textColor;
@@ -46,6 +46,17 @@
     [self setNeedsDisplay];
 }
 
+- (void)setFavoriteIndicationVisible:(BOOL)visible {
+    _favoriteIndicationVisible = visible;
+    if (visible) {
+        self.icon.hidden = NO;
+    } else {
+        self.icon.hidden = YES;
+    }
+    [self setNeedsDisplay];
+    
+}
+
 - (void)setDurablySelected:(BOOL)durablySelected {
     _durablySelected = durablySelected;
     if (durablySelected) {
@@ -61,7 +72,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.icon.frame = CGRectMake(self.contentView.frame.size.width-self.icon.frame.size.width, 0, self.icon.frame.size.width, self.icon.frame.size.height);
+    self.icon.frame = CGRectMake(self.frame.size.width-self.icon.frame.size.width, 0, self.icon.frame.size.width, self.icon.frame.size.height);
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
@@ -76,9 +87,17 @@
 
 - (void)updateCornerIcon {
     if (self.selected || self.highlighted || self.durablySelected) {
-        self.icon.image = [UIImage imageNamed:@"DownloadedCornerSelected"];
+        if (self.favoriteIndicationVisible) {
+            self.icon.image = [UIImage imageNamed:@"FavoriteCornerSelected"];
+        } else {
+            self.icon.image = [UIImage imageNamed:@"DownloadedCornerSelected"];
+        }
     } else {
-        self.icon.image = [UIImage imageNamed:@"DownloadedCorner"];
+        if (self.favoriteIndicationVisible) {
+            self.icon.image = [UIImage imageNamed:@"FavoriteCorner"];
+        } else {
+            self.icon.image = [UIImage imageNamed:@"DownloadedCorner"];
+        }
     }
 }
 
