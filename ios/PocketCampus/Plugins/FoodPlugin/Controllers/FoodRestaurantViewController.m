@@ -34,9 +34,9 @@ static const NSInteger kMealsSection = 1;
     if (self) {
         self.foodService = [FoodService sharedInstanceToRetain];
         self.restaurant = restaurant;
-#warning TO REMOVE
-        self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurants-pics/vallotton.png";
-        self.restaurant.rRating.ratingValue = 0.83;
+//#warning TO REMOVE
+        //self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurants-pics/vallotton.png";
+        //self.restaurant.rRating.ratingValue = 0.83;
     }
     return self;
 }

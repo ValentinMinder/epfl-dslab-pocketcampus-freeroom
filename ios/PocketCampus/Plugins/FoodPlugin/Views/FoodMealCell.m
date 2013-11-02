@@ -50,8 +50,8 @@ static const CGFloat kTextViewWidth = 252.0;
     _meal = meal;
     self.textView.attributedText = [self.class attributedStringForMeal:meal];
 #warning TODO use
-#warning TO REMOVE
-    [self.mealTypeImageView setImageWithURL:[NSURL URLWithString:@"http://pocketcampus.epfl.ch/backend/meals-pics/meat.png"]];
+//#warning TO REMOVE
+    //[self.mealTypeImageView setImageWithURL:[NSURL URLWithString:@"http://pocketcampus.epfl.ch/backend/meals-pics/meat.png"]];
 }
 
 + (CGFloat)preferredHeightForMeal:(EpflMeal*)meal {
