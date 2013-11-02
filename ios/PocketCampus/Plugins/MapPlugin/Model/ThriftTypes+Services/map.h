@@ -129,6 +129,8 @@
 - (void) setCategory: (NSString *) category;
 - (BOOL) categoryIsSet;
 
+- (NSString*)descriptionObject;
+
 @end
 
 @protocol MapService <NSObject>
