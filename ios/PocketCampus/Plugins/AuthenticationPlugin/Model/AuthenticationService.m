@@ -51,6 +51,15 @@ static AuthenticationService* instance __weak = nil;
     return [[[AuthenticationServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
 }
 
++ (BOOL)isLoggedIn {
+    return ([self savedPasswordForUsername:[self savedUsername]] != nil);
+}
+
++ (AuthenticationUserType)loggedInUserType {
+#warning TODO
+    return AuthenticationUserTypeUnknown;
+}
+
 + (NSString*)savedUsername {
     return (NSString*)[ObjectArchiver objectForKey:kSavedUsernameKey andPluginName:@"authentication"];
 }

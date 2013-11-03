@@ -21,7 +21,11 @@
 "RatingSendingError" = "Sorry, an error occured. Please try again.";
 "RatingTooEarly" = "Sorry, it's too early to vote.";
 "RatingAlreadyDone" = "You can vote only once a day";
-"SatisfactionRate" = "satisfaction rate";
+"satisfaction" = "satisfaction";
+"Rate" = "Rate now";
+"rating" = "rating";
+"ratings" = "ratings";
+"NoRating" = "No rating";
 
 
 /* Accessiblity */

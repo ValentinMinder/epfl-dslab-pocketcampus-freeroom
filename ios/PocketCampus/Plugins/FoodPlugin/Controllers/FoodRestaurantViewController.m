@@ -21,6 +21,7 @@ static const NSInteger kMealsSection = 1;
 @property (nonatomic, strong) EpflRestaurant* restaurant;
 @property (nonatomic, strong) FoodRestaurantInfoCell* restaurantInfoCell;
 
+
 @end
 
 @implementation FoodRestaurantViewController
@@ -34,9 +35,11 @@ static const NSInteger kMealsSection = 1;
     if (self) {
         self.foodService = [FoodService sharedInstanceToRetain];
         self.restaurant = restaurant;
-//#warning TO REMOVE
-        //self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurants-pics/vallotton.png";
-        //self.restaurant.rRating.ratingValue = 0.83;
+        self.title = self.restaurant.rName;
+#warning TO REMOVE
+        self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurants-pics/vallotton.png";
+        self.restaurant.rRating.ratingValue = 0.28;
+        self.restaurant.rRating.voteCount = 578;
     }
     return self;
 }
@@ -97,6 +100,7 @@ static const NSInteger kMealsSection = 1;
         case kRestaurantInfoSection:
             if (!self.restaurantInfoCell) {
                 self.restaurantInfoCell = [[FoodRestaurantInfoCell alloc] initWithEpflRestaurant:self.restaurant];
+                self.restaurantInfoCell.showRating = YES;
             }
             cell = self.restaurantInfoCell;
             break;
@@ -108,6 +112,12 @@ static const NSInteger kMealsSection = 1;
             if (!mealCell) {
                 mealCell = [[FoodMealCell alloc] initWithReuseIdentifier:kMealCell];
             }
+#warning TO REMOVE
+            if (indexPath.row > 1) {
+                meal.mRating.voteCount = 6;
+                meal.mRating.ratingValue = 0.76;
+            }
+#warning END OF TO REMOVE
             mealCell.meal = meal;
             cell = mealCell;
             break;

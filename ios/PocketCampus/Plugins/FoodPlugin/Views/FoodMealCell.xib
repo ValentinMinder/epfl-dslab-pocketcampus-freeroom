@@ -6,11 +6,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="100" id="fDV-Zm-CMO" customClass="FoodMealCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="146" id="fDV-Zm-CMO" customClass="FoodMealCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="146"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fDV-Zm-CMO" id="JEL-xE-pIh">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="145"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iTf-At-wnc" userLabel="Meal Type Image View">
@@ -21,10 +21,9 @@
                             <constraint firstAttribute="width" constant="50" id="t3c-lg-wRN"/>
                         </constraints>
                     </imageView>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D9T-6y-12Z">
-                        <rect key="frame" x="78" y="0.0" width="242" height="99"/>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D9T-6y-12Z">
+                        <rect key="frame" x="78" y="0.0" width="242" height="105"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="242" id="3rd-Gk-enm"/>
                         </constraints>
@@ -32,18 +31,52 @@
                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fRM-ZF-UCY" userLabel="Line">
+                        <rect key="frame" x="78" y="105" width="242" height="2"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.84740423387096775" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="oD1-Eq-FOR"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sgr-yg-Xur" userLabel="Sat Rate Button">
+                        <rect key="frame" x="83" y="106" width="38" height="39"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7.-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t6S-DS-N2b" userLabel="Prices label">
+                        <rect key="frame" x="27" y="55" width="22" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="D9T-6y-12Z" firstAttribute="top" secondItem="JEL-xE-pIh" secondAttribute="top" id="1Jv-dp-igd"/>
                     <constraint firstItem="iTf-At-wnc" firstAttribute="top" secondItem="JEL-xE-pIh" secondAttribute="top" constant="5" id="28i-nJ-Gwe"/>
+                    <constraint firstItem="Sgr-yg-Xur" firstAttribute="top" secondItem="fRM-ZF-UCY" secondAttribute="bottom" id="3iu-G0-SmV"/>
+                    <constraint firstItem="D9T-6y-12Z" firstAttribute="leading" secondItem="Sgr-yg-Xur" secondAttribute="leading" constant="-5" id="DhF-M1-7Em"/>
+                    <constraint firstItem="fRM-ZF-UCY" firstAttribute="trailing" secondItem="D9T-6y-12Z" secondAttribute="trailing" id="GH3-uw-2CJ"/>
+                    <constraint firstItem="fRM-ZF-UCY" firstAttribute="top" secondItem="D9T-6y-12Z" secondAttribute="bottom" id="IXw-Sk-4IX"/>
+                    <constraint firstItem="t6S-DS-N2b" firstAttribute="top" secondItem="iTf-At-wnc" secondAttribute="bottom" id="Pi9-9c-wvt"/>
+                    <constraint firstAttribute="bottom" secondItem="Sgr-yg-Xur" secondAttribute="bottom" id="VpS-iJ-uPZ"/>
+                    <constraint firstItem="t6S-DS-N2b" firstAttribute="centerX" secondItem="iTf-At-wnc" secondAttribute="centerX" constant="3" id="ZDi-oB-DMZ"/>
                     <constraint firstAttribute="trailing" secondItem="D9T-6y-12Z" secondAttribute="trailing" id="ZFc-oc-Wm6"/>
+                    <constraint firstItem="fRM-ZF-UCY" firstAttribute="width" secondItem="D9T-6y-12Z" secondAttribute="width" id="gY9-hv-yd3"/>
                     <constraint firstItem="iTf-At-wnc" firstAttribute="leading" secondItem="JEL-xE-pIh" secondAttribute="leading" constant="10" id="of1-6u-EZf"/>
-                    <constraint firstAttribute="bottom" secondItem="D9T-6y-12Z" secondAttribute="bottom" id="rbV-Ph-Fv6"/>
+                    <constraint firstAttribute="bottom" secondItem="D9T-6y-12Z" secondAttribute="bottom" constant="40" id="rbV-Ph-Fv6"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="mealTypeImageView" destination="iTf-At-wnc" id="yjB-EC-rrN"/>
+                <outlet property="pricesLabel" destination="t6S-DS-N2b" id="6WH-db-M6G"/>
+                <outlet property="satRateButton" destination="Sgr-yg-Xur" id="HZQ-kL-DEp"/>
                 <outlet property="textView" destination="D9T-6y-12Z" id="nCG-wf-GcO"/>
+                <outlet property="textViewBottomConstraint" destination="rbV-Ph-Fv6" id="6P4-bf-agJ"/>
                 <outlet property="textViewWidthConstraint" destination="3rd-Gk-enm" id="zEG-0P-U6R"/>
             </connections>
         </tableViewCell>

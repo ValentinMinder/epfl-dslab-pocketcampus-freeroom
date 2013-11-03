@@ -9,11 +9,22 @@
 #define TEQUILA_AUTH_URL @"https://tequila.epfl.ch/cgi-bin/tequila/requestauth?requestkey=%@"
 #define TEQUILA_COOKIE_NAME @"tequila_key"
 
+typedef enum {
+    AuthenticationUserTypeUnknown = 0
+} AuthenticationUserType;
+
 @interface AuthenticationService : Service<ServiceProtocol>
 
 /*
  authentication service methods
  */
+
++ (BOOL)isLoggedIn;
+
+/*
+ * Returns AuthenticationUserTypeUnknown if user is not logged in or its type cannot be determined
+ */
++ (AuthenticationUserType)loggedInUserType;
 
 + (NSString*)savedUsername;
 + (BOOL)saveUsername:(NSString*)username;

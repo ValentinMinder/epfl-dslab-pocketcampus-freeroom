@@ -19,4 +19,9 @@
 
 @property (nonatomic, strong) EpflRestaurant* restaurant;
 
+/*
+ * Default: YES
+ */
+@property (nonatomic) BOOL showRating;
+
 @end

@@ -10,18 +10,25 @@
 
 #import "FoodService.h"
 
+#import "AuthenticationService.h"
+
 #import "UIImageView+AFNetworking.h"
 
 @import CoreText;
 
+static const CGFloat kMinHeight = 60.0;
 static const CGFloat kTextViewWidth = 252.0;
+static const CGFloat kBottomZoneHeight = 30.0;
 
 @interface FoodMealCell ()
 
 @property (nonatomic, strong) IBOutlet UIImageView* mealTypeImageView;
+@property (nonatomic, strong) IBOutlet UILabel* pricesLabel;
 @property (nonatomic, strong) IBOutlet UITextView* textView;
+@property (nonatomic, strong) IBOutlet UIButton* satRateButton;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewWidthConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewBottomConstraint;
 
 @end
 
@@ -35,6 +42,7 @@ static const CGFloat kTextViewWidth = 252.0;
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.textViewWidthConstraint.constant = kTextViewWidth;
+        self.textViewBottomConstraint.constant = kBottomZoneHeight;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return self;
@@ -48,26 +56,58 @@ static const CGFloat kTextViewWidth = 252.0;
 - (void)setMeal:(EpflMeal *)meal {
     [PCUtils throwExceptionIfObject:meal notKindOfClass:[EpflMeal class]];
     _meal = meal;
+    
+    //Meal image
+#warning TODO
+#warning TO REMOVE
+    [self.mealTypeImageView setImageWithURL:[NSURL URLWithString:@"http://pocketcampus.epfl.ch/backend/meals-pics/meat.png"]];
+#warning END OF TO REMOVE
+    // Meal text
     self.textView.attributedText = [self.class attributedStringForMeal:meal];
-#warning TODO use
-//#warning TO REMOVE
-    //[self.mealTypeImageView setImageWithURL:[NSURL URLWithString:@"http://pocketcampus.epfl.ch/backend/meals-pics/meat.png"]];
+    
+    // Prices
+    float price = [self.meal.mPrices[[NSNumber numberWithInteger:PriceTarget_ALL]] floatValue];
+    if (price > 0.0) {
+        AuthenticationUserType userType = [AuthenticationService loggedInUserType];
+        if (userType != AuthenticationUserTypeUnknown) {
+#warning TODO
+        }
+        self.pricesLabel.text = [NSString stringWithFormat:@"%g.-", price];
+    } else {
+        self.pricesLabel.text = nil;
+    }
+    
+    // Rating
+    NSString* satRateString = nil;
+    if (self.meal.mRating.voteCount > 0) {
+        satRateString = [NSString stringWithFormat:@"%.0lf%% %@ (%d %@) – ", self.meal.mRating.ratingValue*100, NSLocalizedStringFromTable(@"satisfaction", @"FoodPlugin", nil), self.meal.mRating.voteCount, self.meal.mRating.voteCount > 1 ? NSLocalizedStringFromTable(@"ratings", @"FoodPlugin", nil) : NSLocalizedStringFromTable(@"rating", @"FoodPlugin", nil)];
+    } else {
+        satRateString = [NSString stringWithFormat:@"%@ – ", NSLocalizedStringFromTable(@"NoRating", @"FoodPlugin", nil)];
+    }
+    NSString* voteString =  NSLocalizedStringFromTable(@"Rate", @"FoodPlugin", nil);
+    NSString* fullString = [NSString stringWithFormat:@"%@%@      ", satRateString, voteString]; //spaces to extent touch zone of button
+    NSMutableAttributedString* satRateAttrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+    [satRateAttrString addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:[fullString rangeOfString:satRateString]];
+    [self.satRateButton setAttributedTitle:satRateAttrString forState:UIControlStateNormal];
 }
 
 + (CGFloat)preferredHeightForMeal:(EpflMeal*)meal {
     [PCUtils throwExceptionIfObject:meal notKindOfClass:[EpflMeal class]];
     NSAttributedString* attrString = [self attributedStringForMeal:meal];
     CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
-    CGSize targetSize = CGSizeMake(kTextViewWidth, CGFLOAT_MAX);
+    CGSize targetSize = CGSizeMake(kTextViewWidth-10.0, CGFLOAT_MAX); //account for text left and right insets of the text view
     CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
     CFRelease(framesetter);
-    CGFloat finalHeight = size.height+20.0; //give some margin
-    return finalHeight > 60.0 ? finalHeight : 60.0;
+    CGFloat finalHeight = size.height + kBottomZoneHeight + 16.0; //give some margin so that text is not too tight between top and bottom lines
+    return finalHeight > kMinHeight ? finalHeight : kMinHeight;
 }
 
 + (NSAttributedString*)attributedStringForMeal:(EpflMeal*)meal {
     [PCUtils throwExceptionIfObject:meal notKindOfClass:[EpflMeal class]];
-    NSString* fullString = [NSString stringWithFormat:@"%@%@%@", meal.mName, meal.mDescription.length > 0 ? @"\n" : @"", meal.mDescription.length > 0 ? meal.mDescription : @""];
+    NSString* fullString = meal.mName;
+    if (meal.mDescription.length > 0) {
+        fullString = [fullString stringByAppendingFormat:@"\n%@", meal.mDescription];
+    }
     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
     [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] range:[fullString rangeOfString:meal.mName]];
     [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1] range:[fullString rangeOfString:meal.mDescription]];
