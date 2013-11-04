@@ -28,9 +28,9 @@ public class VoteRequest implements org.apache.thrift.TBase<VoteRequest, VoteReq
   private static final org.apache.thrift.protocol.TField RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rating", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
   private static final org.apache.thrift.protocol.TField DEVICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceId", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  public long mealId; // required
-  public double rating; // required
-  public String deviceId; // required
+  private long mealId; // required
+  private double rating; // required
+  private String deviceId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

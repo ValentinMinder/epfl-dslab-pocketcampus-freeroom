@@ -30,11 +30,11 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
   private static final org.apache.thrift.protocol.TField RESTAURANT_FIELD_DESC = new org.apache.thrift.protocol.TField("restaurant", org.apache.thrift.protocol.TType.STRUCT, (short)4);
   private static final org.apache.thrift.protocol.TField RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rating", org.apache.thrift.protocol.TType.STRUCT, (short)5);
 
-  public long mealId; // required
-  public String name; // required
-  public String mealDescription; // required
-  public Restaurant restaurant; // required
-  public Rating rating; // required
+  private long mealId; // required
+  private String name; // required
+  private String mealDescription; // required
+  private Restaurant restaurant; // required
+  private Rating rating; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

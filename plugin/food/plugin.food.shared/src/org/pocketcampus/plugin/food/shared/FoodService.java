@@ -676,7 +676,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
 
-    public List<Meal> success; // required
+    private List<Meal> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -929,14 +929,14 @@ public class FoodService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list17 = iprot.readListBegin();
-                this.success = new ArrayList<Meal>(_list17.size);
-                for (int _i18 = 0; _i18 < _list17.size; ++_i18)
+                org.apache.thrift.protocol.TList _list22 = iprot.readListBegin();
+                this.success = new ArrayList<Meal>(_list22.size);
+                for (int _i23 = 0; _i23 < _list22.size; ++_i23)
                 {
-                  Meal _elem19; // required
-                  _elem19 = new Meal();
-                  _elem19.read(iprot);
-                  this.success.add(_elem19);
+                  Meal _elem24; // required
+                  _elem24 = new Meal();
+                  _elem24.read(iprot);
+                  this.success.add(_elem24);
                 }
                 iprot.readListEnd();
               }
@@ -962,9 +962,9 @@ public class FoodService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Meal _iter20 : this.success)
+          for (Meal _iter25 : this.success)
           {
-            _iter20.write(oprot);
+            _iter25.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1221,7 +1221,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.MAP, (short)0);
 
-    public Map<Long,Rating> success; // required
+    private Map<Long,Rating> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1479,16 +1479,16 @@ public class FoodService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.MAP) {
               {
-                org.apache.thrift.protocol.TMap _map21 = iprot.readMapBegin();
-                this.success = new HashMap<Long,Rating>(2*_map21.size);
-                for (int _i22 = 0; _i22 < _map21.size; ++_i22)
+                org.apache.thrift.protocol.TMap _map26 = iprot.readMapBegin();
+                this.success = new HashMap<Long,Rating>(2*_map26.size);
+                for (int _i27 = 0; _i27 < _map26.size; ++_i27)
                 {
-                  long _key23; // required
-                  Rating _val24; // required
-                  _key23 = iprot.readI64();
-                  _val24 = new Rating();
-                  _val24.read(iprot);
-                  this.success.put(_key23, _val24);
+                  long _key28; // required
+                  Rating _val29; // required
+                  _key28 = iprot.readI64();
+                  _val29 = new Rating();
+                  _val29.read(iprot);
+                  this.success.put(_key28, _val29);
                 }
                 iprot.readMapEnd();
               }
@@ -1514,10 +1514,10 @@ public class FoodService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I64, org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Map.Entry<Long, Rating> _iter25 : this.success.entrySet())
+          for (Map.Entry<Long, Rating> _iter30 : this.success.entrySet())
           {
-            oprot.writeI64(_iter25.getKey());
-            _iter25.getValue().write(oprot);
+            oprot.writeI64(_iter30.getKey());
+            _iter30.getValue().write(oprot);
           }
           oprot.writeMapEnd();
         }
@@ -1572,9 +1572,9 @@ public class FoodService {
     private static final org.apache.thrift.protocol.TField RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rating", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
     private static final org.apache.thrift.protocol.TField DEVICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceId", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-    public long mealId; // required
-    public double rating; // required
-    public String deviceId; // required
+    private long mealId; // required
+    private double rating; // required
+    private String deviceId; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2057,11 +2057,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.I32, (short)0);
 
-    /**
-     * 
-     * @see SubmitStatus
-     */
-    public SubmitStatus success; // required
+    private SubmitStatus success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2376,7 +2372,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField FOOD_REQ_FIELD_DESC = new org.apache.thrift.protocol.TField("foodReq", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public FoodRequest foodReq; // required
+    private FoodRequest foodReq; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2681,7 +2677,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public FoodResponse success; // required
+    private FoodResponse success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2985,7 +2981,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField VOTE_REQ_FIELD_DESC = new org.apache.thrift.protocol.TField("voteReq", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public VoteRequest voteReq; // required
+    private VoteRequest voteReq; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -3290,7 +3286,7 @@ public class FoodService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public VoteResponse success; // required
+    private VoteResponse success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {

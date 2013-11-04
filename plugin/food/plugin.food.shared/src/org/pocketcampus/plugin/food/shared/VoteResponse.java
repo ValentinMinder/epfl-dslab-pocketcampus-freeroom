@@ -26,11 +26,7 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
 
   private static final org.apache.thrift.protocol.TField SUBMIT_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("submitStatus", org.apache.thrift.protocol.TType.I32, (short)1);
 
-  /**
-   * 
-   * @see SubmitStatus
-   */
-  public SubmitStatus submitStatus; // required
+  private SubmitStatus submitStatus; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
