@@ -20,12 +20,6 @@ typedef enum {
  */
 
 + (BOOL)isLoggedIn;
-
-/*
- * Returns AuthenticationUserTypeUnknown if user is not logged in or its type cannot be determined
- */
-+ (AuthenticationUserType)loggedInUserType;
-
 + (NSString*)savedUsername;
 + (BOOL)saveUsername:(NSString*)username;
 + (NSString*)savedPasswordForUsername:(NSString*)username;

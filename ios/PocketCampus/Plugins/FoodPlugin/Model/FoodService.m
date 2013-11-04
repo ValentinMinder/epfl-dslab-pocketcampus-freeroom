@@ -32,6 +32,7 @@ static FoodService* instance __weak = nil;
         self = [super initWithServiceName:@"food"];
         if (self) {
             instance = self;
+            instance.userPriceTarget = PriceTarget_ALL;
         }
         return self;
     }

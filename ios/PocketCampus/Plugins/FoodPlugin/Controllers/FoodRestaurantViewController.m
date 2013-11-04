@@ -37,7 +37,7 @@ static const NSInteger kMealsSection = 1;
         self.restaurant = restaurant;
         self.title = self.restaurant.rName;
 #warning TO REMOVE
-        self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurants-pics/vallotton.png";
+        self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurant-pics/vallotton.png";
         self.restaurant.rRating.ratingValue = 0.28;
         self.restaurant.rRating.voteCount = 578;
     }

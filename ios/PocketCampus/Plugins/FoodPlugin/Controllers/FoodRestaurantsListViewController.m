@@ -30,6 +30,8 @@
 
 #import "PCTableViewCellAdditions.h"
 
+#import "AuthenticationService.h"
+
 static NSString* kLastRefreshDateKey = @"lastRefreshDate";
 
 /*
@@ -87,6 +89,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     req.mealTime = MealTime_LUNCH;
     req.mealDate = -1; //now
     req.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    req.userGaspar = [AuthenticationService savedUsername];
     return req;
 }
 
@@ -138,6 +141,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 - (void)getFoodForRequest:(FoodRequest *)request didReturn:(FoodResponse *)response {
     self.foodResponse = response;
     self.foodService.pictureUrlForMealType = response.mealTypePictureUrls; //see doc of self.foodService.pictureUrlForMealType
+    self.foodService.userPriceTarget = response.userStatus; //see doc of self.foodService.userPriceTarget
     [self fillCollectionsAndReloadTableView];
     [self.lgRefreshControl endRefreshingAndMarkSuccessful];
 }

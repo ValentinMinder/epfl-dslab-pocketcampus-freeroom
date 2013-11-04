@@ -55,11 +55,6 @@ static AuthenticationService* instance __weak = nil;
     return ([self savedPasswordForUsername:[self savedUsername]] != nil);
 }
 
-+ (AuthenticationUserType)loggedInUserType {
-#warning TODO
-    return AuthenticationUserTypeUnknown;
-}
-
 + (NSString*)savedUsername {
     return (NSString*)[ObjectArchiver objectForKey:kSavedUsernameKey andPluginName:@"authentication"];
 }

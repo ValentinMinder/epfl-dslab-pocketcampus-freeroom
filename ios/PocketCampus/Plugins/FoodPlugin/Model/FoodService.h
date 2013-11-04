@@ -39,6 +39,13 @@ static NSString* kFavoritesRestaurantsUpdatedNotificationName __unused = @"Favor
  */
 @property (nonatomic, strong) NSDictionary* pictureUrlForMealType;
 
+/*
+ * Any instance getting a FoodResponse (after calling getFoodForRequest:) is responsible for setting this property that
+ * acts as a central point to get access to userPriceTarget for other instances that don't have a pointer to the food response.
+ * Default: PriceTarget_ALL
+ */
+@property (nonatomic) NSInteger userPriceTarget; //PriceTarget enum value
+
 
 - (void)voteForRequest:(VoteRequest*)request delegate:(id)delegate;
 
