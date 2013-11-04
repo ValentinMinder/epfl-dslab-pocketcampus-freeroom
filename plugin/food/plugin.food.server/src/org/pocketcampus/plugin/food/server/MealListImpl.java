@@ -188,18 +188,18 @@ public final class MealListImpl implements MealList {
 		 * Querying map plugin to get restaurant location
 		 */
 		try {
-			String compatibleName = compatibleRestaurantNameForMap(restaurant.rName);
+			String compatibleName = compatibleRestaurantNameForMap(restaurant.getRName());
 			List<MapItem> searchResults = null;
 			searchResults = (List<MapItem>)PocketCampusServer.invokeOnPlugin("map", "search", compatibleName);
 			if (searchResults == null || searchResults.size() == 0) {
-				System.err.println("INFO: map plugin returned 0 result for restaurant "+restaurant.rName);
+				System.err.println("INFO: map plugin returned 0 result for restaurant "+restaurant.getRName());
 			} else {
 				System.out.println(searchResults);
 				MapItem restaurantMapItem = searchResults.get(0); //assuming first result is the right one
 				restaurant.setRLocation(restaurantMapItem);
 			}
 		} catch (Exception e) {
-			System.err.println("Exception while querying map plugin for location of restaurant "+restaurant.rName);
+			System.err.println("Exception while querying map plugin for location of restaurant "+restaurant.getRName());
 			e.printStackTrace();
 		}
 		
