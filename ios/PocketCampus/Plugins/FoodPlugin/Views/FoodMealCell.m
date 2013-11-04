@@ -58,10 +58,16 @@ static const CGFloat kBottomZoneHeight = 30.0;
     _meal = meal;
     
     //Meal image
-#warning TODO
-#warning TO REMOVE
-    [self.mealTypeImageView setImageWithURL:[NSURL URLWithString:@"http://pocketcampus.epfl.ch/backend/meals-pics/meat.png"]];
-#warning END OF TO REMOVE
+
+    NSNumber* primaryType = self.meal.mTypes.count > 0 ? (NSNumber*)(self.meal.mTypes[0]) : [NSNumber numberWithInteger:MealType_UNKNOWN];
+    NSString* urlString = [[FoodService sharedInstanceToRetain] pictureUrlForMealType][primaryType];
+    if (urlString) {
+        [self.mealTypeImageView setImageWithURL:[NSURL URLWithString:urlString]];
+    } else {
+        self.mealTypeImageView.image = nil;
+    }
+
+    
     // Meal text
     self.textView.attributedText = [self.class attributedStringForMeal:meal];
     

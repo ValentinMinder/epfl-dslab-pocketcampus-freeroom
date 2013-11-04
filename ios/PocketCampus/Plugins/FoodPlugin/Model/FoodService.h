@@ -20,6 +20,7 @@ static NSString* kFavoritesRestaurantsUpdatedNotificationName __unused = @"Favor
 - (NSSet*)allFavoriteRestaurantIds; //set of NSNumber of int64_t of restaurant that are favorite
 - (BOOL)isRestaurantFavorite:(EpflRestaurant*)restaurant;
 
+
 /*
  food service methods
  
@@ -31,6 +32,14 @@ static NSString* kFavoritesRestaurantsUpdatedNotificationName __unused = @"Favor
 */
 
 - (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate;
+
+/*
+ * Any instance getting a FoodResponse (after calling getFoodForRequest:) is responsible for setting this property that
+ * acts as a central point to get access to the URLs for other instances that don't have a pointer to the food response.
+ */
+@property (nonatomic, strong) NSDictionary* pictureUrlForMealType;
+
+
 - (void)voteForRequest:(VoteRequest*)request delegate:(id)delegate;
 
 

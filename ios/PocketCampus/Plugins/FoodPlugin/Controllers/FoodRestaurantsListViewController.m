@@ -137,6 +137,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
 - (void)getFoodForRequest:(FoodRequest *)request didReturn:(FoodResponse *)response {
     self.foodResponse = response;
+    self.foodService.pictureUrlForMealType = response.mealTypePictureUrls; //see doc of self.foodService.pictureUrlForMealType
     [self fillCollectionsAndReloadTableView];
     [self.lgRefreshControl endRefreshingAndMarkSuccessful];
 }
