@@ -311,11 +311,13 @@ enum MealTime {
   int __mealTime;
   int64_t __mealDate;
   NSString * __deviceId;
+  NSString * __userGaspar;
 
   BOOL __deviceLanguage_isset;
   BOOL __mealTime_isset;
   BOOL __mealDate_isset;
   BOOL __deviceId_isset;
+  BOOL __userGaspar_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -323,9 +325,10 @@ enum MealTime {
 @property (nonatomic, getter=mealTime, setter=setMealTime:) int mealTime;
 @property (nonatomic, getter=mealDate, setter=setMealDate:) int64_t mealDate;
 @property (nonatomic, retain, getter=deviceId, setter=setDeviceId:) NSString * deviceId;
+@property (nonatomic, retain, getter=userGaspar, setter=setUserGaspar:) NSString * userGaspar;
 #endif
 
-- (id) initWithDeviceLanguage: (NSString *) deviceLanguage mealTime: (int) mealTime mealDate: (int64_t) mealDate deviceId: (NSString *) deviceId;
+- (id) initWithDeviceLanguage: (NSString *) deviceLanguage mealTime: (int) mealTime mealDate: (int64_t) mealDate deviceId: (NSString *) deviceId userGaspar: (NSString *) userGaspar;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -346,19 +349,29 @@ enum MealTime {
 - (void) setDeviceId: (NSString *) deviceId;
 - (BOOL) deviceIdIsSet;
 
+- (NSString *) userGaspar;
+- (void) setUserGaspar: (NSString *) userGaspar;
+- (BOOL) userGasparIsSet;
+
 @end
 
 @interface FoodResponse : NSObject <NSCoding> {
   NSArray * __matchingFood;
+  int __userStatus;
+  NSDictionary * __mealTypePictureUrls;
 
   BOOL __matchingFood_isset;
+  BOOL __userStatus_isset;
+  BOOL __mealTypePictureUrls_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, retain, getter=matchingFood, setter=setMatchingFood:) NSArray * matchingFood;
+@property (nonatomic, getter=userStatus, setter=setUserStatus:) int userStatus;
+@property (nonatomic, retain, getter=mealTypePictureUrls, setter=setMealTypePictureUrls:) NSDictionary * mealTypePictureUrls;
 #endif
 
-- (id) initWithMatchingFood: (NSArray *) matchingFood;
+- (id) initWithMatchingFood: (NSArray *) matchingFood userStatus: (int) userStatus mealTypePictureUrls: (NSDictionary *) mealTypePictureUrls;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -366,6 +379,14 @@ enum MealTime {
 - (NSArray *) matchingFood;
 - (void) setMatchingFood: (NSArray *) matchingFood;
 - (BOOL) matchingFoodIsSet;
+
+- (int) userStatus;
+- (void) setUserStatus: (int) userStatus;
+- (BOOL) userStatusIsSet;
+
+- (NSDictionary *) mealTypePictureUrls;
+- (void) setMealTypePictureUrls: (NSDictionary *) mealTypePictureUrls;
+- (BOOL) mealTypePictureUrlsIsSet;
 
 @end
 

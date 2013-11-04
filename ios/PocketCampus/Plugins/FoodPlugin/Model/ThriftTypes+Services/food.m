@@ -1638,7 +1638,7 @@
 
 @implementation FoodRequest
 
-- (id) initWithDeviceLanguage: (NSString *) deviceLanguage mealTime: (int) mealTime mealDate: (int64_t) mealDate deviceId: (NSString *) deviceId
+- (id) initWithDeviceLanguage: (NSString *) deviceLanguage mealTime: (int) mealTime mealDate: (int64_t) mealDate deviceId: (NSString *) deviceId userGaspar: (NSString *) userGaspar
 {
   self = [super init];
   __deviceLanguage = [deviceLanguage retain];
@@ -1649,6 +1649,8 @@
   __mealDate_isset = YES;
   __deviceId = [deviceId retain];
   __deviceId_isset = YES;
+  __userGaspar = [userGaspar retain];
+  __userGaspar_isset = YES;
   return self;
 }
 
@@ -1675,6 +1677,11 @@
     __deviceId = [[decoder decodeObjectForKey: @"deviceId"] retain];
     __deviceId_isset = YES;
   }
+  if ([decoder containsValueForKey: @"userGaspar"])
+  {
+    __userGaspar = [[decoder decodeObjectForKey: @"userGaspar"] retain];
+    __userGaspar_isset = YES;
+  }
   return self;
 }
 
@@ -1696,12 +1703,17 @@
   {
     [encoder encodeObject: __deviceId forKey: @"deviceId"];
   }
+  if (__userGaspar_isset)
+  {
+    [encoder encodeObject: __userGaspar forKey: @"userGaspar"];
+  }
 }
 
 - (void) dealloc
 {
   [__deviceLanguage release];
   [__deviceId release];
+  [__userGaspar release];
   [super dealloc];
 }
 
@@ -1781,6 +1793,27 @@
   __deviceId_isset = NO;
 }
 
+- (NSString *) userGaspar {
+  return [[__userGaspar retain] autorelease];
+}
+
+- (void) setUserGaspar: (NSString *) userGaspar {
+  [userGaspar retain];
+  [__userGaspar release];
+  __userGaspar = userGaspar;
+  __userGaspar_isset = YES;
+}
+
+- (BOOL) userGasparIsSet {
+  return __userGaspar_isset;
+}
+
+- (void) unsetUserGaspar {
+  [__userGaspar release];
+  __userGaspar = nil;
+  __userGaspar_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -1828,6 +1861,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 5:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setUserGaspar: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -1863,6 +1904,13 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__userGaspar_isset) {
+    if (__userGaspar != nil) {
+      [outProtocol writeFieldBeginWithName: @"userGaspar" type: TType_STRING fieldID: 5];
+      [outProtocol writeString: __userGaspar];
+      [outProtocol writeFieldEnd];
+    }
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -1877,6 +1925,8 @@
   [ms appendFormat: @"%qi", __mealDate];
   [ms appendString: @",deviceId:"];
   [ms appendFormat: @"\"%@\"", __deviceId];
+  [ms appendString: @",userGaspar:"];
+  [ms appendFormat: @"\"%@\"", __userGaspar];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -1885,11 +1935,15 @@
 
 @implementation FoodResponse
 
-- (id) initWithMatchingFood: (NSArray *) matchingFood
+- (id) initWithMatchingFood: (NSArray *) matchingFood userStatus: (int) userStatus mealTypePictureUrls: (NSDictionary *) mealTypePictureUrls
 {
   self = [super init];
   __matchingFood = [matchingFood retain];
   __matchingFood_isset = YES;
+  __userStatus = userStatus;
+  __userStatus_isset = YES;
+  __mealTypePictureUrls = [mealTypePictureUrls retain];
+  __mealTypePictureUrls_isset = YES;
   return self;
 }
 
@@ -1901,6 +1955,16 @@
     __matchingFood = [[decoder decodeObjectForKey: @"matchingFood"] retain];
     __matchingFood_isset = YES;
   }
+  if ([decoder containsValueForKey: @"userStatus"])
+  {
+    __userStatus = [decoder decodeIntForKey: @"userStatus"];
+    __userStatus_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"mealTypePictureUrls"])
+  {
+    __mealTypePictureUrls = [[decoder decodeObjectForKey: @"mealTypePictureUrls"] retain];
+    __mealTypePictureUrls_isset = YES;
+  }
   return self;
 }
 
@@ -1910,11 +1974,20 @@
   {
     [encoder encodeObject: __matchingFood forKey: @"matchingFood"];
   }
+  if (__userStatus_isset)
+  {
+    [encoder encodeInt: __userStatus forKey: @"userStatus"];
+  }
+  if (__mealTypePictureUrls_isset)
+  {
+    [encoder encodeObject: __mealTypePictureUrls forKey: @"mealTypePictureUrls"];
+  }
 }
 
 - (void) dealloc
 {
   [__matchingFood release];
+  [__mealTypePictureUrls release];
   [super dealloc];
 }
 
@@ -1937,6 +2010,44 @@
   [__matchingFood release];
   __matchingFood = nil;
   __matchingFood_isset = NO;
+}
+
+- (int) userStatus {
+  return __userStatus;
+}
+
+- (void) setUserStatus: (int) userStatus {
+  __userStatus = userStatus;
+  __userStatus_isset = YES;
+}
+
+- (BOOL) userStatusIsSet {
+  return __userStatus_isset;
+}
+
+- (void) unsetUserStatus {
+  __userStatus_isset = NO;
+}
+
+- (NSDictionary *) mealTypePictureUrls {
+  return [[__mealTypePictureUrls retain] autorelease];
+}
+
+- (void) setMealTypePictureUrls: (NSDictionary *) mealTypePictureUrls {
+  [mealTypePictureUrls retain];
+  [__mealTypePictureUrls release];
+  __mealTypePictureUrls = mealTypePictureUrls;
+  __mealTypePictureUrls_isset = YES;
+}
+
+- (BOOL) mealTypePictureUrlsIsSet {
+  return __mealTypePictureUrls_isset;
+}
+
+- (void) unsetMealTypePictureUrls {
+  [__mealTypePictureUrls release];
+  __mealTypePictureUrls = nil;
+  __mealTypePictureUrls_isset = NO;
 }
 
 - (void) read: (id <TProtocol>) inProtocol
@@ -1974,6 +2085,33 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 2:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setUserStatus: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 3:
+        if (fieldType == TType_MAP) {
+          int _size19;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size19];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size19];
+          int _i20;
+          for (_i20 = 0; _i20 < _size19; ++_i20)
+          {
+            int _key21 = [inProtocol readI32];
+            NSString * _val22 = [inProtocol readString];
+            [fieldValue setObject: _val22 forKey: [NSNumber numberWithInt: _key21]];
+          }
+          [inProtocol readMapEnd];
+          [self setMealTypePictureUrls: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -1990,12 +2128,34 @@
       [outProtocol writeFieldBeginWithName: @"matchingFood" type: TType_LIST fieldID: 1];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__matchingFood count]];
-        int i20;
-        for (i20 = 0; i20 < [__matchingFood count]; i20++)
+        int i24;
+        for (i24 = 0; i24 < [__matchingFood count]; i24++)
         {
-          [[__matchingFood objectAtIndex: i20] write: outProtocol];
+          [[__matchingFood objectAtIndex: i24] write: outProtocol];
         }
         [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__userStatus_isset) {
+    [outProtocol writeFieldBeginWithName: @"userStatus" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __userStatus];
+    [outProtocol writeFieldEnd];
+  }
+  if (__mealTypePictureUrls_isset) {
+    if (__mealTypePictureUrls != nil) {
+      [outProtocol writeFieldBeginWithName: @"mealTypePictureUrls" type: TType_MAP fieldID: 3];
+      {
+        [outProtocol writeMapBeginWithKeyType: TType_I32 valueType: TType_STRING size: [__mealTypePictureUrls count]];
+        NSEnumerator * _iter25 = [__mealTypePictureUrls keyEnumerator];
+        id key26;
+        while ((key26 = [_iter25 nextObject]))
+        {
+          [outProtocol writeI32: [key26 intValue]];
+          [outProtocol writeString: [__mealTypePictureUrls objectForKey: key26]];
+        }
+        [outProtocol writeMapEnd];
       }
       [outProtocol writeFieldEnd];
     }
@@ -2008,6 +2168,10 @@
   NSMutableString * ms = [NSMutableString stringWithString: @"FoodResponse("];
   [ms appendString: @"matchingFood:"];
   [ms appendFormat: @"%@", __matchingFood];
+  [ms appendString: @",userStatus:"];
+  [ms appendFormat: @"%i", __userStatus];
+  [ms appendString: @",mealTypePictureUrls:"];
+  [ms appendFormat: @"%@", __mealTypePictureUrls];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -2468,16 +2632,16 @@
     {
       case 0:
         if (fieldType == TType_LIST) {
-          int _size21;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size21];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size21];
-          int _i22;
-          for (_i22 = 0; _i22 < _size21; ++_i22)
+          int _size27;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size27];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size27];
+          int _i28;
+          for (_i28 = 0; _i28 < _size27; ++_i28)
           {
-            Meal *_elem23 = [[Meal alloc] init];
-            [_elem23 read: inProtocol];
-            [fieldValue addObject: _elem23];
-            [_elem23 release];
+            Meal *_elem29 = [[Meal alloc] init];
+            [_elem29 read: inProtocol];
+            [fieldValue addObject: _elem29];
+            [_elem29 release];
           }
           [inProtocol readListEnd];
           [self setSuccess: fieldValue];
@@ -2503,10 +2667,10 @@
       [outProtocol writeFieldBeginWithName: @"success" type: TType_LIST fieldID: 0];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__success count]];
-        int i25;
-        for (i25 = 0; i25 < [__success count]; i25++)
+        int i31;
+        for (i31 = 0; i31 < [__success count]; i31++)
         {
-          [[__success objectAtIndex: i25] write: outProtocol];
+          [[__success objectAtIndex: i31] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -2680,17 +2844,17 @@
     {
       case 0:
         if (fieldType == TType_MAP) {
-          int _size26;
-          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size26];
-          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size26];
-          int _i27;
-          for (_i27 = 0; _i27 < _size26; ++_i27)
+          int _size32;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size32];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size32];
+          int _i33;
+          for (_i33 = 0; _i33 < _size32; ++_i33)
           {
-            int64_t _key28 = [inProtocol readI64];
-            Rating *_val29 = [[Rating alloc] init];
-            [_val29 read: inProtocol];
-            [fieldValue setObject: _val29 forKey: [NSNumber numberWithLongLong: _key28]];
-            [_val29 release];
+            int64_t _key34 = [inProtocol readI64];
+            Rating *_val35 = [[Rating alloc] init];
+            [_val35 read: inProtocol];
+            [fieldValue setObject: _val35 forKey: [NSNumber numberWithLongLong: _key34]];
+            [_val35 release];
           }
           [inProtocol readMapEnd];
           [self setSuccess: fieldValue];
@@ -2716,12 +2880,12 @@
       [outProtocol writeFieldBeginWithName: @"success" type: TType_MAP fieldID: 0];
       {
         [outProtocol writeMapBeginWithKeyType: TType_I64 valueType: TType_STRUCT size: [__success count]];
-        NSEnumerator * _iter30 = [__success keyEnumerator];
-        id key31;
-        while ((key31 = [_iter30 nextObject]))
+        NSEnumerator * _iter36 = [__success keyEnumerator];
+        id key37;
+        while ((key37 = [_iter36 nextObject]))
         {
-          [outProtocol writeI64: [key31 longLongValue]];
-          [[__success objectForKey: key31] write: outProtocol];
+          [outProtocol writeI64: [key37 longLongValue]];
+          [[__success objectForKey: key37] write: outProtocol];
         }
         [outProtocol writeMapEnd];
       }
