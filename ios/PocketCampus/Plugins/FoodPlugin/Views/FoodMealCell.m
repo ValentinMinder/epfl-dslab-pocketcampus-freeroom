@@ -66,13 +66,18 @@ static const CGFloat kBottomZoneHeight = 30.0;
     self.textView.attributedText = [self.class attributedStringForMeal:meal];
     
     // Prices
-    float price = [self.meal.mPrices[[NSNumber numberWithInteger:PriceTarget_ALL]] floatValue];
+    float price = [self.meal.mPrices[[NSNumber numberWithInteger:PriceTarget_STAFF]] floatValue];
     if (price > 0.0) {
         AuthenticationUserType userType = [AuthenticationService loggedInUserType];
         if (userType != AuthenticationUserTypeUnknown) {
 #warning TODO
         }
-        self.pricesLabel.text = [NSString stringWithFormat:@"%g.-", price];
+        NSNumberFormatter* numberFormatter = [NSNumberFormatter new];
+        numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        numberFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"fr_CH"]; //force swiss franc notation
+        NSString* priceString = [numberFormatter stringFromNumber:[NSNumber numberWithFloat:price]];
+        priceString = [priceString stringByReplacingOccurrencesOfString:@"CHF" withString:@""];
+        self.pricesLabel.text = priceString;
     } else {
         self.pricesLabel.text = nil;
     }

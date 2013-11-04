@@ -48,7 +48,7 @@
                         </state>
                     </button>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7.-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t6S-DS-N2b" userLabel="Prices label">
-                        <rect key="frame" x="27" y="55" width="22" height="22"/>
+                        <rect key="frame" x="22" y="55" width="22" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -64,7 +64,7 @@
                     <constraint firstItem="fRM-ZF-UCY" firstAttribute="top" secondItem="D9T-6y-12Z" secondAttribute="bottom" id="IXw-Sk-4IX"/>
                     <constraint firstItem="t6S-DS-N2b" firstAttribute="top" secondItem="iTf-At-wnc" secondAttribute="bottom" id="Pi9-9c-wvt"/>
                     <constraint firstAttribute="bottom" secondItem="Sgr-yg-Xur" secondAttribute="bottom" id="VpS-iJ-uPZ"/>
-                    <constraint firstItem="t6S-DS-N2b" firstAttribute="centerX" secondItem="iTf-At-wnc" secondAttribute="centerX" constant="3" id="ZDi-oB-DMZ"/>
+                    <constraint firstItem="t6S-DS-N2b" firstAttribute="centerX" secondItem="iTf-At-wnc" secondAttribute="centerX" constant="-2" id="ZDi-oB-DMZ"/>
                     <constraint firstAttribute="trailing" secondItem="D9T-6y-12Z" secondAttribute="trailing" id="ZFc-oc-Wm6"/>
                     <constraint firstItem="fRM-ZF-UCY" firstAttribute="width" secondItem="D9T-6y-12Z" secondAttribute="width" id="gY9-hv-yd3"/>
                     <constraint firstItem="iTf-At-wnc" firstAttribute="leading" secondItem="JEL-xE-pIh" secondAttribute="leading" constant="10" id="of1-6u-EZf"/>

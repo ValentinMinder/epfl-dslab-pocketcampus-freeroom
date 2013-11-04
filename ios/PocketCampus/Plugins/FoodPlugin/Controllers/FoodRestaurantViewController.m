@@ -100,7 +100,7 @@ static const NSInteger kMealsSection = 1;
         case kRestaurantInfoSection:
             if (!self.restaurantInfoCell) {
                 self.restaurantInfoCell = [[FoodRestaurantInfoCell alloc] initWithEpflRestaurant:self.restaurant];
-                self.restaurantInfoCell.showRating = YES;
+                self.restaurantInfoCell.showRating = NO;
             }
             cell = self.restaurantInfoCell;
             break;
