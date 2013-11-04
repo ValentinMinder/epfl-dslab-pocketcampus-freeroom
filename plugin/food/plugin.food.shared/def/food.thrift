@@ -94,10 +94,12 @@ struct FoodRequest {
 	3: optional i64 mealDate;
 	// not currently used
 	4: optional string deviceId;
+	5: optional string userGaspar;
 }
 
 struct FoodResponse {
 	1: required list<EpflRestaurant> matchingFood;
+	2: optional PriceTarget userStatus;
 }
 
 struct VoteRequest {
