@@ -32,13 +32,13 @@ public class EpflMeal implements org.apache.thrift.TBase<EpflMeal, EpflMeal._Fie
   private static final org.apache.thrift.protocol.TField M_TYPES_FIELD_DESC = new org.apache.thrift.protocol.TField("mTypes", org.apache.thrift.protocol.TType.LIST, (short)6);
   private static final org.apache.thrift.protocol.TField M_RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("mRating", org.apache.thrift.protocol.TType.STRUCT, (short)7);
 
-  public long mId; // required
-  public String mName; // required
-  public String mDescription; // required
-  public Map<PriceTarget,Double> mPrices; // required
-  public double mHalfPortionPrice; // required
-  public List<MealType> mTypes; // required
-  public EpflRating mRating; // required
+  private long mId; // required
+  private String mName; // required
+  private String mDescription; // required
+  private Map<PriceTarget,Double> mPrices; // required
+  private double mHalfPortionPrice; // required
+  private List<MealType> mTypes; // required
+  private EpflRating mRating; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

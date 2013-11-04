@@ -28,9 +28,9 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
   private static final org.apache.thrift.protocol.TField NUMBER_OF_VOTES_FIELD_DESC = new org.apache.thrift.protocol.TField("numberOfVotes", org.apache.thrift.protocol.TType.I32, (short)2);
   private static final org.apache.thrift.protocol.TField SUM_OF_RATINGS_FIELD_DESC = new org.apache.thrift.protocol.TField("sumOfRatings", org.apache.thrift.protocol.TType.DOUBLE, (short)3);
 
-  public double ratingValue; // required
-  public int numberOfVotes; // required
-  public double sumOfRatings; // required
+  private double ratingValue; // required
+  private int numberOfVotes; // required
+  private double sumOfRatings; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
