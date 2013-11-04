@@ -26,11 +26,11 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
 
   private static final org.apache.thrift.protocol.TField MATCHING_FOOD_FIELD_DESC = new org.apache.thrift.protocol.TField("matchingFood", org.apache.thrift.protocol.TType.LIST, (short)1);
   private static final org.apache.thrift.protocol.TField USER_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("userStatus", org.apache.thrift.protocol.TType.I32, (short)2);
-  private static final org.apache.thrift.protocol.TField MEAL_TYPE_PICTURES_FIELD_DESC = new org.apache.thrift.protocol.TField("mealTypePictures", org.apache.thrift.protocol.TType.MAP, (short)3);
+  private static final org.apache.thrift.protocol.TField MEAL_TYPE_PICTURE_URLS_FIELD_DESC = new org.apache.thrift.protocol.TField("mealTypePictureUrls", org.apache.thrift.protocol.TType.MAP, (short)3);
 
   private List<EpflRestaurant> matchingFood; // required
   private PriceTarget userStatus; // required
-  private Map<MealType,String> mealTypePictures; // required
+  private Map<MealType,String> mealTypePictureUrls; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -40,7 +40,7 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
      * @see PriceTarget
      */
     USER_STATUS((short)2, "userStatus"),
-    MEAL_TYPE_PICTURES((short)3, "mealTypePictures");
+    MEAL_TYPE_PICTURE_URLS((short)3, "mealTypePictureUrls");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -59,8 +59,8 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
           return MATCHING_FOOD;
         case 2: // USER_STATUS
           return USER_STATUS;
-        case 3: // MEAL_TYPE_PICTURES
-          return MEAL_TYPE_PICTURES;
+        case 3: // MEAL_TYPE_PICTURE_URLS
+          return MEAL_TYPE_PICTURE_URLS;
         default:
           return null;
       }
@@ -110,7 +110,7 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, EpflRestaurant.class))));
     tmpMap.put(_Fields.USER_STATUS, new org.apache.thrift.meta_data.FieldMetaData("userStatus", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, PriceTarget.class)));
-    tmpMap.put(_Fields.MEAL_TYPE_PICTURES, new org.apache.thrift.meta_data.FieldMetaData("mealTypePictures", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.MEAL_TYPE_PICTURE_URLS, new org.apache.thrift.meta_data.FieldMetaData("mealTypePictureUrls", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
             new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, MealType.class), 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
@@ -123,11 +123,11 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
 
   public FoodResponse(
     List<EpflRestaurant> matchingFood,
-    Map<MealType,String> mealTypePictures)
+    Map<MealType,String> mealTypePictureUrls)
   {
     this();
     this.matchingFood = matchingFood;
-    this.mealTypePictures = mealTypePictures;
+    this.mealTypePictureUrls = mealTypePictureUrls;
   }
 
   /**
@@ -144,20 +144,20 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
     if (other.isSetUserStatus()) {
       this.userStatus = other.userStatus;
     }
-    if (other.isSetMealTypePictures()) {
-      Map<MealType,String> __this__mealTypePictures = new HashMap<MealType,String>();
-      for (Map.Entry<MealType, String> other_element : other.mealTypePictures.entrySet()) {
+    if (other.isSetMealTypePictureUrls()) {
+      Map<MealType,String> __this__mealTypePictureUrls = new HashMap<MealType,String>();
+      for (Map.Entry<MealType, String> other_element : other.mealTypePictureUrls.entrySet()) {
 
         MealType other_element_key = other_element.getKey();
         String other_element_value = other_element.getValue();
 
-        MealType __this__mealTypePictures_copy_key = other_element_key;
+        MealType __this__mealTypePictureUrls_copy_key = other_element_key;
 
-        String __this__mealTypePictures_copy_value = other_element_value;
+        String __this__mealTypePictureUrls_copy_value = other_element_value;
 
-        __this__mealTypePictures.put(__this__mealTypePictures_copy_key, __this__mealTypePictures_copy_value);
+        __this__mealTypePictureUrls.put(__this__mealTypePictureUrls_copy_key, __this__mealTypePictureUrls_copy_value);
       }
-      this.mealTypePictures = __this__mealTypePictures;
+      this.mealTypePictureUrls = __this__mealTypePictureUrls;
     }
   }
 
@@ -169,7 +169,7 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
   public void clear() {
     this.matchingFood = null;
     this.userStatus = null;
-    this.mealTypePictures = null;
+    this.mealTypePictureUrls = null;
   }
 
   public int getMatchingFoodSize() {
@@ -243,38 +243,38 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
     }
   }
 
-  public int getMealTypePicturesSize() {
-    return (this.mealTypePictures == null) ? 0 : this.mealTypePictures.size();
+  public int getMealTypePictureUrlsSize() {
+    return (this.mealTypePictureUrls == null) ? 0 : this.mealTypePictureUrls.size();
   }
 
-  public void putToMealTypePictures(MealType key, String val) {
-    if (this.mealTypePictures == null) {
-      this.mealTypePictures = new HashMap<MealType,String>();
+  public void putToMealTypePictureUrls(MealType key, String val) {
+    if (this.mealTypePictureUrls == null) {
+      this.mealTypePictureUrls = new HashMap<MealType,String>();
     }
-    this.mealTypePictures.put(key, val);
+    this.mealTypePictureUrls.put(key, val);
   }
 
-  public Map<MealType,String> getMealTypePictures() {
-    return this.mealTypePictures;
+  public Map<MealType,String> getMealTypePictureUrls() {
+    return this.mealTypePictureUrls;
   }
 
-  public FoodResponse setMealTypePictures(Map<MealType,String> mealTypePictures) {
-    this.mealTypePictures = mealTypePictures;
+  public FoodResponse setMealTypePictureUrls(Map<MealType,String> mealTypePictureUrls) {
+    this.mealTypePictureUrls = mealTypePictureUrls;
     return this;
   }
 
-  public void unsetMealTypePictures() {
-    this.mealTypePictures = null;
+  public void unsetMealTypePictureUrls() {
+    this.mealTypePictureUrls = null;
   }
 
-  /** Returns true if field mealTypePictures is set (has been assigned a value) and false otherwise */
-  public boolean isSetMealTypePictures() {
-    return this.mealTypePictures != null;
+  /** Returns true if field mealTypePictureUrls is set (has been assigned a value) and false otherwise */
+  public boolean isSetMealTypePictureUrls() {
+    return this.mealTypePictureUrls != null;
   }
 
-  public void setMealTypePicturesIsSet(boolean value) {
+  public void setMealTypePictureUrlsIsSet(boolean value) {
     if (!value) {
-      this.mealTypePictures = null;
+      this.mealTypePictureUrls = null;
     }
   }
 
@@ -296,11 +296,11 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
       }
       break;
 
-    case MEAL_TYPE_PICTURES:
+    case MEAL_TYPE_PICTURE_URLS:
       if (value == null) {
-        unsetMealTypePictures();
+        unsetMealTypePictureUrls();
       } else {
-        setMealTypePictures((Map<MealType,String>)value);
+        setMealTypePictureUrls((Map<MealType,String>)value);
       }
       break;
 
@@ -315,8 +315,8 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
     case USER_STATUS:
       return getUserStatus();
 
-    case MEAL_TYPE_PICTURES:
-      return getMealTypePictures();
+    case MEAL_TYPE_PICTURE_URLS:
+      return getMealTypePictureUrls();
 
     }
     throw new IllegalStateException();
@@ -333,8 +333,8 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
       return isSetMatchingFood();
     case USER_STATUS:
       return isSetUserStatus();
-    case MEAL_TYPE_PICTURES:
-      return isSetMealTypePictures();
+    case MEAL_TYPE_PICTURE_URLS:
+      return isSetMealTypePictureUrls();
     }
     throw new IllegalStateException();
   }
@@ -370,12 +370,12 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
         return false;
     }
 
-    boolean this_present_mealTypePictures = true && this.isSetMealTypePictures();
-    boolean that_present_mealTypePictures = true && that.isSetMealTypePictures();
-    if (this_present_mealTypePictures || that_present_mealTypePictures) {
-      if (!(this_present_mealTypePictures && that_present_mealTypePictures))
+    boolean this_present_mealTypePictureUrls = true && this.isSetMealTypePictureUrls();
+    boolean that_present_mealTypePictureUrls = true && that.isSetMealTypePictureUrls();
+    if (this_present_mealTypePictureUrls || that_present_mealTypePictureUrls) {
+      if (!(this_present_mealTypePictureUrls && that_present_mealTypePictureUrls))
         return false;
-      if (!this.mealTypePictures.equals(that.mealTypePictures))
+      if (!this.mealTypePictureUrls.equals(that.mealTypePictureUrls))
         return false;
     }
 
@@ -396,10 +396,10 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
     if (present_userStatus)
       builder.append(userStatus.getValue());
 
-    boolean present_mealTypePictures = true && (isSetMealTypePictures());
-    builder.append(present_mealTypePictures);
-    if (present_mealTypePictures)
-      builder.append(mealTypePictures);
+    boolean present_mealTypePictureUrls = true && (isSetMealTypePictureUrls());
+    builder.append(present_mealTypePictureUrls);
+    if (present_mealTypePictureUrls)
+      builder.append(mealTypePictureUrls);
 
     return builder.toHashCode();
   }
@@ -432,12 +432,12 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetMealTypePictures()).compareTo(typedOther.isSetMealTypePictures());
+    lastComparison = Boolean.valueOf(isSetMealTypePictureUrls()).compareTo(typedOther.isSetMealTypePictureUrls());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetMealTypePictures()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.mealTypePictures, typedOther.mealTypePictures);
+    if (isSetMealTypePictureUrls()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.mealTypePictureUrls, typedOther.mealTypePictureUrls);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -484,18 +484,18 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // MEAL_TYPE_PICTURES
+        case 3: // MEAL_TYPE_PICTURE_URLS
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
               org.apache.thrift.protocol.TMap _map16 = iprot.readMapBegin();
-              this.mealTypePictures = new HashMap<MealType,String>(2*_map16.size);
+              this.mealTypePictureUrls = new HashMap<MealType,String>(2*_map16.size);
               for (int _i17 = 0; _i17 < _map16.size; ++_i17)
               {
                 MealType _key18; // required
                 String _val19; // required
                 _key18 = MealType.findByValue(iprot.readI32());
                 _val19 = iprot.readString();
-                this.mealTypePictures.put(_key18, _val19);
+                this.mealTypePictureUrls.put(_key18, _val19);
               }
               iprot.readMapEnd();
             }
@@ -537,11 +537,11 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
         oprot.writeFieldEnd();
       }
     }
-    if (this.mealTypePictures != null) {
-      oprot.writeFieldBegin(MEAL_TYPE_PICTURES_FIELD_DESC);
+    if (this.mealTypePictureUrls != null) {
+      oprot.writeFieldBegin(MEAL_TYPE_PICTURE_URLS_FIELD_DESC);
       {
-        oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRING, this.mealTypePictures.size()));
-        for (Map.Entry<MealType, String> _iter21 : this.mealTypePictures.entrySet())
+        oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRING, this.mealTypePictureUrls.size()));
+        for (Map.Entry<MealType, String> _iter21 : this.mealTypePictureUrls.entrySet())
         {
           oprot.writeI32(_iter21.getKey().getValue());
           oprot.writeString(_iter21.getValue());
@@ -577,11 +577,11 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
       first = false;
     }
     if (!first) sb.append(", ");
-    sb.append("mealTypePictures:");
-    if (this.mealTypePictures == null) {
+    sb.append("mealTypePictureUrls:");
+    if (this.mealTypePictureUrls == null) {
       sb.append("null");
     } else {
-      sb.append(this.mealTypePictures);
+      sb.append(this.mealTypePictureUrls);
     }
     first = false;
     sb.append(")");
@@ -593,8 +593,8 @@ public class FoodResponse implements org.apache.thrift.TBase<FoodResponse, FoodR
     if (matchingFood == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'matchingFood' was not present! Struct: " + toString());
     }
-    if (mealTypePictures == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'mealTypePictures' was not present! Struct: " + toString());
+    if (mealTypePictureUrls == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'mealTypePictureUrls' was not present! Struct: " + toString());
     }
   }
 
