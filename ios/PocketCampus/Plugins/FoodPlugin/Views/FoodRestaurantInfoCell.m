@@ -21,6 +21,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView* backgroundImageView;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UILabel* satRateLabel;
+@property (nonatomic, strong) IBOutlet UIButton* showOnMapButton;
 
 @end
 
@@ -35,12 +36,23 @@
     self = (FoodRestaurantInfoCell*)elements[0];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        CAGradientLayer *gradient = [CAGradientLayer layer];
-        gradient.frame = self.overlayView.bounds;
-        gradient.startPoint = CGPointMake(0, 0.5);
-        gradient.endPoint = CGPointMake(1.0, 0.5);
-        gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithWhite:1.0 alpha:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil];
-        [self.overlayView.layer insertSublayer:gradient atIndex:0];
+        
+        CAGradientLayer *gradient1 = [CAGradientLayer layer];
+        gradient1.frame = self.overlayView.bounds;
+        gradient1.startPoint = CGPointMake(0, 0.5);
+        gradient1.endPoint = CGPointMake(1.0, 0.5);
+        gradient1.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithWhite:1.0 alpha:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil];
+        [self.overlayView.layer insertSublayer:gradient1 atIndex:0];
+        
+        [self.showOnMapButton setTitle:[NSString stringWithFormat:@"  %@  ", NSLocalizedStringFromTable(@"ShowOnMap", @"FoodPlugin", nil)] forState:UIControlStateNormal];
+        /*CAGradientLayer *gradient2 = [CAGradientLayer layer];
+        gradient2.frame = self.showOnMapButton.bounds;
+        gradient2.startPoint = CGPointMake(0, 0.5);
+        gradient2.endPoint = CGPointMake(1.0, 0.5);
+        gradient2.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithWhite:1.0 alpha:0.7] CGColor], (id)[[UIColor colorWithWhite:1.0 alpha:0.7] CGColor], nil];
+        [self.showOnMapButton.layer insertSublayer:gradient2 atIndex:0];*/
+        
+        
         _showRating = YES; //Default
         self.restaurant = restaurant;
     }

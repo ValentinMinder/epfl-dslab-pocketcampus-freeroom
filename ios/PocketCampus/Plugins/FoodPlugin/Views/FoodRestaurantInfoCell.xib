@@ -38,11 +38,24 @@
                             <constraint firstItem="W9t-WW-cDB" firstAttribute="leading" secondItem="Wgb-Lp-RtE" secondAttribute="leading" constant="35" id="Tcb-Ah-E0Z"/>
                         </constraints>
                     </view>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ud1-Ci-4nL">
+                        <rect key="frame" x="225" y="89" width="95" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="0.75" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="Lda-I0-czA"/>
+                        </constraints>
+                        <state key="normal" title="Show on map">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="ud1-Ci-4nL" secondAttribute="bottom" id="3aQ-2X-d6E"/>
                     <constraint firstItem="Wgb-Lp-RtE" firstAttribute="leading" secondItem="nb5-WY-Lsp" secondAttribute="leading" id="4sa-sY-vAs"/>
                     <constraint firstAttribute="trailing" secondItem="Wgb-Lp-RtE" secondAttribute="trailing" id="A1o-Ua-Tfm"/>
                     <constraint firstAttribute="bottom" secondItem="Wgb-Lp-RtE" secondAttribute="bottom" id="GfD-p3-Sqv"/>
+                    <constraint firstAttribute="trailing" secondItem="ud1-Ci-4nL" secondAttribute="trailing" id="OYR-Dd-O3l"/>
                     <constraint firstItem="Wgb-Lp-RtE" firstAttribute="top" secondItem="nb5-WY-Lsp" secondAttribute="top" id="rP5-k9-eGj"/>
                 </constraints>
             </tableViewCellContentView>
@@ -50,6 +63,7 @@
                 <outlet property="backgroundImageView" destination="uhQ-p3-Fsr" id="z4J-zO-Urx"/>
                 <outlet property="overlayView" destination="Wgb-Lp-RtE" id="elM-FN-gVe"/>
                 <outlet property="satRateLabel" destination="W9t-WW-cDB" id="9i5-lL-EoH"/>
+                <outlet property="showOnMapButton" destination="ud1-Ci-4nL" id="hsp-Mx-C19"/>
             </connections>
         </tableViewCell>
     </objects>

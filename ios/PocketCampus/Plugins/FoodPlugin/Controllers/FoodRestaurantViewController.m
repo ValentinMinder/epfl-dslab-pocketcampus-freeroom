@@ -13,13 +13,16 @@
 #import "MapController.h"
 
 static const NSInteger kRestaurantInfoSection = 0;
-static const NSInteger kMealsSection = 1;
+static const NSInteger kShowOnMapSection = 1;
+static const NSInteger kMealsSection = 2;
 
 @interface FoodRestaurantViewController ()
 
 @property (nonatomic, strong) FoodService* foodService;
 @property (nonatomic, strong) EpflRestaurant* restaurant;
 @property (nonatomic, strong) FoodRestaurantInfoCell* restaurantInfoCell;
+@property (nonatomic, strong) UITableViewCell* showOnMapCell;
+@property (nonatomic, strong) NSMutableDictionary* cellForMealName;
 
 
 @end
@@ -36,6 +39,7 @@ static const NSInteger kMealsSection = 1;
         self.foodService = [FoodService sharedInstanceToRetain];
         self.restaurant = restaurant;
         self.title = self.restaurant.rName;
+        self.cellForMealName = [NSMutableDictionary dictionaryWithCapacity:self.restaurant.rMeals.count];
 #warning TO REMOVE
         self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurant-pics/vallotton.png";
         self.restaurant.rRating.ratingValue = 0.28;
@@ -79,6 +83,8 @@ static const NSInteger kMealsSection = 1;
     switch (indexPath.section) {
         case kRestaurantInfoSection:
             return [FoodRestaurantInfoCell preferredHeight];
+        case kShowOnMapSection:
+            return 30.0;
         case kMealsSection:
         {
             EpflMeal* meal = self.restaurant.rMeals[indexPath.row];
@@ -88,9 +94,19 @@ static const NSInteger kMealsSection = 1;
     return 0.0;
 }
 
-/*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-}*/
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case kShowOnMapSection:
+        {
+            UIViewController* mapViewController = [MapController viewControllerWithInitialMapItem:self.restaurant.rLocation];
+            [self.navigationController pushViewController:mapViewController animated:YES];
+            break;
+        }
+        default:
+            [self.tableView deselectRowAtIndexPath:indexPath animated:NO]; //no selectable
+            break;
+    }
+}
 
 #pragma mark - UITableViewDataSource
 
@@ -104,13 +120,28 @@ static const NSInteger kMealsSection = 1;
             }
             cell = self.restaurantInfoCell;
             break;
+        case kShowOnMapSection:
+        {
+            if (!self.showOnMapCell) {
+                self.showOnMapCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                //self.showOnMapCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                self.showOnMapCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+                self.showOnMapCell.textLabel.textColor = [PCValues pocketCampusRed];
+                self.showOnMapCell.textLabel.textAlignment = NSTextAlignmentCenter;
+                self.showOnMapCell.textLabel.text = [NSString stringWithFormat:@"%@ ❯", NSLocalizedStringFromTable(@"ShowOnMap", @"FoodPlugin", nil)];
+                self.showOnMapCell.separatorInset = UIEdgeInsetsZero;
+            }
+            cell = self.showOnMapCell;
+            break;
+        }
         case kMealsSection:
         {
             EpflMeal* meal = self.restaurant.rMeals[indexPath.row];
-            static NSString* kMealCell = @"MealCell";
-            FoodMealCell* mealCell = [self.tableView dequeueReusableCellWithIdentifier:kMealCell];
+            FoodMealCell* mealCell = self.cellForMealName[meal.mName];
             if (!mealCell) {
-                mealCell = [[FoodMealCell alloc] initWithReuseIdentifier:kMealCell];
+                mealCell = [[FoodMealCell alloc] initWithReuseIdentifier:nil];
+                mealCell.meal = meal;
+                self.cellForMealName[meal.mName] = mealCell;
             }
 #warning TO REMOVE
             if (indexPath.row > 1) {
@@ -118,7 +149,6 @@ static const NSInteger kMealsSection = 1;
                 meal.mRating.ratingValue = 0.76;
             }
 #warning END OF TO REMOVE
-            mealCell.meal = meal;
             cell = mealCell;
             break;
         }
@@ -130,6 +160,8 @@ static const NSInteger kMealsSection = 1;
     switch (section) {
         case kRestaurantInfoSection:
             return 1;
+        case kShowOnMapSection:
+            return 1;
         case kMealsSection:
             return self.restaurant.rMeals.count;
     }
@@ -140,7 +172,7 @@ static const NSInteger kMealsSection = 1;
     if (!self.restaurant) {
         return 0;
     }
-    return 2; //retaurant info + meals
+    return 3; //retaurant info + show on map + meals
 }
 
 #pragma mark - Dealloc

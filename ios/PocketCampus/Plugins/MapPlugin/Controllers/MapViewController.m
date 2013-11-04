@@ -201,7 +201,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Map"];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Map"];
     
-    if (self.initialQueryWithFullControls && !self.initialQuery) {
+    if (self.initialQueryWithFullControls && !self.initialQuery && !self.initialMapItem) {
         [self startSearchForQuery:self.initialQueryWithFullControls];
     }
 }
@@ -323,7 +323,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     
     NSArray* items = nil;
     
-    if (self.initialQuery) {
+    if (self.initialQuery || self.initialMapItem) {
         if (searchState == SearchStateLoading) {
             items = @[self.loadingBarItem];
         } else {
@@ -479,7 +479,11 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
                 break;
         }
         if (items) {
-            self.toolBar.items = items;
+            //solves an API bug (apparently) that is occuring when chaning toolBar items multiple times in the same run loop
+            //timer schedules change for next run loop and solves the problem
+            [NSTimer scheduledTimerWithTimeInterval:0.0 block:^{
+                self.toolBar.items = items;
+            } repeats:NO];
         }
     }
 }
@@ -721,7 +725,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
         pin.annotation = annotation;
     }
     
-    if ([mapItem.category isEqualToString:kPersonsMapItemCategoryName] && !self.initialQuery) {
+    if ([mapItem.category isEqualToString:kPersonsMapItemCategoryName] && !self.initialQuery && !self.initialMapItem) {
         UIButton* disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         [disclosureButton addTarget:self action:@selector(annotationAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
         pin.rightCalloutAccessoryView = disclosureButton;
@@ -799,7 +803,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
         return;
     }
     
-    if (!self.initialQuery) {
+    if (!self.initialQuery && !self.initialMapItem) {
         [self.mapService addOrPromoteRecentSearch:query];
     }
     
