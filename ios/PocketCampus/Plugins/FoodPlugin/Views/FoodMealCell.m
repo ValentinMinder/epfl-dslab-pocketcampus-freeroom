@@ -16,19 +16,27 @@
 
 @import CoreText;
 
-static const CGFloat kMinHeight = 60.0;
+static const CGFloat kMinHeight = 110.0;
 static const CGFloat kTextViewWidth = 252.0;
 static const CGFloat kBottomZoneHeight = 30.0;
 
 @interface FoodMealCell ()
 
+@property (nonatomic, strong) IBOutlet UIView* infoContentView;
 @property (nonatomic, strong) IBOutlet UIImageView* mealTypeImageView;
 @property (nonatomic, strong) IBOutlet UILabel* pricesLabel;
 @property (nonatomic, strong) IBOutlet UITextView* textView;
 @property (nonatomic, strong) IBOutlet UIButton* satRateButton;
 
+@property (nonatomic, strong) IBOutlet UIView* rateControlsView;
+
+
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* infoContentViewLeftConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* infoContentViewRightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewBottomConstraint;
+
+@property (nonatomic, strong) UILongPressGestureRecognizer* infoContentViewTapGesture; //actually using for touchDown, because tap gesture does not support it
 
 @end
 
@@ -38,12 +46,20 @@ static const CGFloat kBottomZoneHeight = 30.0;
 
 - (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier {
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"FoodMealCell" owner:nil options:nil];
-    self = (FoodMealCell*)elements[0];
+    self = (FoodMealCell*)elements[1];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.textViewWidthConstraint.constant = kTextViewWidth;
         self.textViewBottomConstraint.constant = kBottomZoneHeight;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [self.satRateButton addTarget:self action:@selector(ratePressed) forControlEvents:UIControlEventTouchUpInside];
+        self.infoContentViewTapGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(infoContentViewTapped)];
+        self.infoContentViewTapGesture.minimumPressDuration = 0.001;
+        self.infoContentViewTapGesture.enabled = NO;
+        [self.infoContentView addGestureRecognizer:self.infoContentViewTapGesture];
+        [self.contentView insertSubview:self.rateControlsView belowSubview:self.infoContentView]; //doing that here and not in IB so that we can work on the view that is hidden by infoContentView otherwise :)
+        self.rateControlsView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.contentView forView:self.rateControlsView edgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
     }
     return self;
 }
@@ -129,6 +145,32 @@ static const CGFloat kBottomZoneHeight = 30.0;
     [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] range:[fullString rangeOfString:meal.mName]];
     [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1] range:[fullString rangeOfString:meal.mDescription]];
     return attrString;
+}
+
+#pragma mark - Ratings
+
+- (void)infoContentViewTapped {
+    [self setRateModeEnabled:NO animated:YES];
+}
+
+- (void)ratePressed {
+    [self setRateModeEnabled:YES animated:YES];
+}
+
+- (void)setRateModeEnabled:(BOOL)rateModeEnabled {
+    [self setRateModeEnabled:rateModeEnabled animated:NO];
+}
+
+- (void)setRateModeEnabled:(BOOL)rateModeEnabled animated:(BOOL)animated {
+    _rateModeEnabled = rateModeEnabled;
+    self.infoContentViewTapGesture.enabled = rateModeEnabled;
+    CGFloat offset = rateModeEnabled ? self.contentView.frame.size.width-72.0 : 0.0;
+    self.infoContentViewLeftConstraint.constant = -offset;
+    self.infoContentViewRightConstraint.constant = offset;
+    
+    [UIView animateWithDuration:animated ? 0.3 : 0.0 animations:^{
+        [self.contentView layoutIfNeeded];
+    }];
 }
 
 #pragma mark - Dealloc

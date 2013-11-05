@@ -296,6 +296,18 @@
 		3289D28B15094739008DD299 /* Directory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28915094739008DD299 /* Directory@2x.png */; };
 		3289D28E1509474A008DD299 /* Food.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28C1509474A008DD299 /* Food.png */; };
 		3289D28F1509474A008DD299 /* Food@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28D1509474A008DD299 /* Food@2x.png */; };
+		328A131D18296E2D00F4C622 /* FoodSmileyHappy.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131118296E2D00F4C622 /* FoodSmileyHappy.png */; };
+		328A131E18296E2D00F4C622 /* FoodSmileyHappy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131218296E2D00F4C622 /* FoodSmileyHappy@2x.png */; };
+		328A131F18296E2D00F4C622 /* FoodSmileyHappy2.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131318296E2D00F4C622 /* FoodSmileyHappy2.png */; };
+		328A132018296E2D00F4C622 /* FoodSmileyHappy2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131418296E2D00F4C622 /* FoodSmileyHappy2@2x.png */; };
+		328A132118296E2D00F4C622 /* FoodSmileyMeh.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131518296E2D00F4C622 /* FoodSmileyMeh.png */; };
+		328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131618296E2D00F4C622 /* FoodSmileyMeh@2x.png */; };
+		328A132318296E2D00F4C622 /* FoodSmileyMeh2.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131718296E2D00F4C622 /* FoodSmileyMeh2.png */; };
+		328A132418296E2D00F4C622 /* FoodSmileyMeh2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131818296E2D00F4C622 /* FoodSmileyMeh2@2x.png */; };
+		328A132518296E2D00F4C622 /* FoodSmileySad.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131918296E2D00F4C622 /* FoodSmileySad.png */; };
+		328A132618296E2D00F4C622 /* FoodSmileySad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131A18296E2D00F4C622 /* FoodSmileySad@2x.png */; };
+		328A132718296E2D00F4C622 /* FoodSmileySad2.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131B18296E2D00F4C622 /* FoodSmileySad2.png */; };
+		328A132818296E2D00F4C622 /* FoodSmileySad2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131C18296E2D00F4C622 /* FoodSmileySad2@2x.png */; };
 		328B9ED0150B705200B50024 /* MenusListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328B9ECF150B705200B50024 /* MenusListView.xib */; };
 		328B9ED3150B77DD00B50024 /* MenusListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328B9ED2150B77DD00B50024 /* MenusListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		328B9EDE150B7DDE00B50024 /* MealCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 328B9EDD150B7DDE00B50024 /* MealCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -912,6 +924,18 @@
 		3289D28915094739008DD299 /* Directory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Directory@2x.png"; sourceTree = "<group>"; };
 		3289D28C1509474A008DD299 /* Food.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Food.png; sourceTree = "<group>"; };
 		3289D28D1509474A008DD299 /* Food@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Food@2x.png"; sourceTree = "<group>"; };
+		328A131118296E2D00F4C622 /* FoodSmileyHappy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodSmileyHappy.png; sourceTree = "<group>"; };
+		328A131218296E2D00F4C622 /* FoodSmileyHappy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileyHappy@2x.png"; sourceTree = "<group>"; };
+		328A131318296E2D00F4C622 /* FoodSmileyHappy2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodSmileyHappy2.png; sourceTree = "<group>"; };
+		328A131418296E2D00F4C622 /* FoodSmileyHappy2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileyHappy2@2x.png"; sourceTree = "<group>"; };
+		328A131518296E2D00F4C622 /* FoodSmileyMeh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodSmileyMeh.png; sourceTree = "<group>"; };
+		328A131618296E2D00F4C622 /* FoodSmileyMeh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileyMeh@2x.png"; sourceTree = "<group>"; };
+		328A131718296E2D00F4C622 /* FoodSmileyMeh2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodSmileyMeh2.png; sourceTree = "<group>"; };
+		328A131818296E2D00F4C622 /* FoodSmileyMeh2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileyMeh2@2x.png"; sourceTree = "<group>"; };
+		328A131918296E2D00F4C622 /* FoodSmileySad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodSmileySad.png; sourceTree = "<group>"; };
+		328A131A18296E2D00F4C622 /* FoodSmileySad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileySad@2x.png"; sourceTree = "<group>"; };
+		328A131B18296E2D00F4C622 /* FoodSmileySad2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodSmileySad2.png; sourceTree = "<group>"; };
+		328A131C18296E2D00F4C622 /* FoodSmileySad2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileySad2@2x.png"; sourceTree = "<group>"; };
 		328B9ECF150B705200B50024 /* MenusListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenusListView.xib; sourceTree = "<group>"; };
 		328B9ED1150B77DD00B50024 /* MenusListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusListViewController.h; sourceTree = "<group>"; };
 		328B9ED2150B77DD00B50024 /* MenusListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusListViewController.m; sourceTree = "<group>"; };
@@ -1909,6 +1933,18 @@
 				32290AD218200C67005869E7 /* FoodLarge@2x.png */,
 				3289D28C1509474A008DD299 /* Food.png */,
 				3289D28D1509474A008DD299 /* Food@2x.png */,
+				328A131118296E2D00F4C622 /* FoodSmileyHappy.png */,
+				328A131218296E2D00F4C622 /* FoodSmileyHappy@2x.png */,
+				328A131318296E2D00F4C622 /* FoodSmileyHappy2.png */,
+				328A131418296E2D00F4C622 /* FoodSmileyHappy2@2x.png */,
+				328A131518296E2D00F4C622 /* FoodSmileyMeh.png */,
+				328A131618296E2D00F4C622 /* FoodSmileyMeh@2x.png */,
+				328A131718296E2D00F4C622 /* FoodSmileyMeh2.png */,
+				328A131818296E2D00F4C622 /* FoodSmileyMeh2@2x.png */,
+				328A131918296E2D00F4C622 /* FoodSmileySad.png */,
+				328A131A18296E2D00F4C622 /* FoodSmileySad@2x.png */,
+				328A131B18296E2D00F4C622 /* FoodSmileySad2.png */,
+				328A131C18296E2D00F4C622 /* FoodSmileySad2@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -3038,6 +3074,7 @@
 				3289D28F1509474A008DD299 /* Food@2x.png in Resources */,
 				32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */,
 				32506D02181DC41E003F08D7 /* MasterVisible@2x.png in Resources */,
+				328A132018296E2D00F4C622 /* FoodSmileyHappy2@2x.png in Resources */,
 				328B9ED0150B705200B50024 /* MenusListView.xib in Resources */,
 				32290AD118200A25005869E7 /* FoodSplashDetailView.xib in Resources */,
 				320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */,
@@ -3078,6 +3115,7 @@
 				324151E515375BDD00CCFB22 /* Map.png in Resources */,
 				324151E615375BDD00CCFB22 /* Map@2x.png in Resources */,
 				32CCB4EA1555237500220282 /* MoodlePlugin.strings in Resources */,
+				328A132618296E2D00F4C622 /* FoodSmileySad@2x.png in Resources */,
 				32CCB4EF1555237500220282 /* Moodle.png in Resources */,
 				32930A5C17F85FA70025F864 /* Icon76@2x.png in Resources */,
 				32CCB4F01555237500220282 /* Moodle@2x.png in Resources */,
@@ -3105,11 +3143,13 @@
 				321F37EF15B0499200E7BA6D /* SettingsHomeButton.png in Resources */,
 				32AF214815B197DE00BB445D /* TransportHelp.html in Resources */,
 				3241F1D615B4AB2400C7DF3A /* EditableTableViewCell.xib in Resources */,
+				328A132818296E2D00F4C622 /* FoodSmileySad2@2x.png in Resources */,
 				32A54B8015B5AA5900A7C882 /* GasparView.xib in Resources */,
 				3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */,
 				32CC7B3815B804D3004F0A31 /* SettingsBarButton.png in Resources */,
 				32CC7B3915B804D3004F0A31 /* SettingsBarButton@2x.png in Resources */,
 				3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */,
+				328A132118296E2D00F4C622 /* FoodSmileyMeh.png in Resources */,
 				32930AA817F898910025F864 /* LGRefreshControl.strings in Resources */,
 				32B6A53A15BDF7BB000E7F3C /* PocketCampusStyled@2x.png in Resources */,
 				32B6A53C15BDFB86000E7F3C /* PocketCampusStyled.png in Resources */,
@@ -3132,6 +3172,7 @@
 				32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */,
 				32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */,
 				32574ED7182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png in Resources */,
+				328A132418296E2D00F4C622 /* FoodSmileyMeh2@2x.png in Resources */,
 				32CBF05A163450E500FD92E5 /* PocketCampusDrawing@2x.png in Resources */,
 				32C509E617FC60B0005A5635 /* CameraBarButton.png in Resources */,
 				32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */,
@@ -3217,6 +3258,7 @@
 				32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */,
 				32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */,
 				32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */,
+				328A131D18296E2D00F4C622 /* FoodSmileyHappy.png in Resources */,
 				32E67DC91684D62300E5CFF6 /* ClockCellSelected.png in Resources */,
 				32E67DCA1684D62300E5CFF6 /* ClockCellSelected@2x.png in Resources */,
 				322207EC1688E6B5003F6622 /* NewsSplashView.xib in Resources */,
@@ -3243,10 +3285,12 @@
 				329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */,
 				32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */,
 				32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */,
+				328A131F18296E2D00F4C622 /* FoodSmileyHappy2.png in Resources */,
 				3200375A18119B4100901F6A /* Info@2x.png in Resources */,
 				32F5309416EABA0F00F66484 /* EventsLarge.png in Resources */,
 				32C509E717FC60B0005A5635 /* CameraBarButton@2x.png in Resources */,
 				3212452D16FE174500469113 /* EyeBarButton.png in Resources */,
+				328A131E18296E2D00F4C622 /* FoodSmileyHappy@2x.png in Resources */,
 				3212452E16FE174500469113 /* EyeBarButton@2x.png in Resources */,
 				32F7218C171B0BB4005755A2 /* CamiproView~ipad.xib in Resources */,
 				322C07541722A7E6004FDC83 /* GenericGreyButton.png in Resources */,
@@ -3266,6 +3310,7 @@
 				323414D9176558F300527895 /* AnswerRecViewController.xib in Resources */,
 				323414E5176558F300527895 /* IntroViewController.xib in Resources */,
 				323414E8176558F300527895 /* MatchingViewController.xib in Resources */,
+				328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */,
 				323414FC176558F300527895 /* QAForumPlugin.strings in Resources */,
 				323414FD176558F300527895 /* kermit_empty.png in Resources */,
 				32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */,
@@ -3284,6 +3329,7 @@
 				3234150B176558F300527895 /* qaforum_ask.png in Resources */,
 				3234150C176558F300527895 /* qaforum_forum.png in Resources */,
 				3234150D176558F300527895 /* qaforum_intro1.png in Resources */,
+				328A132318296E2D00F4C622 /* FoodSmileyMeh2.png in Resources */,
 				3234150E176558F300527895 /* qaforum_intro2.png in Resources */,
 				3234150F176558F300527895 /* qaforum_intro3.png in Resources */,
 				32341510176558F300527895 /* qaforum_intro4.png in Resources */,
@@ -3305,10 +3351,12 @@
 				3234151E176558F300527895 /* QAForumView.xib in Resources */,
 				3234151F176558F300527895 /* QuestionListViewController.xib in Resources */,
 				32341520176558F300527895 /* QuestionViewController.xib in Resources */,
+				328A132718296E2D00F4C622 /* FoodSmileySad2.png in Resources */,
 				32341521176558F300527895 /* ReportViewController.xib in Resources */,
 				32341522176558F300527895 /* RequestViewController.xib in Resources */,
 				32341523176558F400527895 /* SettingViewController.xib in Resources */,
 				324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */,
+				328A132518296E2D00F4C622 /* FoodSmileySad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

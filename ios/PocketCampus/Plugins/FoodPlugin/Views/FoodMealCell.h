@@ -18,4 +18,11 @@
 
 + (CGFloat)preferredHeightForMeal:(EpflMeal*)meal;
 
+/*
+ * If YES, cell's content is shifted to the right and reveals rating controls
+ * Default: NO
+ */
+@property (nonatomic, getter = isRateModeEnabled) BOOL rateModeEnabled;
+- (void)setRateModeEnabled:(BOOL)rateModeEnabled animated:(BOOL)animated;
+
 @end
