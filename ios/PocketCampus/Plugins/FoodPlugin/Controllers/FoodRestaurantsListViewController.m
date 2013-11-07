@@ -58,6 +58,10 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     if (self) {
         self.foodService = [FoodService sharedInstanceToRetain];
         self.foodResponse = [self.foodService getFoodFromCacheForRequest:[self createFoodRequest]];
+        if (self.foodResponse) {
+            self.foodService.pictureUrlForMealType = self.foodResponse.mealTypePictureUrls; //see doc of self.foodService.pictureUrlForMealType
+            self.foodService.userPriceTarget = self.foodResponse.userStatus; //see doc of self.foodService.userPriceTarget
+        }
     }
     return self;
 }

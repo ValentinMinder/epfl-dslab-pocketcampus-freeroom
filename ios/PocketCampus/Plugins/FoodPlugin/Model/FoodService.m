@@ -10,6 +10,8 @@
 
 #import "ObjectArchiver.h"
 
+static NSTimeInterval kFoodRequestCacheValidity = 10800.0; //3 hours;
+
 static NSString* kFavoriteRestaurantIds = @"favoriteRestaurantIds";
 
 @interface FoodService ()
@@ -109,7 +111,7 @@ static FoodService* instance __weak = nil;
 - (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
-    operation.cacheValidity = 10800.0; //3 hours
+    operation.cacheValidity = kFoodRequestCacheValidity;
     operation.skipCache = YES; //use getFoodFromCacheForRequest:
     operation.serviceClientSelector = @selector(getFood:);
     operation.delegateDidReturnSelector = @selector(getFoodForRequest:didReturn:);
@@ -134,6 +136,7 @@ static FoodService* instance __weak = nil;
 
 - (FoodResponse*)getFoodFromCacheForRequest:(FoodRequest*)request {
     ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.cacheValidity = kFoodRequestCacheValidity;
     operation.serviceClientSelector = @selector(getFood:);
     operation.delegateDidReturnSelector = @selector(getFoodForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getFoodFailedForRequest:);

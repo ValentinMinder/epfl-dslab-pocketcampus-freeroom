@@ -127,8 +127,8 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
 
 /* END OF ASIHTTPRequestDelegate delegation */
 
-/* pass nil to cancel all operations
- * KNOW BUG : if checkServerRequest is still in progress, calling cancelOperationsForDelegate will cancel operations for ALL delegates !!
+/* 
+ * Pass nil to cancel all operations
  */
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
     int nbOps = 0;
@@ -351,7 +351,13 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
     @try {
         [self computeHashCode];
         
+        [self retain];
         BOOL serverIsReachable = [self.service serverIsReachable];
+        if ([self isCancelled]) {
+            @throw [NSException exceptionWithName:@"Operation cancelled" reason:@"operation was cancelled" userInfo:nil];
+        } else {
+            [self release];
+        }
         
         NSDictionary* cached = nil;
         
@@ -411,8 +417,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
         }
         [self retain]; //So that the NSOperation is kept alive to receive service timeout (POST timeout) even after service release
         
-        if ([self isCancelled])
-        {
+        if ([self isCancelled]) {
             @throw [NSException exceptionWithName:@"Operation cancelled" reason:@"operation was cancelled" userInfo:nil];
         }
         
