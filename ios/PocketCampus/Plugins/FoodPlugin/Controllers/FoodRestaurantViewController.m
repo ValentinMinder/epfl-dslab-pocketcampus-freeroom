@@ -76,6 +76,11 @@ static const NSInteger kMealsSection = 2;
     }
 }
 
+- (void)showOnMapPressed {
+    UIViewController* mapViewController = [MapController viewControllerWithInitialMapItem:self.restaurant.rLocation];
+    [self.navigationController pushViewController:mapViewController animated:YES];
+}
+
 
 #pragma mark - UITableViewDelegate
 
@@ -117,6 +122,7 @@ static const NSInteger kMealsSection = 2;
             if (!self.restaurantInfoCell) {
                 self.restaurantInfoCell = [[FoodRestaurantInfoCell alloc] initWithEpflRestaurant:self.restaurant];
                 //self.restaurantInfoCell.showRating = NO;
+                [self.restaurantInfoCell.showOnMapButton addTarget:self action:@selector(showOnMapPressed) forControlEvents:UIControlEventTouchUpInside];
             }
             cell = self.restaurantInfoCell;
             break;
@@ -161,7 +167,7 @@ static const NSInteger kMealsSection = 2;
         case kRestaurantInfoSection:
             return 1;
         case kShowOnMapSection:
-            return 1;
+            return 0;
         case kMealsSection:
             return self.restaurant.rMeals.count;
     }

@@ -39,6 +39,10 @@
    return [[UIDevice currentDevice].systemVersion floatValue];
 }
 
++ (NSString*)uniqueDeviceIdentifier {
+    return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+}
+
 + (NSString*)appVersion {
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
 }

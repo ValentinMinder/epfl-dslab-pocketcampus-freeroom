@@ -15,6 +15,7 @@
 + (BOOL)isIdiomPad;
 + (BOOL)isOSVersionSmallerThan:(float)version;
 + (float)OSVersion;
++ (NSString*)uniqueDeviceIdentifier;
 + (NSString*)appVersion;
 + (NSString*)userLanguageCode;
 + (NSString*)lastUpdateNowString;

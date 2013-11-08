@@ -16,11 +16,22 @@
 
 @import CoreText;
 
+typedef enum {
+    RatingStatusLabelReady,
+    RatingStatusLabelLoading,
+    RatingStatusLabelRated
+} RatingStatusLabel;
+
 static const CGFloat kMinHeight = 110.0;
 static const CGFloat kTextViewWidth = 252.0;
 static const CGFloat kBottomZoneHeight = 30.0;
+static const CGFloat kRateModeEnabledOffset = 72.0;
 
-@interface FoodMealCell ()
+@interface FoodMealCell ()<FoodServiceDelegate>
+
+@property (nonatomic, strong) FoodService* foodService;
+
+@property (nonatomic) UIEdgeInsets originalSeparatorInsets;
 
 @property (nonatomic, strong) IBOutlet UIView* infoContentView;
 @property (nonatomic, strong) IBOutlet UIImageView* mealTypeImageView;
@@ -29,7 +40,11 @@ static const CGFloat kBottomZoneHeight = 30.0;
 @property (nonatomic, strong) IBOutlet UIButton* satRateButton;
 
 @property (nonatomic, strong) IBOutlet UIView* rateControlsView;
-
+@property (nonatomic, strong) IBOutlet UILabel* rateControlsViewTopLabel;
+@property (nonatomic) RatingStatusLabel ratingStatusLabel;
+@property (nonatomic, strong) IBOutlet UIButton* happyButton;
+@property (nonatomic, strong) IBOutlet UIButton* mehButton;
+@property (nonatomic, strong) IBOutlet UIButton* sadButton;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* infoContentViewLeftConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* infoContentViewRightConstraint;
@@ -37,6 +52,8 @@ static const CGFloat kBottomZoneHeight = 30.0;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewBottomConstraint;
 
 @property (nonatomic, strong) UILongPressGestureRecognizer* infoContentViewTapGesture; //actually using for touchDown, because tap gesture does not support it
+
+- (IBAction)smileyButtonTapped:(id)sender; //not see by IB otherwise
 
 @end
 
@@ -46,9 +63,11 @@ static const CGFloat kBottomZoneHeight = 30.0;
 
 - (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier {
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"FoodMealCell" owner:nil options:nil];
-    self = (FoodMealCell*)elements[1];
+    self = (FoodMealCell*)elements[0];
     if (self) {
+        self.foodService = [FoodService sharedInstanceToRetain];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.originalSeparatorInsets = self.separatorInset;
         self.textViewWidthConstraint.constant = kTextViewWidth;
         self.textViewBottomConstraint.constant = kBottomZoneHeight;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -59,7 +78,9 @@ static const CGFloat kBottomZoneHeight = 30.0;
         [self.infoContentView addGestureRecognizer:self.infoContentViewTapGesture];
         [self.contentView insertSubview:self.rateControlsView belowSubview:self.infoContentView]; //doing that here and not in IB so that we can work on the view that is hidden by infoContentView otherwise :)
         self.rateControlsView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.contentView forView:self.rateControlsView edgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.contentView forView:self.rateControlsView edgeInsets:UIEdgeInsetsMake(0, kNoInsetConstraint, 0, kNoInsetConstraint)]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.infoContentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.rateControlsView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]];
+        [self.rateControlsView addConstraint:[NSLayoutConstraint widthConstraint:self.frame.size.width-kRateModeEnabledOffset forView:self.rateControlsView]];
     }
     return self;
 }
@@ -149,6 +170,18 @@ static const CGFloat kBottomZoneHeight = 30.0;
 
 #pragma mark - Ratings
 
+/*- (void)setRatingStatusLabel:(RatingStatusLabel)ratingStatusLabel {
+    _ratingStatusLabel = ratingStatusLabel;
+    switch (ratingStatusLabel) {
+        case RatingStatusLabelReady:
+            
+            break;
+            
+        default:
+            break;
+    }
+}*/
+
 - (void)infoContentViewTapped {
     [self setRateModeEnabled:NO animated:YES];
 }
@@ -165,18 +198,61 @@ static const CGFloat kBottomZoneHeight = 30.0;
     _rateModeEnabled = rateModeEnabled;
     self.infoContentViewTapGesture.enabled = rateModeEnabled;
     CGFloat offset = rateModeEnabled ? self.contentView.frame.size.width-72.0 : 0.0;
+    self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
     self.infoContentViewLeftConstraint.constant = -offset;
     self.infoContentViewRightConstraint.constant = offset;
     
     [UIView animateWithDuration:animated ? 0.3 : 0.0 animations:^{
-        [self.contentView layoutIfNeeded];
+        [self layoutIfNeeded];
     }];
+}
+
+- (IBAction)smileyButtonTapped:(id)sender {
+    double ratingValue = -1.0;
+    CGFloat dimmedAlpha = 0.2;
+    if (sender == self.happyButton) {
+        ratingValue = 1.0;
+        self.mehButton.alpha = dimmedAlpha;
+        self.sadButton.alpha = dimmedAlpha;
+    } else if (sender == self.mehButton) {
+        ratingValue = 0.5;
+        self.happyButton.alpha = dimmedAlpha;
+        self.sadButton.alpha = dimmedAlpha;
+    } else if (sender == self.sadButton) {
+        ratingValue = 0.0;
+        self.happyButton.alpha = dimmedAlpha;
+        self.mehButton.alpha = dimmedAlpha;
+    } else {
+        //should not happen
+    }
+    self.happyButton.enabled = NO;
+    self.mehButton.enabled = NO;
+    self.sadButton.enabled = NO;
+    self.rateControlsViewTopLabel.text = NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil);
+    
+    VoteRequest* req = [[VoteRequest alloc] initWithMealId:self.meal.mId rating:ratingValue deviceId:[PCUtils uniqueDeviceIdentifier]];
+    [self.foodService voteForRequest:req delegate:self];
+}
+
+#pragma mark - FoodServiceDelegate
+
+- (void)voteForRequest:(VoteRequest *)request didReturn:(VoteResponse *)response {
+#warning TODO
+}
+
+- (void)voteFailedForRequest:(VoteRequest *)request {
+#warning TODO
+}
+
+- (void)serviceConnectionToServerTimedOut {
+#warning TODO
 }
 
 #pragma mark - Dealloc
 
 - (void)dealloc {
     [self.mealTypeImageView cancelImageRequestOperation];
+    [self.foodService cancelOperationsForDelegate:self];
 }
 
 @end

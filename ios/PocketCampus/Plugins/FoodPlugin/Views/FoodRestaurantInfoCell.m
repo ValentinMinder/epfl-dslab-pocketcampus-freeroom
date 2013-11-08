@@ -16,12 +16,12 @@
 
 #import "UIImageView+AFNetworking.h"
 
+#import "UIImage+Additions.h"
+
 @interface FoodRestaurantInfoCell ()
 
 @property (nonatomic, strong) IBOutlet UIImageView* backgroundImageView;
-@property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UILabel* satRateLabel;
-@property (nonatomic, strong) IBOutlet UIButton* showOnMapButton;
 
 @end
 
@@ -33,16 +33,16 @@
 {
     [PCUtils throwExceptionIfObject:restaurant notKindOfClass:[EpflRestaurant class]];
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"FoodRestaurantInfoCell" owner:nil options:nil];
-    self = (FoodRestaurantInfoCell*)elements[0];
+    self = (FoodRestaurantInfoCell*)elements[1];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        CAGradientLayer *gradient1 = [CAGradientLayer layer];
+        self.separatorInset = UIEdgeInsetsZero;
+        /*CAGradientLayer *gradient1 = [CAGradientLayer layer];
         gradient1.frame = self.overlayView.bounds;
         gradient1.startPoint = CGPointMake(0, 0.5);
         gradient1.endPoint = CGPointMake(1.0, 0.5);
         gradient1.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithWhite:1.0 alpha:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil];
-        [self.overlayView.layer insertSublayer:gradient1 atIndex:0];
+        [self.overlayView.layer insertSublayer:gradient1 atIndex:0];*/
         
         [self.showOnMapButton setTitle:[NSString stringWithFormat:@"  %@  ", NSLocalizedStringFromTable(@"ShowOnMap", @"FoodPlugin", nil)] forState:UIControlStateNormal];
         /*CAGradientLayer *gradient2 = [CAGradientLayer layer];
@@ -62,22 +62,29 @@
 #pragma mark - Public properties and methods
 
 + (CGFloat)preferredHeight {
-    return 120.0;
+    return 150.0;
 }
 
 - (void)setRestaurant:(EpflRestaurant *)restaurant {
     _restaurant = restaurant;
     if (self.restaurant.rPictureUrl) {
-        self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self.backgroundImageView setImageWithURL:[NSURL URLWithString:self.restaurant.rPictureUrl]];
+        FoodRestaurantInfoCell* weakSelf __weak = self;
+        
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.restaurant.rPictureUrl]];
+        [self.backgroundImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            image = [image imageByScalingAndCroppingForSize:CGSizeMake(weakSelf.backgroundImageView.frame.size.width, weakSelf.backgroundImageView.frame.size.height) applyDeviceScreenMultiplyingFactor:YES];
+            weakSelf.backgroundImageView.image = image;
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            //nothing to do
+        }];
     }
     
     NSString* satRateTitleString = NSLocalizedStringFromTable(@"satisfaction", @"FoodPlugin", nil);
     NSString* satRateString = [NSString stringWithFormat:@"%.0lf%%", self.restaurant.rRating.ratingValue*100.0]; //show percentage
-    NSString* nbVotesString = [NSString stringWithFormat:@"(%d %@)", self.restaurant.rRating.voteCount, self.restaurant.rRating.voteCount > 1 ? NSLocalizedStringFromTable(@"votes", @"FoodPlugin", nil) : NSLocalizedStringFromTable(@"vote", @"FoodPlugin", nil)];
-    NSString* fullSatRateString = [NSString stringWithFormat:@"%@\n%@\n%@", satRateString, satRateTitleString, nbVotesString];
+    NSString* nbVotesString = [NSString stringWithFormat:@"(%d %@)", self.restaurant.rRating.voteCount, self.restaurant.rRating.voteCount > 1 ? NSLocalizedStringFromTable(@"ratings", @"FoodPlugin", nil) : NSLocalizedStringFromTable(@"rating", @"FoodPlugin", nil)];
+    NSString* fullSatRateString = [NSString stringWithFormat:@"%@ %@ %@", satRateString, satRateTitleString, nbVotesString];
     NSMutableAttributedString* satAttrString = [[NSMutableAttributedString alloc] initWithString:fullSatRateString];
-    UIFont* biggerFont = [UIFont fontWithDescriptor:self.satRateLabel.font.fontDescriptor size:self.satRateLabel.font.fontDescriptor.pointSize+14];
+    UIFont* biggerFont = [UIFont fontWithDescriptor:self.satRateLabel.font.fontDescriptor size:self.satRateLabel.font.fontDescriptor.pointSize];
     [satAttrString addAttribute:NSFontAttributeName value:biggerFont range:[fullSatRateString rangeOfString:satRateString]];
     UIColor* color = nil;
     if (self.restaurant.rRating.ratingValue > 0.66) {
@@ -94,7 +101,7 @@
 
 - (void)setShowRating:(BOOL)showRating {
     _showRating = showRating;
-    self.overlayView.hidden = !showRating;
+    //self.overlayView.hidden = !showRating;
 }
 
 #pragma mark - Actions
