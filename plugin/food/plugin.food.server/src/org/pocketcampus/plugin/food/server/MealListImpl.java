@@ -1,8 +1,6 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
-import java.rmi.NoSuchObjectException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +55,7 @@ public final class MealListImpl implements MealList {
 	// Constants related to meal types.
 	private static final Map<Integer, MealType> MEAL_PRIMARY_TYPES = new HashMap<Integer, MealType>();
 	private static final Map<Integer, MealType> MEAL_SECONDARY_TYPES = new HashMap<Integer, MealType>();
-	
+
 	// The HTTP client used to get the HTML data.
 	private final HttpClient _client;
 
@@ -179,46 +177,40 @@ public final class MealListImpl implements MealList {
 
 		restaurant.getRMeals().add(meal);
 	}
-	
-	/** Based on restaurant name, sets rPictureUrl and queries map plugin to
-	 *  set rLocation attributes **/
-	private static void restaurantSetSpecificAttributes(EpflRestaurant restaurant) {
 
-		/*
-		 * Querying map plugin to get restaurant location
-		 */
+	/**
+	 * Based on restaurant name, sets rPictureUrl and queries map plugin to
+	 * set rLocation attributes
+	 **/
+	@SuppressWarnings("unchecked")
+	private static void restaurantSetSpecificAttributes(EpflRestaurant restaurant) {
+		// Query map plugin to get restaurant location
 		try {
 			String compatibleName = compatibleRestaurantNameForMap(restaurant.getRName());
 			List<MapItem> searchResults = null;
-			searchResults = (List<MapItem>)PocketCampusServer.invokeOnPlugin("map", "search", compatibleName);
+			searchResults = (List<MapItem>) PocketCampusServer.invokeOnPlugin("map", "search", compatibleName);
 			if (searchResults == null || searchResults.size() == 0) {
-				System.err.println("INFO: map plugin returned 0 result for restaurant "+restaurant.getRName());
+				System.err.println("INFO: map plugin returned 0 result for restaurant " + restaurant.getRName());
 			} else {
 				System.out.println(searchResults);
-				MapItem restaurantMapItem = searchResults.get(0); //assuming first result is the right one
+				MapItem restaurantMapItem = searchResults.get(0); // assuming first result is the right one
 				restaurant.setRLocation(restaurantMapItem);
 			}
 		} catch (Exception e) {
-			System.err.println("Exception while querying map plugin for location of restaurant "+restaurant.getRName());
+			System.err.println("Exception while querying map plugin for location of restaurant " + restaurant.getRName());
 			e.printStackTrace();
 		}
-		
-		/*
-		 * Setting rPictureUrl
-		 */
-		//TODO
-		
+
+		// TODO: Set picture url
 	}
-	
-	private static String compatibleRestaurantNameForMap(String originalRestaurantName) {
-		String normalizedName = Normalizer.normalize(originalRestaurantName, Normalizer.Form.NFC).toLowerCase();
-		String compatibleName = originalRestaurantName;
+
+	private static String compatibleRestaurantNameForMap(String restaurantName) {
+		String normalizedName = Normalizer.normalize(restaurantName, Normalizer.Form.NFC).toLowerCase();
+		String compatibleName = restaurantName;
 		if (normalizedName.contains("puur innovation")) {
 			compatibleName = "Puur Innovation";
 		} else if (normalizedName.contains("table de vallotton")) {
 			compatibleName = "Table de Vallotton";
-		} else {
-			//fine
 		}
 		return compatibleName;
 	}
