@@ -248,6 +248,7 @@ public class OldRssParser extends DefaultHandler {
 		}
 		return s.trim();
 	}
+	
 
 	/**
 	 * Represents an RSS Feed.

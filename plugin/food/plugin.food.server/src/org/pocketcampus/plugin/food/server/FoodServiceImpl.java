@@ -24,7 +24,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	
 	static {
 		for (MealType type : MealType.values()) {
-			MEAL_TYPE_PICTURE_URLS.put(MealType.UNKNOWN, MEAL_PICS_FOLDER_URL+type+".png");
+			MEAL_TYPE_PICTURE_URLS.put(type, MEAL_PICS_FOLDER_URL+type+".png");
 			//=> e.g. URL for PIZZA is http://pocketcampus.epfl.ch/backend/meal-pics/PIZZA.png
 		}
 	}

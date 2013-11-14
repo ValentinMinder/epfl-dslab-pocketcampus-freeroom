@@ -27,7 +27,7 @@ public final class FoodServiceTests {
 		MealList mealList = getTestMealList();
 		FoodServiceImpl service = new FoodServiceImpl(getTestDeviceDatabase(), getTestRatingDatabase(), getTestMealList());
 
-		FoodResponse response = service.getFood(new FoodRequest("fr", MealTime.LUNCH, 0));
+		FoodResponse response = service.getFood(new FoodRequest());
 
 		assertEquals(mealList.getMenu(MealTime.LUNCH, LocalDate.now()).menu, response.getMatchingFood());
 	}
@@ -41,7 +41,7 @@ public final class FoodServiceTests {
 		ratingDatabase.vote(12, 2);
 		ratingDatabase.vote(12, 5);
 
-		FoodResponse response = service.getFood(new FoodRequest("fr", MealTime.LUNCH, 0));
+		FoodResponse response = service.getFood(new FoodRequest());
 		List<EpflRestaurant> menu = response.getMatchingFood();
 
 		EpflRating r1 = menu.get(0).getRMeals().get(2).getMRating();
@@ -61,7 +61,7 @@ public final class FoodServiceTests {
 		ratingDatabase.vote(11, 2);
 		ratingDatabase.vote(12, 5);
 
-		FoodResponse response = service.getFood(new FoodRequest("fr", MealTime.LUNCH, 0));
+		FoodResponse response = service.getFood(new FoodRequest());
 		List<EpflRestaurant> menu = response.getMatchingFood();
 
 		EpflRating r1 = menu.get(0).getRRating();

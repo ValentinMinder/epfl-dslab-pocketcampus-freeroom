@@ -10,17 +10,15 @@ import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum SeanceType implements org.apache.thrift.TEnum {
-  SEANCE_LECTURE(0),
-  SEANCE_EXERCISE(1),
-  SEANCE_LAB(2),
-  SEANCE_PROJECT(3),
-  SEANCE_PRACTICE(4),
-  SEANCE_CONFLICT(5);
+public enum StudyPeriodType implements org.apache.thrift.TEnum {
+  LECTURE(0),
+  EXERCISES(1),
+  LAB(2),
+  PROJECT(3);
 
   private final int value;
 
-  private SeanceType(int value) {
+  private StudyPeriodType(int value) {
     this.value = value;
   }
 
@@ -35,20 +33,16 @@ public enum SeanceType implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static SeanceType findByValue(int value) { 
+  public static StudyPeriodType findByValue(int value) { 
     switch (value) {
       case 0:
-        return SEANCE_LECTURE;
+        return LECTURE;
       case 1:
-        return SEANCE_EXERCISE;
+        return EXERCISES;
       case 2:
-        return SEANCE_LAB;
+        return LAB;
       case 3:
-        return SEANCE_PROJECT;
-      case 4:
-        return SEANCE_PRACTICE;
-      case 5:
-        return SEANCE_CONFLICT;
+        return PROJECT;
       default:
         return null;
     }
