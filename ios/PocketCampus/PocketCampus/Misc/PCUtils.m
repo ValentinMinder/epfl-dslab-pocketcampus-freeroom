@@ -40,7 +40,11 @@
 }
 
 + (NSString*)uniqueDeviceIdentifier {
+#ifdef DEBUG
+    return @"TEST_IOS";
+#else
     return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+#endif
 }
 
 + (NSString*)appVersion {

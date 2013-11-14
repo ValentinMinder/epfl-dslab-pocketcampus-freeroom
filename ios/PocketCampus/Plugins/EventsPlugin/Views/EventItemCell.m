@@ -53,7 +53,7 @@
 - (void)setEventItem:(EventItem *)eventItem {
     _eventItem = eventItem;
     self.textLabel.text = self.eventItem.eventTitle;
-    self.detailTextLabel.text = self.eventItem.timeSnippet ? self.eventItem.timeSnippet : [eventItem dateString:EventItemDateStyleMedium];
+    self.detailTextLabel.text = self.eventItem.secondLine ? self.eventItem.secondLine : (self.eventItem.timeSnippet ? self.eventItem.timeSnippet : [eventItem dateString:EventItemDateStyleMedium]);
 }
 
 - (void)setGlowIfEventItemIsNow:(BOOL)glowIfEventItemIsNow {

@@ -741,7 +741,6 @@ static NSString* kEventCell = @"EventCell";
     }
     
     NSString* title = self.sectionsNames[section];
-    
     return [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView];
 }
 

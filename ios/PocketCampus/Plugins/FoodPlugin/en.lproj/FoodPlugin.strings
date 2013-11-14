@@ -26,6 +26,8 @@
 "rating" = "rating";
 "ratings" = "ratings";
 "NoRating" = "No rating";
+"RatingStatusReadyText" = "How did you like this meal ?";
+"RatingStatusRatedText" = "Thank you !";
 
 
 /* Accessiblity */

@@ -17,10 +17,10 @@
 @import CoreText;
 
 typedef enum {
-    RatingStatusLabelReady,
-    RatingStatusLabelLoading,
-    RatingStatusLabelRated
-} RatingStatusLabel;
+    RatingStatusReady,
+    RatingStatusLoading,
+    RatingStatusRated
+} RatingStatus;
 
 static const CGFloat kMinHeight = 110.0;
 static const CGFloat kTextViewWidth = 252.0;
@@ -41,7 +41,7 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
 
 @property (nonatomic, strong) IBOutlet UIView* rateControlsView;
 @property (nonatomic, strong) IBOutlet UILabel* rateControlsViewTopLabel;
-@property (nonatomic) RatingStatusLabel ratingStatusLabel;
+@property (nonatomic) RatingStatus ratingStatus;
 @property (nonatomic, strong) IBOutlet UIButton* happyButton;
 @property (nonatomic, strong) IBOutlet UIButton* mehButton;
 @property (nonatomic, strong) IBOutlet UIButton* sadButton;
@@ -170,17 +170,34 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
 
 #pragma mark - Ratings
 
-/*- (void)setRatingStatusLabel:(RatingStatusLabel)ratingStatusLabel {
-    _ratingStatusLabel = ratingStatusLabel;
-    switch (ratingStatusLabel) {
-        case RatingStatusLabelReady:
-            
+- (void)setRatingStatus:(RatingStatus)ratingStatus {
+    _ratingStatus = ratingStatus;
+    switch (ratingStatus) {
+        case RatingStatusReady:
+            self.rateControlsViewTopLabel.text = NSLocalizedStringFromTable(@"RatingStatusReadyText", @"FoodPlugin", nil);
+            self.happyButton.alpha = 1.0;
+            self.mehButton.alpha = 1.0;
+            self.sadButton.alpha = 1.0;
+            self.happyButton.enabled = YES;
+            self.mehButton.enabled = YES;
+            self.sadButton.enabled = YES;
             break;
-            
+        case RatingStatusLoading:
+            self.rateControlsViewTopLabel.text = NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil);
+            self.happyButton.enabled = NO;
+            self.mehButton.enabled = NO;
+            self.sadButton.enabled = NO;
+            break;
+        case RatingStatusRated:
+            self.rateControlsViewTopLabel.text = NSLocalizedStringFromTable(@"RatingStatusRatedText", @"FoodPlugin", nil);
+            self.happyButton.enabled = NO;
+            self.mehButton.enabled = NO;
+            self.sadButton.enabled = NO;
+            break;
         default:
             break;
     }
-}*/
+}
 
 - (void)infoContentViewTapped {
     [self setRateModeEnabled:NO animated:YES];
@@ -224,12 +241,9 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
         self.mehButton.alpha = dimmedAlpha;
     } else {
         //should not happen
+        return;
     }
-    self.happyButton.enabled = NO;
-    self.mehButton.enabled = NO;
-    self.sadButton.enabled = NO;
-    self.rateControlsViewTopLabel.text = NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil);
-    
+    self.ratingStatus = RatingStatusLoading;
     VoteRequest* req = [[VoteRequest alloc] initWithMealId:self.meal.mId rating:ratingValue deviceId:[PCUtils uniqueDeviceIdentifier]];
     [self.foodService voteForRequest:req delegate:self];
 }
@@ -237,15 +251,42 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
 #pragma mark - FoodServiceDelegate
 
 - (void)voteForRequest:(VoteRequest *)request didReturn:(VoteResponse *)response {
-#warning TODO
+    switch (response.submitStatus) {
+        case SubmitStatus_VALID:
+            self.ratingStatus = RatingStatusRated;
+            break;
+        case SubmitStatus_ALREADY_VOTED:
+            self.ratingStatus = RatingStatusReady;
+            [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"RatingAlreadyDone", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            [self infoContentViewTapped]; //hide rating controls, not longer need them
+            break;
+        case SubmitStatus_TOO_EARLY:
+            self.ratingStatus = RatingStatusReady;
+            [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"RatingTooEarly", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            break;
+        case SubmitStatus_ERROR:
+            [self ratingError];
+            break;
+        default:
+            [self ratingError];
+            break;
+    }
 }
 
 - (void)voteFailedForRequest:(VoteRequest *)request {
-#warning TODO
+    [self ratingError];
+}
+
+- (void)ratingError {
+    self.ratingStatus = RatingStatusReady;
+    [PCUtils showServerErrorAlert];
 }
 
 - (void)serviceConnectionToServerTimedOut {
-#warning TODO
+    if (self.ratingStatus == RatingStatusLoading) {
+        self.ratingStatus = RatingStatusReady;
+        [PCUtils showConnectionToServerTimedOutAlert];
+    }
 }
 
 #pragma mark - Dealloc
