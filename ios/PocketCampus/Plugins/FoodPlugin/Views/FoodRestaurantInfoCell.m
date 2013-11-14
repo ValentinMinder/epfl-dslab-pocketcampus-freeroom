@@ -101,11 +101,8 @@
 
 - (void)setShowRating:(BOOL)showRating {
     _showRating = showRating;
-    //self.overlayView.hidden = !showRating;
+    self.satRateLabel.hidden = !showRating;
 }
-
-#pragma mark - Actions
-
 
 #pragma mark - Dealloc
 

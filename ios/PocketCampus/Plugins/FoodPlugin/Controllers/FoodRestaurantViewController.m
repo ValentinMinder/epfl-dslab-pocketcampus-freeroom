@@ -122,7 +122,11 @@ static const NSInteger kMealsSection = 2;
             if (!self.restaurantInfoCell) {
                 self.restaurantInfoCell = [[FoodRestaurantInfoCell alloc] initWithEpflRestaurant:self.restaurant];
                 //self.restaurantInfoCell.showRating = NO;
-                [self.restaurantInfoCell.showOnMapButton addTarget:self action:@selector(showOnMapPressed) forControlEvents:UIControlEventTouchUpInside];
+                if (self.restaurant.rLocation) {
+                    [self.restaurantInfoCell.showOnMapButton addTarget:self action:@selector(showOnMapPressed) forControlEvents:UIControlEventTouchUpInside];
+                } else {
+                    self.restaurantInfoCell.showOnMapButton.hidden = YES;
+                }
             }
             cell = self.restaurantInfoCell;
             break;
