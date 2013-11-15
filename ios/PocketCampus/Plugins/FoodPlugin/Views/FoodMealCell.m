@@ -263,6 +263,7 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
         case SubmitStatus_TOO_EARLY:
             self.ratingStatus = RatingStatusReady;
             [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"RatingTooEarly", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            [self infoContentViewTapped]; //hide rating controls, not longer need them
             break;
         case SubmitStatus_ERROR:
             [self ratingError];

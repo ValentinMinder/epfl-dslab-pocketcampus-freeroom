@@ -33,7 +33,7 @@
 {
     [PCUtils throwExceptionIfObject:restaurant notKindOfClass:[EpflRestaurant class]];
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"FoodRestaurantInfoCell" owner:nil options:nil];
-    self = (FoodRestaurantInfoCell*)elements[1];
+    self = (FoodRestaurantInfoCell*)elements[0];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.separatorInset = UIEdgeInsetsZero;
@@ -79,22 +79,18 @@
         }];
     }
     
+    self.satRateLabel.hidden = NO;
     NSString* satRateTitleString = NSLocalizedStringFromTable(@"satisfaction", @"FoodPlugin", nil);
-    NSString* satRateString = [NSString stringWithFormat:@"%.0lf%%", self.restaurant.rRating.ratingValue*100.0]; //show percentage
+    NSString* satRateString = self.restaurant.rRating.voteCount > 0 ? [NSString stringWithFormat:@"%.0lf%%", self.restaurant.rRating.ratingValue*100.0] : @"-%"; //show percentage
     NSString* nbVotesString = [NSString stringWithFormat:@"(%d %@)", self.restaurant.rRating.voteCount, self.restaurant.rRating.voteCount > 1 ? NSLocalizedStringFromTable(@"ratings", @"FoodPlugin", nil) : NSLocalizedStringFromTable(@"rating", @"FoodPlugin", nil)];
     NSString* fullSatRateString = [NSString stringWithFormat:@"%@ %@ %@", satRateString, satRateTitleString, nbVotesString];
     NSMutableAttributedString* satAttrString = [[NSMutableAttributedString alloc] initWithString:fullSatRateString];
     UIFont* biggerFont = [UIFont fontWithDescriptor:self.satRateLabel.font.fontDescriptor size:self.satRateLabel.font.fontDescriptor.pointSize];
-    [satAttrString addAttribute:NSFontAttributeName value:biggerFont range:[fullSatRateString rangeOfString:satRateString]];
-    UIColor* color = nil;
-    if (self.restaurant.rRating.ratingValue > 0.66) {
-        color = [UIColor colorWithRed:0.152941 green:0.921569 blue:0.000000 alpha:1.0];
-    } else if (self.restaurant.rRating.ratingValue > 0.33) {
-        color = [UIColor colorWithRed:0.921569 green:0.584314 blue:0.000000 alpha:1.0];
-    } else {
-        color = [UIColor colorWithRed:1.000000 green:0.000000 blue:0.000000 alpha:1.0];
-    }
-    [satAttrString addAttribute:NSForegroundColorAttributeName value:color range:[fullSatRateString rangeOfString:satRateString]];
+    NSRange satRateStringRange = [fullSatRateString rangeOfString:satRateString];
+    [satAttrString addAttribute:NSFontAttributeName value:biggerFont range:satRateStringRange];
+    UIColor* color = [self colorForRating:self.restaurant.rRating];
+    [satAttrString addAttribute:NSForegroundColorAttributeName value:color range:satRateStringRange];
+    [satAttrString addAttribute:NSForegroundColorAttributeName value:color range:satRateStringRange];
     
     self.satRateLabel.attributedText = satAttrString;
 }
@@ -102,6 +98,20 @@
 - (void)setShowRating:(BOOL)showRating {
     _showRating = showRating;
     self.satRateLabel.hidden = !showRating;
+}
+
+/*
+ * http://stackoverflow.com/questions/340209/generate-colors-between-red-and-green-for-a-power-meter
+ */
+- (UIColor*)colorForRating:(EpflRating*)rating {
+    [PCUtils throwExceptionIfObject:rating notKindOfClass:[EpflRating class]];
+    if (!rating.voteCount) {
+        return [UIColor blackColor];
+    }
+    double hue = rating.ratingValue * 0.3; // Hue (note 0.4 = Green)
+    double saturation = 1.0;
+    double brightness = 0.8;
+    return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1.0];
 }
 
 #pragma mark - Dealloc
