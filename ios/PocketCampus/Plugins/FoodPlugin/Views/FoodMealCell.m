@@ -14,6 +14,8 @@
 
 #import "UIImageView+AFNetworking.h"
 
+#import "NSTimer+Blocks.h"
+
 @import CoreText;
 
 typedef enum {
@@ -253,8 +255,14 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
 - (void)voteForRequest:(VoteRequest *)request didReturn:(VoteResponse *)response {
     switch (response.submitStatus) {
         case SubmitStatus_VALID:
+        {
             self.ratingStatus = RatingStatusRated;
+            FoodMealCell* weakSelf __weak = self;
+            [NSTimer scheduledTimerWithTimeInterval:1.0 block:^{
+                [weakSelf infoContentViewTapped]; //hide rating controls, not longer need them
+            } repeats:NO];
             break;
+        }
         case SubmitStatus_ALREADY_VOTED:
             self.ratingStatus = RatingStatusReady;
             [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"RatingAlreadyDone", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
