@@ -9,8 +9,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
+
+import org.apache.http.cookie.Cookie;
 
 import org.pocketcampus.plugin.isacademia.server.*;
 import org.pocketcampus.plugin.isacademia.shared.*;
@@ -76,7 +77,7 @@ public final class ScheduleTests {
 		private static final String RETURN_VALUE = getFileContents("ExampleSchedule.xml");
 		
 		@Override
-		public String getString(String url, Charset charset, Map<String, String> cookies) throws Exception {
+		public String getString(String url, Charset charset, List<Cookie> cookies) throws Exception {
 			return RETURN_VALUE;
 		}
 		

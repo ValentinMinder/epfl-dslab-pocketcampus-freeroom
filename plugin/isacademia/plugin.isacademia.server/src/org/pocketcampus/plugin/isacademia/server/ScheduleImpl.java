@@ -16,6 +16,8 @@ import org.w3c.dom.NodeList;
 
 import org.pocketcampus.plugin.isacademia.shared.*;
 
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.joda.time.*;
 import org.joda.time.format.*;
 
@@ -76,8 +78,11 @@ public final class ScheduleImpl implements Schedule {
 				+ "?" + URL_FROM_PARAMETER + "=" + weekBegin.toString(URL_PARAMETER_FORMAT)
 				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT);
 
-		Map<String, String> cookies = new HashMap<String, String>();
-		cookies.put("tequila_key", tequilaCookie);
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		BasicClientCookie cookie = new BasicClientCookie("tequila_key", tequilaCookie);
+		cookie.setDomain("tequila.epfl.ch");
+		cookie.setPath("/");
+		cookies.add(cookie);
 
 		String xml = null;
 		try {
