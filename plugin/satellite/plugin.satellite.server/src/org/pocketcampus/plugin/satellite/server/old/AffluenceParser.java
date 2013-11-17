@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.satellite.server.parse;
+package org.pocketcampus.plugin.satellite.server.old;
 
 import java.io.IOException;
 

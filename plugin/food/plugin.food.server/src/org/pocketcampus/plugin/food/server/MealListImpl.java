@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.platform.sdk.shared.HttpClient;
 import org.pocketcampus.plugin.food.shared.*;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.apache.commons.lang3.StringUtils;

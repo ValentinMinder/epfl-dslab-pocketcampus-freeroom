@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.food.server;
+package org.pocketcampus.platform.sdk.shared;
 
 import java.nio.charset.Charset;
 

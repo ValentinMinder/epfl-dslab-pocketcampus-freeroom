@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.pocketcampus.platform.sdk.shared.HttpClient;
 import org.pocketcampus.plugin.food.server.*;
 import org.pocketcampus.plugin.food.shared.*;
 

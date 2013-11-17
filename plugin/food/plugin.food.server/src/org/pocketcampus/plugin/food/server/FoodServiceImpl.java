@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.sdk.shared.HttpClientImpl;
 import org.pocketcampus.plugin.food.shared.*;
 import org.joda.time.*;
 
