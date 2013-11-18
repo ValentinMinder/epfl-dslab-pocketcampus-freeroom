@@ -28,15 +28,13 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
   private static final org.apache.thrift.protocol.TField MEAL_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("mealTime", org.apache.thrift.protocol.TType.I32, (short)2);
   private static final org.apache.thrift.protocol.TField MEAL_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("mealDate", org.apache.thrift.protocol.TType.I64, (short)3);
   private static final org.apache.thrift.protocol.TField DEVICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceId", org.apache.thrift.protocol.TType.STRING, (short)4);
+  private static final org.apache.thrift.protocol.TField USER_GASPAR_FIELD_DESC = new org.apache.thrift.protocol.TField("userGaspar", org.apache.thrift.protocol.TType.STRING, (short)5);
 
-  public String deviceLanguage; // required
-  /**
-   * 
-   * @see MealTime
-   */
-  public MealTime mealTime; // required
-  public long mealDate; // required
-  public String deviceId; // required
+  private String deviceLanguage; // required
+  private MealTime mealTime; // required
+  private long mealDate; // required
+  private String deviceId; // required
+  private String userGaspar; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -47,7 +45,8 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
      */
     MEAL_TIME((short)2, "mealTime"),
     MEAL_DATE((short)3, "mealDate"),
-    DEVICE_ID((short)4, "deviceId");
+    DEVICE_ID((short)4, "deviceId"),
+    USER_GASPAR((short)5, "userGaspar");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -70,6 +69,8 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
           return MEAL_DATE;
         case 4: // DEVICE_ID
           return DEVICE_ID;
+        case 5: // USER_GASPAR
+          return USER_GASPAR;
         default:
           return null;
       }
@@ -124,6 +125,8 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.DEVICE_ID, new org.apache.thrift.meta_data.FieldMetaData("deviceId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.USER_GASPAR, new org.apache.thrift.meta_data.FieldMetaData("userGaspar", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FoodRequest.class, metaDataMap);
   }
@@ -149,6 +152,9 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
     if (other.isSetDeviceId()) {
       this.deviceId = other.deviceId;
     }
+    if (other.isSetUserGaspar()) {
+      this.userGaspar = other.userGaspar;
+    }
   }
 
   public FoodRequest deepCopy() {
@@ -163,6 +169,7 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
     setMealDateIsSet(false);
     this.mealDate = 0;
     this.deviceId = null;
+    this.userGaspar = null;
   }
 
   public String getDeviceLanguage() {
@@ -268,6 +275,30 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
     }
   }
 
+  public String getUserGaspar() {
+    return this.userGaspar;
+  }
+
+  public FoodRequest setUserGaspar(String userGaspar) {
+    this.userGaspar = userGaspar;
+    return this;
+  }
+
+  public void unsetUserGaspar() {
+    this.userGaspar = null;
+  }
+
+  /** Returns true if field userGaspar is set (has been assigned a value) and false otherwise */
+  public boolean isSetUserGaspar() {
+    return this.userGaspar != null;
+  }
+
+  public void setUserGasparIsSet(boolean value) {
+    if (!value) {
+      this.userGaspar = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case DEVICE_LANGUAGE:
@@ -302,6 +333,14 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
       }
       break;
 
+    case USER_GASPAR:
+      if (value == null) {
+        unsetUserGaspar();
+      } else {
+        setUserGaspar((String)value);
+      }
+      break;
+
     }
   }
 
@@ -318,6 +357,9 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
 
     case DEVICE_ID:
       return getDeviceId();
+
+    case USER_GASPAR:
+      return getUserGaspar();
 
     }
     throw new IllegalStateException();
@@ -338,6 +380,8 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
       return isSetMealDate();
     case DEVICE_ID:
       return isSetDeviceId();
+    case USER_GASPAR:
+      return isSetUserGaspar();
     }
     throw new IllegalStateException();
   }
@@ -391,6 +435,15 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
         return false;
     }
 
+    boolean this_present_userGaspar = true && this.isSetUserGaspar();
+    boolean that_present_userGaspar = true && that.isSetUserGaspar();
+    if (this_present_userGaspar || that_present_userGaspar) {
+      if (!(this_present_userGaspar && that_present_userGaspar))
+        return false;
+      if (!this.userGaspar.equals(that.userGaspar))
+        return false;
+    }
+
     return true;
   }
 
@@ -417,6 +470,11 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
     builder.append(present_deviceId);
     if (present_deviceId)
       builder.append(deviceId);
+
+    boolean present_userGaspar = true && (isSetUserGaspar());
+    builder.append(present_userGaspar);
+    if (present_userGaspar)
+      builder.append(userGaspar);
 
     return builder.toHashCode();
   }
@@ -469,6 +527,16 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetUserGaspar()).compareTo(typedOther.isSetUserGaspar());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetUserGaspar()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.userGaspar, typedOther.userGaspar);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -515,6 +583,13 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 5: // USER_GASPAR
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.userGaspar = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -553,6 +628,13 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
       if (isSetDeviceId()) {
         oprot.writeFieldBegin(DEVICE_ID_FIELD_DESC);
         oprot.writeString(this.deviceId);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.userGaspar != null) {
+      if (isSetUserGaspar()) {
+        oprot.writeFieldBegin(USER_GASPAR_FIELD_DESC);
+        oprot.writeString(this.userGaspar);
         oprot.writeFieldEnd();
       }
     }
@@ -597,6 +679,16 @@ public class FoodRequest implements org.apache.thrift.TBase<FoodRequest, FoodReq
         sb.append("null");
       } else {
         sb.append(this.deviceId);
+      }
+      first = false;
+    }
+    if (isSetUserGaspar()) {
+      if (!first) sb.append(", ");
+      sb.append("userGaspar:");
+      if (this.userGaspar == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.userGaspar);
       }
       first = false;
     }

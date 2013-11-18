@@ -100,6 +100,7 @@ struct FoodRequest {
 struct FoodResponse {
 	1: required list<EpflRestaurant> matchingFood;
 	2: optional PriceTarget userStatus;
+	3: required map<MealType, string> mealTypePictureUrls;
 }
 
 struct VoteRequest {

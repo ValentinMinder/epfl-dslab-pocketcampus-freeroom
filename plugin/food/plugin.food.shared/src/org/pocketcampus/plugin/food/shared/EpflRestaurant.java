@@ -31,12 +31,12 @@ public class EpflRestaurant implements org.apache.thrift.TBase<EpflRestaurant, E
   private static final org.apache.thrift.protocol.TField R_RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rRating", org.apache.thrift.protocol.TType.STRUCT, (short)5);
   private static final org.apache.thrift.protocol.TField R_PICTURE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("rPictureUrl", org.apache.thrift.protocol.TType.STRING, (short)6);
 
-  public long rId; // required
-  public String rName; // required
-  public List<EpflMeal> rMeals; // required
-  public org.pocketcampus.plugin.map.shared.MapItem rLocation; // required
-  public EpflRating rRating; // required
-  public String rPictureUrl; // required
+  private long rId; // required
+  private String rName; // required
+  private List<EpflMeal> rMeals; // required
+  private org.pocketcampus.plugin.map.shared.MapItem rLocation; // required
+  private EpflRating rRating; // required
+  private String rPictureUrl; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

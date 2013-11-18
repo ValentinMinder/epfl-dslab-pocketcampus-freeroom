@@ -1,12 +1,12 @@
 package org.pocketcampus.plugin.food.server;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.food.shared.*;
-
 import org.joda.time.*;
 
 /**
@@ -18,6 +18,16 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private final DeviceDatabase _deviceDatabase;
 	private final RatingDatabase _ratingDatabase;
 	private final MealList _mealList;
+	
+	private static final String MEAL_PICS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/meal-pics/";
+	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
+	
+	static {
+		for (MealType type : MealType.values()) {
+			MEAL_TYPE_PICTURE_URLS.put(type, MEAL_PICS_FOLDER_URL+type+".png");
+			//=> e.g. URL for PIZZA is http://pocketcampus.epfl.ch/backend/meal-pics/PIZZA.png
+		}
+	}
 
 	public FoodServiceImpl(DeviceDatabase deviceDatabase, RatingDatabase ratingDatabase, MealList mealList) {
 		_deviceDatabase = deviceDatabase;
@@ -55,7 +65,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 		_ratingDatabase.setRatings(menu);
 
-		return new FoodResponse(menu);
+		return new FoodResponse(menu, MEAL_TYPE_PICTURE_URLS);
 	}
 
 	@Override

@@ -21,19 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListReply, IsaExamsListReply._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("IsaExamsListReply");
+public class StudyDay implements org.apache.thrift.TBase<StudyDay, StudyDay._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("StudyDay");
 
-  private static final org.apache.thrift.protocol.TField I_EXAMS_FIELD_DESC = new org.apache.thrift.protocol.TField("iExams", org.apache.thrift.protocol.TType.LIST, (short)1);
-  private static final org.apache.thrift.protocol.TField I_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("iStatus", org.apache.thrift.protocol.TType.I32, (short)2);
+  private static final org.apache.thrift.protocol.TField DAY_FIELD_DESC = new org.apache.thrift.protocol.TField("day", org.apache.thrift.protocol.TType.I64, (short)1);
+  private static final org.apache.thrift.protocol.TField PERIODS_FIELD_DESC = new org.apache.thrift.protocol.TField("periods", org.apache.thrift.protocol.TType.LIST, (short)2);
 
-  public List<IsaExam> iExams; // required
-  public int iStatus; // required
+  private long day; // required
+  private List<StudyPeriod> periods; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    I_EXAMS((short)1, "iExams"),
-    I_STATUS((short)2, "iStatus");
+    DAY((short)1, "day"),
+    PERIODS((short)2, "periods");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +48,10 @@ public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListRe
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // I_EXAMS
-          return I_EXAMS;
-        case 2: // I_STATUS
-          return I_STATUS;
+        case 1: // DAY
+          return DAY;
+        case 2: // PERIODS
+          return PERIODS;
         default:
           return null;
       }
@@ -92,136 +92,138 @@ public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListRe
   }
 
   // isset id assignments
-  private static final int __ISTATUS_ISSET_ID = 0;
+  private static final int __DAY_ISSET_ID = 0;
   private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_EXAMS, new org.apache.thrift.meta_data.FieldMetaData("iExams", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.DAY, new org.apache.thrift.meta_data.FieldMetaData("day", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
+    tmpMap.put(_Fields.PERIODS, new org.apache.thrift.meta_data.FieldMetaData("periods", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, IsaExam.class))));
-    tmpMap.put(_Fields.I_STATUS, new org.apache.thrift.meta_data.FieldMetaData("iStatus", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, StudyPeriod.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(IsaExamsListReply.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(StudyDay.class, metaDataMap);
   }
 
-  public IsaExamsListReply() {
+  public StudyDay() {
   }
 
-  public IsaExamsListReply(
-    int iStatus)
+  public StudyDay(
+    long day,
+    List<StudyPeriod> periods)
   {
     this();
-    this.iStatus = iStatus;
-    setIStatusIsSet(true);
+    this.day = day;
+    setDayIsSet(true);
+    this.periods = periods;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public IsaExamsListReply(IsaExamsListReply other) {
+  public StudyDay(StudyDay other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    if (other.isSetIExams()) {
-      List<IsaExam> __this__iExams = new ArrayList<IsaExam>();
-      for (IsaExam other_element : other.iExams) {
-        __this__iExams.add(new IsaExam(other_element));
+    this.day = other.day;
+    if (other.isSetPeriods()) {
+      List<StudyPeriod> __this__periods = new ArrayList<StudyPeriod>();
+      for (StudyPeriod other_element : other.periods) {
+        __this__periods.add(new StudyPeriod(other_element));
       }
-      this.iExams = __this__iExams;
+      this.periods = __this__periods;
     }
-    this.iStatus = other.iStatus;
   }
 
-  public IsaExamsListReply deepCopy() {
-    return new IsaExamsListReply(this);
+  public StudyDay deepCopy() {
+    return new StudyDay(this);
   }
 
   @Override
   public void clear() {
-    this.iExams = null;
-    setIStatusIsSet(false);
-    this.iStatus = 0;
+    setDayIsSet(false);
+    this.day = 0;
+    this.periods = null;
   }
 
-  public int getIExamsSize() {
-    return (this.iExams == null) ? 0 : this.iExams.size();
+  public long getDay() {
+    return this.day;
   }
 
-  public java.util.Iterator<IsaExam> getIExamsIterator() {
-    return (this.iExams == null) ? null : this.iExams.iterator();
-  }
-
-  public void addToIExams(IsaExam elem) {
-    if (this.iExams == null) {
-      this.iExams = new ArrayList<IsaExam>();
-    }
-    this.iExams.add(elem);
-  }
-
-  public List<IsaExam> getIExams() {
-    return this.iExams;
-  }
-
-  public IsaExamsListReply setIExams(List<IsaExam> iExams) {
-    this.iExams = iExams;
+  public StudyDay setDay(long day) {
+    this.day = day;
+    setDayIsSet(true);
     return this;
   }
 
-  public void unsetIExams() {
-    this.iExams = null;
+  public void unsetDay() {
+    __isset_bit_vector.clear(__DAY_ISSET_ID);
   }
 
-  /** Returns true if field iExams is set (has been assigned a value) and false otherwise */
-  public boolean isSetIExams() {
-    return this.iExams != null;
+  /** Returns true if field day is set (has been assigned a value) and false otherwise */
+  public boolean isSetDay() {
+    return __isset_bit_vector.get(__DAY_ISSET_ID);
   }
 
-  public void setIExamsIsSet(boolean value) {
+  public void setDayIsSet(boolean value) {
+    __isset_bit_vector.set(__DAY_ISSET_ID, value);
+  }
+
+  public int getPeriodsSize() {
+    return (this.periods == null) ? 0 : this.periods.size();
+  }
+
+  public java.util.Iterator<StudyPeriod> getPeriodsIterator() {
+    return (this.periods == null) ? null : this.periods.iterator();
+  }
+
+  public void addToPeriods(StudyPeriod elem) {
+    if (this.periods == null) {
+      this.periods = new ArrayList<StudyPeriod>();
+    }
+    this.periods.add(elem);
+  }
+
+  public List<StudyPeriod> getPeriods() {
+    return this.periods;
+  }
+
+  public StudyDay setPeriods(List<StudyPeriod> periods) {
+    this.periods = periods;
+    return this;
+  }
+
+  public void unsetPeriods() {
+    this.periods = null;
+  }
+
+  /** Returns true if field periods is set (has been assigned a value) and false otherwise */
+  public boolean isSetPeriods() {
+    return this.periods != null;
+  }
+
+  public void setPeriodsIsSet(boolean value) {
     if (!value) {
-      this.iExams = null;
+      this.periods = null;
     }
-  }
-
-  public int getIStatus() {
-    return this.iStatus;
-  }
-
-  public IsaExamsListReply setIStatus(int iStatus) {
-    this.iStatus = iStatus;
-    setIStatusIsSet(true);
-    return this;
-  }
-
-  public void unsetIStatus() {
-    __isset_bit_vector.clear(__ISTATUS_ISSET_ID);
-  }
-
-  /** Returns true if field iStatus is set (has been assigned a value) and false otherwise */
-  public boolean isSetIStatus() {
-    return __isset_bit_vector.get(__ISTATUS_ISSET_ID);
-  }
-
-  public void setIStatusIsSet(boolean value) {
-    __isset_bit_vector.set(__ISTATUS_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case I_EXAMS:
+    case DAY:
       if (value == null) {
-        unsetIExams();
+        unsetDay();
       } else {
-        setIExams((List<IsaExam>)value);
+        setDay((Long)value);
       }
       break;
 
-    case I_STATUS:
+    case PERIODS:
       if (value == null) {
-        unsetIStatus();
+        unsetPeriods();
       } else {
-        setIStatus((Integer)value);
+        setPeriods((List<StudyPeriod>)value);
       }
       break;
 
@@ -230,11 +232,11 @@ public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListRe
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case I_EXAMS:
-      return getIExams();
+    case DAY:
+      return Long.valueOf(getDay());
 
-    case I_STATUS:
-      return Integer.valueOf(getIStatus());
+    case PERIODS:
+      return getPeriods();
 
     }
     throw new IllegalStateException();
@@ -247,10 +249,10 @@ public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListRe
     }
 
     switch (field) {
-    case I_EXAMS:
-      return isSetIExams();
-    case I_STATUS:
-      return isSetIStatus();
+    case DAY:
+      return isSetDay();
+    case PERIODS:
+      return isSetPeriods();
     }
     throw new IllegalStateException();
   }
@@ -259,30 +261,30 @@ public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListRe
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof IsaExamsListReply)
-      return this.equals((IsaExamsListReply)that);
+    if (that instanceof StudyDay)
+      return this.equals((StudyDay)that);
     return false;
   }
 
-  public boolean equals(IsaExamsListReply that) {
+  public boolean equals(StudyDay that) {
     if (that == null)
       return false;
 
-    boolean this_present_iExams = true && this.isSetIExams();
-    boolean that_present_iExams = true && that.isSetIExams();
-    if (this_present_iExams || that_present_iExams) {
-      if (!(this_present_iExams && that_present_iExams))
+    boolean this_present_day = true;
+    boolean that_present_day = true;
+    if (this_present_day || that_present_day) {
+      if (!(this_present_day && that_present_day))
         return false;
-      if (!this.iExams.equals(that.iExams))
+      if (this.day != that.day)
         return false;
     }
 
-    boolean this_present_iStatus = true;
-    boolean that_present_iStatus = true;
-    if (this_present_iStatus || that_present_iStatus) {
-      if (!(this_present_iStatus && that_present_iStatus))
+    boolean this_present_periods = true && this.isSetPeriods();
+    boolean that_present_periods = true && that.isSetPeriods();
+    if (this_present_periods || that_present_periods) {
+      if (!(this_present_periods && that_present_periods))
         return false;
-      if (this.iStatus != that.iStatus)
+      if (!this.periods.equals(that.periods))
         return false;
     }
 
@@ -293,43 +295,43 @@ public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListRe
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_iExams = true && (isSetIExams());
-    builder.append(present_iExams);
-    if (present_iExams)
-      builder.append(iExams);
+    boolean present_day = true;
+    builder.append(present_day);
+    if (present_day)
+      builder.append(day);
 
-    boolean present_iStatus = true;
-    builder.append(present_iStatus);
-    if (present_iStatus)
-      builder.append(iStatus);
+    boolean present_periods = true && (isSetPeriods());
+    builder.append(present_periods);
+    if (present_periods)
+      builder.append(periods);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(IsaExamsListReply other) {
+  public int compareTo(StudyDay other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    IsaExamsListReply typedOther = (IsaExamsListReply)other;
+    StudyDay typedOther = (StudyDay)other;
 
-    lastComparison = Boolean.valueOf(isSetIExams()).compareTo(typedOther.isSetIExams());
+    lastComparison = Boolean.valueOf(isSetDay()).compareTo(typedOther.isSetDay());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIExams()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iExams, typedOther.iExams);
+    if (isSetDay()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.day, typedOther.day);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIStatus()).compareTo(typedOther.isSetIStatus());
+    lastComparison = Boolean.valueOf(isSetPeriods()).compareTo(typedOther.isSetPeriods());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIStatus()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iStatus, typedOther.iStatus);
+    if (isSetPeriods()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.periods, typedOther.periods);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -351,28 +353,28 @@ public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListRe
         break;
       }
       switch (field.id) {
-        case 1: // I_EXAMS
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-              this.iExams = new ArrayList<IsaExam>(_list4.size);
-              for (int _i5 = 0; _i5 < _list4.size; ++_i5)
-              {
-                IsaExam _elem6; // required
-                _elem6 = new IsaExam();
-                _elem6.read(iprot);
-                this.iExams.add(_elem6);
-              }
-              iprot.readListEnd();
-            }
+        case 1: // DAY
+          if (field.type == org.apache.thrift.protocol.TType.I64) {
+            this.day = iprot.readI64();
+            setDayIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // I_STATUS
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.iStatus = iprot.readI32();
-            setIStatusIsSet(true);
+        case 2: // PERIODS
+          if (field.type == org.apache.thrift.protocol.TType.LIST) {
+            {
+              org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+              this.periods = new ArrayList<StudyPeriod>(_list4.size);
+              for (int _i5 = 0; _i5 < _list4.size; ++_i5)
+              {
+                StudyPeriod _elem6; // required
+                _elem6 = new StudyPeriod();
+                _elem6.read(iprot);
+                this.periods.add(_elem6);
+              }
+              iprot.readListEnd();
+            }
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -385,8 +387,8 @@ public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListRe
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetIStatus()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iStatus' was not found in serialized data! Struct: " + toString());
+    if (!isSetDay()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'day' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -395,44 +397,40 @@ public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListRe
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.iExams != null) {
-      if (isSetIExams()) {
-        oprot.writeFieldBegin(I_EXAMS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.iExams.size()));
-          for (IsaExam _iter7 : this.iExams)
-          {
-            _iter7.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-    }
-    oprot.writeFieldBegin(I_STATUS_FIELD_DESC);
-    oprot.writeI32(this.iStatus);
+    oprot.writeFieldBegin(DAY_FIELD_DESC);
+    oprot.writeI64(this.day);
     oprot.writeFieldEnd();
+    if (this.periods != null) {
+      oprot.writeFieldBegin(PERIODS_FIELD_DESC);
+      {
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.periods.size()));
+        for (StudyPeriod _iter7 : this.periods)
+        {
+          _iter7.write(oprot);
+        }
+        oprot.writeListEnd();
+      }
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("IsaExamsListReply(");
+    StringBuilder sb = new StringBuilder("StudyDay(");
     boolean first = true;
 
-    if (isSetIExams()) {
-      sb.append("iExams:");
-      if (this.iExams == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.iExams);
-      }
-      first = false;
-    }
+    sb.append("day:");
+    sb.append(this.day);
+    first = false;
     if (!first) sb.append(", ");
-    sb.append("iStatus:");
-    sb.append(this.iStatus);
+    sb.append("periods:");
+    if (this.periods == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.periods);
+    }
     first = false;
     sb.append(")");
     return sb.toString();
@@ -440,7 +438,10 @@ public class IsaExamsListReply implements org.apache.thrift.TBase<IsaExamsListRe
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'iStatus' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'day' because it's a primitive and you chose the non-beans generator.
+    if (periods == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'periods' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

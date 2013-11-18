@@ -21,16 +21,16 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSession._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("IsaSession");
+public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleResponse, ScheduleResponse._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ScheduleResponse");
 
-  private static final org.apache.thrift.protocol.TField ISA_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("isaCookie", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField DAYS_FIELD_DESC = new org.apache.thrift.protocol.TField("days", org.apache.thrift.protocol.TType.LIST, (short)1);
 
-  public String isaCookie; // required
+  private List<StudyDay> days; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ISA_COOKIE((short)1, "isaCookie");
+    DAYS((short)1, "days");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -45,8 +45,8 @@ public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSessio
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // ISA_COOKIE
-          return ISA_COOKIE;
+        case 1: // DAYS
+          return DAYS;
         default:
           return null;
       }
@@ -91,71 +91,91 @@ public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSessio
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ISA_COOKIE, new org.apache.thrift.meta_data.FieldMetaData("isaCookie", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.DAYS, new org.apache.thrift.meta_data.FieldMetaData("days", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, StudyDay.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(IsaSession.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ScheduleResponse.class, metaDataMap);
   }
 
-  public IsaSession() {
+  public ScheduleResponse() {
   }
 
-  public IsaSession(
-    String isaCookie)
+  public ScheduleResponse(
+    List<StudyDay> days)
   {
     this();
-    this.isaCookie = isaCookie;
+    this.days = days;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public IsaSession(IsaSession other) {
-    if (other.isSetIsaCookie()) {
-      this.isaCookie = other.isaCookie;
+  public ScheduleResponse(ScheduleResponse other) {
+    if (other.isSetDays()) {
+      List<StudyDay> __this__days = new ArrayList<StudyDay>();
+      for (StudyDay other_element : other.days) {
+        __this__days.add(new StudyDay(other_element));
+      }
+      this.days = __this__days;
     }
   }
 
-  public IsaSession deepCopy() {
-    return new IsaSession(this);
+  public ScheduleResponse deepCopy() {
+    return new ScheduleResponse(this);
   }
 
   @Override
   public void clear() {
-    this.isaCookie = null;
+    this.days = null;
   }
 
-  public String getIsaCookie() {
-    return this.isaCookie;
+  public int getDaysSize() {
+    return (this.days == null) ? 0 : this.days.size();
   }
 
-  public IsaSession setIsaCookie(String isaCookie) {
-    this.isaCookie = isaCookie;
+  public java.util.Iterator<StudyDay> getDaysIterator() {
+    return (this.days == null) ? null : this.days.iterator();
+  }
+
+  public void addToDays(StudyDay elem) {
+    if (this.days == null) {
+      this.days = new ArrayList<StudyDay>();
+    }
+    this.days.add(elem);
+  }
+
+  public List<StudyDay> getDays() {
+    return this.days;
+  }
+
+  public ScheduleResponse setDays(List<StudyDay> days) {
+    this.days = days;
     return this;
   }
 
-  public void unsetIsaCookie() {
-    this.isaCookie = null;
+  public void unsetDays() {
+    this.days = null;
   }
 
-  /** Returns true if field isaCookie is set (has been assigned a value) and false otherwise */
-  public boolean isSetIsaCookie() {
-    return this.isaCookie != null;
+  /** Returns true if field days is set (has been assigned a value) and false otherwise */
+  public boolean isSetDays() {
+    return this.days != null;
   }
 
-  public void setIsaCookieIsSet(boolean value) {
+  public void setDaysIsSet(boolean value) {
     if (!value) {
-      this.isaCookie = null;
+      this.days = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ISA_COOKIE:
+    case DAYS:
       if (value == null) {
-        unsetIsaCookie();
+        unsetDays();
       } else {
-        setIsaCookie((String)value);
+        setDays((List<StudyDay>)value);
       }
       break;
 
@@ -164,8 +184,8 @@ public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSessio
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ISA_COOKIE:
-      return getIsaCookie();
+    case DAYS:
+      return getDays();
 
     }
     throw new IllegalStateException();
@@ -178,8 +198,8 @@ public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSessio
     }
 
     switch (field) {
-    case ISA_COOKIE:
-      return isSetIsaCookie();
+    case DAYS:
+      return isSetDays();
     }
     throw new IllegalStateException();
   }
@@ -188,21 +208,21 @@ public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSessio
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof IsaSession)
-      return this.equals((IsaSession)that);
+    if (that instanceof ScheduleResponse)
+      return this.equals((ScheduleResponse)that);
     return false;
   }
 
-  public boolean equals(IsaSession that) {
+  public boolean equals(ScheduleResponse that) {
     if (that == null)
       return false;
 
-    boolean this_present_isaCookie = true && this.isSetIsaCookie();
-    boolean that_present_isaCookie = true && that.isSetIsaCookie();
-    if (this_present_isaCookie || that_present_isaCookie) {
-      if (!(this_present_isaCookie && that_present_isaCookie))
+    boolean this_present_days = true && this.isSetDays();
+    boolean that_present_days = true && that.isSetDays();
+    if (this_present_days || that_present_days) {
+      if (!(this_present_days && that_present_days))
         return false;
-      if (!this.isaCookie.equals(that.isaCookie))
+      if (!this.days.equals(that.days))
         return false;
     }
 
@@ -213,28 +233,28 @@ public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSessio
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_isaCookie = true && (isSetIsaCookie());
-    builder.append(present_isaCookie);
-    if (present_isaCookie)
-      builder.append(isaCookie);
+    boolean present_days = true && (isSetDays());
+    builder.append(present_days);
+    if (present_days)
+      builder.append(days);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(IsaSession other) {
+  public int compareTo(ScheduleResponse other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    IsaSession typedOther = (IsaSession)other;
+    ScheduleResponse typedOther = (ScheduleResponse)other;
 
-    lastComparison = Boolean.valueOf(isSetIsaCookie()).compareTo(typedOther.isSetIsaCookie());
+    lastComparison = Boolean.valueOf(isSetDays()).compareTo(typedOther.isSetDays());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIsaCookie()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isaCookie, typedOther.isaCookie);
+    if (isSetDays()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.days, typedOther.days);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -256,9 +276,20 @@ public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSessio
         break;
       }
       switch (field.id) {
-        case 1: // ISA_COOKIE
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.isaCookie = iprot.readString();
+        case 1: // DAYS
+          if (field.type == org.apache.thrift.protocol.TType.LIST) {
+            {
+              org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
+              this.days = new ArrayList<StudyDay>(_list8.size);
+              for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+              {
+                StudyDay _elem10; // required
+                _elem10 = new StudyDay();
+                _elem10.read(iprot);
+                this.days.add(_elem10);
+              }
+              iprot.readListEnd();
+            }
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -278,9 +309,16 @@ public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSessio
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.isaCookie != null) {
-      oprot.writeFieldBegin(ISA_COOKIE_FIELD_DESC);
-      oprot.writeString(this.isaCookie);
+    if (this.days != null) {
+      oprot.writeFieldBegin(DAYS_FIELD_DESC);
+      {
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.days.size()));
+        for (StudyDay _iter11 : this.days)
+        {
+          _iter11.write(oprot);
+        }
+        oprot.writeListEnd();
+      }
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -289,14 +327,14 @@ public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSessio
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("IsaSession(");
+    StringBuilder sb = new StringBuilder("ScheduleResponse(");
     boolean first = true;
 
-    sb.append("isaCookie:");
-    if (this.isaCookie == null) {
+    sb.append("days:");
+    if (this.days == null) {
       sb.append("null");
     } else {
-      sb.append(this.isaCookie);
+      sb.append(this.days);
     }
     first = false;
     sb.append(")");
@@ -305,8 +343,8 @@ public class IsaSession implements org.apache.thrift.TBase<IsaSession, IsaSessio
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (isaCookie == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'isaCookie' was not present! Struct: " + toString());
+    if (days == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'days' was not present! Struct: " + toString());
     }
   }
 

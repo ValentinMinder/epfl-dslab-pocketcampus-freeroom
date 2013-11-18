@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.plugin.food.shared;
+package org.pocketcampus.plugin.isacademia.shared;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
@@ -21,20 +21,16 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteResponse._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("VoteResponse");
+public class ScheduleException extends Exception implements org.apache.thrift.TBase<ScheduleException, ScheduleException._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ScheduleException");
 
-  private static final org.apache.thrift.protocol.TField SUBMIT_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("submitStatus", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField ERROR_MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("errorMessage", org.apache.thrift.protocol.TType.STRING, (short)1);
 
-  private SubmitStatus submitStatus; // required
+  private String errorMessage; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    /**
-     * 
-     * @see SubmitStatus
-     */
-    SUBMIT_STATUS((short)1, "submitStatus");
+    ERROR_MESSAGE((short)1, "errorMessage");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -49,8 +45,8 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // SUBMIT_STATUS
-          return SUBMIT_STATUS;
+        case 1: // ERROR_MESSAGE
+          return ERROR_MESSAGE;
         default:
           return null;
       }
@@ -95,79 +91,71 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.SUBMIT_STATUS, new org.apache.thrift.meta_data.FieldMetaData("submitStatus", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, SubmitStatus.class)));
+    tmpMap.put(_Fields.ERROR_MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("errorMessage", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(VoteResponse.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ScheduleException.class, metaDataMap);
   }
 
-  public VoteResponse() {
+  public ScheduleException() {
   }
 
-  public VoteResponse(
-    SubmitStatus submitStatus)
+  public ScheduleException(
+    String errorMessage)
   {
     this();
-    this.submitStatus = submitStatus;
+    this.errorMessage = errorMessage;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public VoteResponse(VoteResponse other) {
-    if (other.isSetSubmitStatus()) {
-      this.submitStatus = other.submitStatus;
+  public ScheduleException(ScheduleException other) {
+    if (other.isSetErrorMessage()) {
+      this.errorMessage = other.errorMessage;
     }
   }
 
-  public VoteResponse deepCopy() {
-    return new VoteResponse(this);
+  public ScheduleException deepCopy() {
+    return new ScheduleException(this);
   }
 
   @Override
   public void clear() {
-    this.submitStatus = null;
+    this.errorMessage = null;
   }
 
-  /**
-   * 
-   * @see SubmitStatus
-   */
-  public SubmitStatus getSubmitStatus() {
-    return this.submitStatus;
+  public String getErrorMessage() {
+    return this.errorMessage;
   }
 
-  /**
-   * 
-   * @see SubmitStatus
-   */
-  public VoteResponse setSubmitStatus(SubmitStatus submitStatus) {
-    this.submitStatus = submitStatus;
+  public ScheduleException setErrorMessage(String errorMessage) {
+    this.errorMessage = errorMessage;
     return this;
   }
 
-  public void unsetSubmitStatus() {
-    this.submitStatus = null;
+  public void unsetErrorMessage() {
+    this.errorMessage = null;
   }
 
-  /** Returns true if field submitStatus is set (has been assigned a value) and false otherwise */
-  public boolean isSetSubmitStatus() {
-    return this.submitStatus != null;
+  /** Returns true if field errorMessage is set (has been assigned a value) and false otherwise */
+  public boolean isSetErrorMessage() {
+    return this.errorMessage != null;
   }
 
-  public void setSubmitStatusIsSet(boolean value) {
+  public void setErrorMessageIsSet(boolean value) {
     if (!value) {
-      this.submitStatus = null;
+      this.errorMessage = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case SUBMIT_STATUS:
+    case ERROR_MESSAGE:
       if (value == null) {
-        unsetSubmitStatus();
+        unsetErrorMessage();
       } else {
-        setSubmitStatus((SubmitStatus)value);
+        setErrorMessage((String)value);
       }
       break;
 
@@ -176,8 +164,8 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case SUBMIT_STATUS:
-      return getSubmitStatus();
+    case ERROR_MESSAGE:
+      return getErrorMessage();
 
     }
     throw new IllegalStateException();
@@ -190,8 +178,8 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
     }
 
     switch (field) {
-    case SUBMIT_STATUS:
-      return isSetSubmitStatus();
+    case ERROR_MESSAGE:
+      return isSetErrorMessage();
     }
     throw new IllegalStateException();
   }
@@ -200,21 +188,21 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof VoteResponse)
-      return this.equals((VoteResponse)that);
+    if (that instanceof ScheduleException)
+      return this.equals((ScheduleException)that);
     return false;
   }
 
-  public boolean equals(VoteResponse that) {
+  public boolean equals(ScheduleException that) {
     if (that == null)
       return false;
 
-    boolean this_present_submitStatus = true && this.isSetSubmitStatus();
-    boolean that_present_submitStatus = true && that.isSetSubmitStatus();
-    if (this_present_submitStatus || that_present_submitStatus) {
-      if (!(this_present_submitStatus && that_present_submitStatus))
+    boolean this_present_errorMessage = true && this.isSetErrorMessage();
+    boolean that_present_errorMessage = true && that.isSetErrorMessage();
+    if (this_present_errorMessage || that_present_errorMessage) {
+      if (!(this_present_errorMessage && that_present_errorMessage))
         return false;
-      if (!this.submitStatus.equals(that.submitStatus))
+      if (!this.errorMessage.equals(that.errorMessage))
         return false;
     }
 
@@ -225,28 +213,28 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_submitStatus = true && (isSetSubmitStatus());
-    builder.append(present_submitStatus);
-    if (present_submitStatus)
-      builder.append(submitStatus.getValue());
+    boolean present_errorMessage = true && (isSetErrorMessage());
+    builder.append(present_errorMessage);
+    if (present_errorMessage)
+      builder.append(errorMessage);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(VoteResponse other) {
+  public int compareTo(ScheduleException other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    VoteResponse typedOther = (VoteResponse)other;
+    ScheduleException typedOther = (ScheduleException)other;
 
-    lastComparison = Boolean.valueOf(isSetSubmitStatus()).compareTo(typedOther.isSetSubmitStatus());
+    lastComparison = Boolean.valueOf(isSetErrorMessage()).compareTo(typedOther.isSetErrorMessage());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetSubmitStatus()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.submitStatus, typedOther.submitStatus);
+    if (isSetErrorMessage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorMessage, typedOther.errorMessage);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -268,9 +256,9 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
         break;
       }
       switch (field.id) {
-        case 1: // SUBMIT_STATUS
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.submitStatus = SubmitStatus.findByValue(iprot.readI32());
+        case 1: // ERROR_MESSAGE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.errorMessage = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -290,9 +278,9 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.submitStatus != null) {
-      oprot.writeFieldBegin(SUBMIT_STATUS_FIELD_DESC);
-      oprot.writeI32(this.submitStatus.getValue());
+    if (this.errorMessage != null) {
+      oprot.writeFieldBegin(ERROR_MESSAGE_FIELD_DESC);
+      oprot.writeString(this.errorMessage);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -301,14 +289,14 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("VoteResponse(");
+    StringBuilder sb = new StringBuilder("ScheduleException(");
     boolean first = true;
 
-    sb.append("submitStatus:");
-    if (this.submitStatus == null) {
+    sb.append("errorMessage:");
+    if (this.errorMessage == null) {
       sb.append("null");
     } else {
-      sb.append(this.submitStatus);
+      sb.append(this.errorMessage);
     }
     first = false;
     sb.append(")");
@@ -317,8 +305,8 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (submitStatus == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'submitStatus' was not present! Struct: " + toString());
+    if (errorMessage == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'errorMessage' was not present! Struct: " + toString());
     }
   }
 
