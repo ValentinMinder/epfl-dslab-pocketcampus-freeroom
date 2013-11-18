@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.apache.thrift.TException;
 
+import org.pocketcampus.platform.sdk.shared.CachingProxy;
 import org.pocketcampus.platform.sdk.shared.HttpClientImpl;
 import org.pocketcampus.plugin.satellite.shared.*;
+
+import org.joda.time.Duration;
 
 public final class SatelliteServiceImpl implements SatelliteService.Iface {
 	private final BeerList _beers;
@@ -17,7 +20,8 @@ public final class SatelliteServiceImpl implements SatelliteService.Iface {
 	}
 
 	public SatelliteServiceImpl() {
-		this(new BeerListImpl(new HttpClientImpl()), new AffluenceGetterImpl(new HttpClientImpl()));
+		this(CachingProxy.create(new BeerListImpl(new HttpClientImpl()), Duration.standardDays(1)), 
+			 CachingProxy.create(new AffluenceGetterImpl(new HttpClientImpl()), Duration.standardMinutes(1)));
 	}
 
 	@Override

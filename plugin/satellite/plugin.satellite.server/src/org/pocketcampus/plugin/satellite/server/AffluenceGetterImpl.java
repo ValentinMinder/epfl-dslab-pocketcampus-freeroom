@@ -21,14 +21,15 @@ public final class AffluenceGetterImpl implements AffluenceGetter {
 
 	@Override
 	public SatelliteAffluence get() {
-		String result = null;
+		int result = -1;
 		try {
-			result = _client.getString(AFFLUENCE_URL, StandardCharsets.UTF_8);
+			String resultString = _client.getString(AFFLUENCE_URL, StandardCharsets.UTF_8);
+			result = Integer.parseInt(resultString);
 		} catch (Exception e) {
 			return SatelliteAffluence.ERROR;
 		}
 
-		SatelliteAffluence affluence = SatelliteAffluence.findByValue(Integer.parseInt(result));
+		SatelliteAffluence affluence = SatelliteAffluence.findByValue(result);
 		return affluence == null ? SatelliteAffluence.ERROR : affluence;
 	}
 }

@@ -1,11 +1,13 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.sdk.shared.CachingProxy;
+import org.pocketcampus.platform.sdk.shared.CachingProxy.CacheValidator;
 import org.pocketcampus.platform.sdk.shared.HttpClientImpl;
 import org.pocketcampus.plugin.food.shared.*;
 import org.joda.time.*;
@@ -15,18 +17,19 @@ import org.joda.time.*;
  */
 public class FoodServiceImpl implements FoodService.Iface {
 	private static final Hours VOTING_MIN = Hours.hours(11);
+	private static final Hours CACHE_DURATION = Hours.ONE;
+
+	private static final String MEAL_PICS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/meal-pics/";
+	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
 
 	private final DeviceDatabase _deviceDatabase;
 	private final RatingDatabase _ratingDatabase;
 	private final MealList _mealList;
-	
-	private static final String MEAL_PICS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/meal-pics/";
-	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
-	
+
 	static {
 		for (MealType type : MealType.values()) {
-			MEAL_TYPE_PICTURE_URLS.put(type, MEAL_PICS_FOLDER_URL+type+".png");
-			//=> e.g. URL for PIZZA is http://pocketcampus.epfl.ch/backend/meal-pics/PIZZA.png
+			MEAL_TYPE_PICTURE_URLS.put(type, MEAL_PICS_FOLDER_URL + type + ".png");
+			// => e.g. URL for PIZZA is http://pocketcampus.epfl.ch/backend/meal-pics/PIZZA.png
 		}
 	}
 
@@ -37,7 +40,14 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	public FoodServiceImpl() {
-		this(new DeviceDatabaseImpl(), new RatingDatabaseImpl(), new MealListCache(new MealListImpl(new HttpClientImpl())));
+		this(new DeviceDatabaseImpl(), new RatingDatabaseImpl(),
+				CachingProxy.create(new MealListImpl(new HttpClientImpl()), new CacheValidator() {
+					@Override
+					public boolean isValid(DateTime lastGenerationDate) {
+						return Days.daysBetween(lastGenerationDate, DateTime.now()) == Days.ZERO
+								&& Hours.hoursBetween(lastGenerationDate, DateTime.now()).isLessThan(CACHE_DURATION);
+					}
+				}));
 	}
 
 	@Override
@@ -97,7 +107,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		if (timestamp < 0) {
 			return LocalDate.now();
 		}
-		
+
 		return new LocalDate(timestamp);
 	}
 
