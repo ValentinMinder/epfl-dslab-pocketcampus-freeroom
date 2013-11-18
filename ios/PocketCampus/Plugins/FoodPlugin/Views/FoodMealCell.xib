@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A2093" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -73,10 +73,10 @@
                             <constraint firstItem="V5e-gG-xtp" firstAttribute="leading" secondItem="vt7-Ga-tJo" secondAttribute="leading" constant="5" id="3Mq-fg-ylI"/>
                             <constraint firstItem="vCg-Ih-5U6" firstAttribute="top" secondItem="vt7-Ga-tJo" secondAttribute="bottom" id="FfM-cq-5wC"/>
                             <constraint firstItem="V5e-gG-xtp" firstAttribute="top" secondItem="vCg-Ih-5U6" secondAttribute="bottom" id="MnS-bj-kbF"/>
+                            <constraint firstItem="vt7-Ga-tJo" firstAttribute="leading" secondItem="8CO-2T-OCE" secondAttribute="trailing" constant="18" id="Q4Z-Bq-qa8"/>
                             <constraint firstItem="vt7-Ga-tJo" firstAttribute="top" secondItem="4NI-e9-UFL" secondAttribute="top" id="Svm-Rn-K4M"/>
                             <constraint firstItem="Yyc-8O-czx" firstAttribute="top" secondItem="4NI-e9-UFL" secondAttribute="top" id="TKn-DZ-tjY"/>
                             <constraint firstAttribute="bottom" secondItem="V5e-gG-xtp" secondAttribute="bottom" id="Tmb-Tt-b9F"/>
-                            <constraint firstAttribute="trailing" secondItem="vt7-Ga-tJo" secondAttribute="trailing" id="bTh-eJ-cJM"/>
                             <constraint firstItem="8CO-2T-OCE" firstAttribute="top" secondItem="4NI-e9-UFL" secondAttribute="top" constant="5" id="bqd-Ua-vsT"/>
                             <constraint firstItem="8CO-2T-OCE" firstAttribute="leading" secondItem="4NI-e9-UFL" secondAttribute="leading" constant="10" id="gD7-6K-DDV"/>
                             <constraint firstItem="wsD-q2-2Fb" firstAttribute="centerX" secondItem="8CO-2T-OCE" secondAttribute="centerX" constant="-2" id="gIm-df-Fbw"/>
@@ -101,6 +101,7 @@
                 <outlet property="infoContentViewLeftConstraint" destination="Lsz-5B-2Ih" id="wfj-JJ-inT"/>
                 <outlet property="infoContentViewRightConstraint" destination="cTY-2u-upJ" id="LDa-jX-8Ri"/>
                 <outlet property="mealTypeImageView" destination="8CO-2T-OCE" id="b79-J0-aJw"/>
+                <outlet property="mealTypeImageViewLeftConstraint" destination="gD7-6K-DDV" id="R33-JX-0FU"/>
                 <outlet property="mehButton" destination="WWG-Ud-PsJ" id="d55-5x-m2V"/>
                 <outlet property="pricesLabel" destination="wsD-q2-2Fb" id="Wnl-Yl-da7"/>
                 <outlet property="rateControlsView" destination="N0r-hK-E6s" id="vrd-pJ-nmM"/>

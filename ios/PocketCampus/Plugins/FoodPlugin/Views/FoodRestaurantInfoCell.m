@@ -110,7 +110,7 @@
     }
     double hue = rating.ratingValue * 0.3; // Hue (note 0.4 = Green)
     double saturation = 1.0;
-    double brightness = 0.8;
+    double brightness = 0.7;
     return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1.0];
 }
 

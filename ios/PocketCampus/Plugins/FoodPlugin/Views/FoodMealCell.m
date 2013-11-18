@@ -25,6 +25,8 @@ typedef enum {
 } RatingStatus;
 
 static const CGFloat kMinHeight = 110.0;
+static const CGFloat kmealTypeImageViewLeftConstraintPhone = 10.0;
+static const CGFloat kmealTypeImageViewLeftConstraintPad = 20.0;
 static const CGFloat kTextViewWidth = 252.0;
 static const CGFloat kBottomZoneHeight = 30.0;
 static const CGFloat kRateModeEnabledOffset = 72.0;
@@ -50,6 +52,7 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* infoContentViewLeftConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* infoContentViewRightConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* mealTypeImageViewLeftConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewBottomConstraint;
 
@@ -70,6 +73,7 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
         self.foodService = [FoodService sharedInstanceToRetain];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.originalSeparatorInsets = self.separatorInset;
+        self.mealTypeImageViewLeftConstraint.constant = [PCUtils isIdiomPad] ? kmealTypeImageViewLeftConstraintPad : kmealTypeImageViewLeftConstraintPhone;
         self.textViewWidthConstraint.constant = kTextViewWidth;
         self.textViewBottomConstraint.constant = kBottomZoneHeight;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -91,6 +95,8 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
 {
     return [self initWithReuseIdentifier:reuseIdentifier];
 }
+
+#pragma mark - Meal stuff
 
 - (void)setMeal:(EpflMeal *)meal {
     [PCUtils throwExceptionIfObject:meal notKindOfClass:[EpflMeal class]];
