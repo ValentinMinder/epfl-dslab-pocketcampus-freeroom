@@ -147,3 +147,21 @@ CREATE TABLE IF NOT EXISTS `eventusers` (
   PRIMARY KEY (`userId`),
   UNIQUE KEY `EXCHANGE_TOKEN` (`exchangeToken`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventpageviews`
+--
+
+CREATE TABLE IF NOT EXISTS `eventpageviews` (
+  `userTicket` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `nodeId` bigint(20) NOT NULL,
+  `pageType` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `viewCount` int(11) NOT NULL,
+  PRIMARY KEY (`userTicket`,`nodeId`,`pageType`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
