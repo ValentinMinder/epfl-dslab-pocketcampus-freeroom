@@ -229,22 +229,23 @@ static NSString* kEventCell = @"EventCell";
 }
 
 - (void)reselectLastSelectedItem {
-    if (self.selectedItem) {
-        BOOL found __block = NO;
-        [self.itemsForSection enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
-            [items enumerateObjectsUsingBlock:^(EventItem* item, NSUInteger row, BOOL *stop2) {
-                if ([item isEqual:self.selectedItem]) {
-                    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
-                    self.selectedItem = item;
-                    *stop1 = YES;
-                    *stop2 = YES;
-                    found = YES;
-                }
-            }];
+    if (!self.selectedItem) {
+        return;
+    }
+    BOOL found __block = NO;
+    [self.itemsForSection enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
+        [items enumerateObjectsUsingBlock:^(EventItem* item, NSUInteger row, BOOL *stop2) {
+            if ([item isEqual:self.selectedItem]) {
+                [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                self.selectedItem = item;
+                *stop1 = YES;
+                *stop2 = YES;
+                found = YES;
+            }
         }];
-        if (!found) {
-            self.selectedItem = nil;
-        }
+    }];
+    if (!found) {
+        self.selectedItem = nil;
     }
 }
 

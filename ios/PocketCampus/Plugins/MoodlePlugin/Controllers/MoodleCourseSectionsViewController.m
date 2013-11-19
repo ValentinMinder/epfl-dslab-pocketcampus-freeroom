@@ -295,8 +295,10 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
     if (self.splitViewController) { /* iPad */
         
-        PCTableViewCellAdditions* prevCell = self.cellForMoodleResource[self.selectedResource];
-        prevCell.durablySelected = NO;
+        if (self.selectedResource) {
+            PCTableViewCellAdditions* prevCell = self.cellForMoodleResource[self.selectedResource];
+            prevCell.durablySelected = NO;
+        }
         self.selectedResource = resource;
         
         PCTableViewCellAdditions* newCell = self.cellForMoodleResource[resource];

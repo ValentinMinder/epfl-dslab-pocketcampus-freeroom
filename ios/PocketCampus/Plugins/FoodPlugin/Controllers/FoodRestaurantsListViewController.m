@@ -47,6 +47,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 @property (nonatomic, strong) FoodResponse* foodResponse;
 @property (nonatomic, strong) NSArray* restaurantsSorted; //sorted first by favorite on top, then by name
 @property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) EpflRestaurant* selectedRestaurant;
 
 @end
 
@@ -137,7 +138,21 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 }
 
 - (void)reselectLastSelectedItem {
-#warning TODO
+    if (!self.selectedRestaurant) {
+        return;
+    }
+    BOOL found __block = NO;
+    [self.restaurantsSorted enumerateObjectsUsingBlock:^(EpflRestaurant* restaurant, NSUInteger index, BOOL *stop) {
+        if ([restaurant isEqual:self.selectedRestaurant]) {
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+            self.selectedRestaurant = restaurant;
+            *stop = YES;
+            found = YES;
+        }
+    }];
+    if (!found) {
+        self.selectedRestaurant = nil;
+    }
 }
 
 #pragma mark - FoodServiceDelegate
@@ -191,8 +206,12 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         return;
     }
     EpflRestaurant* restaurant = self.restaurantsSorted[indexPath.row];
+    if (self.splitViewController && [restaurant isEqual:self.selectedRestaurant]) {
+        return;
+    }
     FoodRestaurantViewController* viewController = [[FoodRestaurantViewController alloc] initWithEpflRestaurant:restaurant];
     if (self.splitViewController) {
+        self.selectedRestaurant = restaurant;
         PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], navController];
     } else {
@@ -229,7 +248,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     PCTableViewCellAdditions* cell = [self.tableView dequeueReusableCellWithIdentifier:kRestaurantCellIdentifier];
     if (!cell) {
         cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kRestaurantCellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     }
     cell.textLabel.text = restaurant.rName;

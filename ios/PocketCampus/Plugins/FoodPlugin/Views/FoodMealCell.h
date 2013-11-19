@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+/*
+ * Posted by self everytime rateModeEnabled goes from NO to YES
+ */
+static NSString* FoodMealCellDidEnableRateModeNotification = @"FoodMealCellDidEnableRateModeNotificationName";
+
 @class EpflMeal;
 
 @interface FoodMealCell : UITableViewCell

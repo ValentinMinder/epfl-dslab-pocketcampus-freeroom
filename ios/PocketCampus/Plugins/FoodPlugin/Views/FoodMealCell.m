@@ -26,10 +26,10 @@ typedef enum {
 
 static const CGFloat kMinHeight = 110.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPhone = 10.0;
-static const CGFloat kmealTypeImageViewLeftConstraintPad = 20.0;
+static const CGFloat kmealTypeImageViewLeftConstraintPad = 25.0;
 static const CGFloat kTextViewWidth = 252.0;
 static const CGFloat kBottomZoneHeight = 30.0;
-static const CGFloat kRateModeEnabledOffset = 72.0;
+static const CGFloat kRateControlsViewWidth = 248.0;
 
 @interface FoodMealCell ()<FoodServiceDelegate>
 
@@ -55,6 +55,7 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* mealTypeImageViewLeftConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewBottomConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* rateControlsViewLeftConstraint;
 
 @property (nonatomic, strong) UILongPressGestureRecognizer* infoContentViewTapGesture; //actually using for touchDown, because tap gesture does not support it
 
@@ -82,11 +83,25 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
         self.infoContentViewTapGesture.minimumPressDuration = 0.001;
         self.infoContentViewTapGesture.enabled = NO;
         [self.infoContentView addGestureRecognizer:self.infoContentViewTapGesture];
-        [self.contentView insertSubview:self.rateControlsView belowSubview:self.infoContentView]; //doing that here and not in IB so that we can work on the view that is hidden by infoContentView otherwise :)
+        [self.contentView insertSubview:self.rateControlsView aboveSubview:self.infoContentView]; //doing that here and not in IB so that we can work on the view that is hidden by infoContentView otherwise :)
         self.rateControlsView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.contentView forView:self.rateControlsView edgeInsets:UIEdgeInsetsMake(0, kNoInsetConstraint, 0, kNoInsetConstraint)]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.infoContentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.rateControlsView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]];
-        [self.rateControlsView addConstraint:[NSLayoutConstraint widthConstraint:self.frame.size.width-kRateModeEnabledOffset forView:self.rateControlsView]];
+        self.rateControlsViewLeftConstraint = [NSLayoutConstraint constraintWithItem:self.infoContentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.rateControlsView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
+        [self.contentView addConstraint:self.rateControlsViewLeftConstraint];
+        [self.rateControlsView addConstraint:[NSLayoutConstraint widthConstraint:kRateControlsViewWidth forView:self.rateControlsView]];
+        FoodMealCell* weakSelf __weak = self;
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIDeviceOrientationDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *notif) {
+            weakSelf.rateModeEnabled = weakSelf.rateModeEnabled;
+        }];
+        [[NSNotificationCenter defaultCenter] addObserverForName:FoodMealCellDidEnableRateModeNotification object:nil queue:nil usingBlock:^(NSNotification *notif) {
+            if (notif.object != weakSelf) {
+                /*
+                 * If other cell sets shows rate controls view, hide rate controls view of this cell
+                 * (we want only one cell at a time to show rate controls view)
+                 */
+                [weakSelf setRateModeEnabled:NO animated:YES];
+            }
+        }];
     }
     return self;
 }
@@ -220,12 +235,25 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
 }
 
 - (void)setRateModeEnabled:(BOOL)rateModeEnabled animated:(BOOL)animated {
+    if (!_rateModeEnabled && rateModeEnabled) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:FoodMealCellDidEnableRateModeNotification object:self];
+    }
     _rateModeEnabled = rateModeEnabled;
     self.infoContentViewTapGesture.enabled = rateModeEnabled;
-    CGFloat offset = rateModeEnabled ? self.contentView.frame.size.width-72.0 : 0.0;
-    self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
-    self.infoContentViewLeftConstraint.constant = -offset;
-    self.infoContentViewRightConstraint.constant = offset;
+    self.satRateButton.enabled = !rateModeEnabled;
+    self.satRateButton.alpha = rateModeEnabled ? 0.5 : 1.0;
+    if ([PCUtils isIdiomPad] &&  UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])) {
+        self.rateControlsViewLeftConstraint.constant = rateModeEnabled ? kRateControlsViewWidth : 0.0;
+        self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
+        self.infoContentViewLeftConstraint.constant = 0.0;
+        self.infoContentViewRightConstraint.constant = 0.0;
+    } else {
+        CGFloat offset = rateModeEnabled ? kRateControlsViewWidth : 0.0;
+        self.rateControlsViewLeftConstraint.constant = 0.0;
+        self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
+        self.infoContentViewLeftConstraint.constant = -offset;
+        self.infoContentViewRightConstraint.constant = offset;
+    }
     
     [UIView animateWithDuration:animated ? 0.3 : 0.0 animations:^{
         [self layoutIfNeeded];
@@ -309,6 +337,10 @@ static const CGFloat kRateModeEnabledOffset = 72.0;
 - (void)dealloc {
     [self.mealTypeImageView cancelImageRequestOperation];
     [self.foodService cancelOperationsForDelegate:self];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end

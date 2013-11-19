@@ -62,7 +62,7 @@
 #pragma mark - Public properties and methods
 
 + (CGFloat)preferredHeight {
-    return 150.0;
+    return [PCUtils isIdiomPad] ? 200.0 : 150.0;
 }
 
 - (void)setRestaurant:(EpflRestaurant *)restaurant {

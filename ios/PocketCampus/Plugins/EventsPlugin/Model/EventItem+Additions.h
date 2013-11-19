@@ -17,6 +17,7 @@ typedef enum {
 @interface EventItem (Additions)
 
 - (BOOL)isEqual:(id)object;
+- (BOOL)isEqualToEventItem:(EventItem*)eventItem;
 - (NSUInteger)hash;
 
 /*
