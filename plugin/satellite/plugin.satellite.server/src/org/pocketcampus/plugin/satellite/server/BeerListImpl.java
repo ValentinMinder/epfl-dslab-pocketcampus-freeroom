@@ -70,6 +70,7 @@ public final class BeerListImpl implements BeerList {
 			if (beer.isBeerOfTheMonth()) {
 				container = container.substring(CONTAINER_BEER_OF_THE_MONTH_PREFIX.length());
 			}
+			beer.setContainer(CONTAINERS.get(container));
 
 			String alcoholRate = getChildText(beerNode, BEER_ALCOHOL_RATE_ELEMENT);
 			alcoholRate = alcoholRate.replace(ALCOHOL_RATE_SUFFIX, "");

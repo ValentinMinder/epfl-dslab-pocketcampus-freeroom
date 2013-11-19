@@ -122,7 +122,7 @@ public final class MealListTests {
 
 	private static List<EpflRestaurant> getMenu() {
 		try {
-			return new MealListImpl(new TestHttpClient()).getMenu(MealTime.LUNCH, LocalDate.now()).menu;
+			return new MealListImpl(new TestHttpClient()).getMenu(MealTime.LUNCH, LocalDate.now());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("An exception occured.");

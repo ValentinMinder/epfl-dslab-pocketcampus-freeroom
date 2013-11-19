@@ -89,7 +89,7 @@ public final class MealListImpl implements MealList {
 	}
 
 	/** Parses the menu from the official meal list's HTML. */
-	public MenuResult getMenu(MealTime time, LocalDate date) throws Exception {
+	public List<EpflRestaurant> getMenu(MealTime time, LocalDate date) throws Exception {
 		List<EpflRestaurant> menu = new ArrayList<EpflRestaurant>();
 
 		String timeVal = time == MealTime.LUNCH ? URL_TIME_VALUE_LUNCH : URL_TIME_VALUE_DINNER;
@@ -153,7 +153,7 @@ public final class MealListImpl implements MealList {
 			}
 		}
 
-		return new MenuResult(true, menu);
+		return menu;
 	}
 
 	/** Adds the specified meal to the specified list of restaurant using the specified restaurant name. */

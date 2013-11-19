@@ -64,12 +64,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 		List<EpflRestaurant> menu = null;
 
 		try {
-			MealList.MenuResult result = _mealList.getMenu(time, date);
-			menu = result.menu;
-
-			if (result.hasChanged) {
-				_ratingDatabase.insertMenu(menu);
-			}
+			menu = _mealList.getMenu(time, date);
+			_ratingDatabase.insertMenu(menu);
 		} catch (Exception e) {
 			menu = new ArrayList<EpflRestaurant>();
 		}
