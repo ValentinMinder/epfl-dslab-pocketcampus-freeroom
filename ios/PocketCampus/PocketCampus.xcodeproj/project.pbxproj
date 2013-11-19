@@ -303,10 +303,6 @@
 		328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131618296E2D00F4C622 /* FoodSmileyMeh@2x.png */; };
 		328A132518296E2D00F4C622 /* FoodSmileySad.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131918296E2D00F4C622 /* FoodSmileySad.png */; };
 		328A132618296E2D00F4C622 /* FoodSmileySad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131A18296E2D00F4C622 /* FoodSmileySad@2x.png */; };
-		328B9ED0150B705200B50024 /* MenusListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328B9ECF150B705200B50024 /* MenusListView.xib */; };
-		328B9ED3150B77DD00B50024 /* MenusListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328B9ED2150B77DD00B50024 /* MenusListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		328B9EDE150B7DDE00B50024 /* MealCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 328B9EDD150B7DDE00B50024 /* MealCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		328B9EED150B8E7B00B50024 /* JSFavStarControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 328B9EEC150B8E7B00B50024 /* JSFavStarControl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		328B9EF4150B927500B50024 /* RatingStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF2150B927500B50024 /* RatingStar.png */; };
 		328B9EF5150B927500B50024 /* RatingStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF3150B927500B50024 /* RatingStar@2x.png */; };
 		328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -927,13 +923,6 @@
 		328A131618296E2D00F4C622 /* FoodSmileyMeh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileyMeh@2x.png"; sourceTree = "<group>"; };
 		328A131918296E2D00F4C622 /* FoodSmileySad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodSmileySad.png; sourceTree = "<group>"; };
 		328A131A18296E2D00F4C622 /* FoodSmileySad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileySad@2x.png"; sourceTree = "<group>"; };
-		328B9ECF150B705200B50024 /* MenusListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenusListView.xib; sourceTree = "<group>"; };
-		328B9ED1150B77DD00B50024 /* MenusListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusListViewController.h; sourceTree = "<group>"; };
-		328B9ED2150B77DD00B50024 /* MenusListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusListViewController.m; sourceTree = "<group>"; };
-		328B9EDC150B7DDE00B50024 /* MealCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealCell.h; sourceTree = "<group>"; };
-		328B9EDD150B7DDE00B50024 /* MealCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealCell.m; sourceTree = "<group>"; };
-		328B9EEB150B8E7A00B50024 /* JSFavStarControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSFavStarControl.h; sourceTree = "<group>"; };
-		328B9EEC150B8E7B00B50024 /* JSFavStarControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSFavStarControl.m; sourceTree = "<group>"; };
 		328B9EF2150B927500B50024 /* RatingStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RatingStar.png; sourceTree = "<group>"; };
 		328B9EF3150B927500B50024 /* RatingStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RatingStar@2x.png"; sourceTree = "<group>"; };
 		328D3826174794B5006FE6F3 /* EventsTagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsTagsViewController.h; sourceTree = "<group>"; };
@@ -1864,8 +1853,6 @@
 				3217CE0E1508F92700BF94F7 /* FoodRestaurantsListViewController.m */,
 				3243FB9B18215CEC000F3CB5 /* FoodRestaurantViewController.h */,
 				3243FB9C18215CEC000F3CB5 /* FoodRestaurantViewController.m */,
-				328B9ED1150B77DD00B50024 /* MenusListViewController.h */,
-				328B9ED2150B77DD00B50024 /* MenusListViewController.m */,
 				32290ACD18200A0A005869E7 /* FoodSplashDetailViewController.h */,
 				32290ACE18200A0A005869E7 /* FoodSplashDetailViewController.m */,
 			);
@@ -1904,11 +1891,6 @@
 				32C450AD18241364000C99A3 /* FoodMealCell.m */,
 				32C450AF1824137B000C99A3 /* FoodMealCell.xib */,
 				32290AD018200A25005869E7 /* FoodSplashDetailView.xib */,
-				328B9ECF150B705200B50024 /* MenusListView.xib */,
-				328B9EDC150B7DDE00B50024 /* MealCell.h */,
-				328B9EDD150B7DDE00B50024 /* MealCell.m */,
-				328B9EEB150B8E7A00B50024 /* JSFavStarControl.h */,
-				328B9EEC150B8E7B00B50024 /* JSFavStarControl.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3061,7 +3043,6 @@
 				3289D28F1509474A008DD299 /* Food@2x.png in Resources */,
 				32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */,
 				32506D02181DC41E003F08D7 /* MasterVisible@2x.png in Resources */,
-				328B9ED0150B705200B50024 /* MenusListView.xib in Resources */,
 				32290AD118200A25005869E7 /* FoodSplashDetailView.xib in Resources */,
 				320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */,
 				328B9EF4150B927500B50024 /* RatingStar.png in Resources */,
@@ -3394,9 +3375,6 @@
 				3242DE1F150577050082D720 /* Service.m in Sources */,
 				3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */,
 				3217CE0F1508F92700BF94F7 /* FoodRestaurantsListViewController.m in Sources */,
-				328B9ED3150B77DD00B50024 /* MenusListViewController.m in Sources */,
-				328B9EDE150B7DDE00B50024 /* MealCell.m in Sources */,
-				328B9EED150B8E7B00B50024 /* JSFavStarControl.m in Sources */,
 				3247CAF815135FD800105A71 /* PCTableViewSectionHeader.m in Sources */,
 				32FB2E0A15179014007AE82B /* transport.m in Sources */,
 				32FB2E0B15179014007AE82B /* TransportService.m in Sources */,
