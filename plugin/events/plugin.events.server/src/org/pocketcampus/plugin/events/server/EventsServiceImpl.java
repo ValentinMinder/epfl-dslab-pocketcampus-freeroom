@@ -136,6 +136,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 		//if(req.isSetUserToken()) tokens.add(req.getUserToken()); // backward compatibility
 		try {
 			Connection conn = connMgr.getConnection();
+			logPageView(conn, tokens, parentId, "eventitem");
 			EventItem item = eventItemFromDb(conn, parentId, tokens);
 			if(item == null)
 				return new EventItemReply(400);
@@ -167,6 +168,7 @@ public class EventsServiceImpl implements EventsService.Iface {
 		if(parentId != Constants.CONTAINER_EVENT_ID) period = 0;
 		try {
 			Connection conn = connMgr.getConnection();
+			logPageView(conn, tokens, parentId, "eventpool");
 			EventPool pool = eventPoolFromDb(conn, parentId);
 			if(pool == null)
 				return new EventPoolReply(400);
@@ -1135,6 +1137,17 @@ public class EventsServiceImpl implements EventsService.Iface {
 		stm.close();
 		
 		return affectedRows;
+	}
+
+	private static void logPageView(Connection conn, List<String> userTickets, long nodeId, String pageType) throws SQLException {
+		for(String ticket : userTickets) {
+			PreparedStatement stm = conn.prepareStatement("INSERT INTO eventpageviews (userTicket, nodeId, pageType, viewCount) VALUES (?, ?, ?, 1) ON DUPLICATE KEY UPDATE viewCount = viewCount + 1;");
+			stm.setString(1, ticket);
+			stm.setLong(2, nodeId);
+			stm.setString(3, pageType);
+			stm.executeUpdate();
+			stm.close();
+		}
 	}
 
 	private static void fixCategAndTags(EventItem e) {
