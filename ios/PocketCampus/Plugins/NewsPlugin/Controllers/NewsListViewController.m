@@ -80,6 +80,9 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 #pragma mark - refresh control
 
 - (void)refreshIfNeeded {
+    if (![PCUtils hasDeviceInternetConnection]) {
+        return;
+    }
     if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kAutomaticRefreshPeriodSeconds]) {
         [self refresh];
     }

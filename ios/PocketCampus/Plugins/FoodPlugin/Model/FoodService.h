@@ -10,6 +10,8 @@
 
 #import "food.h"
 
+#import "EpflRestaurant+Additions.h"
+
 //actually used, Xcode deos not simply see it, do not remove.
 static NSString* kFavoritesRestaurantsUpdatedNotificationName __unused = @"FavoritesRestaurantsUpdated";
 

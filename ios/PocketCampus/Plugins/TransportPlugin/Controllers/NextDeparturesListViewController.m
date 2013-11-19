@@ -100,6 +100,9 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 }
 
 - (void)refreshIfNeeded {
+    if (![PCUtils hasDeviceInternetConnection]) {
+        return;
+    }
     if (!needToRefresh && lastRefreshTimestamp != nil && abs([lastRefreshTimestamp timeIntervalSinceNow]) < kSchedulesValidy) {
         return;
     }

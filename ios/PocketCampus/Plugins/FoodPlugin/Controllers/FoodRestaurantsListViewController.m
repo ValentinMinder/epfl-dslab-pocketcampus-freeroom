@@ -99,6 +99,9 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 }
 
 - (void)refreshIfNeeded {
+    if (![PCUtils hasDeviceInternetConnection]) {
+        return;
+    }
     if (!self.foodResponse || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || ![[NSDate date] isSameDayAsDate:self.lgRefreshControl.lastSuccessfulRefreshDate]) {
         if (!self.splitViewController && self.navigationController.topViewController != self) {
             [self.navigationController popToViewController:self animated:NO];
@@ -124,17 +127,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         self.restaurantsSorted = nil;
         return;
     }
-    self.restaurantsSorted = [self.foodResponse.matchingFood sortedArrayUsingComparator:^NSComparisonResult(EpflRestaurant* rest1, EpflRestaurant* rest2) {
-        BOOL fav1 = [self.foodService isRestaurantFavorite:rest1];
-        BOOL fav2 = [self.foodService isRestaurantFavorite:rest2];
-        if (fav1 && !fav2) {
-            return NSOrderedAscending;
-        } else if (!fav1 && fav2) {
-            return NSOrderedDescending;
-        } else {
-            return [rest1.rName compare:rest2.rName];
-        }
-    }];
+    self.restaurantsSorted = [self.foodResponse.matchingFood sortedArrayUsingSelector:@selector(compareToEpflRestaurant:)]; //defined in Additions category on EpflRestaurant
 }
 
 - (void)reselectLastSelectedItem {
@@ -207,6 +200,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     }
     EpflRestaurant* restaurant = self.restaurantsSorted[indexPath.row];
     if (self.splitViewController && [restaurant isEqual:self.selectedRestaurant]) {
+        UINavigationController* navController = [self.splitViewController.viewControllers[1] isKindOfClass:[UINavigationController class]] ? self.splitViewController.viewControllers[1] : nil;
+        [navController popToRootViewControllerAnimated:YES];
         return;
     }
     FoodRestaurantViewController* viewController = [[FoodRestaurantViewController alloc] initWithEpflRestaurant:restaurant];

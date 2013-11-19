@@ -7,6 +7,7 @@
 //
 
 #import "EpflRestaurant+Additions.h"
+#import "FoodService.h"
 
 @implementation EpflRestaurant (Additions)
 
@@ -29,6 +30,23 @@
     NSUInteger hash = 0;
     hash += self.rId;
     return hash;
+}
+
+- (NSComparisonResult)compareToEpflRestaurant:(EpflRestaurant*)otherRestaurant {
+    [PCUtils throwExceptionIfObject:otherRestaurant notKindOfClass:[EpflRestaurant class]];
+    if ([self isEqualToEpflRestaurant:otherRestaurant]) {
+        return NSOrderedSame;
+    }
+    FoodService* foodService = [FoodService sharedInstanceToRetain];
+    BOOL fav1 = [foodService isRestaurantFavorite:self];
+    BOOL fav2 = [foodService isRestaurantFavorite:otherRestaurant];
+    if (fav1 && !fav2) {
+        return NSOrderedAscending;
+    } else if (!fav1 && fav2) {
+        return NSOrderedDescending;
+    } else {
+        return [self.rName compare:otherRestaurant.rName];
+    }
 }
 
 @end
