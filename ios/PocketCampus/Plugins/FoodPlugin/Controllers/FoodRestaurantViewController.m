@@ -39,10 +39,10 @@ static const NSInteger kMealsSection = 1;
         self.restaurant = restaurant;
         self.title = self.restaurant.rName;
         self.cellForMealName = [NSMutableDictionary dictionaryWithCapacity:self.restaurant.rMeals.count];
-#warning TO REMOVE
+/*#warning TO REMOVE
         self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurant-pics/vallotton.png";
         self.restaurant.rRating.ratingValue = 0.76;
-        self.restaurant.rRating.voteCount = 578;
+        self.restaurant.rRating.voteCount = 578;*/
     }
     return self;
 }
@@ -86,7 +86,7 @@ static const NSInteger kMealsSection = 1;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case kRestaurantInfoSection:
-            return [FoodRestaurantInfoCell preferredHeight];
+            return [FoodRestaurantInfoCell preferredHeightForRestaurant:self.restaurant];
         case kMealsSection:
         {
             EpflMeal* meal = self.restaurant.rMeals[indexPath.row];

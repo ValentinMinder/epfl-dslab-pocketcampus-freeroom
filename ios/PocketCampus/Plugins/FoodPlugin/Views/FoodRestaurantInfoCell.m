@@ -37,22 +37,7 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.separatorInset = UIEdgeInsetsZero;
-        /*CAGradientLayer *gradient1 = [CAGradientLayer layer];
-        gradient1.frame = self.overlayView.bounds;
-        gradient1.startPoint = CGPointMake(0, 0.5);
-        gradient1.endPoint = CGPointMake(1.0, 0.5);
-        gradient1.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithWhite:1.0 alpha:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil];
-        [self.overlayView.layer insertSublayer:gradient1 atIndex:0];*/
-        
         [self.showOnMapButton setTitle:[NSString stringWithFormat:@"  %@  ", NSLocalizedStringFromTable(@"ShowOnMap", @"FoodPlugin", nil)] forState:UIControlStateNormal];
-        /*CAGradientLayer *gradient2 = [CAGradientLayer layer];
-        gradient2.frame = self.showOnMapButton.bounds;
-        gradient2.startPoint = CGPointMake(0, 0.5);
-        gradient2.endPoint = CGPointMake(1.0, 0.5);
-        gradient2.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithWhite:1.0 alpha:0.7] CGColor], (id)[[UIColor colorWithWhite:1.0 alpha:0.7] CGColor], nil];
-        [self.showOnMapButton.layer insertSublayer:gradient2 atIndex:0];*/
-        
-        
         _showRating = YES; //Default
         self.restaurant = restaurant;
     }
@@ -61,7 +46,10 @@
 
 #pragma mark - Public properties and methods
 
-+ (CGFloat)preferredHeight {
++ (CGFloat)preferredHeightForRestaurant:(EpflRestaurant*)restaurant {
+    if (!restaurant.rPictureUrl) {
+        return 30.5; //just top bar for satRateLabel and showOnMapButton
+    }
     return [PCUtils isIdiomPad] ? 200.0 : 150.0;
 }
 

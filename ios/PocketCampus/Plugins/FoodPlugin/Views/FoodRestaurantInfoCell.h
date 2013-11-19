@@ -15,7 +15,7 @@
 
 - (instancetype)initWithEpflRestaurant:(EpflRestaurant*)restaurant;
 
-+ (CGFloat)preferredHeight;
++ (CGFloat)preferredHeightForRestaurant:(EpflRestaurant*)restaurant;
 
 @property (nonatomic, strong) EpflRestaurant* restaurant;
 
