@@ -36,7 +36,7 @@
 
 #import <objc/message.h>
 
-@interface MainController ()
+@interface MainController ()<ZUUIRevealControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) UIWindow* window;
 @property (nonatomic, strong) PCURLSchemeHandler* urlSchemeHander;
@@ -761,14 +761,14 @@ static MainController<MainControllerPublic>* instance = nil;
     gesturesView.tag = kGesturesViewTag;
     gesturesView.gestureRecognizers = @[panGestureRecognizer, tapGestureRecognizer];
     
+    UIPanGestureRecognizer* revealPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
+    revealPanGestureRecognizer.delegate = self;
     
     if ([pluginRootViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController* navController = (UINavigationController*)pluginRootViewController;
-        
-        UIPanGestureRecognizer* navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
-        [navController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
-        
         [navController.view addSubview:gesturesView];
+        
+        [navController.view addGestureRecognizer:revealPanGestureRecognizer];
         
         UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
         [[(UIViewController*)(navController.viewControllers[0]) navigationItem] setLeftBarButtonItem:menuButton];
@@ -779,6 +779,8 @@ static MainController<MainControllerPublic>* instance = nil;
         splitController.view.autoresizesSubviews = YES;
         [splitController.view addSubview:gesturesView];
         
+        [splitController.view addGestureRecognizer:revealPanGestureRecognizer];
+        
         for (int i = 0; i<splitController.viewControllers.count; i++) {
             if([splitController.viewControllers[i] isKindOfClass:[UINavigationController class]]) {
                 UINavigationController* navController = (UINavigationController*)splitController.viewControllers[i];
@@ -786,8 +788,6 @@ static MainController<MainControllerPublic>* instance = nil;
                     UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
                     [navController.viewControllers[0] navigationItem].leftBarButtonItem = menuButton;
                 }
-                UIPanGestureRecognizer* navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
-                [navController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
             }
         }
     }
@@ -841,6 +841,25 @@ static MainController<MainControllerPublic>* instance = nil;
     } else {
         [self.pluginsControllers removeAllObjects];
     }
+}
+
+#pragma mark UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isKindOfClass:[UINavigationBar class]]) {
+        return YES;
+    }
+    CGPoint point = [touch locationInView:gestureRecognizer.view];
+    return point.x < 10.0;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if ([otherGestureRecognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
+        return NO;
+    }
+    otherGestureRecognizer.enabled = NO;
+    otherGestureRecognizer.enabled = YES;
+    return YES;
 }
 
 #pragma mark - ZUUIRevealControllerDelegate

@@ -48,9 +48,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     self = [super initWithNibName:@"MoodleResourceView" bundle:nil];
     if (self) {
         self.moodleResource = moodleResource;
-        if ([PCUtils isIdiomPad]) {
-            self.title = moodleResource.iName; //enough space to display title if iPad
-        }
+        self.title = moodleResource.iName; //enough space to display title if iPad
         self.moodleService = [MoodleService sharedInstanceToRetain];
     }
     return self;
