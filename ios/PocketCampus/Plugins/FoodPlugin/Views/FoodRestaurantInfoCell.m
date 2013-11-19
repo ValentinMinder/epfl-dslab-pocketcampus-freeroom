@@ -48,7 +48,7 @@
 
 + (CGFloat)preferredHeightForRestaurant:(EpflRestaurant*)restaurant {
     if (!restaurant.rPictureUrl) {
-        return 30.5; //just top bar for satRateLabel and showOnMapButton
+        return 30.0; //just top bar for satRateLabel and showOnMapButton
     }
     return [PCUtils isIdiomPad] ? 200.0 : 150.0;
 }
@@ -77,7 +77,6 @@
     NSRange satRateStringRange = [fullSatRateString rangeOfString:satRateString];
     [satAttrString addAttribute:NSFontAttributeName value:biggerFont range:satRateStringRange];
     UIColor* color = [self colorForRating:self.restaurant.rRating];
-    [satAttrString addAttribute:NSForegroundColorAttributeName value:color range:satRateStringRange];
     [satAttrString addAttribute:NSForegroundColorAttributeName value:color range:satRateStringRange];
     
     self.satRateLabel.attributedText = satAttrString;

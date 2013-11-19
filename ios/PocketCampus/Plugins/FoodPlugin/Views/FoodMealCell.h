@@ -28,6 +28,5 @@ static NSString* FoodMealCellDidEnableRateModeNotification = @"FoodMealCellDidEn
  * Default: NO
  */
 @property (nonatomic, getter = isRateModeEnabled) BOOL rateModeEnabled;
-- (void)setRateModeEnabled:(BOOL)rateModeEnabled animated:(BOOL)animated;
 
 @end

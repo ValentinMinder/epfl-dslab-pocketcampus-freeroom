@@ -395,7 +395,7 @@ static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    if (!self.sendMailAlertView) {
+    if (self.sendMailAlertView) {
         [self.sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
         [PCUtils showConnectionToServerTimedOutAlert];
         return;

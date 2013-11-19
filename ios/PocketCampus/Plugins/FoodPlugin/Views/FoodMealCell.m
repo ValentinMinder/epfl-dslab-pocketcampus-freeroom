@@ -89,19 +89,8 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         self.rateControlsViewLeftConstraint = [NSLayoutConstraint constraintWithItem:self.infoContentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.rateControlsView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
         [self.contentView addConstraint:self.rateControlsViewLeftConstraint];
         [self.rateControlsView addConstraint:[NSLayoutConstraint widthConstraint:kRateControlsViewWidth forView:self.rateControlsView]];
-        FoodMealCell* weakSelf __weak = self;
-        [[NSNotificationCenter defaultCenter] addObserverForName:UIDeviceOrientationDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *notif) {
-            weakSelf.rateModeEnabled = weakSelf.rateModeEnabled;
-        }];
-        [[NSNotificationCenter defaultCenter] addObserverForName:FoodMealCellDidEnableRateModeNotification object:nil queue:nil usingBlock:^(NSNotification *notif) {
-            if (notif.object != weakSelf) {
-                /*
-                 * If other cell sets shows rate controls view, hide rate controls view of this cell
-                 * (we want only one cell at a time to show rate controls view)
-                 */
-                [weakSelf setRateModeEnabled:NO animated:YES];
-            }
-        }];
+        self.ratingStatus = RatingStatusReady;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rateModeEnabledNotification:) name:FoodMealCellDidEnableRateModeNotification object:nil];
     }
     return self;
 }
@@ -109,6 +98,25 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     return [self initWithReuseIdentifier:reuseIdentifier];
+}
+
+#pragma mark - UIView overrides
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self setRateModeEnabled:self.rateModeEnabled animated:NO postNotif:NO force:YES];
+}
+
+#pragma mark - Notifications listening
+
+- (void)rateModeEnabledNotification:(NSNotification*)notif {
+    if (notif.object != self) {
+        /*
+         * If other cell sets shows rate controls view, hide rate controls view of this cell
+         * (we want only one cell at a time to show rate controls view)
+         */
+        [self setRateModeEnabled:NO animated:YES postNotif:NO force:NO];
+    }
 }
 
 #pragma mark - Meal stuff
@@ -164,7 +172,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     NSString* voteString =  NSLocalizedStringFromTable(@"Rate", @"FoodPlugin", nil);
     NSString* fullString = [NSString stringWithFormat:@"%@%@      ", satRateString, voteString]; //spaces to extent touch zone of button
     NSMutableAttributedString* satRateAttrString = [[NSMutableAttributedString alloc] initWithString:fullString];
-    [satRateAttrString addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:[fullString rangeOfString:satRateString]];
+    [satRateAttrString addAttribute:NSForegroundColorAttributeName value:self.meal.mRating.voteCount > 0 ? [UIColor colorWithWhite:0.2 alpha:1.0] : [UIColor lightGrayColor] range:[fullString rangeOfString:satRateString]];
     [self.satRateButton setAttributedTitle:satRateAttrString forState:UIControlStateNormal];
 }
 
@@ -223,26 +231,30 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 }
 
 - (void)infoContentViewTapped {
-    [self setRateModeEnabled:NO animated:YES];
+    [self setRateModeEnabled:NO animated:YES postNotif:NO force:NO];
 }
 
 - (void)ratePressed {
-    [self setRateModeEnabled:YES animated:YES];
+    [self setRateModeEnabled:YES animated:YES postNotif:YES force:NO];
 }
 
 - (void)setRateModeEnabled:(BOOL)rateModeEnabled {
-    [self setRateModeEnabled:rateModeEnabled animated:NO];
+    [self setRateModeEnabled:rateModeEnabled animated:NO postNotif:NO force:NO];
 }
 
-- (void)setRateModeEnabled:(BOOL)rateModeEnabled animated:(BOOL)animated {
-    if (!_rateModeEnabled && rateModeEnabled) {
+- (void)setRateModeEnabled:(BOOL)rateModeEnabled animated:(BOOL)animated postNotif:(BOOL)postNotif force:(BOOL)force {
+    if (!force && _rateModeEnabled == rateModeEnabled) {
+        return;
+    }
+    if (!_rateModeEnabled && rateModeEnabled && postNotif) {
         [[NSNotificationCenter defaultCenter] postNotificationName:FoodMealCellDidEnableRateModeNotification object:self];
     }
     _rateModeEnabled = rateModeEnabled;
     self.infoContentViewTapGesture.enabled = rateModeEnabled;
     self.satRateButton.enabled = !rateModeEnabled;
     self.satRateButton.alpha = rateModeEnabled ? 0.5 : 1.0;
-    if ([PCUtils isIdiomPad] &&  UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])) {
+    
+    if ([PCUtils isIdiomPad] &&  !UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
         self.rateControlsViewLeftConstraint.constant = rateModeEnabled ? kRateControlsViewWidth : 0.0;
         self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
         self.infoContentViewLeftConstraint.constant = 0.0;

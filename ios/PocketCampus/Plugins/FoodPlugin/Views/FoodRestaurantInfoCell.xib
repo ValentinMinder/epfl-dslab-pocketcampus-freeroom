@@ -57,7 +57,7 @@
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="7Cq-eP-KMy" firstAttribute="top" secondItem="k5o-VX-bhR" secondAttribute="bottom" id="0Nz-rb-DP3"/>
+                    <constraint firstItem="7Cq-eP-KMy" firstAttribute="top" secondItem="k5o-VX-bhR" secondAttribute="bottom" priority="500" id="0Nz-rb-DP3"/>
                     <constraint firstAttribute="trailing" secondItem="k5o-VX-bhR" secondAttribute="trailing" id="BI9-fJ-RO9"/>
                     <constraint firstAttribute="trailing" secondItem="7Cq-eP-KMy" secondAttribute="trailing" id="FYB-za-Ei4"/>
                     <constraint firstAttribute="trailing" secondItem="Idy-LA-NMz" secondAttribute="trailing" id="JQf-hw-9zi"/>
