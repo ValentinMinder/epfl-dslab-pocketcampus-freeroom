@@ -16,6 +16,8 @@ import org.w3c.dom.NodeList;
 
 import org.pocketcampus.plugin.isacademia.shared.*;
 
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.joda.time.*;
 import org.joda.time.format.*;
 
@@ -76,17 +78,15 @@ public final class ScheduleImpl implements Schedule {
 				+ "?" + URL_FROM_PARAMETER + "=" + weekBegin.toString(URL_PARAMETER_FORMAT)
 				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT);
 
-		Map<String, String> cookies = new HashMap<String, String>();
-		cookies.put("tequila_key", tequilaCookie);
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		BasicClientCookie cookie = new BasicClientCookie("tequila_key", tequilaCookie);
+		cookie.setDomain("tequila.epfl.ch");
+		cookie.setPath("/");
+		cookies.add(cookie);
 
 		String xml = null;
 		try {
-			// The server sends a close_notify during the handshake of the second connection to ISA, I don't understand why.
-			// Maybe it's because Java sends a SSLv3 handshake instead of an SSLv2 one (as it does for the first connection)?
-			// Chrome only does one *SSLv3* handshake with ISA and it works.
-			// Qualys' SSL analysis tells me ISA supports SSLv2, SSLv3 and TLSv1. (Java doesn't really support SSLv2 though, only the hello message)
-			// ...
-			xml=_client.getString(url, ISA_CHARSET, cookies);
+			xml = _client.getString(url, ISA_CHARSET, cookies);
 		} catch (Exception e) {
 			throw new ScheduleException("An error occured while downloading the schedule data.");
 		}
@@ -94,8 +94,8 @@ public final class ScheduleImpl implements Schedule {
 		Element xdoc = null;
 		try {
 			xdoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-					                     .parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)))
-					                     .getDocumentElement();
+					.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)))
+					.getDocumentElement();
 		} catch (Exception e) {
 			throw new ScheduleException("An error occured while parsing the schedule data.");
 		}

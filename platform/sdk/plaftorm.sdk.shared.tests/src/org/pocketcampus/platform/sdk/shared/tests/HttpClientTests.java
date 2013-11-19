@@ -1,11 +1,11 @@
-package org.pocketcampus.plugin.food.server.tests;
+package org.pocketcampus.platform.sdk.shared.tests;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.nio.charset.Charset;
 
-import org.pocketcampus.plugin.food.server.HttpClientImpl;
+import org.pocketcampus.platform.sdk.shared.HttpClientImpl;
 
 /** 
  * Tests for HttpClientImpl.

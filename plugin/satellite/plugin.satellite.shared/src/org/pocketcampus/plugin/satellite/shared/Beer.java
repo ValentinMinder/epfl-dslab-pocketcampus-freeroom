@@ -30,11 +30,11 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
   private static final org.apache.thrift.protocol.TField PRICE_FIELD_DESC = new org.apache.thrift.protocol.TField("price", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
   private static final org.apache.thrift.protocol.TField PICTURE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("pictureUrl", org.apache.thrift.protocol.TType.STRING, (short)5);
 
-  public long Id; // required
-  public String name; // required
-  public String description; // required
-  public double price; // required
-  public String pictureUrl; // required
+  private long Id; // required
+  private String name; // required
+  private String description; // required
+  private double price; // required
+  private String pictureUrl; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -115,7 +115,7 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("Id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("description", org.apache.thrift.TFieldRequirementType.REQUIRED, 

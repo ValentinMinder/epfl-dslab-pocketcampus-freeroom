@@ -26,12 +26,10 @@ public final class IsAcademiaServiceImpl implements IsAcademiaService.Iface {
 
 	public static void main(String[] args) {
 		try {
-			// DEBUG - remove once it works
-			System.setProperty("javax.net.debug", "ssl");
 			// To test, replace with a valid Tequila cookie 
 			// (use dev tools in your browser to view the Set-Cookie headers sent
 			//  back after auth from https://tequila.epfl.ch/cgi-bin/tequila/login)
-			ScheduleResponse r = new IsAcademiaServiceImpl().getSchedule(new ScheduleRequest("651574c0260680c7ab1ad7bb7b78297783065e75ad66481a4b5487eec3d4cbbc"));
+			ScheduleResponse r = new IsAcademiaServiceImpl().getSchedule(new ScheduleRequest(""));
 			List<StudyDay> days = r.getDays();
 			System.out.println(days);
 		} catch (Exception e) {

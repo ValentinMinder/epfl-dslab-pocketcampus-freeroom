@@ -29,7 +29,7 @@ public final class FoodServiceTests {
 
 		FoodResponse response = service.getFood(new FoodRequest());
 
-		assertEquals(mealList.getMenu(MealTime.LUNCH, LocalDate.now()).menu, response.getMatchingFood());
+		assertEquals(mealList.getMenu(MealTime.LUNCH, LocalDate.now()), response.getMatchingFood());
 	}
 
 	// getFood sets the ratings on the meals
@@ -92,7 +92,7 @@ public final class FoodServiceTests {
 
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 12, 30).getMillis());
 		service.vote(new VoteRequest(11, 4.0, "12345"));
-		List<EpflRestaurant> menu = mealList.getMenu(MealTime.LUNCH, LocalDate.now()).menu;
+		List<EpflRestaurant> menu = mealList.getMenu(MealTime.LUNCH, LocalDate.now());
 		ratingDatabase.setRatings(menu);
 
 		assertEquals(new EpflRating(4.0, 1), menu.get(1).getRMeals().get(0).getMRating());
@@ -206,8 +206,8 @@ public final class FoodServiceTests {
 	private static MealList getTestMealList() {
 		return new MealList() {
 			@Override
-			public MenuResult getMenu(MealTime time, LocalDate date) throws Exception {
-				return new MenuResult(true, Arrays.asList(new EpflRestaurant[] {
+			public List<EpflRestaurant> getMenu(MealTime time, LocalDate date) throws Exception {
+				return Arrays.asList(new EpflRestaurant[] {
 						new EpflRestaurant(100, "R100", Arrays.asList(new EpflMeal[] {
 								makeMeal(1),
 								makeMeal(2),
@@ -220,7 +220,7 @@ public final class FoodServiceTests {
 						new EpflRestaurant(300, "R300", Arrays.asList(new EpflMeal[] {
 								makeMeal(21)
 						}), new EpflRating(0.0, 0))
-				}));
+				});
 			}
 		};
 	}

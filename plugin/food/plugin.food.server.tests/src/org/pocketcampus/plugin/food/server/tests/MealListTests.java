@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.pocketcampus.platform.sdk.shared.HttpClient;
 import org.pocketcampus.plugin.food.server.*;
 import org.pocketcampus.plugin.food.shared.*;
 
@@ -121,7 +122,7 @@ public final class MealListTests {
 
 	private static List<EpflRestaurant> getMenu() {
 		try {
-			return new MealListImpl(new TestHttpClient()).getMenu(MealTime.LUNCH, LocalDate.now()).menu;
+			return new MealListImpl(new TestHttpClient()).getMenu(MealTime.LUNCH, LocalDate.now());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("An exception occured.");
