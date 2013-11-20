@@ -189,14 +189,18 @@
     NSMutableAttributedString* attrString = nil;
     if (!self.lastSuccessfulRefreshDate) {
         attrString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"LastUpdateNever", @"LGRefreshControl", nil)];
+    } else if (fabs([self.lastSuccessfulRefreshDate timeIntervalSinceNow]) < 60.0) {
+        attrString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"LastUpdateJustNow", @"LGRefreshControl", nil)];
     } else {
         NSString* lastUpdateLocalized = NSLocalizedStringFromTable(@"LastUpdate", @"LGRefreshControl", nil);
-        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-        [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+        NSDateFormatter* dateFormatter = [NSDateFormatter new];
+        dateFormatter.timeStyle = NSDateFormatterNoStyle;
+        dateFormatter.dateStyle = NSDateFormatterShortStyle;
+        [dateFormatter setDoesRelativeDateFormatting:YES];
         NSString* dateString = [dateFormatter stringFromDate:self.lastSuccessfulRefreshDate];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterNoStyle];
+        dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        dateFormatter.dateStyle = NSDateFormatterNoStyle;
+        [dateFormatter setDoesRelativeDateFormatting:NO];
         NSString* timeString = [dateFormatter stringFromDate:self.lastSuccessfulRefreshDate];
        
         attrString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@ %@", lastUpdateLocalized, dateString, timeString]];

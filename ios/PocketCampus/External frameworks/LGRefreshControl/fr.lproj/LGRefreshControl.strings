@@ -5,6 +5,7 @@
   Copyright (c) 2013. All rights reserved.
 */
 
-"LastUpdate" = "Denière mise à jour";
+"LastUpdate" = "Mis à jour";
 "LastUpdateNever" = "Denière mise à jour : jamais";
+"LastUpdateJustNow" = "Mis à jour à l'instant";
 "Refreshing" = "Chargement...";
