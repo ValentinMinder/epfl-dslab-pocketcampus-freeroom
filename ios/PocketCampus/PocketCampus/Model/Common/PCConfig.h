@@ -47,6 +47,7 @@ static NSString* PC_CONFIG_GAN_ENABLED_KEY __unused = @"GA_ENABLED"; //GAN is Go
 
 static NSString* PC_CONFIG_GAN_TRACKING_CODE_KEY __unused = @"GA_TRACKING_CODE";
 
+static NSString* PC_CONFIG_CRASHLYTICS_APIKEY_KEY __unused = @"CRASHLYTICS_APIKEY";
 
 /*
  * Indications on which config steps were successfull

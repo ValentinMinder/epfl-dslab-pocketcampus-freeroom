@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NextDeparturesListViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransportNextDeparturesViewController">
             <connections>
                 <outlet property="connectionErrorLabel" destination="22" id="23"/>
                 <outlet property="fromValueLabel" destination="7" id="17"/>

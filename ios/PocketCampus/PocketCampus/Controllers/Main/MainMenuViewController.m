@@ -171,7 +171,7 @@ static const int kPluginsSection = 0;
     if (_settingsButton) {
         return _settingsButton;
     }
-    _settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsNavBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed)];
+    _settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed)];
     return _settingsButton;
 }
 

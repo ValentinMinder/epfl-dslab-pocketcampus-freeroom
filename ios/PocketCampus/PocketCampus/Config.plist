@@ -14,5 +14,7 @@
 	<string>UA-22135241-3</string>
 	<key>GA_ENABLED</key>
 	<true/>
+	<key>CRASHLYTICS_APIKEY</key>
+	<string>5501169cb5b463b5f215a0033b2c4d4f5f214bd7</string>
 </dict>
 </plist>

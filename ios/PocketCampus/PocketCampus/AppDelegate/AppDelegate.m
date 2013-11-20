@@ -24,6 +24,8 @@
 
 #import "PCURLSchemeHandler.h"
 
+#import <Crashlytics/Crashlytics.h>
+
 static id test __strong __unused = nil;
 
 @interface AppDelegate ()
@@ -39,12 +41,17 @@ static id test __strong __unused = nil;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
-    /* Apply appearence proxy => specified UI elements will defaut to PC defined look&feel, eg. red navigation bar */
-    [PCValues applyAppearenceProxy];
     
     /* Initialize defaults with PC config */
     [PCConfig initConfig];
+    
+    NSString* crashlyticsAPIKey = [[PCConfig defaults] stringForKey:PC_CONFIG_CRASHLYTICS_APIKEY_KEY];
+    if (crashlyticsAPIKey) {
+        [Crashlytics startWithAPIKey:crashlyticsAPIKey];
+    }
+
+    /* Apply appearence proxy => specified UI elements will defaut to PC defined look&feel, eg. red navigation bar */
+    [PCValues applyAppearenceProxy];
     
     NSURLCache* cache = [[NSURLCache alloc] initWithMemoryCapacity:4*1024*1024 diskCapacity:100*1024*1024 diskPath:nil];
     [NSURLCache setSharedURLCache:cache];
