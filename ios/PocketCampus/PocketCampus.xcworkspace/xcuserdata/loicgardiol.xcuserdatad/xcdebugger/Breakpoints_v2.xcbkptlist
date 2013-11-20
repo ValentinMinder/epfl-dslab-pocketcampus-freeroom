@@ -58,29 +58,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "406579815.753357"
+            timestampString = "406634256.70333"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "868"
-            endingLineNumber = "868"
-            landmarkName = "-revealController:willRevealRearViewController:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "406579815.753357"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "890"
-            endingLineNumber = "890"
-            landmarkName = "-revealController:willHideRearViewController:"
-            landmarkType = "5">
+            startingLineNumber = "910"
+            endingLineNumber = "910"
+            landmarkName = "@implementation MainController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -90,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "404590919.055191"
+            timestampString = "406634017.115132"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "730"
-            endingLineNumber = "730"
+            startingLineNumber = "725"
+            endingLineNumber = "725"
             landmarkName = "-preferredStatusBarStyle"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "404591691.962961"
+            timestampString = "406634017.115132"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "746"
-            endingLineNumber = "746"
+            startingLineNumber = "741"
+            endingLineNumber = "741"
             landmarkName = "-setCurrentFrontViewPosition:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1300,11 +1284,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "404590868.050554"
+            timestampString = "406634017.115132"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "722"
-            endingLineNumber = "722"
+            startingLineNumber = "717"
+            endingLineNumber = "717"
             landmarkName = "-prefersStatusBarHidden"
             landmarkType = "5">
             <Actions>
@@ -1842,7 +1826,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Controllers/EventItemViewController.m"

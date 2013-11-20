@@ -752,23 +752,29 @@ static MainController<MainControllerPublic>* instance = nil;
         @throw [NSException exceptionWithName:@"incorrect attribute pluginIdentifier" reason:@"root view controller of pluginController must have initialized pluginIdentifier property" userInfo:nil];
     }
     
-    UIPanGestureRecognizer* panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
-    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealToggle:)];
-    UIView* gesturesView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1.0, 1.0)];
-    gesturesView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    //gesturesView.hidden = YES;
-    //gesturesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-    gesturesView.tag = kGesturesViewTag;
-    gesturesView.gestureRecognizers = @[panGestureRecognizer, tapGestureRecognizer];
+    /*
+     * This gesture is added to the view of every plugin's navigation controller or split view controlle to allow user to pan from
+     * left screen edge to reveal the main menu. See UIGestureRecognizerDelegate delegation (below) for reaction to the gesture.
+     */
+    UIPanGestureRecognizer* revealPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
+    revealPanGesture.delegate = self;
     
-    UIPanGestureRecognizer* revealPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
-    revealPanGestureRecognizer.delegate = self;
+    /*
+     * Creating a view entirely covered with pan and tap gestures.
+     * This view is added to the view of every plugin's navigation controller or split view controller to allow user to pan or tap
+     * anywhere on the plugin's view when it is shifted the right (i.e. main menu currently visible) to bring it back into foreground.
+     */
+    UIPanGestureRecognizer* bringToFrontPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
+    UITapGestureRecognizer* bringToFrontTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealToggle:)];
+    UIView* bringToFrontGesturesView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1.0, 1.0)];
+    bringToFrontGesturesView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    bringToFrontGesturesView.tag = kGesturesViewTag;
+    bringToFrontGesturesView.gestureRecognizers = @[bringToFrontPanGesture, bringToFrontTapGesture];
     
     if ([pluginRootViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController* navController = (UINavigationController*)pluginRootViewController;
-        [navController.view addSubview:gesturesView];
-        
-        [navController.view addGestureRecognizer:revealPanGestureRecognizer];
+        [navController.view addGestureRecognizer:revealPanGesture];
+        [navController.view addSubview:bringToFrontGesturesView];
         
         UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
         [[(UIViewController*)(navController.viewControllers[0]) navigationItem] setLeftBarButtonItem:menuButton];
@@ -776,10 +782,9 @@ static MainController<MainControllerPublic>* instance = nil;
     
     if ([pluginRootViewController isKindOfClass:[UISplitViewController class]]) {
         UISplitViewController* splitController = (UISplitViewController*)pluginRootViewController;
+        [splitController.view addGestureRecognizer:revealPanGesture];
         splitController.view.autoresizesSubviews = YES;
-        [splitController.view addSubview:gesturesView];
-        
-        [splitController.view addGestureRecognizer:revealPanGestureRecognizer];
+        [splitController.view addSubview:bringToFrontGesturesView];
         
         for (int i = 0; i<splitController.viewControllers.count; i++) {
             if([splitController.viewControllers[i] isKindOfClass:[UINavigationController class]]) {
@@ -846,15 +851,33 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if (![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        return NO;
+    }
+    /*
+     * Assuming gesture is the reveal pan gesture
+     * OK, because self is delegate for this gesture only
+     */
+    
     if ([touch.view isKindOfClass:[UINavigationBar class]]) {
+        /*
+         * Allow panning anywhere on the navigation bar
+         */
         return YES;
     }
+    /*
+     * Accept gesture only if started from the left edge of the screen
+     */
     CGPoint point = [touch locationInView:gestureRecognizer.view];
     return point.x < 10.0;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     if ([otherGestureRecognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
+        /*
+         * UIScreenEdgePanGestureRecognizer is iOS 7 gesture to pop view controller in navigation controller.
+         * We don't want to do anything when this gesture is in progress => stopping our reveal gesture.
+         */
         return NO;
     }
     otherGestureRecognizer.enabled = NO;
@@ -865,9 +888,6 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - ZUUIRevealControllerDelegate
 
 - (void)revealController:(ZUUIRevealController *)revealController willRevealRearViewController:(UIViewController *)rearViewController {
-    //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-    
     if (self.activePluginController) {
         [self postNotificationWithState:PluginWillLoseForegroundNotification pluginIdentifier:[self identifierNameForPluginController:self.activePluginController]];
     }
@@ -886,10 +906,9 @@ static MainController<MainControllerPublic>* instance = nil;
     gesturesView.hidden = NO;
 }
 
-- (void)revealController:(ZUUIRevealController *)revealController willHideRearViewController:(UIViewController *)rearViewController {
-    //[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-}
+/*- (void)revealController:(ZUUIRevealController *)revealController willHideRearViewController:(UIViewController *)rearViewController {
+   //nothing
+}*/
 
 - (void)revealController:(ZUUIRevealController *)revealController didHideRearViewController:(UIViewController *)rearViewController {
     if (!self.activePluginController) {
@@ -905,9 +924,9 @@ static MainController<MainControllerPublic>* instance = nil;
     gesturesView.hidden = YES;
 }
 
-- (void)revealController:(ZUUIRevealController *)revealController willSwapToFrontViewController:(UIViewController *)frontViewController {
-    
-}
+/*- (void)revealController:(ZUUIRevealController *)revealController willSwapToFrontViewController:(UIViewController *)frontViewController {
+    //nothing
+}*/
 
 - (void)revealController:(ZUUIRevealController *)revealController didSwapToFrontViewController:(UIViewController *)frontViewController {
     if (frontViewController == self.splashViewController) {
