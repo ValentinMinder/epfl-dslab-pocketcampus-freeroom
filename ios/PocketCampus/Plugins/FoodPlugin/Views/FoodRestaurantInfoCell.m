@@ -48,7 +48,7 @@
 
 + (CGFloat)preferredHeightForRestaurant:(EpflRestaurant*)restaurant {
     if (!restaurant.rPictureUrl) {
-        return 30.0; //just top bar for satRateLabel and showOnMapButton
+        return 36.0; //just top bar for satRateLabel and showOnMapButton
     }
     return [PCUtils isIdiomPad] ? 200.0 : 150.0;
 }
@@ -73,9 +73,9 @@
     NSString* nbVotesString = [NSString stringWithFormat:@"(%d %@)", self.restaurant.rRating.voteCount, self.restaurant.rRating.voteCount > 1 ? NSLocalizedStringFromTable(@"ratings", @"FoodPlugin", nil) : NSLocalizedStringFromTable(@"rating", @"FoodPlugin", nil)];
     NSString* fullSatRateString = [NSString stringWithFormat:@"%@ %@ %@", satRateString, satRateTitleString, nbVotesString];
     NSMutableAttributedString* satAttrString = [[NSMutableAttributedString alloc] initWithString:fullSatRateString];
-    UIFont* biggerFont = [UIFont fontWithDescriptor:self.satRateLabel.font.fontDescriptor size:self.satRateLabel.font.fontDescriptor.pointSize];
+    UIFont* rateFont = [UIFont systemFontOfSize:self.satRateLabel.font.fontDescriptor.pointSize];
     NSRange satRateStringRange = [fullSatRateString rangeOfString:satRateString];
-    [satAttrString addAttribute:NSFontAttributeName value:biggerFont range:satRateStringRange];
+    [satAttrString addAttribute:NSFontAttributeName value:rateFont range:satRateStringRange];
     UIColor* color = [self colorForRating:self.restaurant.rRating];
     [satAttrString addAttribute:NSForegroundColorAttributeName value:color range:satRateStringRange];
     
