@@ -21,22 +21,23 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest, ScheduleRequest._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ScheduleRequest");
+public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTokenResponse, ScheduleTokenResponse._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ScheduleTokenResponse");
 
   private static final org.apache.thrift.protocol.TField TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("token", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-  private static final org.apache.thrift.protocol.TField WEEK_START_FIELD_DESC = new org.apache.thrift.protocol.TField("weekStart", org.apache.thrift.protocol.TType.I64, (short)2);
-  private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField ERROR_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("errorCode", org.apache.thrift.protocol.TType.I32, (short)2);
 
   private ScheduleToken token; // required
-  private long weekStart; // required
-  private String language; // required
+  private ScheduleErrorCode errorCode; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     TOKEN((short)1, "token"),
-    WEEK_START((short)2, "weekStart"),
-    LANGUAGE((short)3, "language");
+    /**
+     * 
+     * @see ScheduleErrorCode
+     */
+    ERROR_CODE((short)2, "errorCode");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -53,10 +54,8 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
       switch(fieldId) {
         case 1: // TOKEN
           return TOKEN;
-        case 2: // WEEK_START
-          return WEEK_START;
-        case 3: // LANGUAGE
-          return LANGUAGE;
+        case 2: // ERROR_CODE
+          return ERROR_CODE;
         default:
           return null;
       }
@@ -97,64 +96,48 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
   }
 
   // isset id assignments
-  private static final int __WEEKSTART_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ScheduleToken.class)));
-    tmpMap.put(_Fields.WEEK_START, new org.apache.thrift.meta_data.FieldMetaData("weekStart", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
-    tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.ERROR_CODE, new org.apache.thrift.meta_data.FieldMetaData("errorCode", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, ScheduleErrorCode.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ScheduleRequest.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ScheduleTokenResponse.class, metaDataMap);
   }
 
-  public ScheduleRequest() {
-  }
-
-  public ScheduleRequest(
-    ScheduleToken token)
-  {
-    this();
-    this.token = token;
+  public ScheduleTokenResponse() {
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public ScheduleRequest(ScheduleRequest other) {
-    __isset_bit_vector.clear();
-    __isset_bit_vector.or(other.__isset_bit_vector);
+  public ScheduleTokenResponse(ScheduleTokenResponse other) {
     if (other.isSetToken()) {
       this.token = new ScheduleToken(other.token);
     }
-    this.weekStart = other.weekStart;
-    if (other.isSetLanguage()) {
-      this.language = other.language;
+    if (other.isSetErrorCode()) {
+      this.errorCode = other.errorCode;
     }
   }
 
-  public ScheduleRequest deepCopy() {
-    return new ScheduleRequest(this);
+  public ScheduleTokenResponse deepCopy() {
+    return new ScheduleTokenResponse(this);
   }
 
   @Override
   public void clear() {
     this.token = null;
-    setWeekStartIsSet(false);
-    this.weekStart = 0;
-    this.language = null;
+    this.errorCode = null;
   }
 
   public ScheduleToken getToken() {
     return this.token;
   }
 
-  public ScheduleRequest setToken(ScheduleToken token) {
+  public ScheduleTokenResponse setToken(ScheduleToken token) {
     this.token = token;
     return this;
   }
@@ -174,50 +157,35 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
     }
   }
 
-  public long getWeekStart() {
-    return this.weekStart;
+  /**
+   * 
+   * @see ScheduleErrorCode
+   */
+  public ScheduleErrorCode getErrorCode() {
+    return this.errorCode;
   }
 
-  public ScheduleRequest setWeekStart(long weekStart) {
-    this.weekStart = weekStart;
-    setWeekStartIsSet(true);
+  /**
+   * 
+   * @see ScheduleErrorCode
+   */
+  public ScheduleTokenResponse setErrorCode(ScheduleErrorCode errorCode) {
+    this.errorCode = errorCode;
     return this;
   }
 
-  public void unsetWeekStart() {
-    __isset_bit_vector.clear(__WEEKSTART_ISSET_ID);
+  public void unsetErrorCode() {
+    this.errorCode = null;
   }
 
-  /** Returns true if field weekStart is set (has been assigned a value) and false otherwise */
-  public boolean isSetWeekStart() {
-    return __isset_bit_vector.get(__WEEKSTART_ISSET_ID);
+  /** Returns true if field errorCode is set (has been assigned a value) and false otherwise */
+  public boolean isSetErrorCode() {
+    return this.errorCode != null;
   }
 
-  public void setWeekStartIsSet(boolean value) {
-    __isset_bit_vector.set(__WEEKSTART_ISSET_ID, value);
-  }
-
-  public String getLanguage() {
-    return this.language;
-  }
-
-  public ScheduleRequest setLanguage(String language) {
-    this.language = language;
-    return this;
-  }
-
-  public void unsetLanguage() {
-    this.language = null;
-  }
-
-  /** Returns true if field language is set (has been assigned a value) and false otherwise */
-  public boolean isSetLanguage() {
-    return this.language != null;
-  }
-
-  public void setLanguageIsSet(boolean value) {
+  public void setErrorCodeIsSet(boolean value) {
     if (!value) {
-      this.language = null;
+      this.errorCode = null;
     }
   }
 
@@ -231,19 +199,11 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
       }
       break;
 
-    case WEEK_START:
+    case ERROR_CODE:
       if (value == null) {
-        unsetWeekStart();
+        unsetErrorCode();
       } else {
-        setWeekStart((Long)value);
-      }
-      break;
-
-    case LANGUAGE:
-      if (value == null) {
-        unsetLanguage();
-      } else {
-        setLanguage((String)value);
+        setErrorCode((ScheduleErrorCode)value);
       }
       break;
 
@@ -255,11 +215,8 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
     case TOKEN:
       return getToken();
 
-    case WEEK_START:
-      return Long.valueOf(getWeekStart());
-
-    case LANGUAGE:
-      return getLanguage();
+    case ERROR_CODE:
+      return getErrorCode();
 
     }
     throw new IllegalStateException();
@@ -274,10 +231,8 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
     switch (field) {
     case TOKEN:
       return isSetToken();
-    case WEEK_START:
-      return isSetWeekStart();
-    case LANGUAGE:
-      return isSetLanguage();
+    case ERROR_CODE:
+      return isSetErrorCode();
     }
     throw new IllegalStateException();
   }
@@ -286,12 +241,12 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof ScheduleRequest)
-      return this.equals((ScheduleRequest)that);
+    if (that instanceof ScheduleTokenResponse)
+      return this.equals((ScheduleTokenResponse)that);
     return false;
   }
 
-  public boolean equals(ScheduleRequest that) {
+  public boolean equals(ScheduleTokenResponse that) {
     if (that == null)
       return false;
 
@@ -304,21 +259,12 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
         return false;
     }
 
-    boolean this_present_weekStart = true && this.isSetWeekStart();
-    boolean that_present_weekStart = true && that.isSetWeekStart();
-    if (this_present_weekStart || that_present_weekStart) {
-      if (!(this_present_weekStart && that_present_weekStart))
+    boolean this_present_errorCode = true && this.isSetErrorCode();
+    boolean that_present_errorCode = true && that.isSetErrorCode();
+    if (this_present_errorCode || that_present_errorCode) {
+      if (!(this_present_errorCode && that_present_errorCode))
         return false;
-      if (this.weekStart != that.weekStart)
-        return false;
-    }
-
-    boolean this_present_language = true && this.isSetLanguage();
-    boolean that_present_language = true && that.isSetLanguage();
-    if (this_present_language || that_present_language) {
-      if (!(this_present_language && that_present_language))
-        return false;
-      if (!this.language.equals(that.language))
+      if (!this.errorCode.equals(that.errorCode))
         return false;
     }
 
@@ -334,26 +280,21 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
     if (present_token)
       builder.append(token);
 
-    boolean present_weekStart = true && (isSetWeekStart());
-    builder.append(present_weekStart);
-    if (present_weekStart)
-      builder.append(weekStart);
-
-    boolean present_language = true && (isSetLanguage());
-    builder.append(present_language);
-    if (present_language)
-      builder.append(language);
+    boolean present_errorCode = true && (isSetErrorCode());
+    builder.append(present_errorCode);
+    if (present_errorCode)
+      builder.append(errorCode.getValue());
 
     return builder.toHashCode();
   }
 
-  public int compareTo(ScheduleRequest other) {
+  public int compareTo(ScheduleTokenResponse other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    ScheduleRequest typedOther = (ScheduleRequest)other;
+    ScheduleTokenResponse typedOther = (ScheduleTokenResponse)other;
 
     lastComparison = Boolean.valueOf(isSetToken()).compareTo(typedOther.isSetToken());
     if (lastComparison != 0) {
@@ -365,22 +306,12 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetWeekStart()).compareTo(typedOther.isSetWeekStart());
+    lastComparison = Boolean.valueOf(isSetErrorCode()).compareTo(typedOther.isSetErrorCode());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetWeekStart()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.weekStart, typedOther.weekStart);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetLanguage()).compareTo(typedOther.isSetLanguage());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetLanguage()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.language, typedOther.language);
+    if (isSetErrorCode()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorCode, typedOther.errorCode);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -410,17 +341,9 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // WEEK_START
-          if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.weekStart = iprot.readI64();
-            setWeekStartIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 3: // LANGUAGE
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.language = iprot.readString();
+        case 2: // ERROR_CODE
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.errorCode = ScheduleErrorCode.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -441,19 +364,16 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
 
     oprot.writeStructBegin(STRUCT_DESC);
     if (this.token != null) {
-      oprot.writeFieldBegin(TOKEN_FIELD_DESC);
-      this.token.write(oprot);
-      oprot.writeFieldEnd();
+      if (isSetToken()) {
+        oprot.writeFieldBegin(TOKEN_FIELD_DESC);
+        this.token.write(oprot);
+        oprot.writeFieldEnd();
+      }
     }
-    if (isSetWeekStart()) {
-      oprot.writeFieldBegin(WEEK_START_FIELD_DESC);
-      oprot.writeI64(this.weekStart);
-      oprot.writeFieldEnd();
-    }
-    if (this.language != null) {
-      if (isSetLanguage()) {
-        oprot.writeFieldBegin(LANGUAGE_FIELD_DESC);
-        oprot.writeString(this.language);
+    if (this.errorCode != null) {
+      if (isSetErrorCode()) {
+        oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
+        oprot.writeI32(this.errorCode.getValue());
         oprot.writeFieldEnd();
       }
     }
@@ -463,29 +383,25 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("ScheduleRequest(");
+    StringBuilder sb = new StringBuilder("ScheduleTokenResponse(");
     boolean first = true;
 
-    sb.append("token:");
-    if (this.token == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.token);
-    }
-    first = false;
-    if (isSetWeekStart()) {
-      if (!first) sb.append(", ");
-      sb.append("weekStart:");
-      sb.append(this.weekStart);
-      first = false;
-    }
-    if (isSetLanguage()) {
-      if (!first) sb.append(", ");
-      sb.append("language:");
-      if (this.language == null) {
+    if (isSetToken()) {
+      sb.append("token:");
+      if (this.token == null) {
         sb.append("null");
       } else {
-        sb.append(this.language);
+        sb.append(this.token);
+      }
+      first = false;
+    }
+    if (isSetErrorCode()) {
+      if (!first) sb.append(", ");
+      sb.append("errorCode:");
+      if (this.errorCode == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.errorCode);
       }
       first = false;
     }
@@ -495,9 +411,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (token == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'token' was not present! Struct: " + toString());
-    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -510,8 +423,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
-      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

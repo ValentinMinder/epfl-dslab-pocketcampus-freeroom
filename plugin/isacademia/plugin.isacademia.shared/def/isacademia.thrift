@@ -23,22 +23,41 @@ struct StudyDay {
   2: required list<StudyPeriod> periods;
 }
 
+struct ScheduleToken {
+  1: required string tequilaToken;
+  2: required string sessionId;
+}
+
 struct ScheduleRequest {
-  1: required string tequilaCookie;
+  1: required ScheduleToken token;
   // default is current week
   2: optional timestamp weekStart;
   // default is "fr"
   3: optional string language;
 }
 
-struct ScheduleResponse {
-  1: required list<StudyDay> days;
+enum ScheduleErrorCode {
+  // A network error occurred
+  NETWORK_ERROR = 404,
+  // The provided session is invalid
+  INVALID_SESSION = 407
 }
 
-exception ScheduleException {
-  1: required string errorMessage;
+struct ScheduleTokenResponse {
+  // Required if the request completed successfully
+  1: optional ScheduleToken token;
+  // Required if an error occurred
+  2: optional ScheduleErrorCode errorCode;
+}
+
+struct ScheduleResponse {
+  // Required if the request completed successfully
+  1: optional list<StudyDay> days;
+  // Required if an error occurred
+  2: optional ScheduleErrorCode errorCode;
 }
 
 service IsAcademiaService {
-    ScheduleResponse getSchedule(1: ScheduleRequest req) throws (1: ScheduleException e);
+    ScheduleTokenResponse getScheduleToken();
+    ScheduleResponse getSchedule(1: ScheduleRequest req);
 }

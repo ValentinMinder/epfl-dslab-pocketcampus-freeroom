@@ -25,12 +25,19 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ScheduleResponse");
 
   private static final org.apache.thrift.protocol.TField DAYS_FIELD_DESC = new org.apache.thrift.protocol.TField("days", org.apache.thrift.protocol.TType.LIST, (short)1);
+  private static final org.apache.thrift.protocol.TField ERROR_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("errorCode", org.apache.thrift.protocol.TType.I32, (short)2);
 
   private List<StudyDay> days; // required
+  private ScheduleErrorCode errorCode; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    DAYS((short)1, "days");
+    DAYS((short)1, "days"),
+    /**
+     * 
+     * @see ScheduleErrorCode
+     */
+    ERROR_CODE((short)2, "errorCode");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -47,6 +54,8 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
       switch(fieldId) {
         case 1: // DAYS
           return DAYS;
+        case 2: // ERROR_CODE
+          return ERROR_CODE;
         default:
           return null;
       }
@@ -91,21 +100,16 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.DAYS, new org.apache.thrift.meta_data.FieldMetaData("days", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.DAYS, new org.apache.thrift.meta_data.FieldMetaData("days", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, StudyDay.class))));
+    tmpMap.put(_Fields.ERROR_CODE, new org.apache.thrift.meta_data.FieldMetaData("errorCode", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, ScheduleErrorCode.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ScheduleResponse.class, metaDataMap);
   }
 
   public ScheduleResponse() {
-  }
-
-  public ScheduleResponse(
-    List<StudyDay> days)
-  {
-    this();
-    this.days = days;
   }
 
   /**
@@ -119,6 +123,9 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
       }
       this.days = __this__days;
     }
+    if (other.isSetErrorCode()) {
+      this.errorCode = other.errorCode;
+    }
   }
 
   public ScheduleResponse deepCopy() {
@@ -128,6 +135,7 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
   @Override
   public void clear() {
     this.days = null;
+    this.errorCode = null;
   }
 
   public int getDaysSize() {
@@ -169,6 +177,38 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
     }
   }
 
+  /**
+   * 
+   * @see ScheduleErrorCode
+   */
+  public ScheduleErrorCode getErrorCode() {
+    return this.errorCode;
+  }
+
+  /**
+   * 
+   * @see ScheduleErrorCode
+   */
+  public ScheduleResponse setErrorCode(ScheduleErrorCode errorCode) {
+    this.errorCode = errorCode;
+    return this;
+  }
+
+  public void unsetErrorCode() {
+    this.errorCode = null;
+  }
+
+  /** Returns true if field errorCode is set (has been assigned a value) and false otherwise */
+  public boolean isSetErrorCode() {
+    return this.errorCode != null;
+  }
+
+  public void setErrorCodeIsSet(boolean value) {
+    if (!value) {
+      this.errorCode = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case DAYS:
@@ -179,6 +219,14 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
       }
       break;
 
+    case ERROR_CODE:
+      if (value == null) {
+        unsetErrorCode();
+      } else {
+        setErrorCode((ScheduleErrorCode)value);
+      }
+      break;
+
     }
   }
 
@@ -186,6 +234,9 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
     switch (field) {
     case DAYS:
       return getDays();
+
+    case ERROR_CODE:
+      return getErrorCode();
 
     }
     throw new IllegalStateException();
@@ -200,6 +251,8 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
     switch (field) {
     case DAYS:
       return isSetDays();
+    case ERROR_CODE:
+      return isSetErrorCode();
     }
     throw new IllegalStateException();
   }
@@ -226,6 +279,15 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
         return false;
     }
 
+    boolean this_present_errorCode = true && this.isSetErrorCode();
+    boolean that_present_errorCode = true && that.isSetErrorCode();
+    if (this_present_errorCode || that_present_errorCode) {
+      if (!(this_present_errorCode && that_present_errorCode))
+        return false;
+      if (!this.errorCode.equals(that.errorCode))
+        return false;
+    }
+
     return true;
   }
 
@@ -237,6 +299,11 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
     builder.append(present_days);
     if (present_days)
       builder.append(days);
+
+    boolean present_errorCode = true && (isSetErrorCode());
+    builder.append(present_errorCode);
+    if (present_errorCode)
+      builder.append(errorCode.getValue());
 
     return builder.toHashCode();
   }
@@ -255,6 +322,16 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
     }
     if (isSetDays()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.days, typedOther.days);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetErrorCode()).compareTo(typedOther.isSetErrorCode());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetErrorCode()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorCode, typedOther.errorCode);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -294,6 +371,13 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 2: // ERROR_CODE
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.errorCode = ScheduleErrorCode.findByValue(iprot.readI32());
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -310,16 +394,25 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
 
     oprot.writeStructBegin(STRUCT_DESC);
     if (this.days != null) {
-      oprot.writeFieldBegin(DAYS_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.days.size()));
-        for (StudyDay _iter11 : this.days)
+      if (isSetDays()) {
+        oprot.writeFieldBegin(DAYS_FIELD_DESC);
         {
-          _iter11.write(oprot);
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.days.size()));
+          for (StudyDay _iter11 : this.days)
+          {
+            _iter11.write(oprot);
+          }
+          oprot.writeListEnd();
         }
-        oprot.writeListEnd();
+        oprot.writeFieldEnd();
       }
-      oprot.writeFieldEnd();
+    }
+    if (this.errorCode != null) {
+      if (isSetErrorCode()) {
+        oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
+        oprot.writeI32(this.errorCode.getValue());
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -330,22 +423,31 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
     StringBuilder sb = new StringBuilder("ScheduleResponse(");
     boolean first = true;
 
-    sb.append("days:");
-    if (this.days == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.days);
+    if (isSetDays()) {
+      sb.append("days:");
+      if (this.days == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.days);
+      }
+      first = false;
     }
-    first = false;
+    if (isSetErrorCode()) {
+      if (!first) sb.append(", ");
+      sb.append("errorCode:");
+      if (this.errorCode == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.errorCode);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (days == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'days' was not present! Struct: " + toString());
-    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
