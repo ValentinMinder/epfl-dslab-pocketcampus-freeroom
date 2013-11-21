@@ -1,10 +1,10 @@
 package org.pocketcampus.plugin.isacademia.server;
 
+import org.pocketcampus.plugin.isacademia.shared.*;
+
 import org.apache.thrift.TException;
 
 import org.joda.time.*;
-
-import org.pocketcampus.plugin.isacademia.shared.*;
 
 /**
  * Implementation of IsAcademiaService.

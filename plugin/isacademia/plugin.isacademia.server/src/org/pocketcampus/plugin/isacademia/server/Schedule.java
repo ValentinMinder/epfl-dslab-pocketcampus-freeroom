@@ -11,5 +11,6 @@ import org.joda.time.*;
  */
 public interface Schedule {
 	ScheduleTokenResponse getToken() throws Exception;
+
 	ScheduleResponse get(LocalDate weekBeginning, String language, ScheduleToken token) throws Exception;
 }

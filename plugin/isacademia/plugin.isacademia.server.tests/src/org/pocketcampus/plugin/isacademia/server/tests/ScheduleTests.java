@@ -25,7 +25,7 @@ import org.joda.time.*;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public final class ScheduleTests {
-	// All days are taken into account (even Monday which isn't in the file)
+	// All working week days are there (even Monday which isn't in the file)
 	@Test
 	public void allDaysAreParsed() {
 		List<StudyDay> days = getDays("fr");
