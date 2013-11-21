@@ -5,7 +5,7 @@ import org.pocketcampus.plugin.isacademia.shared.*;
 import org.joda.time.*;
 
 /**
- * Retrieves an user's schedule.
+ * Retrieves a student's schedule.
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */

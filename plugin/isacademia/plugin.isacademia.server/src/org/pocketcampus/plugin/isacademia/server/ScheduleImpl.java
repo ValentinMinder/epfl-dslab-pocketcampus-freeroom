@@ -32,16 +32,14 @@ public final class ScheduleImpl implements Schedule {
 	// The encoding of IS-Academia's schedule API.
 	private static final Charset ISA_CHARSET = StandardCharsets.ISO_8859_1;
 	// The parameters of IS-Academia's API.
-	private static final String URL_FROM_PARAMETER = "from", URL_TO_PARAMETER = "to";
+	private static final String URL_FROM_PARAMETER = "from", URL_TO_PARAMETER = "to", URL_KEY_PARAMETER = "key";
 	// The date format for IS-Academia's API.
 	private static final String URL_PARAMETER_FORMAT = "dd.MM.yyyy";
 
 	// The separator for the request key in a Tequila URL
 	private static final String TEQUILA_URL_KEY_SEPARATOR = "requestkey=";
 
-	// The properties of the cookies for Tequila and IS-Academia
-	private static final String TEQUILA_COOKIE_NAME = "tequilakey";
-	private static final String TEQUILA_COOKIE_DOMAIN = "tequila.epfl.ch";
+	// The properties of the cookie for IS-Academia
 	private static final String ISA_COOKIE_NAME = "JSESSIONID";
 	private static final String ISA_COOKIE_DOMAIN = "isa.epfl.ch";
 	private static final String COOKIE_PATH_ALL = "/";
@@ -110,13 +108,10 @@ public final class ScheduleImpl implements Schedule {
 		LocalDate weekEnd = weekBeginning.plusDays(6);
 		String url = ISA_SCHEDULE_URL
 				+ "?" + URL_FROM_PARAMETER + "=" + weekBeginning.toString(URL_PARAMETER_FORMAT)
-				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT);
+				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT)
+				+ "&" + URL_KEY_PARAMETER  + "=" + token.getTequilaToken();
 
 		List<Cookie> cookies = new ArrayList<Cookie>();
-		BasicClientCookie tequilaCookie = new BasicClientCookie(TEQUILA_COOKIE_NAME, token.getTequilaToken());
-		tequilaCookie.setDomain(TEQUILA_COOKIE_DOMAIN);
-		tequilaCookie.setPath(COOKIE_PATH_ALL);
-		cookies.add(tequilaCookie);
 		BasicClientCookie isaCookie = new BasicClientCookie(ISA_COOKIE_NAME, token.getSessionId());
 		isaCookie.setDomain(ISA_COOKIE_DOMAIN);
 		isaCookie.setPath(COOKIE_PATH_ALL);
