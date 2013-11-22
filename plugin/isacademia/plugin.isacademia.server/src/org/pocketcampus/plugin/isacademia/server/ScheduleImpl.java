@@ -14,6 +14,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import org.pocketcampus.plugin.isacademia.server.HttpsClient.HttpResult;
 import org.pocketcampus.plugin.isacademia.shared.*;
 
 import org.apache.http.cookie.Cookie;
@@ -31,9 +32,17 @@ public final class ScheduleImpl implements Schedule {
 	// The encoding of IS-Academia's schedule API.
 	private static final Charset ISA_CHARSET = StandardCharsets.ISO_8859_1;
 	// The parameters of IS-Academia's API.
-	private static final String URL_FROM_PARAMETER = "from", URL_TO_PARAMETER = "to";
+	private static final String URL_FROM_PARAMETER = "from", URL_TO_PARAMETER = "to", URL_KEY_PARAMETER = "key";
 	// The date format for IS-Academia's API.
 	private static final String URL_PARAMETER_FORMAT = "dd.MM.yyyy";
+
+	// The separator for the request key in a Tequila URL
+	private static final String TEQUILA_URL_KEY_SEPARATOR = "requestkey=";
+
+	// The properties of the cookie for IS-Academia
+	private static final String ISA_COOKIE_NAME = "JSESSIONID";
+	private static final String ISA_COOKIE_DOMAIN = "isa.epfl.ch";
+	private static final String COOKIE_PATH_ALL = "/";
 
 	// The default language for localized text.
 	private static final String DEFAULT_LANGUAGE = "en";
@@ -72,38 +81,60 @@ public final class ScheduleImpl implements Schedule {
 	}
 
 	@Override
-	public List<StudyDay> get(LocalDate weekBegin, String language, String tequilaCookie) throws ScheduleException {
-		LocalDate weekEnd = weekBegin.plusDays(6);
+	public ScheduleTokenResponse getToken() throws Exception {
+		HttpResult result;
+		try {
+			result = _client.get(ISA_SCHEDULE_URL, ISA_CHARSET, new ArrayList<Cookie>());
+		} catch (Exception e) {
+			return new ScheduleTokenResponse().setErrorCode(ScheduleErrorCode.NETWORK_ERROR);
+		}
+
+		String tequilaKey = result.url.split(TEQUILA_URL_KEY_SEPARATOR)[1];
+		String sessionId = null;
+		for (Cookie cookie : result.cookies) {
+			if (cookie.getName().equals(ISA_COOKIE_NAME)) {
+				sessionId = cookie.getValue();
+			}
+		}
+		if (sessionId == null) {
+			throw new Exception("ScheduleImpl#getToken: No ISA session ID found.");
+		}
+
+		return new ScheduleTokenResponse().setToken(new ScheduleToken(tequilaKey, sessionId));
+	}
+
+	@Override
+	public ScheduleResponse get(LocalDate weekBeginning, String language, ScheduleToken token) throws Exception {
+		LocalDate weekEnd = weekBeginning.plusDays(6);
 		String url = ISA_SCHEDULE_URL
-				+ "?" + URL_FROM_PARAMETER + "=" + weekBegin.toString(URL_PARAMETER_FORMAT)
-				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT);
+				+ "?" + URL_FROM_PARAMETER + "=" + weekBeginning.toString(URL_PARAMETER_FORMAT)
+				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT)
+				+ "&" + URL_KEY_PARAMETER + "=" + token.getTequilaToken();
 
 		List<Cookie> cookies = new ArrayList<Cookie>();
-		BasicClientCookie cookie = new BasicClientCookie("tequila_key", tequilaCookie);
-		cookie.setDomain("tequila.epfl.ch");
-		cookie.setPath("/");
-		cookies.add(cookie);
+		BasicClientCookie isaCookie = new BasicClientCookie(ISA_COOKIE_NAME, token.getSessionId());
+		isaCookie.setDomain(ISA_COOKIE_DOMAIN);
+		isaCookie.setPath(COOKIE_PATH_ALL);
+		cookies.add(isaCookie);
 
 		String xml = null;
 		try {
-			xml = _client.getString(url, ISA_CHARSET, cookies);
+			HttpResult result = _client.get(url, ISA_CHARSET, cookies);
+
+			if (!result.url.contains(ISA_SCHEDULE_URL)) {
+				return new ScheduleResponse().setErrorCode(ScheduleErrorCode.INVALID_SESSION);
+			}
+
+			xml = result.content;
 		} catch (Exception e) {
-			throw new ScheduleException("An error occured while downloading the schedule data.");
+			return new ScheduleResponse().setErrorCode(ScheduleErrorCode.NETWORK_ERROR);
 		}
 
-		Element xdoc = null;
-		try {
-			xdoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-					.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)))
-					.getDocumentElement();
-		} catch (Exception e) {
-			throw new ScheduleException("An error occured while parsing the schedule data.");
-		}
+		Element xdoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+				.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)))
+				.getDocumentElement();
 
 		List<StudyPeriod> periods = new ArrayList<StudyPeriod>();
-
-		// I'm not sure this is needed, but everybody does it
-		xdoc.normalize();
 
 		for (Node periodNode : getNodes(xdoc, STUDY_PERIOD_TAG)) {
 			StudyPeriod period = new StudyPeriod();
@@ -127,7 +158,7 @@ public final class ScheduleImpl implements Schedule {
 			periods.add(period);
 		}
 
-		return groupPeriodsByDay(weekBegin, periods);
+		return new ScheduleResponse().setDays(groupPeriodsByDay(weekBeginning, periods));
 	}
 
 	private static List<StudyDay> groupPeriodsByDay(LocalDate weekBegin, List<StudyPeriod> periods) {

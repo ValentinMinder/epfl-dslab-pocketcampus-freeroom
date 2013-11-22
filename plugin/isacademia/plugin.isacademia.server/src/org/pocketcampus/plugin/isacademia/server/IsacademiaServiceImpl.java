@@ -1,12 +1,10 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import java.util.List;
+import org.pocketcampus.plugin.isacademia.shared.*;
 
 import org.apache.thrift.TException;
 
 import org.joda.time.*;
-
-import org.pocketcampus.plugin.isacademia.shared.*;
 
 /**
  * Implementation of IsAcademiaService.
@@ -24,26 +22,40 @@ public final class IsAcademiaServiceImpl implements IsAcademiaService.Iface {
 		this(new ScheduleImpl(new HttpsClientImpl()));
 	}
 
+	/** For testing purposes only. */
 	public static void main(String[] args) {
 		try {
-			// To test, replace with a valid Tequila cookie 
-			// (use dev tools in your browser to view the Set-Cookie headers sent
-			//  back after auth from https://tequila.epfl.ch/cgi-bin/tequila/login)
-			ScheduleResponse r = new IsAcademiaServiceImpl().getSchedule(new ScheduleRequest(""));
-			List<StudyDay> days = r.getDays();
-			System.out.println(days);
+			ScheduleTokenResponse tr = new IsAcademiaServiceImpl().getScheduleToken();
+			System.out.println(tr.getToken().getTequilaToken());
+			// Get the token printed out, go to https://tequila.epfl.ch/cgi-bin/tequila/requestauth?requestkey=THE_TOKEN
+			// authenticate, then press a key in the console
+			System.in.read();
+			ScheduleResponse r = new IsAcademiaServiceImpl().getSchedule(new ScheduleRequest(tr.getToken()));
+			System.out.println(r.getDays());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public ScheduleResponse getSchedule(ScheduleRequest req) throws ScheduleException, TException {
+	public ScheduleTokenResponse getScheduleToken() throws TException {
+		try {
+			return _schedule.getToken();
+		} catch (Exception e) {
+			throw new TException(e);
+		}
+	}
+
+	@Override
+	public ScheduleResponse getSchedule(ScheduleRequest req) throws TException {
 		LocalDate date = req.isSetWeekStart() ? new LocalDate(req.getWeekStart()) : getCurrentWeekStart();
 		String lang = req.isSetLanguage() ? req.getLanguage() : "fr";
-		List<StudyDay> days = _schedule.get(date, lang, req.getTequilaCookie());
 
-		return new ScheduleResponse(days);
+		try {
+			return _schedule.get(date, lang, req.getToken());
+		} catch (Exception e) {
+			throw new TException(e);
+		}
 	}
 
 	private static LocalDate getCurrentWeekStart() {

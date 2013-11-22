@@ -10,19 +10,17 @@ import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import javax.net.ssl.SSLSocket;
 
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.HttpResponse;
+import org.apache.http.conn.*;
+import org.apache.http.conn.ssl.*;
+import org.apache.http.*;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.scheme.*;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.SingleClientConnManager;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.*;
 
 /**
  * Implementation of HttpsClient.
@@ -44,7 +42,7 @@ public class HttpsClientImpl implements HttpsClient {
 	}
 
 	@Override
-	public String getString(String url, Charset charset, List<Cookie> cookies) throws Exception {
+	public HttpResult get(String url, Charset charset, List<Cookie> cookies) throws Exception {
 		ClientConnectionManager cm = new SingleClientConnManager(SCHEME_REGISTRY);
 		AbstractHttpClient client = new DefaultHttpClient(cm);
 
@@ -55,9 +53,11 @@ public class HttpsClientImpl implements HttpsClient {
 		client.setCookieStore(cookieStore);
 
 		HttpGet get = new HttpGet(url);
-
-		HttpResponse response = client.execute(get);
-		return read(response.getEntity().getContent(), charset);
+		HttpContext context = new BasicHttpContext();
+		HttpResponse response = client.execute(get, context);
+		String content = read(response.getEntity().getContent(), charset);
+		String redirectedUrl = getRedirectedUrl(context);
+		return new HttpResult(cookieStore.getCookies(), redirectedUrl, content);
 	}
 
 	private static String read(InputStream stream, Charset charset) {
@@ -71,6 +71,12 @@ public class HttpsClientImpl implements HttpsClient {
 				scanner.close();
 			}
 		}
+	}
+
+	private static String getRedirectedUrl(HttpContext context) {
+		HttpUriRequest currentReq = (HttpUriRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
+		HttpHost currentHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+		return currentReq.getURI().isAbsolute() ? currentReq.getURI().toString() : (currentHost.toURI() + currentReq.getURI());
 	}
 
 	private static class InsecureSocketFactory extends SSLSocketFactory {

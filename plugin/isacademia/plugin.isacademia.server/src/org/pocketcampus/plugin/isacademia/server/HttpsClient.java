@@ -11,5 +11,17 @@ import org.apache.http.cookie.Cookie;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public interface HttpsClient {
-	String getString(String url, Charset charset, List<Cookie> cookies) throws Exception;
+	HttpResult get(String url, Charset charset, List<Cookie> cookies) throws Exception;
+
+	public static final class HttpResult {
+		public final List<Cookie> cookies;
+		public final String url;
+		public final String content;
+
+		public HttpResult(List<Cookie> cookies, String url, String content) {
+			this.cookies = cookies;
+			this.url = url;
+			this.content = content;
+		}
+	}
 }
