@@ -34,14 +34,24 @@
 - (void)getTripsFrom:(NSString*)from to:(NSString*)to atTimestamp:(timestamp)time isDeparture:(BOOL)isDeparture delegate:(id)delegate;
 - (void)getTripsFromStationID:(NSString*)fromStationID toStationID:(NSString*)toStationID delegate:(id)delegate;
 
-/* user defaults management */
-- (NSArray*)userFavoriteTransportStations; //NSArray of TransportStation, empty array if there is not favorite station, default stations if first call
-- (BOOL)saveUserFavoriteTransportStations:(NSArray*)favStations; //NSArray of TransportStation
-- (TransportStation*)userManualDepartureStation;
-- (BOOL)saveUserManualDepartureStation:(TransportStation*)station;
+#pragma mark - User stations
+- (NSArray*)userFavoriteTransportStations __attribute__((deprecated)); //NSArray of TransportStation, empty array if there is not favorite station, default stations if first call
+- (BOOL)saveUserFavoriteTransportStations:(NSArray*)favStations __attribute__((deprecated)); //NSArray of TransportStation
+- (BOOL)saveUserManualDepartureStation:(TransportStation*)station __attribute__((deprecated));
 
-/* location utilites */
-- (BOOL)appHasAccessToLocation;
+/*
+ * This property is persisted (uses storage)
+ */
+@property (nonatomic, copy) NSSet* userTransportStations;
+
+/*
+ * This property is persisted (uses storage)
+ */
+@property (nonatomic, copy) TransportStation* userManualDepartureStation;
+
+
+#pragma mark - Location
+- (BOOL)appHasAccessToLocation __attribute__((deprecated));
 - (void)nearestFavoriteTransportStationWithDelegate:(id)delegate;
 
 @end

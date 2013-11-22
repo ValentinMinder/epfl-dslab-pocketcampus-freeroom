@@ -7,7 +7,7 @@
 */
 
 "PluginName" = "Transports";
-"FromLabel" = "Départ :";
+"From" = "Départ :";
 "NoStation" = "Aucune station";
 "LocationNeedJustification" = "Votre position sera utilisée pour trouver la station de transport la plus proche (EPFL ou Lausanne-Flon par défaut). PocketCampus n'enregistre pas l'historique de vos déplacements. Essayez une fois avant de refuser ;)";
 "ImpossibleLocateShort" = "Localisation impossible";

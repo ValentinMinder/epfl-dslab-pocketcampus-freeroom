@@ -8,7 +8,7 @@
 
 #import "TransportController.h"
 
-#import "NextDeparturesListViewController.h"
+#import "TransportNextDeparturesViewController.h"
 
 #import "ObjectArchiver.h"
 
@@ -26,7 +26,7 @@ static NSMutableDictionary* settings = nil;
         }
         self = [super init];
         if (self) {
-            NextDeparturesListViewController* nextDeparturesListViewController = [[NextDeparturesListViewController alloc] init];
+            TransportNextDeparturesViewController* nextDeparturesListViewController = [[TransportNextDeparturesViewController alloc] init];
             nextDeparturesListViewController.title = [[self class] localizedName];
             PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:nextDeparturesListViewController];
             navController.pluginIdentifier = [[self class] identifierName];

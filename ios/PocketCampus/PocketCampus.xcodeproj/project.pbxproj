@@ -203,13 +203,11 @@
 		3243FB9D18215CEC000F3CB5 /* FoodRestaurantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3243FB9C18215CEC000F3CB5 /* FoodRestaurantViewController.m */; };
 		3243FBA018216B95000F3CB5 /* FoodRestaurantInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3243FB9F18216B95000F3CB5 /* FoodRestaurantInfoCell.m */; };
 		3243FBA218216BBC000F3CB5 /* FoodRestaurantInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3243FBA118216BBC000F3CB5 /* FoodRestaurantInfoCell.xib */; };
-		32442FEB151CF87100685D10 /* NextDeparturesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		32442FEB151CF87100685D10 /* TransportNextDeparturesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32442FEA151CF87100685D10 /* TransportNextDeparturesViewController.m */; };
 		32442FEE151CFDED00685D10 /* Transport.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FEC151CFDED00685D10 /* Transport.png */; };
 		32442FEF151CFDED00685D10 /* Transport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FED151CFDED00685D10 /* Transport@2x.png */; };
-		32442FF1151D0F3000685D10 /* NextDeparturesListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF0151D0F3000685D10 /* NextDeparturesListView.xib */; };
+		32442FF1151D0F3000685D10 /* TransportNextDeparturesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF0151D0F3000685D10 /* TransportNextDeparturesView.xib */; };
 		32442FF3151D141200685D10 /* TopTableViewInnerShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF2151D141200685D10 /* TopTableViewInnerShadow@2x.png */; };
-		32442FF6151D2BF700685D10 /* LocationArrowActiveLight.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF4151D2BF700685D10 /* LocationArrowActiveLight.png */; };
-		32442FF7151D2BF700685D10 /* LocationArrowActiveLight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF5151D2BF700685D10 /* LocationArrowActiveLight@2x.png */; };
 		32449D5D17C3F248003269E5 /* DirectoryLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32449D5C17C3F248003269E5 /* DirectoryLarge@2x.png */; };
 		3244B3E816A36976006A7E37 /* MoodleResource+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -291,6 +289,11 @@
 		3289D28B15094739008DD299 /* Directory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28915094739008DD299 /* Directory@2x.png */; };
 		3289D28E1509474A008DD299 /* Food.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28C1509474A008DD299 /* Food.png */; };
 		3289D28F1509474A008DD299 /* Food@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28D1509474A008DD299 /* Food@2x.png */; };
+		3289F2B7183FAB8C00D833C2 /* LocationArrow2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289F2B3183FAB8C00D833C2 /* LocationArrow2.png */; };
+		3289F2B8183FAB8C00D833C2 /* LocationArrow2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289F2B4183FAB8C00D833C2 /* LocationArrow2@2x.png */; };
+		3289F2B9183FAB8C00D833C2 /* LocationArrow2Active.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289F2B5183FAB8C00D833C2 /* LocationArrow2Active.png */; };
+		3289F2BA183FAB8C00D833C2 /* LocationArrow2Active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289F2B6183FAB8C00D833C2 /* LocationArrow2Active@2x.png */; };
+		3289F2BD183FB80600D833C2 /* TransportStationsManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3289F2BC183FB80600D833C2 /* TransportStationsManagerViewController.m */; };
 		328A131D18296E2D00F4C622 /* FoodSmileyHappy.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131118296E2D00F4C622 /* FoodSmileyHappy.png */; };
 		328A131E18296E2D00F4C622 /* FoodSmileyHappy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131218296E2D00F4C622 /* FoodSmileyHappy@2x.png */; };
 		328A132118296E2D00F4C622 /* FoodSmileyMeh.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131518296E2D00F4C622 /* FoodSmileyMeh.png */; };
@@ -405,9 +408,11 @@
 		32C8799D183D103600750A11 /* SettingsBarButton2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C8799B183D103600750A11 /* SettingsBarButton2@2x.png */; };
 		32C879A0183D10E600750A11 /* PlusBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C8799E183D10E600750A11 /* PlusBarButton.png */; };
 		32C879A1183D10E600750A11 /* PlusBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C8799F183D10E600750A11 /* PlusBarButton@2x.png */; };
-		32C879A4183D137B00750A11 /* TransportNextDeparturesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C879A3183D137B00750A11 /* TransportNextDeparturesViewController.m */; };
-		32C879A6183D140300750A11 /* TransportNextDeparturesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32C879A5183D140300750A11 /* TransportNextDeparturesView.xib */; };
 		32C879AB183D6C8E00750A11 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C879AA183D6C8E00750A11 /* Crashlytics.framework */; };
+		32CACD97183E366B00BD36F9 /* LocationArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD93183E366B00BD36F9 /* LocationArrow.png */; };
+		32CACD98183E366B00BD36F9 /* LocationArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD94183E366B00BD36F9 /* LocationArrow@2x.png */; };
+		32CACD99183E366B00BD36F9 /* LocationArrowSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD95183E366B00BD36F9 /* LocationArrowSelected.png */; };
+		32CACD9A183E366B00BD36F9 /* LocationArrowSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD96183E366B00BD36F9 /* LocationArrowSelected@2x.png */; };
 		32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32CAE432153628C100AB17CC /* ConnectionPartsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */; };
 		32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CBF057163450E500FD92E5 /* PocketCampusDrawing.png */; };
@@ -592,8 +597,6 @@
 		321CCF9D16E3B537002CBEA2 /* PCURLSchemeHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCURLSchemeHandler.m; sourceTree = "<group>"; };
 		321F37E115B02FBE00E7BA6D /* HelpBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HelpBarButton.png; sourceTree = "<group>"; };
 		321F37E215B02FBE00E7BA6D /* HelpBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HelpBarButton@2x.png"; sourceTree = "<group>"; };
-		321F37E315B02FBE00E7BA6D /* HomeNavbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HomeNavbar.png; sourceTree = "<group>"; };
-		321F37E415B02FBE00E7BA6D /* HomeNavbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HomeNavbar@2x.png"; sourceTree = "<group>"; };
 		32216D1516594005008F1D3B /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		3221932F16788F520072CE86 /* MyEduMovieSpeed1X@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduMovieSpeed1X@2x.png"; sourceTree = "<group>"; };
 		322193311678907F0072CE86 /* MyEduMovieSpeed1X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduMovieSpeed1X.png; sourceTree = "<group>"; };
@@ -785,14 +788,12 @@
 		3243FB9E18216B95000F3CB5 /* FoodRestaurantInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodRestaurantInfoCell.h; sourceTree = "<group>"; };
 		3243FB9F18216B95000F3CB5 /* FoodRestaurantInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodRestaurantInfoCell.m; sourceTree = "<group>"; };
 		3243FBA118216BBC000F3CB5 /* FoodRestaurantInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FoodRestaurantInfoCell.xib; sourceTree = "<group>"; };
-		32442FE9151CF87100685D10 /* NextDeparturesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextDeparturesListViewController.h; sourceTree = "<group>"; };
-		32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextDeparturesListViewController.m; sourceTree = "<group>"; };
+		32442FE9151CF87100685D10 /* TransportNextDeparturesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportNextDeparturesViewController.h; sourceTree = "<group>"; };
+		32442FEA151CF87100685D10 /* TransportNextDeparturesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportNextDeparturesViewController.m; sourceTree = "<group>"; };
 		32442FEC151CFDED00685D10 /* Transport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transport.png; sourceTree = "<group>"; };
 		32442FED151CFDED00685D10 /* Transport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Transport@2x.png"; sourceTree = "<group>"; };
-		32442FF0151D0F3000685D10 /* NextDeparturesListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NextDeparturesListView.xib; sourceTree = "<group>"; };
+		32442FF0151D0F3000685D10 /* TransportNextDeparturesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportNextDeparturesView.xib; sourceTree = "<group>"; };
 		32442FF2151D141200685D10 /* TopTableViewInnerShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TopTableViewInnerShadow@2x.png"; sourceTree = "<group>"; };
-		32442FF4151D2BF700685D10 /* LocationArrowActiveLight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowActiveLight.png; sourceTree = "<group>"; };
-		32442FF5151D2BF700685D10 /* LocationArrowActiveLight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrowActiveLight@2x.png"; sourceTree = "<group>"; };
 		32449D5C17C3F248003269E5 /* DirectoryLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DirectoryLarge@2x.png"; sourceTree = "<group>"; };
 		3244B3E616A36976006A7E37 /* MoodleResource+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MoodleResource+Comparison.h"; sourceTree = "<group>"; };
 		3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MoodleResource+Comparison.m"; sourceTree = "<group>"; };
@@ -910,6 +911,12 @@
 		3289D28915094739008DD299 /* Directory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Directory@2x.png"; sourceTree = "<group>"; };
 		3289D28C1509474A008DD299 /* Food.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Food.png; sourceTree = "<group>"; };
 		3289D28D1509474A008DD299 /* Food@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Food@2x.png"; sourceTree = "<group>"; };
+		3289F2B3183FAB8C00D833C2 /* LocationArrow2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrow2.png; sourceTree = "<group>"; };
+		3289F2B4183FAB8C00D833C2 /* LocationArrow2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrow2@2x.png"; sourceTree = "<group>"; };
+		3289F2B5183FAB8C00D833C2 /* LocationArrow2Active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrow2Active.png; sourceTree = "<group>"; };
+		3289F2B6183FAB8C00D833C2 /* LocationArrow2Active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrow2Active@2x.png"; sourceTree = "<group>"; };
+		3289F2BB183FB80600D833C2 /* TransportStationsManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportStationsManagerViewController.h; sourceTree = "<group>"; };
+		3289F2BC183FB80600D833C2 /* TransportStationsManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportStationsManagerViewController.m; sourceTree = "<group>"; };
 		328A131118296E2D00F4C622 /* FoodSmileyHappy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodSmileyHappy.png; sourceTree = "<group>"; };
 		328A131218296E2D00F4C622 /* FoodSmileyHappy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileyHappy@2x.png"; sourceTree = "<group>"; };
 		328A131518296E2D00F4C622 /* FoodSmileyMeh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodSmileyMeh.png; sourceTree = "<group>"; };
@@ -1077,10 +1084,11 @@
 		32C8799B183D103600750A11 /* SettingsBarButton2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsBarButton2@2x.png"; sourceTree = "<group>"; };
 		32C8799E183D10E600750A11 /* PlusBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlusBarButton.png; sourceTree = "<group>"; };
 		32C8799F183D10E600750A11 /* PlusBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlusBarButton@2x.png"; sourceTree = "<group>"; };
-		32C879A2183D137B00750A11 /* TransportNextDeparturesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportNextDeparturesViewController.h; sourceTree = "<group>"; };
-		32C879A3183D137B00750A11 /* TransportNextDeparturesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportNextDeparturesViewController.m; sourceTree = "<group>"; };
-		32C879A5183D140300750A11 /* TransportNextDeparturesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportNextDeparturesView.xib; sourceTree = "<group>"; };
 		32C879AA183D6C8E00750A11 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		32CACD93183E366B00BD36F9 /* LocationArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrow.png; sourceTree = "<group>"; };
+		32CACD94183E366B00BD36F9 /* LocationArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrow@2x.png"; sourceTree = "<group>"; };
+		32CACD95183E366B00BD36F9 /* LocationArrowSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowSelected.png; sourceTree = "<group>"; };
+		32CACD96183E366B00BD36F9 /* LocationArrowSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrowSelected@2x.png"; sourceTree = "<group>"; };
 		32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionPartsListViewController.h; sourceTree = "<group>"; };
 		32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionPartsListViewController.m; sourceTree = "<group>"; };
 		32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionPartsListView.xib; sourceTree = "<group>"; };
@@ -1455,6 +1463,14 @@
 				3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */,
 				3270B7EF18056E6F007EE85B /* ListBarButton.png */,
 				3270B7F018056E6F007EE85B /* ListBarButton@2x.png */,
+				32CACD93183E366B00BD36F9 /* LocationArrow.png */,
+				32CACD94183E366B00BD36F9 /* LocationArrow@2x.png */,
+				32CACD95183E366B00BD36F9 /* LocationArrowSelected.png */,
+				32CACD96183E366B00BD36F9 /* LocationArrowSelected@2x.png */,
+				3289F2B3183FAB8C00D833C2 /* LocationArrow2.png */,
+				3289F2B4183FAB8C00D833C2 /* LocationArrow2@2x.png */,
+				3289F2B5183FAB8C00D833C2 /* LocationArrow2Active.png */,
+				3289F2B6183FAB8C00D833C2 /* LocationArrow2Active@2x.png */,
 				325368BE164932F600406801 /* StretchableInnerShadow.png */,
 				325368BF164932F600406801 /* StretchableInnerShadow@2x.png */,
 				32CBF057163450E500FD92E5 /* PocketCampusDrawing.png */,
@@ -1477,8 +1493,6 @@
 				32C509E917FC6D73005A5635 /* SortBarButton@2x.png */,
 				321F37E115B02FBE00E7BA6D /* HelpBarButton.png */,
 				321F37E215B02FBE00E7BA6D /* HelpBarButton@2x.png */,
-				321F37E315B02FBE00E7BA6D /* HomeNavbar.png */,
-				321F37E415B02FBE00E7BA6D /* HomeNavbar@2x.png */,
 				323A913B1640783F007A63D3 /* TopDown1pxShadow.png */,
 				323A913E164078FF007A63D3 /* TopDown1pxShadow@2x.png */,
 				329FD30316449C67003FF9BE /* WarningSignRed.png */,
@@ -2229,48 +2243,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		32C879A7183D140F00750A11 /* old */ = {
-			isa = PBXGroup;
-			children = (
-				32442FF0151D0F3000685D10 /* NextDeparturesListView.xib */,
-				324A5992151DC73A00977F33 /* FavoriteStationsView.xib */,
-				324A5999151DFDF700977F33 /* AddStationView.xib */,
-				328872C81534D85400330B54 /* DestinationConnectionsListView.xib */,
-				32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */,
-				32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */,
-				3236B5B1151F746100C43769 /* NextDeparturesCell.h */,
-				3236B5B2151F746100C43769 /* NextDeparturesCell.m */,
-				32488C901535F31B00BA49AB /* ConnectionSummaryCell.h */,
-				32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */,
-				32AF214515B193A200BB445D /* TransportHelpView.xib */,
-				32AF214615B197DE00BB445D /* TransportHelp.html */,
-				32969AB115FB92FC0051EF9A /* MyStationsHelp.html */,
-				32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */,
-			);
-			name = old;
-			sourceTree = "<group>";
-		};
-		32C879A8183D142900750A11 /* old */ = {
-			isa = PBXGroup;
-			children = (
-				32442FE9151CF87100685D10 /* NextDeparturesListViewController.h */,
-				32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */,
-				324A598E151DC6A800977F33 /* FavoriteStationsViewController.h */,
-				324A598F151DC6A800977F33 /* FavoriteStationsViewController.m */,
-				324A5996151DFDD200977F33 /* AddStationViewController.h */,
-				324A5997151DFDD200977F33 /* AddStationViewController.m */,
-				328872C51534D82C00330B54 /* DestinationConnectionsListViewController.h */,
-				328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */,
-				32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */,
-				32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */,
-				3257C20B1570F99C00E626A4 /* TransportHelpViewController.h */,
-				3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */,
-				32058ACA1572B44D00F4D361 /* TransportSettingsViewController.h */,
-				32058ACB1572B44D00F4D361 /* TransportSettingsViewController.m */,
-			);
-			name = old;
-			sourceTree = "<group>";
-		};
 		32CBF0561634482D00FD92E5 /* Icons+Defaults */ = {
 			isa = PBXGroup;
 			children = (
@@ -2687,9 +2659,22 @@
 			children = (
 				32CFECE3151C789A00D8CBA6 /* TransportController.h */,
 				32CFECE4151C789A00D8CBA6 /* TransportController.m */,
-				32C879A2183D137B00750A11 /* TransportNextDeparturesViewController.h */,
-				32C879A3183D137B00750A11 /* TransportNextDeparturesViewController.m */,
-				32C879A8183D142900750A11 /* old */,
+				32442FE9151CF87100685D10 /* TransportNextDeparturesViewController.h */,
+				32442FEA151CF87100685D10 /* TransportNextDeparturesViewController.m */,
+				3289F2BB183FB80600D833C2 /* TransportStationsManagerViewController.h */,
+				3289F2BC183FB80600D833C2 /* TransportStationsManagerViewController.m */,
+				324A598E151DC6A800977F33 /* FavoriteStationsViewController.h */,
+				324A598F151DC6A800977F33 /* FavoriteStationsViewController.m */,
+				324A5996151DFDD200977F33 /* AddStationViewController.h */,
+				324A5997151DFDD200977F33 /* AddStationViewController.m */,
+				328872C51534D82C00330B54 /* DestinationConnectionsListViewController.h */,
+				328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */,
+				32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */,
+				32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */,
+				3257C20B1570F99C00E626A4 /* TransportHelpViewController.h */,
+				3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */,
+				32058ACA1572B44D00F4D361 /* TransportSettingsViewController.h */,
+				32058ACB1572B44D00F4D361 /* TransportSettingsViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2719,8 +2704,20 @@
 			isa = PBXGroup;
 			children = (
 				32FB2E0815179014007AE82B /* Images */,
-				32C879A5183D140300750A11 /* TransportNextDeparturesView.xib */,
-				32C879A7183D140F00750A11 /* old */,
+				32442FF0151D0F3000685D10 /* TransportNextDeparturesView.xib */,
+				324A5992151DC73A00977F33 /* FavoriteStationsView.xib */,
+				324A5999151DFDF700977F33 /* AddStationView.xib */,
+				328872C81534D85400330B54 /* DestinationConnectionsListView.xib */,
+				32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */,
+				32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */,
+				3236B5B1151F746100C43769 /* NextDeparturesCell.h */,
+				3236B5B2151F746100C43769 /* NextDeparturesCell.m */,
+				32488C901535F31B00BA49AB /* ConnectionSummaryCell.h */,
+				32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */,
+				32AF214515B193A200BB445D /* TransportHelpView.xib */,
+				32AF214615B197DE00BB445D /* TransportHelp.html */,
+				32969AB115FB92FC0051EF9A /* MyStationsHelp.html */,
+				32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2736,8 +2733,6 @@
 				329D4AD1151F86D7000AC339 /* BusTransport@2x.png */,
 				329D4ACB151F810E000AC339 /* DestinationTransportArrow.png */,
 				329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */,
-				32442FF4151D2BF700685D10 /* LocationArrowActiveLight.png */,
-				32442FF5151D2BF700685D10 /* LocationArrowActiveLight@2x.png */,
 				32442FEC151CFDED00685D10 /* Transport.png */,
 				32442FED151CFDED00685D10 /* Transport@2x.png */,
 				32442FF2151D141200685D10 /* TopTableViewInnerShadow@2x.png */,
@@ -3070,14 +3065,13 @@
 				32FB2E0915179014007AE82B /* TransportPlugin.strings in Resources */,
 				32442FEE151CFDED00685D10 /* Transport.png in Resources */,
 				32442FEF151CFDED00685D10 /* Transport@2x.png in Resources */,
-				32442FF1151D0F3000685D10 /* NextDeparturesListView.xib in Resources */,
+				32442FF1151D0F3000685D10 /* TransportNextDeparturesView.xib in Resources */,
 				32442FF3151D141200685D10 /* TopTableViewInnerShadow@2x.png in Resources */,
 				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
-				32442FF6151D2BF700685D10 /* LocationArrowActiveLight.png in Resources */,
-				32442FF7151D2BF700685D10 /* LocationArrowActiveLight@2x.png in Resources */,
 				327513311825465D0037FE00 /* FavoriteCorner.png in Resources */,
 				324A5993151DC73A00977F33 /* FavoriteStationsView.xib in Resources */,
 				324A599A151DFDF700977F33 /* AddStationView.xib in Resources */,
+				3289F2BA183FAB8C00D833C2 /* LocationArrow2Active@2x.png in Resources */,
 				329D4ACD151F810E000AC339 /* DestinationTransportArrow.png in Resources */,
 				329D4ACE151F810E000AC339 /* DestinationTransportArrow@2x.png in Resources */,
 				329D4AD2151F86D7000AC339 /* BusTransport.png in Resources */,
@@ -3136,6 +3130,7 @@
 				32969ABC15FBA9150051EF9A /* Compass@2x.png in Resources */,
 				32969ABF15FBBB170051EF9A /* BookmarksBlueHighlighted.png in Resources */,
 				32969AC015FBBB170051EF9A /* BookmarksBlueHighlighted@2x.png in Resources */,
+				32CACD97183E366B00BD36F9 /* LocationArrow.png in Resources */,
 				327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */,
 				32B3F3941621956C007A75C7 /* MainMenuView.xib in Resources */,
 				325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */,
@@ -3146,6 +3141,7 @@
 				E6C544C6812266BE16AC628D /* MyEdu.png in Resources */,
 				32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */,
 				32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */,
+				32CACD99183E366B00BD36F9 /* LocationArrowSelected.png in Resources */,
 				32574ED7182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png in Resources */,
 				32CBF05A163450E500FD92E5 /* PocketCampusDrawing@2x.png in Resources */,
 				32C509E617FC60B0005A5635 /* CameraBarButton.png in Resources */,
@@ -3154,6 +3150,7 @@
 				32B3325A17E5C7E9004F5E75 /* Icon60@2x.png in Resources */,
 				323586E816381E1200872ECE /* MyEduCourseListView.xib in Resources */,
 				323A913C1640783F007A63D3 /* TopDown1pxShadow.png in Resources */,
+				3289F2B9183FAB8C00D833C2 /* LocationArrow2Active.png in Resources */,
 				323A913F164078FF007A63D3 /* TopDown1pxShadow@2x.png in Resources */,
 				32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */,
 				32B92F241641BE2A0054B46F /* MyEduSectionListView.xib in Resources */,
@@ -3176,6 +3173,7 @@
 				320073641646E101002AD7BA /* MyEduModuleText@2x.png in Resources */,
 				320073671647128F002AD7BA /* ArrowHide.png in Resources */,
 				320073681647128F002AD7BA /* ArrowHide@2x.png in Resources */,
+				32CACD9A183E366B00BD36F9 /* LocationArrowSelected@2x.png in Resources */,
 				3200736B164718DA002AD7BA /* ArrowShow.png in Resources */,
 				32C509EB17FC6D73005A5635 /* SortBarButton@2x.png in Resources */,
 				3200736C164718DA002AD7BA /* ArrowShow@2x.png in Resources */,
@@ -3189,6 +3187,7 @@
 				3242F40B1655A5B900A8C3D7 /* MyEduDrawersNavbar.png in Resources */,
 				3242F40C1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png in Resources */,
 				32ADC70E165995050039F6A6 /* MyEduModuleVideoDownloadView.xib in Resources */,
+				3289F2B8183FAB8C00D833C2 /* LocationArrow2@2x.png in Resources */,
 				320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */,
 				32ADC710165999820039F6A6 /* CancelCrossRound@2x.png in Resources */,
 				32ADC7161659A2BA0039F6A6 /* CancelCrossRound.png in Resources */,
@@ -3288,9 +3287,9 @@
 				32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */,
 				323414FE176558F300527895 /* kermit_full.png in Resources */,
 				323414FF176558F300527895 /* kermit_half.png in Resources */,
+				32CACD98183E366B00BD36F9 /* LocationArrow@2x.png in Resources */,
 				32341502176558F300527895 /* AcceptViewController.xib in Resources */,
 				32341503176558F300527895 /* AnswerListViewController.xib in Resources */,
-				32C879A6183D140300750A11 /* TransportNextDeparturesView.xib in Resources */,
 				32341504176558F300527895 /* AnswerViewController.xib in Resources */,
 				3200375618118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png in Resources */,
 				32341505176558F300527895 /* AskQuestionViewController.xib in Resources */,
@@ -3320,6 +3319,7 @@
 				3234151A176558F300527895 /* MyQuestionListViewController.xib in Resources */,
 				3234151B176558F300527895 /* MyQuestionViewController.xib in Resources */,
 				3234151C176558F300527895 /* PendingTableCell.xib in Resources */,
+				3289F2B7183FAB8C00D833C2 /* LocationArrow2.png in Resources */,
 				3234151D176558F300527895 /* PendingViewController.xib in Resources */,
 				3234151E176558F300527895 /* QAForumView.xib in Resources */,
 				3234151F176558F300527895 /* QuestionListViewController.xib in Resources */,
@@ -3403,7 +3403,7 @@
 				32FB2E0B15179014007AE82B /* TransportService.m in Sources */,
 				32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */,
 				32CFECEF151CCB6800D8CBA6 /* ObjectArchiver.m in Sources */,
-				32442FEB151CF87100685D10 /* NextDeparturesListViewController.m in Sources */,
+				32442FEB151CF87100685D10 /* TransportNextDeparturesViewController.m in Sources */,
 				322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */,
 				324A5990151DC6A800977F33 /* FavoriteStationsViewController.m in Sources */,
 				324A5998151DFDD200977F33 /* AddStationViewController.m in Sources */,
@@ -3493,6 +3493,7 @@
 				32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */,
 				32EB617F180D5A3C001AE852 /* MapResultsListViewController.m in Sources */,
 				322207F91689E3A3003F6622 /* PCUtils.m in Sources */,
+				3289F2BD183FB80600D833C2 /* TransportStationsManagerViewController.m in Sources */,
 				32930AB217F898910025F864 /* TMemoryBuffer.m in Sources */,
 				322207FA1689E3A3003F6622 /* PCValues.m in Sources */,
 				32930A7517F882010025F864 /* LGRefreshControl+PCAdditions.m in Sources */,
@@ -3528,7 +3529,6 @@
 				32AEEC861747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m in Sources */,
 				32FB442017650268008C8282 /* NSDate+Addtions.m in Sources */,
 				3277F862180437670057F77C /* RemoteOverlayRenderer.m in Sources */,
-				32C879A4183D137B00750A11 /* TransportNextDeparturesViewController.m in Sources */,
 				323414D6176558F300527895 /* AcceptViewController.m in Sources */,
 				323414D7176558F300527895 /* AnswerListViewController.m in Sources */,
 				32930AB617F898910025F864 /* TTransportException.m in Sources */,

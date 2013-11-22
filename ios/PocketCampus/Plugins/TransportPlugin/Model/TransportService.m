@@ -12,12 +12,21 @@
 
 #import <float.h>
 
+@interface TransportService ()
+
+@property (nonatomic, strong) NSSet* privateUserTransportStations;
+@property (nonatomic, strong) TransportStation* privateUserManualDepartureTransportStation;
+
+@end
+
 @implementation TransportService
 
 static TransportService* instance __weak = nil;
 
 static NSString* kFavoriteTransportStationsKey = @"favoriteTransportStations";
 static NSString* kManualDepartureStationKey = @"manualDepartureStation";
+
+#pragma mark - Init
 
 - (id)init {
     @synchronized(self) {
@@ -44,6 +53,8 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 #endif
     }
 }
+
+#pragma mark - Thrift
 
 - (id)thriftServiceClientInstance {
     return [[[TransportServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
@@ -164,7 +175,8 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     [operation release];
 }
 
-/* User defaults */
+
+#pragma mark - Properties
 
 - (NSArray*)userFavoriteTransportStations { //NSArray of TransportStation
     return (NSArray*)[ObjectArchiver objectForKey:kFavoriteTransportStationsKey andPluginName:@"transport"];
@@ -174,12 +186,66 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     return [ObjectArchiver saveObject:favStations forKey:kFavoriteTransportStationsKey andPluginName:@"transport"];
 }
 
-- (TransportStation*)userManualDepartureStation {
-    return (TransportStation*)[ObjectArchiver objectForKey:kManualDepartureStationKey andPluginName:@"transport"];
-}
-
 - (BOOL)saveUserManualDepartureStation:(TransportStation*)station {
     return [ObjectArchiver saveObject:station forKey:kManualDepartureStationKey andPluginName:@"transport"];
+}
+
+static NSString* kUserTransportStationsKey = @"userTransportStations";
+
+- (void)initPersistedProperties {
+    if (!self.privateUserTransportStations) {
+        self.privateUserTransportStations = (NSSet*)[ObjectArchiver objectForKey:kUserTransportStationsKey andPluginName:@"transport"];
+        if (!self.privateUserTransportStations) {
+            NSArray* oldFavStations = [self userFavoriteTransportStations];
+            if (oldFavStations) {
+                self.privateUserTransportStations = [NSSet setWithArray:oldFavStations]; //storage transition from old methods to new
+            }
+        }
+        if (!self.privateUserTransportStations) {
+            self.privateUserTransportStations = [NSSet set];
+        }
+    }
+    if (!self.privateUserManualDepartureTransportStation) {
+        self.privateUserManualDepartureTransportStation = (TransportStation*)[ObjectArchiver objectForKey:kManualDepartureStationKey andPluginName:@"transport"];
+    }
+}
+
+- (void)persistUserTransportStations {
+    [ObjectArchiver saveObject:self.privateUserTransportStations forKey:kUserTransportStationsKey andPluginName:@"transport"];
+}
+
+- (NSSet*)userTransportStations {
+    @synchronized(self) {
+        [self initPersistedProperties];
+        return self.privateUserTransportStations;
+    }
+}
+
+- (void)setUserTransportStations:(NSSet *)userTransportStations {
+    @synchronized(self) {
+        [self initPersistedProperties];
+        self.privateUserTransportStations = [userTransportStations copy];
+        [self persistUserTransportStations];
+    }
+}
+
+- (void)persistUserManualDepartureStation {
+    [ObjectArchiver saveObject:self.privateUserManualDepartureTransportStation forKey:kManualDepartureStationKey andPluginName:@"transport"];
+}
+
+- (TransportStation*)userManualDepartureStation {
+    @synchronized(self) {
+        [self initPersistedProperties];
+        return self.privateUserManualDepartureTransportStation;
+    }
+}
+
+- (void)setUserManualDepartureStation:(TransportStation *)userManualDepartureStation {
+    @synchronized(self) {
+        [self initPersistedProperties];
+        self.privateUserTransportStations = [userManualDepartureStation copy];
+        [self persistUserTransportStations];
+    }
 }
 
 /* location utilities */
