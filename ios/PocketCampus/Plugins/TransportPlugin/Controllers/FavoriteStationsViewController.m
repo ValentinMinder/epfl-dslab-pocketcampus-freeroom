@@ -10,7 +10,7 @@
 
 #import "FavoriteStationsViewController.h"
 
-#import "AddStationViewController.h"
+#import "TransportAddStationViewController.h"
 
 #import "PCValues.h"
 
@@ -127,7 +127,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 }
 
 - (IBAction)addButtonPressed {
-    AddStationViewController* viewController = [[AddStationViewController alloc] init];
+    TransportAddStationViewController* viewController = [[TransportAddStationViewController alloc] init];
     if([self respondsToSelector:@selector(presentingViewController)]) {
         [self presentViewController:viewController animated:YES completion:NULL]; //only available in iOS 5.0
     } else {

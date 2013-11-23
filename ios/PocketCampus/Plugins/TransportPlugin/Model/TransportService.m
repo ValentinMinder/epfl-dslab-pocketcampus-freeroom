@@ -14,7 +14,7 @@
 
 @interface TransportService ()
 
-@property (nonatomic, strong) NSSet* privateUserTransportStations;
+@property (nonatomic, strong) NSOrderedSet* privateUserTransportStations;
 @property (nonatomic, strong) TransportStation* privateUserManualDepartureTransportStation;
 
 @end
@@ -194,15 +194,15 @@ static NSString* kUserTransportStationsKey = @"userTransportStations";
 
 - (void)initPersistedProperties {
     if (!self.privateUserTransportStations) {
-        self.privateUserTransportStations = (NSSet*)[ObjectArchiver objectForKey:kUserTransportStationsKey andPluginName:@"transport"];
+        self.privateUserTransportStations = (NSOrderedSet*)[ObjectArchiver objectForKey:kUserTransportStationsKey andPluginName:@"transport"];
         if (!self.privateUserTransportStations) {
             NSArray* oldFavStations = [self userFavoriteTransportStations];
             if (oldFavStations) {
-                self.privateUserTransportStations = [NSSet setWithArray:oldFavStations]; //storage transition from old methods to new
+                self.privateUserTransportStations = [NSOrderedSet orderedSetWithArray:oldFavStations]; //storage transition from old methods to new
             }
         }
         if (!self.privateUserTransportStations) {
-            self.privateUserTransportStations = [NSSet set];
+            self.privateUserTransportStations = [NSOrderedSet orderedSet];
         }
     }
     if (!self.privateUserManualDepartureTransportStation) {
@@ -214,16 +214,17 @@ static NSString* kUserTransportStationsKey = @"userTransportStations";
     [ObjectArchiver saveObject:self.privateUserTransportStations forKey:kUserTransportStationsKey andPluginName:@"transport"];
 }
 
-- (NSSet*)userTransportStations {
+- (NSOrderedSet*)userTransportStations {
     @synchronized(self) {
         [self initPersistedProperties];
         return self.privateUserTransportStations;
     }
 }
 
-- (void)setUserTransportStations:(NSSet *)userTransportStations {
+- (void)setUserTransportStations:(NSOrderedSet*)userTransportStations {
     @synchronized(self) {
         [self initPersistedProperties];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kUserTransportStationsModifiedNotificationName object:self];
         self.privateUserTransportStations = [userTransportStations copy];
         [self persistUserTransportStations];
     }
@@ -241,9 +242,14 @@ static NSString* kUserTransportStationsKey = @"userTransportStations";
 }
 
 - (void)setUserManualDepartureStation:(TransportStation *)userManualDepartureStation {
+    if (userManualDepartureStation == self.privateUserManualDepartureTransportStation) {
+        return;
+    }
     @synchronized(self) {
         [self initPersistedProperties];
+        [self willChangeValueForKey:NSStringFromSelector(@selector(userManualDepartureStation))];
         self.privateUserTransportStations = [userManualDepartureStation copy];
+        [self didChangeValueForKey:NSStringFromSelector(@selector(userManualDepartureStation))];
         [self persistUserTransportStations];
     }
 }

@@ -219,8 +219,8 @@
 		32488C921535F31B00BA49AB /* ConnectionSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		324A5990151DC6A800977F33 /* FavoriteStationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A598F151DC6A800977F33 /* FavoriteStationsViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		324A5993151DC73A00977F33 /* FavoriteStationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5992151DC73A00977F33 /* FavoriteStationsView.xib */; };
-		324A5998151DFDD200977F33 /* AddStationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A5997151DFDD200977F33 /* AddStationViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		324A599A151DFDF700977F33 /* AddStationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5999151DFDF700977F33 /* AddStationView.xib */; };
+		324A5998151DFDD200977F33 /* TransportAddStationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A5997151DFDD200977F33 /* TransportAddStationViewController.m */; };
+		324A599A151DFDF700977F33 /* TransportAddStationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5999151DFDF700977F33 /* TransportAddStationView.xib */; };
 		324A59A0151E453300977F33 /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		324C7A23174A627C00ED19FD /* GenericResizableShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A21174A627C00ED19FD /* GenericResizableShadow.png */; };
 		324C7A24174A627C00ED19FD /* GenericResizableShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */; };
@@ -815,9 +815,9 @@
 		324A598E151DC6A800977F33 /* FavoriteStationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteStationsViewController.h; sourceTree = "<group>"; };
 		324A598F151DC6A800977F33 /* FavoriteStationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteStationsViewController.m; sourceTree = "<group>"; };
 		324A5992151DC73A00977F33 /* FavoriteStationsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoriteStationsView.xib; sourceTree = "<group>"; };
-		324A5996151DFDD200977F33 /* AddStationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddStationViewController.h; sourceTree = "<group>"; };
-		324A5997151DFDD200977F33 /* AddStationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddStationViewController.m; sourceTree = "<group>"; };
-		324A5999151DFDF700977F33 /* AddStationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStationView.xib; sourceTree = "<group>"; };
+		324A5996151DFDD200977F33 /* TransportAddStationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportAddStationViewController.h; sourceTree = "<group>"; };
+		324A5997151DFDD200977F33 /* TransportAddStationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportAddStationViewController.m; sourceTree = "<group>"; };
+		324A5999151DFDF700977F33 /* TransportAddStationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportAddStationView.xib; sourceTree = "<group>"; };
 		324A599E151E453300977F33 /* TransportUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportUtils.h; sourceTree = "<group>"; };
 		324A599F151E453300977F33 /* TransportUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportUtils.m; sourceTree = "<group>"; };
 		324C7A21174A627C00ED19FD /* GenericResizableShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GenericResizableShadow.png; sourceTree = "<group>"; };
@@ -2663,10 +2663,10 @@
 				32442FEA151CF87100685D10 /* TransportNextDeparturesViewController.m */,
 				3289F2BB183FB80600D833C2 /* TransportStationsManagerViewController.h */,
 				3289F2BC183FB80600D833C2 /* TransportStationsManagerViewController.m */,
+				324A5996151DFDD200977F33 /* TransportAddStationViewController.h */,
+				324A5997151DFDD200977F33 /* TransportAddStationViewController.m */,
 				324A598E151DC6A800977F33 /* FavoriteStationsViewController.h */,
 				324A598F151DC6A800977F33 /* FavoriteStationsViewController.m */,
-				324A5996151DFDD200977F33 /* AddStationViewController.h */,
-				324A5997151DFDD200977F33 /* AddStationViewController.m */,
 				328872C51534D82C00330B54 /* DestinationConnectionsListViewController.h */,
 				328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */,
 				32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */,
@@ -2705,8 +2705,8 @@
 			children = (
 				32FB2E0815179014007AE82B /* Images */,
 				32442FF0151D0F3000685D10 /* TransportNextDeparturesView.xib */,
+				324A5999151DFDF700977F33 /* TransportAddStationView.xib */,
 				324A5992151DC73A00977F33 /* FavoriteStationsView.xib */,
-				324A5999151DFDF700977F33 /* AddStationView.xib */,
 				328872C81534D85400330B54 /* DestinationConnectionsListView.xib */,
 				32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */,
 				32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */,
@@ -3070,7 +3070,7 @@
 				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
 				327513311825465D0037FE00 /* FavoriteCorner.png in Resources */,
 				324A5993151DC73A00977F33 /* FavoriteStationsView.xib in Resources */,
-				324A599A151DFDF700977F33 /* AddStationView.xib in Resources */,
+				324A599A151DFDF700977F33 /* TransportAddStationView.xib in Resources */,
 				3289F2BA183FAB8C00D833C2 /* LocationArrow2Active@2x.png in Resources */,
 				329D4ACD151F810E000AC339 /* DestinationTransportArrow.png in Resources */,
 				329D4ACE151F810E000AC339 /* DestinationTransportArrow@2x.png in Resources */,
@@ -3406,7 +3406,7 @@
 				32442FEB151CF87100685D10 /* TransportNextDeparturesViewController.m in Sources */,
 				322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */,
 				324A5990151DC6A800977F33 /* FavoriteStationsViewController.m in Sources */,
-				324A5998151DFDD200977F33 /* AddStationViewController.m in Sources */,
+				324A5998151DFDD200977F33 /* TransportAddStationViewController.m in Sources */,
 				324A59A0151E453300977F33 /* TransportUtils.m in Sources */,
 				3236B5B3151F746100C43769 /* NextDeparturesCell.m in Sources */,
 				32930AB117F898910025F864 /* THTTPClient.m in Sources */,

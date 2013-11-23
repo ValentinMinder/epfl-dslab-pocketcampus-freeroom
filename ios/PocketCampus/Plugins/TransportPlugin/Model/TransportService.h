@@ -12,6 +12,8 @@
 
 #import "transport.h"
 
+static NSString* kUserTransportStationsModifiedNotificationName __unused = @"UserTransportStationsModifiedNotification";
+
 @interface TransportService : Service<ServiceProtocol>
 
 /*
@@ -41,11 +43,13 @@
 
 /*
  * This property is persisted (uses storage)
+ * A notification with name kUserTransportStationsModifiedNotificationName is posted when the set is modified
  */
-@property (nonatomic, copy) NSSet* userTransportStations;
+@property (nonatomic, copy) NSOrderedSet* userTransportStations;
 
 /*
  * This property is persisted (uses storage)
+ * KVO compliant
  */
 @property (nonatomic, copy) TransportStation* userManualDepartureStation;
 

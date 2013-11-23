@@ -16,6 +16,7 @@
 "WelcomeTouchInfoInstructions" = "Tap the bookmarks button to manage\nyour stations.";
 "Need2StationsTouchInfoInstructions" = "At least two stations are\nrequired to compute a schedule.\n\nTap the bookmarks button and\nadd another station.";
 "FavoriteStationsTitle" = "My stations";
+"MyStations" = "My stations";
 "TouchAddStationInstructions" = "Tap the ✚ to add a station.";
 "DepartureStation" = "Departure station";
 
@@ -25,9 +26,9 @@
 "FavoriteStationsManagementExplanations" = "☞  Tap the ✚ to add a station.\n☞  Tap \"Edit\" to remove or reorder\n      your stations.";
 
 "ClearAll" = "Clear all";
-"SearchFieldPlaceholder" = "Search for a station";
+"AddStation" = "Add station";
+"AddStationSearchFieldPlaceholder" = "Train / metro station, bus stop, ...";
 "SearchStationNoResult" = "No results";
-"SearchBarStationPrompt" = "Type a station name.";
 "StationAlreadyFavorite" = "This station is already in your stations.";
 "CellMultiplePossibilitiesTrip" = "Multiple possibilites";
 "Connections"="Connections";

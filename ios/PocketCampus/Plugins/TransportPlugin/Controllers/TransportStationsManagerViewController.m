@@ -12,10 +12,12 @@
 
 #import "TransportUtils.h"
 
+#import "TransportAddStationViewController.h"
+
 @interface TransportStationsManagerViewController ()
 
 @property (nonatomic, strong) TransportService* transportService;
-@property (nonatomic, strong) NSMutableArray* stations;
+@property (nonatomic, strong) NSMutableOrderedSet* stations;
 
 @end
 
@@ -26,6 +28,8 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.transportService = [TransportService sharedInstanceToRetain];
+        self.stations = [self.transportService.userTransportStations mutableCopy];
+        self.title = NSLocalizedStringFromTable(@"MyStations", @"TransportPlugin", nil);
     }
     return self;
 }
@@ -34,8 +38,33 @@
 {
     [super viewDidLoad];
 	self.tableView.editing = YES;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromModel) name:kUserTransportStationsModifiedNotificationName object:self.transportService];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.transportService.userTransportStations = self.stations;
+}
+
+#pragma mark - Actions
+
+- (void)donePressed {
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)addPressed {
+    TransportAddStationViewController* viewController = [TransportAddStationViewController new];
+    [self presentViewController:[[PCNavigationController alloc] initWithRootViewController:viewController] animated:YES completion:NULL];
+}
+
+#pragma mark - Data load
+
+- (void)refreshFromModel {
+    self.stations = [self.transportService.userTransportStations mutableCopy];
+    [self.tableView reloadData];
+}
 
 #pragma mark - UITableViewDelegate
 
@@ -71,7 +100,6 @@
     } else {
         [self.stations insertObject:station atIndex:destinationIndexPath.row];
     }
-    
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -79,6 +107,7 @@
         return;
     }
     [self.stations removeObjectAtIndex:indexPath.row];
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -93,7 +122,7 @@
 
 - (void)dealloc
 {
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

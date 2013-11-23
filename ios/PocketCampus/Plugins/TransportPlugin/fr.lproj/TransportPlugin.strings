@@ -16,6 +16,7 @@
 "WelcomeTouchInfoInstructions" = "Touchez le bouton signets pour gérer\n vos stations.";
 "Need2StationsTouchInfoInstructions" = "Deux stations sont au minimum nécessaires pour afficher les horaires. Touchez le bouton signets\npour ajouter une deuxième station.";
 "FavoriteStationsTitle" = "Mes stations";
+"MyStations" = "Mes stations";
 "TouchAddStationInstructions" = "Touchez le ✚ pour ajouter une station";
 "DepartureStation" = "Station de départ";
 
@@ -25,9 +26,9 @@
 "FavoriteStationsManagementExplanations" = "☞  Touchez le ✚ pour ajouter une station.\n☞  Touchez \"Modifier\" pour supprimer\n      ou réordonner vos stations.";
 
 "ClearAll" = "Tout effacer";
-"SearchFieldPlaceholder" = "Rechercher une station";
+"AddStation" = "Ajouter une station";
+"AddStationSearchFieldPlaceholder" = "Gare, arrêt de bus, métro, ...";
 "SearchStationNoResult" = "Aucun résultat";
-"SearchBarStationPrompt" = "Entrez le nom d'une station ou d'un arrêt.";
 "StationAlreadyFavorite" = "Cette station est déjà dans vos stations.";
 "CellMultiplePossibilitiesTrip" = "Plusieurs possibilités";
 "Connections"="Connexions";
