@@ -22,6 +22,6 @@
 + (int)numberOfChangeForTrip:(TransportTrip*)trip; //excluding feet parts
 + (NSString*)firstLineNameForTrip:(TransportTrip*)trip;
 + (BOOL)isFeetConnection:(TransportConnection*)part;
-+ (NSString*)nicerName:(NSString*)currentName;
++ (NSString*)nicerName:(NSString*)currentName __attribute__((deprecated)); //use "shortName" on respective classes
 
 @end
