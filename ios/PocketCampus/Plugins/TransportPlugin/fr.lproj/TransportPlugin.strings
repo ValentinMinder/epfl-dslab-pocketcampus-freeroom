@@ -41,6 +41,10 @@
 
 "Need2StationsClickPlusToAdd" = "Au minimum deux stations sont nécessaires pour afficher les horaires.\n\nTouchez le + pour ajouter une station.";
 
+// TransportNextDeparturesViewController
+
+"LoadingDefaultStations..." = "Chargement des stations\npar défaut...";
+
 // TransportStationsManagerViewController
 
 "MyStations" = "Mes stations";

@@ -109,12 +109,13 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     //UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentFavoriteStationsViewController:)];
     //[self.fromLabel addGestureRecognizer:tapGesture];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTransportStationsModified) name:kUserTransportStationsModifiedNotificationName object:self.transportService];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
-    [self refresh];
+    [self refreshIfNeeded];
     //[NSTimer scheduledTimerWithTimeInterval:0.85 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
     //refreshTimer = [[NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(refreshButtonPressed) userInfo:nil repeats:YES] retain];
 }
@@ -128,6 +129,12 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - Notifications listening
+
+- (void)userTransportStationsModified {
+    self.lastRefreshTimestamp = nil; //then next call to refreshIsNeeded will pass
 }
 
 #pragma mark - Refresh & requests start
@@ -244,8 +251,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 // Call this method everytime location might have changed or when user stations have changed
 - (void)updateAll {
     
-    //NSLog(@"-> updateAll with states (%d, %d, %d)", userStationsState, locationState, schedulesState);
-    
     switch (self.userStationsState) {
         case UserStationsStateLoadingDefault:
             self.locationButton.enabled = NO;
@@ -344,7 +349,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 - (void)locationsForNames:(NSArray*)names didReturn:(NSArray*)locations {
     if (names.count == 2 && [names[0] isEqualToString:@"EPFL"] && [names[1] isEqualToString:@"Lausanne-Flon"]) {
         //default stations request returned
-        self.transportService.userTransportStations = self.usersStations;
+        self.transportService.userTransportStations = [NSOrderedSet orderedSetWithArray:locations];
         NSLog(@"-> Default stations returned and saved in user settings. Refreshing.");
         [self refresh];
     }

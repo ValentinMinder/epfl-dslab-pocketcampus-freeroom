@@ -43,6 +43,10 @@
 
 "Need2StationsClickPlusToAdd" = "At least two stations are required to show the schedules.\n\nTap + to add a station.";
 
+// TransportNextDeparturesViewController
+
+"LoadingDefaultStations..." = "Loading default stations...";
+
 // TransportStationsManagerViewController
 
 "MyStations" = "My stations";
