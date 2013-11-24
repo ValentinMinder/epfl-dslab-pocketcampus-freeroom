@@ -1,12 +1,12 @@
 //
-//  TransportStation+Additions.m
+//  TransportModelAdditions.m
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 23.11.13.
 //  Copyright (c) 2013 EPFL. All rights reserved.
 //
 
-#import "TransportStation+Additions.h"
+#import "TransportModelAdditions.h"
 
 @implementation TransportStation (Additions)
 

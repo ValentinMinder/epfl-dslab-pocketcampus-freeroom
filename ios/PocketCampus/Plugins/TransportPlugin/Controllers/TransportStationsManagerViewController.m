@@ -28,7 +28,7 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.transportService = [TransportService sharedInstanceToRetain];
-        self.stations = [self.transportService.userTransportStations mutableCopy];
+        //self.stations = [self.transportService.userTransportStations mutableCopy];
         self.title = NSLocalizedStringFromTable(@"MyStations", @"TransportPlugin", nil);
     }
     return self;
@@ -41,20 +41,18 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromModel) name:kUserTransportStationsModifiedNotificationName object:self.transportService];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    self.transportService.userTransportStations = self.stations;
+    [self refreshFromModel];
 }
 
 #pragma mark - Actions
 
 - (void)donePressed {
+    self.transportService.userTransportStations = self.stations; //saving changes
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)addPressed {
+    self.transportService.userTransportStations = self.stations; //saving changes first
     TransportAddStationViewController* viewController = [TransportAddStationViewController new];
     [self presentViewController:[[PCNavigationController alloc] initWithRootViewController:viewController] animated:YES completion:NULL];
 }
@@ -63,7 +61,8 @@
 
 - (void)refreshFromModel {
     self.stations = [self.transportService.userTransportStations mutableCopy];
-    [self.tableView reloadData];
+    self.navigationItem.rightBarButtonItem.enabled = self.stations.count > 1;
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - UITableViewDelegate
@@ -78,6 +77,13 @@
 
 #pragma mark - UITableViewDataSource
 
+- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    if (self.stations && self.stations.count < 2) {
+        return NSLocalizedStringFromTable(@"Need2StationsClickPlusToAdd", @"TransportPlugin", nil);
+    }
+    return nil;
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TransportStation* station = self.stations[indexPath.row];
     static NSString* identifier = @"StationCell";
@@ -85,7 +91,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    cell.textLabel.text = [TransportUtils nicerName:station.name];
+    cell.textLabel.text = station.shortName;
     return cell;
 }
 
@@ -100,6 +106,7 @@
     } else {
         [self.stations insertObject:station atIndex:destinationIndexPath.row];
     }
+    [self.tableView moveRowAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -107,7 +114,7 @@
         return;
     }
     [self.stations removeObjectAtIndex:indexPath.row];
-    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    self.transportService.userTransportStations = self.stations;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

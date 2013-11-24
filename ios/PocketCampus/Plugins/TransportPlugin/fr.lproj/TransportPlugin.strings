@@ -6,6 +6,8 @@
   Copyright (c) 2012 EPFL. All rights reserved.
 */
 
+// Common
+
 "PluginName" = "Transports";
 "From" = "Départ :";
 "NoStation" = "Aucune station";
@@ -16,7 +18,6 @@
 "WelcomeTouchInfoInstructions" = "Touchez le bouton signets pour gérer\n vos stations.";
 "Need2StationsTouchInfoInstructions" = "Deux stations sont au minimum nécessaires pour afficher les horaires. Touchez le bouton signets\npour ajouter une deuxième station.";
 "FavoriteStationsTitle" = "Mes stations";
-"MyStations" = "Mes stations";
 "TouchAddStationInstructions" = "Touchez le ✚ pour ajouter une station";
 "DepartureStation" = "Station de départ";
 
@@ -26,10 +27,6 @@
 "FavoriteStationsManagementExplanations" = "☞  Touchez le ✚ pour ajouter une station.\n☞  Touchez \"Modifier\" pour supprimer\n      ou réordonner vos stations.";
 
 "ClearAll" = "Tout effacer";
-"AddStation" = "Ajouter une station";
-"AddStationSearchFieldPlaceholder" = "Gare, arrêt de bus, métro, ...";
-"SearchStationNoResult" = "Aucun résultat";
-"StationAlreadyFavorite" = "Cette station est déjà dans vos stations.";
 "CellMultiplePossibilitiesTrip" = "Plusieurs possibilités";
 "Connections"="Connexions";
 "TransportSettings" = "Préférences";
@@ -41,3 +38,16 @@
 "ResetFavStationsExplanations" = "Vos stations seront remplacées par les stations par défaut:\nEPFL et Lausanne-Flon.";
 "PlatformShort" = "voie";
 "TransportHelp" = "Aide Transports";
+
+"Need2StationsClickPlusToAdd" = "Au minimum deux stations sont nécessaires pour afficher les horaires.\n\nTouchez le + pour ajouter une station.";
+
+// TransportStationsManagerViewController
+
+"MyStations" = "Mes stations";
+
+// TransportAddStationViewController
+
+"AddStation" = "Ajouter une station";
+"AddStationSearchFieldPlaceholder" = "Gare, arrêt de bus, métro, ...";
+"SearchStationNoResult" = "Aucun résultat";
+"alreadyInYourStations" = "déjà dans vos stations";

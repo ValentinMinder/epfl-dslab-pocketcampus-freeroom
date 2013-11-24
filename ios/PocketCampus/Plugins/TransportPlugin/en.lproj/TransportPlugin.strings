@@ -6,6 +6,8 @@
   Copyright (c) 2012 EPFL. All rights reserved.
 */
 
+//Common
+
 "PluginName" = "Transport";
 "From:" = "From:";
 "NoStation" = "No station";
@@ -16,7 +18,7 @@
 "WelcomeTouchInfoInstructions" = "Tap the bookmarks button to manage\nyour stations.";
 "Need2StationsTouchInfoInstructions" = "At least two stations are\nrequired to compute a schedule.\n\nTap the bookmarks button and\nadd another station.";
 "FavoriteStationsTitle" = "My stations";
-"MyStations" = "My stations";
+
 "TouchAddStationInstructions" = "Tap the ✚ to add a station.";
 "DepartureStation" = "Departure station";
 
@@ -26,10 +28,7 @@
 "FavoriteStationsManagementExplanations" = "☞  Tap the ✚ to add a station.\n☞  Tap \"Edit\" to remove or reorder\n      your stations.";
 
 "ClearAll" = "Clear all";
-"AddStation" = "Add station";
-"AddStationSearchFieldPlaceholder" = "Train / metro station, bus stop, ...";
-"SearchStationNoResult" = "No results";
-"StationAlreadyFavorite" = "This station is already in your stations.";
+
 "CellMultiplePossibilitiesTrip" = "Multiple possibilites";
 "Connections"="Connections";
 "TransportSettings" = "Transport Settings";
@@ -41,3 +40,16 @@
 "ResetFavStationsExplanations" = "Your stations will be replaced by default stations:\nEPFL and Lausanne-Flon.";
 "PlatformShort" = "plat.";
 "TransportHelp" = "Transports help";
+
+"Need2StationsClickPlusToAdd" = "At least two stations are required to show the schedules.\n\nTap + to add a station.";
+
+// TransportStationsManagerViewController
+
+"MyStations" = "My stations";
+
+// TransportAddStationViewController
+
+"AddStation" = "Add station";
+"AddStationSearchFieldPlaceholder" = "Train / metro station, bus stop, ...";
+"SearchStationNoResult" = "No results";
+"alreadyInYourStations" = "already in your stations";

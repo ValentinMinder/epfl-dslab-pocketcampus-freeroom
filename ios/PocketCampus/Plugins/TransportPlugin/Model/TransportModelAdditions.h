@@ -1,5 +1,5 @@
 //
-//  TransportStation+Additions.h
+//  TransportModelAdditions.h
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 23.11.13.

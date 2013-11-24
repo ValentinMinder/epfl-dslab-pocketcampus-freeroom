@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A2093" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4511" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3745"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransportAddStationViewController">
@@ -19,6 +19,15 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="10" preferredMaxLayoutWidth="310" translatesAutoresizingMaskIntoConstraints="NO" id="8" userLabel="Message label">
+                    <rect key="frame" x="5" y="148" width="310" height="0.0"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                    <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <size key="shadowOffset" width="0.0" height="1"/>
+                </label>
                 <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="4">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -28,15 +37,6 @@
                         <outlet property="delegate" destination="-1" id="15"/>
                     </connections>
                 </tableView>
-                <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="10" preferredMaxLayoutWidth="310" translatesAutoresizingMaskIntoConstraints="NO" id="8" userLabel="Message label">
-                    <rect key="frame" x="5" y="105" width="310" height="0.0"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                    <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <size key="shadowOffset" width="0.0" height="1"/>
-                </label>
                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="9">
                     <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -56,6 +56,7 @@
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
             <constraints>
+                <constraint firstItem="8" firstAttribute="top" secondItem="9" secondAttribute="bottom" constant="40" id="6fL-Gp-FwH"/>
                 <constraint firstItem="9" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="7Lf-lf-lGG"/>
                 <constraint firstItem="8" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="5" id="Boy-Ya-KHm"/>
                 <constraint firstAttribute="trailing" secondItem="10" secondAttribute="trailing" constant="42" id="ExE-Ik-Lsd"/>
@@ -64,7 +65,6 @@
                 <constraint firstAttribute="trailing" secondItem="9" secondAttribute="trailing" id="PnF-w3-7Y6"/>
                 <constraint firstItem="9" firstAttribute="top" secondItem="1" secondAttribute="top" constant="64" id="QXm-te-eua"/>
                 <constraint firstAttribute="bottom" secondItem="4" secondAttribute="bottom" id="Ua0-99-Wcr"/>
-                <constraint firstItem="8" firstAttribute="top" secondItem="1" secondAttribute="top" constant="105" id="WaP-p1-NPk"/>
                 <constraint firstItem="4" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="fto-GP-WVI"/>
                 <constraint firstAttribute="trailing" secondItem="8" secondAttribute="trailing" constant="5" id="gio-AP-1nQ"/>
                 <constraint firstItem="4" firstAttribute="top" secondItem="1" secondAttribute="top" id="upU-0p-Ny5"/>

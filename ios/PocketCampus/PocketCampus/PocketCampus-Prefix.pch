@@ -23,5 +23,6 @@
     #import "UIPopoverController+Additions.h"
     #import "LGRefreshControl+PCAdditions.h"
     #import "UIImage+Additions.h"
+    #import "NSTimer+Blocks.h"
 
 #endif

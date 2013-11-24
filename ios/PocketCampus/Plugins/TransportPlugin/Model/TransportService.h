@@ -12,6 +12,8 @@
 
 #import "transport.h"
 
+#import "TransportModelAdditions.h"
+
 static NSString* kUserTransportStationsModifiedNotificationName __unused = @"UserTransportStationsModifiedNotification";
 
 @interface TransportService : Service<ServiceProtocol>
@@ -28,7 +30,8 @@ static NSString* kUserTransportStationsModifiedNotificationName __unused = @"Use
 - (QueryTripsResult *) getTripsFromStationsIDs: (NSString *) fromID : (NSString *) toID;  // throws TException
 */
 
-/* default transport service requests */
+#pragma mark - Thrift requests
+
 - (void)autocomplete:(NSString*)constraint delegate:(id)delegate;
 - (void)getLocationsForIDs:(NSArray*)ids delegate:(id)delegate;
 - (void)getLocationsForNames:(NSArray*)names delegate:(id)delegate;
@@ -36,29 +39,28 @@ static NSString* kUserTransportStationsModifiedNotificationName __unused = @"Use
 - (void)getTripsFrom:(NSString*)from to:(NSString*)to atTimestamp:(timestamp)time isDeparture:(BOOL)isDeparture delegate:(id)delegate;
 - (void)getTripsFromStationID:(NSString*)fromStationID toStationID:(NSString*)toStationID delegate:(id)delegate;
 
-#pragma mark - User stations
-- (NSArray*)userFavoriteTransportStations __attribute__((deprecated)); //NSArray of TransportStation, empty array if there is not favorite station, default stations if first call
-- (BOOL)saveUserFavoriteTransportStations:(NSArray*)favStations __attribute__((deprecated)); //NSArray of TransportStation
-- (BOOL)saveUserManualDepartureStation:(TransportStation*)station __attribute__((deprecated));
+#pragma mark - Location
 
+- (void)nearestUserTransportStationWithDelegate:(id)delegate;
+
+#pragma mark - User stations
 /*
  * This property is persisted (uses storage)
+ * nil if never set
  * A notification with name kUserTransportStationsModifiedNotificationName is posted when the set is modified
  */
 @property (nonatomic, copy) NSOrderedSet* userTransportStations;
 
 /*
  * This property is persisted (uses storage)
+ * nil if never set
  * KVO compliant
  */
 @property (nonatomic, copy) TransportStation* userManualDepartureStation;
 
-
-#pragma mark - Location
-- (BOOL)appHasAccessToLocation __attribute__((deprecated));
-- (void)nearestFavoriteTransportStationWithDelegate:(id)delegate;
-
 @end
+
+#pragma mark -  fTransportServiceDelegate
 
 typedef enum {
     LocationFailureReasonUnset = 0,
@@ -86,25 +88,7 @@ typedef enum {
 
 /* delegation for location utilities */
 
-- (void)nearestFavoriteTransportStationDidReturn:(TransportStation*)nearestStation;
-- (void)nearestFavoriteTransportStationFailed:(LocationFailureReason)reason;
-
-@end
-
-/* internal class to manage nearest favorite station request. This class managed the CLLocationManager */
-
-@interface NearestFavoriteStationRequest : NSOperationWithDelegate<CLLocationManagerDelegate> {
-    CLLocationManager* locationManager;
-    NSArray* stations;
-    BOOL blockedByAuthStatus; 
-    BOOL delegateCallScheduled;
-    int nbRounds;
-    NSTimer* checkCancellationAndAdaptDesiredAccuracyTimer;
-}
-
-- (id)initWithTransportStations:(NSArray*)sations delegate:(id)delegate;
-
-@property (retain) NSArray* stations;
-@property (retain) NSTimer* checkCancellationAndAdaptDesiredAccuracyTimer;
+- (void)nearestUserTransportStationDidReturn:(TransportStation*)nearestStation;
+- (void)nearestUserTransportStationFailed:(LocationFailureReason)reason;
 
 @end

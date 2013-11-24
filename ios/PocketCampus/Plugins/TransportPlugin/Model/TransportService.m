@@ -12,6 +12,8 @@
 
 #import <float.h>
 
+#pragma mark - TransportService private interface
+
 @interface TransportService ()
 
 @property (nonatomic, strong) NSOrderedSet* privateUserTransportStations;
@@ -19,12 +21,25 @@
 
 @end
 
+#pragma mark - NearestUserTransportStationRequest interface
+
+@interface NearestUserTransportStationRequest : NSOperationWithDelegate<CLLocationManagerDelegate>
+
+- (id)initWithTransportStations:(NSOrderedSet*)sations delegate:(id)delegate;
+
+@property (nonatomic, strong) NSOrderedSet* stations;
+@property (nonatomic, strong) NSTimer* checkCancellationAndAdaptDesiredAccuracyTimer;
+@property (nonatomic, strong) CLLocationManager* locationManager;
+@property (nonatomic) BOOL blockedByAuthStatus;
+@property (nonatomic) BOOL delegateCallScheduled;
+@property (nonatomic) int nbRounds;
+
+@end
+
+
 @implementation TransportService
 
 static TransportService* instance __weak = nil;
-
-static NSString* kFavoriteTransportStationsKey = @"favoriteTransportStations";
-static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 
 #pragma mark - Init
 
@@ -57,7 +72,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 #pragma mark - Thrift
 
 - (id)thriftServiceClientInstance {
-    return [[[TransportServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
+    return [[TransportServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 - (void)autocomplete:(NSString*)constraint delegate:(id)delegate {
@@ -71,7 +86,6 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     [operation addObjectArgument:constraint];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getLocationsForIDs:(NSArray*)ids delegate:(id)delegate {
@@ -85,7 +99,6 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     [operation addObjectArgument:ids];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getLocationsForNames:(NSArray*)names delegate:(id)delegate {
@@ -99,7 +112,6 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     [operation addObjectArgument:names];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)nextDeparturesForStationID:(NSString*)stationID delegate:(id)delegate {
@@ -113,7 +125,6 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     [operation addObjectArgument:stationID];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getTripsFrom:(NSString*)from to:(NSString*)to delegate:(id)delegate priority:(NSInteger)priority {
@@ -133,7 +144,6 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     [operation addObjectArgument:to];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getTripsFrom:(NSString*)from to:(NSString*)to atTimestamp:(timestamp)time isDeparture:(BOOL)isDeparture delegate:(id)delegate {
@@ -154,7 +164,6 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     [operation addBoolArgument:isDeparture];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getTripsFromStationID:(NSString*)fromStationID toStationID:(NSString*)toStationID delegate:(id)delegate {
@@ -172,37 +181,23 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     [operation addObjectArgument:toStationID];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 
 #pragma mark - Properties
 
-- (NSArray*)userFavoriteTransportStations { //NSArray of TransportStation
-    return (NSArray*)[ObjectArchiver objectForKey:kFavoriteTransportStationsKey andPluginName:@"transport"];
-}
-
-- (BOOL)saveUserFavoriteTransportStations:(NSArray*)favStations { //NSArray of TransportStation
-    return [ObjectArchiver saveObject:favStations forKey:kFavoriteTransportStationsKey andPluginName:@"transport"];
-}
-
-- (BOOL)saveUserManualDepartureStation:(TransportStation*)station {
-    return [ObjectArchiver saveObject:station forKey:kManualDepartureStationKey andPluginName:@"transport"];
-}
-
 static NSString* kUserTransportStationsKey = @"userTransportStations";
+static NSString* kFavoriteTransportStationsOldKey = @"favoriteTransportStations";
+static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 
 - (void)initPersistedProperties {
     if (!self.privateUserTransportStations) {
         self.privateUserTransportStations = (NSOrderedSet*)[ObjectArchiver objectForKey:kUserTransportStationsKey andPluginName:@"transport"];
         if (!self.privateUserTransportStations) {
-            NSArray* oldFavStations = [self userFavoriteTransportStations];
+            NSArray* oldFavStations = (NSArray*)[ObjectArchiver objectForKey:kFavoriteTransportStationsOldKey andPluginName:@"transport"];;
             if (oldFavStations) {
                 self.privateUserTransportStations = [NSOrderedSet orderedSetWithArray:oldFavStations]; //storage transition from old methods to new
             }
-        }
-        if (!self.privateUserTransportStations) {
-            self.privateUserTransportStations = [NSOrderedSet orderedSet];
         }
     }
     if (!self.privateUserManualDepartureTransportStation) {
@@ -210,74 +205,47 @@ static NSString* kUserTransportStationsKey = @"userTransportStations";
     }
 }
 
-- (void)persistUserTransportStations {
-    [ObjectArchiver saveObject:self.privateUserTransportStations forKey:kUserTransportStationsKey andPluginName:@"transport"];
-}
-
 - (NSOrderedSet*)userTransportStations {
-    @synchronized(self) {
-        [self initPersistedProperties];
-        return self.privateUserTransportStations;
-    }
+    [self initPersistedProperties];
+    return self.privateUserTransportStations;
 }
 
 - (void)setUserTransportStations:(NSOrderedSet*)userTransportStations {
-    @synchronized(self) {
-        [self initPersistedProperties];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kUserTransportStationsModifiedNotificationName object:self];
-        self.privateUserTransportStations = [userTransportStations copy];
-        [self persistUserTransportStations];
-    }
-}
-
-- (void)persistUserManualDepartureStation {
-    [ObjectArchiver saveObject:self.privateUserManualDepartureTransportStation forKey:kManualDepartureStationKey andPluginName:@"transport"];
+    [self initPersistedProperties];
+    self.privateUserTransportStations = [userTransportStations copy];
+    [ObjectArchiver saveObject:self.privateUserTransportStations forKey:kUserTransportStationsKey andPluginName:@"transport"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUserTransportStationsModifiedNotificationName object:self];
 }
 
 - (TransportStation*)userManualDepartureStation {
-    @synchronized(self) {
-        [self initPersistedProperties];
-        return self.privateUserManualDepartureTransportStation;
-    }
+    [self initPersistedProperties];
+    return self.privateUserManualDepartureTransportStation;
 }
 
 - (void)setUserManualDepartureStation:(TransportStation *)userManualDepartureStation {
     if (userManualDepartureStation == self.privateUserManualDepartureTransportStation) {
         return;
     }
-    @synchronized(self) {
-        [self initPersistedProperties];
-        [self willChangeValueForKey:NSStringFromSelector(@selector(userManualDepartureStation))];
-        self.privateUserTransportStations = [userManualDepartureStation copy];
-        [self didChangeValueForKey:NSStringFromSelector(@selector(userManualDepartureStation))];
-        [self persistUserTransportStations];
-    }
+    [self initPersistedProperties];
+    [self willChangeValueForKey:NSStringFromSelector(@selector(userManualDepartureStation))];
+    self.privateUserTransportStations = [userManualDepartureStation copy];
+    [self didChangeValueForKey:NSStringFromSelector(@selector(userManualDepartureStation))];
+    [ObjectArchiver saveObject:self.privateUserManualDepartureTransportStation forKey:kManualDepartureStationKey andPluginName:@"transport"];
 }
 
-/* location utilities */
+#pragma mark - Nearest TransportStation
 
-- (BOOL)appHasAccessToLocation {
-    CLAuthorizationStatus status =  [CLLocationManager authorizationStatus];
-    if (status != kCLAuthorizationStatusAuthorized || ![CLLocationManager locationServicesEnabled]) {
-        return NO;
-    }
-    return YES;
-}
-
-- (void)nearestFavoriteTransportStationWithDelegate:(id)delegate {
+- (void)nearestUserTransportStationWithDelegate:(id)delegate {
     if (delegate == nil) {
         @throw [NSException exceptionWithName:@"bad delegate" reason:@"delegate cannot be nul" userInfo:nil];
     }
-    NSArray* stations = [self userFavoriteTransportStations];
+    NSOrderedSet* stations = self.userTransportStations;
     
-    if (stations.count == 0) {
-        [delegate nearestFavoriteTransportStationDidReturn:nil];
-    } else if (stations.count == 1) {
-        [delegate nearestFavoriteTransportStationDidReturn:[stations objectAtIndex:0]];
+    if (stations.count < 2) {
+        [delegate nearestUserTransportStationDidReturn:[stations firstObject]];
     } else {
-        NearestFavoriteStationRequest* operation = [[NearestFavoriteStationRequest alloc] initWithTransportStations:(NSArray*)[self userFavoriteTransportStations] delegate:delegate];
+        NearestUserTransportStationRequest* operation = [[NearestUserTransportStationRequest alloc] initWithTransportStations:stations delegate:delegate];
         [operationQueue addOperation:operation];
-        [operation release];
     }
 }
 
@@ -286,34 +254,25 @@ static NSString* kUserTransportStationsKey = @"userTransportStations";
     @synchronized(self) {
         instance = nil;
     }
-    [super dealloc];
 }
 
 @end
 
 /*---------------------------------------------------*/
 
-@implementation NearestFavoriteStationRequest
+
+@implementation NearestUserTransportStationRequest
 
 static int kLocationValidity = 30; //nb seconds a cached location can be used / is considered that user has not moved
 static NSString* kLastLocationKey = @"lastLocation";
 
-@synthesize stations, checkCancellationAndAdaptDesiredAccuracyTimer;
-
-- (id)initWithTransportStations:(NSArray*)stations_ delegate:(id)delegate_
-{
+- (id)initWithTransportStations:(NSOrderedSet*)stations delegate:(id)delegate {
+    [PCUtils throwExceptionIfObject:stations notKindOfClass:[NSOrderedSet class]];
     self = [super init];
     if (self) {
-        self.delegate = delegate_;
-        self.stations = stations_;
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.purpose = NSLocalizedStringFromTable(@"LocationNeedJustification", @"TransportPlugin", nil);
-        blockedByAuthStatus = NO;
-        executing = NO;
-        finished = NO;
-        delegateCallScheduled = NO;
-        self.checkCancellationAndAdaptDesiredAccuracyTimer = nil;
-        nbRounds = 0;
+        self.stations = stations;
+        self.delegate = delegate;
+        self.locationManager = [CLLocationManager new];
     }
     return self;
 }
@@ -321,8 +280,6 @@ static NSString* kLastLocationKey = @"lastLocation";
 /* NSOperation methods */
 
 - (void)main {
-    //[self retain]; //to prevent release of the operation even when main finishes (must wait for location to be precised)
-    
     if ([self isCancelled])
     {
         [self cancelAll];
@@ -333,54 +290,43 @@ static NSString* kLastLocationKey = @"lastLocation";
     executing = YES;
     [self didChangeValueForKey:@"isExecuting"];
     
-    if (![stations isKindOfClass:[NSArray class]]) {
-        @throw [NSException exceptionWithName:@"bad stations" reason:@"bad stations in NearestFavoriteStationRequest" userInfo:nil];
-    }
-    
-    locationManager.delegate = self;
-    [locationManager startUpdatingLocation];
+    self.locationManager.delegate = self;
+    [self.locationManager startUpdatingLocation];
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
         NSLog(@"-> User has denied access to location, will return error to delegate.");
-        [self locationManager:locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorDenied userInfo:nil]];
+        [self locationManager:self.locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorDenied userInfo:nil]];
         return;
     }
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
         NSLog(@"-> Waiting for user to accept access to location...");
-        blockedByAuthStatus = YES;
+        self.blockedByAuthStatus = YES;
         return; //self will be called (see delegate method) by CLLocationManager when user has accepted or rejected access to location
     }
     
-    blockedByAuthStatus = NO;
+    self.blockedByAuthStatus = NO;
     
     CLLocationDistance minDistance = [self minimumDistanceBetweenStations];
     
     if (minDistance > 1000) {
-        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; //improves reliability
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; //improves reliability
     } else {
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     }
     
-    locationManager.distanceFilter =  kCLDistanceFilterNone;
+    self.locationManager.distanceFilter =  kCLDistanceFilterNone;
     
     dispatch_async(dispatch_get_main_queue(), ^{ //timer must be scheduled on other thread not be blocked
         self.checkCancellationAndAdaptDesiredAccuracyTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkCancellationAndAdaptDesiredAccuracy) userInfo:nil repeats:YES];
     });
     
     CLLocation* lastLocation = (CLLocation*)[ObjectArchiver objectForKey:kLastLocationKey andPluginName:@"transport"];
-    if ([self locationIsStillValid:lastLocation] && [self locationEnglobesOnlyOneFavoriteStation:lastLocation]) {
+    if ([self locationIsStillValid:lastLocation] && [self locationEnglobesOnlyOneStation:lastLocation]) {
         NSLog(@"-> Last location still valid (%@), will return to delegate.", lastLocation.timestamp);
         [self returnLocationToDelegate:lastLocation];
         return;
     }
-    
-    /*if ([self locationIsStillValid:locationManager.location] && [self locationEnglobesOnlyOneFavoriteStation:locationManager.location]) { //commented because CLLocationManange sometimes says location is fresh (timestamp diff 0) when it's not. Do not trust it !
-        NSLog(@"-> Initial locationManager location still valid, will return to delegate.");
-        [self handleLocationUpdate:locationManager.location];
-        return;
-    }*/
-    
 }
 
 - (void)checkCancellationAndAdaptDesiredAccuracy {
@@ -388,28 +334,28 @@ static NSString* kLastLocationKey = @"lastLocation";
         [self cancelAll];
         return;
     }
-    nbRounds++;
+    self.nbRounds++;
     
-    if (nbRounds == 10) { //enlarge desiredAccurary, should give a result much faster
-        locationManager.desiredAccuracy = 5000.0; //5KM
-        [self handleLocationUpdate:locationManager.location];
-    } else if (nbRounds == 15) { //location timeout (15 seconds)
-        [self locationManager:locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorLocationUnknown userInfo:nil]]; //normally delegate method, but used to properly terminate location search and return error to delegate
+    if (self.nbRounds == 10) { //enlarge desiredAccurary, should give a result much faster
+        self.locationManager.desiredAccuracy = 5000.0; //5KM
+        [self handleLocationUpdate:self.locationManager.location];
+    } else if (self.nbRounds == 15) { //location timeout (15 seconds)
+        [self locationManager:self.locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorLocationUnknown userInfo:nil]]; //normally delegate method, but used to properly terminate location search and return error to delegate
     } else {
         /*CLLocationAccuracy accuracy = locationManager.desiredAccuracy;
         if (nbRounds % 4 == 0 && accuracy < kCLLocationAccuracyBest) { //don't want to wait longer with this accuracy level
             accuracy = 80.0;
         }
         accuracy = accuracy*2.0;*/
-        if (locationManager.desiredAccuracy == kCLLocationAccuracyBest) {
-            if (nbRounds == 3) { //do not wait longer than 3 seconds in this best accuracy mode
-                locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+        if (self.locationManager.desiredAccuracy == kCLLocationAccuracyBest) {
+            if (self.nbRounds == 3) { //do not wait longer than 3 seconds in this best accuracy mode
+                self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
             }
-        } else if (nbRounds % 2 == 0) {
-            locationManager.desiredAccuracy *= 2.0;
+        } else if (self.nbRounds % 2 == 0) {
+            self.locationManager.desiredAccuracy *= 2.0;
         }
         
-        [self handleLocationUpdate:locationManager.location];
+        [self handleLocationUpdate:self.locationManager.location];
     }
 }
 
@@ -418,8 +364,8 @@ static NSString* kLastLocationKey = @"lastLocation";
     if (self.checkCancellationAndAdaptDesiredAccuracyTimer) {
         [self.checkCancellationAndAdaptDesiredAccuracyTimer invalidate];
     }
-    locationManager.delegate = nil;
-    [locationManager stopUpdatingLocation];
+    self.locationManager.delegate = nil;
+    [self.locationManager stopUpdatingLocation];
     self.delegate = nil;
     [self willChangeValueForKey:@"isFinished"];
     [self willChangeValueForKey:@"isExecuting"];
@@ -444,18 +390,19 @@ static NSString* kLastLocationKey = @"lastLocation";
 /* CLLocationManagerDelegate delegation */
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    if (blockedByAuthStatus) {
+    if (self.blockedByAuthStatus) {
         NSLog(@"-> User has made a decision for location access. Restarting the request.");
         [self main];
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    CLLocation* newLocation = [locations lastObject]; //docs says lastObject is newest, and array contains at least one location
     [self handleLocationUpdate:newLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    if(delegateCallScheduled) {
+    if(self.delegateCallScheduled) {
         return; //delegate call has already been putted in main loop
     }
     
@@ -464,29 +411,29 @@ static NSString* kLastLocationKey = @"lastLocation";
         [self cancelAll];
         return;
     }
-    locationManager.delegate = nil;
+    self.locationManager.delegate = nil;
     switch (error.code) {
         case kCLErrorDenied:
-            if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestFavoriteTransportStationFailed:)]) {
+            if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestUserTransportStationFailed:)]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate nearestFavoriteTransportStationFailed:LocationFailureReasonUserDenied];
+                    [self.delegate nearestUserTransportStationFailed:LocationFailureReasonUserDenied];
                     [self cancelAll];
                 });
             } else {
                 [self cancelAll];
             }
-            delegateCallScheduled = YES;
+            self.delegateCallScheduled = YES;
             break;
         default:
-            if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestFavoriteTransportStationFailed:)]) {
+            if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestUserTransportStationFailed:)]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate nearestFavoriteTransportStationFailed:LocationFailureReasonUnknown];
+                    [self.delegate nearestUserTransportStationFailed:LocationFailureReasonUnknown];
                     [self cancelAll];
                 });
             } else {
                 [self cancelAll];
             }
-            delegateCallScheduled = YES;
+            self.delegateCallScheduled = YES;
             break;
     }
 }
@@ -495,7 +442,7 @@ static NSString* kLastLocationKey = @"lastLocation";
 /* utilities */
 
 - (void)handleLocationUpdate:(CLLocation*)newLocation {
-    if(delegateCallScheduled) {
+    if(self.delegateCallScheduled) {
         return; //delegate call has already been putted in main loop
     }
     
@@ -509,7 +456,7 @@ static NSString* kLastLocationKey = @"lastLocation";
         return;
     }
     
-    NSLog(@"-> Handling location with accuracy : %lf | desired accuarcy : %lf", newLocation.horizontalAccuracy, locationManager.desiredAccuracy);
+    NSLog(@"-> Handling location with accuracy : %lf | desired accuarcy : %lf", newLocation.horizontalAccuracy, self.locationManager.desiredAccuracy);
     
     if (![self locationIsStillValid:newLocation]) {
         NSLog(@"-> Old location. Ignoring.");
@@ -522,18 +469,18 @@ static NSString* kLastLocationKey = @"lastLocation";
         return;
     }
     
-    if (locationManager.desiredAccuracy == kCLLocationAccuracyBest) {
-        NSLog(@"-> Waiting for best accuracy to be achieved : desired accuracy will be switched to 100m in %d seconds.", (3-nbRounds));
+    if (self.locationManager.desiredAccuracy == kCLLocationAccuracyBest) {
+        NSLog(@"-> Waiting for best accuracy to be achieved : desired accuracy will be switched to 100m in %d seconds.", (3-self.nbRounds));
         return;
     }
     
-    if (newLocation.horizontalAccuracy > locationManager.desiredAccuracy) {
-        NSLog(@"-> Location accuracy (%lf) not sufficient, %lf required.", newLocation.horizontalAccuracy, locationManager.desiredAccuracy);
+    if (newLocation.horizontalAccuracy > self.locationManager.desiredAccuracy) {
+        NSLog(@"-> Location accuracy (%lf) not sufficient, %lf required.", newLocation.horizontalAccuracy, self.locationManager.desiredAccuracy);
         return;
     }
     
-    if (![self locationEnglobesOnlyOneFavoriteStation:newLocation]) {
-        if (newLocation.horizontalAccuracy > locationManager.desiredAccuracy) { //second condition to prevent infinite waiting because accuracy cannot be achieved (desiredAccurary is deacreased by timer)
+    if (![self locationEnglobesOnlyOneStation:newLocation]) {
+        if (newLocation.horizontalAccuracy > self.locationManager.desiredAccuracy) { //second condition to prevent infinite waiting because accuracy cannot be achieved (desiredAccurary is deacreased by timer)
             NSLog(@"-> Location not accurate enough. Ignoring.");
             return;
         }
@@ -562,25 +509,22 @@ static NSString* kLastLocationKey = @"lastLocation";
 
 - (void)returnLocationToDelegate:(CLLocation*)validLocation {
     
-    TransportStation* retStation = [[self nearestStationFromLocation:validLocation] retain];
+    TransportStation* retStation = [self nearestStationFromLocation:validLocation];
     if ([self isCancelled])
     {
-        [retStation release],
         [self cancelAll];
         return;
     }
     
-    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestFavoriteTransportStationDidReturn:)]) {
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestUserTransportStationDidReturn:)]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.delegate nearestFavoriteTransportStationDidReturn:retStation];
-            [retStation release];
+            [self.delegate nearestUserTransportStationDidReturn:retStation];
             [self cancelAll];
         });
     } else {
-        [retStation release];
         [self cancelAll];
     }
-    delegateCallScheduled = YES;
+    self.delegateCallScheduled = YES;
 }
 
 - (BOOL)locationIsStillValid:(CLLocation*)location {
@@ -596,19 +540,18 @@ static NSString* kLastLocationKey = @"lastLocation";
     return YES;
 }
 
-//Return YES if location parameter accuracy englobes only 1 favorite station. NO otherwise.
-- (BOOL)locationEnglobesOnlyOneFavoriteStation:(CLLocation*)newLocation {
+//Return YES if location parameter accuracy englobes only 1 user station. NO otherwise.
+- (BOOL)locationEnglobesOnlyOneStation:(CLLocation*)newLocation {
     if (newLocation == nil) {
         return NO;
     }
-    CLRegion* userRegion = [[CLRegion alloc] initCircularRegionWithCenter:newLocation.coordinate radius:newLocation.horizontalAccuracy identifier:@"userRegion"]; //+1.0 to be sure this station will be included in containsCoordinate check
+    CLCircularRegion* userRegion = [[CLCircularRegion alloc] initWithCenter:newLocation.coordinate radius:newLocation.horizontalAccuracy identifier:@"userRegion"]; //+1.0 to be sure this station will be included in containsCoordinate check
     int nbFavStationsInUserRegion = 0;
-    for (TransportStation* station in stations) {
+    for (TransportStation* station in self.stations) {
         if ([userRegion containsCoordinate:CLLocationCoordinate2DMake(station.latitude/1000000.0, station.longitude/1000000.0)]) {
             nbFavStationsInUserRegion++;
         }
     }
-    [userRegion release];
     return (nbFavStationsInUserRegion < 2);
 }
 
@@ -616,35 +559,27 @@ static NSString* kLastLocationKey = @"lastLocation";
 - (TransportStation*)nearestStationFromLocation:(CLLocation*)newLocation {
     TransportStation* retStation = nil;
     CLLocationDistance minDistance = CGFLOAT_MAX;
-    for (TransportStation* station in stations) {
+    for (TransportStation* station in self.stations) {
         CLLocation* location = [[CLLocation alloc] initWithLatitude:station.latitude/1000000.0 longitude:station.longitude/1000000.0];
         CLLocationDistance distance = [location distanceFromLocation:newLocation];
         if ([location distanceFromLocation:newLocation] < minDistance) {
             retStation = station;
             minDistance = distance;
         }
-        [location release];
     }
     return retStation;
 }
 
 - (CLLocationDistance)minimumDistanceBetweenStations {
     CLLocationDistance minDistance = CGFLOAT_MAX; //in meters
-    
-    for (TransportStation* station1 in stations) {
-        if (![station1 isKindOfClass:[TransportStation class]]) {
-            @throw [NSException exceptionWithName:@"bad station" reason:@"station1 is not of kind TransportStation in NearestFavoriteStationRequest" userInfo:nil];
-        }
-        for (TransportStation* station2 in stations) {
-            if (![station2 isKindOfClass:[TransportStation class]]) {
-                @throw [NSException exceptionWithName:@"bad station" reason:@"station2 is not of kind TransportStation in NearestFavoriteStationRequest" userInfo:nil];
-            }
+    for (TransportStation* station1 in self.stations) {
+        for (TransportStation* station2 in self.stations) {
+            [PCUtils throwExceptionIfObject:station1 notKindOfClass:[TransportStation class]];
+            [PCUtils throwExceptionIfObject:station2 notKindOfClass:[TransportStation class]];
             if (station1 != station2) {
                 CLLocation* location1 = [[CLLocation alloc] initWithLatitude:station1.latitude/1000000.0 longitude:station1.longitude/1000000.0];
                 CLLocation* location2 = [[CLLocation alloc] initWithLatitude:station2.latitude/1000000.0 longitude:station2.longitude/1000000.0];
                 CLLocationDistance distance = [location1 distanceFromLocation:location2];
-                [location1 release];
-                [location2 release];
                 if (distance < minDistance) {
                     minDistance = distance;
                 }
@@ -656,11 +591,7 @@ static NSString* kLastLocationKey = @"lastLocation";
 
 - (void)dealloc
 {
-    NSLog(@"-> NearestFavoriteStationRequest released");
-    [locationManager release];
-    [stations release];
-    [checkCancellationAndAdaptDesiredAccuracyTimer release];
-    [super dealloc];
+    self.locationManager.delegate = nil;
 }
 
 @end

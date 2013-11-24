@@ -19,6 +19,8 @@
 @property (nonatomic, strong) IBOutlet UISearchBar* searchBar;
 
 @property (nonatomic, strong) TransportService* transportService;
+@property (nonatomic, strong) NSOrderedSet* userStationsAtLoad;
+
 @property (nonatomic, strong) NSArray* stations;
 @property (nonatomic, strong) NSTimer* typingTimer;
 
@@ -34,6 +36,7 @@
     if (self) {
         self.title = NSLocalizedStringFromTable(@"AddStation", @"TransportPlugin", nil);
         self.transportService = [TransportService sharedInstanceToRetain];
+        self.userStationsAtLoad = [self.transportService.userTransportStations copy];
     }
     return self;
 }
@@ -45,6 +48,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [[PCGAITracker sharedTracker] trackScreenWithName:@"/transport/addStation"];
+    self.tableView.contentInset = UIEdgeInsetsMake(64.0+self.searchBar.frame.size.height, 0, 0, 0);
+    self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
     self.searchBar.placeholder = NSLocalizedStringFromTable(@"AddStationSearchFieldPlaceholder", @"TransportPlugin", nil);
     self.searchBar.isAccessibilityElement = YES;
@@ -83,13 +88,36 @@
     [self.transportService cancelOperationsForDelegate:self];
     [self.barActivityIndicator stopAnimating];
     self.tableView.hidden = YES;
-    self.messageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
+    self.messageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
 }
 
 #pragma mark - Actions
 
 - (void)dismiss {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    self.messageLabel.text = nil;
+    if (searchText.length == 0) {
+        [self.barActivityIndicator stopAnimating];
+        [self.transportService cancelOperationsForDelegate:self];
+        self.tableView.hidden = YES;
+        self.messageLabel.text = nil;
+        [self.tableView reloadData];
+        return;
+    }
+    [self.typingTimer invalidate];
+    self.typingTimer = nil;
+    if (searchText.length > 1) {
+        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutocompleteRequest) userInfo:nil repeats:NO];
+    }
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self.searchBar resignFirstResponder];
 }
 
 #pragma mark - TransportServiceDelegate
@@ -126,29 +154,6 @@
     self.messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
 }
 
-#pragma mark - UISearchBarDelegate
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    self.messageLabel.text = nil;
-    if (searchText.length == 0) {
-        [self.barActivityIndicator stopAnimating];
-        [self.transportService cancelOperationsForDelegate:self];
-        self.tableView.hidden = YES;
-        self.messageLabel.text = nil;
-        [self.tableView reloadData];
-        return;
-    }
-    [self.typingTimer invalidate];
-    self.typingTimer = nil;
-    if (searchText.length > 1) {
-        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutocompleteRequest) userInfo:nil repeats:NO];
-    }
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self.searchBar resignFirstResponder];
-}
-
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -161,17 +166,14 @@
     if (indexPath.row >= self.stations.count) {
         return;
     }
+    if ([self.tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone) {
+        //means already in stations, see tableView:cellForRowAtIndexPath: implementation
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        return;
+    }
     TransportStation* newStation = self.stations[indexPath.row];
     NSMutableOrderedSet* userStations = [self.transportService.userTransportStations mutableCopy];
-    for (TransportStation* station in userStations) {
-        if (newStation.id == station.id) {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"StationAlreadyFavorite", @"TransportPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
-            return;
-        }
-    }
-    [userStations addObject:newStation]; //inserting at end of list
+    [userStations addObject:newStation];
     self.transportService.userTransportStations = userStations;
     [self dismiss];
 }
@@ -183,9 +185,20 @@
     static NSString* identifier = @"StationNameAutocompleteCell";
     UITableViewCell* cell =  [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     }
-    cell.textLabel.text = [TransportUtils nicerName:station.name];
+    if ([self.userStationsAtLoad containsObject:station]) {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.textColor = [UIColor lightGrayColor];
+        cell.detailTextLabel.text = NSLocalizedStringFromTable(@"alreadyInYourStations", @"TransportPlugin", nil);
+    } else {
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.detailTextLabel.text = nil;
+    }
+    cell.textLabel.text = station.shortName;
+    
     return cell;
 }
 
