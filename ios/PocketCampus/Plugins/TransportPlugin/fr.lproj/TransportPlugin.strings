@@ -45,6 +45,13 @@
 
 "LoadingDefaultStations..." = "Chargement des stations\npar défaut...";
 
+// TransportDepartureSelectionViewController
+
+"DepartureStation" = "Station de départ";
+"Automatic" = "Automatique";
+"NearestStation" = "La plus proche de vos stations";
+"AllowPocketCampusLocationToUserAutomaticDepartureFeature" = "Authorisez PocketCampus à accéder à votre localisation pour pouvoir utiliser cette fonctionalité.";
+
 // TransportStationsManagerViewController
 
 "MyStations" = "Mes stations";

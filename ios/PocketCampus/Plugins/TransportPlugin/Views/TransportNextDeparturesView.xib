@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4511" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A2093" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3745"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransportNextDeparturesViewController">
             <connections>
+                <outlet property="centerLoadingIndicator" destination="KZE-6o-VUY" id="idQ-6f-QlK"/>
                 <outlet property="centerMessageLabel" destination="14" id="6Rh-pb-r8W"/>
                 <outlet property="fromLabel" destination="7" id="67b-1J-uaG"/>
                 <outlet property="locationButton" destination="CvN-kc-iXK" id="9FH-Vm-8yE"/>
@@ -20,10 +21,15 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="KZE-6o-VUY">
+                    <rect key="frame" x="142" y="227" width="37" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                </activityIndicatorView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" minimumFontSize="10" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="14" userLabel="Center message label">
                     <rect key="frame" x="10" y="284" width="300" height="0.0"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                     <color key="shadowColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -87,7 +93,7 @@
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem title="?" style="plain" id="49">
+                        <barButtonItem image="HelpBarButton.png" style="plain" id="49">
                             <connections>
                                 <action selector="presentHelpViewController:" destination="-1" id="51"/>
                             </connections>
@@ -99,15 +105,9 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="rXZ-Fq-rpY"/>
-                        <barButtonItem systemItem="organize" id="CfS-K2-wVG">
+                        <barButtonItem image="ListBarButton.png" id="CfS-K2-wVG">
                             <connections>
                                 <action selector="stationsButtonsPressed" destination="-1" id="hNW-x6-nlG"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="50"/>
-                        <barButtonItem image="SettingsBarButton.png" style="plain" id="48">
-                            <connections>
-                                <action selector="presentSettingsViewController:" destination="-1" id="53"/>
                             </connections>
                         </barButtonItem>
                     </items>
@@ -120,6 +120,8 @@
                 <constraint firstAttribute="bottom" secondItem="3" secondAttribute="bottom" id="Ak0-JN-fFa"/>
                 <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" id="Ib3-vS-7ZH"/>
                 <constraint firstItem="3" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="Kn2-qH-7du"/>
+                <constraint firstItem="14" firstAttribute="top" secondItem="KZE-6o-VUY" secondAttribute="bottom" constant="20" id="MxQ-f2-RA7"/>
+                <constraint firstAttribute="centerX" secondItem="KZE-6o-VUY" secondAttribute="centerX" id="MxW-23-aI1"/>
                 <constraint firstAttribute="trailing" secondItem="14" secondAttribute="trailing" constant="10" id="PeS-ow-Za9"/>
                 <constraint firstItem="Vf9-Pd-tXX" firstAttribute="width" secondItem="n26-cb-aLU" secondAttribute="width" id="Rc5-rp-EOE"/>
                 <constraint firstItem="14" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="S9k-eA-beu"/>
@@ -139,7 +141,8 @@
         </view>
     </objects>
     <resources>
+        <image name="HelpBarButton.png" width="20" height="20"/>
+        <image name="ListBarButton.png" width="26" height="16"/>
         <image name="LocationArrow2.png" width="30" height="30"/>
-        <image name="SettingsBarButton.png" width="42" height="42"/>
     </resources>
 </document>

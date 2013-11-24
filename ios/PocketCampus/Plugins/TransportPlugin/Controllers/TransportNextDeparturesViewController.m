@@ -30,6 +30,8 @@
 
 #import "TransportAddStationViewController.h"
 
+#import "TransportDepartureSelectionViewController.h"
+
 
 typedef enum {
     UserStationsStateOK = 0,
@@ -62,6 +64,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 @property (nonatomic, strong) IBOutlet UIButton* locationButton;
 @property (nonatomic, strong) IBOutlet UILabel* fromLabel;
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* centerLoadingIndicator;
 @property (nonatomic, strong) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, strong) IBOutlet UIToolbar* toolbar;
 
@@ -105,11 +108,11 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     NSLog(@"%lf", self.topLayoutGuide.length);
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshButton;
-#warning TODO
-    //UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentFavoriteStationsViewController:)];
-    //[self.fromLabel addGestureRecognizer:tapGesture];
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fromLabelPressed)];
+    [self.fromLabel addGestureRecognizer:tapGesture];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTransportStationsModified) name:kUserTransportStationsModifiedNotificationName object:self.transportService];
+    [self.transportService addObserver:self forKeyPath:NSStringFromSelector(@selector(userManualDepartureStation)) options:0 context:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -135,6 +138,12 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 - (void)userTransportStationsModified {
     self.lastRefreshTimestamp = nil; //then next call to refreshIsNeeded will pass
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(userManualDepartureStation))] && object == self.transportService) {
+        self.lastRefreshTimestamp = nil; //then next call to refreshIsNeeded will pass
+    }
 }
 
 #pragma mark - Refresh & requests start
@@ -221,6 +230,12 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     }
 }
 
+- (void)fromLabelPressed {
+    TransportDepartureSelectionViewController* viewController = [TransportDepartureSelectionViewController new];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
+    [self presentViewController:navController animated:YES completion:NULL];
+}
+
 - (IBAction)addStationButtonPressed {
     TransportAddStationViewController* viewController = [TransportAddStationViewController new];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
@@ -239,12 +254,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     [self presentViewController:navController animated:YES completion:NULL];
 }
 
-- (IBAction)presentSettingsViewController:(id)sender {
-    TransportSettingsViewController* viewController = [[TransportSettingsViewController alloc] init];
-    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
-    [self presentViewController:navController animated:YES completion:NULL];
-}
-
 #pragma mark - UI update
 
 // Initialize and/or update all infos of the UI, according to current states.
@@ -256,6 +265,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             self.locationButton.enabled = NO;
             self.fromLabel.text = nil;
             self.tableView.hidden = YES;
+            [self.centerLoadingIndicator startAnimating];
             self.centerMessageLabel.text = NSLocalizedStringFromTable(@"LoadingDefaultStations...", @"TransportPlugin", nil);
             return; //everything is set
             break;
@@ -263,10 +273,12 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             self.locationButton.enabled = NO;
             self.fromLabel.text = nil;
             self.tableView.hidden = YES;
+            [self.centerLoadingIndicator stopAnimating];
             self.centerMessageLabel.text = NSLocalizedStringFromTable(@"Need2StationsClickPlusToAdd", @"TransportPlugin", nil);
             return; //everything is set
             break;
         default:
+            [self.centerLoadingIndicator stopAnimating];
             break;
     }
     
@@ -396,7 +408,10 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 - (void)tripsFailedFrom:(NSString*)from to:(NSString*)to {
     self.tripResults[to] = [NSNull null]; //indicates error
-    [self.tableView reloadRowsAtIndexPaths:@[[self biasedIndexPathForStationName:to]] withRowAnimation:UITableViewRowAnimationFade];
+    @try {
+        [self.tableView reloadRowsAtIndexPaths:@[[self biasedIndexPathForStationName:to]] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    @catch (NSException *exception) {}
     if (self.tripResults.count == self.usersStations.count - 1) { //all results have arrived
         NSLog(@"-> All trips returned (some with error) => SchedulesStateLoaded");
         self.schedulesState = SchedulesStateLoaded;
@@ -415,7 +430,11 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             [timedOutIndexPaths addObject:[self biasedIndexPathForStationName:station.name]];
         }
     }
-    [self.tableView reloadRowsAtIndexPaths:timedOutIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+    @try {
+        [self.tableView reloadRowsAtIndexPaths:timedOutIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+    }
+    @catch (NSException *exception) {}
+    
     [self updateAll];
 }
 
@@ -520,6 +539,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.transportService cancelOperationsForDelegate:self];
+    [self.transportService removeObserver:self forKeyPath:NSStringFromSelector(@selector(userManualDepartureStation))];
     [self.refreshTimer invalidate];
 }
 

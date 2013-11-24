@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import <CoreLocation/CoreLocation.h>
-
 #import "Service.h"
 
 #import "transport.h"

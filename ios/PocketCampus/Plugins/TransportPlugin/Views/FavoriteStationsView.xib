@@ -61,6 +61,6 @@
         </view>
     </objects>
     <resources>
-        <image name="HelpBarButton.png" width="28" height="28"/>
+        <image name="HelpBarButton.png" width="20" height="20"/>
     </resources>
 </document>

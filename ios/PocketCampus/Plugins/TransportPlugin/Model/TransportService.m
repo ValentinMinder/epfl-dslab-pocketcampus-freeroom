@@ -8,6 +8,8 @@
 
 #import "TransportService.h"
 
+#import <CoreLocation/CoreLocation.h>
+
 #import "ObjectArchiver.h"
 
 #import <float.h>
@@ -228,7 +230,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     }
     [self initPersistedProperties];
     [self willChangeValueForKey:NSStringFromSelector(@selector(userManualDepartureStation))];
-    self.privateUserTransportStations = [userManualDepartureStation copy];
+    self.privateUserManualDepartureTransportStation = userManualDepartureStation;
     [self didChangeValueForKey:NSStringFromSelector(@selector(userManualDepartureStation))];
     [ObjectArchiver saveObject:self.privateUserManualDepartureTransportStation forKey:kManualDepartureStationKey andPluginName:@"transport"];
 }

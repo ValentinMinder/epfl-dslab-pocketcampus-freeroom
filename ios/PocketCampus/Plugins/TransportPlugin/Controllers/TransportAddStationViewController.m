@@ -46,14 +46,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     [[PCGAITracker sharedTracker] trackScreenWithName:@"/transport/addStation"];
     self.tableView.contentInset = UIEdgeInsetsMake(64.0+self.searchBar.frame.size.height, 0, 0, 0);
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
     self.searchBar.placeholder = NSLocalizedStringFromTable(@"AddStationSearchFieldPlaceholder", @"TransportPlugin", nil);
-    self.searchBar.isAccessibilityElement = YES;
-    self.searchBar.accessibilityIdentifier = @"SearchBar";
 }
 
 - (void)viewWillAppear:(BOOL)animated

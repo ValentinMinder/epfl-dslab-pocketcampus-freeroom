@@ -37,6 +37,7 @@
  * Returns [[Reachability reachabilityForInternetConnection] isReachable], i.e. whether internet is reachable
  */
 + (BOOL)hasDeviceInternetConnection;
++ (BOOL)hasAppAccessToLocation;
 
 + (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class;
 

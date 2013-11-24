@@ -20,7 +20,6 @@
 "FavoriteStationsTitle" = "My stations";
 
 "TouchAddStationInstructions" = "Tap the ✚ to add a station.";
-"DepartureStation" = "Departure station";
 
 "NearestFavoriteStation" = "Automatic (nearest)";
 "FavoriteStationsExplanations_NearestSelected" = "Current choice: the station nearest to you in this list will be set as departure. Next departures schedules from this station to all other stations in the list will be displayed.";
@@ -41,11 +40,18 @@
 "PlatformShort" = "plat.";
 "TransportHelp" = "Transports help";
 
-"Need2StationsClickPlusToAdd" = "At least two stations are required to show the schedules.\n\nTap + to add a station.";
+"Need2StationsClickPlusToAdd" = "At least two stations are required\nto show the schedules.\n\nTap + to add a station.";
 
 // TransportNextDeparturesViewController
 
 "LoadingDefaultStations..." = "Loading default stations...";
+
+// TransportDepartureSelectionViewController
+
+"DepartureStation" = "Departure station";
+"Automatic" = "Automatic";
+"NearestStation" = "Nearest of your stations";
+"AllowPocketCampusLocationToUserAutomaticDepartureFeature" = "Allow PocketCampus to access your location to use this feature";
 
 // TransportStationsManagerViewController
 
@@ -54,6 +60,6 @@
 // TransportAddStationViewController
 
 "AddStation" = "Add station";
-"AddStationSearchFieldPlaceholder" = "Train / metro station, bus stop, ...";
+"AddStationSearchFieldPlaceholder" = "Metro station, bus stop, train station, ...";
 "SearchStationNoResult" = "No results";
 "alreadyInYourStations" = "already in your stations";

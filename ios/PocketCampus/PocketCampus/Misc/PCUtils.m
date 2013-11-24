@@ -10,6 +10,8 @@
 
 #import "Reachability.h"
 
+#import <CoreLocation/CoreLocation.h>
+
 @implementation PCUtils
 
 + (BOOL)isRetinaDevice{
@@ -110,7 +112,7 @@
     label.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     label.text = message;
     label.tag = 20;
-    label.textAlignment = UITextAlignmentCenter;
+    label.textAlignment = NSTextAlignmentCenter;
     label.numberOfLines = 0;
     label.textColor = [UIColor colorWithWhite:0.33 alpha:1.0];
     [view addSubview:label];
@@ -157,6 +159,10 @@
 
 + (BOOL)hasDeviceInternetConnection {
     return [[Reachability reachabilityForInternetConnection] isReachable];
+}
+
++ (BOOL)hasAppAccessToLocation {
+    return ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized);
 }
 
 + (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class; {

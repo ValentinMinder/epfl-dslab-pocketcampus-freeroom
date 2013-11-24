@@ -61,7 +61,6 @@
 
 - (void)refreshFromModel {
     self.stations = [self.transportService.userTransportStations mutableCopy];
-    self.navigationItem.rightBarButtonItem.enabled = self.stations.count > 1;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
