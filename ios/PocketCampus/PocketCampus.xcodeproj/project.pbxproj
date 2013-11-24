@@ -376,6 +376,7 @@
 		32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B13A3D1634B0F4007B54A1 /* MainMenuNavbar.png */; };
 		32B13A401634B0F4007B54A1 /* MainMenuNavbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B13A3E1634B0F4007B54A1 /* MainMenuNavbar@2x.png */; };
 		32B1D9E317F08E1D000CC209 /* PCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B1D9E217F08E1D000CC209 /* PCNavigationController.m */; };
+		32B2B88A1841281F009DA368 /* TransportStation+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B2B8891841281F009DA368 /* TransportStation+Additions.m */; };
 		32B3325817E5C708004F5E75 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32B3325717E5C708004F5E75 /* Images.xcassets */; };
 		32B3325A17E5C7E9004F5E75 /* Icon60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B3325917E5C7E9004F5E75 /* Icon60@2x.png */; };
 		32B3F39016219403007A75C7 /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B3F38F16219403007A75C7 /* MainMenuViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -1040,6 +1041,8 @@
 		32B13A3E1634B0F4007B54A1 /* MainMenuNavbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MainMenuNavbar@2x.png"; sourceTree = "<group>"; };
 		32B1D9E117F08E1D000CC209 /* PCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCNavigationController.h; sourceTree = "<group>"; };
 		32B1D9E217F08E1D000CC209 /* PCNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCNavigationController.m; sourceTree = "<group>"; };
+		32B2B8881841281F009DA368 /* TransportStation+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TransportStation+Additions.h"; sourceTree = "<group>"; };
+		32B2B8891841281F009DA368 /* TransportStation+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TransportStation+Additions.m"; sourceTree = "<group>"; };
 		32B3325717E5C708004F5E75 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../Images.xcassets; sourceTree = "<group>"; };
 		32B3325917E5C7E9004F5E75 /* Icon60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon60@2x.png"; sourceTree = "<group>"; };
 		32B3F38E16219402007A75C7 /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MainMenuViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -2686,6 +2689,8 @@
 				32FB2E0615179014007AE82B /* TransportService.m */,
 				324A599E151E453300977F33 /* TransportUtils.h */,
 				324A599F151E453300977F33 /* TransportUtils.m */,
+				32B2B8881841281F009DA368 /* TransportStation+Additions.h */,
+				32B2B8891841281F009DA368 /* TransportStation+Additions.m */,
 				32FB2E0215179014007AE82B /* ThriftTypes+Services */,
 			);
 			path = Model;
@@ -3433,6 +3438,7 @@
 				32C450AE18241364000C99A3 /* FoodMealCell.m in Sources */,
 				32B5871D156458FA0051C57E /* camipro.m in Sources */,
 				32B58723156459370051C57E /* CamiproController.m in Sources */,
+				32B2B88A1841281F009DA368 /* TransportStation+Additions.m in Sources */,
 				32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */,
 				32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */,
 				32E280AC156E618800B74825 /* DirectoryServiceTests.m in Sources */,
