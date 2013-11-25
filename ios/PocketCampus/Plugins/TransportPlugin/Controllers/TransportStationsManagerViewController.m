@@ -27,9 +27,8 @@
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.transportService = [TransportService sharedInstanceToRetain];
-        //self.stations = [self.transportService.userTransportStations mutableCopy];
         self.title = NSLocalizedStringFromTable(@"MyStations", @"TransportPlugin", nil);
+        self.transportService = [TransportService sharedInstanceToRetain];
     }
     return self;
 }
@@ -40,6 +39,7 @@
 	self.tableView.editing = YES;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
+    self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStylePlain;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromModel) name:kUserTransportStationsModifiedNotificationName object:self.transportService];
     [self refreshFromModel];
 }
@@ -61,7 +61,12 @@
 
 - (void)refreshFromModel {
     self.stations = [self.transportService.userTransportStations mutableCopy];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    @try {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    @catch (NSException *exception) {
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - UITableViewDelegate

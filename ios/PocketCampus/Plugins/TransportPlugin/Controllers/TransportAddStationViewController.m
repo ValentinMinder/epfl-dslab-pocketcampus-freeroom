@@ -56,7 +56,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.searchBar becomeFirstResponder];
+    TransportAddStationViewController* weakSelf __weak = self;
+    [NSTimer scheduledTimerWithTimeInterval:0.0 block:^{
+        [weakSelf.searchBar becomeFirstResponder]; //if done inline, it was slowing down the presentation of the view controller for some reason
+    } repeats:NO];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6

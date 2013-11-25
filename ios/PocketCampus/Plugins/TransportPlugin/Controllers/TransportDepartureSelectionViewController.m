@@ -8,6 +8,8 @@
 
 #import "TransportDepartureSelectionViewController.h"
 
+#import "TransportAddStationViewController.h"
+
 #import "TransportService.h"
 
 static const NSUInteger kAutomaticSection = 0;
@@ -32,7 +34,6 @@ static const NSUInteger kStationsSection = 1;
     if (self) {
         self.title = NSLocalizedStringFromTable(@"DepartureStation", @"TransportPlugin", nil);
         self.transportService = [TransportService sharedInstanceToRetain];
-        self.stations = [self.transportService.userTransportStations copy];
         self.appCouldNotAccessLocation = ![PCUtils hasAppAccessToLocation];
     }
     return self;
@@ -44,6 +45,9 @@ static const NSUInteger kStationsSection = 1;
 {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
+self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromModel) name:kUserTransportStationsModifiedNotificationName object:self.transportService];
+    [self refreshFromModel];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -54,10 +58,29 @@ static const NSUInteger kStationsSection = 1;
     }
 }
 
-#pragma mark - Others
+#pragma mark - Data load
+
+- (void)refreshFromModel {
+    self.stations = [self.transportService.userTransportStations mutableCopy];
+    @try {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kStationsSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    @catch (NSException *exception) {
+        [self.tableView reloadData];
+    }
+
+}
+
+#pragma mark - Actions
 
 - (void)dismiss {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)addPressed {
+    TransportAddStationViewController* viewController = [TransportAddStationViewController new];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
+    [self presentViewController:navController animated:YES completion:NULL];
 }
 
 #pragma mark - UITableViewDelegate
@@ -86,6 +109,17 @@ static const NSUInteger kStationsSection = 1;
 
 #pragma mark - UITableViewDataSource
 
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case kAutomaticSection:
+            break;
+        case kStationsSection:
+            return NSLocalizedStringFromTable(@"ChooseManually", @"TransportPlugin", nil);
+            break;
+    }
+    return nil;
+}
+
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     switch (section) {
         case kAutomaticSection:
@@ -107,6 +141,7 @@ static const NSUInteger kStationsSection = 1;
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
             cell.textLabel.text = NSLocalizedStringFromTable(@"Automatic", @"TransportPlugin", nil);
             cell.detailTextLabel.text = NSLocalizedStringFromTable(@"NearestStation", @"TransportPlugin", nil);
+            cell.detailTextLabel.textColor = [UIColor lightGrayColor];
             if ([PCUtils hasAppAccessToLocation]) {
                 cell.textLabel.textColor = [UIColor blackColor];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;

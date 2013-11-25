@@ -9,12 +9,8 @@
 // Common
 
 "PluginName" = "Transports";
-"From" = "Départ :";
+"From:" = "Départ :";
 "NoStation" = "Aucune station";
-"LocationNeedJustification" = "Votre position sera utilisée pour trouver la station de transport la plus proche (EPFL ou Lausanne-Flon par défaut). PocketCampus n'enregistre pas l'historique de vos déplacements. Essayez une fois avant de refuser ;)";
-"ImpossibleLocateShort" = "Localisation impossible";
-"ImpossibleLocateUserDenied" = "Impossible de trouver la station la plus proche. Avez-vous refusé la localisation ? Si oui, vous pouvez activer la localisation dans le menu Réglages de votre iPhone ou choisir manuellement une station de départ.";
-"ImpossibleLocateUnknown" = "Désolé, votre position n'a pas pu être déterminée. Essayez de rafraichir ou essayez plus tard.\n Vous pouvez choisir une station de départ manuellement en touchant le bouton bleu (favoris)";
 "WelcomeTouchInfoInstructions" = "Touchez le bouton signets pour gérer\n vos stations.";
 "Need2StationsTouchInfoInstructions" = "Deux stations sont au minimum nécessaires pour afficher les horaires. Touchez le bouton signets\npour ajouter une deuxième station.";
 "FavoriteStationsTitle" = "Mes stations";
@@ -39,6 +35,9 @@
 "PlatformShort" = "voie";
 "TransportHelp" = "Aide Transports";
 
+"ChooseManually" = "Choisir manuellement";
+"ImpossibleLocateUserDenied" = "Impossible de trouver la station la plus proche.\n\nAvez-vous refusé l'accès à la localisation ? Si oui, vous pouvez authoriser \"EPFL\" en allant dans:\n\nRéglages > Confidentialité > Service de localisation\n\nVous pouvez également choisir la station de départ manuellement.";
+"ImpossibleLocateUnknown" = "Désolé, votre position n'a pas\npu être déterminée.\n\nEssayez de rafraîchir, ou sélectionnez une station de départ manuellement.";
 "Need2StationsClickPlusToAdd" = "Au minimum deux stations sont nécessaires pour afficher les horaires.\n\nTouchez le + pour ajouter une station.";
 
 // TransportNextDeparturesViewController
@@ -49,8 +48,8 @@
 
 "DepartureStation" = "Station de départ";
 "Automatic" = "Automatique";
-"NearestStation" = "La plus proche de vos stations";
-"AllowPocketCampusLocationToUserAutomaticDepartureFeature" = "Authorisez PocketCampus à accéder à votre localisation pour pouvoir utiliser cette fonctionalité.";
+"NearestStation" = "La plus proche des stations ci-dessous";
+"AllowPocketCampusLocationToUserAutomaticDepartureFeature" = "Pour pouvoir activer cette fonctionalité, authorisez \"EPFL\" dans Réglages > Confidentialité > Service de localisation";
 
 // TransportStationsManagerViewController
 

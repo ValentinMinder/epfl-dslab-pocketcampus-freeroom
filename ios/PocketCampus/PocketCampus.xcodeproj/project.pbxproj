@@ -210,6 +210,8 @@
 		32442FF3151D141200685D10 /* TopTableViewInnerShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF2151D141200685D10 /* TopTableViewInnerShadow@2x.png */; };
 		32449D5D17C3F248003269E5 /* DirectoryLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32449D5C17C3F248003269E5 /* DirectoryLarge@2x.png */; };
 		3244B3E816A36976006A7E37 /* MoodleResource+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32456C0A184373DE00993F8B /* TransportNextDeparturesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32456C09184373DE00993F8B /* TransportNextDeparturesCell.m */; };
+		32456C0C184373FE00993F8B /* TransportNextDeparturesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32456C0B184373FE00993F8B /* TransportNextDeparturesCell.xib */; };
 		324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3247495017F33B0D00698A9D /* DirectoryPersonBaseInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3247494F17F33B0D00698A9D /* DirectoryPersonBaseInfoCell.xib */; };
 		3247495317F33E3400698A9D /* DirectoryPersonBaseInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247495217F33E3400698A9D /* DirectoryPersonBaseInfoCell.m */; };
@@ -799,6 +801,9 @@
 		32449D5C17C3F248003269E5 /* DirectoryLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DirectoryLarge@2x.png"; sourceTree = "<group>"; };
 		3244B3E616A36976006A7E37 /* MoodleResource+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MoodleResource+Comparison.h"; sourceTree = "<group>"; };
 		3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MoodleResource+Comparison.m"; sourceTree = "<group>"; };
+		32456C08184373DE00993F8B /* TransportNextDeparturesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportNextDeparturesCell.h; sourceTree = "<group>"; };
+		32456C09184373DE00993F8B /* TransportNextDeparturesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportNextDeparturesCell.m; sourceTree = "<group>"; };
+		32456C0B184373FE00993F8B /* TransportNextDeparturesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportNextDeparturesCell.xib; sourceTree = "<group>"; };
 		324654C5168BA2D300F2782D /* PluginControllerAuthentified.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginControllerAuthentified.h; sourceTree = "<group>"; };
 		324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginControllerAuthentified.m; sourceTree = "<group>"; };
 		324715AC15001381007C230C /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
@@ -2732,6 +2737,9 @@
 			children = (
 				32FB2E0815179014007AE82B /* Images */,
 				32442FF0151D0F3000685D10 /* TransportNextDeparturesView.xib */,
+				32456C08184373DE00993F8B /* TransportNextDeparturesCell.h */,
+				32456C09184373DE00993F8B /* TransportNextDeparturesCell.m */,
+				32456C0B184373FE00993F8B /* TransportNextDeparturesCell.xib */,
 				324A5999151DFDF700977F33 /* TransportAddStationView.xib */,
 				328872C81534D85400330B54 /* DestinationConnectionsListView.xib */,
 				32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */,
@@ -3337,6 +3345,7 @@
 				32341514176558F300527895 /* qaforum_record.png in Resources */,
 				32341515176558F300527895 /* qaforum_right.png in Resources */,
 				3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */,
+				32456C0C184373FE00993F8B /* TransportNextDeparturesCell.xib in Resources */,
 				32449D5D17C3F248003269E5 /* DirectoryLarge@2x.png in Resources */,
 				32341516176558F300527895 /* qaforum_selected.png in Resources */,
 				32341517176558F300527895 /* LatestForumViewController.xib in Resources */,
@@ -3442,6 +3451,7 @@
 				32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */,
 				324151D515373B5900CCFB22 /* map.m in Sources */,
 				324151D815373BA300CCFB22 /* MapService.m in Sources */,
+				32456C0A184373DE00993F8B /* TransportNextDeparturesCell.m in Sources */,
 				324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */,
 				3275435F153872DF00C94F3D /* MapUtils.m in Sources */,
 				32B89254154584A90058E472 /* EPFLTileOverlay.m in Sources */,

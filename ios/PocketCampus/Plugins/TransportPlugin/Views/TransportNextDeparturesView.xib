@@ -22,12 +22,12 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="KZE-6o-VUY">
-                    <rect key="frame" x="142" y="227" width="37" height="37"/>
+                    <rect key="frame" x="142" y="226" width="37" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                 </activityIndicatorView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" minimumFontSize="10" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="14" userLabel="Center message label">
-                    <rect key="frame" x="10" y="284" width="300" height="0.0"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="14" userLabel="Center message label">
+                    <rect key="frame" x="10" y="283" width="300" height="0.0"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -115,7 +115,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerY" secondItem="14" secondAttribute="centerY" id="5Q0-Qd-4sC"/>
+                <constraint firstAttribute="centerY" secondItem="14" secondAttribute="centerY" constant="1" id="5Q0-Qd-4sC"/>
                 <constraint firstAttribute="trailing" secondItem="47" secondAttribute="trailing" id="6qd-FN-UPm"/>
                 <constraint firstAttribute="bottom" secondItem="3" secondAttribute="bottom" id="Ak0-JN-fFa"/>
                 <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" id="Ib3-vS-7ZH"/>

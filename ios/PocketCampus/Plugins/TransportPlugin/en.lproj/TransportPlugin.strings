@@ -13,8 +13,6 @@
 "NoStation" = "No station";
 "LocationNeedJustification" = "Your location will be used to find the nearest transport station (EPFL or Lausanne-Flon by default). PocketCampus does not track your location history.\n Give it a try before denying ;)";
 "ImpossibleLocateShort" = "Location error";
-"ImpossibleLocateUserDenied" = "Impossible to find the nearest station. Have you denied access to location ? If so, you can enable location in the Settings menu of your iPhone or manually select a departure station.";
-"ImpossibleLocateUnknown" = "Sorry, impossible to find you current location. Try to refresh or try again later.\nYou can select a departure station manually by tapping the bookmarks icon.";
 "WelcomeTouchInfoInstructions" = "Tap the bookmarks button to manage\nyour stations.";
 "Need2StationsTouchInfoInstructions" = "At least two stations are\nrequired to compute a schedule.\n\nTap the bookmarks button and\nadd another station.";
 "FavoriteStationsTitle" = "My stations";
@@ -40,6 +38,9 @@
 "PlatformShort" = "plat.";
 "TransportHelp" = "Transports help";
 
+"ChooseManually" = "Choose manually";
+"ImpossibleLocateUserDenied" = "Impossible to find nearest station.\n\n Did you deny access to location ?\nIf so, you can allow \"EPFL\" in:\n\nSettings > Privacy > Location.\n\nAlternatively, you can choose a departure station manually.";
+"ImpossibleLocateUnknown" = "Sorry, your location could\nnot be determined.\n\nTry to refresh, or select the\ndeparture station manually.";
 "Need2StationsClickPlusToAdd" = "At least two stations are required\nto show the schedules.\n\nTap + to add a station.";
 
 // TransportNextDeparturesViewController
@@ -50,8 +51,8 @@
 
 "DepartureStation" = "Departure station";
 "Automatic" = "Automatic";
-"NearestStation" = "Nearest of your stations";
-"AllowPocketCampusLocationToUserAutomaticDepartureFeature" = "Allow PocketCampus to access your location to use this feature";
+"NearestStation" = "Nearest of stations below";
+"AllowPocketCampusLocationToUserAutomaticDepartureFeature" = "To enable this feature, allow \"EPFL\" in Settings > Privacy > Location";
 
 // TransportStationsManagerViewController
 

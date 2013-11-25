@@ -153,7 +153,9 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         return;
     }
     if (self.lastRefreshTimestamp && abs([self.lastRefreshTimestamp timeIntervalSinceNow]) < kSchedulesValidy) {
-        return;
+        if (!(self.locationState == LocationStateErrorUserDenied && [PCUtils hasAppAccessToLocation])) {
+            return;
+        }
     }
     [self refresh];
 }
@@ -284,7 +286,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     
     
     NSString* locationArrowImageName = @"LocationArrow2";
-    NSString* locationAlertMessage = nil;
+    NSString* locationProblemMessage = nil;
     NSMutableAttributedString* fromLabelAttrString = nil;
     NSString* fromLabelString = nil;
     NSString* fromString = NSLocalizedStringFromTable(@"From:", @"TransportPlugin", nil);
@@ -318,13 +320,13 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             break;
         }
         case LocationStateErrorUserDenied:
-            locationAlertMessage = NSLocalizedStringFromTable(@"ImpossibleLocateUserDenied", @"TransportPlugin", nil);
+            locationProblemMessage = NSLocalizedStringFromTable(@"ImpossibleLocateUserDenied", @"TransportPlugin", nil);
             break;
         case LocationStateErrorTimeout:
-            locationAlertMessage = NSLocalizedStringFromTable(@"ImpossibleLocateUnknown", @"TransportPlugin", nil);
+            locationProblemMessage = NSLocalizedStringFromTable(@"ImpossibleLocateUnknown", @"TransportPlugin", nil);
             break;
         case LocationStateErrorUnknown:
-            locationAlertMessage = NSLocalizedStringFromTable(@"ImpossibleLocateUnknown", @"TransportPlugin", nil);
+            locationProblemMessage = NSLocalizedStringFromTable(@"ImpossibleLocateUnknown", @"TransportPlugin", nil);
             break;
         default:
             break;
@@ -333,18 +335,15 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     [self.locationButton setImage:[UIImage imageNamed:locationArrowImageName] forState:UIControlStateNormal];
     self.fromLabel.attributedText = fromLabelAttrString;
     
-    if (locationAlertMessage) {
+    if (locationProblemMessage) {
         self.locationButton.enabled = NO;
-        NSString* cannotLocateString = NSLocalizedStringFromTable(@"ImpossibleLocateShort", @"TransportPlugin", nil);
-        fromLabelString = [NSString stringWithFormat:@"%@ %@", fromString, cannotLocateString];
+        NSString* chooseManuallyString = NSLocalizedStringFromTable(@"ChooseManually", @"TransportPlugin", nil);
+        fromLabelString = [NSString stringWithFormat:@"%@ %@", fromString, chooseManuallyString];
         fromLabelAttrString = [[NSMutableAttributedString alloc] initWithString:fromLabelString];
-        [fromLabelAttrString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:[fromLabelString rangeOfString:cannotLocateString]];
+        [fromLabelAttrString addAttribute:NSForegroundColorAttributeName value:[PCValues pocketCampusRed] range:[fromLabelString rangeOfString:chooseManuallyString]];
         self.fromLabel.attributedText = fromLabelAttrString;
-        //[self.locationActivityIndicator stopAnimating];
         self.tableView.hidden = YES;
-        self.centerMessageLabel.text = nil;
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ImpossibleLocateShort", @"TransportPlugin", nil) message:locationAlertMessage delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
+        self.centerMessageLabel.text = locationProblemMessage;
         return;
     }
     
