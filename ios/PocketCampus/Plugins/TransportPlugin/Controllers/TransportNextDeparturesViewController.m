@@ -14,13 +14,13 @@
 
 #import "TransportUtils.h"
 
-#import "NextDeparturesCell.h"
+//#import "NextDeparturesCell.h"
+
+#import "TransportNextDeparturesCell.h"
 
 #import "DestinationConnectionsListViewController.h"
 
 #import "TransportHelpViewController.h"
-
-#import "TransportSettingsViewController.h"
 
 #import "TransportController.h"
 
@@ -71,6 +71,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 @property (nonatomic, strong) TransportService* transportService;
 @property (nonatomic, strong) NSOrderedSet* usersStations;
 @property (nonatomic, strong) NSMutableDictionary* tripResults; //key : destination station name, value : QueryTripResult
+@property (nonatomic, strong) NSMutableDictionary* cellForDestinationName;
 @property (nonatomic) LocationState locationState;
 @property (nonatomic) SchedulesState schedulesState;
 @property (nonatomic) TransportStation* departureStation;
@@ -174,7 +175,9 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     
     self.lastRefreshTimestamp = [NSDate date];
     
+    
     if (self.userStationsState == UserStationsStateOK) {
+        self.cellForDestinationName = [NSMutableDictionary dictionaryWithCapacity:self.usersStations.count-1];
         if (self.locationState == LocationStateManualSelection) {
             [self startGetTripsRequests];
         } else {
@@ -183,6 +186,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             [self.transportService nearestUserTransportStationWithDelegate:self];
         }
     } else if (self.userStationsState == UserStationsStateLoadingDefault) {
+        self.cellForDestinationName = nil;
         NSLog(@"-> No previously saved user stations. Requesting default stations...");
         [self.transportService getLocationsForNames:@[@"EPFL", @"Lausanne-Flon"] delegate:self];
     }
@@ -396,7 +400,8 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     self.tripResults[to] = tripResult;
     
     if (self.schedulesState != SchedulesStateError) {
-        [self.tableView reloadRowsAtIndexPaths:@[[self biasedIndexPathForStationName:to]] withRowAnimation:UITableViewRowAnimationFade];
+        TransportNextDeparturesCell* cell = self.cellForDestinationName[to];
+        cell.tripResult = tripResult;
     }
     if (self.tripResults.count == self.usersStations.count - 1) { //all results have arrived
         NSLog(@"-> All trips returned => SchedulesStateLoaded");
@@ -407,10 +412,8 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 - (void)tripsFailedFrom:(NSString*)from to:(NSString*)to {
     self.tripResults[to] = [NSNull null]; //indicates error
-    @try {
-        [self.tableView reloadRowsAtIndexPaths:@[[self biasedIndexPathForStationName:to]] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    @catch (NSException *exception) {}
+    TransportNextDeparturesCell* cell = self.cellForDestinationName[to];
+    cell.state = TransportNextDeparturesCellStateError;
     if (self.tripResults.count == self.usersStations.count - 1) { //all results have arrived
         NSLog(@"-> All trips returned (some with error) => SchedulesStateLoaded");
         self.schedulesState = SchedulesStateLoaded;
@@ -423,29 +426,25 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         return; //timeout message already displayed
     }
     self.schedulesState = SchedulesStateError;
-    NSMutableArray* timedOutIndexPaths = [NSMutableArray array];
     for (TransportStation* station in self.usersStations) {
         if (![station isEqualToTransportStation:self.departureStation] && !self.tripResults[station.name]) {
-            [timedOutIndexPaths addObject:[self biasedIndexPathForStationName:station.name]];
+            TransportNextDeparturesCell* cell = self.cellForDestinationName[station.name];
+            cell.state = TransportNextDeparturesCellStateError;
         }
     }
-    @try {
-        [self.tableView reloadRowsAtIndexPaths:timedOutIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-    }
-    @catch (NSException *exception) {}
-    
+    [PCUtils showConnectionToServerTimedOutAlert];
     [self updateAll];
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NextDeparturesCell* cell = (NextDeparturesCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-    if (cell.loadingState != LoadingStateLoaded) {
+    TransportNextDeparturesCell* cell = (TransportNextDeparturesCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell.state != TransportNextDeparturesCellStateLoaded) {
         return;
     }
     
-    QueryTripsResult* queryTripResult = self.tripResults[cell.transportStation.name];
+    QueryTripsResult* queryTripResult = self.tripResults[cell.destinationStation.name];
     DestinationConnectionsListViewController* viewController = [[DestinationConnectionsListViewController alloc] initWithQueryTripResult:queryTripResult];
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -457,7 +456,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     TransportStation* station = self.usersStations[biasedIndexPath.row];
     QueryTripsResult* trip = self.tripResults[station.name];
     
-    if (!trip) { //still loading
+    /*if (!trip) { //still loading
         return [[NextDeparturesCell alloc] initWithDestinationStation:station loadingState:LoadingStateLoading];;
     }
     
@@ -473,7 +472,32 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         return [[NextDeparturesCell alloc] initWithQueryTripResult:trip redundantConnections:redundantConnections];
     }
     
-    return [[NextDeparturesCell alloc] initWithQueryTripResult:trip redundantConnections:nil];
+    return [[NextDeparturesCell alloc] initWithQueryTripResult:trip redundantConnections:nil];*/
+    
+    static NSString* identifier = @"TransportNextDeparturesCell";
+    
+    TransportNextDeparturesCell* cell = self.cellForDestinationName[station.name];
+    if (!cell) {
+        cell = [[TransportNextDeparturesCell alloc] initWithReuseIdentifier:identifier];
+        self.cellForDestinationName[station.name] = cell;
+    }
+    if (!trip) { //common case, still loading, as requests were just started
+        cell.destinationStation = station;
+        cell.state = TransportNextDeparturesCellStateLoading;
+    } else {
+        /*
+         * Following cases are not expected to happen (though they are correct), as when reloadData is called, refresh just started.
+         * When responses arrive, respective methods update cells using self.cellForDestinationName directly, without reloading the table
+         */
+        if ([trip isEqual:[NSNull null]]) { //means error
+            cell.destinationStation = station;
+            cell.state = TransportNextDeparturesCellStateError;
+        } else { //means trip != nil and not NSNull => is a QueryTripResult
+            cell.tripResult = trip;
+        }
+    }
+    return cell;
+    
 }
 
 

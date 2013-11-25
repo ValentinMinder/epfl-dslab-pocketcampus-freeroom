@@ -53,6 +53,9 @@
 }
 
 + (NSArray*)connectionsWithoutAlreadyLeft:(NSArray*)connections {
+    if (!connections) {
+        return nil;
+    }
     NSMutableArray* purgedConnections = [NSMutableArray arrayWithCapacity:connections.count]; //often, no connection to remove
     for (TransportConnection* connection in connections) {
         NSString* timeString = [self  automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
