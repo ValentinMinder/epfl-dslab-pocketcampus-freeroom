@@ -33,6 +33,8 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 
 @interface FoodMealCell ()<FoodServiceDelegate>
 
+@property (nonatomic, copy, readwrite) NSString* reuseIdentifier;
+
 @property (nonatomic, strong) FoodService* foodService;
 
 @property (nonatomic) UIEdgeInsets originalSeparatorInsets;
@@ -71,6 +73,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"FoodMealCell" owner:nil options:nil];
     self = (FoodMealCell*)elements[0];
     if (self) {
+        self.reuseIdentifier = reuseIdentifier;
         self.foodService = [FoodService sharedInstanceToRetain];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.originalSeparatorInsets = self.separatorInset;
@@ -172,7 +175,17 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     NSString* voteString =  NSLocalizedStringFromTable(@"Rate", @"FoodPlugin", nil);
     NSString* fullString = [NSString stringWithFormat:@"%@%@      ", satRateString, voteString]; //spaces to extent touch zone of button
     NSMutableAttributedString* satRateAttrString = [[NSMutableAttributedString alloc] initWithString:fullString];
-    [satRateAttrString addAttribute:NSForegroundColorAttributeName value:self.meal.mRating.voteCount > 0 ? [UIColor colorWithWhite:0.2 alpha:1.0] : [UIColor lightGrayColor] range:[fullString rangeOfString:satRateString]];
+    if (self.meal.mRating.voteCount > 0) {
+        [satRateAttrString addAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.2 alpha:1.0],
+                                           NSFontAttributeName:[UIFont boldSystemFontOfSize:self.satRateButton.titleLabel.font.fontDescriptor.pointSize]}
+                                   range:[fullString rangeOfString:satRateString]];
+    } else {
+        [satRateAttrString addAttributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor],
+                                           NSFontAttributeName:[UIFont systemFontOfSize:self.satRateButton.titleLabel.font.fontDescriptor.pointSize]}
+                                   range:[fullString rangeOfString:satRateString]];
+    }
+    
+
     [self.satRateButton setAttributedTitle:satRateAttrString forState:UIControlStateNormal];
 }
 
@@ -256,13 +269,13 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     
     if ([PCUtils isIdiomPad] &&  !UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
         self.rateControlsViewLeftConstraint.constant = rateModeEnabled ? kRateControlsViewWidth : 0.0;
-        self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
+        //self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
         self.infoContentViewLeftConstraint.constant = 0.0;
         self.infoContentViewRightConstraint.constant = 0.0;
     } else {
         CGFloat offset = rateModeEnabled ? kRateControlsViewWidth : 0.0;
         self.rateControlsViewLeftConstraint.constant = 0.0;
-        self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
+        //self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
         self.infoContentViewLeftConstraint.constant = -offset;
         self.infoContentViewRightConstraint.constant = offset;
     }

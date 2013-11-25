@@ -60,7 +60,10 @@
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.restaurant.rPictureUrl]];
         [self.backgroundImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-            image = [image imageByScalingAndCroppingForSize:CGSizeMake(weakSelf.backgroundImageView.frame.size.width, weakSelf.backgroundImageView.frame.size.height) applyDeviceScreenMultiplyingFactor:YES];
+            CGFloat width = weakSelf.backgroundImageView.frame.size.width;
+            CGFloat height = weakSelf.backgroundImageView.frame.size.height;
+            [weakSelf.backgroundImageView addConstraints:[NSLayoutConstraint width:width height:height constraintsForView:weakSelf.backgroundImageView]];
+            image = [image imageByScalingAndCroppingForSize:CGSizeMake(width, height) applyDeviceScreenMultiplyingFactor:YES];
             weakSelf.backgroundImageView.image = image;
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             //nothing to do
