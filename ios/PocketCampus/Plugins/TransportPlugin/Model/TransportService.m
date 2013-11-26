@@ -214,6 +214,9 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 
 - (void)setUserTransportStations:(NSOrderedSet*)userTransportStations {
     [self initPersistedProperties];
+    if ([self.privateUserTransportStations isEqualToOrderedSet:userTransportStations]) {
+        return;
+    }
     self.privateUserTransportStations = [userTransportStations copy];
     [ObjectArchiver saveObject:self.privateUserTransportStations forKey:kUserTransportStationsKey andPluginName:@"transport"];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUserTransportStationsModifiedNotificationName object:self];

@@ -194,7 +194,7 @@
     self.time3Label.alpha = 0.0;
     self.lineLabel.alpha = 0.0;
     self.destinationLabelCenterYConstraint.constant = 13.0;
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         self.time1Label.alpha = 1.0;
         self.time2Label.alpha = 1.0;
         self.time3Label.alpha = 1.0;
