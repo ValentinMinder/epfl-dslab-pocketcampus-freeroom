@@ -28,37 +28,34 @@ enum Affluence {
 
 enum SatelliteBeerContainer {
   DRAFT = 1,
-  SMALL_BOTTLE = 2,
+  BOTTLE = 2,
   LARGE_BOTTLE = 3
 }
 
 struct SatelliteBeer {
   1: required string name;
   2: required string breweryName;
-  3: required string beerType;
-  4: required string originCountry;
-  5: required double alcoholRate;
-  6: required double price;
-  7: required string description;
-  8: required bool beerOfTheMonth;
-  9: required SatelliteBeerContainer container;
+  3: required string originCountry;
+  4: required double alcoholRate;
+  5: required double price;
+  6: required string description;
 }
 
-enum SatelliteAffluence {
-  EMPTY = 0,
-  MEDIUM = 1,
-  CROWDED = 2,
-  FULL = 3,
-  CLOSED = 4,
-  ERROR = 100
+struct SatelliteMenuPart {
+  1: required list<SatelliteBeer> beersOfTheMonth;
+  2: required map<string, list<SatelliteBeer>> beers;
+}
+
+enum SatelliteErrorCode {
+  // An error occurred while reaching the Satellite website
+  NETWORK_ERROR = 404,
 }
 
 struct BeersResponse {
-  1: required list<SatelliteBeer> beers;
-}
-
-struct AffluenceResponse {
-  1: required SatelliteAffluence affluence;
+  // required if the request completed successfully
+  1: optional map<SatelliteBeerContainer, SatelliteMenuPart> beerList;
+  // required if the request failed
+  2: optional SatelliteErrorCode errorCode;
 }
 
 service SatelliteService {
@@ -68,5 +65,4 @@ service SatelliteService {
 	
   // NEW STUFF
   BeersResponse getBeers();
-  AffluenceResponse getCurrentAffluence();
 }

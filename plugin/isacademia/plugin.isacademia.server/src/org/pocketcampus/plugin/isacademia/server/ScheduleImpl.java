@@ -109,7 +109,7 @@ public final class ScheduleImpl implements Schedule {
 		String url = ISA_SCHEDULE_URL
 				+ "?" + URL_FROM_PARAMETER + "=" + weekBeginning.toString(URL_PARAMETER_FORMAT)
 				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT)
-				+ "&" + URL_KEY_PARAMETER + "=" + token.getTequilaToken();
+				+ "&" + URL_KEY_PARAMETER  + "=" + token.getTequilaToken();
 
 		List<Cookie> cookies = new ArrayList<Cookie>();
 		BasicClientCookie isaCookie = new BasicClientCookie(ISA_COOKIE_NAME, token.getSessionId());
@@ -135,6 +135,9 @@ public final class ScheduleImpl implements Schedule {
 				.getDocumentElement();
 
 		List<StudyPeriod> periods = new ArrayList<StudyPeriod>();
+
+		// I'm not sure this is needed, but everybody does it
+		xdoc.normalize();
 
 		for (Node periodNode : getNodes(xdoc, STUDY_PERIOD_TAG)) {
 			StudyPeriod period = new StudyPeriod();

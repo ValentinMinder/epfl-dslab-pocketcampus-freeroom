@@ -10,17 +10,12 @@ import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum SatelliteAffluence implements org.apache.thrift.TEnum {
-  EMPTY(0),
-  MEDIUM(1),
-  CROWDED(2),
-  FULL(3),
-  CLOSED(4),
-  ERROR(100);
+public enum SatelliteErrorCode implements org.apache.thrift.TEnum {
+  NETWORK_ERROR(404);
 
   private final int value;
 
-  private SatelliteAffluence(int value) {
+  private SatelliteErrorCode(int value) {
     this.value = value;
   }
 
@@ -35,20 +30,10 @@ public enum SatelliteAffluence implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static SatelliteAffluence findByValue(int value) { 
+  public static SatelliteErrorCode findByValue(int value) { 
     switch (value) {
-      case 0:
-        return EMPTY;
-      case 1:
-        return MEDIUM;
-      case 2:
-        return CROWDED;
-      case 3:
-        return FULL;
-      case 4:
-        return CLOSED;
-      case 100:
-        return ERROR;
+      case 404:
+        return NETWORK_ERROR;
       default:
         return null;
     }

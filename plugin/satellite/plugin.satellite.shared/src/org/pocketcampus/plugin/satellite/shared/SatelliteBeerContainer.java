@@ -12,7 +12,7 @@ import org.apache.thrift.TEnum;
 
 public enum SatelliteBeerContainer implements org.apache.thrift.TEnum {
   DRAFT(1),
-  SMALL_BOTTLE(2),
+  BOTTLE(2),
   LARGE_BOTTLE(3);
 
   private final int value;
@@ -37,7 +37,7 @@ public enum SatelliteBeerContainer implements org.apache.thrift.TEnum {
       case 1:
         return DRAFT;
       case 2:
-        return SMALL_BOTTLE;
+        return BOTTLE;
       case 3:
         return LARGE_BOTTLE;
       default:
