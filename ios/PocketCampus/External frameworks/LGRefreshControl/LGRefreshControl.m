@@ -34,8 +34,8 @@
         if (!tableViewController) {
             @throw [NSException exceptionWithName:@"Illegal argument" reason:@"tableviewcontroller cannot be nil" userInfo:nil];
         }
-        if (!dataIdentifier || dataIdentifier.length == 0) {
-            @throw [NSException exceptionWithName:@"Illegal argument" reason:@"refreshedDataIdentifier cannot be nil or length 0" userInfo:nil];
+        if (dataIdentifier && dataIdentifier.length == 0) {
+            @throw [NSException exceptionWithName:@"Illegal argument" reason:@"refreshedDataIdentifier cannot be not nil with length 0" userInfo:nil];
         }
         self.tableViewController = tableViewController;
         self.refreshedDataIdentifier = dataIdentifier;
@@ -156,7 +156,7 @@
 
 - (void)markRefreshSuccessful {
     if (!self.refreshedDataIdentifier) {
-        @throw [NSException exceptionWithName:@"Illegal operation" reason:@"PCRefreshControl does not support markRefreshSuccessful without being initilized with a refreshTaskUniqueIdentifier" userInfo:nil];
+        @throw [NSException exceptionWithName:@"Illegal operation" reason:@"PCRefreshControl does not support markRefreshSuccessful without being initilized with a nil refreshedDataIdentifier" userInfo:nil];
     }
     self.lastSuccessfulRefreshDate = [NSDate date]; //now
     self.message = nil; //will set last message to default => last refresh message

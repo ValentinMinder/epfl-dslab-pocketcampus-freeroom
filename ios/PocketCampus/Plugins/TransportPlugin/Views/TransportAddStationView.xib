@@ -20,7 +20,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="10" preferredMaxLayoutWidth="310" translatesAutoresizingMaskIntoConstraints="NO" id="8" userLabel="Message label">
-                    <rect key="frame" x="5" y="148" width="310" height="0.0"/>
+                    <rect key="frame" x="5" y="188" width="310" height="0.0"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -56,7 +56,7 @@
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
             <constraints>
-                <constraint firstItem="8" firstAttribute="top" secondItem="9" secondAttribute="bottom" constant="40" id="6fL-Gp-FwH"/>
+                <constraint firstItem="8" firstAttribute="top" secondItem="9" secondAttribute="bottom" constant="80" id="6fL-Gp-FwH"/>
                 <constraint firstItem="9" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="7Lf-lf-lGG"/>
                 <constraint firstItem="8" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="5" id="Boy-Ya-KHm"/>
                 <constraint firstAttribute="trailing" secondItem="10" secondAttribute="trailing" constant="42" id="ExE-Ik-Lsd"/>

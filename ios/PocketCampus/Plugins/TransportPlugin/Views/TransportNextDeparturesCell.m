@@ -81,7 +81,7 @@
     _destinationStation = destinationStation;
     self.tripResult = nil;
     self.destinationLabelCenterYConstraint.constant = 0.0;
-    self.destinationLabel.text = self.destinationStation.shortName;
+    self.destinationLabel.attributedText = [self destinationAttributedStringWithTransportStation:self.destinationStation];
     [self.contentView layoutIfNeeded];
 }
 
@@ -95,9 +95,8 @@
             [self.loadingIndicator stopAnimating];
             self.lineLabel.font = self.originalLineLabelFont;
             self.lineLabel.textColor = self.originalLineLabelTextColor;
-            self.lineLabel.text = nil;
-            if (self.tripResult) {
-#warning TODO line name
+            if ([self.lineLabel.text isEqualToString:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil)]) {
+                self.lineLabel.text = nil;
             }
             break;
         case TransportNextDeparturesCellStateError:
@@ -117,8 +116,7 @@
         [PCUtils throwExceptionIfObject:tripResult notKindOfClass:[QueryTripsResult class]];
     }
     _tripResult = tripResult;
-    self.destinationLabel.text = self.tripResult.to.shortName;
-    self.destinationLabelCenterYConstraint.constant = 10.0;
+    self.destinationLabel.attributedText = [self destinationAttributedStringWithTransportStation:self.destinationStation];
     self.state = TransportNextDeparturesCellStateLoaded;
     if (!self.tripResult) {
         self.time1Label.text = nil;
@@ -126,21 +124,113 @@
         self.time3Label.text = nil;
         return;
     }
+    
     NSArray* redundantConnections = [TransportUtils nextRedundantDeparturesFromMessyResult:self.tripResult];
     redundantConnections = [TransportUtils connectionsWithoutAlreadyLeft:redundantConnections];
     NSArray* timeLabels = @[self.time1Label, self.time2Label, self.time3Label];
     if (redundantConnections.count > 0) {
         [redundantConnections enumerateObjectsUsingBlock:^(TransportConnection* connection, NSUInteger index, BOOL *stop) {
-            NSString* timesString = [TransportUtils automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+            NSString* timeString = [TransportUtils automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
             UILabel* label = index < 3 ? timeLabels[index] : nil;
-            if ([timesString isEqualToString:@"Now"]) {
-                label.text = @"now";
+            if ([timeString isEqualToString:@"Now"]) {
+                [self setBusImageViewVisible:YES inLabel:label];
+                label.text = @"     ";
             } else {
-                label.text = timesString;
+                [self setBusImageViewVisible:NO inLabel:label];
+                label.text = timeString;
             }
+            [label sizeToFit];
         }];
+        TransportConnection* connection = [redundantConnections firstObject]; //all have same line anyway
+        self.lineLabel.text = connection.line.shortName;
+        
     } else {
-#warning TODO non-redundant connection
+        NSArray* connections = [TransportUtils connectionsWithoutAlreadyLeft:self.tripResult.connections];
+        if (connections.count < 3) {
+            //reset labels if less than 3 connections, as we might then leave previous content of the cell
+            for (UILabel* label in timeLabels) {
+                label.text = nil;
+            }
+        }
+        [connections enumerateObjectsUsingBlock:^(TransportTrip* transportTrip, NSUInteger index, BOOL *stop) {
+            if (index > 2) {
+                *stop = YES;
+                return;
+            }
+            NSString* timeString = nil;
+            TransportConnection* firstConnection = nil;
+            if (transportTrip.parts.count == 0) {
+                timeString = [TransportUtils automaticHoursMinutesLeftStringForTimestamp:transportTrip.departureTime/1000.0];
+            } else {
+                if (transportTrip.parts.count > 1 && [(TransportConnection*)[transportTrip.parts firstObject] isFeetConnection]) {
+                    //first real connection is actual second one, as one at index 0 is feet
+                    firstConnection = transportTrip.parts[1];
+                } else {
+                    firstConnection = [transportTrip.parts firstObject];
+                }
+                timeString = [TransportUtils automaticTimeStringForTimestamp:(firstConnection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+            }
+            
+            UILabel* label = timeLabels[index];
+            NSString* lineName = firstConnection ? firstConnection.line.shortName : @"";
+            NSString* fullString = nil;
+            if ([timeString isEqualToString:@"Now"]) {
+                [self setBusImageViewVisible:YES inLabel:label];
+                fullString = [NSString stringWithFormat:@"     %@", lineName];
+            } else {
+                [self setBusImageViewVisible:NO inLabel:label];
+                fullString = [NSString stringWithFormat:@"%@ %@", timeString, lineName];
+            }
+            NSMutableAttributedString* fullAttrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+            [fullAttrString addAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.5 alpha:1.0],
+                                            NSFontAttributeName:[UIFont systemFontOfSize:label.font.fontDescriptor.pointSize-2]}
+                                    range:[fullString rangeOfString:lineName]];
+            label.attributedText = fullAttrString;
+        }];
+    }
+    
+    self.time1Label.alpha = 0.0;
+    self.time2Label.alpha = 0.0;
+    self.time3Label.alpha = 0.0;
+    self.lineLabel.alpha = 0.0;
+    self.destinationLabelCenterYConstraint.constant = 13.0;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.time1Label.alpha = 1.0;
+        self.time2Label.alpha = 1.0;
+        self.time3Label.alpha = 1.0;
+        self.lineLabel.alpha = 1.0;
+        [self.contentView layoutIfNeeded];
+    }];
+    
+}
+
+- (NSAttributedString*)destinationAttributedStringWithTransportStation:(TransportStation*)station {
+    return [[NSAttributedString alloc] initWithString:station.shortName];
+    /*NSString* toString = NSLocalizedStringFromTable(@"To", @"TransportPlugin", nil);
+    NSString* fullString = [NSString stringWithFormat:@"%@ %@", toString, station.shortName];
+    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+    [attrString addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:self.destinationLabel.font.fontDescriptor.pointSize-1],
+                                NSForegroundColorAttributeName:[UIColor lightGrayColor]}
+                        range:[fullString rangeOfString:toString]];
+    return attrString;*/
+}
+
+- (void)setBusImageViewVisible:(BOOL)visible inLabel:(UILabel*)label {
+    static const int kBusImageViewTag = 5;
+    UIImageView* busImageView = (UIImageView*)[label viewWithTag:kBusImageViewTag];
+    if (visible) {
+        if (busImageView) {
+            busImageView.hidden = NO;
+        } else {
+            busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TransportSmallBus"]];
+            busImageView.alpha = 0.8;
+            busImageView.translatesAutoresizingMaskIntoConstraints = NO;
+            [label addSubview:busImageView];
+            [label addConstraint:[NSLayoutConstraint constraintForCenterYtoSuperview:label forView:busImageView constant:0.0]];
+            [label addConstraints:[NSLayoutConstraint constraintsToSuperview:label forView:busImageView edgeInsets:UIEdgeInsetsMake(kNoInsetConstraint, 0.0, kNoInsetConstraint, kNoInsetConstraint)]];
+        }
+    } else {
+        busImageView.hidden = YES;
     }
 }
 

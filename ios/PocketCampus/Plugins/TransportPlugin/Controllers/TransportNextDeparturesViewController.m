@@ -68,6 +68,9 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 @property (nonatomic, strong) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, strong) IBOutlet UIToolbar* toolbar;
 
+@property (nonatomic, strong) UITableViewController* tableViewController;
+@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+
 @property (nonatomic, strong) TransportService* transportService;
 @property (nonatomic, strong) NSOrderedSet* usersStations;
 @property (nonatomic, strong) NSMutableDictionary* tripResults; //key : destination station name, value : QueryTripResult
@@ -102,11 +105,18 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/transport"];
+    
+    self.tableViewController = [[UITableViewController alloc] initWithStyle:self.tableView.style];
+    [self addChildViewController:self.tableViewController];
+    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
+    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
+    self.tableViewController.tableView = self.tableView;
+    
     self.locationButton.tintColor = [PCValues pocketCampusRed];
     self.tableView.hidden = YES;
-    self.tableView.rowHeight = 60.0;
+    self.tableView.rowHeight = 74.0;
     self.tableView.contentInset = UIEdgeInsetsMake(64.0+self.topContainerView.frame.size.height, 0, self.toolbar.frame.size.height, 0);
-    NSLog(@"%lf", self.topLayoutGuide.length);
+    self.tableView.separatorInset = self.tableView.contentInset;
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshButton;
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fromLabelPressed)];
@@ -163,6 +173,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 - (void)refresh {
     NSLog(@"-> Refresh...");
+    [self.lgRefreshControl endRefreshing];
     
     self.usersStations = [self.transportService.userTransportStations copy];
     self.departureStation = self.transportService.userManualDepartureStation;

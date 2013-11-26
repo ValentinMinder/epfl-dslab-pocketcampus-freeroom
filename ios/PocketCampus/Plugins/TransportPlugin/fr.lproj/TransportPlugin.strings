@@ -9,7 +9,8 @@
 // Common
 
 "PluginName" = "Transports";
-"From:" = "Départ :";
+"From:" = "De:";
+"To" = "→";
 "NoStation" = "Aucune station";
 "WelcomeTouchInfoInstructions" = "Touchez le bouton signets pour gérer\n vos stations.";
 "Need2StationsTouchInfoInstructions" = "Deux stations sont au minimum nécessaires pour afficher les horaires. Touchez le bouton signets\npour ajouter une deuxième station.";
@@ -43,6 +44,7 @@
 // TransportNextDeparturesViewController
 
 "LoadingDefaultStations..." = "Chargement des stations\npar défaut...";
+"locating..." = "localisation...";
 
 // TransportDepartureSelectionViewController
 
