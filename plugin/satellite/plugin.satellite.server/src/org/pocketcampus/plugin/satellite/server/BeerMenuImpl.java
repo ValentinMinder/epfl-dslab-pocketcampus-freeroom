@@ -16,7 +16,12 @@ import org.w3c.dom.NodeList;
 import org.pocketcampus.platform.sdk.shared.HttpClient;
 import org.pocketcampus.plugin.satellite.shared.*;
 
-public final class BeerListImpl implements BeerList {
+/**
+ * Gets Satellite's menu from their XML feed.
+ * 
+ * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ */
+public final class BeerMenuImpl implements BeerMenu {
 	private static final String BEER_LIST_URL = "http://sat.epfl.ch/pocket/flux.xml";
 
 	private static final String BEER_ELEMENT = "biere";
@@ -37,40 +42,38 @@ public final class BeerListImpl implements BeerList {
 
 	static {
 		CONTAINERS.put("pression", SatelliteBeerContainer.DRAFT);
-		CONTAINERS.put("bouteille", SatelliteBeerContainer.SMALL_BOTTLE);
+		CONTAINERS.put("bouteille", SatelliteBeerContainer.BOTTLE);
 		CONTAINERS.put("grande_bouteille", SatelliteBeerContainer.LARGE_BOTTLE);
 	}
 
 	private final HttpClient _client;
 
-	public BeerListImpl(HttpClient client) {
+	public BeerMenuImpl(HttpClient client) {
 		_client = client;
 	}
 
 	@Override
-	public List<SatelliteBeer> get() throws Exception {
-		String xml = _client.getString(BEER_LIST_URL, StandardCharsets.UTF_8);
+	public BeersResponse get() throws Exception {
+		String xml;
+		try {
+			xml = _client.getString(BEER_LIST_URL, StandardCharsets.UTF_8);
+		} catch (Exception e) {
+			return new BeersResponse().setErrorCode(SatelliteErrorCode.NETWORK_ERROR);
+		}
 
 		Element xdoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 				.parse(new ByteArrayInputStream(xml.getBytes()))
 				.getDocumentElement();
 
-		List<SatelliteBeer> beers = new ArrayList<SatelliteBeer>();
+		Map<SatelliteBeerContainer, SatelliteMenuPart> menu = new HashMap<SatelliteBeerContainer, SatelliteMenuPart>();
+
 		for (Node beerNode : getNodes(xdoc, BEER_ELEMENT)) {
 			SatelliteBeer beer = new SatelliteBeer();
 
 			beer.setName(getChildText(beerNode, BEER_NAME_ELEMENT));
 			beer.setBreweryName(getChildText(beerNode, BEER_BREWERY_ELEMENT));
-			beer.setBeerType(getChildText(beerNode, BEER_TYPE_ELEMENT));
 			beer.setOriginCountry(getChildText(beerNode, BEER_ORIGIN_ELEMENT));
 			beer.setDescription(getChildText(beerNode, BEER_DESCRIPTION_ELEMENT));
-
-			String container = getAttributeText(beerNode, BEER_CONTAINER_ATTRIBUTE);
-			beer.setBeerOfTheMonth(container.startsWith(CONTAINER_BEER_OF_THE_MONTH_PREFIX));
-			if (beer.isBeerOfTheMonth()) {
-				container = container.substring(CONTAINER_BEER_OF_THE_MONTH_PREFIX.length());
-			}
-			beer.setContainer(CONTAINERS.get(container));
 
 			String alcoholRate = getChildText(beerNode, BEER_ALCOHOL_RATE_ELEMENT);
 			alcoholRate = alcoholRate.replace(ALCOHOL_RATE_SUFFIX, "");
@@ -80,10 +83,28 @@ public final class BeerListImpl implements BeerList {
 			price = price.replace(PRICE_SUFFIX, "");
 			beer.setPrice(Double.parseDouble(price));
 
-			beers.add(beer);
+			String containerName = getAttributeText(beerNode, BEER_CONTAINER_ATTRIBUTE);
+			boolean isBeerOfTheMonth = containerName.startsWith(CONTAINER_BEER_OF_THE_MONTH_PREFIX);
+			if (isBeerOfTheMonth) {
+				containerName = containerName.substring(CONTAINER_BEER_OF_THE_MONTH_PREFIX.length());
+			}
+			SatelliteBeerContainer container = CONTAINERS.get(containerName);
+			String beerType = prettify(getChildText(beerNode, BEER_TYPE_ELEMENT));
+
+			if (!menu.containsKey(container)) {
+				menu.put(container, new SatelliteMenuPart(new ArrayList<SatelliteBeer>(), new HashMap<String, List<SatelliteBeer>>()));
+			}
+			if (isBeerOfTheMonth) {
+				menu.get(container).addToBeersOfTheMonth(beer);
+			} else {
+				if (!menu.get(container).getBeers().containsKey(beerType)) {
+					menu.get(container).getBeers().put(beerType, new ArrayList<SatelliteBeer>());
+				}
+				menu.get(container).getBeers().get(beerType).add(beer);
+			}
 		}
 
-		return beers;
+		return new BeersResponse().setBeerList(menu);
 	}
 
 	/** Gets the text from the specified attribute of the specified XML node. */
@@ -104,5 +125,15 @@ public final class BeerListImpl implements BeerList {
 			retVal.add(nodes.item(n));
 		}
 		return retVal;
+	}
+
+	private static String prettify(String s) {
+		String[] split = s.split(" ");
+		String result = "";
+		for (int n = 0; n < split.length; n++) {
+			result += Character.toUpperCase(split[n].charAt(0)) + split[n].substring(1).toLowerCase();
+			result += " ";
+		}
+		return result.trim();
 	}
 }

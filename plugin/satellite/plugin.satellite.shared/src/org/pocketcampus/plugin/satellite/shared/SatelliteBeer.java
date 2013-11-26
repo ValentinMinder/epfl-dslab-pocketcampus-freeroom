@@ -26,39 +26,26 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField BREWERY_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("breweryName", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField BEER_TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("beerType", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField ORIGIN_COUNTRY_FIELD_DESC = new org.apache.thrift.protocol.TField("originCountry", org.apache.thrift.protocol.TType.STRING, (short)4);
-  private static final org.apache.thrift.protocol.TField ALCOHOL_RATE_FIELD_DESC = new org.apache.thrift.protocol.TField("alcoholRate", org.apache.thrift.protocol.TType.DOUBLE, (short)5);
-  private static final org.apache.thrift.protocol.TField PRICE_FIELD_DESC = new org.apache.thrift.protocol.TField("price", org.apache.thrift.protocol.TType.DOUBLE, (short)6);
-  private static final org.apache.thrift.protocol.TField DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("description", org.apache.thrift.protocol.TType.STRING, (short)7);
-  private static final org.apache.thrift.protocol.TField BEER_OF_THE_MONTH_FIELD_DESC = new org.apache.thrift.protocol.TField("beerOfTheMonth", org.apache.thrift.protocol.TType.BOOL, (short)8);
-  private static final org.apache.thrift.protocol.TField CONTAINER_FIELD_DESC = new org.apache.thrift.protocol.TField("container", org.apache.thrift.protocol.TType.I32, (short)9);
+  private static final org.apache.thrift.protocol.TField ORIGIN_COUNTRY_FIELD_DESC = new org.apache.thrift.protocol.TField("originCountry", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField ALCOHOL_RATE_FIELD_DESC = new org.apache.thrift.protocol.TField("alcoholRate", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
+  private static final org.apache.thrift.protocol.TField PRICE_FIELD_DESC = new org.apache.thrift.protocol.TField("price", org.apache.thrift.protocol.TType.DOUBLE, (short)5);
+  private static final org.apache.thrift.protocol.TField DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("description", org.apache.thrift.protocol.TType.STRING, (short)6);
 
   private String name; // required
   private String breweryName; // required
-  private String beerType; // required
   private String originCountry; // required
   private double alcoholRate; // required
   private double price; // required
   private String description; // required
-  private boolean beerOfTheMonth; // required
-  private SatelliteBeerContainer container; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     NAME((short)1, "name"),
     BREWERY_NAME((short)2, "breweryName"),
-    BEER_TYPE((short)3, "beerType"),
-    ORIGIN_COUNTRY((short)4, "originCountry"),
-    ALCOHOL_RATE((short)5, "alcoholRate"),
-    PRICE((short)6, "price"),
-    DESCRIPTION((short)7, "description"),
-    BEER_OF_THE_MONTH((short)8, "beerOfTheMonth"),
-    /**
-     * 
-     * @see SatelliteBeerContainer
-     */
-    CONTAINER((short)9, "container");
+    ORIGIN_COUNTRY((short)3, "originCountry"),
+    ALCOHOL_RATE((short)4, "alcoholRate"),
+    PRICE((short)5, "price"),
+    DESCRIPTION((short)6, "description");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -77,20 +64,14 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
           return NAME;
         case 2: // BREWERY_NAME
           return BREWERY_NAME;
-        case 3: // BEER_TYPE
-          return BEER_TYPE;
-        case 4: // ORIGIN_COUNTRY
+        case 3: // ORIGIN_COUNTRY
           return ORIGIN_COUNTRY;
-        case 5: // ALCOHOL_RATE
+        case 4: // ALCOHOL_RATE
           return ALCOHOL_RATE;
-        case 6: // PRICE
+        case 5: // PRICE
           return PRICE;
-        case 7: // DESCRIPTION
+        case 6: // DESCRIPTION
           return DESCRIPTION;
-        case 8: // BEER_OF_THE_MONTH
-          return BEER_OF_THE_MONTH;
-        case 9: // CONTAINER
-          return CONTAINER;
         default:
           return null;
       }
@@ -133,8 +114,7 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
   // isset id assignments
   private static final int __ALCOHOLRATE_ISSET_ID = 0;
   private static final int __PRICE_ISSET_ID = 1;
-  private static final int __BEEROFTHEMONTH_ISSET_ID = 2;
-  private BitSet __isset_bit_vector = new BitSet(3);
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -142,8 +122,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.BREWERY_NAME, new org.apache.thrift.meta_data.FieldMetaData("breweryName", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.BEER_TYPE, new org.apache.thrift.meta_data.FieldMetaData("beerType", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.ORIGIN_COUNTRY, new org.apache.thrift.meta_data.FieldMetaData("originCountry", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -153,10 +131,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("description", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.BEER_OF_THE_MONTH, new org.apache.thrift.meta_data.FieldMetaData("beerOfTheMonth", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.CONTAINER, new org.apache.thrift.meta_data.FieldMetaData("container", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, SatelliteBeerContainer.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SatelliteBeer.class, metaDataMap);
   }
@@ -167,27 +141,20 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
   public SatelliteBeer(
     String name,
     String breweryName,
-    String beerType,
     String originCountry,
     double alcoholRate,
     double price,
-    String description,
-    boolean beerOfTheMonth,
-    SatelliteBeerContainer container)
+    String description)
   {
     this();
     this.name = name;
     this.breweryName = breweryName;
-    this.beerType = beerType;
     this.originCountry = originCountry;
     this.alcoholRate = alcoholRate;
     setAlcoholRateIsSet(true);
     this.price = price;
     setPriceIsSet(true);
     this.description = description;
-    this.beerOfTheMonth = beerOfTheMonth;
-    setBeerOfTheMonthIsSet(true);
-    this.container = container;
   }
 
   /**
@@ -202,9 +169,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     if (other.isSetBreweryName()) {
       this.breweryName = other.breweryName;
     }
-    if (other.isSetBeerType()) {
-      this.beerType = other.beerType;
-    }
     if (other.isSetOriginCountry()) {
       this.originCountry = other.originCountry;
     }
@@ -212,10 +176,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     this.price = other.price;
     if (other.isSetDescription()) {
       this.description = other.description;
-    }
-    this.beerOfTheMonth = other.beerOfTheMonth;
-    if (other.isSetContainer()) {
-      this.container = other.container;
     }
   }
 
@@ -227,16 +187,12 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
   public void clear() {
     this.name = null;
     this.breweryName = null;
-    this.beerType = null;
     this.originCountry = null;
     setAlcoholRateIsSet(false);
     this.alcoholRate = 0.0;
     setPriceIsSet(false);
     this.price = 0.0;
     this.description = null;
-    setBeerOfTheMonthIsSet(false);
-    this.beerOfTheMonth = false;
-    this.container = null;
   }
 
   public String getName() {
@@ -284,30 +240,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
   public void setBreweryNameIsSet(boolean value) {
     if (!value) {
       this.breweryName = null;
-    }
-  }
-
-  public String getBeerType() {
-    return this.beerType;
-  }
-
-  public SatelliteBeer setBeerType(String beerType) {
-    this.beerType = beerType;
-    return this;
-  }
-
-  public void unsetBeerType() {
-    this.beerType = null;
-  }
-
-  /** Returns true if field beerType is set (has been assigned a value) and false otherwise */
-  public boolean isSetBeerType() {
-    return this.beerType != null;
-  }
-
-  public void setBeerTypeIsSet(boolean value) {
-    if (!value) {
-      this.beerType = null;
     }
   }
 
@@ -405,61 +337,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     }
   }
 
-  public boolean isBeerOfTheMonth() {
-    return this.beerOfTheMonth;
-  }
-
-  public SatelliteBeer setBeerOfTheMonth(boolean beerOfTheMonth) {
-    this.beerOfTheMonth = beerOfTheMonth;
-    setBeerOfTheMonthIsSet(true);
-    return this;
-  }
-
-  public void unsetBeerOfTheMonth() {
-    __isset_bit_vector.clear(__BEEROFTHEMONTH_ISSET_ID);
-  }
-
-  /** Returns true if field beerOfTheMonth is set (has been assigned a value) and false otherwise */
-  public boolean isSetBeerOfTheMonth() {
-    return __isset_bit_vector.get(__BEEROFTHEMONTH_ISSET_ID);
-  }
-
-  public void setBeerOfTheMonthIsSet(boolean value) {
-    __isset_bit_vector.set(__BEEROFTHEMONTH_ISSET_ID, value);
-  }
-
-  /**
-   * 
-   * @see SatelliteBeerContainer
-   */
-  public SatelliteBeerContainer getContainer() {
-    return this.container;
-  }
-
-  /**
-   * 
-   * @see SatelliteBeerContainer
-   */
-  public SatelliteBeer setContainer(SatelliteBeerContainer container) {
-    this.container = container;
-    return this;
-  }
-
-  public void unsetContainer() {
-    this.container = null;
-  }
-
-  /** Returns true if field container is set (has been assigned a value) and false otherwise */
-  public boolean isSetContainer() {
-    return this.container != null;
-  }
-
-  public void setContainerIsSet(boolean value) {
-    if (!value) {
-      this.container = null;
-    }
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -475,14 +352,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
         unsetBreweryName();
       } else {
         setBreweryName((String)value);
-      }
-      break;
-
-    case BEER_TYPE:
-      if (value == null) {
-        unsetBeerType();
-      } else {
-        setBeerType((String)value);
       }
       break;
 
@@ -518,22 +387,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
       }
       break;
 
-    case BEER_OF_THE_MONTH:
-      if (value == null) {
-        unsetBeerOfTheMonth();
-      } else {
-        setBeerOfTheMonth((Boolean)value);
-      }
-      break;
-
-    case CONTAINER:
-      if (value == null) {
-        unsetContainer();
-      } else {
-        setContainer((SatelliteBeerContainer)value);
-      }
-      break;
-
     }
   }
 
@@ -544,9 +397,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
 
     case BREWERY_NAME:
       return getBreweryName();
-
-    case BEER_TYPE:
-      return getBeerType();
 
     case ORIGIN_COUNTRY:
       return getOriginCountry();
@@ -559,12 +409,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
 
     case DESCRIPTION:
       return getDescription();
-
-    case BEER_OF_THE_MONTH:
-      return Boolean.valueOf(isBeerOfTheMonth());
-
-    case CONTAINER:
-      return getContainer();
 
     }
     throw new IllegalStateException();
@@ -581,8 +425,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
       return isSetName();
     case BREWERY_NAME:
       return isSetBreweryName();
-    case BEER_TYPE:
-      return isSetBeerType();
     case ORIGIN_COUNTRY:
       return isSetOriginCountry();
     case ALCOHOL_RATE:
@@ -591,10 +433,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
       return isSetPrice();
     case DESCRIPTION:
       return isSetDescription();
-    case BEER_OF_THE_MONTH:
-      return isSetBeerOfTheMonth();
-    case CONTAINER:
-      return isSetContainer();
     }
     throw new IllegalStateException();
   }
@@ -627,15 +465,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
       if (!(this_present_breweryName && that_present_breweryName))
         return false;
       if (!this.breweryName.equals(that.breweryName))
-        return false;
-    }
-
-    boolean this_present_beerType = true && this.isSetBeerType();
-    boolean that_present_beerType = true && that.isSetBeerType();
-    if (this_present_beerType || that_present_beerType) {
-      if (!(this_present_beerType && that_present_beerType))
-        return false;
-      if (!this.beerType.equals(that.beerType))
         return false;
     }
 
@@ -675,24 +504,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
         return false;
     }
 
-    boolean this_present_beerOfTheMonth = true;
-    boolean that_present_beerOfTheMonth = true;
-    if (this_present_beerOfTheMonth || that_present_beerOfTheMonth) {
-      if (!(this_present_beerOfTheMonth && that_present_beerOfTheMonth))
-        return false;
-      if (this.beerOfTheMonth != that.beerOfTheMonth)
-        return false;
-    }
-
-    boolean this_present_container = true && this.isSetContainer();
-    boolean that_present_container = true && that.isSetContainer();
-    if (this_present_container || that_present_container) {
-      if (!(this_present_container && that_present_container))
-        return false;
-      if (!this.container.equals(that.container))
-        return false;
-    }
-
     return true;
   }
 
@@ -709,11 +520,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     builder.append(present_breweryName);
     if (present_breweryName)
       builder.append(breweryName);
-
-    boolean present_beerType = true && (isSetBeerType());
-    builder.append(present_beerType);
-    if (present_beerType)
-      builder.append(beerType);
 
     boolean present_originCountry = true && (isSetOriginCountry());
     builder.append(present_originCountry);
@@ -734,16 +540,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     builder.append(present_description);
     if (present_description)
       builder.append(description);
-
-    boolean present_beerOfTheMonth = true;
-    builder.append(present_beerOfTheMonth);
-    if (present_beerOfTheMonth)
-      builder.append(beerOfTheMonth);
-
-    boolean present_container = true && (isSetContainer());
-    builder.append(present_container);
-    if (present_container)
-      builder.append(container.getValue());
 
     return builder.toHashCode();
   }
@@ -772,16 +568,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     }
     if (isSetBreweryName()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.breweryName, typedOther.breweryName);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetBeerType()).compareTo(typedOther.isSetBeerType());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetBeerType()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.beerType, typedOther.beerType);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -826,26 +612,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetBeerOfTheMonth()).compareTo(typedOther.isSetBeerOfTheMonth());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetBeerOfTheMonth()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.beerOfTheMonth, typedOther.beerOfTheMonth);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetContainer()).compareTo(typedOther.isSetContainer());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetContainer()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.container, typedOther.container);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     return 0;
   }
 
@@ -877,21 +643,14 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // BEER_TYPE
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.beerType = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 4: // ORIGIN_COUNTRY
+        case 3: // ORIGIN_COUNTRY
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.originCountry = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // ALCOHOL_RATE
+        case 4: // ALCOHOL_RATE
           if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
             this.alcoholRate = iprot.readDouble();
             setAlcoholRateIsSet(true);
@@ -899,7 +658,7 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 6: // PRICE
+        case 5: // PRICE
           if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
             this.price = iprot.readDouble();
             setPriceIsSet(true);
@@ -907,24 +666,9 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 7: // DESCRIPTION
+        case 6: // DESCRIPTION
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.description = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 8: // BEER_OF_THE_MONTH
-          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-            this.beerOfTheMonth = iprot.readBool();
-            setBeerOfTheMonthIsSet(true);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 9: // CONTAINER
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.container = SatelliteBeerContainer.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -943,9 +687,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     if (!isSetPrice()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'price' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetBeerOfTheMonth()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'beerOfTheMonth' was not found in serialized data! Struct: " + toString());
-    }
     validate();
   }
 
@@ -963,11 +704,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
       oprot.writeString(this.breweryName);
       oprot.writeFieldEnd();
     }
-    if (this.beerType != null) {
-      oprot.writeFieldBegin(BEER_TYPE_FIELD_DESC);
-      oprot.writeString(this.beerType);
-      oprot.writeFieldEnd();
-    }
     if (this.originCountry != null) {
       oprot.writeFieldBegin(ORIGIN_COUNTRY_FIELD_DESC);
       oprot.writeString(this.originCountry);
@@ -982,14 +718,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     if (this.description != null) {
       oprot.writeFieldBegin(DESCRIPTION_FIELD_DESC);
       oprot.writeString(this.description);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldBegin(BEER_OF_THE_MONTH_FIELD_DESC);
-    oprot.writeBool(this.beerOfTheMonth);
-    oprot.writeFieldEnd();
-    if (this.container != null) {
-      oprot.writeFieldBegin(CONTAINER_FIELD_DESC);
-      oprot.writeI32(this.container.getValue());
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -1017,14 +745,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("beerType:");
-    if (this.beerType == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.beerType);
-    }
-    first = false;
-    if (!first) sb.append(", ");
     sb.append("originCountry:");
     if (this.originCountry == null) {
       sb.append("null");
@@ -1048,18 +768,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
       sb.append(this.description);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("beerOfTheMonth:");
-    sb.append(this.beerOfTheMonth);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("container:");
-    if (this.container == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.container);
-    }
-    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -1072,9 +780,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     if (breweryName == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'breweryName' was not present! Struct: " + toString());
     }
-    if (beerType == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'beerType' was not present! Struct: " + toString());
-    }
     if (originCountry == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'originCountry' was not present! Struct: " + toString());
     }
@@ -1082,10 +787,6 @@ public class SatelliteBeer implements org.apache.thrift.TBase<SatelliteBeer, Sat
     // alas, we cannot check 'price' because it's a primitive and you chose the non-beans generator.
     if (description == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'description' was not present! Struct: " + toString());
-    }
-    // alas, we cannot check 'beerOfTheMonth' because it's a primitive and you chose the non-beans generator.
-    if (container == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'container' was not present! Struct: " + toString());
     }
   }
 

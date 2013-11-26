@@ -21,7 +21,7 @@
   <biere contenant="bouteille">
     <nom>Gulden Draak</nom>
     <brasserie>Van Steenberge</brasserie>
-    <type>Brune</type>
+    <type>brune</type>
     <origine>Belgique</origine>
     <teneur>10.5°</teneur>
     <prix>5CHF</prix>

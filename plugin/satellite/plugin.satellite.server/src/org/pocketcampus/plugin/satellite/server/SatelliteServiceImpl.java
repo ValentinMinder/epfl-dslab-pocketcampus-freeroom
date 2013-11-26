@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.satellite.server;
 
-import java.util.List;
-
 import org.apache.thrift.TException;
 
 import org.pocketcampus.platform.sdk.shared.CachingProxy;
@@ -10,35 +8,29 @@ import org.pocketcampus.plugin.satellite.shared.*;
 
 import org.joda.time.Duration;
 
+/**
+ * Implementation of SatelliteService.
+ * 
+ * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ */
 public final class SatelliteServiceImpl implements SatelliteService.Iface {
-	private final BeerList _beers;
-	private final AffluenceGetter _affluenceGetter;
+	private final BeerMenu _beerMenu;
 
-	public SatelliteServiceImpl(BeerList beers, AffluenceGetter affluenceGetter) {
-		_beers = beers;
-		_affluenceGetter = affluenceGetter;
+	public SatelliteServiceImpl(BeerMenu beerMenu) {
+		_beerMenu = beerMenu;
 	}
 
 	public SatelliteServiceImpl() {
-		this(CachingProxy.create(new BeerListImpl(new HttpClientImpl()), Duration.standardDays(1)), 
-			 CachingProxy.create(new AffluenceGetterImpl(new HttpClientImpl()), Duration.standardMinutes(1)));
+		this(CachingProxy.create(new BeerMenuImpl(new HttpClientImpl()), Duration.standardDays(1)));
 	}
 
 	@Override
 	public BeersResponse getBeers() throws TException {
-		List<SatelliteBeer> beers;
 		try {
-			beers = _beers.get();
+			return _beerMenu.get();
 		} catch (Exception e) {
-			throw new TException("Something went wrong during the parsing of beers");
+			throw new TException("Something went wrong during the parsing of beers.", e);
 		}
-		return new BeersResponse(beers);
-	}
-
-	@Override
-	public AffluenceResponse getCurrentAffluence() throws TException {
-		SatelliteAffluence affluence = _affluenceGetter.get();
-		return new AffluenceResponse(affluence);
 	}
 
 	// OLD STUFF - DO NOT TOUCH
