@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -222,7 +223,14 @@ public class VoteResponse implements org.apache.thrift.TBase<VoteResponse, VoteR
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_submitStatus = true && (isSetSubmitStatus());
+    builder.append(present_submitStatus);
+    if (present_submitStatus)
+      builder.append(submitStatus.getValue());
+
+    return builder.toHashCode();
   }
 
   public int compareTo(VoteResponse other) {

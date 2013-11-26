@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.food.server;
 
 public interface DeviceDatabase {
-	void insert(String deviceId);
+	void vote(String deviceId);
 	boolean hasVotedToday(String deviceId);
 }

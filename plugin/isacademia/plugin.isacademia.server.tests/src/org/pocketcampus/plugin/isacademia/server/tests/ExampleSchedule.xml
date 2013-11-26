@@ -1,0 +1,441 @@
+<data status="Terminé" date="20131108 18:21:46" key="1754686818" dateFin="19.10.2013" dateDebut="15.10.2013">
+  <study-period>
+    <id>1696005192</id>
+    <date>15.10.2013</date>
+    <duration>105</duration>
+    <day>2</day>
+    <startTime>08:15</startTime>
+    <endTime>10:00</endTime>
+    <type>
+      <text lang="en">Exercises</text>
+      <text lang="fr">Exercices</text>
+    </type>
+    <course>
+      <id>1776067</id>
+      <name>
+        <text lang="fr">Computer networks</text>
+      </name>
+    </course>
+    <room>
+      <id>2189476</id>
+      <code>INF2</code>
+      <name>
+        <text lang="fr">INF 2</text>
+      </name>
+    </room>
+    <room>
+      <id>2189476</id>
+      <code>BC07-08</code>
+      <name>
+        <text lang="fr">BC 07-08</text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1696005206</id>
+    <date>15.10.2013</date>
+    <duration>105</duration>
+    <day>2</day>
+    <startTime>13:15</startTime>
+    <endTime>15:00</endTime>
+    <type>
+      <text lang="en">Lecture</text>
+      <text lang="fr">Cours</text>
+    </type>
+    <course>
+      <id>1771839</id>
+      <name>
+        <text lang="en">Computer architecture I</text>
+        <text lang="fr">Architecture des ordinateurs I</text>
+      </name>
+    </course>
+    <room>
+      <id>2192144</id>
+      <code>CO3</code>
+      <name>
+        <text lang="fr">CO 3</text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1705233719</id>
+    <date>15.10.2013</date>
+    <duration>105</duration>
+    <day>2</day>
+    <startTime>15:15</startTime>
+    <endTime>17:00</endTime>
+    <type>
+      <text lang="en">Lecture</text>
+      <text lang="fr">Cours</text>
+    </type>
+    <course>
+      <id>235424562</id>
+      <name>
+        <text lang="en">State and human rights</text>
+        <text lang="fr">État et droits humains</text>
+      </name>
+    </course>
+    <room>
+      <id>2191702</id>
+      <code>CE1101</code>
+      <name>
+        <text lang="fr">CE 1 101</text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1696005219</id>
+    <date>16.10.2013</date>
+    <duration>225</duration>
+    <day>3</day>
+    <startTime>08:15</startTime>
+    <endTime>12:00</endTime>
+    <type>
+      <text lang="en">Practical work</text>
+      <text lang="fr">TP</text>
+    </type>
+    <course>
+      <id>1771839</id>
+      <name>
+        <text lang="en">Computer architecture I</text>
+        <text lang="fr">Architecture des ordinateurs I</text>
+      </name>
+    </course>
+    <room>
+      <id>2189476</id>
+      <code>INF2</code>
+      <name>
+        <text lang="fr">INF 2</text>
+      </name>
+    </room>
+    <room>
+      <id>2189476</id>
+      <code>INF1</code>
+      <name>
+        <text lang="fr">INF 1 </text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1697658807</id>
+    <date>16.10.2013</date>
+    <duration>105</duration>
+    <day>3</day>
+    <startTime>13:15</startTime>
+    <endTime>15:00</endTime>
+    <type>
+      <text lang="en">Lecture</text>
+      <text lang="fr">Cours</text>
+    </type>
+    <course>
+      <id>1677967724</id>
+      <name>
+        <text lang="en">General physics I (For IC)</text>
+        <text lang="fr">Physique générale I (pour IC)</text>
+      </name>
+    </course>
+    <room>
+      <id>2190822</id>
+      <code>CE1</code>
+      <name>
+        <text lang="fr">CE 1</text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1697660889</id>
+    <date>16.10.2013</date>
+    <duration>105</duration>
+    <day>3</day>
+    <startTime>15:15</startTime>
+    <endTime>17:00</endTime>
+    <type>
+      <text lang="en">Lecture</text>
+      <text lang="fr">Cours</text>
+    </type>
+    <course>
+      <id>1678952194</id>
+      <name>
+        <text lang="fr">Programming principles</text>
+      </name>
+    </course>
+    <room>
+      <id>2191838</id>
+      <code>CM1</code>
+      <name>
+        <text lang="fr">CM 1 </text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1696005229</id>
+    <date>17.10.2013</date>
+    <duration>105</duration>
+    <day>4</day>
+    <startTime>08:15</startTime>
+    <endTime>10:00</endTime>
+    <type>
+      <text lang="en">Lecture</text>
+      <text lang="fr">Cours</text>
+    </type>
+    <course>
+      <id>1773492</id>
+      <name>
+        <text lang="en">Electronics I</text>
+        <text lang="fr">Electronique I</text>
+      </name>
+    </course>
+    <room>
+      <id>2192131</id>
+      <code>CO2</code>
+      <name>
+        <text lang="fr">CO 2</text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1696005239</id>
+    <date>17.10.2013</date>
+    <duration>45</duration>
+    <day>4</day>
+    <startTime>10:15</startTime>
+    <endTime>11:00</endTime>
+    <type>
+      <text lang="en">Exercises</text>
+      <text lang="fr">Exercices</text>
+    </type>
+    <course>
+      <id>1773492</id>
+      <name>
+        <text lang="en">Electronics I</text>
+        <text lang="fr">Electronique I</text>
+      </name>
+    </course>
+    <room>
+      <id>2192346</id>
+      <code>ELA1</code>
+      <name>
+        <text lang="fr">ELA 1 </text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1697659106</id>
+    <date>17.10.2013</date>
+    <duration>105</duration>
+    <day>4</day>
+    <startTime>11:15</startTime>
+    <endTime>13:00</endTime>
+    <type>
+      <text lang="en">Lecture</text>
+      <text lang="fr">Cours</text>
+    </type>
+    <course>
+      <id>1677967724</id>
+      <name>
+        <text lang="en">General physics I (For IC)</text>
+        <text lang="fr">Physique générale I (pour IC)</text>
+      </name>
+    </course>
+    <room>
+      <id>2190822</id>
+      <code>CE1</code>
+      <name>
+        <text lang="fr">CE 1</text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1696005249</id>
+    <date>17.10.2013</date>
+    <duration>45</duration>
+    <day>4</day>
+    <startTime>14:15</startTime>
+    <endTime>15:00</endTime>
+    <type>
+      <text lang="en">Lecture</text>
+      <text lang="fr">Cours</text>
+    </type>
+    <course>
+      <id>348715502</id>
+      <name>
+        <text lang="fr">Circuits and systems I</text>
+      </name>
+    </course>
+    <room>
+      <id>2191851</id>
+      <code>CM2</code>
+      <name>
+        <text lang="fr">CM 2</text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1696005261</id>
+    <date>17.10.2013</date>
+    <duration>105</duration>
+    <day>4</day>
+    <startTime>15:15</startTime>
+    <endTime>17:00</endTime>
+    <type>
+      <text lang="en">Exercises</text>
+      <text lang="fr">Exercices</text>
+    </type>
+    <course>
+      <id>348715502</id>
+      <name>
+        <text lang="fr">Circuits and systems I</text>
+      </name>
+    </course>
+    <room>
+      <id>2192253</id>
+      <code>CO021</code>
+      <name>
+        <text lang="fr">CO 021</text>
+      </name>
+    </room>
+    <room>
+      <id>2192253</id>
+      <code>CM2</code>
+      <name>
+        <text lang="fr">CM 2</text>
+      </name>
+    </room>
+    <room>
+      <id>2192253</id>
+      <code>CO020</code>
+      <name>
+        <text lang="fr">CO 020</text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1697659504</id>
+    <date>17.10.2013</date>
+    <duration>105</duration>
+    <day>4</day>
+    <startTime>17:15</startTime>
+    <endTime>19:00</endTime>
+    <type>
+      <text lang="en">Exercises</text>
+      <text lang="fr">Exercices</text>
+    </type>
+    <course>
+      <id>1677967724</id>
+      <name>
+        <text lang="en">General physics I (For IC)</text>
+        <text lang="fr">Physique générale I (pour IC)</text>
+      </name>
+    </course>
+    <room>
+      <id>2191877</id>
+      <code>CM4</code>
+      <name>
+        <text lang="fr">CM 4 </text>
+      </name>
+    </room>
+    <room>
+      <id>2191877</id>
+      <code>GRA330</code>
+      <name>
+        <text lang="fr">GR A3 30</text>
+      </name>
+    </room>
+    <room>
+      <id>2191877</id>
+      <code>CM09</code>
+      <name>
+        <text lang="fr">CM  0 9 </text>
+      </name>
+    </room>
+    <room>
+      <id>2191877</id>
+      <code>CM010</code>
+      <name>
+        <text lang="fr">CM  0 10 </text>
+      </name>
+    </room>
+    <room>
+      <id>2191877</id>
+      <code>CM5</code>
+      <name>
+        <text lang="fr">CM 5 </text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1697661454</id>
+    <date>18.10.2013</date>
+    <duration>45</duration>
+    <day>5</day>
+    <startTime>10:15</startTime>
+    <endTime>11:00</endTime>
+    <type>
+      <text lang="en">Exercises</text>
+      <text lang="fr">Exercices</text>
+    </type>
+    <course>
+      <id>1678952194</id>
+      <name>
+        <text lang="fr">Programming principles</text>
+      </name>
+    </course>
+    <room>
+      <id>2189517</id>
+      <code>INF1</code>
+      <name>
+        <text lang="fr">INF 1 </text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1696005277</id>
+    <date>18.10.2013</date>
+    <duration>105</duration>
+    <day>5</day>
+    <startTime>13:15</startTime>
+    <endTime>15:00</endTime>
+    <type>
+      <text lang="en">Lecture</text>
+      <text lang="fr">Cours</text>
+    </type>
+    <course>
+      <id>2258712</id>
+      <name>
+        <text lang="fr">Algorithms</text>
+      </name>
+    </course>
+    <room>
+      <id>2192131</id>
+      <code>CO2</code>
+      <name>
+        <text lang="fr">CO 2</text>
+      </name>
+    </room>
+  </study-period>
+  <study-period>
+    <id>1696005293</id>
+    <date>18.10.2013</date>
+    <duration>105</duration>
+    <day>5</day>
+    <startTime>15:15</startTime>
+    <endTime>17:00</endTime>
+    <type>
+      <text lang="en">Lecture</text>
+      <text lang="fr">Cours</text>
+    </type>
+    <course>
+      <id>1776067</id>
+      <name>
+        <text lang="fr">Computer networks</text>
+      </name>
+    </course>
+    <room>
+      <id>2192144</id>
+      <code>CO3</code>
+      <name>
+        <text lang="fr">CO 3</text>
+      </name>
+    </room>
+  </study-period>
+</data>

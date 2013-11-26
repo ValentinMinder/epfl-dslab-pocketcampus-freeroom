@@ -16,7 +16,7 @@ chdir(dirname(__FILE__));
 
 // ARGUMENTS: SET THE PLUGIN NAME HERE (set to "sdk" to compile common thrift definition files)
 
-$plugin_name = "Map";
+$plugin_name = "Food";
 
 // LOGIC: DONT TOUCH THE CODE BELOW
 
@@ -38,7 +38,7 @@ $plugin_shared_dir = "../../$string_plugin/$plugin_name/$string_plugin.$plugin_n
 foreach(glob("$plugin_shared_dir/def/*.thrift") as $def_file) {
 	echo "Compiling $def_file\n";
 	// TODO read package name from thrift file and clear corresponding directory
-	system("$thrift_bin --gen java:hashcode -out $plugin_shared_dir/src $def_file");
+	system("$thrift_bin --gen java:hashcode,private-members -out $plugin_shared_dir/src $def_file");
 	system("$thrift_bin --gen cocoa -out $plugin_ios_dir $def_file");
 }
 

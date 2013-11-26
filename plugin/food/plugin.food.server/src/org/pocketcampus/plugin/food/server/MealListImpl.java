@@ -1,20 +1,23 @@
 package org.pocketcampus.plugin.food.server;
 
 import java.nio.charset.Charset;
+import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.platform.sdk.shared.HttpClient;
+import org.pocketcampus.plugin.food.shared.*;
+import org.pocketcampus.plugin.map.shared.MapItem;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
-import org.pocketcampus.plugin.food.shared.*;
+import org.joda.time.LocalDate;
 
 /**
  * Parses meals from the official meal list's HTML.
@@ -65,7 +68,8 @@ public final class MealListImpl implements MealList {
 		PRICE_TARGETS.put("C", PriceTarget.STAFF);
 		PRICE_TARGETS.put("V", PriceTarget.VISITOR);
 		PRICE_TARGETS.put("", PriceTarget.ALL);
-		PRICE_TARGETS.put("P", PriceTarget.ALL); // The "Copernic" restaurant uses this - it stands for "Plat" ("Main course").
+		// The "Copernic" restaurant uses this - it stands for "Plat" ("Main course").
+		PRICE_TARGETS.put("P", PriceTarget.ALL);
 
 		MEAL_PRIMARY_TYPES.put(1, MealType.THAI);
 		MEAL_PRIMARY_TYPES.put(2, MealType.INDIAN);
@@ -85,11 +89,11 @@ public final class MealListImpl implements MealList {
 	}
 
 	/** Parses the menu from the official meal list's HTML. */
-	public MenuResult getMenu(MealTime time, Date date) throws Exception {
+	public List<EpflRestaurant> getMenu(MealTime time, LocalDate date) throws Exception {
 		List<EpflRestaurant> menu = new ArrayList<EpflRestaurant>();
 
 		String timeVal = time == MealTime.LUNCH ? URL_TIME_VALUE_LUNCH : URL_TIME_VALUE_DINNER;
-		String dateVal = DateFormatUtils.format(date, URL_DATE_VALUE_FORMAT);
+		String dateVal = date.toString(URL_DATE_VALUE_FORMAT);
 		String url = String.format("%s?%s=%s&%s=%s", MEAL_LIST_URL, URL_TIME_PARAMETER, timeVal, URL_DATE_PARAMETER, dateVal);
 
 		Document doc = Jsoup.parse(_client.getString(url, MEAL_LIST_CHARSET));
@@ -149,7 +153,7 @@ public final class MealListImpl implements MealList {
 			}
 		}
 
-		return new MenuResult(true, menu);
+		return menu;
 	}
 
 	/** Adds the specified meal to the specified list of restaurant using the specified restaurant name. */
@@ -168,10 +172,48 @@ public final class MealListImpl implements MealList {
 			restaurant.setRId(restaurantName.hashCode());
 			restaurant.setRName(restaurantName);
 			restaurant.setRMeals(new ArrayList<EpflMeal>());
+			restaurantSetSpecificAttributes(restaurant);
 			restaurants.add(restaurant);
 		}
 
 		restaurant.getRMeals().add(meal);
+	}
+
+	/**
+	 * Based on restaurant name, sets rPictureUrl and queries map plugin to
+	 * set rLocation attributes
+	 **/
+	@SuppressWarnings("unchecked")
+	private static void restaurantSetSpecificAttributes(EpflRestaurant restaurant) {
+		// Query map plugin to get restaurant location
+		try {
+			String compatibleName = compatibleRestaurantNameForMap(restaurant.getRName());
+			List<MapItem> searchResults = null;
+			searchResults = (List<MapItem>) PocketCampusServer.invokeOnPlugin("map", "search", compatibleName);
+			if (searchResults == null || searchResults.size() == 0) {
+				System.err.println("INFO: map plugin returned 0 result for restaurant " + restaurant.getRName());
+			} else {
+				System.out.println(searchResults);
+				MapItem restaurantMapItem = searchResults.get(0); // assuming first result is the right one
+				restaurant.setRLocation(restaurantMapItem);
+			}
+		} catch (Exception e) {
+			System.err.println("Exception while querying map plugin for location of restaurant " + restaurant.getRName());
+			e.printStackTrace();
+		}
+
+		// TODO: Set picture url
+	}
+
+	private static String compatibleRestaurantNameForMap(String restaurantName) {
+		String normalizedName = Normalizer.normalize(restaurantName, Normalizer.Form.NFC).toLowerCase();
+		String compatibleName = restaurantName;
+		if (normalizedName.contains("puur innovation")) {
+			compatibleName = "Puur Innovation";
+		} else if (normalizedName.contains("table de vallotton")) {
+			compatibleName = "Table de Vallotton";
+		}
+		return compatibleName;
 	}
 
 	/** Gets the full text, newlines included, contained in an HTML element. */
@@ -186,8 +228,7 @@ public final class MealListImpl implements MealList {
 
 	/** Indicates whether the specified meal is valid. */
 	private static boolean isValid(EpflMeal meal, String restaurantName) {
-		return !restaurantName.equals("Le Vinci"); // De facto duplicate of
-													// "Le Parmentier"
+		return !restaurantName.equals("Le Vinci"); // De facto duplicate of "Le Parmentier"
 	}
 
 	/** If necessary, fixes the specified meal. */

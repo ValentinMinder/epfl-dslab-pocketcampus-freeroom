@@ -1,9 +1,9 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
+
+import org.joda.time.LocalDate;
 
 /**
  * The database containing the device IDs of people who voted on the current day.
@@ -12,16 +12,16 @@ import java.util.HashSet;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public class DeviceDatabaseImpl implements DeviceDatabase {
-	private Date _lastVoteDate;
+	private LocalDate _currentDay;
 	private final Set<String> _votedToday;
 
 	public DeviceDatabaseImpl() {
-		_lastVoteDate = new Date();
+		_currentDay = LocalDate.now();
 		_votedToday = new HashSet<String>(100);
 	}
 
 	@Override
-	public void insert(String deviceId) {
+	public void vote(String deviceId) {
 		ensureToday();
 		_votedToday.add(deviceId);
 	}
@@ -33,19 +33,10 @@ public class DeviceDatabaseImpl implements DeviceDatabase {
 	}
 
 	private void ensureToday() {
-		Date now = new Date();
-		if (daysBetween(now, _lastVoteDate) >= 1) {
-			_lastVoteDate = now;
+		LocalDate now = LocalDate.now();
+		if (now.compareTo(_currentDay) != 0) {
+			_currentDay = now;
 			_votedToday.clear();
 		}
-	}
-
-	private int daysBetween(Date date1, Date date2) {
-		Calendar c1 = Calendar.getInstance();
-		c1.setTime(date1);
-		Calendar c2 = Calendar.getInstance();
-		c2.setTime(date2);
-
-		return c1.get(Calendar.DAY_OF_YEAR) - c2.get(Calendar.DAY_OF_YEAR);
 	}
 }

@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -272,7 +273,19 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_restaurantId = true;
+    builder.append(present_restaurantId);
+    if (present_restaurantId)
+      builder.append(restaurantId);
+
+    boolean present_name = true && (isSetName());
+    builder.append(present_name);
+    if (present_name)
+      builder.append(name);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(Restaurant other) {

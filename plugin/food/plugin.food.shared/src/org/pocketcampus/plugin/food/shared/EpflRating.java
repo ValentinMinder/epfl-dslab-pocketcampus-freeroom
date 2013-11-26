@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -272,7 +273,19 @@ public class EpflRating implements org.apache.thrift.TBase<EpflRating, EpflRatin
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_ratingValue = true;
+    builder.append(present_ratingValue);
+    if (present_ratingValue)
+      builder.append(ratingValue);
+
+    boolean present_voteCount = true;
+    builder.append(present_voteCount);
+    if (present_voteCount)
+      builder.append(voteCount);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(EpflRating other) {

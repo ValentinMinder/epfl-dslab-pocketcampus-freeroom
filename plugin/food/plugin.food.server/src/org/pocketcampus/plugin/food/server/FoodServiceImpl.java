@@ -1,24 +1,37 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.sdk.shared.CachingProxy;
+import org.pocketcampus.platform.sdk.shared.CachingProxy.CacheValidator;
+import org.pocketcampus.platform.sdk.shared.HttpClientImpl;
 import org.pocketcampus.plugin.food.shared.*;
+import org.joda.time.*;
 
 /**
  * Provides information about the meals, and allows users to rate them.
  */
 public class FoodServiceImpl implements FoodService.Iface {
-	private static final int TIMESTAMP_NOW = -1;
-	private static final int VOTING_MIN_HOUR = 11;
+	private static final Hours VOTING_MIN = Hours.hours(11);
+	private static final Hours CACHE_DURATION = Hours.ONE;
+
+	private static final String MEAL_PICS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/meal-pics/";
+	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
 
 	private final DeviceDatabase _deviceDatabase;
 	private final RatingDatabase _ratingDatabase;
 	private final MealList _mealList;
+
+	static {
+		for (MealType type : MealType.values()) {
+			MEAL_TYPE_PICTURE_URLS.put(type, MEAL_PICS_FOLDER_URL + type + ".png");
+			// => e.g. URL for PIZZA is http://pocketcampus.epfl.ch/backend/meal-pics/PIZZA.png
+		}
+	}
 
 	public FoodServiceImpl(DeviceDatabase deviceDatabase, RatingDatabase ratingDatabase, MealList mealList) {
 		_deviceDatabase = deviceDatabase;
@@ -27,29 +40,39 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	public FoodServiceImpl() {
-		this(new DeviceDatabaseImpl(), new RatingDatabaseImpl(), new MealListCache(new MealListImpl(new HttpClientImpl())));
+		this(new DeviceDatabaseImpl(), new RatingDatabaseImpl(),
+				CachingProxy.create(new MealListImpl(new HttpClientImpl()), new CacheValidator() {
+					@Override
+					public boolean isValid(DateTime lastGenerationDate) {
+						return Days.daysBetween(lastGenerationDate, DateTime.now()) == Days.ZERO
+								&& Hours.hoursBetween(lastGenerationDate, DateTime.now()).isLessThan(CACHE_DURATION);
+					}
+				}));
 	}
 
 	@Override
 	public FoodResponse getFood(FoodRequest foodReq) throws TException {
-		Date date = getDateFromTimestamp(foodReq.getMealDate());
+		LocalDate date = LocalDate.now();
+		if (foodReq.isSetMealDate()) {
+			date = getDateFromTimestamp(foodReq.getMealDate());
+		}
+		MealTime time = MealTime.LUNCH;
+		if (foodReq.isSetMealTime()) {
+			time = foodReq.getMealTime();
+		}
 
 		List<EpflRestaurant> menu = null;
 
 		try {
-			MealList.MenuResult result = _mealList.getMenu(foodReq.getMealTime(), date);
-			menu = result.menu;
-
-			if (result.hasChanged) {
-				_ratingDatabase.insert(menu);
-			}
+			menu = _mealList.getMenu(time, date);
+			_ratingDatabase.insertMenu(menu);
 		} catch (Exception e) {
 			menu = new ArrayList<EpflRestaurant>();
 		}
 
 		_ratingDatabase.setRatings(menu);
 
-		return new FoodResponse(menu);
+		return new FoodResponse(menu, MEAL_TYPE_PICTURE_URLS);
 	}
 
 	@Override
@@ -63,12 +86,12 @@ public class FoodServiceImpl implements FoodService.Iface {
 				return new VoteResponse(SubmitStatus.ALREADY_VOTED);
 			}
 
-			if (getCurrentHour() <= VOTING_MIN_HOUR) {
+			if (DateTime.now().getHourOfDay() < VOTING_MIN.getHours()) {
 				return new VoteResponse(SubmitStatus.TOO_EARLY);
 			}
 
 			_ratingDatabase.vote(voteReq.getMealId(), voteReq.getRating());
-			_deviceDatabase.insert(voteReq.getDeviceId());
+			_deviceDatabase.vote(voteReq.getDeviceId());
 
 			return new VoteResponse(SubmitStatus.VALID);
 		} catch (Exception _) {
@@ -76,20 +99,12 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 	}
 
-	private static Date getDateFromTimestamp(int timestamp) {
-		if (timestamp == TIMESTAMP_NOW) {
-			return new Date();
+	private static LocalDate getDateFromTimestamp(long timestamp) {
+		if (timestamp < 0) {
+			return LocalDate.now();
 		}
-		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(timestamp * 1000L);
-		return c.getTime();
-	}
 
-	private static int getCurrentHour() {
-		// and then people ask why I think Java is verbose...
-		Calendar c = Calendar.getInstance();
-		c.setTime(new Date());
-		return c.get(Calendar.HOUR_OF_DAY);
+		return new LocalDate(timestamp);
 	}
 
 	// OLD STUFF - DO NOT TOUCH

@@ -27,13 +27,9 @@ public class SatelliteService {
 
     public Beer getBeerOfTheMonth() throws org.apache.thrift.TException;
 
-    public List<Beer> getAllBeers() throws org.apache.thrift.TException;
-
-    public List<Sandwich> getSatSandwiches() throws org.apache.thrift.TException;
-
     public Affluence getAffluence() throws org.apache.thrift.TException;
 
-    public List<Event> getNextEvents() throws org.apache.thrift.TException;
+    public BeersResponse getBeers() throws org.apache.thrift.TException;
 
   }
 
@@ -41,13 +37,9 @@ public class SatelliteService {
 
     public void getBeerOfTheMonth(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBeerOfTheMonth_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getAllBeers(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getAllBeers_call> resultHandler) throws org.apache.thrift.TException;
-
-    public void getSatSandwiches(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getSatSandwiches_call> resultHandler) throws org.apache.thrift.TException;
-
     public void getAffluence(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getAffluence_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getNextEvents(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getNextEvents_call> resultHandler) throws org.apache.thrift.TException;
+    public void getBeers(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBeers_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -93,50 +85,6 @@ public class SatelliteService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBeerOfTheMonth failed: unknown result");
     }
 
-    public List<Beer> getAllBeers() throws org.apache.thrift.TException
-    {
-      send_getAllBeers();
-      return recv_getAllBeers();
-    }
-
-    public void send_getAllBeers() throws org.apache.thrift.TException
-    {
-      getAllBeers_args args = new getAllBeers_args();
-      sendBase("getAllBeers", args);
-    }
-
-    public List<Beer> recv_getAllBeers() throws org.apache.thrift.TException
-    {
-      getAllBeers_result result = new getAllBeers_result();
-      receiveBase(result, "getAllBeers");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getAllBeers failed: unknown result");
-    }
-
-    public List<Sandwich> getSatSandwiches() throws org.apache.thrift.TException
-    {
-      send_getSatSandwiches();
-      return recv_getSatSandwiches();
-    }
-
-    public void send_getSatSandwiches() throws org.apache.thrift.TException
-    {
-      getSatSandwiches_args args = new getSatSandwiches_args();
-      sendBase("getSatSandwiches", args);
-    }
-
-    public List<Sandwich> recv_getSatSandwiches() throws org.apache.thrift.TException
-    {
-      getSatSandwiches_result result = new getSatSandwiches_result();
-      receiveBase(result, "getSatSandwiches");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getSatSandwiches failed: unknown result");
-    }
-
     public Affluence getAffluence() throws org.apache.thrift.TException
     {
       send_getAffluence();
@@ -159,26 +107,26 @@ public class SatelliteService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getAffluence failed: unknown result");
     }
 
-    public List<Event> getNextEvents() throws org.apache.thrift.TException
+    public BeersResponse getBeers() throws org.apache.thrift.TException
     {
-      send_getNextEvents();
-      return recv_getNextEvents();
+      send_getBeers();
+      return recv_getBeers();
     }
 
-    public void send_getNextEvents() throws org.apache.thrift.TException
+    public void send_getBeers() throws org.apache.thrift.TException
     {
-      getNextEvents_args args = new getNextEvents_args();
-      sendBase("getNextEvents", args);
+      getBeers_args args = new getBeers_args();
+      sendBase("getBeers", args);
     }
 
-    public List<Event> recv_getNextEvents() throws org.apache.thrift.TException
+    public BeersResponse recv_getBeers() throws org.apache.thrift.TException
     {
-      getNextEvents_result result = new getNextEvents_result();
-      receiveBase(result, "getNextEvents");
+      getBeers_result result = new getBeers_result();
+      receiveBase(result, "getBeers");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getNextEvents failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBeers failed: unknown result");
     }
 
   }
@@ -228,64 +176,6 @@ public class SatelliteService {
       }
     }
 
-    public void getAllBeers(org.apache.thrift.async.AsyncMethodCallback<getAllBeers_call> resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      getAllBeers_call method_call = new getAllBeers_call(resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class getAllBeers_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getAllBeers_call(org.apache.thrift.async.AsyncMethodCallback<getAllBeers_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getAllBeers", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getAllBeers_args args = new getAllBeers_args();
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public List<Beer> getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getAllBeers();
-      }
-    }
-
-    public void getSatSandwiches(org.apache.thrift.async.AsyncMethodCallback<getSatSandwiches_call> resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      getSatSandwiches_call method_call = new getSatSandwiches_call(resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class getSatSandwiches_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getSatSandwiches_call(org.apache.thrift.async.AsyncMethodCallback<getSatSandwiches_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getSatSandwiches", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getSatSandwiches_args args = new getSatSandwiches_args();
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public List<Sandwich> getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getSatSandwiches();
-      }
-    }
-
     public void getAffluence(org.apache.thrift.async.AsyncMethodCallback<getAffluence_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       getAffluence_call method_call = new getAffluence_call(resultHandler, this, ___protocolFactory, ___transport);
@@ -315,32 +205,32 @@ public class SatelliteService {
       }
     }
 
-    public void getNextEvents(org.apache.thrift.async.AsyncMethodCallback<getNextEvents_call> resultHandler) throws org.apache.thrift.TException {
+    public void getBeers(org.apache.thrift.async.AsyncMethodCallback<getBeers_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getNextEvents_call method_call = new getNextEvents_call(resultHandler, this, ___protocolFactory, ___transport);
+      getBeers_call method_call = new getBeers_call(resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getNextEvents_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getNextEvents_call(org.apache.thrift.async.AsyncMethodCallback<getNextEvents_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getBeers_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public getBeers_call(org.apache.thrift.async.AsyncMethodCallback<getBeers_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getNextEvents", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getNextEvents_args args = new getNextEvents_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getBeers", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getBeers_args args = new getBeers_args();
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<Event> getResult() throws org.apache.thrift.TException {
+      public BeersResponse getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getNextEvents();
+        return (new Client(prot)).recv_getBeers();
       }
     }
 
@@ -358,10 +248,8 @@ public class SatelliteService {
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getBeerOfTheMonth", new getBeerOfTheMonth());
-      processMap.put("getAllBeers", new getAllBeers());
-      processMap.put("getSatSandwiches", new getSatSandwiches());
       processMap.put("getAffluence", new getAffluence());
-      processMap.put("getNextEvents", new getNextEvents());
+      processMap.put("getBeers", new getBeers());
       return processMap;
     }
 
@@ -377,38 +265,6 @@ public class SatelliteService {
       protected getBeerOfTheMonth_result getResult(I iface, getBeerOfTheMonth_args args) throws org.apache.thrift.TException {
         getBeerOfTheMonth_result result = new getBeerOfTheMonth_result();
         result.success = iface.getBeerOfTheMonth();
-        return result;
-      }
-    }
-
-    private static class getAllBeers<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getAllBeers_args> {
-      public getAllBeers() {
-        super("getAllBeers");
-      }
-
-      protected getAllBeers_args getEmptyArgsInstance() {
-        return new getAllBeers_args();
-      }
-
-      protected getAllBeers_result getResult(I iface, getAllBeers_args args) throws org.apache.thrift.TException {
-        getAllBeers_result result = new getAllBeers_result();
-        result.success = iface.getAllBeers();
-        return result;
-      }
-    }
-
-    private static class getSatSandwiches<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getSatSandwiches_args> {
-      public getSatSandwiches() {
-        super("getSatSandwiches");
-      }
-
-      protected getSatSandwiches_args getEmptyArgsInstance() {
-        return new getSatSandwiches_args();
-      }
-
-      protected getSatSandwiches_result getResult(I iface, getSatSandwiches_args args) throws org.apache.thrift.TException {
-        getSatSandwiches_result result = new getSatSandwiches_result();
-        result.success = iface.getSatSandwiches();
         return result;
       }
     }
@@ -429,18 +285,18 @@ public class SatelliteService {
       }
     }
 
-    private static class getNextEvents<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getNextEvents_args> {
-      public getNextEvents() {
-        super("getNextEvents");
+    private static class getBeers<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getBeers_args> {
+      public getBeers() {
+        super("getBeers");
       }
 
-      protected getNextEvents_args getEmptyArgsInstance() {
-        return new getNextEvents_args();
+      protected getBeers_args getEmptyArgsInstance() {
+        return new getBeers_args();
       }
 
-      protected getNextEvents_result getResult(I iface, getNextEvents_args args) throws org.apache.thrift.TException {
-        getNextEvents_result result = new getNextEvents_result();
-        result.success = iface.getNextEvents();
+      protected getBeers_result getResult(I iface, getBeers_args args) throws org.apache.thrift.TException {
+        getBeers_result result = new getBeers_result();
+        result.success = iface.getBeers();
         return result;
       }
     }
@@ -656,7 +512,7 @@ public class SatelliteService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public Beer success; // required
+    private Beer success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -955,1096 +811,6 @@ public class SatelliteService {
 
   }
 
-  public static class getAllBeers_args implements org.apache.thrift.TBase<getAllBeers_args, getAllBeers_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getAllBeers_args");
-
-
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getAllBeers_args.class, metaDataMap);
-    }
-
-    public getAllBeers_args() {
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getAllBeers_args(getAllBeers_args other) {
-    }
-
-    public getAllBeers_args deepCopy() {
-      return new getAllBeers_args(this);
-    }
-
-    @Override
-    public void clear() {
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getAllBeers_args)
-        return this.equals((getAllBeers_args)that);
-      return false;
-    }
-
-    public boolean equals(getAllBeers_args that) {
-      if (that == null)
-        return false;
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(getAllBeers_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      getAllBeers_args typedOther = (getAllBeers_args)other;
-
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getAllBeers_args(");
-      boolean first = true;
-
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class getAllBeers_result implements org.apache.thrift.TBase<getAllBeers_result, getAllBeers_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getAllBeers_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
-
-    public List<Beer> success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Beer.class))));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getAllBeers_result.class, metaDataMap);
-    }
-
-    public getAllBeers_result() {
-    }
-
-    public getAllBeers_result(
-      List<Beer> success)
-    {
-      this();
-      this.success = success;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getAllBeers_result(getAllBeers_result other) {
-      if (other.isSetSuccess()) {
-        List<Beer> __this__success = new ArrayList<Beer>();
-        for (Beer other_element : other.success) {
-          __this__success.add(new Beer(other_element));
-        }
-        this.success = __this__success;
-      }
-    }
-
-    public getAllBeers_result deepCopy() {
-      return new getAllBeers_result(this);
-    }
-
-    @Override
-    public void clear() {
-      this.success = null;
-    }
-
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Beer> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Beer elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Beer>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Beer> getSuccess() {
-      return this.success;
-    }
-
-    public getAllBeers_result setSuccess(List<Beer> success) {
-      this.success = success;
-      return this;
-    }
-
-    public void unsetSuccess() {
-      this.success = null;
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
-        this.success = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((List<Beer>)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return getSuccess();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getAllBeers_result)
-        return this.equals((getAllBeers_result)that);
-      return false;
-    }
-
-    public boolean equals(getAllBeers_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!this.success.equals(that.success))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(getAllBeers_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      getAllBeers_result typedOther = (getAllBeers_result)other;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                this.success = new ArrayList<Beer>(_list0.size);
-                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
-                {
-                  Beer _elem2; // required
-                  _elem2 = new Beer();
-                  _elem2.read(iprot);
-                  this.success.add(_elem2);
-                }
-                iprot.readListEnd();
-              }
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-
-      if (this.isSetSuccess()) {
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Beer _iter3 : this.success)
-          {
-            _iter3.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getAllBeers_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      if (this.success == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.success);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class getSatSandwiches_args implements org.apache.thrift.TBase<getSatSandwiches_args, getSatSandwiches_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getSatSandwiches_args");
-
-
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSatSandwiches_args.class, metaDataMap);
-    }
-
-    public getSatSandwiches_args() {
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getSatSandwiches_args(getSatSandwiches_args other) {
-    }
-
-    public getSatSandwiches_args deepCopy() {
-      return new getSatSandwiches_args(this);
-    }
-
-    @Override
-    public void clear() {
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getSatSandwiches_args)
-        return this.equals((getSatSandwiches_args)that);
-      return false;
-    }
-
-    public boolean equals(getSatSandwiches_args that) {
-      if (that == null)
-        return false;
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(getSatSandwiches_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      getSatSandwiches_args typedOther = (getSatSandwiches_args)other;
-
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getSatSandwiches_args(");
-      boolean first = true;
-
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class getSatSandwiches_result implements org.apache.thrift.TBase<getSatSandwiches_result, getSatSandwiches_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getSatSandwiches_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
-
-    public List<Sandwich> success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Sandwich.class))));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSatSandwiches_result.class, metaDataMap);
-    }
-
-    public getSatSandwiches_result() {
-    }
-
-    public getSatSandwiches_result(
-      List<Sandwich> success)
-    {
-      this();
-      this.success = success;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getSatSandwiches_result(getSatSandwiches_result other) {
-      if (other.isSetSuccess()) {
-        List<Sandwich> __this__success = new ArrayList<Sandwich>();
-        for (Sandwich other_element : other.success) {
-          __this__success.add(new Sandwich(other_element));
-        }
-        this.success = __this__success;
-      }
-    }
-
-    public getSatSandwiches_result deepCopy() {
-      return new getSatSandwiches_result(this);
-    }
-
-    @Override
-    public void clear() {
-      this.success = null;
-    }
-
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Sandwich> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Sandwich elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Sandwich>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Sandwich> getSuccess() {
-      return this.success;
-    }
-
-    public getSatSandwiches_result setSuccess(List<Sandwich> success) {
-      this.success = success;
-      return this;
-    }
-
-    public void unsetSuccess() {
-      this.success = null;
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
-        this.success = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((List<Sandwich>)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return getSuccess();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getSatSandwiches_result)
-        return this.equals((getSatSandwiches_result)that);
-      return false;
-    }
-
-    public boolean equals(getSatSandwiches_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!this.success.equals(that.success))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(getSatSandwiches_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      getSatSandwiches_result typedOther = (getSatSandwiches_result)other;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-                this.success = new ArrayList<Sandwich>(_list4.size);
-                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
-                {
-                  Sandwich _elem6; // required
-                  _elem6 = new Sandwich();
-                  _elem6.read(iprot);
-                  this.success.add(_elem6);
-                }
-                iprot.readListEnd();
-              }
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-
-      if (this.isSetSuccess()) {
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Sandwich _iter7 : this.success)
-          {
-            _iter7.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getSatSandwiches_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      if (this.success == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.success);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
   public static class getAffluence_args implements org.apache.thrift.TBase<getAffluence_args, getAffluence_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getAffluence_args");
 
@@ -2254,11 +1020,7 @@ public class SatelliteService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.I32, (short)0);
 
-    /**
-     * 
-     * @see Affluence
-     */
-    public Affluence success; // required
+    private Affluence success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2568,8 +1330,8 @@ public class SatelliteService {
 
   }
 
-  public static class getNextEvents_args implements org.apache.thrift.TBase<getNextEvents_args, getNextEvents_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getNextEvents_args");
+  public static class getBeers_args implements org.apache.thrift.TBase<getBeers_args, getBeers_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBeers_args");
 
 
 
@@ -2632,20 +1394,20 @@ public class SatelliteService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getNextEvents_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBeers_args.class, metaDataMap);
     }
 
-    public getNextEvents_args() {
+    public getBeers_args() {
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getNextEvents_args(getNextEvents_args other) {
+    public getBeers_args(getBeers_args other) {
     }
 
-    public getNextEvents_args deepCopy() {
-      return new getNextEvents_args(this);
+    public getBeers_args deepCopy() {
+      return new getBeers_args(this);
     }
 
     @Override
@@ -2678,12 +1440,12 @@ public class SatelliteService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getNextEvents_args)
-        return this.equals((getNextEvents_args)that);
+      if (that instanceof getBeers_args)
+        return this.equals((getBeers_args)that);
       return false;
     }
 
-    public boolean equals(getNextEvents_args that) {
+    public boolean equals(getBeers_args that) {
       if (that == null)
         return false;
 
@@ -2697,13 +1459,13 @@ public class SatelliteService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getNextEvents_args other) {
+    public int compareTo(getBeers_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getNextEvents_args typedOther = (getNextEvents_args)other;
+      getBeers_args typedOther = (getBeers_args)other;
 
       return 0;
     }
@@ -2743,7 +1505,7 @@ public class SatelliteService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getNextEvents_args(");
+      StringBuilder sb = new StringBuilder("getBeers_args(");
       boolean first = true;
 
       sb.append(")");
@@ -2772,12 +1534,12 @@ public class SatelliteService {
 
   }
 
-  public static class getNextEvents_result implements org.apache.thrift.TBase<getNextEvents_result, getNextEvents_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getNextEvents_result");
+  public static class getBeers_result implements org.apache.thrift.TBase<getBeers_result, getBeers_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBeers_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public List<Event> success; // required
+    private BeersResponse success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2843,17 +1605,16 @@ public class SatelliteService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Event.class))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, BeersResponse.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getNextEvents_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBeers_result.class, metaDataMap);
     }
 
-    public getNextEvents_result() {
+    public getBeers_result() {
     }
 
-    public getNextEvents_result(
-      List<Event> success)
+    public getBeers_result(
+      BeersResponse success)
     {
       this();
       this.success = success;
@@ -2862,18 +1623,14 @@ public class SatelliteService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getNextEvents_result(getNextEvents_result other) {
+    public getBeers_result(getBeers_result other) {
       if (other.isSetSuccess()) {
-        List<Event> __this__success = new ArrayList<Event>();
-        for (Event other_element : other.success) {
-          __this__success.add(new Event(other_element));
-        }
-        this.success = __this__success;
+        this.success = new BeersResponse(other.success);
       }
     }
 
-    public getNextEvents_result deepCopy() {
-      return new getNextEvents_result(this);
+    public getBeers_result deepCopy() {
+      return new getBeers_result(this);
     }
 
     @Override
@@ -2881,26 +1638,11 @@ public class SatelliteService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Event> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Event elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Event>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Event> getSuccess() {
+    public BeersResponse getSuccess() {
       return this.success;
     }
 
-    public getNextEvents_result setSuccess(List<Event> success) {
+    public getBeers_result setSuccess(BeersResponse success) {
       this.success = success;
       return this;
     }
@@ -2926,7 +1668,7 @@ public class SatelliteService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Event>)value);
+          setSuccess((BeersResponse)value);
         }
         break;
 
@@ -2959,12 +1701,12 @@ public class SatelliteService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getNextEvents_result)
-        return this.equals((getNextEvents_result)that);
+      if (that instanceof getBeers_result)
+        return this.equals((getBeers_result)that);
       return false;
     }
 
-    public boolean equals(getNextEvents_result that) {
+    public boolean equals(getBeers_result that) {
       if (that == null)
         return false;
 
@@ -2992,13 +1734,13 @@ public class SatelliteService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getNextEvents_result other) {
+    public int compareTo(getBeers_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getNextEvents_result typedOther = (getNextEvents_result)other;
+      getBeers_result typedOther = (getBeers_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -3028,19 +1770,9 @@ public class SatelliteService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                this.success = new ArrayList<Event>(_list8.size);
-                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
-                {
-                  Event _elem10; // required
-                  _elem10 = new Event();
-                  _elem10.read(iprot);
-                  this.success.add(_elem10);
-                }
-                iprot.readListEnd();
-              }
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new BeersResponse();
+              this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -3061,14 +1793,7 @@ public class SatelliteService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Event _iter11 : this.success)
-          {
-            _iter11.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
+        this.success.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -3077,7 +1802,7 @@ public class SatelliteService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getNextEvents_result(");
+      StringBuilder sb = new StringBuilder("getBeers_result(");
       boolean first = true;
 
       sb.append("success:");

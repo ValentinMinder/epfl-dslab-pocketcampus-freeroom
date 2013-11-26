@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bieres>
+  <biere contenant="bouteille">
+    <nom>St-Feuillien Brune</nom>
+    <brasserie>St-Feuillien </brasserie>
+    <type>Brune</type>
+    <origine>Belgique</origine>
+    <teneur>7.5°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière naturelle de fermentation haute, brassée avec des malts et des houblons de premier choix. Les notes fruitées se marient harmonieusement avec la dominante réglisse et le caramel. Son arôme est riche et son goût savoureux.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Duchesse de Bourgogne</nom>
+    <brasserie>Verhaeghe</brasserie>
+    <type>Vieille Brune</type>
+    <origine>Belgique</origine>
+    <teneur>6.2°</teneur>
+    <prix>4CHF</prix>
+    <description>Bière de haute fermentation, mûrie en fût de chêne. Ceci lui confère un goût entre lambic et cidre, fruitée et acide à la fois.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Gulden Draak</nom>
+    <brasserie>Van Steenberge</brasserie>
+    <type>brune</type>
+    <origine>Belgique</origine>
+    <teneur>10.5°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de haute fermentation, elle est refermentée en bouteille durant minimum deux ans. Dense, vineuse et très fruitée, c'est une bière de fête. Certains lui distingue des saveurs de chocolat ou café en fin de bouche.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Westmalle Tripel</nom>
+    <brasserie>Van Westmalle</brasserie>
+    <type>Blonde</type>
+    <origine>Belgique</origine>
+    <teneur>9.5°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de fermentation triple, à l'amertume soutenue par les arômes de fruits. Bière complexe qui dégage des arômes fruités et un parfum de houblon aussi agréable que nuancé. Savoureuse et désaltérante à souhait.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Westmalle Dubbel</nom>
+    <brasserie>Van Westmalle</brasserie>
+    <type>Brune</type>
+    <origine>Belgique</origine>
+    <teneur>7°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de fermentation haute au léger goût de malt. Sa saveur est à la fois riche et complexe, fruitée et épicée, avec une finale amère tout en fraîcheur.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Gueuze Foudroyante</nom>
+    <brasserie>Lindemans</brasserie>
+    <type>Lambic</type>
+    <origine>Belgique</origine>
+    <teneur>4.5°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière à fermentation spontanée, c'est un mélange de trois lambics d´âges différents, refermenté en bouteille. Son nez boisé est agrémenté de touches de rhubarbe. Bière légèrement aigre au final fruité et sucré.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Budweiser Budwar</nom>
+    <brasserie>Budweiser </brasserie>
+    <type>Blonde</type>
+    <origine>Rép. Tchèque</origine>
+    <teneur>5°</teneur>
+    <prix>4CHF</prix>
+    <description>Bière à basse fermentation au goût fortement malté, elle est peu amère, douce et convient parfaitement au rôle de bière désaltérante. Possédant une douceur finale fruitée, son arôme est issus de 700 ans de tradition. A ne pas confondre avec la malheureusement célèbre bière industrielle américaine.&#13;
+</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Bush</nom>
+    <brasserie>Dubuisson</brasserie>
+    <type>Ambrée</type>
+    <origine>Belgique</origine>
+    <teneur>12°</teneur>
+    <prix>4.5CHF</prix>
+    <description>Bière de haute fermentation, filtrée, son goût amer sucré lui donne beaucoup de caractère. C’est la plus forte bière belge et une des plus fortes au monde. Elle se caractérise par un goût et un arôme fortement malté, contrebalancé par une amertume prononcée. &#13;
+Elle peut se consommer sous forme de «café belge» lorsque combinée à une Duvel, sensation garantie ! </description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Desperados</nom>
+    <brasserie>Fischer</brasserie>
+    <type>Blonde</type>
+    <origine>France</origine>
+    <teneur>5.9°</teneur>
+    <prix>4.5CHF</prix>
+    <description>Bière de basse fermentation française, à consonance mexicaine, elle est aromatisée à la téquila. Légère, douce, elle se boit en toute circonstance. Un rayon de soleil sous le notre trop souvent couvert.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Chimay Bleue</nom>
+    <brasserie>Abbaye de Scouremont</brasserie>
+    <type>Brune</type>
+    <origine>Belgique</origine>
+    <teneur>9°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière de fermentation haute, refermentée en bouteille et non pasteurisée. Au goût léger et et agréable de caramel, elle est puissante et très caractéristique. Cette bière est millésimée et demande quelques années pour mûrir en bouteille.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Chimay Rouge</nom>
+    <brasserie>Abbaye de Scouremont</brasserie>
+    <type>Rousse</type>
+    <origine>Belgique</origine>
+    <teneur>7°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Bière de fermentation haute, refermentée en bouteille et non pasterisée. Son odeur fruitée abricotée, son équilibre et sa légère amertume en bouche rendent cette bière harmonieuse et particulièrement attrayante.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Andechs Weissbier</nom>
+    <brasserie>Klosterbrauerei Andechs</brasserie>
+    <type>Blanche</type>
+    <origine>Allemagne</origine>
+    <teneur>5.5°</teneur>
+    <prix>4.5CHF</prix>
+    <description>Bière de haute fermentation brassée dans les cuves ouvertes de la cave du monastère. Non-filtrée, elle est naturellement trouble. Le goût légèrement fruité donne à cette blanche une douceur et un arôme surprenant.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Fin du Monde</nom>
+    <brasserie>Unibroue</brasserie>
+    <type>Blonde</type>
+    <origine>Quebec</origine>
+    <teneur>9°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Bière de triple fermentation, corsée, maltée et qui se termine sur une note légèrement amère. Au goût épicé, sa levure dégage un nez fruité aux effluves d'agrumes et un soupçon épicé. Elle laisse dans la bouche le souvenir d'une bière moelleuse et légèrement piquante.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>John Martin´s Pale Ale</nom>
+    <brasserie>John Martin</brasserie>
+    <type>Blonde</type>
+    <origine>Belgique</origine>
+    <teneur>5.8°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière de haute fermentation, fortement houblonnée et très désaltérante. D'une saveur douce et fruitée, elle représente parfaitement la Pale Ale classique britannique.&#13;
+&#13;
+</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Maudite</nom>
+    <brasserie>Unibroue</brasserie>
+    <type>Brune</type>
+    <origine>Quebec</origine>
+    <teneur>8°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de haute fermentation. D'une grande douceur, elle offre des saveurs qui évoquent le porto. C'est une bière de caractère, grâce à la chaleur qui s'en dégage.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Duvel</nom>
+    <brasserie>Duvel</brasserie>
+    <type>Blonde</type>
+    <origine>Belgique</origine>
+    <teneur>8.5°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de haute fermentation, non filtrée, non pasteurisée, brassée selon la méthode artisanale d'antan sans additif ni conservateur. Elle est trompeuse sous sa robe dorée anodine qui cache une force et un goût fantastique. Sa mousse est riche et onctueuse, son arôme houblonné. Après une deuxième fermentation et une longue maturation en bouteille, son arôme est équilibré et son amertume subtile.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Rochefort 10</nom>
+    <brasserie>Abbaye St-Remy</brasserie>
+    <type>Brune</type>
+    <origine>Belgique</origine>
+    <teneur>11.3°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière trappiste de haute fermentation, à l'intensité liquoreuse remarquable. Son goût est caramélisé, fort, aux notes fruitées de prune mûre et de cacao. Parmi les trois Rochefort, celle-ci est appelée la "Merveille".</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Delirium Tremens</nom>
+    <brasserie>Huyghe</brasserie>
+    <type>Blonde</type>
+    <origine>Belgique</origine>
+    <teneur>9°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de haute fermentation, son nez puissant révèle une forte teneur en malt. Étant corsée, forte, avec une amertume durable, sa saveur est étonnante.&#13;
+Son nom provient du phénomène neurologique provoqué par un sevrage d'alcool chez les personnes dépendantes, créant des hallucinations telles que le légendaire éléphant rose, symbole de cette bière.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Urbock</nom>
+    <brasserie>Eggenberg</brasserie>
+    <type>Blonde</type>
+    <origine>Autriche</origine>
+    <teneur>9.6°</teneur>
+    <prix>4.5CHF</prix>
+    <description>Bière de fermentation basse, à l'arôme fortement malté. Elle possède un léger parfum de chêne et un parfum puissant.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Rochefort 8</nom>
+    <brasserie>Abbaye St-Remy</brasserie>
+    <type>Ambrée</type>
+    <origine>Belgique</origine>
+    <teneur>9.2°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Bière trappiste de haute fermentation, elle ressemble à sa consœur, bien qu'étant plus épicée, aux notes de caramel et de chocolat plus prononcées. Celle-ci est appleée la "Spéciale".</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Chimay Triple</nom>
+    <brasserie>Abbaye de Scouremont</brasserie>
+    <type>Blonde Triple</type>
+    <origine>Belgique</origine>
+    <teneur>8°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Bière de haute fermentation, refermentée et non pasteurisée.&#13;
+Son arôme vient principalement du houblon et des touches fruitées de types muscat et raisin sec. Elle possède une amertume rafraîchissante qui la rend particulièrement attrayante.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Hercule</nom>
+    <brasserie>Ellezelloise</brasserie>
+    <type>Stout</type>
+    <origine>Belgique</origine>
+    <teneur>9°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière de haute fermentation, non filtrée et non pasteurisée, elle est caractéristique par sa saveur caramélisée et houblonnée. Sa mousse est abondante et son parfum malté. Elle est à la fois âpre, aromatique, chocolatée et reste longtemps en bouche.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Carlsberg</nom>
+    <brasserie>Carlsberg</brasserie>
+    <type>Blonde</type>
+    <origine>Danemark</origine>
+    <teneur>5°</teneur>
+    <prix>3.5CHF</prix>
+    <description>Bière danoise de renommée internationale, c’est une blonde de type pils, à l’amertume franche. Appréciée des connaisseurs, elle est relativement maltée, dont l’arôme présente également quelques notes de pomme dues à la spécificité de sa levure.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>La Meule</nom>
+    <brasserie>Brasserie des Franches-Montagnes (BFM)</brasserie>
+    <type>Blanche</type>
+    <origine>Suisse</origine>
+    <teneur>5.5°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière de haute fermentation, au bouquet marqué par des notes de houblons puissants (agrumes, foin séché, gingembre) et souligné d’une pointe de sauge. Amertume franche, crémeuse avec une petite pointe d’acidité caractéristique des bières blanches. L’écorce d’oranges amères et un houblonnage discret sont les secrets de cette bière.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Satellite Grand Cru</nom>
+    <brasserie>les Faiseurs de Bière</brasserie>
+    <type>bière spéciale</type>
+    <origine>Suisse</origine>
+    <teneur>8.6°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Son nom veut tout dire. Cette bière est spécialement brassée pour Satellite, en l'honneur de ses 25 ans d'existence.&#13;
+C'est un savant mélange entre la douceur d'une bière blanche et la force d'une bière ambrée.&#13;
+À elle seule est représente la convivialité et la richesse de ce lieu qui nous est cher à tous. </description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Bière du Boucanier Red Ale</nom>
+    <brasserie>Icobes B.V.B.A.</brasserie>
+    <type>Ambrée</type>
+    <origine>Belgique</origine>
+    <teneur>7°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de haute fermentation brassée uniquement à partir de malt. Son goût riche et épicé lui donne un corps envoutant et complexe qui reste longtemps en bouche. Elle laisse un souvenir fort qui ne laissera personne indifférent, ses nombreux adeptes ne pourront que le confirmer!</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Belgoo Magus</nom>
+    <brasserie>Belgoo</brasserie>
+    <type>Ambrée</type>
+    <origine>Belgique</origine>
+    <teneur>6.6°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Bière artisanale de fermentation haute, refermentée en bouteille et non filtrée, la Belgoo se démarque par l'usage de 4 céréales différentes : malt d'orge, de froment, avoine et épeautre. Puissante mais désaltérante, elle développe des arômes caramélisés et épicés.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Brugse Zot Brune</nom>
+    <brasserie>De Halve Maan</brasserie>
+    <type>Brune</type>
+    <origine>Belgique</origine>
+    <teneur>7.5°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Bière de fermentation haute, refermentée en bouteille, la Brugse Zot Dubbel est une brune belge qui possède des arômes grillés et caramélisés relevés d'un goût légèrement sucré, contrebalancés par une légère amertume qui la rend agréable et désaltérante.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Andechs Dunkles Weissbier</nom>
+    <brasserie>Klosterbrauerei Andechs</brasserie>
+    <type>Blanche</type>
+    <origine>Allemagne</origine>
+    <teneur>5°</teneur>
+    <prix>4.5CHF</prix>
+    <description>Bière de haute fermentation, robe brune car brassée avec du malt torréfié. Son caractère aromatique la classe au rang des meilleures blanches bavaroises. Sa douceur et son arôme légèrement fruité la rendent tout simplement exceptionnelle.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Double Chocolate</nom>
+    <brasserie>Young</brasserie>
+    <type>Stout</type>
+    <origine>Angleterre</origine>
+    <teneur>5.2°</teneur>
+    <prix>5CHF</prix>
+    <description>La double bière de malt de Young de chocolat est un mélange intrigant. Le malt de chocolat et le vrai chocolat foncé sont combinés avec la richess des bière Young's.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Tempête du Désert</nom>
+    <brasserie>Docteur Gab's</brasserie>
+    <type>blonde</type>
+    <origine>Suisse</origine>
+    <teneur>8°</teneur>
+    <prix>13CHF</prix>
+    <description>Bière de fermentation haute, refermentée en bouteille.&#13;
+&#13;
+Lorsque la tempête s'abat sur le désert, c'est une blonde houblonnée et toute en rondeur qui s'opère.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Chameau</nom>
+    <brasserie>Docteur Gab's</brasserie>
+    <type>brune</type>
+    <origine>Suisse</origine>
+    <teneur>7°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière de fermentation haute, refermentée en bouteille, non filtrée.&#13;
+&#13;
+Le subtil mariage de ses trois malts lui donne un corps complexe et raffiné. En finale, l'héritage fruité de ses levures d'abbaye se prolonge par une fraîche astringence.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Quintine Blanche Bio</nom>
+    <brasserie>Ellezelloise</brasserie>
+    <type>Blanche</type>
+    <origine>Belgique</origine>
+    <teneur>5.9°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière blanche de fermentation haute, non filtrée et refermentée en bouteille, la Quintine Bio-Organic utilise des ingrédients intégralement issus de l'agriculture biologique. Présentant des arômes citronnés et épicés, elle est extrêmement rafraîchissante grâce à une légère amertume en fin de bouche.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Straffe Hendrik</nom>
+    <brasserie>De Halve Maan</brasserie>
+    <type>Blonde</type>
+    <origine>Belgique</origine>
+    <teneur>9°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Bière de fermentation haute, refermentée en bouteille, la Straffe Hendrik est une bière triple belge faisant honneur à la tradition. Elle présente un bel équilibre entre puissance douceur et acidité, laissant apparaître de subtiles notes de fruits secs.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>5a.m. Saint</nom>
+    <brasserie>Brewdog</brasserie>
+    <type>Ambrée</type>
+    <origine>Ecosse</origine>
+    <teneur>5°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de fermentation haute, houblonnée à cru, cette bière est une red ale fortement houblonnée, à la fois douce et amère à la robe rubis, qui développe de forts arômes floraux.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Achel Blonde</nom>
+    <brasserie>Achel</brasserie>
+    <type>Blonde</type>
+    <origine>Belgique</origine>
+    <teneur>8°</teneur>
+    <prix>6.5CHF</prix>
+    <description>Bière de fermentation haute, refermentée en bouteille et possédant le label trappiste, cette Achel s'inscrit dans la pure tradition des bières triples belges. Elle séduit par son apparente simplicité et son équilibre entre une légère acidité et des notes fruitées, la rendant plus facile et immédiate que la plupart de ses consœurs.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Cuvée Alex le Rouge</nom>
+    <brasserie>Brasserie des Franches-Montagnes</brasserie>
+    <type>Imperial Stout</type>
+    <origine>Suisse</origine>
+    <teneur>10.276°</teneur>
+    <prix>8CHF</prix>
+    <description>Bière de fermentation haute, refermentée en bouteille et houblonnée à cru, la cuvée Alex le Rouge est une stout riche, aux arômes de café au lait et de vanille et au côté légèrement acidulé, à laquelle sa belle amertume confère une longueur en bouche exceptionnelle.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Paradox Isle of Arran</nom>
+    <brasserie>Brewdog</brasserie>
+    <type>Imperial Stout</type>
+    <origine>Ecosse</origine>
+    <teneur>10°</teneur>
+    <prix>8CHF</prix>
+    <description>Bière de fermentation haute vieillie en fût de chêne. En plus des notes torréfiées propres aux stouts, qui lui confèrent des arômes de café, de fruits noirs ou de réglisse, cette bière profite de son passage en fût de whisky de la distillerie Isle of Arran pour gagner des notes boisées et fumées ainsi qu'une magnifique substance liquoreuse.&#13;
+Une expérience de dégustation unique !</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Punk IPA</nom>
+    <brasserie>Brewdog</brasserie>
+    <type>India Pale Ale</type>
+    <origine>Ecosse</origine>
+    <teneur>5.6°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de fermentation haute houblonnée à cru, c'est le de lance de la brasserie montante Brewdog. Cette IPA dorée à l'amertume rafraîchissante est équilibrée par de persistants arômes de pêche fruits exotiques qui lui donnent sa forte personnalité.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Hardcore IPA</nom>
+    <brasserie>Brewdog</brasserie>
+    <type>India Pale Ale</type>
+    <origine>Ecosse</origine>
+    <teneur>9.2°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière de fermentation haute, la Hardcore IPA est une digne resprésentente du style "Imperial IPA". Le principe est simple : il s'agit d'une bière de tous les excès ! Avec une quantité très importante à la fois de malt et de houblon, on obtient une bière puissante, épaisse mais également amère et fruitée, ce qui lui confère un équilibre étonnamment agréable à boire.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Achel Brune</nom>
+    <brasserie>Achel</brasserie>
+    <type>Brune</type>
+    <origine>Belgique</origine>
+    <teneur>8°</teneur>
+    <prix>6.5CHF</prix>
+    <description>Bière de fermentation haute, refermentée en bouteille et possédant le label trappiste, cette Achel est une valeur sûre des brunes belges, dont elle se démarque par une douceur et une onctuosité soulignées par des arômes fruités et légèrement sucrés.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Proper Job</nom>
+    <brasserie>St Austell</brasserie>
+    <type>India Pale Ale</type>
+    <origine>Angleterre</origine>
+    <teneur>5.5°</teneur>
+    <prix>6.5CHF</prix>
+    <description>Bière dorée de fermentation haute, la Proper Job est une IPA brassée en Cornouaille.&#13;
+Rafraîchissante et équilibrée, sa légèreté est relevée d'une belle amertume soulignant de puissants arômes d'agrumes dûs à un houblonnage très travaillé.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Young's Special London Ale</nom>
+    <brasserie>Wells &amp; Young's</brasserie>
+    <type>Blonde</type>
+    <origine>Angleterre</origine>
+    <teneur>6.4°</teneur>
+    <prix>6.5CHF</prix>
+    <description>Bière de fermentation haute de type "english strong ale", la Young's Special London Ale est un des plus fameux représentants du style ale britannique, comme en témoignent les nombreux prix gagnés depuis sa création. Malgré sa puissance importante pour une ale britannique, cette bière à la robe orangée est très facile à boire grâce à son corps léger et son houblonnage important conférant amertume et arômes fruités.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Mélissandre</nom>
+    <brasserie>Les Faiseurs de bière</brasserie>
+    <type>Blonde au Miel</type>
+    <origine>Suisse</origine>
+    <teneur>6°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière de haute fermentation, où du miel est ajouté en fin de cuisson. Brassée de manière artisanale, son goût doux séduira les amateurs de bière sucrée.&#13;
+&#13;
+</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Faro</nom>
+    <brasserie>Lindemans</brasserie>
+    <type>Lambic</type>
+    <origine>Belgique</origine>
+    <teneur>4°</teneur>
+    <prix>4CHF</prix>
+    <description>Bière de fermentation spontanée, le faro est un lambic adouci par l’ajout de sucre candi brun qui lui confère un goût caramélisé. Bière douce et sucrée, elle plaît particulièrement à la gente féminine.&#13;
+</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Trois Pistoles</nom>
+    <brasserie>Unibroue</brasserie>
+    <type>Brune</type>
+    <origine>Quebec</origine>
+    <teneur>9°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Bière de haute fermentation, riche et corsée. Nez très malté aux effluves de chocolat, de mélasse et de rhum brun. Son goût est puissant et ressemble à celui du vieux porto.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Grimbergen Blonde</nom>
+    <brasserie>Abbaye de Grimbergen</brasserie>
+    <type>Blonde</type>
+    <origine>Belgique</origine>
+    <teneur>6.7°</teneur>
+    <prix>4CHF</prix>
+    <description>Bière de haute fermentation, légèrement fruitée, avec un bel équilibre entre la douceur et l’amertume. Sa saveur ample et ronde est bien prononcée. "La Grim", pour les intimes, est rafraîchissante et à consommer jusqu'à plus soif.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Orval</nom>
+    <brasserie>Orval</brasserie>
+    <type>Blonde</type>
+    <origine>Belgique</origine>
+    <teneur>6.2°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Bière de haute fermentation, non filtrée, refermentée en bouteille. Authentique bière trappiste, elle se caractérise par une amertume très prononcée. Son goût et son arôme très houblonnés lui sont propres.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Bière de Miel</nom>
+    <brasserie>Dupont</brasserie>
+    <type>Ambrée au Miel</type>
+    <origine>Belgique</origine>
+    <teneur>8°</teneur>
+    <prix>5.5CHF</prix>
+    <description>Bière de haute fermentation brassée exclusivement à partir de matières premières certifiées biologiques et sans additif chimique. Son parfum envoûtant et son goût subtil la rendent très agréablement sucrée sans être écœurante.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Bombardier </nom>
+    <brasserie>Wells</brasserie>
+    <type>Premium Bitter</type>
+    <origine>Angleterre</origine>
+    <teneur>5.2°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière à haute fermentation, c'est LA bière britannique authentique par excellence. Riche en malt, elle reste légère et agréable en bouche.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Adelscott</nom>
+    <brasserie>Fischer</brasserie>
+    <type>Ambrée au malt de whisky</type>
+    <origine>France</origine>
+    <teneur>6.6°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de haute fermentation brassée à partir de malt à whisky. Bière sucrée et sans amertume. La persistance aromatique fruitée qui reste en bouche lui donne une légèreté et un goût final agréable.  &#13;
+</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Kriekbier</nom>
+    <brasserie>Liefmans</brasserie>
+    <type>Vieille brune</type>
+    <origine>Belgique</origine>
+    <teneur>6°</teneur>
+    <prix>6.5CHF</prix>
+    <description>Bière de haute fermentation. Contrairement à la plupart des kriek (lambic), elle est produite sur une base de vielle brune, macérée avec des cerises fraîches. Elle a un goût acide et sucré, équilibré, avec beaucoup de complexité. Un chef-d’oeuvre !</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>La Trappe Quadruple</nom>
+    <brasserie>Koningshoeven</brasserie>
+    <type>Blonde</type>
+    <origine>Hollande</origine>
+    <teneur>10°</teneur>
+    <prix>6CHF</prix>
+    <description>Bière de haute fermentation, refermentée en bouteille, brassée au malt légèrement grillé. Son goût est doux, légèrement sucré et agréablement amer, avec des notes de caramel.  Elle est millésimée et de bonne compagnie pour les longues soirées d’hiver.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Pêcheresse</nom>
+    <brasserie>Lindemans</brasserie>
+    <type>Lambic</type>
+    <origine>Belgique</origine>
+    <teneur>2.5°</teneur>
+    <prix>4.5CHF</prix>
+    <description>Bière très sucrée, d'où le goût est donné par une teneur d'environ 30% de jus de pêche. Fraîche et fruitée, au riche bouquet de lambic.&#13;
+Son goût très sucré et sa faible teneur en alcool lui octroient gracieusement le surnom de "Bière de Gonzesse".</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Corona</nom>
+    <brasserie>Cerveceria Modelo</brasserie>
+    <type>Blonde</type>
+    <origine>Mexique</origine>
+    <teneur>4.4°</teneur>
+    <prix>4.5CHF</prix>
+    <description>Bière spéciale de fermentation basse, légère et douce, elle a une mousse blanche peu serrée de tenue moyenne. Au nez de caramel et de malt mêlés, sa saveur est ronde et son corps doux.</description>
+  </biere>
+  <biere contenant="bouteille">
+    <nom>Rivale</nom>
+    <brasserie>Brasserie Trois Dames</brasserie>
+    <type>Ale Rousse</type>
+    <origine>Suisse</origine>
+    <teneur>4.6°</teneur>
+    <prix>5CHF</prix>
+    <description>Bière de haute fermentation et d’inspiration irlandaise. Faiblement houblonnée et aux notes douces et maltées (pain toasté, noisette), il s’agit d’une bière de « session »(on peut facilement en boire plusieurs en suivant)grâce à son caractère léger et peu alcoolisé.</description>
+  </biere>
+  <biere contenant="grande_bouteille">
+    <nom>Lupulus</nom>
+    <brasserie>Les 3 Fourquets</brasserie>
+    <type>Blonde</type>
+    <origine>Belgique</origine>
+    <teneur>8.5°</teneur>
+    <prix>10CHF</prix>
+    <description>Bière de haute fermentation, refermentée en bouteille, non filtrée et non pasteurisée. Dotée de touches olfactives et gustatives tout à fait uniques et nouvelles.&#13;
+A l'époque de nos ancêtres les Loups peuplaient l'Ardenne. On dit que ces hordes venaient de Slovénie, contrée où les meilleurs houblons du monde, en latin Humulus lupulus, voient le jour.&#13;
+Vrai ou faux? Quoi qu'il en soit une bière de grande classe est née. La LUPULUS, just FABULUS!</description>
+  </biere>
+  <biere contenant="grande_bouteille">
+    <nom>Chouffe Dobbelen IPA Tripel</nom>
+    <brasserie>D´Achouffe</brasserie>
+    <type>Pale Ale</type>
+    <origine>Belgique</origine>
+    <teneur>9°</teneur>
+    <prix>13CHF</prix>
+    <description>La Bière Houblon chouffe dobbelen ipa triple est une bière de type "Pale Ale" à fermentation , conçue par le brasseur "Achouffe" en Belgique. Une India Pale Ale saisissant par son extraordinaire amertume qui se prolonge par un corps moelleux, levuré et alcoolisé. Une IPA à la sauce belge !</description>
+  </biere>
+  <biere contenant="grande_bouteille">
+    <nom>L'Abbaye de Saint Bon Chien</nom>
+    <brasserie>BFM</brasserie>
+    <type>Strong sour ale</type>
+    <origine>Suisse</origine>
+    <teneur>11°</teneur>
+    <prix>14CHF</prix>
+    <description>Cette bière de fermentation spontanée, est une cuvée aux reflets rouges-ambrés. Elle est mûrie pendant de longs mois dans des fûts de chêne ayant déjà contenu du vin ou des eaux-de-vie. Ces fûts donneront des arômes très complexes à cette bière.</description>
+  </biere>
+  <biere contenant="grande_bouteille">
+    <nom>McChouffe</nom>
+    <brasserie>D´Achouffe</brasserie>
+    <type>Brune</type>
+    <origine>Belgique</origine>
+    <teneur>8.5°</teneur>
+    <prix>13CHF</prix>
+    <description>Bière de haute fermentation, refermentée en bouteille, non filtrée, non pasteurisée et sans additifs.&#13;
+Forte, fruitée, épicée, légèrement houblonnée, au goût évolutif. </description>
+  </biere>
+  <biere contenant="mois_bouteille">
+    <nom>Chimay Spéciale Cente Cinquante</nom>
+    <brasserie>Abbaye de Scourmont</brasserie>
+    <type>Blonde</type>
+    <origine>Belgique</origine>
+    <teneur>10°</teneur>
+    <prix>13CHF</prix>
+    <description>Développée au sein de l'abbaye à l'instar de ses sœurs, cette bière spéciale est à la fois corsée et délicate. Produite à partir d'ingrédients 100% naturels, elle possède une robe or pâle, au pétillement qui rappelle celui du champagne, et est surmontée d'une belle coiffe de mousse blanche.&#13;
+&#13;
+Son parfum unique, original, évoque les notes richement fruitées et complexes de la levure de Chimay, en harmonie avec les saveurs délicatement épicées et le parfum noble du houblon frais.&#13;
+&#13;
+Avec une teneur en alcool de 10%, la Chimay «Spéciale Cent Cinquante» est corsée et complexe. Son goût légèrement acidulé et rafraîchissant s'achève sur une note pétillante de houblon, pour le plus grand plaisir du palais. </description>
+  </biere>
+  <biere contenant="mois_bouteille">
+    <nom>Lupulus Brune</nom>
+    <brasserie>Les 3 Fourquets</brasserie>
+    <type>brune</type>
+    <origine>Belgique</origine>
+    <teneur>8.5°</teneur>
+    <prix>13CHF</prix>
+    <description>Il s’agit d’une bière titrant 8.5 % alcool volume, refermentée en bouteilles de ¾ l et en fûts de 20 L. La bière est très atténuée, ce qui veut dire qu’elle est très facile à boire parce qu’elle n’est pas lourde. La coloration est due à du sucre candi. En fin d’ébullition une petite quantité  d’écorces d’oranges est ajoutée.  Selon les personnes qui l’ont déjà goûtée il s’agit d’une brune très différente des brunes traditionnelles et de goût très apprécié.</description>
+  </biere>
+  <biere contenant="mois_pression">
+    <nom>St-Feuillien Saison</nom>
+    <brasserie>St-Feuillien</brasserie>
+    <type>Saison (blonde)</type>
+    <origine>Belgique</origine>
+    <teneur>6.5°</teneur>
+    <prix>4CHF</prix>
+    <description>Bière de terroir par excellence, la Saison trouve son origine dans les fermes-brasseries du Sud de la Belgique, et principalement en Hainaut. A l’époque, cette bière peu alcoolisée et rafraîchissante étanchait la soif des ouvriers saisonniers.&#13;
+A la Brasserie St-Feuillien, la Saison est une bière de fermentation haute, refermentée en bouteille, non filtrée, d’un chaleureux blond doré. Son profil aromatique est tout en nuances et son amertume bien marquée, l’ensemble soutenu par une belle plénitude en bouche. Un grand classique.</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Gurten Lager</nom>
+    <brasserie>Gurten</brasserie>
+    <type>Blonde</type>
+    <origine>Suisse</origine>
+    <teneur>4.8°</teneur>
+    <prix>3CHF</prix>
+    <description>La bière désaltérante par excellence, agréable à boire, légère et savoureuse. Très légèrement houblonnée, peu amère, elle convient en toute situation. Elle est LA bière classique de notre assortiment, idéale pour satisfaire une soif soudaine qui n'exige pas une dégustation passionnée.</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Schneider Weisse</nom>
+    <brasserie>G. Schneider &amp; Sohn</brasserie>
+    <type>blanche</type>
+    <origine>Allemagne</origine>
+    <teneur>5.2°</teneur>
+    <prix>4CHF</prix>
+    <description>Une belle mousse, un nez bien malté et une douceur mêlée à un malt très légèrement torréfié, voilà une bière bien agréable, avec un bon petit caractère.</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Wittekop</nom>
+    <brasserie>Riva</brasserie>
+    <type>Blanche</type>
+    <origine>Belgique</origine>
+    <teneur>4.5°</teneur>
+    <prix>3.5CHF</prix>
+    <description>Bière de haute fermentation, non-filtrée, naturellement trouble. Son arôme subtil est dût à l'adjonction d'épices et son goût piquant et fruité à un processus de fermentation particulier.</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Super Bock</nom>
+    <brasserie>Unicer</brasserie>
+    <type>lager</type>
+    <origine>Portugal</origine>
+    <teneur>5°</teneur>
+    <prix>3CHF</prix>
+    <description>Légèrement sucrée et fruitée (groseille), elle se laisserait facilement passer pour un cocktail. Brassée à base de matières premières sélectionnées pour leur excellente qualité, la Super Bock a été récompensée par 28 médailles d'Or au Concours International "Monde Sélection".</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Leffe Blonde</nom>
+    <brasserie>InBev</brasserie>
+    <type>Bière d</type>
+    <origine>Belgique</origine>
+    <teneur>6.6°</teneur>
+    <prix>4CHF</prix>
+    <description>Bière de haute fermentation, brassée au malt pâle et au maïs. Goût plein, doux et fruité. Elle une des perles des bière belges, à la saveur surprenante et envoûtante. Bien qu'extrêmement connue et consommée, elle reste une bière de dégustation qui se savoure à chaque instant.</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Carolus</nom>
+    <brasserie>Het Anker</brasserie>
+    <type>brune</type>
+    <origine>Bélgique</origine>
+    <teneur>8°</teneur>
+    <prix>4CHF</prix>
+    <description>À l’origine, cette bière impériale malinoise était bue principalement lors des chasses aux renards de Charles-Quint et elle a trouvé son nom dans ses pièces d'or. Composée d'un mélange soigneusement dosé de différents malts foncés, elle est brassée suivant la méthode classique, à savoir, la méthode de l'infusion. Garantie de haute fermentation, elle allie, grâce à sa densité élevée de 19° plato, la chaleur du vin à la fraîcheur de la bière. Elle est classée sous les bières spéciales et est particulièrement indiquée à des fins culinaires comme des étuvés, du gibier, des pâtés et même des sabayons.</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Karmeliet</nom>
+    <brasserie>Bosteels</brasserie>
+    <type>Blonde Triple</type>
+    <origine>Belgique</origine>
+    <teneur>8.4°</teneur>
+    <prix>4CHF</prix>
+    <description>Bière de haute fermentation, brassée à partir d'orge, de froment et d'avoine. Au goût doux et fruité, au saveur de citron, d'orange ou de vanille. Elle est cependant forte, dangereuse par son goût agréable qui cache un haut taux d'alcool. </description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Kwak</nom>
+    <brasserie>Bosteels</brasserie>
+    <type>Ambrée</type>
+    <origine>Belgique</origine>
+    <teneur>8.4°</teneur>
+    <prix>4CHF</prix>
+    <description>Bière de haute fermentation. Artisanale forte et corsée, elle se boit dans un verre spécial crée à l’attention des cochers. La légende veut que son nom provienne du bruit que l’on entend quand on boit son verre cul-sec, quand l’air remontant dans celui-ci laisse entendre le fameux «kwak». Il s’agirait en fait du nom de son inventeur, le brasseur Pauwel Kwak.</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Cuvée des Trolls</nom>
+    <brasserie>Dubuisson</brasserie>
+    <type>blonde</type>
+    <origine>Bélgique</origine>
+    <teneur>7°</teneur>
+    <prix>4CHF</prix>
+    <description>Il s'agit d'une bière blonde, filtrée, fraîche et parfumée, particulièrement ronde et bien équilibrée, et titrant 7% de volume alcool.&#13;
+Elle est brassée à partir de moût sucré auquel on rajoute du houblon et des écorces d'orange séchées. Il s'agit d'une fermentation haute.</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Kilkenny</nom>
+    <brasserie>St Francis</brasserie>
+    <type>Ambrée</type>
+    <origine>Irlande</origine>
+    <teneur>5.5°</teneur>
+    <prix>4CHF</prix>
+    <description>Bière de haute fermentation, à l'orge caramélisé et aux notes subtilement fruitées. Elle accompagne généralement la Guinness sur les comptoirs des pubs irlandais et vous fera découvrir le côté caché de la bière irlandaise.</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Tempête</nom>
+    <brasserie>Docteur Gab's</brasserie>
+    <type>blonde</type>
+    <origine>Suisse</origine>
+    <teneur>8°</teneur>
+    <prix>4CHF</prix>
+    <description>Depuis cet automne nous servons en pression une des bières de la brasserie locale Docteur Gab's. On alterne entre la Tempête, la Chameau ainsi que des spécialités saisonnières.&#13;
+Cette bière blonde double malt combine force de caractère et amertume subtile.</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Docteur Gab's</nom>
+    <brasserie>Docteur Gab's</brasserie>
+    <type>Variable</type>
+    <origine>Suisse</origine>
+    <teneur>7°</teneur>
+    <prix>4CHF</prix>
+    <description>Une des tireuses du bar est exclusivement réservée aux bières de la brasserie Docteur Gab's... mais au gré des humeurs, des envies ou des saisons, la bière peut changer !&#13;
+Venez découvrir la Tempête, blonde puissante, la Chameau, ambrée au caractère complexe, ou bien les bières saisonnières de la brasserie... Les hasards du calendrier vous permettront de découvrir en profondeur la diversité de cette excellente brasserie vaudoise !</description>
+  </biere>
+  <biere contenant="pression">
+    <nom>Guinness</nom>
+    <brasserie>John Martin</brasserie>
+    <type>Stout</type>
+    <origine>Irlande</origine>
+    <teneur>4.2°</teneur>
+    <prix>4CHF</prix>
+    <description>Bière de haute fermentation  au malt fortement torréfié et grains d'orge grillés. La plus célèbre bière irlandaise est reconnaissable à sa couleur noire et opaque, sa mousse crémeuse et son goût authentique. </description>
+  </biere>
+</bieres>

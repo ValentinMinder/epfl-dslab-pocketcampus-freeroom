@@ -1,22 +1,16 @@
 namespace java org.pocketcampus.plugin.satellite.shared
 namespace csharp org.pocketcampus.plugin.satellite.shared
 
-include "../../../../platform/sdk/platform.sdk.shared/def/common.thrift"
-
-//To represent a date (milisec from January 1, 1970, 00:00:00 GMT)
-typedef i64 timestamp
+// ---------
+// OLD STUFF
+// ---------
 
 struct Beer {
-	1: required common.Id Id;
+	1: required i64 Id;
 	2: required string name;
 	3: required string description;
 	4: optional double price;
 	5: optional string pictureUrl;
-}
-
-struct Sandwich {
-	1: required common.Id Id;
-	3: required string name;
 }
 
 enum Affluence {
@@ -28,18 +22,47 @@ enum Affluence {
 	ERROR;
 }
 
-struct Event {
-	1: required common.Id Id;
-	2: required string title;
-	3: required string description;
-	4: required timestamp date;
-	5: required double price;
+// ---------
+// NEW STUFF
+// ---------
+
+enum SatelliteBeerContainer {
+  DRAFT = 1,
+  BOTTLE = 2,
+  LARGE_BOTTLE = 3
+}
+
+struct SatelliteBeer {
+  1: required string name;
+  2: required string breweryName;
+  3: required string originCountry;
+  4: required double alcoholRate;
+  5: required double price;
+  6: required string description;
+}
+
+struct SatelliteMenuPart {
+  1: required list<SatelliteBeer> beersOfTheMonth;
+  2: required map<string, list<SatelliteBeer>> beers;
+}
+
+enum SatelliteErrorCode {
+  // An error occurred while reaching the Satellite website
+  NETWORK_ERROR = 404,
+}
+
+struct BeersResponse {
+  // required if the request completed successfully
+  1: optional map<SatelliteBeerContainer, SatelliteMenuPart> beerList;
+  // required if the request failed
+  2: optional SatelliteErrorCode errorCode;
 }
 
 service SatelliteService {
+    // OLD STUFF
 	Beer getBeerOfTheMonth();
-	list<Beer> getAllBeers();
-	list<Sandwich> getSatSandwiches();
 	Affluence getAffluence();
-	list<Event> getNextEvents();
+	
+  // NEW STUFF
+  BeersResponse getBeers();
 }

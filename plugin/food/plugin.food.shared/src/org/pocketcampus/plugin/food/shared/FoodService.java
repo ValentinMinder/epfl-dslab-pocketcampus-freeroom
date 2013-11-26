@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -590,7 +591,9 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getMeals_args other) {
@@ -878,7 +881,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getMeals_result other) {
@@ -919,14 +929,14 @@ public class FoodService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list17 = iprot.readListBegin();
-                this.success = new ArrayList<Meal>(_list17.size);
-                for (int _i18 = 0; _i18 < _list17.size; ++_i18)
+                org.apache.thrift.protocol.TList _list22 = iprot.readListBegin();
+                this.success = new ArrayList<Meal>(_list22.size);
+                for (int _i23 = 0; _i23 < _list22.size; ++_i23)
                 {
-                  Meal _elem19; // required
-                  _elem19 = new Meal();
-                  _elem19.read(iprot);
-                  this.success.add(_elem19);
+                  Meal _elem24; // required
+                  _elem24 = new Meal();
+                  _elem24.read(iprot);
+                  this.success.add(_elem24);
                 }
                 iprot.readListEnd();
               }
@@ -952,9 +962,9 @@ public class FoodService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Meal _iter20 : this.success)
+          for (Meal _iter25 : this.success)
           {
-            _iter20.write(oprot);
+            _iter25.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1126,7 +1136,9 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRatings_args other) {
@@ -1419,7 +1431,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRatings_result other) {
@@ -1460,16 +1479,16 @@ public class FoodService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.MAP) {
               {
-                org.apache.thrift.protocol.TMap _map21 = iprot.readMapBegin();
-                this.success = new HashMap<Long,Rating>(2*_map21.size);
-                for (int _i22 = 0; _i22 < _map21.size; ++_i22)
+                org.apache.thrift.protocol.TMap _map26 = iprot.readMapBegin();
+                this.success = new HashMap<Long,Rating>(2*_map26.size);
+                for (int _i27 = 0; _i27 < _map26.size; ++_i27)
                 {
-                  long _key23; // required
-                  Rating _val24; // required
-                  _key23 = iprot.readI64();
-                  _val24 = new Rating();
-                  _val24.read(iprot);
-                  this.success.put(_key23, _val24);
+                  long _key28; // required
+                  Rating _val29; // required
+                  _key28 = iprot.readI64();
+                  _val29 = new Rating();
+                  _val29.read(iprot);
+                  this.success.put(_key28, _val29);
                 }
                 iprot.readMapEnd();
               }
@@ -1495,10 +1514,10 @@ public class FoodService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I64, org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Map.Entry<Long, Rating> _iter25 : this.success.entrySet())
+          for (Map.Entry<Long, Rating> _iter30 : this.success.entrySet())
           {
-            oprot.writeI64(_iter25.getKey());
-            _iter25.getValue().write(oprot);
+            oprot.writeI64(_iter30.getKey());
+            _iter30.getValue().write(oprot);
           }
           oprot.writeMapEnd();
         }
@@ -1857,7 +1876,24 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_mealId = true;
+      builder.append(present_mealId);
+      if (present_mealId)
+        builder.append(mealId);
+
+      boolean present_rating = true;
+      builder.append(present_rating);
+      if (present_rating)
+        builder.append(rating);
+
+      boolean present_deviceId = true && (isSetDeviceId());
+      builder.append(present_deviceId);
+      if (present_deviceId)
+        builder.append(deviceId);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(setRating_args other) {
@@ -2218,7 +2254,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success.getValue());
+
+      return builder.toHashCode();
     }
 
     public int compareTo(setRating_result other) {
@@ -2514,7 +2557,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_foodReq = true && (isSetFoodReq());
+      builder.append(present_foodReq);
+      if (present_foodReq)
+        builder.append(foodReq);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getFood_args other) {
@@ -2812,7 +2862,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getFood_result other) {
@@ -3109,7 +3166,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_voteReq = true && (isSetVoteReq());
+      builder.append(present_voteReq);
+      if (present_voteReq)
+        builder.append(voteReq);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(vote_args other) {
@@ -3407,7 +3471,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(vote_result other) {
