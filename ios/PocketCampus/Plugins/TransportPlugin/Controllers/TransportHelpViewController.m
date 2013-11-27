@@ -6,47 +6,41 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-
-
 #import "TransportHelpViewController.h"
 
-#import "PCValues.h"
+@interface TransportHelpViewController ()
+
+@property (nonatomic, assign) IBOutlet UIWebView* webView;
+
+@end
 
 @implementation TransportHelpViewController
 
-@synthesize webView;
+#pragma mark - Init
 
-- (id)initWithHTMLFilePath:(NSString*)htmlFilePath_;
+- (id)init
 {
     self = [super initWithNibName:@"TransportHelpView" bundle:nil];
     if (self) {
-        htmlFilePath = [htmlFilePath_ retain];
+        self.title = NSLocalizedStringFromTable(@"TransportHelp", @"TransportPlugin", nil);
     }
     return self;
 }
+
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/transport/help"];
-	self.title = NSLocalizedStringFromTable(@"TransportHelp", @"TransportPlugin", nil);
-    self.view.backgroundColor = [PCValues backgroundColor1];
-    webView.backgroundColor = [UIColor clearColor];
-    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismissViewController)];
-    self.navigationItem.rightBarButtonItem = doneButton;
-    [doneButton release];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/transport/help"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
+    self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStylePlain;
     NSError* error = nil;
-    NSString* htmlString = [NSString stringWithContentsOfFile:htmlFilePath encoding:NSUTF8StringEncoding error:&error];
+    NSString* htmlString = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TransportHelp" ofType:@"html"] encoding:NSUTF8StringEncoding error:&error];
     if (!error) {
-        [webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
+        [self.webView loadHTMLString:htmlString baseURL:nil];
     }
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -54,26 +48,17 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+#pragma mark - Actions
+
+- (void)donePressed {
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
-/* IBActions */
-
-- (IBAction)dismissViewController {
-    if ([self.presentingViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) { // >= iOS 5.0
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-    } else {
-        [self.presentingViewController dismissModalViewControllerAnimated:YES];
-    }
-}
+#pragma mark - Dealloc
 
 - (void)dealloc {
-    webView.delegate = nil;
-    [webView stopLoading];
-    [htmlFilePath release];
-    [super dealloc];
+    self.webView.delegate = nil;
+    [self.webView stopLoading];
 }
 
 @end

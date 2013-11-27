@@ -240,7 +240,7 @@
 		3256175816A89C7D00F52D24 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3256175716A89C7D00F52D24 /* MapViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 32574ED4182140AE008F3163 /* DirectoryEmptyPictureSmall.png */; };
 		32574ED7182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32574ED5182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png */; };
-		3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
 		3258D65116AF1FE20040DAE3 /* PCConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3258D65016AF1FE20040DAE3 /* PCConfig.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325C47A61621D63E006752B4 /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47A51621D63E006752B4 /* MainMenuItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */; };
@@ -1991,6 +1991,8 @@
 		3278F6C71842574B007CB382 /* old */ = {
 			isa = PBXGroup;
 			children = (
+				3236B5B1151F746100C43769 /* NextDeparturesCell.h */,
+				3236B5B2151F746100C43769 /* NextDeparturesCell.m */,
 				324A5992151DC73A00977F33 /* FavoriteStationsView.xib */,
 				32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */,
 			);
@@ -2741,15 +2743,13 @@
 				32456C09184373DE00993F8B /* TransportNextDeparturesCell.m */,
 				32456C0B184373FE00993F8B /* TransportNextDeparturesCell.xib */,
 				324A5999151DFDF700977F33 /* TransportAddStationView.xib */,
+				32AF214515B193A200BB445D /* TransportHelpView.xib */,
+				32AF214615B197DE00BB445D /* TransportHelp.html */,
 				328872C81534D85400330B54 /* DestinationConnectionsListView.xib */,
 				32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */,
 				32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */,
-				3236B5B1151F746100C43769 /* NextDeparturesCell.h */,
-				3236B5B2151F746100C43769 /* NextDeparturesCell.m */,
 				32488C901535F31B00BA49AB /* ConnectionSummaryCell.h */,
 				32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */,
-				32AF214515B193A200BB445D /* TransportHelpView.xib */,
-				32AF214615B197DE00BB445D /* TransportHelp.html */,
 				32969AB115FB92FC0051EF9A /* MyStationsHelp.html */,
 				3278F6C71842574B007CB382 /* old */,
 			);

@@ -30,7 +30,6 @@
 "BestResults" = "Meilleur résultat"; //chose singular finally
 "BestResultsExplanation" = "Pour chaque destination, si un trajet\n est meilleur (plus direct, plus fréquent),\nseuls les prochains départs pour la ligne correspondante (ex. M1) sont affichés\ndans la liste principale.";
 "Schedules" = "Horaires";
-"Reset" = "Réinitialiser";
 "ResetFavStations" = "Stations par défaut...";
 "ResetFavStationsExplanations" = "Vos stations seront remplacées par les stations par défaut:\nEPFL et Lausanne-Flon.";
 "PlatformShort" = "voie";
@@ -56,6 +55,9 @@
 // TransportStationsManagerViewController
 
 "MyStations" = "Mes stations";
+"ResetToDefaultStations" = "Stations par défaut...";
+"Reset" = "Réinitialiser";
+"ResetToDefaultStationsExplanations" = "Vos stations seront remplacées par les stations par défaut:\nEPFL et Lausanne-Flon.";
 
 // TransportAddStationViewController
 

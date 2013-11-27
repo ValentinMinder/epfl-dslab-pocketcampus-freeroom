@@ -10,21 +10,17 @@
 
 #import "TransportService.h"
 
-#import "FavoriteStationsViewController.h"
-
 #import "TransportUtils.h"
 
-//#import "NextDeparturesCell.h"
+#import "TransportController.h"
+
+#import "ObjectArchiver.h"
 
 #import "TransportNextDeparturesCell.h"
 
 #import "DestinationConnectionsListViewController.h"
 
 #import "TransportHelpViewController.h"
-
-#import "TransportController.h"
-
-#import "ObjectArchiver.h"
 
 #import "TransportStationsManagerViewController.h"
 
@@ -266,7 +262,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 }
 
 - (IBAction)presentHelpViewController:(id)sender {
-    TransportHelpViewController* viewController = [[TransportHelpViewController alloc] initWithHTMLFilePath:[[NSBundle mainBundle] pathForResource:@"TransportHelp" ofType:@"html"]];
+    TransportHelpViewController* viewController = [TransportHelpViewController new];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navController animated:YES completion:NULL];
 }

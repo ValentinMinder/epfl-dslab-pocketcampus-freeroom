@@ -33,7 +33,6 @@
 "BestResults" = "Best result"; //chose singular finally
 "BestResultsExplanation" = "For each destination, if a trip is considered\nbetter than the others (direct, higher frequency), only the departures for the\ncorresponding transport line (ex. M1)\nare shown in the main list.";
 "Schedules" = "Schedules";
-"Reset" = "Reset";
 "ResetFavStations" = "Restore default stations...";
 "ResetFavStationsExplanations" = "Your stations will be replaced by default stations:\nEPFL and Lausanne-Flon.";
 "PlatformShort" = "plat.";
@@ -59,6 +58,9 @@
 // TransportStationsManagerViewController
 
 "MyStations" = "My stations";
+"ResetToDefaultStations" = "Restore default stations...";
+"Reset" = "Reset";
+"ResetToDefaultStationsExplanations" = "Your stations will be replaced by default stations:\nEPFL and Lausanne-Flon.";
 
 // TransportAddStationViewController
 

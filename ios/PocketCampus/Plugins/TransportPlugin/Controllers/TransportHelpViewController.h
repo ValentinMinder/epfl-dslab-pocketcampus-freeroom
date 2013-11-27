@@ -8,13 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TransportHelpViewController : UIViewController {
-    UIWebView* webView;
-    NSString* htmlFilePath;
-}
+@interface TransportHelpViewController : UIViewController
 
-- (id)initWithHTMLFilePath:(NSString*)htmlFilePath;
-
-@property (nonatomic, assign) IBOutlet UIWebView* webView;
 
 @end
