@@ -131,13 +131,24 @@
         if (result.numberOfRanges > 1) {
             range = [result rangeAtIndex:1];
             if (range.length != 0) {
-                return [currentName substringWithRange:range];
+                return [NSString stringWithFormat:@"B%@",[currentName substringWithRange:range]];
             }
         }
     }
     
     {
         regex = [NSRegularExpression regularExpressionWithPattern:@"^S(S\\d) " options:NSRegularExpressionCaseInsensitive error:&error];
+        result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
+        if (result.numberOfRanges > 1) {
+            range = [result rangeAtIndex:1];
+            if (range.length != 0) {
+                return [currentName substringWithRange:range];
+            }
+        }
+    }
+    
+    {
+        regex = [NSRegularExpression regularExpressionWithPattern:@"^S(S\\d\\d)" options:NSRegularExpressionCaseInsensitive error:&error];
         result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
         if (result.numberOfRanges > 1) {
             range = [result rangeAtIndex:1];
