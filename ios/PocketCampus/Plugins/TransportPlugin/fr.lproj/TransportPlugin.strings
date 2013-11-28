@@ -6,66 +6,60 @@
   Copyright (c) 2012 EPFL. All rights reserved.
 */
 
+//////////////////////////////////////////
 // Common
+//////////////////////////////////////////
 
 "PluginName" = "Transports";
-"From:" = "De:";
-"To" = "→";
-"NoStation" = "Aucune station";
-"WelcomeTouchInfoInstructions" = "Touchez le bouton signets pour gérer\n vos stations.";
-"Need2StationsTouchInfoInstructions" = "Deux stations sont au minimum nécessaires pour afficher les horaires. Touchez le bouton signets\npour ajouter une deuxième station.";
-"FavoriteStationsTitle" = "Mes stations";
-"TouchAddStationInstructions" = "Touchez le ✚ pour ajouter une station";
-"DepartureStation" = "Station de départ";
-
-"NearestFavoriteStation" = "Automatique (la plus proche)";
-"FavoriteStationsExplanations_NearestSelected" = "Choix actuel : la station la plus proche de vous dans cette liste sera choisie comme point de départ. Les horaires des prochains départs depuis cette station vers toutes les autres stations de la liste seront affichés.";
-"FavoriteStationsExplanations_ManualWithFormat" = "Choix actuel : %@ est sélectionné comme point de départ. Les horaires des prochains départs depuis cette station vers toutes les autres stations de la liste seront affichés.";
-"FavoriteStationsManagementExplanations" = "☞  Touchez le ✚ pour ajouter une station.\n☞  Touchez \"Modifier\" pour supprimer\n      ou réordonner vos stations.";
-
-"ClearAll" = "Tout effacer";
-"CellMultiplePossibilitiesTrip" = "Plusieurs possibilités";
-"Connections"="Connexions";
-"TransportSettings" = "Préférences";
-"BestResults" = "Meilleur résultat"; //chose singular finally
-"BestResultsExplanation" = "Pour chaque destination, si un trajet\n est meilleur (plus direct, plus fréquent),\nseuls les prochains départs pour la ligne correspondante (ex. M1) sont affichés\ndans la liste principale.";
-"Schedules" = "Horaires";
-"ResetFavStations" = "Stations par défaut...";
-"ResetFavStationsExplanations" = "Vos stations seront remplacées par les stations par défaut:\nEPFL et Lausanne-Flon.";
 "PlatformShort" = "voie";
-"TransportHelp" = "Aide Transports";
-
-"ChooseManually" = "Choisir manuellement";
-"ImpossibleLocateUserDenied" = "Impossible de trouver la station la plus proche.\n\nAvez-vous refusé l'accès à la localisation ? Si oui, vous pouvez authoriser \"EPFL\" en allant dans:\n\nRéglages > Confidentialité > Service de localisation\n\nVous pouvez également choisir la station de départ manuellement.";
-"ImpossibleLocateUnknown" = "Désolé, votre position n'a pas\npu être déterminée.\n\nEssayez de rafraîchir, ou sélectionnez une station de départ manuellement.";
 "Need2StationsClickPlusToAdd" = "Au minimum deux stations sont nécessaires pour afficher les horaires.\n\nTouchez le + pour ajouter une station.";
 
+//////////////////////////////////////////
 // TransportNextDeparturesViewController
+//////////////////////////////////////////
 
+"From:" = "De:";
 "LoadingDefaultStations..." = "Chargement des stations\npar défaut...";
 "locating..." = "localisation...";
+"ImpossibleLocateUserDenied" = "Impossible de trouver la station la plus proche.\n\nAvez-vous refusé l'accès à la localisation ? Si oui, vous pouvez authoriser \"EPFL\" en allant dans:\n\nRéglages > Confidentialité > Service de localisation\n\nVous pouvez également choisir la station de départ manuellement.";
+"ImpossibleLocateUnknown" = "Désolé, votre position n'a pas\npu être déterminée.\n\nEssayez de rafraîchir, ou sélectionnez une station de départ manuellement.";
 
+//////////////////////////////////////////
 // TransportDepartureSelectionViewController
+//////////////////////////////////////////
 
 "DepartureStation" = "Station de départ";
 "Automatic" = "Automatique";
 "NearestStation" = "La plus proche des stations ci-dessous";
 "AllowPocketCampusLocationToUserAutomaticDepartureFeature" = "Pour pouvoir activer cette fonctionalité, authorisez \"EPFL\" dans Réglages > Confidentialité > Service de localisation";
+"ChooseManually" = "Choisir manuellement";
 
+//////////////////////////////////////////
 // TransportStationsManagerViewController
+//////////////////////////////////////////
 
 "MyStations" = "Mes stations";
 "ResetToDefaultStations" = "Stations par défaut...";
 "Reset" = "Réinitialiser";
 "ResetToDefaultStationsExplanations" = "Vos stations seront remplacées par les stations par défaut:\nEPFL et Lausanne-Flon.";
 
+//////////////////////////////////////////
 // TransportAddStationViewController
+//////////////////////////////////////////
 
 "AddStation" = "Ajouter une station";
 "AddStationSearchFieldPlaceholder" = "Gare, arrêt de bus, métro, ...";
 "SearchStationNoResult" = "Aucun résultat";
 "alreadyInYourStations" = "déjà dans vos stations";
 
+//////////////////////////////////////////
+//TransportHelpViewController
+//////////////////////////////////////////
+
+"TransportHelp" = "Aide Transports";
+
+//////////////////////////////////////////
 //TransportTripsListViewController
+//////////////////////////////////////////
 
 "Trips" = "Trajets";
