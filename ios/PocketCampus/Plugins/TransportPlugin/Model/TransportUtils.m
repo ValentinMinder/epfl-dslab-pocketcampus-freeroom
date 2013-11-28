@@ -112,7 +112,7 @@
                 }
                 NSString* lineNicerName = directConnection.line.shortName;
                 if (!connectionsForLine[lineNicerName]) {
-                    connectionsForLine[lineNicerName] = @[directConnection];
+                    connectionsForLine[lineNicerName] = [NSMutableArray arrayWithObject:directConnection];
                     //NSLog(@"found new direct potentialRepeatingConnection line : %@", lineNicerName);
                 } else {
                     NSMutableArray* lineDirectConnections = connectionsForLine[lineNicerName];

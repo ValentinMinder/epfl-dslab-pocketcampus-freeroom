@@ -192,7 +192,7 @@ typedef enum {
 }
 
 - (UIView*)feetConnectionViewWithStartingY:(CGFloat)startingY {
-    UIImageView* person = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"FeetConnection"]];
+    UIImageView* person = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TransportFeetConnection"]];
     person.center = CGPointMake(102.0, startingY-(person.frame.size.height/2.0));
     person.alpha = 0.8;
     return person;

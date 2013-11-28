@@ -244,7 +244,8 @@
         if (busImageView) {
             busImageView.hidden = NO;
         } else {
-            busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TransportSmallBus"]];
+            UIImage* image = [UIImage imageNamed:label == self.time1Label ? @"TransportSmallBusGreen" : @"TransportSmallBus"];
+            busImageView = [[UIImageView alloc] initWithImage:image];
             busImageView.alpha = 0.8;
             busImageView.translatesAutoresizingMaskIntoConstraints = NO;
             [label addSubview:busImageView];
