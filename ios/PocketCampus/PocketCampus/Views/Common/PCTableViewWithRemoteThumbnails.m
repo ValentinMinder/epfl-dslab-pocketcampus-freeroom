@@ -199,6 +199,10 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 - (void)dealloc
 {
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
     [self.reachability stopNotifier];
     [self.networkQueue setSuspended:YES];
     for (ASIHTTPRequest* req in self.networkQueue.operations) {
