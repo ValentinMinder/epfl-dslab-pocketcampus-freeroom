@@ -99,7 +99,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     self.tableViewController = [[UITableViewController alloc] initWithStyle:self.tableView.style];
     [self addChildViewController:self.tableViewController];
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];

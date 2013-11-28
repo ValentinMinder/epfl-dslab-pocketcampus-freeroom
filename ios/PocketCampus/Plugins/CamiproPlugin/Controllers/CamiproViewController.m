@@ -33,6 +33,8 @@ static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, weak) IBOutlet UIToolbar* toolbar;
 
+@property (nonatomic, strong) UITableViewController* tableViewController;
+@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 
 // iPad only
 @property (nonatomic, strong) IBOutlet UILabel* statsLabel;
@@ -85,6 +87,12 @@ static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
 {
     [super viewDidLoad];
     
+    self.tableViewController = [[UITableViewController alloc] initWithStyle:self.tableView.style];
+    [self addChildViewController:self.tableViewController];
+    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
+    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
+    self.tableViewController.tableView = self.tableView;
+    
     UIEdgeInsets insets = [PCUtils edgeInsetsForViewController:self];
     insets.bottom = self.toolbar.frame.size.height;
     self.tableView.contentInset = insets;
@@ -117,6 +125,7 @@ static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
 #pragma mark - Refresh, login and requests
 
 - (void)refresh {
+    [self.lgRefreshControl endRefreshing];
     self.centerMessageLabel.text = @"";
     [self.centerActivityIndicator startAnimating];
     self.tableView.hidden = YES;
@@ -129,9 +138,8 @@ static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
     self.statsContentLabel.hidden = YES;
     self.reloadCardButton.hidden = YES;
     
-//#warning TO REMOVE
     CamiproSession* sessionId = [CamiproService lastSessionId];
-    if (sessionId == nil) {
+    if (!sessionId) {
         NSLog(@"-> No previously saved sessionId. Requesting credentials...");
         [self login];
     } else {
