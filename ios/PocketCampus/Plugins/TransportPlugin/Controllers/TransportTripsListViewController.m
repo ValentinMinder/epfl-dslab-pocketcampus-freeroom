@@ -12,7 +12,7 @@
 
 #import "TransportTripCell.h"
 
-#import "ConnectionPartsListViewController.h"
+#import "TransportTripPartsViewController.h"
 
 #import "TransportService.h"
 
@@ -85,13 +85,13 @@
         return;
     }
     TransportTrip* trip = self.nonLeftTrips[indexPath.row-1];
-    ConnectionPartsListViewController* viewController = [[ConnectionPartsListViewController alloc] initWithTransportTrip:trip];
+    TransportTripPartsViewController* viewController = [[TransportTripPartsViewController alloc] initWithTransportTrip:trip];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - UITableViewDataSource
 
-- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) { //header cell
         UITableViewCell* headerCell = [[[NSBundle mainBundle] loadNibNamed:@"TransportTripsHeaderCell" owner:self options:nil] objectAtIndex:0];
         headerCell.selectionStyle = UITableViewCellSelectionStyleNone;

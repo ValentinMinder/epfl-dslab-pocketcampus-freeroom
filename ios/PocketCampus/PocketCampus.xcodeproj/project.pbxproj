@@ -415,8 +415,8 @@
 		32CACD98183E366B00BD36F9 /* LocationArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD94183E366B00BD36F9 /* LocationArrow@2x.png */; };
 		32CACD99183E366B00BD36F9 /* LocationArrowSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD95183E366B00BD36F9 /* LocationArrowSelected.png */; };
 		32CACD9A183E366B00BD36F9 /* LocationArrowSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD96183E366B00BD36F9 /* LocationArrowSelected@2x.png */; };
-		32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		32CAE432153628C100AB17CC /* ConnectionPartsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */; };
+		32CAE42F1536256B00AB17CC /* TransportTripPartsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* TransportTripPartsViewController.m */; };
+		32CAE432153628C100AB17CC /* TransportTripPartsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CAE431153628C000AB17CC /* TransportTripPartsView.xib */; };
 		32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CBF057163450E500FD92E5 /* PocketCampusDrawing.png */; };
 		32CBF05A163450E500FD92E5 /* PocketCampusDrawing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CBF058163450E500FD92E5 /* PocketCampusDrawing@2x.png */; };
 		32CBF0631634812C00FD92E5 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CBF0621634812C00FD92E5 /* SplashViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -1098,9 +1098,9 @@
 		32CACD94183E366B00BD36F9 /* LocationArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrow@2x.png"; sourceTree = "<group>"; };
 		32CACD95183E366B00BD36F9 /* LocationArrowSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowSelected.png; sourceTree = "<group>"; };
 		32CACD96183E366B00BD36F9 /* LocationArrowSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrowSelected@2x.png"; sourceTree = "<group>"; };
-		32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionPartsListViewController.h; sourceTree = "<group>"; };
-		32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionPartsListViewController.m; sourceTree = "<group>"; };
-		32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionPartsListView.xib; sourceTree = "<group>"; };
+		32CAE42D1536256B00AB17CC /* TransportTripPartsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportTripPartsViewController.h; sourceTree = "<group>"; };
+		32CAE42E1536256B00AB17CC /* TransportTripPartsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportTripPartsViewController.m; sourceTree = "<group>"; };
+		32CAE431153628C000AB17CC /* TransportTripPartsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportTripPartsView.xib; sourceTree = "<group>"; };
 		32CBF057163450E500FD92E5 /* PocketCampusDrawing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PocketCampusDrawing.png; sourceTree = "<group>"; };
 		32CBF058163450E500FD92E5 /* PocketCampusDrawing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PocketCampusDrawing@2x.png"; sourceTree = "<group>"; };
 		32CBF0611634812C00FD92E5 /* SplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
@@ -1998,6 +1998,9 @@
 				3236B5B2151F746100C43769 /* NextDeparturesCell.m */,
 				324A5992151DC73A00977F33 /* FavoriteStationsView.xib */,
 				32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */,
+				32488C901535F31B00BA49AB /* ConnectionSummaryCell.h */,
+				32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */,
+				32969AB115FB92FC0051EF9A /* MyStationsHelp.html */,
 			);
 			name = old;
 			sourceTree = "<group>";
@@ -2699,16 +2702,16 @@
 				32442FEA151CF87100685D10 /* TransportNextDeparturesViewController.m */,
 				3278F6C8184257AF007CB382 /* TransportDepartureSelectionViewController.h */,
 				3278F6C9184257AF007CB382 /* TransportDepartureSelectionViewController.m */,
-				3289F2BB183FB80600D833C2 /* TransportStationsManagerViewController.h */,
-				3289F2BC183FB80600D833C2 /* TransportStationsManagerViewController.m */,
-				324A5996151DFDD200977F33 /* TransportAddStationViewController.h */,
-				324A5997151DFDD200977F33 /* TransportAddStationViewController.m */,
-				328872C51534D82C00330B54 /* TransportTripsListViewController.h */,
-				328872C61534D82C00330B54 /* TransportTripsListViewController.m */,
-				32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */,
-				32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */,
 				3257C20B1570F99C00E626A4 /* TransportHelpViewController.h */,
 				3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */,
+				324A5996151DFDD200977F33 /* TransportAddStationViewController.h */,
+				324A5997151DFDD200977F33 /* TransportAddStationViewController.m */,
+				3289F2BB183FB80600D833C2 /* TransportStationsManagerViewController.h */,
+				3289F2BC183FB80600D833C2 /* TransportStationsManagerViewController.m */,
+				328872C51534D82C00330B54 /* TransportTripsListViewController.h */,
+				328872C61534D82C00330B54 /* TransportTripsListViewController.m */,
+				32CAE42D1536256B00AB17CC /* TransportTripPartsViewController.h */,
+				32CAE42E1536256B00AB17CC /* TransportTripPartsViewController.m */,
 				3278F6C618425737007CB382 /* old */,
 			);
 			path = Controllers;
@@ -2752,10 +2755,7 @@
 				32D1DE141846614500D0C866 /* TransportTripCell.h */,
 				32D1DE151846614500D0C866 /* TransportTripCell.m */,
 				32D1DE17184663C700D0C866 /* TransportTripCell.xib */,
-				32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */,
-				32488C901535F31B00BA49AB /* ConnectionSummaryCell.h */,
-				32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */,
-				32969AB115FB92FC0051EF9A /* MyStationsHelp.html */,
+				32CAE431153628C000AB17CC /* TransportTripPartsView.xib */,
 				3278F6C71842574B007CB382 /* old */,
 			);
 			path = Views;
@@ -3113,7 +3113,7 @@
 				32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */,
 				32342A8017F43347009C05FA /* DirectoryEmptyPicture.png in Resources */,
 				32B3325817E5C708004F5E75 /* Images.xcassets in Resources */,
-				32CAE432153628C100AB17CC /* ConnectionPartsListView.xib in Resources */,
+				32CAE432153628C100AB17CC /* TransportTripPartsView.xib in Resources */,
 				32125BBF1536F215009B8D37 /* FeetConnection.png in Resources */,
 				32125BC01536F215009B8D37 /* FeetConnection@2x.png in Resources */,
 				324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */,
@@ -3449,7 +3449,7 @@
 				32930AB117F898910025F864 /* THTTPClient.m in Sources */,
 				328872C71534D82C00330B54 /* TransportTripsListViewController.m in Sources */,
 				32488C921535F31B00BA49AB /* ConnectionSummaryCell.m in Sources */,
-				32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */,
+				32CAE42F1536256B00AB17CC /* TransportTripPartsViewController.m in Sources */,
 				324151D515373B5900CCFB22 /* map.m in Sources */,
 				324151D815373BA300CCFB22 /* MapService.m in Sources */,
 				32456C0A184373DE00993F8B /* TransportNextDeparturesCell.m in Sources */,

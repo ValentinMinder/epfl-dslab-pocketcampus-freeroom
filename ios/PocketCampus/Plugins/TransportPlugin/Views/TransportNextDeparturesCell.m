@@ -46,7 +46,6 @@
     self = (TransportNextDeparturesCell*)elements[0];
     if (self) {
         self.reuseIdentifier = identifier;
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         self.originalLineLabelFont = self.lineLabel.font;
         self.originalLineLabelTextColor = self.lineLabel.textColor;
         self.destinationLabel.text = nil;
@@ -93,9 +92,11 @@
     _state = state;
     switch (state) {
         case TransportNextDeparturesCellStateLoading:
+            self.accessoryType = UITableViewCellAccessoryNone;
             [self.loadingIndicator startAnimating];
             break;
         case TransportNextDeparturesCellStateLoaded:
+            self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             [self.loadingIndicator stopAnimating];
             self.lineLabel.font = self.originalLineLabelFont;
             self.lineLabel.textColor = self.originalLineLabelTextColor;
@@ -104,6 +105,7 @@
             }
             break;
         case TransportNextDeparturesCellStateError:
+            self.accessoryType = UITableViewCellAccessoryNone;
             [self.loadingIndicator stopAnimating];
             self.lineLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
             self.lineLabel.textColor = [UIColor orangeColor];
