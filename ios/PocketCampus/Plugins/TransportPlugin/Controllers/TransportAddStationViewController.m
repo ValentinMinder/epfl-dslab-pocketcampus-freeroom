@@ -46,7 +46,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/transport/addStation"];
     self.tableView.contentInset = UIEdgeInsetsMake(64.0+self.searchBar.frame.size.height, 0, 0, 0);
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
@@ -56,6 +55,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/transport/addStation"];
     TransportAddStationViewController* weakSelf __weak = self;
     [NSTimer scheduledTimerWithTimeInterval:0.0 block:^{
         [weakSelf.searchBar becomeFirstResponder]; //if done inline, it was slowing down the presentation of the view controller for some reason

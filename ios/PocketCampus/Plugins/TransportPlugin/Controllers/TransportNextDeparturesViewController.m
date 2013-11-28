@@ -18,7 +18,7 @@
 
 #import "TransportNextDeparturesCell.h"
 
-#import "DestinationConnectionsListViewController.h"
+#import "TransportTripsListViewController.h"
 
 #import "TransportHelpViewController.h"
 
@@ -100,8 +100,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/transport"];
-    
     self.tableViewController = [[UITableViewController alloc] initWithStyle:self.tableView.style];
     [self addChildViewController:self.tableViewController];
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
@@ -124,6 +122,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/transport"];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
     [self refreshIfNeeded];
     //[NSTimer scheduledTimerWithTimeInterval:0.85 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
@@ -304,6 +303,9 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     switch (self.locationState) {
         case LocationStateLocating:
         {
+            self.tableView.hidden = YES;
+            [self.centerLoadingIndicator startAnimating];
+            self.centerMessageLabel.text = nil;
             self.locationButton.enabled = YES;
             NSString* locatingString = NSLocalizedStringFromTable(@"locating...", @"TransportPlugin", nil);
             fromLabelString = [NSString stringWithFormat:@"%@ %@", fromString, locatingString];
@@ -313,6 +315,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         }
         case LocationStateLocated:
         {
+            [self.centerLoadingIndicator stopAnimating];
             locationArrowImageName = @"LocationArrow2Active";
             self.locationButton.enabled = YES;
             NSString* stationName = self.departureStation.shortName;
@@ -323,6 +326,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         }
         case LocationStateManualSelection:
         {
+            [self.centerLoadingIndicator stopAnimating];
             self.locationButton.enabled = YES;
             NSString* stationName = self.departureStation.shortName;
             fromLabelString = [NSString stringWithFormat:@"%@ %@", fromString, stationName];
@@ -359,6 +363,8 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     }
     
     switch (self.schedulesState) {
+        case SchedulesStateWaiting:
+            break;
         default:
             self.tableView.hidden = NO;
             break;
@@ -448,11 +454,12 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TransportNextDeparturesCell* cell = (TransportNextDeparturesCell*)[self.tableView cellForRowAtIndexPath:indexPath];
     if (cell.state != TransportNextDeparturesCellStateLoaded) {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         return;
     }
     
     QueryTripsResult* queryTripResult = self.tripResults[cell.destinationStation.name];
-    DestinationConnectionsListViewController* viewController = [[DestinationConnectionsListViewController alloc] initWithQueryTripResult:queryTripResult];
+    TransportTripsListViewController* viewController = [[TransportTripsListViewController alloc] initWithQueryTripResult:queryTripResult];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

@@ -65,3 +65,7 @@
 "AddStationSearchFieldPlaceholder" = "Gare, arrêt de bus, métro, ...";
 "SearchStationNoResult" = "Aucun résultat";
 "alreadyInYourStations" = "déjà dans vos stations";
+
+//TransportTripsListViewController
+
+"Trips" = "Trajets";

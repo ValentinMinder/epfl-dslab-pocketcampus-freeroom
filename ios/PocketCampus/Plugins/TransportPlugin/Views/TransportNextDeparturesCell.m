@@ -132,11 +132,13 @@
     self.destinationLabelCenterYConstraint.constant = kDestinationLabelCenterYConstraintConstantNormal;
     
     if (!self.tripResult) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.time1Label.text = nil;
         self.time2Label.text = nil;
         self.time3Label.text = nil;
         return;
     }
+    self.selectionStyle = UITableViewCellSelectionStyleDefault;
     
     NSArray* redundantConnections = [TransportUtils nextRedundantDeparturesFromMessyResult:self.tripResult];
     redundantConnections = [TransportUtils connectionsWithoutAlreadyLeft:redundantConnections];
@@ -179,35 +181,30 @@
                 *stop = YES;
                 return;
             }
+            
             NSString* timeString = nil;
-            TransportConnection* firstConnection = nil;
-            if (transportTrip.parts.count == 0) {
-                timeString = [TransportUtils automaticHoursMinutesLeftStringForTimestamp:transportTrip.departureTime/1000.0];
-            } else {
-                if (transportTrip.parts.count > 1 && [(TransportConnection*)[transportTrip.parts firstObject] isFeetConnection]) {
-                    //first real connection is actual second one, as one at index 0 is feet
-                    firstConnection = transportTrip.parts[1];
-                } else {
-                    firstConnection = [transportTrip.parts firstObject];
-                }
+            TransportConnection* firstConnection = transportTrip.firstConnection;
+            if (firstConnection) {
                 timeString = [TransportUtils automaticTimeStringForTimestamp:(firstConnection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+            } else {
+                timeString = [TransportUtils automaticHoursMinutesLeftStringForTimestamp:transportTrip.departureTime/1000.0];
             }
             
-            UILabel* label = timeLabels[index];
+            UILabel* timeLabel = timeLabels[index];
             NSString* lineName = firstConnection ? firstConnection.line.shortName : @"";
             NSString* fullString = nil;
             if ([timeString isEqualToString:@"Now"]) {
-                [self setBusImageViewVisible:YES inLabel:label];
+                [self setBusImageViewVisible:YES inLabel:timeLabel];
                 fullString = [NSString stringWithFormat:@"     %@", lineName];
             } else {
-                [self setBusImageViewVisible:NO inLabel:label];
+                [self setBusImageViewVisible:NO inLabel:timeLabel];
                 fullString = [NSString stringWithFormat:@"%@ %@", timeString, lineName];
             }
             NSMutableAttributedString* fullAttrString = [[NSMutableAttributedString alloc] initWithString:fullString];
             [fullAttrString addAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.5 alpha:1.0],
-                                            NSFontAttributeName:[UIFont systemFontOfSize:label.font.fontDescriptor.pointSize-2]}
+                                            NSFontAttributeName:[UIFont systemFontOfSize:timeLabel.font.fontDescriptor.pointSize-2]}
                                     range:[fullString rangeOfString:lineName]];
-            label.attributedText = fullAttrString;
+            timeLabel.attributedText = fullAttrString;
             UILabel* platformLabel = index < 3 ? platformLabels[index] : nil;
             if (firstConnection.departurePosition) {
                 self.time1LabelTopConstraint.constant = kTime1LabelTopConstraintConstantShiftedUpForPlatform;

@@ -289,8 +289,7 @@
 		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
 		328860B9183B63590098C857 /* EpflRestaurant+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 328860B8183B63590098C857 /* EpflRestaurant+Additions.m */; };
 		328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3288699214FE5AF300CC97DB /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		328872C71534D82C00330B54 /* DestinationConnectionsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		328872C91534D85400330B54 /* DestinationConnectionsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328872C81534D85400330B54 /* DestinationConnectionsListView.xib */; };
+		328872C71534D82C00330B54 /* TransportTripsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328872C61534D82C00330B54 /* TransportTripsListViewController.m */; };
 		3289D28A15094739008DD299 /* Directory.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28815094739008DD299 /* Directory.png */; };
 		3289D28B15094739008DD299 /* Directory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28915094739008DD299 /* Directory@2x.png */; };
 		3289D28E1509474A008DD299 /* Food.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28C1509474A008DD299 /* Food.png */; };
@@ -360,7 +359,7 @@
 		32A46DE2168B975C0023F37C /* MyEduLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A46DE1168B975C0023F37C /* MyEduLarge.png */; };
 		32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A54B7C15B5A8E100A7C882 /* GasparViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32A54B8015B5AA5900A7C882 /* GasparView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A54B7F15B5AA5900A7C882 /* GasparView.xib */; };
-		32A63A4B1535FFF400237841 /* DestinationConnectionsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */; };
+		32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */; };
 		32A77DC316A564460018976F /* UIPopoverController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC216A564460018976F /* UIPopoverController+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC516A565600018976F /* UIActionSheet+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AA6CCC16DFF0D100783E9C /* EventsPlugin.strings */; };
@@ -454,6 +453,8 @@
 		32D0B263166ABEA200F68304 /* FloorUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B25F166ABEA200F68304 /* FloorUp@2x.png */; };
 		32D0B266166AC86100F68304 /* EyeMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B264166AC86000F68304 /* EyeMap.png */; };
 		32D0B267166AC86100F68304 /* EyeMap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B265166AC86000F68304 /* EyeMap@2x.png */; };
+		32D1DE161846614500D0C866 /* TransportTripCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D1DE151846614500D0C866 /* TransportTripCell.m */; };
+		32D1DE18184663C700D0C866 /* TransportTripCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D1DE17184663C700D0C866 /* TransportTripCell.xib */; };
 		32D57299157F7D780051230F /* EPFLLayersOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D57298157F7D780051230F /* EPFLLayersOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32D97C9C15AF1BB8004384A5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D97C9B15AF1BB8004384A5 /* Security.framework */; };
 		32DA6454168E590B00D22D08 /* NewsItem+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -915,9 +916,8 @@
 		328860B8183B63590098C857 /* EpflRestaurant+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EpflRestaurant+Additions.m"; sourceTree = "<group>"; };
 		3288699114FE5AF300CC97DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AppDelegate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		3288699214FE5AF300CC97DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		328872C51534D82C00330B54 /* DestinationConnectionsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationConnectionsListViewController.h; sourceTree = "<group>"; };
-		328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationConnectionsListViewController.m; sourceTree = "<group>"; };
-		328872C81534D85400330B54 /* DestinationConnectionsListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DestinationConnectionsListView.xib; sourceTree = "<group>"; };
+		328872C51534D82C00330B54 /* TransportTripsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportTripsListViewController.h; sourceTree = "<group>"; };
+		328872C61534D82C00330B54 /* TransportTripsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportTripsListViewController.m; sourceTree = "<group>"; };
 		3289D28815094739008DD299 /* Directory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Directory.png; sourceTree = "<group>"; };
 		3289D28915094739008DD299 /* Directory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Directory@2x.png"; sourceTree = "<group>"; };
 		3289D28C1509474A008DD299 /* Food.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Food.png; sourceTree = "<group>"; };
@@ -1020,8 +1020,8 @@
 		32A54B7B15B5A8E100A7C882 /* GasparViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GasparViewController.h; sourceTree = "<group>"; };
 		32A54B7C15B5A8E100A7C882 /* GasparViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GasparViewController.m; sourceTree = "<group>"; };
 		32A54B7F15B5AA5900A7C882 /* GasparView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GasparView.xib; sourceTree = "<group>"; };
-		32A63A4C1535FFF400237841 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DestinationConnectionsHeaderCell.xib; sourceTree = "<group>"; };
-		32A63A4F1536000100237841 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/DestinationConnectionsHeaderCell.xib; sourceTree = "<group>"; };
+		32A63A4C1535FFF400237841 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
+		32A63A4F1536000100237841 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/TransportTripsHeaderCell.xib; sourceTree = "<group>"; };
 		32A77DC116A564460018976F /* UIPopoverController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPopoverController+Additions.h"; sourceTree = "<group>"; };
 		32A77DC216A564460018976F /* UIPopoverController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPopoverController+Additions.m"; sourceTree = "<group>"; };
 		32A77DC416A565600018976F /* UIActionSheet+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Additions.h"; sourceTree = "<group>"; };
@@ -1152,6 +1152,9 @@
 		32D0B25F166ABEA200F68304 /* FloorUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FloorUp@2x.png"; sourceTree = "<group>"; };
 		32D0B264166AC86000F68304 /* EyeMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EyeMap.png; sourceTree = "<group>"; };
 		32D0B265166AC86000F68304 /* EyeMap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeMap@2x.png"; sourceTree = "<group>"; };
+		32D1DE141846614500D0C866 /* TransportTripCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportTripCell.h; sourceTree = "<group>"; };
+		32D1DE151846614500D0C866 /* TransportTripCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportTripCell.m; sourceTree = "<group>"; };
+		32D1DE17184663C700D0C866 /* TransportTripCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportTripCell.xib; sourceTree = "<group>"; };
 		32D57296157F79650051230F /* OverlayWithURLs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OverlayWithURLs.h; sourceTree = "<group>"; };
 		32D57297157F7D780051230F /* EPFLLayersOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPFLLayersOverlay.h; sourceTree = "<group>"; };
 		32D57298157F7D780051230F /* EPFLLayersOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPFLLayersOverlay.m; sourceTree = "<group>"; };
@@ -2700,8 +2703,8 @@
 				3289F2BC183FB80600D833C2 /* TransportStationsManagerViewController.m */,
 				324A5996151DFDD200977F33 /* TransportAddStationViewController.h */,
 				324A5997151DFDD200977F33 /* TransportAddStationViewController.m */,
-				328872C51534D82C00330B54 /* DestinationConnectionsListViewController.h */,
-				328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */,
+				328872C51534D82C00330B54 /* TransportTripsListViewController.h */,
+				328872C61534D82C00330B54 /* TransportTripsListViewController.m */,
 				32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */,
 				32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */,
 				3257C20B1570F99C00E626A4 /* TransportHelpViewController.h */,
@@ -2745,8 +2748,10 @@
 				324A5999151DFDF700977F33 /* TransportAddStationView.xib */,
 				32AF214515B193A200BB445D /* TransportHelpView.xib */,
 				32AF214615B197DE00BB445D /* TransportHelp.html */,
-				328872C81534D85400330B54 /* DestinationConnectionsListView.xib */,
-				32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */,
+				32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */,
+				32D1DE141846614500D0C866 /* TransportTripCell.h */,
+				32D1DE151846614500D0C866 /* TransportTripCell.m */,
+				32D1DE17184663C700D0C866 /* TransportTripCell.xib */,
 				32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */,
 				32488C901535F31B00BA49AB /* ConnectionSummaryCell.h */,
 				32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */,
@@ -3105,8 +3110,7 @@
 				329D4ACD151F810E000AC339 /* DestinationTransportArrow.png in Resources */,
 				329D4ACE151F810E000AC339 /* DestinationTransportArrow@2x.png in Resources */,
 				3297E366180826D20047AD07 /* CenterOnEPFL@2x.png in Resources */,
-				328872C91534D85400330B54 /* DestinationConnectionsListView.xib in Resources */,
-				32A63A4B1535FFF400237841 /* DestinationConnectionsHeaderCell.xib in Resources */,
+				32A63A4B1535FFF400237841 /* TransportTripsHeaderCell.xib in Resources */,
 				32342A8017F43347009C05FA /* DirectoryEmptyPicture.png in Resources */,
 				32B3325817E5C708004F5E75 /* Images.xcassets in Resources */,
 				32CAE432153628C100AB17CC /* ConnectionPartsListView.xib in Resources */,
@@ -3263,6 +3267,7 @@
 				32E67DCA1684D62300E5CFF6 /* ClockCellSelected@2x.png in Resources */,
 				322207EC1688E6B5003F6622 /* NewsSplashView.xib in Resources */,
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
+				32D1DE18184663C700D0C866 /* TransportTripCell.xib in Resources */,
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
 				32A46DE2168B975C0023F37C /* MyEduLarge.png in Resources */,
 				32506D01181DC41E003F08D7 /* MasterVisible.png in Resources */,
@@ -3442,7 +3447,7 @@
 				324A59A0151E453300977F33 /* TransportUtils.m in Sources */,
 				3236B5B3151F746100C43769 /* NextDeparturesCell.m in Sources */,
 				32930AB117F898910025F864 /* THTTPClient.m in Sources */,
-				328872C71534D82C00330B54 /* DestinationConnectionsListViewController.m in Sources */,
+				328872C71534D82C00330B54 /* TransportTripsListViewController.m in Sources */,
 				32488C921535F31B00BA49AB /* ConnectionSummaryCell.m in Sources */,
 				32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */,
 				324151D515373B5900CCFB22 /* map.m in Sources */,
@@ -3526,6 +3531,7 @@
 				322207EF1688F097003F6622 /* NewsItemViewController.m in Sources */,
 				32930AB817F898910025F864 /* ZUUIRevealController.m in Sources */,
 				32EB617F180D5A3C001AE852 /* MapResultsListViewController.m in Sources */,
+				32D1DE161846614500D0C866 /* TransportTripCell.m in Sources */,
 				322207F91689E3A3003F6622 /* PCUtils.m in Sources */,
 				3289F2BD183FB80600D833C2 /* TransportStationsManagerViewController.m in Sources */,
 				32930AB217F898910025F864 /* TMemoryBuffer.m in Sources */,
@@ -3697,13 +3703,13 @@
 			name = MyStationsHelp.html;
 			sourceTree = "<group>";
 		};
-		32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */ = {
+		32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				32A63A4C1535FFF400237841 /* en */,
 				32A63A4F1536000100237841 /* fr */,
 			);
-			name = DestinationConnectionsHeaderCell.xib;
+			name = TransportTripsHeaderCell.xib;
 			sourceTree = "<group>";
 		};
 		32AA6CCC16DFF0D100783E9C /* EventsPlugin.strings */ = {

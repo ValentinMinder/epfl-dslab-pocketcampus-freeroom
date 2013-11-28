@@ -50,3 +50,42 @@
 @property (nonatomic, readonly) NSString* shortName;
 
 @end
+
+#pragma mark - TransportTrip (Additions)
+
+@interface TransportTrip (Additions)
+
+/*
+ * Returns the first connection that is not a feet connection
+ * If the trip is composed of only a feet connection, it returns it
+ * Returns nil if the trip is composed of no connection
+ */
+- (TransportConnection*)firstConnection;
+
+/*
+ * Returns number of changes (excluding feet parts)
+ * So for example:
+ * Lausanne-Flon (M2) - Lausanne (M2) - walk - Lausanne station - Genève
+ * is one change (switching from M2 to train)
+ */
+@property (nonatomic, readonly) NSUInteger numberOfChanges;
+
+/*
+ * Returns YES if departureTime is in the past
+ * NO otherwise
+ */
+@property (nonatomic, readonly) BOOL isLeft;
+
+@end
+
+#pragma mark - QueryTripResult (Additions)
+
+@interface QueryTripsResult (Additions)
+
+/*
+ * Returns QueryTripsResult.connections purged of ones that are already left at the the time of method call
+ */
+- (NSArray*)nonLeftTrips;
+
+@end
+

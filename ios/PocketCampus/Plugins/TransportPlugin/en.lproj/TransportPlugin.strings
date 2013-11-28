@@ -28,7 +28,6 @@
 "ClearAll" = "Clear all";
 
 "CellMultiplePossibilitiesTrip" = "Multiple possibilites";
-"Connections"="Connections";
 "TransportSettings" = "Transport Settings";
 "BestResults" = "Best result"; //chose singular finally
 "BestResultsExplanation" = "For each destination, if a trip is considered\nbetter than the others (direct, higher frequency), only the departures for the\ncorresponding transport line (ex. M1)\nare shown in the main list.";
@@ -68,3 +67,7 @@
 "AddStationSearchFieldPlaceholder" = "Metro station, bus stop, train station, ...";
 "SearchStationNoResult" = "No results";
 "alreadyInYourStations" = "already in your stations";
+
+//TransportTripsListViewController
+
+"Trips" = "Trips";

@@ -206,3 +206,51 @@
 }
 
 @end
+
+@implementation TransportTrip (Additions)
+
+- (TransportConnection*)firstConnection {
+    if (!self.parts.count) {
+        return nil;
+    }
+    if (self.parts.count > 1 && [(TransportConnection*)[self.parts firstObject] isFeetConnection]) {
+        return (TransportConnection*)(self.parts[1]);
+    }
+    return (TransportConnection*)[self.parts firstObject];
+    
+}
+
+- (NSUInteger)numberOfChanges {
+    if (!self.parts.count) {
+        return 0;
+    }
+    
+    NSUInteger nbChanges = 0;
+    for (TransportConnection* connection in self.parts) {
+        if (!connection.isFeetConnection) {
+            nbChanges++;
+        }
+    }
+    return nbChanges-1; //les piquets et les potaux...
+}
+
+- (BOOL)isLeft {
+    NSTimeInterval interval = (self.departureTime/1000.0) - [[NSDate date] timeIntervalSince1970];
+    return interval < 0.0;
+}
+
+@end
+
+@implementation QueryTripsResult (Additions)
+
+- (NSArray*)nonLeftTrips {
+    NSMutableArray* purgedTrips = [NSMutableArray arrayWithArray:self.connections];
+    for  (TransportTrip* trip in self.connections) {
+        if (trip.isLeft) {
+            [purgedTrips removeObject:purgedTrips];
+        }
+    }
+    return purgedTrips;
+}
+
+@end
