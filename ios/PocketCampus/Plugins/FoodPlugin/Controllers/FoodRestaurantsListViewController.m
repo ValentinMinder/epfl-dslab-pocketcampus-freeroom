@@ -95,9 +95,6 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 }
 
 - (void)refreshIfNeeded {
-    if (![PCUtils hasDeviceInternetConnection]) {
-        return;
-    }
     if (!self.foodResponse || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || ![[NSDate date] isSameDayAsDate:self.lgRefreshControl.lastSuccessfulRefreshDate]) {
         if (!self.splitViewController && self.navigationController.topViewController != self) {
             [self.navigationController popToViewController:self animated:NO];
