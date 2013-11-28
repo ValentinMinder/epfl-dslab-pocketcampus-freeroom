@@ -469,25 +469,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     NSIndexPath* biasedIndexPath = [self biasedIndexPathForIndexPath:indexPath];
     TransportStation* station = self.usersStations[biasedIndexPath.row];
     QueryTripsResult* trip = self.tripResults[station.name];
-    
-    /*if (!trip) { //still loading
-        return [[NextDeparturesCell alloc] initWithDestinationStation:station loadingState:LoadingStateLoading];;
-    }
-    
-    if ([trip isEqual:[NSNull null]]) { //indicates error
-        return [[NextDeparturesCell alloc] initWithDestinationStation:station loadingState:LoadingStateError];;
-    }
-    
-    NSNumber* bestResultSetting = (NSNumber*)[ObjectArchiver objectForKey:kTransportSettingsKeyBestResult andPluginName:@"transport"];
-    
-    if (!bestResultSetting  || [bestResultSetting boolValue]) { //if nil, means not set => default => YES.
-        NSArray* redundantConnections = [TransportUtils nextRedundantDeparturesFromMessyResult:trip];
-        redundantConnections = [TransportUtils connectionsWithoutAlreadyLeft:redundantConnections];
-        return [[NextDeparturesCell alloc] initWithQueryTripResult:trip redundantConnections:redundantConnections];
-    }
-    
-    return [[NextDeparturesCell alloc] initWithQueryTripResult:trip redundantConnections:nil];*/
-    
+        
     static NSString* identifier = @"TransportNextDeparturesCell";
     
     TransportNextDeparturesCell* cell = self.cellForDestinationName[station.name];

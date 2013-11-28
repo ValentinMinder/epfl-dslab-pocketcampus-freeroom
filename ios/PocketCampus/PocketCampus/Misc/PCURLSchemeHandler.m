@@ -71,7 +71,7 @@
     NSMutableDictionary* params = [[PCUtils urlStringParameters:url.absoluteString] mutableCopy];
     
     if (!params) {
-        params = [NSDictionary dictionary]; //empty dictionary
+        params = [NSMutableDictionary dictionary]; //empty dictionary
     } else {
         for (NSString* param in [params copy]) {
             params[param] = [params[param] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // convert HTML entities

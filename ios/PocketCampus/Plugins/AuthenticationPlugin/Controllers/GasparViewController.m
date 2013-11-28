@@ -65,12 +65,6 @@
     }
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
     if ([PCUtils isIdiomPad]) {
@@ -79,15 +73,6 @@
         return UIInterfaceOrientationMaskPortrait;
     }
     
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
-{
-    if ([PCUtils isIdiomPad]) {
-        return YES;
-    } else {
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
-    }
 }
 
 - (void)showDoneButton {

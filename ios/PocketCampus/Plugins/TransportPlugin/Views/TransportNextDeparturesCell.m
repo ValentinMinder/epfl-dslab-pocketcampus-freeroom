@@ -142,8 +142,7 @@
     }
     self.selectionStyle = UITableViewCellSelectionStyleDefault;
     
-    NSArray* redundantConnections = [TransportUtils nextRedundantDeparturesFromMessyResult:self.tripResult];
-    redundantConnections = [TransportUtils connectionsWithoutAlreadyLeft:redundantConnections];
+    NSArray* redundantConnections = [TransportUtils nextRedundantDeparturesFromMessyResult:self.tripResult purgeAlreadyLeft:YES];
     NSArray* timeLabels = @[self.time1Label, self.time2Label, self.time3Label];
     NSArray* platformLabels = @[self.platform1Label, self.platform2Label, self.platform3Label];
     
@@ -171,7 +170,7 @@
         self.lineLabel.text = connection.line.shortName;
         
     } else {
-        NSArray* trips = [TransportUtils connectionsWithoutAlreadyLeft:self.tripResult.connections];
+        NSArray* trips = self.tripResult.nonLeftTrips;
         if (trips.count < 3) {
             //reset labels if less than 3 connections, as we might then leave previous content of the cell
             for (UILabel* label in timeLabels) {

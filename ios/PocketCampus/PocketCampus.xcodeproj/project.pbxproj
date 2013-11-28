@@ -33,8 +33,6 @@
 		32035FEB16E153860016F03C /* EventItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FEA16E153860016F03C /* EventItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3204C6D01648412D003944D2 /* LightGrayTextureBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */; };
 		3204C6D11648412D003944D2 /* LightGrayTextureBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */; };
-		32058ACC1572B44D00F4D361 /* TransportSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32058ACB1572B44D00F4D361 /* TransportSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */; };
 		32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32074B7C17FB09CA009804CE /* NewsLarge@2x.png */; };
 		320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* GlobalSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		320DFC2616469A2300849907 /* MyEduSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320DFC2516469A2300849907 /* MyEduSplashDetailView.xib */; };
@@ -182,7 +180,6 @@
 		323676C916BDB6620004D5AD /* FacebookLikeCellImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */; };
 		323676CC16BDD1420004D5AD /* WhiteDisclosureIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676CA16BDD1420004D5AD /* WhiteDisclosureIndicator.png */; };
 		323676CD16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676CB16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png */; };
-		3236B5B3151F746100C43769 /* NextDeparturesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3236B5B2151F746100C43769 /* NextDeparturesCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		323A913C1640783F007A63D3 /* TopDown1pxShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 323A913B1640783F007A63D3 /* TopDown1pxShadow.png */; };
 		323A913F164078FF007A63D3 /* TopDown1pxShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323A913E164078FF007A63D3 /* TopDown1pxShadow@2x.png */; };
 		324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 324151C615373A1700CCFB22 /* MapPlugin.strings */; };
@@ -215,12 +212,9 @@
 		3247495617F340B800698A9D /* Person+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247495517F340B800698A9D /* Person+Extras.m */; };
 		3247C3B71504F2E10079522A /* FoodPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3247C3B01504F2E10079522A /* FoodPlugin.strings */; };
 		3247CAF815135FD800105A71 /* PCTableViewSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32488C921535F31B00BA49AB /* ConnectionSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		324A5990151DC6A800977F33 /* FavoriteStationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A598F151DC6A800977F33 /* FavoriteStationsViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		324A5993151DC73A00977F33 /* FavoriteStationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5992151DC73A00977F33 /* FavoriteStationsView.xib */; };
 		324A5998151DFDD200977F33 /* TransportAddStationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A5997151DFDD200977F33 /* TransportAddStationViewController.m */; };
 		324A599A151DFDF700977F33 /* TransportAddStationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5999151DFDF700977F33 /* TransportAddStationView.xib */; };
-		324A59A0151E453300977F33 /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		324A59A0151E453300977F33 /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; };
 		324C7A23174A627C00ED19FD /* GenericResizableShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A21174A627C00ED19FD /* GenericResizableShadow.png */; };
 		324C7A24174A627C00ED19FD /* GenericResizableShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */; };
 		324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */; };
@@ -334,7 +328,6 @@
 		3295DF0F165BC60D00CA3B9D /* DownloadedRectSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 3295DF0D165BC60B00CA3B9D /* DownloadedRectSmall.png */; };
 		3295DF10165BC60D00CA3B9D /* DownloadedRectSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3295DF0E165BC60C00CA3B9D /* DownloadedRectSmall@2x.png */; };
 		3296570B14FF9DDB00C44C12 /* PocketCampus.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3296570914FF9DDB00C44C12 /* PocketCampus.strings */; };
-		32969AB315FB92FD0051EF9A /* MyStationsHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 32969AB115FB92FC0051EF9A /* MyStationsHelp.html */; };
 		32969ABB15FBA9150051EF9A /* Compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969AB915FBA9150051EF9A /* Compass.png */; };
 		32969ABC15FBA9150051EF9A /* Compass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969ABA15FBA9150051EF9A /* Compass@2x.png */; };
 		3297E017155571F80054F790 /* NewsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E016155571F80054F790 /* NewsLarge.png */; };
@@ -548,9 +541,6 @@
 		32035FEA16E153860016F03C /* EventItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventItemCell.m; sourceTree = "<group>"; };
 		3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LightGrayTextureBackground.png; sourceTree = "<group>"; };
 		3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LightGrayTextureBackground@2x.png"; sourceTree = "<group>"; };
-		32058ACA1572B44D00F4D361 /* TransportSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportSettingsViewController.h; sourceTree = "<group>"; };
-		32058ACB1572B44D00F4D361 /* TransportSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportSettingsViewController.m; sourceTree = "<group>"; };
-		32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportSettingsView.xib; sourceTree = "<group>"; };
 		32074B7C17FB09CA009804CE /* NewsLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NewsLarge@2x.png"; sourceTree = "<group>"; };
 		320A05B015B02C240057B15C /* GlobalSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalSettingsViewController.h; sourceTree = "<group>"; };
 		320A05B115B02C240057B15C /* GlobalSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalSettingsViewController.m; sourceTree = "<group>"; };
@@ -762,8 +752,6 @@
 		323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookLikeCellImage@2x.png"; sourceTree = "<group>"; };
 		323676CA16BDD1420004D5AD /* WhiteDisclosureIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WhiteDisclosureIndicator.png; sourceTree = "<group>"; };
 		323676CB16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteDisclosureIndicator@2x.png"; sourceTree = "<group>"; };
-		3236B5B1151F746100C43769 /* NextDeparturesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextDeparturesCell.h; sourceTree = "<group>"; };
-		3236B5B2151F746100C43769 /* NextDeparturesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextDeparturesCell.m; sourceTree = "<group>"; };
 		323A913B1640783F007A63D3 /* TopDown1pxShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TopDown1pxShadow.png; sourceTree = "<group>"; };
 		323A913E164078FF007A63D3 /* TopDown1pxShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TopDown1pxShadow@2x.png"; sourceTree = "<group>"; };
 		324151C715373A1700CCFB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MapPlugin.strings; sourceTree = "<group>"; };
@@ -814,11 +802,6 @@
 		3247C3B21504F2E10079522A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/FoodPlugin.strings; sourceTree = "<group>"; };
 		3247CAF615135FD800105A71 /* PCTableViewSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCTableViewSectionHeader.h; sourceTree = "<group>"; };
 		3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTableViewSectionHeader.m; sourceTree = "<group>"; };
-		32488C901535F31B00BA49AB /* ConnectionSummaryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionSummaryCell.h; sourceTree = "<group>"; };
-		32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionSummaryCell.m; sourceTree = "<group>"; };
-		324A598E151DC6A800977F33 /* FavoriteStationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteStationsViewController.h; sourceTree = "<group>"; };
-		324A598F151DC6A800977F33 /* FavoriteStationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteStationsViewController.m; sourceTree = "<group>"; };
-		324A5992151DC73A00977F33 /* FavoriteStationsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoriteStationsView.xib; sourceTree = "<group>"; };
 		324A5996151DFDD200977F33 /* TransportAddStationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportAddStationViewController.h; sourceTree = "<group>"; };
 		324A5997151DFDD200977F33 /* TransportAddStationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportAddStationViewController.m; sourceTree = "<group>"; };
 		324A5999151DFDF700977F33 /* TransportAddStationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportAddStationView.xib; sourceTree = "<group>"; };
@@ -992,8 +975,6 @@
 		3295DF0E165BC60C00CA3B9D /* DownloadedRectSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownloadedRectSmall@2x.png"; sourceTree = "<group>"; };
 		3296570A14FF9DDB00C44C12 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PocketCampus.strings; sourceTree = "<group>"; };
 		3296570C14FF9DE300C44C12 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PocketCampus.strings; sourceTree = "<group>"; };
-		32969AB215FB92FD0051EF9A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/MyStationsHelp.html; sourceTree = "<group>"; };
-		32969AB515FB93060051EF9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/MyStationsHelp.html; sourceTree = "<group>"; };
 		32969AB915FBA9150051EF9A /* Compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Compass.png; sourceTree = "<group>"; };
 		32969ABA15FBA9150051EF9A /* Compass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Compass@2x.png"; sourceTree = "<group>"; };
 		3297E016155571F80054F790 /* NewsLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NewsLarge.png; sourceTree = "<group>"; };
@@ -1980,31 +1961,6 @@
 			path = Plugins/EventsPlugin/Controllers;
 			sourceTree = SOURCE_ROOT;
 		};
-		3278F6C618425737007CB382 /* old */ = {
-			isa = PBXGroup;
-			children = (
-				324A598E151DC6A800977F33 /* FavoriteStationsViewController.h */,
-				324A598F151DC6A800977F33 /* FavoriteStationsViewController.m */,
-				32058ACA1572B44D00F4D361 /* TransportSettingsViewController.h */,
-				32058ACB1572B44D00F4D361 /* TransportSettingsViewController.m */,
-			);
-			name = old;
-			sourceTree = "<group>";
-		};
-		3278F6C71842574B007CB382 /* old */ = {
-			isa = PBXGroup;
-			children = (
-				3236B5B1151F746100C43769 /* NextDeparturesCell.h */,
-				3236B5B2151F746100C43769 /* NextDeparturesCell.m */,
-				324A5992151DC73A00977F33 /* FavoriteStationsView.xib */,
-				32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */,
-				32488C901535F31B00BA49AB /* ConnectionSummaryCell.h */,
-				32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */,
-				32969AB115FB92FC0051EF9A /* MyStationsHelp.html */,
-			);
-			name = old;
-			sourceTree = "<group>";
-		};
 		3288699014FE5AF300CC97DB /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
@@ -2712,7 +2668,6 @@
 				328872C61534D82C00330B54 /* TransportTripsListViewController.m */,
 				32CAE42D1536256B00AB17CC /* TransportTripPartsViewController.h */,
 				32CAE42E1536256B00AB17CC /* TransportTripPartsViewController.m */,
-				3278F6C618425737007CB382 /* old */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2756,7 +2711,6 @@
 				32D1DE151846614500D0C866 /* TransportTripCell.m */,
 				32D1DE17184663C700D0C866 /* TransportTripCell.xib */,
 				32CAE431153628C000AB17CC /* TransportTripPartsView.xib */,
-				3278F6C71842574B007CB382 /* old */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3104,7 +3058,6 @@
 				32442FF1151D0F3000685D10 /* TransportNextDeparturesView.xib in Resources */,
 				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
 				327513311825465D0037FE00 /* FavoriteCorner.png in Resources */,
-				324A5993151DC73A00977F33 /* FavoriteStationsView.xib in Resources */,
 				324A599A151DFDF700977F33 /* TransportAddStationView.xib in Resources */,
 				3289F2BA183FAB8C00D833C2 /* LocationArrow2Active@2x.png in Resources */,
 				329D4ACD151F810E000AC339 /* DestinationTransportArrow.png in Resources */,
@@ -3140,7 +3093,6 @@
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
 				32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */,
-				32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */,
 				321F37E615B02FBE00E7BA6D /* HelpBarButton.png in Resources */,
 				321F37E715B02FBE00E7BA6D /* HelpBarButton@2x.png in Resources */,
 				32506D06181DC7AF003F08D7 /* MasterHidden@2x.png in Resources */,
@@ -3157,7 +3109,6 @@
 				3293AD2315D1BC930097D414 /* AboutPCView.xib in Resources */,
 				32777B4615D1BFBC00A29F56 /* AboutPC.html in Resources */,
 				32675C2415F50F4A00880387 /* Config.plist in Resources */,
-				32969AB315FB92FD0051EF9A /* MyStationsHelp.html in Resources */,
 				32969ABB15FBA9150051EF9A /* Compass.png in Resources */,
 				32969ABC15FBA9150051EF9A /* Compass@2x.png in Resources */,
 				32CACD97183E366B00BD36F9 /* LocationArrow.png in Resources */,
@@ -3441,14 +3392,11 @@
 				32CFECEF151CCB6800D8CBA6 /* ObjectArchiver.m in Sources */,
 				32442FEB151CF87100685D10 /* TransportNextDeparturesViewController.m in Sources */,
 				322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */,
-				324A5990151DC6A800977F33 /* FavoriteStationsViewController.m in Sources */,
 				3278F6CA184257AF007CB382 /* TransportDepartureSelectionViewController.m in Sources */,
 				324A5998151DFDD200977F33 /* TransportAddStationViewController.m in Sources */,
 				324A59A0151E453300977F33 /* TransportUtils.m in Sources */,
-				3236B5B3151F746100C43769 /* NextDeparturesCell.m in Sources */,
 				32930AB117F898910025F864 /* THTTPClient.m in Sources */,
 				328872C71534D82C00330B54 /* TransportTripsListViewController.m in Sources */,
-				32488C921535F31B00BA49AB /* ConnectionSummaryCell.m in Sources */,
 				32CAE42F1536256B00AB17CC /* TransportTripPartsViewController.m in Sources */,
 				324151D515373B5900CCFB22 /* map.m in Sources */,
 				324151D815373BA300CCFB22 /* MapService.m in Sources */,
@@ -3477,7 +3425,6 @@
 				32E280AC156E618800B74825 /* DirectoryServiceTests.m in Sources */,
 				32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */,
 				3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */,
-				32058ACC1572B44D00F4D361 /* TransportSettingsViewController.m in Sources */,
 				32D57299157F7D780051230F /* EPFLLayersOverlay.m in Sources */,
 				320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */,
 				3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */,
@@ -3692,15 +3639,6 @@
 				3296570C14FF9DE300C44C12 /* en */,
 			);
 			name = PocketCampus.strings;
-			sourceTree = "<group>";
-		};
-		32969AB115FB92FC0051EF9A /* MyStationsHelp.html */ = {
-			isa = PBXVariantGroup;
-			children = (
-				32969AB215FB92FD0051EF9A /* en */,
-				32969AB515FB93060051EF9A /* fr */,
-			);
-			name = MyStationsHelp.html;
 			sourceTree = "<group>";
 		};
 		32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */ = {
