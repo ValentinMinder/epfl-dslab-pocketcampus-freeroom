@@ -267,16 +267,21 @@ static NSString* kPoolCell = @"PoolCell";
         self.tableView.tableHeaderView = self.webView;
     }
     [self.webView loadHTMLString:html baseURL:[NSURL fileURLWithPath:@"/"]];
+    [self repositionTableViewHeader];
 }
 
-#pragma mark - UIWebViewDelegate
-
-- (void)webViewDidFinishLoad:(UIWebView *)aWebView {
+- (void)repositionTableViewHeader {
     CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
     
     self.webView.frame = CGRectMake(0, 0, self.webView.frame.size.width, height);
     
     self.tableView.tableHeaderView = self.webView; //makes table view look at webview's frame again and adapt first section y
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webViewDidFinishLoad:(UIWebView *)aWebView {
+    [self repositionTableViewHeader];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {

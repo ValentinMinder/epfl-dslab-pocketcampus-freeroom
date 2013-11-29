@@ -107,7 +107,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
     if (self.serviceWillBeReleased) {
         return;
     }
-    if (request.responseStatusCode == 404) { //correct. Means the server has responded
+    if (request.responseStatusCode == 404 || request.responseStatusCode == 200) { //correct. Means the server has responded
         serverIsReachable = YES;
     } else {
         NSLog(@"-> Server reachability test failed. Replied %d instead of 404. Returning timeout to delegate.", request.responseStatusCode);

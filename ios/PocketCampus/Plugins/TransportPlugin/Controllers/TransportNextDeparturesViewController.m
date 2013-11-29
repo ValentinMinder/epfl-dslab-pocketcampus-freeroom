@@ -32,6 +32,7 @@
 typedef enum {
     UserStationsStateOK = 0,
     UserStationsStateLoadingDefault,
+    UserStationsStateErrorLoadingDefault,
     UserStationsStateErrorNeedTwo,
 } UserStationsState;
 
@@ -154,9 +155,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 #pragma mark - Refresh & requests start
 
 - (void)refreshIfNeeded {
-    if (![PCUtils hasDeviceInternetConnection]) {
-        return;
-    }
     if (self.lastRefreshTimestamp && abs([self.lastRefreshTimestamp timeIntervalSinceNow]) < kSchedulesValidy) {
         if (!(self.locationState == LocationStateErrorUserDenied && [PCUtils hasAppAccessToLocation])) {
             return;
@@ -280,6 +278,13 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             self.centerMessageLabel.text = NSLocalizedStringFromTable(@"LoadingDefaultStations...", @"TransportPlugin", nil);
             return; //everything is set
             break;
+        case UserStationsStateErrorLoadingDefault:
+            self.locationButton.enabled = NO;
+            self.fromLabel.text = nil;
+            self.tableView.hidden = YES;
+            [self.centerLoadingIndicator stopAnimating];
+            self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
+            return; //everything is set
         case UserStationsStateErrorNeedTwo:
             self.locationButton.enabled = NO;
             self.fromLabel.text = nil;
@@ -434,17 +439,20 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    if (self.schedulesState == SchedulesStateError) {
+    if (self.userStationsState == UserStationsStateLoadingDefault) {
+        self.userStationsState = UserStationsStateErrorLoadingDefault;
+    } else if (self.schedulesState == SchedulesStateError) {
         return; //timeout message already displayed
-    }
-    self.schedulesState = SchedulesStateError;
-    for (TransportStation* station in self.usersStations) {
-        if (![station isEqualToTransportStation:self.departureStation] && !self.tripResults[station.name]) {
-            TransportNextDeparturesCell* cell = self.cellForDestinationName[station.name];
-            cell.state = TransportNextDeparturesCellStateError;
+    } else {
+        self.schedulesState = SchedulesStateError;
+        for (TransportStation* station in self.usersStations) {
+            if (![station isEqualToTransportStation:self.departureStation] && !self.tripResults[station.name]) {
+                TransportNextDeparturesCell* cell = self.cellForDestinationName[station.name];
+                cell.state = TransportNextDeparturesCellStateError;
+            }
         }
+        [PCUtils showConnectionToServerTimedOutAlert];
     }
-    [PCUtils showConnectionToServerTimedOutAlert];
     [self updateAll];
 }
 
