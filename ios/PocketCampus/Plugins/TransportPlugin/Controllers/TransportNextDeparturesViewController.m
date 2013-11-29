@@ -387,6 +387,13 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     }
 }
 
+- (void)locationsFailedForNames:(NSArray *)names {
+    if (self.userStationsState == UserStationsStateLoadingDefault) {
+        self.userStationsState = UserStationsStateErrorLoadingDefault;
+    }
+    [self updateAll];
+}
+
 - (void)nearestUserTransportStationDidReturn:(TransportStation*)nearestStation {
     NSLog(@"-> Nearest station found : %@", nearestStation.name);
     self.departureStation = nearestStation;
