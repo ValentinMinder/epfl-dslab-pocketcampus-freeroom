@@ -21,6 +21,7 @@
 "From:" = "De:";
 "LoadingDefaultStations..." = "Chargement des stations\npar défaut...";
 "locating..." = "localisation...";
+"SearchingNearestStation" = "Recherche de votre\nstation la plus proche";
 "ImpossibleLocateUserDenied" = "Impossible de trouver la station la plus proche.\n\nAvez-vous refusé l'accès à la localisation ? Si oui, vous pouvez authoriser \"EPFL\" en allant dans:\n\nRéglages > Confidentialité > Service de localisation\n\nVous pouvez également choisir la station de départ manuellement.";
 "ImpossibleLocateUnknown" = "Désolé, votre position n'a pas\npu être déterminée.\n\nEssayez de rafraîchir, ou sélectionnez une station de départ manuellement.";
 

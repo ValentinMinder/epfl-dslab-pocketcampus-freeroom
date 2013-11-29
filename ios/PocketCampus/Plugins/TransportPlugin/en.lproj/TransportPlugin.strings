@@ -21,6 +21,7 @@
 "From:" = "From:";
 "LoadingDefaultStations..." = "Loading default stations...";
 "locating..." = "locating...";
+"SearchingNearestStation" = "Locating your closest station";
 "ImpossibleLocateUserDenied" = "Impossible to find nearest station.\n\n Did you deny access to location ?\nIf so, you can allow \"EPFL\" in:\n\nSettings > Privacy > Location.\n\nAlternatively, you can choose a departure station manually.";
 "ImpossibleLocateUnknown" = "Sorry, your location could\nnot be determined.\n\nTry to refresh, or select the\ndeparture station manually.";
 

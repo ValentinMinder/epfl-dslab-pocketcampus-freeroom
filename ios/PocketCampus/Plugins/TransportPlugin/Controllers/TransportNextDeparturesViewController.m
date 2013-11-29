@@ -309,7 +309,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         {
             self.tableView.hidden = YES;
             [self.centerLoadingIndicator startAnimating];
-            self.centerMessageLabel.text = nil;
+            self.centerMessageLabel.text = NSLocalizedStringFromTable(@"SearchingNearestStation", @"TransportPlugin", nil);
             self.locationButton.enabled = YES;
             NSString* locatingString = NSLocalizedStringFromTable(@"locating...", @"TransportPlugin", nil);
             fromLabelString = [NSString stringWithFormat:@"%@ %@", fromString, locatingString];
