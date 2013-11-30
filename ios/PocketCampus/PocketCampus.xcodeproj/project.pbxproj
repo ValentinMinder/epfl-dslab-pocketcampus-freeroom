@@ -301,12 +301,13 @@
 		328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131618296E2D00F4C622 /* FoodSmileyMeh@2x.png */; };
 		328A132518296E2D00F4C622 /* FoodSmileySad.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131918296E2D00F4C622 /* FoodSmileySad.png */; };
 		328A132618296E2D00F4C622 /* FoodSmileySad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131A18296E2D00F4C622 /* FoodSmileySad@2x.png */; };
+		328A72DF184A4EE0002C5A6B /* SplashImage4inch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A72DD184A4EE0002C5A6B /* SplashImage4inch@2x.png */; };
+		328A72E0184A4EE0002C5A6B /* SplashImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A72DE184A4EE0002C5A6B /* SplashImage@2x.png */; };
+		328A72E3184A503C002C5A6B /* PCSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = 328A72E2184A503C002C5A6B /* PCSplashView.m */; };
 		328B9EF4150B927500B50024 /* RatingStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF2150B927500B50024 /* RatingStar.png */; };
 		328B9EF5150B927500B50024 /* RatingStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF3150B927500B50024 /* RatingStar@2x.png */; };
 		328D3828174794B5006FE6F3 /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328D38291747A8C9006FE6F3 /* EventsTagView.xib */; };
-		32930A5B17F85FA70025F864 /* Icon76.png in Resources */ = {isa = PBXBuildFile; fileRef = 32930A5917F85FA70025F864 /* Icon76.png */; };
-		32930A5C17F85FA70025F864 /* Icon76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32930A5A17F85FA70025F864 /* Icon76@2x.png */; };
 		32930A7517F882010025F864 /* LGRefreshControl+PCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A7417F882010025F864 /* LGRefreshControl+PCAdditions.m */; };
 		32930AA817F898910025F864 /* LGRefreshControl.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32930A7817F898910025F864 /* LGRefreshControl.strings */; };
 		32930AA917F898910025F864 /* LGRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A7C17F898910025F864 /* LGRefreshControl.m */; };
@@ -372,7 +373,6 @@
 		32B1D9E317F08E1D000CC209 /* PCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B1D9E217F08E1D000CC209 /* PCNavigationController.m */; };
 		32B2B88A1841281F009DA368 /* TransportModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B2B8891841281F009DA368 /* TransportModelAdditions.m */; };
 		32B3325817E5C708004F5E75 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32B3325717E5C708004F5E75 /* Images.xcassets */; };
-		32B3325A17E5C7E9004F5E75 /* Icon60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B3325917E5C7E9004F5E75 /* Icon60@2x.png */; };
 		32B3F39016219403007A75C7 /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B3F38F16219403007A75C7 /* MainMenuViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32B3F3941621956C007A75C7 /* MainMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32B3F3931621956C007A75C7 /* MainMenuView.xib */; };
 		32B3F3971621B6D3007A75C7 /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B3F3961621B6D2007A75C7 /* MainMenuItem.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -919,13 +919,15 @@
 		328A131618296E2D00F4C622 /* FoodSmileyMeh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileyMeh@2x.png"; sourceTree = "<group>"; };
 		328A131918296E2D00F4C622 /* FoodSmileySad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodSmileySad.png; sourceTree = "<group>"; };
 		328A131A18296E2D00F4C622 /* FoodSmileySad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FoodSmileySad@2x.png"; sourceTree = "<group>"; };
+		328A72DD184A4EE0002C5A6B /* SplashImage4inch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashImage4inch@2x.png"; sourceTree = "<group>"; };
+		328A72DE184A4EE0002C5A6B /* SplashImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashImage@2x.png"; sourceTree = "<group>"; };
+		328A72E1184A503C002C5A6B /* PCSplashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCSplashView.h; sourceTree = "<group>"; };
+		328A72E2184A503C002C5A6B /* PCSplashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCSplashView.m; sourceTree = "<group>"; };
 		328B9EF2150B927500B50024 /* RatingStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RatingStar.png; sourceTree = "<group>"; };
 		328B9EF3150B927500B50024 /* RatingStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RatingStar@2x.png"; sourceTree = "<group>"; };
 		328D3826174794B5006FE6F3 /* EventsTagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsTagsViewController.h; sourceTree = "<group>"; };
 		328D3827174794B5006FE6F3 /* EventsTagsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsTagsViewController.m; sourceTree = "<group>"; };
 		328D38291747A8C9006FE6F3 /* EventsTagView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventsTagView.xib; sourceTree = "<group>"; };
-		32930A5917F85FA70025F864 /* Icon76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon76.png; sourceTree = "<group>"; };
-		32930A5A17F85FA70025F864 /* Icon76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon76@2x.png"; sourceTree = "<group>"; };
 		32930A7317F882010025F864 /* LGRefreshControl+PCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LGRefreshControl+PCAdditions.h"; sourceTree = "<group>"; };
 		32930A7417F882010025F864 /* LGRefreshControl+PCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LGRefreshControl+PCAdditions.m"; sourceTree = "<group>"; };
 		32930A7917F898910025F864 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGRefreshControl.strings; sourceTree = "<group>"; };
@@ -1031,7 +1033,6 @@
 		32B2B8881841281F009DA368 /* TransportModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportModelAdditions.h; sourceTree = "<group>"; };
 		32B2B8891841281F009DA368 /* TransportModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportModelAdditions.m; sourceTree = "<group>"; };
 		32B3325717E5C708004F5E75 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../Images.xcassets; sourceTree = "<group>"; };
-		32B3325917E5C7E9004F5E75 /* Icon60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon60@2x.png"; sourceTree = "<group>"; };
 		32B3F38E16219402007A75C7 /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MainMenuViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32B3F38F16219403007A75C7 /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MainMenuViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32B3F3931621956C007A75C7 /* MainMenuView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuView.xib; sourceTree = "<group>"; };
@@ -1316,6 +1317,8 @@
 				325C47B3162200E8006752B4 /* BlankPluginView.xib */,
 				3293AD2215D1BC930097D414 /* AboutPCView.xib */,
 				32777B4215D1BFB400A29F56 /* AboutPC.html */,
+				328A72E1184A503C002C5A6B /* PCSplashView.h */,
+				328A72E2184A503C002C5A6B /* PCSplashView.m */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -1323,7 +1326,6 @@
 		3219EF4114FCDE4800A271CD = {
 			isa = PBXGroup;
 			children = (
-				32CBF0561634482D00FD92E5 /* Icons+Defaults */,
 				32E28098156E52ED00B74825 /* PocketCampusLogicTests */,
 				3219EF5614FCDE4900A271CD /* PocketCampus */,
 				32FAC0DF1500F40700925180 /* Plugins */,
@@ -1486,6 +1488,8 @@
 				32C8799B183D103600750A11 /* SettingsBarButton2@2x.png */,
 				32C509E817FC6D73005A5635 /* SortBarButton.png */,
 				32C509E917FC6D73005A5635 /* SortBarButton@2x.png */,
+				328A72DD184A4EE0002C5A6B /* SplashImage4inch@2x.png */,
+				328A72DE184A4EE0002C5A6B /* SplashImage@2x.png */,
 				321F37E115B02FBE00E7BA6D /* HelpBarButton.png */,
 				321F37E215B02FBE00E7BA6D /* HelpBarButton@2x.png */,
 				323A913B1640783F007A63D3 /* TopDown1pxShadow.png */,
@@ -2236,16 +2240,6 @@
 				32B58711156458FA0051C57E /* CamiproPlugin.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		32CBF0561634482D00FD92E5 /* Icons+Defaults */ = {
-			isa = PBXGroup;
-			children = (
-				32B3325917E5C7E9004F5E75 /* Icon60@2x.png */,
-				32930A5917F85FA70025F864 /* Icon76.png */,
-				32930A5A17F85FA70025F864 /* Icon76@2x.png */,
-			);
-			name = "Icons+Defaults";
 			sourceTree = "<group>";
 		};
 		32CCB4B6155520FE00220282 /* AuthenticationPlugin */ = {
@@ -3034,7 +3028,6 @@
 				32FAC0F81500F40700925180 /* DirectoryPlugin.strings in Resources */,
 				32FAC0FD1500F40700925180 /* DirectorySearchView.xib in Resources */,
 				3243FBA218216BBC000F3CB5 /* FoodRestaurantInfoCell.xib in Resources */,
-				32930A5B17F85FA70025F864 /* Icon76.png in Resources */,
 				3247C3B71504F2E10079522A /* FoodPlugin.strings in Resources */,
 				3289D28A15094739008DD299 /* Directory.png in Resources */,
 				3289D28B15094739008DD299 /* Directory@2x.png in Resources */,
@@ -3075,7 +3068,6 @@
 				327585A118449347004215FC /* TransportLarge@2x.png in Resources */,
 				328A132618296E2D00F4C622 /* FoodSmileySad@2x.png in Resources */,
 				32CCB4EF1555237500220282 /* Moodle.png in Resources */,
-				32930A5C17F85FA70025F864 /* Icon76@2x.png in Resources */,
 				32CCB4F01555237500220282 /* Moodle@2x.png in Resources */,
 				32342A8117F43347009C05FA /* DirectoryEmptyPicture@2x.png in Resources */,
 				32CCB500155546C100220282 /* NewsPlugin.strings in Resources */,
@@ -3127,7 +3119,6 @@
 				32C509E617FC60B0005A5635 /* CameraBarButton.png in Resources */,
 				32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */,
 				32B13A401634B0F4007B54A1 /* MainMenuNavbar@2x.png in Resources */,
-				32B3325A17E5C7E9004F5E75 /* Icon60@2x.png in Resources */,
 				323586E816381E1200872ECE /* MyEduCourseListView.xib in Resources */,
 				323A913C1640783F007A63D3 /* TopDown1pxShadow.png in Resources */,
 				3289F2B9183FAB8C00D833C2 /* LocationArrow2Active.png in Resources */,
@@ -3215,6 +3206,7 @@
 				32E67DC91684D62300E5CFF6 /* ClockCellSelected.png in Resources */,
 				32E67DCA1684D62300E5CFF6 /* ClockCellSelected@2x.png in Resources */,
 				322207EC1688E6B5003F6622 /* NewsSplashView.xib in Resources */,
+				328A72DF184A4EE0002C5A6B /* SplashImage4inch@2x.png in Resources */,
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
 				32D1DE18184663C700D0C866 /* TransportTripCell.xib in Resources */,
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
@@ -3269,6 +3261,7 @@
 				328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */,
 				323414FC176558F300527895 /* QAForumPlugin.strings in Resources */,
 				323414FD176558F300527895 /* kermit_empty.png in Resources */,
+				328A72E0184A4EE0002C5A6B /* SplashImage@2x.png in Resources */,
 				32074B7D17FB09CA009804CE /* NewsLarge@2x.png in Resources */,
 				323414FE176558F300527895 /* kermit_full.png in Resources */,
 				323414FF176558F300527895 /* kermit_half.png in Resources */,
@@ -3502,6 +3495,7 @@
 				32035FEB16E153860016F03C /* EventItemCell.m in Sources */,
 				32930AB517F898910025F864 /* TSocketClient.m in Sources */,
 				32F8E3F116E1F9D900AF365C /* EventsUtils.m in Sources */,
+				328A72E3184A503C002C5A6B /* PCSplashView.m in Sources */,
 				322C4ACD16E1FD8300DE418E /* EventItem+Additions.m in Sources */,
 				3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */,
 				328860B9183B63590098C857 /* EpflRestaurant+Additions.m in Sources */,

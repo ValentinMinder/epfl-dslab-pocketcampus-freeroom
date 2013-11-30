@@ -267,7 +267,11 @@
 	}];
 }
 
-- (void)hideFrontView
+- (void)hideFrontView {
+    [self hideFrontViewAnimated:YES];
+}
+
+- (void)hideFrontViewAnimated:(BOOL)animated
 {
 	if (self.currentFrontViewPosition == FrontViewPositionRightMost)
 	{
@@ -280,11 +284,15 @@
 		[self.delegate revealController:self willEnterRearViewControllerPresentationMode:self.rearViewController];
 	}
 	
-	[self _revealCompletelyAnimationWithDuration:self.toggleAnimationDuration];
+	[self _revealCompletelyAnimationWithDuration:animated ? self.toggleAnimationDuration : 0.0];
 	self.currentFrontViewPosition = FrontViewPositionRightMost;
 }
 
-- (void)showFrontViewCompletely:(BOOL)completely
+- (void)showFrontViewCompletely:(BOOL)completely {
+    [self showFrontViewCompletely:completely animated:YES];
+}
+
+- (void)showFrontViewCompletely:(BOOL)completely animated:(BOOL)animated
 {
 	if (self.currentFrontViewPosition != FrontViewPositionRightMost)
 	{
@@ -305,12 +313,12 @@
 			[self.delegate revealController:self willHideRearViewController:self.rearViewController];
 		}
 		
-		[self _concealAnimationWithDuration:self.toggleAnimationDuration resigningCompletelyFromRearViewPresentationMode:YES];
+		[self _concealAnimationWithDuration:animated ? self.toggleAnimationDuration : 0.0 resigningCompletelyFromRearViewPresentationMode:YES];
 		self.currentFrontViewPosition = FrontViewPositionLeft;
 	}
 	else
 	{
-		[self _concealPartiallyAnimationWithDuration:self.toggleAnimationDuration*0.5f];
+		[self _concealPartiallyAnimationWithDuration:animated ? self.toggleAnimationDuration*0.5f : 0.0];
 		self.currentFrontViewPosition = FrontViewPositionRight;
 	}
 }

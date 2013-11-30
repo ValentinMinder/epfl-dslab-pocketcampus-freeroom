@@ -43,7 +43,8 @@
     | UIViewAutoresizingFlexibleRightMargin
     | UIViewAutoresizingFlexibleBottomMargin;
     self.splashViewImage.center = self.view.center;
-    self.view.backgroundColor = [UIColor colorWithRed:0.961 green:0.957 blue:0.941 alpha:1.0];
+    self.view.backgroundColor = [UIColor colorWithRed:0.972549 green:0.972549 blue:0.972549 alpha:1.0];
+    //self.view.backgroundColor = [UIColor colorWithRed:0.961 green:0.957 blue:0.941 alpha:1.0];
     //self.view.backgroundColor = [UIColor colorWithRed:0.400000 green:0.400000 blue:0.400000 alpha:1.0];
     
     [self.view addSubview:self.splashViewImage];

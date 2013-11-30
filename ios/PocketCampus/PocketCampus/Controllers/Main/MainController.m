@@ -20,9 +20,7 @@
 
 #import "MainMenuItem.h"
 
-#import "PCValues.h"
-
-#import "PCUtils.h"
+#import "PCSplashView.h"
 
 #import "SplashViewController.h"
 
@@ -47,6 +45,7 @@
 @property (nonatomic, strong) NSArray* logicOnlyPluginsList; //plugin identifiers of plugins that have no UI (logicOnly is YES)
 @property (nonatomic, strong) NSArray* pluginsList; //plugin identifiers of plugins that have a UI (logicOnly is NO)
 @property (nonatomic, strong) SplashViewController* splashViewController;
+@property (nonatomic, strong) PCSplashView* splashView;
 @property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
 @property (nonatomic, strong) NSString* initialActivePluginIdentifier;
 @property (nonatomic, copy) NSURL* pcURLToHandle;
@@ -94,6 +93,7 @@ static MainController<MainControllerPublic>* instance = nil;
             self.revealWidth = 280.0;
         }
         [self initRevealController];
+        [self initSplashView];
         self.revealController.maxRearViewRevealOverdraw = 0.0;
         if ([PCUtils isIdiomPad]) {
             self.revealController.toggleAnimationDuration = 0.65;
@@ -473,6 +473,17 @@ static MainController<MainControllerPublic>* instance = nil;
     self.revealController.frontViewShadowRadius = 1.0;
 }
 
+- (void)initSplashView {
+    if (!self.revealController) {
+        [NSException raise:@"Bad state" format:@"cannot init splashView without revealController being initialized."];
+    }
+    if ([PCUtils isIdiomPad]) {
+        //no splashview on iPad, using SplashViewController in RevealController's front view instead
+        return;
+    }
+    self.splashView = [[PCSplashView alloc] initWithSuperview:self.revealController.view];
+}
+
 - (void)revealMenuAfterSplash {
     if (self.initialActivePluginIdentifier) {
         self.revealController.toggleAnimationDuration = 0.25;
@@ -480,16 +491,26 @@ static MainController<MainControllerPublic>* instance = nil;
         [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
         self.initialActivePluginIdentifier = nil; //initial plugin has been treated, prevent future use
         [self.revealController revealToggle:self];
+        [self.splashView hideWithAnimationDuration:self.revealController.toggleAnimationDuration completion:^{
+            [self.splashView removeFromSuperview];
+        }];
     } else {
         [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:NO];
+        NSTimeInterval duration;
         if ([PCUtils isIdiomPad]) {
             [self.revealController revealToggle:self];
+            duration = self.revealController.toggleAnimationDuration;
         } else {
-            [self.revealController hideFrontView];
+            [self.revealController hideFrontViewAnimated:NO];
+            duration = 0.3;
+            [self.splashView hideWithAnimationDuration:duration completion:^{
+                [self.splashView removeFromSuperview];
+            }];
         }
-        [NSTimer scheduledTimerWithTimeInterval:self.revealController.toggleAnimationDuration+0.1 target:self selector:@selector(setInitDoneYES) userInfo:nil repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:duration+0.1 target:self selector:@selector(setInitDoneYES) userInfo:nil repeats:NO];
         self.revealController.toggleAnimationDuration = 0.25;
     }
+
 }
 
 /*
