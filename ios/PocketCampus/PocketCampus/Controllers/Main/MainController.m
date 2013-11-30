@@ -502,7 +502,7 @@ static MainController<MainControllerPublic>* instance = nil;
             duration = self.revealController.toggleAnimationDuration;
         } else {
             [self.revealController hideFrontViewAnimated:NO];
-            duration = 0.3;
+            duration = 0.5;
             [self.splashView hideWithAnimationDuration:duration completion:^{
                 [self.splashView removeFromSuperview];
             }];
