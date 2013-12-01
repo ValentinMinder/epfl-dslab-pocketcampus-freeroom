@@ -34,7 +34,7 @@ public final class BeerMenuTests {
 		assertEquals("Belgique", beer.getOriginCountry());
 		assertEquals(6.5, beer.getAlcoholRate(), Double.MIN_VALUE);
 		assertEquals(4, beer.getPrice(), Double.MIN_VALUE);
-		assertEquals("Bière de terroir par excellence, la Saison trouve son origine dans les fermes-brasseries du Sud de la Belgique, et principalement en Hainaut. A l’époque, cette bière peu alcoolisée et rafraîchissante étanchait la soif des ouvriers saisonniers.\r\nA la Brasserie St-Feuillien, la Saison est une bière de fermentation haute, refermentée en bouteille, non filtrée, d’un chaleureux blond doré. Son profil aromatique est tout en nuances et son amertume bien marquée, l’ensemble soutenu par une belle plénitude en bouche. Un grand classique.", beer.getDescription());
+		assertEquals("BiÃ¨re de terroir par excellence, la Saison trouve son origine dans les fermes-brasseries du Sud de la Belgique, et principalement en Hainaut. A lâ€™Ã©poque, cette biÃ¨re peu alcoolisÃ©e et rafraÃ®chissante Ã©tanchait la soif des ouvriers saisonniers.\r\nA la Brasserie St-Feuillien, la Saison est une biÃ¨re de fermentation haute, refermentÃ©e en bouteille, non filtrÃ©e, dâ€™un chaleureux blond dorÃ©. Son profil aromatique est tout en nuances et son amertume bien marquÃ©e, lâ€™ensemble soutenu par une belle plÃ©nitude en bouche. Un grand classique.", beer.getDescription());
 	}
 	
 	@Test
@@ -46,7 +46,7 @@ public final class BeerMenuTests {
 		assertEquals("Belgique", beer.getOriginCountry());
 		assertEquals(6.2, beer.getAlcoholRate(), Double.MIN_VALUE);
 		assertEquals(4, beer.getPrice(), Double.MIN_VALUE);
-		assertEquals("Bière de haute fermentation, mûrie en fût de chêne. Ceci lui confère un goût entre lambic et cidre, fruitée et acide à la fois.", beer.getDescription());
+		assertEquals("BiÃ¨re de haute fermentation, mÃ»rie en fÃ»t de chÃªne. Ceci lui confÃ¨re un goÃ»t entre lambic et cidre, fruitÃ©e et acide Ã  la fois.", beer.getDescription());
 	}
 	
 	@Test
