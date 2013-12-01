@@ -1935,25 +1935,27 @@
 
 @implementation FoodResponse
 
-- (id) initWithMatchingFood: (NSArray *) matchingFood userStatus: (int) userStatus mealTypePictureUrls: (NSDictionary *) mealTypePictureUrls
+- (id) initWithMenu: (NSArray *) menu userStatus: (int) userStatus mealTypePictureUrls: (NSDictionary *) mealTypePictureUrls statusCode: (int) statusCode
 {
   self = [super init];
-  __matchingFood = [matchingFood retain];
-  __matchingFood_isset = YES;
+  __menu = [menu retain];
+  __menu_isset = YES;
   __userStatus = userStatus;
   __userStatus_isset = YES;
   __mealTypePictureUrls = [mealTypePictureUrls retain];
   __mealTypePictureUrls_isset = YES;
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
   return self;
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"matchingFood"])
+  if ([decoder containsValueForKey: @"menu"])
   {
-    __matchingFood = [[decoder decodeObjectForKey: @"matchingFood"] retain];
-    __matchingFood_isset = YES;
+    __menu = [[decoder decodeObjectForKey: @"menu"] retain];
+    __menu_isset = YES;
   }
   if ([decoder containsValueForKey: @"userStatus"])
   {
@@ -1965,14 +1967,19 @@
     __mealTypePictureUrls = [[decoder decodeObjectForKey: @"mealTypePictureUrls"] retain];
     __mealTypePictureUrls_isset = YES;
   }
+  if ([decoder containsValueForKey: @"statusCode"])
+  {
+    __statusCode = [decoder decodeIntForKey: @"statusCode"];
+    __statusCode_isset = YES;
+  }
   return self;
 }
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__matchingFood_isset)
+  if (__menu_isset)
   {
-    [encoder encodeObject: __matchingFood forKey: @"matchingFood"];
+    [encoder encodeObject: __menu forKey: @"menu"];
   }
   if (__userStatus_isset)
   {
@@ -1982,34 +1989,38 @@
   {
     [encoder encodeObject: __mealTypePictureUrls forKey: @"mealTypePictureUrls"];
   }
+  if (__statusCode_isset)
+  {
+    [encoder encodeInt: __statusCode forKey: @"statusCode"];
+  }
 }
 
 - (void) dealloc
 {
-  [__matchingFood release];
+  [__menu release];
   [__mealTypePictureUrls release];
   [super dealloc];
 }
 
-- (NSArray *) matchingFood {
-  return [[__matchingFood retain] autorelease];
+- (NSArray *) menu {
+  return [[__menu retain] autorelease];
 }
 
-- (void) setMatchingFood: (NSArray *) matchingFood {
-  [matchingFood retain];
-  [__matchingFood release];
-  __matchingFood = matchingFood;
-  __matchingFood_isset = YES;
+- (void) setMenu: (NSArray *) menu {
+  [menu retain];
+  [__menu release];
+  __menu = menu;
+  __menu_isset = YES;
 }
 
-- (BOOL) matchingFoodIsSet {
-  return __matchingFood_isset;
+- (BOOL) menuIsSet {
+  return __menu_isset;
 }
 
-- (void) unsetMatchingFood {
-  [__matchingFood release];
-  __matchingFood = nil;
-  __matchingFood_isset = NO;
+- (void) unsetMenu {
+  [__menu release];
+  __menu = nil;
+  __menu_isset = NO;
 }
 
 - (int) userStatus {
@@ -2050,6 +2061,23 @@
   __mealTypePictureUrls_isset = NO;
 }
 
+- (int) statusCode {
+  return __statusCode;
+}
+
+- (void) setStatusCode: (int) statusCode {
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+}
+
+- (BOOL) statusCodeIsSet {
+  return __statusCode_isset;
+}
+
+- (void) unsetStatusCode {
+  __statusCode_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -2079,7 +2107,7 @@
             [_elem18 release];
           }
           [inProtocol readListEnd];
-          [self setMatchingFood: fieldValue];
+          [self setMenu: fieldValue];
           [fieldValue release];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
@@ -2112,6 +2140,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 4:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setStatusCode: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -2123,15 +2159,15 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"FoodResponse"];
-  if (__matchingFood_isset) {
-    if (__matchingFood != nil) {
-      [outProtocol writeFieldBeginWithName: @"matchingFood" type: TType_LIST fieldID: 1];
+  if (__menu_isset) {
+    if (__menu != nil) {
+      [outProtocol writeFieldBeginWithName: @"menu" type: TType_LIST fieldID: 1];
       {
-        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__matchingFood count]];
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__menu count]];
         int i24;
-        for (i24 = 0; i24 < [__matchingFood count]; i24++)
+        for (i24 = 0; i24 < [__menu count]; i24++)
         {
-          [[__matchingFood objectAtIndex: i24] write: outProtocol];
+          [[__menu objectAtIndex: i24] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -2160,18 +2196,25 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__statusCode_isset) {
+    [outProtocol writeFieldBeginWithName: @"statusCode" type: TType_I32 fieldID: 4];
+    [outProtocol writeI32: __statusCode];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"FoodResponse("];
-  [ms appendString: @"matchingFood:"];
-  [ms appendFormat: @"%@", __matchingFood];
+  [ms appendString: @"menu:"];
+  [ms appendFormat: @"%@", __menu];
   [ms appendString: @",userStatus:"];
   [ms appendFormat: @"%i", __userStatus];
   [ms appendString: @",mealTypePictureUrls:"];
   [ms appendFormat: @"%@", __mealTypePictureUrls];
+  [ms appendString: @",statusCode:"];
+  [ms appendFormat: @"%i", __statusCode];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }

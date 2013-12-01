@@ -47,6 +47,11 @@ enum MealTime {
   MealTime_DINNER = 2
 };
 
+enum FoodStatusCode {
+  FoodStatusCode_OK = 200,
+  FoodStatusCode_NETWORK_ERROR = 404
+};
+
 @interface Restaurant : NSObject <NSCoding> {
   int64_t __restaurantId;
   NSString * __name;
@@ -356,29 +361,32 @@ enum MealTime {
 @end
 
 @interface FoodResponse : NSObject <NSCoding> {
-  NSArray * __matchingFood;
+  NSArray * __menu;
   int __userStatus;
   NSDictionary * __mealTypePictureUrls;
+  int __statusCode;
 
-  BOOL __matchingFood_isset;
+  BOOL __menu_isset;
   BOOL __userStatus_isset;
   BOOL __mealTypePictureUrls_isset;
+  BOOL __statusCode_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=matchingFood, setter=setMatchingFood:) NSArray * matchingFood;
+@property (nonatomic, retain, getter=menu, setter=setMenu:) NSArray * menu;
 @property (nonatomic, getter=userStatus, setter=setUserStatus:) int userStatus;
 @property (nonatomic, retain, getter=mealTypePictureUrls, setter=setMealTypePictureUrls:) NSDictionary * mealTypePictureUrls;
+@property (nonatomic, getter=statusCode, setter=setStatusCode:) int statusCode;
 #endif
 
-- (id) initWithMatchingFood: (NSArray *) matchingFood userStatus: (int) userStatus mealTypePictureUrls: (NSDictionary *) mealTypePictureUrls;
+- (id) initWithMenu: (NSArray *) menu userStatus: (int) userStatus mealTypePictureUrls: (NSDictionary *) mealTypePictureUrls statusCode: (int) statusCode;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (NSArray *) matchingFood;
-- (void) setMatchingFood: (NSArray *) matchingFood;
-- (BOOL) matchingFoodIsSet;
+- (NSArray *) menu;
+- (void) setMenu: (NSArray *) menu;
+- (BOOL) menuIsSet;
 
 - (int) userStatus;
 - (void) setUserStatus: (int) userStatus;
@@ -387,6 +395,10 @@ enum MealTime {
 - (NSDictionary *) mealTypePictureUrls;
 - (void) setMealTypePictureUrls: (NSDictionary *) mealTypePictureUrls;
 - (BOOL) mealTypePictureUrlsIsSet;
+
+- (int) statusCode;
+- (void) setStatusCode: (int) statusCode;
+- (BOOL) statusCodeIsSet;
 
 @end
 

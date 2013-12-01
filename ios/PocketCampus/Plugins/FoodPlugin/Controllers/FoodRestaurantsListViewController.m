@@ -120,7 +120,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         self.restaurantsSorted = nil;
         return;
     }
-    self.restaurantsSorted = [self.foodResponse.matchingFood sortedArrayUsingSelector:@selector(compareToEpflRestaurant:)]; //defined in Additions category on EpflRestaurant
+    self.restaurantsSorted = [self.foodResponse.menu sortedArrayUsingSelector:@selector(compareToEpflRestaurant:)]; //defined in Additions category on EpflRestaurant
 }
 
 - (void)reselectLastSelectedItem {
@@ -144,11 +144,19 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 #pragma mark - FoodServiceDelegate
 
 - (void)getFoodForRequest:(FoodRequest *)request didReturn:(FoodResponse *)response {
-    self.foodResponse = response;
-    self.foodService.pictureUrlForMealType = response.mealTypePictureUrls; //see doc of self.foodService.pictureUrlForMealType
-    self.foodService.userPriceTarget = response.userStatus; //see doc of self.foodService.userPriceTarget
-    [self fillCollectionsAndReloadTableView];
-    [self.lgRefreshControl endRefreshingAndMarkSuccessful];
+    switch (response.statusCode) {
+        case FoodStatusCode_OK:
+            self.foodResponse = response;
+            self.foodService.pictureUrlForMealType = response.mealTypePictureUrls; //see doc of self.foodService.pictureUrlForMealType
+            self.foodService.userPriceTarget = response.userStatus; //see doc of self.foodService.userPriceTarget
+            [self fillCollectionsAndReloadTableView];
+            [self.lgRefreshControl endRefreshingAndMarkSuccessful];
+            break;
+        default:
+            [self getFoodFailedForRequest:request];
+            break;
+    }
+    
 }
 
 - (void)getFoodFailedForRequest:(FoodRequest *)request {
