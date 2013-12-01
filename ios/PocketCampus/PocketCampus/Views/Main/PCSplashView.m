@@ -54,18 +54,30 @@
 #pragma mark - Public methods
 
 - (void)hideWithAnimationDuration:(NSTimeInterval)duration completion:(VoidBlock)completion {
-    self.drawingImageViewCenterYConstraint.constant = 40.0;
+    //duration = 5.0;
+    CGFloat originalHeight = self.drawingImageView.frame.size.height;
+    CGFloat compressedHeight = self.drawingImageView.frame.size.height*0.85;
+    NSArray* compressedSizeConstraints = [NSLayoutConstraint width:self.drawingImageView.frame.size.width height:compressedHeight constraintsForView:self.drawingImageView];
+    [self.drawingImageView addConstraints:compressedSizeConstraints];
+    self.drawingImageViewCenterYConstraint.constant = (originalHeight-compressedHeight)/2.0;
     [UIView animateWithDuration:duration*0.6 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self.backgroundImageView layoutIfNeeded];
     } completion:^(BOOL finished) {
-        self.drawingImageViewCenterYConstraint.constant = [PCUtils is4inchDevice] ? -300.0 : -220.0;
-        [UIView animateWithDuration:duration*0.4 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.alpha = 0.0;
+        [self.drawingImageView removeConstraints:compressedSizeConstraints];
+        self.drawingImageViewCenterYConstraint.constant = 0.0;
+        [UIView animateWithDuration:duration*0.07 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
             [self.backgroundImageView layoutIfNeeded];
         } completion:^(BOOL finished) {
-            if (completion) {
-                completion();
-            }
+            
+            self.drawingImageViewCenterYConstraint.constant = [PCUtils is4inchDevice] ? -300.0 : -212.0;
+            [UIView animateWithDuration:duration*0.33 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                self.alpha = 0.0;
+                [self.backgroundImageView layoutIfNeeded];
+            } completion:^(BOOL finished) {
+                if (completion) {
+                    completion();
+                }
+            }];
         }];
     }];
 }

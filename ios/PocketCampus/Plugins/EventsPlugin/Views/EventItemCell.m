@@ -16,6 +16,8 @@
 
 #import "UIImage+Additions.h"
 
+#import "EventsService.h"
+
 @interface EventItemCell ()
 
 @property (nonatomic, strong) NSString* customReuseIdentifier;
@@ -54,6 +56,8 @@
     _eventItem = eventItem;
     self.textLabel.text = self.eventItem.eventTitle;
     self.detailTextLabel.text = self.eventItem.secondLine ? self.eventItem.secondLine : (self.eventItem.timeSnippet ? self.eventItem.timeSnippet : [eventItem dateString:EventItemDateStyleMedium]);
+    
+    self.favoriteIndicationVisible = self.eventItem ? [[EventsService sharedInstanceToRetain] isEventItemIdFavorite:self.eventItem.eventId] : NO;
 }
 
 - (void)setGlowIfEventItemIsNow:(BOOL)glowIfEventItemIsNow {

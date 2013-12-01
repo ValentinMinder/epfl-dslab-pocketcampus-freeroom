@@ -10,9 +10,9 @@
 
 #import "events.h"
 
-#import "ASIHTTPRequest.h"
+#import "PCTableViewCellAdditions.h"
 
-@interface EventItemCell : UITableViewCell<ASIHTTPRequestDelegate>
+@interface EventItemCell : PCTableViewCellAdditions
 
 - (id)initWithEventItem:(EventItem*)eventItem reuseIdentifier:(NSString*)reuseIdentifier;
 

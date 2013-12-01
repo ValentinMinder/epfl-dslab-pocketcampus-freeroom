@@ -116,7 +116,7 @@
 			<key>hiddenByDefault</key>
 			<true/>
 			<key>supportedIdioms</key>
-			<string>pad</string>
+			<string></string>
 		</dict>
 		<dict>
 			<key>identifierName</key>

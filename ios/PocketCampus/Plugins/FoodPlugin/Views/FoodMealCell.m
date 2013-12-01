@@ -27,6 +27,7 @@ typedef enum {
 static const CGFloat kMinHeight = 110.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPhone = 10.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPad = 25.0;
+static const CGFloat kmealTypeImageViewDefaultHeightConstraint = 50.0;
 static const CGFloat kTextViewWidth = 252.0;
 static const CGFloat kBottomZoneHeight = 30.0;
 static const CGFloat kRateControlsViewWidth = 248.0;
@@ -55,9 +56,10 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* infoContentViewLeftConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* infoContentViewRightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* mealTypeImageViewLeftConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* mealTypeImageViewHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewBottomConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint* rateControlsViewLeftConstraint;
+@property (nonatomic, strong) NSLayoutConstraint* rateControlsViewLeftConstraint;
 
 @property (nonatomic, strong) UILongPressGestureRecognizer* infoContentViewTapGesture; //actually using for touchDown, because tap gesture does not support it
 
@@ -133,9 +135,18 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     NSNumber* primaryType = self.meal.mTypes.count > 0 ? (NSNumber*)(self.meal.mTypes[0]) : [NSNumber numberWithInteger:MealType_UNKNOWN];
     NSString* urlString = [[FoodService sharedInstanceToRetain] pictureUrlForMealType][primaryType];
     if (urlString) {
-        [self.mealTypeImageView setImageWithURL:[NSURL URLWithString:urlString]];
+        NSURLRequest* req = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+        FoodMealCell* weakSelf __weak = self;
+        [self.mealTypeImageView setImageWithURLRequest:req placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            weakSelf.mealTypeImageView.image = image;
+            weakSelf.mealTypeImageViewHeightConstraint.constant = kmealTypeImageViewDefaultHeightConstraint;
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            weakSelf.mealTypeImageView.image = nil;
+            weakSelf.mealTypeImageViewHeightConstraint.constant = 3.0;
+        }];
     } else {
         self.mealTypeImageView.image = nil;
+        self.mealTypeImageViewHeightConstraint.constant = 3.0;
     }
 
     

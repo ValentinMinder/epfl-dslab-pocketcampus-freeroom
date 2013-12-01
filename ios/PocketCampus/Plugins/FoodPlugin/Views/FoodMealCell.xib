@@ -90,6 +90,7 @@
                 <outlet property="infoContentViewLeftConstraint" destination="Lsz-5B-2Ih" id="wfj-JJ-inT"/>
                 <outlet property="infoContentViewRightConstraint" destination="cTY-2u-upJ" id="LDa-jX-8Ri"/>
                 <outlet property="mealTypeImageView" destination="8CO-2T-OCE" id="b79-J0-aJw"/>
+                <outlet property="mealTypeImageViewHeightConstraint" destination="oYG-Vq-rfU" id="bco-0j-TZZ"/>
                 <outlet property="mealTypeImageViewLeftConstraint" destination="gD7-6K-DDV" id="R33-JX-0FU"/>
                 <outlet property="mehButton" destination="WWG-Ud-PsJ" id="d55-5x-m2V"/>
                 <outlet property="pricesLabel" destination="wsD-q2-2Fb" id="Wnl-Yl-da7"/>
