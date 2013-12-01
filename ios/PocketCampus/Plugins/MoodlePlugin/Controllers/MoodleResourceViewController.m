@@ -76,6 +76,9 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     actionButton.enabled = NO;
     [rightButtons addObject:actionButton];
     
+    UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:[self.moodleService isFavoriteMoodleResource:self.moodleResource] ? @"FavoriteGlowNavBarButton" : @"FavoriteNavBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteButtonPressed)];
+    [rightButtons addObject:favoriteButton];
+    
     UIBarButtonItem* deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonPressed)];
     deleteButton.enabled = NO;
     [rightButtons addObject:deleteButton];
@@ -95,6 +98,8 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     }
     self.splitViewControllerPtr = self.splitViewController;
     [self.splitViewController addObserver:self forKeyPath:NSStringFromSelector(@selector(isMasterViewControllerHidden)) options:0 context:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kFavoritesMoodleResourcesUpdatedNotificationName object:self.moodleService];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -130,6 +135,11 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 #pragma mark - Observers
+
+- (void)refreshFavoriteButton {
+    UIImage* image = [UIImage imageNamed:[self.moodleService isFavoriteMoodleResource:self.moodleResource] ? @"FavoriteGlowNavBarButton" : @"FavoriteNavBarButton"];
+    [[self favoriteButton] setImage:image];
+}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (object == self.splitViewController && [keyPath isEqualToString:NSStringFromSelector(@selector(isMasterViewControllerHidden))]) {
@@ -203,11 +213,18 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     return self.navigationItem.rightBarButtonItems[0];
 }
 
-- (UIBarButtonItem*)deleteButton {
+- (UIBarButtonItem*)favoriteButton {
     if (self.navigationItem.rightBarButtonItems.count < 2) {
         return nil;
     }
     return self.navigationItem.rightBarButtonItems[1];
+}
+
+- (UIBarButtonItem*)deleteButton {
+    if (self.navigationItem.rightBarButtonItems.count < 3) {
+        return nil;
+    }
+    return self.navigationItem.rightBarButtonItems[2];
 }
 
 #pragma mark - Buttons actions
@@ -222,6 +239,14 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self.deleteActionSheet toggleFromBarButtonItem:[self deleteButton] animated:YES];
 }
 
+- (void)favoriteButtonPressed {
+    if ([self.moodleService isFavoriteMoodleResource:self.moodleResource]) {
+        [self.moodleService removeFavoriteMoodleResource:self.moodleResource];
+    } else {
+        [self.moodleService addFavoriteMoodleResource:self.moodleResource];;
+    }
+}
+                                       
 - (void)actionButtonPressed {
     if (self.deleteActionSheet.isVisible) {
         [self.deleteActionSheet dismissWithClickedButtonIndex:self.deleteActionSheet.cancelButtonIndex animated:NO];

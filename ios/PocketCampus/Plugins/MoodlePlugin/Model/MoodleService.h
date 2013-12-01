@@ -24,9 +24,19 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 
 #pragma mark - MoodleService definition
 
-@interface MoodleService : Service<ServiceProtocol>
+/*
+ * Posted by self on NSNotificationCenter defaultCenter if a resource is added or removed
+ * from favorite resources
+ */
+static NSString* kFavoritesMoodleResourcesUpdatedNotificationName __unused = @"FavoritesMoodleResourcesUpdated";
 
-//@property(nonatomic, retain) MoodleSession* moodleCookie; //NOT USED, TO REMOVE
+/*
+ * Key of NSNotifiation.userInfo
+ * Value: MoodleResource that was added/removed from favorites
+ */
+static NSString* kFavoriteStatusMoodleResourceUpdatedKey __unused = @"FavoriteStatusMoodleResourceUpdated";
+
+@interface MoodleService : Service<ServiceProtocol>
 
 #pragma mark - Session
 
@@ -35,7 +45,11 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 - (BOOL)saveSession:(MoodleSession*)session;
 - (BOOL)deleteSession;
 
-#pragma mark - Resources file management
+#pragma mark - Resources favorites and file management
+
+- (void)addFavoriteMoodleResource:(MoodleResource*)moodleResource;
+- (void)removeFavoriteMoodleResource:(MoodleResource*)moodleResource;
+- (BOOL)isFavoriteMoodleResource:(MoodleResource*)moodleResource;
 
 - (NSString*)localPathForMoodleResource:(MoodleResource*)moodleResource;
 - (NSString*)localPathForMoodleResource:(MoodleResource*)moodleResource createIntermediateDirectories:(BOOL)createIntermediateDirectories;

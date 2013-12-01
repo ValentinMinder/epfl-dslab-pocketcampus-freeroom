@@ -38,23 +38,14 @@
 
 - (void)setDownloadedIndicationVisible:(BOOL)visible {
     _downloadedIndicationVisible = visible;
-    if (visible) {
-        self.icon.hidden = NO;
-    } else {
-        self.icon.hidden = YES;
-    }
     [self setNeedsDisplay];
+    [self updateCornerIcon];
 }
 
 - (void)setFavoriteIndicationVisible:(BOOL)visible {
     _favoriteIndicationVisible = visible;
-    if (visible) {
-        self.icon.hidden = NO;
-    } else {
-        self.icon.hidden = YES;
-    }
     [self setNeedsDisplay];
-    
+    [self updateCornerIcon];
 }
 
 - (void)setDurablySelected:(BOOL)durablySelected {
@@ -99,6 +90,7 @@
             self.icon.image = [UIImage imageNamed:@"DownloadedCorner"];
         }
     }
+    self.icon.hidden = !(self.downloadedIndicationVisible || self.favoriteIndicationVisible);
 }
 
 - (void)willTransitionToState:(UITableViewCellStateMask)state {

@@ -80,6 +80,7 @@ static FoodService* instance __weak = nil;
 }
 
 - (void)addFavoriteRestaurant:(EpflRestaurant*)restaurant {
+    [PCUtils throwExceptionIfObject:restaurant notKindOfClass:[EpflRestaurant class]];
     [self initFavorites];
     [self.favoriteRestaurantIds addObject:[self nsNumberForRestaurantId:restaurant.rId]];
     [self persistFavorites];
@@ -89,6 +90,7 @@ static FoodService* instance __weak = nil;
 }
 
 - (void)removeFavoritRestaurant:(EpflRestaurant*)restaurant {
+    [PCUtils throwExceptionIfObject:restaurant notKindOfClass:[EpflRestaurant class]];
     [self initFavorites];
     [self.favoriteRestaurantIds removeObject:[self nsNumberForRestaurantId:restaurant.rId]];
     [self persistFavorites];

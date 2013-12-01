@@ -38,6 +38,7 @@
 
 @property (nonatomic, strong) MoodleSession* session;
 @property (strong) NSMutableDictionary* resourcesObserversForResourceKey; //key: [self keyForMoodleResource:] value: NSArray of MoodleResourceObserver
+@property (nonatomic, strong) NSMutableSet* favoriteMoodleResourcesURLs; //set of NSString
 
 @end
 
@@ -107,7 +108,79 @@ static NSString* kMoodleResourceKey = @"moodleResource";
     return [ObjectArchiver saveObject:nil forKey:kMoodleSessionKey andPluginName:@"moodle"];
 }
 
-#pragma mark - Resources files management
+#pragma mark - Resources favorites and file management
+
+static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
+
+- (void)initFavorites {
+    if (!self.favoriteMoodleResourcesURLs) { //first try to get it from persistent storage
+        self.favoriteMoodleResourcesURLs = [(NSSet*)[ObjectArchiver objectForKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"] mutableCopy];
+    }
+    if (!self.favoriteMoodleResourcesURLs) { //if not present in persistent storage, create set
+        self.favoriteMoodleResourcesURLs = [NSMutableSet set];
+    }
+}
+
+- (BOOL)persistFavorites {
+    if (!self.favoriteMoodleResourcesURLs) {
+        return YES;
+    }
+    return [ObjectArchiver saveObject:self.favoriteMoodleResourcesURLs forKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"];
+}
+/*
+- (NSNumber*)nsNumberForRestaurantId:(int64_t)restaurantId {
+    return [NSNumber numberWithInt:restaurantId];
+}
+
+- (void)addFavoriteRestaurant:(EpflRestaurant*)restaurant {
+    [self initFavorites];
+    [self.favoriteRestaurantIds addObject:[self nsNumberForRestaurantId:restaurant.rId]];
+    [self persistFavorites];
+    NSNotification* notif = [NSNotification notificationWithName:kFavoritesRestaurantsUpdatedNotificationName object:self];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
+    
+}
+
+- (void)removeFavoritRestaurant:(EpflRestaurant*)restaurant {
+    [self initFavorites];
+    [self.favoriteRestaurantIds removeObject:[self nsNumberForRestaurantId:restaurant.rId]];
+    [self persistFavorites];
+    NSNotification* notif = [NSNotification notificationWithName:kFavoritesRestaurantsUpdatedNotificationName object:self];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
+}
+
+- (NSSet*)allFavoriteRestaurantIds {
+    [self initFavorites];
+    return self.favoriteRestaurantIds;
+}
+
+- (BOOL)isRestaurantFavorite:(EpflRestaurant*)restaurant {
+    [self initFavorites];
+    return [self.favoriteRestaurantIds containsObject:[self nsNumberForRestaurantId:restaurant.rId]];
+}*/
+
+- (void)addFavoriteMoodleResource:(MoodleResource*)moodleResource {
+    [PCUtils throwExceptionIfObject:moodleResource notKindOfClass:[MoodleResource class]];
+    [self initFavorites];
+    [self.favoriteMoodleResourcesURLs addObject:moodleResource.iUrl];
+    [self persistFavorites];
+    NSNotification* notif = [NSNotification notificationWithName:kFavoritesMoodleResourcesUpdatedNotificationName object:self userInfo:@{kFavoriteStatusMoodleResourceUpdatedKey:moodleResource}];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
+}
+
+- (void)removeFavoriteMoodleResource:(MoodleResource*)moodleResource {
+    [PCUtils throwExceptionIfObject:moodleResource notKindOfClass:[MoodleResource class]];
+    [self initFavorites];
+    [self.favoriteMoodleResourcesURLs removeObject:moodleResource.iUrl];
+    [self persistFavorites];
+    NSNotification* notif = [NSNotification notificationWithName:kFavoritesMoodleResourcesUpdatedNotificationName object:self userInfo:@{kFavoriteStatusMoodleResourceUpdatedKey:moodleResource}];
+    [[NSNotificationCenter defaultCenter] postNotification:notif];
+}
+
+- (BOOL)isFavoriteMoodleResource:(MoodleResource*)moodleResource {
+    [self initFavorites];
+    return [self.favoriteMoodleResourcesURLs containsObject:moodleResource.iUrl];
+}
 
 - (NSString*)localPathForMoodleResource:(MoodleResource*)moodleResource {
     return [self localPathForMoodleResource:moodleResource createIntermediateDirectories:NO];

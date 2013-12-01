@@ -44,6 +44,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
 @implementation MoodleCourseSectionsViewController
 
+#pragma mark - Init
+
 - (id)initWithCourse:(MoodleCourse*)course;
 {
     self = [super initWithStyle:UITableViewStylePlain];
@@ -59,6 +61,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
     return self;
 }
 
+#pragma mark - UIViewController overrides
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]]];
@@ -66,6 +70,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
     self.tableView.rowHeight = 65.0;
     self.tableView.allowsMultipleSelection = NO;
     [self showToggleButtonIfPossible];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteMoodleResourcesUpdated:) name:kFavoritesMoodleResourcesUpdatedNotificationName object:self.moodleService];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,16 +81,21 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
     
+}
+
+#pragma mark - Notifications listening
+
+- (void)favoriteMoodleResourcesUpdated:(NSNotification*)notif {
+    MoodleResource* resource = notif.userInfo[kFavoriteStatusMoodleResourceUpdatedKey];
+    if (!resource) {
+        return;
+    }
+    PCTableViewCellAdditions* cell = self.cellForMoodleResource[resource];
+    cell.favoriteIndicationVisible = [self.moodleService isFavoriteMoodleResource:resource];
 }
 
 #pragma mark - refresh control
@@ -182,26 +192,23 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
         for (MoodleResource* resource in section.iResources) {
             
             
-            PCTableViewCellAdditions* newCell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
-            newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-            newCell.textLabel.adjustsFontSizeToFitWidth = YES;
-            newCell.textLabel.text = resource.iName;
+            PCTableViewCellAdditions* cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+            cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+            cell.textLabel.text = resource.iName;
             
-            newCell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
             
             NSArray* pathComponents = [resource.iUrl pathComponents];
-            newCell.detailTextLabel.text = [pathComponents objectAtIndex:pathComponents.count-1];
-            newCell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
-            if ([self.moodleService isMoodleResourceDownloaded:resource]) {
-                newCell.downloadedIndicationVisible = YES;
-            }
+            cell.detailTextLabel.text = [pathComponents objectAtIndex:pathComponents.count-1];
+            cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
             
-            if ([self.selectedResource isEqual:resource]) {
-                newCell.durablySelected = YES;
-            }
+            cell.downloadedIndicationVisible = [self.moodleService isMoodleResourceDownloaded:resource];
+            cell.favoriteIndicationVisible = [self.moodleService isFavoriteMoodleResource:resource];
+            cell.durablySelected = [self.selectedResource isEqual:resource];
             
             MoodleCourseSectionsViewController* controller __weak = self;
-            PCTableViewCellAdditions* cellWeak __weak = newCell;
+            PCTableViewCellAdditions* cellWeak __weak = cell;
             
             [self.moodleService removeMoodleResourceObserver:self forResource:resource];
             [self.moodleService addMoodleResourceObserver:self forResource:resource eventBlock:^(MoodleResourceEvent event) {
@@ -220,10 +227,10 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
                 } else {
                     //not supported
                 }
-                [newCell setNeedsLayout];
+                [cell setNeedsLayout];
             }];
 
-            cellsTemp[(id<NSCopying>)resource] = newCell; //NSCopying is implemented in Comparison category
+            cellsTemp[(id<NSCopying>)resource] = cell; //NSCopying is implemented in Comparison category
             
         }
     }
@@ -232,7 +239,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
 }
 
-#pragma MoodleServiceDelegate
+#pragma mark - MoodleServiceDelegate
 
 - (void)getCourseSections:(MoodleRequest *)aMoodleRequest didReturn:(SectionsListReply *)sectionsListReply {
     switch (sectionsListReply.iStatus) {
@@ -436,6 +443,10 @@ static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 {
     [self.moodleService removeMoodleResourceObserver:self];
     [self.moodleService cancelOperationsForDelegate:self];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end

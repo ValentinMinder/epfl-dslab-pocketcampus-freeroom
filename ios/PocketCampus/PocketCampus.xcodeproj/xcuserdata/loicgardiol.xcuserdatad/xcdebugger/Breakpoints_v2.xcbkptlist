@@ -754,7 +754,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "162"
             endingLineNumber = "162"
-            landmarkName = "-getFromCacheMeals"
+            landmarkName = "-getMealsWithDelegate:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2460,12 +2460,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "406575984.644433"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "295"
-            endingLineNumber = "295"
-            landmarkName = "-downloadOfMoodleResource:didFinish:"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
+            landmarkName = "-loadDownloadedMoodleResourceInWebView"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2476,12 +2476,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "406575984.644433"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "308"
-            endingLineNumber = "308"
-            landmarkName = "-downloadFailedForMoodleResource:responseStatusCode:"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
+            landmarkName = "-downloadOfMoodleResource:didFinish:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2506,7 +2506,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "365"
             endingLineNumber = "365"
-            landmarkName = "-downloadMoodleResourceRequestDidFinish:"
+            landmarkName = "-addMoodleResourceObserver:forResource:eventBlock:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2522,7 +2522,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "329"
             endingLineNumber = "329"
-            landmarkName = "-downloadMoodleResource:progressView:delegate:"
+            landmarkName = "-saveToCacheCourseListReply:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2538,7 +2538,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "385"
             endingLineNumber = "385"
-            landmarkName = "-downloadMoodleResourceFailed:"
+            landmarkName = "-removeMoodleResourceObserver:forResource:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2713,11 +2713,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "406547139.391202"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "416"
-            endingLineNumber = "416"
+            startingLineNumber = "421"
+            endingLineNumber = "421"
             landmarkName = "-numberOfSectionsInTableView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2729,11 +2729,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "406547139.391202"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "402"
-            endingLineNumber = "402"
+            startingLineNumber = "407"
+            endingLineNumber = "407"
             landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2745,11 +2745,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "404579372.091314"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "244"
-            endingLineNumber = "244"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
             landmarkName = "-getCourseSections:didReturn:"
             landmarkType = "5">
             <Actions>
@@ -2770,11 +2770,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "406547139.391202"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "385"
-            endingLineNumber = "385"
+            startingLineNumber = "390"
+            endingLineNumber = "390"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2786,11 +2786,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "406547139.391202"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
+            startingLineNumber = "327"
+            endingLineNumber = "327"
             landmarkName = "-tableView:editingStyleForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2802,11 +2802,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "404579372.091314"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
             <Actions>
@@ -2843,11 +2843,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "404577850.168839"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
             landmarkName = "-toggleShowAll:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2859,11 +2859,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "406547139.391202"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
+            startingLineNumber = "319"
+            endingLineNumber = "319"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
             <Actions>
@@ -3450,11 +3450,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleCourseSectionsViewController.m"
-            timestampString = "404579372.091314"
+            timestampString = "407610280.577205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
             landmarkName = "-fillCellsFromSections"
             landmarkType = "5">
             <Actions>
@@ -3809,7 +3809,7 @@
                   symbolName = "-[MyEduModuleVideoViewController destroyVideoPlayer]"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MyEduPlugin/Controllers/MyEduModuleVideoViewController.m"
-                  timestampString = "407604804.564924"
+                  timestampString = "407610583.041265"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "169"
@@ -3823,7 +3823,7 @@
                   symbolName = "-[MyEduModuleVideoViewController destroyVideoPlayer]"
                   moduleName = "PocketCampus"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MyEduPlugin/Controllers/MyEduModuleVideoViewController.m"
-                  timestampString = "407604804.565217"
+                  timestampString = "407610583.041521"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "169"
