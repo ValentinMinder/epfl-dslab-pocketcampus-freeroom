@@ -3,7 +3,7 @@ namespace csharp org.pocketcampus.plugin.food.shared
 
 include "../../../../plugin/map/plugin.map.shared/def/map.thrift"
 
-// OLD SHIT
+// OLD STUFF
 
 struct Restaurant {
 	1: required i64 restaurantId;
@@ -25,13 +25,14 @@ struct Meal {
 }
 
 
-// NEW SHIT
+// NEW STUFF
 
 enum SubmitStatus {
-	ALREADY_VOTED;
-	VALID;
-	TOO_EARLY;
-	ERROR;
+	ALREADY_VOTED,
+	VALID,
+	TOO_EARLY,
+	// TODO: remove this when we remove the old stuff, error codes shouldn't indicate normal failures
+	ERROR
 }
 
 enum PriceTarget {
@@ -97,10 +98,16 @@ struct FoodRequest {
 	5: optional string userGaspar;
 }
 
+enum FoodStatusCode {
+    OK = 200,
+    NETWORK_ERROR = 404
+}
+
 struct FoodResponse {
-	1: required list<EpflRestaurant> matchingFood;
+	1: optional list<EpflRestaurant> menu;
 	2: optional PriceTarget userStatus;
 	3: required map<MealType, string> mealTypePictureUrls;
+	4: required FoodStatusCode statusCode;
 }
 
 struct VoteRequest {
@@ -115,10 +122,12 @@ struct VoteResponse {
 
 
 service FoodService {
+    // OLD STUFF
 	list<Meal> getMeals();
 	map<i64, Rating> getRatings();
 	SubmitStatus setRating(1: i64 mealId, 2: double rating, 3: string deviceId);
 	
+	// NEW STUFF
 	FoodResponse getFood(1: FoodRequest foodReq);
 	VoteResponse vote(1: VoteRequest voteReq);
 }

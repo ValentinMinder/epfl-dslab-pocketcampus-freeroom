@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.food.server;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import org.joda.time.LocalDate;
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
-public final class MealListImpl implements MealList {
+public final class MenuImpl implements Menu {
 	// The URL to the meal list. Not really an API, but we have no choice.
 	private static final String MEAL_LIST_URL = "http://menus.epfl.ch/cgi-bin/getMenus";
 	// The URL parameters and values.
@@ -33,7 +34,7 @@ public final class MealListImpl implements MealList {
 	private static final String URL_DATE_PARAMETER = "date";
 	private static final String URL_DATE_VALUE_FORMAT = "dd/MM/yyyy";
 	// The meal list's encoding. Should be windows-1252 but we might not run on Windows.
-	private static final Charset MEAL_LIST_CHARSET = Charset.forName("ISO-8859-1");
+	private static final Charset MEAL_LIST_CHARSET = StandardCharsets.ISO_8859_1;
 	// The various HTML node tags, IDs and classes in the meal list.
 	private static final String LIST_ROOT_ID = "menulist";
 	private static final String MEAL_ROOT_TAG = "li";
@@ -84,19 +85,26 @@ public final class MealListImpl implements MealList {
 		MEAL_SECONDARY_TYPES.put(4, MealType.VEGETARIAN);
 	}
 
-	public MealListImpl(HttpClient client) {
+	public MenuImpl(HttpClient client) {
 		_client = client;
 	}
 
 	/** Parses the menu from the official meal list's HTML. */
-	public List<EpflRestaurant> getMenu(MealTime time, LocalDate date) throws Exception {
+	public FoodResponse get(MealTime time, LocalDate date) throws Exception {
 		List<EpflRestaurant> menu = new ArrayList<EpflRestaurant>();
 
 		String timeVal = time == MealTime.LUNCH ? URL_TIME_VALUE_LUNCH : URL_TIME_VALUE_DINNER;
 		String dateVal = date.toString(URL_DATE_VALUE_FORMAT);
 		String url = String.format("%s?%s=%s&%s=%s", MEAL_LIST_URL, URL_TIME_PARAMETER, timeVal, URL_DATE_PARAMETER, dateVal);
 
-		Document doc = Jsoup.parse(_client.getString(url, MEAL_LIST_CHARSET));
+		String html = null;
+		try {
+			html = _client.getString(url, MEAL_LIST_CHARSET);
+		} catch (Exception e) {
+			return new FoodResponse().setStatusCode(FoodStatusCode.NETWORK_ERROR);
+		}
+
+		Document doc = Jsoup.parse(html);
 
 		for (Element elem : doc.getElementById(LIST_ROOT_ID).getElementsByTag(MEAL_ROOT_TAG)) {
 			EpflMeal meal = new EpflMeal();
@@ -153,7 +161,7 @@ public final class MealListImpl implements MealList {
 			}
 		}
 
-		return menu;
+		return new FoodResponse().setStatusCode(FoodStatusCode.OK).setMenu(menu);
 	}
 
 	/** Adds the specified meal to the specified list of restaurant using the specified restaurant name. */
