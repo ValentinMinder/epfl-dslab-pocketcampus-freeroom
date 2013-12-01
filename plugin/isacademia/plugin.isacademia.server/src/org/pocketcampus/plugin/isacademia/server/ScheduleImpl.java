@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.isacademia.server;
 
 import java.io.ByteArrayInputStream;
-import java.nio.charset.*;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -30,7 +30,7 @@ import org.joda.time.format.*;
 public final class ScheduleImpl implements Schedule {
 	private static final String ISA_SCHEDULE_URL = "https://isa.epfl.ch/service/secure/student/timetable/period";
 	// The encoding of IS-Academia's schedule API.
-	private static final Charset ISA_CHARSET = StandardCharsets.ISO_8859_1;
+	private static final Charset ISA_CHARSET = Charset.forName("ISO-8859-1");
 	// The parameters of IS-Academia's API.
 	private static final String URL_FROM_PARAMETER = "from", URL_TO_PARAMETER = "to", URL_KEY_PARAMETER = "key";
 	// The date format for IS-Academia's API.
@@ -109,7 +109,7 @@ public final class ScheduleImpl implements Schedule {
 		String url = ISA_SCHEDULE_URL
 				+ "?" + URL_FROM_PARAMETER + "=" + weekBeginning.toString(URL_PARAMETER_FORMAT)
 				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT)
-				+ "&" + URL_KEY_PARAMETER  + "=" + token.getTequilaToken();
+				+ "&" + URL_KEY_PARAMETER + "=" + token.getTequilaToken();
 
 		List<Cookie> cookies = new ArrayList<Cookie>();
 		BasicClientCookie isaCookie = new BasicClientCookie(ISA_COOKIE_NAME, token.getSessionId());
@@ -131,7 +131,7 @@ public final class ScheduleImpl implements Schedule {
 		}
 
 		Element xdoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-				.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)))
+				.parse(new ByteArrayInputStream(xml.getBytes()))
 				.getDocumentElement();
 
 		List<StudyPeriod> periods = new ArrayList<StudyPeriod>();

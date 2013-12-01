@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.satellite.server;
 
 import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -56,7 +56,7 @@ public final class BeerMenuImpl implements BeerMenu {
 	public BeersResponse get() throws Exception {
 		String xml;
 		try {
-			xml = _client.getString(BEER_LIST_URL, StandardCharsets.UTF_8);
+			xml = _client.getString(BEER_LIST_URL, Charset.forName("UTF-8"));
 		} catch (Exception e) {
 			return new BeersResponse().setErrorCode(SatelliteErrorCode.NETWORK_ERROR);
 		}

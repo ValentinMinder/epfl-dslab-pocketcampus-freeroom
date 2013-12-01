@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.food.server;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +33,7 @@ public final class MenuImpl implements Menu {
 	private static final String URL_DATE_PARAMETER = "date";
 	private static final String URL_DATE_VALUE_FORMAT = "dd/MM/yyyy";
 	// The meal list's encoding. Should be windows-1252 but we might not run on Windows.
-	private static final Charset MEAL_LIST_CHARSET = StandardCharsets.ISO_8859_1;
+	private static final Charset MEAL_LIST_CHARSET = Charset.forName("ISO-8859-1");
 	// The various HTML node tags, IDs and classes in the meal list.
 	private static final String LIST_ROOT_ID = "menulist";
 	private static final String MEAL_ROOT_TAG = "li";
