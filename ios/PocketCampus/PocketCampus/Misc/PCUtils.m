@@ -50,7 +50,7 @@
 }
 
 + (NSString*)appVersion {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
 
 + (NSString*)userLanguageCode {

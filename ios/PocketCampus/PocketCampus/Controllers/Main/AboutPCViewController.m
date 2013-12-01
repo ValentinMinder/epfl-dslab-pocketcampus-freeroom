@@ -43,9 +43,7 @@
     NSError* error = nil;
     NSString* htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
     
-    NSString* version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
-    
-    htmlString = [htmlString stringByReplacingOccurrencesOfString:@"$PC_VERSION$" withString:version];
+    htmlString = [htmlString stringByReplacingOccurrencesOfString:@"$PC_VERSION$" withString:[PCUtils appVersion]];
     
     if (!error) {
         [self.webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
@@ -68,12 +66,16 @@
 }
 
 - (void)showInfos {
+    NSString* build = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
     BOOL loadedFromBundle = [[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY];
     BOOL loadedFromServer = [[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
     BOOL loadedFromAppSupport = [[PCConfig defaults] boolForKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
     NSString* serverAddress = [[PCConfig defaults] objectForKey:PC_CONFIG_SERVER_ADDRESS_KEY];
+    NSString* serverProtocol = [[PCConfig defaults] objectForKey:PC_CONFIG_SERVER_PROTOCOL_KEY];
+    NSString* serverPort = [[PCConfig defaults] objectForKey:PC_CONFIG_SERVER_PORT_KEY];
+    NSString* serverUri = [[PCConfig defaults] objectForKey:PC_CONFIG_SERVER_URI_KEY];
     
-    NSString* message = [NSString stringWithFormat:@"%@:%d\n%@:%d\n%@:%d\n\nServer address:\n%@", @"Bundle", loadedFromBundle, @"Server", loadedFromServer, @"AppSupport", loadedFromAppSupport, serverAddress];
+    NSString* message = [NSString stringWithFormat:@"%@:%@\n\n%@:%d\n%@:%d\n%@:%d\n\n%@:%@\n%@:%@\n%@:%@\n%@:%@",@"Build", build, @"Bundle", loadedFromBundle, @"Server", loadedFromServer, @"AppSupport", loadedFromAppSupport, @"Address", serverAddress, @"Prot", serverProtocol, @"Port", serverPort, @"URI", serverUri];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"PCConfig state" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
 }
