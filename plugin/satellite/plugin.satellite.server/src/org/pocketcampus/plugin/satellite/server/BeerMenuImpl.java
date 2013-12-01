@@ -35,7 +35,7 @@ public final class BeerMenuImpl implements BeerMenu {
 	private static final String BEER_DESCRIPTION_ELEMENT = "description";
 
 	private static final String CONTAINER_BEER_OF_THE_MONTH_PREFIX = "mois_";
-	private static final String ALCOHOL_RATE_SUFFIX = "°";
+	private static final String ALCOHOL_RATE_SUFFIX = "Â°";
 	private static final String PRICE_SUFFIX = "CHF";
 
 	private static final Map<String, SatelliteBeerContainer> CONTAINERS = new HashMap<String, SatelliteBeerContainer>();
