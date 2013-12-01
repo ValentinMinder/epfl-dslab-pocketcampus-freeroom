@@ -55,7 +55,7 @@ static NSString* GET_CONFIG_URL __unused = @"https://pocketcampus.epfl.ch/backen
         NSLog(@"   !! No internet connection. Cannot fetch config from server.");
         return;
     }
-    NSString* app_version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    NSString* app_version = [PCUtils appVersion];
     NSString* getConfigWithParamsURLString = [GET_CONFIG_URL stringByAppendingFormat:@"?platform=ios&app_version=%@", app_version];
     ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:getConfigWithParamsURLString]];
     request.timeOutSeconds = 3; //must NOT delay app start time too much if server is not reachable
