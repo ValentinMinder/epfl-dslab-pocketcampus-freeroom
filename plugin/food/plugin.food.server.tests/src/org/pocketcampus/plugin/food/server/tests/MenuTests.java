@@ -3,9 +3,7 @@ package org.pocketcampus.plugin.food.server.tests;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +16,11 @@ import org.pocketcampus.plugin.food.shared.*;
 import org.joda.time.LocalDate;
 
 /**
- * Tests for MealListImpl
+ * Tests for MenuImpl.
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
-public final class MealListTests {
+public final class MenuTests {
 	// Simple meal
 	@Test
 	public void simpleMeal() {
@@ -32,8 +30,8 @@ public final class MealListTests {
 
 		assertEquals("Le Copernic", r.getRName());
 		
-		assertEquals("Pavé de saumon mariné à la fleur de sel de guérande", m.getMName());
-		assertEquals("Légumes de saison\nBol de riz", m.getMDescription());
+		assertEquals("PavÃ© de saumon marinÃ© Ã  la fleur de sel de guÃ©rande", m.getMName());
+		assertEquals("LÃ©gumes de saison\nBol de riz", m.getMDescription());
 		assertFalse(m.isSetMHalfPortionPrice());
 		assertEquals(1, m.getMPrices().size());
 		assertTrue(m.getMPrices().containsKey(PriceTarget.ALL));
@@ -122,7 +120,7 @@ public final class MealListTests {
 
 	private static List<EpflRestaurant> getMenu() {
 		try {
-			return new MealListImpl(new TestHttpClient()).getMenu(MealTime.LUNCH, LocalDate.now());
+			return new MenuImpl(new TestHttpClient()).get(MealTime.LUNCH, LocalDate.now()).getMenu();
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("An exception occured.");
@@ -144,10 +142,7 @@ public final class MealListTests {
 
 			try {
 				InputStream stream = new TestHttpClient().getClass().getResourceAsStream(name);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-
-				// smart trick from http://stackoverflow.com/a/5445161
-				s = new Scanner(reader).useDelimiter("\\A");
+				s = new Scanner(stream, "ISO-8859-1").useDelimiter("\\A");
 				return s.hasNext() ? s.next() : "";
 			} finally {
 				if (s != null) {
