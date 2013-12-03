@@ -3,12 +3,6 @@
 
 #import "authentication.h"
 
-#import "ASIHTTPRequest.h"
-
-typedef enum {
-    AuthenticationUserTypeUnknown = 0
-} AuthenticationUserType;
-
 typedef enum {
     AuthenticationTequilaLoginFailureReasonBadCredentials,
     AuthenticationTequilaLoginFailureReasonOtherError

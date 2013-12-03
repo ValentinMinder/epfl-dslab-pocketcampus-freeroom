@@ -12,11 +12,7 @@
 
 #import "Person+Extras.h"
 
-#import "ASIHTTPRequest.h"
-
-#import "ASIDownloadCache.h"
-
-@interface DirectoryService : Service <ServiceProtocol, ASIHTTPRequestDelegate>
+@interface DirectoryService : Service <ServiceProtocol>
 
 /*
  - (NSArray *) searchPersons: (NSString *) nameOrSciper;  // throws LDAPException *, TException
@@ -28,7 +24,6 @@
  */
 
 - (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate;
-- (void)getProfilePicture:(Person *)person delegate:(id)delegate;
 
 - (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate __attribute__((deprecated)); //use search instead
 - (void)autocomplete:(NSString *)constraint delegate:(id)delegate __attribute((deprecated)); //used searchPersons instead
@@ -41,8 +36,6 @@
 
 - (void)searchForRequest:(DirectoryRequest*)request didReturn:(DirectoryResponse*)response;
 - (void)searchFailedForRequest:(DirectoryRequest*)request;
-- (void)profilePictureFor:(Person*)person didReturn:(NSData*)data;
-- (void)profilePictureFailedFor:(Person*)person;
 
 - (void)searchDirectoryFor:(NSString*)searchPattern didReturn:(NSArray*)results __attribute((deprecated));
 - (void)searchDirectoryFailedFor:(NSString*)searchPattern __attribute((deprecated));

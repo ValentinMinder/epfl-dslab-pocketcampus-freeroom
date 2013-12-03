@@ -10,9 +10,13 @@
 
 #import "Person+Extras.h"
 
+#import "AFNetworking.h"
+
+#import "UIImageView+AFNetworking.h"
+
 #import <QuartzCore/QuartzCore.h>
 
-@interface DirectoryPersonBaseInfoCell ()<DirectoryServiceDelegate>
+@interface DirectoryPersonBaseInfoCell ()
 
 @property (nonatomic, strong) DirectoryService* directoryService;
 
@@ -57,15 +61,31 @@
     [PCUtils throwExceptionIfObject:person notKindOfClass:[Person class]];
     
     if (_person) {
-        [self.directoryService cancelOperationsForDelegate:self];
+        [self.profilePictureImageView cancelImageRequestOperation];
     }
     
     _person = person;
     
-    [self.imageLoadingIndicator startAnimating];
-    self.profilePicture = nil;
-    self.profilePictureImageView.image = nil;
-    [self.directoryService getProfilePicture:self.person delegate:self];
+    if (self.person.pictureUrl) {
+        [self.imageLoadingIndicator startAnimating];
+        self.profilePicture = nil;
+        self.profilePictureImageView.image = nil;
+        NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:self.person.pictureUrl parameters:nil];
+        request.cachePolicy = NSURLRequestUseProtocolCachePolicy;
+        DirectoryPersonBaseInfoCell* weakSelf __weak = self;
+        [self.profilePictureImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            image = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
+            weakSelf.profilePicture = image;
+            weakSelf.profilePictureImageView.image = image;
+            weakSelf.profilePictureImageView.layer.borderWidth = 0.0;
+            [weakSelf showImageViewAnimated:YES];
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            [weakSelf noProfilePictureOrError];
+        }];
+    } else {
+        [self noProfilePictureOrError];
+    }
+    
     
     NSString* firstLastName = self.person.fullFirstnameLastname;
     NSString* organizations = self.person.organizationsString;
@@ -84,6 +104,13 @@
 
 #pragma mark - ImageView stuff
 
+- (void)noProfilePictureOrError {
+    self.profilePictureImageView.layer.borderWidth = 1.0;
+    self.profilePicture = nil;
+    self.profilePictureImageView.image = [UIImage imageNamed:@"DirectoryEmptyPicture"];
+    [self showImageViewAnimated:YES];
+}
+
 - (void)showImageViewAnimated:(BOOL)animated {
     self.profilePictureImageView.alpha = 0.0;
     [UIView animateWithDuration:animated ? 0.5 : 0.0 animations:^{
@@ -95,41 +122,10 @@
     }];
 }
 
-#pragma mark - DirectoryServiceDelegate
-
-- (void)profilePictureFor:(Person *)person didReturn:(NSData *)data {
-    if (person == self.person) {
-        if (data) {
-            self.profilePicture = [UIImage imageWithData:data];
-            self.profilePictureImageView.image = self.profilePicture;
-            self.profilePictureImageView.layer.borderWidth = 0.0;
-            [self showImageViewAnimated:YES];
-        } else {
-            [self profilePictureFailedFor:person];
-        }
-    }
-}
-
-- (void)profilePictureFailedFor:(Person *)person {
-    if (person == self.person) {
-        self.profilePictureImageView.layer.borderWidth = 1.0;
-        self.profilePicture = nil;
-        self.profilePictureImageView.image = [UIImage imageNamed:@"DirectoryEmptyPicture"];
-        [self showImageViewAnimated:YES];
-    }
-}
-
-- (void)serviceConnectionToServerTimedOut {
-    self.profilePictureImageView.layer.borderWidth = 1.0;
-    self.profilePicture = nil;
-    self.profilePictureImageView.image = [UIImage imageNamed:@"DirectoryEmptyPicture "];
-    [self showImageViewAnimated:YES];
-}
-
 #pragma mark - Dealloc
 
 - (void)dealloc {
-    [self.directoryService cancelOperationsForDelegate:self];
+    [self.profilePictureImageView cancelImageRequestOperation];
 }
 
 @end

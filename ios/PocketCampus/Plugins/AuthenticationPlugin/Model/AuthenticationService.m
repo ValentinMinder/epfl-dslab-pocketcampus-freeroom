@@ -1,9 +1,6 @@
 
 #import "AuthenticationService.h"
 
-//#import "ASIHTTPRequest.h"
-//#import "ASIFormDataRequest.h""
-
 #import "AFNetworking.h"
 
 #import "ObjectArchiver.h"
