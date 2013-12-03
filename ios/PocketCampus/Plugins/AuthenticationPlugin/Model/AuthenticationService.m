@@ -1,8 +1,10 @@
 
 #import "AuthenticationService.h"
 
-#import "ASIHTTPRequest.h"
-#import "ASIFormDataRequest.h"
+//#import "ASIHTTPRequest.h"
+//#import "ASIFormDataRequest.h""
+
+#import "AFNetworking.h"
 
 #import "ObjectArchiver.h"
 
@@ -11,6 +13,9 @@
 @implementation AuthenticationService
 
 /* __unused are added to prevent unused warning, even though the variables ARE actually used */
+
+static NSString* kTequilaLoginURL = @"https://tequila.epfl.ch/cgi-bin/tequila/login";
+static NSString* kTequilaAuthURL = @"https://tequila.epfl.ch/cgi-bin/tequila/requestauth";
 
 static NSString* kLastUsedUseramesKey __unused = @"lastUsedUsernames";
 static NSString* kKeychainServiceKey = @"PCGasparPassword";
@@ -48,7 +53,7 @@ static AuthenticationService* instance __weak = nil;
 }
 
 - (id)thriftServiceClientInstance {
-    return [[[AuthenticationServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
+    return [[AuthenticationServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 + (BOOL)isLoggedIn {
@@ -102,30 +107,100 @@ static AuthenticationService* instance __weak = nil;
     [[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostASAP coalesceMask:NSNotificationCoalescingOnName forModes:nil]; //NSNotificationCoalescingOnName so that only 1 notif is added
 }
 
-- (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate {
-    NSURL *url = [NSURL URLWithString:TEQUILA_LOGIN_URL];    
-    ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
-    request.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
-    [request setRequestMethod:@"POST"];
-    [request setPostValue:user forKey:@"username"];
-    [request setPostValue:password forKey:@"password"];
-    [request setDelegate:delegate];
-    request.shouldRedirect = NO;
-    [request setDidFinishSelector:@selector(loginToTequilaDidReturn:)];
-    [request setDidFailSelector:@selector(loginToTequilaFailed:)];
-    [operationQueue addOperation:request];
+- (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate {    
+    [PCUtils throwExceptionIfObject:user notKindOfClass:[NSString class]];
+    [PCUtils throwExceptionIfObject:password notKindOfClass:[NSString class]];
+    NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:kTequilaLoginURL parameters:@{@"username":user, @"password":password}];
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    id weakDelegate __weak = delegate;
+    void (^failedBlock)(AuthenticationTequilaLoginFailureReason) = ^void (AuthenticationTequilaLoginFailureReason reason) {
+        if ([weakDelegate respondsToSelector:@selector(loginToTequilaFailedWithReason:)]) {
+            [weakDelegate loginToTequilaFailedWithReason:reason];
+        }
+    };
+    [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *request2, NSURLResponse *redirectResponse) {
+        /*
+         * Redirect block is actually called for original request as well.
+         * This logic allows the first request to pursue but not the second one
+         * => prevents redirect
+         */
+        if (!redirectResponse && connection.originalRequest == connection.currentRequest) {
+            return request2;
+        }
+        return nil;
+    }];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray* allCookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[operation.response allHeaderFields] forURL:operation.request.URL];
+        NSHTTPCookie* tequilaCookie = nil;
+        for (NSHTTPCookie* cookie in allCookies) {
+            if ([cookie.name isEqualToString:kTequilaCookieName]) {
+                tequilaCookie = cookie;
+            }
+        }
+        if (tequilaCookie) {
+            if ([weakDelegate respondsToSelector:@selector(loginToTequilaDidSuceedWithTequilaCookie:)]) {
+                [weakDelegate loginToTequilaDidSuceedWithTequilaCookie:tequilaCookie];
+            }
+        } else {
+            failedBlock(AuthenticationTequilaLoginFailureReasonBadCredentials);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failedBlock(AuthenticationTequilaLoginFailureReasonOtherError);
+    }];
+    [self.operationQueue addOperation:operation];
 }
 
-- (void)authenticateToken:(NSString*)token withTequilaCookie:(NSString*)tequilaCookie delegate:(id)delegate {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:TEQUILA_AUTH_URL, token]];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    request.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
-    [request addRequestHeader:@"Cookie" value:[NSString stringWithFormat:@"%@=%@", TEQUILA_COOKIE_NAME, tequilaCookie]];
-    [request setDelegate:delegate];
-    request.shouldRedirect = NO;
-    [request setDidFinishSelector:@selector(authenticateTokenWithTequilaDidReturn:)];
-    [request setDidFailSelector:@selector(authenticateTokenWithTequilaFailed:)];
-    [operationQueue addOperation:request];
+- (void)authenticateToken:(NSString*)token withTequilaCookie:(NSHTTPCookie*)tequilaCookie delegate:(id)delegate {
+    [PCUtils throwExceptionIfObject:token notKindOfClass:[NSString class]];
+    [PCUtils throwExceptionIfObject:tequilaCookie notKindOfClass:[NSHTTPCookie class]];
+    
+    NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:kTequilaAuthURL parameters:@{@"requestkey":token}];
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    [request addValue:[NSString stringWithFormat:@"%@=%@", kTequilaCookieName, tequilaCookie.value] forHTTPHeaderField:@"Cookie"];
+    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    id weakDelegate __weak = delegate;
+    
+    VoidBlock failedBlock = ^() {
+        if ([weakDelegate respondsToSelector:@selector(authenticateFailedForToken:tequilaCookie:)]) {
+            [weakDelegate authenticateFailedForToken:token tequilaCookie:tequilaCookie];
+        }
+    };
+    
+    /*
+     * We need the request to return 302 to succeed (=> token is authenticated and valid)
+     * Any other code is considered as failed. Particularly, 200 means redirect to credentials page => failure
+     */
+    [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *request2, NSURLResponse *redirectResponse) {
+        /*
+         * Redirect block is actually called for original request as well.
+         * This logic allows the first request to pursue but not the second one
+         * => prevents redirect
+         */
+        if (!redirectResponse && connection.originalRequest == connection.currentRequest) {
+            return request2;
+        }
+        return nil;
+    }];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        /*
+         * Completion block handles all responses with status code in the range 2xx,
+         * which is a failure in our case (see above)
+         */
+        failedBlock();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        switch (operation.response.statusCode) {
+            case 302:
+                if ([weakDelegate respondsToSelector:@selector(authenticateDidSucceedForToken:tequilaCookie:)]) {
+                    [weakDelegate authenticateDidSucceedForToken:token tequilaCookie:tequilaCookie];
+                }
+                break;
+            default:
+                failedBlock();
+                break;
+        }
+    }];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)dealloc

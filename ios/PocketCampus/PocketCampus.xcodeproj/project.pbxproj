@@ -413,8 +413,8 @@
 		32CBF059163450E500FD92E5 /* PocketCampusDrawing.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CBF057163450E500FD92E5 /* PocketCampusDrawing.png */; };
 		32CBF05A163450E500FD92E5 /* PocketCampusDrawing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CBF058163450E500FD92E5 /* PocketCampusDrawing@2x.png */; };
 		32CBF0631634812C00FD92E5 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CBF0621634812C00FD92E5 /* SplashViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32CCB4C8155520FE00220282 /* AuthenticationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4B9155520FE00220282 /* AuthenticationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32CCB4CB155520FE00220282 /* AuthenticationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C1155520FE00220282 /* AuthenticationService.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		32CCB4C8155520FE00220282 /* AuthenticationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4B9155520FE00220282 /* AuthenticationController.m */; };
+		32CCB4CB155520FE00220282 /* AuthenticationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C1155520FE00220282 /* AuthenticationService.m */; };
 		32CCB4CC155520FE00220282 /* authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C4155520FE00220282 /* authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32CCB4E91555237500220282 /* MoodleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4D71555237500220282 /* MoodleController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32CCB4EA1555237500220282 /* MoodlePlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4D81555237500220282 /* MoodlePlugin.strings */; };
@@ -3815,8 +3815,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "B5BA64CB-1764-42C5-9937-730AFDB7A57B";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B5BA64CB-1764-42C5-9937-730AFDB7A57B";
+				PROVISIONING_PROFILE = "53B2B79E-82D9-4491-80CD-808663F9463F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "53B2B79E-82D9-4491-80CD-808663F9463F";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;

@@ -5,13 +5,17 @@
 
 #import "ASIHTTPRequest.h"
 
-#define TEQUILA_LOGIN_URL @"https://tequila.epfl.ch/cgi-bin/tequila/login"
-#define TEQUILA_AUTH_URL @"https://tequila.epfl.ch/cgi-bin/tequila/requestauth?requestkey=%@"
-#define TEQUILA_COOKIE_NAME @"tequila_key"
-
 typedef enum {
     AuthenticationUserTypeUnknown = 0
 } AuthenticationUserType;
+
+typedef enum {
+    AuthenticationTequilaLoginFailureReasonBadCredentials,
+    AuthenticationTequilaLoginFailureReasonOtherError
+} AuthenticationTequilaLoginFailureReason;
+
+
+static NSString* kTequilaCookieName __unused = @"tequila_key";
 
 @interface AuthenticationService : Service<ServiceProtocol>
 
@@ -32,17 +36,18 @@ typedef enum {
 + (void)enqueueLogoutNotificationDelayed:(BOOL)delayed; //set delayed to YES to inform the receiver of the notif. that it should logout only when user has finished (leaving plugin)
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate;
-- (void)authenticateToken:(NSString*)token withTequilaCookie:(NSString*)tequilaCookie delegate:(id)delegate;
+- (void)authenticateToken:(NSString*)token withTequilaCookie:(NSHTTPCookie*)tequilaCookie delegate:(id)delegate;
 
 @end
 
 @protocol AuthenticationServiceDelegate <ServiceDelegate>
 
 @optional
-- (void)loginToTequilaDidReturn:(ASIHTTPRequest*)request;
-- (void)loginToTequilaFailed:(ASIHTTPRequest*)request;
-- (void)authenticateTokenWithTequilaDidReturn:(ASIHTTPRequest*)request;
-- (void)authenticateTokenWithTequilaFailed:(ASIHTTPRequest*)request;
+- (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie*)tequilaCookie;
+- (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason;
+
+- (void)authenticateDidSucceedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie;
+- (void)authenticateFailedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie;
 
 @end
 

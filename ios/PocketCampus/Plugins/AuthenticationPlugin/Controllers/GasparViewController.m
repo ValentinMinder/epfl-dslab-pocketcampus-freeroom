@@ -7,16 +7,11 @@
 //
 
 
-
 #import "GasparViewController.h"
 
 #import "AuthenticationService.h"
 
 #import "EditableTableViewCell.h"
-
-#import "PCValues.h"
-
-#import "PCUtils.h"
 
 @implementation GasparViewController
 
@@ -494,90 +489,85 @@
 /* AuthenticationServiceDelegate delegation */
 
 /* STEP 1 */
-- (void)loginToTequilaDidReturn:(ASIHTTPRequest*)request {
-    NSString* tequilaCookie = nil;
-    for(NSHTTPCookie* cookie in request.responseCookies) {
-        if ([cookie.name isEqualToString:TEQUILA_COOKIE_NAME]) {
-            tequilaCookie = cookie.value;
-        }
+
+- (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie *)tequilaCookie {
+    [errorMessage release];
+    errorMessage = nil;
+    [AuthenticationService saveUsername:username];
+    if(!showSavePasswordSwitch || (showSavePasswordSwitch && [savePasswordSwitch isOn])) {
+        [AuthenticationService savePassword:password forUsername:username];
     }
-    if (!tequilaCookie) { //means bad credentials
-        [AuthenticationService deleteSavedPasswordForUsername:username];
-        [errorMessage release];
-        errorMessage = [NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) retain];
-        if (presentationMode == PresentationModeTryHidden) {
-            if (!self.viewControllerForPresentation) {
-                @throw [NSException exceptionWithName:@"nil viewControllerForPresentation" reason:@"could not present GasparViewController after failing silent authentication." userInfo:nil];
-            }
-            presentationMode = PresentationModeModal;
-            usernameTextField.enabled = YES;
-            passwordTextField.enabled = YES;
-            
-            UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:self]; //so that nav bar is shown
-            [viewControllerForPresentation presentViewController:tmpNavController animated:YES completion:^{
-                [self focusOnInput];
-            }];
-            [tmpNavController release];
-        } else {
-            [usernameCell release];
-            usernameCell = nil;
-            [passwordCell release];
-            passwordCell = nil;
-            [password release];
-            password = nil;
-            [tableView reloadData];
-            [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(focusOnInput) userInfo:nil repeats:NO];
-        }
-        
-    } else {
-        [errorMessage release];
-        errorMessage = nil;
-        [AuthenticationService saveUsername:username];
-        if(!showSavePasswordSwitch || (showSavePasswordSwitch && [savePasswordSwitch isOn])) {
-            [AuthenticationService savePassword:password forUsername:username];
-        }
-        if (token) {
-            [authenticationService authenticateToken:token withTequilaCookie:tequilaCookie delegate:self];
-        } else { //mean user just wanted to login to tequila without loggin in to service. From settings for example.
-            [usernameCell release];
-            usernameCell = nil;
-            [passwordCell release];
-            passwordCell = nil;
-            [self reloadTableViewWithEffect]; //will show logged-in UI then
-        }
-        [password release];
-        password = nil;
+    if (token) {
+        [authenticationService authenticateToken:token withTequilaCookie:tequilaCookie delegate:self];
+    } else { //mean user just wanted to login to tequila without loggin in to service. From settings for example.
+        [usernameCell release];
+        usernameCell = nil;
+        [passwordCell release];
+        passwordCell = nil;
+        [self reloadTableViewWithEffect]; //will show logged-in UI then
     }
-    
+    [password release];
+    password = nil;
 }
 
-- (void)loginToTequilaFailed:(ASIHTTPRequest*)request {
-    NSLog(@"-> loginToTequilaFailed");
-    [self connectionError];
+- (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason {
+    NSLog(@"-> loginToTequilaFailedloginToTequilaFailedWithReason: %d", reason);
+    switch (reason) {
+        case AuthenticationTequilaLoginFailureReasonBadCredentials:
+        {
+            [AuthenticationService deleteSavedPasswordForUsername:username];
+            [errorMessage release];
+            errorMessage = [NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) retain];
+            if (presentationMode == PresentationModeTryHidden) {
+                if (!self.viewControllerForPresentation) {
+                    @throw [NSException exceptionWithName:@"nil viewControllerForPresentation" reason:@"could not present GasparViewController after failing silent authentication." userInfo:nil];
+                }
+                presentationMode = PresentationModeModal;
+                usernameTextField.enabled = YES;
+                passwordTextField.enabled = YES;
+                
+                UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:self]; //so that nav bar is shown
+                [viewControllerForPresentation presentViewController:tmpNavController animated:YES completion:^{
+                    [self focusOnInput];
+                }];
+                [tmpNavController release];
+            } else {
+                [usernameCell release];
+                usernameCell = nil;
+                [passwordCell release];
+                passwordCell = nil;
+                [password release];
+                password = nil;
+                [tableView reloadData];
+                [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(focusOnInput) userInfo:nil repeats:NO];
+            }
+            break;
+        }
+        default:
+            [self connectionError];
+            break;
+    }
 }
 
 /* STEP 2 */
-- (void)authenticateTokenWithTequilaDidReturn:(ASIHTTPRequest*)request{
-    NSString* redir = [request.responseHeaders objectForKey:@"Location"];
-    if(redir == nil) {
-        if ([(NSObject*)self.delegate respondsToSelector:@selector(invalidToken)]) {
-            [(NSObject*)self.delegate performSelectorOnMainThread:@selector(invalidToken) withObject:nil waitUntilDone:NO];
-        }
-    } else {
-        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceeded)]) {
-            [(NSObject*)self.delegate performSelectorOnMainThread:@selector(authenticationSucceeded) withObject:nil waitUntilDone:YES];
-        }
-        if (presentationMode != PresentationModeTryHidden && (showSavePasswordSwitch && ![savePasswordSwitch isOn])) {
-            [AuthenticationService enqueueLogoutNotificationDelayed:YES];
-        }
+
+- (void)authenticateDidSucceedForToken:(NSString *)token tequilaCookie:(NSHTTPCookie *)tequilaCookie {
+    if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceeded)]) {
+        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(authenticationSucceeded) withObject:nil waitUntilDone:YES];
+    }
+    if (presentationMode != PresentationModeTryHidden && (showSavePasswordSwitch && ![savePasswordSwitch isOn])) {
+        [AuthenticationService enqueueLogoutNotificationDelayed:YES];
     }
     [loadingIndicator stopAnimating];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)authenticateTokenWithTequilaFailed:(ASIHTTPRequest*)request {
-    NSLog(@"authenticateTokenWithTequilaFailed");
-    [self connectionError];
+- (void)authenticateFailedForToken:(NSString *)token tequilaCookie:(NSHTTPCookie *)tequilaCookie {
+    if ([(NSObject*)self.delegate respondsToSelector:@selector(invalidToken)]) {
+        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(invalidToken) withObject:nil waitUntilDone:NO];
+    }
+    [loadingIndicator stopAnimating];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)connectionError {
