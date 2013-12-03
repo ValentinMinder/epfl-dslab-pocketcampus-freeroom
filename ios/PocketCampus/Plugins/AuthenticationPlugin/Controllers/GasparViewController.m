@@ -13,51 +13,61 @@
 
 #import "EditableTableViewCell.h"
 
+@interface GasparViewController ()<UITextFieldDelegate, AuthenticationServiceDelegate>
+
+@property (nonatomic, strong) UITextField* usernameTextField;
+@property (nonatomic, strong) UITextField* passwordTextField;
+@property (nonatomic, strong) UISwitch* savePasswordSwitch;
+@property (nonatomic, strong) EditableTableViewCell* usernameCell;
+@property (nonatomic, strong) EditableTableViewCell* passwordCell;
+@property (nonatomic, strong) UITableViewCell* loginCell;
+@property (nonatomic, strong) NSString* errorMessage;
+@property (nonatomic) BOOL isLoggedIn;
+@property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, strong) AuthenticationService* authenticationService;
+@property (nonatomic, strong) NSString* username;
+@property (nonatomic, strong) NSString* password;
+
+@end
+
 @implementation GasparViewController
 
-@synthesize tableView, delegate, token, showSavePasswordSwitch, hideGasparUsageAccountMessage, presentationMode, viewControllerForPresentation;
+#pragma mark - Init
 
 - (id)init;
 {
-    self = [super initWithNibName:@"GasparView" bundle:nil];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        presentationMode = PresentationModeNavStack; //default
+        self.presentationMode = PresentationModeNavStack; //default
         self.modalPresentationStyle = UIModalPresentationFormSheet; //prevents full-screen on iPad
-        showSavePasswordSwitch = NO; //default
-        hideGasparUsageAccountMessage = NO; //default
-        viewControllerForPresentation = nil;
-        errorMessage = nil;
-        token = nil;
-        usernameTextField = nil;
-        passwordTextField = nil;
-        loginCell = nil;
-        savePasswordSwitch = nil;
-        authenticationService = [[AuthenticationService sharedInstanceToRetain] retain];
-        isLoggedIn = ([AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]] != nil);
+        self.authenticationService = [AuthenticationService sharedInstanceToRetain];
+        self.isLoggedIn = [AuthenticationService isLoggedIn];
     }
     return self;
 }
 
-+ (NSString*)localizedTitle {
-    return NSLocalizedStringFromTable(@"GasparAccount", @"AuthenticationPlugin", nil);
-}
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.navigationController.view.backgroundColor = [UIColor whiteColor];
     [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/authentication"];
     self.title = [[self class] localizedTitle];
-    
-    if (presentationMode == PresentationModeModal || presentationMode == PresentationModeTryHidden) {
-        UIBarButtonItem* cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
-        [cancelButton release];
-    } else if (presentationMode == PresentationModeNavStack && isLoggedIn) {
+    self.tableView.sectionHeaderHeight = 2.0;
+    self.tableView.sectionFooterHeight = 2.0;
+    if (self.presentationMode == PresentationModeModal || self.presentationMode == PresentationModeTryHidden) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
+    } else if (self.presentationMode == PresentationModeNavStack && self.isLoggedIn) {
         [self showDoneButton];
     } else {
         //nothing, unknown
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    //empty and not calling super on purpose, this is to disable the auto-scrolling when getting text fields focus
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -70,16 +80,42 @@
     
 }
 
+#pragma mark - Public methods
+
+- (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationCallbackDelegate>)delegate_ {
+    self.token = token_;
+    if (!delegate_) {
+        @throw [NSException exceptionWithName:@"askCredientialsForTypeOfService:delegate: bad delegate" reason:@"delegate cannot be nil" userInfo:nil];
+    }
+    self.delegate = delegate_;
+    self.username = [AuthenticationService savedUsername];
+    self.password = [AuthenticationService savedPasswordForUsername:self.username];
+    [self.authenticationService loginToTequilaWithUser:self.username password:self.password delegate:self];
+}
+
+- (void)focusOnInput {
+    if (![self.usernameTextField.text isEqualToString:@""]) {
+        [self.passwordTextField becomeFirstResponder];
+    } else {
+        [self.usernameTextField becomeFirstResponder];
+    }
+}
+
++ (NSString*)localizedTitle {
+    return NSLocalizedStringFromTable(@"GasparAccount", @"AuthenticationPlugin", nil);
+}
+
+#pragma mark - Actions & buttons management
+
 - (void)showDoneButton {
     UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(donePressed)];
     [self.navigationItem setRightBarButtonItem:doneButton animated:YES];
-    [doneButton release];
 }
 
 - (void)cancelPressed {
-    [authenticationService cancelOperationsForDelegate:self];
+    [self.authenticationService cancelOperationsForDelegate:self];
     [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
-    if (presentationMode == PresentationModeModal) {
+    if (self.presentationMode == PresentationModeModal) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
             if ([(NSObject*)self.delegate respondsToSelector:@selector(userCancelledAuthentication)]) {
                 [(NSObject*)self.delegate performSelectorOnMainThread:@selector(userCancelledAuthentication) withObject:nil waitUntilDone:YES];
@@ -92,59 +128,128 @@
 }
 
 - (void)donePressed {
-    if (self.presentingViewController && presentationMode == PresentationModeNavStack) {
+    if (self.presentingViewController && self.presentationMode == PresentationModeNavStack) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     }
 }
 
-/*- (BOOL)checkUserInputs {
-    UIAlertView* alertView;
-    if ([usernameTextField.text isEqualToString:@""]) {
-        alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"UsernameCannotBeEmpty", @"AuthenticationPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
-        [usernameTextField becomeFirstResponder];
-        return NO;
-    }
-    if ([passwordTextField.text isEqualToString:@""]) {
-        alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"PasswordCannotBeEmpty", @"AuthenticationPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
-        [passwordTextField becomeFirstResponder];
-        return NO;
-    }
-    return YES;
-}*/
-
-- (void)focusOnInput {
-    if (![usernameTextField.text isEqualToString:@""]) {
-        [passwordTextField becomeFirstResponder];
-    } else {
-        [usernameTextField becomeFirstResponder];
-    }
-}
+#pragma mark - Listening
 
 - (void)savePasswordSwitchValueChanged {
-    [AuthenticationService savePasswordSwitchState:savePasswordSwitch.isOn];
+    [AuthenticationService savePasswordSwitchState:self.savePasswordSwitch.isOn];
 }
 
+#pragma mark - Inputs things
+
 - (void)inputFieldsDidChange {
-    if (usernameTextField.text.length == 0 || passwordTextField.text.length == 0) {
-        if (usernameTextField.text.length == 0 && !savePasswordSwitch.isOn) { //means user has cleared field to remove his username
+    if (self.usernameTextField.text.length == 0 || self.passwordTextField.text.length == 0) {
+        if (self.usernameTextField.text.length == 0 && !self.savePasswordSwitch.isOn) { //means user has cleared field to remove his username
             [AuthenticationService saveUsername:nil];
         }
-        loginCell.textLabel.enabled = NO;
-        loginCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.loginCell.textLabel.enabled = NO;
+        self.loginCell.selectionStyle = UITableViewCellSelectionStyleNone;
     } else {
-        loginCell.textLabel.enabled = YES;
-        loginCell.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.loginCell.textLabel.enabled = YES;
+        self.loginCell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
 }
 
-/* UITextFieldDelegate delegation */
+#pragma mark - AuthenticationCallbackDelegate
+
+/* STEP 1 */
+
+- (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie *)tequilaCookie {
+    self.errorMessage = nil;
+    [AuthenticationService saveUsername:self.username];
+    if(!self.showSavePasswordSwitch || (self.showSavePasswordSwitch && [self.savePasswordSwitch isOn])) {
+        [AuthenticationService savePassword:self.password forUsername:self.username];
+    }
+    if (self.token) {
+        [self.authenticationService authenticateToken:self.token withTequilaCookie:tequilaCookie delegate:self];
+    } else { //mean user just wanted to login to tequila without loggin in to service. From settings for example.
+        self.usernameCell = nil;
+        self.passwordCell = nil;
+        [self reloadTableViewWithEffect]; //will show logged-in UI then
+    }
+    self.password = nil;
+}
+
+- (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason {
+    NSLog(@"-> loginToTequilaFailedloginToTequilaFailedWithReason: %d", reason);
+    switch (reason) {
+        case AuthenticationTequilaLoginFailureReasonBadCredentials:
+        {
+            [AuthenticationService deleteSavedPasswordForUsername:self.username];
+            self.errorMessage = NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil);
+            if (self.presentationMode == PresentationModeTryHidden) {
+                if (!self.viewControllerForPresentation) {
+                    @throw [NSException exceptionWithName:@"nil viewControllerForPresentation" reason:@"could not present GasparViewController after failing silent authentication." userInfo:nil];
+                }
+                self.presentationMode = PresentationModeModal;
+                self.usernameTextField.enabled = YES;
+                self.passwordTextField.enabled = YES;
+                
+                UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:self]; //so that nav bar is shown
+                [self.viewControllerForPresentation presentViewController:tmpNavController animated:YES completion:^{
+                    [self focusOnInput];
+                }];
+            } else {
+                self.usernameCell = nil;
+                self.passwordCell = nil;
+                self.password = nil;
+                [self.tableView reloadData];
+                [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(focusOnInput) userInfo:nil repeats:NO];
+            }
+            break;
+        }
+        default:
+            [self connectionError];
+            break;
+    }
+}
+
+/* STEP 2 */
+
+- (void)authenticateDidSucceedForToken:(NSString *)token tequilaCookie:(NSHTTPCookie *)tequilaCookie {
+    if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceeded)]) {
+        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(authenticationSucceeded) withObject:nil waitUntilDone:YES];
+    }
+    if (self.presentationMode != PresentationModeTryHidden && (self.showSavePasswordSwitch && ![self.savePasswordSwitch isOn])) {
+        [AuthenticationService enqueueLogoutNotificationDelayed:YES];
+    }
+    [self.loadingIndicator stopAnimating];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)authenticateFailedForToken:(NSString *)token tequilaCookie:(NSHTTPCookie *)tequilaCookie {
+    if ([(NSObject*)self.delegate respondsToSelector:@selector(invalidToken)]) {
+        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(invalidToken) withObject:nil waitUntilDone:NO];
+    }
+    [self.loadingIndicator stopAnimating];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)connectionError {
+    [self.loadingIndicator stopAnimating];
+    self.usernameTextField.enabled = YES;
+    self.passwordTextField.enabled = YES;
+    self.loginCell.textLabel.enabled = YES;
+    self.loginCell.selectionStyle = UITableViewCellSelectionStyleGray;
+    [PCUtils showConnectionToServerTimedOutAlert];
+    
+    if (self.presentationMode == PresentationModeTryHidden && [(NSObject*)self.delegate respondsToSelector:@selector(serviceConnectionToServerTimedOut)]) {
+        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(serviceConnectionToServerTimedOut) withObject:nil waitUntilDone:YES];
+    }
+}
+
+- (void)serviceConnectionToServerTimedOut {
+    [self connectionError];
+}
+
+#pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    tableView.contentInset = UIEdgeInsetsMake(tableView.contentInset.top, tableView.contentInset.left, tableView.contentInset.bottom+220.0, tableView.contentInset.right);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, self.tableView.contentInset.left, self.tableView.contentInset.bottom+220.0, self.tableView.contentInset.right);
     /*if (textField == passwordTextField) {
         [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }*/
@@ -152,62 +257,55 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    tableView.contentInset = UIEdgeInsetsMake(tableView.contentInset.top, tableView.contentInset.left, tableView.contentInset.bottom-220.0, tableView.contentInset.right);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, self.tableView.contentInset.left, self.tableView.contentInset.bottom-220.0, self.tableView.contentInset.right);
 }
 
-
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == usernameTextField) {
-        [passwordTextField becomeFirstResponder];
-    } else if (textField == passwordTextField) {
-        [self tableView:tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]]; //simulate login cell pressed
+    if (textField == self.usernameTextField) {
+        [self.passwordTextField becomeFirstResponder];
+    } else if (textField == self.passwordTextField) {
+        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]]; //simulate login cell pressed
     } else {
         //nothing, unknown
     }
     return YES;
 }
 
-/* UITableViewDelegate delegation */
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (isLoggedIn) {
+    if (self.isLoggedIn) {
         if (indexPath.section == 0) { //logout button
             [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
             [AuthenticationService saveUsername:nil];
             [AuthenticationService enqueueLogoutNotificationDelayed:NO];
-            username = nil;
-            [password release];
-            password = nil;
-            [usernameCell release];
-            usernameCell = nil;
-            [passwordCell release];
-            passwordCell = nil;
+            self.username = nil;
+            self.password = nil;
+            self.usernameCell = nil;
+            self.passwordCell = nil;
             [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(reloadTableViewWithEffect) userInfo:nil repeats:NO];
         }
     } else {
-        if (indexPath.section == 1 && loginCell.textLabel.enabled) { //login button
+        if (indexPath.section == 1 && self.loginCell.textLabel.enabled) { //login button
             [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/authentication/click/login"];
-            [loadingIndicator startAnimating];
-            [usernameTextField resignFirstResponder];
-            [passwordTextField resignFirstResponder];
-            usernameTextField.enabled = NO;
-            passwordTextField.enabled = NO;
-            loginCell.textLabel.enabled = NO;
-            loginCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [username release];
-            username = [usernameTextField.text retain];
-            [password release];
-            password = [passwordTextField.text retain];
-            [authenticationService loginToTequilaWithUser:username password:password delegate:self];
+            [self.loadingIndicator startAnimating];
+            [self.usernameTextField resignFirstResponder];
+            [self.passwordTextField resignFirstResponder];
+            self.usernameTextField.enabled = NO;
+            self.passwordTextField.enabled = NO;
+            self.loginCell.textLabel.enabled = NO;
+            self.loginCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            self.username = self.usernameTextField.text;
+            self.password = self.passwordTextField.text;
+            [self.authenticationService loginToTequilaWithUser:self.username password:self.password delegate:self];
         }
     }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0) {
-        if (presentationMode == PresentationModeNavStack && isLoggedIn) {
+        if (self.presentationMode == PresentationModeNavStack && self.isLoggedIn) {
             return 40.0;
         } else {
             return 5.0;
@@ -217,85 +315,16 @@
     return 0.0;
 }
 
-/*- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    
-    NSString* text;
-    if (isLoggedIn && section == 0) {
-        text = NSLocalizedStringFromTable(@"LoggedInExplanationLong", @"AuthenticationPlugin", nil);
-        UIFont* font = [UIFont systemFontOfSize:16.0];
-        CGSize reqSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
-        return reqSize.height+15.0;
-    } else if (!isLoggedIn && section == 1) {
-        if (errorMessage) {
-            text = errorMessage;
-        } else {
-            if (hideGasparUsageAccountMessage) {
-                return 0.0;
-            } else {
-                text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"AuthenticationPlugin", nil);
-                
-            }
-        }
-        UIFont* font = [UIFont systemFontOfSize:16.0];
-        CGSize reqSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
-        return reqSize.height+15.0;
-    } else {
-        return 0.0;
-    }
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    
-    if ((section == 0 && isLoggedIn) || (section == 1 && !isLoggedIn)) {
-        NSString* text;
-        if (isLoggedIn) {
-            text = NSLocalizedStringFromTable(@"LoggedInExplanationLong", @"AuthenticationPlugin", nil);
-        } else {
-            if (errorMessage) {
-                text = errorMessage;
-            } else {
-                if (!hideGasparUsageAccountMessage) {
-                    text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"AuthenticationPlugin", nil);
-                } else {
-                    text = @"";
-                }
-            }
-        }
-        
-        UILabel* label = [[UILabel alloc] init];
-        label.text = text;
-        UIFont* font = [UIFont systemFontOfSize:16.0];
-        CGSize reqSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
-        label.frame = CGRectMake(0, 0, 260.0, reqSize.height);
-        label.numberOfLines = 0;
-        label.textAlignment = UITextAlignmentCenter;
-        label.backgroundColor = [UIColor clearColor];
-        label.font = font;
-        if (errorMessage) {
-            label.textColor = [PCValues pocketCampusRed];
-        } else {
-            label.textColor = [PCValues textColor1];
-        }
-        label.shadowOffset = [PCValues shadowOffset1];
-        label.shadowColor = [UIColor whiteColor];
-        label.adjustsFontSizeToFitWidth = NO;
-        label.text = text;
-        return [label autorelease];
-    }
-    
-    return nil;
-}*/
-
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    if ((section == 0 && isLoggedIn) || (section == 1 && !isLoggedIn)) {
+    if ((section == 0 && self.isLoggedIn) || (section == 1 && !self.isLoggedIn)) {
         NSString* text;
-        if (isLoggedIn) {
+        if (self.isLoggedIn) {
             text = NSLocalizedStringFromTable(@"LoggedInExplanationLong", @"AuthenticationPlugin", nil);
         } else {
-            if (errorMessage) {
-                text = errorMessage;
+            if (self.errorMessage) {
+                text = self.errorMessage;
             } else {
-                if (!hideGasparUsageAccountMessage) {
+                if (!self.hideGasparUsageAccountMessage) {
                     text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"AuthenticationPlugin", nil);
                 } else {
                     text = @"";
@@ -308,13 +337,13 @@
     return nil;
 }
 
-/* UITableViewDataSource delegation */
+#pragma mark - UITableViewDataSource
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0: //gaspar account
         {
-            if (isLoggedIn) { 
+            if (self.isLoggedIn) {
                 return [NSString stringWithFormat:NSLocalizedStringFromTable(@"LoggedInAsWithFormat", @"AuthenticationPlugin", nil), [AuthenticationService savedUsername]];
             }
             break;
@@ -330,8 +359,8 @@
         case 0: //gaspar account
         {
             
-            if (isLoggedIn) { //logout button
-                UITableViewCell* logoutCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+            if (self.isLoggedIn) { //logout button
+                UITableViewCell* logoutCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
                 logoutCell.textLabel.text = NSLocalizedStringFromTable(@"Logout", @"AuthenticationPlugin", nil);
                 logoutCell.textLabel.textColor = [PCValues pocketCampusRed];
                 return logoutCell;
@@ -339,43 +368,41 @@
                 switch (indexPath.row) {
                     case 0: //username
                     {
-                        if (usernameCell) {
-                            return usernameCell;
+                        if (self.usernameCell) {
+                            return self.usernameCell;
                         }
-                        usernameCell = [[EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)] retain];
-                        [usernameTextField release];
-                        usernameTextField = [usernameCell.textField retain];
-                        usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-                        usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-                        usernameTextField.returnKeyType = UIReturnKeyNext;
-                        usernameTextField.clearButtonMode = UITextFieldViewModeAlways;
-                        usernameTextField.delegate = self;
+                        self.usernameCell = [EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)];
+                        self.usernameTextField = self.usernameCell.textField;
+                        self.usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+                        self.usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                        self.usernameTextField.returnKeyType = UIReturnKeyNext;
+                        self.usernameTextField.clearButtonMode = UITextFieldViewModeAlways;
+                        self.usernameTextField.delegate = self;
                         
                         NSString* text = [AuthenticationService savedUsername];
-                        if (!text && username) {
-                            text = username;
+                        if (!text && self.username) {
+                            text = self.username;
                         }
                         
-                        if (text && (presentationMode == PresentationModeModal || presentationMode == PresentationModeNavStack)) {
-                            usernameTextField.text = text;
+                        if (text && (self.presentationMode == PresentationModeModal || self.presentationMode == PresentationModeNavStack)) {
+                            self.usernameTextField.text = text;
                         }
-                        [usernameTextField addTarget:self action:@selector(inputFieldsDidChange) forControlEvents:UIControlEventEditingChanged];
-                        return usernameCell;
+                        [self.usernameTextField addTarget:self action:@selector(inputFieldsDidChange) forControlEvents:UIControlEventEditingChanged];
+                        return self.usernameCell;
                         break;
                     }
                     case 1: //password
                     {
-                        if (passwordCell) {
-                            return passwordCell;
+                        if (self.passwordCell) {
+                            return self.passwordCell;
                         }
-                        passwordCell = [[EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)] retain];
-                        [passwordTextField release];
-                        passwordTextField = [passwordCell.textField retain];
-                        passwordTextField.secureTextEntry = YES;
-                        passwordTextField.returnKeyType = UIReturnKeyGo;
-                        passwordCell.textField.delegate = self;
-                        [passwordTextField addTarget:self action:@selector(inputFieldsDidChange) forControlEvents:UIControlEventEditingChanged];
-                        return passwordCell;
+                        self.passwordCell = [EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)];
+                        self.passwordTextField = self.passwordCell.textField;
+                        self.passwordTextField.secureTextEntry = YES;
+                        self.passwordTextField.returnKeyType = UIReturnKeyGo;
+                        self.passwordCell.textField.delegate = self;
+                        [self.passwordTextField addTarget:self action:@selector(inputFieldsDidChange) forControlEvents:UIControlEventEditingChanged];
+                        return self.passwordCell;
                         break;
                     }
                     default:
@@ -386,36 +413,33 @@
         }
         case 1: //login cell button
         {
-            UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-            [loginCell release];
-            loginCell = [cell retain];
-            loginCell.textLabel.text = NSLocalizedStringFromTable(@"Login", @"AuthenticationPlugin", nil);
-            loginCell.textLabel.textColor = [PCValues pocketCampusRed];
-            loginCell.textLabel.enabled = NO;
-            loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [loginCell.contentView addSubview:loadingIndicator];
-            loadingIndicator.center = CGPointMake(294.0, 22.0);
-            loadingIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-            [loadingIndicator release];
+            UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            self.loginCell = cell;
+            self.loginCell.textLabel.text = NSLocalizedStringFromTable(@"Login", @"AuthenticationPlugin", nil);
+            self.loginCell.textLabel.textColor = [PCValues pocketCampusRed];
+            self.loginCell.textLabel.enabled = NO;
+            self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [self.loginCell.contentView addSubview:self.loadingIndicator];
+            self.loadingIndicator.center = CGPointMake(294.0, 22.0);
+            self.loadingIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
             [self inputFieldsDidChange];
             return cell;
             break;
         }
         case 2: //save password switch
         {
-            UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+            UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.textLabel.text = NSLocalizedStringFromTable(@"SavePassword", @"AuthenticationPlugin", nil);
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [savePasswordSwitch release];
-            savePasswordSwitch = [[UISwitch alloc] init];
+            self.savePasswordSwitch = [[UISwitch alloc] init];
             BOOL on = YES; //default
             NSNumber* onNSNumber = [AuthenticationService savePasswordSwitchWasOn];
             if (onNSNumber != nil && ![onNSNumber boolValue]) { //previously save state AND this state was off
                 on = NO;
             }
-            savePasswordSwitch.on = on;
-            [savePasswordSwitch addTarget:self action:@selector(savePasswordSwitchValueChanged) forControlEvents:UIControlEventValueChanged];
-            cell.accessoryView = savePasswordSwitch;
+            self.savePasswordSwitch.on = on;
+            [self.savePasswordSwitch addTarget:self action:@selector(savePasswordSwitchValueChanged) forControlEvents:UIControlEventValueChanged];
+            cell.accessoryView = self.savePasswordSwitch;
             return cell;
             break;
         }
@@ -429,7 +453,7 @@
     switch (section) {
         case 0:
         {
-            if (isLoggedIn) {
+            if (self.isLoggedIn) {
                 return 1; //only logout button
             } else {
                 return 2; //username, password
@@ -447,12 +471,12 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    isLoggedIn = ([AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]] != nil);
-    if (isLoggedIn) {
+    self.isLoggedIn = [AuthenticationService isLoggedIn];
+    if (self.isLoggedIn) {
         [self showDoneButton];
         return 1; //only logout button
     } else {
-        if (showSavePasswordSwitch) {
+        if (self.showSavePasswordSwitch) {
             return 3;//username/password section, login button section, save password switch section
         } else {
             return 2; //username/password section, login button section
@@ -462,146 +486,25 @@
 
 - (void)reloadTableViewWithEffect {
     [UIView animateWithDuration:0.4 animations:^{
-        tableView.alpha = 0.0;
+        self.tableView.alpha = 0.0;
     } completion:^(BOOL finished) {
-        [tableView reloadData];
+        [self.tableView reloadData];
     }];
     [UIView animateWithDuration:0.4 animations:^{
-        tableView.alpha = 1.0;
+        self.tableView.alpha = 1.0;
     }];
 }
 
-/* instance methods */
-
-- (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationCallbackDelegate>)delegate_ {
-    self.token = token_;
-    if (!delegate_) {
-        @throw [NSException exceptionWithName:@"askCredientialsForTypeOfService:delegate: bad delegate" reason:@"delegate cannot be nil" userInfo:nil];
-    }
-    self.delegate = delegate_;
-    [username release];
-    username = [[AuthenticationService savedUsername] retain];
-    [password release];
-    password = [[AuthenticationService savedPasswordForUsername:username] retain];
-    [authenticationService loginToTequilaWithUser:username password:password delegate:self];
-}
-
-/* AuthenticationServiceDelegate delegation */
-
-/* STEP 1 */
-
-- (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie *)tequilaCookie {
-    [errorMessage release];
-    errorMessage = nil;
-    [AuthenticationService saveUsername:username];
-    if(!showSavePasswordSwitch || (showSavePasswordSwitch && [savePasswordSwitch isOn])) {
-        [AuthenticationService savePassword:password forUsername:username];
-    }
-    if (token) {
-        [authenticationService authenticateToken:token withTequilaCookie:tequilaCookie delegate:self];
-    } else { //mean user just wanted to login to tequila without loggin in to service. From settings for example.
-        [usernameCell release];
-        usernameCell = nil;
-        [passwordCell release];
-        passwordCell = nil;
-        [self reloadTableViewWithEffect]; //will show logged-in UI then
-    }
-    [password release];
-    password = nil;
-}
-
-- (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason {
-    NSLog(@"-> loginToTequilaFailedloginToTequilaFailedWithReason: %d", reason);
-    switch (reason) {
-        case AuthenticationTequilaLoginFailureReasonBadCredentials:
-        {
-            [AuthenticationService deleteSavedPasswordForUsername:username];
-            [errorMessage release];
-            errorMessage = [NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) retain];
-            if (presentationMode == PresentationModeTryHidden) {
-                if (!self.viewControllerForPresentation) {
-                    @throw [NSException exceptionWithName:@"nil viewControllerForPresentation" reason:@"could not present GasparViewController after failing silent authentication." userInfo:nil];
-                }
-                presentationMode = PresentationModeModal;
-                usernameTextField.enabled = YES;
-                passwordTextField.enabled = YES;
-                
-                UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:self]; //so that nav bar is shown
-                [viewControllerForPresentation presentViewController:tmpNavController animated:YES completion:^{
-                    [self focusOnInput];
-                }];
-                [tmpNavController release];
-            } else {
-                [usernameCell release];
-                usernameCell = nil;
-                [passwordCell release];
-                passwordCell = nil;
-                [password release];
-                password = nil;
-                [tableView reloadData];
-                [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(focusOnInput) userInfo:nil repeats:NO];
-            }
-            break;
-        }
-        default:
-            [self connectionError];
-            break;
-    }
-}
-
-/* STEP 2 */
-
-- (void)authenticateDidSucceedForToken:(NSString *)token tequilaCookie:(NSHTTPCookie *)tequilaCookie {
-    if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceeded)]) {
-        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(authenticationSucceeded) withObject:nil waitUntilDone:YES];
-    }
-    if (presentationMode != PresentationModeTryHidden && (showSavePasswordSwitch && ![savePasswordSwitch isOn])) {
-        [AuthenticationService enqueueLogoutNotificationDelayed:YES];
-    }
-    [loadingIndicator stopAnimating];
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void)authenticateFailedForToken:(NSString *)token tequilaCookie:(NSHTTPCookie *)tequilaCookie {
-    if ([(NSObject*)self.delegate respondsToSelector:@selector(invalidToken)]) {
-        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(invalidToken) withObject:nil waitUntilDone:NO];
-    }
-    [loadingIndicator stopAnimating];
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void)connectionError {
-    [loadingIndicator stopAnimating];
-    usernameTextField.enabled = YES;
-    passwordTextField.enabled = YES;
-    loginCell.textLabel.enabled = YES;
-    loginCell.selectionStyle = UITableViewCellSelectionStyleGray;
-    [PCUtils showConnectionToServerTimedOutAlert];
-    
-    if (presentationMode == PresentationModeTryHidden && [(NSObject*)self.delegate respondsToSelector:@selector(serviceConnectionToServerTimedOut)]) {
-        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(serviceConnectionToServerTimedOut) withObject:nil waitUntilDone:YES];
-    }
-}
-
-- (void)serviceConnectionToServerTimedOut {
-    [self connectionError];
-}
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
     self.delegate = nil;
-    [authenticationService cancelOperationsForDelegate:self];
-    [authenticationService release];
-    [username release];
-    [password release];
-    [usernameTextField release];
-    [passwordTextField release];
-    [usernameCell release];
-    [passwordCell release];
-    [loginCell release];
-    [savePasswordSwitch release];
-    [token release];
-    [super dealloc];
+    [self.authenticationService cancelOperationsForDelegate:self];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end

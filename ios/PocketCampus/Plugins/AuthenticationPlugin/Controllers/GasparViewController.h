@@ -18,36 +18,16 @@ typedef enum {
     PresentationModeTryHidden //silent authentication (user and pass are already stored) will still present on viewControllerForPresentation if no stored user or password
 } PresentationMode;
 
-@interface GasparViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, AuthenticationServiceDelegate> {
-    UITableView* tableView;
-    UITextField* usernameTextField;
-    UITextField* passwordTextField;
-    UISwitch* savePasswordSwitch;
-    EditableTableViewCell* usernameCell;
-    EditableTableViewCell* passwordCell;
-    UITableViewCell* loginCell;
-    NSString* errorMessage;
-    BOOL isLoggedIn;
-    PresentationMode presentationMode;
-    BOOL showSavePasswordSwitch; //if no, password is saved by default
-    BOOL hideGasparUsageAccountMessage;
-    UIActivityIndicatorView* loadingIndicator;
-    UIViewController* viewControllerForPresentation;
-    AuthenticationService* authenticationService;
-    NSString* username;
-    NSString* password;
-    NSString* token;
-}
+@interface GasparViewController : UITableViewController
 
-@property (nonatomic, assign) IBOutlet UITableView* tableView;
 
-@property (assign) id<AuthenticationCallbackDelegate> delegate;
-@property (retain) NSString* token;
+@property (nonatomic, weak) id<AuthenticationCallbackDelegate> delegate;
+@property (nonatomic, copy) NSString* token;
 
-@property PresentationMode presentationMode;
-@property BOOL showSavePasswordSwitch;
-@property BOOL hideGasparUsageAccountMessage;
-@property (assign) UIViewController* viewControllerForPresentation;
+@property (nonatomic) PresentationMode presentationMode;
+@property (nonatomic) BOOL showSavePasswordSwitch;
+@property (nonatomic) BOOL hideGasparUsageAccountMessage;
+@property (nonatomic, weak) UIViewController* viewControllerForPresentation;
 
 + (NSString*)localizedTitle;
 
