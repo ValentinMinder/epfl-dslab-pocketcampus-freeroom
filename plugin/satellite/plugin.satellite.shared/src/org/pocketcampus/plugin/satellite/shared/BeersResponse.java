@@ -25,19 +25,19 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("BeersResponse");
 
   private static final org.apache.thrift.protocol.TField BEER_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("beerList", org.apache.thrift.protocol.TType.MAP, (short)1);
-  private static final org.apache.thrift.protocol.TField ERROR_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("errorCode", org.apache.thrift.protocol.TType.I32, (short)2);
+  private static final org.apache.thrift.protocol.TField STATUS_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("statusCode", org.apache.thrift.protocol.TType.I32, (short)2);
 
   private Map<SatelliteBeerContainer,SatelliteMenuPart> beerList; // required
-  private SatelliteErrorCode errorCode; // required
+  private SatelliteStatusCode statusCode; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     BEER_LIST((short)1, "beerList"),
     /**
      * 
-     * @see SatelliteErrorCode
+     * @see SatelliteStatusCode
      */
-    ERROR_CODE((short)2, "errorCode");
+    STATUS_CODE((short)2, "statusCode");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -54,8 +54,8 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
       switch(fieldId) {
         case 1: // BEER_LIST
           return BEER_LIST;
-        case 2: // ERROR_CODE
-          return ERROR_CODE;
+        case 2: // STATUS_CODE
+          return STATUS_CODE;
         default:
           return null;
       }
@@ -104,13 +104,20 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
         new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
             new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, SatelliteBeerContainer.class), 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SatelliteMenuPart.class))));
-    tmpMap.put(_Fields.ERROR_CODE, new org.apache.thrift.meta_data.FieldMetaData("errorCode", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, SatelliteErrorCode.class)));
+    tmpMap.put(_Fields.STATUS_CODE, new org.apache.thrift.meta_data.FieldMetaData("statusCode", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, SatelliteStatusCode.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(BeersResponse.class, metaDataMap);
   }
 
   public BeersResponse() {
+  }
+
+  public BeersResponse(
+    SatelliteStatusCode statusCode)
+  {
+    this();
+    this.statusCode = statusCode;
   }
 
   /**
@@ -132,8 +139,8 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
       }
       this.beerList = __this__beerList;
     }
-    if (other.isSetErrorCode()) {
-      this.errorCode = other.errorCode;
+    if (other.isSetStatusCode()) {
+      this.statusCode = other.statusCode;
     }
   }
 
@@ -144,7 +151,7 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
   @Override
   public void clear() {
     this.beerList = null;
-    this.errorCode = null;
+    this.statusCode = null;
   }
 
   public int getBeerListSize() {
@@ -184,33 +191,33 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
 
   /**
    * 
-   * @see SatelliteErrorCode
+   * @see SatelliteStatusCode
    */
-  public SatelliteErrorCode getErrorCode() {
-    return this.errorCode;
+  public SatelliteStatusCode getStatusCode() {
+    return this.statusCode;
   }
 
   /**
    * 
-   * @see SatelliteErrorCode
+   * @see SatelliteStatusCode
    */
-  public BeersResponse setErrorCode(SatelliteErrorCode errorCode) {
-    this.errorCode = errorCode;
+  public BeersResponse setStatusCode(SatelliteStatusCode statusCode) {
+    this.statusCode = statusCode;
     return this;
   }
 
-  public void unsetErrorCode() {
-    this.errorCode = null;
+  public void unsetStatusCode() {
+    this.statusCode = null;
   }
 
-  /** Returns true if field errorCode is set (has been assigned a value) and false otherwise */
-  public boolean isSetErrorCode() {
-    return this.errorCode != null;
+  /** Returns true if field statusCode is set (has been assigned a value) and false otherwise */
+  public boolean isSetStatusCode() {
+    return this.statusCode != null;
   }
 
-  public void setErrorCodeIsSet(boolean value) {
+  public void setStatusCodeIsSet(boolean value) {
     if (!value) {
-      this.errorCode = null;
+      this.statusCode = null;
     }
   }
 
@@ -224,11 +231,11 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
       }
       break;
 
-    case ERROR_CODE:
+    case STATUS_CODE:
       if (value == null) {
-        unsetErrorCode();
+        unsetStatusCode();
       } else {
-        setErrorCode((SatelliteErrorCode)value);
+        setStatusCode((SatelliteStatusCode)value);
       }
       break;
 
@@ -240,8 +247,8 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
     case BEER_LIST:
       return getBeerList();
 
-    case ERROR_CODE:
-      return getErrorCode();
+    case STATUS_CODE:
+      return getStatusCode();
 
     }
     throw new IllegalStateException();
@@ -256,8 +263,8 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
     switch (field) {
     case BEER_LIST:
       return isSetBeerList();
-    case ERROR_CODE:
-      return isSetErrorCode();
+    case STATUS_CODE:
+      return isSetStatusCode();
     }
     throw new IllegalStateException();
   }
@@ -284,12 +291,12 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
         return false;
     }
 
-    boolean this_present_errorCode = true && this.isSetErrorCode();
-    boolean that_present_errorCode = true && that.isSetErrorCode();
-    if (this_present_errorCode || that_present_errorCode) {
-      if (!(this_present_errorCode && that_present_errorCode))
+    boolean this_present_statusCode = true && this.isSetStatusCode();
+    boolean that_present_statusCode = true && that.isSetStatusCode();
+    if (this_present_statusCode || that_present_statusCode) {
+      if (!(this_present_statusCode && that_present_statusCode))
         return false;
-      if (!this.errorCode.equals(that.errorCode))
+      if (!this.statusCode.equals(that.statusCode))
         return false;
     }
 
@@ -305,10 +312,10 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
     if (present_beerList)
       builder.append(beerList);
 
-    boolean present_errorCode = true && (isSetErrorCode());
-    builder.append(present_errorCode);
-    if (present_errorCode)
-      builder.append(errorCode.getValue());
+    boolean present_statusCode = true && (isSetStatusCode());
+    builder.append(present_statusCode);
+    if (present_statusCode)
+      builder.append(statusCode.getValue());
 
     return builder.toHashCode();
   }
@@ -331,12 +338,12 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetErrorCode()).compareTo(typedOther.isSetErrorCode());
+    lastComparison = Boolean.valueOf(isSetStatusCode()).compareTo(typedOther.isSetStatusCode());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetErrorCode()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorCode, typedOther.errorCode);
+    if (isSetStatusCode()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.statusCode, typedOther.statusCode);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -378,9 +385,9 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // ERROR_CODE
+        case 2: // STATUS_CODE
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.errorCode = SatelliteErrorCode.findByValue(iprot.readI32());
+            this.statusCode = SatelliteStatusCode.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -415,12 +422,10 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
         oprot.writeFieldEnd();
       }
     }
-    if (this.errorCode != null) {
-      if (isSetErrorCode()) {
-        oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
-        oprot.writeI32(this.errorCode.getValue());
-        oprot.writeFieldEnd();
-      }
+    if (this.statusCode != null) {
+      oprot.writeFieldBegin(STATUS_CODE_FIELD_DESC);
+      oprot.writeI32(this.statusCode.getValue());
+      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -440,22 +445,23 @@ public class BeersResponse implements org.apache.thrift.TBase<BeersResponse, Bee
       }
       first = false;
     }
-    if (isSetErrorCode()) {
-      if (!first) sb.append(", ");
-      sb.append("errorCode:");
-      if (this.errorCode == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.errorCode);
-      }
-      first = false;
+    if (!first) sb.append(", ");
+    sb.append("statusCode:");
+    if (this.statusCode == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.statusCode);
     }
+    first = false;
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (statusCode == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'statusCode' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

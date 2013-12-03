@@ -46,16 +46,17 @@ struct SatelliteMenuPart {
   2: required map<string, list<SatelliteBeer>> beers;
 }
 
-enum SatelliteErrorCode {
+enum SatelliteStatusCode {
+  // The request completed successfully
+  OK = 200,
   // An error occurred while reaching the Satellite website
-  NETWORK_ERROR = 404,
+  NETWORK_ERROR = 404
 }
 
 struct BeersResponse {
   // required if the request completed successfully
   1: optional map<SatelliteBeerContainer, SatelliteMenuPart> beerList;
-  // required if the request failed
-  2: optional SatelliteErrorCode errorCode;
+  2: required SatelliteStatusCode statusCode;
 }
 
 service SatelliteService {

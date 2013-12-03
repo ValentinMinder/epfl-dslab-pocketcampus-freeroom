@@ -17,7 +17,7 @@ import org.pocketcampus.platform.sdk.shared.HttpClient;
 import org.pocketcampus.plugin.satellite.shared.*;
 
 /**
- * Gets Satellite's menu from their XML feed.
+ * Gets Satellite's beer menu from their XML feed.
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
@@ -58,7 +58,7 @@ public final class BeerMenuImpl implements BeerMenu {
 		try {
 			xml = _client.getString(BEER_LIST_URL, Charset.forName("UTF-8"));
 		} catch (Exception e) {
-			return new BeersResponse().setErrorCode(SatelliteErrorCode.NETWORK_ERROR);
+			return new BeersResponse(SatelliteStatusCode.NETWORK_ERROR);
 		}
 
 		Element xdoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
@@ -104,7 +104,7 @@ public final class BeerMenuImpl implements BeerMenu {
 			}
 		}
 
-		return new BeersResponse().setBeerList(menu);
+		return new BeersResponse(SatelliteStatusCode.OK).setBeerList(menu);
 	}
 
 	/** Gets the text from the specified attribute of the specified XML node. */
