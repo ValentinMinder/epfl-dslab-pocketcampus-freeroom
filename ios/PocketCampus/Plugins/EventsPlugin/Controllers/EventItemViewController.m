@@ -24,8 +24,6 @@
 
 #import "PCTableViewWithRemoteThumbnails.h"
 
-#import "ASIHTTPRequest.h"
-
 #import "ZBarSDK.h"
 
 @interface EventItemViewController ()<EventsServiceDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -34,8 +32,6 @@
 @property (nonatomic, strong) EventItem* eventItem;
 @property (nonatomic, strong) EventItemReply* itemReply;
 @property (nonatomic, strong) EventsService* eventsService;
-
-//@property (nonatomic, strong) ASIHTTPRequest* pictureRequest __unused;
 
 @property (nonatomic, strong) NSArray* childrenPools; //array of EventPool sorted by Id
 

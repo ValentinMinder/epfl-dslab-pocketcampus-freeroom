@@ -8,43 +8,47 @@
 
 #import "PCTableViewWithRemoteThumbnails.h"
 
-#import "PCValues.h"
-
-#import "PCUtils.h"
-
-#import "ASIDownloadCache.h"
+#import "AFNetworking.h"
 
 #import "UIImage+Additions.h"
 
 @interface PCTableViewWithRemoteThumbnails ()
 
-@property (nonatomic, strong) ASINetworkQueue* networkQueue;
-@property (nonatomic, strong) NSMutableDictionary* requestForIndexPath; //key: NSIndexPath, value: ASIHTTPRequest
+@property (nonatomic, strong) NSOperationQueue* operationQueue;
+@property (nonatomic, strong) NSMutableDictionary* operationForIndexPath; //key: NSIndexPath, value: AFHTTPRequestOperation
 @property (nonatomic, strong) NSMutableDictionary* urlForIndexPath; //key: NSIndexPath, value: NSURL
 @property (nonatomic, strong) NSMutableDictionary* rawImageForUrlString; //key: NSURL.absoluteString, value: UIImage
 @property (nonatomic, strong) NSMutableDictionary* imageForUrlString; //key: NSURL.absoluteString, value: UIImage (processed by imageProcessingBlock)
-@property (nonatomic, strong) Reachability* reachability;
+//@property (nonatomic, strong) Reachability* reachability;
 @property (nonatomic, strong) NSMutableSet* failedThumbsIndexPaths;
 @property (nonatomic) BOOL initDone;
 
 @end
 
-static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
+//static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 @implementation PCTableViewWithRemoteThumbnails
 
+#pragma mark - init
 
 - (void)initDefaultValues {
     
     //private
     if (!self.initDone) {
-        self.networkQueue = [[ASINetworkQueue alloc] init];
-        self.networkQueue.maxConcurrentOperationCount = 6;
-        [self.networkQueue setSuspended:NO];
-        self.requestForIndexPath = [NSMutableDictionary dictionary];
+        self.operationQueue = [NSOperationQueue new];
+        [self.operationQueue setSuspended:NO];
+        self.operationForIndexPath = [NSMutableDictionary dictionary];
         self.urlForIndexPath = [NSMutableDictionary dictionary];
         self.imageForUrlString = [NSMutableDictionary dictionary];
         self.rawImageForUrlString = [NSMutableDictionary dictionary];
+        self.failedThumbsIndexPaths = [NSMutableSet set];
+        
+        PCTableViewWithRemoteThumbnails* weakSelf __weak = self;
+        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            if (status > 0) { //means internet reachable
+                [weakSelf reloadFailedThumbnailsCells];
+            }
+        }];
         
         self.initDone = YES;
     }
@@ -57,6 +61,8 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         self.cellsImageViewSelectorString = @"imageView";
     }
 }
+
+#pragma mark - Public methods
 
 - (void)setImageURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
     
@@ -85,14 +91,14 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     }
     
     [self imageViewForCell:cell].image = self.temporaryImage; //Temporary thumbnail until image is loaded
-    ASIHTTPRequest* prevRequest = self.requestForIndexPath[indexPath];
+    AFHTTPRequestOperation* prevOperation = self.operationForIndexPath[indexPath];
     
-    if (prevRequest) {
-        [prevRequest clearDelegatesAndCancel];
-        [self.requestForIndexPath removeObjectForKey:indexPath];
+    if (prevOperation) {
+        [prevOperation cancel];
+        [self.operationForIndexPath removeObjectForKey:indexPath];
     }
     
-    ASIHTTPRequest* thumbnailRequest = [ASIHTTPRequest requestWithURL:url];
+    /*ASIHTTPRequest* thumbnailRequest = [ASIHTTPRequest requestWithURL:url];
     thumbnailRequest.downloadCache = [ASIDownloadCache sharedCache];
     thumbnailRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
     thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
@@ -106,8 +112,19 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     thumbnailRequest.userInfo = userInfo;
     thumbnailRequest.timeOutSeconds = 10.0; //do not overload network with thumbnails that fail to load
     self.requestForIndexPath[indexPath] = thumbnailRequest;
-    [self.networkQueue addOperation:thumbnailRequest];
-
+    [self.networkQueue addOperation:thumbnailRequest];*/
+    
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0]; //do not overload network with thumbnails that fail to loa
+    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFImageResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, UIImage* image) {
+        [self.operationForIndexPath removeObjectForKey:indexPath];
+        [self processAndSetImage:image forCell:cell atIndexPath:indexPath url:url];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.operationForIndexPath removeObjectForKey:indexPath];
+        [self.failedThumbsIndexPaths addObject:operation];
+    }];
+    [self.operationQueue addOperation:operation];
 }
 
 - (UIImage*)imageAtIndexPath:(NSIndexPath*)indexPath {
@@ -120,6 +137,51 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     NSURL* url = self.urlForIndexPath[indexPath];
     return self.rawImageForUrlString[url.absoluteString];
+}
+
+#pragma mark - Private methods
+
+- (void)processAndSetImage:(UIImage*)image_ forCell:(UITableViewCell*)cell_ atIndexPath:(NSIndexPath*)indexPath_ url:(NSURL*)url_ {
+    [PCUtils throwExceptionIfObject:image_ notKindOfClass:[UIImage class]];
+    [PCUtils throwExceptionIfObject:cell_ notKindOfClass:[UITableViewCell class]];
+    [PCUtils throwExceptionIfObject:indexPath_ notKindOfClass:[NSIndexPath class]];
+    [PCUtils throwExceptionIfObject:url_ notKindOfClass:[NSURL class]];
+    UIImage* image __block = image_;
+    UITableViewCell* cell __block = cell_;
+    NSIndexPath* indexPath __block = indexPath_;
+    NSURL* url __block = url_;
+    PCTableViewWithRemoteThumbnails* weakSelf __weak = self;
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+        if (image && (image.imageOrientation != UIImageOrientationUp)) {
+            image = [UIImage imageWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
+        }
+        if (!weakSelf) {
+            return;
+        }
+        UIImage* rawImage = image;
+        if (weakSelf.imageProcessingBlock) {
+            image = weakSelf.imageProcessingBlock(indexPath, cell, image);
+        }
+        if (!weakSelf) {
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            if (!weakSelf) {
+                return;
+            }
+            weakSelf.imageForUrlString[url.absoluteString] = image;
+            weakSelf.rawImageForUrlString[url.absoluteString] = rawImage;
+            [weakSelf imageViewForCell:cell].image = image;
+            [cell layoutSubviews];
+        });
+    });
+}
+
+- (UIImageView*)imageViewForCell:(UITableViewCell*)cell {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    return (UIImageView*)[cell performSelector:NSSelectorFromString(self.cellsImageViewSelectorString)];
+#pragma clang diagnostic pop
 }
 
 - (void)reloadFailedThumbnailsCells {
@@ -137,7 +199,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 #pragma mark - ASIHTTPRequestDelegate
 
-- (void)thumbnailRequestFinished:(ASIHTTPRequest *)request {
+/*- (void)thumbnailRequestFinished:(ASIHTTPRequest *)request {
     NSIndexPath* indexPath = [request.userInfo objectForKey:kThumbnailIndexPathKey];
     if (!indexPath) { //should never happen
         return;
@@ -188,14 +250,9 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadFailedThumbnailsCells) name:kReachabilityChangedNotification object:self.reachability];
         [self.reachability startNotifier];
     }
-}
+}*/
 
-- (UIImageView*)imageViewForCell:(UITableViewCell*)cell {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    return (UIImageView*)[cell performSelector:NSSelectorFromString(self.cellsImageViewSelectorString)];
-#pragma clang diagnostic pop
-}
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
@@ -203,13 +260,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
     @catch (NSException *exception) {}
-    [self.reachability stopNotifier];
-    [self.networkQueue setSuspended:YES];
-    for (ASIHTTPRequest* req in self.networkQueue.operations) {
-        req.delegate = nil;
-        [req cancel];
-    }
-    self.networkQueue.delegate = nil;
+    [self.operationQueue cancelAllOperations];
 }
 
 

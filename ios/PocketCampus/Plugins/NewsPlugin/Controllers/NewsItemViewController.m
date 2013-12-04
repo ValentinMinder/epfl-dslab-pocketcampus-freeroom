@@ -20,13 +20,12 @@
 
 #import "TUSafariActivity.h"
 
-@interface NewsItemViewController ()<NewsServiceDelegate, ASIHTTPRequestDelegate, UIAlertViewDelegate, UIWebViewDelegate>
+@interface NewsItemViewController ()<NewsServiceDelegate, UIAlertViewDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) UIImage* image;
 @property (nonatomic, strong) UIPopoverController* actionsPopover;
 @property (nonatomic, strong) NewsItem* newsItem;
 @property (nonatomic, strong) NewsService* newsService;
-@property (nonatomic, strong) ASIHTTPRequest* imageRequest;
 @property (nonatomic, strong) NSURL* urlClicked;
 @property (nonatomic, strong) Reachability* reachability;
     

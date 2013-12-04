@@ -6,15 +6,9 @@
 //  Copyright (c) 2013 EPFL. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-#import "ASIHTTPRequest.h"
-
-#import "ASINetworkQueue.h"
-
-#import "Reachability.h"
-
-@interface PCTableViewWithRemoteThumbnails : UITableView<ASIHTTPRequestDelegate>
+@interface PCTableViewWithRemoteThumbnails : UITableView
 
 - (void)setImageURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
