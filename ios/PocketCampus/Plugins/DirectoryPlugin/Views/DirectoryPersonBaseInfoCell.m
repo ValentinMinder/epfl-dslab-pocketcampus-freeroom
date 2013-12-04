@@ -72,7 +72,7 @@
         self.profilePictureImageView.image = nil;
         NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:self.person.pictureUrl parameters:nil];
         request.cachePolicy = NSURLRequestUseProtocolCachePolicy;
-        DirectoryPersonBaseInfoCell* weakSelf __weak = self;
+        __weak __typeof(self) weakSelf = self;
         [self.profilePictureImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
             image = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
             weakSelf.profilePicture = image;

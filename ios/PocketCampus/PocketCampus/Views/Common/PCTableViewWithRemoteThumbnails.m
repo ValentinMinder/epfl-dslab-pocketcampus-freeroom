@@ -19,7 +19,7 @@
 @property (nonatomic, strong) NSMutableDictionary* urlForIndexPath; //key: NSIndexPath, value: NSURL
 @property (nonatomic, strong) NSMutableDictionary* rawImageForUrlString; //key: NSURL.absoluteString, value: UIImage
 @property (nonatomic, strong) NSMutableDictionary* imageForUrlString; //key: NSURL.absoluteString, value: UIImage (processed by imageProcessingBlock)
-//@property (nonatomic, strong) Reachability* reachability;
+@property (nonatomic, strong) AFNetworkReachabilityManager* reachabilityManager;
 @property (nonatomic, strong) NSMutableSet* failedThumbsIndexPaths;
 @property (nonatomic) BOOL initDone;
 
@@ -44,12 +44,13 @@
         self.failedThumbsIndexPaths = [NSMutableSet set];
         
         PCTableViewWithRemoteThumbnails* weakSelf __weak = self;
-        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            if (status > 0) { //means internet reachable
+        self.reachabilityManager = [AFNetworkReachabilityManager managerForDomain:@"google.com"];
+        [self.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            if (status > 0 && weakSelf.failedThumbsIndexPaths.count > 0) { //means internet reachable
                 [weakSelf reloadFailedThumbnailsCells];
             }
         }];
-        
+        [self.reachabilityManager startMonitoring];
         self.initDone = YES;
     }
     
@@ -98,31 +99,19 @@
         [self.operationForIndexPath removeObjectForKey:indexPath];
     }
     
-    /*ASIHTTPRequest* thumbnailRequest = [ASIHTTPRequest requestWithURL:url];
-    thumbnailRequest.downloadCache = [ASIDownloadCache sharedCache];
-    thumbnailRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
-    thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
-    thumbnailRequest.secondsToCache = self.imagesCacheSeconds;
-    thumbnailRequest.delegate = self;
-    thumbnailRequest.didFinishSelector = @selector(thumbnailRequestFinished:);
-    thumbnailRequest.didFailSelector = @selector(thumbnailRequestFailed:);
-    
-    NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
-    userInfo[kThumbnailIndexPathKey] = indexPath;
-    thumbnailRequest.userInfo = userInfo;
-    thumbnailRequest.timeOutSeconds = 10.0; //do not overload network with thumbnails that fail to load
-    self.requestForIndexPath[indexPath] = thumbnailRequest;
-    [self.networkQueue addOperation:thumbnailRequest];*/
-    
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0]; //do not overload network with thumbnails that fail to loa
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0]; //do not overload network with thumbnails that fail to loa
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     operation.responseSerializer = [AFImageResponseSerializer serializer];
+    __weak __typeof(self) weakSelf = self;
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, UIImage* image) {
-        [self.operationForIndexPath removeObjectForKey:indexPath];
-        [self processAndSetImage:image forCell:cell atIndexPath:indexPath url:url];
+        [weakSelf.operationForIndexPath removeObjectForKey:indexPath];
+        [weakSelf.failedThumbsIndexPaths removeObject:indexPath];
+        if (image) {
+            [weakSelf processAndSetImage:image forCell:cell atIndexPath:indexPath url:url];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self.operationForIndexPath removeObjectForKey:indexPath];
-        [self.failedThumbsIndexPaths addObject:operation];
+        [weakSelf.operationForIndexPath removeObjectForKey:indexPath];
+        [weakSelf.failedThumbsIndexPaths addObject:indexPath];
     }];
     [self.operationQueue addOperation:operation];
 }
@@ -197,61 +186,6 @@
     return CGSizeMake(length, length);
 }
 
-#pragma mark - ASIHTTPRequestDelegate
-
-/*- (void)thumbnailRequestFinished:(ASIHTTPRequest *)request {
-    NSIndexPath* indexPath = [request.userInfo objectForKey:kThumbnailIndexPathKey];
-    if (!indexPath) { //should never happen
-        return;
-    }
-    
-    [self.failedThumbsIndexPaths removeObject:indexPath];
-    [self.requestForIndexPath removeObjectForKey:indexPath];
-    
-    UITableViewCell* cell = [self cellForRowAtIndexPath:indexPath];
-    
-    if (request.responseData) {
-        
-        UIImage* image __block = [UIImage imageWithData:request.responseData];
-        
-        if (image) {
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
-                if (image && (image.imageOrientation != UIImageOrientationUp)) {
-                    image = [UIImage imageWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
-                }
-                UIImage* rawImage = image;
-                if (self.imageProcessingBlock) {
-                    image = self.imageProcessingBlock(indexPath, cell, image);
-                }
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    self.imageForUrlString[request.url.absoluteString] = image;
-                    self.rawImageForUrlString[request.url.absoluteString] = rawImage;
-                    [self imageViewForCell:cell].image = image;
-                    [cell layoutSubviews];
-                });
-            });
-        }
-    }
-
-}
-
-
-- (void)thumbnailRequestFailed:(ASIHTTPRequest *)request {
-    NSIndexPath* reqIndexPath = [request.userInfo objectForKey:kThumbnailIndexPathKey];
-    
-    if (!self.failedThumbsIndexPaths) {
-        self.failedThumbsIndexPaths = [NSMutableSet setWithObject:reqIndexPath];
-    } else {
-        [self.failedThumbsIndexPaths addObject:reqIndexPath];
-    }
-    
-    if (!self.reachability) {
-        self.reachability = [Reachability reachabilityForInternetConnection];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadFailedThumbnailsCells) name:kReachabilityChangedNotification object:self.reachability];
-        [self.reachability startNotifier];
-    }
-}*/
-
 #pragma mark - Dealloc
 
 - (void)dealloc
@@ -260,6 +194,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
     @catch (NSException *exception) {}
+    [self.reachabilityManager stopMonitoring];
+    
     [self.operationQueue cancelAllOperations];
 }
 
