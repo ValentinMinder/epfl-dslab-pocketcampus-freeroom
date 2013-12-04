@@ -95,7 +95,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         [self.contentView addConstraint:self.rateControlsViewLeftConstraint];
         [self.rateControlsView addConstraint:[NSLayoutConstraint widthConstraint:kRateControlsViewWidth forView:self.rateControlsView]];
         self.ratingStatus = RatingStatusReady;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rateModeEnabledNotification:) name:FoodMealCellDidEnableRateModeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rateModeEnabledNotification:) name:kFoodMealCellDidEnableRateModeNotificationName object:nil];
     }
     return self;
 }
@@ -271,7 +271,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         return;
     }
     if (!_rateModeEnabled && rateModeEnabled && postNotif) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:FoodMealCellDidEnableRateModeNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellDidEnableRateModeNotificationName object:self];
     }
     _rateModeEnabled = rateModeEnabled;
     self.infoContentViewTapGesture.enabled = rateModeEnabled;
@@ -330,6 +330,9 @@ static const CGFloat kRateControlsViewWidth = 248.0;
             FoodMealCell* weakSelf __weak = self;
             [NSTimer scheduledTimerWithTimeInterval:1.0 block:^{
                 [weakSelf infoContentViewTapped]; //hide rating controls, not longer need them
+            } repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:1.4 block:^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellUserSuccessfullyRatedMealNotificationName object:self];
             } repeats:NO];
             break;
         }

@@ -11,7 +11,13 @@
 /*
  * Posted by self everytime rateModeEnabled goes from NO to YES
  */
-static NSString* FoodMealCellDidEnableRateModeNotification = @"FoodMealCellDidEnableRateModeNotificationName";
+static NSString* kFoodMealCellDidEnableRateModeNotificationName = @"FoodMealCellDidEnableRateModeNotification";
+
+/*
+ * Posted by self when the user has rated a meal
+ */
+static NSString* kFoodMealCellUserSuccessfullyRatedMealNotificationName = @"FoodMealCellUserSuccessfullyRatedMealNotification";
+
 
 @class EpflMeal;
 

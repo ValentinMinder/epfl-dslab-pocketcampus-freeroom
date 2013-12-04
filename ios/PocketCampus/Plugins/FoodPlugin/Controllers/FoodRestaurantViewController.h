@@ -14,6 +14,6 @@
 
 - (instancetype)initWithEpflRestaurant:(EpflRestaurant*)restaurant;
 
-@property (nonatomic, readonly) EpflRestaurant* restaurant;
+@property (nonatomic, strong) EpflRestaurant* restaurant;
 
 @end

@@ -18,7 +18,6 @@ static const NSInteger kMealsSection = 1;
 @interface FoodRestaurantViewController ()
 
 @property (nonatomic, strong) FoodService* foodService;
-@property (nonatomic, strong) EpflRestaurant* restaurant;
 @property (nonatomic, strong) FoodRestaurantInfoCell* restaurantInfoCell;
 @property (nonatomic, strong) UITableViewCell* showOnMapCell;
 @property (nonatomic, strong) NSMutableDictionary* cellForMealName;
@@ -36,7 +35,7 @@ static const NSInteger kMealsSection = 1;
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.foodService = [FoodService sharedInstanceToRetain];
-        self.restaurant = restaurant;
+        _restaurant = restaurant;
         self.title = self.restaurant.rName;
         self.cellForMealName = [NSMutableDictionary dictionaryWithCapacity:self.restaurant.rMeals.count];
 /*#warning TO REMOVE
@@ -58,6 +57,15 @@ static const NSInteger kMealsSection = 1;
 
 - (NSUInteger)supportedInterfaceOrientations {
     return [PCUtils isIdiomPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - Public properties
+
+- (void)setRestaurant:(EpflRestaurant *)restaurant {
+    _restaurant = restaurant;
+    self.restaurantInfoCell = nil,
+    [self.cellForMealName removeAllObjects];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Actions

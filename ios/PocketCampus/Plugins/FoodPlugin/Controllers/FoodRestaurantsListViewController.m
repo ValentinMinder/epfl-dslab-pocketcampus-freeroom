@@ -28,6 +28,8 @@
 
 #import "AuthenticationService.h"
 
+#import "FoodMealCell.h"
+
 static NSString* kLastRefreshDateKey = @"lastRefreshDate";
 
 /*
@@ -44,6 +46,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 @property (nonatomic, strong) NSArray* restaurantsSorted; //sorted first by favorite on top, then by name
 @property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 @property (nonatomic, strong) EpflRestaurant* selectedRestaurant;
+
+@property (nonatomic, weak) FoodRestaurantViewController* restaurantViewController;
 
 @end
 
@@ -67,6 +71,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndReloadTableView) name:kFavoritesRestaurantsUpdatedNotificationName object:self.foodService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kFoodMealCellUserSuccessfullyRatedMealNotificationName object:nil];
+    
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"food" dataName:@"restaurantsAndMeals"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
 }
@@ -109,6 +115,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingMenus", @"FoodPlugin", nil)];
     [self.foodService getFoodForRequest:[self createFoodRequest] delegate:self];
 }
+
 - (void)fillCollectionsAndReloadTableView {
     [self fillCollections];
     [self.tableView reloadData];
@@ -151,6 +158,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
             self.foodService.userPriceTarget = response.userStatus; //see doc of self.foodService.userPriceTarget
             [self fillCollectionsAndReloadTableView];
             [self.lgRefreshControl endRefreshingAndMarkSuccessful];
+            if (self.restaurantViewController) {
+                NSInteger index = [self.foodResponse.menu indexOfObject:self.restaurantViewController.restaurant];
+                if (index != NSNotFound) {
+                    EpflRestaurant* restaurant = self.foodResponse.menu[index];
+                    self.restaurantViewController.restaurant = restaurant;
+                }
+            }
             break;
         default:
             [self getFoodFailedForRequest:request];
@@ -206,12 +220,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         return;
     }
     FoodRestaurantViewController* viewController = [[FoodRestaurantViewController alloc] initWithEpflRestaurant:restaurant];
+    self.restaurantViewController = viewController;
     if (self.splitViewController) {
         self.selectedRestaurant = restaurant;
-        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
+        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:self.restaurantViewController];
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], navController];
     } else {
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self.navigationController pushViewController:self.restaurantViewController animated:YES];
     }
 }
 
