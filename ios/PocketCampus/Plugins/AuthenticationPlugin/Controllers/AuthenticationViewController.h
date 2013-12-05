@@ -1,5 +1,5 @@
 //
-//  GasparViewController.h
+//  AuthenticationViewController.h
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 17.07.12.
@@ -18,7 +18,7 @@ typedef enum {
     PresentationModeTryHidden //silent authentication (user and pass are already stored) will still present on viewControllerForPresentation if no stored user or password
 } PresentationMode;
 
-@interface GasparViewController : UITableViewController
+@interface AuthenticationViewController : UITableViewController
 
 
 @property (nonatomic, weak) id<AuthenticationCallbackDelegate> delegate;

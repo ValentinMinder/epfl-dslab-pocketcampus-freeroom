@@ -40,7 +40,7 @@
 
 @interface AuthenticationController ()
 
-@property (nonatomic, strong) GasparViewController* gasparViewController;
+@property (nonatomic, strong) AuthenticationViewController* gasparViewController;
 
 @end
 
@@ -77,7 +77,7 @@ static AuthenticationController* instance __weak = nil;
 
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate; {
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]];
-    self.gasparViewController = [[GasparViewController alloc] init];
+    self.gasparViewController = [[AuthenticationViewController alloc] init];
     if (savedPassword) {
         self.gasparViewController.presentationMode = PresentationModeTryHidden;
         self.gasparViewController.viewControllerForPresentation = presentationViewController;

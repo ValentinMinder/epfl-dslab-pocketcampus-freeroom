@@ -102,8 +102,8 @@ static NSString* kFavoriteStatusMoodleResourceUpdatedKey __unused = @"FavoriteSt
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest didReturn:(SectionsListReply*)sectionsListReply;
 - (void)getCourseSectionsFailed:(MoodleRequest*)aMoodleRequest;
 
-- (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest*)request;
-- (void)fetchMoodleResourceFailed:(ASIHTTPRequest*)request;
+/*- (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest*)request;
+- (void)fetchMoodleResourceFailed:(ASIHTTPRequest*)request;*/
 
 - (void)downloadOfMoodleResource:(MoodleResource*)moodleResource didFinish:(NSURL*)localFileURL;
 - (void)downloadFailedForMoodleResource:(MoodleResource*)moodleResource responseStatusCode:(int)statusCode;

@@ -14,7 +14,7 @@
 
 #import "EditableTableViewCell.h"
 
-#import "GasparViewController.h"
+#import "AuthenticationViewController.h"
 
 #import "AboutPCViewController.h"
 
@@ -93,7 +93,7 @@ static const int kAboutRow = 2;
             switch (indexPath.row) {
                 case 0: //gaspar account
                 {
-                    GasparViewController* viewController = [[GasparViewController alloc] init];
+                    AuthenticationViewController* viewController = [[AuthenticationViewController alloc] init];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
                 }
@@ -175,7 +175,7 @@ static const int kAboutRow = 2;
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = [GasparViewController localizedTitle];
+            cell.textLabel.text = [AuthenticationViewController localizedTitle];
             NSString* username = [AuthenticationService savedUsername];
             if (username) {
                 cell.detailTextLabel.text = username;

@@ -1,5 +1,5 @@
 //
-//  GasparViewController.m
+//  AuthenticationViewController.m
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 17.07.12.
@@ -7,13 +7,13 @@
 //
 
 
-#import "GasparViewController.h"
+#import "AuthenticationViewController.h"
 
 #import "AuthenticationService.h"
 
 #import "EditableTableViewCell.h"
 
-@interface GasparViewController ()<UITextFieldDelegate, AuthenticationServiceDelegate>
+@interface AuthenticationViewController ()<UITextFieldDelegate, AuthenticationServiceDelegate>
 
 @property (nonatomic, strong) UITextField* usernameTextField;
 @property (nonatomic, strong) UITextField* passwordTextField;
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation GasparViewController
+@implementation AuthenticationViewController
 
 #pragma mark - Init
 
@@ -57,6 +57,7 @@
     self.title = [[self class] localizedTitle];
     self.tableView.sectionHeaderHeight = 2.0;
     self.tableView.sectionFooterHeight = 2.0;
+    self.tableView.separatorColor = [UIColor clearColor];
     if (self.presentationMode == PresentationModeModal || self.presentationMode == PresentationModeTryHidden) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
     } else if (self.presentationMode == PresentationModeNavStack && self.isLoggedIn) {

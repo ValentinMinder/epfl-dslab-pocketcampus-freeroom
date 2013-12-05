@@ -3,9 +3,9 @@
 
 #import "AuthenticationService.h"
 
-#import "GasparViewController.h"
+#import "AuthenticationViewController.h"
 
-@class GasparViewController;
+@class AuthenticationViewController;
 
 @interface PCLoginObserver : NSObject
 

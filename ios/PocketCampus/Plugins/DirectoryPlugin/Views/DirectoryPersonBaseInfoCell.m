@@ -74,11 +74,15 @@
         request.cachePolicy = NSURLRequestUseProtocolCachePolicy;
         __weak __typeof(self) weakSelf = self;
         [self.profilePictureImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-            image = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
-            weakSelf.profilePicture = image;
-            weakSelf.profilePictureImageView.image = image;
-            weakSelf.profilePictureImageView.layer.borderWidth = 0.0;
-            [weakSelf showImageViewAnimated:YES];
+            if (image) {
+                image = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
+                weakSelf.profilePicture = image;
+                weakSelf.profilePictureImageView.image = image;
+                weakSelf.profilePictureImageView.layer.borderWidth = 0.0;
+                [weakSelf showImageViewAnimated:YES];
+            } else {
+                [weakSelf noProfilePictureOrError];
+            }
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             [weakSelf noProfilePictureOrError];
         }];

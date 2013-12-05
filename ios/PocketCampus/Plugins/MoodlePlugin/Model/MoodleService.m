@@ -3,7 +3,9 @@
 
 #import "ObjectArchiver.h"
 
-#import "PCUtils.h"
+#import "AFNetworking.h"
+
+#import "UIProgressView+AFNetworking.h"
 
 #pragma mark - MoodleResourceObserver implementation
 
@@ -40,13 +42,15 @@
 @property (strong) NSMutableDictionary* resourcesObserversForResourceKey; //key: [self keyForMoodleResource:] value: NSArray of MoodleResourceObserver
 @property (nonatomic, strong) NSMutableSet* favoriteMoodleResourcesURLs; //set of NSString
 
+@property (nonatomic, strong) AFHTTPSessionManager* resourcesDownloadSessionManager;
+
 @end
 
 @implementation MoodleService
 
 static MoodleService* instance __weak = nil;
 
-static int kFetchMoodleResourceTimeoutSeconds = 30;
+static const NSTimeInterval kFetchMoodleResourceTimeoutSeconds = 30.0;
 
 static NSString* kMoodleSessionKey = @"moodleSession";
 static NSString* kServiceDelegateKey = @"serviceDelegate";
@@ -127,37 +131,6 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
     }
     return [ObjectArchiver saveObject:self.favoriteMoodleResourcesURLs forKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"];
 }
-/*
-- (NSNumber*)nsNumberForRestaurantId:(int64_t)restaurantId {
-    return [NSNumber numberWithInt:restaurantId];
-}
-
-- (void)addFavoriteRestaurant:(EpflRestaurant*)restaurant {
-    [self initFavorites];
-    [self.favoriteRestaurantIds addObject:[self nsNumberForRestaurantId:restaurant.rId]];
-    [self persistFavorites];
-    NSNotification* notif = [NSNotification notificationWithName:kFavoritesRestaurantsUpdatedNotificationName object:self];
-    [[NSNotificationCenter defaultCenter] postNotification:notif];
-    
-}
-
-- (void)removeFavoritRestaurant:(EpflRestaurant*)restaurant {
-    [self initFavorites];
-    [self.favoriteRestaurantIds removeObject:[self nsNumberForRestaurantId:restaurant.rId]];
-    [self persistFavorites];
-    NSNotification* notif = [NSNotification notificationWithName:kFavoritesRestaurantsUpdatedNotificationName object:self];
-    [[NSNotificationCenter defaultCenter] postNotification:notif];
-}
-
-- (NSSet*)allFavoriteRestaurantIds {
-    [self initFavorites];
-    return self.favoriteRestaurantIds;
-}
-
-- (BOOL)isRestaurantFavorite:(EpflRestaurant*)restaurant {
-    [self initFavorites];
-    return [self.favoriteRestaurantIds containsObject:[self nsNumberForRestaurantId:restaurant.rId]];
-}*/
 
 - (void)addFavoriteMoodleResource:(MoodleResource*)moodleResource {
     [PCUtils throwExceptionIfObject:moodleResource notKindOfClass:[MoodleResource class]];
@@ -397,78 +370,93 @@ static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%
 
 #pragma mark - Resource download
 
+- (AFHTTPSessionManager*)resourcesDownloadSessionManager {
+    if (!_resourcesDownloadSessionManager) {
+        _resourcesDownloadSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        [_resourcesDownloadSessionManager setTaskWillPerformHTTPRedirectionBlock:^NSURLRequest *(NSURLSession *session, NSURLSessionTask *task, NSURLResponse *response, NSURLRequest *request) {
+            /*
+             * Redirect block is actually called for original request as well.
+             * This logic allows the first request to pursue but not the second one
+             * => prevents redirect
+             */
+            if (!response && task.originalRequest == task.currentRequest) {
+                return request;
+            }
+            return nil;
+        }];
+    }
+    return _resourcesDownloadSessionManager;
+}
+
 - (void)downloadMoodleResource:(MoodleResource*)moodleResource progressView:(UIProgressView*)progressView delegate:(id)delegate {
-    NSURL *nsurl = [NSURL URLWithString:moodleResource.iUrl];
-    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:nsurl];
-    NSString* filePath = [self localPathForMoodleResource:moodleResource createIntermediateDirectories:YES];
-    [request setDownloadDestinationPath:filePath];
-    [request addRequestHeader:@"Cookie" value:[self lastSession].moodleCookie];
-    [request setTimeOutSeconds:kFetchMoodleResourceTimeoutSeconds];
-    [request setDelegate:self];
-    [request setDidFinishSelector:@selector(downloadMoodleResourceRequestDidFinish:)];
-    [request setDidFailSelector:@selector(downloadMoodleResourceFailed:)];
-    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
-    userInfo[kServiceDelegateKey] = delegate;
-    userInfo[kMoodleResourceKey] = moodleResource;
-    request.userInfo = userInfo;
-    request.showAccurateProgress = YES;
-    request.downloadProgressDelegate = progressView;
-    request.shouldRedirect = NO;
-    request.useCookiePersistence = NO;
-    request.cachePolicy = ASIDoNotReadFromCacheCachePolicy;
-    [operationQueue addOperation:request];
+    __weak __typeof(delegate) weakDelegate = delegate;
+    NSString* localPath = [self localPathForMoodleResource:moodleResource createIntermediateDirectories:YES];
+    NSURL* localURL = [NSURL fileURLWithPath:localPath];
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:moodleResource.iUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:kFetchMoodleResourceTimeoutSeconds];
+    [request addValue:[self lastSession].moodleCookie forHTTPHeaderField:@"Cookie"];
+    NSURLSessionDownloadTask* downloadTask = [self.resourcesDownloadSessionManager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+        return localURL;
+    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+        if (error.code == NSURLErrorCancelled) {
+            //should not call delegate when cancelled
+            return;
+        }
+        void (^failedBlock)(NSInteger) = ^void (NSInteger statusCode) {
+            [[NSFileManager defaultManager] removeItemAtPath:localPath error:nil]; //to be sure not empty/wrong file is there
+            if ([weakDelegate respondsToSelector:@selector(downloadFailedForMoodleResource:responseStatusCode:)]) {
+                [weakDelegate downloadFailedForMoodleResource:moodleResource responseStatusCode:statusCode];
+            }
+        };
+        if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
+            failedBlock(0);
+            return;
+        }
+        NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+        if (error) {
+            failedBlock(httpResponse.statusCode);
+        } else {
+            switch (httpResponse.statusCode) {
+                case 200:
+                {
+                    if ([weakDelegate respondsToSelector:@selector(downloadOfMoodleResource:didFinish:)]) {
+                        [weakDelegate downloadOfMoodleResource:moodleResource didFinish:localURL];
+                    }
+                    // Execute observers block
+                    for (MoodleResourceObserver* observer in self.resourcesObserversForResourceKey[[self keyForMoodleResource:moodleResource]]) {
+                        if (observer.observer && observer.eventBlock) {
+                            observer.eventBlock(MoodleResourceEventDownloaded);
+                        }
+                    }
+                    break;
+                }
+                default:
+                    failedBlock(httpResponse.statusCode);
+                    break;
+            }
+            
+        }
+    }];
+    downloadTask.taskDescription = [NSString stringWithFormat:@"%p", delegate];
+    [progressView setProgressWithDownloadProgressOfTask:downloadTask animated:YES];
+    [downloadTask resume];
 }
 
 - (void)cancelDownloadOfMoodleResourceForDelegate:(id)delegate {
-    [[operationQueue.operations copy] enumerateObjectsUsingBlock:^(NSOperation* operation, NSUInteger idx, BOOL *stop) {
-        if ([operation isKindOfClass:[ASIHTTPRequest class]]) {
-            ASIHTTPRequest* request = (ASIHTTPRequest*)operation;
-            id reqDelegate = request.userInfo[kServiceDelegateKey];
-            if (delegate == reqDelegate) {
-                [request cancel];
-                request.delegate = nil;
-            }
+    [self.resourcesDownloadSessionManager.tasks enumerateObjectsUsingBlock:^(NSURLSessionTask* task, NSUInteger index, BOOL *stop) {
+        if ([task.taskDescription isEqualToString:[NSString stringWithFormat:@"%p", delegate]]) {
+            [task cancel];
         }
     }];
 }
 
-#pragma mark - ASIHTTPRequestDelegate
+#pragma mark - Service overrides
 
-- (void)downloadMoodleResourceRequestDidFinish:(ASIHTTPRequest*)request {
-    id<MoodleServiceDelegate> delegate_ = request.userInfo[kServiceDelegateKey];
-    MoodleResource* moodleResource = request.userInfo[kMoodleResourceKey];
-    if (request.responseStatusCode != 200) {
-        [self downloadMoodleResourceFailed:request];
-        return;
-    }
-    /* Notify delegate */
-    NSURL* fileLocalURL = [NSURL fileURLWithPath:request.downloadDestinationPath];
-    if ([delegate_ respondsToSelector:@selector(downloadOfMoodleResource:didFinish:)]) {
-        [delegate_ downloadOfMoodleResource:moodleResource didFinish:fileLocalURL];
-    }
-    /* Execute observers block */
-    for (MoodleResourceObserver* observer in self.resourcesObserversForResourceKey[[self keyForMoodleResource:moodleResource]]) {
-        if (observer.observer && observer.eventBlock) {
-            observer.eventBlock(MoodleResourceEventDownloaded);
-        }
-    }
-}
-
-- (void)downloadMoodleResourceFailed:(ASIHTTPRequest*)request {
-    id<MoodleServiceDelegate> delegate = request.userInfo[kServiceDelegateKey];
-    MoodleResource* moodleResource = request.userInfo[kMoodleResourceKey];
-    [[NSFileManager defaultManager] removeItemAtPath:request.downloadDestinationPath error:nil]; //to be sure not empty/wrong file is there
-    if (request.responseStatusCode != 200 && [delegate respondsToSelector:@selector(downloadFailedForMoodleResource:responseStatusCode:)]) {
-        [delegate downloadFailedForMoodleResource:moodleResource responseStatusCode:request.responseStatusCode];
-        return;
-    }
-}
-
-//override
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
     [super cancelOperationsForDelegate:delegate];
     [self cancelDownloadOfMoodleResourceForDelegate:delegate];
 }
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
