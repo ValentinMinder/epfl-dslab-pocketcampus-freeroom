@@ -86,7 +86,7 @@ public final class ScheduleImpl implements Schedule {
 		try {
 			result = _client.get(ISA_SCHEDULE_URL, ISA_CHARSET, new ArrayList<Cookie>());
 		} catch (Exception e) {
-			return new ScheduleTokenResponse().setErrorCode(ScheduleErrorCode.NETWORK_ERROR);
+			return new ScheduleTokenResponse(ScheduleStatusCode.NETWORK_ERROR);
 		}
 
 		String tequilaKey = result.url.split(TEQUILA_URL_KEY_SEPARATOR)[1];
@@ -100,7 +100,7 @@ public final class ScheduleImpl implements Schedule {
 			throw new Exception("ScheduleImpl#getToken: No ISA session ID found.");
 		}
 
-		return new ScheduleTokenResponse().setToken(new ScheduleToken(tequilaKey, sessionId));
+		return new ScheduleTokenResponse(ScheduleStatusCode.OK).setToken(new ScheduleToken(tequilaKey, sessionId));
 	}
 
 	@Override
@@ -122,12 +122,12 @@ public final class ScheduleImpl implements Schedule {
 			HttpResult result = _client.get(url, ISA_CHARSET, cookies);
 
 			if (!result.url.contains(ISA_SCHEDULE_URL)) {
-				return new ScheduleResponse().setErrorCode(ScheduleErrorCode.INVALID_SESSION);
+				return new ScheduleResponse(ScheduleStatusCode.INVALID_SESSION);
 			}
 
 			xml = result.content;
 		} catch (Exception e) {
-			return new ScheduleResponse().setErrorCode(ScheduleErrorCode.NETWORK_ERROR);
+			return new ScheduleResponse(ScheduleStatusCode.NETWORK_ERROR);
 		}
 
 		Element xdoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
@@ -161,7 +161,7 @@ public final class ScheduleImpl implements Schedule {
 			periods.add(period);
 		}
 
-		return new ScheduleResponse().setDays(groupPeriodsByDay(weekBeginning, periods));
+		return new ScheduleResponse(ScheduleStatusCode.OK).setDays(groupPeriodsByDay(weekBeginning, periods));
 	}
 
 	private static List<StudyDay> groupPeriodsByDay(LocalDate weekBegin, List<StudyPeriod> periods) {
