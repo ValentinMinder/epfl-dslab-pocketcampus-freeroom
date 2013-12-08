@@ -10,13 +10,14 @@ import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum ScheduleErrorCode implements org.apache.thrift.TEnum {
+public enum ScheduleStatusCode implements org.apache.thrift.TEnum {
+  OK(200),
   NETWORK_ERROR(404),
   INVALID_SESSION(407);
 
   private final int value;
 
-  private ScheduleErrorCode(int value) {
+  private ScheduleStatusCode(int value) {
     this.value = value;
   }
 
@@ -31,8 +32,10 @@ public enum ScheduleErrorCode implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static ScheduleErrorCode findByValue(int value) { 
+  public static ScheduleStatusCode findByValue(int value) { 
     switch (value) {
+      case 200:
+        return OK;
       case 404:
         return NETWORK_ERROR;
       case 407:

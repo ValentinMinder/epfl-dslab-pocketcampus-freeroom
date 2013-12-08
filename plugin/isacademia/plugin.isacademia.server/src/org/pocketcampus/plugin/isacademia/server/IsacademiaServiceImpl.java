@@ -22,21 +22,6 @@ public final class IsAcademiaServiceImpl implements IsAcademiaService.Iface {
 		this(new ScheduleImpl(new HttpsClientImpl()));
 	}
 
-	/** For testing purposes only. */
-	public static void main(String[] args) {
-		try {
-			ScheduleTokenResponse tr = new IsAcademiaServiceImpl().getScheduleToken();
-			System.out.println(tr.getToken().getTequilaToken());
-			// Get the token printed out, go to https://tequila.epfl.ch/cgi-bin/tequila/requestauth?requestkey=THE_TOKEN
-			// authenticate, then press a key in the console
-			System.in.read();
-			ScheduleResponse r = new IsAcademiaServiceImpl().getSchedule(new ScheduleRequest(tr.getToken()));
-			System.out.println(r.getDays());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	@Override
 	public ScheduleTokenResponse getScheduleToken() throws TException {
 		try {

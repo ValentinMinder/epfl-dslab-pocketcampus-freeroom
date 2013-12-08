@@ -36,7 +36,9 @@ struct ScheduleRequest {
   3: optional string language;
 }
 
-enum ScheduleErrorCode {
+enum ScheduleStatusCode {
+  // The request was successful
+  OK = 200,
   // A network error occurred
   NETWORK_ERROR = 404,
   // The provided session is invalid
@@ -46,15 +48,13 @@ enum ScheduleErrorCode {
 struct ScheduleTokenResponse {
   // Required if the request completed successfully
   1: optional ScheduleToken token;
-  // Required if an error occurred
-  2: optional ScheduleErrorCode errorCode;
+  2: required ScheduleStatusCode statusCode;
 }
 
 struct ScheduleResponse {
   // Required if the request completed successfully
   1: optional list<StudyDay> days;
-  // Required if an error occurred
-  2: optional ScheduleErrorCode errorCode;
+  2: required ScheduleStatusCode statusCode;
 }
 
 service IsAcademiaService {
