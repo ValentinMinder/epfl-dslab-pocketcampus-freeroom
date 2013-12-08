@@ -84,6 +84,7 @@ typedef enum
 
 - (void)setFrontViewController:(UIViewController *)frontViewController;
 - (void)setFrontViewController:(UIViewController *)frontViewController animated:(BOOL)animated;
+- (void)setFrontViewController:(UIViewController *)frontViewController animated:(BOOL)animated keepFrontViewPosition:(BOOL)keepFrontViewPosition;
 
 - (void)hideFrontView; //same as next without animated YES
 - (void)hideFrontViewAnimated:(BOOL)animated;

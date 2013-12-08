@@ -255,7 +255,7 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 /*
- * Contains all init code that does not need PCConfig to be loaded
+ * Iinit code that does NOT need PCConfig to be loaded
  */
 - (void)preConfigInit {
     self.window.tintColor = [PCValues pocketCampusRed];
@@ -264,7 +264,7 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 /*
- * Contains all init code that needs PCConfig to be loaded
+ * Iinit code that needs PCConfig to be loaded
  */
 - (void)postConfigInit {
     [self initPluginsList];
@@ -284,7 +284,6 @@ static MainController<MainControllerPublic>* instance = nil;
         self.splashView = [[PCSplashView alloc] initWithSuperview:self.splashViewController.view];
     }
     self.window.rootViewController = self.splashViewController;
-    self.splashViewController.superviewOfView = self.window;
 }
 
 #pragma mark Post-config phases
@@ -430,8 +429,8 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)initRevealController {
+    self.splashViewController = [[SplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
     PCNavigationController* mainMenuNavController = [[PCNavigationController alloc] initWithRootViewController:self.mainMenuViewController];
-    self.window.rootViewController = nil;
     self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:mainMenuNavController];
     self.revealController.rearViewRevealWidth = self.revealWidth;
     self.revealController.frontViewShadowRadius = 1.0;
@@ -439,7 +438,6 @@ static MainController<MainControllerPublic>* instance = nil;
     self.revealController.toggleAnimationDuration = 0.65;
     [self.splashView moveToSuperview:self.revealController.view];
     self.window.rootViewController = self.revealController;
-    self.splashViewController.superviewOfView = self.revealController.view;
 }
 
 - (void)initPluginObservers {

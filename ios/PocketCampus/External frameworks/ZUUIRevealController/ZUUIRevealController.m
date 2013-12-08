@@ -596,6 +596,11 @@
 
 - (void)setFrontViewController:(UIViewController *)frontViewController animated:(BOOL)animated
 {
+    [self setFrontViewController:frontViewController animated:animated keepFrontViewPosition:NO];
+}
+
+- (void)setFrontViewController:(UIViewController *)frontViewController animated:(BOOL)animated keepFrontViewPosition:(BOOL)keepFrontViewPosition
+{
 	if (nil != frontViewController && _frontViewController == frontViewController)
 	{
 		[self revealToggle:self];
