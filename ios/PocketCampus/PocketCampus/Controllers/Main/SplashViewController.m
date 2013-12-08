@@ -8,15 +8,13 @@
 
 #import "SplashViewController.h"
 
-#import "PCUtils.h"
-
-#import "PCValues.h"
-
 #import <QuartzCore/QuartzCore.h>
 
 @interface SplashViewController ()
 
-@property (retain, nonatomic) UIImageView* splashViewImage;
+@property (nonatomic, retain) UIImageView* splashViewImage;
+
+@property (nonatomic, retain) NSLayoutConstraint* leadingSpaceToSuperViewConstraint;
 
 @end
 
@@ -31,34 +29,15 @@
     return self;
 }
 
-- (void)loadView {
-    [super loadView];
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)]; //any non-null size. AutoresizingMask will stretch to full screen size
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.view.autoresizesSubviews = YES;
-    
-    self.splashViewImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PocketCampusDrawing"]];
-    self.splashViewImage.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin
-    | UIViewAutoresizingFlexibleTopMargin
-    | UIViewAutoresizingFlexibleRightMargin
-    | UIViewAutoresizingFlexibleBottomMargin;
-    self.splashViewImage.center = self.view.center;
-    self.view.backgroundColor = [UIColor colorWithRed:0.972549 green:0.972549 blue:0.972549 alpha:1.0];
-    //self.view.backgroundColor = [UIColor colorWithRed:0.961 green:0.957 blue:0.941 alpha:1.0];
-    //self.view.backgroundColor = [UIColor colorWithRed:0.400000 green:0.400000 blue:0.400000 alpha:1.0];
-    
-    [self.view addSubview:self.splashViewImage];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.splashViewImage.center = self.view.center;
+	self.view.translatesAutoresizingMaskIntoConstraints = NO;
+    self.view.autoresizesSubviews = YES;
+    self.view.backgroundColor = [UIColor colorWithRed:0.972549 green:0.972549 blue:0.972549 alpha:1.0];
+    self.splashViewImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PocketCampusDrawing"]];
+    [self.view addSubview:self.splashViewImage];
+    [self.view addConstraints:[NSLayoutConstraint constraintsForCenterXYtoSuperview:self.view forView:self.splashViewImage]];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -67,14 +46,19 @@
     } else {
         return UIInterfaceOrientationMaskPortrait;
     }
-    
+}
+
+- (void)setSuperviewOfView:(UIView *)superviewOfView {
+    _superviewOfView = superviewOfView;
+    self.leadingSpaceToSuperViewConstraint = [NSLayoutConstraint constraintsToSuperview:self.superviewOfView forView:self.view edgeInsets:UIEdgeInsetsMake(kNoInsetConstraint, kNoInsetConstraint, kNoInsetConstraint, 0)][0];
+    [self.superviewOfView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.superviewOfView forView:self.view edgeInsets:UIEdgeInsetsMake(0, 0, 0, kNoInsetConstraint)]];
 }
 
 - (void)willMoveToRightWithDuration:(NSTimeInterval)duration hideDrawingOnIdiomPhone:(BOOL)hideDrawingOnIdiomPhone {
     if ([PCUtils isIdiomPad]) { //adapt drawing's position
-        
+        self.leadingSpaceToSuperViewConstraint.constant = self.rightHiddenOffset;
         [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.view.frame = CGRectMake(0, 0, self.view.frame.size.width - self.rightHiddenOffset, self.view.frame.size.height);
+            [self.view.superview layoutIfNeeded];
         } completion:NULL];
         
     } else { //hide drowing

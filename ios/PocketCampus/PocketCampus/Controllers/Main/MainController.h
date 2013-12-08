@@ -96,7 +96,6 @@ typedef enum {
  */
 - (id)initWithWindow:(UIWindow*)window;
 - (void)setActivePluginWithIdentifier:(NSString*)identifier;
-- (void)mainMenuIsReady;
 - (void)showGlobalSettings;
 
 - (void)mainMenuStartedEditing;

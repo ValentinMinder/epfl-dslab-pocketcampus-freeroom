@@ -3,8 +3,6 @@
 
 #import "moodle.h"
 
-#import "ASIHTTPRequest.h"
-
 #pragma mark - MoodleResourceObserver definition
 
 typedef enum {
@@ -101,9 +99,6 @@ static NSString* kFavoriteStatusMoodleResourceUpdatedKey __unused = @"FavoriteSt
 - (void)getEventsListFailed:(MoodleRequest*)aMoodleRequest;
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest didReturn:(SectionsListReply*)sectionsListReply;
 - (void)getCourseSectionsFailed:(MoodleRequest*)aMoodleRequest;
-
-/*- (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest*)request;
-- (void)fetchMoodleResourceFailed:(ASIHTTPRequest*)request;*/
 
 - (void)downloadOfMoodleResource:(MoodleResource*)moodleResource didFinish:(NSURL*)localFileURL;
 - (void)downloadFailedForMoodleResource:(MoodleResource*)moodleResource responseStatusCode:(int)statusCode;

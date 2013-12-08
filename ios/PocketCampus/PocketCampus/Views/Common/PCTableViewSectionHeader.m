@@ -7,9 +7,6 @@
 //
 
 #import "PCTableViewSectionHeader.h"
-#import "PCValues.h"
-
-static float SEPARATOR_HEIGHT = 1.0;
 
 static CGFloat cachedPreferredHeight = 0.0;
 
@@ -77,14 +74,5 @@ static BOOL addedObserver = NO;
 {
     cachedPreferredHeight = 0.0;
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

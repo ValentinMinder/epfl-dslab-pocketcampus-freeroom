@@ -12,6 +12,8 @@
 
 @property (nonatomic) CGFloat rightHiddenOffset;
 
+@property (nonatomic, weak) UIView* superviewOfView;
+
 - (id)initWithRightHiddenOffset:(CGFloat)rightHiddenOffset;
 - (void)willMoveToRightWithDuration:(NSTimeInterval)duration hideDrawingOnIdiomPhone:(BOOL)hideDrawingOnIdiomPhone;
 

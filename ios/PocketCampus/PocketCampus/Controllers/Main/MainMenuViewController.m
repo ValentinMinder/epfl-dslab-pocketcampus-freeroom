@@ -38,6 +38,8 @@ static const int kPluginsSection = 0;
 
 @implementation MainMenuViewController
 
+#pragma mark - Init
+
 - (id)initWithMenuItems:(NSArray*)menuItems mainController:(MainController*)mainController;
 {
     self = [super initWithNibName:@"MainMenuView" bundle:nil];
@@ -50,11 +52,11 @@ static const int kPluginsSection = 0;
     return self;
 }
 
+#pragma mark - UIViewController overrides
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/dashboard"];
     self.navigationController.navigationBar.translucent = NO;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     self.tableView.scrollsToTop = NO; //if not set to NO, front view controllers cannot be scrolled to top by tapping the status bar
@@ -66,13 +68,11 @@ static const int kPluginsSection = 0;
     frame.size.width = 320.0;
     self.navigationController.view.frame = frame;
     self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask (we want constant 320.0 width)
-    [self.mainController mainMenuIsReady];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[PCGAITracker sharedTracker] trackScreenWithName:@"/dashboard"];
 }
 
 - (NSUInteger)supportedInterfaceOrientations

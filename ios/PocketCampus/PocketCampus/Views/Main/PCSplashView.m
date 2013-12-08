@@ -26,8 +26,7 @@
     self = [super initWithFrame:CGRectMake(0, 0, 1, 1)];
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        [superview addSubview:self];
-        [superview addConstraints:[NSLayoutConstraint constraintsToSuperview:superview forView:self edgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
+        [self moveToSuperview:superview];
         self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
         self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundImageView.image = [self imageForDevice];
@@ -52,6 +51,11 @@
 }
 
 #pragma mark - Public methods
+
+- (void)moveToSuperview:(UIView*)superview {
+    [superview addSubview:self];
+    [superview addConstraints:[NSLayoutConstraint constraintsToSuperview:superview forView:self edgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
+}
 
 - (void)hideWithAnimationDuration:(NSTimeInterval)duration completion:(VoidBlock)completion {
     //duration = 5.0;

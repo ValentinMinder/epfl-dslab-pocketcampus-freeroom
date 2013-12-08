@@ -11,6 +11,7 @@
 @interface PCSplashView : UIView
 
 - (id)initWithSuperview:(UIView*)superview;
+- (void)moveToSuperview:(UIView*)superview;
 - (void)hideWithAnimationDuration:(NSTimeInterval)duration completion:(VoidBlock)completion;
 
 @end
