@@ -22,8 +22,6 @@
 
 #import "UIImage+Additions.h"
 
-static NSString* kNewsCellIdentifier = @"NewsCell";
-static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 @interface NewsListViewController ()<NewsServiceDelegate>
 
@@ -187,10 +185,11 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString* identifier = @"NewsCell";
     NewsItem* newsItem = self.sections[indexPath.section][indexPath.row];
-    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:kNewsCellIdentifier];
+    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNewsCellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.textLabel.font = [UIFont boldSystemFontOfSize:13.0];
         cell.textLabel.numberOfLines = 3;
         //cell.textLabel.adjustsFontSizeToFitWidth = YES;

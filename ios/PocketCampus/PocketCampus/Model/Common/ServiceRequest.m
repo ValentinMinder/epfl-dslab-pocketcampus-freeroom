@@ -55,6 +55,8 @@
     return self;
 }
 
+#pragma mark - Identification and description
+
 - (NSString*)hashIdentifier {
     if (!_hashIdentifier) {
         NSString* tempHashIdentifier = [ServiceRequest md5HexDigestForString:NSStringFromSelector(self.serviceClientSelector)];
@@ -382,7 +384,7 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString*  
     [self throwIfCancelled];
     
     if (self.keepInCache) {
-        [ObjectArchiver saveObject:responseDic forKey:self.hashIdentifier andPluginName:self.service.serviceName];
+        [ObjectArchiver saveObject:responseDic forKey:self.hashIdentifier andPluginName:self.service.serviceName isCache:YES];
     }
     
     NSInvocation* delegateInv = [NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidReturnSelector]];

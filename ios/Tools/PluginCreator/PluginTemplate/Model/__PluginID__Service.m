@@ -23,6 +23,8 @@ static __PluginID__Service* instance __weak = nil;
     }
 }
 
+#pragma mark - ServiceProtocol
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -44,6 +46,14 @@ static __PluginID__Service* instance __weak = nil;
 #endif
 }
 
+- (id)thriftServiceClientInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
+#if __has_feature(objc_arc)
+    return [[__PluginID__ServiceClient alloc] initWithProtocol:[self thriftProtocolInstanceWithCustomTimeoutInterval:timeoutInterval]];
+#else
+    return [[[__PluginID__ServiceClient alloc] initWithProtocol:[self thriftProtocolInstanceWithCustomTimeoutInterval:timeoutInterval]] autorelease];
+#endif
+}
+
 
 #pragma mark - Service methods
 
@@ -60,7 +70,7 @@ static __PluginID__Service* instance __weak = nil;
 //      operation.delegateDidReturnSelector = @selector(getMealsDidReturn:); //corresponding *didReturn* definition
 //      operation.delegateDidFailSelector = @selector(getMealsFailed); //corresponding *Failed* definition
 //      operation.returnType = ReturnTypeObject; //result type. Can be object or any standard primitive types (ReturnTypeInt, ...)
-//      [operationQueue addOperation:operation]; //schedule operation in background
+//      [self.operationQueue addOperation:operation]; //schedule operation in background
 //      [operation release]; //If you do NOT use ARC: release operation (has been retained by operationQueue)
 //  }
 //
@@ -73,7 +83,7 @@ static __PluginID__Service* instance __weak = nil;
 //      [operation addLongLongArgument:mealId]; //add arguments in order in which they appear
 //      [operation addDoubleArgument:rating];
 //      operation.returnType = ReturnTypeInt; //return type is int this time
-//      [operationQueue addOperation:operation]; //schedule operation in background
+//      [self.operationQueue addOperation:operation]; //schedule operation in background
 //      [operation release]; //If you do NOT use ARC: release operation (has been retained by operationQueue)
 //  } 
 //
