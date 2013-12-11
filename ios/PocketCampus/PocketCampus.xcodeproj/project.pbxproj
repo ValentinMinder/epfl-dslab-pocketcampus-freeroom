@@ -9,6 +9,507 @@
 /* Begin PBXBuildFile section */
 		1997124D15EFC9CA00E2A679 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322515C206F30091757D /* libsqlite3.dylib */; };
 		1D0F4A038721DEB98C2AC34A /* MyEdu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB5245679D4E9E9B9F64BAC1 /* MyEdu@2x.png */; };
+		272300B61858CEB900B72F5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219EF5C14FCDE4900A271CD /* main.m */; };
+		272300B71858CEB900B72F5E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3288699214FE5AF300CC97DB /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300B81858CEB900B72F5E /* TSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A8A17F898910025F864 /* TSocketServer.m */; };
+		272300B91858CEB900B72F5E /* DirectoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E31500F40700925180 /* DirectoryController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300BA1858CEB900B72F5E /* DirectorySearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E51500F40700925180 /* DirectorySearchViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300BB1858CEB900B72F5E /* DirectoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0ED1500F40700925180 /* DirectoryService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300BC1858CEB900B72F5E /* directory.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0F01500F40700925180 /* directory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300BD1858CEB900B72F5E /* food.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6515050B9D0076537E /* food.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300BE1858CEB900B72F5E /* FoodService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6B15050C000076537E /* FoodService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300BF1858CEB900B72F5E /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* Service.m */; };
+		272300C01858CEB900B72F5E /* FoodController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE091508E31200BF94F7 /* FoodController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300C11858CEB900B72F5E /* FoodRestaurantsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE0E1508F92700BF94F7 /* FoodRestaurantsListViewController.m */; };
+		272300C21858CEB900B72F5E /* PCTableViewSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300C31858CEB900B72F5E /* transport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0415179014007AE82B /* transport.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300C41858CEB900B72F5E /* TransportService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0615179014007AE82B /* TransportService.m */; };
+		272300C51858CEB900B72F5E /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
+		272300C61858CEB900B72F5E /* ObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300C71858CEB900B72F5E /* TransportNextDeparturesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32442FEA151CF87100685D10 /* TransportNextDeparturesViewController.m */; };
+		272300C81858CEB900B72F5E /* PCGAITracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 322FB01717EC938E00D1A466 /* PCGAITracker.m */; };
+		272300C91858CEB900B72F5E /* TransportDepartureSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3278F6C9184257AF007CB382 /* TransportDepartureSelectionViewController.m */; };
+		272300CA1858CEB900B72F5E /* TransportAddStationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A5997151DFDD200977F33 /* TransportAddStationViewController.m */; };
+		272300CB1858CEB900B72F5E /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; };
+		272300CC1858CEB900B72F5E /* THTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A9617F898910025F864 /* THTTPClient.m */; };
+		272300CD1858CEB900B72F5E /* TransportTripsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328872C61534D82C00330B54 /* TransportTripsListViewController.m */; };
+		272300CE1858CEB900B72F5E /* TransportTripPartsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* TransportTripPartsViewController.m */; };
+		272300CF1858CEB900B72F5E /* map.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D415373B5900CCFB22 /* map.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300D01858CEB900B72F5E /* MapService.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D715373BA300CCFB22 /* MapService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300D11858CEB900B72F5E /* TransportNextDeparturesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32456C09184373DE00993F8B /* TransportNextDeparturesCell.m */; };
+		272300D21858CEB900B72F5E /* MapItemAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151F315377B4C00CCFB22 /* MapItemAnnotation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300D31858CEB900B72F5E /* MapUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3275435E153872DF00C94F3D /* MapUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300D41858CEB900B72F5E /* EPFLTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B89253154584A90058E472 /* EPFLTileOverlay.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300D51858CEB900B72F5E /* EPFLTileOverlay2.m in Sources */ = {isa = PBXBuildFile; fileRef = 3297E368180856E60047AD07 /* EPFLTileOverlay2.m */; };
+		272300D61858CEB900B72F5E /* AuthenticationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4B9155520FE00220282 /* AuthenticationController.m */; };
+		272300D71858CEB900B72F5E /* AuthenticationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C1155520FE00220282 /* AuthenticationService.m */; };
+		272300D81858CEB900B72F5E /* authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C4155520FE00220282 /* authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300D91858CEB900B72F5E /* MoodleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4D71555237500220282 /* MoodleController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300DA1858CEB900B72F5E /* MoodleService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4DD1555237500220282 /* MoodleService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300DB1858CEB900B72F5E /* moodle.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4E01555237500220282 /* moodle.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300DC1858CEB900B72F5E /* news.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4FD155546C100220282 /* news.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300DD1858CEB900B72F5E /* NewsService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB50415554A6600220282 /* NewsService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300DE1858CEB900B72F5E /* NewsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB50715555BBF00220282 /* NewsController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300DF1858CEB900B72F5E /* NewsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB50A15555D9200220282 /* NewsListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300E01858CEB900B72F5E /* NewsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3297E01A15557FE10054F790 /* NewsUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300E11858CEB900B72F5E /* FoodMealCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C450AD18241364000C99A3 /* FoodMealCell.m */; };
+		272300E21858CEB900B72F5E /* camipro.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B58717156458FA0051C57E /* camipro.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300E31858CEB900B72F5E /* CamiproController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B58722156459370051C57E /* CamiproController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300E41858CEB900B72F5E /* TransportModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B2B8891841281F009DA368 /* TransportModelAdditions.m */; };
+		272300E51858CEB900B72F5E /* CamiproService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E8C1564FC2400DE6984 /* CamiproService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300E61858CEB900B72F5E /* ServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* ServiceRequest.m */; };
+		272300E71858CEB900B72F5E /* CamiproViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E90156507DA00DE6984 /* CamiproViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300E81858CEB900B72F5E /* DirectoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E280A8156E583A00B74825 /* DirectoryServiceTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300E91858CEB900B72F5E /* PocketCampusLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300EA1858CEB900B72F5E /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
+		272300EB1858CEB900B72F5E /* EPFLLayersOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D57298157F7D780051230F /* EPFLLayersOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300EC1858CEB900B72F5E /* GlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* GlobalSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300ED1858CEB900B72F5E /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300EE1858CEB900B72F5E /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A54B7C15B5A8E100A7C882 /* AuthenticationViewController.m */; };
+		272300EF1858CEB900B72F5E /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; };
+		272300F01858CEB900B72F5E /* MapServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300F11858CEB900B72F5E /* DirectoryPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300F21858CEB900B72F5E /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930AA317F898910025F864 /* TSharedProcessorFactory.m */; };
+		272300F31858CEB900B72F5E /* TProtocolUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A8717F898910025F864 /* TProtocolUtil.m */; };
+		272300F41858CEB900B72F5E /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B3F38F16219403007A75C7 /* MainMenuViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300F51858CEB900B72F5E /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B3F3961621B6D2007A75C7 /* MainMenuItem.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300F61858CEB900B72F5E /* MainMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47A51621D63E006752B4 /* MainMenuItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300F71858CEB900B72F5E /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300F81858CEB900B72F5E /* MyEduController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968E4CDC8AB22470DE349C3B /* MyEduController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300F91858CEB900B72F5E /* MyEduService.m in Sources */ = {isa = PBXBuildFile; fileRef = 437F4DF1A201ED94FAB8E2F2 /* MyEduService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300FA1858CEB900B72F5E /* myedu.m in Sources */ = {isa = PBXBuildFile; fileRef = 92184A8EA6FCB1AB9277A185 /* myedu.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300FB1858CEB900B72F5E /* MyEduServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3EAB51633506900DA8902 /* MyEduServiceTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300FC1858CEB900B72F5E /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CBF0621634812C00FD92E5 /* SplashViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300FD1858CEB900B72F5E /* NSLayoutConstraint+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+Extras.m */; };
+		272300FE1858CEB900B72F5E /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300FF1858CEB900B72F5E /* MyEduCourseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323586E316381BF700872ECE /* MyEduCourseListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301001858CEB900B72F5E /* PluginSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301011858CEB900B72F5E /* PluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32704C66150016B3002BCB75 /* PluginController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301021858CEB900B72F5E /* MyEduSectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B92F201641BD630054B46F /* MyEduSectionListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301031858CEB900B72F5E /* MyEduModuleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301041858CEB900B72F5E /* PCCenterMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30701645D31A00909D82 /* PCCenterMessageCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301051858CEB900B72F5E /* MyEduCourseInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301061858CEB900B72F5E /* FoodRestaurantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3243FB9C18215CEC000F3CB5 /* FoodRestaurantViewController.m */; };
+		272301071858CEB900B72F5E /* MyEduSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320DFC281646A25900849907 /* MyEduSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301081858CEB900B72F5E /* MyEduModuleVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320DFC301646B35900849907 /* MyEduModuleVideoViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301091858CEB900B72F5E /* MyEduModuleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320DFC351646C03700849907 /* MyEduModuleDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723010A1858CEB900B72F5E /* MyEduModuleTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3200735F1646DDB9002AD7BA /* MyEduModuleTextViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723010B1858CEB900B72F5E /* MyEduModuleMaterialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325368C31649638B00406801 /* MyEduModuleMaterialsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723010C1858CEB900B72F5E /* FoodRestaurantInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3243FB9F18216B95000F3CB5 /* FoodRestaurantInfoCell.m */; };
+		2723010D1858CEB900B72F5E /* DirectoryPersonBaseInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247495217F33E3400698A9D /* DirectoryPersonBaseInfoCell.m */; };
+		2723010E1858CEB900B72F5E /* MyEduModuleVideoDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32ADC709165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723010F1858CEB900B72F5E /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301101858CEB900B72F5E /* PushNotifService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2F4A5AA559021373171E91 /* PushNotifService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301111858CEB900B72F5E /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301121858CEB900B72F5E /* MapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D015373A5B00CCFB22 /* MapController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301131858CEB900B72F5E /* PushNotifControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0B24A166A282700F68304 /* PushNotifControllerTests.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301141858CEB900B72F5E /* MoodleCoursesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301151858CEB900B72F5E /* MoodleCourseSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301161858CEB900B72F5E /* MoodleResourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035BB2166E987100E134DD /* MoodleResourceViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301171858CEB900B72F5E /* MoodleSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301181858CEB900B72F5E /* PCTableViewCellAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301191858CEB900B72F5E /* TApplicationException.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A8C17F898910025F864 /* TApplicationException.m */; };
+		2723011A1858CEB900B72F5E /* DirectoryEmptyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E67DC21684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723011B1858CEB900B72F5E /* NSOperationWithDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */; };
+		2723011C1858CEB900B72F5E /* PCRecentResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E67DC51684D40C00E5CFF6 /* PCRecentResultTableViewCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723011D1858CEB900B72F5E /* NewsSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207E71688E62D003F6622 /* NewsSplashViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723011E1858CEB900B72F5E /* NewsItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207EE1688F096003F6622 /* NewsItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723011F1858CEB900B72F5E /* ZUUIRevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930AA717F898910025F864 /* ZUUIRevealController.m */; };
+		272301201858CEB900B72F5E /* MapResultsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB617E180D5A3C001AE852 /* MapResultsListViewController.m */; };
+		272301211858CEB900B72F5E /* TransportTripCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D1DE151846614500D0C866 /* TransportTripCell.m */; };
+		272301221858CEB900B72F5E /* PCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207F61689E3A3003F6622 /* PCUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301231858CEB900B72F5E /* TransportStationsManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3289F2BC183FB80600D833C2 /* TransportStationsManagerViewController.m */; };
+		272301241858CEB900B72F5E /* TMemoryBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A9817F898910025F864 /* TMemoryBuffer.m */; };
+		272301251858CEB900B72F5E /* PCValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207F81689E3A3003F6622 /* PCValues.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301261858CEB900B72F5E /* LGRefreshControl+PCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A7417F882010025F864 /* LGRefreshControl+PCAdditions.m */; };
+		272301271858CEB900B72F5E /* TException.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A8E17F898910025F864 /* TException.m */; };
+		272301281858CEB900B72F5E /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301291858CEB900B72F5E /* NewsItem+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723012A1858CEB900B72F5E /* MoodleResource+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723012B1858CEB900B72F5E /* MyEduModule+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 3235174516A4B5B70022B98E /* MyEduModule+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723012C1858CEB900B72F5E /* UIPopoverController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC216A564460018976F /* UIPopoverController+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723012D1858CEB900B72F5E /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC516A565600018976F /* UIActionSheet+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723012E1858CEB900B72F5E /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723012F1858CEB900B72F5E /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3256175716A89C7D00F52D24 /* MapViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301301858CEB900B72F5E /* PCConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3258D65016AF1FE20040DAE3 /* PCConfig.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301311858CEB900B72F5E /* EventsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8834ED985A01F6FB20543E8 /* EventsController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301321858CEB900B72F5E /* EventsService.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AE43D19400EAA046F5166E /* EventsService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301331858CEB900B72F5E /* events.m in Sources */ = {isa = PBXBuildFile; fileRef = 62FB4BFDBB53089EB412B0C1 /* events.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301341858CEB900B72F5E /* EventsServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AA6CD016DFF41100783E9C /* EventsServiceTests.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301351858CEB900B72F5E /* EventPoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FE516E13A020016F03C /* EventPoolViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301361858CEB900B72F5E /* EventItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FEA16E153860016F03C /* EventItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301371858CEB900B72F5E /* TSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A9E17F898910025F864 /* TSocketClient.m */; };
+		272301381858CEB900B72F5E /* EventsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F016E1F9D900AF365C /* EventsUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301391858CEB900B72F5E /* PCSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = 328A72E2184A503C002C5A6B /* PCSplashView.m */; };
+		2723013A1858CEB900B72F5E /* EventItem+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F316E1FA1100AF365C /* EventItem+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723013B1858CEB900B72F5E /* EventItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3281AB8116E221F700D8FAD1 /* EventItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723013C1858CEB900B72F5E /* EpflRestaurant+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 328860B8183B63590098C857 /* EpflRestaurant+Additions.m */; };
+		2723013D1858CEB900B72F5E /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723013E1858CEB900B72F5E /* TNSStreamTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A9C17F898910025F864 /* TNSStreamTransport.m */; };
+		2723013F1858CEB900B72F5E /* PCURLSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF9D16E3B537002CBEA2 /* PCURLSchemeHandler.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301401858CEB900B72F5E /* PCTableViewWithRemoteThumbnails.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301411858CEB900B72F5E /* PCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B1D9E217F08E1D000CC209 /* PCNavigationController.m */; };
+		272301421858CEB900B72F5E /* EventsCategorySelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301431858CEB900B72F5E /* EventsSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301441858CEB900B72F5E /* EventsTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328D3827174794B5006FE6F3 /* EventsTagsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301451858CEB900B72F5E /* EventsShareFavoriteItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AEEC851747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301461858CEB900B72F5E /* NSDate+Addtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB441F17650268008C8282 /* NSDate+Addtions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301471858CEB900B72F5E /* RemoteOverlayRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3277F861180437670057F77C /* RemoteOverlayRenderer.m */; };
+		272301481858CEB900B72F5E /* AcceptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234145A176558F300527895 /* AcceptViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301491858CEB900B72F5E /* AnswerListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234145D176558F300527895 /* AnswerListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723014A1858CEB900B72F5E /* TTransportException.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930AA117F898910025F864 /* TTransportException.m */; };
+		2723014B1858CEB900B72F5E /* AnswerRecViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234145F176558F300527895 /* AnswerRecViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723014C1858CEB900B72F5E /* AnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341462176558F300527895 /* AnswerViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723014D1858CEB900B72F5E /* AskQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341464176558F300527895 /* AskQuestionViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723014E1858CEB900B72F5E /* FeedbackListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341466176558F300527895 /* FeedbackListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723014F1858CEB900B72F5E /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341468176558F300527895 /* FeedbackViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301501858CEB900B72F5E /* ForumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234146A176558F300527895 /* ForumTableCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301511858CEB900B72F5E /* Person+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247495517F340B800698A9D /* Person+Extras.m */; };
+		272301521858CEB900B72F5E /* CompundTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234146D176558F300527895 /* CompundTableCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301531858CEB900B72F5E /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234146F176558F300527895 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301541858CEB900B72F5E /* QAFListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341471176558F300527895 /* QAFListCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301551858CEB900B72F5E /* TableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341473176558F300527895 /* TableCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301561858CEB900B72F5E /* UIPlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341475176558F300527895 /* UIPlaceHolderTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301571858CEB900B72F5E /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341477176558F300527895 /* IntroViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301581858CEB900B72F5E /* FoodSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32290ACE18200A0A005869E7 /* FoodSplashDetailViewController.m */; };
+		272301591858CEB900B72F5E /* LatestForumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234147A176558F300527895 /* LatestForumViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723015A1858CEB900B72F5E /* MatchingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234147C176558F300527895 /* MatchingViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723015B1858CEB900B72F5E /* MyAnswerListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234147F176558F300527895 /* MyAnswerListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723015C1858CEB900B72F5E /* MyAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341481176558F300527895 /* MyAnswerViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723015D1858CEB900B72F5E /* MapRecentSearchesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */; };
+		2723015E1858CEB900B72F5E /* MyQuestionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341483176558F300527895 /* MyQuestionListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723015F1858CEB900B72F5E /* MyQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341485176558F300527895 /* MyQuestionViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301601858CEB900B72F5E /* PendingTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341487176558F300527895 /* PendingTableCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301611858CEB900B72F5E /* PendingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341489176558F300527895 /* PendingViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301621858CEB900B72F5E /* AbstractActionSheetPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234148C176558F300527895 /* AbstractActionSheetPicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301631858CEB900B72F5E /* ActionSheetDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234148E176558F300527895 /* ActionSheetDatePicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301641858CEB900B72F5E /* ActionSheetDistancePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341490176558F300527895 /* ActionSheetDistancePicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301651858CEB900B72F5E /* LGRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A7C17F898910025F864 /* LGRefreshControl.m */; };
+		272301661858CEB900B72F5E /* ActionSheetStringPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341492176558F300527895 /* ActionSheetStringPicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301671858CEB900B72F5E /* DistancePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341494176558F300527895 /* DistancePickerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301681858CEB900B72F5E /* TNSFileHandleTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A9A17F898910025F864 /* TNSFileHandleTransport.m */; };
+		272301691858CEB900B72F5E /* TFramedTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A9417F898910025F864 /* TFramedTransport.m */; };
+		2723016A1858CEB900B72F5E /* QAForumController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341496176558F300527895 /* QAForumController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723016B1858CEB900B72F5E /* QAForumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32341498176558F300527895 /* QAForumViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723016C1858CEB900B72F5E /* QuestionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234149A176558F300527895 /* QuestionListViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723016D1858CEB900B72F5E /* QuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234149C176558F300527895 /* QuestionViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723016E1858CEB900B72F5E /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3234149E176558F300527895 /* RateView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2723016F1858CEB900B72F5E /* TProtocolException.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A8417F898910025F864 /* TProtocolException.m */; };
+		272301701858CEB900B72F5E /* TBinaryProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A8117F898910025F864 /* TBinaryProtocol.m */; };
+		272301711858CEB900B72F5E /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323414A0176558F300527895 /* ReportViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301721858CEB900B72F5E /* RequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323414A2176558F300527895 /* RequestViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301731858CEB900B72F5E /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323414A4176558F300527895 /* SettingViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301741858CEB900B72F5E /* QAForumService.m in Sources */ = {isa = PBXBuildFile; fileRef = 323414AE176558F300527895 /* QAForumService.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301751858CEB900B72F5E /* qaforum.m in Sources */ = {isa = PBXBuildFile; fileRef = 323414B1176558F300527895 /* qaforum.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301761858CEB900B72F5E /* CamiproTransactionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 324FD735176574FE0003EE30 /* CamiproTransactionCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272301781858CEB900B72F5E /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 321CCF9A16E37F7C002CBEA2 /* libiconv.dylib */; };
+		272301791858CEB900B72F5E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321CCF9816E37F6A002CBEA2 /* CoreVideo.framework */; };
+		2723017A1858CEB900B72F5E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321CCF9616E37F5E002CBEA2 /* CoreMedia.framework */; };
+		2723017B1858CEB900B72F5E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321CCF9416E37F53002CBEA2 /* AVFoundation.framework */; };
+		2723017C1858CEB900B72F5E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322515C206F30091757D /* libsqlite3.dylib */; };
+		2723017D1858CEB900B72F5E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8928115458BD70058E472 /* libz.dylib */; };
+		2723017E1858CEB900B72F5E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32216D1516594005008F1D3B /* MediaPlayer.framework */; };
+		2723017F1858CEB900B72F5E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D97C9B15AF1BB8004384A5 /* Security.framework */; };
+		272301801858CEB900B72F5E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927F15458BAB0058E472 /* MobileCoreServices.framework */; };
+		272301811858CEB900B72F5E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927D15458BA10058E472 /* SystemConfiguration.framework */; };
+		272301821858CEB900B72F5E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927B15458B520058E472 /* CFNetwork.framework */; };
+		272301831858CEB900B72F5E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 324151E11537527B00CCFB22 /* MapKit.framework */; };
+		272301841858CEB900B72F5E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
+		272301851858CEB900B72F5E /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32C879AA183D6C8E00750A11 /* Crashlytics.framework */; };
+		272301861858CEB900B72F5E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B925115027A1400DB4AEE /* AddressBook.framework */; };
+		272301871858CEB900B72F5E /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B924F150279E900DB4AEE /* AddressBookUI.framework */; };
+		272301881858CEB900B72F5E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5014FCDE4900A271CD /* UIKit.framework */; };
+		272301891858CEB900B72F5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5214FCDE4900A271CD /* Foundation.framework */; };
+		2723018A1858CEB900B72F5E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5414FCDE4900A271CD /* CoreGraphics.framework */; };
+		2723018B1858CEB900B72F5E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322715C2070E0091757D /* QuartzCore.framework */; };
+		2723018C1858CEB900B72F5E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AF5068222245668954256E /* libPods.a */; };
+		2723018E1858CEB900B72F5E /* DirectoryPersonBaseInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3247494F17F33B0D00698A9D /* DirectoryPersonBaseInfoCell.xib */; };
+		2723018F1858CEB900B72F5E /* PocketCampus.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3296570914FF9DDB00C44C12 /* PocketCampus.strings */; };
+		272301901858CEB900B72F5E /* CheckmarkRoundedSquareEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */; };
+		272301911858CEB900B72F5E /* Plugins.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32704C7B15002F67002BCB75 /* Plugins.plist */; };
+		272301921858CEB900B72F5E /* DirectoryPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FAC0E81500F40700925180 /* DirectoryPlugin.strings */; };
+		272301931858CEB900B72F5E /* DirectorySearchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FAC0F41500F40700925180 /* DirectorySearchView.xib */; };
+		272301941858CEB900B72F5E /* FoodRestaurantInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3243FBA118216BBC000F3CB5 /* FoodRestaurantInfoCell.xib */; };
+		272301951858CEB900B72F5E /* FoodPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3247C3B01504F2E10079522A /* FoodPlugin.strings */; };
+		272301961858CEB900B72F5E /* Directory.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28815094739008DD299 /* Directory.png */; };
+		272301971858CEB900B72F5E /* Directory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28915094739008DD299 /* Directory@2x.png */; };
+		272301981858CEB900B72F5E /* Food.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28C1509474A008DD299 /* Food.png */; };
+		272301991858CEB900B72F5E /* MasterHidden.png in Resources */ = {isa = PBXBuildFile; fileRef = 32506D03181DC7AF003F08D7 /* MasterHidden.png */; };
+		2723019A1858CEB900B72F5E /* Food@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28D1509474A008DD299 /* Food@2x.png */; };
+		2723019B1858CEB900B72F5E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
+		2723019C1858CEB900B72F5E /* MasterVisible@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32506D00181DC41E003F08D7 /* MasterVisible@2x.png */; };
+		2723019D1858CEB900B72F5E /* FoodSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32290AD018200A25005869E7 /* FoodSplashDetailView.xib */; };
+		2723019E1858CEB900B72F5E /* CheckmarkRoundedSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */; };
+		2723019F1858CEB900B72F5E /* RatingStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF2150B927500B50024 /* RatingStar.png */; };
+		272301A01858CEB900B72F5E /* RatingStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328B9EF3150B927500B50024 /* RatingStar@2x.png */; };
+		272301A11858CEB900B72F5E /* RatingStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE09150BBA77001F2A88 /* RatingStarEmpty.png */; };
+		272301A21858CEB900B72F5E /* RatingStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE0A150BBA77001F2A88 /* RatingStarEmpty@2x.png */; };
+		272301A31858CEB900B72F5E /* CamiproLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */; };
+		272301A41858CEB900B72F5E /* RatingPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE0E150BBEE9001F2A88 /* RatingPoint.png */; };
+		272301A51858CEB900B72F5E /* RatingPoint@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE0F150BBEE9001F2A88 /* RatingPoint@2x.png */; };
+		272301A61858CEB900B72F5E /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FB2DFE15179014007AE82B /* TransportPlugin.strings */; };
+		272301A71858CEB900B72F5E /* Transport.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FEC151CFDED00685D10 /* Transport.png */; };
+		272301A81858CEB900B72F5E /* Transport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FED151CFDED00685D10 /* Transport@2x.png */; };
+		272301A91858CEB900B72F5E /* TransportNextDeparturesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF0151D0F3000685D10 /* TransportNextDeparturesView.xib */; };
+		272301AA1858CEB900B72F5E /* MoodleLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32506CFD181D4195003F08D7 /* MoodleLarge@2x.png */; };
+		272301AB1858CEB900B72F5E /* FavoriteCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132D1825465D0037FE00 /* FavoriteCorner.png */; };
+		272301AC1858CEB900B72F5E /* TransportAddStationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5999151DFDF700977F33 /* TransportAddStationView.xib */; };
+		272301AD1858CEB900B72F5E /* LocationArrow2Active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289F2B6183FAB8C00D833C2 /* LocationArrow2Active@2x.png */; };
+		272301AE1858CEB900B72F5E /* CenterOnEPFL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E365180826D20047AD07 /* CenterOnEPFL@2x.png */; };
+		272301AF1858CEB900B72F5E /* TransportTripsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */; };
+		272301B01858CEB900B72F5E /* DirectoryEmptyPicture.png in Resources */ = {isa = PBXBuildFile; fileRef = 32342A7E17F43347009C05FA /* DirectoryEmptyPicture.png */; };
+		272301B11858CEB900B72F5E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32B3325717E5C708004F5E75 /* Images.xcassets */; };
+		272301B21858CEB900B72F5E /* TransportTripPartsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CAE431153628C000AB17CC /* TransportTripPartsView.xib */; };
+		272301B31858CEB900B72F5E /* TransportFeetConnection.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBD1536F215009B8D37 /* TransportFeetConnection.png */; };
+		272301B41858CEB900B72F5E /* TransportFeetConnection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBE1536F215009B8D37 /* TransportFeetConnection@2x.png */; };
+		272301B51858CEB900B72F5E /* MapPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 324151C615373A1700CCFB22 /* MapPlugin.strings */; };
+		272301B61858CEB900B72F5E /* MapView-phone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324151DF15374FB100CCFB22 /* MapView-phone.xib */; };
+		272301B71858CEB900B72F5E /* Map.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E315375BDD00CCFB22 /* Map.png */; };
+		272301B81858CEB900B72F5E /* Map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E415375BDD00CCFB22 /* Map@2x.png */; };
+		272301B91858CEB900B72F5E /* MoodlePlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4D81555237500220282 /* MoodlePlugin.strings */; };
+		272301BA1858CEB900B72F5E /* TransportLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275859F18449347004215FC /* TransportLarge@2x.png */; };
+		272301BB1858CEB900B72F5E /* FoodSmileySad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131A18296E2D00F4C622 /* FoodSmileySad@2x.png */; };
+		272301BC1858CEB900B72F5E /* Moodle.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4E51555237500220282 /* Moodle.png */; };
+		272301BD1858CEB900B72F5E /* Moodle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4E61555237500220282 /* Moodle@2x.png */; };
+		272301BE1858CEB900B72F5E /* DirectoryEmptyPicture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32342A7F17F43347009C05FA /* DirectoryEmptyPicture@2x.png */; };
+		272301BF1858CEB900B72F5E /* NewsPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4F7155546C100220282 /* NewsPlugin.strings */; };
+		272301C01858CEB900B72F5E /* News.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB50E155567CB00220282 /* News.png */; };
+		272301C11858CEB900B72F5E /* News@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB50F155567CB00220282 /* News@2x.png */; };
+		272301C21858CEB900B72F5E /* NewsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E016155571F80054F790 /* NewsLarge.png */; };
+		272301C31858CEB900B72F5E /* BackgroundNewsThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E02215558BE40054F790 /* BackgroundNewsThumbnail.png */; };
+		272301C41858CEB900B72F5E /* BackgroundNewsThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E02315558BE40054F790 /* BackgroundNewsThumbnail@2x.png */; };
+		272301C51858CEB900B72F5E /* CamiproPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32B58711156458FA0051C57E /* CamiproPlugin.strings */; };
+		272301C61858CEB900B72F5E /* ListBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3270B7EF18056E6F007EE85B /* ListBarButton.png */; };
+		272301C71858CEB900B72F5E /* ListBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3270B7F018056E6F007EE85B /* ListBarButton@2x.png */; };
+		272301C81858CEB900B72F5E /* Camipro.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B5871A156458FA0051C57E /* Camipro.png */; };
+		272301C91858CEB900B72F5E /* Camipro@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B5871B156458FA0051C57E /* Camipro@2x.png */; };
+		272301CA1858CEB900B72F5E /* CamiproLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32710E941565129600DE6984 /* CamiproLarge.png */; };
+		272301CB1858CEB900B72F5E /* TransportHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214515B193A200BB445D /* TransportHelpView.xib */; };
+		272301CC1858CEB900B72F5E /* HelpBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37E115B02FBE00E7BA6D /* HelpBarButton.png */; };
+		272301CD1858CEB900B72F5E /* HelpBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37E215B02FBE00E7BA6D /* HelpBarButton@2x.png */; };
+		272301CE1858CEB900B72F5E /* MasterHidden@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32506D04181DC7AF003F08D7 /* MasterHidden@2x.png */; };
+		272301CF1858CEB900B72F5E /* TransportSmallBus.png in Resources */ = {isa = PBXBuildFile; fileRef = 327585A61844DE93004215FC /* TransportSmallBus.png */; };
+		272301D01858CEB900B72F5E /* TransportHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214615B197DE00BB445D /* TransportHelp.html */; };
+		272301D11858CEB900B72F5E /* EditableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */; };
+		272301D21858CEB900B72F5E /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
+		272301D31858CEB900B72F5E /* MoodleLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3218CD2315B8359F00CEB238 /* MoodleLarge.png */; };
+		272301D41858CEB900B72F5E /* FoodSmileyMeh.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131518296E2D00F4C622 /* FoodSmileyMeh.png */; };
+		272301D51858CEB900B72F5E /* LGRefreshControl.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32930A7817F898910025F864 /* LGRefreshControl.strings */; };
+		272301D61858CEB900B72F5E /* PocketCampusStyled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B6A53915BDF7BB000E7F3C /* PocketCampusStyled@2x.png */; };
+		272301D71858CEB900B72F5E /* PocketCampusStyled.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B6A53B15BDFB86000E7F3C /* PocketCampusStyled.png */; };
+		272301D81858CEB900B72F5E /* AboutPCView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3293AD2215D1BC930097D414 /* AboutPCView.xib */; };
+		272301D91858CEB900B72F5E /* AboutPC.html in Resources */ = {isa = PBXBuildFile; fileRef = 32777B4215D1BFB400A29F56 /* AboutPC.html */; };
+		272301DA1858CEB900B72F5E /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32675C2315F50F4A00880387 /* Config.plist */; };
+		272301DB1858CEB900B72F5E /* Compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969AB915FBA9150051EF9A /* Compass.png */; };
+		272301DC1858CEB900B72F5E /* Compass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969ABA15FBA9150051EF9A /* Compass@2x.png */; };
+		272301DD1858CEB900B72F5E /* LocationArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD93183E366B00BD36F9 /* LocationArrow.png */; };
+		272301DE1858CEB900B72F5E /* FavoriteCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132F1825465D0037FE00 /* FavoriteCornerSelected.png */; };
+		272301DF1858CEB900B72F5E /* MainMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32B3F3931621956C007A75C7 /* MainMenuView.xib */; };
+		272301E01858CEB900B72F5E /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */; };
+		272301E11858CEB900B72F5E /* BlankPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47B3162200E8006752B4 /* BlankPluginView.xib */; };
+		272301E21858CEB900B72F5E /* MyEdu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB5245679D4E9E9B9F64BAC1 /* MyEdu@2x.png */; };
+		272301E31858CEB900B72F5E /* Info.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375718119B4100901F6A /* Info.png */; };
+		272301E41858CEB900B72F5E /* FavoriteCornerSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327513301825465D0037FE00 /* FavoriteCornerSelected@2x.png */; };
+		272301E51858CEB900B72F5E /* MyEdu.png in Resources */ = {isa = PBXBuildFile; fileRef = 74EB4361AD2616FF44DA66CB /* MyEdu.png */; };
+		272301E61858CEB900B72F5E /* MyEduPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32F3EAB116334DD200DA8902 /* MyEduPlugin.strings */; };
+		272301E71858CEB900B72F5E /* PocketCampusDrawing.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CBF057163450E500FD92E5 /* PocketCampusDrawing.png */; };
+		272301E81858CEB900B72F5E /* LocationArrowSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD95183E366B00BD36F9 /* LocationArrowSelected.png */; };
+		272301E91858CEB900B72F5E /* DirectoryEmptyPictureSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32574ED5182140AE008F3163 /* DirectoryEmptyPictureSmall@2x.png */; };
+		272301EA1858CEB900B72F5E /* TransportSmallBus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327585A71844DE93004215FC /* TransportSmallBus@2x.png */; };
+		272301EB1858CEB900B72F5E /* PocketCampusDrawing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CBF058163450E500FD92E5 /* PocketCampusDrawing@2x.png */; };
+		272301EC1858CEB900B72F5E /* CameraBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C509E417FC60B0005A5635 /* CameraBarButton.png */; };
+		272301ED1858CEB900B72F5E /* MainMenuNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B13A3D1634B0F4007B54A1 /* MainMenuNavbar.png */; };
+		272301EE1858CEB900B72F5E /* MainMenuNavbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B13A3E1634B0F4007B54A1 /* MainMenuNavbar@2x.png */; };
+		272301EF1858CEB900B72F5E /* MyEduCourseListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323586E716381E1200872ECE /* MyEduCourseListView.xib */; };
+		272301F01858CEB900B72F5E /* TopDown1pxShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 323A913B1640783F007A63D3 /* TopDown1pxShadow.png */; };
+		272301F11858CEB900B72F5E /* LocationArrow2Active.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289F2B5183FAB8C00D833C2 /* LocationArrow2Active.png */; };
+		272301F21858CEB900B72F5E /* TopDown1pxShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323A913E164078FF007A63D3 /* TopDown1pxShadow@2x.png */; };
+		272301F31858CEB900B72F5E /* DirectoryLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */; };
+		272301F41858CEB900B72F5E /* MyEduSectionListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32B92F231641BE2A0054B46F /* MyEduSectionListView.xib */; };
+		272301F51858CEB900B72F5E /* MyEduModuleListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322BA0431643F4510063B632 /* MyEduModuleListView.xib */; };
+		272301F61858CEB900B72F5E /* ArrowDownCircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD2FB164485DF003FF9BE /* ArrowDownCircle.png */; };
+		272301F71858CEB900B72F5E /* ArrowDownCircle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */; };
+		272301F81858CEB900B72F5E /* WarningSignRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD30316449C67003FF9BE /* WarningSignRed.png */; };
+		272301F91858CEB900B72F5E /* WarningSignRed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD30416449C67003FF9BE /* WarningSignRed@2x.png */; };
+		272301FA1858CEB900B72F5E /* MyEduCourseInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */; };
+		272301FB1858CEB900B72F5E /* MyEduSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320DFC2516469A2300849907 /* MyEduSplashDetailView.xib */; };
+		272301FC1858CEB900B72F5E /* DirectoryEmptyPictureSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 32574ED4182140AE008F3163 /* DirectoryEmptyPictureSmall.png */; };
+		272301FD1858CEB900B72F5E /* FavoriteCorner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132E1825465D0037FE00 /* FavoriteCorner@2x.png */; };
+		272301FE1858CEB900B72F5E /* MyEduModuleVideoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320DFC321646B3A200849907 /* MyEduModuleVideoView.xib */; };
+		272301FF1858CEB900B72F5E /* MyEduModuleDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320073561646C51E002AD7BA /* MyEduModuleDetailView.xib */; };
+		272302001858CEB900B72F5E /* MyEduModuleVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073581646CBF0002AD7BA /* MyEduModuleVideo.png */; };
+		272302011858CEB900B72F5E /* SettingsBarButton2.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C8799A183D103600750A11 /* SettingsBarButton2.png */; };
+		272302021858CEB900B72F5E /* MyEduModuleVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073591646CBF0002AD7BA /* MyEduModuleVideo@2x.png */; };
+		272302031858CEB900B72F5E /* MyEduModuleTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3200735C1646DD52002AD7BA /* MyEduModuleTextView.xib */; };
+		272302041858CEB900B72F5E /* MyEduModuleText.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073611646E101002AD7BA /* MyEduModuleText.png */; };
+		272302051858CEB900B72F5E /* MyEduModuleText@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073621646E101002AD7BA /* MyEduModuleText@2x.png */; };
+		272302061858CEB900B72F5E /* ArrowHide.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073651647128F002AD7BA /* ArrowHide.png */; };
+		272302071858CEB900B72F5E /* ArrowSimpleRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327585A31844C5B1004215FC /* ArrowSimpleRight@2x.png */; };
+		272302081858CEB900B72F5E /* ArrowHide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320073661647128F002AD7BA /* ArrowHide@2x.png */; };
+		272302091858CEB900B72F5E /* LocationArrowSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD96183E366B00BD36F9 /* LocationArrowSelected@2x.png */; };
+		2723020A1858CEB900B72F5E /* ArrowShow.png in Resources */ = {isa = PBXBuildFile; fileRef = 32007369164718DA002AD7BA /* ArrowShow.png */; };
+		2723020B1858CEB900B72F5E /* SortBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C509E917FC6D73005A5635 /* SortBarButton@2x.png */; };
+		2723020C1858CEB900B72F5E /* ArrowShow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200736A164718DA002AD7BA /* ArrowShow@2x.png */; };
+		2723020D1858CEB900B72F5E /* LightGrayTextureBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */; };
+		2723020E1858CEB900B72F5E /* LightGrayTextureBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */; };
+		2723020F1858CEB900B72F5E /* StretchableInnerShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 325368BE164932F600406801 /* StretchableInnerShadow.png */; };
+		272302101858CEB900B72F5E /* StretchableInnerShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325368BF164932F600406801 /* StretchableInnerShadow@2x.png */; };
+		272302111858CEB900B72F5E /* MyEduModuleMaterialsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325368C516496F7F00406801 /* MyEduModuleMaterialsView.xib */; };
+		272302121858CEB900B72F5E /* MyEduModuleMaterial.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */; };
+		272302131858CEB900B72F5E /* MyEduModuleMaterial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */; };
+		272302141858CEB900B72F5E /* MyEduDrawersNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3242F4091655A5B900A8C3D7 /* MyEduDrawersNavbar.png */; };
+		272302151858CEB900B72F5E /* MyEduDrawersNavbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3242F40A1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png */; };
+		272302161858CEB900B72F5E /* MyEduModuleVideoDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC70D165995050039F6A6 /* MyEduModuleVideoDownloadView.xib */; };
+		272302171858CEB900B72F5E /* LocationArrow2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289F2B4183FAB8C00D833C2 /* LocationArrow2@2x.png */; };
+		272302181858CEB900B72F5E /* CheckmarkRoundedSquare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */; };
+		272302191858CEB900B72F5E /* CancelCrossRound@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */; };
+		2723021A1858CEB900B72F5E /* CancelCrossRound.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7151659A2BA0039F6A6 /* CancelCrossRound.png */; };
+		2723021B1858CEB900B72F5E /* Download.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7171659AAEB0039F6A6 /* Download.png */; };
+		2723021C1858CEB900B72F5E /* Download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7181659AAEB0039F6A6 /* Download@2x.png */; };
+		2723021D1858CEB900B72F5E /* DownloadedRectSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 3295DF0D165BC60B00CA3B9D /* DownloadedRectSmall.png */; };
+		2723021E1858CEB900B72F5E /* DownloadedRectSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3295DF0E165BC60C00CA3B9D /* DownloadedRectSmall@2x.png */; };
+		2723021F1858CEB900B72F5E /* MapView-pad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32763230166511B600C33DF9 /* MapView-pad.xib */; };
+		272302201858CEB900B72F5E /* PushNotifPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327BF2351666043100C67937 /* PushNotifPlugin.strings */; };
+		272302211858CEB900B72F5E /* LocationArrowActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B250166AA58D00F68304 /* LocationArrowActive.png */; };
+		272302221858CEB900B72F5E /* LocationArrowActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B251166AA58D00F68304 /* LocationArrowActive@2x.png */; };
+		272302231858CEB900B72F5E /* LocationArrowInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B252166AA58D00F68304 /* LocationArrowInactive.png */; };
+		272302241858CEB900B72F5E /* LocationArrowInactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B253166AA58D00F68304 /* LocationArrowInactive@2x.png */; };
+		272302251858CEB900B72F5E /* MapControlsOverlayBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B254166AA58E00F68304 /* MapControlsOverlayBox.png */; };
+		272302261858CEB900B72F5E /* TransportLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275859E18449347004215FC /* TransportLarge.png */; };
+		272302271858CEB900B72F5E /* MapControlsOverlayBox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B255166AA58E00F68304 /* MapControlsOverlayBox@2x.png */; };
+		272302281858CEB900B72F5E /* FloorDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B25C166ABEA100F68304 /* FloorDown.png */; };
+		272302291858CEB900B72F5E /* FloorDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B25D166ABEA200F68304 /* FloorDown@2x.png */; };
+		2723022A1858CEB900B72F5E /* FloorUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B25E166ABEA200F68304 /* FloorUp.png */; };
+		2723022B1858CEB900B72F5E /* FloorUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B25F166ABEA200F68304 /* FloorUp@2x.png */; };
+		2723022C1858CEB900B72F5E /* EyeMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B264166AC86000F68304 /* EyeMap.png */; };
+		2723022D1858CEB900B72F5E /* EyeMap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B265166AC86000F68304 /* EyeMap@2x.png */; };
+		2723022E1858CEB900B72F5E /* SettingsBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329CA501166D452E00F7B1AE /* SettingsBarButton.png */; };
+		2723022F1858CEB900B72F5E /* PlusBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C8799E183D10E600750A11 /* PlusBarButton.png */; };
+		272302301858CEB900B72F5E /* SettingsBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329CA502166D452E00F7B1AE /* SettingsBarButton@2x.png */; };
+		272302311858CEB900B72F5E /* MoodleResourceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32035BB4166E988600E134DD /* MoodleResourceView.xib */; };
+		272302321858CEB900B72F5E /* MoodleSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */; };
+		272302331858CEB900B72F5E /* MyEduMovieSpeed1X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3221932F16788F520072CE86 /* MyEduMovieSpeed1X@2x.png */; };
+		272302341858CEB900B72F5E /* MyEduMovieSpeed1X.png in Resources */ = {isa = PBXBuildFile; fileRef = 322193311678907F0072CE86 /* MyEduMovieSpeed1X.png */; };
+		272302351858CEB900B72F5E /* MyEduMovieSpeed0_5X.png in Resources */ = {isa = PBXBuildFile; fileRef = 322193331678A10C0072CE86 /* MyEduMovieSpeed0_5X.png */; };
+		272302361858CEB900B72F5E /* MyEduMovieSpeed0_5X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322193341678A10C0072CE86 /* MyEduMovieSpeed0_5X@2x.png */; };
+		272302371858CEB900B72F5E /* MyEduMovieSpeed1_5X.png in Resources */ = {isa = PBXBuildFile; fileRef = 322193351678A10C0072CE86 /* MyEduMovieSpeed1_5X.png */; };
+		272302381858CEB900B72F5E /* MyEduMovieSpeed1_5X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322193361678A10C0072CE86 /* MyEduMovieSpeed1_5X@2x.png */; };
+		272302391858CEB900B72F5E /* MyEduMovieSpeed1_2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6031678C9BE00A32983 /* MyEduMovieSpeed1_2X.png */; };
+		2723023A1858CEB900B72F5E /* MyEduMovieSpeed1_2X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */; };
+		2723023B1858CEB900B72F5E /* DownloadedCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412D8167E776A001E8C62 /* DownloadedCorner.png */; };
+		2723023C1858CEB900B72F5E /* DownloadedCorner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412D9167E776A001E8C62 /* DownloadedCorner@2x.png */; };
+		2723023D1858CEB900B72F5E /* DownloadedCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412DF167E7E56001E8C62 /* DownloadedCornerSelected.png */; };
+		2723023E1858CEB900B72F5E /* DownloadedCornerSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */; };
+		2723023F1858CEB900B72F5E /* ClockCell.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBA16847A0900E5CFF6 /* ClockCell.png */; };
+		272302401858CEB900B72F5E /* ClockCell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */; };
+		272302411858CEB900B72F5E /* DirectoryEmptyDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */; };
+		272302421858CEB900B72F5E /* FoodSmileyHappy.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131118296E2D00F4C622 /* FoodSmileyHappy.png */; };
+		272302431858CEB900B72F5E /* ClockCellSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */; };
+		272302441858CEB900B72F5E /* ClockCellSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DC81684D62300E5CFF6 /* ClockCellSelected@2x.png */; };
+		272302451858CEB900B72F5E /* NewsSplashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322207EB1688E6B5003F6622 /* NewsSplashView.xib */; };
+		272302461858CEB900B72F5E /* SplashImage4inch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A72DD184A4EE0002C5A6B /* SplashImage4inch@2x.png */; };
+		272302471858CEB900B72F5E /* NewsItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322207F01688F101003F6622 /* NewsItemView.xib */; };
+		272302481858CEB900B72F5E /* TransportTripCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D1DE17184663C700D0C866 /* TransportTripCell.xib */; };
+		272302491858CEB900B72F5E /* NewsItem.html in Resources */ = {isa = PBXBuildFile; fileRef = 322207F21688FFFA003F6622 /* NewsItem.html */; };
+		2723024A1858CEB900B72F5E /* MyEduLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A46DE1168B975C0023F37C /* MyEduLarge.png */; };
+		2723024B1858CEB900B72F5E /* MasterVisible.png in Resources */ = {isa = PBXBuildFile; fileRef = 32506CFF181DC41E003F08D7 /* MasterVisible.png */; };
+		2723024C1858CEB900B72F5E /* DirectoryProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */; };
+		2723024D1858CEB900B72F5E /* SettingsBarButton2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C8799B183D103600750A11 /* SettingsBarButton2@2x.png */; };
+		2723024E1858CEB900B72F5E /* AppLogoCellImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C216BDB42D0004D5AD /* AppLogoCellImage@2x.png */; };
+		2723024F1858CEB900B72F5E /* AppLogoCellImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C416BDB5300004D5AD /* AppLogoCellImage.png */; };
+		272302501858CEB900B72F5E /* FacebookLikeCellImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */; };
+		272302511858CEB900B72F5E /* TransportSmallBusGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 320480C318479D4E00116380 /* TransportSmallBusGreen.png */; };
+		272302521858CEB900B72F5E /* FacebookLikeCellImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */; };
+		272302531858CEB900B72F5E /* WhiteDisclosureIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676CA16BDD1420004D5AD /* WhiteDisclosureIndicator.png */; };
+		272302541858CEB900B72F5E /* WhiteDisclosureIndicator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676CB16BDD1420004D5AD /* WhiteDisclosureIndicator@2x.png */; };
+		272302551858CEB900B72F5E /* Events.png in Resources */ = {isa = PBXBuildFile; fileRef = C9574A2CA3E21EEE6B620DE7 /* Events.png */; };
+		272302561858CEB900B72F5E /* Events@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0FF44E59AC0FAF424B57744 /* Events@2x.png */; };
+		272302571858CEB900B72F5E /* EventsPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AA6CCC16DFF0D100783E9C /* EventsPlugin.strings */; };
+		272302581858CEB900B72F5E /* CellNoImageStretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EB16E1F53000AF365C /* CellNoImageStretchable.png */; };
+		272302591858CEB900B72F5E /* CellNoImageStretchable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F8E3EC16E1F53000AF365C /* CellNoImageStretchable@2x.png */; };
+		2723025A1858CEB900B72F5E /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
+		2723025B1858CEB900B72F5E /* FavoriteNavBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3916E693130054C3A8 /* FavoriteNavBarButton.png */; };
+		2723025C1858CEB900B72F5E /* FavoriteNavBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */; };
+		2723025D1858CEB900B72F5E /* FavoriteGlowNavBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */; };
+		2723025E1858CEB900B72F5E /* FavoriteGlowNavBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */; };
+		2723025F1858CEB900B72F5E /* EventItemInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308C16EAB02400F66484 /* EventItemInfo.html */; };
+		272302601858CEB900B72F5E /* EventsSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */; };
+		272302611858CEB900B72F5E /* Info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375818119B4100901F6A /* Info@2x.png */; };
+		272302621858CEB900B72F5E /* EventsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F5309316EABA0F00F66484 /* EventsLarge.png */; };
+		272302631858CEB900B72F5E /* CameraBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C509E517FC60B0005A5635 /* CameraBarButton@2x.png */; };
+		272302641858CEB900B72F5E /* EyeBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452B16FE174500469113 /* EyeBarButton.png */; };
+		272302651858CEB900B72F5E /* FoodSmileyHappy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131218296E2D00F4C622 /* FoodSmileyHappy@2x.png */; };
+		272302661858CEB900B72F5E /* EyeBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452C16FE174500469113 /* EyeBarButton@2x.png */; };
+		272302671858CEB900B72F5E /* CamiproView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F7218B171B0BB4005755A2 /* CamiproView~ipad.xib */; };
+		272302681858CEB900B72F5E /* GenericGreyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 322C07501722A7E6004FDC83 /* GenericGreyButton.png */; };
+		272302691858CEB900B72F5E /* GenericGreyButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322C07511722A7E6004FDC83 /* GenericGreyButton@2x.png */; };
+		2723026A1858CEB900B72F5E /* GenericGreyButtonHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 322C07521722A7E6004FDC83 /* GenericGreyButtonHighlight.png */; };
+		2723026B1858CEB900B72F5E /* GenericGreyButtonHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322C07531722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png */; };
+		2723026C1858CEB900B72F5E /* EventsTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 328D38291747A8C9006FE6F3 /* EventsTagView.xib */; };
+		2723026D1858CEB900B72F5E /* SortBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C509E817FC6D73005A5635 /* SortBarButton.png */; };
+		2723026E1858CEB900B72F5E /* DirectoryPersonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */; };
+		2723026F1858CEB900B72F5E /* CamiproView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AEEC821747C11C006DBA2F /* CamiproView~iphone.xib */; };
+		272302701858CEB900B72F5E /* FoodMealCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32C450AF1824137B000C99A3 /* FoodMealCell.xib */; };
+		272302711858CEB900B72F5E /* GenericResizableShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A21174A627C00ED19FD /* GenericResizableShadow.png */; };
+		272302721858CEB900B72F5E /* GenericResizableShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */; };
+		272302731858CEB900B72F5E /* ArrowUpRightCircleAccessory.png in Resources */ = {isa = PBXBuildFile; fileRef = 327B0C22175199590011D81E /* ArrowUpRightCircleAccessory.png */; };
+		272302741858CEB900B72F5E /* FoodLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32290AD218200C67005869E7 /* FoodLarge@2x.png */; };
+		272302751858CEB900B72F5E /* ArrowUpRightCircleAccessory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327B0C23175199590011D81E /* ArrowUpRightCircleAccessory@2x.png */; };
+		272302761858CEB900B72F5E /* ArrowSimpleRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 327585A21844C5B1004215FC /* ArrowSimpleRight.png */; };
+		272302771858CEB900B72F5E /* AnswerRecViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32341460176558F300527895 /* AnswerRecViewController.xib */; };
+		272302781858CEB900B72F5E /* IntroViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32341478176558F300527895 /* IntroViewController.xib */; };
+		272302791858CEB900B72F5E /* MatchingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3234147D176558F300527895 /* MatchingViewController.xib */; };
+		2723027A1858CEB900B72F5E /* FoodSmileyMeh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131618296E2D00F4C622 /* FoodSmileyMeh@2x.png */; };
+		2723027B1858CEB900B72F5E /* QAForumPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 323414A5176558F300527895 /* QAForumPlugin.strings */; };
+		2723027C1858CEB900B72F5E /* kermit_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414A9176558F300527895 /* kermit_empty.png */; };
+		2723027D1858CEB900B72F5E /* SplashImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A72DE184A4EE0002C5A6B /* SplashImage@2x.png */; };
+		2723027E1858CEB900B72F5E /* NewsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32074B7C17FB09CA009804CE /* NewsLarge@2x.png */; };
+		2723027F1858CEB900B72F5E /* kermit_full.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414AA176558F300527895 /* kermit_full.png */; };
+		272302801858CEB900B72F5E /* kermit_half.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414AB176558F300527895 /* kermit_half.png */; };
+		272302811858CEB900B72F5E /* LocationArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CACD94183E366B00BD36F9 /* LocationArrow@2x.png */; };
+		272302821858CEB900B72F5E /* AcceptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B3176558F300527895 /* AcceptViewController.xib */; };
+		272302831858CEB900B72F5E /* AnswerListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B4176558F300527895 /* AnswerListViewController.xib */; };
+		272302841858CEB900B72F5E /* AnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B5176558F300527895 /* AnswerViewController.xib */; };
+		272302851858CEB900B72F5E /* CheckmarkRoundedSquareEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */; };
+		272302861858CEB900B72F5E /* AskQuestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B6176558F300527895 /* AskQuestionViewController.xib */; };
+		272302871858CEB900B72F5E /* FeedbackListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B7176558F300527895 /* FeedbackListViewController.xib */; };
+		272302881858CEB900B72F5E /* FeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B8176558F300527895 /* FeedbackViewController.xib */; };
+		272302891858CEB900B72F5E /* ForumTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414B9176558F300527895 /* ForumTableCell.xib */; };
+		2723028A1858CEB900B72F5E /* QAForum.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414BB176558F300527895 /* QAForum.png */; };
+		2723028B1858CEB900B72F5E /* QAForum@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414BC176558F300527895 /* QAForum@2x.png */; };
+		2723028C1858CEB900B72F5E /* qaforum_ask.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414BD176558F300527895 /* qaforum_ask.png */; };
+		2723028D1858CEB900B72F5E /* qaforum_forum.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414BE176558F300527895 /* qaforum_forum.png */; };
+		2723028E1858CEB900B72F5E /* qaforum_intro1.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414BF176558F300527895 /* qaforum_intro1.png */; };
+		2723028F1858CEB900B72F5E /* qaforum_intro2.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C0176558F300527895 /* qaforum_intro2.png */; };
+		272302901858CEB900B72F5E /* PlusBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C8799F183D10E600750A11 /* PlusBarButton@2x.png */; };
+		272302911858CEB900B72F5E /* qaforum_intro3.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C1176558F300527895 /* qaforum_intro3.png */; };
+		272302921858CEB900B72F5E /* qaforum_intro4.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C2176558F300527895 /* qaforum_intro4.png */; };
+		272302931858CEB900B72F5E /* qaforum_intro5.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C3176558F300527895 /* qaforum_intro5.png */; };
+		272302941858CEB900B72F5E /* qaforum_pending.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C4176558F300527895 /* qaforum_pending.png */; };
+		272302951858CEB900B72F5E /* qaforum_question.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C5176558F300527895 /* qaforum_question.png */; };
+		272302961858CEB900B72F5E /* qaforum_record.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C6176558F300527895 /* qaforum_record.png */; };
+		272302971858CEB900B72F5E /* qaforum_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C7176558F300527895 /* qaforum_right.png */; };
+		272302981858CEB900B72F5E /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
+		272302991858CEB900B72F5E /* TransportNextDeparturesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32456C0B184373FE00993F8B /* TransportNextDeparturesCell.xib */; };
+		2723029A1858CEB900B72F5E /* DirectoryLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32449D5C17C3F248003269E5 /* DirectoryLarge@2x.png */; };
+		2723029B1858CEB900B72F5E /* qaforum_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 323414C8176558F300527895 /* qaforum_selected.png */; };
+		2723029C1858CEB900B72F5E /* LatestForumViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414C9176558F300527895 /* LatestForumViewController.xib */; };
+		2723029D1858CEB900B72F5E /* MyAnswerListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CA176558F300527895 /* MyAnswerListViewController.xib */; };
+		2723029E1858CEB900B72F5E /* MyAnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CB176558F300527895 /* MyAnswerViewController.xib */; };
+		2723029F1858CEB900B72F5E /* MyQuestionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CC176558F300527895 /* MyQuestionListViewController.xib */; };
+		272302A01858CEB900B72F5E /* MyQuestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CD176558F300527895 /* MyQuestionViewController.xib */; };
+		272302A11858CEB900B72F5E /* PendingTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CE176558F300527895 /* PendingTableCell.xib */; };
+		272302A21858CEB900B72F5E /* LocationArrow2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289F2B3183FAB8C00D833C2 /* LocationArrow2.png */; };
+		272302A31858CEB900B72F5E /* TransportSmallBusGreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320480C418479D4E00116380 /* TransportSmallBusGreen@2x.png */; };
+		272302A41858CEB900B72F5E /* PendingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414CF176558F300527895 /* PendingViewController.xib */; };
+		272302A51858CEB900B72F5E /* QAForumView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D0176558F300527895 /* QAForumView.xib */; };
+		272302A61858CEB900B72F5E /* QuestionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D1176558F300527895 /* QuestionListViewController.xib */; };
+		272302A71858CEB900B72F5E /* QuestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D2176558F300527895 /* QuestionViewController.xib */; };
+		272302A81858CEB900B72F5E /* ReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D3176558F300527895 /* ReportViewController.xib */; };
+		272302A91858CEB900B72F5E /* RequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D4176558F300527895 /* RequestViewController.xib */; };
+		272302AA1858CEB900B72F5E /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323414D5176558F300527895 /* SettingViewController.xib */; };
+		272302AB1858CEB900B72F5E /* CamiproTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */; };
+		272302AC1858CEB900B72F5E /* FoodSmileySad.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131918296E2D00F4C622 /* FoodSmileySad.png */; };
 		320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */; };
 		320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */; };
 		3200375518118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */; };
@@ -513,6 +1014,8 @@
 /* Begin PBXFileReference section */
 		108747F4A9B8A8CE3F473774 /* MyEduController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MyEduController.h; path = Plugins/MyEduPlugin/Controllers/MyEduController.h; sourceTree = SOURCE_ROOT; };
 		14D146FF839137578105D4C3 /* EventsService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventsService.h; path = Plugins/EventsPlugin/Model/EventsService.h; sourceTree = SOURCE_ROOT; };
+		272302B21858CEB900B72F5E /* PocketCampusNoCodeSign.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketCampusNoCodeSign.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		272302B31858CEBA00B72F5E /* PocketCampus copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PocketCampus copy2-Info.plist"; path = "/Users/slv/Documents/Projects/PocketCampus/ios/PocketCampus/PocketCampus copy2-Info.plist"; sourceTree = "<absolute>"; };
 		2A2F4A5AA559021373171E91 /* PushNotifService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = PushNotifService.m; path = Plugins/PushNotifPlugin/Model/PushNotifService.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CheckmarkRoundedSquare.png; sourceTree = "<group>"; };
 		320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckmarkRoundedSquare@2x.png"; sourceTree = "<group>"; };
@@ -1245,6 +1748,34 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		272301771858CEB900B72F5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				272301781858CEB900B72F5E /* libiconv.dylib in Frameworks */,
+				272301791858CEB900B72F5E /* CoreVideo.framework in Frameworks */,
+				2723017A1858CEB900B72F5E /* CoreMedia.framework in Frameworks */,
+				2723017B1858CEB900B72F5E /* AVFoundation.framework in Frameworks */,
+				2723017C1858CEB900B72F5E /* libsqlite3.dylib in Frameworks */,
+				2723017D1858CEB900B72F5E /* libz.dylib in Frameworks */,
+				2723017E1858CEB900B72F5E /* MediaPlayer.framework in Frameworks */,
+				2723017F1858CEB900B72F5E /* Security.framework in Frameworks */,
+				272301801858CEB900B72F5E /* MobileCoreServices.framework in Frameworks */,
+				272301811858CEB900B72F5E /* SystemConfiguration.framework in Frameworks */,
+				272301821858CEB900B72F5E /* CFNetwork.framework in Frameworks */,
+				272301831858CEB900B72F5E /* MapKit.framework in Frameworks */,
+				272301841858CEB900B72F5E /* CoreLocation.framework in Frameworks */,
+				272301851858CEB900B72F5E /* Crashlytics.framework in Frameworks */,
+				272301861858CEB900B72F5E /* AddressBook.framework in Frameworks */,
+				272301871858CEB900B72F5E /* AddressBookUI.framework in Frameworks */,
+				272301881858CEB900B72F5E /* UIKit.framework in Frameworks */,
+				272301891858CEB900B72F5E /* Foundation.framework in Frameworks */,
+				2723018A1858CEB900B72F5E /* CoreGraphics.framework in Frameworks */,
+				2723018B1858CEB900B72F5E /* QuartzCore.framework in Frameworks */,
+				2723018C1858CEB900B72F5E /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3219EF4914FCDE4900A271CD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1335,6 +1866,7 @@
 				3219EF4F14FCDE4900A271CD /* Frameworks */,
 				3219EF4D14FCDE4900A271CD /* Products */,
 				43F74C41A62B4C69936087B0 /* Pods.xcconfig */,
+				272302B31858CEBA00B72F5E /* PocketCampus copy2-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1342,6 +1874,7 @@
 			isa = PBXGroup;
 			children = (
 				3219EF4C14FCDE4900A271CD /* PocketCampus.app */,
+				272302B21858CEB900B72F5E /* PocketCampusNoCodeSign.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2962,6 +3495,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		272300B31858CEB900B72F5E /* PocketCampusNoCodeSign */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 272302AF1858CEB900B72F5E /* Build configuration list for PBXNativeTarget "PocketCampusNoCodeSign" */;
+			buildPhases = (
+				272300B41858CEB900B72F5E /* Check Pods Manifest.lock */,
+				272300B51858CEB900B72F5E /* Sources */,
+				272301771858CEB900B72F5E /* Frameworks */,
+				2723018D1858CEB900B72F5E /* Resources */,
+				272302AD1858CEB900B72F5E /* Copy Pods Resources */,
+				272302AE1858CEB900B72F5E /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PocketCampusNoCodeSign;
+			productName = PocketCampus;
+			productReference = 272302B21858CEB900B72F5E /* PocketCampusNoCodeSign.app */;
+			productType = "com.apple.product-type.application";
+		};
 		3219EF4B14FCDE4900A271CD /* PocketCampus */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3219EF6414FCDE4900A271CD /* Build configuration list for PBXNativeTarget "PocketCampus" */;
@@ -3010,11 +3563,306 @@
 			projectRoot = "";
 			targets = (
 				3219EF4B14FCDE4900A271CD /* PocketCampus */,
+				272300B31858CEB900B72F5E /* PocketCampusNoCodeSign */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2723018D1858CEB900B72F5E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2723018E1858CEB900B72F5E /* DirectoryPersonBaseInfoCell.xib in Resources */,
+				2723018F1858CEB900B72F5E /* PocketCampus.strings in Resources */,
+				272301901858CEB900B72F5E /* CheckmarkRoundedSquareEmpty.png in Resources */,
+				272301911858CEB900B72F5E /* Plugins.plist in Resources */,
+				272301921858CEB900B72F5E /* DirectoryPlugin.strings in Resources */,
+				272301931858CEB900B72F5E /* DirectorySearchView.xib in Resources */,
+				272301941858CEB900B72F5E /* FoodRestaurantInfoCell.xib in Resources */,
+				272301951858CEB900B72F5E /* FoodPlugin.strings in Resources */,
+				272301961858CEB900B72F5E /* Directory.png in Resources */,
+				272301971858CEB900B72F5E /* Directory@2x.png in Resources */,
+				272301981858CEB900B72F5E /* Food.png in Resources */,
+				272301991858CEB900B72F5E /* MasterHidden.png in Resources */,
+				2723019A1858CEB900B72F5E /* Food@2x.png in Resources */,
+				2723019B1858CEB900B72F5E /* FoodLarge.png in Resources */,
+				2723019C1858CEB900B72F5E /* MasterVisible@2x.png in Resources */,
+				2723019D1858CEB900B72F5E /* FoodSplashDetailView.xib in Resources */,
+				2723019E1858CEB900B72F5E /* CheckmarkRoundedSquare.png in Resources */,
+				2723019F1858CEB900B72F5E /* RatingStar.png in Resources */,
+				272301A01858CEB900B72F5E /* RatingStar@2x.png in Resources */,
+				272301A11858CEB900B72F5E /* RatingStarEmpty.png in Resources */,
+				272301A21858CEB900B72F5E /* RatingStarEmpty@2x.png in Resources */,
+				272301A31858CEB900B72F5E /* CamiproLarge@2x.png in Resources */,
+				272301A41858CEB900B72F5E /* RatingPoint.png in Resources */,
+				272301A51858CEB900B72F5E /* RatingPoint@2x.png in Resources */,
+				272301A61858CEB900B72F5E /* TransportPlugin.strings in Resources */,
+				272301A71858CEB900B72F5E /* Transport.png in Resources */,
+				272301A81858CEB900B72F5E /* Transport@2x.png in Resources */,
+				272301A91858CEB900B72F5E /* TransportNextDeparturesView.xib in Resources */,
+				272301AA1858CEB900B72F5E /* MoodleLarge@2x.png in Resources */,
+				272301AB1858CEB900B72F5E /* FavoriteCorner.png in Resources */,
+				272301AC1858CEB900B72F5E /* TransportAddStationView.xib in Resources */,
+				272301AD1858CEB900B72F5E /* LocationArrow2Active@2x.png in Resources */,
+				272301AE1858CEB900B72F5E /* CenterOnEPFL@2x.png in Resources */,
+				272301AF1858CEB900B72F5E /* TransportTripsHeaderCell.xib in Resources */,
+				272301B01858CEB900B72F5E /* DirectoryEmptyPicture.png in Resources */,
+				272301B11858CEB900B72F5E /* Images.xcassets in Resources */,
+				272301B21858CEB900B72F5E /* TransportTripPartsView.xib in Resources */,
+				272301B31858CEB900B72F5E /* TransportFeetConnection.png in Resources */,
+				272301B41858CEB900B72F5E /* TransportFeetConnection@2x.png in Resources */,
+				272301B51858CEB900B72F5E /* MapPlugin.strings in Resources */,
+				272301B61858CEB900B72F5E /* MapView-phone.xib in Resources */,
+				272301B71858CEB900B72F5E /* Map.png in Resources */,
+				272301B81858CEB900B72F5E /* Map@2x.png in Resources */,
+				272301B91858CEB900B72F5E /* MoodlePlugin.strings in Resources */,
+				272301BA1858CEB900B72F5E /* TransportLarge@2x.png in Resources */,
+				272301BB1858CEB900B72F5E /* FoodSmileySad@2x.png in Resources */,
+				272301BC1858CEB900B72F5E /* Moodle.png in Resources */,
+				272301BD1858CEB900B72F5E /* Moodle@2x.png in Resources */,
+				272301BE1858CEB900B72F5E /* DirectoryEmptyPicture@2x.png in Resources */,
+				272301BF1858CEB900B72F5E /* NewsPlugin.strings in Resources */,
+				272301C01858CEB900B72F5E /* News.png in Resources */,
+				272301C11858CEB900B72F5E /* News@2x.png in Resources */,
+				272301C21858CEB900B72F5E /* NewsLarge.png in Resources */,
+				272301C31858CEB900B72F5E /* BackgroundNewsThumbnail.png in Resources */,
+				272301C41858CEB900B72F5E /* BackgroundNewsThumbnail@2x.png in Resources */,
+				272301C51858CEB900B72F5E /* CamiproPlugin.strings in Resources */,
+				272301C61858CEB900B72F5E /* ListBarButton.png in Resources */,
+				272301C71858CEB900B72F5E /* ListBarButton@2x.png in Resources */,
+				272301C81858CEB900B72F5E /* Camipro.png in Resources */,
+				272301C91858CEB900B72F5E /* Camipro@2x.png in Resources */,
+				272301CA1858CEB900B72F5E /* CamiproLarge.png in Resources */,
+				272301CB1858CEB900B72F5E /* TransportHelpView.xib in Resources */,
+				272301CC1858CEB900B72F5E /* HelpBarButton.png in Resources */,
+				272301CD1858CEB900B72F5E /* HelpBarButton@2x.png in Resources */,
+				272301CE1858CEB900B72F5E /* MasterHidden@2x.png in Resources */,
+				272301CF1858CEB900B72F5E /* TransportSmallBus.png in Resources */,
+				272301D01858CEB900B72F5E /* TransportHelp.html in Resources */,
+				272301D11858CEB900B72F5E /* EditableTableViewCell.xib in Resources */,
+				272301D21858CEB900B72F5E /* AuthenticationPlugin.strings in Resources */,
+				272301D31858CEB900B72F5E /* MoodleLarge.png in Resources */,
+				272301D41858CEB900B72F5E /* FoodSmileyMeh.png in Resources */,
+				272301D51858CEB900B72F5E /* LGRefreshControl.strings in Resources */,
+				272301D61858CEB900B72F5E /* PocketCampusStyled@2x.png in Resources */,
+				272301D71858CEB900B72F5E /* PocketCampusStyled.png in Resources */,
+				272301D81858CEB900B72F5E /* AboutPCView.xib in Resources */,
+				272301D91858CEB900B72F5E /* AboutPC.html in Resources */,
+				272301DA1858CEB900B72F5E /* Config.plist in Resources */,
+				272301DB1858CEB900B72F5E /* Compass.png in Resources */,
+				272301DC1858CEB900B72F5E /* Compass@2x.png in Resources */,
+				272301DD1858CEB900B72F5E /* LocationArrow.png in Resources */,
+				272301DE1858CEB900B72F5E /* FavoriteCornerSelected.png in Resources */,
+				272301DF1858CEB900B72F5E /* MainMenuView.xib in Resources */,
+				272301E01858CEB900B72F5E /* MainMenuItemCell.xib in Resources */,
+				272301E11858CEB900B72F5E /* BlankPluginView.xib in Resources */,
+				272301E21858CEB900B72F5E /* MyEdu@2x.png in Resources */,
+				272301E31858CEB900B72F5E /* Info.png in Resources */,
+				272301E41858CEB900B72F5E /* FavoriteCornerSelected@2x.png in Resources */,
+				272301E51858CEB900B72F5E /* MyEdu.png in Resources */,
+				272301E61858CEB900B72F5E /* MyEduPlugin.strings in Resources */,
+				272301E71858CEB900B72F5E /* PocketCampusDrawing.png in Resources */,
+				272301E81858CEB900B72F5E /* LocationArrowSelected.png in Resources */,
+				272301E91858CEB900B72F5E /* DirectoryEmptyPictureSmall@2x.png in Resources */,
+				272301EA1858CEB900B72F5E /* TransportSmallBus@2x.png in Resources */,
+				272301EB1858CEB900B72F5E /* PocketCampusDrawing@2x.png in Resources */,
+				272301EC1858CEB900B72F5E /* CameraBarButton.png in Resources */,
+				272301ED1858CEB900B72F5E /* MainMenuNavbar.png in Resources */,
+				272301EE1858CEB900B72F5E /* MainMenuNavbar@2x.png in Resources */,
+				272301EF1858CEB900B72F5E /* MyEduCourseListView.xib in Resources */,
+				272301F01858CEB900B72F5E /* TopDown1pxShadow.png in Resources */,
+				272301F11858CEB900B72F5E /* LocationArrow2Active.png in Resources */,
+				272301F21858CEB900B72F5E /* TopDown1pxShadow@2x.png in Resources */,
+				272301F31858CEB900B72F5E /* DirectoryLarge.png in Resources */,
+				272301F41858CEB900B72F5E /* MyEduSectionListView.xib in Resources */,
+				272301F51858CEB900B72F5E /* MyEduModuleListView.xib in Resources */,
+				272301F61858CEB900B72F5E /* ArrowDownCircle.png in Resources */,
+				272301F71858CEB900B72F5E /* ArrowDownCircle@2x.png in Resources */,
+				272301F81858CEB900B72F5E /* WarningSignRed.png in Resources */,
+				272301F91858CEB900B72F5E /* WarningSignRed@2x.png in Resources */,
+				272301FA1858CEB900B72F5E /* MyEduCourseInfoView.xib in Resources */,
+				272301FB1858CEB900B72F5E /* MyEduSplashDetailView.xib in Resources */,
+				272301FC1858CEB900B72F5E /* DirectoryEmptyPictureSmall.png in Resources */,
+				272301FD1858CEB900B72F5E /* FavoriteCorner@2x.png in Resources */,
+				272301FE1858CEB900B72F5E /* MyEduModuleVideoView.xib in Resources */,
+				272301FF1858CEB900B72F5E /* MyEduModuleDetailView.xib in Resources */,
+				272302001858CEB900B72F5E /* MyEduModuleVideo.png in Resources */,
+				272302011858CEB900B72F5E /* SettingsBarButton2.png in Resources */,
+				272302021858CEB900B72F5E /* MyEduModuleVideo@2x.png in Resources */,
+				272302031858CEB900B72F5E /* MyEduModuleTextView.xib in Resources */,
+				272302041858CEB900B72F5E /* MyEduModuleText.png in Resources */,
+				272302051858CEB900B72F5E /* MyEduModuleText@2x.png in Resources */,
+				272302061858CEB900B72F5E /* ArrowHide.png in Resources */,
+				272302071858CEB900B72F5E /* ArrowSimpleRight@2x.png in Resources */,
+				272302081858CEB900B72F5E /* ArrowHide@2x.png in Resources */,
+				272302091858CEB900B72F5E /* LocationArrowSelected@2x.png in Resources */,
+				2723020A1858CEB900B72F5E /* ArrowShow.png in Resources */,
+				2723020B1858CEB900B72F5E /* SortBarButton@2x.png in Resources */,
+				2723020C1858CEB900B72F5E /* ArrowShow@2x.png in Resources */,
+				2723020D1858CEB900B72F5E /* LightGrayTextureBackground.png in Resources */,
+				2723020E1858CEB900B72F5E /* LightGrayTextureBackground@2x.png in Resources */,
+				2723020F1858CEB900B72F5E /* StretchableInnerShadow.png in Resources */,
+				272302101858CEB900B72F5E /* StretchableInnerShadow@2x.png in Resources */,
+				272302111858CEB900B72F5E /* MyEduModuleMaterialsView.xib in Resources */,
+				272302121858CEB900B72F5E /* MyEduModuleMaterial.png in Resources */,
+				272302131858CEB900B72F5E /* MyEduModuleMaterial@2x.png in Resources */,
+				272302141858CEB900B72F5E /* MyEduDrawersNavbar.png in Resources */,
+				272302151858CEB900B72F5E /* MyEduDrawersNavbar@2x.png in Resources */,
+				272302161858CEB900B72F5E /* MyEduModuleVideoDownloadView.xib in Resources */,
+				272302171858CEB900B72F5E /* LocationArrow2@2x.png in Resources */,
+				272302181858CEB900B72F5E /* CheckmarkRoundedSquare@2x.png in Resources */,
+				272302191858CEB900B72F5E /* CancelCrossRound@2x.png in Resources */,
+				2723021A1858CEB900B72F5E /* CancelCrossRound.png in Resources */,
+				2723021B1858CEB900B72F5E /* Download.png in Resources */,
+				2723021C1858CEB900B72F5E /* Download@2x.png in Resources */,
+				2723021D1858CEB900B72F5E /* DownloadedRectSmall.png in Resources */,
+				2723021E1858CEB900B72F5E /* DownloadedRectSmall@2x.png in Resources */,
+				2723021F1858CEB900B72F5E /* MapView-pad.xib in Resources */,
+				272302201858CEB900B72F5E /* PushNotifPlugin.strings in Resources */,
+				272302211858CEB900B72F5E /* LocationArrowActive.png in Resources */,
+				272302221858CEB900B72F5E /* LocationArrowActive@2x.png in Resources */,
+				272302231858CEB900B72F5E /* LocationArrowInactive.png in Resources */,
+				272302241858CEB900B72F5E /* LocationArrowInactive@2x.png in Resources */,
+				272302251858CEB900B72F5E /* MapControlsOverlayBox.png in Resources */,
+				272302261858CEB900B72F5E /* TransportLarge.png in Resources */,
+				272302271858CEB900B72F5E /* MapControlsOverlayBox@2x.png in Resources */,
+				272302281858CEB900B72F5E /* FloorDown.png in Resources */,
+				272302291858CEB900B72F5E /* FloorDown@2x.png in Resources */,
+				2723022A1858CEB900B72F5E /* FloorUp.png in Resources */,
+				2723022B1858CEB900B72F5E /* FloorUp@2x.png in Resources */,
+				2723022C1858CEB900B72F5E /* EyeMap.png in Resources */,
+				2723022D1858CEB900B72F5E /* EyeMap@2x.png in Resources */,
+				2723022E1858CEB900B72F5E /* SettingsBarButton.png in Resources */,
+				2723022F1858CEB900B72F5E /* PlusBarButton.png in Resources */,
+				272302301858CEB900B72F5E /* SettingsBarButton@2x.png in Resources */,
+				272302311858CEB900B72F5E /* MoodleResourceView.xib in Resources */,
+				272302321858CEB900B72F5E /* MoodleSplashDetailView.xib in Resources */,
+				272302331858CEB900B72F5E /* MyEduMovieSpeed1X@2x.png in Resources */,
+				272302341858CEB900B72F5E /* MyEduMovieSpeed1X.png in Resources */,
+				272302351858CEB900B72F5E /* MyEduMovieSpeed0_5X.png in Resources */,
+				272302361858CEB900B72F5E /* MyEduMovieSpeed0_5X@2x.png in Resources */,
+				272302371858CEB900B72F5E /* MyEduMovieSpeed1_5X.png in Resources */,
+				272302381858CEB900B72F5E /* MyEduMovieSpeed1_5X@2x.png in Resources */,
+				272302391858CEB900B72F5E /* MyEduMovieSpeed1_2X.png in Resources */,
+				2723023A1858CEB900B72F5E /* MyEduMovieSpeed1_2X@2x.png in Resources */,
+				2723023B1858CEB900B72F5E /* DownloadedCorner.png in Resources */,
+				2723023C1858CEB900B72F5E /* DownloadedCorner@2x.png in Resources */,
+				2723023D1858CEB900B72F5E /* DownloadedCornerSelected.png in Resources */,
+				2723023E1858CEB900B72F5E /* DownloadedCornerSelected@2x.png in Resources */,
+				2723023F1858CEB900B72F5E /* ClockCell.png in Resources */,
+				272302401858CEB900B72F5E /* ClockCell@2x.png in Resources */,
+				272302411858CEB900B72F5E /* DirectoryEmptyDetailView.xib in Resources */,
+				272302421858CEB900B72F5E /* FoodSmileyHappy.png in Resources */,
+				272302431858CEB900B72F5E /* ClockCellSelected.png in Resources */,
+				272302441858CEB900B72F5E /* ClockCellSelected@2x.png in Resources */,
+				272302451858CEB900B72F5E /* NewsSplashView.xib in Resources */,
+				272302461858CEB900B72F5E /* SplashImage4inch@2x.png in Resources */,
+				272302471858CEB900B72F5E /* NewsItemView.xib in Resources */,
+				272302481858CEB900B72F5E /* TransportTripCell.xib in Resources */,
+				272302491858CEB900B72F5E /* NewsItem.html in Resources */,
+				2723024A1858CEB900B72F5E /* MyEduLarge.png in Resources */,
+				2723024B1858CEB900B72F5E /* MasterVisible.png in Resources */,
+				2723024C1858CEB900B72F5E /* DirectoryProfilePictureView.xib in Resources */,
+				2723024D1858CEB900B72F5E /* SettingsBarButton2@2x.png in Resources */,
+				2723024E1858CEB900B72F5E /* AppLogoCellImage@2x.png in Resources */,
+				2723024F1858CEB900B72F5E /* AppLogoCellImage.png in Resources */,
+				272302501858CEB900B72F5E /* FacebookLikeCellImage.png in Resources */,
+				272302511858CEB900B72F5E /* TransportSmallBusGreen.png in Resources */,
+				272302521858CEB900B72F5E /* FacebookLikeCellImage@2x.png in Resources */,
+				272302531858CEB900B72F5E /* WhiteDisclosureIndicator.png in Resources */,
+				272302541858CEB900B72F5E /* WhiteDisclosureIndicator@2x.png in Resources */,
+				272302551858CEB900B72F5E /* Events.png in Resources */,
+				272302561858CEB900B72F5E /* Events@2x.png in Resources */,
+				272302571858CEB900B72F5E /* EventsPlugin.strings in Resources */,
+				272302581858CEB900B72F5E /* CellNoImageStretchable.png in Resources */,
+				272302591858CEB900B72F5E /* CellNoImageStretchable@2x.png in Resources */,
+				2723025A1858CEB900B72F5E /* EventItemView.xib in Resources */,
+				2723025B1858CEB900B72F5E /* FavoriteNavBarButton.png in Resources */,
+				2723025C1858CEB900B72F5E /* FavoriteNavBarButton@2x.png in Resources */,
+				2723025D1858CEB900B72F5E /* FavoriteGlowNavBarButton.png in Resources */,
+				2723025E1858CEB900B72F5E /* FavoriteGlowNavBarButton@2x.png in Resources */,
+				2723025F1858CEB900B72F5E /* EventItemInfo.html in Resources */,
+				272302601858CEB900B72F5E /* EventsSplashDetailView.xib in Resources */,
+				272302611858CEB900B72F5E /* Info@2x.png in Resources */,
+				272302621858CEB900B72F5E /* EventsLarge.png in Resources */,
+				272302631858CEB900B72F5E /* CameraBarButton@2x.png in Resources */,
+				272302641858CEB900B72F5E /* EyeBarButton.png in Resources */,
+				272302651858CEB900B72F5E /* FoodSmileyHappy@2x.png in Resources */,
+				272302661858CEB900B72F5E /* EyeBarButton@2x.png in Resources */,
+				272302671858CEB900B72F5E /* CamiproView~ipad.xib in Resources */,
+				272302681858CEB900B72F5E /* GenericGreyButton.png in Resources */,
+				272302691858CEB900B72F5E /* GenericGreyButton@2x.png in Resources */,
+				2723026A1858CEB900B72F5E /* GenericGreyButtonHighlight.png in Resources */,
+				2723026B1858CEB900B72F5E /* GenericGreyButtonHighlight@2x.png in Resources */,
+				2723026C1858CEB900B72F5E /* EventsTagView.xib in Resources */,
+				2723026D1858CEB900B72F5E /* SortBarButton.png in Resources */,
+				2723026E1858CEB900B72F5E /* DirectoryPersonView.xib in Resources */,
+				2723026F1858CEB900B72F5E /* CamiproView~iphone.xib in Resources */,
+				272302701858CEB900B72F5E /* FoodMealCell.xib in Resources */,
+				272302711858CEB900B72F5E /* GenericResizableShadow.png in Resources */,
+				272302721858CEB900B72F5E /* GenericResizableShadow@2x.png in Resources */,
+				272302731858CEB900B72F5E /* ArrowUpRightCircleAccessory.png in Resources */,
+				272302741858CEB900B72F5E /* FoodLarge@2x.png in Resources */,
+				272302751858CEB900B72F5E /* ArrowUpRightCircleAccessory@2x.png in Resources */,
+				272302761858CEB900B72F5E /* ArrowSimpleRight.png in Resources */,
+				272302771858CEB900B72F5E /* AnswerRecViewController.xib in Resources */,
+				272302781858CEB900B72F5E /* IntroViewController.xib in Resources */,
+				272302791858CEB900B72F5E /* MatchingViewController.xib in Resources */,
+				2723027A1858CEB900B72F5E /* FoodSmileyMeh@2x.png in Resources */,
+				2723027B1858CEB900B72F5E /* QAForumPlugin.strings in Resources */,
+				2723027C1858CEB900B72F5E /* kermit_empty.png in Resources */,
+				2723027D1858CEB900B72F5E /* SplashImage@2x.png in Resources */,
+				2723027E1858CEB900B72F5E /* NewsLarge@2x.png in Resources */,
+				2723027F1858CEB900B72F5E /* kermit_full.png in Resources */,
+				272302801858CEB900B72F5E /* kermit_half.png in Resources */,
+				272302811858CEB900B72F5E /* LocationArrow@2x.png in Resources */,
+				272302821858CEB900B72F5E /* AcceptViewController.xib in Resources */,
+				272302831858CEB900B72F5E /* AnswerListViewController.xib in Resources */,
+				272302841858CEB900B72F5E /* AnswerViewController.xib in Resources */,
+				272302851858CEB900B72F5E /* CheckmarkRoundedSquareEmpty@2x.png in Resources */,
+				272302861858CEB900B72F5E /* AskQuestionViewController.xib in Resources */,
+				272302871858CEB900B72F5E /* FeedbackListViewController.xib in Resources */,
+				272302881858CEB900B72F5E /* FeedbackViewController.xib in Resources */,
+				272302891858CEB900B72F5E /* ForumTableCell.xib in Resources */,
+				2723028A1858CEB900B72F5E /* QAForum.png in Resources */,
+				2723028B1858CEB900B72F5E /* QAForum@2x.png in Resources */,
+				2723028C1858CEB900B72F5E /* qaforum_ask.png in Resources */,
+				2723028D1858CEB900B72F5E /* qaforum_forum.png in Resources */,
+				2723028E1858CEB900B72F5E /* qaforum_intro1.png in Resources */,
+				2723028F1858CEB900B72F5E /* qaforum_intro2.png in Resources */,
+				272302901858CEB900B72F5E /* PlusBarButton@2x.png in Resources */,
+				272302911858CEB900B72F5E /* qaforum_intro3.png in Resources */,
+				272302921858CEB900B72F5E /* qaforum_intro4.png in Resources */,
+				272302931858CEB900B72F5E /* qaforum_intro5.png in Resources */,
+				272302941858CEB900B72F5E /* qaforum_pending.png in Resources */,
+				272302951858CEB900B72F5E /* qaforum_question.png in Resources */,
+				272302961858CEB900B72F5E /* qaforum_record.png in Resources */,
+				272302971858CEB900B72F5E /* qaforum_right.png in Resources */,
+				272302981858CEB900B72F5E /* EventsLarge@2x.png in Resources */,
+				272302991858CEB900B72F5E /* TransportNextDeparturesCell.xib in Resources */,
+				2723029A1858CEB900B72F5E /* DirectoryLarge@2x.png in Resources */,
+				2723029B1858CEB900B72F5E /* qaforum_selected.png in Resources */,
+				2723029C1858CEB900B72F5E /* LatestForumViewController.xib in Resources */,
+				2723029D1858CEB900B72F5E /* MyAnswerListViewController.xib in Resources */,
+				2723029E1858CEB900B72F5E /* MyAnswerViewController.xib in Resources */,
+				2723029F1858CEB900B72F5E /* MyQuestionListViewController.xib in Resources */,
+				272302A01858CEB900B72F5E /* MyQuestionViewController.xib in Resources */,
+				272302A11858CEB900B72F5E /* PendingTableCell.xib in Resources */,
+				272302A21858CEB900B72F5E /* LocationArrow2.png in Resources */,
+				272302A31858CEB900B72F5E /* TransportSmallBusGreen@2x.png in Resources */,
+				272302A41858CEB900B72F5E /* PendingViewController.xib in Resources */,
+				272302A51858CEB900B72F5E /* QAForumView.xib in Resources */,
+				272302A61858CEB900B72F5E /* QuestionListViewController.xib in Resources */,
+				272302A71858CEB900B72F5E /* QuestionViewController.xib in Resources */,
+				272302A81858CEB900B72F5E /* ReportViewController.xib in Resources */,
+				272302A91858CEB900B72F5E /* RequestViewController.xib in Resources */,
+				272302AA1858CEB900B72F5E /* SettingViewController.xib in Resources */,
+				272302AB1858CEB900B72F5E /* CamiproTransactionCell.xib in Resources */,
+				272302AC1858CEB900B72F5E /* FoodSmileySad.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3219EF4A14FCDE4900A271CD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3327,6 +4175,49 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		272300B41858CEB900B72F5E /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		272302AD1858CEB900B72F5E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		272302AE1858CEB900B72F5E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 5501169cb5b463b5f215a0033b2c4d4f5f214bd7";
+		};
 		32C879A9183D6C4B00750A11 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3358,6 +4249,206 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		272300B51858CEB900B72F5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				272300B61858CEB900B72F5E /* main.m in Sources */,
+				272300B71858CEB900B72F5E /* AppDelegate.m in Sources */,
+				272300B81858CEB900B72F5E /* TSocketServer.m in Sources */,
+				272300B91858CEB900B72F5E /* DirectoryController.m in Sources */,
+				272300BA1858CEB900B72F5E /* DirectorySearchViewController.m in Sources */,
+				272300BB1858CEB900B72F5E /* DirectoryService.m in Sources */,
+				272300BC1858CEB900B72F5E /* directory.m in Sources */,
+				272300BD1858CEB900B72F5E /* food.m in Sources */,
+				272300BE1858CEB900B72F5E /* FoodService.m in Sources */,
+				272300BF1858CEB900B72F5E /* Service.m in Sources */,
+				272300C01858CEB900B72F5E /* FoodController.m in Sources */,
+				272300C11858CEB900B72F5E /* FoodRestaurantsListViewController.m in Sources */,
+				272300C21858CEB900B72F5E /* PCTableViewSectionHeader.m in Sources */,
+				272300C31858CEB900B72F5E /* transport.m in Sources */,
+				272300C41858CEB900B72F5E /* TransportService.m in Sources */,
+				272300C51858CEB900B72F5E /* TransportController.m in Sources */,
+				272300C61858CEB900B72F5E /* ObjectArchiver.m in Sources */,
+				272300C71858CEB900B72F5E /* TransportNextDeparturesViewController.m in Sources */,
+				272300C81858CEB900B72F5E /* PCGAITracker.m in Sources */,
+				272300C91858CEB900B72F5E /* TransportDepartureSelectionViewController.m in Sources */,
+				272300CA1858CEB900B72F5E /* TransportAddStationViewController.m in Sources */,
+				272300CB1858CEB900B72F5E /* TransportUtils.m in Sources */,
+				272300CC1858CEB900B72F5E /* THTTPClient.m in Sources */,
+				272300CD1858CEB900B72F5E /* TransportTripsListViewController.m in Sources */,
+				272300CE1858CEB900B72F5E /* TransportTripPartsViewController.m in Sources */,
+				272300CF1858CEB900B72F5E /* map.m in Sources */,
+				272300D01858CEB900B72F5E /* MapService.m in Sources */,
+				272300D11858CEB900B72F5E /* TransportNextDeparturesCell.m in Sources */,
+				272300D21858CEB900B72F5E /* MapItemAnnotation.m in Sources */,
+				272300D31858CEB900B72F5E /* MapUtils.m in Sources */,
+				272300D41858CEB900B72F5E /* EPFLTileOverlay.m in Sources */,
+				272300D51858CEB900B72F5E /* EPFLTileOverlay2.m in Sources */,
+				272300D61858CEB900B72F5E /* AuthenticationController.m in Sources */,
+				272300D71858CEB900B72F5E /* AuthenticationService.m in Sources */,
+				272300D81858CEB900B72F5E /* authentication.m in Sources */,
+				272300D91858CEB900B72F5E /* MoodleController.m in Sources */,
+				272300DA1858CEB900B72F5E /* MoodleService.m in Sources */,
+				272300DB1858CEB900B72F5E /* moodle.m in Sources */,
+				272300DC1858CEB900B72F5E /* news.m in Sources */,
+				272300DD1858CEB900B72F5E /* NewsService.m in Sources */,
+				272300DE1858CEB900B72F5E /* NewsController.m in Sources */,
+				272300DF1858CEB900B72F5E /* NewsListViewController.m in Sources */,
+				272300E01858CEB900B72F5E /* NewsUtils.m in Sources */,
+				272300E11858CEB900B72F5E /* FoodMealCell.m in Sources */,
+				272300E21858CEB900B72F5E /* camipro.m in Sources */,
+				272300E31858CEB900B72F5E /* CamiproController.m in Sources */,
+				272300E41858CEB900B72F5E /* TransportModelAdditions.m in Sources */,
+				272300E51858CEB900B72F5E /* CamiproService.m in Sources */,
+				272300E61858CEB900B72F5E /* ServiceRequest.m in Sources */,
+				272300E71858CEB900B72F5E /* CamiproViewController.m in Sources */,
+				272300E81858CEB900B72F5E /* DirectoryServiceTests.m in Sources */,
+				272300E91858CEB900B72F5E /* PocketCampusLogicTests.m in Sources */,
+				272300EA1858CEB900B72F5E /* TransportHelpViewController.m in Sources */,
+				272300EB1858CEB900B72F5E /* EPFLLayersOverlay.m in Sources */,
+				272300EC1858CEB900B72F5E /* GlobalSettingsViewController.m in Sources */,
+				272300ED1858CEB900B72F5E /* EditableTableViewCell.m in Sources */,
+				272300EE1858CEB900B72F5E /* AuthenticationViewController.m in Sources */,
+				272300EF1858CEB900B72F5E /* AboutPCViewController.m in Sources */,
+				272300F01858CEB900B72F5E /* MapServiceTests.m in Sources */,
+				272300F11858CEB900B72F5E /* DirectoryPersonViewController.m in Sources */,
+				272300F21858CEB900B72F5E /* TSharedProcessorFactory.m in Sources */,
+				272300F31858CEB900B72F5E /* TProtocolUtil.m in Sources */,
+				272300F41858CEB900B72F5E /* MainMenuViewController.m in Sources */,
+				272300F51858CEB900B72F5E /* MainMenuItem.m in Sources */,
+				272300F61858CEB900B72F5E /* MainMenuItemCell.m in Sources */,
+				272300F71858CEB900B72F5E /* MainController.m in Sources */,
+				272300F81858CEB900B72F5E /* MyEduController.m in Sources */,
+				272300F91858CEB900B72F5E /* MyEduService.m in Sources */,
+				272300FA1858CEB900B72F5E /* myedu.m in Sources */,
+				272300FB1858CEB900B72F5E /* MyEduServiceTests.m in Sources */,
+				272300FC1858CEB900B72F5E /* SplashViewController.m in Sources */,
+				272300FD1858CEB900B72F5E /* NSLayoutConstraint+Extras.m in Sources */,
+				272300FE1858CEB900B72F5E /* PluginNavigationController.m in Sources */,
+				272300FF1858CEB900B72F5E /* MyEduCourseListViewController.m in Sources */,
+				272301001858CEB900B72F5E /* PluginSplitViewController.m in Sources */,
+				272301011858CEB900B72F5E /* PluginController.m in Sources */,
+				272301021858CEB900B72F5E /* MyEduSectionListViewController.m in Sources */,
+				272301031858CEB900B72F5E /* MyEduModuleListViewController.m in Sources */,
+				272301041858CEB900B72F5E /* PCCenterMessageCell.m in Sources */,
+				272301051858CEB900B72F5E /* MyEduCourseInfoViewController.m in Sources */,
+				272301061858CEB900B72F5E /* FoodRestaurantViewController.m in Sources */,
+				272301071858CEB900B72F5E /* MyEduSplashDetailViewController.m in Sources */,
+				272301081858CEB900B72F5E /* MyEduModuleVideoViewController.m in Sources */,
+				272301091858CEB900B72F5E /* MyEduModuleDetailViewController.m in Sources */,
+				2723010A1858CEB900B72F5E /* MyEduModuleTextViewController.m in Sources */,
+				2723010B1858CEB900B72F5E /* MyEduModuleMaterialsViewController.m in Sources */,
+				2723010C1858CEB900B72F5E /* FoodRestaurantInfoCell.m in Sources */,
+				2723010D1858CEB900B72F5E /* DirectoryPersonBaseInfoCell.m in Sources */,
+				2723010E1858CEB900B72F5E /* MyEduModuleVideoDownloadViewController.m in Sources */,
+				2723010F1858CEB900B72F5E /* PushNotifController.m in Sources */,
+				272301101858CEB900B72F5E /* PushNotifService.m in Sources */,
+				272301111858CEB900B72F5E /* pushnotif.m in Sources */,
+				272301121858CEB900B72F5E /* MapController.m in Sources */,
+				272301131858CEB900B72F5E /* PushNotifControllerTests.m in Sources */,
+				272301141858CEB900B72F5E /* MoodleCoursesListViewController.m in Sources */,
+				272301151858CEB900B72F5E /* MoodleCourseSectionsViewController.m in Sources */,
+				272301161858CEB900B72F5E /* MoodleResourceViewController.m in Sources */,
+				272301171858CEB900B72F5E /* MoodleSplashDetailViewController.m in Sources */,
+				272301181858CEB900B72F5E /* PCTableViewCellAdditions.m in Sources */,
+				272301191858CEB900B72F5E /* TApplicationException.m in Sources */,
+				2723011A1858CEB900B72F5E /* DirectoryEmptyDetailViewController.m in Sources */,
+				2723011B1858CEB900B72F5E /* NSOperationWithDelegate.m in Sources */,
+				2723011C1858CEB900B72F5E /* PCRecentResultTableViewCell.m in Sources */,
+				2723011D1858CEB900B72F5E /* NewsSplashViewController.m in Sources */,
+				2723011E1858CEB900B72F5E /* NewsItemViewController.m in Sources */,
+				2723011F1858CEB900B72F5E /* ZUUIRevealController.m in Sources */,
+				272301201858CEB900B72F5E /* MapResultsListViewController.m in Sources */,
+				272301211858CEB900B72F5E /* TransportTripCell.m in Sources */,
+				272301221858CEB900B72F5E /* PCUtils.m in Sources */,
+				272301231858CEB900B72F5E /* TransportStationsManagerViewController.m in Sources */,
+				272301241858CEB900B72F5E /* TMemoryBuffer.m in Sources */,
+				272301251858CEB900B72F5E /* PCValues.m in Sources */,
+				272301261858CEB900B72F5E /* LGRefreshControl+PCAdditions.m in Sources */,
+				272301271858CEB900B72F5E /* TException.m in Sources */,
+				272301281858CEB900B72F5E /* PluginControllerAuthentified.m in Sources */,
+				272301291858CEB900B72F5E /* NewsItem+Comparison.m in Sources */,
+				2723012A1858CEB900B72F5E /* MoodleResource+Comparison.m in Sources */,
+				2723012B1858CEB900B72F5E /* MyEduModule+Comparison.m in Sources */,
+				2723012C1858CEB900B72F5E /* UIPopoverController+Additions.m in Sources */,
+				2723012D1858CEB900B72F5E /* UIActionSheet+Additions.m in Sources */,
+				2723012E1858CEB900B72F5E /* DirectoryProfilePictureViewController.m in Sources */,
+				2723012F1858CEB900B72F5E /* MapViewController.m in Sources */,
+				272301301858CEB900B72F5E /* PCConfig.m in Sources */,
+				272301311858CEB900B72F5E /* EventsController.m in Sources */,
+				272301321858CEB900B72F5E /* EventsService.m in Sources */,
+				272301331858CEB900B72F5E /* events.m in Sources */,
+				272301341858CEB900B72F5E /* EventsServiceTests.m in Sources */,
+				272301351858CEB900B72F5E /* EventPoolViewController.m in Sources */,
+				272301361858CEB900B72F5E /* EventItemCell.m in Sources */,
+				272301371858CEB900B72F5E /* TSocketClient.m in Sources */,
+				272301381858CEB900B72F5E /* EventsUtils.m in Sources */,
+				272301391858CEB900B72F5E /* PCSplashView.m in Sources */,
+				2723013A1858CEB900B72F5E /* EventItem+Additions.m in Sources */,
+				2723013B1858CEB900B72F5E /* EventItemViewController.m in Sources */,
+				2723013C1858CEB900B72F5E /* EpflRestaurant+Additions.m in Sources */,
+				2723013D1858CEB900B72F5E /* UIImage+Additions.m in Sources */,
+				2723013E1858CEB900B72F5E /* TNSStreamTransport.m in Sources */,
+				2723013F1858CEB900B72F5E /* PCURLSchemeHandler.m in Sources */,
+				272301401858CEB900B72F5E /* PCTableViewWithRemoteThumbnails.m in Sources */,
+				272301411858CEB900B72F5E /* PCNavigationController.m in Sources */,
+				272301421858CEB900B72F5E /* EventsCategorySelectorViewController.m in Sources */,
+				272301431858CEB900B72F5E /* EventsSplashDetailViewController.m in Sources */,
+				272301441858CEB900B72F5E /* EventsTagsViewController.m in Sources */,
+				272301451858CEB900B72F5E /* EventsShareFavoriteItemsViewController.m in Sources */,
+				272301461858CEB900B72F5E /* NSDate+Addtions.m in Sources */,
+				272301471858CEB900B72F5E /* RemoteOverlayRenderer.m in Sources */,
+				272301481858CEB900B72F5E /* AcceptViewController.m in Sources */,
+				272301491858CEB900B72F5E /* AnswerListViewController.m in Sources */,
+				2723014A1858CEB900B72F5E /* TTransportException.m in Sources */,
+				2723014B1858CEB900B72F5E /* AnswerRecViewController.m in Sources */,
+				2723014C1858CEB900B72F5E /* AnswerViewController.m in Sources */,
+				2723014D1858CEB900B72F5E /* AskQuestionViewController.m in Sources */,
+				2723014E1858CEB900B72F5E /* FeedbackListViewController.m in Sources */,
+				2723014F1858CEB900B72F5E /* FeedbackViewController.m in Sources */,
+				272301501858CEB900B72F5E /* ForumTableCell.m in Sources */,
+				272301511858CEB900B72F5E /* Person+Extras.m in Sources */,
+				272301521858CEB900B72F5E /* CompundTableCell.m in Sources */,
+				272301531858CEB900B72F5E /* JSONKit.m in Sources */,
+				272301541858CEB900B72F5E /* QAFListCell.m in Sources */,
+				272301551858CEB900B72F5E /* TableCell.m in Sources */,
+				272301561858CEB900B72F5E /* UIPlaceHolderTextView.m in Sources */,
+				272301571858CEB900B72F5E /* IntroViewController.m in Sources */,
+				272301581858CEB900B72F5E /* FoodSplashDetailViewController.m in Sources */,
+				272301591858CEB900B72F5E /* LatestForumViewController.m in Sources */,
+				2723015A1858CEB900B72F5E /* MatchingViewController.m in Sources */,
+				2723015B1858CEB900B72F5E /* MyAnswerListViewController.m in Sources */,
+				2723015C1858CEB900B72F5E /* MyAnswerViewController.m in Sources */,
+				2723015D1858CEB900B72F5E /* MapRecentSearchesListViewController.m in Sources */,
+				2723015E1858CEB900B72F5E /* MyQuestionListViewController.m in Sources */,
+				2723015F1858CEB900B72F5E /* MyQuestionViewController.m in Sources */,
+				272301601858CEB900B72F5E /* PendingTableCell.m in Sources */,
+				272301611858CEB900B72F5E /* PendingViewController.m in Sources */,
+				272301621858CEB900B72F5E /* AbstractActionSheetPicker.m in Sources */,
+				272301631858CEB900B72F5E /* ActionSheetDatePicker.m in Sources */,
+				272301641858CEB900B72F5E /* ActionSheetDistancePicker.m in Sources */,
+				272301651858CEB900B72F5E /* LGRefreshControl.m in Sources */,
+				272301661858CEB900B72F5E /* ActionSheetStringPicker.m in Sources */,
+				272301671858CEB900B72F5E /* DistancePickerView.m in Sources */,
+				272301681858CEB900B72F5E /* TNSFileHandleTransport.m in Sources */,
+				272301691858CEB900B72F5E /* TFramedTransport.m in Sources */,
+				2723016A1858CEB900B72F5E /* QAForumController.m in Sources */,
+				2723016B1858CEB900B72F5E /* QAForumViewController.m in Sources */,
+				2723016C1858CEB900B72F5E /* QuestionListViewController.m in Sources */,
+				2723016D1858CEB900B72F5E /* QuestionViewController.m in Sources */,
+				2723016E1858CEB900B72F5E /* RateView.m in Sources */,
+				2723016F1858CEB900B72F5E /* TProtocolException.m in Sources */,
+				272301701858CEB900B72F5E /* TBinaryProtocol.m in Sources */,
+				272301711858CEB900B72F5E /* ReportViewController.m in Sources */,
+				272301721858CEB900B72F5E /* RequestViewController.m in Sources */,
+				272301731858CEB900B72F5E /* SettingViewController.m in Sources */,
+				272301741858CEB900B72F5E /* QAForumService.m in Sources */,
+				272301751858CEB900B72F5E /* qaforum.m in Sources */,
+				272301761858CEB900B72F5E /* CamiproTransactionCell.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3219EF4814FCDE4900A271CD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3727,6 +4818,60 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		272302B01858CEB900B72F5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43F74C41A62B4C69936087B0 /* Pods.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
+				INFOPLIST_FILE = "PocketCampus copy2-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_NAME = PocketCampusNoCodeSign;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "$(inherited)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		272302B11858CEB900B72F5E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43F74C41A62B4C69936087B0 /* Pods.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
+				INFOPLIST_FILE = "PocketCampus copy2-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_NAME = PocketCampusNoCodeSign;
+				PROVISIONING_PROFILE = "1688CD38-8163-49D3-8F84-B540EE4460AE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1688CD38-8163-49D3-8F84-B540EE4460AE";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "$(inherited)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		3219EF6214FCDE4900A271CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3850,6 +4995,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		272302AF1858CEB900B72F5E /* Build configuration list for PBXNativeTarget "PocketCampusNoCodeSign" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				272302B01858CEB900B72F5E /* Debug */,
+				272302B11858CEB900B72F5E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3219EF4614FCDE4800A271CD /* Build configuration list for PBXProject "PocketCampus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
