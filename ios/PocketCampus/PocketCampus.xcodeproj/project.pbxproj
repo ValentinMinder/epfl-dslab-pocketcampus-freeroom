@@ -721,7 +721,6 @@
 		324C7A24174A627C00ED19FD /* GenericResizableShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324C7A22174A627C00ED19FD /* GenericResizableShadow@2x.png */; };
 		324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */; };
 		324CB5821671585B008C7B3D /* MoodleSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		324F6B3015D7B55F00CFB8B5 /* MapServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */; };
 		324FD736176574FE0003EE30 /* CamiproTransactionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 324FD735176574FE0003EE30 /* CamiproTransactionCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32506CFD181D4195003F08D7 /* MoodleLarge@2x.png */; };
@@ -856,7 +855,6 @@
 		32A77DC316A564460018976F /* UIPopoverController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC216A564460018976F /* UIPopoverController+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC516A565600018976F /* UIActionSheet+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32AA6CCA16DFF0D100783E9C /* EventsPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AA6CCC16DFF0D100783E9C /* EventsPlugin.strings */; };
-		32AA6CD116DFF41100783E9C /* EventsServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AA6CD016DFF41100783E9C /* EventsServiceTests.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32ADC70A165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32ADC709165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32ADC70E165995050039F6A6 /* MyEduModuleVideoDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC70D165995050039F6A6 /* MyEduModuleVideoDownloadView.xib */; };
 		32ADC710165999820039F6A6 /* CancelCrossRound@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */; };
@@ -931,7 +929,6 @@
 		32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
 		32CFECEF151CCB6800D8CBA6 /* ObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32D0B24B166A282700F68304 /* PushNotifControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0B24A166A282700F68304 /* PushNotifControllerTests.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32D0B24F166A9B9D00F68304 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322715C2070E0091757D /* QuartzCore.framework */; };
 		32D0B256166AA58E00F68304 /* LocationArrowActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B250166AA58D00F68304 /* LocationArrowActive.png */; };
 		32D0B257166AA58E00F68304 /* LocationArrowActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B251166AA58D00F68304 /* LocationArrowActive@2x.png */; };
@@ -954,8 +951,6 @@
 		32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */; };
 		32DE5B2817F2003800E03423 /* NSLayoutConstraint+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+Extras.m */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
-		32E280AC156E618800B74825 /* DirectoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E280A8156E583A00B74825 /* DirectoryServiceTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBA16847A0900E5CFF6 /* ClockCell.png */; };
 		32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */; };
 		32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */; };
@@ -973,7 +968,6 @@
 		32F2F6051678C9BE00A32983 /* MyEduMovieSpeed1_2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6031678C9BE00A32983 /* MyEduMovieSpeed1_2X.png */; };
 		32F2F6061678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */; };
 		32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32F3EAB116334DD200DA8902 /* MyEduPlugin.strings */; };
-		32F3EAB61633506900DA8902 /* MyEduServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3EAB51633506900DA8902 /* MyEduServiceTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308C16EAB02400F66484 /* EventItemInfo.html */; };
 		32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */; };
@@ -1315,8 +1309,6 @@
 		324CB57E1671580B008C7B3D /* MoodleSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoodleSplashDetailView.xib; sourceTree = "<group>"; };
 		324CB5801671585B008C7B3D /* MoodleSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleSplashDetailViewController.h; sourceTree = "<group>"; };
 		324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSplashDetailViewController.m; sourceTree = "<group>"; };
-		324F6B2E15D7B55F00CFB8B5 /* MapServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapServiceTests.h; sourceTree = "<group>"; };
-		324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapServiceTests.m; sourceTree = "<group>"; };
 		324FD732176574DD0003EE30 /* CamiproTransactionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproTransactionCell.xib; sourceTree = "<group>"; };
 		324FD734176574FE0003EE30 /* CamiproTransactionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamiproTransactionCell.h; sourceTree = "<group>"; };
 		324FD735176574FE0003EE30 /* CamiproTransactionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproTransactionCell.m; sourceTree = "<group>"; };
@@ -1511,8 +1503,6 @@
 		32A77DC516A565600018976F /* UIActionSheet+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Additions.m"; sourceTree = "<group>"; };
 		32AA6CCB16DFF0D100783E9C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EventsPlugin.strings; sourceTree = "<group>"; };
 		32AA6CCD16DFF0D400783E9C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EventsPlugin.strings; sourceTree = "<group>"; };
-		32AA6CCF16DFF41100783E9C /* EventsServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsServiceTests.h; sourceTree = "<group>"; };
-		32AA6CD016DFF41100783E9C /* EventsServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsServiceTests.m; sourceTree = "<group>"; };
 		32ADC708165994840039F6A6 /* MyEduModuleVideoDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleVideoDownloadViewController.h; sourceTree = "<group>"; };
 		32ADC709165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduModuleVideoDownloadViewController.m; sourceTree = "<group>"; };
 		32ADC70D165995050039F6A6 /* MyEduModuleVideoDownloadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleVideoDownloadView.xib; sourceTree = "<group>"; };
@@ -1620,8 +1610,6 @@
 		32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		32CFECED151CCB6800D8CBA6 /* ObjectArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectArchiver.h; sourceTree = "<group>"; };
 		32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectArchiver.m; sourceTree = "<group>"; };
-		32D0B249166A282700F68304 /* PushNotifControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushNotifControllerTests.h; sourceTree = "<group>"; };
-		32D0B24A166A282700F68304 /* PushNotifControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushNotifControllerTests.m; sourceTree = "<group>"; };
 		32D0B250166AA58D00F68304 /* LocationArrowActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowActive.png; sourceTree = "<group>"; };
 		32D0B251166AA58D00F68304 /* LocationArrowActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrowActive@2x.png"; sourceTree = "<group>"; };
 		32D0B252166AA58D00F68304 /* LocationArrowInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowInactive.png; sourceTree = "<group>"; };
@@ -1648,13 +1636,6 @@
 		32DE5B2617F2003800E03423 /* NSLayoutConstraint+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+Extras.h"; sourceTree = "<group>"; };
 		32DE5B2717F2003800E03423 /* NSLayoutConstraint+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+Extras.m"; sourceTree = "<group>"; };
 		32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodLarge.png; sourceTree = "<group>"; };
-		32E2809A156E52ED00B74825 /* PocketCampusLogicTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PocketCampusLogicTests-Info.plist"; sourceTree = "<group>"; };
-		32E2809C156E52ED00B74825 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		32E2809E156E52ED00B74825 /* PocketCampusLogicTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PocketCampusLogicTests.h; sourceTree = "<group>"; };
-		32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PocketCampusLogicTests.m; sourceTree = "<group>"; };
-		32E280A1156E52ED00B74825 /* PocketCampusLogicTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PocketCampusLogicTests-Prefix.pch"; sourceTree = "<group>"; };
-		32E280A7156E583A00B74825 /* DirectoryServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServiceTests.h; sourceTree = "<group>"; };
-		32E280A8156E583A00B74825 /* DirectoryServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServiceTests.m; sourceTree = "<group>"; };
 		32E280AA156E613100B74825 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		32E67DBA16847A0900E5CFF6 /* ClockCell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockCell.png; sourceTree = "<group>"; };
 		32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCell@2x.png"; sourceTree = "<group>"; };
@@ -1681,8 +1662,6 @@
 		32F2F6041678C9BE00A32983 /* MyEduMovieSpeed1_2X@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduMovieSpeed1_2X@2x.png"; sourceTree = "<group>"; };
 		32F3EAB016334DD200DA8902 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MyEduPlugin.strings; sourceTree = "<group>"; };
 		32F3EAB216334DDB00DA8902 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MyEduPlugin.strings; sourceTree = "<group>"; };
-		32F3EAB41633506900DA8902 /* MyEduServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduServiceTests.h; sourceTree = "<group>"; };
-		32F3EAB51633506900DA8902 /* MyEduServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduServiceTests.m; sourceTree = "<group>"; };
 		32F5308716EA973B00F66484 /* EventsCategorySelectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventsCategorySelectorViewController.h; sourceTree = "<group>"; };
 		32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventsCategorySelectorViewController.m; sourceTree = "<group>"; };
 		32F5308C16EAB02400F66484 /* EventItemInfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = EventItemInfo.html; sourceTree = "<group>"; };
@@ -1860,7 +1839,6 @@
 		3219EF4114FCDE4800A271CD = {
 			isa = PBXGroup;
 			children = (
-				32E28098156E52ED00B74825 /* PocketCampusLogicTests */,
 				3219EF5614FCDE4900A271CD /* PocketCampus */,
 				32FAC0DF1500F40700925180 /* Plugins */,
 				3219EF4F14FCDE4900A271CD /* Frameworks */,
@@ -2467,15 +2445,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		324F6B2D15D7B55F00CFB8B5 /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				324F6B2E15D7B55F00CFB8B5 /* MapServiceTests.h */,
-				324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */,
-			);
-			path = Map;
-			sourceTree = "<group>";
-		};
 		32654C1394E6F467509BDB85 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2690,15 +2659,6 @@
 				32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		32AA6CCE16DFF3F000783E9C /* Events */ = {
-			isa = PBXGroup;
-			children = (
-				32AA6CCF16DFF41100783E9C /* EventsServiceTests.h */,
-				32AA6CD016DFF41100783E9C /* EventsServiceTests.m */,
-			);
-			path = Events;
 			sourceTree = "<group>";
 		};
 		32B5870F156458FA0051C57E /* CamiproPlugin */ = {
@@ -2995,66 +2955,6 @@
 				32CCB4F7155546C100220282 /* NewsPlugin.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		32D0B248166A280000F68304 /* PushNotif */ = {
-			isa = PBXGroup;
-			children = (
-				32D0B249166A282700F68304 /* PushNotifControllerTests.h */,
-				32D0B24A166A282700F68304 /* PushNotifControllerTests.m */,
-			);
-			path = PushNotif;
-			sourceTree = "<group>";
-		};
-		32E28098156E52ED00B74825 /* PocketCampusLogicTests */ = {
-			isa = PBXGroup;
-			children = (
-				32E2809E156E52ED00B74825 /* PocketCampusLogicTests.h */,
-				32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */,
-				32E280A5156E577900B74825 /* PluginsTests */,
-				32E28099156E52ED00B74825 /* Supporting Files */,
-			);
-			path = PocketCampusLogicTests;
-			sourceTree = "<group>";
-		};
-		32E28099156E52ED00B74825 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				32E2809A156E52ED00B74825 /* PocketCampusLogicTests-Info.plist */,
-				32E2809B156E52ED00B74825 /* InfoPlist.strings */,
-				32E280A1156E52ED00B74825 /* PocketCampusLogicTests-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		32E280A5156E577900B74825 /* PluginsTests */ = {
-			isa = PBXGroup;
-			children = (
-				32E280A6156E577900B74825 /* Directory */,
-				32AA6CCE16DFF3F000783E9C /* Events */,
-				324F6B2D15D7B55F00CFB8B5 /* Map */,
-				32F3EAB31633505400DA8902 /* MyEdu */,
-				32D0B248166A280000F68304 /* PushNotif */,
-			);
-			path = PluginsTests;
-			sourceTree = "<group>";
-		};
-		32E280A6156E577900B74825 /* Directory */ = {
-			isa = PBXGroup;
-			children = (
-				32E280A7156E583A00B74825 /* DirectoryServiceTests.h */,
-				32E280A8156E583A00B74825 /* DirectoryServiceTests.m */,
-			);
-			path = Directory;
-			sourceTree = "<group>";
-		};
-		32F3EAB31633505400DA8902 /* MyEdu */ = {
-			isa = PBXGroup;
-			children = (
-				32F3EAB41633506900DA8902 /* MyEduServiceTests.h */,
-				32F3EAB51633506900DA8902 /* MyEduServiceTests.m */,
-			);
-			path = MyEdu;
 			sourceTree = "<group>";
 		};
 		32FAC0DF1500F40700925180 /* Plugins */ = {
@@ -4503,15 +4403,12 @@
 				32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */,
 				32FDA9A11854B5E600C6393A /* ServiceRequest.m in Sources */,
 				32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */,
-				32E280AC156E618800B74825 /* DirectoryServiceTests.m in Sources */,
-				32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */,
 				3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */,
 				32D57299157F7D780051230F /* EPFLLayersOverlay.m in Sources */,
 				320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */,
 				3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */,
 				32A54B7D15B5A8E100A7C882 /* AuthenticationViewController.m in Sources */,
 				3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */,
-				324F6B3015D7B55F00CFB8B5 /* MapServiceTests.m in Sources */,
 				32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */,
 				32930AB717F898910025F864 /* TSharedProcessorFactory.m in Sources */,
 				32930AAC17F898910025F864 /* TProtocolUtil.m in Sources */,
@@ -4522,7 +4419,6 @@
 				D2A344178B2283CAF92E9B46 /* MyEduController.m in Sources */,
 				E6C14DE7BD48C7DCC99900DB /* MyEduService.m in Sources */,
 				553A402C812143D9F650BB50 /* myedu.m in Sources */,
-				32F3EAB61633506900DA8902 /* MyEduServiceTests.m in Sources */,
 				32CBF0631634812C00FD92E5 /* SplashViewController.m in Sources */,
 				32DE5B2817F2003800E03423 /* NSLayoutConstraint+Extras.m in Sources */,
 				32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */,
@@ -4546,7 +4442,6 @@
 				E9D24E52ACF3440B795D0F3A /* PushNotifService.m in Sources */,
 				3D60403F97790317C691C8A4 /* pushnotif.m in Sources */,
 				3200A93F1666B709003D163E /* MapController.m in Sources */,
-				32D0B24B166A282700F68304 /* PushNotifControllerTests.m in Sources */,
 				32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */,
 				32EE9628166E25BD005B0F65 /* MoodleCourseSectionsViewController.m in Sources */,
 				32035BB3166E987100E134DD /* MoodleResourceViewController.m in Sources */,
@@ -4579,7 +4474,6 @@
 				F1AE44D191F279D3C0533B81 /* EventsController.m in Sources */,
 				D4224276930AC66CEAA3E5A9 /* EventsService.m in Sources */,
 				4C3C4FEEB609B30BEFA34726 /* events.m in Sources */,
-				32AA6CD116DFF41100783E9C /* EventsServiceTests.m in Sources */,
 				32035FE616E13A020016F03C /* EventPoolViewController.m in Sources */,
 				32035FEB16E153860016F03C /* EventItemCell.m in Sources */,
 				32930AB517F898910025F864 /* TSocketClient.m in Sources */,
@@ -4777,14 +4671,6 @@
 				32CCB4F9155546C100220282 /* fr */,
 			);
 			name = NewsPlugin.strings;
-			sourceTree = "<group>";
-		};
-		32E2809B156E52ED00B74825 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				32E2809C156E52ED00B74825 /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		32F3EAB116334DD200DA8902 /* MyEduPlugin.strings */ = {

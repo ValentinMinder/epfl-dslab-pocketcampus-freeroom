@@ -26,13 +26,11 @@
 
 #import "GlobalSettingsViewController.h"
 
-#import "ObjectArchiver.h"
-
-#import "PCConfig.h"
-
 #import "PCURLSchemeHandler.h"
 
 #import <objc/message.h>
+
+#import <Crashlytics/Crashlytics.h>
 
 @interface MainController ()<ZUUIRevealControllerDelegate, UIGestureRecognizerDelegate>
 
@@ -267,6 +265,7 @@ static MainController<MainControllerPublic>* instance = nil;
  * Iinit code that needs PCConfig to be loaded
  */
 - (void)postConfigInit {
+    [self initAnalytics];
     [self initPluginsList];
     self.pluginsControllers = [NSMutableDictionary dictionaryWithCapacity:self.pluginsList.count];
     [self initMainMenu];
@@ -287,6 +286,14 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 #pragma mark Post-config phases
+
+- (void)initAnalytics {
+    NSString* crashlyticsAPIKey = [[PCConfig defaults] stringForKey:PC_CONFIG_CRASHLYTICS_APIKEY_KEY];
+    if (crashlyticsAPIKey) {
+        NSLog(@"-> Starting Crashlytics");
+        [Crashlytics startWithAPIKey:crashlyticsAPIKey];
+    }
+}
 
 - (void)initPluginsList {
     

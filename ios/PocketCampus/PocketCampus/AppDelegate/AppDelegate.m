@@ -8,20 +8,6 @@
 
 #import "AppDelegate.h"
 
-#import "PCConfig.h"
-
-#import "PCUtils.h"
-
-#import "PCValues.h"
-
-#import "PCGAITracker.h"
-
-#import "MyEduServiceTests.h"
-
-#import "PushNotifControllerTests.h"
-
-#import "EventsServiceTests.h"
-
 #import "PCURLSchemeHandler.h"
 
 #import <Crashlytics/Crashlytics.h>
@@ -44,11 +30,6 @@ static id test __strong __unused = nil;
     
     /* Initialize defaults with PC config */
     [PCConfig loadConfigAsynchronously];
-    
-    /*NSString* crashlyticsAPIKey = [[PCConfig defaults] stringForKey:PC_CONFIG_CRASHLYTICS_APIKEY_KEY];
-    if (crashlyticsAPIKey) {
-        [Crashlytics startWithAPIKey:crashlyticsAPIKey];
-    }*/
 
     /* Apply appearence proxy => specified UI elements will defaut to PC defined look&feel, eg. red navigation bar */
     [PCValues applyAppearenceProxy];
@@ -56,9 +37,7 @@ static id test __strong __unused = nil;
     NSURLCache* cache = [[NSURLCache alloc] initWithMemoryCapacity:4*1024*1024 diskCapacity:100*1024*1024 diskPath:nil];
     [NSURLCache setSharedURLCache:cache];
 
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
     
     self.mainController = [[MainController alloc] initWithWindow:self.window];
@@ -92,35 +71,6 @@ static id test __strong __unused = nil;
 
     return YES;
 }
-
-/*- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [PCConfig initConfigWithCompletionHandler:^{
-        NSString* crashlyticsAPIKey = [[PCConfig defaults] stringForKey:PC_CONFIG_CRASHLYTICS_APIKEY_KEY];
-        if (crashlyticsAPIKey) {
-            [Crashlytics startWithAPIKey:crashlyticsAPIKey];
-            // Apply appearence proxy => specified UI elements will defaut to PC defined look&feel, eg. red navigation bar
-            [PCValues applyAppearenceProxy];
-            
-            NSURLCache* cache = [[NSURLCache alloc] initWithMemoryCapacity:4*1024*1024 diskCapacity:100*1024*1024 diskPath:nil];
-            [NSURLCache setSharedURLCache:cache];
-            
-            self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-            // Override point for customization after application launch.
-            self.window.backgroundColor = [UIColor blackColor];
-            
-            self.mainController = [[MainController alloc] initWithWindow:self.window];
-            
-            [self.window makeKeyAndVisible];
-            
-            // App might have been opened by notification touch
-            NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-            if (userInfo) {
-                [self application:[UIApplication sharedApplication] didReceiveRemoteNotification:userInfo];
-            }
-        }
-    }];
-    return YES;
-}*/
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     if (![[[MainController publicController] urlSchemeHandlerSharedInstance] isValidPocketCampusURL:url]) {

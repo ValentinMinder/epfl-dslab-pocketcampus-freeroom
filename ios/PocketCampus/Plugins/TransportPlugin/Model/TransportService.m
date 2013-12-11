@@ -60,6 +60,8 @@ static TransportService* instance __weak = nil;
     }
 }
 
+#pragma mark - ServiceProtocol
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -73,11 +75,15 @@ static TransportService* instance __weak = nil;
     }
 }
 
-#pragma mark - Thrift
-
 - (id)thriftServiceClientInstance {
     return [[TransportServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
+
+- (id)thriftServiceClientInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
+    return [[TransportServiceClient alloc] initWithProtocol:[self thriftProtocolInstanceWithCustomTimeoutInterval:timeoutInterval]];
+}
+
+#pragma mark - Thrift
 
 - (void)autocomplete:(NSString*)constraint delegate:(id)delegate {
     if (![constraint isKindOfClass:[NSString class]]) {
@@ -140,7 +146,6 @@ static TransportService* instance __weak = nil;
     }
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     [operation setQueuePriority:priority];
-    operation.customTimeout = 40.0;
     operation.serviceClientSelector = @selector(getTrips::);
     operation.delegateDidReturnSelector = @selector(tripsFrom:to:didReturn:);
     operation.delegateDidFailSelector = @selector(tripsFailedFrom:to:);
@@ -158,7 +163,7 @@ static TransportService* instance __weak = nil;
     if (![to isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad 'to' argument" reason:@"'to' argument is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstanceWithCustomTimeoutInterval:40.0] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getTripsAtTime::::);
     operation.delegateDidReturnSelector = @selector(tripsFrom:to:atTimestamp:isDeparture:didReturn:);
     operation.delegateDidFailSelector = @selector(tripsFailedFrom:to:atTimestamp:isDeparture:);

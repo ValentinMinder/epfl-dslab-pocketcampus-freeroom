@@ -69,6 +69,8 @@ static NSString* kMoodleResourceKey = @"moodleResource";
     }
 }
 
+#pragma mark - ServiceProtocol
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -84,6 +86,10 @@ static NSString* kMoodleResourceKey = @"moodleResource";
 
 - (id)thriftServiceClientInstance {
     return [[MoodleServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
+}
+
+- (id)thriftServiceClientInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
+    return [[MoodleServiceClient alloc] initWithProtocol:[self thriftProtocolInstanceWithCustomTimeoutInterval:timeoutInterval]];
 }
 
 #pragma mark - Session
@@ -274,8 +280,7 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
 }
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.customTimeout = 90.0; // might take time
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstanceWithCustomTimeoutInterval:90.0] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getCourseSections:);
     operation.delegateDidReturnSelector = @selector(getCourseSections:didReturn:);
     operation.delegateDidFailSelector = @selector(getCourseSectionsFailed:);
