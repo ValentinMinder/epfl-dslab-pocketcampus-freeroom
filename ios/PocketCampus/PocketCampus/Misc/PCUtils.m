@@ -8,7 +8,7 @@
 
 #import "PCUtils.h"
 
-#import "Reachability.h"
+#import "AFNetworking.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -158,7 +158,7 @@
 }
 
 + (BOOL)hasDeviceInternetConnection {
-    return [[Reachability reachabilityForInternetConnection] isReachable];
+    return [[AFNetworkReachabilityManager sharedManager] isReachable];
 }
 
 + (BOOL)hasAppAccessToLocation {

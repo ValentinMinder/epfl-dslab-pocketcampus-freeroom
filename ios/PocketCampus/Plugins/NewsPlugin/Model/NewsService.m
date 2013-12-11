@@ -54,20 +54,20 @@ static NewsService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(newsItemsFailedForLanguage:);
     [operation addObjectArgument:language];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
-- (void)getNewsItemContentForId:(Id)newsItemId delegate:(id)delegate {
+- (void)getNewsItemContentForId:(int64_t)newsItemId delegate:(id)delegate {
     //cannot check int
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
-    operation.cacheValidity = 2419200; //seconds = 4 weeks. Could theoritically put more as News item is not likely to change
+    operation.cacheValidityInterval = 2419200; //seconds = 4 weeks. Could theoritically put more as News item is not likely to change
     operation.serviceClientSelector = @selector(getNewsItemContent:);
     operation.delegateDidReturnSelector = @selector(newsItemContentForId:didReturn:);
     operation.delegateDidFailSelector = @selector(newsItemContentFailedForId:);
     [operation addLongLongArgument:newsItemId];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getFeedUrlsForLanguage:(NSString*)language delegate:(id)delegate {
@@ -80,7 +80,7 @@ static NewsService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(feedUrlsFailedForLanguage:);
     [operation addObjectArgument:language];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getFeedsForLanguage:(NSString*)language delegate:(id)delegate {
@@ -93,7 +93,7 @@ static NewsService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(feedsFailedForLanguage:);
     [operation addObjectArgument:language];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (NSArray*)getFromCacheNewsItemsForLanguage:(NSString*)language {

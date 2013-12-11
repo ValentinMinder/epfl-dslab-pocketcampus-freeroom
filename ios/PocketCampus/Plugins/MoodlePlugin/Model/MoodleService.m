@@ -240,7 +240,7 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
     operation.delegateDidReturnSelector = @selector(getTequilaTokenForMoodleDidReturn:);
     operation.delegateDidFailSelector = @selector(getTequilaTokenForMoodleFailed);
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate {
@@ -250,7 +250,7 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
     operation.delegateDidFailSelector = @selector(getSessionIdForServiceFailedForTequilaKey:);
     [operation addObjectArgument:tequilaKey];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
@@ -260,7 +260,7 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
     operation.delegateDidFailSelector = @selector(getCoursesListFailed:);
     [operation addObjectArgument:aMoodleRequest];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getEventsList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
@@ -270,7 +270,7 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
     operation.delegateDidFailSelector = @selector(getEventsListFailed:);
     [operation addObjectArgument:aMoodleRequest];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
@@ -281,7 +281,7 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
     operation.delegateDidFailSelector = @selector(getCourseSectionsFailed:);
     [operation addObjectArgument:aMoodleRequest];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 #pragma mark - Saved elements

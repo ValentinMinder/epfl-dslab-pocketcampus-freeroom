@@ -8,9 +8,21 @@
 
 #import "TransportModelAdditions.h"
 
+#import <objc/runtime.h>
+
 @implementation TransportStation (Additions)
 
 - (NSString*)shortName {
+    static NSString* const kShortNameKey = @"shortName";
+    NSString* shortName = objc_getAssociatedObject(self, (__bridge const void *)(kShortNameKey));
+    if (!shortName) {
+        shortName = [self computeShortName];
+        objc_setAssociatedObject(self, (__bridge const void *)(kShortNameKey), shortName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return shortName;
+}
+
+- (NSString*)computeShortName {
     if ([self.name isEqualToString:@"Ecublens VD, EPFL"]) {
         return @"EPFL";
     }
@@ -73,6 +85,16 @@
 @implementation TransportLine (Additions)
 
 - (NSString*)shortName {
+    static NSString* const kShortNameKey = @"shortName";
+    NSString* shortName = objc_getAssociatedObject(self, (__bridge const void *)(kShortNameKey));
+    if (!shortName) {
+        shortName = [self computeShortName];
+        objc_setAssociatedObject(self, (__bridge const void *)(kShortNameKey), shortName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return shortName;
+}
+
+- (NSString*)computeShortName {
     
     NSString* currentName = self.name;
     
@@ -84,36 +106,12 @@
         return @"M1";
     }
     
-    if ([currentName isEqualToString:@"Ecublens VD, EPFL"]) {
-        return @"EPFL";
-    }
-    
-    if ([currentName isEqualToString:@"Ecublens VD, EPFL Piccard"]) {
-        return @"EPFL Piccard";
-    }
-    
-    if ([currentName isEqualToString:@"Ecublens VD, UNIL-Sorge"]) {
-        return @"UNIL-Sorge";
-    }
-    
     if ([currentName isEqualToString:@"UMetm2"]) {
         return @"M2";
     }
     
     if ([currentName isEqualToString:@"UMm2"]) {
         return @"M2";
-    }
-    
-    if ([currentName isEqualToString:@"Lausanne, Vigie"]) {
-        return @"Vigie";
-    }
-    
-    if ([currentName isEqualToString:@"Chavannes-p.-R., UNIL-Dorigny"]) {
-        return @"UNIL-Dorigny";
-    }
-    
-    if ([currentName isEqualToString:@"Chavannes-p.-R., UNIL-Mouline"]) {
-        return @"UNIL-Mouline";
     }
     
     NSError* error = NULL;

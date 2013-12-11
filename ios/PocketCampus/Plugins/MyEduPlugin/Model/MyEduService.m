@@ -168,7 +168,7 @@ static MyEduService* instance __weak = nil;
     operation.delegateDidReturnSelector = @selector(getTequilaTokenForMyEduDidReturn:);
     operation.delegateDidFailSelector = @selector(getTequilaTokenForMyEduFailed);
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken*)tequilaToken delegate:(id)delegate {
@@ -178,7 +178,7 @@ static MyEduService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(getMyEduSessionFailedForTequilaToken:);
     [operation addObjectArgument:tequilaToken];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getSubscribedCoursesListForRequest:(MyEduRequest*)request delegate:(id)delegate {
@@ -190,7 +190,7 @@ static MyEduService* instance __weak = nil;
     operation.skipCache = YES;
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (MyEduSubscribedCoursesListReply*)getFromCacheSubscribedCoursesListForRequest:(MyEduRequest*)request {
@@ -212,7 +212,7 @@ static MyEduService* instance __weak = nil;
     operation.skipCache = YES;
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (MyEduCourseDetailsReply*)getFromCacheCourseDetailsForRequest:(MyEduCourseDetailsRequest*)request {
@@ -234,7 +234,7 @@ static MyEduService* instance __weak = nil;
     operation.skipCache = YES;
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (MyEduCourseDetailsReply*)getFromCacheSectionDetailsForRequest:(MyEduSectionDetailsRequest*)request {
@@ -256,7 +256,7 @@ static MyEduService* instance __weak = nil;
     operation.skipCache = YES;
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (MyEduModuleDetailsReply*)getFromCacheModuleDetailsForRequest:(MyEduModuleDetailsRequest*)request {
@@ -276,7 +276,7 @@ static MyEduService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(submitFeedbackFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 #pragma mark - playback time persistence
@@ -355,7 +355,7 @@ static MyEduService* instance __weak = nil;
     request.shouldRedirect = NO;
     request.timeOutSeconds = 5.0;
     [request addRequestHeader:@"Cookie" value:[self lastSession].iMyEduCookie];
-    [operationQueue addOperation:request];
+    [self.operationQueue addOperation:request];
 }
 
 - (MyEduMaterialData*)materialDataIfExistsForMaterial:(MyEduMaterial*)material {
@@ -481,7 +481,7 @@ static MyEduService* instance __weak = nil;
     request.downloadDestinationPath = [MyEduService localPathForVideoOfModule:module];
     request.didFinishSelector = @selector(downloadVideoRequestFinished:);
     request.didFailSelector = @selector(downloadVideoRequestFailed:);
-    [operationQueue addOperation:request];
+    [self.operationQueue addOperation:request];
     
     NSMutableArray* observers = self.downloadsObserversForVideoKey[key];
     [[observers copy] enumerateObjectsUsingBlock:^(MyEduDownloadObserver* downloadObserver, NSUInteger idx, BOOL *stop) {

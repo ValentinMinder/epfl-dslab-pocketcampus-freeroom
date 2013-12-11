@@ -50,7 +50,7 @@ static DirectoryService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(searchFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate {
@@ -59,13 +59,13 @@ static DirectoryService* instance __weak = nil;
     }
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
-    operation.cacheValidity = 60; //1 min
+    operation.cacheValidityInterval = 60; //1 min
     operation.serviceClientSelector = @selector(searchPersons:);
     operation.delegateDidReturnSelector = @selector(searchDirectoryFor:didReturn:);
     operation.delegateDidFailSelector = @selector(searchDirectoryFailedFor:);
     [operation addObjectArgument:nameOrSciper];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)autocomplete:(NSString *)constraint delegate:(id)delegate {
@@ -78,7 +78,7 @@ static DirectoryService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(autocompleteFailedFor:);
     [operation addObjectArgument:constraint];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)dealloc

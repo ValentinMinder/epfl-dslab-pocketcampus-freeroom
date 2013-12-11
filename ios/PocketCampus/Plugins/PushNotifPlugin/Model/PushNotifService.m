@@ -52,7 +52,7 @@ static PushNotifService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(deleteMappingFailedForDummy:);
     [operation addObjectArgument:dummy];
     operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)dealloc

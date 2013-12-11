@@ -61,7 +61,7 @@ static MapService* instance __weak = nil;
     operation.delegateDidReturnSelector = @selector(getLayerListDidReturn:);
     operation.delegateDidFailSelector = @selector(getLayerListFailed:);
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getLayerItemsForLayerId:(int64_t)layerId delegate:(id)delegate {
@@ -71,7 +71,7 @@ static MapService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(getLayerItemsFailedForLayerId:);
     [operation addIntArgument:layerId];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)searchFor:(NSString*)query delegate:(id)delegate {
@@ -80,13 +80,13 @@ static MapService* instance __weak = nil;
     }
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     //operation.keepInCache = YES;
-    //operation.cacheValidity = 4*24*3600.0; //4 weeks
+    //operation.cacheValidityInterval = 4*24*3600.0; //4 weeks
     operation.serviceClientSelector = @selector(search:);
     operation.delegateDidReturnSelector = @selector(searchMapFor:didReturn:);
     operation.delegateDidFailSelector = @selector(searchMapFailedFor:);
     [operation addObjectArgument:query];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 

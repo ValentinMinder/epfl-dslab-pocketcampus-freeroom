@@ -61,7 +61,7 @@ static CamiproService* instance __weak = nil;
     operation.delegateDidReturnSelector = @selector(getTequilaTokenForCamiproDidReturn:);
     operation.delegateDidFailSelector = @selector(getTequilaTokenForCamiproFailed);
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate {
@@ -71,7 +71,7 @@ static CamiproService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(getSessionIdForServiceFailedForTequilaKey:);
     [operation addObjectArgument:tequilaKey];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getBalanceAndTransactions:(CamiproRequest*)camiproRequest delegate:(id)delegate {
@@ -84,7 +84,7 @@ static CamiproService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(getBalanceAndTransactionsFailedForCamiproRequest:);
     [operation addObjectArgument:camiproRequest];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getStatsAndLoadingInfo:(CamiproRequest*)camiproRequest delegate:(id)delegate {
@@ -97,7 +97,7 @@ static CamiproService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(getStatsAndLoadingInfoFailedForCamiproRequest:);
     [operation addObjectArgument:camiproRequest];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)sendLoadingInfoByEmail:(CamiproRequest*)camiproRequest delegate:(id)delegate {
@@ -110,7 +110,7 @@ static CamiproService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(sendLoadingInfoByEmailFailedForCamiproRequest:);
     [operation addObjectArgument:camiproRequest];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)dealloc

@@ -215,17 +215,17 @@ static EventsService* instance __weak = nil;
     [PCUtils throwExceptionIfObject:request notKindOfClass:[EventItemRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
-    operation.returnEvenStaleCacheIfServerIsUnreachable = YES;
-    operation.cacheValidity = 43200; //half-day
+    operation.returnEvenStaleCacheIfNoInternetConnection = YES;
+    operation.cacheValidityInterval = 43200; //half-day
 //#warning TO REMOVE
     //operation.skipCache = YES;
-    //operation.cacheValidity = 432000;
+    //operation.cacheValidityInterval = 432000;
     operation.serviceClientSelector = @selector(getEventItem:);
     operation.delegateDidReturnSelector = @selector(getEventItemForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getEventItemFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getEventPoolForRequest:(EventPoolRequest*)request delegate:(id)delegate {
@@ -238,7 +238,7 @@ static EventsService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(getEventPoolFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)exchangeContactsForRequest:(ExchangeRequest*)request delegate:(id)delegate {
@@ -249,7 +249,7 @@ static EventsService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(exchangeContactsFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)sendStarredItemsByEmail:(SendEmailRequest *)request delegate:(id)delegate {
@@ -260,7 +260,7 @@ static EventsService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(sendStarredItemsByEmailFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (EventPoolReply*)getFromCacheEventPoolForRequest:(EventPoolRequest*)request {

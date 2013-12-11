@@ -113,14 +113,14 @@ static FoodService* instance __weak = nil;
 - (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
-    operation.cacheValidity = kFoodRequestCacheValidity;
+    operation.cacheValidityInterval = kFoodRequestCacheValidity;
     operation.skipCache = YES; //use getFoodFromCacheForRequest:
     operation.serviceClientSelector = @selector(getFood:);
     operation.delegateDidReturnSelector = @selector(getFoodForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getFoodFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)voteForRequest:(VoteRequest*)request delegate:(id)delegate {
@@ -131,14 +131,14 @@ static FoodService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(voteFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 #pragma Cached versions
 
 - (FoodResponse*)getFoodFromCacheForRequest:(FoodRequest*)request {
     ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
-    operation.cacheValidity = kFoodRequestCacheValidity;
+    operation.cacheValidityInterval = kFoodRequestCacheValidity;
     operation.serviceClientSelector = @selector(getFood:);
     operation.delegateDidReturnSelector = @selector(getFoodForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getFoodFailedForRequest:);
@@ -153,12 +153,12 @@ static FoodService* instance __weak = nil;
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.skipCache = YES;
-    operation.cacheValidity = 3600*24;
+    operation.cacheValidityInterval = 3600*24;
     operation.serviceClientSelector = @selector(getMeals);
     operation.delegateDidReturnSelector = @selector(getMealsDidReturn:);
     operation.delegateDidFailSelector = @selector(getMealsFailed);
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (NSArray*)getFromCacheMeals {
@@ -176,7 +176,7 @@ static FoodService* instance __weak = nil;
     operation.delegateDidReturnSelector = @selector(getRatingsDidReturn:);
     operation.delegateDidFailSelector = @selector(getRatingsFailed);
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)setRatingForMeal:(int64_t)mealId rating:(double)rating deviceId:(NSString*)deviceId delegate:(id)delegate {
@@ -192,7 +192,7 @@ static FoodService* instance __weak = nil;
     [operation addDoubleArgument:rating];
     [operation addObjectArgument:deviceId];
     operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)dealloc

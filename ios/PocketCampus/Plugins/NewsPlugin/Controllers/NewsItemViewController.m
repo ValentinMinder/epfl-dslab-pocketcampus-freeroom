@@ -138,7 +138,7 @@
 #pragma mark - NewsServiceDelegate
 
 
-- (void)newsItemContentForId:(Id)newsItemId didReturn:(NSString *)content {
+- (void)newsItemContentForId:(int64_t)newsItemId didReturn:(NSString *)content {
     
     NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"NewsItem" ofType:@"html"];
     NSError* error = nil;
@@ -178,7 +178,7 @@
     [self.loadingIndicator stopAnimating];
 }
 
-- (void)newsItemContentFailedForId:(Id)newsItemId {
+- (void)newsItemContentFailedForId:(int64_t)newsItemId {
     [self error];
 }
 

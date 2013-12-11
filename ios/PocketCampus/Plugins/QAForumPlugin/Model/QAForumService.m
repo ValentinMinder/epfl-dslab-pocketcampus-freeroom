@@ -82,7 +82,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidReturnSelector = @selector(getTequilaTokenForQAforumDidReturn:);
     operation.delegateDidFailSelector = @selector(getTequilaTokenForQAforumFailed);
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -93,7 +93,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(getSessionIdFailedForTequilaToken:);
     [operation addObjectArgument:token];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -104,7 +104,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(askQuestionFailed);
     [operation addObjectArgument:question];
     operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -115,7 +115,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(updateSettingFailed);
     [operation addObjectArgument:setting];
     operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -126,7 +126,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(acceptNotifFailed);
     [operation addObjectArgument:accept];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -137,7 +137,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(answerQuestionFailed);
     [operation addObjectArgument:answer];
     operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -148,7 +148,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(feedbackQuestionFailed);
     [operation addObjectArgument:feedback];
     operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -162,7 +162,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(requestQuestionFailed);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -173,7 +173,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(reportQuestionFailed);
     [operation addObjectArgument:report];
     operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -184,7 +184,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(requestInformationFailed);
     [operation addObjectArgument:sessionid];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -195,7 +195,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(myQuestionFailed);
     [operation addObjectArgument:userid];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -206,7 +206,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(oneQuestionFailed);
     [operation addIntArgument:questionid];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -218,7 +218,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(myAnswerFailed);
     [operation addObjectArgument:userid];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -229,7 +229,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(oneAnswerFailed);
     [operation addIntArgument:forwardid];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -240,7 +240,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(LatestQuestionsFailed);
     [operation addObjectArgument:userid];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -251,7 +251,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(OneLatestQuestionsFailed);
     [operation addObjectArgument:onelatest];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -262,7 +262,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(PendingNotificationsFailed);
     [operation addObjectArgument:userid];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -273,7 +273,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(DeleteNotificationFailed);
     [operation addObjectArgument:deleteinfo];
     operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -284,7 +284,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(QuestionMatchingFailed);
     [operation addObjectArgument:question];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -295,7 +295,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(RelationshipFailed);
     [operation addObjectArgument:relation];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 }
 
@@ -306,7 +306,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(TagInterestedFailed);
     [operation addObjectArgument:taguser];
     operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
 
 }
@@ -318,7 +318,7 @@ static QAForumService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(closeIntroFailed);
     [operation addObjectArgument:userid];
     operation.returnType = ReturnTypeInt;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
     [operation release];
     
 }

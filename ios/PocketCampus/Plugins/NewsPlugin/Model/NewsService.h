@@ -23,7 +23,7 @@
  */
 
 - (void)getNewsItemsForLanguage:(NSString*)language delegate:(id)delegate;
-- (void)getNewsItemContentForId:(Id)newsItemId delegate:(id)delegate;
+- (void)getNewsItemContentForId:(int64_t)newsItemId delegate:(id)delegate;
 - (void)getFeedUrlsForLanguage:(NSString*)language delegate:(id)delegate;
 - (void)getFeedsForLanguage:(NSString*)language delegate:(id)delegate;
 
@@ -38,8 +38,8 @@
 @optional
 - (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems;
 - (void)newsItemsFailedForLanguage:(NSString*)language;
-- (void)newsItemContentForId:(Id)newsItemId didReturn:(NSString*)content;
-- (void)newsItemContentFailedForId:(Id)newsItemId;
+- (void)newsItemContentForId:(int64_t)newsItemId didReturn:(NSString*)content;
+- (void)newsItemContentFailedForId:(int64_t)newsItemId;
 - (void)feedUrlsForLanguage:(NSString*)language didReturn:(NSDictionary*)feedUrls;
 - (void)feedUrlsFailedForLanguage:(NSString*)language;
 - (void)feedsForLanguage:(NSString*)language didReturn:(NSArray*)feeds;

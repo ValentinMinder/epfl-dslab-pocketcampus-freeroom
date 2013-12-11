@@ -14,6 +14,8 @@
 
 #import <float.h>
 
+#import "NSOperationWithDelegate_Protected.h"
+
 #pragma mark - TransportService private interface
 
 @interface TransportService ()
@@ -87,7 +89,7 @@ static TransportService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(autocompleteFailedFor::);
     [operation addObjectArgument:constraint];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getLocationsForIDs:(NSArray*)ids delegate:(id)delegate {
@@ -100,7 +102,7 @@ static TransportService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(locationsFailedForIDs:);
     [operation addObjectArgument:ids];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getLocationsForNames:(NSArray*)names delegate:(id)delegate {
@@ -113,7 +115,7 @@ static TransportService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(locationsFailedForNames:);
     [operation addObjectArgument:names];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)nextDeparturesForStationID:(NSString*)stationID delegate:(id)delegate {
@@ -126,7 +128,7 @@ static TransportService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(nextDeparturesFailedForStationID:);
     [operation addObjectArgument:stationID];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getTripsFrom:(NSString*)from to:(NSString*)to delegate:(id)delegate priority:(NSInteger)priority {
@@ -145,7 +147,7 @@ static TransportService* instance __weak = nil;
     [operation addObjectArgument:from];
     [operation addObjectArgument:to];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getTripsFrom:(NSString*)from to:(NSString*)to atTimestamp:(timestamp)time isDeparture:(BOOL)isDeparture delegate:(id)delegate {
@@ -165,7 +167,7 @@ static TransportService* instance __weak = nil;
     [operation addLongLongArgument:time];
     [operation addBoolArgument:isDeparture];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)getTripsFromStationID:(NSString*)fromStationID toStationID:(NSString*)toStationID delegate:(id)delegate {
@@ -182,7 +184,7 @@ static TransportService* instance __weak = nil;
     [operation addObjectArgument:fromStationID];
     [operation addObjectArgument:toStationID];
     operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
+    [self.operationQueue addOperation:operation];
 }
 
 
@@ -250,7 +252,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
         [delegate nearestUserTransportStationDidReturn:[stations firstObject]];
     } else {
         NearestUserTransportStationRequest* operation = [[NearestUserTransportStationRequest alloc] initWithTransportStations:stations delegate:delegate];
-        [operationQueue addOperation:operation];
+        [self.operationQueue addOperation:operation];
     }
 }
 
@@ -292,7 +294,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     }
     
     [self willChangeValueForKey:@"isExecuting"];
-    executing = YES;
+    self.executing = YES;
     [self didChangeValueForKey:@"isExecuting"];
     
     self.locationManager.delegate = self;
@@ -374,8 +376,8 @@ static NSString* kLastLocationKey = @"lastLocation";
     self.delegate = nil;
     [self willChangeValueForKey:@"isFinished"];
     [self willChangeValueForKey:@"isExecuting"];
-    executing = NO;
-    finished = YES;
+    self.executing = NO;
+    self.finished = YES;
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
 }
@@ -385,11 +387,11 @@ static NSString* kLastLocationKey = @"lastLocation";
 }
 
 - (BOOL)isExecuting {
-    return executing;
+    return self.executing;
 }
 
 - (BOOL)isFinished {
-    return finished;
+    return self.finished;
 }
 
 /* CLLocationManagerDelegate delegation */

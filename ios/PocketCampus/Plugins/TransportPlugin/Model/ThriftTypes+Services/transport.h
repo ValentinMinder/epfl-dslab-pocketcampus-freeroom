@@ -15,8 +15,6 @@
 #import <TProtocolUtil.h>
 #import <TProcessor.h>
 
-#import "common.h"
-
 enum TransportStationType {
   TransportStationType_ANY = 0,
   TransportStationType_STATION = 1,
