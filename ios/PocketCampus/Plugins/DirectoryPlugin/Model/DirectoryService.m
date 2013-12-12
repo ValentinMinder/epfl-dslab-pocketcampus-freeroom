@@ -17,7 +17,7 @@ static DirectoryService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"DirectoryService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"directory"];
+        self = [super initWithServiceName:@"directory" thriftServiceClientClassName:NSStringFromClass(DirectoryServiceClient.class)];
         if (self) {
             instance = self;
         }
@@ -36,10 +36,6 @@ static DirectoryService* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
-}
-
-- (id)thriftServiceClientInstance {
-    return [[DirectoryServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 - (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate {

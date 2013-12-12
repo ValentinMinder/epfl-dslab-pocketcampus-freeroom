@@ -52,16 +52,18 @@ static MoodleService* instance __weak = nil;
 
 static const NSTimeInterval kFetchMoodleResourceTimeoutSeconds = 30.0;
 
-static NSString* kMoodleSessionKey = @"moodleSession";
-static NSString* kServiceDelegateKey = @"serviceDelegate";
-static NSString* kMoodleResourceKey = @"moodleResource";
+static NSString* const kMoodleSessionKey = @"moodleSession";
+static NSString* const kServiceDelegateKey = @"serviceDelegate";
+static NSString* const kMoodleResourceKey = @"moodleResource";
+
+#pragma mark - Init
 
 - (id)init {
     @synchronized(self) {
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MoodleService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"moodle"];
+        self = [super initWithServiceName:@"moodle" thriftServiceClientClassName:NSStringFromClass(MoodleServiceClient.class)];
         if (self) {
             instance = self;
         }
@@ -82,14 +84,6 @@ static NSString* kMoodleResourceKey = @"moodleResource";
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
-}
-
-- (id)thriftServiceClientInstance {
-    return [[MoodleServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
-}
-
-- (id)thriftServiceClientInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
-    return [[MoodleServiceClient alloc] initWithProtocol:[self thriftProtocolInstanceWithCustomTimeoutInterval:timeoutInterval]];
 }
 
 #pragma mark - Session

@@ -14,16 +14,14 @@
 #import "TBinaryProtocol.h"
 
 
-static NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 15.0;
+static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 15.0;
 
 @interface Service ()
 
 @property (nonatomic, readwrite, strong) NSString* serviceName;
-@property (nonatomic, strong) NSString* serverAddressWithPort; //example 128.178.0.1:9090
-@property (nonatomic, strong) NSURL* serverURL; //full URL with service extension (example ../v3r1/transport/)
-@property (nonatomic, strong) TBinaryProtocol* thriftProtocol;
-@property (nonatomic, strong) NSOperationQueue* operationQueue;
-@property (nonatomic, strong) id thriftClient;
+@property (nonatomic, readwrite, strong) NSString* thriftServiceClientClassName;
+@property (nonatomic, readwrite, strong) NSURL* serviceURL;
+@property (nonatomic, readwrite, strong) NSOperationQueue* operationQueue;
 
 @end
 
@@ -32,27 +30,40 @@ static NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 15.0;
 #pragma mark - Init
 
 - (id)initWithServiceName:(NSString*)serviceName {
+    return [self initWithServiceName:serviceName thriftServiceClientClassName:nil];
+}
+
+- (id)initWithServiceName:(NSString*)serviceName thriftServiceClientClassName:(NSString*)thriftServiceClientClassName; {
     [PCUtils throwExceptionIfObject:serviceName notKindOfClass:[NSString class]];
     self = [super init];
     if (self) {
         self.serviceName = serviceName;
-        
-        NSUserDefaults* defaults = [PCConfig defaults];
-
-        NSString* serverProto = [defaults objectForKey:PC_CONFIG_SERVER_PROTOCOL_KEY];
-        NSString* serverAddress = [defaults objectForKey:PC_CONFIG_SERVER_ADDRESS_KEY];
-        NSString* serverPort = [defaults objectForKey:PC_CONFIG_SERVER_PORT_KEY];
-        NSString* serverVersion = [defaults objectForKey:PC_CONFIG_SERVER_URI_KEY];
-        
-        self.serverAddressWithPort = [NSString stringWithFormat:@"%@://%@:%@", serverProto, serverAddress, serverPort];
-        NSString* serviceURLString = [NSString stringWithFormat:@"%@/%@/%@", self.serverAddressWithPort, serverVersion, serviceName];
-        NSLog(@"-> Initializing service '%@' on server (%@)", serviceName, serviceURLString);
-        self.serverURL = [NSURL URLWithString:serviceURLString];
+        self.thriftServiceClientClassName = thriftServiceClientClassName;
+        self.serviceURL = [self.class serviceURLforServiceName:serviceName];
+        NSLog(@"-> Initializing service '%@' with URL (%@)", serviceName, self.serviceURL.absoluteString);
         self.operationQueue = [NSOperationQueue new];
+        self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
     }
     return self;
 }
 
+#pragma mark - Config
+
++ (NSURL*)serviceURLforServiceName:(NSString*)serviceName {
+    static NSURL* kServerURL;
+    static NSString* kVersionURI;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSUserDefaults* defaults = [PCConfig defaults];
+        NSString* serverProt = [defaults objectForKey:PC_CONFIG_SERVER_PROTOCOL_KEY];
+        NSString* serverAddress = [defaults objectForKey:PC_CONFIG_SERVER_ADDRESS_KEY];
+        NSString* serverPort = [defaults objectForKey:PC_CONFIG_SERVER_PORT_KEY];
+        NSString* versionURI = [defaults objectForKey:PC_CONFIG_SERVER_URI_KEY];
+        kServerURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@:%@", serverProt, serverAddress, serverPort]];
+        kVersionURI = versionURI;
+    });
+    return [NSURL URLWithString:[kVersionURI stringByAppendingPathComponent:serviceName] relativeToURL:kServerURL];
+}
 
 #pragma mark - Cancelling operations
 
@@ -81,12 +92,28 @@ static NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 15.0;
 
 #pragma mark - Thrift
 
+- (id)thriftServiceClientInstance {
+    Class thriftClientClass = NSClassFromString(self.thriftServiceClientClassName);
+    if (!thriftClientClass) {
+        return nil;
+    }
+    return [[thriftClientClass alloc] initWithProtocol:[self thriftProtocolInstance]];
+}
+
+- (id)thriftServiceClientInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
+    Class thriftClientClass = NSClassFromString(self.thriftServiceClientClassName);
+    if (!thriftClientClass) {
+        return nil;
+    }
+    return [[thriftClientClass alloc] initWithProtocol:[self thriftProtocolInstanceWithCustomTimeoutInterval:timeoutInterval]];
+}
+
 - (id)thriftProtocolInstance {
     return [self thriftProtocolInstanceWithCustomTimeoutInterval:kDefaultThriftProtocolInstanceTimeoutInterval];
 }
 
 - (id)thriftProtocolInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
-    THTTPClient* client = [[THTTPClient alloc] initWithURL:self.serverURL userAgent:nil timeout:timeoutInterval];
+    THTTPClient* client = [[THTTPClient alloc] initWithURL:self.serviceURL userAgent:nil timeout:timeoutInterval];
     NSString* deviceToken = [PushNotifController notificationsDeviceToken];
     if (deviceToken) {
         [client->mRequest setValue:@"IOS" forHTTPHeaderField:@"X-PC-PUSHNOTIF-OS"];

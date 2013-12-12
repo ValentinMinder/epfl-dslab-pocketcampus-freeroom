@@ -52,7 +52,7 @@ static TransportService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"PushNotifService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"transport"];
+        self = [super initWithServiceName:@"transport" thriftServiceClientClassName:NSStringFromClass(TransportServiceClient.class)];
         if (self) {
             instance = self;
         }
@@ -73,14 +73,6 @@ static TransportService* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
-}
-
-- (id)thriftServiceClientInstance {
-    return [[TransportServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
-}
-
-- (id)thriftServiceClientInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
-    return [[TransportServiceClient alloc] initWithProtocol:[self thriftProtocolInstanceWithCustomTimeoutInterval:timeoutInterval]];
 }
 
 #pragma mark - Thrift

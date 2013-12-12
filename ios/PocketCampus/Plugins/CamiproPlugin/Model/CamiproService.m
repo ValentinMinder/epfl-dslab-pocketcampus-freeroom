@@ -16,18 +16,22 @@ static NSString* kLastSessionIdKey = @"lastSessionId";
 
 static CamiproService* instance __weak = nil;
 
+#pragma mark - Init
+
 - (id)init {
     @synchronized(self) {
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"CamiproService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"camipro"];
+        self = [super initWithServiceName:@"camipro" thriftServiceClientClassName:NSStringFromClass(CamiproServiceClient.class)];
         if (self) {
             instance = self;
         }
         return self;
     }
 }
+
+#pragma mark - ServiceProtocol
 
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
@@ -42,10 +46,7 @@ static CamiproService* instance __weak = nil;
     }
 }
 
-
-- (id)thriftServiceClientInstance {
-    return [[CamiproServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
-}
+#pragma mark - Thrift
 
 + (CamiproSession*)lastSessionId {
     return (CamiproSession*)[ObjectArchiver objectForKey:kLastSessionIdKey andPluginName:@"camipro"];

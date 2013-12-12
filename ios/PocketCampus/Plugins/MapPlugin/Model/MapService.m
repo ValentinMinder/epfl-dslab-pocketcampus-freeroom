@@ -30,7 +30,7 @@ static MapService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MapService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"map"];
+        self = [super initWithServiceName:@"map" thriftServiceClientClassName:NSStringFromClass(MapServiceClient.class)];
         if (self) {
             instance = self;
         }
@@ -49,10 +49,6 @@ static MapService* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
-}
-
-- (id)thriftServiceClientInstance {
-    return [[MapServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 - (void)getLayerListWithDelegate:(id)delegate {

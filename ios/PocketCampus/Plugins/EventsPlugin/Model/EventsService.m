@@ -39,7 +39,7 @@ static EventsService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"EventsService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"events"];
+        self = [super initWithServiceName:@"events" thriftServiceClientClassName:NSStringFromClass(EventsServiceClient.class)];
         if (self) {
             instance = self;
         }
@@ -58,14 +58,6 @@ static EventsService* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
-}
-
-- (id)thriftServiceClientInstance {
-#if __has_feature(objc_arc)
-    return [[EventsServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
-#else
-    return [[[EventsServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
-#endif
 }
 
 #pragma mark - User tickets
