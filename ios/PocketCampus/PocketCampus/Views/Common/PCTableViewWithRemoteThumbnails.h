@@ -38,6 +38,5 @@ typedef UIImage* (^ImageProcessingBlock)(NSIndexPath* indexPath, UITableViewCell
 @property (nonatomic, copy) ImageProcessingBlock imageProcessingBlock;
 
 @property (nonatomic, strong) UIImage* temporaryImage;
-@property (nonatomic) NSTimeInterval imagesCacheSeconds;
 
 @end

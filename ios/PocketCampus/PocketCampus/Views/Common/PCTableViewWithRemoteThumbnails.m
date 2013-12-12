@@ -55,9 +55,6 @@
     }
     
     //Only init if user not already set them
-    if (self.imagesCacheSeconds == 0.0) {
-        self.imagesCacheSeconds = 86400; //1day
-    }
     if (!self.cellsImageViewSelectorString) {
         self.cellsImageViewSelectorString = @"imageView";
     }
@@ -82,6 +79,8 @@
         [self imageViewForCell:cell].image = self.temporaryImage; //Generic image sign
         return;
     }
+    
+    [self imageViewForCell:cell].image = nil; //prevent ghosts (previous image visible when recycling cell)
     
     self.urlForIndexPath[indexPath] = url;
     

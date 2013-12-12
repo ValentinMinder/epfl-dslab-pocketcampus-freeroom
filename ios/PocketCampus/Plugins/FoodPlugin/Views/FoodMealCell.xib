@@ -51,10 +51,10 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7.-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsD-q2-2Fb" userLabel="Prices label">
-                                <rect key="frame" x="22" y="55" width="22" height="22"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="7.-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsD-q2-2Fb" userLabel="Prices label">
+                                <rect key="frame" x="24" y="55" width="21" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="20"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -69,7 +69,7 @@
                             <constraint firstAttribute="bottom" secondItem="V5e-gG-xtp" secondAttribute="bottom" id="Tmb-Tt-b9F"/>
                             <constraint firstItem="8CO-2T-OCE" firstAttribute="top" secondItem="4NI-e9-UFL" secondAttribute="top" constant="5" id="bqd-Ua-vsT"/>
                             <constraint firstItem="8CO-2T-OCE" firstAttribute="leading" secondItem="4NI-e9-UFL" secondAttribute="leading" constant="10" id="gD7-6K-DDV"/>
-                            <constraint firstItem="wsD-q2-2Fb" firstAttribute="centerX" secondItem="8CO-2T-OCE" secondAttribute="centerX" constant="-2" id="gIm-df-Fbw"/>
+                            <constraint firstItem="wsD-q2-2Fb" firstAttribute="centerX" secondItem="8CO-2T-OCE" secondAttribute="centerX" constant="-1" id="gIm-df-Fbw"/>
                             <constraint firstAttribute="bottom" secondItem="vt7-Ga-tJo" secondAttribute="bottom" constant="30" id="gWP-BJ-UKe"/>
                             <constraint firstItem="wsD-q2-2Fb" firstAttribute="top" secondItem="8CO-2T-OCE" secondAttribute="bottom" id="hVx-z5-azw"/>
                             <constraint firstItem="vCg-Ih-5U6" firstAttribute="leading" secondItem="vt7-Ga-tJo" secondAttribute="leading" id="l1H-X4-Spq"/>

@@ -19,7 +19,7 @@
 @interface TransportTripsListViewController ()
 
 @property (nonatomic, readwrite, strong) QueryTripsResult* tripResult;
-@property (nonatomic, strong) NSArray* nonLeftTrips;
+@property (nonatomic, strong) NSArray* trips;
 
 @end
 
@@ -34,7 +34,7 @@
     if (self) {
         self.title = NSLocalizedStringFromTable(@"Trips", @"TransportPlugin", nil);
         self.tripResult = tripResult;
-        self.nonLeftTrips = self.tripResult.nonLeftTrips;
+        self.trips = self.tripResult.connections;
     }
     return self;
 }
@@ -81,10 +81,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.nonLeftTrips.count <= indexPath.row-1) { //should not happen, (-1 because header cell)
+    if (self.trips.count <= indexPath.row-1) { //should not happen, (-1 because header cell)
         return;
     }
-    TransportTrip* trip = self.nonLeftTrips[indexPath.row-1];
+    TransportTrip* trip = self.trips[indexPath.row-1];
     TransportTripPartsViewController* viewController = [[TransportTripPartsViewController alloc] initWithTransportTrip:trip];
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -99,11 +99,11 @@
         return headerCell;
     }
     
-    if (self.nonLeftTrips.count <= indexPath.row-1) { //should not happen, (-1 because header cell)
+    if (self.trips.count <= indexPath.row-1) { //should not happen, (-1 because header cell)
         return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     }
     
-    TransportTrip* trip = self.nonLeftTrips[indexPath.row-1];
+    TransportTrip* trip = self.trips[indexPath.row-1];
     static NSString* identifier = @"TripCell";
     TransportTripCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
@@ -114,10 +114,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (!self.nonLeftTrips.count) {
+    if (!self.trips.count) {
         return 0;
     }
-    return self.nonLeftTrips.count+1; //+1 because header row (from | to | time | ...)
+    return self.trips.count+1; //+1 because header row (from | to | time | ...)
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

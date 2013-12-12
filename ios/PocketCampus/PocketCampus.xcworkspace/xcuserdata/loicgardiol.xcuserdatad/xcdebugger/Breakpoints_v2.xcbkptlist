@@ -1433,11 +1433,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "407600304.044191"
+            timestampString = "408565664.341545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
             landmarkName = "-setMeal:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1481,11 +1481,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "407600304.044191"
+            timestampString = "408565664.341545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
+            startingLineNumber = "275"
+            endingLineNumber = "275"
             landmarkName = "-ratePressed"
             landmarkType = "5">
             <Actions>
@@ -1506,11 +1506,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "407872099.963617"
+            timestampString = "408565664.341545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "276"
-            endingLineNumber = "276"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
             landmarkName = "-setRateModeEnabled:animated:postNotif:force:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1522,11 +1522,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "407600304.044191"
+            timestampString = "408565664.341545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
+            startingLineNumber = "271"
+            endingLineNumber = "271"
             landmarkName = "-infoContentViewTapped"
             landmarkType = "5">
             <Actions>
@@ -1627,11 +1627,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "407872099.963617"
+            timestampString = "408565664.341545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "300"
-            endingLineNumber = "300"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
             landmarkName = "-smileyButtonTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1659,11 +1659,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "407872099.963617"
+            timestampString = "408565664.341545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "326"
-            endingLineNumber = "326"
+            startingLineNumber = "339"
+            endingLineNumber = "339"
             landmarkName = "-voteForRequest:didReturn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2304,11 +2304,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Views/Common/PCTableViewWithRemoteThumbnails.m"
-            timestampString = "407868093.056305"
+            timestampString = "408563269.190958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "-processAndSetImage:forCell:atIndexPath:url:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2320,11 +2320,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Views/Common/PCTableViewWithRemoteThumbnails.m"
-            timestampString = "407868093.056305"
+            timestampString = "408563269.190958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
             landmarkName = "-setImageURL:forCell:atIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2336,11 +2336,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Views/Common/PCTableViewWithRemoteThumbnails.m"
-            timestampString = "407868093.056305"
+            timestampString = "408563269.190958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
             landmarkName = "-processAndSetImage:forCell:atIndexPath:url:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2407,11 +2407,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Views/Common/PCTableViewWithRemoteThumbnails.m"
-            timestampString = "407868093.056305"
+            timestampString = "408563269.190958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
             landmarkName = "-setImageURL:forCell:atIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2439,11 +2439,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "407871924.654392"
+            timestampString = "408565664.341545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "273"
-            endingLineNumber = "273"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
             landmarkName = "-setRateModeEnabled:animated:postNotif:force:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2898,6 +2898,22 @@
             startingLineNumber = "88"
             endingLineNumber = "88"
             landmarkName = "-shortName"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
+            timestampString = "408563926.993552"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
+            landmarkName = "-setMeal:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
