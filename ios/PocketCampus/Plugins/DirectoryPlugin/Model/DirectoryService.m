@@ -12,6 +12,8 @@
 
 static DirectoryService* instance __weak = nil;
 
+#pragma mark - Init
+
 - (id)init {
     @synchronized(self) {
         if (instance) {
@@ -25,6 +27,8 @@ static DirectoryService* instance __weak = nil;
     }
 }
 
+#pragma mark - ServiceProtocol
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -37,6 +41,8 @@ static DirectoryService* instance __weak = nil;
 #endif
     }
 }
+
+#pragma mark - Thrift
 
 - (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[DirectoryRequest class]];
