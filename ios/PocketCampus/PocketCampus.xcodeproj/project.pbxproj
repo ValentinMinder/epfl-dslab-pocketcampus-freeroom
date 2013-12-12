@@ -59,15 +59,15 @@
 		272300E51858CEB900B72F5E /* CamiproService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E8C1564FC2400DE6984 /* CamiproService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300E61858CEB900B72F5E /* ServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* ServiceRequest.m */; };
 		272300E71858CEB900B72F5E /* CamiproViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E90156507DA00DE6984 /* CamiproViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		272300E81858CEB900B72F5E /* DirectoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E280A8156E583A00B74825 /* DirectoryServiceTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		272300E91858CEB900B72F5E /* PocketCampusLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300E81858CEB900B72F5E /* (null) in Sources */ = {isa = PBXBuildFile; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300E91858CEB900B72F5E /* (null) in Sources */ = {isa = PBXBuildFile; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		272300EA1858CEB900B72F5E /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
 		272300EB1858CEB900B72F5E /* EPFLLayersOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D57298157F7D780051230F /* EPFLLayersOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		272300EC1858CEB900B72F5E /* GlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* GlobalSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300ED1858CEB900B72F5E /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300EE1858CEB900B72F5E /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A54B7C15B5A8E100A7C882 /* AuthenticationViewController.m */; };
 		272300EF1858CEB900B72F5E /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; };
-		272300F01858CEB900B72F5E /* MapServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300F01858CEB900B72F5E /* (null) in Sources */ = {isa = PBXBuildFile; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		272300F11858CEB900B72F5E /* DirectoryPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300F21858CEB900B72F5E /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930AA317F898910025F864 /* TSharedProcessorFactory.m */; };
 		272300F31858CEB900B72F5E /* TProtocolUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A8717F898910025F864 /* TProtocolUtil.m */; };
@@ -78,7 +78,7 @@
 		272300F81858CEB900B72F5E /* MyEduController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968E4CDC8AB22470DE349C3B /* MyEduController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300F91858CEB900B72F5E /* MyEduService.m in Sources */ = {isa = PBXBuildFile; fileRef = 437F4DF1A201ED94FAB8E2F2 /* MyEduService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300FA1858CEB900B72F5E /* myedu.m in Sources */ = {isa = PBXBuildFile; fileRef = 92184A8EA6FCB1AB9277A185 /* myedu.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		272300FB1858CEB900B72F5E /* MyEduServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3EAB51633506900DA8902 /* MyEduServiceTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		272300FB1858CEB900B72F5E /* (null) in Sources */ = {isa = PBXBuildFile; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		272300FC1858CEB900B72F5E /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CBF0621634812C00FD92E5 /* SplashViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300FD1858CEB900B72F5E /* NSLayoutConstraint+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+Extras.m */; };
 		272300FE1858CEB900B72F5E /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -102,7 +102,7 @@
 		272301101858CEB900B72F5E /* PushNotifService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2F4A5AA559021373171E91 /* PushNotifService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301111858CEB900B72F5E /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		272301121858CEB900B72F5E /* MapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D015373A5B00CCFB22 /* MapController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		272301131858CEB900B72F5E /* PushNotifControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0B24A166A282700F68304 /* PushNotifControllerTests.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301131858CEB900B72F5E /* (null) in Sources */ = {isa = PBXBuildFile; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301141858CEB900B72F5E /* MoodleCoursesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301151858CEB900B72F5E /* MoodleCourseSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301161858CEB900B72F5E /* MoodleResourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035BB2166E987100E134DD /* MoodleResourceViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -135,7 +135,7 @@
 		272301311858CEB900B72F5E /* EventsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8834ED985A01F6FB20543E8 /* EventsController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301321858CEB900B72F5E /* EventsService.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AE43D19400EAA046F5166E /* EventsService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301331858CEB900B72F5E /* events.m in Sources */ = {isa = PBXBuildFile; fileRef = 62FB4BFDBB53089EB412B0C1 /* events.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		272301341858CEB900B72F5E /* EventsServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AA6CD016DFF41100783E9C /* EventsServiceTests.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301341858CEB900B72F5E /* (null) in Sources */ = {isa = PBXBuildFile; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301351858CEB900B72F5E /* EventPoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FE516E13A020016F03C /* EventPoolViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301361858CEB900B72F5E /* EventItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32035FEA16E153860016F03C /* EventItemCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301371858CEB900B72F5E /* TSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A9E17F898910025F864 /* TSocketClient.m */; };
@@ -4203,15 +4203,15 @@
 				272300E51858CEB900B72F5E /* CamiproService.m in Sources */,
 				272300E61858CEB900B72F5E /* ServiceRequest.m in Sources */,
 				272300E71858CEB900B72F5E /* CamiproViewController.m in Sources */,
-				272300E81858CEB900B72F5E /* DirectoryServiceTests.m in Sources */,
-				272300E91858CEB900B72F5E /* PocketCampusLogicTests.m in Sources */,
+				272300E81858CEB900B72F5E /* (null) in Sources */,
+				272300E91858CEB900B72F5E /* (null) in Sources */,
 				272300EA1858CEB900B72F5E /* TransportHelpViewController.m in Sources */,
 				272300EB1858CEB900B72F5E /* EPFLLayersOverlay.m in Sources */,
 				272300EC1858CEB900B72F5E /* GlobalSettingsViewController.m in Sources */,
 				272300ED1858CEB900B72F5E /* EditableTableViewCell.m in Sources */,
 				272300EE1858CEB900B72F5E /* AuthenticationViewController.m in Sources */,
 				272300EF1858CEB900B72F5E /* AboutPCViewController.m in Sources */,
-				272300F01858CEB900B72F5E /* MapServiceTests.m in Sources */,
+				272300F01858CEB900B72F5E /* (null) in Sources */,
 				272300F11858CEB900B72F5E /* DirectoryPersonViewController.m in Sources */,
 				272300F21858CEB900B72F5E /* TSharedProcessorFactory.m in Sources */,
 				272300F31858CEB900B72F5E /* TProtocolUtil.m in Sources */,
@@ -4222,7 +4222,7 @@
 				272300F81858CEB900B72F5E /* MyEduController.m in Sources */,
 				272300F91858CEB900B72F5E /* MyEduService.m in Sources */,
 				272300FA1858CEB900B72F5E /* myedu.m in Sources */,
-				272300FB1858CEB900B72F5E /* MyEduServiceTests.m in Sources */,
+				272300FB1858CEB900B72F5E /* (null) in Sources */,
 				272300FC1858CEB900B72F5E /* SplashViewController.m in Sources */,
 				272300FD1858CEB900B72F5E /* NSLayoutConstraint+Extras.m in Sources */,
 				272300FE1858CEB900B72F5E /* PluginNavigationController.m in Sources */,
@@ -4246,7 +4246,7 @@
 				272301101858CEB900B72F5E /* PushNotifService.m in Sources */,
 				272301111858CEB900B72F5E /* pushnotif.m in Sources */,
 				272301121858CEB900B72F5E /* MapController.m in Sources */,
-				272301131858CEB900B72F5E /* PushNotifControllerTests.m in Sources */,
+				272301131858CEB900B72F5E /* (null) in Sources */,
 				272301141858CEB900B72F5E /* MoodleCoursesListViewController.m in Sources */,
 				272301151858CEB900B72F5E /* MoodleCourseSectionsViewController.m in Sources */,
 				272301161858CEB900B72F5E /* MoodleResourceViewController.m in Sources */,
@@ -4279,7 +4279,7 @@
 				272301311858CEB900B72F5E /* EventsController.m in Sources */,
 				272301321858CEB900B72F5E /* EventsService.m in Sources */,
 				272301331858CEB900B72F5E /* events.m in Sources */,
-				272301341858CEB900B72F5E /* EventsServiceTests.m in Sources */,
+				272301341858CEB900B72F5E /* (null) in Sources */,
 				272301351858CEB900B72F5E /* EventPoolViewController.m in Sources */,
 				272301361858CEB900B72F5E /* EventItemCell.m in Sources */,
 				272301371858CEB900B72F5E /* TSocketClient.m in Sources */,
@@ -4834,8 +4834,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Loic Gardiol (NL782XD7Y6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Loic Gardiol (NL782XD7Y6)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
@@ -4843,8 +4843,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "53B2B79E-82D9-4491-80CD-808663F9463F";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "53B2B79E-82D9-4491-80CD-808663F9463F";
+				PROVISIONING_PROFILE = "14C49701-2273-4D44-8AD2-4BB1E0D65899";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "14C49701-2273-4D44-8AD2-4BB1E0D65899";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;
@@ -4861,8 +4861,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Loic Gardiol (7KPBSVCYLZ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Loic Gardiol (7KPBSVCYLZ)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";

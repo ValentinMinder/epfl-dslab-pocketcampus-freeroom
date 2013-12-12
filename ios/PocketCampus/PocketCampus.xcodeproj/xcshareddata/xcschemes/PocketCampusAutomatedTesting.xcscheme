@@ -15,7 +15,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "272300B31858CEB900B72F5E"
-                     BuildableName = "PocketCampus copy.app"
+                     BuildableName = "PocketCampusNoCodeSign.app"
                      BlueprintName = "PocketCampusNoCodeSign"
                      ReferencedContainer = "container:PocketCampus.xcodeproj">
                   </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "272300B31858CEB900B72F5E"
-               BuildableName = "PocketCampus copy.app"
+               BuildableName = "PocketCampusNoCodeSign.app"
                BlueprintName = "PocketCampusNoCodeSign"
                ReferencedContainer = "container:PocketCampus.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "272300B31858CEB900B72F5E"
-            BuildableName = "PocketCampus copy.app"
+            BuildableName = "PocketCampusNoCodeSign.app"
             BlueprintName = "PocketCampusNoCodeSign"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
@@ -70,7 +70,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "272300B31858CEB900B72F5E"
-            BuildableName = "PocketCampus copy.app"
+            BuildableName = "PocketCampusNoCodeSign.app"
             BlueprintName = "PocketCampusNoCodeSign"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
@@ -88,7 +88,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "272300B31858CEB900B72F5E"
-            BuildableName = "PocketCampus copy.app"
+            BuildableName = "PocketCampusNoCodeSign.app"
             BlueprintName = "PocketCampusNoCodeSign"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
