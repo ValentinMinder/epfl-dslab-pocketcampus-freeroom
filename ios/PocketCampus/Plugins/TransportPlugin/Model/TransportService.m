@@ -268,7 +268,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 @implementation NearestUserTransportStationRequest
 
 static NSTimeInterval const kLocationValidityInterval = 60.0; //nb seconds a cached location can be used / is considered that user has not moved
-static NSString* kLastLocationKey = @"lastLocation";
+static NSString* const kLastLocationKey = @"lastLocation";
 
 - (id)initWithTransportStations:(NSOrderedSet*)stations delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:stations notKindOfClass:[NSOrderedSet class]];
@@ -281,7 +281,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     return self;
 }
 
-/* NSOperation methods */
+#pragma mark - NSOperation overrides
 
 - (void)main {
     if ([self isCancelled])
@@ -323,6 +323,12 @@ static NSString* kLastLocationKey = @"lastLocation";
         self.checkCancellationAndAdaptDesiredAccuracyTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkCancellationAndAdaptDesiredAccuracy) userInfo:nil repeats:YES];
     });
 }
+
+- (BOOL)isConcurrent {
+    return YES;
+}
+
+#pragma mark - Timer call handling
 
 - (void)checkCancellationAndAdaptDesiredAccuracy {
     if ([self isCancelled]) {
@@ -366,11 +372,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     self.finished = YES;
 }
 
-- (BOOL)isConcurrent {
-    return YES;
-}
-
-/* CLLocationManagerDelegate delegation */
+#pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if (self.blockedByAuthStatus) {
@@ -421,8 +423,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     }
 }
 
-
-/* utilities */
+#pragma mark - Location and delegate handling
 
 - (void)handleLocationUpdate:(CLLocation*)newLocation {
     if(self.delegateCallScheduled) {
@@ -510,6 +511,8 @@ static NSString* kLastLocationKey = @"lastLocation";
     self.delegateCallScheduled = YES;
 }
 
+#pragma mark - Utils
+
 - (BOOL)locationIsStillValid:(CLLocation*)location {
     if (location == nil || location.timestamp == nil) {
         return NO;
@@ -571,6 +574,8 @@ static NSString* kLastLocationKey = @"lastLocation";
     }
     return minDistance;
 }
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
