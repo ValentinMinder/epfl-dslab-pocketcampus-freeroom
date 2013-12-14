@@ -4,7 +4,7 @@ Author : Loïc Gardiol
 
 The purpose of this document is document is to expose some good structural and coding practices when developing for iOS and OSX.
 
-##Third-party Libraries##
+##Third-party libraries##
 
 ###Use CocoaPods [http://cocoapods.org]###
 
