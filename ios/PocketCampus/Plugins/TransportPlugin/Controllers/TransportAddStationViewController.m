@@ -147,7 +147,7 @@
     [self resultsError];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [self.transportService cancelOperationsForDelegate:self];
     [self.barActivityIndicator stopAnimating];
     self.tableView.hidden = YES;

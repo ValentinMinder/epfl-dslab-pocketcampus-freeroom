@@ -325,7 +325,7 @@ static NSString* kPoolCell = @"PoolCell";
     self.tableView.hidden = YES;
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.hidden = YES;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);

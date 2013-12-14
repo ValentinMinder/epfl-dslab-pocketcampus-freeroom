@@ -42,7 +42,7 @@ static DirectoryService* instance __weak = nil;
     }
 }
 
-#pragma mark - Thrift
+#pragma mark - Service methods
 
 - (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[DirectoryRequest class]];

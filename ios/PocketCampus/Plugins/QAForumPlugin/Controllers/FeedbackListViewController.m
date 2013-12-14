@@ -128,7 +128,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
 }
 @end

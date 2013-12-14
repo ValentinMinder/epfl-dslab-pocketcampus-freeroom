@@ -81,8 +81,8 @@
     self.authenticationStarted = NO;
     @synchronized (self) {
         for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
-            if ([loginObserver.observer respondsToSelector:@selector(serviceConnectionToServerTimedOut)]) {
-                [loginObserver.observer serviceConnectionToServerTimedOut];
+            if ([loginObserver.observer respondsToSelector:@selector(serviceConnectionToServerFailed)]) {
+                [loginObserver.observer serviceConnectionToServerFailed];
             } else {
                 loginObserver.failureBlock();
             }

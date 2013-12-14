@@ -14,7 +14,7 @@
 #import "TBinaryProtocol.h"
 
 
-static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 15.0;
+static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0;
 
 @interface Service ()
 

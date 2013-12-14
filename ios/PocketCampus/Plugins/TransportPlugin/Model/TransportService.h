@@ -28,7 +28,7 @@ static NSString* kUserTransportStationsModifiedNotificationName __unused = @"Use
 - (QueryTripsResult *) getTripsFromStationsIDs: (NSString *) fromID : (NSString *) toID;  // throws TException
 */
 
-#pragma mark - Thrift requests
+#pragma mark - Service methods
 
 - (void)autocomplete:(NSString*)constraint delegate:(id)delegate;
 - (void)getLocationsForIDs:(NSArray*)ids delegate:(id)delegate;

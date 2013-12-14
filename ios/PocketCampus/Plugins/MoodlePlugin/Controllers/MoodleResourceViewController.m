@@ -285,7 +285,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
                 [self.navigationController popViewControllerAnimated:YES];
             }
         } failureBlock:^{
-            [self serviceConnectionToServerTimedOut];
+            [self serviceConnectionToServerFailed];
         }];
     }
 }
@@ -328,18 +328,18 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     if (statusCode == 404) {
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
-        [self serviceConnectionToServerTimedOut];
+        [self serviceConnectionToServerFailed];
     } else if (statusCode == 303 || statusCode == 407) {
         //mans bad cookie
         self.progressView.progress = 0.0;
         [self.moodleService deleteSession];
         [self startMoodleResourceDownload];
     } else { //other unkown error
-        [self serviceConnectionToServerTimedOut];
+        [self serviceConnectionToServerFailed];
     }
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     self.webView.hidden = YES;
     self.progressView.hidden = YES;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil);

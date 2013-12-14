@@ -189,7 +189,7 @@
     self.centerMessageLabel.hidden = NO;
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     self.webView.hidden = YES;
     [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);

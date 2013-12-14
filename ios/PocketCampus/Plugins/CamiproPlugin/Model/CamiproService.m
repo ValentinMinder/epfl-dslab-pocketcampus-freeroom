@@ -46,7 +46,7 @@ static CamiproService* instance __weak = nil;
     }
 }
 
-#pragma mark - Thrift
+#pragma mark - Service methods
 
 + (CamiproSession*)lastSessionId {
     return (CamiproSession*)[ObjectArchiver objectForKey:kLastSessionIdKey andPluginName:@"camipro"];

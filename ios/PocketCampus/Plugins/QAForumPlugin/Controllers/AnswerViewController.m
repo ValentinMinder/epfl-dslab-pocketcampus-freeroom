@@ -234,7 +234,7 @@
     [alert release];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
 }
 - (void)error {

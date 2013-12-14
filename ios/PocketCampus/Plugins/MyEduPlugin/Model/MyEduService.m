@@ -156,7 +156,7 @@ static MyEduService* instance __weak = nil;
     return [ObjectArchiver saveObject:nil forKey:kMyEduSessionIdentifier andPluginName:@"myedu"];
 }
 
-#pragma mark - Thrift service
+#pragma mark - Service methods
 
 - (void)getTequilaTokenForMyEduWithDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];

@@ -127,7 +127,7 @@
     [self setTableview:nil];
     [super viewDidUnload];
 }
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
 }
 - (void)error {

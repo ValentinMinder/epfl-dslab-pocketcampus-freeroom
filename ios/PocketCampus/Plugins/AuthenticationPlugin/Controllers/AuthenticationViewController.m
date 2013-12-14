@@ -238,12 +238,12 @@
     self.loginCell.selectionStyle = UITableViewCellSelectionStyleGray;
     [PCUtils showConnectionToServerTimedOutAlert];
     
-    if (self.presentationMode == PresentationModeTryHidden && [(NSObject*)self.delegate respondsToSelector:@selector(serviceConnectionToServerTimedOut)]) {
-        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(serviceConnectionToServerTimedOut) withObject:nil waitUntilDone:YES];
+    if (self.presentationMode == PresentationModeTryHidden && [(NSObject*)self.delegate respondsToSelector:@selector(serviceConnectionToServerFailed)]) {
+        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(serviceConnectionToServerFailed) withObject:nil waitUntilDone:YES];
     }
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [self connectionError];
 }
 

@@ -108,7 +108,7 @@
     [self setOthers:nil];
     [super viewDidUnload];
 }
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
 }
 @end

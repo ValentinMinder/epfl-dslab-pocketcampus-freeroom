@@ -75,7 +75,7 @@ static TransportService* instance __weak = nil;
     }
 }
 
-#pragma mark - Thrift
+#pragma mark - Service methods
 
 - (void)autocomplete:(NSString*)constraint delegate:(id)delegate {
     if (![constraint isKindOfClass:[NSString class]]) {

@@ -1756,11 +1756,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproViewController.m"
-            timestampString = "407370491.204624"
+            timestampString = "408712907.486036"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "406"
-            endingLineNumber = "406"
+            startingLineNumber = "405"
+            endingLineNumber = "405"
             landmarkName = "-serviceConnectionToServerTimedOut"
             landmarkType = "5">
          </BreakpointContent>
@@ -1836,13 +1836,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Model/TransportService.m"
-            timestampString = "408567680.617776"
+            timestampString = "408639736.840493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "394"
-            endingLineNumber = "394"
-            landmarkName = "@implementation NearestUserTransportStationRequest"
-            landmarkType = "3">
+            startingLineNumber = "396"
+            endingLineNumber = "396"
+            landmarkName = "-locationManager:didFailWithError:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2782,11 +2782,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/ServiceRequest.m"
-            timestampString = "408472404.748109"
+            timestampString = "408711771.99854"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "401"
-            endingLineNumber = "401"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
             landmarkName = "-startRequestAndReturnToDelegateCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2860,11 +2860,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/ServiceRequest.m"
-            timestampString = "408472404.748109"
+            timestampString = "408711771.99854"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "405"
-            endingLineNumber = "405"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
             landmarkName = "-startRequestAndReturnToDelegateCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2876,11 +2876,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/ServiceRequest.m"
-            timestampString = "408472404.748109"
+            timestampString = "408711771.99854"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
+            startingLineNumber = "262"
+            endingLineNumber = "262"
             landmarkName = "-startRequestAndReturnToDelegateCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2940,11 +2940,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Model/TransportService.m"
-            timestampString = "408567680.617776"
+            timestampString = "408639736.840493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "522"
-            endingLineNumber = "522"
+            startingLineNumber = "525"
+            endingLineNumber = "525"
             landmarkName = "-locationIsStillValid:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3032,13 +3032,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Model/TransportService.m"
-            timestampString = "408567673.607877"
+            timestampString = "408639736.840493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "585"
-            endingLineNumber = "585"
-            landmarkName = "-dealloc"
-            landmarkType = "5">
+            startingLineNumber = "590"
+            endingLineNumber = "590">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

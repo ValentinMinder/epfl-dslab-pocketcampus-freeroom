@@ -208,7 +208,7 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
     }
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;

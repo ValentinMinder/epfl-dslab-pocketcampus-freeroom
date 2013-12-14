@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Model/TransportService.m"
-            timestampString = "408567680.617776"
+            timestampString = "408639736.840493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "572"
-            endingLineNumber = "572"
+            startingLineNumber = "575"
+            endingLineNumber = "575"
             landmarkName = "-minimumDistanceBetweenStations"
             landmarkType = "5">
          </BreakpointContent>
@@ -444,11 +444,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/CamiproPlugin/Controllers/CamiproViewController.m"
-            timestampString = "407370491.204624"
+            timestampString = "408712907.486036"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "443"
-            endingLineNumber = "443"
+            startingLineNumber = "442"
+            endingLineNumber = "442"
             landmarkName = "-alertView:willDismissWithButtonIndex:"
             landmarkType = "5">
             <Actions>
@@ -3345,36 +3345,6 @@
                   </ActionContent>
                </BreakpointActionProxy>
             </Actions>
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MyEduModuleVideoViewController destroyVideoPlayer]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MyEduPlugin/Controllers/MyEduModuleVideoViewController.m"
-                  timestampString = "408567680.700534"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "169"
-                  endingLineNumber = "169"
-                  offsetFromSymbolStart = "54">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MyEduModuleVideoViewController destroyVideoPlayer]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MyEduPlugin/Controllers/MyEduModuleVideoViewController.m"
-                  timestampString = "408567680.700752"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "169"
-                  endingLineNumber = "169"
-                  offsetFromSymbolStart = "784">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

@@ -117,7 +117,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
 }
 @end

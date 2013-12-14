@@ -12,7 +12,7 @@
 
 @protocol ServiceDelegate <NSObject>
 
-- (void)serviceConnectionToServerTimedOut;
+- (void)serviceConnectionToServerFailed;
 
 @end
 

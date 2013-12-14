@@ -377,7 +377,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     [PCUtils showServerErrorAlert];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     if (self.ratingStatus == RatingStatusLoading) {
         self.ratingStatus = RatingStatusReady;
         [PCUtils showConnectionToServerTimedOutAlert];

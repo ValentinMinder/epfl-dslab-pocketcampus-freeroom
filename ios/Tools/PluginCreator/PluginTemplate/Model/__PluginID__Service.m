@@ -75,7 +75,7 @@ static __PluginID__Service* instance __weak = nil;
 // --------------------------------------------------------------------------------------  //
 
 
-#pragma mark - dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

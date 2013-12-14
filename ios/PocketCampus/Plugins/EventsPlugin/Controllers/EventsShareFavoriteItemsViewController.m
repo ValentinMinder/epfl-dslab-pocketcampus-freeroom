@@ -133,7 +133,7 @@
     [PCUtils showServerErrorAlert];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     self.operationInProgress = NO;
     [PCUtils showConnectionToServerTimedOutAlert];
 }

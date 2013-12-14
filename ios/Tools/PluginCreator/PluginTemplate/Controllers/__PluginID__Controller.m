@@ -14,6 +14,8 @@ static __PluginID__Controller* instance __weak = nil;
 
 @implementation __PluginID__Controller
 
+#pragma mark - Init
+
 - (id)init
 {
     @synchronized(self) {
@@ -51,6 +53,8 @@ static __PluginID__Controller* instance __weak = nil;
     }
 }
 
+#pragma mark - PluginControllerProtocol
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -71,6 +75,8 @@ static __PluginID__Controller* instance __weak = nil;
 + (NSString*)identifierName {
     return @"__PluginID__";
 }
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

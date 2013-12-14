@@ -445,7 +445,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     }
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     if (self.userStationsState == UserStationsStateLoadingDefault) {
         self.userStationsState = UserStationsStateErrorLoadingDefault;
     } else if (self.schedulesState == SchedulesStateError) {

@@ -3,5 +3,4 @@
 
 @interface MoodleController : PluginControllerAuthentified<PluginControllerProtocol>
 
-
 @end
