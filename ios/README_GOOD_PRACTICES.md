@@ -16,12 +16,12 @@ The dependencies (libraries that CocoaPods should install) are described in a _P
 
 *Speaking of third-party libraries: if your app has any network activity (i.e. makes network requests), it is strongly encouraged to use [AFNetworking](http://afnetworking.com). It is very popular and constantly updated.*
 
-###External Frameworks (not CocoaPods supported)###
+###External frameworks (not CocoaPods supported)###
 
 Third-party libraries that are not supported by CocoaPods should be put in `/External frameworks/`and imported into the corresponding group in Xcode.
 
 ##MVC##
-###Views & Controllers###
+###Views & controllers###
 ####Files####
 
 iOS follows the  [Model View Controller pattern](http://developer.apple.com/library/ios/#documentation/general/conceptual/devpedia-cocoacore/MVC.html). Each class/file is stored within the corresponding folder (or subfolder) or Misc folder if none of the three is appropriate.
@@ -95,7 +95,7 @@ Often, 1-line if-statements are conditional value assignments. Use the very clea
 
 	self.name = self.isNew ? @"New" : @"Old";
 	
-####Use Literals####
+####Use literals####
 
 Modern Objective-C brings many syntactic sugar to help developers write less code to do the same. Here are the most useful literals:
 
@@ -129,7 +129,7 @@ Modern Objective-C brings many syntactic sugar to help developers write less cod
 	NSNumber* number = [NSNumber numberWithInteger:42];
 	NSSNumber* boolean = [NSNumber numberWithBool:YES];
 
-###Use Properties###
+###Use properties###
 
 Avoid using instance variable of the form:
 
