@@ -141,7 +141,7 @@ Use properties instead:
 
 Then, access them from within your class with `self.propertyName` and set them the same `self.propertyName = ...`
 
-###Define private properties in class extension in .m file###
+####Define private properties in class extension in .m file####
 
 Unless they are needed as public accessors, declare the properties inside the .m file, in a class extension (which is actually a private category on your class).
 
@@ -159,7 +159,7 @@ Unless they are needed as public accessors, declare the properties inside the .m
 
 	@end
 
-###You do not need to @synthesize, it is done automatically ;)###
+####Do not write @synthesize, it is done automatically ;)####
 
 All properties _propertyName_ are by default synthesized as classic instance variable with name _\_propertyName_ (note the prefixing underscore).
 
@@ -188,11 +188,9 @@ If you want to override the getter or the setter for a property called `alpha` f
 
 The compiler will understand it and will __not__ insert the default setter.
 
-###Public/private properties###
+####Readonly properties####
 
-If you need a property to be public, simply put it in the .h file instead of the .m file.
-
-Now, what if you want a property to be _only_ a getter (readonly) ? You do like this:
+If you want a property to be _only_ a getter (readonly) add the *readonly* attribute.
 
 __MyClass.h__
 	
@@ -202,6 +200,8 @@ __MyClass.h__
 
 	@end
 
+
+If you still want this property to be a private setter as well, simply declare it as readwrite in your private class extension (see above).
 
 __MyClass.m__
 	
@@ -218,6 +218,20 @@ __MyClass.m__
 	@end
 
 Yes, you declare it twice. It's not very nice, but it's how it's done commonly.
+
+###Forget NullPointerExceptions###
+
+**In Objective-C, calling anything on `nil` simply returns `nil`**. No exception is thrown.
+
+Put differently, depending on the context, it is perfectly fine *not* to check for `nil` before an action on a object. This helps keep the code cleaner.
+
+So imagine for example that you want to know how many objects are in an array, but you don't know whether this array is initialized:
+
+	/*
+	 * Returns 0 (== nil) both if self.elements is nil
+	 * or self.elements contains 0 element.
+	 */
+	NSUInteger count = self.elements.count;
 
 ###Types###
 
