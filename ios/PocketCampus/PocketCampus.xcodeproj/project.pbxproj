@@ -67,7 +67,7 @@
 		272300EA1858CEB900B72F5E /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
 		272300EB1858CEB900B72F5E /* EPFLLayersOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D57298157F7D780051230F /* EPFLLayersOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		272300EC1858CEB900B72F5E /* GlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* GlobalSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		272300ED1858CEB900B72F5E /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300ED1858CEB900B72F5E /* PCEditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* PCEditableTableViewCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300EE1858CEB900B72F5E /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A54B7C15B5A8E100A7C882 /* AuthenticationViewController.m */; };
 		272300EF1858CEB900B72F5E /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; };
 		272300F01858CEB900B72F5E /* (null) in Sources */ = {isa = PBXBuildFile; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -293,7 +293,6 @@
 		272301CE1858CEB900B72F5E /* MasterHidden@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32506D04181DC7AF003F08D7 /* MasterHidden@2x.png */; };
 		272301CF1858CEB900B72F5E /* TransportSmallBus.png in Resources */ = {isa = PBXBuildFile; fileRef = 327585A61844DE93004215FC /* TransportSmallBus.png */; };
 		272301D01858CEB900B72F5E /* TransportHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214615B197DE00BB445D /* TransportHelp.html */; };
-		272301D11858CEB900B72F5E /* EditableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */; };
 		272301D21858CEB900B72F5E /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
 		272301D31858CEB900B72F5E /* MoodleLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3218CD2315B8359F00CEB238 /* MoodleLarge.png */; };
 		272301D41858CEB900B72F5E /* FoodSmileyMeh.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131518296E2D00F4C622 /* FoodSmileyMeh.png */; };
@@ -407,8 +406,6 @@
 		272302401858CEB900B72F5E /* ClockCell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */; };
 		272302411858CEB900B72F5E /* DirectoryEmptyDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */; };
 		272302421858CEB900B72F5E /* FoodSmileyHappy.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A131118296E2D00F4C622 /* FoodSmileyHappy.png */; };
-		272302431858CEB900B72F5E /* ClockCellSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */; };
-		272302441858CEB900B72F5E /* ClockCellSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DC81684D62300E5CFF6 /* ClockCellSelected@2x.png */; };
 		272302451858CEB900B72F5E /* NewsSplashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322207EB1688E6B5003F6622 /* NewsSplashView.xib */; };
 		272302461858CEB900B72F5E /* SplashImage4inch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 328A72DD184A4EE0002C5A6B /* SplashImage4inch@2x.png */; };
 		272302471858CEB900B72F5E /* NewsItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322207F01688F101003F6622 /* NewsItemView.xib */; };
@@ -695,8 +692,7 @@
 		324151E515375BDD00CCFB22 /* Map.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E315375BDD00CCFB22 /* Map.png */; };
 		324151E615375BDD00CCFB22 /* Map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E415375BDD00CCFB22 /* Map@2x.png */; };
 		324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151F315377B4C00CCFB22 /* MapItemAnnotation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		3241F1D615B4AB2400C7DF3A /* EditableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */; };
-		3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		3241F1DE15B4AB9C00C7DF3A /* PCEditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* PCEditableTableViewCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3242DE1F150577050082D720 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* Service.m */; };
 		3242F40B1655A5B900A8C3D7 /* MyEduDrawersNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3242F4091655A5B900A8C3D7 /* MyEduDrawersNavbar.png */; };
 		3242F40C1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3242F40A1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png */; };
@@ -961,8 +957,6 @@
 		32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */; };
 		32E67DC31684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E67DC21684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32E67DC61684D40C00E5CFF6 /* PCRecentResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E67DC51684D40C00E5CFF6 /* PCRecentResultTableViewCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		32E67DC91684D62300E5CFF6 /* ClockCellSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */; };
-		32E67DCA1684D62300E5CFF6 /* ClockCellSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DC81684D62300E5CFF6 /* ClockCellSelected@2x.png */; };
 		32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32EB617F180D5A3C001AE852 /* MapResultsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB617E180D5A3C001AE852 /* MapResultsListViewController.m */; };
 		32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */; };
@@ -991,7 +985,7 @@
 		32FB2E0915179014007AE82B /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FB2DFE15179014007AE82B /* TransportPlugin.strings */; };
 		32FB2E0A15179014007AE82B /* transport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0415179014007AE82B /* transport.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32FB2E0B15179014007AE82B /* TransportService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0615179014007AE82B /* TransportService.m */; };
-		32FB442017650268008C8282 /* NSDate+Addtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB441F17650268008C8282 /* NSDate+Addtions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		32FB442017650268008C8282 /* NSDate+Addtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB441F17650268008C8282 /* NSDate+Addtions.m */; };
 		32FDA99D1854A06F00C6393A /* NSOperationWithDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */; };
 		32FDA9A11854B5E600C6393A /* ServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* ServiceRequest.m */; };
 		32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -1282,9 +1276,8 @@
 		324151E415375BDD00CCFB22 /* Map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Map@2x.png"; sourceTree = "<group>"; };
 		324151F215377B4C00CCFB22 /* MapItemAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapItemAnnotation.h; sourceTree = "<group>"; };
 		324151F315377B4C00CCFB22 /* MapItemAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapItemAnnotation.m; sourceTree = "<group>"; };
-		3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditableTableViewCell.xib; sourceTree = "<group>"; };
-		3241F1DC15B4AB9B00C7DF3A /* EditableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditableTableViewCell.h; sourceTree = "<group>"; };
-		3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableTableViewCell.m; sourceTree = "<group>"; };
+		3241F1DC15B4AB9B00C7DF3A /* PCEditableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCEditableTableViewCell.h; sourceTree = "<group>"; };
+		3241F1DD15B4AB9B00C7DF3A /* PCEditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCEditableTableViewCell.m; sourceTree = "<group>"; };
 		3242F4091655A5B900A8C3D7 /* MyEduDrawersNavbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduDrawersNavbar.png; sourceTree = "<group>"; };
 		3242F40A1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduDrawersNavbar@2x.png"; sourceTree = "<group>"; };
 		3243FB9B18215CEC000F3CB5 /* FoodRestaurantViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodRestaurantViewController.h; sourceTree = "<group>"; };
@@ -1663,8 +1656,6 @@
 		32E67DC21684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryEmptyDetailViewController.m; sourceTree = "<group>"; };
 		32E67DC41684D40C00E5CFF6 /* PCRecentResultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCRecentResultTableViewCell.h; sourceTree = "<group>"; };
 		32E67DC51684D40C00E5CFF6 /* PCRecentResultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCRecentResultTableViewCell.m; sourceTree = "<group>"; };
-		32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockCellSelected.png; sourceTree = "<group>"; };
-		32E67DC81684D62300E5CFF6 /* ClockCellSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCellSelected@2x.png"; sourceTree = "<group>"; };
 		32E9A22116394F6D00188AE0 /* PluginSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginSplitViewController.h; sourceTree = "<group>"; };
 		32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginSplitViewController.m; sourceTree = "<group>"; };
 		32EB617D180D5A3C001AE852 /* MapResultsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapResultsListViewController.h; sourceTree = "<group>"; };
@@ -1973,8 +1964,6 @@
 				3200375418118B9A00901F6A /* CheckmarkRoundedSquareEmpty@2x.png */,
 				32E67DBA16847A0900E5CFF6 /* ClockCell.png */,
 				32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */,
-				32E67DC71684D62300E5CFF6 /* ClockCellSelected.png */,
-				32E67DC81684D62300E5CFF6 /* ClockCellSelected@2x.png */,
 				32ADC7171659AAEB0039F6A6 /* Download.png */,
 				32ADC7181659AAEB0039F6A6 /* Download@2x.png */,
 				327412D8167E776A001E8C62 /* DownloadedCorner.png */,
@@ -2557,11 +2546,12 @@
 		328869A814FE5AF400CC97DB /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				32617BCC16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.h */,
+				32617BCD16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m */,
 				3247CAF615135FD800105A71 /* PCTableViewSectionHeader.h */,
 				3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */,
-				3241F1DC15B4AB9B00C7DF3A /* EditableTableViewCell.h */,
-				3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */,
-				3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */,
+				3241F1DC15B4AB9B00C7DF3A /* PCEditableTableViewCell.h */,
+				3241F1DD15B4AB9B00C7DF3A /* PCEditableTableViewCell.m */,
 				32BA306F1645D31900909D82 /* PCCenterMessageCell.h */,
 				32BA30701645D31A00909D82 /* PCCenterMessageCell.m */,
 				327412E3167E824F001E8C62 /* PCTableViewCellAdditions.h */,
@@ -2572,8 +2562,6 @@
 				32A77DC216A564460018976F /* UIPopoverController+Additions.m */,
 				32A77DC416A565600018976F /* UIActionSheet+Additions.h */,
 				32A77DC516A565600018976F /* UIActionSheet+Additions.m */,
-				32617BCC16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.h */,
-				32617BCD16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m */,
 				32930A7317F882010025F864 /* LGRefreshControl+PCAdditions.h */,
 				32930A7417F882010025F864 /* LGRefreshControl+PCAdditions.m */,
 			);
@@ -3633,7 +3621,6 @@
 				272301CE1858CEB900B72F5E /* MasterHidden@2x.png in Resources */,
 				272301CF1858CEB900B72F5E /* TransportSmallBus.png in Resources */,
 				272301D01858CEB900B72F5E /* TransportHelp.html in Resources */,
-				272301D11858CEB900B72F5E /* EditableTableViewCell.xib in Resources */,
 				272301D21858CEB900B72F5E /* AuthenticationPlugin.strings in Resources */,
 				272301D31858CEB900B72F5E /* MoodleLarge.png in Resources */,
 				272301D41858CEB900B72F5E /* FoodSmileyMeh.png in Resources */,
@@ -3747,8 +3734,6 @@
 				272302401858CEB900B72F5E /* ClockCell@2x.png in Resources */,
 				272302411858CEB900B72F5E /* DirectoryEmptyDetailView.xib in Resources */,
 				272302421858CEB900B72F5E /* FoodSmileyHappy.png in Resources */,
-				272302431858CEB900B72F5E /* ClockCellSelected.png in Resources */,
-				272302441858CEB900B72F5E /* ClockCellSelected@2x.png in Resources */,
 				272302451858CEB900B72F5E /* NewsSplashView.xib in Resources */,
 				272302461858CEB900B72F5E /* SplashImage4inch@2x.png in Resources */,
 				272302471858CEB900B72F5E /* NewsItemView.xib in Resources */,
@@ -3930,7 +3915,6 @@
 				32506D06181DC7AF003F08D7 /* MasterHidden@2x.png in Resources */,
 				327585A81844DE93004215FC /* TransportSmallBus.png in Resources */,
 				32AF214815B197DE00BB445D /* TransportHelp.html in Resources */,
-				3241F1D615B4AB2400C7DF3A /* EditableTableViewCell.xib in Resources */,
 				3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */,
 				3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */,
 				328A132118296E2D00F4C622 /* FoodSmileyMeh.png in Resources */,
@@ -4044,8 +4028,6 @@
 				32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */,
 				32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */,
 				328A131D18296E2D00F4C622 /* FoodSmileyHappy.png in Resources */,
-				32E67DC91684D62300E5CFF6 /* ClockCellSelected.png in Resources */,
-				32E67DCA1684D62300E5CFF6 /* ClockCellSelected@2x.png in Resources */,
 				322207EC1688E6B5003F6622 /* NewsSplashView.xib in Resources */,
 				328A72DF184A4EE0002C5A6B /* SplashImage4inch@2x.png in Resources */,
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
@@ -4307,7 +4289,7 @@
 				272300EA1858CEB900B72F5E /* TransportHelpViewController.m in Sources */,
 				272300EB1858CEB900B72F5E /* EPFLLayersOverlay.m in Sources */,
 				272300EC1858CEB900B72F5E /* GlobalSettingsViewController.m in Sources */,
-				272300ED1858CEB900B72F5E /* EditableTableViewCell.m in Sources */,
+				272300ED1858CEB900B72F5E /* PCEditableTableViewCell.m in Sources */,
 				272300EE1858CEB900B72F5E /* AuthenticationViewController.m in Sources */,
 				272300EF1858CEB900B72F5E /* AboutPCViewController.m in Sources */,
 				272300F01858CEB900B72F5E /* (null) in Sources */,
@@ -4508,7 +4490,7 @@
 				3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */,
 				32D57299157F7D780051230F /* EPFLLayersOverlay.m in Sources */,
 				320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */,
-				3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */,
+				3241F1DE15B4AB9C00C7DF3A /* PCEditableTableViewCell.m in Sources */,
 				32A54B7D15B5A8E100A7C882 /* AuthenticationViewController.m in Sources */,
 				3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */,
 				32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */,

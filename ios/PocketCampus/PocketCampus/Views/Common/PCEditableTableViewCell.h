@@ -1,5 +1,5 @@
 //
-//  EditableTableViewCell.h
+//  PCEditableTableViewCell.h
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 16.07.12.
@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EditableTableViewCell : UITableViewCell
+@interface PCEditableTableViewCell : UITableViewCell
 
-@property (nonatomic, assign) IBOutlet UITextField* textField;
+@property (nonatomic, readonly) UITextField* textField;
 
 + (id)editableCellWithPlaceholder:(NSString*)placeholder;
 

@@ -12,7 +12,7 @@
 
 #import "PCUtils.h"
 
-#import "EditableTableViewCell.h"
+#import "PCEditableTableViewCell.h"
 
 #import "AuthenticationViewController.h"
 

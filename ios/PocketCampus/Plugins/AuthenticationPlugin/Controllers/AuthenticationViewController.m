@@ -11,15 +11,15 @@
 
 #import "AuthenticationService.h"
 
-#import "EditableTableViewCell.h"
+#import "PCEditableTableViewCell.h"
 
 @interface AuthenticationViewController ()<UITextFieldDelegate, AuthenticationServiceDelegate>
 
 @property (nonatomic, strong) UITextField* usernameTextField;
 @property (nonatomic, strong) UITextField* passwordTextField;
 @property (nonatomic, strong) UISwitch* savePasswordSwitch;
-@property (nonatomic, strong) EditableTableViewCell* usernameCell;
-@property (nonatomic, strong) EditableTableViewCell* passwordCell;
+@property (nonatomic, strong) PCEditableTableViewCell* usernameCell;
+@property (nonatomic, strong) PCEditableTableViewCell* passwordCell;
 @property (nonatomic, strong) UITableViewCell* loginCell;
 @property (nonatomic, strong) NSString* errorMessage;
 @property (nonatomic) BOOL isLoggedIn;
@@ -372,7 +372,7 @@
                         if (self.usernameCell) {
                             return self.usernameCell;
                         }
-                        self.usernameCell = [EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)];
+                        self.usernameCell = [PCEditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)];
                         self.usernameTextField = self.usernameCell.textField;
                         self.usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
                         self.usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -397,7 +397,7 @@
                         if (self.passwordCell) {
                             return self.passwordCell;
                         }
-                        self.passwordCell = [EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)];
+                        self.passwordCell = [PCEditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)];
                         self.passwordTextField = self.passwordCell.textField;
                         self.passwordTextField.secureTextEntry = YES;
                         self.passwordTextField.returnKeyType = UIReturnKeyGo;

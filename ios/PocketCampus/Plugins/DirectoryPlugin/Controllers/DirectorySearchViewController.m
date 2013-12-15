@@ -440,7 +440,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         if (newCell == nil) {
             newCell = [[PCRecentResultTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRecentSearchCellIdentifier];
             newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-            newCell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            newCell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         } else {
             [(UIActivityIndicatorView*)(newCell.accessoryView) stopAnimating];
         }
