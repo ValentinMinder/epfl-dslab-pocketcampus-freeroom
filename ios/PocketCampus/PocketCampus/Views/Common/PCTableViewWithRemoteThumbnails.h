@@ -15,13 +15,15 @@
 /*
  * If image as been downloaded, returns it, nil otherwise.
  * If imageProcessingBlock is not NULL, this method returns the processed image.
+ * INFO: can return nil if image was downloaded but later evicted because of memory limitations
  */
-- (UIImage*)imageAtIndexPath:(NSIndexPath*)indexPath;
+- (UIImage*)cachedImageAtIndexPath:(NSIndexPath*)indexPath;
 
 /*
  * Same as previous but returns image as it was before being processed by imageProcessingBlock
+ * INFO: can return nil if image was downloaded but later evicted because of memory limitations
  */
-- (UIImage*)rawImageAtIndexPath:(NSIndexPath*)indexPath;
+- (UIImage*)cachedRawImageAtIndexPath:(NSIndexPath*)indexPath;
 
 /*
  * Specify the keypath of the UIImageView in the cells.

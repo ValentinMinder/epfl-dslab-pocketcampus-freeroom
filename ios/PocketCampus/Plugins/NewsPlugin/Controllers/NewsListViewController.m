@@ -172,7 +172,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         return;
     }
     
-    NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:[(PCTableViewWithRemoteThumbnails*)(self.tableView) rawImageAtIndexPath:indexPath]];
+    NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:[(PCTableViewWithRemoteThumbnails*)(self.tableView) cachedRawImageAtIndexPath:indexPath]];
     
     if (self.splitViewController) { // iPad
         self.selectedItem = newsItem;

@@ -17,8 +17,8 @@
 @property (nonatomic, strong) NSOperationQueue* operationQueue;
 @property (nonatomic, strong) NSMutableDictionary* operationForIndexPath; //key: NSIndexPath, value: AFHTTPRequestOperation
 @property (nonatomic, strong) NSMutableDictionary* urlForIndexPath; //key: NSIndexPath, value: NSURL
-@property (nonatomic, strong) NSMutableDictionary* rawImageForUrlString; //key: NSURL.absoluteString, value: UIImage
-@property (nonatomic, strong) NSMutableDictionary* imageForUrlString; //key: NSURL.absoluteString, value: UIImage (processed by imageProcessingBlock)
+@property (nonatomic, strong) NSCache* cachedRawImageForUrlString; //key: NSURL.absoluteString, value: UIImage
+@property (nonatomic, strong) NSCache* cachedImageForUrlString; //key: NSURL.absoluteString, value: UIImage (processed by imageProcessingBlock)
 @property (nonatomic, strong) AFNetworkReachabilityManager* reachabilityManager;
 @property (nonatomic, strong) NSMutableSet* failedThumbsIndexPaths;
 @property (nonatomic) BOOL initDone;
@@ -36,11 +36,12 @@
     //private
     if (!self.initDone) {
         self.operationQueue = [NSOperationQueue new];
+        self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
         [self.operationQueue setSuspended:NO];
         self.operationForIndexPath = [NSMutableDictionary dictionary];
         self.urlForIndexPath = [NSMutableDictionary dictionary];
-        self.imageForUrlString = [NSMutableDictionary dictionary];
-        self.rawImageForUrlString = [NSMutableDictionary dictionary];
+        self.cachedImageForUrlString = [NSCache new];
+        self.cachedRawImageForUrlString = [NSCache new];
         self.failedThumbsIndexPaths = [NSMutableSet set];
         
         PCTableViewWithRemoteThumbnails* weakSelf __weak = self;
@@ -72,8 +73,8 @@
     if (!url) {
         NSURL* url = self.urlForIndexPath[indexPath];
         if (url) {
-            [self.imageForUrlString removeObjectForKey:url];
-            [self.rawImageForUrlString removeObjectForKey:url];
+            [self.cachedImageForUrlString removeObjectForKey:url];
+            [self.cachedRawImageForUrlString removeObjectForKey:url];
         }
         [self.urlForIndexPath removeObjectForKey:indexPath];
         [self imageViewForCell:cell].image = self.temporaryImage; //Generic image sign
@@ -84,8 +85,8 @@
     
     self.urlForIndexPath[indexPath] = url;
     
-    if (self.imageForUrlString[url.absoluteString]) {
-        [self imageViewForCell:cell].image = self.imageForUrlString[url.absoluteString];
+    if ([self.cachedImageForUrlString objectForKey:url.absoluteString]) {
+        [self imageViewForCell:cell].image = [self.cachedImageForUrlString objectForKey:url.absoluteString];
         [cell layoutSubviews];
         return;
     }
@@ -98,7 +99,7 @@
         [self.operationForIndexPath removeObjectForKey:indexPath];
     }
     
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0]; //do not overload network with thumbnails that fail to loa
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0]; //do not overload network with thumbnails that fail to loa
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     operation.responseSerializer = [AFImageResponseSerializer serializer];
     __weak __typeof(self) weakSelf = self;
@@ -115,16 +116,16 @@
     [self.operationQueue addOperation:operation];
 }
 
-- (UIImage*)imageAtIndexPath:(NSIndexPath*)indexPath {
+- (UIImage*)cachedImageAtIndexPath:(NSIndexPath*)indexPath {
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     NSURL* url = self.urlForIndexPath[indexPath];
-    return self.imageForUrlString[url.absoluteString];
+    return [self.cachedImageForUrlString objectForKey:url.absoluteString];
 }
 
-- (UIImage*)rawImageAtIndexPath:(NSIndexPath*)indexPath {
+- (UIImage*)cachedRawImageAtIndexPath:(NSIndexPath*)indexPath {
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     NSURL* url = self.urlForIndexPath[indexPath];
-    return self.rawImageForUrlString[url.absoluteString];
+    return [self.cachedRawImageForUrlString objectForKey:url.absoluteString];
 }
 
 #pragma mark - Private methods
@@ -157,8 +158,9 @@
             if (!weakSelf) {
                 return;
             }
-            weakSelf.imageForUrlString[url.absoluteString] = image;
-            weakSelf.rawImageForUrlString[url.absoluteString] = rawImage;
+            [weakSelf.cachedImageForUrlString setObject:image forKey:url.absoluteString];
+            [weakSelf.cachedRawImageForUrlString setObject:rawImage forKey:url.absoluteString];
+            
             [weakSelf imageViewForCell:cell].image = image;
             [cell layoutSubviews];
         });
