@@ -10,12 +10,12 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "exec &gt; /tmp/automated_test.log.txt&#10;&#10;env&#10;&#10;echo &quot;App ${EXECUTABLE_FOLDER_PATH}&quot;&#10;APP=&quot;${BUILD_ROOT}/Debug-iphonesimulator/${EXECUTABLE_FOLDER_PATH}&quot;&#10;&#10;echo $APP&#10;&#10;XCODE_DIR=`dirname ${DEVELOPER_DIR}`&#10;TEMPLATE=&quot;${XCODE_DIR}/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate&quot;&#10;instruments -t ${TEMPLATE} &quot;${APP}&quot; -e UIASCRIPT &quot;${SRCROOT}/AutomationScripts/PocketCampusAutoMonkey.js&quot; -e UIARESULTSPATH &quot;${SRCROOT}/AutomationScripts/&quot;">
+               scriptText = "exec &gt; /tmp/automated_test.log.txt&#10;&#10;&#10;echo &quot;App ${EXECUTABLE_FOLDER_PATH}&quot;&#10;APP=&quot;${BUILD_ROOT}/Debug-iphonedebug/${EXECUTABLE_FOLDER_PATH}&quot;&#10;#APP=&quot;${EXECUTABLE_FOLDER_PATH}&quot;&#10;echo $APP&#10;&#10;XCODE_DIR=`dirname ${DEVELOPER_DIR}`&#10;TEMPLATE=&quot;${XCODE_DIR}/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate&quot;&#10;instruments -t ${TEMPLATE} &quot;${APP}&quot; -e UIASCRIPT &quot;${SRCROOT}/AutomationScripts/PocketCampusAutoMonkey.js&quot; -e UIARESULTSPATH &quot;${SRCROOT}/AutomationScripts/&quot;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "272300B31858CEB900B72F5E"
-                     BuildableName = "PocketCampus copy.app"
+                     BuildableName = "PocketCampusNoCodeSign.app"
                      BlueprintName = "PocketCampusNoCodeSign"
                      ReferencedContainer = "container:PocketCampus.xcodeproj">
                   </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "272300B31858CEB900B72F5E"
-               BuildableName = "PocketCampus copy.app"
+               BuildableName = "PocketCampusNoCodeSign.app"
                BlueprintName = "PocketCampusNoCodeSign"
                ReferencedContainer = "container:PocketCampus.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "272300B31858CEB900B72F5E"
-            BuildableName = "PocketCampus copy.app"
+            BuildableName = "PocketCampusNoCodeSign.app"
             BlueprintName = "PocketCampusNoCodeSign"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
@@ -70,7 +70,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "272300B31858CEB900B72F5E"
-            BuildableName = "PocketCampus copy.app"
+            BuildableName = "PocketCampusNoCodeSign.app"
             BlueprintName = "PocketCampusNoCodeSign"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
@@ -88,7 +88,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "272300B31858CEB900B72F5E"
-            BuildableName = "PocketCampus copy.app"
+            BuildableName = "PocketCampusNoCodeSign.app"
             BlueprintName = "PocketCampusNoCodeSign"
             ReferencedContainer = "container:PocketCampus.xcodeproj">
          </BuildableReference>
