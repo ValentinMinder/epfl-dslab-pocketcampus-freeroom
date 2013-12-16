@@ -111,7 +111,7 @@ static MyEduService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MyEduService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"myedu"];
+        self = [super initWithServiceName:@"myedu" thriftServiceClientClassName:NSStringFromClass(MyEduServiceClient.class)];
         if (self) {
             instance = self;
         }
@@ -130,10 +130,6 @@ static MyEduService* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
-}
-
-- (id)thriftServiceClientInstance {
-    return [[MyEduServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 #pragma mark - Session
@@ -160,7 +156,7 @@ static MyEduService* instance __weak = nil;
     return [ObjectArchiver saveObject:nil forKey:kMyEduSessionIdentifier andPluginName:@"myedu"];
 }
 
-#pragma mark - Thrift service
+#pragma mark - Service methods
 
 - (void)getTequilaTokenForMyEduWithDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];

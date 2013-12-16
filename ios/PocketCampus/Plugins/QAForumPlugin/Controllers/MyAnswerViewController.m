@@ -170,7 +170,7 @@ titleForHeaderInSection:(NSInteger)section
     return labelSize.height + 20;
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
     [PCUtils addCenteredLabelInView:self.view withMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil)];
     tableview.hidden = YES;

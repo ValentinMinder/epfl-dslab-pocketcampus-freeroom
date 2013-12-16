@@ -353,7 +353,7 @@ static NSString* kRecentSearchesKey = @"recentSearches";
     }
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [self.directoryService cancelOperationsForDelegate:self];
     [self.barActivityIndicator stopAnimating];
     
@@ -415,7 +415,6 @@ static NSString* kRecentSearchesKey = @"recentSearches";
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSearchResultCellIdentifier];
             cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-            //cell.imageView.layer.masksToBounds = YES;
         }
         /* Remove secondary first names */
         Person* person = [self.searchResults objectAtIndex:indexPath.row];
@@ -430,21 +429,18 @@ static NSString* kRecentSearchesKey = @"recentSearches";
             firstLastName = [firstLastName stringByReplacingCharactersInRange:NSMakeRange(maxNbChars, firstLastName.length-maxNbChars) withString:@"..."];
         }
         
-        cell.textLabel.text = firstLastName;
-        
-        if (person.organisationalUnits) {
-            cell.detailTextLabel.text = [person.organisationalUnits objectAtIndex:0];
-        }
-        
         [self.tableView setImageURL:[NSURL URLWithString:person.pictureUrl] forCell:cell atIndexPath:indexPath];
+        cell.textLabel.text = firstLastName;
+        cell.detailTextLabel.text = [person.organisationalUnits firstObject];
         
         return cell;
+        
     } else if (self.resultsMode == ResultsModeRecentSearches) {
         PCRecentResultTableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kRecentSearchCellIdentifier];
         if (newCell == nil) {
             newCell = [[PCRecentResultTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRecentSearchCellIdentifier];
             newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-            newCell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            newCell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         } else {
             [(UIActivityIndicatorView*)(newCell.accessoryView) stopAnimating];
         }

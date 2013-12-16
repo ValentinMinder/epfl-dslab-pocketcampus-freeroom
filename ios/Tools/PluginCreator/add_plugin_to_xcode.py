@@ -2,8 +2,8 @@ import shutil, errno, sys, os, re
 
 from mod_pbxproj import XcodeProject
 
-if not re.match("^.*ios/iphone/Tools/PluginCreator$", os.getcwd()):
-	print("\nError : please cd into <PocketCampusRepositoryRoot>/ios/iphone/Tools/PluginCreator\n")
+if not re.match("^.*ios/Tools/PluginCreator$", os.getcwd()):
+	print("\nError : please cd into <PocketCampusRepositoryRoot>/ios/Tools/PluginCreator\n")
 	exit(-1)
 	
 if len(sys.argv) < 2:

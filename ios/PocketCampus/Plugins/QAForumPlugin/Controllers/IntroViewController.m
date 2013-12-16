@@ -99,7 +99,7 @@
 - (void)closeIntro:(NSString *)userid didReturn:(NSString *)result {
     [QAForumService lastSessionId].intro = 1;
 }
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
 }
 

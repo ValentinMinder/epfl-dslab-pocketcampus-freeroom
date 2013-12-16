@@ -424,7 +424,7 @@
     //unuseful, for we use customized pickerView.
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
     centerIndicator.hidden = true;
     [centerIndicator stopAnimating];

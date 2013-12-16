@@ -20,7 +20,7 @@
 
 @property (nonatomic, strong) NSTimer* callDelegateTimer;
 
-@property (strong) NSMutableDictionary* tilesCache;  //key : - (NSString*)keyWithMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale, value : UIImage of corresponding tile
+@property (strong) NSCache* tilesCache;  //key : - (NSString*)keyWithMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale, value : UIImage of corresponding tile
 @property BOOL willBeDeallocated;
 
 @end
@@ -33,19 +33,11 @@
     if (self) {
         self.operationQueue = [NSOperationQueue new];
         self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
-        self.tilesCache = [NSMutableDictionary dictionary];
+        self.tilesCache = [NSCache new];
         self.callDelegateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(callDelegateAccordingToRequestsState) userInfo:nil repeats:YES];
         self.willBeDeallocated = NO;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     return self;
-}
-
-- (void)appDidReceiveMemoryWarning {
-    @synchronized(self) {
-        NSLog(@"-> RemoteOverlayRenderer didReceiveMemoryWarning. Emptying tiles cache in memory...");
-        [self.tilesCache removeAllObjects];
-    }
 }
 
 - (NSString*)keyWithMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale {
@@ -62,7 +54,7 @@
         }
         
         NSString* key = [self keyWithMapRect:mapRect andZoomScale:zoomScale];
-        if (self.tilesCache[key]) { //tile has already been downloaded and is in memory
+        if ([self.tilesCache objectForKey:key]) { //tile has already been downloaded and is in memory
             return YES;
         }
         
@@ -97,7 +89,7 @@
             return;
         }
         NSString* key = [self keyWithMapRect:mapRect andZoomScale:zoomScale];
-        UIImage* image = self.tilesCache[key];
+        UIImage* image = [self.tilesCache objectForKey:key];
         
         if (!image) {
             [self canDrawMapRect:mapRect zoomScale:zoomScale];

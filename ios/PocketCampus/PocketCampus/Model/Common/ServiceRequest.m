@@ -168,17 +168,16 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString*  
     }
     @catch (NSException *exception) {
         
-        
-        TTransportException* texception = [exception isKindOfClass:TTransportException.class] ? (TTransportException*)exception : nil;
-        NSError* error = texception.userInfo[@"error"];
-        
-        ServiceRequestLog(self, @"EXCEPTION caught in main : %@, %@, error: %@", texception.name, texception.reason, error);
-        
         if ([self isCancelled]) {
             ServiceRequestLog(self, @"cancelled operation handled.");
             [self finish];
             return;
         }
+        
+        TTransportException* texception = [exception isKindOfClass:TTransportException.class] ? (TTransportException*)exception : nil;
+        NSError* error = texception.userInfo[@"error"];
+        
+        ServiceRequestLog(self, @"EXCEPTION caught in main : %@, %@, error: %@", texception.name, texception.reason, error);
         
         // Checking if server could not be reached
         // See http://stackoverflow.com/a/10644008
@@ -411,8 +410,8 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString*  
 
 - (void)indicateConnectionErrorToDelegateCompletion:(VoidBlock)completion {
     dispatch_sync(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(serviceConnectionToServerTimedOut)]) {
-            [self.delegate serviceConnectionToServerTimedOut];
+        if ([self.delegate respondsToSelector:@selector(serviceConnectionToServerFailed)]) {
+            [self.delegate serviceConnectionToServerFailed];
         }
     });
     if (completion) {

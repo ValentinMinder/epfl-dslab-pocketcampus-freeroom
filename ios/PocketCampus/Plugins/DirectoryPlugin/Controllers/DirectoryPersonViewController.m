@@ -254,7 +254,7 @@ static const int kAddToExistingContactActionIndex = 1;
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     //search for person timed out
     [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.hidden = NO;

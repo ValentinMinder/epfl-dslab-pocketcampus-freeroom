@@ -58,8 +58,8 @@ PLUGIN_ID_LOW_HAYSTACK = '__PluginID_low__'
 #
 # Checking arguments
 #
-if not re.match("^.*ios/iphone/Tools/PluginCreator$", os.getcwd()):
-	print("\nError : please cd into <PocketCampusRepositoryRoot>/ios/iphone/Tools/PluginCreator\n")
+if not re.match("^.*ios/Tools/PluginCreator$", os.getcwd()):
+	print("\nError : please cd into <PocketCampusRepositoryRoot>/ios/Tools/PluginCreator\n")
 	exit(-1)
 
 if len(sys.argv) < 2:
@@ -85,9 +85,9 @@ if " " in plugin_identifier:
 	print("\nError : bad plugin name. Cannot contain blanks.")
 	exit(-1)
 	
-if not plugin_identifier.istitle():
+if not plugin_identifier[:1][0].isupper():
 	while True:
-		choice = raw_input('\nError : bad plugin name. Should be titlecased (satisfy python str.istitle()). Continue anyway ? (y/N) [N]: ')
+		choice = raw_input('\nError : bad plugin name. Should start with a capital. Continue anyway ? (y/N) [N]: ')
 		if choice == 'y':
 			break
 		if choice == 'N' or choice == '':
@@ -137,6 +137,7 @@ Utils.walk_and_replace(plugin_folder_path, {PLUGIN_ID_HAYSTACK:plugin_identifier
 plugin_folder_path_within_PC = os.path.join(xcode_project_path, 'Plugins', plugin_folder_path)
 try:
 	Utils.copyanything(plugin_folder_path, plugin_folder_path_within_PC)
+	os.remove(os.path.join(plugin_folder_path_within_PC, 'Model', 'ThriftTypes+Services', 'dummy.txt')) #deleting dummy.txt file
 	shutil.rmtree(plugin_folder_path)
 except Exception as exs:
 	printf("Error: could not copy plugin folder into PocketCampus project")

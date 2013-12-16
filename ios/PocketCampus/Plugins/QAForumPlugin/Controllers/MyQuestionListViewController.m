@@ -183,7 +183,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"About to go back to the first screen..");
     [self.navigationController popToRootViewControllerAnimated:TRUE];
 }
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
     [PCUtils addCenteredLabelInView:self.view withMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil)];
     tableview.hidden = YES;

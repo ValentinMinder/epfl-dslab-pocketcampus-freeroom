@@ -1,0 +1,3 @@
+!!! DO NOT REMOVE !!!
+Only here because empty folder not supported in Git.
+Ignored when creating plugin folder from template.

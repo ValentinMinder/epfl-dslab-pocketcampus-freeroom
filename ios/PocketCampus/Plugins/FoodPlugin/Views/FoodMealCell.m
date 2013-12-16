@@ -166,12 +166,25 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     }
     
     if (price > 0.0) {
-        NSNumberFormatter* numberFormatter = [NSNumberFormatter new];
-        numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        BOOL integer = ((price - (float)((int)price)) == 0.0);
+        NSString* priceString = nil;
+        NSString* currencyString = @"CHF";
+        if (integer) {
+            priceString = [NSString stringWithFormat:@"%.0f\nCHF", price];
+        } else {
+            priceString = [NSString stringWithFormat:@"%.2f\nCHF", price];
+        }
+        self.pricesLabel.numberOfLines = 2;
+        NSMutableAttributedString* attrPriceString = [[NSMutableAttributedString alloc] initWithString:priceString];
+        [attrPriceString addAttribute:NSFontAttributeName value:[UIFont fontWithDescriptor:self.pricesLabel.font.fontDescriptor size:self.pricesLabel.font.fontDescriptor.pointSize-6] range:[priceString rangeOfString:currencyString]];
+        
+        //self.pricesLabel.numberOfLines = integer ? 1 : 2;
+        
+        /*NSNumberFormatter* numberFormatter = [NSNumberFormatter new];
+        numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
         numberFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"fr_CH"]; //force swiss franc notation
-        NSString* priceString = [numberFormatter stringFromNumber:[NSNumber numberWithFloat:price]];
-        priceString = [priceString stringByReplacingOccurrencesOfString:@"CHF" withString:@""];
-        self.pricesLabel.text = priceString;
+        NSString* priceString = [numberFormatter stringFromNumber:[NSNumber numberWithFloat:price]];*/
+        self.pricesLabel.attributedText = attrPriceString;
     } else {
         self.pricesLabel.text = nil;
     }
@@ -364,7 +377,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     [PCUtils showServerErrorAlert];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     if (self.ratingStatus == RatingStatusLoading) {
         self.ratingStatus = RatingStatusReady;
         [PCUtils showConnectionToServerTimedOutAlert];

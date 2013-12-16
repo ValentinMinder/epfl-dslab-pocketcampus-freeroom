@@ -176,7 +176,7 @@ static MyEduController* instance __weak = nil;
     [self cleanAndNotifyFailureToObservers];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [super cleanAndNotifyConnectionToServerTimedOutToObservers];
 }
 

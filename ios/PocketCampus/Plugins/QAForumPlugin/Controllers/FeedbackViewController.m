@@ -102,7 +102,7 @@
     NSLog(@"%f",rating);
     rate = rating;
 }
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
 }
 - (void)error {

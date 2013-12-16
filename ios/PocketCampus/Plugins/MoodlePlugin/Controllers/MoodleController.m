@@ -99,7 +99,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     }
 }
 
-#pragma mark - Login observers management
+#pragma mark - PluginController
 
 - (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock
       userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
@@ -144,7 +144,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     [self cleanAndNotifyFailureToObservers];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [super cleanAndNotifyConnectionToServerTimedOutToObservers];
 }
 

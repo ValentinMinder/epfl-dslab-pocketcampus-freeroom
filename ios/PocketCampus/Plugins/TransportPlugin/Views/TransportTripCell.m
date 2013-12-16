@@ -68,6 +68,17 @@
     self.durationLabel.text = [TransportUtils durationgStringForInterval:((self.trip.arrivalTime/1000.0) - (self.trip.departureTime/1000.0))];
     self.changesLabel.text = [NSString stringWithFormat:@"%u", self.trip.numberOfChanges];
     self.firstLineLabel.text = firstConnection.line.shortName;
+    
+    BOOL isLeft = self.trip.isLeft;
+    
+    static UIColor* normalColor = nil;
+    static UIColor* leftColor = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        normalColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+        leftColor = [UIColor colorWithWhite:0.6 alpha:1.0];
+    });
+    self.depTimeLabel.textColor = isLeft ? leftColor : normalColor;
 }
 
 @end

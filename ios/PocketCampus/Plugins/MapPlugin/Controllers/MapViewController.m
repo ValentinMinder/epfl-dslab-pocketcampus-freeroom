@@ -827,7 +827,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     [PCUtils showServerErrorAlert];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     if (self.searchState == SearchStateLoading) {
         [self setSearchState:SearchStateReady animated:YES];
     }

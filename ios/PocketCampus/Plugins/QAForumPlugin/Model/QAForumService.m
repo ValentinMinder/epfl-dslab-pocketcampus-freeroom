@@ -21,7 +21,7 @@ static QAForumService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"QAForumService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"qaforum"];
+        self = [super initWithServiceName:@"qaforum" thriftServiceClientClassName:NSStringFromClass(QAforumServiceClient.class)];
         if (self) {
             instance = self;
         }
@@ -40,14 +40,6 @@ static QAForumService* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
-}
-
-- (id)thriftServiceClientInstance {
-#if __has_feature(objc_arc)
-    return [[QAForumServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
-#else
-    return [[[QAforumServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
-#endif
 }
 
 + (s_session*)lastSessionId {

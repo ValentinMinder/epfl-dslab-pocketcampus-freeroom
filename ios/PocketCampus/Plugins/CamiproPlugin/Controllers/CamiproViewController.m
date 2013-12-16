@@ -22,8 +22,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
-
 @interface CamiproViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, AuthenticationCallbackDelegate, CamiproServiceDelegate>
 
 
@@ -144,6 +142,7 @@ static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
         [self login];
     } else {
         NSLog(@"-> Trying to getBalanceAndTransactions with previously saved SessionId");
+        [self.camiproService cancelOperationsForDelegate:self];
         [self startBalanceAndTransactionsRequestWithSessionId:sessionId];
     }
 }
@@ -216,7 +215,7 @@ static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
 }
 
 - (void)getTequilaTokenForCamiproFailed {
-    [self serviceConnectionToServerTimedOut];
+    [self serviceConnectionToServerFailed];
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(CamiproSession*)sessionId {
@@ -225,7 +224,7 @@ static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
 }
 
 - (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)tequilaKey {
-    [self serviceConnectionToServerTimedOut];
+    [self serviceConnectionToServerFailed];
     [CamiproService saveSessionId:nil];
 }
 
@@ -402,7 +401,7 @@ static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
     [PCUtils showServerErrorAlert];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     if (self.sendMailAlertView) {
         [self.sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
         [PCUtils showConnectionToServerTimedOutAlert];
@@ -493,9 +492,8 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
 
 #pragma mark - UITableViewDataSource
 
-- (UITableViewCell*)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = nil;
-    
     if (indexPath.section == 0) { //balance cell
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -517,11 +515,12 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
         return cell;
     }
     
+    static NSString* const identifier = @"CamiproHistoryCell";
     //transactions cells
-    Transaction* transaction = [self.balanceAndTransactions.iTransactions objectAtIndex:indexPath.row];
-    cell = [self.tableView dequeueReusableCellWithIdentifier:kHistoryCellIdentifier];
+    Transaction* transaction = self.balanceAndTransactions.iTransactions[indexPath.row];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[CamiproTransactionCell alloc] initWithReuseIdentifier:kHistoryCellIdentifier];
+        cell = [[CamiproTransactionCell alloc] initWithReuseIdentifier:identifier];
     }
     ((CamiproTransactionCell*)cell).transaction = transaction;
     return cell;
@@ -535,9 +534,6 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
         case 0:
             return 1; //balance
         case 1:
-            if (!self.balanceAndTransactions.iTransactions) {
-                return 0;
-            }
             return self.balanceAndTransactions.iTransactions.count;
     }
     return 0;

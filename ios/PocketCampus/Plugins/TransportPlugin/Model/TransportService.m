@@ -52,7 +52,7 @@ static TransportService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"PushNotifService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"transport"];
+        self = [super initWithServiceName:@"transport" thriftServiceClientClassName:NSStringFromClass(TransportServiceClient.class)];
         if (self) {
             instance = self;
         }
@@ -75,15 +75,7 @@ static TransportService* instance __weak = nil;
     }
 }
 
-- (id)thriftServiceClientInstance {
-    return [[TransportServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
-}
-
-- (id)thriftServiceClientInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
-    return [[TransportServiceClient alloc] initWithProtocol:[self thriftProtocolInstanceWithCustomTimeoutInterval:timeoutInterval]];
-}
-
-#pragma mark - Thrift
+#pragma mark - Service methods
 
 - (void)autocomplete:(NSString*)constraint delegate:(id)delegate {
     if (![constraint isKindOfClass:[NSString class]]) {
@@ -275,8 +267,8 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 
 @implementation NearestUserTransportStationRequest
 
-static int kLocationValidity = 30; //nb seconds a cached location can be used / is considered that user has not moved
-static NSString* kLastLocationKey = @"lastLocation";
+static NSTimeInterval const kLocationValidityInterval = 60.0; //nb seconds a cached location can be used / is considered that user has not moved
+static NSString* const kLastLocationKey = @"lastLocation";
 
 - (id)initWithTransportStations:(NSOrderedSet*)stations delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:stations notKindOfClass:[NSOrderedSet class]];
@@ -289,7 +281,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     return self;
 }
 
-/* NSOperation methods */
+#pragma mark - NSOperation overrides
 
 - (void)main {
     if ([self isCancelled])
@@ -298,9 +290,7 @@ static NSString* kLastLocationKey = @"lastLocation";
         return;
     }
     
-    [self willChangeValueForKey:@"isExecuting"];
     self.executing = YES;
-    [self didChangeValueForKey:@"isExecuting"];
     
     self.locationManager.delegate = self;
     [self.locationManager startUpdatingLocation];
@@ -317,29 +307,28 @@ static NSString* kLastLocationKey = @"lastLocation";
         return; //self will be called (see delegate method) by CLLocationManager when user has accepted or rejected access to location
     }
     
-    self.blockedByAuthStatus = NO;
-    
-    CLLocationDistance minDistance = [self minimumDistanceBetweenStations];
-    
-    if (minDistance > 1000) {
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; //improves reliability
-    } else {
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    }
-    
-    self.locationManager.distanceFilter =  kCLDistanceFilterNone;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{ //timer must be scheduled on other thread not be blocked
-        self.checkCancellationAndAdaptDesiredAccuracyTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkCancellationAndAdaptDesiredAccuracy) userInfo:nil repeats:YES];
-    });
-    
     CLLocation* lastLocation = (CLLocation*)[ObjectArchiver objectForKey:kLastLocationKey andPluginName:@"transport"];
     if ([self locationIsStillValid:lastLocation] && [self locationEnglobesOnlyOneStation:lastLocation]) {
         NSLog(@"-> Last location still valid (%@), will return to delegate.", lastLocation.timestamp);
         [self returnLocationToDelegate:lastLocation];
         return;
     }
+    
+    self.blockedByAuthStatus = NO;
+
+    self.locationManager.desiredAccuracy = [self minimumDistanceBetweenStations] > 1000 ? kCLLocationAccuracyHundredMeters : kCLLocationAccuracyBest; //improves reliability
+    self.locationManager.distanceFilter =  kCLDistanceFilterNone;
+    
+    dispatch_sync(dispatch_get_main_queue(), ^{ //timer must be scheduled on other thread not be blocked
+        self.checkCancellationAndAdaptDesiredAccuracyTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkCancellationAndAdaptDesiredAccuracy) userInfo:nil repeats:YES];
+    });
 }
+
+- (BOOL)isConcurrent {
+    return YES;
+}
+
+#pragma mark - Timer call handling
 
 - (void)checkCancellationAndAdaptDesiredAccuracy {
     if ([self isCancelled]) {
@@ -379,27 +368,11 @@ static NSString* kLastLocationKey = @"lastLocation";
     self.locationManager.delegate = nil;
     [self.locationManager stopUpdatingLocation];
     self.delegate = nil;
-    [self willChangeValueForKey:@"isFinished"];
-    [self willChangeValueForKey:@"isExecuting"];
     self.executing = NO;
     self.finished = YES;
-    [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];
 }
 
-- (BOOL)isConcurrent {
-    return YES;
-}
-
-- (BOOL)isExecuting {
-    return self.executing;
-}
-
-- (BOOL)isFinished {
-    return self.finished;
-}
-
-/* CLLocationManagerDelegate delegation */
+#pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if (self.blockedByAuthStatus) {
@@ -450,8 +423,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     }
 }
 
-
-/* utilities */
+#pragma mark - Location and delegate handling
 
 - (void)handleLocationUpdate:(CLLocation*)newLocation {
     if(self.delegateCallScheduled) {
@@ -539,6 +511,8 @@ static NSString* kLastLocationKey = @"lastLocation";
     self.delegateCallScheduled = YES;
 }
 
+#pragma mark - Utils
+
 - (BOOL)locationIsStillValid:(CLLocation*)location {
     if (location == nil || location.timestamp == nil) {
         return NO;
@@ -546,7 +520,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     if (location.horizontalAccuracy < 0) { //from documentation, means invalid location
         return NO;
     }
-    if (abs((int)[location.timestamp timeIntervalSinceNow]) > kLocationValidity) {
+    if (fabs([location.timestamp timeIntervalSinceNow]) > kLocationValidityInterval) {
         return NO;
     }
     return YES;
@@ -600,6 +574,8 @@ static NSString* kLastLocationKey = @"lastLocation";
     }
     return minDistance;
 }
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

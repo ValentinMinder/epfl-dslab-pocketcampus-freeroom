@@ -10,7 +10,7 @@
 
 #import "AuthenticationService.h"
 
-@class EditableTableViewCell;
+@class PCEditableTableViewCell;
 
 typedef enum {
     PresentationModeModal, //when presented from bottom => will show cancel button in top bar

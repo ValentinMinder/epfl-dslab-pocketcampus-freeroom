@@ -8,13 +8,13 @@
 
 #import "EventsShareFavoriteItemsViewController.h"
 
-#import "EditableTableViewCell.h"
+#import "PCEditableTableViewCell.h"
 
 @interface EventsShareFavoriteItemsViewController ()<EventsServiceDelegate>
 
 @property (nonatomic, strong) EventsService* eventsService;
 
-@property (nonatomic, strong) EditableTableViewCell* emailCell;
+@property (nonatomic, strong) PCEditableTableViewCell* emailCell;
 
 @property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
 
@@ -133,7 +133,7 @@
     [PCUtils showServerErrorAlert];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     self.operationInProgress = NO;
     [PCUtils showConnectionToServerTimedOutAlert];
 }
@@ -189,7 +189,7 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (!self.emailCell) {
-        self.emailCell = [EditableTableViewCell editableCellWithPlaceholder:@"your@email.com"];
+        self.emailCell = [PCEditableTableViewCell editableCellWithPlaceholder:@"your@email.com"];
         self.emailCell.textLabel.text = @"Email";
         self.emailCell.textField.text = self.prefilledEmail;
         self.emailCell.textField.keyboardType = UIKeyboardTypeEmailAddress;

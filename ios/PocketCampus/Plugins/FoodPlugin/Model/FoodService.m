@@ -31,7 +31,7 @@ static FoodService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"FoodService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"food"];
+        self = [super initWithServiceName:@"food" thriftServiceClientClassName:NSStringFromClass(FoodServiceClient.class)];
         if (self) {
             instance = self;
             instance.userPriceTarget = PriceTarget_ALL;
@@ -51,10 +51,6 @@ static FoodService* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
-}
-
-- (id)thriftServiceClientInstance {
-    return [[FoodServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 #pragma mark - Favorite restaurants

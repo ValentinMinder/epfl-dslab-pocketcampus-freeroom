@@ -305,7 +305,7 @@
     [ActionSheetStringPicker showPickerWithTitle:title rows:items initialSelection:selectedRow doneBlock:done cancelBlock:cancel origin:textField];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
 }
 @end

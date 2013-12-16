@@ -17,7 +17,7 @@ static NewsService* instance __weak = nil;
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"NewsService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"news"];
+        self = [super initWithServiceName:@"news" thriftServiceClientClassName:NSStringFromClass(NewsServiceClient.class)];
         if (self) {
             instance = self;
         }
@@ -36,10 +36,6 @@ static NewsService* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
-}
-
-- (id)thriftServiceClientInstance {
-    return [[NewsServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
 }
 
 - (void)getNewsItemsForLanguage:(NSString*)language delegate:(id)delegate {

@@ -139,7 +139,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     NSLog(@"%@",@"Refresh");
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
     
 }

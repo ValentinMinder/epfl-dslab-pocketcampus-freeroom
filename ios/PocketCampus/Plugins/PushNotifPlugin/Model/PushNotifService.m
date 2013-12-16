@@ -10,18 +10,22 @@
 
 static PushNotifService* instance __weak = nil;
 
+#pragma mark - Init
+
 - (id)init {
     @synchronized(self) {
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"PushNotifService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"pushnotif"];
+        self = [super initWithServiceName:@"pushnotif" thriftServiceClientClassName:NSStringFromClass(PushNotifServiceClient.class)];
         if (self) {
             instance = self;
         }
         return self;
     }
 }
+
+#pragma mark - ServiceProtocol
 
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
@@ -36,14 +40,7 @@ static PushNotifService* instance __weak = nil;
     }
 }
 
-
-- (id)thriftServiceClientInstance {
-#if __has_feature(objc_arc)
-    return [[PushNotifServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
-#else
-    return [[[PushNotifServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
-#endif
-}
+#pragma Thrift
 
 - (void)deleteMappingWithDummy:(NSString*)dummy delegate:(id)delegate; {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];

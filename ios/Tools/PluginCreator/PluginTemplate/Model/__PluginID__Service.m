@@ -10,12 +10,14 @@
 
 static __PluginID__Service* instance __weak = nil;
 
+#pragma mark - Init
+
 - (id)init {
     @synchronized(self) {
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"__PluginID__Service cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
-        self = [super initWithServiceName:@"__PluginID_low__"];
+        self = [super initWithServiceName:@"__PluginID_low__" thriftServiceClientClassName:NSStringFromClass(__PluginID__ServiceClient.class)];
         if (self) {
             instance = self;
         }
@@ -37,23 +39,6 @@ static __PluginID__Service* instance __weak = nil;
 #endif
     }
 }
-
-- (id)thriftServiceClientInstance {
-#if __has_feature(objc_arc)
-    return [[__PluginID__ServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
-#else
-    return [[[__PluginID__ServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
-#endif
-}
-
-- (id)thriftServiceClientInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
-#if __has_feature(objc_arc)
-    return [[__PluginID__ServiceClient alloc] initWithProtocol:[self thriftProtocolInstanceWithCustomTimeoutInterval:timeoutInterval]];
-#else
-    return [[[__PluginID__ServiceClient alloc] initWithProtocol:[self thriftProtocolInstanceWithCustomTimeoutInterval:timeoutInterval]] autorelease];
-#endif
-}
-
 
 #pragma mark - Service methods
 
@@ -90,7 +75,7 @@ static __PluginID__Service* instance __weak = nil;
 // --------------------------------------------------------------------------------------  //
 
 
-#pragma mark - dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

@@ -213,7 +213,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self setTableView:nil];
     [super viewDidUnload];
 }
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
     [PCUtils addCenteredLabelInView:self.view withMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil)];
     self.tableView.hidden = YES;

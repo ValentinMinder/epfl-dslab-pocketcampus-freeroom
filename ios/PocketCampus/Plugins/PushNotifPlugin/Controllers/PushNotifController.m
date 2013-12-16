@@ -27,7 +27,7 @@ static NSMutableDictionary* observerInstanceForNSNotificationCenterObserver __st
     self.failureBlock(0);
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     self.failureBlock(0);
 }
 

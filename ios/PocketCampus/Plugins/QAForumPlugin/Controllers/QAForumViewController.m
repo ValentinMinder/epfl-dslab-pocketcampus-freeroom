@@ -174,7 +174,7 @@
 
 - (void)invalidToken {
     NSLog(@"%@",@"Invalid Token");
-    [self serviceConnectionToServerTimedOut];
+    [self serviceConnectionToServerFailed];
 }
 
 - (void)getSessionIdWithTequilaToken:(QATequilaToken *)token didReturn:(s_session *)session {
@@ -356,7 +356,7 @@
     [self waitForDataDidReturn];
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     [PCUtils showConnectionToServerTimedOutAlert];
     [centerActivityIndicator stopAnimating];
     centerActivityIndicator.hidden = YES;
