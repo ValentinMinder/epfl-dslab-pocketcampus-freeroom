@@ -30,6 +30,13 @@ import de.schildbach.pte.dto.NearbyStationsResult;
 public class TransportServiceImpl implements TransportService.Iface {
 	/** Public Transport information provider */
 	private SbbProvider mSbbProvider;
+	
+	/**
+	 * Used by getTrips
+	 * Number of milliseconds that should be deduced from now timestamp, requesting schedules,
+	 * so that results can contain departures that just left or are leaving.
+	 */
+	private final long NUMBER_MS_IN_PAST_GET_TRIPS_REQUEST = 3*60*1000; //3 min
 
 	/**
 	 * Constructor. Initializes the provider with the api key.
@@ -246,8 +253,8 @@ public class TransportServiceImpl implements TransportService.Iface {
 	 */
 	@Override
 	public QueryTripsResult getTrips(String from, String to) throws TException {
-
-		long now = (new Date()).getTime();
+		//requesting in past so that user can also see trips are leaving now or just left
+		long now = (new Date()).getTime() - NUMBER_MS_IN_PAST_GET_TRIPS_REQUEST; 
 		QueryTripsResult result = getTripsFromSchildbach(from, to, now, true);
 		return result;
 
