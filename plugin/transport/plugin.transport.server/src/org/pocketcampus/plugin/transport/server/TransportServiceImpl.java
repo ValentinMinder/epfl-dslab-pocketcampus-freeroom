@@ -33,7 +33,7 @@ public class TransportServiceImpl implements TransportService.Iface {
 	
 	/**
 	 * Used by getTrips
-	 * Number of milliseconds that should be deduced from now timestamp, requesting schedules,
+	 * Number of milliseconds that should be deduced from current timestamp when requesting schedules,
 	 * so that results can contain departures that just left or are leaving.
 	 */
 	private final long NUMBER_MS_IN_PAST_GET_TRIPS_REQUEST = 3*60*1000; //3 min
