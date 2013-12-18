@@ -466,7 +466,7 @@ static MainController<MainControllerPublic>* instance = nil;
         [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
         self.initialActivePluginIdentifier = nil; //initial plugin has been treated, prevent future use
         [self.revealController revealToggle:self];
-        [self.splashView hideWithAnimationDuration:self.revealController.toggleAnimationDuration completion:^{
+        [self.splashView hideWithAnimationDelay:0.4 duration:self.revealController.toggleAnimationDuration completion:^{
             [self.splashView removeFromSuperview];
         }];
     } else {
@@ -478,7 +478,7 @@ static MainController<MainControllerPublic>* instance = nil;
         } else {
             [self.revealController hideFrontViewAnimated:NO];
             duration = 0.45;
-            [self.splashView hideWithAnimationDuration:duration completion:^{
+            [self.splashView hideWithAnimationDelay:0.4 duration:duration completion:^{
                 [self.splashView removeFromSuperview];
             }];
         }

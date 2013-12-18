@@ -57,14 +57,14 @@
     [superview addConstraints:[NSLayoutConstraint constraintsToSuperview:superview forView:self edgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
 }
 
-- (void)hideWithAnimationDuration:(NSTimeInterval)duration completion:(VoidBlock)completion {
+- (void)hideWithAnimationDelay:(NSTimeInterval)delay duration:(NSTimeInterval)duration completion:(VoidBlock)completion; {
     //duration = 5.0;
     CGFloat originalHeight = self.drawingImageView.frame.size.height;
     CGFloat compressedHeight = self.drawingImageView.frame.size.height*0.85;
     NSArray* compressedSizeConstraints = [NSLayoutConstraint width:self.drawingImageView.frame.size.width height:compressedHeight constraintsForView:self.drawingImageView];
     [self.drawingImageView addConstraints:compressedSizeConstraints];
     self.drawingImageViewCenterYConstraint.constant = (originalHeight-compressedHeight)/2.0;
-    [UIView animateWithDuration:duration*0.6 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:duration*0.6 delay:delay options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self.backgroundImageView layoutIfNeeded];
     } completion:^(BOOL finished) {
         [self.drawingImageView removeConstraints:compressedSizeConstraints];

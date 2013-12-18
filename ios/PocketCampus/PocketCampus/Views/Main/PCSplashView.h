@@ -12,6 +12,6 @@
 
 - (id)initWithSuperview:(UIView*)superview;
 - (void)moveToSuperview:(UIView*)superview;
-- (void)hideWithAnimationDuration:(NSTimeInterval)duration completion:(VoidBlock)completion;
+- (void)hideWithAnimationDelay:(NSTimeInterval)delay duration:(NSTimeInterval)duration completion:(VoidBlock)completion;
 
 @end
