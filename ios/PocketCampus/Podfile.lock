@@ -17,27 +17,14 @@ PODS:
   - AFNetworking/Serialization (2.0.3)
   - AFNetworking/UIKit (2.0.3):
     - AFNetworking/NSURLConnection
-  - ASIHTTPRequest (1.8.1):
-    - ASIHTTPRequest/ASIWebPageRequest
-    - ASIHTTPRequest/CloudFiles
-    - ASIHTTPRequest/S3
-    - Reachability
-  - ASIHTTPRequest/ASIWebPageRequest (1.8.1):
-    - Reachability
-  - ASIHTTPRequest/CloudFiles (1.8.1):
-    - Reachability
-  - ASIHTTPRequest/S3 (1.8.1):
-    - Reachability
   - GoogleAnalytics-iOS-SDK (3.0.2)
   - NSTimer-Blocks (0.0.1)
-  - Reachability (3.1.1)
   - SSKeychain (1.2.1)
   - TUSafariActivity (1.0.0)
   - ZBarSDK (1.3.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
-  - ASIHTTPRequest
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - NSTimer-Blocks
   - SSKeychain (~> 1.2)
@@ -46,10 +33,8 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
-  ASIHTTPRequest: 162783e0cd71bdd3ff1ceed0cd5fa9505e0116a8
   GoogleAnalytics-iOS-SDK: 86393b99f7328ae8d8e975fcaa8632a39dafafe8
   NSTimer-Blocks: 99f52d61c29429d7e8ef0c82e596f317addb9421
-  Reachability: be4883bb93f31e38266ae3365e5600a317aae735
   SSKeychain: d18926838c2e7cd342e2a49e9f869858e49f035a
   TUSafariActivity: bd9da588f5f9136ba445d89f8f86b6dccf4d46ba
   ZBarSDK: 6ae54d2077fea894d6a24bd1d7035192c0a7471e

@@ -10,7 +10,7 @@
 
 #import "NewsUtils.h"
 
-#import "Reachability.h"
+#import "AFNetworkReachabilityManager.h"
 
 #import "ObjectArchiver.h"
 
@@ -27,7 +27,7 @@
 @property (nonatomic, strong) NewsItem* newsItem;
 @property (nonatomic, strong) NewsService* newsService;
 @property (nonatomic, strong) NSURL* urlClicked;
-@property (nonatomic, strong) Reachability* reachability;
+@property (nonatomic, strong) AFNetworkReachabilityManager* reachabilityManager;
     
 @property (nonatomic, strong) IBOutlet UIWebView* webView;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* loadingIndicator;
@@ -139,7 +139,7 @@
 
 
 - (void)newsItemContentForId:(int64_t)newsItemId didReturn:(NSString *)content {
-    
+    [self.reachabilityManager stopMonitoring];
     NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"NewsItem" ofType:@"html"];
     NSError* error = nil;
     NSString* html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
@@ -194,10 +194,15 @@
     [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
-    if (!self.reachability) {
-        self.reachability = [Reachability reachabilityForInternetConnection];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadNewsItem) name:kReachabilityChangedNotification object:self.reachability];
-        [self.reachability startNotifier];
+    if (!self.reachabilityManager) {
+        NewsItemViewController* weakSelf __weak = self;
+        self.reachabilityManager = [AFNetworkReachabilityManager managerForDomain:@"google.com"];
+        [self.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            if (status > 0) { //means internet reachable
+                [weakSelf loadNewsItem];
+            }
+        }];
+        [self.reachabilityManager startMonitoring];
     }
 }
 
@@ -237,11 +242,7 @@
 #pragma mark - dealloc
 
 - (void)dealloc {
-    [self.reachability stopNotifier];
-    @try {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:self.reachability];
-    }
-    @catch (NSException *exception) {}
+    [self.reachabilityManager stopMonitoring];
     self.webView.delegate = nil;
     [self.webView stopLoading];
     [self.newsService cancelOperationsForDelegate:self];

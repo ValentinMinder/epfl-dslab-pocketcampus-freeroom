@@ -136,7 +136,7 @@
 			<key>hiddenByDefault</key>
 			<false/>
 			<key>supportedIdioms</key>
-			<string>phone</string>
+			<string></string>
 			<key>devTeam</key>
 			<string>Artificial Intelligence Lab (LIA)</string>
 			<key>minOSVersion</key>

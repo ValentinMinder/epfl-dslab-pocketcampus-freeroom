@@ -9,22 +9,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-ASIHTTPRequest.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-GoogleAnalytics-iOS-SDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-NSTimer-Blocks.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-Reachability.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -52,47 +42,37 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3686EF92DBDE498FBCAFA91F</key>
+		<key>084E068AEDA14E5E8E153704</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>55C0065A7E6340578EE7FF24</key>
+		<key>43360D2A6B514E31A3DE579A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>577A8AAE5DD442EF8BC1FCC1</key>
+		<key>7ACD17C560EC4E1F9551043D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6A855A4701A54F70B44F8B4C</key>
+		<key>8EE9608EAAE742E7AAC650D3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BB0279AE726044E59E165ACC</key>
+		<key>C7408EB0349A4CE5BCB28A7B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CC9AE01F7923402988C4ABA3</key>
+		<key>D908B693D2A345D19E157CA3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D3213C0FA1774D09A46B3DE2</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E69A62B85D16464CA0507CBE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F1E05193B6A143C2998437FA</key>
+		<key>DE1B0DC73F894888A20B01BA</key>
 		<dict>
 			<key>primary</key>
 			<true/>

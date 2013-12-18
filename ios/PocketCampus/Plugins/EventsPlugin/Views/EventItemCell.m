@@ -10,8 +10,6 @@
 
 #import "EventItem+Additions.h"
 
-#import "ASIDownloadCache.h"
-
 #import "PCUtils.h"
 
 #import "UIImage+Additions.h"

@@ -30,11 +30,6 @@ static NSString* kFavoritesEventItemsUpdatedNotification __unused = @"FavoritesE
 - (void)removeUserTicket:(NSString*)ticket;
 - (NSArray*)allUserTickets;
 
-- (NSString*)lastUserToken __deprecated;
-- (BOOL)saveUserToken:(NSString*)token __deprecated;
-- (BOOL)deleteUserToken __deprecated;
-
-
 - (void)addFavoriteEventItemId:(int64_t)itemId;
 - (void)removeFavoriteEventItemId:(int64_t)itemId;
 - (NSArray*)allFavoriteEventItemIds; //array of NSNumber of int64_t (unspecifed order)

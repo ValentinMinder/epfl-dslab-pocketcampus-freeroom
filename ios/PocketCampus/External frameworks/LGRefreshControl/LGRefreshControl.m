@@ -7,7 +7,7 @@
 
 #import "LGRefreshControl.h"
 
-#import "Reachability.h"
+#import "AFNetworkReachabilityManager.h"
 
 @interface LGRefreshControl ()
 
@@ -164,11 +164,11 @@
 
 - (BOOL)shouldRefreshDataForValidity:(NSTimeInterval)validitySeconds {
     if (!self.refreshedDataIdentifier) {
-        return [[Reachability reachabilityForInternetConnection] isReachable];
+        return [[AFNetworkReachabilityManager sharedManager] isReachable];
     }
     NSTimeInterval diffWithLastRefresh = [[NSDate date] timeIntervalSinceDate:self.lastSuccessfulRefreshDate];
     if (diffWithLastRefresh > validitySeconds) {
-        return [[Reachability reachabilityForInternetConnection] isReachable];
+        return [[AFNetworkReachabilityManager sharedManager] isReachable];
     }
     return NO;
 }

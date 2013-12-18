@@ -15,14 +15,11 @@
 @interface EventsService ()
 
 @property (nonatomic, strong) NSMutableSet* userTickets;
-@property (nonatomic, strong) NSString* userToken __deprecated;
 @property (nonatomic, strong) NSMutableSet* favoriteEventItemIds; //set of NSNumber int64_t
 
 @end
 
 static NSString* kUserTicketsKey = @"userTickets";
-
-static NSString* kUserTokenKey __deprecated = @"userToken";
 
 static NSString* kFavoriteEventItemIds = @"favoriteEventItemIds";
 
@@ -62,6 +59,8 @@ static EventsService* instance __weak = nil;
 
 #pragma mark - User tickets
 
+static NSString* kUserTokenKey = @"userToken";
+
 - (void)initUserTickets {
     if (!self.userTickets) { //first try to get it from persistent storage
         self.userTickets = [(NSSet*)[ObjectArchiver objectForKey:kUserTicketsKey andPluginName:@"events"] mutableCopy];
@@ -70,15 +69,16 @@ static EventsService* instance __weak = nil;
         self.userTickets = [NSMutableSet set];
     }
     
-    static NSString* kTransitionToUserTicketsDone = @"TransitionToUserTicketsDone";
+    static NSString* kEventsTransitionToUserTicketsDone = @"EventsTransitionToUserTicketsDone";
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    if (![defaults boolForKey:kTransitionToUserTicketsDone]) {
-        if (self.lastUserToken) {
+    if (![defaults boolForKey:kEventsTransitionToUserTicketsDone]) {
+        NSString* userToken = (NSString*)[ObjectArchiver objectForKey:kUserTokenKey andPluginName:@"events"];
+        if (userToken) {
             //transition period, get back old tokens
-            [self.userTickets addObject:self.lastUserToken];
-            [self deleteUserToken];
+            [self.userTickets addObject:userToken];
+            [ObjectArchiver saveObject:nil forKey:kUserTokenKey andPluginName:@"events"];
         }
-        [defaults setBool:YES forKey:kTransitionToUserTicketsDone];
+        [defaults setBool:YES forKey:kEventsTransitionToUserTicketsDone];
     }
 }
 
@@ -106,25 +106,6 @@ static EventsService* instance __weak = nil;
         return YES;
     }
     return [ObjectArchiver saveObject:self.userTickets forKey:kUserTicketsKey andPluginName:@"events"];
-}
-
-#pragma mark - User token
-
-- (NSString*)lastUserToken {
-    if (!self.userToken) {
-        self.userToken = (NSString*)[ObjectArchiver objectForKey:kUserTokenKey andPluginName:@"events"];
-    }
-    return self.userToken;
-}
-
-- (BOOL)saveUserToken:(NSString*)token {
-    self.userToken = token;
-    return [ObjectArchiver saveObject:token forKey:kUserTokenKey andPluginName:@"events"];
-}
-
-- (BOOL)deleteUserToken {
-    self.userToken = nil;
-    return [ObjectArchiver saveObject:nil forKey:kUserTokenKey andPluginName:@"events"];
 }
 
 #pragma mark - Favorites
