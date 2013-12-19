@@ -2341,8 +2341,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "71"
             endingLineNumber = "71"
-            landmarkName = "-setRestaurant:"
-            landmarkType = "5">
+            landmarkName = "@implementation FoodRestaurantViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3013,6 +3013,22 @@
             startingLineNumber = "217"
             endingLineNumber = "217"
             landmarkName = "+preferredHeightForMeal:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PocketCampus/Misc/PCGAITracker.m"
+            timestampString = "409182494.294587"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "-initGAIConfig"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

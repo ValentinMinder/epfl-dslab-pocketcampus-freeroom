@@ -16,8 +16,6 @@
 
 static id instance __strong = nil;
 
-static BOOL configChecked = NO;
-
 @interface PCGAITracker ()
 
 @property (nonatomic, strong) id<GAITracker> gaiTracker;
@@ -27,25 +25,21 @@ static BOOL configChecked = NO;
 @implementation PCGAITracker
 
 + (instancetype)sharedTracker {
-    @synchronized(self) {
-        if (instance) {
-            return instance;
-        }
-        if (configChecked) {
-            return nil;
-        }
-        /* Start Google Analytics tracker if enabled in config */
+    if (![PCConfig isLoaded]) {
+        NSLog(@"-> Cannot create PCGAITracker sharedTracker instance because PCConfig is not loading yet. Returning nil.");
+        return nil;
+    }
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[PCGAITracker alloc] init];
         if ([[PCConfig defaults] boolForKey:PC_CONFIG_GAN_ENABLED_KEY]) {
-            NSLog(@"-> Starting Google Analytics tracker.");
-            instance = [[PCGAITracker alloc] init];
             [instance initGAIConfig];
+            NSLog(@"-> Starting Google Analytics tracker.");
         } else {
             NSLog(@"-> Google Analytics disabled (config)");
         }
-        configChecked = YES;
-        return instance;
-    }
-
+    });
+    return instance;
 }
 
 - (void)initGAIConfig {
@@ -54,20 +48,17 @@ static BOOL configChecked = NO;
         NSLog(@"!! ERROR: cannot start Google Analytics tracker because tracking code is empty or absent from config.");
         return;
     }
-    // Optional: automatically send uncaught exceptions to Google Analytics.
-    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    [GAI sharedInstance].trackUncaughtExceptions = NO;
     [GAI sharedInstance].dispatchInterval = 10;
+    [GAI sharedInstance].dryRun = NO;
     // Optional: set Logger to VERBOSE for debug information.
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
-    
     self.gaiTracker = [[GAI sharedInstance] trackerWithTrackingId:ganId];
-    
-    [self.gaiTracker set:PC_PROD_APP_VERSION_KEY value:[PCUtils appVersion]];
 }
 
 - (void)trackScreenWithName:(NSString*)screenName {
     if (screenName.length == 0) {
-        NSLog(@"!! ERROR: cannot track screeName of length 0.");
+        NSLog(@"!! ERROR: cannot track nil screeName or of length 0.");
         return;
     }
     [self.gaiTracker set:kGAIScreenName value:screenName];
