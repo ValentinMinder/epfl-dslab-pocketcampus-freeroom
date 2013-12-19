@@ -131,7 +131,7 @@
 		272301391858CEB900B72F5E /* PCSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = 328A72E2184A503C002C5A6B /* PCSplashView.m */; };
 		2723013A1858CEB900B72F5E /* EventItem+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F316E1FA1100AF365C /* EventItem+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2723013B1858CEB900B72F5E /* EventItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3281AB8116E221F700D8FAD1 /* EventItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		2723013C1858CEB900B72F5E /* EpflRestaurant+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 328860B8183B63590098C857 /* EpflRestaurant+Additions.m */; };
+		2723013C1858CEB900B72F5E /* FoodModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 328860B8183B63590098C857 /* FoodModelAdditions.m */; };
 		2723013D1858CEB900B72F5E /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2723013E1858CEB900B72F5E /* TNSStreamTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A9C17F898910025F864 /* TNSStreamTransport.m */; };
 		2723013F1858CEB900B72F5E /* PCURLSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF9D16E3B537002CBEA2 /* PCURLSchemeHandler.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -553,7 +553,7 @@
 		3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3281AB8116E221F700D8FAD1 /* EventItemViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
 		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
-		328860B9183B63590098C857 /* EpflRestaurant+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 328860B8183B63590098C857 /* EpflRestaurant+Additions.m */; };
+		328860B9183B63590098C857 /* FoodModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 328860B8183B63590098C857 /* FoodModelAdditions.m */; };
 		328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3288699214FE5AF300CC97DB /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		328872C71534D82C00330B54 /* TransportTripsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328872C61534D82C00330B54 /* TransportTripsListViewController.m */; };
 		3289D28A15094739008DD299 /* Directory.png in Resources */ = {isa = PBXBuildFile; fileRef = 3289D28815094739008DD299 /* Directory.png */; };
@@ -1003,8 +1003,8 @@
 		3281AB8116E221F700D8FAD1 /* EventItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EventItemViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3281AB8316E2254600D8FAD1 /* EventItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventItemView.xib; sourceTree = "<group>"; };
 		3282C283181179E2002A4FAE /* EventsLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EventsLarge@2x.png"; sourceTree = "<group>"; };
-		328860B7183B63590098C857 /* EpflRestaurant+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EpflRestaurant+Additions.h"; sourceTree = "<group>"; };
-		328860B8183B63590098C857 /* EpflRestaurant+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EpflRestaurant+Additions.m"; sourceTree = "<group>"; };
+		328860B7183B63590098C857 /* FoodModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodModelAdditions.h; sourceTree = "<group>"; };
+		328860B8183B63590098C857 /* FoodModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodModelAdditions.m; sourceTree = "<group>"; };
 		3288699114FE5AF300CC97DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AppDelegate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		3288699214FE5AF300CC97DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		328872C51534D82C00330B54 /* TransportTripsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportTripsListViewController.h; sourceTree = "<group>"; };
@@ -1777,8 +1777,8 @@
 			children = (
 				32102B6A15050C000076537E /* FoodService.h */,
 				32102B6B15050C000076537E /* FoodService.m */,
-				328860B7183B63590098C857 /* EpflRestaurant+Additions.h */,
-				328860B8183B63590098C857 /* EpflRestaurant+Additions.m */,
+				328860B7183B63590098C857 /* FoodModelAdditions.h */,
+				328860B8183B63590098C857 /* FoodModelAdditions.m */,
 				3247C3B41504F2E10079522A /* ThriftTypes+Services */,
 			);
 			path = Model;
@@ -3476,7 +3476,7 @@
 				272301391858CEB900B72F5E /* PCSplashView.m in Sources */,
 				2723013A1858CEB900B72F5E /* EventItem+Additions.m in Sources */,
 				2723013B1858CEB900B72F5E /* EventItemViewController.m in Sources */,
-				2723013C1858CEB900B72F5E /* EpflRestaurant+Additions.m in Sources */,
+				2723013C1858CEB900B72F5E /* FoodModelAdditions.m in Sources */,
 				2723013D1858CEB900B72F5E /* UIImage+Additions.m in Sources */,
 				2723013E1858CEB900B72F5E /* TNSStreamTransport.m in Sources */,
 				2723013F1858CEB900B72F5E /* PCURLSchemeHandler.m in Sources */,
@@ -3622,7 +3622,7 @@
 				328A72E3184A503C002C5A6B /* PCSplashView.m in Sources */,
 				322C4ACD16E1FD8300DE418E /* EventItem+Additions.m in Sources */,
 				3281AB8216E221F700D8FAD1 /* EventItemViewController.m in Sources */,
-				328860B9183B63590098C857 /* EpflRestaurant+Additions.m in Sources */,
+				328860B9183B63590098C857 /* FoodModelAdditions.m in Sources */,
 				321CCF7016E27357002CBEA2 /* UIImage+Additions.m in Sources */,
 				32930AB417F898910025F864 /* TNSStreamTransport.m in Sources */,
 				321CCF9E16E3B537002CBEA2 /* PCURLSchemeHandler.m in Sources */,

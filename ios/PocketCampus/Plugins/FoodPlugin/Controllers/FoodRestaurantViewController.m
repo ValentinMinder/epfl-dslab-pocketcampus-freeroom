@@ -37,7 +37,7 @@ static const NSInteger kMealsSection = 1;
         self.foodService = [FoodService sharedInstanceToRetain];
         _restaurant = restaurant;
         self.title = self.restaurant.rName;
-        self.cellForMealName = [NSMutableDictionary dictionaryWithCapacity:self.restaurant.rMeals.count];
+        self.cellForMealName = [NSMutableDictionary dictionaryWithCapacity:self.restaurant.rUniqueMeals.count];
 /*#warning TO REMOVE
         self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurant-pics/vallotton.png";
         self.restaurant.rRating.ratingValue = 0.76;
@@ -97,7 +97,7 @@ static const NSInteger kMealsSection = 1;
             return [FoodRestaurantInfoCell preferredHeightForRestaurant:self.restaurant];
         case kMealsSection:
         {
-            EpflMeal* meal = self.restaurant.rMeals[indexPath.row];
+            EpflMeal* meal = self.restaurant.rUniqueMeals[indexPath.row];
             return [FoodMealCell preferredHeightForMeal:meal];
         }
     }
@@ -122,7 +122,7 @@ static const NSInteger kMealsSection = 1;
             break;
         case kMealsSection:
         {
-            EpflMeal* meal = self.restaurant.rMeals[indexPath.row];
+            EpflMeal* meal = self.restaurant.rUniqueMeals[indexPath.row];
             FoodMealCell* mealCell = self.cellForMealName[meal.mName];
 /*#warning TO REMOVE
             if (indexPath.row > 1) {
@@ -147,7 +147,7 @@ static const NSInteger kMealsSection = 1;
         case kRestaurantInfoSection:
             return 1;
         case kMealsSection:
-            return self.restaurant.rMeals.count;
+            return self.restaurant.rUniqueMeals.count;
     }
     return 0;
 }
