@@ -3,7 +3,7 @@
 
 #import "MoodleCoursesListViewController.h"
 
-#import "ObjectArchiver.h"
+#import "PCObjectArchiver.h"
 
 #import "AuthenticationController.h"
 
@@ -67,11 +67,11 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 }
 
 + (void)deleteSessionIfNecessary {
-    NSNumber* deleteSession = (NSNumber*)[ObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
+    NSNumber* deleteSession = (NSNumber*)[PCObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
     if (deleteSession && [deleteSession boolValue]) {
         NSLog(@"-> Delayed logout notification on Moodle now applied : deleting sessionId");
         [[MoodleService sharedInstanceToRetain] deleteSession];
-        [ObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
+        [PCObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
     }
 }
 
@@ -84,14 +84,14 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
             NSNumber* delayed = [notification.userInfo objectForKey:[AuthenticationService delayedUserInfoKey]];
             if ([delayed boolValue]) {
                 NSLog(@"-> Moodle received %@ notification delayed", [AuthenticationService logoutNotificationName]);
-                [ObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
+                [PCObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
             } else {
                 NSLog(@"-> Moodle received %@ notification", [AuthenticationService logoutNotificationName]);
                 MoodleService* moodleService = [MoodleService sharedInstanceToRetain];
                 [moodleService deleteSession]; //removing stored session
                 [moodleService deleteAllDownloadedResources]; //removing all downloaded Moodle files
                 moodleService = nil;
-                [ObjectArchiver deleteAllCachedObjectsForPluginName:@"moodle"];
+                [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"moodle"];
                 [[MainController publicController] requestLeavePlugin:@"Moodle"];
             }
         }];

@@ -10,7 +10,7 @@
 
 #import "TransportNextDeparturesViewController.h"
 
-#import "ObjectArchiver.h"
+#import "PCObjectArchiver.h"
 
 @implementation TransportController
 
@@ -65,14 +65,14 @@ static NSMutableDictionary* settings = nil;
         }
         [settings setObject:val forKey:settingKey];
         settingsAreDirty = YES;
-        return [ObjectArchiver saveObject:settings forKey:kSettingsKey andPluginName:@"transport"];
+        return [PCObjectArchiver saveObject:settings forKey:kSettingsKey andPluginName:@"transport"];
     }
 }
 
 + (id<NSCoding>)objectSettingForKey:(NSString*)settingKey {
     @synchronized(self) {
         if (settings == nil || settingsAreDirty) {
-            settings = (NSMutableDictionary*)[ObjectArchiver objectForKey:kSettingsKey andPluginName:@"transport"];
+            settings = (NSMutableDictionary*)[PCObjectArchiver objectForKey:kSettingsKey andPluginName:@"transport"];
             settingsAreDirty = NO;
         }
         if (settings == nil) {

@@ -6,11 +6,9 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+@import StoreKit;
+
 #import "GlobalSettingsViewController.h"
-
-#import "PCValues.h"
-
-#import "PCUtils.h"
 
 #import "PCEditableTableViewCell.h"
 
@@ -36,7 +34,7 @@ static const int kRatePCRow = 0;
 static const int kLikePCFBRow = 1;
 static const int kAboutRow = 2;
 
-@interface GlobalSettingsViewController () <UITextFieldDelegate>
+@interface GlobalSettingsViewController () <UITextFieldDelegate, SKStoreProductViewControllerDelegate>
 
 @property (nonatomic, weak) MainController* mainController;
 
@@ -123,6 +121,12 @@ static const int kAboutRow = 2;
             switch (indexPath.row) {
                 case kRatePCRow:
                 {
+                    //iOS 7 bug makes that "Write review" button is not available when using SKStoreProductViewController
+                    //Thus simply opening app in App Store app instead
+                    /*SKStoreProductViewController* productViewController = [SKStoreProductViewController new];
+                    productViewController.delegate = self;
+                    [productViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier:@549799535} completionBlock:NULL];
+                    [self presentViewController:productViewController animated:YES completion:NULL];*/
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/ch/app/epfl/id549799535"];
                     [[UIApplication sharedApplication] openURL:url];
@@ -148,6 +152,12 @@ static const int kAboutRow = 2;
         default:
             break;
     }
+}
+
+#pragma mark - SKStoreProductViewControllerDelegate
+
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - UITableViewDataSource
@@ -209,7 +219,7 @@ static const int kAboutRow = 2;
                     //cell.detailTextLabel.text = NSLocalizedStringFromTable(@"RatePCAppStoreSubtitle", @"PocketCampus", nil);
                     cell.imageView.image = [UIImage imageNamed:@"AppLogoCellImage"];
                     break;
-                case kRestoreDefaultMainMenuRow:
+                case kLikePCFBRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
                     cell.textLabel.text = NSLocalizedStringFromTable(@"LikePConFB", @"PocketCampus", nil);
                     cell.imageView.image = [UIImage imageNamed:@"FacebookLikeCellImage"];

@@ -27,7 +27,7 @@
 		272300C31858CEB900B72F5E /* transport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0415179014007AE82B /* transport.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		272300C41858CEB900B72F5E /* TransportService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0615179014007AE82B /* TransportService.m */; };
 		272300C51858CEB900B72F5E /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
-		272300C61858CEB900B72F5E /* ObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272300C61858CEB900B72F5E /* PCObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* PCObjectArchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300C71858CEB900B72F5E /* TransportNextDeparturesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32442FEA151CF87100685D10 /* TransportNextDeparturesViewController.m */; };
 		272300C81858CEB900B72F5E /* PCGAITracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 322FB01717EC938E00D1A466 /* PCGAITracker.m */; };
 		272300C91858CEB900B72F5E /* TransportDepartureSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3278F6C9184257AF007CB382 /* TransportDepartureSelectionViewController.m */; };
@@ -692,7 +692,7 @@
 		32CCB511155567CB00220282 /* News@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB50F155567CB00220282 /* News@2x.png */; };
 		32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
-		32CFECEF151CCB6800D8CBA6 /* ObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32CFECEF151CCB6800D8CBA6 /* PCObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* PCObjectArchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32D0B24F166A9B9D00F68304 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322715C2070E0091757D /* QuartzCore.framework */; };
 		32D0B256166AA58E00F68304 /* LocationArrowActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B250166AA58D00F68304 /* LocationArrowActive.png */; };
 		32D0B257166AA58E00F68304 /* LocationArrowActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B251166AA58D00F68304 /* LocationArrowActive@2x.png */; };
@@ -1211,8 +1211,8 @@
 		32CFECE3151C789A00D8CBA6 /* TransportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportController.h; sourceTree = "<group>"; };
 		32CFECE4151C789A00D8CBA6 /* TransportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportController.m; sourceTree = "<group>"; };
 		32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		32CFECED151CCB6800D8CBA6 /* ObjectArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectArchiver.h; sourceTree = "<group>"; };
-		32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectArchiver.m; sourceTree = "<group>"; };
+		32CFECED151CCB6800D8CBA6 /* PCObjectArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCObjectArchiver.h; sourceTree = "<group>"; };
+		32CFECEE151CCB6800D8CBA6 /* PCObjectArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCObjectArchiver.m; sourceTree = "<group>"; };
 		32D0B250166AA58D00F68304 /* LocationArrowActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowActive.png; sourceTree = "<group>"; };
 		32D0B251166AA58D00F68304 /* LocationArrowActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrowActive@2x.png"; sourceTree = "<group>"; };
 		32D0B252166AA58D00F68304 /* LocationArrowInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowInactive.png; sourceTree = "<group>"; };
@@ -1730,8 +1730,8 @@
 		324715AB15001381007C230C /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				32CFECED151CCB6800D8CBA6 /* ObjectArchiver.h */,
-				32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */,
+				32CFECED151CCB6800D8CBA6 /* PCObjectArchiver.h */,
+				32CFECEE151CCB6800D8CBA6 /* PCObjectArchiver.m */,
 				3258D64F16AF1FE20040DAE3 /* PCConfig.h */,
 				3258D65016AF1FE20040DAE3 /* PCConfig.m */,
 				324715AC15001381007C230C /* Service.h */,
@@ -3372,7 +3372,7 @@
 				272300C31858CEB900B72F5E /* transport.m in Sources */,
 				272300C41858CEB900B72F5E /* TransportService.m in Sources */,
 				272300C51858CEB900B72F5E /* TransportController.m in Sources */,
-				272300C61858CEB900B72F5E /* ObjectArchiver.m in Sources */,
+				272300C61858CEB900B72F5E /* PCObjectArchiver.m in Sources */,
 				272300C71858CEB900B72F5E /* TransportNextDeparturesViewController.m in Sources */,
 				272300C81858CEB900B72F5E /* PCGAITracker.m in Sources */,
 				272300C91858CEB900B72F5E /* TransportDepartureSelectionViewController.m in Sources */,
@@ -3524,7 +3524,7 @@
 				32FB2E0A15179014007AE82B /* transport.m in Sources */,
 				32FB2E0B15179014007AE82B /* TransportService.m in Sources */,
 				32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */,
-				32CFECEF151CCB6800D8CBA6 /* ObjectArchiver.m in Sources */,
+				32CFECEF151CCB6800D8CBA6 /* PCObjectArchiver.m in Sources */,
 				32442FEB151CF87100685D10 /* TransportNextDeparturesViewController.m in Sources */,
 				322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */,
 				3278F6CA184257AF007CB382 /* TransportDepartureSelectionViewController.m in Sources */,

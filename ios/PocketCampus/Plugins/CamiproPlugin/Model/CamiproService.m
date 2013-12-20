@@ -8,7 +8,7 @@
 
 #import "CamiproService.h"
 
-#import "ObjectArchiver.h"
+#import "PCObjectArchiver.h"
 
 @implementation CamiproService
 
@@ -49,11 +49,11 @@ static CamiproService* instance __weak = nil;
 #pragma mark - Service methods
 
 + (CamiproSession*)lastSessionId {
-    return (CamiproSession*)[ObjectArchiver objectForKey:kLastSessionIdKey andPluginName:@"camipro"];
+    return (CamiproSession*)[PCObjectArchiver objectForKey:kLastSessionIdKey andPluginName:@"camipro"];
 }
 
 + (BOOL)saveSessionId:(CamiproSession*)sessionId {
-    return [ObjectArchiver saveObject:sessionId forKey:kLastSessionIdKey andPluginName:@"camipro"];
+    return [PCObjectArchiver saveObject:sessionId forKey:kLastSessionIdKey andPluginName:@"camipro"];
 }
 
 - (void)getTequilaTokenForCamiproDelegate:(id)delegate {

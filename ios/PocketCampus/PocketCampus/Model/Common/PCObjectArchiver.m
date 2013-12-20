@@ -1,14 +1,14 @@
 //
-//  ObjectArchiver.m
+//  PCObjectArchiver.m
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 23.03.12.
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "ObjectArchiver.h"
+#import "PCObjectArchiver.h"
 
-@implementation ObjectArchiver
+@implementation PCObjectArchiver
 
 + (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString*)key andPluginName:(NSString*)pluginName {
     return [self saveObject:object forKey:key andPluginName:pluginName isCache:NO];

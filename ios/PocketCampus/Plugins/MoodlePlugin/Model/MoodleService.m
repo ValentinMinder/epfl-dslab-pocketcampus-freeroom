@@ -1,7 +1,7 @@
 
 #import "MoodleService.h"
 
-#import "ObjectArchiver.h"
+#import "PCObjectArchiver.h"
 
 #import "AFNetworking.h"
 
@@ -98,18 +98,18 @@ static NSString* const kMoodleResourceKey = @"moodleResource";
     if (self.session) {
         return self.session;
     }
-    self.session = (MoodleSession*)[ObjectArchiver objectForKey:kMoodleSessionKey andPluginName:@"moodle"];
+    self.session = (MoodleSession*)[PCObjectArchiver objectForKey:kMoodleSessionKey andPluginName:@"moodle"];
     return self.session;
 }
 
 - (BOOL)saveSession:(MoodleSession*)session {
     self.session = session;
-    return [ObjectArchiver saveObject:session forKey:kMoodleSessionKey andPluginName:@"moodle"];
+    return [PCObjectArchiver saveObject:session forKey:kMoodleSessionKey andPluginName:@"moodle"];
 }
 
 - (BOOL)deleteSession {
     self.session = nil;
-    return [ObjectArchiver saveObject:nil forKey:kMoodleSessionKey andPluginName:@"moodle"];
+    return [PCObjectArchiver saveObject:nil forKey:kMoodleSessionKey andPluginName:@"moodle"];
 }
 
 #pragma mark - Resources favorites and file management
@@ -118,7 +118,7 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
 
 - (void)initFavorites {
     if (!self.favoriteMoodleResourcesURLs) { //first try to get it from persistent storage
-        self.favoriteMoodleResourcesURLs = [(NSSet*)[ObjectArchiver objectForKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"] mutableCopy];
+        self.favoriteMoodleResourcesURLs = [(NSSet*)[PCObjectArchiver objectForKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"] mutableCopy];
     }
     if (!self.favoriteMoodleResourcesURLs) { //if not present in persistent storage, create set
         self.favoriteMoodleResourcesURLs = [NSMutableSet set];
@@ -129,7 +129,7 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
     if (!self.favoriteMoodleResourcesURLs) {
         return YES;
     }
-    return [ObjectArchiver saveObject:self.favoriteMoodleResourcesURLs forKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"];
+    return [PCObjectArchiver saveObject:self.favoriteMoodleResourcesURLs forKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"];
 }
 
 - (void)addFavoriteMoodleResource:(MoodleResource*)moodleResource {
@@ -293,19 +293,19 @@ static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%
 }
 
 - (CoursesListReply*)getFromCacheCourseListReply {
-    return (CoursesListReply*)[ObjectArchiver objectForKey:kCourseListReplyKey andPluginName:@"moodle" isCache:YES];
+    return (CoursesListReply*)[PCObjectArchiver objectForKey:kCourseListReplyKey andPluginName:@"moodle" isCache:YES];
 }
 
 - (BOOL)saveToCacheCourseListReply:(CoursesListReply*)courseListReply {
-    return [ObjectArchiver saveObject:courseListReply forKey:kCourseListReplyKey andPluginName:@"moodle" isCache:YES];
+    return [PCObjectArchiver saveObject:courseListReply forKey:kCourseListReplyKey andPluginName:@"moodle" isCache:YES];
 }
 
 - (SectionsListReply*)getFromCacheSectionsListReplyForCourse:(MoodleCourse*)course {
-    return (SectionsListReply*)[ObjectArchiver objectForKey:[self keyForSectionsListReplyForCourse:course] andPluginName:@"moodle" isCache:YES];
+    return (SectionsListReply*)[PCObjectArchiver objectForKey:[self keyForSectionsListReplyForCourse:course] andPluginName:@"moodle" isCache:YES];
 }
 
 - (BOOL)saveToCacheSectionsListReply:(SectionsListReply*)sectionsListReply forCourse:(MoodleCourse*)course {
-    return [ObjectArchiver saveObject:sectionsListReply forKey:[self keyForSectionsListReplyForCourse:course] andPluginName:@"moodle" isCache:YES];
+    return [PCObjectArchiver saveObject:sectionsListReply forKey:[self keyForSectionsListReplyForCourse:course] andPluginName:@"moodle" isCache:YES];
 }
 
 #pragma mark - MoodleResources observation

@@ -1,5 +1,5 @@
 //
-//  ObjectArchiver.h
+//  PCObjectArchiver.h
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 23.03.12.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ObjectArchiver : NSObject
+@interface PCObjectArchiver : NSObject
 
 + (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString*)key andPluginName:(NSString*)pluginName; //same as next with isCache = NO. Passing nil objects delete files for corresponding key if it exists
 + (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString *)key andPluginName:(NSString *)pluginName isCache:(BOOL)isCache;

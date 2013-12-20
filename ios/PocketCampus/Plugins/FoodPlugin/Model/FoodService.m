@@ -8,7 +8,7 @@
 
 #import "FoodService.h"
 
-#import "ObjectArchiver.h"
+#import "PCObjectArchiver.h"
 
 static NSTimeInterval kFoodRequestCacheValidity = 10800.0; //3 hours;
 
@@ -57,7 +57,7 @@ static FoodService* instance __weak = nil;
 
 - (void)initFavorites {
     if (!self.favoriteRestaurantIds) { //first try to get it from persistent storage
-        self.favoriteRestaurantIds = [(NSSet*)[ObjectArchiver objectForKey:kFavoriteRestaurantIds andPluginName:@"food"] mutableCopy];
+        self.favoriteRestaurantIds = [(NSSet*)[PCObjectArchiver objectForKey:kFavoriteRestaurantIds andPluginName:@"food"] mutableCopy];
     }
     if (!self.favoriteRestaurantIds) { //if not present in persistent storage, create set
         self.favoriteRestaurantIds = [NSMutableSet set];
@@ -68,7 +68,7 @@ static FoodService* instance __weak = nil;
     if (!self.favoriteRestaurantIds) {
         return YES;
     }
-    return [ObjectArchiver saveObject:self.favoriteRestaurantIds forKey:kFavoriteRestaurantIds andPluginName:@"food"];
+    return [PCObjectArchiver saveObject:self.favoriteRestaurantIds forKey:kFavoriteRestaurantIds andPluginName:@"food"];
 }
 
 - (NSNumber*)nsNumberForRestaurantId:(int64_t)restaurantId {

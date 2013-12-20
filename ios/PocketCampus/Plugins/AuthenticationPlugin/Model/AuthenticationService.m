@@ -3,7 +3,7 @@
 
 #import "AFNetworking.h"
 
-#import "ObjectArchiver.h"
+#import "PCObjectArchiver.h"
 
 #import "SSKeychain.h"
 
@@ -60,11 +60,11 @@ static AuthenticationService* instance __weak = nil;
 }
 
 + (NSString*)savedUsername {
-    return (NSString*)[ObjectArchiver objectForKey:kSavedUsernameKey andPluginName:@"authentication"];
+    return (NSString*)[PCObjectArchiver objectForKey:kSavedUsernameKey andPluginName:@"authentication"];
 }
 
 + (BOOL)saveUsername:(NSString*)username {
-    return [ObjectArchiver saveObject:username forKey:kSavedUsernameKey andPluginName:@"authentication"];
+    return [PCObjectArchiver saveObject:username forKey:kSavedUsernameKey andPluginName:@"authentication"];
 }
 
 + (NSString*)savedPasswordForUsername:(NSString*)username {
@@ -85,11 +85,11 @@ static AuthenticationService* instance __weak = nil;
 }
 
 + (NSNumber*)savePasswordSwitchWasOn {
-    return (NSNumber*)[ObjectArchiver objectForKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
+    return (NSNumber*)[PCObjectArchiver objectForKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
 }
 
 + (BOOL)savePasswordSwitchState:(BOOL)isOn {
-    return [ObjectArchiver saveObject:[NSNumber numberWithBool:isOn] forKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
+    return [PCObjectArchiver saveObject:[NSNumber numberWithBool:isOn] forKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
 }
 
 + (NSString*)logoutNotificationName {

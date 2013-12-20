@@ -10,7 +10,7 @@
 
 #import "CamiproViewController.h"
 
-#import "ObjectArchiver.h"
+#import "PCObjectArchiver.h"
 
 #import "CamiproService.h"
 
@@ -56,11 +56,11 @@ static CamiproController* instance __weak = nil;
 }
 
 + (void)deleteSessionIfNecessary {
-    NSNumber* deleteSession = (NSNumber*)[ObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
+    NSNumber* deleteSession = (NSNumber*)[PCObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
     if (deleteSession && [deleteSession boolValue]) {
         NSLog(@"-> Delayed logout notification on Camipro now applied : deleting sessionId");
         [CamiproService saveSessionId:nil];
-        [ObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
+        [PCObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
     }
 }
 
@@ -73,11 +73,11 @@ static CamiproController* instance __weak = nil;
             NSNumber* delayed = [notification.userInfo objectForKey:[AuthenticationService delayedUserInfoKey]];
             if ([delayed boolValue]) {
                 NSLog(@"-> Camipro received %@ notification delayed", [AuthenticationService logoutNotificationName]);
-                [ObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
+                [PCObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
             } else {
                 NSLog(@"-> Camipro received %@ notification", [AuthenticationService logoutNotificationName]);
                 [CamiproService saveSessionId:nil]; //removing stored session
-                [ObjectArchiver deleteAllCachedObjectsForPluginName:@"camipro"];
+                [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"camipro"];
                 [[MainController publicController] requestLeavePlugin:@"Camipro"];
             }
         }];

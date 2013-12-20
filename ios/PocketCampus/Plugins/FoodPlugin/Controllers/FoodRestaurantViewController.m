@@ -38,10 +38,10 @@ static const NSInteger kMealsSection = 1;
         _restaurant = restaurant;
         self.title = self.restaurant.rName;
         self.cellForMealName = [NSMutableDictionary dictionaryWithCapacity:self.restaurant.rUniqueMeals.count];
-/*#warning TO REMOVE
-        self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurant-pics/vallotton.png";
-        self.restaurant.rRating.ratingValue = 0.76;
-        self.restaurant.rRating.voteCount = 578;*/
+//#warning TO REMOVE
+        //self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurant-pics/vallotton.png";
+        //self.restaurant.rRating.ratingValue = 0.76;
+        //self.restaurant.rRating.voteCount = 578;
     }
     return self;
 }

@@ -402,7 +402,7 @@ static MainController<MainControllerPublic>* instance = nil;
     
     /* Restoring previous order / hidden of menu items, saved be used */
     
-    NSDictionary* menuItemsInfo = (NSDictionary*)[ObjectArchiver objectForKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"];
+    NSDictionary* menuItemsInfo = (NSDictionary*)[PCObjectArchiver objectForKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"];
     
     NSMutableArray* menuItemsCopy = [menuItems mutableCopy];
     
@@ -547,14 +547,14 @@ static MainController<MainControllerPublic>* instance = nil;
         [self requestLeavePlugin:activePluginIdentifier];
     }
     
-    if (![ObjectArchiver saveObject:menuItemsInfo forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
+    if (![PCObjectArchiver saveObject:menuItemsInfo forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while saving the main menu state." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
     }
 }
 
 - (void)restoreDefaultMainMenu {
-    if (![ObjectArchiver saveObject:nil forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
+    if (![PCObjectArchiver saveObject:nil forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while restoring default main menu." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
         return;

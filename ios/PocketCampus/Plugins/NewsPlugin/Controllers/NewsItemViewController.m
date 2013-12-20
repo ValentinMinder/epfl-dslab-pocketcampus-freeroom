@@ -12,7 +12,7 @@
 
 #import "AFNetworkReachabilityManager.h"
 
-#import "ObjectArchiver.h"
+#import "PCObjectArchiver.h"
 
 #import "PluginSplitViewController.h"
 
@@ -121,7 +121,7 @@
 
 - (NSString*)pathForImage {
     NSString* key = [NSString stringWithFormat:@"newsItemImage-%u", [self.newsItem.imageUrl hash]];
-    return [ObjectArchiver pathForKey:key pluginName:@"news" customFileExtension:[self.newsItem.imageUrl pathExtension] isCache:YES];
+    return [PCObjectArchiver pathForKey:key pluginName:@"news" customFileExtension:[self.newsItem.imageUrl pathExtension] isCache:YES];
 }
 
 - (void)saveImageToDisk {
