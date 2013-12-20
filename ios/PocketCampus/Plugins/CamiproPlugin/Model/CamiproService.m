@@ -10,11 +10,11 @@
 
 #import "PCObjectArchiver.h"
 
+static CamiproService* instance __weak = nil;
+
 @implementation CamiproService
 
-static NSString* kLastSessionIdKey = @"lastSessionId";
-
-static CamiproService* instance __weak = nil;
+@synthesize camiproSession = _camiproSession;
 
 #pragma mark - Init
 
@@ -46,15 +46,24 @@ static CamiproService* instance __weak = nil;
     }
 }
 
+#pragma mark - Properties
+
+static NSString* const kCamiproSession = @"camiproSession";
+
+- (CamiproSession*)camiproSession {
+    if (_camiproSession) {
+        return _camiproSession;
+    }
+    _camiproSession = (CamiproSession*)[PCObjectArchiver objectForKey:kCamiproSession andPluginName:@"camipro"];
+    return _camiproSession;
+}
+
+- (void)setCamiproSession:(CamiproSession *)camiproSession {
+    _camiproSession = camiproSession;
+    [PCObjectArchiver saveObject:camiproSession forKey:kCamiproSession andPluginName:@"camipro"];
+}
+
 #pragma mark - Service methods
-
-+ (CamiproSession*)lastSessionId {
-    return (CamiproSession*)[PCObjectArchiver objectForKey:kLastSessionIdKey andPluginName:@"camipro"];
-}
-
-+ (BOOL)saveSessionId:(CamiproSession*)sessionId {
-    return [PCObjectArchiver saveObject:sessionId forKey:kLastSessionIdKey andPluginName:@"camipro"];
-}
 
 - (void)getTequilaTokenForCamiproDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];

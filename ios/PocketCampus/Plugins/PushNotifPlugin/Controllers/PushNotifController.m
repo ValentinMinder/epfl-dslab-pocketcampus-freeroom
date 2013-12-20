@@ -36,8 +36,6 @@ static NSMutableDictionary* observerInstanceForNSNotificationCenterObserver __st
 static NSString* kNotificationsDeviceTokenKey = @"NotificationsDeviceToken";
 static NSString* notificationsDeviceTokenCache __strong = nil;
 
-static BOOL initObserversDone = NO;
-
 static PushNotifController* instance __weak = nil;
 
 static PushNotifService* pushNotifService __strong = nil; //used to retain service during unregistration
@@ -84,26 +82,23 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 }
 
 + (void)initObservers {
-    @synchronized(self) {
-        if (initObserversDone) {
-            return;
-        }
-        [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotificationName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
             if ([self notificationsDeviceToken] == nil) {
-                NSLog(@"-> PushNotif received %@ notification. No saved device token to unregister, returning.", [AuthenticationService logoutNotificationName]);
+                NSLog(@"-> PushNotif received %@ notification. No saved device token to unregister, returning.", kAuthenticationLogoutNotificationName);
                 return;
             }
-            NSNumber* delayed = [notification.userInfo objectForKey:[AuthenticationService delayedUserInfoKey]];
+            NSNumber* delayed = [notification.userInfo objectForKey:kAuthenticationLogoutNotificationDelayedKey];
             if ([delayed boolValue]) {
-                NSLog(@"-> PushNotif received %@ notification delayed", [AuthenticationService logoutNotificationName]);
+                NSLog(@"-> PushNotif received %@ notification delayed", kAuthenticationLogoutNotificationName);
                 NSLog(@"WARNING: delayed logout is not supported in PushNotif. Unregistration for push notifs will be immediate. Users that login with a non-persitent state (not saving credentials) will thus not receive notifications.");
             } else {
-                NSLog(@"-> PushNotif received %@ notification. Now unregistrating from push notifs...", [AuthenticationService logoutNotificationName]);
+                NSLog(@"-> PushNotif received %@ notification. Now unregistrating from push notifs...", kAuthenticationLogoutNotificationName);
             }
             [self unregisterAfterLogout];
         }];
-        initObserversDone = YES;
-    }
+    });
 }
 
 + (NSString*)notificationsDeviceToken {

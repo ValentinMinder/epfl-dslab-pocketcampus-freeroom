@@ -14,15 +14,13 @@
 
 #import "CamiproService.h"
 
-#import "AuthenticationController.h"
-
-#import "authentication.h"
+#import "CamiproController.h"
 
 #import "CamiproTransactionCell.h"
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface CamiproViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, AuthenticationCallbackDelegate, CamiproServiceDelegate>
+@interface CamiproViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, CamiproServiceDelegate>
 
 
 
@@ -47,12 +45,8 @@
 
 @property (nonatomic, strong) UIAlertView* sendMailAlertView;
 @property (nonatomic, strong) UIAlertView* statsAlertView;
-@property (nonatomic, strong) AuthenticationController* authController;
 @property (nonatomic, strong) CamiproService* camiproService;
 @property (nonatomic, strong) BalanceAndTransactions* balanceAndTransactions;
-@property (nonatomic, strong) TequilaToken* tequilaKey;
-
-@property (nonatomic, strong) NSTimer* tableViewMasksToBoundsTimer;
 
 @property (nonatomic) BOOL shouldRefresh;
 
@@ -66,7 +60,6 @@
 {
     self = [super initWithNibName:@"CamiproView" bundle:nil];
     if (self) {
-        self.authController = [AuthenticationController sharedInstanceToRetain];
         self.camiproService = [CamiproService sharedInstanceToRetain];
         
         /* TEST */
@@ -136,33 +129,47 @@
     self.statsContentLabel.hidden = YES;
     self.reloadCardButton.hidden = YES;
     
-    CamiproSession* sessionId = [CamiproService lastSessionId];
-    if (!sessionId) {
-        NSLog(@"-> No previously saved sessionId. Requesting credentials...");
-        [self login];
-    } else {
-        NSLog(@"-> Trying to getBalanceAndTransactions with previously saved SessionId");
-        [self.camiproService cancelOperationsForDelegate:self];
-        [self startBalanceAndTransactionsRequestWithSessionId:sessionId];
-    }
-}
-
-- (void)login {
-    [self.camiproService getTequilaTokenForCamiproDelegate:self];
+    [self.camiproService cancelOperationsForDelegate:self];
+    [self startBalanceAndTransactionsRequest];
 }
 
 - (SessionId*)buildSessionIdFromCamiproSession:(CamiproSession*)camiproSession {
     return [[SessionId alloc] initWithTos:TypeOfService_SERVICE_CAMIPRO pocketCampusSessionId:nil moodleCookie:nil camiproCookie:camiproSession.camiproCookie isaCookie:nil];
 }
 
-- (void)startBalanceAndTransactionsRequestWithSessionId:(CamiproSession*)sessionId {
-    CamiproRequest* request = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:sessionId] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
-    [self.camiproService getBalanceAndTransactions:request delegate:self];
+- (void)startBalanceAndTransactionsRequest {
+    VoidBlock successBlock = ^{
+        CamiproRequest* request = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:self.camiproService.camiproSession] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
+        [self.camiproService getBalanceAndTransactions:request delegate:self];
+    };
+    if (self.camiproService.camiproSession) {
+        successBlock();
+    } else {
+        [[CamiproController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
+            [self.centerActivityIndicator stopAnimating];
+        } failureBlock:^{
+            [self getBalanceAndTransactionsFailedForCamiproRequest:nil];
+        }];
+    }
 }
 
 - (void)startGetStatsRequest {
-    CamiproRequest* statsRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]];
-    [self.camiproService getStatsAndLoadingInfo:statsRequest delegate:self];
+    VoidBlock successBlock = ^{
+        CamiproRequest* request = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:self.camiproService.camiproSession] iLanguage:[PCUtils userLanguageCode]];
+        [self.camiproService getStatsAndLoadingInfo:request delegate:self];
+    };
+    if (self.camiproService.camiproSession) {
+        successBlock();
+    } else {
+        [[CamiproController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
+            if (!self.statsAlertView) {
+                return;
+            }
+            [self.statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        } failureBlock:^{
+            [self getStatsAndLoadingInfoFailedForCamiproRequest:nil];
+        }];
+    }
 }
 
 #pragma mark - Actions
@@ -181,59 +188,14 @@
 }
 
 
-#pragma mark - AuthenticationCallbackDelegate
-
-- (void)userCancelledAuthentication {
-    [CamiproService saveSessionId:nil];
-    [self.centerActivityIndicator stopAnimating];
-    if (self.navigationController.visibleViewController == self) {
-        [self.navigationController popViewControllerAnimated:YES]; //leaving plugin
-    }
-}
-
-- (void)authenticationSucceeded {
-    [self.camiproService getSessionIdForServiceWithTequilaKey:self.tequilaKey delegate:self];
-}
-
-- (void)invalidToken {
-    NSLog(@"-> invalid token");
-    [self.centerActivityIndicator stopAnimating];
-    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
-    self.centerMessageLabel.hidden = NO;
-    self.tableView.hidden = YES;
-    self.verticalLine.hidden = YES;
-    self.toolbar.hidden = YES;
-    self.navigationItem.rightBarButtonItem.enabled = YES;
-    [CamiproService saveSessionId:nil];
-}
-
 #pragma mark - CamiproServiceDelegate
-
-- (void)getTequilaTokenForCamiproDidReturn:(TequilaToken*)tequilaKey {
-    self.tequilaKey = tequilaKey;
-    [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.navigationController delegate:self];
-}
-
-- (void)getTequilaTokenForCamiproFailed {
-    [self serviceConnectionToServerFailed];
-}
-
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(CamiproSession*)sessionId {
-    [CamiproService saveSessionId:sessionId];
-    [self startBalanceAndTransactionsRequestWithSessionId:sessionId];
-}
-
-- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)tequilaKey {
-    [self serviceConnectionToServerFailed];
-    [CamiproService saveSessionId:nil];
-}
 
 - (void)getBalanceAndTransactionsForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(BalanceAndTransactions*)balanceAndTransactions {
     switch (balanceAndTransactions.iStatus) {
         case 407: //user not authenticated (sessionId expired)
             NSLog(@"-> User session has expired. Requesting credientials...");
-            [CamiproService saveSessionId:nil];
-            [self login];
+            self.camiproService.camiproSession = nil;
+            [self startBalanceAndTransactionsRequest];
             break;
         case 404:
             NSLog(@"-> 404 error in status from getBalanceAndTransactionsForCamiproRequest:didReturn:");
@@ -319,6 +281,7 @@
         }
         default:
             NSLog(@"!! Unknown status code %d in sendLoadingInfoByEmailForCamiproRequest:didReturn:", sendMailResult.iStatus);
+            [self sendLoadingInfoByEmailFailedForCamiproRequest:camiproRequest];
             break;
     }
 }
@@ -439,7 +402,7 @@
         self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
         [self.sendMailAlertView show];
         
-        CamiproRequest* mailRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]];
+        CamiproRequest* mailRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:self.camiproService.camiproSession] iLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]];
         [self.camiproService sendLoadingInfoByEmail:mailRequest delegate:self];
     } else if (alertView == self.statsAlertView) {
         self.statsAlertView = nil;

@@ -175,9 +175,13 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString*  
         }
         
         TTransportException* texception = [exception isKindOfClass:TTransportException.class] ? (TTransportException*)exception : nil;
-        NSError* error = texception.userInfo[@"error"];
+        if (!texception) {
+            ServiceRequestLog(self, @"EXCEPTION caught in main : %@, %@", exception.name, exception.reason);
+            [self finish];
+            return;
+        }
         
-        ServiceRequestLog(self, @"EXCEPTION caught in main : %@, %@, error: %@", texception.name, texception.reason, error);
+        NSError* error = texception.userInfo[@"error"];
         
         // Checking if server could not be reached
         // See http://stackoverflow.com/a/10644008

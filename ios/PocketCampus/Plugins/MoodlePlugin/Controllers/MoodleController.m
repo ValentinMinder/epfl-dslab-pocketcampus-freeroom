@@ -20,7 +20,6 @@
 
 static MoodleController* instance __weak = nil;
 
-static BOOL initObserversDone = NO;
 static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (id)init
@@ -53,6 +52,8 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     }
 }
 
+#pragma mark - PluginController
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -76,17 +77,15 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 }
 
 + (void)initObservers {
-    @synchronized(self) {
-        if (initObserversDone) {
-            return;
-        }
-        [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            NSNumber* delayed = [notification.userInfo objectForKey:[AuthenticationService delayedUserInfoKey]];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotificationName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            NSNumber* delayed = [notification.userInfo objectForKey:kAuthenticationLogoutNotificationDelayedKey];
             if ([delayed boolValue]) {
-                NSLog(@"-> Moodle received %@ notification delayed", [AuthenticationService logoutNotificationName]);
+                NSLog(@"-> Moodle received %@ notification delayed", kAuthenticationLogoutNotificationName);
                 [PCObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
             } else {
-                NSLog(@"-> Moodle received %@ notification", [AuthenticationService logoutNotificationName]);
+                NSLog(@"-> Moodle received %@ notification", kAuthenticationLogoutNotificationName);
                 MoodleService* moodleService = [MoodleService sharedInstanceToRetain];
                 [moodleService deleteSession]; //removing stored session
                 [moodleService deleteAllDownloadedResources]; //removing all downloaded Moodle files
@@ -95,11 +94,10 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
                 [[MainController publicController] requestLeavePlugin:@"Moodle"];
             }
         }];
-        initObserversDone = YES;
-    }
+    });
 }
 
-#pragma mark - PluginController
+#pragma mark - PluginControllerAuthentified
 
 - (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock
       userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
@@ -119,7 +117,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     }
 }
 
-#pragma mark - MyEduServiceDelegate
+#pragma mark - MoodleServiceDelegate
 
 - (void)getTequilaTokenForMoodleDidReturn:(TequilaToken *)tequilaKey {
     self.tequilaToken = tequilaKey;
@@ -134,8 +132,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     [self cleanAndNotifyFailureToObservers];
 }
 
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)aTequilaKey didReturn:(MoodleSession *)aSessionId {
-    MoodleSession* session = [[MoodleSession alloc] initWithMoodleCookie:aSessionId.moodleCookie];
+- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)aTequilaKey didReturn:(MoodleSession *)session {
     [self.moodleService saveSession:session];
     [self cleanAndNotifySuccessToObservers];
 }
@@ -159,6 +156,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 }
 
 - (void)userCancelledAuthentication {
+    [self.moodleService cancelOperationsForDelegate:self];
     [self.moodleService deleteSession];
     [self cleanAndNotifyUserCancelledToObservers];
 }

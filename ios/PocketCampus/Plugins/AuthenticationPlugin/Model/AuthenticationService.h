@@ -11,6 +11,9 @@ typedef enum {
 
 static NSString* kTequilaCookieName __unused = @"tequila_key";
 
+static NSString* kAuthenticationLogoutNotificationName = @"AuthenticationLogoutNotification";
+static NSString* kAuthenticationLogoutNotificationDelayedKey = @"AuthenticationLogoutNotificationDelayed";
+
 @interface AuthenticationService : Service<ServiceProtocol>
 
 /*
@@ -25,8 +28,6 @@ static NSString* kTequilaCookieName __unused = @"tequila_key";
 + (BOOL)deleteSavedPasswordForUsername:(NSString*)username;
 + (NSNumber*)savePasswordSwitchWasOn;
 + (BOOL)savePasswordSwitchState:(BOOL)isOn;
-+ (NSString*)logoutNotificationName;
-+ (NSString*)delayedUserInfoKey;
 + (void)enqueueLogoutNotificationDelayed:(BOOL)delayed; //set delayed to YES to inform the receiver of the notif. that it should logout only when user has finished (leaving plugin)
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate;

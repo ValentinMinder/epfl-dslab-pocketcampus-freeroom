@@ -16,12 +16,20 @@
 
 #import "AuthenticationService.h"
 
+@interface CamiproController ()<CamiproServiceDelegate, AuthenticationCallbackDelegate>
+
+@property (nonatomic, strong) CamiproService* camiproService;
+@property (nonatomic, strong) TequilaToken* tequilaToken;
+
+@end
+
 @implementation CamiproController
 
-static BOOL initObserversDone = NO;
 static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 static CamiproController* instance __weak = nil;
+
+#pragma mark - Init
 
 - (id)init {
     @synchronized(self) {
@@ -59,30 +67,27 @@ static CamiproController* instance __weak = nil;
     NSNumber* deleteSession = (NSNumber*)[PCObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
     if (deleteSession && [deleteSession boolValue]) {
         NSLog(@"-> Delayed logout notification on Camipro now applied : deleting sessionId");
-        [CamiproService saveSessionId:nil];
+        [[CamiproService sharedInstanceToRetain] setCamiproSession:nil];
         [PCObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
     }
 }
 
 + (void)initObservers {
-    @synchronized(self) {
-        if (initObserversDone) {
-            return;
-        }
-        [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            NSNumber* delayed = [notification.userInfo objectForKey:[AuthenticationService delayedUserInfoKey]];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotificationName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            NSNumber* delayed = [notification.userInfo objectForKey:kAuthenticationLogoutNotificationDelayedKey];
             if ([delayed boolValue]) {
-                NSLog(@"-> Camipro received %@ notification delayed", [AuthenticationService logoutNotificationName]);
-                [PCObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
+                NSLog(@"-> Camipro received %@ notification delayed", kAuthenticationLogoutNotificationName);
+                [PCObjectArchiver saveObject:@YES forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
             } else {
-                NSLog(@"-> Camipro received %@ notification", [AuthenticationService logoutNotificationName]);
-                [CamiproService saveSessionId:nil]; //removing stored session
+                NSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotificationName);
+                [[CamiproService sharedInstanceToRetain] setCamiproSession:nil]; //removing stored session
                 [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"camipro"];
                 [[MainController publicController] requestLeavePlugin:@"Camipro"];
             }
         }];
-        initObserversDone = YES;
-    }
+    });
 }
 
 + (NSString*)localizedName {
@@ -93,8 +98,75 @@ static CamiproController* instance __weak = nil;
     return @"Camipro";
 }
 
+#pragma mark - PluginControllerAuthentified
+
+- (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock
+      userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
+    
+    [super addLoginObserver:observer successBlock:successBlock userCancelledBlock:userCancelledblock failureBlock:failureBlock];
+    if (!super.authenticationStarted) {
+        super.authenticationStarted = YES;
+        self.camiproService = [CamiproService sharedInstanceToRetain];
+        [self.camiproService getTequilaTokenForCamiproDelegate:self];
+    }
+}
+
+- (void)removeLoginObserver:(id)observer {
+    [super removeLoginObserver:observer];
+    if ([self.loginObservers count] == 0) {
+        [self.camiproService cancelOperationsForDelegate:self]; //abandon login attempt if no more observer interested
+    }
+}
+
+#pragma mark - CamiproServiceDelegate
+
+- (void)getTequilaTokenForCamiproDidReturn:(TequilaToken *)tequilaKey {
+    self.tequilaToken = tequilaKey;
+    [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.mainNavigationController delegate:self];
+}
+
+- (void)getTequilaTokenForCamiproFailed {
+    [self cleanAndNotifyFailureToObservers];
+}
+
+- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)tequilaKey didReturn:(CamiproSession *)session {
+    self.camiproService.camiproSession = session;
+    [self cleanAndNotifySuccessToObservers];
+}
+
+- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken *)aTequilaKey {
+    [self cleanAndNotifyFailureToObservers];
+}
+
+- (void)serviceConnectionToServerFailed {
+    [super cleanAndNotifyConnectionToServerTimedOutToObservers];
+}
+
+#pragma mark - AuthenticationCallbackDelegate
+
+- (void)authenticationSucceeded {
+    if (!self.tequilaToken) {
+        NSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
+        return;
+    }
+    [self.camiproService getSessionIdForServiceWithTequilaKey:self.tequilaToken delegate:self];
+}
+
+- (void)userCancelledAuthentication {
+    [self.camiproService cancelOperationsForDelegate:self];
+    self.camiproService.camiproSession = nil;
+    [self cleanAndNotifyUserCancelledToObservers];
+}
+
+- (void)invalidToken {
+    [self.camiproService getTequilaTokenForCamiproDelegate:self]; //restart to get new token
+}
+
+#pragma mark - Dealloc
+
 - (void)dealloc
 {
+    [self.camiproService cancelOperationsForDelegate:self];
     [[self class] deleteSessionIfNecessary];
     @synchronized(self) {
         instance = nil;

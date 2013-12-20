@@ -18,8 +18,6 @@ static NSString* kLastUsedUseramesKey __unused = @"lastUsedUsernames";
 static NSString* kKeychainServiceKey = @"PCGasparPassword";
 static NSString* kSavedUsernameKey = @"savedUsername";
 static NSString* kSavePasswordSwitchStateKey = @"savePasswordSwitch";
-static NSString* kLogoutNotificationKey = @"PCLogoutNotification";
-static NSString* kDelayedUserInfoKey = @"PCDelayedUserInfoKey";
 
 static AuthenticationService* instance __weak = nil;
 
@@ -92,17 +90,9 @@ static AuthenticationService* instance __weak = nil;
     return [PCObjectArchiver saveObject:[NSNumber numberWithBool:isOn] forKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
 }
 
-+ (NSString*)logoutNotificationName {
-    return kLogoutNotificationKey;
-}
-
-+ (NSString*)delayedUserInfoKey {
-    return kDelayedUserInfoKey;
-}
-
 + (void)enqueueLogoutNotificationDelayed:(BOOL)delayed {
-    NSDictionary* notifInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:delayed] forKey:kDelayedUserInfoKey];
-    NSNotification* notification = [NSNotification notificationWithName:kLogoutNotificationKey object:nil userInfo:notifInfo];
+    NSDictionary* notifInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:delayed] forKey:kAuthenticationLogoutNotificationDelayedKey];
+    NSNotification* notification = [NSNotification notificationWithName:kAuthenticationLogoutNotificationName object:nil userInfo:notifInfo];
     [[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostASAP coalesceMask:NSNotificationCoalescingOnName forModes:nil]; //NSNotificationCoalescingOnName so that only 1 notif is added
 }
 

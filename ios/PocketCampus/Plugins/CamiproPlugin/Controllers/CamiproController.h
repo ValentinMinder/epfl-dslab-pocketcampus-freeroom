@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "PluginController.h"
+#import "PluginControllerAuthentified.h"
 
-@interface CamiproController : PluginController<PluginControllerProtocol>
+@interface CamiproController : PluginControllerAuthentified<PluginControllerProtocol>
 
 + (void)initObservers;
 

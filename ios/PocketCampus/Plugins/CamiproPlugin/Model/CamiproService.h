@@ -20,8 +20,11 @@
  
 */
 
-+ (CamiproSession*)lastSessionId;
-+ (BOOL)saveSessionId:(CamiproSession*)sessionId;
+/*
+ * Use this property to store the camipro session
+ * This property is persisted
+ */
+@property (nonatomic,readwrite, strong) CamiproSession* camiproSession;
 
 - (void)getTequilaTokenForCamiproDelegate:(id)delegate;
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate;
