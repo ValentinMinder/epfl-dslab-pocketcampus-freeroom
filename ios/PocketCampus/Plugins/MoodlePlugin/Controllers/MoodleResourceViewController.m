@@ -76,7 +76,11 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     actionButton.enabled = NO;
     [rightButtons addObject:actionButton];
     
-    UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:[self.moodleService isFavoriteMoodleResource:self.moodleResource] ? @"FavoriteGlowNavBarButton" : @"FavoriteNavBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteButtonPressed)];
+    BOOL isFavorite = [self.moodleService isFavoriteMoodleResource:self.moodleResource];
+    UIImage* favoriteImage = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
+    UIImage* favoriteImageLandscape = [PCValues imageForFavoriteNavBarButtonLandscapePhone:YES glow:isFavorite];
+    
+    UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithImage:favoriteImage landscapeImagePhone:favoriteImageLandscape style:UIBarButtonItemStylePlain target:self action:@selector(favoriteButtonPressed)];
     [rightButtons addObject:favoriteButton];
     
     UIBarButtonItem* deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonPressed)];
@@ -137,8 +141,14 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 #pragma mark - Observers
 
 - (void)refreshFavoriteButton {
-    UIImage* image = [UIImage imageNamed:[self.moodleService isFavoriteMoodleResource:self.moodleResource] ? @"FavoriteGlowNavBarButton" : @"FavoriteNavBarButton"];
-    [[self favoriteButton] setImage:image];
+    BOOL isFavorite = [self.moodleService isFavoriteMoodleResource:self.moodleResource];
+    UIImage* favoriteImage = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
+    UIImage* favoriteImageLandscape = [PCValues imageForFavoriteNavBarButtonLandscapePhone:YES glow:isFavorite];
+    UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithImage:favoriteImage landscapeImagePhone:favoriteImageLandscape style:UIBarButtonItemStylePlain target:self action:@selector(favoriteButtonPressed)];
+    NSUInteger index = [self.navigationItem.rightBarButtonItems indexOfObject:[self favoriteButton]];
+    NSMutableArray* items = [self.navigationItem.rightBarButtonItems mutableCopy];
+    [items replaceObjectAtIndex:index withObject:favoriteButton];
+    self.navigationItem.rightBarButtonItems = items;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -189,6 +199,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     }
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController setNeedsStatusBarAppearanceUpdate];
+    [self.navigationController.navigationBar layoutSubviews]; //workaround for API bug: otherwise, bar button items landscape image is not used, even in landscape
     self.webView.scrollView.contentInset = [PCUtils edgeInsetsForViewController:self];
     self.webView.scrollView.scrollIndicatorInsets = [PCUtils edgeInsetsForViewController:self];
     [self rescheduleHideNavbarTimer];

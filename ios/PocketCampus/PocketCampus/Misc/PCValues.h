@@ -16,10 +16,7 @@
  */
 + (void)applyAppearenceProxy;
 
-+ (UIImage*)imageForGenericGreyButton;
-+ (UIImage*)highlightedForGenericGreyButton;
-
-+ (UIImage*)imageForGenericResizableShadow;
++ (UIImage*)imageForFavoriteNavBarButtonLandscapePhone:(BOOL)landscapePhone glow:(BOOL)glow;
 
 + (UIColor*)pocketCampusRed;
 + (UIColor*)backgroundColor1;

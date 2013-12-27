@@ -172,7 +172,7 @@ static NSString* kPoolCell = @"PoolCell";
         self.navigationItem.rightBarButtonItem = nil;
         return;
     }
-    UIImage* image = [UIImage imageNamed:[self.eventsService isEventItemIdFavorite:self.eventItem.eventId] ? @"FavoriteGlowNavBarButton" : @"FavoriteNavBarButton"];
+    UIImage* image = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:[self.eventsService isEventItemIdFavorite:self.eventItem.eventId]];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(addRemoveFavoritesButtonPressed)];
 }
 

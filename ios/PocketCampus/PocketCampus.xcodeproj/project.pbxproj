@@ -749,6 +749,10 @@
 		32FDA99D1854A06F00C6393A /* NSOperationWithDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA99C1854A06F00C6393A /* NSOperationWithDelegate.m */; };
 		32FDA9A11854B5E600C6393A /* ServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FDA9A01854B5E600C6393A /* ServiceRequest.m */; };
 		32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32FFA796186DDD5500237957 /* FavoriteNavBarButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */; };
+		32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA795186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png */; };
+		32FFA79A186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */; };
+		32FFA79B186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA799186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png */; };
 		38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0FF44E59AC0FAF424B57744 /* Events@2x.png */; };
 		3D60403F97790317C691C8A4 /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -1300,6 +1304,10 @@
 		32FDA9A21857151500C6393A /* ServiceRequest_Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiceRequest_Protected.h; sourceTree = "<group>"; };
 		32FF46531636FB2400932FF5 /* PluginNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginNavigationController.h; sourceTree = "<group>"; };
 		32FF46541636FB2500932FF5 /* PluginNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginNavigationController.m; sourceTree = "<group>"; };
+		32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteNavBarButtonLandscape.png; sourceTree = "<group>"; };
+		32FFA795186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteNavBarButtonLandscape@2x.png"; sourceTree = "<group>"; };
+		32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteGlowNavBarButtonLandscape.png; sourceTree = "<group>"; };
+		32FFA799186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteGlowNavBarButtonLandscape@2x.png"; sourceTree = "<group>"; };
 		39424C568B2FFD2731E4DCAE /* PushNotifService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PushNotifService.h; path = Plugins/PushNotifPlugin/Model/PushNotifService.h; sourceTree = SOURCE_ROOT; };
 		43F74C41A62B4C69936087B0 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		51224CC590D66476EC4D0CFB /* IsAcademia@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IsAcademia@2x.png"; path = "Plugins/IsAcademiaPlugin/Views/Images/IsAcademia@2x.png"; sourceTree = SOURCE_ROOT; };
@@ -1549,8 +1557,12 @@
 				327513301825465D0037FE00 /* FavoriteCornerSelected@2x.png */,
 				329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */,
 				329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */,
+				32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */,
+				32FFA799186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png */,
 				329E1B3916E693130054C3A8 /* FavoriteNavBarButton.png */,
 				329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */,
+				32FFA794186DDD5500237957 /* FavoriteNavBarButtonLandscape.png */,
+				32FFA795186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png */,
 				322C07501722A7E6004FDC83 /* GenericGreyButton.png */,
 				322C07511722A7E6004FDC83 /* GenericGreyButton@2x.png */,
 				322C07521722A7E6004FDC83 /* GenericGreyButtonHighlight.png */,
@@ -3083,6 +3095,7 @@
 				324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */,
 				324151E015374FB100CCFB22 /* MapView-phone.xib in Resources */,
 				324151E515375BDD00CCFB22 /* Map.png in Resources */,
+				32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */,
 				324151E615375BDD00CCFB22 /* Map@2x.png in Resources */,
 				32CCB4EA1555237500220282 /* MoodlePlugin.strings in Resources */,
 				327585A118449347004215FC /* TransportLarge@2x.png in Resources */,
@@ -3095,6 +3108,7 @@
 				32CCB511155567CB00220282 /* News@2x.png in Resources */,
 				3297E017155571F80054F790 /* NewsLarge.png in Resources */,
 				3297E02415558BE40054F790 /* BackgroundNewsThumbnail.png in Resources */,
+				32FFA79B186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png in Resources */,
 				3297E02515558BE40054F790 /* BackgroundNewsThumbnail@2x.png in Resources */,
 				32B5871C156458FA0051C57E /* CamiproPlugin.strings in Resources */,
 				3270B7F118056E6F007EE85B /* ListBarButton.png in Resources */,
@@ -3174,6 +3188,7 @@
 				327585A018449347004215FC /* TransportLarge.png in Resources */,
 				32D0B25B166AA58E00F68304 /* MapControlsOverlayBox@2x.png in Resources */,
 				32D0B260166ABEA200F68304 /* FloorDown.png in Resources */,
+				32FFA79A186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png in Resources */,
 				32D0B261166ABEA200F68304 /* FloorDown@2x.png in Resources */,
 				32D0B262166ABEA200F68304 /* FloorUp.png in Resources */,
 				32D0B263166ABEA200F68304 /* FloorUp@2x.png in Resources */,
@@ -3254,6 +3269,7 @@
 				320480C618479D4E00116380 /* TransportSmallBusGreen@2x.png in Resources */,
 				324FD733176574DD0003EE30 /* CamiproTransactionCell.xib in Resources */,
 				328A132518296E2D00F4C622 /* FoodSmileySad.png in Resources */,
+				32FFA796186DDD5500237957 /* FavoriteNavBarButtonLandscape.png in Resources */,
 				C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */,
 				8193447294E5D065581CBAAD /* IsAcademia.png in Resources */,
 				32D29719185B64FE006530B7 /* IsAcademiaPlugin.strings in Resources */,

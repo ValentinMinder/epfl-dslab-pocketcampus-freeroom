@@ -71,7 +71,7 @@ static const NSInteger kMealsSection = 1;
 #pragma mark - Actions
 
 - (void)refreshFavoriteButton {
-    UIImage* image = [UIImage imageNamed:[self.foodService isRestaurantFavorite:self.restaurant] ? @"FavoriteGlowNavBarButton" : @"FavoriteNavBarButton"];
+    UIImage* image = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:[self.foodService isRestaurantFavorite:self.restaurant]];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(favoritePressed)];
 }
 

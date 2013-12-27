@@ -20,16 +20,9 @@
     //nothing for now
 }
 
-+ (UIImage*)imageForGenericGreyButton {
-    return [[UIImage imageNamed:@"GenericGreyButton"] resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
-}
-
-+ (UIImage*)highlightedForGenericGreyButton {
-    return [[UIImage imageNamed:@"GenericGreyButtonHighlight"] resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
-}
-
-+ (UIImage*)imageForGenericResizableShadow {
-    return [[UIImage imageNamed:@"GenericResizableShadow"] resizableImageWithCapInsets:UIEdgeInsetsMake(60, 60, 60, 60)];
++ (UIImage*)imageForFavoriteNavBarButtonLandscapePhone:(BOOL)landscapePhone glow:(BOOL)glow {
+    NSString* imageName = landscapePhone ? (glow ? @"FavoriteGlowNavBarButtonLandscape" : @"FavoriteNavBarButtonLandscape") : (glow ? @"FavoriteGlowNavBarButton" : @"FavoriteNavBarButton");
+    return [UIImage imageNamed:imageName];
 }
 
 + (UIColor*)pocketCampusRed {
