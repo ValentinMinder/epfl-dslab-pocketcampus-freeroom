@@ -151,8 +151,13 @@
     html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_FEED_NAME$" withString:self.newsItem.feed];
     
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:self.newsItem.pubDate/1000.0];
-    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-    formatter.dateStyle = NSDateFormatterLongStyle;
+    static NSDateFormatter* formatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [NSDateFormatter new];
+        formatter.dateStyle = NSDateFormatterLongStyle;
+    });
+    
     NSString* dateString = [formatter stringFromDate:date];
     html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_PUB_DATE$" withString:dateString];
     

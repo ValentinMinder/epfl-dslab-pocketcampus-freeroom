@@ -71,7 +71,12 @@
 
 - (NSString*)dateString:(EventItemDateStyle)dateStyle {
     
-    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    static NSDateFormatter* formatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [NSDateFormatter new];
+    });
+    
     
     NSDate* startDate = [NSDate dateWithTimeIntervalSince1970:self.startDate/1000];
     NSDate* endDate = [NSDate dateWithTimeIntervalSince1970:self.endDate/1000];

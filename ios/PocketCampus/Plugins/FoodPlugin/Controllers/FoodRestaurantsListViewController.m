@@ -197,8 +197,12 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         return nil;
     }
     
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    static NSDateFormatter* dateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [NSDateFormatter new];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    });
     
     NSString* dateString = [dateFormatter stringFromDate:[NSDate date]]; //now
     
