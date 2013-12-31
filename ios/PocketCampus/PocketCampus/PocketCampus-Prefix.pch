@@ -19,7 +19,7 @@
     #import "PCGAITracker.h"
     #import "PCNavigationController.h"
 
-    #import "NSLayoutConstraint+Extras.h"
+    #import "NSLayoutConstraint+LGAdditions.h"
     #import "UIActionSheet+Additions.h"
     #import "UIPopoverController+Additions.h"
     #import "LGRefreshControl+PCAdditions.h"

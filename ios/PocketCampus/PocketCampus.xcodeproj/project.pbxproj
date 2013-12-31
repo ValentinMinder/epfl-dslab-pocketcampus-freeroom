@@ -79,7 +79,7 @@
 		272300F71858CEB900B72F5E /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300FB1858CEB900B72F5E /* (null) in Sources */ = {isa = PBXBuildFile; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		272300FC1858CEB900B72F5E /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CBF0621634812C00FD92E5 /* SplashViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		272300FD1858CEB900B72F5E /* NSLayoutConstraint+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+Extras.m */; };
+		272300FD1858CEB900B72F5E /* NSLayoutConstraint+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */; };
 		272300FE1858CEB900B72F5E /* PluginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FF46541636FB2500932FF5 /* PluginNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301001858CEB900B72F5E /* PluginSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301011858CEB900B72F5E /* PluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32704C66150016B3002BCB75 /* PluginController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -114,7 +114,7 @@
 		272301271858CEB900B72F5E /* TException.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A8E17F898910025F864 /* TException.m */; };
 		272301281858CEB900B72F5E /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301291858CEB900B72F5E /* NewsItem+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		2723012A1858CEB900B72F5E /* MoodleResource+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		2723012A1858CEB900B72F5E /* MoodleModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3244B3E716A36976006A7E37 /* MoodleModelAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2723012C1858CEB900B72F5E /* UIPopoverController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC216A564460018976F /* UIPopoverController+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2723012D1858CEB900B72F5E /* UIActionSheet+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A77DC516A565600018976F /* UIActionSheet+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2723012E1858CEB900B72F5E /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -478,7 +478,7 @@
 		32442FEF151CFDED00685D10 /* Transport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FED151CFDED00685D10 /* Transport@2x.png */; };
 		32442FF1151D0F3000685D10 /* TransportNextDeparturesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32442FF0151D0F3000685D10 /* TransportNextDeparturesView.xib */; };
 		32449D5D17C3F248003269E5 /* DirectoryLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32449D5C17C3F248003269E5 /* DirectoryLarge@2x.png */; };
-		3244B3E816A36976006A7E37 /* MoodleResource+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		3244B3E816A36976006A7E37 /* MoodleModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3244B3E716A36976006A7E37 /* MoodleModelAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32456C0A184373DE00993F8B /* TransportNextDeparturesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32456C09184373DE00993F8B /* TransportNextDeparturesCell.m */; };
 		32456C0C184373FE00993F8B /* TransportNextDeparturesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32456C0B184373FE00993F8B /* TransportNextDeparturesCell.xib */; };
 		324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -715,7 +715,7 @@
 		32DA6454168E590B00D22D08 /* NewsItem+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */; };
 		32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */; };
-		32DE5B2817F2003800E03423 /* NSLayoutConstraint+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+Extras.m */; };
+		32DE5B2817F2003800E03423 /* NSLayoutConstraint+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
 		32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBA16847A0900E5CFF6 /* ClockCell.png */; };
 		32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */; };
@@ -901,8 +901,8 @@
 		32442FED151CFDED00685D10 /* Transport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Transport@2x.png"; sourceTree = "<group>"; };
 		32442FF0151D0F3000685D10 /* TransportNextDeparturesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportNextDeparturesView.xib; sourceTree = "<group>"; };
 		32449D5C17C3F248003269E5 /* DirectoryLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DirectoryLarge@2x.png"; sourceTree = "<group>"; };
-		3244B3E616A36976006A7E37 /* MoodleResource+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MoodleResource+Comparison.h"; sourceTree = "<group>"; };
-		3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MoodleResource+Comparison.m"; sourceTree = "<group>"; };
+		3244B3E616A36976006A7E37 /* MoodleModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleModelAdditions.h; sourceTree = "<group>"; };
+		3244B3E716A36976006A7E37 /* MoodleModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleModelAdditions.m; sourceTree = "<group>"; };
 		32456C08184373DE00993F8B /* TransportNextDeparturesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportNextDeparturesCell.h; sourceTree = "<group>"; };
 		32456C09184373DE00993F8B /* TransportNextDeparturesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportNextDeparturesCell.m; sourceTree = "<group>"; };
 		32456C0B184373FE00993F8B /* TransportNextDeparturesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportNextDeparturesCell.xib; sourceTree = "<group>"; };
@@ -1242,8 +1242,8 @@
 		32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NewsItem+Comparison.m"; sourceTree = "<group>"; };
 		32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DirectoryLarge.png; sourceTree = "<group>"; };
 		32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryPersonView.xib; sourceTree = "<group>"; };
-		32DE5B2617F2003800E03423 /* NSLayoutConstraint+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+Extras.h"; sourceTree = "<group>"; };
-		32DE5B2717F2003800E03423 /* NSLayoutConstraint+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+Extras.m"; sourceTree = "<group>"; };
+		32DE5B2617F2003800E03423 /* NSLayoutConstraint+LGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+LGAdditions.h"; sourceTree = "<group>"; };
+		32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+LGAdditions.m"; sourceTree = "<group>"; };
 		32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodLarge.png; sourceTree = "<group>"; };
 		32E280AA156E613100B74825 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		32E67DBA16847A0900E5CFF6 /* ClockCell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockCell.png; sourceTree = "<group>"; };
@@ -1633,8 +1633,8 @@
 				321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */,
 				32FB441E17650268008C8282 /* NSDate+Addtions.h */,
 				32FB441F17650268008C8282 /* NSDate+Addtions.m */,
-				32DE5B2617F2003800E03423 /* NSLayoutConstraint+Extras.h */,
-				32DE5B2717F2003800E03423 /* NSLayoutConstraint+Extras.m */,
+				32DE5B2617F2003800E03423 /* NSLayoutConstraint+LGAdditions.h */,
+				32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -2236,8 +2236,8 @@
 			children = (
 				32CCB4DC1555237500220282 /* MoodleService.h */,
 				32CCB4DD1555237500220282 /* MoodleService.m */,
-				3244B3E616A36976006A7E37 /* MoodleResource+Comparison.h */,
-				3244B3E716A36976006A7E37 /* MoodleResource+Comparison.m */,
+				3244B3E616A36976006A7E37 /* MoodleModelAdditions.h */,
+				3244B3E716A36976006A7E37 /* MoodleModelAdditions.m */,
 				32CCB4DE1555237500220282 /* ThriftTypes+Services */,
 			);
 			path = Model;
@@ -3440,7 +3440,7 @@
 				272300F71858CEB900B72F5E /* MainController.m in Sources */,
 				272300FB1858CEB900B72F5E /* (null) in Sources */,
 				272300FC1858CEB900B72F5E /* SplashViewController.m in Sources */,
-				272300FD1858CEB900B72F5E /* NSLayoutConstraint+Extras.m in Sources */,
+				272300FD1858CEB900B72F5E /* NSLayoutConstraint+LGAdditions.m in Sources */,
 				272300FE1858CEB900B72F5E /* PluginNavigationController.m in Sources */,
 				272301001858CEB900B72F5E /* PluginSplitViewController.m in Sources */,
 				272301011858CEB900B72F5E /* PluginController.m in Sources */,
@@ -3475,7 +3475,7 @@
 				272301271858CEB900B72F5E /* TException.m in Sources */,
 				272301281858CEB900B72F5E /* PluginControllerAuthentified.m in Sources */,
 				272301291858CEB900B72F5E /* NewsItem+Comparison.m in Sources */,
-				2723012A1858CEB900B72F5E /* MoodleResource+Comparison.m in Sources */,
+				2723012A1858CEB900B72F5E /* MoodleModelAdditions.m in Sources */,
 				2723012C1858CEB900B72F5E /* UIPopoverController+Additions.m in Sources */,
 				2723012D1858CEB900B72F5E /* UIActionSheet+Additions.m in Sources */,
 				2723012E1858CEB900B72F5E /* DirectoryProfilePictureViewController.m in Sources */,
@@ -3588,7 +3588,7 @@
 				325C47A61621D63E006752B4 /* MainMenuItemCell.m in Sources */,
 				325C47AE1621E91A006752B4 /* MainController.m in Sources */,
 				32CBF0631634812C00FD92E5 /* SplashViewController.m in Sources */,
-				32DE5B2817F2003800E03423 /* NSLayoutConstraint+Extras.m in Sources */,
+				32DE5B2817F2003800E03423 /* NSLayoutConstraint+LGAdditions.m in Sources */,
 				32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */,
 				32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */,
 				329840E316397ADB00FBADFA /* PluginController.m in Sources */,
@@ -3622,7 +3622,7 @@
 				32930AAF17F898910025F864 /* TException.m in Sources */,
 				324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */,
 				32DA6454168E590B00D22D08 /* NewsItem+Comparison.m in Sources */,
-				3244B3E816A36976006A7E37 /* MoodleResource+Comparison.m in Sources */,
+				3244B3E816A36976006A7E37 /* MoodleModelAdditions.m in Sources */,
 				32A77DC316A564460018976F /* UIPopoverController+Additions.m in Sources */,
 				32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */,
 				3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */,

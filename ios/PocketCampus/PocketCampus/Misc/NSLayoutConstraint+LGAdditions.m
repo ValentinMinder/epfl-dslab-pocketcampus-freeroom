@@ -1,14 +1,14 @@
 //
-//  NSLayoutConstraint+Extras.m
+//  NSLayoutConstraint+LGAdditions.m
 //  HEALP.me
 //
 //  Created by Loïc Gardiol on 28.06.13.
 //  Copyright (c) 2013 UsefulWeb.ch. All rights reserved.
 //
 
-#import "NSLayoutConstraint+Extras.h"
+#import "NSLayoutConstraint+LGAdditions.h"
 
-@implementation NSLayoutConstraint (Extras)
+@implementation NSLayoutConstraint (LGAdditions)
 
 + (NSLayoutConstraint*)widthConstraint:(CGFloat)width forView:(UIView*)view {
     return [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:width];

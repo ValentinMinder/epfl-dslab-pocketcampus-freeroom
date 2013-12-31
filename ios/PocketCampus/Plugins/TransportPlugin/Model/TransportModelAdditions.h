@@ -8,8 +8,6 @@
 
 #import "transport.h"
 
-#pragma mark - TransportStation (Additions)
-
 @interface TransportStation (Additions)
 
 /*
@@ -25,8 +23,6 @@
 
 @end
 
-#pragma mark - TransportConnection (Additions)
-
 @interface TransportConnection (Additions)
 
 /*
@@ -38,8 +34,6 @@
 
 @end
 
-#pragma mark - TransportLine (Additions)
-
 @interface TransportLine (Additions)
 
 /*
@@ -50,8 +44,6 @@
 @property (nonatomic, readonly) NSString* shortName;
 
 @end
-
-#pragma mark - TransportTrip (Additions)
 
 @interface TransportTrip (Additions)
 
@@ -77,8 +69,6 @@
 @property (nonatomic, readonly) BOOL isLeft;
 
 @end
-
-#pragma mark - QueryTripResult (Additions)
 
 @interface QueryTripsResult (Additions)
 

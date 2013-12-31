@@ -1,5 +1,5 @@
 //
-//  NSLayoutConstraint+Extras.h
+//  NSLayoutConstraint+LGAdditions.h
 //  HEALP.me
 //
 //  Created by Loïc Gardiol on 28.06.13.
@@ -10,7 +10,7 @@
 
 static const CGFloat kNoInsetConstraint = FLT_MIN;
 
-@interface NSLayoutConstraint (Extras)
+@interface NSLayoutConstraint (LGAdditions)
 
 + (NSLayoutConstraint*)widthConstraint:(CGFloat)width forView:(UIView*)view;
 + (NSLayoutConstraint*)heightConstraint:(CGFloat)height forView:(UIView*)view;
