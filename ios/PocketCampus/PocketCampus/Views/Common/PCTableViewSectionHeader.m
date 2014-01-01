@@ -26,8 +26,9 @@ static BOOL addedObserver = NO;
     [PCUtils throwExceptionIfObject:tableView notKindOfClass:[UITableView class]];
     CGFloat height = [self.class preferredHeight];
     self = [super initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, height)];
-    self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     if (self) {
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.userInteractionEnabled = NO; //otherwise intercepts scrolling touches in tableview
         self.tableView = tableView;
         self.backgroundColor = [UIColor clearColor];
         self.clipsToBounds = YES;
