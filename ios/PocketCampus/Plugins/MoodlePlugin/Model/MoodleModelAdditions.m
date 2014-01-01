@@ -16,7 +16,7 @@
     static NSString* const kFilenameKey = @"filename";
     NSString* filename = objc_getAssociatedObject(self, (__bridge const void *)(kFilenameKey));
     if (!filename) {
-        NSString* filename = [[self.iUrl pathComponents] lastObject];
+        filename = [[self.iUrl pathComponents] lastObject];
         objc_setAssociatedObject(self, (__bridge const void *)(kFilenameKey), filename, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return filename;
@@ -55,8 +55,8 @@
 
 - (id)copyWithZone:(NSZone *)zone {
     MoodleSection* newInstance = [[[self class] allocWithZone:zone] init];
-    newInstance.iResources = [self.iResources copy];
-    newInstance.iText = [self.iText copy];
+    newInstance.iResources = self.iResources;
+    newInstance.iText = self.iText;
     newInstance.iStartDate = self.iStartDate;
     newInstance.iEndDate = self.iEndDate;
     newInstance.iCurrent = self.iCurrent;

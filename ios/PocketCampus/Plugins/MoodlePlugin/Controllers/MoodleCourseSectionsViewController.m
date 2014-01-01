@@ -39,6 +39,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 @property (nonatomic, strong) UISearchDisplayController* searchController;
 @property (nonatomic, strong) NSOperationQueue* searchQueue;
 @property (nonatomic, strong) NSTimer* typingTimer;
+@property (nonatomic, strong) NSRegularExpression* currentSearchRegex;
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) NSArray* sections;
@@ -150,8 +151,6 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     }
 }
 
-
-
 #pragma mark - Utils and toggle week button
 
 - (void)computeCurrentWeek {
@@ -160,8 +159,8 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     }
     self.currentWeek = -1; //-1 means outside semester time, all weeks will be displayed and toggle button hidden
     for (NSInteger i = 0; i < self.sections.count; i++) {
-        MoodleSection* iSection = self.sections[i];
-        if(iSection.iResources.count != 0 && iSection.iCurrent) {
+        MoodleSection* section = self.sections[i];
+        if(section.iResources.count != 0 && section.iCurrent) {
             self.currentWeek = i;
             break;
         }
@@ -221,7 +220,6 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     for (MoodleSection* section in self.sections) {
         for (MoodleResource* resource in section.iResources) {
             
-            
             PCTableViewCellAdditions* cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
             cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
@@ -265,7 +263,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         }
     }
     
-    self.cellForMoodleResource = [cellsTemp copy]; //immutable copy
+    self.cellForMoodleResource = cellsTemp;
 
 }
 
@@ -280,16 +278,6 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     return filteredSections;
 }
 
-- (void)search {
-    [self.searchQueue addOperationWithBlock:^{
-        NSArray* filteredSections = [self filteredSectionsFromPattern:self.searchBar.text];
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            self.filteredSections = filteredSections;
-            [self.searchController.searchResultsTableView reloadData];
-        }];
-    }];
-}
-
 #pragma mark - UISearchBarDisplayDelegate
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
@@ -297,6 +285,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     [self.searchQueue cancelAllOperations];
     if (searchString.length == 0) {
         self.filteredSections = nil;
+        self.currentSearchRegex = nil;
         return YES;
     } else {
         //perform search in background
@@ -304,8 +293,10 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:self.filteredSections.count ? 0.2 : 0.0 block:^{ //interval: so that first search is not delayed (would display "No results" otherwise)
             [self.searchQueue addOperationWithBlock:^{
                 NSArray* filteredSections = [self filteredSectionsFromPattern:searchString];
+                NSRegularExpression* currentSearchRegex = [NSRegularExpression regularExpressionWithPattern:searchString options:NSRegularExpressionCaseInsensitive error:NULL];
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                     weakSelf.filteredSections = filteredSections;
+                    weakSelf.currentSearchRegex = currentSearchRegex;
                     [weakSelf.searchController.searchResultsTableView reloadData];
                 }];
             }];
@@ -421,12 +412,10 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //if (tableView == self.tableView) {
-        PCTableViewCellAdditions* cell = (PCTableViewCellAdditions*)[self.tableView cellForRowAtIndexPath:indexPath];
-        if (cell.isDownloadedIndicationVisible) {
-            return UITableViewCellEditingStyleDelete;
-        }
-    //}
+    PCTableViewCellAdditions* cell = (PCTableViewCellAdditions*)[tableView cellForRowAtIndexPath:indexPath];
+    if (cell.isDownloadedIndicationVisible) {
+        return UITableViewCellEditingStyleDelete;
+    }
     return UITableViewCellEditingStyleNone;
 }
 
@@ -445,7 +434,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         if (!self.sections.count) {
             return 0.0;
         }
-        if (![self showSection:section]) {
+        if (![self showSection:section inTableView:tableView]) {
             return 0.0;
         }
         MoodleSection* secObj = self.sections[section];
@@ -456,7 +445,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         if (!self.filteredSections.count) {
             return 0.0;
         }
-        if (![self showSection:section]) {
+        if (![self showSection:section inTableView:tableView]) {
             return 0.0;
         }
         MoodleSection* secObj = self.filteredSections[section];
@@ -471,7 +460,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (tableView == self.tableView) {
-        if (!self.sections.count || ![self showSection:section]) {
+        if (!self.sections.count || ![self showSection:section inTableView:tableView]) {
             return nil;
         }
         MoodleSection* secObj = self.sections[section];
@@ -480,7 +469,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         }
     }
     if (tableView == self.searchController.searchResultsTableView) {
-        if (!self.filteredSections.count || ![self showSection:section]) {
+        if (!self.filteredSections.count || ![self showSection:section inTableView:tableView]) {
             return nil;
         }
         MoodleSection* secObj = self.filteredSections[section];
@@ -536,6 +525,16 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     MoodleSection* section = tableView == self.tableView ? self.sections[indexPath.section] : self.filteredSections[indexPath.section];
     MoodleResource* resource = section.iResources[indexPath.row];
     PCTableViewCellAdditions* cell = self.cellForMoodleResource[resource];
+    
+    if (tableView == self.tableView) {
+        cell.textLabelHighlightedRegex = nil;
+        cell.detailTextLabelHighlightedRegex = nil;
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        //Results text highlighting
+        cell.textLabelHighlightedRegex = self.currentSearchRegex;
+        cell.detailTextLabelHighlightedRegex = self.currentSearchRegex;
+    }
+    
     return cell;
 }
 
@@ -547,7 +546,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         if (self.sections.count == 0) {
             return 2; //first empty cell, second cell says no content
         }
-        if(![self showSection:section]) {
+        if(![self showSection:section inTableView:tableView]) {
             return 0;
         }
         MoodleSection* secObj = self.sections[section];
@@ -557,7 +556,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         if (!self.filteredSections) {
             return 0;
         }
-        if(![self showSection:section]) {
+        if(![self showSection:section inTableView:tableView]) {
             return 0;
         }
         MoodleSection* secObj = self.filteredSections[section];
@@ -584,11 +583,11 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 #pragma mark - showSections
 
-- (BOOL)showSection:(NSInteger)section {
+- (BOOL)showSection:(NSInteger)section inTableView:(UITableView*)tableView {
     if (section == 0) {
         return NO;
     }
-    if (self.currentWeek <= 0) {
+    if (self.currentWeek <= 0 || tableView == self.searchController.searchResultsTableView) {
         return YES;
     }
     return (self.currentWeek == section);

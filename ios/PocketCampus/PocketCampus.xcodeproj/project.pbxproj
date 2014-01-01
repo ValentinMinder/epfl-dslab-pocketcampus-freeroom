@@ -654,6 +654,7 @@
 		32B8928015458BAB0058E472 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927F15458BAB0058E472 /* MobileCoreServices.framework */; };
 		32B8928215458BD70058E472 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8928115458BD70058E472 /* libz.dylib */; };
 		32BA30711645D31A00909D82 /* PCCenterMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30701645D31A00909D82 /* PCCenterMessageCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32BBA918187454A600B2A7D3 /* UILabel+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BBA917187454A600B2A7D3 /* UILabel+Additions.m */; };
 		32C450AE18241364000C99A3 /* FoodMealCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C450AD18241364000C99A3 /* FoodMealCell.m */; };
 		32C450B01824137B000C99A3 /* FoodMealCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32C450AF1824137B000C99A3 /* FoodMealCell.xib */; };
 		32C509E617FC60B0005A5635 /* CameraBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C509E417FC60B0005A5635 /* CameraBarButton.png */; };
@@ -1161,6 +1162,8 @@
 		32B8928115458BD70058E472 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		32BA306F1645D31900909D82 /* PCCenterMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCCenterMessageCell.h; sourceTree = "<group>"; };
 		32BA30701645D31A00909D82 /* PCCenterMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCCenterMessageCell.m; sourceTree = "<group>"; };
+		32BBA916187454A600B2A7D3 /* UILabel+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Additions.h"; sourceTree = "<group>"; };
+		32BBA917187454A600B2A7D3 /* UILabel+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Additions.m"; sourceTree = "<group>"; };
 		32C450AC18241364000C99A3 /* FoodMealCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodMealCell.h; sourceTree = "<group>"; };
 		32C450AD18241364000C99A3 /* FoodMealCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FoodMealCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32C450AF1824137B000C99A3 /* FoodMealCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FoodMealCell.xib; sourceTree = "<group>"; };
@@ -1946,6 +1949,8 @@
 				32A77DC216A564460018976F /* UIPopoverController+Additions.m */,
 				32A77DC416A565600018976F /* UIActionSheet+Additions.h */,
 				32A77DC516A565600018976F /* UIActionSheet+Additions.m */,
+				32BBA916187454A600B2A7D3 /* UILabel+Additions.h */,
+				32BBA917187454A600B2A7D3 /* UILabel+Additions.m */,
 				32930A7317F882010025F864 /* LGRefreshControl+PCAdditions.h */,
 				32930A7417F882010025F864 /* LGRefreshControl+PCAdditions.m */,
 			);
@@ -3634,6 +3639,7 @@
 				32035FE616E13A020016F03C /* EventPoolViewController.m in Sources */,
 				32035FEB16E153860016F03C /* EventItemCell.m in Sources */,
 				32930AB517F898910025F864 /* TSocketClient.m in Sources */,
+				32BBA918187454A600B2A7D3 /* UILabel+Additions.m in Sources */,
 				32F8E3F116E1F9D900AF365C /* EventsUtils.m in Sources */,
 				328A72E3184A503C002C5A6B /* PCSplashView.m in Sources */,
 				322C4ACD16E1FD8300DE418E /* EventItem+Additions.m in Sources */,
