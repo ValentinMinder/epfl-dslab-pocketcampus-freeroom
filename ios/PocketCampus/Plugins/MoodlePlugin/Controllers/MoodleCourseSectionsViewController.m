@@ -459,12 +459,13 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    MoodleSection* moodleSection = nil;
     if (tableView == self.tableView) {
         if (!self.sections.count || ![self showSection:section inTableView:tableView]) {
             return nil;
         }
-        MoodleSection* secObj = self.sections[section];
-        if (secObj.iResources.count == 0) {
+        moodleSection = self.sections[section];
+        if (moodleSection.iResources.count == 0) {
             return nil;
         }
     }
@@ -472,8 +473,8 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         if (!self.filteredSections.count || ![self showSection:section inTableView:tableView]) {
             return nil;
         }
-        MoodleSection* secObj = self.filteredSections[section];
-        if (secObj.iResources.count == 0) {
+        moodleSection = self.filteredSections[section];
+        if (moodleSection.iResources.count == 0) {
             return nil;
         }
     }
@@ -483,11 +484,16 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
      [dateFormatter setDateFormat:@"dd/MM"];
      //NSLog(@"%lld", secObj.iStartDate);
      NSString* startDate = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:secObj.iStartDate]];*/
-    
     /* startDate and endDate are not filled by server yet */
-    NSString* title = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
+    
+    NSString* title = nil;
+    
+    if (moodleSection.iText) {
+        title = moodleSection.iText;
+    } else {
+       title = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
+    }
     return [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView];
-    return nil;
 }
 
 #pragma mark - UITableViewDataSource
@@ -584,9 +590,6 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 #pragma mark - showSections
 
 - (BOOL)showSection:(NSInteger)section inTableView:(UITableView*)tableView {
-    if (section == 0) {
-        return NO;
-    }
     if (self.currentWeek <= 0 || tableView == self.searchController.searchResultsTableView) {
         return YES;
     }
