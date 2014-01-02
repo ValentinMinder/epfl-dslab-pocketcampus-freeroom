@@ -22,8 +22,6 @@
 
 @interface CamiproViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, CamiproServiceDelegate>
 
-
-
 @property (nonatomic, weak) IBOutlet UITableView* tableView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
@@ -61,13 +59,6 @@
     self = [super initWithNibName:@"CamiproView" bundle:nil];
     if (self) {
         self.camiproService = [CamiproService sharedInstanceToRetain];
-        
-        /* TEST */
-        
-        //[CamiproService saveSessionId:nil];
-        
-        /* END OF TEST */
-        
     }
     return self;
 }

@@ -37,20 +37,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.rowHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle];
     if (![PCUtils isIdiomPad]) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed)];
     }
 }
 
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
+- (NSUInteger)supportedInterfaceOrientations
 {
     return [PCUtils isIdiomPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Buttons actions
@@ -85,12 +80,12 @@
         }
     }
     
-    static NSString* kMapItemCell = @"MapItemCell";
-    
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kMapItemCell];
-    
+    static NSString* identifier = @"MapItemCell";
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kMapItemCell];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
+        cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle];
     }
     
     MapItem* mapItem = self.mapItems[indexPath.row];

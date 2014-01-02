@@ -20,6 +20,11 @@
 
 #import "PluginSplitViewController.h"
 
+#import "PCTableViewCellAdditions.h"
+
+
+static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
+
 @interface MoodleCoursesListViewController ()<PCMasterSplitDelegate, MoodleServiceDelegate>
 
 @property (nonatomic, strong) MoodleService* moodleService;
@@ -27,10 +32,6 @@
 @property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
 
 @end
-
-static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
-
-static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
 
 @implementation MoodleCoursesListViewController
 
@@ -164,12 +165,12 @@ static NSString* kMoodleCourseListCell = @"MoodleCourseListCell";
             return cell;
         }
     }
-    
+    static NSString* const identifier = @"MoodleCourseCell";
     MoodleCourse* course = self.courses[indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMoodleCourseListCell];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMoodleCourseListCell];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         cell.textLabel.numberOfLines = 2;

@@ -8,6 +8,11 @@
 
 #import "PCTableViewCellAdditions.h"
 
+static CGFloat kCellHeightForDefaultPreferredContentSizeCategory = 44.0;
+
+NSString* PCTableViewCellAdditionsDefaultTextLabelTextStyle;
+NSString* PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle;
+
 @interface PCTableViewCellAdditions ()
 
 @property (nonatomic, strong) UIImageView* icon;
@@ -23,6 +28,12 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
 @implementation PCTableViewCellAdditions
 
 #pragma mark - Init
+
+//see NSObject doc
++ (void)initialize {
+    PCTableViewCellAdditionsDefaultTextLabelTextStyle = UIFontTextStyleBody;
+    PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle = UIFontTextStyleFootnote;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -46,7 +57,7 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     return self;
 }
 
-#pragma mark - Properties
+#pragma mark - Public properties
 
 - (void)setDownloadedIndicationVisible:(BOOL)visible {
     _downloadedIndicationVisible = visible;
@@ -97,6 +108,37 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     [self updateDetailTextLabelHighlighting];
 }
 
+#pragma mark - Public methods
+
++ (CGFloat)preferredHeightForStyle:(UITableViewCellStyle)style textLabelTextStyle:(NSString*)textLabelTextStyle detailTextLabelTextStyle:(NSString*)detailTextLabelTextStyle {
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, FLT_MAX, FLT_MAX)];
+    label.text = @"test";
+    CGFloat textLabelHeight = 0.0;
+    if (textLabelTextStyle) {
+        [PCUtils throwExceptionIfObject:textLabelTextStyle notKindOfClass:[NSString class]];
+        label.font = [UIFont preferredFontForTextStyle:textLabelTextStyle];
+        [label sizeToFit];
+        textLabelHeight = label.frame.size.height;
+    }
+    CGFloat detailTextLabelHeight = 0.0;
+    if (detailTextLabelTextStyle) {
+        [PCUtils throwExceptionIfObject:detailTextLabelTextStyle notKindOfClass:[NSString class]];
+        label.font = [UIFont preferredFontForTextStyle:detailTextLabelTextStyle];
+        [label sizeToFit];
+        detailTextLabelHeight = label.frame.size.height;
+    }
+    CGFloat totalHeight = style == UITableViewCellStyleSubtitle ? textLabelHeight + detailTextLabelHeight : MAX(textLabelHeight, detailTextLabelHeight);
+    CGFloat preferredHeight = totalHeight * 1.0f;
+    CGFloat minHeight = [self minHeightForCurrentPreferredContentSizeCategory];
+    preferredHeight = preferredHeight < minHeight ? minHeight : preferredHeight;
+    preferredHeight = (CGFloat)((int)preferredHeight);
+    return preferredHeight;
+}
+
++ (CGFloat)preferredHeightForDefaultTextStylesForCellStyle:(UITableViewCellStyle)style {
+    return [self preferredHeightForStyle:style textLabelTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle detailTextLabelTextStyle:PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle];
+}
+
 #pragma mark - UIView overrides
 
 - (void)layoutSubviews {
@@ -142,7 +184,7 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     }
 }
 
-#pragma mark - Others
+#pragma mark - Private
 
 - (void)updateCornerIcon {
     if (self.selected || self.highlighted || self.durablySelected) {
@@ -183,6 +225,40 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     } else {
         self.detailTextLabel.textColor = self.originalDetailTextLabelColor;
     }
+}
+
++ (CGFloat)minHeightForCurrentPreferredContentSizeCategory {
+    
+    static CGFloat height = 0.0;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification object:[UIApplication sharedApplication] queue:nil usingBlock:^(NSNotification *note) {
+            height = 0.0;
+        }];
+    });
+    if (height == 0.0) {
+        CGFloat coefficient;
+        NSString* contentSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
+        if ([contentSize isEqualToString:UIContentSizeCategoryExtraSmall]) {
+            coefficient = 0.78;
+        } else if ([contentSize isEqualToString:UIContentSizeCategorySmall]) {
+            coefficient = 0.85;
+        } else if ([contentSize isEqualToString:UIContentSizeCategoryMedium]) {
+            coefficient = 0.92;
+        } else if ([contentSize isEqualToString:UIContentSizeCategoryLarge]) { //Default
+            coefficient = 1.0;
+        } else if ([contentSize isEqualToString:UIContentSizeCategoryExtraLarge]) {
+            coefficient = 1.08;
+        } else if ([contentSize isEqualToString:UIContentSizeCategoryExtraExtraLarge]) {
+            coefficient = 1.15;
+        } else if ([contentSize isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge]) {
+            coefficient = 1.22;
+        } else {
+            coefficient = 1.0; //Default
+        }
+        height = kCellHeightForDefaultPreferredContentSizeCategory * coefficient;
+    }
+    return height;
 }
 
 #pragma mark - Dealloc

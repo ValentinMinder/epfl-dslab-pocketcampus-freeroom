@@ -8,10 +8,6 @@
 
 #import "PCTableViewSectionHeader.h"
 
-static CGFloat cachedPreferredHeight = 0.0;
-
-static BOOL addedObserver = NO;
-
 @interface PCTableViewSectionHeader ()
 
 @property (nonatomic, readwrite) UITableView* tableView;
@@ -51,29 +47,36 @@ static BOOL addedObserver = NO;
 }
 
 + (UIFont*)fontForTitleLabel {
-    return [UIFont boldSystemFontOfSize:13.0];
+    static UIFont* font = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification object:[UIApplication sharedApplication] queue:nil usingBlock:^(NSNotification *note) {
+            font = nil;
+        }];
+    });
+    if (!font) {
+        UIFontDescriptor* fontDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote];
+        font = [UIFont boldSystemFontOfSize:fontDescriptor.pointSize];
+    }
+    return font;
 }
 
-+ (CGFloat)preferredHeight
-{
-    if (cachedPreferredHeight > 0.0) {
-        return cachedPreferredHeight;
++ (CGFloat)preferredHeight {
+    static CGFloat height = 0.0;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification object:[UIApplication sharedApplication] queue:nil usingBlock:^(NSNotification *note) {
+            height = 0.0;
+        }];
+    });
+    if (height == 0.0) {
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, FLT_MAX, FLT_MAX)];
+        label.text = @"test";
+        label.font = [self fontForTitleLabel];
+        [label sizeToFit];
+        height = (CGFloat)((int)(label.frame.size.height * 1.4f));
     }
-    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, FLT_MAX, FLT_MAX)];
-    label.text = @"test";
-    label.font = [self fontForTitleLabel];
-    [label sizeToFit];
-    cachedPreferredHeight = (CGFloat)((int)(label.frame.size.height * 1.5));
-    if (!addedObserver) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferredContentSizeChanged:) name:UIContentSizeCategoryDidChangeNotification object:nil];
-        addedObserver = YES;
-    }
-    return cachedPreferredHeight;
-}
-
-+ (void)preferredContentSizeChanged:(NSNotification *)notification
-{
-    cachedPreferredHeight = 0.0;
+    return height;
 }
 
 @end

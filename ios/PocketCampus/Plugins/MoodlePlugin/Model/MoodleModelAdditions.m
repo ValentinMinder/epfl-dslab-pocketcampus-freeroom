@@ -17,6 +17,7 @@
     NSString* filename = objc_getAssociatedObject(self, (__bridge const void *)(kFilenameKey));
     if (!filename) {
         filename = [[self.iUrl pathComponents] lastObject];
+        filename = [filename stringByRemovingPercentEncoding];
         objc_setAssociatedObject(self, (__bridge const void *)(kFilenameKey), filename, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return filename;

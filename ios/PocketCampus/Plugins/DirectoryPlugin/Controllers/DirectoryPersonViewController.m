@@ -6,21 +6,12 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import <AddressBook/AddressBook.h>
-#import <AddressBookUI/AddressBookUI.h>
-
 @import AddressBook;
 @import AddressBookUI;
 
 #import "DirectoryPersonViewController.h"
 
 #import "DirectoryProfilePictureViewController.h"
-
-#import "UIPopoverController+Additions.h"
-
-#import "PCUtils.h"
-
-#import "PCValues.h"
 
 #import "MapController.h"
 
@@ -37,6 +28,14 @@ static const int kOfficePhoneRow = 1;
 
 static const int kCreateNewContactActionIndex = 0;
 static const int kAddToExistingContactActionIndex = 1;
+
+//for all but first cell (DirectoryPersonBaseInfoCell)
+static UITableViewCellStyle kCellStyle = UITableViewCellStyleValue2;
+//init at run-time in +initialize
+static NSString* kCellTextLabelTextStyle;
+static NSString* kCellDetailTextLabelTextStyle;
+//init at each instantiation in init to reflect possible user change of preferred content size
+static CGFloat kCellHeight;
 
 @interface DirectoryPersonViewController ()<DirectoryServiceDelegate, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, ABNewPersonViewControllerDelegate, ABPeoplePickerNavigationControllerDelegate>
 
@@ -60,9 +59,15 @@ static const int kAddToExistingContactActionIndex = 1;
 
 #pragma mark - Inits
 
++ (void)initialize {
+    kCellTextLabelTextStyle = UIFontTextStyleFootnote;
+    kCellDetailTextLabelTextStyle = UIFontTextStyleFootnote;
+}
+
 - (id)init {
     self = [super initWithNibName:@"DirectoryPersonView" bundle:nil];
     if (self) {
+        kCellHeight = [PCTableViewCellAdditions preferredHeightForStyle:kCellStyle textLabelTextStyle:kCellTextLabelTextStyle detailTextLabelTextStyle:kCellDetailTextLabelTextStyle];
         self.directoryService = [DirectoryService sharedInstanceToRetain];
         self.allowShowOfficeOnMap = YES; //default
     }
@@ -264,7 +269,7 @@ static const int kAddToExistingContactActionIndex = 1;
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static const CGFloat kDefaultRowHeight = 44.0;
+    CGFloat kDefaultRowHeight = kCellHeight;
     switch (indexPath.section) {
         case kPersonBaseInfoSection:
             return [DirectoryPersonBaseInfoCell heightForStyle:DirectoryPersonBaseInfoCellStyleLarge];
@@ -403,10 +408,10 @@ static const int kAddToExistingContactActionIndex = 1;
         return self.personBaseInfoCell;
     }
     
-    UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
+    UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:kCellStyle reuseIdentifier:nil];
     cell.textLabel.textColor = [PCValues pocketCampusRed];
-    cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    cell.textLabel.font = [UIFont preferredFontForTextStyle:kCellTextLabelTextStyle];
+    cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:kCellDetailTextLabelTextStyle];
     cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
     
     switch (indexPath.section) {

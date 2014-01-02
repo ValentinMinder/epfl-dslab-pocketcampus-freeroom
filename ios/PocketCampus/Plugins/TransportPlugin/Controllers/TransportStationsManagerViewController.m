@@ -43,6 +43,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
     [super viewDidLoad];
 	self.tableView.editing = YES;
     self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.rowHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
     self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStylePlain;
@@ -149,6 +150,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
             }
             cell.textLabel.text = station.shortName;
             break;
@@ -158,6 +160,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.textLabel.text = NSLocalizedStringFromTable(@"ResetToDefaultStations", @"TransportPlugin", nil);
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
             break;
         }
         default:

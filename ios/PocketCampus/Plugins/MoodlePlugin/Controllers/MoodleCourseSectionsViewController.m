@@ -27,8 +27,6 @@
 
 static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
 
-static const CGFloat kCellsHeight = 65.0;
-
 static const UISearchBarStyle kSearchBarDefaultStyle = UISearchBarStyleDefault;
 static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
@@ -78,7 +76,9 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     
-    self.tableView.rowHeight = kCellsHeight;
+    CGFloat cellHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle]*1.2;
+    
+    self.tableView.rowHeight = cellHeight;
     self.tableView.allowsMultipleSelection = NO;
     
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0.0)];
@@ -94,9 +94,8 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     self.searchController.searchResultsDelegate = self;
     self.searchController.searchResultsDataSource = self;
     self.searchController.delegate = self;
-    self.searchController.searchResultsTableView.rowHeight = kCellsHeight;
+    self.searchController.searchResultsTableView.rowHeight = cellHeight;
     self.searchController.searchResultsTableView.allowsMultipleSelection = NO;
-    self.searchController.searchResultsTitle = @"Test";
     
     [self showToggleButtonIfPossible];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteMoodleResourcesUpdated:) name:kFavoritesMoodleResourcesUpdatedNotificationName object:self.moodleService];
@@ -221,14 +220,16 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         for (MoodleResource* resource in section.iResources) {
             
             PCTableViewCellAdditions* cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
-            cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+            
+            cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
             cell.textLabel.text = resource.iName;
             
-            cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
-            
-            cell.detailTextLabel.text = resource.filename;
+            cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle];
             cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
+            cell.detailTextLabel.text = resource.filename;
+            
+            cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
             
             cell.downloadedIndicationVisible = [self.moodleService isMoodleResourceDownloaded:resource];
             cell.favoriteIndicationVisible = [self.moodleService isFavoriteMoodleResource:resource];
@@ -314,13 +315,17 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 }
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-    self.searchBar.searchBarStyle = kSearchBarActiveStyle;
+    if ([PCUtils isIdiomPad]) {
+        self.searchBar.searchBarStyle = kSearchBarActiveStyle;
+    }
     [self.moodleService cancelOperationsForDelegate:self];
     [self.lgRefreshControl endRefreshing];
 }
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-    self.searchBar.searchBarStyle = kSearchBarDefaultStyle;
+    if ([PCUtils isIdiomPad]) {
+        self.searchBar.searchBarStyle = kSearchBarDefaultStyle;
+    }
 }
 
 #pragma mark - MoodleServiceDelegate

@@ -35,6 +35,7 @@
 {
     [super viewDidLoad];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    self.tableView.rowHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
     self.title = NSLocalizedStringFromTable(@"Recents", @"PocketCampus", nil);
     if (!self.showClearButtonWithinTableView) {
         self.title = NSLocalizedStringFromTable(@"Recents", @"PocketCampus", nil);
@@ -83,6 +84,7 @@
     if (!cell) {
         cell = [[PCRecentResultTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kRecentSearchCell];
         cell.backgroundColor = [UIColor clearColor];
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
     }
     cell.textLabel.text = pattern;
     return cell;

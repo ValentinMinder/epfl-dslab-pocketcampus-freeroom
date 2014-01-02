@@ -44,6 +44,7 @@ static const NSUInteger kStationsSection = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.rowHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Close", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromModel) name:kUserTransportStationsModifiedNotificationName object:self.transportService];
@@ -140,8 +141,10 @@ static const NSUInteger kStationsSection = 1;
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
             cell.textLabel.text = NSLocalizedStringFromTable(@"Automatic", @"TransportPlugin", nil);
+            cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
             cell.detailTextLabel.text = NSLocalizedStringFromTable(@"NearestStation", @"TransportPlugin", nil);
             cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+            cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle];
             if ([PCUtils hasAppAccessToLocation]) {
                 cell.textLabel.textColor = [UIColor blackColor];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -162,6 +165,7 @@ static const NSUInteger kStationsSection = 1;
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.textLabel.text = station.shortName;
+            cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
             cell.accessoryType = [self.transportService.userManualDepartureStation isEqualToTransportStation:station] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             break;
         }
