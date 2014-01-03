@@ -19,7 +19,7 @@
 
 @end
 
-static NSString* kCategoryCell = @"CategoryCell";
+static NSString* const kCategoryCell = @"CategoryCell";
 
 @implementation EventsCategorySelectorViewController
 

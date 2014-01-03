@@ -42,7 +42,7 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Clear", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(clearPressed)];
     }
     MapRecentSearchesListViewController* weakSelf __weak = self;
-    [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotificationName object:self.mapService queue:nil usingBlock:^(NSNotification *note) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotification object:self.mapService queue:nil usingBlock:^(NSNotification *note) {
         weakSelf.recentSearches = [weakSelf.mapService recentSearches];
         [weakSelf.tableView reloadData];
     }];
@@ -79,7 +79,7 @@
         return cell;
     }
     NSString* pattern = self.recentSearches[indexPath.row - (self.showClearButtonWithinTableView ? 1 : 0)];
-    static NSString* kRecentSearchCell = @"RecentSearchCell";
+    static NSString* const kRecentSearchCell = @"RecentSearchCell";
     PCRecentResultTableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:kRecentSearchCell];
     if (!cell) {
         cell = [[PCRecentResultTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kRecentSearchCell];

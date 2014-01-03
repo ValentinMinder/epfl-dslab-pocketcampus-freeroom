@@ -25,7 +25,7 @@
 
 @implementation CamiproController
 
-static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
+static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 static CamiproController* instance __weak = nil;
 
@@ -75,13 +75,13 @@ static CamiproController* instance __weak = nil;
 + (void)initObservers {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotificationName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            NSNumber* delayed = [notification.userInfo objectForKey:kAuthenticationLogoutNotificationDelayedKey];
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            NSNumber* delayed = [notification.userInfo objectForKey:kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
             if ([delayed boolValue]) {
-                NSLog(@"-> Camipro received %@ notification delayed", kAuthenticationLogoutNotificationName);
+                NSLog(@"-> Camipro received %@ notification delayed", kAuthenticationLogoutNotification);
                 [PCObjectArchiver saveObject:@YES forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
             } else {
-                NSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotificationName);
+                NSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotification);
                 [[CamiproService sharedInstanceToRetain] setCamiproSession:nil]; //removing stored session
                 [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"camipro"];
                 [[MainController publicController] requestLeavePlugin:@"Camipro"];

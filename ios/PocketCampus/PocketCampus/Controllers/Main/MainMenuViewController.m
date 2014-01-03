@@ -20,8 +20,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-static NSString* kMenuItemButtonIdentifier = @"MenuItemButton";
-static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
+static NSString* const kMenuItemButtonIdentifier = @"MenuItemButton";
+static NSString* const kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
 static const int kPluginsSection = 0;
 

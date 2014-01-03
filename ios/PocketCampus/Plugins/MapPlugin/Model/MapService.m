@@ -12,8 +12,11 @@
 
 #import "PCObjectArchiver.h"
 
-static NSString* kRecentSearchesKey = @"recentSearches";
-static NSUInteger kMaxRecentSearches = 15;
+NSString* const kMapPersonsMapItemCategoryName = @"persons";
+NSString* const kMapRecentSearchesModifiedNotification = @"kMapRecentSearchesModifiedNotification";
+
+static NSString* const kRecentSearchesKey = @"recentSearches";
+static NSUInteger const kMaxRecentSearches = 15;
 
 @interface MapService ()
 
@@ -115,13 +118,13 @@ static MapService* instance __weak = nil;
         [self.recentSearchesInternal removeObjectsInRange:NSMakeRange(kMaxRecentSearches, self.recentSearches.count - kMaxRecentSearches)];
     }
     [PCObjectArchiver saveObject:self.recentSearchesInternal forKey:kRecentSearchesKey andPluginName:@"map" isCache:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMapRecentSearchesModifiedNotificationName object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMapRecentSearchesModifiedNotification object:self];
 }
 
 - (void)clearRecentSearches {
     [self.recentSearchesInternal removeAllObjects];
     [PCObjectArchiver saveObject:nil forKey:kRecentSearchesKey andPluginName:@"map" isCache:YES]; //deleted cached recent searches
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMapRecentSearchesModifiedNotificationName object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMapRecentSearchesModifiedNotification object:self];
 }
 
 #pragma mark - Dealloc

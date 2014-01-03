@@ -12,8 +12,7 @@
 
 #import "FoodModelAdditions.h"
 
-//actually used, Xcode deos not simply see it, do not remove.
-static NSString* kFavoritesRestaurantsUpdatedNotificationName __unused = @"FavoritesRestaurantsUpdated";
+extern NSString* const kFoodFavoritesRestaurantsUpdatedNotification;
 
 @interface FoodService : Service<ServiceProtocol>
 

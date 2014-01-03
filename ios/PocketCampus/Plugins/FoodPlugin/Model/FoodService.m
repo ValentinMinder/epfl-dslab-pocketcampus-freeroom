@@ -10,9 +10,11 @@
 
 #import "PCObjectArchiver.h"
 
+NSString* const kFoodFavoritesRestaurantsUpdatedNotification = @"kFavoritesRestaurantsUpdatedNotification";
+
 static NSTimeInterval kFoodRequestCacheValidity = 10800.0; //3 hours;
 
-static NSString* kFavoriteRestaurantIds = @"favoriteRestaurantIds";
+static NSString* const kFavoriteRestaurantIds = @"favoriteRestaurantIds";
 
 @interface FoodService ()
 
@@ -80,7 +82,7 @@ static FoodService* instance __weak = nil;
     [self initFavorites];
     [self.favoriteRestaurantIds addObject:[self nsNumberForRestaurantId:restaurant.rId]];
     [self persistFavorites];
-    NSNotification* notif = [NSNotification notificationWithName:kFavoritesRestaurantsUpdatedNotificationName object:self];
+    NSNotification* notif = [NSNotification notificationWithName:kFoodFavoritesRestaurantsUpdatedNotification object:self];
     [[NSNotificationCenter defaultCenter] postNotification:notif];
 
 }
@@ -90,7 +92,7 @@ static FoodService* instance __weak = nil;
     [self initFavorites];
     [self.favoriteRestaurantIds removeObject:[self nsNumberForRestaurantId:restaurant.rId]];
     [self persistFavorites];
-    NSNotification* notif = [NSNotification notificationWithName:kFavoritesRestaurantsUpdatedNotificationName object:self];
+    NSNotification* notif = [NSNotification notificationWithName:kFoodFavoritesRestaurantsUpdatedNotification object:self];
     [[NSNotificationCenter defaultCenter] postNotification:notif];
 }
 

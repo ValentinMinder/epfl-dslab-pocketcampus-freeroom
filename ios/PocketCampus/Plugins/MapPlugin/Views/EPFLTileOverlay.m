@@ -18,7 +18,7 @@
 
 @end
 
-static NSString* URL_ENDING = @".png";
+static NSString* const kURLEnding = @".png";
 
 @implementation EPFLTileOverlay
 
@@ -107,7 +107,7 @@ static NSString* URL_ENDING = @".png";
  * Normal
  */
 - (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
-    NSString* urlString = [NSString stringWithFormat:@"http://plan-epfl-tile1.epfl.ch/batiments%d-merc/%d/%@/%@%@", self.currentLayerLevel, zoom, [self createCoordString:x], [self createCoordString:y], URL_ENDING];
+    NSString* urlString = [NSString stringWithFormat:@"http://plan-epfl-tile1.epfl.ch/batiments%d-merc/%d/%@/%@%@", self.currentLayerLevel, zoom, [self createCoordString:x], [self createCoordString:y], kURLEnding];
     return urlString;
 }
 

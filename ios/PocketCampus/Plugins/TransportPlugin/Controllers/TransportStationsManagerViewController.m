@@ -47,7 +47,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
     self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStylePlain;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromModel) name:kUserTransportStationsModifiedNotificationName object:self.transportService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromModel) name:kTransportUserTransportStationsModifiedNotification object:self.transportService];
     [self refreshFromModel];
 }
 
@@ -145,7 +145,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
         case kStationsSection:
         {
             TransportStation* station = self.stations[indexPath.row];
-            static NSString* identifier = @"StationCell";
+            static NSString* const identifier = @"StationCell";
             cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];

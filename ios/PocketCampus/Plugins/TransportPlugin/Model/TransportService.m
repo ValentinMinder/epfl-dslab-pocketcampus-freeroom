@@ -18,6 +18,8 @@
 
 #pragma mark - TransportService private interface
 
+NSString* const kTransportUserTransportStationsModifiedNotification = @"kTransportUserTransportStationsModifiedNotification";
+
 @interface TransportService ()
 
 @property (nonatomic, strong) NSOrderedSet* privateUserTransportStations;
@@ -187,9 +189,9 @@ static TransportService* instance __weak = nil;
 
 #pragma mark - Properties
 
-static NSString* kUserTransportStationsKey = @"userTransportStations";
-static NSString* kFavoriteTransportStationsOldKey = @"favoriteTransportStations";
-static NSString* kManualDepartureStationKey = @"manualDepartureStation";
+static NSString* const kUserTransportStationsKey = @"userTransportStations";
+static NSString* const kFavoriteTransportStationsOldKey = @"favoriteTransportStations";
+static NSString* const kManualDepartureStationKey = @"manualDepartureStation";
 
 - (void)initPersistedProperties {
     if (!self.privateUserTransportStations) {
@@ -218,7 +220,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     }
     self.privateUserTransportStations = [userTransportStations copy];
     [PCObjectArchiver saveObject:self.privateUserTransportStations forKey:kUserTransportStationsKey andPluginName:@"transport"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUserTransportStationsModifiedNotificationName object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTransportUserTransportStationsModifiedNotification object:self];
 }
 
 - (TransportStation*)userManualDepartureStation {

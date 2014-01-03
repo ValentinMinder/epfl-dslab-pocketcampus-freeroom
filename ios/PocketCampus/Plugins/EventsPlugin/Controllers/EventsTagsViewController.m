@@ -131,7 +131,7 @@
         }
     }
     
-    static NSString* kTagCell = @"TagCell";
+    static NSString* const kTagCell = @"TagCell";
     
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kTagCell];
     

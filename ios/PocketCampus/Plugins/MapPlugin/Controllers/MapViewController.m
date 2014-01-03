@@ -49,11 +49,11 @@ typedef enum  {
     MapControlsStateNoFloorControl
 } MapControlsState;
 
-static int kMaxDisplayedAnnotations = 70;
-static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
+static int const kMaxDisplayedAnnotations = 70;
+static NSString* const kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
-static const CGFloat kSearchBarHeightPortrait = 44.0;
-static const CGFloat kSearchBarHeightLandscape = 32.0;
+static CGFloat const kSearchBarHeightPortrait = 44.0;
+static CGFloat const kSearchBarHeightLandscape = 32.0;
 
 @interface MapViewController ()<MKMapViewDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, RemoteOverlayRendererDelegate, UIPopoverControllerDelegate>
 
@@ -177,7 +177,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
     self.searchState = SearchStateReady; //will set nav bar elements, see implementation
     [self manageRecentSearchesControllerVisibilityAnimated:NO];
     MapViewController* weakSelf __weak = self;
-    [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotificationName object:self.mapService queue:Nil usingBlock:^(NSNotification *note) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotification object:self.mapService queue:Nil usingBlock:^(NSNotification *note) {
         [weakSelf manageRecentSearchesControllerVisibilityAnimated:YES];
     }];
     self.mapControlsState = MapControlsStateAllAvailable;
@@ -725,7 +725,7 @@ static const CGFloat kSearchBarHeightLandscape = 32.0;
         pin.annotation = annotation;
     }
     
-    if ([mapItem.category isEqualToString:kPersonsMapItemCategoryName] && !self.initialQuery && !self.initialMapItem) {
+    if ([mapItem.category isEqualToString:kMapPersonsMapItemCategoryName] && !self.initialQuery && !self.initialMapItem) {
         UIButton* disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         [disclosureButton addTarget:self action:@selector(annotationAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
         pin.rightCalloutAccessoryView = disclosureButton;

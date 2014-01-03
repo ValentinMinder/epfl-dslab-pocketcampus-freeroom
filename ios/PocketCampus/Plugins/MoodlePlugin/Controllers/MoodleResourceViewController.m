@@ -103,7 +103,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     self.splitViewControllerPtr = self.splitViewController;
     [self.splitViewController addObserver:self forKeyPath:NSStringFromSelector(@selector(isMasterViewControllerHidden)) options:0 context:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kFavoritesMoodleResourcesUpdatedNotificationName object:self.moodleService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

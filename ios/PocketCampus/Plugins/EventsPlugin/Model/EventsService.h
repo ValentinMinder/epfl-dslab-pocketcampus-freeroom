@@ -11,8 +11,7 @@
 
 #import "events.h"
 
-//actually used, Xcode deos not simply see it, do not remove.
-static NSString* kFavoritesEventItemsUpdatedNotification __unused = @"FavoritesEventItemsUpdated";
+extern NSString* const kEventsFavoritesEventItemsUpdatedNotification;
 
 @interface EventsService : Service <ServiceProtocol>
 

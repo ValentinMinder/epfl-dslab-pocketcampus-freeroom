@@ -10,9 +10,8 @@
 
 #import "map.h"
 
-//actually used in MapViewController, Xcode simply does not see it
-static NSString* kPersonsMapItemCategoryName __unused = @"persons";
-static NSString* kMapRecentSearchesModifiedNotificationName __unused = @"MapRecentSearchesModified"; //posted by self on default notification center
+extern NSString* const kMapPersonsMapItemCategoryName;
+extern NSString* const kMapRecentSearchesModifiedNotification; //posted by self on default notification center
 
 @interface MapService : Service<ServiceProtocol>
 

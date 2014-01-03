@@ -20,7 +20,7 @@
 
 static MoodleController* instance __weak = nil;
 
-static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
+static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (id)init
 {
@@ -79,13 +79,13 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 + (void)initObservers {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotificationName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            NSNumber* delayed = [notification.userInfo objectForKey:kAuthenticationLogoutNotificationDelayedKey];
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            NSNumber* delayed = [notification.userInfo objectForKey:kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
             if ([delayed boolValue]) {
-                NSLog(@"-> Moodle received %@ notification delayed", kAuthenticationLogoutNotificationName);
+                NSLog(@"-> Moodle received %@ notification delayed", kAuthenticationLogoutNotification);
                 [PCObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
             } else {
-                NSLog(@"-> Moodle received %@ notification", kAuthenticationLogoutNotificationName);
+                NSLog(@"-> Moodle received %@ notification", kAuthenticationLogoutNotification);
                 MoodleService* moodleService = [MoodleService sharedInstanceToRetain];
                 [moodleService deleteSession]; //removing stored session
                 [moodleService deleteAllDownloadedResources]; //removing all downloaded Moodle files

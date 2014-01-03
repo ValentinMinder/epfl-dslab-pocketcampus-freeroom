@@ -52,7 +52,7 @@ static const NSInteger kMealsSection = 1;
 {
     [super viewDidLoad];
     [self refreshFavoriteButton];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kFavoritesRestaurantsUpdatedNotificationName object:self.foodService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {

@@ -10,9 +10,44 @@
 
 #import "AFNetworking.h"
 
-static NSString* const GET_CONFIG_URL __unused = @"https://pocketcampus.epfl.ch/backend/get_config.php";
-static NSString* const GET_CONFIG_PLATFORM_PARAMETER_NAME __unused = @"platform";
-static NSString* const GET_CONFIG_APP_VERSION_PARAMETER_NAME __unused = @"app_version";
+NSString* const PC_CONFIG_SERVER_PROTOCOL_KEY = @"SERVER_PROTOCOL";
+
+NSString* const PC_CONFIG_SERVER_ADDRESS_KEY = @"SERVER_ADDRESS";
+
+NSString* const PC_CONFIG_SERVER_PORT_KEY = @"SERVER_PORT";
+
+NSString* const PC_CONFIG_SERVER_URI_KEY = @"SERVER_URI";
+
+NSString* const PC_CONFIG_ENABLED_PLUGINS_ARRAY_KEY = @"ENABLED_PLUGINS";
+
+NSString* const PC_CONFIG_ALLOW_MEALS_MULTI_VOTES_KEY = @"ALLOW_MEALS_MULTI_VOTES";
+
+NSString* const PC_CONFIG_GAN_ENABLED_KEY = @"GA_ENABLED"; //GAN is Google Analytics
+
+NSString* const PC_CONFIG_GAN_TRACKING_CODE_KEY = @"GA_TRACKING_CODE";
+
+NSString* const PC_CONFIG_CRASHLYTICS_APIKEY_KEY = @"CRASHLYTICS_APIKEY";
+
+
+NSString* const PC_CONFIG_LOADED_FROM_BUNDLE_KEY = @"CONFIG_LOADED_FROM_BUNDLE";
+
+NSString* const PC_CONFIG_LOADED_FROM_SERVER_KEY = @"CONFIG_LOADED_FROM_SERVER";
+
+NSString* const PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT = @"CONFIG_LOADED_FROM_APP_SUPPORT";
+
+
+NSInteger const PC_PROD_GAN_DISPATCH_PERIOD_SEC = 10; // The constant is used in AppDelegate when starting the GAN tracker
+
+NSString* const PC_PROD_APP_VERSION_KEY = @"APP_VERSION";
+
+
+NSString* const kPCConfigDidFinishLoadingNotification = @"kPCConfigDidFinishLoadingNotification";
+
+
+//Private
+static NSString* const kGetConfigURLString = @"https://pocketcampus.epfl.ch/backend/get_config.php";
+static NSString* const kGetConfigPlatformParameterName = @"platform";
+static NSString* const kGetConfigAppVersionParameterName = @"app_version";
 
 static BOOL loaded = NO;
 
@@ -33,7 +68,7 @@ static BOOL loaded = NO;
             [[self _defaults] synchronize]; //persist to disk
             NSLog(@"-> Config loaded.");
             loaded = YES;
-            [[NSNotificationCenter defaultCenter] postNotificationName:kPCConfigDidFinishLoadingNotificationName object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kPCConfigDidFinishLoadingNotification object:nil];
         }];
     });
 }
@@ -82,8 +117,8 @@ static BOOL loaded = NO;
     NSMutableSet* acceptableContentTypes = [NSMutableSet setWithSet:manager.responseSerializer.acceptableContentTypes];
     [acceptableContentTypes addObject:@"text/html"];
     manager.responseSerializer.acceptableContentTypes = acceptableContentTypes;
-    [manager GET:GET_CONFIG_URL
-      parameters:@{GET_CONFIG_PLATFORM_PARAMETER_NAME:@"ios", GET_CONFIG_APP_VERSION_PARAMETER_NAME:[PCUtils appVersion]}
+    [manager GET:kGetConfigURLString
+      parameters:@{kGetConfigPlatformParameterName:@"ios", kGetConfigAppVersionParameterName:[PCUtils appVersion]}
          success:^(NSURLSessionDataTask *task, NSDictionary* jsonServerConfig) {
              [[self _defaults] registerDefaults:jsonServerConfig];
              [[self _defaults] setBool:YES forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];

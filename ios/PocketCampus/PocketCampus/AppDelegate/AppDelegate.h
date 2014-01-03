@@ -10,13 +10,9 @@
 
 #import "MainController.h"
 
-/* __unsued put to remove warnings, Xcode is just stupid and does not see that they are used */
-
-static NSString* AppDidSucceedToRegisterToNotifications __unused = @"AppDidSucceedToRegisterToNotifications";
-static NSString* kPushDeviceTokenStringKey __unused = @"PushDeviceTokenString";
-static NSString* AppDidFailToRegisterToNotifications __unused = @"AppDidFailToRegisterToNotifications";
-
-static NSString* RemoteNotifForPluginName __unused = @"AppDidReceiveRemoteNotificationForPlugin";
+extern NSString* const kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification;
+extern NSString* const kAppDelegatePushDeviceTokenStringUserInfoKey;
+extern NSString* const kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

@@ -12,7 +12,13 @@
 
 #import <Crashlytics/Crashlytics.h>
 
+NSString* const kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification = @"AppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification";
+NSString* const kAppDelegatePushDeviceTokenStringUserInfoKey = @"AppDelegatePushDeviceTokenStringUserInfoKey";
+NSString* const kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification = @"AppDelegateAppFailedToRegisterForRemoteNotificationsNotification";
+
 static id test __strong __unused = nil;
+
+static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidReceiveRemoteNotificationForPlugin";
 
 @interface AppDelegate ()
 
@@ -115,23 +121,23 @@ static id test __strong __unused = nil;
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSString* deviceTokenString = [[[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSNotification* notif = [NSNotification notificationWithName:AppDidSucceedToRegisterToNotifications object:nil userInfo:[NSDictionary dictionaryWithObject:deviceTokenString forKey:kPushDeviceTokenStringKey]];
+    NSNotification* notif = [NSNotification notificationWithName:kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification object:self userInfo:@{kAppDelegatePushDeviceTokenStringUserInfoKey:deviceTokenString}];
     [[NSNotificationCenter defaultCenter] postNotification:notif];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    [[NSNotificationCenter defaultCenter] postNotificationName:AppDidFailToRegisterToNotifications object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification object:self];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSString* pluginName = userInfo[@"pluginName"];
     NSString* message = userInfo[@"aps"][@"alert"];
     NSLog(@"-> Notification received for plugin %@: %@  (userInfo:%@)", pluginName, message, userInfo);
-    [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:[pluginName lowercaseString]] object:nil userInfo:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:[pluginName lowercaseString]] object:self userInfo:userInfo];
 }
 
 + (NSString*)nsNotificationNameForPluginLowerIdentifier:(NSString*)pluginLowerIdentifier {
-    return [NSString stringWithFormat:@"%@_%@", RemoteNotifForPluginName, pluginLowerIdentifier];
+    return [NSString stringWithFormat:@"%@_%@", kAppDidReceiveRemoteNotificationForPlugin, pluginLowerIdentifier];
 }
 
 @end

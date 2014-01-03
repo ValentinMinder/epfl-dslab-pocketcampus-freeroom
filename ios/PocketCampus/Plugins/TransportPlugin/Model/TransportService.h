@@ -12,7 +12,7 @@
 
 #import "TransportModelAdditions.h"
 
-static NSString* kUserTransportStationsModifiedNotificationName __unused = @"UserTransportStationsModifiedNotification";
+extern NSString* const kTransportUserTransportStationsModifiedNotification;
 
 @interface TransportService : Service<ServiceProtocol>
 

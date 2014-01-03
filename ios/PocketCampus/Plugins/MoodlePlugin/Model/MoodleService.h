@@ -26,13 +26,13 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
  * Posted by self on NSNotificationCenter defaultCenter if a resource is added or removed
  * from favorite resources
  */
-static NSString* kFavoritesMoodleResourcesUpdatedNotificationName __unused = @"FavoritesMoodleResourcesUpdated";
+extern NSString* const kMoodleFavoritesMoodleResourcesUpdatedNotification;
 
 /*
  * Key of NSNotifiation.userInfo
  * Value: MoodleResource that was added/removed from favorites
  */
-static NSString* kFavoriteStatusMoodleResourceUpdatedKey __unused = @"FavoriteStatusMoodleResourceUpdated";
+extern NSString* const kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey;
 
 @interface MoodleService : Service<ServiceProtocol>
 

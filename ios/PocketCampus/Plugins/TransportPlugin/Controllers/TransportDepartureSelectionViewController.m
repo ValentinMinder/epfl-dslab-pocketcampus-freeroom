@@ -47,7 +47,7 @@ static const NSUInteger kStationsSection = 1;
     self.tableView.rowHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Close", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromModel) name:kUserTransportStationsModifiedNotificationName object:self.transportService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromModel) name:kTransportUserTransportStationsModifiedNotification object:self.transportService];
     [self refreshFromModel];
 }
 
@@ -159,7 +159,7 @@ static const NSUInteger kStationsSection = 1;
         case kStationsSection:
         {
             TransportStation* station = self.stations[indexPath.row];
-            static NSString* identifier = @"StationCell";
+            static NSString* const identifier = @"StationCell";
             cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];

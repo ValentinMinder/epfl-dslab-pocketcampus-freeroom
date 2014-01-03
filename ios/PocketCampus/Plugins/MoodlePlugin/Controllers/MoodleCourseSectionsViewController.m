@@ -98,7 +98,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     self.searchController.searchResultsTableView.allowsMultipleSelection = NO;
     
     [self showToggleButtonIfPossible];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteMoodleResourcesUpdated:) name:kFavoritesMoodleResourcesUpdatedNotificationName object:self.moodleService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteMoodleResourcesUpdated:) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -118,7 +118,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 #pragma mark - Notifications listening
 
 - (void)favoriteMoodleResourcesUpdated:(NSNotification*)notif {
-    MoodleResource* resource = notif.userInfo[kFavoriteStatusMoodleResourceUpdatedKey];
+    MoodleResource* resource = notif.userInfo[kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey];
     if (!resource) {
         return;
     }

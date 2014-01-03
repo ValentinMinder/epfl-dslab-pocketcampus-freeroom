@@ -85,7 +85,7 @@ static const NSInteger kOneWeekPeriodIndex = 0;
 static const NSInteger kOneMonthPeriodIndex = 1;
 static const NSInteger kSixMonthsPeriodIndex = 2;
 
-static NSString* kEventCell = @"EventCell";
+static NSString* const kEventCell = @"EventCell";
 
 @implementation EventPoolViewController
 
@@ -151,7 +151,7 @@ static NSString* kEventCell = @"EventCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromCurrentData) name:kFavoritesEventItemsUpdatedNotification object:self.eventsService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromCurrentData) name:kEventsFavoritesEventItemsUpdatedNotification object:self.eventsService];
     self.tableView = [[PCTableViewWithRemoteThumbnails alloc] init];
     ((PCTableViewWithRemoteThumbnails*)(self.tableView)).imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image) {
         return [image imageByScalingAndCroppingForSize:CGSizeMake([EventItemCell preferredHeight], [EventItemCell preferredHeight]) applyDeviceScreenMultiplyingFactor:YES];

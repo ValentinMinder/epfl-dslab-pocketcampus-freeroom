@@ -30,7 +30,7 @@ static const int kCreateNewContactActionIndex = 0;
 static const int kAddToExistingContactActionIndex = 1;
 
 //for all but first cell (DirectoryPersonBaseInfoCell)
-static UITableViewCellStyle kCellStyle = UITableViewCellStyleValue2;
+static UITableViewCellStyle const kCellStyle = UITableViewCellStyleValue2;
 //init at run-time in +initialize
 static NSString* kCellTextLabelTextStyle;
 static NSString* kCellDetailTextLabelTextStyle;

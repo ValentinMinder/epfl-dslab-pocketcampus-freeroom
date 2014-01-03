@@ -62,11 +62,11 @@ typedef enum {
 
 @implementation DirectorySearchViewController
 
-static NSString* kSearchResultCellIdentifier = @"searchResultCell";
-static NSString* kRecentSearchCellIdentifier = @"recentSearchCell";
+static NSString* const kSearchResultCellIdentifier = @"searchResultCell";
+static NSString* const kRecentSearchCellIdentifier = @"recentSearchCell";
 
-static NSUInteger kMaxRecentSearches = 15;
-static NSString* kRecentSearchesKey = @"recentSearches";
+static NSUInteger const kMaxRecentSearches = 15;
+static NSString* const kRecentSearchesKey = @"recentSearches";
 
 - (id)init
 {

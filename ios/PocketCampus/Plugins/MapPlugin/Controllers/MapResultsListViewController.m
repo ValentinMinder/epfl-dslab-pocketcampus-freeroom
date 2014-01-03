@@ -80,7 +80,7 @@
         }
     }
     
-    static NSString* identifier = @"MapItemCell";
+    static NSString* const identifier = @"MapItemCell";
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];

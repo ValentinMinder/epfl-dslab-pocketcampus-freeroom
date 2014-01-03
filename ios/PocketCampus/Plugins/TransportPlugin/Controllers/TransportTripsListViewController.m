@@ -104,7 +104,7 @@
     }
     
     TransportTrip* trip = self.trips[indexPath.row-1];
-    static NSString* identifier = @"TripCell";
+    static NSString* const identifier = @"TripCell";
     TransportTripCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[TransportTripCell alloc] initWithReuseIdentifier:identifier];

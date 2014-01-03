@@ -53,13 +53,13 @@
 @end
 
 /* Corresponds to supportedIdioms possible values in config file Plugins.plist */
-static NSString* kSupportedIdiomPhone = @"phone";
-static NSString* kSupportedIdiomPad = @"pad";
-static NSString* kSupportedIdiomPhonePad = @"phone+pad";
+static NSString* const kSupportedIdiomPhone = @"phone";
+static NSString* const kSupportedIdiomPad = @"pad";
+static NSString* const kSupportedIdiomPhonePad = @"phone+pad";
 
-static NSString* kPluginsMainMenuItemsInfoKey = @"pluginsMainMenuItemsInfo";
-static NSString* kPluginsMainMenuItemsInfoOrderNumberKey = @"pluginsMainMenuItemsInfoOrderNumber";
-static NSString* kPluginsMainMenuItemsInfoHiddenKey = @"pluginsMainMenuItemsInfoHidden";
+static NSString* const kPluginsMainMenuItemsInfoKey = @"pluginsMainMenuItemsInfo";
+static NSString* const kPluginsMainMenuItemsInfoOrderNumberKey = @"pluginsMainMenuItemsInfoOrderNumber";
+static NSString* const kPluginsMainMenuItemsInfoHiddenKey = @"pluginsMainMenuItemsInfoHidden";
 
 static int kGesturesViewTag = 50;
 
@@ -245,7 +245,7 @@ static MainController<MainControllerPublic>* instance = nil;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         [self preConfigInit];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(globalInit) name:kPCConfigDidFinishLoadingNotificationName object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(globalInit) name:kPCConfigDidFinishLoadingNotification object:nil];
     });
     if ([PCConfig isLoaded]) {
         [self postConfigInit];

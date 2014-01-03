@@ -9,10 +9,9 @@ typedef enum {
 } AuthenticationTequilaLoginFailureReason;
 
 
-static NSString* kTequilaCookieName __unused = @"tequila_key";
-
-static NSString* kAuthenticationLogoutNotificationName = @"AuthenticationLogoutNotification";
-static NSString* kAuthenticationLogoutNotificationDelayedKey = @"AuthenticationLogoutNotificationDelayed";
+extern NSString* const kAuthenticationTequilaCookieName;
+extern NSString* const kAuthenticationLogoutNotification;
+extern NSString* const kAuthenticationLogoutNotificationDelayedBoolUserInfoKey;
 
 @interface AuthenticationService : Service<ServiceProtocol>
 

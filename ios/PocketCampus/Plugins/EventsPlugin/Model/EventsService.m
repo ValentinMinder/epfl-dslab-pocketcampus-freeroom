@@ -12,6 +12,8 @@
 
 #import "PCUtils.h"
 
+NSString* const kEventsFavoritesEventItemsUpdatedNotification = @"kFavoritesEventItemsUpdatedNotification";
+
 @interface EventsService ()
 
 @property (nonatomic, strong) NSMutableSet* userTickets;
@@ -19,13 +21,13 @@
 
 @end
 
-static NSString* kUserTicketsKey = @"userTickets";
+static NSString* const kUserTicketsKey = @"userTickets";
 
-static NSString* kFavoriteEventItemIds = @"favoriteEventItemIds";
+static NSString* const kFavoriteEventItemIds = @"favoriteEventItemIds";
 
 //static NSString* kEventItemPictureKeyWithFormat = @"picture-eventItem-%ld";
 
-static NSString* kPoolPeriodKey = @"poolPeriod";
+static NSString* const kPoolPeriodKey = @"poolPeriod";
 
 @implementation EventsService
 
@@ -59,7 +61,7 @@ static EventsService* instance __weak = nil;
 
 #pragma mark - User tickets
 
-static NSString* kUserTokenKey = @"userToken";
+static NSString* const kUserTokenKey = @"userToken";
 
 - (void)initUserTickets {
     if (!self.userTickets) { //first try to get it from persistent storage
@@ -69,7 +71,7 @@ static NSString* kUserTokenKey = @"userToken";
         self.userTickets = [NSMutableSet set];
     }
     
-    static NSString* kEventsTransitionToUserTicketsDone = @"EventsTransitionToUserTicketsDone";
+    static NSString* const kEventsTransitionToUserTicketsDone = @"EventsTransitionToUserTicketsDone";
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults boolForKey:kEventsTransitionToUserTicketsDone]) {
         NSString* userToken = (NSString*)[PCObjectArchiver objectForKey:kUserTokenKey andPluginName:@"events"];
@@ -130,7 +132,7 @@ static NSString* kUserTokenKey = @"userToken";
     [self initFavorites];
     [self.favoriteEventItemIds addObject:[EventsUtils nsNumberForEventId:itemId]];
     [self persistFavorites];
-    NSNotification* notif = [NSNotification notificationWithName:kFavoritesEventItemsUpdatedNotification object:self];
+    NSNotification* notif = [NSNotification notificationWithName:kEventsFavoritesEventItemsUpdatedNotification object:self];
     [[NSNotificationCenter defaultCenter] postNotification:notif];
 }
 
@@ -138,7 +140,7 @@ static NSString* kUserTokenKey = @"userToken";
     [self initFavorites];
     [self.favoriteEventItemIds removeObject:[EventsUtils nsNumberForEventId:itemId]];
     [self persistFavorites];
-    NSNotification* notif = [NSNotification notificationWithName:kFavoritesEventItemsUpdatedNotification object:self];
+    NSNotification* notif = [NSNotification notificationWithName:kEventsFavoritesEventItemsUpdatedNotification object:self];
     [[NSNotificationCenter defaultCenter] postNotification:notif];
 }
 

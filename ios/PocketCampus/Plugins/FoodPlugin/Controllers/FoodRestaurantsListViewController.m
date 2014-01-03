@@ -30,7 +30,7 @@
 
 #import "FoodMealCell.h"
 
-static NSString* kLastRefreshDateKey = @"lastRefreshDate";
+static NSString* const kLastRefreshDateKey = @"lastRefreshDate";
 
 /*
  * Will refresh if last refresh date is not same date as current OR older than kRefreshValiditySeconds ago
@@ -69,10 +69,10 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.rowHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndReloadTableView) name:kFavoritesRestaurantsUpdatedNotificationName object:self.foodService];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kFoodMealCellUserSuccessfullyRatedMealNotificationName object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndReloadTableView) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kFoodMealCellUserSuccessfullyRatedMealNotification object:nil];
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"food" dataName:@"restaurantsAndMeals"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
 }
@@ -259,12 +259,12 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     }
     
     EpflRestaurant* restaurant = self.restaurantsSorted[indexPath.row];
-    static NSString* kRestaurantCellIdentifier = @"RestaurantCell";
-    PCTableViewCellAdditions* cell = [self.tableView dequeueReusableCellWithIdentifier:kRestaurantCellIdentifier];
+    static NSString* const identifier = @"RestaurantCell";
+    PCTableViewCellAdditions* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kRestaurantCellIdentifier];
+        cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
     }
     cell.textLabel.text = restaurant.rName;
     cell.favoriteIndicationVisible = [self.foodService isRestaurantFavorite:restaurant];

@@ -34,6 +34,18 @@
 
 @end
 
+
+NSString* const kMoodleFavoritesMoodleResourcesUpdatedNotification = @"kFavoritesMoodleResourcesUpdatedNotificationName";
+NSString* const kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey = @"kFavoriteStatusMoodleResourceUpdatedKey";
+
+static const NSTimeInterval kFetchMoodleResourceTimeoutSeconds = 30.0;
+
+static NSString* const kMoodleSessionKey = @"moodleSession";
+static NSString* const kServiceDelegateKey = @"serviceDelegate";
+static NSString* const kMoodleResourceKey = @"moodleResource";
+
+static MoodleService* instance __weak = nil;
+
 #pragma mark - MoodleService implementation
 
 @interface MoodleService ()
@@ -47,14 +59,6 @@
 @end
 
 @implementation MoodleService
-
-static MoodleService* instance __weak = nil;
-
-static const NSTimeInterval kFetchMoodleResourceTimeoutSeconds = 30.0;
-
-static NSString* const kMoodleSessionKey = @"moodleSession";
-static NSString* const kServiceDelegateKey = @"serviceDelegate";
-static NSString* const kMoodleResourceKey = @"moodleResource";
 
 #pragma mark - Init
 
@@ -114,7 +118,7 @@ static NSString* const kMoodleResourceKey = @"moodleResource";
 
 #pragma mark - Resources favorites and file management
 
-static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
+static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
 
 - (void)initFavorites {
     if (!self.favoriteMoodleResourcesURLs) { //first try to get it from persistent storage
@@ -137,7 +141,7 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
     [self initFavorites];
     [self.favoriteMoodleResourcesURLs addObject:moodleResource.iUrl];
     [self persistFavorites];
-    NSNotification* notif = [NSNotification notificationWithName:kFavoritesMoodleResourcesUpdatedNotificationName object:self userInfo:@{kFavoriteStatusMoodleResourceUpdatedKey:moodleResource}];
+    NSNotification* notif = [NSNotification notificationWithName:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self userInfo:@{kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey:moodleResource}];
     [[NSNotificationCenter defaultCenter] postNotification:notif];
 }
 
@@ -146,7 +150,7 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
     [self initFavorites];
     [self.favoriteMoodleResourcesURLs removeObject:moodleResource.iUrl];
     [self persistFavorites];
-    NSNotification* notif = [NSNotification notificationWithName:kFavoritesMoodleResourcesUpdatedNotificationName object:self userInfo:@{kFavoriteStatusMoodleResourceUpdatedKey:moodleResource}];
+    NSNotification* notif = [NSNotification notificationWithName:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self userInfo:@{kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey:moodleResource}];
     [[NSNotificationCenter defaultCenter] postNotification:notif];
 }
 
@@ -285,8 +289,8 @@ static NSString* kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesURLs ";
 
 #pragma mark - Saved elements
 
-static NSString* kCourseListReplyKey = @"courseListReply";
-static NSString* kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%d";
+static NSString* const kCourseListReplyKey = @"courseListReply";
+static NSString* const kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%d";
 
 - (NSString*)keyForSectionsListReplyForCourse:(MoodleCourse*)course {
     return [NSString stringWithFormat:kSectionsListReplyForCourseIdWithFormat, course.iId];

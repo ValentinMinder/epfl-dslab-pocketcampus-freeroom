@@ -183,7 +183,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TransportStation* station = self.stations[indexPath.row];
-    static NSString* identifier = @"StationNameAutocompleteCell";
+    static NSString* const identifier = @"StationNameAutocompleteCell";
     UITableViewCell* cell =  [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];

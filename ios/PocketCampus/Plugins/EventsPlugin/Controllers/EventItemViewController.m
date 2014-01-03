@@ -42,7 +42,7 @@
 
 @end
 
-static NSString* kPoolCell = @"PoolCell";
+static NSString* const kPoolCell = @"PoolCell";
 
 @implementation EventItemViewController
 

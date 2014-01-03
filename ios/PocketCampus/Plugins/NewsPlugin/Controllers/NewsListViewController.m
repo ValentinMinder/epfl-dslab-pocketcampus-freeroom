@@ -185,7 +185,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString* identifier = @"NewsCell";
+    static NSString* const identifier = @"NewsCell";
     NewsItem* newsItem = self.sections[indexPath.section][indexPath.row];
     UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {

@@ -9,15 +9,17 @@
 
 @implementation AuthenticationService
 
-/* __unused are added to prevent unused warning, even though the variables ARE actually used */
+NSString* const kAuthenticationTequilaCookieName = @"tequila_key";
+NSString* const kAuthenticationLogoutNotification = @"kAuthenticationLogoutNotification";
+NSString* const kAuthenticationLogoutNotificationDelayedBoolUserInfoKey = @"kAuthenticationLogoutNotificationDelayedBoolUserInfoKey";
 
-static NSString* kTequilaLoginURL = @"https://tequila.epfl.ch/cgi-bin/tequila/login";
-static NSString* kTequilaAuthURL = @"https://tequila.epfl.ch/cgi-bin/tequila/requestauth";
+static NSString* const kTequilaLoginURL = @"https://tequila.epfl.ch/cgi-bin/tequila/login";
+static NSString* const kTequilaAuthURL = @"https://tequila.epfl.ch/cgi-bin/tequila/requestauth";
 
-static NSString* kLastUsedUseramesKey __unused = @"lastUsedUsernames";
-static NSString* kKeychainServiceKey = @"PCGasparPassword";
-static NSString* kSavedUsernameKey = @"savedUsername";
-static NSString* kSavePasswordSwitchStateKey = @"savePasswordSwitch";
+static NSString* const kLastUsedUseramesKey = @"lastUsedUsernames";
+static NSString* const kKeychainServiceKey = @"PCGasparPassword";
+static NSString* const kSavedUsernameKey = @"savedUsername";
+static NSString* const kSavePasswordSwitchStateKey = @"savePasswordSwitch";
 
 static AuthenticationService* instance __weak = nil;
 
@@ -91,8 +93,7 @@ static AuthenticationService* instance __weak = nil;
 }
 
 + (void)enqueueLogoutNotificationDelayed:(BOOL)delayed {
-    NSDictionary* notifInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:delayed] forKey:kAuthenticationLogoutNotificationDelayedKey];
-    NSNotification* notification = [NSNotification notificationWithName:kAuthenticationLogoutNotificationName object:nil userInfo:notifInfo];
+    NSNotification* notification = [NSNotification notificationWithName:kAuthenticationLogoutNotification object:nil userInfo:@{kAuthenticationLogoutNotificationDelayedBoolUserInfoKey:[NSNumber numberWithBool:delayed]}];
     [[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostASAP coalesceMask:NSNotificationCoalescingOnName forModes:nil]; //NSNotificationCoalescingOnName so that only 1 notif is added
 }
 
@@ -123,7 +124,7 @@ static AuthenticationService* instance __weak = nil;
         NSArray* allCookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[operation.response allHeaderFields] forURL:operation.request.URL];
         NSHTTPCookie* tequilaCookie = nil;
         for (NSHTTPCookie* cookie in allCookies) {
-            if ([cookie.name isEqualToString:kTequilaCookieName]) {
+            if ([cookie.name isEqualToString:kAuthenticationTequilaCookieName]) {
                 tequilaCookie = cookie;
             }
         }
@@ -146,7 +147,7 @@ static AuthenticationService* instance __weak = nil;
     
     NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:kTequilaAuthURL parameters:@{@"requestkey":token}];
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
-    [request addValue:[NSString stringWithFormat:@"%@=%@", kTequilaCookieName, tequilaCookie.value] forHTTPHeaderField:@"Cookie"];
+    [request addValue:[NSString stringWithFormat:@"%@=%@", kAuthenticationTequilaCookieName, tequilaCookie.value] forHTTPHeaderField:@"Cookie"];
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     id weakDelegate __weak = delegate;
     

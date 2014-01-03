@@ -24,6 +24,9 @@ typedef enum {
     RatingStatusRated
 } RatingStatus;
 
+NSString* const kFoodMealCellDidEnableRateModeNotification = @"kFoodMealCellDidEnableRateModeNotification";
+NSString* const kFoodMealCellUserSuccessfullyRatedMealNotification = @"kFoodMealCellUserSuccessfullyRatedMealNotification";
+
 static const CGFloat kMinHeight = 110.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPhone = 10.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPad = 25.0;
@@ -95,7 +98,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         [self.contentView addConstraint:self.rateControlsViewLeftConstraint];
         [self.rateControlsView addConstraint:[NSLayoutConstraint widthConstraint:kRateControlsViewWidth forView:self.rateControlsView]];
         self.ratingStatus = RatingStatusReady;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rateModeEnabledNotification:) name:kFoodMealCellDidEnableRateModeNotificationName object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rateModeEnabledNotification:) name:kFoodMealCellDidEnableRateModeNotification object:nil];
     }
     return self;
 }
@@ -284,7 +287,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         return;
     }
     if (!_rateModeEnabled && rateModeEnabled && postNotif) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellDidEnableRateModeNotificationName object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellDidEnableRateModeNotification object:self];
     }
     _rateModeEnabled = rateModeEnabled;
     self.infoContentViewTapGesture.enabled = rateModeEnabled;
@@ -345,7 +348,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
                 [weakSelf infoContentViewTapped]; //hide rating controls, not longer need them
             } repeats:NO];
             [NSTimer scheduledTimerWithTimeInterval:1.4 block:^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellUserSuccessfullyRatedMealNotificationName object:self];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellUserSuccessfullyRatedMealNotification object:self];
             } repeats:NO];
             break;
         }

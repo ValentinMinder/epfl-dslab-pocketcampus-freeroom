@@ -25,8 +25,6 @@
 
 @end
 
-//static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
-
 @implementation PCTableViewWithRemoteThumbnails
 
 #pragma mark - init

@@ -116,7 +116,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fromLabelPressed)];
     [self.fromLabel addGestureRecognizer:tapGesture];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTransportStationsModified) name:kUserTransportStationsModifiedNotificationName object:self.transportService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTransportStationsModified) name:kTransportUserTransportStationsModifiedNotification object:self.transportService];
     [self.transportService addObserver:self forKeyPath:NSStringFromSelector(@selector(userManualDepartureStation)) options:0 context:nil];
 }
 
@@ -484,7 +484,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     TransportStation* station = self.usersStations[biasedIndexPath.row];
     QueryTripsResult* trip = self.tripResults[station.name];
         
-    static NSString* identifier = @"TransportNextDeparturesCell";
+    static NSString* const identifier = @"TransportNextDeparturesCell";
     
     TransportNextDeparturesCell* cell = self.cellForDestinationName[station.name];
     if (!cell) {
