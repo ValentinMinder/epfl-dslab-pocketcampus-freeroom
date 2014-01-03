@@ -10,16 +10,17 @@
 
 #import <objc/runtime.h>
 
+static NSCache* shortNameForTransportStationName;
+
 @implementation TransportStation (Additions)
 
 - (NSString*)shortName {
-    static NSString* const kShortNameKey = @"shortName";
-    NSString* shortName = objc_getAssociatedObject(self, (__bridge const void *)(kShortNameKey));
-    if (!shortName) {
-        shortName = [self computeShortName];
-        objc_setAssociatedObject(self, (__bridge const void *)(kShortNameKey), shortName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    shortNameForTransportStationName = shortNameForTransportStationName ?: [NSCache new];
+    if (!shortNameForTransportStationName[self.name]) {
+        NSLog(@"Computing for %@", self.name);
+        shortNameForTransportStationName[self.name] = [self computeShortName];
     }
-    return shortName;
+    return shortNameForTransportStationName[self.name];
 }
 
 - (NSString*)computeShortName {
@@ -82,18 +83,30 @@
 
 @end
 
+static NSCache* shortNameForTransportLineName;
+static NSCache* veryShortNameForTransportLineName;
+
 @implementation TransportLine (Additions)
 
 - (NSString*)shortName {
-    static NSString* const kShortNameKey = @"shortName";
-    NSString* shortName = objc_getAssociatedObject(self, (__bridge const void *)(kShortNameKey));
-    if (!shortName) {
-        shortName = [self computeShortName];
-        objc_setAssociatedObject(self, (__bridge const void *)(kShortNameKey), shortName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    shortNameForTransportLineName = shortNameForTransportLineName ?: [NSCache new];
+    if (!shortNameForTransportLineName[self.name]) {
+        shortNameForTransportLineName[self.name] = [self computeShortName];
     }
-    return shortName;
+    return shortNameForTransportLineName[self.name];
 }
 
+- (NSString*)veryShortName {
+    veryShortNameForTransportLineName = veryShortNameForTransportLineName ?: [NSCache new];
+    if (!veryShortNameForTransportLineName[self.name]) {
+        veryShortNameForTransportLineName[self.name] = self.shortName.length <= 3 ?
+        self.shortName :
+        [[self.shortName substringToIndex:2] stringByAppendingString:@".."];
+    }
+    return veryShortNameForTransportLineName[self.name];
+}
+
+//private
 - (NSString*)computeShortName {
     
     NSString* currentName = self.name;

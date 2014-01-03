@@ -547,6 +547,7 @@
 		32777B4615D1BFBC00A29F56 /* AboutPC.html in Resources */ = {isa = PBXBuildFile; fileRef = 32777B4215D1BFB400A29F56 /* AboutPC.html */; };
 		3277F862180437670057F77C /* RemoteOverlayRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3277F861180437670057F77C /* RemoteOverlayRenderer.m */; };
 		3278F6CA184257AF007CB382 /* TransportDepartureSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3278F6C9184257AF007CB382 /* TransportDepartureSelectionViewController.m */; };
+		32797ABC1877050B005A19FD /* NSCache+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32797ABB1877050B005A19FD /* NSCache+LGAdditions.m */; };
 		327B0C24175199590011D81E /* ArrowUpRightCircleAccessory.png in Resources */ = {isa = PBXBuildFile; fileRef = 327B0C22175199590011D81E /* ArrowUpRightCircleAccessory.png */; };
 		327B0C25175199590011D81E /* ArrowUpRightCircleAccessory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327B0C23175199590011D81E /* ArrowUpRightCircleAccessory@2x.png */; };
 		327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327BF2351666043100C67937 /* PushNotifPlugin.strings */; };
@@ -1000,6 +1001,8 @@
 		3277F861180437670057F77C /* RemoteOverlayRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteOverlayRenderer.m; sourceTree = "<group>"; };
 		3278F6C8184257AF007CB382 /* TransportDepartureSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportDepartureSelectionViewController.h; sourceTree = "<group>"; };
 		3278F6C9184257AF007CB382 /* TransportDepartureSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportDepartureSelectionViewController.m; sourceTree = "<group>"; };
+		32797ABA1877050B005A19FD /* NSCache+LGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCache+LGAdditions.h"; sourceTree = "<group>"; };
+		32797ABB1877050B005A19FD /* NSCache+LGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCache+LGAdditions.m"; sourceTree = "<group>"; };
 		327B0C22175199590011D81E /* ArrowUpRightCircleAccessory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowUpRightCircleAccessory.png; sourceTree = "<group>"; };
 		327B0C23175199590011D81E /* ArrowUpRightCircleAccessory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowUpRightCircleAccessory@2x.png"; sourceTree = "<group>"; };
 		327BF2361666043100C67937 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PushNotifPlugin.strings; sourceTree = "<group>"; };
@@ -1638,6 +1641,8 @@
 				32FB441F17650268008C8282 /* NSDate+Addtions.m */,
 				32DE5B2617F2003800E03423 /* NSLayoutConstraint+LGAdditions.h */,
 				32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */,
+				32797ABA1877050B005A19FD /* NSCache+LGAdditions.h */,
+				32797ABB1877050B005A19FD /* NSCache+LGAdditions.m */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -3592,6 +3597,7 @@
 				32B3F3971621B6D3007A75C7 /* MainMenuItem.m in Sources */,
 				325C47A61621D63E006752B4 /* MainMenuItemCell.m in Sources */,
 				325C47AE1621E91A006752B4 /* MainController.m in Sources */,
+				32797ABC1877050B005A19FD /* NSCache+LGAdditions.m in Sources */,
 				32CBF0631634812C00FD92E5 /* SplashViewController.m in Sources */,
 				32DE5B2817F2003800E03423 /* NSLayoutConstraint+LGAdditions.m in Sources */,
 				32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */,

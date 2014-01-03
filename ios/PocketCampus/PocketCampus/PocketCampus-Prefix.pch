@@ -20,6 +20,7 @@
     #import "PCNavigationController.h"
 
     #import "NSLayoutConstraint+LGAdditions.h"
+    #import "NSCache+LGAdditions.h"
     #import "UIActionSheet+Additions.h"
     #import "UIPopoverController+Additions.h"
     #import "UILabel+Additions.h"

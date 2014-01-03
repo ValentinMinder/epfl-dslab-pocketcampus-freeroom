@@ -234,8 +234,8 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         fullString = [fullString stringByAppendingFormat:@"\n%@", meal.mDescription];
     }
     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
-    [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] range:[fullString rangeOfString:meal.mName]];
-    [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1] range:[fullString rangeOfString:meal.mDescription]];
+    [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] range:[fullString rangeOfString:meal.mName]];
+    [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] range:[fullString rangeOfString:meal.mDescription]];
     return attrString;
 }
 

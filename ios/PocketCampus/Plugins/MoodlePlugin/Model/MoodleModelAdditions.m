@@ -13,14 +13,18 @@
 @implementation MoodleResource (Comparison)
 
 - (NSString*)filename {
-    static NSString* const kFilenameKey = @"filename";
-    NSString* filename = objc_getAssociatedObject(self, (__bridge const void *)(kFilenameKey));
-    if (!filename) {
-        filename = [[self.iUrl pathComponents] lastObject];
-        filename = [filename stringByRemovingPercentEncoding];
-        objc_setAssociatedObject(self, (__bridge const void *)(kFilenameKey), filename, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    static NSString* key;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        key = NSStringFromSelector(_cmd);
+    });
+    id value = objc_getAssociatedObject(self, (__bridge const void *)(key));
+    if (!value) {
+        value = [[self.iUrl pathComponents] lastObject];
+        value = [value stringByRemovingPercentEncoding];
+        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
-    return filename;
+    return value;
 }
 
 - (BOOL)isEqual:(id)object {

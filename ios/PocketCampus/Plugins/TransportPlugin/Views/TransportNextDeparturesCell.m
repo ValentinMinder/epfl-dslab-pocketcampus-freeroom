@@ -167,7 +167,7 @@
             }
         }];
         TransportConnection* connection = [redundantConnections firstObject]; //all have same line anyway
-        self.lineLabel.text = connection.line.shortName;
+        self.lineLabel.text = connection.line.veryShortName;
         
     } else {
         NSArray* trips = self.tripResult.nonLeftTrips;
@@ -192,7 +192,7 @@
             }
             
             UILabel* timeLabel = timeLabels[index];
-            NSString* lineName = firstConnection ? firstConnection.line.shortName : @"";
+            NSString* lineName = firstConnection ? firstConnection.line.veryShortName : @"";
             NSString* fullString = nil;
             if ([timeString isEqualToString:@"Now"]) {
                 [self setBusImageViewVisible:YES inLabel:timeLabel];

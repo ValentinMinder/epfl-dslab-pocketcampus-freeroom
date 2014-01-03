@@ -43,6 +43,12 @@
  */
 @property (nonatomic, readonly) NSString* shortName;
 
+/*
+ * Returns shortName if shortName's length is smaller or equal to 3
+ * otherwise, returns shortName first two caracters followed by '..'.
+ */
+@property (nonatomic, readonly) NSString* veryShortName;
+
 @end
 
 @interface TransportTrip (Additions)

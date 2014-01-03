@@ -52,13 +52,17 @@
 }
 
 - (NSOrderedSet*)rUniqueMeals {
-    static NSString* const krUniqueMealsKey = @"rUniqueMeals";
-    NSOrderedSet* uniqueMeals = objc_getAssociatedObject(self, (__bridge const void *)(krUniqueMealsKey));
-    if (!uniqueMeals) {
-        uniqueMeals = [NSOrderedSet orderedSetWithArray:self.rMeals];
-        objc_setAssociatedObject(self, (__bridge const void *)(krUniqueMealsKey), uniqueMeals, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    static NSString* key;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        key = NSStringFromSelector(_cmd);
+    });
+    id value = objc_getAssociatedObject(self, (__bridge const void *)(key));
+    if (!value) {
+        value = [NSOrderedSet orderedSetWithArray:self.rMeals];
+        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
-    return uniqueMeals;
+    return value;
 }
 
 @end
