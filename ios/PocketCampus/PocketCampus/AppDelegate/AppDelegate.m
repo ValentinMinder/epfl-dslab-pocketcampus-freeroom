@@ -70,7 +70,7 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
     [self.window makeKeyAndVisible];
     
     /* App might have been opened by notification touch */
-    NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    NSDictionary* userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (userInfo) {
         [self application:[UIApplication sharedApplication] didReceiveRemoteNotification:userInfo];
     }

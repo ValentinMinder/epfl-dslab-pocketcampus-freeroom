@@ -74,7 +74,7 @@
         NSLog(@"!! ERROR in objectForKey:andPluginName:nilIfDiffIntervalLargerThan:isCache: : could not read file attributes");
         return nil;
     }
-    NSDate* modifDate = [fileAttributes objectForKey:@"NSFileModificationDate"];
+    NSDate* modifDate = fileAttributes[@"NSFileModificationDate"];
     if ((double)(abs([modifDate timeIntervalSinceNow])) > interval) {
         return nil;
     }

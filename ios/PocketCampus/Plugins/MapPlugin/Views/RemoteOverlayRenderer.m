@@ -54,7 +54,7 @@
         }
         
         NSString* key = [self keyWithMapRect:mapRect andZoomScale:zoomScale];
-        if ([self.tilesCache objectForKey:key]) { //tile has already been downloaded and is in memory
+        if (self.tilesCache[key]) { //tile has already been downloaded and is in memory
             return YES;
         }
         
@@ -89,7 +89,7 @@
             return;
         }
         NSString* key = [self keyWithMapRect:mapRect andZoomScale:zoomScale];
-        UIImage* image = [self.tilesCache objectForKey:key];
+        UIImage* image = self.tilesCache[key];
         
         if (!image) {
             [self canDrawMapRect:mapRect zoomScale:zoomScale];

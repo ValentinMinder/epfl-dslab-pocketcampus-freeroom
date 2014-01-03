@@ -163,7 +163,7 @@
             if (firstConnection.isFeetConnection) {
                 firstConnection = firstTrip.parts[1];
             }
-            TransportConnection* firstConnectionFromResult = [maxLineDirectConnections objectAtIndex:0];
+            TransportConnection* firstConnectionFromResult = maxLineDirectConnections[0];
             if ((firstConnectionFromResult.departureTime/1000.0) < (firstConnection.departureTime/1000.0) + 5.0*60.0) { //returning direct must arrive at most 5 minutes later than the non-direct that arrives the first
                 return maxLineDirectConnections;
             }

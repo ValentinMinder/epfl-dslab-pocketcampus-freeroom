@@ -54,7 +54,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 {
     [super viewDidLoad];
     self.tableView = [[PCTableViewWithRemoteThumbnails alloc] init];
-    ((PCTableViewWithRemoteThumbnails*)(self.tableView)).imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image) {
+    ((PCTableViewWithRemoteThumbnails*)(self.tableView)).imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UIImage* image) {
         return [image imageByScalingAndCroppingForSize:CGSizeMake(106.0, 60.0) applyDeviceScreenMultiplyingFactor:YES];
     };
     self.tableView.rowHeight = 60.0;

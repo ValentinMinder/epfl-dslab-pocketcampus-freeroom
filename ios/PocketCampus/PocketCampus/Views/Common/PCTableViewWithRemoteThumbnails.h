@@ -36,7 +36,7 @@
  * If this block is not NULL, returned image replaces downloaded image. 
  * Default: NULL
  */
-typedef UIImage* (^ImageProcessingBlock)(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image);
+typedef UIImage* (^ImageProcessingBlock)(NSIndexPath* indexPath, UIImage* image);
 @property (nonatomic, copy) ImageProcessingBlock imageProcessingBlock;
 
 @property (nonatomic, strong) UIImage* temporaryImage;

@@ -156,7 +156,7 @@ double WGStoCHy(double lat, double lng) {
              
     }
     
-    return [mapView.annotations objectAtIndex:0]; //otherwise select first one
+    return mapView.annotations[0]; //otherwise select first one
 }
 
 + (NSInteger)levelToSelectForRoomName:(NSString*)roomName {
@@ -297,7 +297,7 @@ double WGStoCHy(double lat, double lng) {
     MKMapPoint points[count]; //C array of MKMapPoint struct
     for( int i=0; i<count; i++ ) //load points C array by converting coordinates to points
     {
-        CLLocationCoordinate2D coordinate = [(id <MKAnnotation>)[annotations objectAtIndex:i] coordinate];
+        CLLocationCoordinate2D coordinate = [(id <MKAnnotation>)annotations[i] coordinate];
         points[i] = MKMapPointForCoordinate(coordinate);
     }
     //create MKMapRect from array of MKMapPoint

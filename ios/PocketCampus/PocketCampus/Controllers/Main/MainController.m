@@ -99,7 +99,7 @@ static MainController<MainControllerPublic>* instance = nil;
     [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
     
     /* If not BACKGROUND_PLUGINS_ENABLED, check that active plugin controller can be released */
-    PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:pluginIdentifierName];
+    PluginController<PluginControllerProtocol>* pluginController = self.pluginsControllers[pluginIdentifierName];
     if (!BACKGROUND_PLUGINS_ENABLED && self.activePluginController == pluginController && [pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
         return NO;
     }
@@ -119,7 +119,7 @@ static MainController<MainControllerPublic>* instance = nil;
 - (BOOL)requestLeavePlugin:(NSString*)pluginIdentifierName {
     [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
     
-    PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:pluginIdentifierName];
+    PluginController<PluginControllerProtocol>* pluginController = self.pluginsControllers[pluginIdentifierName];
     
     if (!pluginController) {
         return YES; //plugin is not allocated and not active => desired effect achieved
@@ -299,7 +299,7 @@ static MainController<MainControllerPublic>* instance = nil;
     
     //Loading plugins list from Plugins.plist
     NSDictionary* plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Plugins" ofType:@"plist"]];
-    NSArray* pluginsFromPlist = [plist objectForKey:@"Plugins"];
+    NSArray* pluginsFromPlist = plist[@"Plugins"];
     NSMutableArray* logicOnlyPluginsListTmp = [NSMutableArray array];
     NSMutableArray* pluginsListTmp = [NSMutableArray arrayWithCapacity:pluginsFromPlist.count];
     NSMutableDictionary* tmpPlistDicForPluginIdentifier = [NSMutableDictionary dictionaryWithCapacity:pluginsFromPlist.count];
@@ -312,9 +312,9 @@ static MainController<MainControllerPublic>* instance = nil;
     
     
     for (NSDictionary* pluginDic in pluginsFromPlist) {
-        NSString* identifierName = [pluginDic objectForKey:@"identifierName"];
+        NSString* identifierName = pluginDic[@"identifierName"];
         
-        BOOL pluginEnabled = [[pluginDic objectForKey:@"enabled"] boolValue];
+        BOOL pluginEnabled = [pluginDic[@"enabled"] boolValue];
         if (pluginsFromServer) { //if server config available, it overrides one from Plugins.plist
             pluginEnabled = [pluginsFromServer containsObject:identifierName];
         }
@@ -334,14 +334,14 @@ static MainController<MainControllerPublic>* instance = nil;
         }
         
         if (pluginEnabled) { //plugin is enabled
-            NSString* idiom = [pluginDic objectForKey:@"supportedIdioms"];
+            NSString* idiom = pluginDic[@"supportedIdioms"];
             if (idiom &&
                 (
                  [idiom isEqualToString:kSupportedIdiomPhonePad]
                  || (isPadIdiom && [idiom isEqualToString:kSupportedIdiomPad])
                  || (!isPadIdiom && [idiom isEqualToString:kSupportedIdiomPhone]))
                 ) {
-                NSNumber* logicOnly = [pluginDic objectForKey:@"logicOnly"];
+                NSNumber* logicOnly = pluginDic[@"logicOnly"];
                 BOOL logicOnlyBool = NO;
                 if (logicOnly && ![logicOnly isKindOfClass:[NSNumber class]]) {
                     NSLog(@"!! ERROR: logicOnly key must be of type BOOL (found %@). Assuming logicOnly = NO.", logicOnly);
@@ -606,7 +606,7 @@ static MainController<MainControllerPublic>* instance = nil;
     
     [self throwExceptionIfPluginIdentifierNameIsNotValid:identifier];
     
-    PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:identifier];
+    PluginController<PluginControllerProtocol>* pluginController = self.pluginsControllers[identifier];
     if (pluginController) { // pluginController was backgrounded
         UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
         [self.revealController setFrontViewController:pluginRootViewController animated:NO]; //check on whether this is already the front one is done in the method implementation

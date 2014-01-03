@@ -16,8 +16,6 @@
 
 static TransportController* instance __weak = nil;
 
-static BOOL settingsAreDirty = NO;
-static NSMutableDictionary* settings = nil;
 
 - (id)init {
     @synchronized(self) {
@@ -56,30 +54,6 @@ static NSMutableDictionary* settings = nil;
 
 + (NSString*)identifierName {
     return @"Transport";
-}
-
-+ (BOOL)saveObjectSetting:(NSObject<NSCoding>*)val forKey:(NSString*)settingKey {
-    @synchronized(self) {
-        if (settings == nil) {
-            settings = [NSMutableDictionary dictionary];
-        }
-        [settings setObject:val forKey:settingKey];
-        settingsAreDirty = YES;
-        return [PCObjectArchiver saveObject:settings forKey:kSettingsKey andPluginName:@"transport"];
-    }
-}
-
-+ (id<NSCoding>)objectSettingForKey:(NSString*)settingKey {
-    @synchronized(self) {
-        if (settings == nil || settingsAreDirty) {
-            settings = (NSMutableDictionary*)[PCObjectArchiver objectForKey:kSettingsKey andPluginName:@"transport"];
-            settingsAreDirty = NO;
-        }
-        if (settings == nil) {
-            return nil;
-        }
-        return [settings objectForKey:settingKey];
-    }
 }
 
 - (void)dealloc

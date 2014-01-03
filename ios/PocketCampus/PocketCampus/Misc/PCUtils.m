@@ -50,11 +50,11 @@
 }
 
 + (NSString*)appVersion {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    return [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
 }
 
 + (NSString*)userLanguageCode {
-    return [[NSLocale preferredLanguages] objectAtIndex:0];
+    return [NSLocale preferredLanguages][0];
 }
 
 + (NSString*)lastUpdateNowString {
@@ -150,8 +150,8 @@
         
         for (NSString* keyValuePair in paramsComponents) {
             NSArray* pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-            NSString* key = [pairComponents objectAtIndex:0];
-            NSString* value = [pairComponents objectAtIndex:1];
+            NSString* key = pairComponents[0];
+            NSString* value = pairComponents[1];
             [queryStringDictionary setObject:value forKey:key];
         }
     }

@@ -28,8 +28,8 @@
 
 + (MainMenuItemCell*)cellWithMainMenuItem:(MainMenuItem*)menuItem reuseIdentifier:(NSString *)reuseIdentifier
 {
-    NSArray* topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"MainMenuItemCell" owner:self options:nil];
-    MainMenuItemCell* instance = [topLevelObjects objectAtIndex:0];
+    NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"MainMenuItemCell" owner:self options:nil];
+    MainMenuItemCell* instance = elements[0];
     instance.menuItem = menuItem;
     instance.reuseIdentifier = reuseIdentifier;
     instance.selectionStyle = UITableViewCellSelectionStyleDefault;

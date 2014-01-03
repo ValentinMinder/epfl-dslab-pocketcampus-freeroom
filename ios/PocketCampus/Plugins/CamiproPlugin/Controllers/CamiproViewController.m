@@ -393,7 +393,7 @@
         self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
         [self.sendMailAlertView show];
         
-        CamiproRequest* mailRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:self.camiproService.camiproSession] iLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]];
+        CamiproRequest* mailRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:self.camiproService.camiproSession] iLanguage:[NSLocale preferredLanguages][0]];
         [self.camiproService sendLoadingInfoByEmail:mailRequest delegate:self];
     } else if (alertView == self.statsAlertView) {
         self.statsAlertView = nil;

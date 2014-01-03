@@ -13,8 +13,4 @@
 
 @interface TransportController : PluginController<PluginControllerProtocol>
 
-/* will aggregate all settings in 1 file */
-+ (BOOL)saveObjectSetting:(NSObject<NSCoding>*)val forKey:(NSString*)settingKey __attribute__((deprecated));
-+ (id<NSCoding>)objectSettingForKey:(NSString*)settingKey __attribute__((deprecated));
-
 @end

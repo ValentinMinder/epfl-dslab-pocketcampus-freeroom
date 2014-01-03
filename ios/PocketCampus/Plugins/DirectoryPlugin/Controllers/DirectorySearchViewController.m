@@ -92,7 +92,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
     }
     CGFloat rowHeight = self.tableView.rowHeight;
     self.tableView.temporaryImage = [UIImage imageNamed:@"DirectoryEmptyPictureSmall"];
-    self.tableView.imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image) {
+    self.tableView.imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UIImage* image) {
         //cell.imageView.layer.cornerRadius = (int)(rowHeight / 2.0);
         return [image imageByScalingAndCroppingForSize:CGSizeMake(rowHeight, rowHeight) applyDeviceScreenMultiplyingFactor:YES];
     };
@@ -380,7 +380,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.resultsMode == ResultsModeSearch) {
-        Person* person = [self.searchResults objectAtIndex:indexPath.row];
+        Person* person = self.searchResults[indexPath.row];
         if (self.splitViewController && [person.sciper isEqualToString:self.displayedPerson.sciper]) { //isEqual not implemented in Thrift
             [self.personViewController.navigationController popToRootViewControllerAnimated:YES]; //return to contact info if in map for example
             return;
@@ -417,7 +417,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
             cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         }
         /* Remove secondary first names */
-        Person* person = [self.searchResults objectAtIndex:indexPath.row];
+        Person* person = self.searchResults[indexPath.row];
         NSString* firstNameOnly = person.firstName;
         NSArray* elems = [firstNameOnly componentsSeparatedByString:@" "];
         firstNameOnly = elems[0];
@@ -444,7 +444,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
         } else {
             [(UIActivityIndicatorView*)(newCell.accessoryView) stopAnimating];
         }
-        newCell.textLabel.text = [self.recentSearches objectAtIndex:indexPath.row];
+        newCell.textLabel.text = self.recentSearches[indexPath.row];
         return newCell;
     } else {
         //Unsupported mode

@@ -153,7 +153,7 @@ static NSString* const kEventCell = @"EventCell";
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromCurrentData) name:kEventsFavoritesEventItemsUpdatedNotification object:self.eventsService];
     self.tableView = [[PCTableViewWithRemoteThumbnails alloc] init];
-    ((PCTableViewWithRemoteThumbnails*)(self.tableView)).imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UITableViewCell* cell, UIImage* image) {
+    ((PCTableViewWithRemoteThumbnails*)(self.tableView)).imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UIImage* image) {
         return [image imageByScalingAndCroppingForSize:CGSizeMake([EventItemCell preferredHeight], [EventItemCell preferredHeight]) applyDeviceScreenMultiplyingFactor:YES];
     };
     self.tableView.rowHeight = [EventItemCell preferredHeight];
@@ -594,7 +594,7 @@ static NSString* const kEventCell = @"EventCell";
 
 - (void)imagePickerController:(UIImagePickerController*)reader didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
-    id<NSFastEnumeration> results = [info objectForKey: ZBarReaderControllerResults];
+    id<NSFastEnumeration> results = info[ZBarReaderControllerResults];
     ZBarSymbol *symbol = nil;
     for(symbol in results)
         //just grab the first barcode

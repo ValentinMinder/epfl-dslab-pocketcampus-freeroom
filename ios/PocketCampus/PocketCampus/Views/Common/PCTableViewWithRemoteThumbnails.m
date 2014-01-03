@@ -42,7 +42,7 @@
         self.cachedRawImageForUrlString = [NSCache new];
         self.failedThumbsIndexPaths = [NSMutableSet set];
         
-        PCTableViewWithRemoteThumbnails* weakSelf __weak = self;
+        __weak __typeof(self) weakSelf = self;
         self.reachabilityManager = [AFNetworkReachabilityManager managerForDomain:@"google.com"];
         [self.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
             if (status > 0 && weakSelf.failedThumbsIndexPaths.count > 0) { //means internet reachable
@@ -76,65 +76,72 @@
         }
         [self.urlForIndexPath removeObjectForKey:indexPath];
         [self imageViewForCell:cell].image = self.temporaryImage; //Generic image sign
-        return;
-    }
-    
-    [self imageViewForCell:cell].image = nil; //prevent ghosts (previous image visible when recycling cell)
-    
-    self.urlForIndexPath[indexPath] = url;
-    
-    if ([self.cachedImageForUrlString objectForKey:url.absoluteString]) {
-        [self imageViewForCell:cell].image = [self.cachedImageForUrlString objectForKey:url.absoluteString];
         [cell layoutSubviews];
         return;
     }
     
-    [self imageViewForCell:cell].image = self.temporaryImage; //Temporary thumbnail until image is loaded
-    AFHTTPRequestOperation* prevOperation = self.operationForIndexPath[indexPath];
+    if (self.cachedImageForUrlString[url.absoluteString]) {
+        self.urlForIndexPath[indexPath] = url;
+        [self imageViewForCell:cell].image = self.cachedImageForUrlString[url.absoluteString];
+        [cell layoutSubviews];
+        return;
+    }
     
-    if (prevOperation) {
+    self.urlForIndexPath[indexPath] = url;
+    
+    AFHTTPRequestOperation* prevOperation = self.operationForIndexPath[indexPath];
+    if ([prevOperation.request.URL.absoluteString isEqualToString:url.absoluteString]) {
+        //no need to start new request, just wait that current finishes
+        //just make sure operation has correct priority
+        [self manageOperationsPriority];
+        return;
+    } else {
+        //need to start a new request as no current or with different URL
+        [prevOperation setCompletionBlockWithSuccess:NULL failure:NULL];
         [prevOperation cancel];
         [self.operationForIndexPath removeObjectForKey:indexPath];
     }
     
+    [self imageViewForCell:cell].image = self.temporaryImage; //Temporary thumbnail until image is loaded
+    
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0]; //do not overload network with thumbnails that fail to loa
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    self.operationForIndexPath[indexPath] = operation;
     operation.responseSerializer = [AFImageResponseSerializer serializer];
     __weak __typeof(self) weakSelf = self;
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, UIImage* image) {
         [weakSelf.operationForIndexPath removeObjectForKey:indexPath];
         [weakSelf.failedThumbsIndexPaths removeObject:indexPath];
         if (image) {
-            [weakSelf processAndSetImage:image forCell:cell atIndexPath:indexPath url:url];
+            [weakSelf processAndSetImage:image atIndexPath:indexPath url:url];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [weakSelf.operationForIndexPath removeObjectForKey:indexPath];
         [weakSelf.failedThumbsIndexPaths addObject:indexPath];
     }];
+    [self manageOperationsPriority];
     [self.operationQueue addOperation:operation];
 }
 
 - (UIImage*)cachedImageAtIndexPath:(NSIndexPath*)indexPath {
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     NSURL* url = self.urlForIndexPath[indexPath];
-    return [self.cachedImageForUrlString objectForKey:url.absoluteString];
+    return self.cachedImageForUrlString[url.absoluteString];
 }
 
 - (UIImage*)cachedRawImageAtIndexPath:(NSIndexPath*)indexPath {
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     NSURL* url = self.urlForIndexPath[indexPath];
-    return [self.cachedRawImageForUrlString objectForKey:url.absoluteString];
+    return self.cachedRawImageForUrlString[url.absoluteString];
 }
 
 #pragma mark - Private methods
 
-- (void)processAndSetImage:(UIImage*)image_ forCell:(UITableViewCell*)cell_ atIndexPath:(NSIndexPath*)indexPath_ url:(NSURL*)url_ {
+- (void)processAndSetImage:(UIImage*)image_ atIndexPath:(NSIndexPath*)indexPath_ url:(NSURL*)url_ {
     [PCUtils throwExceptionIfObject:image_ notKindOfClass:[UIImage class]];
-    [PCUtils throwExceptionIfObject:cell_ notKindOfClass:[UITableViewCell class]];
     [PCUtils throwExceptionIfObject:indexPath_ notKindOfClass:[NSIndexPath class]];
     [PCUtils throwExceptionIfObject:url_ notKindOfClass:[NSURL class]];
     UIImage* image __block = image_;
-    UITableViewCell* cell __block = cell_;
     NSIndexPath* indexPath __block = indexPath_;
     NSURL* url __block = url_;
     PCTableViewWithRemoteThumbnails* weakSelf __weak = self;
@@ -147,7 +154,7 @@
         }
         UIImage* rawImage = image;
         if (weakSelf.imageProcessingBlock) {
-            image = weakSelf.imageProcessingBlock(indexPath, cell, image);
+            image = weakSelf.imageProcessingBlock(indexPath, image);
         }
         if (!weakSelf) {
             return;
@@ -156,13 +163,22 @@
             if (!weakSelf) {
                 return;
             }
-            [weakSelf.cachedImageForUrlString setObject:image forKey:url.absoluteString];
-            [weakSelf.cachedRawImageForUrlString setObject:rawImage forKey:url.absoluteString];
-            
+            weakSelf.cachedImageForUrlString[url.absoluteString] = image;
+            weakSelf.cachedRawImageForUrlString[url.absoluteString] = rawImage;
+            UITableViewCell* cell = [weakSelf cellForRowAtIndexPath:indexPath];
             [weakSelf imageViewForCell:cell].image = image;
             [cell layoutSubviews];
         });
     });
+}
+
+- (void)manageOperationsPriority {
+    NSSet* visibleIndexPaths = [NSSet setWithArray:self.indexPathsForVisibleRows];
+    NSArray* allIndexPaths = [self.operationForIndexPath allKeys];
+    for (NSIndexPath* indexPath in allIndexPaths) {
+        NSOperation* operation = self.operationForIndexPath[indexPath];
+        operation.queuePriority = [visibleIndexPaths containsObject:indexPath] ? NSOperationQueuePriorityHigh : NSOperationQueuePriorityLow;
+    }
 }
 
 - (UIImageView*)imageViewForCell:(UITableViewCell*)cell {

@@ -234,7 +234,7 @@ static const int kPluginsSection = 0;
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MainMenuItem* menuItem = self.menuItems[indexPath.row];
-    MainMenuItemCell* cell = [self.cellForIndexPath objectForKey:indexPath];
+    MainMenuItemCell* cell = self.cellForIndexPath[indexPath];
     if (!cell) {
         cell = [MainMenuItemCell cellWithMainMenuItem:menuItem reuseIdentifier:kMenuItemButtonIdentifier];
         self.cellForIndexPath[indexPath] = cell;
