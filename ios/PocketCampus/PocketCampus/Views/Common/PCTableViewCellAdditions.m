@@ -131,7 +131,7 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     CGFloat preferredHeight = totalHeight * 1.0f;
     CGFloat minHeight = [self minHeightForCurrentPreferredContentSizeCategory];
     preferredHeight = preferredHeight < minHeight ? minHeight : preferredHeight;
-    preferredHeight = (CGFloat)((int)preferredHeight);
+    preferredHeight = floorf(preferredHeight);
     return preferredHeight;
 }
 
@@ -256,7 +256,7 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
         } else {
             coefficient = 1.0; //Default
         }
-        height = kCellHeightForDefaultPreferredContentSizeCategory * coefficient;
+        height = floorf(kCellHeightForDefaultPreferredContentSizeCategory * coefficient);
     }
     return height;
 }

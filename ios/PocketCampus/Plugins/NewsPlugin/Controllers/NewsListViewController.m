@@ -22,6 +22,7 @@
 
 #import "UIImage+Additions.h"
 
+static NSString* kCellTextLabelTextStyle;
 
 @interface NewsListViewController ()<NewsServiceDelegate>
 
@@ -40,6 +41,10 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            kCellTextLabelTextStyle = UIFontTextStyleFootnote;
+        });
         self.newsService = [NewsService sharedInstanceToRetain];
         NSArray* newsItems = [self.newsService getFromCacheNewsItemsForLanguage:[PCUtils userLanguageCode]];
         if (newsItems) {
@@ -54,10 +59,11 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 {
     [super viewDidLoad];
     self.tableView = [[PCTableViewWithRemoteThumbnails alloc] init];
+    CGFloat rowHeight = floorf([PCTableViewCellAdditions preferredHeightForStyle:UITableViewCellStyleDefault textLabelTextStyle:kCellTextLabelTextStyle detailTextLabelTextStyle:nil]*1.35);
     ((PCTableViewWithRemoteThumbnails*)(self.tableView)).imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UIImage* image) {
-        return [image imageByScalingAndCroppingForSize:CGSizeMake(106.0, 60.0) applyDeviceScreenMultiplyingFactor:YES];
+        return [image imageByScalingAndCroppingForSize:CGSizeMake(106.0, rowHeight) applyDeviceScreenMultiplyingFactor:YES];
     };
-    self.tableView.rowHeight = 60.0;
+    self.tableView.rowHeight = rowHeight;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"news" dataName:@"newsList"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
@@ -190,9 +196,9 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:13.0];
+        UIFont* font = [UIFont preferredFontForTextStyle:kCellTextLabelTextStyle];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:font.pointSize];
         cell.textLabel.numberOfLines = 3;
-        //cell.textLabel.adjustsFontSizeToFitWidth = YES;
         cell.imageView.backgroundColor = [UIColor clearColor];
         if (![PCUtils isIdiomPad]) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
