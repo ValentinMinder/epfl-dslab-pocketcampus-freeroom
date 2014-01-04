@@ -10,10 +10,6 @@
 
 #import "MapController.h"
 
-#import "PCObjectArchiver.h"
-
-#import "PCUtils.h"
-
 #import "DirectoryEmptyDetailViewController.h"
 
 #import "PCRecentResultTableViewCell.h"
@@ -26,7 +22,7 @@
 
 #import "DirectoryService.h"
 
-#import "PCTableViewAdditions.h"
+#import "DirectoryPersonCell.h"
 
 typedef enum {
     ResutlsModeNotStarted = 0,
@@ -90,11 +86,17 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
     if ([PCUtils isIdiomPad]) {
         self.backgroundIconCenterYConstraint.constant = 130.0;
     }
-    CGFloat rowHeight = self.tableView.rowHeight;
     self.tableView.temporaryImage = [UIImage imageNamed:@"DirectoryEmptyPictureSmall"];
     self.tableView.imageProcessingBlock = ^UIImage*(PCTableViewAdditions* tableView, NSIndexPath* indexPath, UIImage* image) {
-        //cell.imageView.layer.cornerRadius = (int)(rowHeight / 2.0);
-        return [image imageByScalingAndCroppingForSize:CGSizeMake(rowHeight, rowHeight) applyDeviceScreenMultiplyingFactor:YES];
+        CGFloat rowHeight = tableView.rowHeightBlock(tableView);
+        image = [image imageByScalingAndCroppingForSize:CGSizeMake(rowHeight, rowHeight) applyDeviceScreenMultiplyingFactor:YES];
+        return image;
+    };
+    self.tableView.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        if ([[UIApplication sharedApplication].preferredContentSizeCategory isEqualToString:UIContentSizeCategoryLarge]) { //Default
+            return 50.0; //Because cell images are adapted for that size. This is common case.
+        }
+        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle];
     };
     self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length+self.searchBar.frame.size.height, 0.0, 0.0, 0.0);
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
@@ -194,10 +196,9 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 }
 
 - (void)putPersonAtTopOfRecentSearches:(Person*)person {
-    NSString* firstLast = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
-    NSUInteger currentIndex = [self.recentSearches indexOfObject:firstLast];
+    NSUInteger currentIndex = [self.recentSearches indexOfObject:person.firstnameLastname];
     if (currentIndex == NSNotFound) { //this stupid logic needs to be done because there is no way to do in one step: add the object to top if it's not in the set already or move it if it is.
-        [self.recentSearches insertObject:firstLast atIndex:0]; // adding to top (works only if object not in set)
+        [self.recentSearches insertObject:person.firstnameLastname atIndex:0]; // adding to top (works only if object not in set)
     } else {
         [self.recentSearches moveObjectsAtIndexes:[NSIndexSet indexSetWithIndex:currentIndex] toIndex:0]; //moving to top
     }
@@ -409,47 +410,45 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 
 #pragma mark - UITableViewDataSource
 
-- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.resultsMode == ResultsModeSearch) {
-        UITableViewCell* cell =  [self.tableView dequeueReusableCellWithIdentifier:kSearchResultCellIdentifier];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSearchResultCellIdentifier];
-            cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    PCTableViewCellAdditions* cell = nil;
+    switch (self.resultsMode) {
+        case ResultsModeSearch:
+        {
+            NSString* const identifier = [self.tableView autoInvalidatingReuseIdentifierForIdentifier:@"SearchResultCell"];
+            cell =  [self.tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[DirectoryPersonCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+                cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellEditingStyleNone : UITableViewCellAccessoryDisclosureIndicator;
+                cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
+                cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle];
+                cell.detailTextLabel.textColor = [UIColor grayColor];
+            }
+            Person* person = self.searchResults[indexPath.row];
+            cell.textLabel.text = person.firstnameLastname;
+            cell.detailTextLabel.text = person.organizationsString;
+            [self.tableView setImageURL:[NSURL URLWithString:person.pictureUrl] forCell:cell atIndexPath:indexPath];
+            break;
         }
-        /* Remove secondary first names */
-        Person* person = self.searchResults[indexPath.row];
-        NSString* firstNameOnly = person.firstName;
-        NSArray* elems = [firstNameOnly componentsSeparatedByString:@" "];
-        firstNameOnly = elems[0];
-        
-        NSString* firstLastName = [NSString stringWithFormat:@"%@ %@", firstNameOnly, person.lastName];
-        
-        static NSInteger maxNbChars = 17;
-        if (firstLastName.length > maxNbChars) { //prevent textLabel hiding detailTextLabel
-            firstLastName = [firstLastName stringByReplacingCharactersInRange:NSMakeRange(maxNbChars, firstLastName.length-maxNbChars) withString:@"..."];
+        case ResultsModeRecentSearches:
+        {
+            NSString* const identifier = [self.tableView autoInvalidatingReuseIdentifierForIdentifier:@"RecentSearchCell"];
+            cell =  [self.tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[PCRecentResultTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellEditingStyleNone : UITableViewCellAccessoryDisclosureIndicator;
+                cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
+                cell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            } else {
+                [(UIActivityIndicatorView*)(cell.accessoryView) stopAnimating];
+            }
+            cell.textLabel.text = self.recentSearches[indexPath.row];
+            break;
         }
-        
-        [self.tableView setImageURL:[NSURL URLWithString:person.pictureUrl] forCell:cell atIndexPath:indexPath];
-        cell.textLabel.text = firstLastName;
-        cell.detailTextLabel.text = [person.organisationalUnits firstObject];
-        
-        return cell;
-        
-    } else if (self.resultsMode == ResultsModeRecentSearches) {
-        PCRecentResultTableViewCell* newCell =  [self.tableView dequeueReusableCellWithIdentifier:kRecentSearchCellIdentifier];
-        if (newCell == nil) {
-            newCell = [[PCRecentResultTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRecentSearchCellIdentifier];
-            newCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-            newCell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        } else {
-            [(UIActivityIndicatorView*)(newCell.accessoryView) stopAnimating];
-        }
-        newCell.textLabel.text = self.recentSearches[indexPath.row];
-        return newCell;
-    } else {
-        //Unsupported mode
+        default:
+            break;
     }
-    return nil;
+    return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

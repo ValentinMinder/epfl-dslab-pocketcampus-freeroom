@@ -654,6 +654,7 @@
 		32B8927E15458BA10058E472 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927D15458BA10058E472 /* SystemConfiguration.framework */; };
 		32B8928015458BAB0058E472 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927F15458BAB0058E472 /* MobileCoreServices.framework */; };
 		32B8928215458BD70058E472 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8928115458BD70058E472 /* libz.dylib */; };
+		32B956231878BA60003B9330 /* DirectoryPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B956221878BA60003B9330 /* DirectoryPersonCell.m */; };
 		32BA30711645D31A00909D82 /* PCCenterMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30701645D31A00909D82 /* PCCenterMessageCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32BBA918187454A600B2A7D3 /* UILabel+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BBA917187454A600B2A7D3 /* UILabel+Additions.m */; };
 		32C450AE18241364000C99A3 /* FoodMealCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C450AD18241364000C99A3 /* FoodMealCell.m */; };
@@ -1163,6 +1164,8 @@
 		32B8927D15458BA10058E472 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		32B8927F15458BAB0058E472 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		32B8928115458BD70058E472 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		32B956211878BA60003B9330 /* DirectoryPersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryPersonCell.h; sourceTree = "<group>"; };
+		32B956221878BA60003B9330 /* DirectoryPersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryPersonCell.m; sourceTree = "<group>"; };
 		32BA306F1645D31900909D82 /* PCCenterMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCCenterMessageCell.h; sourceTree = "<group>"; };
 		32BA30701645D31A00909D82 /* PCCenterMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCCenterMessageCell.m; sourceTree = "<group>"; };
 		32BBA916187454A600B2A7D3 /* UILabel+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Additions.h"; sourceTree = "<group>"; };
@@ -2445,6 +2448,8 @@
 				32FAC0FF1500F4F100925180 /* Images */,
 				32FAC0F41500F40700925180 /* DirectorySearchView.xib */,
 				32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */,
+				32B956211878BA60003B9330 /* DirectoryPersonCell.h */,
+				32B956221878BA60003B9330 /* DirectoryPersonCell.m */,
 				32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */,
 				3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */,
 				3247495117F33E3400698A9D /* DirectoryPersonBaseInfoCell.h */,
@@ -3534,6 +3539,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B956231878BA60003B9330 /* DirectoryPersonCell.m in Sources */,
 				3219EF5D14FCDE4900A271CD /* main.m in Sources */,
 				328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */,
 				32930AAD17F898910025F864 /* TSocketServer.m in Sources */,

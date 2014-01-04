@@ -134,8 +134,8 @@
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     
     if (!url) {
-        NSURL* url = self.urlForIndexPath[indexPath];
-        if (url) {
+        NSURL* prevURL = self.urlForIndexPath[indexPath];
+        if (prevURL) {
             [self.cachedImageForUrlString removeObjectForKey:url];
             [self.cachedRawImageForUrlString removeObjectForKey:url];
         }

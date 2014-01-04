@@ -12,7 +12,15 @@
 
 @interface Person (Extras)
 
+/*
+ * Returns full "Firstname(s) Lastname"
+ */
 @property (nonatomic, readonly) NSString* fullFirstnameLastname;
+
+/*
+ * Returns "Firstname Lastname", taking only the first firstname if there are more than one
+ */
+@property (nonatomic, readonly) NSString* firstnameLastname;
 
 @property (nonatomic, readonly) NSString* organizationsString;
 

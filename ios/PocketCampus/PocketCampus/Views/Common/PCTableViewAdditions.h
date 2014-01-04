@@ -14,6 +14,8 @@
 
 - (void)setImageURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
+@property (nonatomic, strong) UIImage* temporaryImage;
+
 /*
  * If image as been downloaded, returns it, nil otherwise.
  * If imageProcessingBlock is not NULL, this method returns the processed image.
@@ -43,8 +45,6 @@
  */
 typedef UIImage* (^ImageProcessingBlock)(PCTableViewAdditions* tableView, NSIndexPath* indexPath, UIImage* image);
 @property (nonatomic, copy) ImageProcessingBlock imageProcessingBlock;
-
-@property (nonatomic, strong) UIImage* temporaryImage;
 
 #pragma mark - Content size updates
 

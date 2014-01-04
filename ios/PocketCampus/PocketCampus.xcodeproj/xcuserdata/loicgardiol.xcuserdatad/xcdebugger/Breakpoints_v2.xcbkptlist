@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-            timestampString = "404831746.425874"
+            timestampString = "410568780.129061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "@implementation DirectorySearchViewController"
             landmarkType = "3">
             <Actions>
@@ -211,11 +211,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-            timestampString = "404831746.425874"
+            timestampString = "410568780.129061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
             landmarkName = "-startSearchRequest"
             landmarkType = "5">
             <Actions>
@@ -236,11 +236,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-            timestampString = "404831746.425874"
+            timestampString = "410568780.129061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "246"
-            endingLineNumber = "246"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
             landmarkName = "-searchBar:textDidChange:"
             landmarkType = "5">
             <Actions>
@@ -2316,11 +2316,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-            timestampString = "404831746.425874"
+            timestampString = "410568780.129061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "359"
-            endingLineNumber = "359"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
             landmarkName = "-serviceConnectionToServerFailed"
             landmarkType = "5">
          </BreakpointContent>
@@ -2592,11 +2592,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-            timestampString = "404831746.425874"
+            timestampString = "410568780.129061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
             landmarkName = "-didEnterForeground"
             landmarkType = "5">
             <Actions>
@@ -2617,11 +2617,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-            timestampString = "404831746.425874"
+            timestampString = "410568780.129061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "-willLoseForeground"
             landmarkType = "5">
             <Actions>
@@ -2955,11 +2955,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-            timestampString = "404831746.425874"
+            timestampString = "410568780.129061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "399"
-            endingLineNumber = "399"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
             <Actions>
@@ -3208,11 +3208,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-            timestampString = "404831746.425874"
+            timestampString = "410568780.129061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "242"
-            endingLineNumber = "242"
+            startingLineNumber = "243"
+            endingLineNumber = "243"
             landmarkName = "-searchBar:textDidChange:"
             landmarkType = "5">
             <Actions>
@@ -4276,11 +4276,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-            timestampString = "404831746.425874"
+            timestampString = "410568780.129061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "379"
-            endingLineNumber = "379"
+            startingLineNumber = "380"
+            endingLineNumber = "380"
             landmarkName = "@implementation DirectorySearchViewController"
             landmarkType = "3">
          </BreakpointContent>

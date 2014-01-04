@@ -11,15 +11,14 @@
 @implementation Person (Extras)
 
 - (NSString*)fullFirstnameLastname {
-    if (self.firstName && self.lastName) {
-        return [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName];
-    } else if (self.firstName) {
-        return self.firstName;
-    } else if (self.lastName) {
-        return self.lastName;
-    } else {
-        return @"";
-    }
+    return [self firstnameLastnameWithFirstName:self.firstName];
+}
+
+- (NSString*)firstnameLastname {
+    NSString* firstNameOnly = self.firstName;
+    NSArray* elems = [firstNameOnly componentsSeparatedByString:@" "];
+    firstNameOnly = [elems firstObject];
+    return [self firstnameLastnameWithFirstName:firstNameOnly];
 }
 
 - (NSString*)organizationsString {
@@ -214,6 +213,20 @@
 	}
     
     return (error == NULL);
+}
+
+#pragma mark - Private methods
+
+- (NSString*)firstnameLastnameWithFirstName:(NSString*)firstname {
+    if (firstname && self.lastName) {
+        return [NSString stringWithFormat:@"%@ %@", firstname, self.lastName];
+    } else if (firstname) {
+        return firstname;
+    } else if (self.lastName) {
+        return self.lastName;
+    } else {
+        return @"";
+    }
 }
 
 @end
