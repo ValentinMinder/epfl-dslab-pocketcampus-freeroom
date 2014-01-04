@@ -24,7 +24,7 @@
 
 #import "EventItemViewController.h"
 
-#import "PCTableViewWithRemoteThumbnails.h"
+#import "PCTableViewAdditions.h"
 
 #import "EventItem+Additions.h"
 
@@ -152,11 +152,15 @@ static NSString* const kEventCell = @"EventCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromCurrentData) name:kEventsFavoritesEventItemsUpdatedNotification object:self.eventsService];
-    self.tableView = [[PCTableViewWithRemoteThumbnails alloc] init];
-    ((PCTableViewWithRemoteThumbnails*)(self.tableView)).imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UIImage* image) {
+    self.tableView = [[PCTableViewAdditions alloc] init];
+    PCTableViewAdditions* tableViewAdditions = ((PCTableViewAdditions*)(self.tableView));
+    tableViewAdditions.imageProcessingBlock = ^UIImage*(PCTableViewAdditions* tableView, NSIndexPath* indexPath, UIImage* image) {
         return [image imageByScalingAndCroppingForSize:CGSizeMake([EventItemCell preferredHeight], [EventItemCell preferredHeight]) applyDeviceScreenMultiplyingFactor:YES];
     };
-    self.tableView.rowHeight = [EventItemCell preferredHeight];
+    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return [EventItemCell preferredHeight];
+    };
+    
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"events" dataName:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     [self showButtonsConditionally];
@@ -792,7 +796,7 @@ static NSString* const kEventCell = @"EventCell";
     
     cell.eventItem = eventItem;
     
-    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setImageURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
+    [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
     
     return cell;
 }

@@ -28,6 +28,7 @@
     #import "LGRefreshControl+PCAdditions.h"
     #import "UIImage+Additions.h"
     #import "NSTimer+Blocks.h"
+    #import "PCTableViewAdditions.h"
     #import "PCTableViewCellAdditions.h"
 
 #endif

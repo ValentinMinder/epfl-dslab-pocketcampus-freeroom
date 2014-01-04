@@ -26,7 +26,7 @@
 
 #import "DirectoryService.h"
 
-#import "PCTableViewWithRemoteThumbnails.h"
+#import "PCTableViewAdditions.h"
 
 typedef enum {
     ResutlsModeNotStarted = 0,
@@ -50,7 +50,7 @@ typedef enum {
 
 @property (nonatomic, strong) IBOutlet UISearchBar* searchBar;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* barActivityIndicator;
-@property (nonatomic, strong) IBOutlet PCTableViewWithRemoteThumbnails* tableView;
+@property (nonatomic, strong) IBOutlet PCTableViewAdditions* tableView;
 @property (nonatomic, strong) IBOutlet UILabel* messageLabel;
 @property (nonatomic, strong) IBOutlet UIImageView* backgroundIcon;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* backgroundIconCenterYConstraint;
@@ -92,7 +92,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
     }
     CGFloat rowHeight = self.tableView.rowHeight;
     self.tableView.temporaryImage = [UIImage imageNamed:@"DirectoryEmptyPictureSmall"];
-    self.tableView.imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UIImage* image) {
+    self.tableView.imageProcessingBlock = ^UIImage*(PCTableViewAdditions* tableView, NSIndexPath* indexPath, UIImage* image) {
         //cell.imageView.layer.cornerRadius = (int)(rowHeight / 2.0);
         return [image imageByScalingAndCroppingForSize:CGSizeMake(rowHeight, rowHeight) applyDeviceScreenMultiplyingFactor:YES];
     };

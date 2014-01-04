@@ -228,25 +228,24 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
 }
 
 + (CGFloat)minHeightForCurrentPreferredContentSizeCategory {
-    
     static CGFloat height = 0.0;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification object:[UIApplication sharedApplication] queue:nil usingBlock:^(NSNotification *note) {
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
             height = 0.0;
         }];
     });
     if (height == 0.0) {
         CGFloat coefficient;
         NSString* contentSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
-        if ([contentSize isEqualToString:UIContentSizeCategoryExtraSmall]) {
+        if ([contentSize isEqualToString:UIContentSizeCategoryLarge]) { //Default => common case first
+            coefficient = 1.0;
+        } else if ([contentSize isEqualToString:UIContentSizeCategoryExtraSmall]) {
             coefficient = 0.78;
         } else if ([contentSize isEqualToString:UIContentSizeCategorySmall]) {
             coefficient = 0.85;
         } else if ([contentSize isEqualToString:UIContentSizeCategoryMedium]) {
             coefficient = 0.92;
-        } else if ([contentSize isEqualToString:UIContentSizeCategoryLarge]) { //Default
-            coefficient = 1.0;
         } else if ([contentSize isEqualToString:UIContentSizeCategoryExtraLarge]) {
             coefficient = 1.08;
         } else if ([contentSize isEqualToString:UIContentSizeCategoryExtraExtraLarge]) {

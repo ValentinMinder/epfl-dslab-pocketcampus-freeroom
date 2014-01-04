@@ -13,7 +13,7 @@
 
 @interface TransportAddStationViewController ()<TransportServiceDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) IBOutlet UITableView* tableView;
+@property (nonatomic, strong) IBOutlet PCTableViewAdditions* tableView;
 @property (nonatomic, strong) IBOutlet UILabel* messageLabel;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* barActivityIndicator;
 @property (nonatomic, strong) IBOutlet UISearchBar* searchBar;
@@ -46,7 +46,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView.rowHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle];
+    self.tableView.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle];
+    };
     self.tableView.contentInset = UIEdgeInsetsMake(64.0+self.searchBar.frame.size.height, 0, 0, 0);
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
@@ -181,9 +183,9 @@
 
 #pragma mark - UITableViewDataSource
 
-- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TransportStation* station = self.stations[indexPath.row];
-    static NSString* const identifier = @"StationNameAutocompleteCell";
+    NSString* const identifier = [self.tableView autoInvalidatingReuseIdentifierForIdentifier:@"StationNameAutocompleteCell"];
     UITableViewCell* cell =  [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];

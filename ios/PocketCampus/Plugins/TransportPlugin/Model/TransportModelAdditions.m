@@ -17,7 +17,6 @@ static NSCache* shortNameForTransportStationName;
 - (NSString*)shortName {
     shortNameForTransportStationName = shortNameForTransportStationName ?: [NSCache new];
     if (!shortNameForTransportStationName[self.name]) {
-        NSLog(@"Computing for %@", self.name);
         shortNameForTransportStationName[self.name] = [self computeShortName];
     }
     return shortNameForTransportStationName[self.name];

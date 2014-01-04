@@ -73,12 +73,22 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]]];
-    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     
-    CGFloat cellHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle]*1.2;
+    PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
+    self.tableView = tableViewAdditions;
     
-    self.tableView.rowHeight = cellHeight;
+    RowHeightBlock rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return floorf([PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle]*1.2);
+    };
+    tableViewAdditions.rowHeightBlock = rowHeightBlock;
+    __weak __typeof(self) weakSelf = self;
+    tableViewAdditions.contentSizeCategoryDidChangeBlock = ^(PCTableViewAdditions* tableView) {
+        //need to do it manually because UISearchDisplayController does not support using a custom table view (PCTableViewAdditions in this case)
+        weakSelf.searchDisplayController.searchResultsTableView.rowHeight = tableView.rowHeightBlock(tableView);
+        [weakSelf fillCellsFromSections];
+        [weakSelf.searchDisplayController.searchResultsTableView reloadData];
+    };
+
     self.tableView.allowsMultipleSelection = NO;
     
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0.0)];
@@ -94,8 +104,11 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     self.searchController.searchResultsDelegate = self;
     self.searchController.searchResultsDataSource = self;
     self.searchController.delegate = self;
-    self.searchController.searchResultsTableView.rowHeight = cellHeight;
+    self.searchController.searchResultsTableView.rowHeight = rowHeightBlock(tableViewAdditions);
     self.searchController.searchResultsTableView.allowsMultipleSelection = NO;
+    
+    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]]];
+    [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     
     [self showToggleButtonIfPossible];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteMoodleResourcesUpdated:) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
@@ -223,10 +236,12 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
             
             cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
+            cell.textLabel.minimumScaleFactor = 0.9;
             cell.textLabel.text = resource.iName;
             
             cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle];
             cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
+            cell.detailTextLabel.minimumScaleFactor = 0.9;
             cell.detailTextLabel.text = resource.filename;
             
             cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;

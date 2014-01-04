@@ -22,7 +22,7 @@
 
 #import "PCURLSchemeHandler.h"
 
-#import "PCTableViewWithRemoteThumbnails.h"
+#import "PCTableViewAdditions.h"
 
 #import "ZBarSDK.h"
 
@@ -389,7 +389,7 @@ static NSString* const kPoolCell = @"PoolCell";
         }
     }
     
-    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setImageURL:[NSURL URLWithString:eventPool.poolPicture] forCell:cell atIndexPath:indexPath];
+    [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:eventPool.poolPicture] forCell:cell atIndexPath:indexPath];
     
     return cell;
 }

@@ -135,7 +135,7 @@
 		2723013D1858CEB900B72F5E /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF6F16E27357002CBEA2 /* UIImage+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2723013E1858CEB900B72F5E /* TNSStreamTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A9C17F898910025F864 /* TNSStreamTransport.m */; };
 		2723013F1858CEB900B72F5E /* PCURLSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 321CCF9D16E3B537002CBEA2 /* PCURLSchemeHandler.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		272301401858CEB900B72F5E /* PCTableViewWithRemoteThumbnails.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		272301401858CEB900B72F5E /* PCTableViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301411858CEB900B72F5E /* PCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B1D9E217F08E1D000CC209 /* PCNavigationController.m */; };
 		272301421858CEB900B72F5E /* EventsCategorySelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272301431858CEB900B72F5E /* EventsSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -512,7 +512,7 @@
 		325C47AB1621D8FC006752B4 /* MainMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */; };
 		325C47AE1621E91A006752B4 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325C47AD1621E91A006752B4 /* MainController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		325C47B4162200E8006752B4 /* BlankPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325C47B3162200E8006752B4 /* BlankPluginView.xib */; };
-		32617BCE16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32675C2415F50F4A00880387 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32675C2315F50F4A00880387 /* Config.plist */; };
 		326B9250150279E900DB4AEE /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B924F150279E900DB4AEE /* AddressBookUI.framework */; };
@@ -955,8 +955,8 @@
 		325C47AC1621E91A006752B4 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MainController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		325C47AD1621E91A006752B4 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MainController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		325C47B3162200E8006752B4 /* BlankPluginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BlankPluginView.xib; sourceTree = "<group>"; };
-		32617BCC16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCTableViewWithRemoteThumbnails.h; sourceTree = "<group>"; };
-		32617BCD16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTableViewWithRemoteThumbnails.m; sourceTree = "<group>"; };
+		32617BCC16E7DA5F004F9CF9 /* PCTableViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCTableViewAdditions.h; sourceTree = "<group>"; };
+		32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTableViewAdditions.m; sourceTree = "<group>"; };
 		32649B21160DD7DA002E6498 /* DirectoryPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryPersonViewController.h; sourceTree = "<group>"; };
 		32649B22160DD7DA002E6498 /* DirectoryPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DirectoryPersonViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32675C2315F50F4A00880387 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -1938,8 +1938,8 @@
 		328869A814FE5AF400CC97DB /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				32617BCC16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.h */,
-				32617BCD16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m */,
+				32617BCC16E7DA5F004F9CF9 /* PCTableViewAdditions.h */,
+				32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */,
 				3247CAF615135FD800105A71 /* PCTableViewSectionHeader.h */,
 				3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */,
 				3241F1DC15B4AB9B00C7DF3A /* PCEditableTableViewCell.h */,
@@ -3506,7 +3506,7 @@
 				2723013D1858CEB900B72F5E /* UIImage+Additions.m in Sources */,
 				2723013E1858CEB900B72F5E /* TNSStreamTransport.m in Sources */,
 				2723013F1858CEB900B72F5E /* PCURLSchemeHandler.m in Sources */,
-				272301401858CEB900B72F5E /* PCTableViewWithRemoteThumbnails.m in Sources */,
+				272301401858CEB900B72F5E /* PCTableViewAdditions.m in Sources */,
 				272301411858CEB900B72F5E /* PCNavigationController.m in Sources */,
 				272301421858CEB900B72F5E /* EventsCategorySelectorViewController.m in Sources */,
 				272301431858CEB900B72F5E /* EventsSplashDetailViewController.m in Sources */,
@@ -3654,7 +3654,7 @@
 				321CCF7016E27357002CBEA2 /* UIImage+Additions.m in Sources */,
 				32930AB417F898910025F864 /* TNSStreamTransport.m in Sources */,
 				321CCF9E16E3B537002CBEA2 /* PCURLSchemeHandler.m in Sources */,
-				32617BCE16E7DA5F004F9CF9 /* PCTableViewWithRemoteThumbnails.m in Sources */,
+				32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */,
 				32B1D9E317F08E1D000CC209 /* PCNavigationController.m in Sources */,
 				32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */,
 				32F5309216EAB8F800F66484 /* EventsSplashDetailViewController.m in Sources */,

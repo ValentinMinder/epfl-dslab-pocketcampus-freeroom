@@ -48,9 +48,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
+    self.tableView = tableViewAdditions;
+    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault]*1.3;
+    };
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:@"coursesList"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
-    self.tableView.rowHeight = 65.0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -165,7 +169,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
             return cell;
         }
     }
-    static NSString* const identifier = @"MoodleCourseCell";
+    NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"CourseCell"];
     MoodleCourse* course = self.courses[indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     

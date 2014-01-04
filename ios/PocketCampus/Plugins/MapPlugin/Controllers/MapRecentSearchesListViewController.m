@@ -24,6 +24,7 @@
 - (id)initWithUserSelectedRecentSearchBlock:(void (^)(NSString* searchPattern))userSelectedRecentSearchBlock {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
+        self.title = NSLocalizedStringFromTable(@"Recents", @"PocketCampus", nil);
         self.mapService = [MapService sharedInstanceToRetain];
         self.userSelectedRecentSearchBlock = userSelectedRecentSearchBlock;
         self.recentSearches = [self.mapService recentSearches];
@@ -34,14 +35,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
+    self.tableView = tableViewAdditions;
+    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
+    };
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    self.tableView.rowHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
-    self.title = NSLocalizedStringFromTable(@"Recents", @"PocketCampus", nil);
     if (!self.showClearButtonWithinTableView) {
         self.title = NSLocalizedStringFromTable(@"Recents", @"PocketCampus", nil);
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Clear", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(clearPressed)];
     }
-    MapRecentSearchesListViewController* weakSelf __weak = self;
+    __weak __typeof(self) weakSelf = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotification object:self.mapService queue:nil usingBlock:^(NSNotification *note) {
         weakSelf.recentSearches = [weakSelf.mapService recentSearches];
         [weakSelf.tableView reloadData];
@@ -79,7 +83,7 @@
         return cell;
     }
     NSString* pattern = self.recentSearches[indexPath.row - (self.showClearButtonWithinTableView ? 1 : 0)];
-    static NSString* const kRecentSearchCell = @"RecentSearchCell";
+    NSString* const kRecentSearchCell = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"RecentSearchCell"];
     PCRecentResultTableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:kRecentSearchCell];
     if (!cell) {
         cell = [[PCRecentResultTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kRecentSearchCell];

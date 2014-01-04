@@ -34,8 +34,8 @@ static UITableViewCellStyle const kCellStyle = UITableViewCellStyleValue2;
 //init at run-time in +initialize
 static NSString* kCellTextLabelTextStyle;
 static NSString* kCellDetailTextLabelTextStyle;
-//init at each instantiation in init to reflect possible user change of preferred content size
-static CGFloat kCellHeight;
+
+static CGFloat kRowHeight;
 
 @interface DirectoryPersonViewController ()<DirectoryServiceDelegate, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, ABNewPersonViewControllerDelegate, ABPeoplePickerNavigationControllerDelegate>
 
@@ -44,7 +44,7 @@ static CGFloat kCellHeight;
 @property (nonatomic, strong) UIPopoverController* profilePicturePopover;
 @property (nonatomic, strong) DirectoryService* directoryService;
 
-@property (nonatomic, strong) IBOutlet UITableView* tableView;
+@property (nonatomic, strong) IBOutlet PCTableViewAdditions* tableView;
 @property (nonatomic, strong) DirectoryPersonBaseInfoCell* personBaseInfoCell;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* loadingIndicator;
 @property (nonatomic, strong) IBOutlet UILabel* centerMessageLabel;
@@ -67,7 +67,6 @@ static CGFloat kCellHeight;
 - (id)init {
     self = [super initWithNibName:@"DirectoryPersonView" bundle:nil];
     if (self) {
-        kCellHeight = [PCTableViewCellAdditions preferredHeightForStyle:kCellStyle textLabelTextStyle:kCellTextLabelTextStyle detailTextLabelTextStyle:kCellDetailTextLabelTextStyle];
         self.directoryService = [DirectoryService sharedInstanceToRetain];
         self.allowShowOfficeOnMap = YES; //default
     }
@@ -96,6 +95,9 @@ static CGFloat kCellHeight;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.contentSizeCategoryDidChangeBlock = ^(PCTableViewAdditions* tableView) {
+        kRowHeight = 0.0;
+    };
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Details", @"DirectoryPlugin", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     if (!self.person) {
         if (!self.fullNameToSearch) {
@@ -269,19 +271,21 @@ static CGFloat kCellHeight;
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat kDefaultRowHeight = kCellHeight;
+    if (kRowHeight == 0.0) {
+        kRowHeight = [PCTableViewCellAdditions preferredHeightForStyle:kCellStyle textLabelTextStyle:kCellTextLabelTextStyle detailTextLabelTextStyle:kCellDetailTextLabelTextStyle];
+    }
     switch (indexPath.section) {
         case kPersonBaseInfoSection:
             return [DirectoryPersonBaseInfoCell heightForStyle:DirectoryPersonBaseInfoCellStyleLarge];
         case kPhonesSection:
             switch (indexPath.row) {
                 case kPrivatePhoneRow:
-                    return self.person.privatePhoneNumber ? kDefaultRowHeight : 0.0;
+                    return self.person.privatePhoneNumber ? kRowHeight : 0.0;
                 case kOfficePhoneRow:
-                    return self.person.officePhoneNumber ? kDefaultRowHeight : 0.0;
+                    return self.person.officePhoneNumber ? kRowHeight : 0.0;
             }
     }
-    return kDefaultRowHeight;
+    return kRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

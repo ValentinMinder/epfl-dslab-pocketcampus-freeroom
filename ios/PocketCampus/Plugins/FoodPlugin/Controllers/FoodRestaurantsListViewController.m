@@ -69,7 +69,12 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.rowHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
+    PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] init];
+    self.tableView = tableViewAdditions;
+    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
+    };
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndReloadTableView) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kFoodMealCellUserSuccessfullyRatedMealNotification object:nil];
@@ -246,7 +251,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     return [NSString stringWithFormat:NSLocalizedStringFromTable(@"MenusForTodayWithFormat", @"FoodPlugin", nil), dateString];
 }*/
 
-- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (self.restaurantsSorted && self.restaurantsSorted.count == 0) {
         if (indexPath.row == 1) {
@@ -259,7 +264,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     }
     
     EpflRestaurant* restaurant = self.restaurantsSorted[indexPath.row];
-    static NSString* const identifier = @"RestaurantCell";
+    NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"RestaurantCell"];
     PCTableViewCellAdditions* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];

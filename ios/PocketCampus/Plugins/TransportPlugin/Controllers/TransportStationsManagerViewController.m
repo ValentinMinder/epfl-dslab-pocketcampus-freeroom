@@ -41,9 +41,13 @@ static const NSUInteger kRestoreDefaultSection = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
+    self.tableView = tableViewAdditions;
+    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
+    };
 	self.tableView.editing = YES;
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.rowHeight = [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
     self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStylePlain;
@@ -145,7 +149,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
         case kStationsSection:
         {
             TransportStation* station = self.stations[indexPath.row];
-            static NSString* const identifier = @"StationCell";
+            NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"StationCell"];
             cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];

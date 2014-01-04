@@ -22,7 +22,7 @@
 
 @interface CamiproViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, CamiproServiceDelegate>
 
-@property (nonatomic, weak) IBOutlet UITableView* tableView;
+@property (nonatomic, weak) IBOutlet PCTableViewAdditions* tableView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, weak) IBOutlet UIToolbar* toolbar;
@@ -469,7 +469,7 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
         return cell;
     }
     
-    static NSString* const identifier = @"CamiproHistoryCell";
+    NSString* identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"CamiproHistoryCell"];
     //transactions cells
     Transaction* transaction = self.balanceAndTransactions.iTransactions[indexPath.row];
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];

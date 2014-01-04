@@ -18,7 +18,7 @@
 
 #import "PCTableViewSectionHeader.h"
 
-#import "PCTableViewWithRemoteThumbnails.h"
+#import "PCTableViewAdditions.h"
 
 #import "UIImage+Additions.h"
 
@@ -58,12 +58,15 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView = [[PCTableViewWithRemoteThumbnails alloc] init];
-    CGFloat rowHeight = floorf([PCTableViewCellAdditions preferredHeightForStyle:UITableViewCellStyleDefault textLabelTextStyle:kCellTextLabelTextStyle detailTextLabelTextStyle:nil]*1.35);
-    ((PCTableViewWithRemoteThumbnails*)(self.tableView)).imageProcessingBlock = ^UIImage*(NSIndexPath* indexPath, UIImage* image) {
-        return [image imageByScalingAndCroppingForSize:CGSizeMake(106.0, rowHeight) applyDeviceScreenMultiplyingFactor:YES];
+    PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] init];
+    self.tableView = tableViewAdditions;
+    tableViewAdditions.imageProcessingBlock = ^UIImage*(PCTableViewAdditions* tableView, NSIndexPath* indexPath, UIImage* image) {
+        return [image imageByScalingAndCroppingForSize:CGSizeMake(106.0, tableView.rowHeight) applyDeviceScreenMultiplyingFactor:YES];
     };
-    self.tableView.rowHeight = rowHeight;
+    tableViewAdditions.reprocessesImagesWhenContentSizeCategoryChanges = YES;
+    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return floorf([PCTableViewCellAdditions preferredHeightForStyle:UITableViewCellStyleDefault textLabelTextStyle:kCellTextLabelTextStyle detailTextLabelTextStyle:nil]*1.35);
+    };
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"news" dataName:@"newsList"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
@@ -178,7 +181,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         return;
     }
     
-    NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:[(PCTableViewWithRemoteThumbnails*)(self.tableView) cachedRawImageAtIndexPath:indexPath]];
+    NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:[(PCTableViewAdditions*)(self.tableView) cachedRawImageAtIndexPath:indexPath]];
     
     if (self.splitViewController) { // iPad
         self.selectedItem = newsItem;
@@ -191,7 +194,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString* const identifier = @"NewsCell";
+    NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"NewsCell"];
     NewsItem* newsItem = self.sections[indexPath.section][indexPath.row];
     UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
@@ -207,7 +210,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     
     cell.textLabel.text = newsItem.title;
     
-    [(PCTableViewWithRemoteThumbnails*)(self.tableView) setImageURL:[NSURL URLWithString:newsItem.imageUrl] forCell:cell atIndexPath:indexPath];
+    [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:newsItem.imageUrl] forCell:cell atIndexPath:indexPath];
     
     return cell;
 }

@@ -1,18 +1,18 @@
 //
-//  PCTableViewWithRemoteThumbnails.m
+//  PCTableViewAdditions.m
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 06.03.13.
 //  Copyright (c) 2013 EPFL. All rights reserved.
 //
 
-#import "PCTableViewWithRemoteThumbnails.h"
+#import "PCTableViewAdditions.h"
 
 #import "AFNetworking.h"
 
 #import "UIImage+Additions.h"
 
-@interface PCTableViewWithRemoteThumbnails ()
+@interface PCTableViewAdditions ()
 
 @property (nonatomic, strong) NSOperationQueue* operationQueue;
 @property (nonatomic, strong) NSMutableDictionary* operationForIndexPath; //key: NSIndexPath, value: AFHTTPRequestOperation
@@ -21,18 +21,58 @@
 @property (nonatomic, strong) NSCache* cachedImageForUrlString; //key: NSURL.absoluteString, value: UIImage (processed by imageProcessingBlock)
 @property (nonatomic, strong) AFNetworkReachabilityManager* reachabilityManager;
 @property (nonatomic, strong) NSMutableSet* failedThumbsIndexPaths;
-@property (nonatomic) BOOL initDone;
+@property (nonatomic) BOOL cellImagesManagementInitDone;
+
+@property (nonatomic, strong) NSString* reuseIdentifierPrefix;
 
 @end
 
-@implementation PCTableViewWithRemoteThumbnails
+@implementation PCTableViewAdditions
 
 #pragma mark - init
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        [self initDefaultValues];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self initDefaultValues];
+    }
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initDefaultValues];
+    }
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
+    self = [super initWithFrame:frame style:style];
+    if (self) {
+        [self initDefaultValues];
+    }
+    return self;
+}
+
+#pragma mark - Values initialization
+
 - (void)initDefaultValues {
-    
+    self.reloadsDataWhenContentSizeCategoryChanges = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferredContentSizeChanged:) name:UIContentSizeCategoryDidChangeNotification object:nil];
+}
+
+- (void)initCellImagesManagement {
     //private
-    if (!self.initDone) {
+    if (!self.cellImagesManagementInitDone) {
         self.operationQueue = [NSOperationQueue new];
         self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
         [self.operationQueue setSuspended:NO];
@@ -50,7 +90,7 @@
             }
         }];
         [self.reachabilityManager startMonitoring];
-        self.initDone = YES;
+        self.cellImagesManagementInitDone = YES;
     }
     
     //Only init if user not already set them
@@ -59,11 +99,36 @@
     }
 }
 
+#pragma mark - Notification listening
+
+- (void)preferredContentSizeChanged:(NSNotification *)notification {
+    __weak __typeof(self) weakSelf = self;
+    [NSTimer scheduledTimerWithTimeInterval:0.1 block:^{
+        // 1)
+        if (weakSelf.contentSizeCategoryDidChangeBlock) {
+            weakSelf.contentSizeCategoryDidChangeBlock(weakSelf);
+        }
+        // 2)
+        if (weakSelf.rowHeightBlock) {
+            weakSelf.rowHeight = self.rowHeightBlock(weakSelf);
+        }
+        // 3)
+        if (weakSelf.reprocessesImagesWhenContentSizeCategoryChanges) {
+            [weakSelf reprocessAllCachedImages];
+        }
+        // 4)
+        if (weakSelf.reloadsDataWhenContentSizeCategoryChanges) {
+            [weakSelf invalidateReuseIdentifiers];
+            [weakSelf reloadData];
+        }
+    } repeats:NO];
+}
+
 #pragma mark - Public methods
 
 - (void)setImageURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
     
-    [self initDefaultValues];
+    [self initCellImagesManagement];
     
     [PCUtils throwExceptionIfObject:cell notKindOfClass:[UITableViewCell class]];
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
@@ -135,7 +200,30 @@
     return self.cachedRawImageForUrlString[url.absoluteString];
 }
 
+- (void)setImageProcessingBlock:(ImageProcessingBlock)imageProcessingBlock {
+    _imageProcessingBlock = [imageProcessingBlock copy];
+    [self reprocessAllCachedImages];
+}
+
+- (void)setRowHeightBlock:(RowHeightBlock)rowHeightBlock {
+    _rowHeightBlock = [rowHeightBlock copy];
+    if (rowHeightBlock) {
+        self.rowHeight = rowHeightBlock(self);
+    }
+}
+
+- (NSString*)autoInvalidatingReuseIdentifierForIdentifier:(NSString*)identifier {
+    if (!identifier) {
+        return nil;
+    }
+    return [self.reuseIdentifierPrefix stringByAppendingString:identifier];
+}
+
 #pragma mark - Private methods
+
+- (void)invalidateReuseIdentifiers {
+    self.reuseIdentifierPrefix = [NSString stringWithFormat:@"%ld", random()];
+}
 
 - (void)processAndSetImage:(UIImage*)image_ atIndexPath:(NSIndexPath*)indexPath_ url:(NSURL*)url_ {
     [PCUtils throwExceptionIfObject:image_ notKindOfClass:[UIImage class]];
@@ -144,8 +232,8 @@
     UIImage* image __block = image_;
     NSIndexPath* indexPath __block = indexPath_;
     NSURL* url __block = url_;
-    PCTableViewWithRemoteThumbnails* weakSelf __weak = self;
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+    PCTableViewAdditions* weakSelf __weak = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
         if (image && (image.imageOrientation != UIImageOrientationUp)) {
             image = [UIImage imageWithCGImage:image.CGImage scale:1.0 orientation:UIImageOrientationUp]; //returning to be sure it's in portrait mode
         }
@@ -154,7 +242,7 @@
         }
         UIImage* rawImage = image;
         if (weakSelf.imageProcessingBlock) {
-            image = weakSelf.imageProcessingBlock(indexPath, image);
+            image = weakSelf.imageProcessingBlock(weakSelf, indexPath, rawImage);
         }
         if (!weakSelf) {
             return;
@@ -170,6 +258,17 @@
             [cell layoutSubviews];
         });
     });
+}
+
+- (void)reprocessAllCachedImages {
+    //reprocessing already cached processed image
+    [self.urlForIndexPath enumerateKeysAndObjectsUsingBlock:^(NSIndexPath* indexPath, NSURL* url, BOOL *stop) {
+        UIImage* image = self.cachedImageForUrlString[url.absoluteString];
+        UIImage* rawImage = self.cachedRawImageForUrlString[url.absoluteString];
+        if (image && rawImage) {
+            self.cachedImageForUrlString[url.absoluteString] = self.imageProcessingBlock ? self.imageProcessingBlock(self, indexPath, rawImage) : rawImage;
+        }
+    }];
 }
 
 - (void)manageOperationsPriority {
