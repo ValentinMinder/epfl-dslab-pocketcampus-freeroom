@@ -35,10 +35,10 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="color" white="0.0" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
                 </activityIndicatorView>
-                <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Center message label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="10" preferredMaxLayoutWidth="162" translatesAutoresizingMaskIntoConstraints="NO" id="14">
-                    <rect key="frame" x="303" y="610" width="162" height="21"/>
+                <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="10" preferredMaxLayoutWidth="748" translatesAutoresizingMaskIntoConstraints="NO" id="14" userLabel="Center message label">
+                    <rect key="frame" x="10" y="621" width="748" height="0.0"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -104,9 +104,11 @@
                 <constraint firstItem="14" firstAttribute="centerY" secondItem="13" secondAttribute="centerY" id="7yL-FA-8jy"/>
                 <constraint firstAttribute="centerX" secondItem="15" secondAttribute="centerX" constant="3" id="FZ3-31-49J"/>
                 <constraint firstItem="51" firstAttribute="centerX" secondItem="48" secondAttribute="centerX" id="Fjd-lG-VAJ"/>
+                <constraint firstItem="14" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="HGd-Sj-EOV"/>
                 <constraint firstAttribute="bottom" secondItem="nt0-iA-A5f" secondAttribute="bottom" id="Hxf-ac-nnh"/>
                 <constraint firstAttribute="bottom" secondItem="b8T-UD-jT2" secondAttribute="bottom" constant="25" id="Ii9-uc-Xwl"/>
                 <constraint firstItem="nt0-iA-A5f" firstAttribute="leading" secondItem="6" secondAttribute="trailing" id="JIp-hN-24q"/>
+                <constraint firstAttribute="trailing" secondItem="14" secondAttribute="trailing" constant="10" id="N8I-G8-JFk"/>
                 <constraint firstItem="51" firstAttribute="centerY" secondItem="49" secondAttribute="centerY" id="Ns6-bH-1Qj"/>
                 <constraint firstItem="6" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="S6f-BQ-ZwX"/>
                 <constraint firstAttribute="centerY" secondItem="15" secondAttribute="centerY" constant="45" id="TyT-Cg-Ybv"/>

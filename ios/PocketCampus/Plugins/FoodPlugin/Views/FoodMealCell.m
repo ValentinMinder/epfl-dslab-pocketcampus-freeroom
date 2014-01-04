@@ -134,12 +134,11 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     _meal = meal;
     
     //Meal image
-
     NSNumber* primaryType = self.meal.mTypes.count > 0 ? (NSNumber*)(self.meal.mTypes[0]) : [NSNumber numberWithInteger:MealType_UNKNOWN];
     NSString* urlString = [[FoodService sharedInstanceToRetain] pictureUrlForMealType][primaryType];
     if (urlString) {
         NSURLRequest* req = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
-        FoodMealCell* weakSelf __weak = self;
+        __weak __typeof(self) weakSelf = self;
         [self.mealTypeImageView setImageWithURLRequest:req placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
             weakSelf.mealTypeImageView.image = image;
             weakSelf.mealTypeImageViewHeightConstraint.constant = kmealTypeImageViewDefaultHeightConstraint;
@@ -179,7 +178,8 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         }
         self.pricesLabel.numberOfLines = 2;
         NSMutableAttributedString* attrPriceString = [[NSMutableAttributedString alloc] initWithString:priceString];
-        [attrPriceString addAttribute:NSFontAttributeName value:[UIFont fontWithDescriptor:self.pricesLabel.font.fontDescriptor size:self.pricesLabel.font.fontDescriptor.pointSize-6] range:[priceString rangeOfString:currencyString]];
+        [attrPriceString addAttribute:NSFontAttributeName value:[self.pricesLabel.font fontWithSize:self.pricesLabel.font.pointSize-6.0] range:[priceString rangeOfString:currencyString]];
+        
         
         //self.pricesLabel.numberOfLines = integer ? 1 : 2;
         
@@ -234,7 +234,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         fullString = [fullString stringByAppendingFormat:@"\n%@", meal.mDescription];
     }
     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
-    [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] range:[fullString rangeOfString:meal.mName]];
+    [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] range:[fullString rangeOfString:meal.mName]];
     [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] range:[fullString rangeOfString:meal.mDescription]];
     return attrString;
 }
