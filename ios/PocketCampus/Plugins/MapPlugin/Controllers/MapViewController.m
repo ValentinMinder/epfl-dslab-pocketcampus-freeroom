@@ -242,16 +242,12 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
 - (MKCoordinateRegion)epflRegion {
     if ([PCUtils isIdiomPad]) {
         if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) {
-            return MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.014175, 0.016479));
+            return MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.520674, 6.566849), MKCoordinateSpanMake(0.011292, 0.013128));
         } else {
-            return MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519113, 6.566634), MKCoordinateSpanMake(0.010395, 0.021973));
+            return MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519803, 6.566633), MKCoordinateSpanMake(0.008335, 0.017620));
         }
     } else {
-        if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) {
-            return MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.012285, 0.013733));
-        } else {
-            return MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.012285, 0.013733));
-        }
+        return MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.519766, 6.566893), MKCoordinateSpanMake(0.014206, 0.013108));
     }
 }
 
@@ -759,7 +755,7 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
     
     MKZoomScale zoomScale = self.mapView.bounds.size.width / self.mapView.visibleMapRect.size.width;
     
-    //NSLog(@"%lf", self.mapView.camera.altitude);
+    //NSLog(@"Coordinate: %lf %lf span: %lf %lf", mapView.region.center.latitude, mapView.region.center.longitude, mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
     
     if ([self.epflTileOverlay canDrawMapRect:self.mapView.visibleMapRect zoomScale:zoomScale]) {
         if (self.mapView.overlays.count == 0) {

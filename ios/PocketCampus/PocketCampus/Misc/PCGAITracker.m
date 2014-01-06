@@ -58,7 +58,6 @@ static id instance __strong = nil;
         NSLog(@"!! ERROR: cannot track nil screeName or of length 0.");
         return;
     }
-    NSLog(@"-> Sending screen: %@", screenName);
     [self.gaiTracker set:kGAIScreenName value:screenName];
     [self.gaiTracker send:[[GAIDictionaryBuilder createAppView] build]];
 }
@@ -68,7 +67,6 @@ static id instance __strong = nil;
         NSLog(@"!! ERROR: cannot track nil action or of length 0.");
         return;
     }
-    NSLog(@"-> Sending action: %@ in screen: %@", action, screenName);
     action = screenName.length > 0 ? [screenName stringByAppendingFormat:@"-%@", action] : action;
     [self.gaiTracker set:kGAIScreenName value:screenName];
     [self.gaiTracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action" action:action label:nil value:nil] build]];
