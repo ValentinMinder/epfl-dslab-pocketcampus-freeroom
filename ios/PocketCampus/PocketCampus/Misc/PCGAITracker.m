@@ -69,6 +69,7 @@ static id instance __strong = nil;
         return;
     }
     NSLog(@"-> Sending action: %@ in screen: %@", action, screenName);
+    action = screenName.length > 0 ? [screenName stringByAppendingFormat:@"-%@", action] : action;
     [self.gaiTracker set:kGAIScreenName value:screenName];
     [self.gaiTracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action" action:action label:nil value:nil] build]];
 }
@@ -85,7 +86,7 @@ static id instance __strong = nil;
     [GAI sharedInstance].dispatchInterval = 10;
     [GAI sharedInstance].dryRun = NO;
     // Optional: set Logger to VERBOSE for debug information.
-    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
     self.gaiTracker = [[GAI sharedInstance] trackerWithTrackingId:ganId];
 }
 
