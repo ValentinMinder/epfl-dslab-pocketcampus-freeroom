@@ -47,6 +47,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 - (id)initWithMoodleResource:(MoodleResource*)moodleResource {
     self = [super initWithNibName:@"MoodleResourceView" bundle:nil];
     if (self) {
+        self.gaiScreenName = @"/moodle/course/document";
         self.moodleResource = moodleResource;
         self.title = moodleResource.iName; //enough space to display title if iPad
         self.moodleService = [MoodleService sharedInstanceToRetain];
@@ -108,7 +109,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/moodle/course/document"];
+    [self trackScreen];
     self.webView.scrollView.contentInset = [PCUtils edgeInsetsForViewController:self];
     self.webView.scrollView.scrollIndicatorInsets = [PCUtils edgeInsetsForViewController:self];
 }
@@ -252,8 +253,10 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)favoriteButtonPressed {
     if ([self.moodleService isFavoriteMoodleResource:self.moodleResource]) {
+        [self trackAction:PCGAITrackerActionUnmarkFavorite];
         [self.moodleService removeFavoriteMoodleResource:self.moodleResource];
     } else {
+        [self trackAction:PCGAITrackerActionMarkFavorite];
         [self.moodleService addFavoriteMoodleResource:self.moodleResource];;
     }
 }
@@ -266,6 +269,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         [self.docController dismissMenuAnimated:YES];
         self.docController = nil;
     } else {
+        [self trackAction:PCGAITrackerActionActionButtonPressed];
         NSURL* resourceLocalURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleResource:self.moodleResource]];
         self.docController = [UIDocumentInteractionController interactionControllerWithURL:resourceLocalURL];
         self.docController.delegate = self;
@@ -362,6 +366,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) { //delete button, starts from the top, cancel button not included
+        [self trackAction:PCGAITrackerActionDelete];
         [self removeSplitViewControllerObserver];
         if (![self.moodleService deleteDownloadedMoodleResource:self.moodleResource]) {
             UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleDeleteFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

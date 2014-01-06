@@ -44,7 +44,7 @@ static const int kPluginsSection = 0;
 {
     self = [super initWithNibName:@"MainMenuView" bundle:nil];
     if (self) {
-        // Custom initialization
+        self.gaiScreenName = @"/dashboard";
         self.mainController = mainController;
         [self fillCollectionsWithMenuItems:menuItems];
         self.cellForIndexPath = [NSMutableDictionary dictionary];
@@ -57,6 +57,7 @@ static const int kPluginsSection = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self trackScreen];
     self.navigationController.navigationBar.translucent = NO;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     self.tableView.scrollsToTop = NO; //if not set to NO, front view controllers cannot be scrolled to top by tapping the status bar
@@ -72,7 +73,7 @@ static const int kPluginsSection = 0;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/dashboard"];
+    
 }
 
 - (NSUInteger)supportedInterfaceOrientations

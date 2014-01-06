@@ -118,6 +118,7 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
         self = [super initWithNibName:@"MapView-phone" bundle:nil];
     }
     if (self) {
+        self.gaiScreenName = @"/map";
         self.mapService = [MapService sharedInstanceToRetain];
         self.epflTileOverlay = [[EPFLTileOverlay alloc] init];
         //self.epflTileOverlay2 = [[EPFLTileOverlay2 alloc] init];
@@ -219,7 +220,7 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/map"];
+    [self trackScreen];
 }
 
 /*- (void)viewDidAppear:(BOOL)animated {
@@ -563,7 +564,7 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
 #pragma mark - Actions
 
 - (void)resultsListPressed {
-    MapViewController* weakSelf __weak = self;
+    __weak __typeof(self) weakSelf = self;
     MapResultsListViewController* resultsViewController = [[MapResultsListViewController alloc] initWithMapItems:self.mapItemsAllResults selectedInitially:nil userValidatedSelectionBlock:^(NSArray *newlySelected) {
         [weakSelf.mapView removeAnnotations:[MapUtils mapItemAnnotations:weakSelf.mapView.annotations]];
         
@@ -592,17 +593,14 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
             self.resultsListPopOverController = [[UIPopoverController alloc] initWithContentViewController:navController];
             self.resultsListPopOverController.delegate = self;
         }
-        if (!self.resultsListPopOverController.isPopoverVisible) {
-            [[PCGAITracker sharedTracker] trackScreenWithName:@"/map/searchResultsList"];
-        }
         [self.resultsListPopOverController togglePopoverFromBarButtonItem:self.resultsListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         [self presentViewController:navController animated:YES completion:NULL];
-        [[PCGAITracker sharedTracker] trackScreenWithName:@"/map/searchResultsList"];
     }
 }
 
 - (void)floorDownPressed {
+    [self trackAction:@"FloorDownPressed"];
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) { //copy in case they are modified in the meantime (highly unlikely though)
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
@@ -612,6 +610,7 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
 }
 
 - (void)floorUpPressed {
+    [self trackAction:@"FloorUpPressed"];
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) {
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
@@ -621,6 +620,7 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
 }
 
 - (void)centerOnEPFLPressed {
+    [self trackAction:@"CenterOnEPFL"];
     [self.mapView setRegion:self.epflRegion animated:YES];
 }
 
@@ -742,7 +742,6 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
     if (mapItemAnnotations.count == 1) {
         [self.mapView selectAnnotation:mapItemAnnotations[0] animated:YES];
     }
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/map/searchResults"];
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
@@ -845,9 +844,8 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
     
     DirectoryPersonViewController* personViewController = [[DirectoryPersonViewController alloc] initAndLoadPersonWithFullName:annotationTitle];
     personViewController.allowShowOfficeOnMap = NO; //prevent loop
-    
+    [self trackAction:@"AnnotationInfoPressed"];
     if ([PCUtils isIdiomPad]) {
-        
         if (!self.personPopOverController) {
             personViewController.title = NSLocalizedStringFromTable(@"Details", @"MapPlugin", nil);
             
@@ -876,7 +874,6 @@ static CGFloat const kSearchBarHeightLandscape = 32.0;
             [self.personPopOverController presentPopoverFromRect:box inView:self.mapView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             
         }
-        
     } else {
         [self.navigationController pushViewController:personViewController animated:YES];
     }

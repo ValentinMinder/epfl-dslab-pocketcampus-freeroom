@@ -57,6 +57,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
+        self.gaiScreenName = @"/food";
         self.foodService = [FoodService sharedInstanceToRetain];
         self.foodResponse = [self.foodService getFoodFromCacheForRequest:[self createFoodRequest]];
         if (self.foodResponse) {
@@ -84,7 +85,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
 
 - (void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/food"];
+    [self trackScreen];
     [self refreshIfNeeded];
 }
 

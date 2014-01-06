@@ -21,6 +21,7 @@
 
     #import "NSLayoutConstraint+LGAdditions.h"
     #import "NSCache+LGAdditions.h"
+    #import "UIViewController+Additions.h"
 
     #import "UIActionSheet+Additions.h"
     #import "UIPopoverController+Additions.h"

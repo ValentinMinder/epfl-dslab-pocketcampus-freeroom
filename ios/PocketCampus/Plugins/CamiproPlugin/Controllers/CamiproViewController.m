@@ -58,6 +58,7 @@
 {
     self = [super initWithNibName:@"CamiproView" bundle:nil];
     if (self) {
+        self.gaiScreenName = @"/camipro";
         self.camiproService = [CamiproService sharedInstanceToRetain];
     }
     return self;
@@ -96,7 +97,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/camipro"];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -389,7 +390,7 @@
             [self.camiproService cancelOperationsForDelegate:self];
             return;
         }
-        [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/camipro/click/email"];
+        [[PCGAITracker sharedTracker] trackScreenWithName:@"/camipro/charge/email"];
         self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
         [self.sendMailAlertView show];
         

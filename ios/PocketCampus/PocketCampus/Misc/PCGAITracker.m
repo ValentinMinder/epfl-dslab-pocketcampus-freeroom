@@ -12,7 +12,16 @@
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
 
-#import "PCUtils.h"
+NSString* const PCGAITrackerActionMarkFavorite = @"MarkFavorite";
+NSString* const PCGAITrackerActionUnmarkFavorite = @"UnmarkFavorite";
+NSString* const PCGAITrackerActionActionButtonPressed = @"ActionButtonPressed";
+NSString* const PCGAITrackerActionClearHistory = @"ClearHistory";
+NSString* const PCGAITrackerActionAdd = @"Add";
+NSString* const PCGAITrackerActionDelete = @"Delete";
+NSString* const PCGAITrackerActionReorder = @"Reorder";
+NSString* const PCGAITrackerActionCopy = @"Copy";
+NSString* const PCGAITrackerActionHelp = @"Help";
+NSString* const PCGAITrackerActionSearch = @"Search";
 
 static id instance __strong = nil;
 
@@ -23,6 +32,8 @@ static id instance __strong = nil;
 @end
 
 @implementation PCGAITracker
+
+#pragma mark - Public
 
 + (instancetype)sharedTracker {
     if (![PCConfig isLoaded]) {
@@ -42,6 +53,28 @@ static id instance __strong = nil;
     return instance;
 }
 
+- (void)trackScreenWithName:(NSString*)screenName {
+    if (screenName.length == 0) {
+        NSLog(@"!! ERROR: cannot track nil screeName or of length 0.");
+        return;
+    }
+    NSLog(@"-> Sending screen: %@", screenName);
+    [self.gaiTracker set:kGAIScreenName value:screenName];
+    [self.gaiTracker send:[[GAIDictionaryBuilder createAppView] build]];
+}
+
+- (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName {
+    if (action.length == 0) {
+        NSLog(@"!! ERROR: cannot track nil action or of length 0.");
+        return;
+    }
+    NSLog(@"-> Sending action: %@ in screen: %@", action, screenName);
+    [self.gaiTracker set:kGAIScreenName value:screenName];
+    [self.gaiTracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action" action:action label:nil value:nil] build]];
+}
+
+#pragma mark - Private
+
 - (void)initGAIConfig {
     NSString* ganId = (NSString*)[[PCConfig defaults] objectForKey:PC_CONFIG_GAN_TRACKING_CODE_KEY];
     if (ganId.length == 0) {
@@ -52,17 +85,8 @@ static id instance __strong = nil;
     [GAI sharedInstance].dispatchInterval = 10;
     [GAI sharedInstance].dryRun = NO;
     // Optional: set Logger to VERBOSE for debug information.
-    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
     self.gaiTracker = [[GAI sharedInstance] trackerWithTrackingId:ganId];
-}
-
-- (void)trackScreenWithName:(NSString*)screenName {
-    if (screenName.length == 0) {
-        NSLog(@"!! ERROR: cannot track nil screeName or of length 0.");
-        return;
-    }
-    [self.gaiTracker set:kGAIScreenName value:screenName];
-    [self.gaiTracker send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
 @end

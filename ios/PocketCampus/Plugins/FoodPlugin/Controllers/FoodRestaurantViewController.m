@@ -34,6 +34,7 @@ static const NSInteger kMealsSection = 1;
     [PCUtils throwExceptionIfObject:restaurant notKindOfClass:[EpflRestaurant class]];
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
+        self.gaiScreenName = @"/food/restaurant";
         self.foodService = [FoodService sharedInstanceToRetain];
         _restaurant = restaurant;
         self.title = self.restaurant.rName;
@@ -53,6 +54,11 @@ static const NSInteger kMealsSection = 1;
     [super viewDidLoad];
     [self refreshFavoriteButton];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -77,13 +83,16 @@ static const NSInteger kMealsSection = 1;
 
 - (void)favoritePressed {
     if ([self.foodService isRestaurantFavorite:self.restaurant]) {
+        [self trackAction:PCGAITrackerActionUnmarkFavorite];
         [self.foodService removeFavoritRestaurant:self.restaurant];
     } else {
+        [self trackAction:PCGAITrackerActionMarkFavorite];
         [self.foodService addFavoriteRestaurant:self.restaurant];
     }
 }
 
 - (void)showOnMapPressed {
+    [self trackAction:@"ShowOnMap"];
     UIViewController* mapViewController = [MapController viewControllerWithInitialMapItem:self.restaurant.rLocation];
     [self.navigationController pushViewController:mapViewController animated:YES];
 }

@@ -613,6 +613,7 @@
 		329840E316397ADB00FBADFA /* PluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32704C66150016B3002BCB75 /* PluginController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		329CA503166D452E00F7B1AE /* SettingsBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329CA501166D452E00F7B1AE /* SettingsBarButton.png */; };
 		329CA504166D452E00F7B1AE /* SettingsBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329CA502166D452E00F7B1AE /* SettingsBarButton@2x.png */; };
+		329CF4BE187ABC2C00062C98 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329CF4BD187ABC2C00062C98 /* UIViewController+Additions.m */; };
 		329E1B3B16E693130054C3A8 /* FavoriteNavBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3916E693130054C3A8 /* FavoriteNavBarButton.png */; };
 		329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */; };
 		329E1B3F16E696F80054C3A8 /* FavoriteGlowNavBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */; };
@@ -1106,6 +1107,8 @@
 		3297E368180856E60047AD07 /* EPFLTileOverlay2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPFLTileOverlay2.m; sourceTree = "<group>"; };
 		329CA501166D452E00F7B1AE /* SettingsBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsBarButton.png; sourceTree = "<group>"; };
 		329CA502166D452E00F7B1AE /* SettingsBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsBarButton@2x.png"; sourceTree = "<group>"; };
+		329CF4BC187ABC2C00062C98 /* UIViewController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Additions.h"; sourceTree = "<group>"; };
+		329CF4BD187ABC2C00062C98 /* UIViewController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Additions.m"; sourceTree = "<group>"; };
 		329E1B3916E693130054C3A8 /* FavoriteNavBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteNavBarButton.png; sourceTree = "<group>"; };
 		329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteNavBarButton@2x.png"; sourceTree = "<group>"; };
 		329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteGlowNavBarButton.png; sourceTree = "<group>"; };
@@ -2075,6 +2078,8 @@
 				320DFC24164697AE00849907 /* PCMasterSplitDelegate.h */,
 				32E9A22116394F6D00188AE0 /* PluginSplitViewController.h */,
 				32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */,
+				329CF4BC187ABC2C00062C98 /* UIViewController+Additions.h */,
+				329CF4BD187ABC2C00062C98 /* UIViewController+Additions.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3588,6 +3593,7 @@
 				32B58723156459370051C57E /* CamiproController.m in Sources */,
 				32B2B88A1841281F009DA368 /* TransportModelAdditions.m in Sources */,
 				32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */,
+				329CF4BE187ABC2C00062C98 /* UIViewController+Additions.m in Sources */,
 				32FDA9A11854B5E600C6393A /* ServiceRequest.m in Sources */,
 				32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */,
 				3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */,

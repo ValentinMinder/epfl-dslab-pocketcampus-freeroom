@@ -26,6 +26,7 @@
 {
     self = [super initWithNibName:@"DirectoryProfilePictureView" bundle:nil];
     if (self) {
+        self.gaiScreenName = @"/directory/personPicture";
         self.image = image;
         self.title = NSLocalizedStringFromTable(@"Photo", @"DirectoryPlugin", nil);
     }
@@ -53,7 +54,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/directory/personPicture"];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations

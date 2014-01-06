@@ -71,6 +71,7 @@
 #pragma mark - Master view controller visibility management
 
 - (void)toggleMasterVideoControllerHidden:(UIBarButtonItem*)sender {
+    [self trackAction:@"ToggleMasterViewControllerHidden"];
     sender.image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterVisible" : @"MasterHidden"];
     [self setMasterViewControllerHidden:!self.isMasterViewControllerHidden animated:YES];
 }

@@ -69,6 +69,7 @@ static CGFloat kRowHeight;
     if (self) {
         self.directoryService = [DirectoryService sharedInstanceToRetain];
         self.allowShowOfficeOnMap = YES; //default
+        self.gaiScreenName = @"/directory/personDetails";
     }
     return self;
 }
@@ -115,9 +116,8 @@ static CGFloat kRowHeight;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/directory/personDetails"];
+    [self trackScreen];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-    //NSLog(@"Person picture url: %@", self.person.pictureUrl);
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -137,6 +137,7 @@ static CGFloat kRowHeight;
 #pragma mark - Buttons and actions
 
 - (void)actionButtonPressed {
+    [self trackAction:PCGAITrackerActionActionButtonPressed];
     if (!self.actionSheet) {
         self.actionSheet = [[UIActionSheet alloc] initWithTitle:Nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"CreateNewContact", @"DirectoryPlugin", nil), NSLocalizedStringFromTable(@"AddToExistingContact", @"DirectoryPlugin", nil), nil];
         self.actionSheet.delegate = self;
@@ -145,6 +146,7 @@ static CGFloat kRowHeight;
 }
 
 - (void)openSecretPicture {
+    [self trackAction:@"OpenSecretPicture"];
     NSString* urlString = [NSString stringWithFormat:@"http://people.epfl.ch/cgi-bin/people/getPhoto?id=%@&show=1", self.person.emailPrefix];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
 }
@@ -231,8 +233,10 @@ static CGFloat kRowHeight;
         self.actionSheet = nil;
         return;
     } else if (buttonIndex == kCreateNewContactActionIndex) {
+        [self trackAction:@"CreateNewContact"];
         [self createAndPresentNewContact];
     } else if (buttonIndex == kAddToExistingContactActionIndex) {
+        [self trackAction:@"AddToExistingContact"];
         [self presentContactsPicker];
     } else {
         //nothing
@@ -315,6 +319,7 @@ static CGFloat kRowHeight;
             break;
         case kPhonesSection:
         {
+            [self trackAction:@"Call"];
             NSString* phone = nil;
             switch (indexPath.row) {
                 case kPrivatePhoneRow:
@@ -330,16 +335,19 @@ static CGFloat kRowHeight;
             break;
         }
         case kEmailSection:
+            [self trackAction:@"SendEmail"];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", self.person.email]]];
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         case kWebpageSection:
+            [self trackAction:@"OpenWebpage"];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.person.web]];
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         case kOfficeSection:
         {
             if (self.allowShowOfficeOnMap) {
+                [self trackAction:@"ShowOnMap"];
                 UIViewController* viewController = [MapController viewControllerWithInitialSearchQuery:self.person.office pinLabelText:self.person.fullFirstnameLastname];
                 [self.navigationController pushViewController:viewController animated:YES];
             } else {
@@ -358,6 +366,7 @@ static CGFloat kRowHeight;
 
 - (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
     if ([NSStringFromSelector(action) isEqualToString:@"copy:"]) {
+        [self trackAction:PCGAITrackerActionCopy];
         return YES;
     }
     return NO;

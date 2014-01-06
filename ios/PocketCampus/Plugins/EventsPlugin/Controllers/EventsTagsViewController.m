@@ -14,6 +14,8 @@
 
 #import "PCCenterMessageCell.h"
 
+static NSString* kCellTextLabelTextStyle;
+
 @interface EventsTagsViewController ()
 
 @property (nonatomic, strong) IBOutlet UIView* headerView;
@@ -33,6 +35,10 @@
 {
     self = [super initWithNibName:@"EventsTagView" bundle:nil];
     if (self) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            kCellTextLabelTextStyle = UIFontTextStyleFootnote;
+        });
         [PCUtils throwExceptionIfObject:allTags notKindOfClass:[NSArray class]];
         self.allTags = allTags;
         self.selectedInitially = selectedInitially;
@@ -46,10 +52,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    PCTableViewAdditions* tableViewAdditions = (PCTableViewAdditions*)self.tableView;
+    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return floorf([PCTableViewCellAdditions preferredHeightForStyle:UITableViewCellStyleDefault textLabelTextStyle:kCellTextLabelTextStyle detailTextLabelTextStyle:nil]);
+    };
     self.tableView.backgroundColor = [UIColor clearColor];
     UIView* backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
-    backgroundView.backgroundColor = [PCValues backgroundColor1];;
+    backgroundView.backgroundColor = [PCValues backgroundColor1];
     self.tableView.backgroundView = backgroundView;
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed)];
@@ -61,13 +70,9 @@
     }
 }
 
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
+- (NSUInteger)supportedInterfaceOrientations
 {
-    if ([PCUtils isIdiomPad]) {
-        return UIInterfaceOrientationMaskAll;
-    } else {
-        return UIInterfaceOrientationMaskPortrait;
-    }
+    return [PCUtils isIdiomPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark - Buttons actions
@@ -131,14 +136,15 @@
         }
     }
     
-    static NSString* const kTagCell = @"TagCell";
+    NSString* const kTagCell = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"TagCell"];
     
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kTagCell];
     
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kTagCell];
+        UIFont* font = [UIFont preferredFontForTextStyle:kCellTextLabelTextStyle];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:font.pointSize];
         cell.textLabel.numberOfLines = 2;
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     

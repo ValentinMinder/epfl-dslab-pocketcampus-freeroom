@@ -38,6 +38,7 @@
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
+        self.gaiScreenName = @"/authentication";
         self.presentationMode = PresentationModeNavStack; //default
         self.modalPresentationStyle = UIModalPresentationFormSheet; //prevents full-screen on iPad
         self.authenticationService = [AuthenticationService sharedInstanceToRetain];
@@ -53,7 +54,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/authentication"];
     self.title = [[self class] localizedTitle];
     self.tableView.sectionHeaderHeight = 2.0;
     self.tableView.sectionFooterHeight = 2.0;
@@ -68,7 +68,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    //empty and not calling super on purpose, this is to disable the auto-scrolling when getting text fields focus
+    //not calling super on purpose, this is to disable the auto-scrolling when getting text fields focus
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -288,7 +289,6 @@
         }
     } else {
         if (indexPath.section == 1 && self.loginCell.textLabel.enabled) { //login button
-            [[PCGAITracker sharedTracker] trackScreenWithName:@"/v3r1/authentication/click/login"];
             [self.loadingIndicator startAnimating];
             [self.usernameTextField resignFirstResponder];
             [self.passwordTextField resignFirstResponder];

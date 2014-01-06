@@ -68,7 +68,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 {
     self = [super initWithNibName:@"DirectorySearchView" bundle:nil];
     if (self) {
-        // Custom initialization
+        self.gaiScreenName = @"/directory";
         self.directoryService = [DirectoryService sharedInstanceToRetain];
         self.resultsMode = ResutlsModeNotStarted;
         self.recentSearches = [(NSOrderedSet*)[PCObjectArchiver objectForKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES] mutableCopy]; //archived object are always returned as copy => immutable
@@ -101,9 +101,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
     self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length+self.searchBar.frame.size.height, 0.0, 0.0, 0.0);
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchFieldPlaceholder", @"DirectoryPlugin", @"");
-    [self.searchBar setIsAccessibilityElement:YES];
     self.searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
-    self.tableView.accessibilityIdentifier = @"SearchResults";
     [self searchBar:self.searchBar textDidChange:self.searchBar.text]; //show recent searches if any
     [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Directory"];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Directory"];
@@ -122,7 +120,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/directory"];
+    [self trackScreen];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     self.displayedPerson = nil;
     self.personViewController = nil; //so that profile picture request does not try to set picture for personViewController that is no longer displayed (and thus released)
@@ -212,6 +210,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 #pragma mark - clear button
 
 - (void)clearButtonPressed {
+    [self trackAction:PCGAITrackerActionClearHistory];
     self.searchBar.text = @"";
     [self.recentSearches removeAllObjects];
     [PCObjectArchiver saveObject:nil forKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES]; //deleted cached recent searches

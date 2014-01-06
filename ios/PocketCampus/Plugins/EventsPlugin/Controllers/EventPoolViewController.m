@@ -398,6 +398,7 @@ static NSString* const kEventCell = @"EventCell";
 }
 
 - (void)cameraButtonPressed {
+    [self trackAction:@"CameraButtonPressed"];
     ZBarReaderViewController *reader = [ZBarReaderViewController new];
     reader.readerDelegate = self;
     reader.supportedOrientationsMask = ZBarOrientationMask(UIInterfaceOrientationPortrait);
@@ -499,15 +500,20 @@ static NSString* const kEventCell = @"EventCell";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (actionSheet == self.filterSelectionActionSheet) {
+        
         if (buttonIndex == [self goToCategoryButtonIndex]) {
+            [self trackAction:@"SelectCategory"];
             [self presentCategoriesController];
         } else if (buttonIndex == [self filterByTagsButtonIndex]) {
+            [self trackAction:@"SelectTags"];
             [self presentTagsController];
         } else if (buttonIndex == [self  pastModeButtonIndex]) {
             if (self.pastMode) {
+                [self trackAction:@"SwitchBackToUpcomingEvents"];
                 self.pastMode = NO;
                 self.title = self.normalTitle;
             } else {
+                [self trackAction:@"SwitchToPastEvents"];
                 self.pastMode = YES;
                 self.normalTitle = self.title;
                 self.title = NSLocalizedStringFromTable(@"PastEventsShort", @"EventsPlugin", nil);
@@ -520,6 +526,7 @@ static NSString* const kEventCell = @"EventCell";
         }
         self.filterSelectionActionSheet = nil;
     } else if (actionSheet == self.periodsSelectionActionSheet) {
+        [self trackAction:@"ChangePeriod"];
         switch (buttonIndex) {
             case kOneWeekPeriodIndex:
                 self.selectedPeriod = EventsPeriods_ONE_WEEK;

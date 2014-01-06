@@ -43,6 +43,7 @@
 {
     self = [super initWithNibName:@"NewsItemView" bundle:nil];
     if (self) {
+        self.gaiScreenName = @"/news/item";
         self.newsService = [NewsService sharedInstanceToRetain];
         self.newsItem = newsItem;
         self.image = image;
@@ -70,7 +71,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/news/item"];
+    [self trackScreen];
 }
 
 - (void)loadNewsItem {
@@ -96,7 +97,7 @@
 - (void)actionButtonPressed {
     NSURL* newsItemURL = [NSURL URLWithString:self.newsItem.link];
     UIActivityViewController* viewController = [[UIActivityViewController alloc] initWithActivityItems:@[newsItemURL] applicationActivities:@[[TUSafariActivity new]]];
-    
+    [self trackAction:PCGAITrackerActionActionButtonPressed];
     if (self.splitViewController) {
         if (!self.actionsPopover) {
             self.actionsPopover = [[UIPopoverController alloc] initWithContentViewController:viewController];

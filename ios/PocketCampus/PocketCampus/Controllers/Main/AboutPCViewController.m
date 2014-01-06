@@ -26,7 +26,7 @@
 {
     self = [super initWithNibName:@"AboutPCView" bundle:nil];
     if (self) {
-        // Custom initialization
+        self.gaiScreenName = @"/dashboard/settings/about";
     }
     return self;
 }
@@ -57,7 +57,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/dashboard/settings/about"];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6

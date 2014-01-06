@@ -39,6 +39,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
+        self.gaiScreenName = @"/moodle";
         self.title = NSLocalizedStringFromTable(@"MyCourses", @"MoodlePlugin", nil);
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.courses = [self.moodleService getFromCacheCourseListReply].iCourses;
@@ -59,7 +60,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/moodle"];
+    [self trackScreen];
     if (!self.courses || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }

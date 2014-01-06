@@ -32,6 +32,7 @@
     [PCUtils throwExceptionIfObject:tripResult notKindOfClass:[QueryTripsResult class]];
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
+        self.gaiScreenName = @"/transport/trips";
         self.title = NSLocalizedStringFromTable(@"Trips", @"TransportPlugin", nil);
         self.tripResult = tripResult;
         self.trips = self.tripResult.connections;
@@ -49,7 +50,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/transport/trips"];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations

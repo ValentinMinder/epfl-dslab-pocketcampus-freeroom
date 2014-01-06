@@ -45,6 +45,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         dispatch_once(&onceToken, ^{
             kCellTextLabelTextStyle = UIFontTextStyleFootnote;
         });
+        self.gaiScreenName = @"/news";
         self.newsService = [NewsService sharedInstanceToRetain];
         NSArray* newsItems = [self.newsService getFromCacheNewsItemsForLanguage:[PCUtils userLanguageCode]];
         if (newsItems) {
@@ -74,7 +75,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/news"];
+    [self trackScreen];
     [self refreshIfNeeded];
 }
 

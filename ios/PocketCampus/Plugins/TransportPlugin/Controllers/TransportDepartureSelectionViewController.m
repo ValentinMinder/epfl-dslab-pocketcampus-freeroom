@@ -32,6 +32,7 @@ static const NSUInteger kStationsSection = 1;
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
+        self.gaiScreenName = @"/transport/departureSelection";
         self.title = NSLocalizedStringFromTable(@"DepartureStation", @"TransportPlugin", nil);
         self.transportService = [TransportService sharedInstanceToRetain];
         self.appCouldNotAccessLocation = ![PCUtils hasAppAccessToLocation];
@@ -57,6 +58,7 @@ static const NSUInteger kStationsSection = 1;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self trackScreen];
     if (self.appCouldNotAccessLocation) {
         self.appCouldNotAccessLocation = ![PCUtils hasAppAccessToLocation];
         [self.tableView reloadData];
@@ -97,11 +99,13 @@ static const NSUInteger kStationsSection = 1;
                 [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                 return;
             }
+            [self trackAction:@"AutomaticModeSelected"];
             self.transportService.userManualDepartureStation = nil;
             [self dismiss];
             break;
         case kStationsSection:
         {
+            [self trackAction:@"StationManuallySelected"];
             TransportStation* station = self.stations[indexPath.row];
             self.transportService.userManualDepartureStation = station;
             [self dismiss];

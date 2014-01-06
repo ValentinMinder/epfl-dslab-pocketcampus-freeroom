@@ -23,9 +23,10 @@
 
 - (id)initWithMapItems:(NSArray*)mapItems selectedInitially:(NSArray*)selectedInitially userValidatedSelectionBlock:(void (^)(NSArray* newlySelected))userValidatedSelectionBlock
 {
+    [PCUtils throwExceptionIfObject:mapItems notKindOfClass:[NSArray class]];
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
-        [PCUtils throwExceptionIfObject:mapItems notKindOfClass:[NSArray class]];
+        self.gaiScreenName = @"/map/searchResultsList";
         self.mapItems = mapItems;
         self.selectedInitially = selectedInitially;
         self.userValidatedSelectionBlock = userValidatedSelectionBlock;
@@ -45,6 +46,11 @@
     if (![PCUtils isIdiomPad]) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed)];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations

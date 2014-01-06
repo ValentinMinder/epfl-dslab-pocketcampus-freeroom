@@ -34,6 +34,7 @@
 {
     self = [super initWithNibName:@"TransportAddStationView" bundle:nil];
     if (self) {
+        self.gaiScreenName = @"/transport/addStation";
         self.title = NSLocalizedStringFromTable(@"AddStation", @"TransportPlugin", nil);
         self.transportService = [TransportService sharedInstanceToRetain];
         self.userStationsAtLoad = [self.transportService.userTransportStations copy];
@@ -58,7 +59,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/transport/addStation"];
+    [self trackScreen];
     TransportAddStationViewController* weakSelf __weak = self;
     [NSTimer scheduledTimerWithTimeInterval:0.0 block:^{
         [weakSelf.searchBar becomeFirstResponder]; //if done inline, it was slowing down the presentation of the view controller for some reason

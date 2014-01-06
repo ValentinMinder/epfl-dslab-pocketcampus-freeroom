@@ -19,8 +19,6 @@
 
 @end
 
-static NSString* const kCategoryCell = @"CategoryCell";
-
 @implementation EventsCategorySelectorViewController
 
 - (id)initWithCategories:(NSArray*)allCategories selectedInitially:(NSArray*)selectedInitially userValidatedSelectionBlock:(void (^)(NSArray* newlySelected))userValidatedSelectionBlock
@@ -39,8 +37,12 @@ static NSString* const kCategoryCell = @"CategoryCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
+    self.tableView = tableViewAdditions;
+    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
+    };
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed)];
-
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -85,11 +87,11 @@ static NSString* const kCategoryCell = @"CategoryCell";
         }
     }
     
+    NSString* const kCategoryCell = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"CategoryCell"];
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kCategoryCell];
-    
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCategoryCell];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
     }
     
     cell.textLabel.text = self.allCategories[indexPath.row];

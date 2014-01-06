@@ -89,6 +89,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 {
     self = [super initWithNibName:@"TransportNextDeparturesView" bundle:nil];
     if (self) {
+        self.gaiScreenName = @"/transport";
         self.transportService = [TransportService sharedInstanceToRetain];
     }
     
@@ -122,7 +123,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/transport"];
+    [self trackScreen];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
     [self refreshIfNeeded];
     //[NSTimer scheduledTimerWithTimeInterval:0.85 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
@@ -233,6 +234,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 #pragma mark - Actions
 
 - (IBAction)locationButtonPressed {
+    [self trackAction:@"LocationButtonPressed"];
     if (self.locationState == LocationStateManualSelection) {
         self.transportService.userManualDepartureStation = nil;
         [self refresh];

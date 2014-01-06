@@ -34,8 +34,9 @@ typedef enum {
     [PCUtils throwExceptionIfObject:trip notKindOfClass:[TransportTrip class]];
     self = [super initWithNibName:@"TransportTripPartsView" bundle:nil];
     if (self) {
+        self.gaiScreenName = @"/transport/trips/parts";
         self.trip = trip;
-        self.title = [NSString stringWithFormat:@"%@ ➔ %@", self.trip.from.shortName, self.trip.to.shortName];
+        self.title = [NSString stringWithFormat:@"%@ ➝ %@", self.trip.from.shortName, self.trip.to.shortName];
     }
     return self;
 }
@@ -91,7 +92,7 @@ typedef enum {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/transport/trips/parts"];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6

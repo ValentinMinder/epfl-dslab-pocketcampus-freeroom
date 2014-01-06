@@ -91,7 +91,8 @@ static NSString* const kPoolCell = @"PoolCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-        [[PCGAITracker sharedTracker] trackScreenWithName:[NSString stringWithFormat:@"/v3r1/events/%lld", self.eventId]];
+#warning TODO
+    [[PCGAITracker sharedTracker] trackScreenWithName:[NSString stringWithFormat:@"/v3r1/events/%lld", self.eventId]];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
@@ -148,8 +149,10 @@ static NSString* const kPoolCell = @"PoolCell";
 
 - (void)addRemoveFavoritesButtonPressed {
     if ([self.eventsService isEventItemIdFavorite:self.eventItem.eventId]) {
+        [self trackAction:PCGAITrackerActionUnmarkFavorite];
         [self.eventsService removeFavoriteEventItemId:self.eventItem.eventId];
     } else {
+        [self trackAction:PCGAITrackerActionMarkFavorite];
         [self.eventsService addFavoriteEventItemId:self.eventItem.eventId];
     }
     [self refreshFavoriteButton];

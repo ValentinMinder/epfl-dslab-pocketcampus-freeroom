@@ -57,6 +57,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
+        self.gaiScreenName = @"/moodle/course";
         self.course = course;
         self.title = self.course.iTitle;
         self.moodleService = [MoodleService sharedInstanceToRetain];
@@ -116,7 +117,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/moodle/course"];
+    [self trackScreen];
     if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
@@ -202,6 +203,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 }
 
 - (void)toggleShowAll:(id)sender {
+    [self trackAction:@"AllCurrentWeekTogglePressed"];
     if (self.currentWeek > 0) {
         self.currentWeek = 0;
     } else {
@@ -330,6 +332,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 }
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+    [self trackAction:PCGAITrackerActionSearch];
     if ([PCUtils isIdiomPad]) {
         self.searchBar.searchBarStyle = kSearchBarActiveStyle;
     }
@@ -522,6 +525,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         MoodleSection* section = tableView == self.tableView ? self.sections[indexPath.section] : self.filteredSections[indexPath.section];
         MoodleResource* resource = section.iResources[indexPath.row];
+        [self trackAction:PCGAITrackerActionDelete];
         if ([self.moodleService deleteDownloadedMoodleResource:resource]) {
             [tableView setEditing:NO animated:YES];
         } else {

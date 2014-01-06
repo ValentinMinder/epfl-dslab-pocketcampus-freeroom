@@ -46,6 +46,7 @@ static const int kAboutRow = 2;
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
+        self.gaiScreenName = @"/dashboard/settings";
         self.mainController = mainController;
         self.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
     }
@@ -64,7 +65,7 @@ static const int kAboutRow = 2;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/dashboard/settings"];
+    [self trackScreen];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 }
