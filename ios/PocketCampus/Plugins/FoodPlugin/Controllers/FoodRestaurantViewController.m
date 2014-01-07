@@ -52,6 +52,12 @@ static const NSInteger kMealsSection = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
+    self.tableView = tableViewAdditions;
+    __weak __typeof(self) weakSelf = self;
+    tableViewAdditions.contentSizeCategoryDidChangeBlock = ^(PCTableViewAdditions* tableView) {
+        [weakSelf.cellForMealName removeAllObjects];
+    };
     [self refreshFavoriteButton];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
 }
