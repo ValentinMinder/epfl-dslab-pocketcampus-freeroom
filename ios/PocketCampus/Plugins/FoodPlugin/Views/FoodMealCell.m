@@ -82,6 +82,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         self.foodService = [FoodService sharedInstanceToRetain];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.originalSeparatorInsets = self.separatorInset;
+        self.textView.scrollEnabled = NO;
         self.mealTypeImageViewLeftConstraint.constant = [PCUtils isIdiomPad] ? kmealTypeImageViewLeftConstraintPad : kmealTypeImageViewLeftConstraintPhone;
         self.textViewWidthConstraint.constant = kTextViewWidth;
         self.textViewBottomConstraint.constant = kBottomZoneHeight;
@@ -212,7 +213,6 @@ static const CGFloat kRateControlsViewWidth = 248.0;
                                    range:[fullString rangeOfString:satRateString]];
     }
     
-
     [self.satRateButton setAttributedTitle:satRateAttrString forState:UIControlStateNormal];
 }
 
@@ -223,7 +223,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     CGSize targetSize = CGSizeMake(kTextViewWidth-10.0, CGFLOAT_MAX); //account for text left and right insets of the text view
     CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
     CFRelease(framesetter);
-    CGFloat finalHeight = size.height + kBottomZoneHeight + 16.0; //give some margin so that text is not too tight between top and bottom lines
+    CGFloat finalHeight = size.height + kBottomZoneHeight + 22.0; //give some margin so that text is not too tight between top and bottom lines
     return finalHeight > kMinHeight ? finalHeight : kMinHeight;
 }
 
