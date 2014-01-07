@@ -58,23 +58,30 @@
 }
 
 - (void)hideWithAnimationDelay:(NSTimeInterval)delay duration:(NSTimeInterval)duration completion:(VoidBlock)completion; {
-    //duration = 5.0;
+    //duration = 15.0;
+    
     CGFloat originalHeight = self.drawingImageView.frame.size.height;
     CGFloat compressedHeight = self.drawingImageView.frame.size.height*0.85;
-    NSArray* compressedSizeConstraints = [NSLayoutConstraint width:self.drawingImageView.frame.size.width height:compressedHeight constraintsForView:self.drawingImageView];
-    [self.drawingImageView addConstraints:compressedSizeConstraints];
+    CGFloat originalCenterYConstraintConstant = self.drawingImageViewCenterYConstraint.constant;
+    NSLayoutConstraint* compressedHeightConstraint = [NSLayoutConstraint heightConstraint:compressedHeight forView:self.drawingImageView];
+    
+    [self.drawingImageView addConstraint:compressedHeightConstraint];
     self.drawingImageViewCenterYConstraint.constant = (originalHeight-compressedHeight)/2.0;
+    
     [UIView animateWithDuration:duration*0.6 delay:delay options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self.backgroundImageView layoutIfNeeded];
     } completion:^(BOOL finished) {
-        [self.drawingImageView removeConstraints:compressedSizeConstraints];
-        self.drawingImageViewCenterYConstraint.constant = 0.0;
+        
+        [self.drawingImageView removeConstraint:compressedHeightConstraint];
+        self.drawingImageViewCenterYConstraint.constant = originalCenterYConstraintConstant;
+        
         [UIView animateWithDuration:duration*0.07 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
             [self.backgroundImageView layoutIfNeeded];
         } completion:^(BOOL finished) {
             
-            self.drawingImageViewCenterYConstraint.constant = [PCUtils is4inchDevice] ? -300.0 : -212.0;
-            [UIView animateWithDuration:duration*0.33 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            self.drawingImageViewCenterYConstraint.constant = [PCUtils is4inchDevice] ? -500.0 : -412.0;
+            
+            [UIView animateWithDuration:duration*0.33 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
                 self.alpha = 0.0;
                 [self.backgroundImageView layoutIfNeeded];
             } completion:^(BOOL finished) {
