@@ -102,25 +102,30 @@
 #pragma mark - Notification listening
 
 - (void)preferredContentSizeChanged:(NSNotification *)notification {
-    __weak __typeof(self) weakSelf = self;
     [NSTimer scheduledTimerWithTimeInterval:0.1 block:^{
-        // 1)
-        if (weakSelf.contentSizeCategoryDidChangeBlock) {
-            weakSelf.contentSizeCategoryDidChangeBlock(weakSelf);
-        }
-        // 2)
-        if (weakSelf.rowHeightBlock) {
-            weakSelf.rowHeight = self.rowHeightBlock(weakSelf);
-        }
-        // 3)
-        if (weakSelf.reprocessesImagesWhenContentSizeCategoryChanges) {
-            [weakSelf reprocessAllCachedImages];
-        }
-        // 4)
-        if (weakSelf.reloadsDataWhenContentSizeCategoryChanges) {
-            [weakSelf invalidateReuseIdentifiers];
-            [weakSelf reloadData];
-        }
+        __weak __typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            @try {
+                // 1)
+                if (weakSelf.contentSizeCategoryDidChangeBlock) {
+                    weakSelf.contentSizeCategoryDidChangeBlock(weakSelf);
+                }
+                // 2)
+                if (weakSelf.rowHeightBlock) {
+                    weakSelf.rowHeight = self.rowHeightBlock(weakSelf);
+                }
+                // 3)
+                if (weakSelf.reprocessesImagesWhenContentSizeCategoryChanges) {
+                    [weakSelf reprocessAllCachedImages];
+                }
+                // 4)
+                if (weakSelf.reloadsDataWhenContentSizeCategoryChanges) {
+                    [weakSelf invalidateReuseIdentifiers];
+                    [weakSelf reloadData];
+                }
+            }
+            @catch (NSException *exception) {}
+        });
     } repeats:NO];
 }
 

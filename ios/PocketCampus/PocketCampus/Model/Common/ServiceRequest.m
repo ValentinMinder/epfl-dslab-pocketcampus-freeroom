@@ -72,7 +72,7 @@
     return [NSString stringWithFormat:@"<ServiceRequest %p (%@ - %@)>", self, self.service.serviceName, NSStringFromSelector(self.serviceClientSelector)];
 }
 
-static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString*  format, ...) {
+static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* format, ...) {
     va_list args;
     va_start(args, format);
     NSString* message = [[NSString alloc] initWithFormat:format arguments:args];
@@ -83,7 +83,7 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString*  
 
 - (id)cachedResponseObjectEvenIfStale:(BOOL)evenIfStale {
     if (self.returnType != ReturnTypeObject) {
-        NSLog(@"WARNING: Unsupported operation, cachedResponseObjectEvenIfStale is not supported when returnType is not ReturnTypeObject. Returning nil.");
+        ServiceRequestLog(self, @"WARNING: Unsupported operation, cachedResponseObjectEvenIfStale is not supported when returnType is not ReturnTypeObject. Returning nil.");
         return nil;
     }
     
@@ -95,7 +95,7 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString*  
     }
     
     if ([cachedArgDic[kWrappedElementDictPrimitiveKey] boolValue]) {
-        NSLog(@"WARNING: Unsupported operation, cachedResponseObjectEvenIfStale is not supported when returnType is not ReturnTypeObject. Returning nil.");
+        ServiceRequestLog(self, @"WARNING: Unsupported operation, cachedResponseObjectEvenIfStale is not supported when returnType is not ReturnTypeObject. Returning nil.");
         return nil;
     }
     
@@ -208,7 +208,7 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString*  
         }
         
         if (![self.delegate respondsToSelector:self.delegateDidFailSelector]) {
-            ServiceRequestLog(self, @"operation failed but delegate does not respond to selector %@. Ignoring");
+            ServiceRequestLog(self, @"operation failed but delegate does not respond to selector %@. Ignoring", NSStringFromSelector(self.delegateDidFailSelector));
             [self finish];
             return;
         }
