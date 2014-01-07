@@ -80,6 +80,11 @@ static NSCache* shortNameForTransportStationName;
     return ( (duration <= (3*60)) && !self.line.name); //feet connections are generally 3min longs (or less) and have nil line name
 }
 
+- (BOOL)hasLeft {
+    NSTimeInterval interval = (self.departureTime/1000.0) - [[NSDate date] timeIntervalSince1970];
+    return interval < -60.0; //up to 1min in the past, consider that the transport might still be there
+}
+
 @end
 
 static NSCache* shortNameForTransportLineName;
@@ -244,11 +249,6 @@ static NSCache* veryShortNameForTransportLineName;
     return nbChanges-1; //les piquets et les potaux...
 }
 
-- (BOOL)isLeft {
-    NSTimeInterval interval = (self.departureTime/1000.0) - [[NSDate date] timeIntervalSince1970];
-    return interval < -60.0; //up to 1min in the past, consider that the transport might still be there
-}
-
 @end
 
 @implementation QueryTripsResult (Additions)
@@ -256,7 +256,7 @@ static NSCache* veryShortNameForTransportLineName;
 - (NSArray*)nonLeftTrips {
     NSMutableArray* purgedTrips = [NSMutableArray arrayWithArray:self.connections];
     for  (TransportTrip* trip in self.connections) {
-        if (trip.isLeft) {
+        if (trip.firstConnection.hasLeft) {
             [purgedTrips removeObject:trip];
         }
     }

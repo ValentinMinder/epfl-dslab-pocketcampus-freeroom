@@ -32,6 +32,12 @@
  */
 @property (nonatomic, readonly, getter = isFeetConnection) BOOL feetConnection;
 
+/*
+ * Returns YES if departureTime is in the past
+ * NO otherwise
+ */
+@property (nonatomic, readonly) BOOL hasLeft;
+
 @end
 
 @interface TransportLine (Additions)
@@ -67,12 +73,6 @@
  * is one change (switching from M2 to train)
  */
 @property (nonatomic, readonly) NSUInteger numberOfChanges;
-
-/*
- * Returns YES if departureTime is in the past
- * NO otherwise
- */
-@property (nonatomic, readonly) BOOL isLeft;
 
 @end
 
