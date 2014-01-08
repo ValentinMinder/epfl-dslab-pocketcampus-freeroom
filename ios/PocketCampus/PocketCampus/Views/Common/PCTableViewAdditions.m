@@ -12,6 +12,8 @@
 
 #import "UIImage+Additions.h"
 
+static id kEmptyImageValue;
+
 @interface PCTableViewAdditions ()
 
 @property (nonatomic, strong) NSOperationQueue* operationQueue;
@@ -30,6 +32,10 @@
 @implementation PCTableViewAdditions
 
 #pragma mark - init
+
++ (void)initialize {
+    kEmptyImageValue = [NSNull null];
+}
 
 - (id)init {
     self = [super init];
@@ -103,6 +109,7 @@
 
 - (void)preferredContentSizeChanged:(NSNotification *)notification {
     [NSTimer scheduledTimerWithTimeInterval:0.1 block:^{
+        //delayed, so that all UIContentSizeCategoryDidChangeNotification in other classes have been delivered
         __weak __typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
             @try {
@@ -143,17 +150,22 @@
         if (prevURL) {
             [self.cachedImageForUrlString removeObjectForKey:url];
             [self.cachedRawImageForUrlString removeObjectForKey:url];
+            [self.urlForIndexPath removeObjectForKey:indexPath];
         }
-        [self.urlForIndexPath removeObjectForKey:indexPath];
-        [self imageViewForCell:cell].image = self.temporaryImage; //Generic image sign
-        [cell layoutSubviews];
+        if ([self imageViewForCell:cell].image) {
+            [self setImage:self.temporaryImage ofCell:cell];
+        }
         return;
     }
     
     if (self.cachedImageForUrlString[url.absoluteString]) {
-        self.urlForIndexPath[indexPath] = url;
-        [self imageViewForCell:cell].image = self.cachedImageForUrlString[url.absoluteString];
-        [cell layoutSubviews];
+        if (self.cachedImageForUrlString[url.absoluteString] == kEmptyImageValue) {
+            //means previous request returned empty image. No need to check for it again.
+            [self setImage:self.temporaryImage ofCell:cell];
+        } else {
+            self.urlForIndexPath[indexPath] = url;
+            [self setImage:self.cachedImageForUrlString[url.absoluteString] ofCell:cell];
+        }
         return;
     }
     
@@ -162,17 +174,18 @@
     AFHTTPRequestOperation* prevOperation = self.operationForIndexPath[indexPath];
     if ([prevOperation.request.URL.absoluteString isEqualToString:url.absoluteString]) {
         //no need to start new request, just wait that current finishes
-        //just make sure operation has correct priority
+        //just make sure operation has correct priority and reapply temporary image as cell might have been reused in between
+        [self setImage:self.temporaryImage ofCell:cell];
         [self manageOperationsPriority];
         return;
-    } else {
+    } else if (prevOperation) {
         //need to start a new request as no current or with different URL
         [prevOperation setCompletionBlockWithSuccess:NULL failure:NULL];
         [prevOperation cancel];
         [self.operationForIndexPath removeObjectForKey:indexPath];
     }
     
-    [self imageViewForCell:cell].image = self.temporaryImage; //Temporary thumbnail until image is loaded
+    [self setImage:self.temporaryImage ofCell:cell]; //Temporary thumbnail until image is loaded
     
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0]; //do not overload network with thumbnails that fail to loa
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -184,6 +197,10 @@
         [weakSelf.failedThumbsIndexPaths removeObject:indexPath];
         if (image) {
             [weakSelf processAndSetImage:image atIndexPath:indexPath url:url];
+        } else {
+            weakSelf.cachedRawImageForUrlString[url.absoluteString] = kEmptyImageValue;
+            weakSelf.cachedImageForUrlString[url.absoluteString] = kEmptyImageValue;
+            [weakSelf setImage:self.temporaryImage atIndexIndex:indexPath];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [weakSelf.operationForIndexPath removeObjectForKey:indexPath];
@@ -196,13 +213,15 @@
 - (UIImage*)cachedImageAtIndexPath:(NSIndexPath*)indexPath {
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     NSURL* url = self.urlForIndexPath[indexPath];
-    return self.cachedImageForUrlString[url.absoluteString];
+    UIImage* image = self.cachedImageForUrlString[url.absoluteString];
+    return image == kEmptyImageValue ? nil : image;
 }
 
 - (UIImage*)cachedRawImageAtIndexPath:(NSIndexPath*)indexPath {
     [PCUtils throwExceptionIfObject:indexPath notKindOfClass:[NSIndexPath class]];
     NSURL* url = self.urlForIndexPath[indexPath];
-    return self.cachedRawImageForUrlString[url.absoluteString];
+    UIImage* rawImage = self.cachedRawImageForUrlString[url.absoluteString];
+    return rawImage == kEmptyImageValue ? nil : rawImage;
 }
 
 - (void)setImageProcessingBlock:(ImageProcessingBlock)imageProcessingBlock {
@@ -258,9 +277,7 @@
             }
             weakSelf.cachedImageForUrlString[url.absoluteString] = image;
             weakSelf.cachedRawImageForUrlString[url.absoluteString] = rawImage;
-            UITableViewCell* cell = [weakSelf cellForRowAtIndexPath:indexPath];
-            [weakSelf imageViewForCell:cell].image = image;
-            [cell layoutSubviews];
+            [weakSelf setImage:image atIndexIndex:indexPath];
         });
     });
 }
@@ -283,6 +300,24 @@
         NSOperation* operation = self.operationForIndexPath[indexPath];
         operation.queuePriority = [visibleIndexPaths containsObject:indexPath] ? NSOperationQueuePriorityHigh : NSOperationQueuePriorityLow;
     }
+}
+
+- (void)setImage:(UIImage*)image atIndexIndex:(NSIndexPath*)indexPath {
+    if (!indexPath) {
+        return;
+    }
+    UITableViewCell* cell = [self cellForRowAtIndexPath:indexPath];
+    if (cell) {
+        [self setImage:image ofCell:cell];
+    }
+}
+
+- (void)setImage:(UIImage*)image ofCell:(UITableViewCell*)cell {
+    if (!cell || [self imageViewForCell:cell].image == image) {
+        return;
+    }
+    [[self imageViewForCell:cell] setImage:image];
+    [cell layoutSubviews];
 }
 
 - (UIImageView*)imageViewForCell:(UITableViewCell*)cell {

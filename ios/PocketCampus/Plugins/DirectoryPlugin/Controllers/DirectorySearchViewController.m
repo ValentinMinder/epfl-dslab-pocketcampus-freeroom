@@ -64,6 +64,8 @@ static NSString* const kRecentSearchCellIdentifier = @"recentSearchCell";
 static NSUInteger const kMaxRecentSearches = 15;
 static NSString* const kRecentSearchesKey = @"recentSearches";
 
+#pragma mark - Init
+
 - (id)init
 {
     self = [super initWithNibName:@"DirectorySearchView" bundle:nil];
@@ -79,6 +81,8 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
     }
     return self;
 }
+
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
@@ -105,17 +109,6 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
     [self searchBar:self.searchBar textDidChange:self.searchBar.text]; //show recent searches if any
     [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Directory"];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Directory"];
-}
-
-- (void)willLoseForeground {
-    self.searchBarWasFirstResponder = [self.searchBar isFirstResponder];
-    [self.searchBar resignFirstResponder];
-}
-
-- (void)didEnterForeground {
-    if (self.searchBarWasFirstResponder) {
-        [self.searchBar becomeFirstResponder];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -160,6 +153,21 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
     return UIInterfaceOrientationMaskPortrait;
 }
 
+#pragma mark - Notifications listening
+
+- (void)willLoseForeground {
+    self.searchBarWasFirstResponder = [self.searchBar isFirstResponder];
+    [self.searchBar resignFirstResponder];
+}
+
+- (void)didEnterForeground {
+    if (self.searchBarWasFirstResponder) {
+        [self.searchBar becomeFirstResponder];
+    }
+}
+
+#pragma mark - Misc
+
 - (void)showNoResultMessage {
     [self.barActivityIndicator stopAnimating];
     self.tableView.hidden = YES;
@@ -193,7 +201,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
     self.displayedPerson = nil;
 }
 
-- (void)putPersonAtTopOfRecentSearches:(Person*)person {
+- (void)promotePersonToRecentSearches:(Person*)person {
     NSUInteger currentIndex = [self.recentSearches indexOfObject:person.firstnameLastname];
     if (currentIndex == NSNotFound) { //this stupid logic needs to be done because there is no way to do in one step: add the object to top if it's not in the set already or move it if it is.
         [self.recentSearches insertObject:person.firstnameLastname atIndex:0]; // adding to top (works only if object not in set)
@@ -201,13 +209,13 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
         [self.recentSearches moveObjectsAtIndexes:[NSIndexSet indexSetWithIndex:currentIndex] toIndex:0]; //moving to top
     }
     
-    /* Cleaning old results */
+    // Cleaning old results
     if (self.recentSearches.count > kMaxRecentSearches) {
         [self.recentSearches removeObjectsInRange:NSMakeRange(kMaxRecentSearches, self.recentSearches.count - kMaxRecentSearches)];
     }
 }
 
-#pragma mark - clear button
+#pragma mark - Clear button
 
 - (void)clearButtonPressed {
     [self trackAction:PCGAITrackerActionClearHistory];
@@ -311,7 +319,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
         if (selectedIndexPath) {
             Person* person = self.searchResults[0]; //first is excepted to be the one as recent searched made request with full first and last name
             [self showPersonViewControllerForPerson:person];
-            [self putPersonAtTopOfRecentSearches:person];
+            [self promotePersonToRecentSearches:person];
             UIActivityIndicatorView* loadingView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:selectedIndexPath] accessoryView];
             if ([loadingView isKindOfClass:[UIActivityIndicatorView class]]) {
                 [loadingView stopAnimating];
@@ -386,7 +394,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
             return;
         } else {
             [self showPersonViewControllerForPerson:person];
-            [self putPersonAtTopOfRecentSearches:person];
+            [self promotePersonToRecentSearches:person];
             if (self.splitViewController) {
                 [self.searchBar resignFirstResponder];
             }
@@ -426,7 +434,8 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
             Person* person = self.searchResults[indexPath.row];
             cell.textLabel.text = person.firstnameLastname;
             cell.detailTextLabel.text = person.organizationsString;
-            [self.tableView setImageURL:[NSURL URLWithString:person.pictureUrl] forCell:cell atIndexPath:indexPath];
+            NSURL* url = person.pictureUrl ? [NSURL URLWithString:person.pictureUrl] : nil;
+            [self.tableView setImageURL:url forCell:cell atIndexPath:indexPath];
             break;
         }
         case ResultsModeRecentSearches:
