@@ -45,8 +45,8 @@ static id kEmptyImageValue;
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super initWithCoder:decoder];
     if (self) {
         [self initDefaultValues];
     }

@@ -461,7 +461,7 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (void)revealMenuAndFinalize {
     static NSTimeInterval const kHideAnimationDelay = 0.4;
-    static NSTimeInterval const kHideAnimationNormalDuration = 0.35;
+    static NSTimeInterval const kHideAnimationNormalDuration = 0.50;
     if (self.initialActivePluginIdentifier) {
         self.revealController.toggleAnimationDuration = 0.25;
         self.initDone = YES; //must do it before calling setActivePluginWithIdentifier otherwise no effect
