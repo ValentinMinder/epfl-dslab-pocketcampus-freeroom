@@ -100,7 +100,7 @@
     [self.drawingImageView addConstraint:compressedHeightConstraint];
     self.drawingImageViewCenterYConstraint.constant = m2LogoCenterDistance;
     
-    [UIView animateWithDuration:m1Duration delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration:m1Duration delay:delay options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self.backgroundImageView layoutIfNeeded];
     } completion:^(BOOL finished) {
         
