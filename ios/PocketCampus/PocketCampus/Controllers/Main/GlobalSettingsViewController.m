@@ -104,12 +104,14 @@ static const int kAboutRow = 2;
             switch (indexPath.row) {
                 case kEditMainMenuRow:
                 {
+                    [self trackAction:@"EditMainMenu"];
                     [self.mainController.mainMenuViewController setEditing:YES];
                     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
                     break;
                 }
                 case kRestoreDefaultMainMenuRow:
                 {
+                    [self trackAction:@"RestoreDefaultMainMenu"];
                     [self.mainController restoreDefaultMainMenu];
                     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
                     break;
@@ -122,6 +124,7 @@ static const int kAboutRow = 2;
             switch (indexPath.row) {
                 case kRatePCRow:
                 {
+                    [self trackAction:@"RateOnAppStore"];
                     //iOS 7 bug makes that "Write review" button is not available when using SKStoreProductViewController
                     //Thus simply opening app in App Store app instead
                     /*SKStoreProductViewController* productViewController = [SKStoreProductViewController new];
@@ -135,6 +138,7 @@ static const int kAboutRow = 2;
                 }
                 case kLikePCFBRow:
                 {
+                    [self trackAction:@"LikeOnFacebook"];
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     //
                     NSURL *url = [NSURL URLWithString:@"http://facebook.com/pocketcampus"];

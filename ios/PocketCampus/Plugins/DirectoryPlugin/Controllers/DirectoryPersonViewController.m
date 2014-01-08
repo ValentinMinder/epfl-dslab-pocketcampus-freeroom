@@ -366,13 +366,13 @@ static CGFloat kRowHeight;
 
 - (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
     if ([NSStringFromSelector(action) isEqualToString:@"copy:"]) {
-        [self trackAction:PCGAITrackerActionCopy];
         return YES;
     }
     return NO;
 }
 
 - (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+    [self trackAction:PCGAITrackerActionCopy];
     UIPasteboard* pasteboard = [UIPasteboard generalPasteboard];
     switch (indexPath.section) {
         case kPersonBaseInfoSection:
@@ -398,7 +398,6 @@ static CGFloat kRowHeight;
             pasteboard.string = self.person.office;
             break;
     }
-    NSLog(@"-> Copied '%@' to pasteboard", pasteboard.string);
 }
 
 #pragma mark - UITableViewDataSource
