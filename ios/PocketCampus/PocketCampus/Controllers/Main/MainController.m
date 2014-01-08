@@ -293,6 +293,7 @@ static MainController<MainControllerPublic>* instance = nil;
         NSLog(@"-> Starting Crashlytics");
         [Crashlytics startWithAPIKey:crashlyticsAPIKey];
     }
+    [[PCGAITracker sharedTracker] trackAppOnce];
 }
 
 - (void)initPluginsList {

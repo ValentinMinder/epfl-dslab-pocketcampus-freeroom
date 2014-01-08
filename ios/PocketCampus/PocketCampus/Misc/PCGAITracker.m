@@ -23,6 +23,9 @@ NSString* const PCGAITrackerActionCopy = @"Copy";
 NSString* const PCGAITrackerActionHelp = @"Help";
 NSString* const PCGAITrackerActionSearch = @"Search";
 
+
+static NSString* const kFirstLaunchAfterInstallAction = @"FirstLaunchAfterInstall";
+
 static id instance __strong = nil;
 
 @interface PCGAITracker ()
@@ -70,6 +73,17 @@ static id instance __strong = nil;
     action = screenName.length > 0 ? [screenName stringByAppendingFormat:@"-%@", action] : action;
     [self.gaiTracker set:kGAIScreenName value:screenName];
     [self.gaiTracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action" action:action label:nil value:nil] build]];
+}
+
+- (void)trackAppOnce {
+    if ([[PCConfig defaults] boolForKey:kFirstLaunchAfterInstallAction]) {
+        return;
+    }
+    NSLog(@"-> First app launch, sending '%@' event to Google Analytics", kFirstLaunchAfterInstallAction);
+    [[PCConfig defaults] setBool:YES forKey:kFirstLaunchAfterInstallAction];
+    [[PCConfig defaults] synchronize];
+    [self trackAction:kFirstLaunchAfterInstallAction inScreenWithName:@"/"];
+    
 }
 
 #pragma mark - Private

@@ -34,4 +34,10 @@ extern NSString* const PCGAITrackerActionSearch;
  */
 - (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName;
 
+/*
+ * The first time ever this method is called (even between app launched)
+ * a first launch action is sent to GAN. Does nothing the other times.
+ */
+- (void)trackAppOnce;
+
 @end
