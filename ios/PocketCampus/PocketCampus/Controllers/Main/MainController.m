@@ -460,13 +460,15 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)revealMenuAndFinalize {
+    static NSTimeInterval const kHideAnimationDelay = 0.4;
+    static NSTimeInterval const kHideAnimationNormalDuration = 0.35;
     if (self.initialActivePluginIdentifier) {
         self.revealController.toggleAnimationDuration = 0.25;
         self.initDone = YES; //must do it before calling setActivePluginWithIdentifier otherwise no effect
         [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
         self.initialActivePluginIdentifier = nil; //initial plugin has been treated, prevent future use
         [self.revealController revealToggle:self];
-        [self.splashView hideWithAnimationDelay:0.4 duration:self.revealController.toggleAnimationDuration completion:^{
+        [self.splashView hideWithAnimationDelay:kHideAnimationDelay duration:self.revealController.toggleAnimationDuration completion:^{
             [self.splashView removeFromSuperview];
         }];
     } else {
@@ -477,8 +479,8 @@ static MainController<MainControllerPublic>* instance = nil;
             duration = self.revealController.toggleAnimationDuration;
         } else {
             [self.revealController hideFrontViewAnimated:NO];
-            duration = 0.45;
-            [self.splashView hideWithAnimationDelay:0.4 duration:duration completion:^{
+            duration = kHideAnimationNormalDuration;
+            [self.splashView hideWithAnimationDelay:kHideAnimationDelay duration:duration completion:^{
                 [self.splashView removeFromSuperview];
             }];
         }

@@ -52,7 +52,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
     self.tableView = tableViewAdditions;
     tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
-        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault]*1.3;
+        return floorf([PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault]*1.3);
     };
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:@"coursesList"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];

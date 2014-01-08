@@ -58,20 +58,49 @@
 }
 
 - (void)hideWithAnimationDelay:(NSTimeInterval)delay duration:(NSTimeInterval)duration completion:(VoidBlock)completion; {
-    //duration = 5.0;
+    //duration = 1.0;
+    
+    /*CAMediaTimingFunction* easeIn = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+    for (size_t index = 0; index<=3; index++) {
+        float values[2];
+        [easeIn getControlPointAtIndex:index values:values];
+        NSLog(@"EaseIN %ld: (%f, %f)", index, values[0], values[1]);
+    }*/
+    
+    static CGFloat kEaseInFinalSlope = 50.0/29.0;
     
     CGFloat originalHeight = self.drawingImageView.frame.size.height;
     CGFloat compressedHeight = self.drawingImageView.frame.size.height*0.85;
     CGFloat originalCenterYConstraintConstant = self.drawingImageViewCenterYConstraint.constant;
     NSLayoutConstraint* compressedHeightConstraint = [NSLayoutConstraint heightConstraint:compressedHeight forView:self.drawingImageView];
-    NSTimeInterval m1Duration = duration*0.55;
-    NSTimeInterval m2Duration = duration*0.12;
-    NSTimeInterval m3Duration = duration*0.33;
+    CGFloat m2LogoTopDistance = originalHeight-compressedHeight;
+    CGFloat m2LogoCenterDistance = m2LogoTopDistance/2.0;
+    CGFloat finalCenterYConstraintConstant = -500.0;
+    CGFloat m3Distance = finalCenterYConstraintConstant-originalCenterYConstraintConstant;
+    
+    float m1TimeFrac = 0.65;
+    
+    /*
+     * m2TimeFrac can be found by resolving following system:
+     *
+     * m1TimeFrac = constant (above)
+     * m3TimeFrac = 1 - m1TimeFrac - m2TimeFrac
+     * 
+     * (m2LogoTopDistance / m2TimeFrac) * kEaseInFinalSlope = m3Distance / (1 - m1TimeFrac - m2TimeFrac)
+     */
+    float m2TimeFrac = (1 - m1TimeFrac) / ( (m3Distance / (m2LogoTopDistance * kEaseInFinalSlope) + 1) );
+    
+    NSTimeInterval m1Duration = duration*m1TimeFrac;
+    NSTimeInterval m2Duration = duration*m2TimeFrac;
+    NSTimeInterval m3Duration = duration-m1Duration-m2Duration;
+    
+    //NSLog(@"M2 avg speed: %lf, final speed: %lf", m2LogoTopDistance/m2Duration, (m2LogoTopDistance/m2Duration)*kEaseInFinalSlope);
+    //NSLog(@"M3 avg speed: %lf", m3Distance/m3Duration);
     
     [self.drawingImageView addConstraint:compressedHeightConstraint];
-    self.drawingImageViewCenterYConstraint.constant = (originalHeight-compressedHeight)/2.0;
+    self.drawingImageViewCenterYConstraint.constant = m2LogoCenterDistance;
     
-    [UIView animateWithDuration:m1Duration delay:delay options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:m1Duration delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^{
         [self.backgroundImageView layoutIfNeeded];
     } completion:^(BOOL finished) {
         
@@ -82,9 +111,8 @@
             [self.backgroundImageView layoutIfNeeded];
         } completion:^(BOOL finished) {
             
-            self.drawingImageViewCenterYConstraint.constant = [PCUtils is4inchDevice] ? -500.0 : -412.0;
-            //NSLog(@"M3 avg speed: %lf", self.drawingImageViewCenterYConstraint.constant/m3Duration);
-            [UIView animateWithDuration:duration*m3Duration delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+            self.drawingImageViewCenterYConstraint.constant = finalCenterYConstraintConstant;
+            [UIView animateWithDuration:m3Duration delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
                 self.alpha = 0.0;
                 [self.backgroundImageView layoutIfNeeded];
             } completion:^(BOOL finished) {
