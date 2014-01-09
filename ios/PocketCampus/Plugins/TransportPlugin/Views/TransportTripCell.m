@@ -26,6 +26,8 @@
 
 @implementation TransportTripCell
 
+@synthesize reuseIdentifier = _reuseIdentifier;
+
 #pragma mark - Init
 
 - (id)initWithReuseIdentifier:(NSString*)reuseIdentifier {

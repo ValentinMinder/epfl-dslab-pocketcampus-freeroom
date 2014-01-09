@@ -24,8 +24,6 @@ typedef enum {
 
 @property (nonatomic, weak) id<EyeButtonDelegate> eyeButtonDelegate;
 
-@property (nonatomic, copy) NSString* reuseIdentifier;
-
 @property (nonatomic) EyeButtonState eyeButtonState; //Eye button can only appear during in editing mode
 
 + (MainMenuItemCell*)cellWithMainMenuItem:(MainMenuItem*)menuItem reuseIdentifier:(NSString *)reuseIdentifier;

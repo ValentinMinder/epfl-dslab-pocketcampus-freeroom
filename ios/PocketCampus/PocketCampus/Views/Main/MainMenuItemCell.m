@@ -12,6 +12,8 @@
 
 @interface MainMenuItemCell ()
 
+@property (nonatomic, readwrite, copy) NSString* reuseIdentifier;
+
 @property (nonatomic, weak) IBOutlet UIImageView* leftImageView;
 @property (nonatomic, weak) IBOutlet UILabel* titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel* subtitleLabel;
@@ -25,6 +27,8 @@
 @end
 
 @implementation MainMenuItemCell
+
+@synthesize reuseIdentifier = _reuseIdentifier;
 
 + (MainMenuItemCell*)cellWithMainMenuItem:(MainMenuItem*)menuItem reuseIdentifier:(NSString *)reuseIdentifier
 {

@@ -23,9 +23,6 @@ static const int kEmailSection = 2;
 static const int kWebpageSection = 3;
 static const int kOfficeSection = 4;
 
-static const int kPrivatePhoneRow = 0;
-static const int kOfficePhoneRow = 1;
-
 static const int kCreateNewContactActionIndex = 0;
 static const int kAddToExistingContactActionIndex = 1;
 
@@ -281,13 +278,6 @@ static CGFloat kRowHeight;
     switch (indexPath.section) {
         case kPersonBaseInfoSection:
             return [DirectoryPersonBaseInfoCell heightForStyle:DirectoryPersonBaseInfoCellStyleLarge];
-        case kPhonesSection:
-            switch (indexPath.row) {
-                case kPrivatePhoneRow:
-                    return self.person.privatePhoneNumber ? kRowHeight : 0.0;
-                case kOfficePhoneRow:
-                    return self.person.officePhoneNumber ? kRowHeight : 0.0;
-            }
     }
     return kRowHeight;
 }
@@ -321,13 +311,13 @@ static CGFloat kRowHeight;
         {
             [self trackAction:@"Call"];
             NSString* phone = nil;
-            switch (indexPath.row) {
-                case kPrivatePhoneRow:
-                    phone = self.person.privatePhoneNumber;
-                    break;
-                case kOfficePhoneRow:
-                    phone = self.person.officePhoneNumber;
-                    break;
+            if (indexPath.row == [self privatePhoneNumberRowIndex]) {
+                phone = self.person.privatePhoneNumber;
+            } else if (indexPath.row == [self officePhoneNumberRowIndex]) {
+                phone = self.person.officePhoneNumber;
+            } else {
+                //should not happen
+                return;
             }
             phone = [phone stringByReplacingOccurrencesOfString:@" " withString:@""];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phone]]];
@@ -379,13 +369,13 @@ static CGFloat kRowHeight;
             pasteboard.string = self.person.fullFirstnameLastname;
             break;
         case kPhonesSection:
-            switch (indexPath.row) {
-                case kPrivatePhoneRow:
-                    pasteboard.string = self.person.privatePhoneNumber;
-                    break;
-                case kOfficePhoneRow:
-                    pasteboard.string = self.person.officePhoneNumber;
-                    break;
+            if (indexPath.row == [self privatePhoneNumberRowIndex]) {
+                pasteboard.string = self.person.privatePhoneNumber;
+            } else if (indexPath.row == [self officePhoneNumberRowIndex]) {
+                pasteboard.string = self.person.officePhoneNumber;
+            } else {
+                //should not happen
+                return;
             }
             break;
         case kEmailSection:
@@ -398,6 +388,7 @@ static CGFloat kRowHeight;
             pasteboard.string = self.person.office;
             break;
     }
+    NSLog(@"-> Copy '%@' to pasteboard.", pasteboard.string);
 }
 
 #pragma mark - UITableViewDataSource
@@ -428,19 +419,12 @@ static CGFloat kRowHeight;
     
     switch (indexPath.section) {
         case kPhonesSection:
-            switch (indexPath.row) {
-                case kPrivatePhoneRow:
-                {
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"PrivatePhone", @"DirectoryPlugin", nil);
-                    cell.detailTextLabel.text = self.person.privatePhoneNumber;
-                    break;
-                }
-                case kOfficePhoneRow:
-                {
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"OfficePhone", @"DirectoryPlugin", nil);
-                    cell.detailTextLabel.text = self.person.officePhoneNumber;
-                    break;
-                }
+            if (indexPath.row == [self privatePhoneNumberRowIndex]) {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"PrivatePhone", @"DirectoryPlugin", nil);
+                cell.detailTextLabel.text = self.person.privatePhoneNumber;
+            } else if (indexPath.row == [self officePhoneNumberRowIndex]) {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"OfficePhone", @"DirectoryPlugin", nil);
+                cell.detailTextLabel.text = self.person.officePhoneNumber;
             }
             break;
         case kEmailSection:
@@ -473,7 +457,12 @@ static CGFloat kRowHeight;
         case kPersonBaseInfoSection:
             return 1;
         case kPhonesSection:
-            return (self.person.privatePhoneNumber || self.person.officePhoneNumber) ? 2 : 0;
+            if (self.person.privatePhoneNumber && self.person.officePhoneNumber) {
+                return 2;
+            } else if (self.person.privatePhoneNumber || self.person.officePhoneNumber) {
+                return 1;
+            }
+            return 0;
         case kEmailSection:
             return self.person.email ? 1 : 0;
         case kWebpageSection:
@@ -489,6 +478,21 @@ static CGFloat kRowHeight;
         return 0;
     }
     return 5; //see static ints defined at top of class
+}
+
+#pragma mark - Utils
+
+- (NSInteger)privatePhoneNumberRowIndex {
+    return self.person.privatePhoneNumber ? 0 : -1; //-1 means row does not exist
+}
+
+- (NSInteger)officePhoneNumberRowIndex {
+    if (self.person.privatePhoneNumber && self.person.officePhoneNumber) {
+        return 1;
+    } else if (self.person.officePhoneNumber) {
+        return 0;
+    }
+    return -1;
 }
 
 

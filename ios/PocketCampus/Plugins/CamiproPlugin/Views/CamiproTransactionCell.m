@@ -22,6 +22,8 @@
 
 @implementation CamiproTransactionCell
 
+@synthesize reuseIdentifier = _reuseIdentifier;
+
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"CamiproTransactionCell" owner:self options:nil];

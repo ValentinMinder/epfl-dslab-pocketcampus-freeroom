@@ -72,6 +72,8 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 
 @implementation FoodMealCell
 
+@synthesize reuseIdentifier = _reuseIdentifier;
+
 #pragma mark - Init
 
 - (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier {

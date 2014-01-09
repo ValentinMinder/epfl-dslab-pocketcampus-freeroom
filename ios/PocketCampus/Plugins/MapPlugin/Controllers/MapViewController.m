@@ -53,7 +53,7 @@ static int const kMaxDisplayedAnnotations = 70;
 static NSString* const kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 static CGFloat const kSearchBarHeightPortrait = 44.0;
-static CGFloat const kSearchBarHeightLandscape = 32.0;
+static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 @interface MapViewController ()<MKMapViewDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, RemoteOverlayRendererDelegate, UIPopoverControllerDelegate>
 

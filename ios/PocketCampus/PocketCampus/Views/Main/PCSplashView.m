@@ -58,7 +58,7 @@
 }
 
 - (void)hideWithAnimationDelay:(NSTimeInterval)delay duration:(NSTimeInterval)duration completion:(VoidBlock)completion; {
-    //duration = 2.0;
+    //duration = 5.0;
     
     /*CAMediaTimingFunction* easeIn = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     for (size_t index = 0; index<=3; index++) {

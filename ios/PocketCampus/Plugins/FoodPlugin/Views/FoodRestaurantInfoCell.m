@@ -36,7 +36,7 @@
     self = (FoodRestaurantInfoCell*)elements[0];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.separatorInset = UIEdgeInsetsZero;
+        //self.separatorInset = UIEdgeInsetsMake(0, 1000, 0, 0);
         [self.showOnMapButton setTitle:[NSString stringWithFormat:@"  %@  ", NSLocalizedStringFromTable(@"ShowOnMap", @"FoodPlugin", nil)] forState:UIControlStateNormal];
         _showRating = YES; //Default
         self.restaurant = restaurant;
@@ -48,13 +48,14 @@
 
 + (CGFloat)preferredHeightForRestaurant:(EpflRestaurant*)restaurant {
     if (!restaurant.rPictureUrl) {
-        return 36.0; //just top bar for satRateLabel and showOnMapButton
+        return 36.5; //just top bar for satRateLabel and showOnMapButton
     }
     return [PCUtils isIdiomPad] ? 200.0 : 150.0;
 }
 
 - (void)setRestaurant:(EpflRestaurant *)restaurant {
     _restaurant = restaurant;
+    self.backgroundImageView.hidden = (self.restaurant.rPictureUrl == nil);
     if (self.restaurant.rPictureUrl) {
         FoodRestaurantInfoCell* weakSelf __weak = self;
         
