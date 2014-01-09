@@ -67,7 +67,7 @@
         return;
     }
     if (self.userSelectedRecentSearchBlock) {
-        self.userSelectedRecentSearchBlock(self.recentSearches[indexPath.row - self.showClearButtonWithinTableView ? 1 : 0]);
+        self.userSelectedRecentSearchBlock(self.recentSearches[indexPath.row - (self.showClearButtonWithinTableView ? 1 : 0)]);
     }
 }
 
