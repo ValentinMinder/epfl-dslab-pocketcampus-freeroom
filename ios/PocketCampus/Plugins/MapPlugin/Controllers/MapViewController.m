@@ -102,6 +102,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 @property (nonatomic, strong) UIAlertView* internetConnectionAlert;
 @property (nonatomic, strong) UIAlertView* tooManyResultsAlert;
 
+@property (nonatomic) BOOL searchBarShouldBeginEditing;
 @property (nonatomic) BOOL searchBarWasFirstResponder;
 
 @end
@@ -127,6 +128,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         //self.tilesOverlayRenderer2 = [[MKTileOverlayRenderer alloc] initWithOverlay:self.epflTileOverlay2];
         _searchState = -1; //set to "illegal" value so that first call to setSearchState is not discared (as default value 0)
         _mapControlsState = -1; //set to "illegal" value so that first call to setMapControlState is not discareded (as default value 0)
+        self.searchBarShouldBeginEditing = YES;
     }
     return self;
 
@@ -392,6 +394,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     [self.navigationItem setRightBarButtonItems:items animated:NO];
     if (searchBarWasFirstResponder) {
         [self.searchBar becomeFirstResponder];
+    } else {
+        [self.searchBar resignFirstResponder];
     }
     
 }
@@ -659,6 +663,9 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if (!self.searchBar.isFirstResponder) {
+        self.searchBarShouldBeginEditing = NO;
+    }
     switch (self.searchState) {
         case SearchStateReady:
             [self manageRecentSearchesControllerVisibilityAnimated:YES];
@@ -674,6 +681,19 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         default:
             break;
     }
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    // So that user can press clear button to just clear results from map
+    // but not bring the keyboard
+    // http://stackoverflow.com/a/3852509/1423774
+    BOOL boolToReturn = self.searchBarShouldBeginEditing;
+    self.searchBarShouldBeginEditing = YES;
+    if (!boolToReturn) {
+        //otherwise, cancel stays but disabled
+        self.searchBar.showsCancelButton = NO;
+    }
+    return boolToReturn;
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
