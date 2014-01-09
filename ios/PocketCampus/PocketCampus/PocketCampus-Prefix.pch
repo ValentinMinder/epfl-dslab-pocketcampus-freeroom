@@ -22,7 +22,8 @@
     #import "NSLayoutConstraint+LGAdditions.h"
     #import "NSCache+LGAdditions.h"
     #import "UIViewController+Additions.h"
-
+    #import "UIView+Additions.h"
+    #import "UISearchBar+Additions.h"
     #import "UIActionSheet+Additions.h"
     #import "UIPopoverController+Additions.h"
     #import "UILabel+Additions.h"

@@ -293,8 +293,9 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0, 210.0, kSearchBarHeightPortrait)];
             self.searchBar.delegate = self;
             self.searchBar.barStyle = UISearchBarStyleDefault;
-            self.searchBar.barTintColor = [UIColor clearColor];
             self.searchBar.translucent = YES;
+            self.searchBar.barTintColor = [UIColor clearColor];
+            [self.searchBar setBackgroundViewTransparent];
             self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchPlaceholder", @"MapPlugin", nil);
             self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
             self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -302,7 +303,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             self.searchBar.accessibilityIdentifier = @"SearchBar";
         }
         UIView* searchBarContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.searchBar.frame.size.width, self.searchBar.frame.size.height)];
-        //searchBarContainerView.backgroundColor = [UIColor yellowColor];
+        searchBarContainerView.backgroundColor = [UIColor clearColor];
         [searchBarContainerView addSubview:self.searchBar];
         
         self.searchBarItem = [[UIBarButtonItem alloc] initWithCustomView:searchBarContainerView];
@@ -888,6 +889,13 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 }
 
 #pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (alertView == self.noResultAlert && !self.initialQuery) { //initial query case is treated in alertView:didDismissWithButtonIndex: (nect method)
+        //user likely wants to retype, so focus in search bar
+        [self.searchBar becomeFirstResponder];
+    }
+}
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (alertView == self.internetConnectionAlert) {

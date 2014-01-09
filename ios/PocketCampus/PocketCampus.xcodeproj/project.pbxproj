@@ -611,6 +611,8 @@
 		3297E366180826D20047AD07 /* CenterOnEPFL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E365180826D20047AD07 /* CenterOnEPFL@2x.png */; };
 		3297E369180856E60047AD07 /* EPFLTileOverlay2.m in Sources */ = {isa = PBXBuildFile; fileRef = 3297E368180856E60047AD07 /* EPFLTileOverlay2.m */; };
 		329840E316397ADB00FBADFA /* PluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32704C66150016B3002BCB75 /* PluginController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		329C52AE187EE6200045ECB8 /* UISearchBar+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329C52AD187EE6200045ECB8 /* UISearchBar+Additions.m */; };
+		329C52B1187EE6600045ECB8 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329C52B0187EE6600045ECB8 /* UIView+Additions.m */; };
 		329CA503166D452E00F7B1AE /* SettingsBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329CA501166D452E00F7B1AE /* SettingsBarButton.png */; };
 		329CA504166D452E00F7B1AE /* SettingsBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329CA502166D452E00F7B1AE /* SettingsBarButton@2x.png */; };
 		329CF4BE187ABC2C00062C98 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 329CF4BD187ABC2C00062C98 /* UIViewController+Additions.m */; };
@@ -1105,6 +1107,10 @@
 		3297E365180826D20047AD07 /* CenterOnEPFL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CenterOnEPFL@2x.png"; sourceTree = "<group>"; };
 		3297E367180856E60047AD07 /* EPFLTileOverlay2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPFLTileOverlay2.h; sourceTree = "<group>"; };
 		3297E368180856E60047AD07 /* EPFLTileOverlay2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPFLTileOverlay2.m; sourceTree = "<group>"; };
+		329C52AC187EE6200045ECB8 /* UISearchBar+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Additions.h"; sourceTree = "<group>"; };
+		329C52AD187EE6200045ECB8 /* UISearchBar+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Additions.m"; sourceTree = "<group>"; };
+		329C52AF187EE6600045ECB8 /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
+		329C52B0187EE6600045ECB8 /* UIView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
 		329CA501166D452E00F7B1AE /* SettingsBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsBarButton.png; sourceTree = "<group>"; };
 		329CA502166D452E00F7B1AE /* SettingsBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsBarButton@2x.png"; sourceTree = "<group>"; };
 		329CF4BC187ABC2C00062C98 /* UIViewController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Additions.h"; sourceTree = "<group>"; };
@@ -1964,6 +1970,10 @@
 				32BBA917187454A600B2A7D3 /* UILabel+Additions.m */,
 				32930A7317F882010025F864 /* LGRefreshControl+PCAdditions.h */,
 				32930A7417F882010025F864 /* LGRefreshControl+PCAdditions.m */,
+				329C52AC187EE6200045ECB8 /* UISearchBar+Additions.h */,
+				329C52AD187EE6200045ECB8 /* UISearchBar+Additions.m */,
+				329C52AF187EE6600045ECB8 /* UIView+Additions.h */,
+				329C52B0187EE6600045ECB8 /* UIView+Additions.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3645,6 +3655,7 @@
 				32930AAF17F898910025F864 /* TException.m in Sources */,
 				324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */,
 				32DA6454168E590B00D22D08 /* NewsItem+Comparison.m in Sources */,
+				329C52AE187EE6200045ECB8 /* UISearchBar+Additions.m in Sources */,
 				3244B3E816A36976006A7E37 /* MoodleModelAdditions.m in Sources */,
 				32A77DC316A564460018976F /* UIPopoverController+Additions.m in Sources */,
 				32A77DC616A565600018976F /* UIActionSheet+Additions.m in Sources */,
@@ -3676,6 +3687,7 @@
 				3277F862180437670057F77C /* RemoteOverlayRenderer.m in Sources */,
 				32930AB617F898910025F864 /* TTransportException.m in Sources */,
 				3247495617F340B800698A9D /* Person+Extras.m in Sources */,
+				329C52B1187EE6600045ECB8 /* UIView+Additions.m in Sources */,
 				32290ACF18200A0A005869E7 /* FoodSplashDetailViewController.m in Sources */,
 				32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */,
 				32930AA917F898910025F864 /* LGRefreshControl.m in Sources */,
