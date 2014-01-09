@@ -215,6 +215,10 @@ static const CGFloat kRateControlsViewWidth = 248.0;
                                    range:[fullString rangeOfString:satRateString]];
     }
     
+    //It shouldn't be necessary as default color for button is tintColor of window, which is PocketCampus red.
+    //But this is ignored by iOS 7.1 apparently (falling back to default default color => blue)
+    [satRateAttrString addAttribute:NSForegroundColorAttributeName value:[PCValues pocketCampusRed] range:[fullString rangeOfString:voteString]];
+    
     [self.satRateButton setAttributedTitle:satRateAttrString forState:UIControlStateNormal];
 }
 
