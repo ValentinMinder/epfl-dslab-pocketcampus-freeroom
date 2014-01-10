@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>3B95300D-301F-468D-A540-25F53767A3AB</string>
+	<string>A25E17E3-5945-4B4B-89E7-7F9573A87836</string>
 	<key>IDESourceControlProjectName</key>
 	<string>PocketCampus</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>5D1307A5-111F-4C74-8875-6E25F715C10A</key>
-		<string>https://github.com/dslab-epfl/pocketcampus.git</string>
+		<key>BA1D16FF-01C7-49B7-BCC6-623031A2B302</key>
+		<string>https://github.com/dslab-epfl/pocketcampus</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>ios/PocketCampus/PocketCampus.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>5D1307A5-111F-4C74-8875-6E25F715C10A</key>
+		<key>BA1D16FF-01C7-49B7-BCC6-623031A2B302</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/dslab-epfl/pocketcampus.git</string>
+	<string>https://github.com/dslab-epfl/pocketcampus</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>5D1307A5-111F-4C74-8875-6E25F715C10A</string>
+	<string>BA1D16FF-01C7-49B7-BCC6-623031A2B302</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>5D1307A5-111F-4C74-8875-6E25F715C10A</string>
+			<string>BA1D16FF-01C7-49B7-BCC6-623031A2B302</string>
 			<key>IDESourceControlWCCName</key>
-			<string>PocketCampus-private</string>
+			<string>PocketCampus</string>
 		</dict>
 	</array>
 </dict>
