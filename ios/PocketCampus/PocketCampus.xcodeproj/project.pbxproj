@@ -11,6 +11,7 @@
 		1997124D15EFC9CA00E2A679 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322515C206F30091757D /* libsqlite3.dylib */; };
 		1E8A476B975E7A7BDF71ABF5 /* isacademia.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A324ABBA411E9EDDA54A1AB /* isacademia.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		252B42E6BD62E392C176B5E3 /* IsAcademiaController.m in Sources */ = {isa = PBXBuildFile; fileRef = 104F4598B47B32142EF41F88 /* IsAcademiaController.m */; };
+		270206BA18804E740022787A /* DirectoryPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B956221878BA60003B9330 /* DirectoryPersonCell.m */; };
 		272300B61858CEB900B72F5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219EF5C14FCDE4900A271CD /* main.m */; };
 		272300B71858CEB900B72F5E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3288699214FE5AF300CC97DB /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		272300B81858CEB900B72F5E /* TSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 32930A8A17F898910025F864 /* TSocketServer.m */; };
@@ -3436,6 +3437,7 @@
 				272300D51858CEB900B72F5E /* EPFLTileOverlay2.m in Sources */,
 				272300D61858CEB900B72F5E /* AuthenticationController.m in Sources */,
 				272300D71858CEB900B72F5E /* AuthenticationService.m in Sources */,
+				270206BA18804E740022787A /* DirectoryPersonCell.m in Sources */,
 				272300D81858CEB900B72F5E /* authentication.m in Sources */,
 				272300D91858CEB900B72F5E /* MoodleController.m in Sources */,
 				272300DA1858CEB900B72F5E /* MoodleService.m in Sources */,
