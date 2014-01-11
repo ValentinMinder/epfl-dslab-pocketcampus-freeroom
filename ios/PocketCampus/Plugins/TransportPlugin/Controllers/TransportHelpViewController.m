@@ -1,10 +1,7 @@
-//
-//  HelpViewController.m
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 26.05.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "TransportHelpViewController.h"
 

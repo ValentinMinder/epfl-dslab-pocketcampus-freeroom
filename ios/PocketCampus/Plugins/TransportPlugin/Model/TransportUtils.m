@@ -1,10 +1,7 @@
-//
-//  TransportUtils.m
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 24.03.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "TransportUtils.h"
 

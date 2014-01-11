@@ -1,10 +1,10 @@
-//
-//  EventItem+Additions.m
-//  PocketCampus
-//
+
+
+
+
 //  Created by Loïc Gardiol on 01.03.13.
-//  Copyright (c) 2013 EPFL. All rights reserved.
-//
+
+
 
 #import "EventItem+Additions.h"
 

@@ -1,8 +1,8 @@
-//
-//  IsAcademiaService.m
-//  PocketCampus
-//
-//
+
+
+
+
+
 
 #import "IsAcademiaService.h"
 

@@ -1,10 +1,7 @@
-//
-//  NoContactDetailViewController.m
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 21.12.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "DirectoryEmptyDetailViewController.h"
 

@@ -1,10 +1,7 @@
-//
-//  CourseSectionsViewController.m
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 04.12.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "MoodleCourseSectionsViewController.h"
 

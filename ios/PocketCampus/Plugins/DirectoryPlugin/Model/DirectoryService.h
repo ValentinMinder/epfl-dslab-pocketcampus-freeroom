@@ -1,10 +1,4 @@
-//
-//  DirectoryService.h
-//  PocketCampus
-//
 //  Created by Loïc Gardiol on 28.02.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 #import "Service.h"

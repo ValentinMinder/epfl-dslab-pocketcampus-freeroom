@@ -1,8 +1,8 @@
-//
-//  IsAcademiaController.m
-//  PocketCampus
-//
-//
+
+
+
+
+
 
 #import "IsAcademiaController.h"
 

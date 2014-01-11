@@ -1,10 +1,7 @@
-//
-//  EPFLTileOverlay.h
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 23.04.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #define DEFAULT_LAYER_LEVEL 1
 #define MAX_LAYER_LEVEL 8

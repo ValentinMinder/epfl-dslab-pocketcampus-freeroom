@@ -1,7 +1,3 @@
-/* 
-  Localizable.strings
-  PocketCampus
-*/
 
 "PluginName" = "Events";
 "LoadingEventPool" = "Loading elements...";

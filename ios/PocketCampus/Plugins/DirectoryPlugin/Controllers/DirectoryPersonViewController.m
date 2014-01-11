@@ -1,10 +1,7 @@
-//
-//  PCUnkownPersonViewController.m
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 22.09.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 @import AddressBook;
 @import AddressBookUI;

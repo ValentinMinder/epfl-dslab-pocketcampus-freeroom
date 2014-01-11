@@ -1,10 +1,7 @@
-//
-//  EPFLLayersOverlay.m
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 06.06.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "EPFLLayersOverlay.h"
 

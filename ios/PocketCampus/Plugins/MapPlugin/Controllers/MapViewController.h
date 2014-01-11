@@ -1,10 +1,7 @@
-//
-//  MapViewController.h
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 12.04.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 @class MapItem;
 

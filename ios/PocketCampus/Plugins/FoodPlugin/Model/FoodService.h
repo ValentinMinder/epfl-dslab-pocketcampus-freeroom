@@ -1,10 +1,7 @@
-//
-//  FoodService.h
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 05.03.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "Service.h"
 

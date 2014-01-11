@@ -1,7 +1,7 @@
-//
-//  IsAcademiaController.h
-//  PocketCampus
-//
+
+
+
+
 
 #import "PluginController.h"
 

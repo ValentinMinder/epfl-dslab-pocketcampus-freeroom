@@ -1,10 +1,7 @@
-//
-//  MapUtils.m
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 13.04.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "MapUtils.h"
 

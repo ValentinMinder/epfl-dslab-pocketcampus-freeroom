@@ -1,10 +1,10 @@
-//
-//  CategorySelectorViewController.m
-//  PocketCampus
-//
+
+
+
+
 //  Created by Loïc Gardiol on 08.03.13.
-//  Copyright (c) 2013 EPFL. All rights reserved.
-//
+
+
 
 #import "EventsCategorySelectorViewController.h"
 

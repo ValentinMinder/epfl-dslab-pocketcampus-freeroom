@@ -1,10 +1,7 @@
-//
-//  CamiproService.m
-//  PocketCampus
-//
+
+
 //  Created by Loïc Gardiol on 17.05.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "CamiproService.h"
 

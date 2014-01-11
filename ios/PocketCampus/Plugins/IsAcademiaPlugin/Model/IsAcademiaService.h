@@ -1,9 +1,9 @@
-//
-//  IsAcademiaService.h
-//  PocketCampus
-//
+
+
+
+
 //  Created by Loïc Gardiol (loic.gardiol@gmail.com)
-//
+
 
 #import <Foundation/Foundation.h>
 
