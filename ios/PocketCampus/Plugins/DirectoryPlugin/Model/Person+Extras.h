@@ -26,12 +26,7 @@
  */
 
 
-
-
-
-
 //  Created by Loïc Gardiol on 25.09.13.
-
 
 
 #import "directory.h"
@@ -64,9 +59,8 @@
 - (ABRecordRef)createABRecord;
 
 /*
- * Adds info of self to person.
- * Returns YES if info could be added, NO on error
+ * Returns an ABRecordRef person that is contains info of self + person, or nil in case of failure
  */
-- (BOOL)addInfoToABRecord:(ABRecordRef)person;
+- (ABRecordRef)mergedWithABRecord:(ABRecordRef)person addressBook:(ABAddressBookRef)addressBook;
 
 @end

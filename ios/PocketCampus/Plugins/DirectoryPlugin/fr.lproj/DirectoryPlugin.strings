@@ -22,6 +22,7 @@
 "TapToSeeOnMap" = "voir sur le plan";
 
 "AddToExistingContact" = "Ajouter à un contact existant";
+"AddToExistingContactError" = "Désolé, ce contact n'a pas pu être mis à jour.";
 "CreateNewContact" = "Créer un nouveau contact";
 "UpdatedContact" = "Contact fusionné";
 

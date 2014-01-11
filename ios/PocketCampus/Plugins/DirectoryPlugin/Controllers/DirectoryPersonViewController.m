@@ -237,7 +237,11 @@ static CGFloat kRowHeight;
 #pragma mark - ABPeoplePickerNavigationControllerDelegate
 
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
-    [self.person addInfoToABRecord:person];
+    person = [self.person mergedWithABRecord:person addressBook:peoplePicker.addressBook];
+    if (!person) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"AddToExistingContactError", @"DirectoryPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        return NO;
+    }
     [self dismissViewControllerAnimated:YES completion:^{
         [self createAndPresentNewContactWithRecordOrNil:person addressBookOrNil:peoplePicker.addressBook];
     }];

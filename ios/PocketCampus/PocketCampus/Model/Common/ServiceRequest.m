@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 08.12.13.
-
-
 
 #import "ServiceRequest.h"
 
@@ -215,6 +208,7 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
         // See http://stackoverflow.com/a/10644008
         NSInteger errorCode = error.code;
         if (   errorCode == NSURLErrorCannotFindHost
+            || errorCode == NSURLErrorTimedOut
             || errorCode == NSURLErrorCannotConnectToHost
             || errorCode == NSURLErrorNetworkConnectionLost
             || errorCode == NSURLErrorDNSLookupFailed
