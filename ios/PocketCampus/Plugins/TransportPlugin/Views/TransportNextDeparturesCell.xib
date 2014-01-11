@@ -13,7 +13,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="287" height="73"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArrowSimpleRight.png" translatesAutoresizingMaskIntoConstraints="NO" id="OMU-xG-dgd" userLabel="Arrow Image View">
+                    <imageView userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArrowSimpleRight.png" translatesAutoresizingMaskIntoConstraints="NO" id="OMU-xG-dgd" userLabel="Arrow Image View">
                         <rect key="frame" x="10" y="11" width="10" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>

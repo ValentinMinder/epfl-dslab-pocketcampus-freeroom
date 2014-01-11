@@ -129,24 +129,40 @@
     CFErrorRef error = NULL;
     
     if (self.officePhoneNumber || self.privatePhoneNumber) {
-        ABMultiValueRef phone = ABRecordCopyValue(abPerson, kABPersonPhoneProperty);
-        if (phone) {
-            phone = ABMultiValueCreateMutableCopy(phone);
+        ABMultiValueRef phones = ABRecordCopyValue(abPerson, kABPersonPhoneProperty);
+        if (!phones || ABMultiValueGetCount(phones) == 0) {
+            CFArrayRef linkedContacts = ABPersonCopyArrayOfAllLinkedPeople(abPerson);
+            phones = ABMultiValueCreateMutable(kABPersonPhoneProperty);
+            ABMultiValueRef linkedPhones;
+            for (int i = 0; i<CFArrayGetCount(linkedContacts); i++) {
+                ABRecordRef linkedContact = CFArrayGetValueAtIndex(linkedContacts, i);
+                linkedPhones = ABRecordCopyValue(linkedContact, kABPersonPhoneProperty);
+                if (linkedPhones != nil && ABMultiValueGetCount(linkedPhones) > 0) {
+                    for (int j = 0; j<ABMultiValueGetCount(linkedPhones); j++) {
+                        ABMultiValueAddValueAndLabel(phones, ABMultiValueCopyValueAtIndex(linkedPhones, j), ABMultiValueCopyLabelAtIndex(linkedPhones, j), NULL);
+                    }
+                }
+                CFRelease(linkedPhones);
+            }
+            CFRelease(linkedContacts);
         } else {
-            phone = ABMultiValueCreateMutable(kABStringPropertyType);
+            phones = ABMultiValueCreateMutableCopy(phones);
         }
-        NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(phone));
+        NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(phones));
         if (self.officePhoneNumber && ![existingValues containsObject:self.officePhoneNumber]) {
-            couldCreate = ABMultiValueAddValueAndLabel(phone, (__bridge CFTypeRef)(self.officePhoneNumber), kABWorkLabel, NULL);
+            couldCreate = ABMultiValueAddValueAndLabel(phones, (__bridge CFTypeRef)(self.officePhoneNumber), kABWorkLabel, NULL);
         }
         if (self.privatePhoneNumber && ![existingValues containsObject:self.privatePhoneNumber]) {
-            couldCreate = ABMultiValueAddValueAndLabel(phone, (__bridge CFTypeRef)(self.privatePhoneNumber), kABHomeLabel, NULL);
+            couldCreate = ABMultiValueAddValueAndLabel(phones, (__bridge CFTypeRef)(self.privatePhoneNumber), kABHomeLabel, NULL);
         }
         if (couldCreate) {
-            ABRecordSetValue(abPerson, kABPersonPhoneProperty, phone, &error);
+#warning THERE IS AN ERROR in error after this line
+            ABRecordSetValue(abPerson, kABPersonPhoneProperty, phones, &error);
         }
-        CFRelease((CFArrayRef)(existingValues));
-        CFRelease(phone);
+        if (existingValues) {
+            CFRelease((CFArrayRef)(existingValues));
+        }
+        CFRelease(phones);
     }
     
     if (self.email) {
@@ -163,7 +179,9 @@
                 ABRecordSetValue(abPerson, kABPersonEmailProperty, email, &error);
             }
         }
-        CFRelease((CFArrayRef)(existingValues));
+        if (existingValues) {
+            CFRelease((CFArrayRef)(existingValues));
+        }
 		CFRelease(email);
 	}
 
@@ -180,6 +198,9 @@
             if (couldCreate) {
                 ABRecordSetValue(abPerson, kABPersonURLProperty, web, &error);
             }
+        }
+        if (existingValues) {
+            CFRelease((CFArrayRef)(existingValues));
         }
 		CFRelease(web);
 	}
@@ -208,6 +229,9 @@
             if (couldCreate) {
                 ABRecordSetValue(abPerson, kABPersonAddressProperty, office, &error);
             }
+        }
+        if (existingDictionaries) {
+            CFRelease((CFArrayRef)(existingDictionaries));
         }
 		CFRelease(office);
 	}

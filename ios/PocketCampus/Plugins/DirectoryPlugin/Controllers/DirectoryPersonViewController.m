@@ -167,20 +167,29 @@ static CGFloat kRowHeight;
     }
 }
 
-- (void)createAndPresentNewContact {
-    ABRecordRef abPerson = [self.person createABRecord];
-    if (!abPerson) {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleToCreateContact", @"DirectoryPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-        return;
-    }
-    
-    if (self.personBaseInfoCell.profilePicture) {
-        NSData* imageData = UIImagePNGRepresentation(self.personBaseInfoCell.profilePicture);
-        ABPersonSetImageData(abPerson,(__bridge CFDataRef)imageData, nil);
-    }
+- (void)createAndPresentNewContactWithRecordOrNil:(ABRecordRef)person addressBookOrNil:(ABAddressBookRef)addressBook {
     ABNewPersonViewController* abPersonController = [ABNewPersonViewController new];
     abPersonController.newPersonViewDelegate = self;
+    ABRecordRef abPerson = nil;
+    if (person) {
+        abPerson = person;
+        abPersonController.title = NSLocalizedStringFromTable(@"UpdatedContact", @"DirectoryPlugin", nil);
+    } else {
+        abPerson = [self.person createABRecord];
+        if (!abPerson) {
+            [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleToCreateContact", @"DirectoryPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            return;
+        }
+        
+        if (self.personBaseInfoCell.profilePicture) {
+            NSData* imageData = UIImagePNGRepresentation(self.personBaseInfoCell.profilePicture);
+            ABPersonSetImageData(abPerson,(__bridge CFDataRef)imageData, nil);
+        }
+    }
     abPersonController.displayedPerson = abPerson;
+    if (addressBook) {
+        abPersonController.addressBook = addressBook;
+    }
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:abPersonController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navController animated:YES completion:NULL];
@@ -204,14 +213,9 @@ static CGFloat kRowHeight;
 
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
     [self.person addInfoToABRecord:person];
-    ABAddressBookRef ab = peoplePicker.addressBook;
-    CFErrorRef* error = NULL;
-    ABAddressBookSave(ab, error);
-    if (error) {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleToUpdateExistingContact", @"DirectoryPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-    } else {
-        [self dismissViewControllerAnimated:YES completion:NULL];
-    }
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self createAndPresentNewContactWithRecordOrNil:person addressBookOrNil:peoplePicker.addressBook];
+    }];
     return NO;
 }
 
@@ -231,7 +235,7 @@ static CGFloat kRowHeight;
         return;
     } else if (buttonIndex == kCreateNewContactActionIndex) {
         [self trackAction:@"CreateNewContact"];
-        [self createAndPresentNewContact];
+        [self createAndPresentNewContactWithRecordOrNil:nil addressBookOrNil:nil];
     } else if (buttonIndex == kAddToExistingContactActionIndex) {
         [self trackAction:@"AddToExistingContact"];
         [self presentContactsPicker];
