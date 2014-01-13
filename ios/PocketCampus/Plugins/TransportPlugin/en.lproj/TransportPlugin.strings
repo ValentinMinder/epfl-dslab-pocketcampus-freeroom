@@ -1,10 +1,4 @@
-/* 
-  Localizable.strings
-  PocketCampus
-
-  Created by Loïc Gardiol on 01.03.12.
-  Copyright (c) 2012 EPFL. All rights reserved.
-*/
+// Created by Loïc Gardiol on 01.03.12.
 
 //////////////////////////////////////////
 // Common
@@ -21,7 +15,7 @@
 "From:" = "From:";
 "LoadingDefaultStations..." = "Loading default stations...";
 "locating..." = "locating...";
-"SearchingNearestStation" = "Locating your closest station";
+"SearchingNearestStation" = "Determining your closest station";
 "ImpossibleLocateUserDenied" = "Impossible to find nearest station.\n\n Did you deny access to location ?\nIf so, you can allow \"EPFL\" in:\n\nSettings > Privacy > Location.\n\nAlternatively, you can choose a departure station manually.";
 "ImpossibleLocateUnknown" = "Sorry, your location could\nnot be determined.\n\nTry to refresh, or select the\ndeparture station manually.";
 

@@ -1,10 +1,4 @@
-/* 
-  Localizable.strings
-  PocketCampus
-
-  Created by Loïc Gardiol on 01.03.12.
-  Copyright (c) 2012 EPFL. All rights reserved.
-*/
+// Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Annuaire";
 "SearchFieldPlaceholder" = "Nom ou sciper";
@@ -28,7 +22,9 @@
 "TapToSeeOnMap" = "voir sur le plan";
 
 "AddToExistingContact" = "Ajouter à un contact existant";
+"AddToExistingContactError" = "Désolé, ce contact n'a pas pu être mis à jour.";
 "CreateNewContact" = "Créer un nouveau contact";
+"UpdatedContact" = "Contact fusionné";
 
 /* Accessiblity */
 

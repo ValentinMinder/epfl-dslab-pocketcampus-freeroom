@@ -1,10 +1,38 @@
-//
-//  Person+Extras.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
+
+
 //  Created by Loïc Gardiol on 25.09.13.
-//  Copyright (c) 2013 EPFL. All rights reserved.
-//
+
+
 
 #import "Person+Extras.h"
 
@@ -116,87 +144,141 @@
      }
      */
     
-	if (error != NULL) {
-        return nil;
-	}
-    
-    return abPerson;
+	return error ? nil : abPerson;
 }
 
 
-- (BOOL)addInfoToABRecord:(ABRecordRef)abPerson {
-    BOOL couldCreate = YES;
-    CFErrorRef error = NULL;
+- (ABRecordRef)mergedWithABRecord:(ABRecordRef)abPerson addressBook:(ABAddressBookRef)addressBook {
     
+    // Cannot directly work on abPerson, because might be an aggregate of contact info (for e.g. iCloud + Facebook)
+    // ABRecordSetValue fails if working on an aggregate contact
+    // So we have to find the corresponding "leaf" contat from ABAddressBookCopyDefaultSource(addressBook)
+    // which returns for example iCloud for example if this is user's default address book
+    // one cannot use the recordID for that because recordID between aggregate source and leaf record might not be the same
+    
+    CFStringRef originalFirstname = ABRecordCopyValue(abPerson, kABPersonFirstNameProperty);
+    CFStringRef originalLastname = ABRecordCopyValue(abPerson, kABPersonLastNameProperty);
+    
+    CFArrayRef allPersons = ABAddressBookCopyArrayOfAllPeopleInSource(addressBook, ABAddressBookCopyDefaultSource(addressBook));
+    BOOL found = NO;
+    for (int i = 0; i<CFArrayGetCount(allPersons); i++) {
+        ABRecordRef person = CFArrayGetValueAtIndex(allPersons, i);
+        CFStringRef firstname = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        CFStringRef lastname = ABRecordCopyValue(person, kABPersonLastNameProperty);
+        if (originalFirstname && originalLastname) {
+            //selected person has both first and last names info,
+            //so contact to find should have exactly the same info
+            if (firstname && lastname
+                && CFStringCompare(firstname, originalFirstname, 0) == kCFCompareEqualTo
+                && CFStringCompare(lastname, originalLastname, 0) == kCFCompareEqualTo) {
+                abPerson = CFRetain(person);
+                found = YES;
+            }
+        } else if (originalFirstname) { //originalLastname is NULL
+            //selected person has only firstname info,
+            //so contact to find should have exactly the same info
+            if (firstname && !lastname
+                && CFStringCompare(firstname, originalFirstname, 0) == kCFCompareEqualTo) {
+                abPerson = CFRetain(person);
+                found = YES;
+            }
+        } else if (originalLastname) { //originalFirstname is NULL
+            //selected person has only lastname info,
+            //so contact to find should have exactly the same info
+            if (!firstname && lastname
+                && CFStringCompare(lastname, originalLastname, 0) == kCFCompareEqualTo) {
+                abPerson = CFRetain(person);
+                found = YES;
+            }
+        }
+        if (firstname) {
+            CFRelease(firstname);
+        }
+        if (lastname) {
+            CFRelease(lastname);
+        }
+        if (found) {
+            break;
+        }
+    }
+    
+    if (originalFirstname) {
+        CFRelease(originalFirstname);
+    }
+    if (originalLastname) {
+        CFRelease(originalLastname);
+    }
+    if (allPersons) {
+        CFRelease(allPersons);
+    }
+    
+    if (!found) {
+        return nil;
+    }
+    
+    //From this point, we have a valid, default source record, that we can work on
+    
+    BOOL couldCreate = YES;
+    CFErrorRef error = NULL; 
     if (self.officePhoneNumber || self.privatePhoneNumber) {
-        ABMultiValueRef phone = ABRecordCopyValue(abPerson, kABPersonPhoneProperty);
-        if (phone) {
-            phone = ABMultiValueCreateMutableCopy(phone);
-        } else {
-            phone = ABMultiValueCreateMutable(kABStringPropertyType);
-        }
-        NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(phone));
-        if (self.officePhoneNumber && ![existingValues containsObject:self.officePhoneNumber]) {
-            couldCreate = ABMultiValueAddValueAndLabel(phone, (__bridge CFTypeRef)(self.officePhoneNumber), kABWorkLabel, NULL);
-        }
+        ABMultiValueRef phones = ABRecordCopyValue(abPerson, kABPersonPhoneProperty);
+        phones = phones && ABMultiValueGetCount(phones) > 0 ? ABMultiValueCreateMutableCopy(phones) : ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(phones));
         if (self.privatePhoneNumber && ![existingValues containsObject:self.privatePhoneNumber]) {
-            couldCreate = ABMultiValueAddValueAndLabel(phone, (__bridge CFTypeRef)(self.privatePhoneNumber), kABHomeLabel, NULL);
+            couldCreate = ABMultiValueAddValueAndLabel(phones, (__bridge CFTypeRef)(self.privatePhoneNumber), kABHomeLabel, NULL);
+        }
+        if (self.officePhoneNumber && ![existingValues containsObject:self.officePhoneNumber]) {
+            couldCreate = ABMultiValueAddValueAndLabel(phones, (__bridge CFTypeRef)(self.officePhoneNumber), kABWorkLabel, NULL);
         }
         if (couldCreate) {
-            ABRecordSetValue(abPerson, kABPersonPhoneProperty, phone, &error);
+            ABRecordSetValue(abPerson, kABPersonPhoneProperty, phones, &error);
         }
-        CFRelease((CFArrayRef)(existingValues));
-        CFRelease(phone);
+        if (existingValues) {
+            CFRelease((CFArrayRef)(existingValues));
+        }
+        CFRelease(phones);
     }
     
     if (self.email) {
-		ABMultiValueRef email = ABRecordCopyValue(abPerson, kABPersonEmailProperty);
-        if (email) {
-            email = ABMultiValueCreateMutableCopy(email);
-        } else {
-            email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-        }
-        NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(email));
+		ABMultiValueRef emails = ABRecordCopyValue(abPerson, kABPersonEmailProperty);
+        emails = emails && ABMultiValueGetCount(emails) > 0 ? ABMultiValueCreateMutableCopy(emails) : ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(emails));
         if (![existingValues containsObject:self.email]) {
-            couldCreate = ABMultiValueAddValueAndLabel(email, (__bridge CFTypeRef)(self.email), kABWorkLabel, NULL);
+            couldCreate = ABMultiValueAddValueAndLabel(emails, (__bridge CFTypeRef)(self.email), kABWorkLabel, NULL);
             if (couldCreate) {
-                ABRecordSetValue(abPerson, kABPersonEmailProperty, email, &error);
+                ABRecordSetValue(abPerson, kABPersonEmailProperty, emails, &error);
             }
         }
-        CFRelease((CFArrayRef)(existingValues));
-		CFRelease(email);
+        if (existingValues) {
+            CFRelease((CFArrayRef)(existingValues));
+        }
+		CFRelease(emails);
 	}
 
     if (self.web) {
-		ABMultiValueRef web = ABRecordCopyValue(abPerson, kABPersonURLProperty);
-        if (web) {
-            web = ABMultiValueCreateMutableCopy(web);
-        } else {
-            web = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-        }
-        NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(web));
+		ABMultiValueRef webUrls = ABRecordCopyValue(abPerson, kABPersonURLProperty);
+        webUrls = webUrls && ABMultiValueGetCount(webUrls) > 0 ? ABMultiValueCreateMutableCopy(webUrls) : ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(webUrls));
         if (![existingValues containsObject:self.web]) {
-            couldCreate = ABMultiValueAddValueAndLabel(web, (__bridge CFTypeRef)(self.web), kABPersonHomePageLabel, NULL);
+            couldCreate = ABMultiValueAddValueAndLabel(webUrls, (__bridge CFTypeRef)(self.web), kABPersonHomePageLabel, NULL);
             if (couldCreate) {
-                ABRecordSetValue(abPerson, kABPersonURLProperty, web, &error);
+                ABRecordSetValue(abPerson, kABPersonURLProperty, webUrls, &error);
             }
         }
-		CFRelease(web);
+        if (existingValues) {
+            CFRelease((CFArrayRef)(existingValues));
+        }
+		CFRelease(webUrls);
 	}
     
     if (self.office) {
-        ABMultiValueRef office = ABRecordCopyValue(abPerson, kABPersonAddressProperty);
-        if (office) {
-            office = ABMultiValueCreateMutableCopy(office);
-        } else {
-            office = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
-        }
-        
+        ABMultiValueRef addresses = ABRecordCopyValue(abPerson, kABPersonAddressProperty);
+        addresses = addresses && ABMultiValueGetCount(addresses) > 0 ? ABMultiValueCreateMutableCopy(addresses) : ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
         NSMutableDictionary* addressDictionary = [NSMutableDictionary dictionaryWithCapacity:2];
         [addressDictionary setObject:self.office forKey:(NSString *)kABPersonAddressCityKey];
 		[addressDictionary setObject:@"" forKey:(NSString *)kABPersonAddressCountryKey];
         BOOL shouldAdd = YES;
-        NSArray* existingDictionaries = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(office));
+        NSArray* existingDictionaries = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(addresses));
         for (NSDictionary* existingDic in existingDictionaries) {
             if ([existingDic isEqualToDictionary:addressDictionary]) {
                 shouldAdd = NO;
@@ -204,15 +286,18 @@
             }
         }
 		if (shouldAdd) {
-            couldCreate = ABMultiValueAddValueAndLabel(office, (__bridge CFTypeRef)(addressDictionary), (__bridge CFStringRef)(NSLocalizedStringFromTable(@"EPFLOffice", @"DirectoryPlugin", nil)), NULL);
+            couldCreate = ABMultiValueAddValueAndLabel(addresses, (__bridge CFTypeRef)(addressDictionary), (__bridge CFStringRef)(NSLocalizedStringFromTable(@"EPFLOffice", @"DirectoryPlugin", nil)), NULL);
             if (couldCreate) {
-                ABRecordSetValue(abPerson, kABPersonAddressProperty, office, &error);
+                ABRecordSetValue(abPerson, kABPersonAddressProperty, addresses, &error);
             }
         }
-		CFRelease(office);
+        if (existingDictionaries) {
+            CFRelease((CFArrayRef)(existingDictionaries));
+        }
+		CFRelease(addresses);
 	}
     
-    return (error == NULL);
+    return error ? nil : abPerson;
 }
 
 #pragma mark - Private methods
