@@ -367,7 +367,8 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     }
     [[PCGAITracker sharedTracker] trackAction:@"RateMeal" inScreenWithName:@"/food/restaurant"];
     self.ratingStatus = RatingStatusLoading;
-    VoteRequest* req = [[VoteRequest alloc] initWithMealId:self.meal.mId rating:ratingValue deviceId:[PCUtils uniqueDeviceIdentifier]];
+    NSString* identifier = [PCUtils uniqueDeviceIdentifier];
+    VoteRequest* req = [[VoteRequest alloc] initWithMealId:self.meal.mId rating:ratingValue deviceId:identifier];
     [self.foodService voteForRequest:req delegate:self];
 }
 

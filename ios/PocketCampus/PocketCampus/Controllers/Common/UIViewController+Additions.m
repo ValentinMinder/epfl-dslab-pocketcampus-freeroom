@@ -26,7 +26,7 @@
  */
 
 
-//  Created by Loïc Gardiol on 06.01.14.
+// Created by Loïc Gardiol on 06.01.14.
 
 
 #import "UIViewController+Additions.h"
