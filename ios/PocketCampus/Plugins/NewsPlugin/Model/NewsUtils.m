@@ -53,7 +53,7 @@ static NSTimeInterval kOneMonthSeconds = 2592000;
     
     NSMutableOrderedSet* set = [NSMutableOrderedSet orderedSet];
     
-    for (int i = newsItems.count-1; i>=0; i--) {
+    for (NSInteger i = (NSInteger)(newsItems.count-1)                       ; i>=0; i--) {
         [set addObject:newsItems[i]];
     }
     

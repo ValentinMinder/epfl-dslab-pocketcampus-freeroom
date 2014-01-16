@@ -33,7 +33,7 @@
 
 #import <UIKit/UIKit.h>
 
-static const CGFloat kNoInsetConstraint = FLT_MIN;
+static const CGFloat kNoInsetConstraint = CGFLOAT_MIN;
 
 @interface NSLayoutConstraint (LGAdditions)
 

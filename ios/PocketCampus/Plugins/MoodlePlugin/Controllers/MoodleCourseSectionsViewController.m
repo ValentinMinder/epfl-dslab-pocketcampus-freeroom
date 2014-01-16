@@ -539,7 +539,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     if (moodleSection.iText) {
         title = moodleSection.iText;
     } else {
-       title = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
+       title = [NSString stringWithFormat:@"%@ %ld", NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
     }
     return [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView];
 }

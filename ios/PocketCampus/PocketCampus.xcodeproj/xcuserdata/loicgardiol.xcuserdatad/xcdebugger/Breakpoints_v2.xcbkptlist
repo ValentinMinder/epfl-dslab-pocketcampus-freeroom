@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "187"
             endingLineNumber = "187"
-            landmarkName = "-setRatingForMeal:rating:deviceId:delegate:"
+            landmarkName = "-getFromCacheMeals"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -111,7 +111,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "577"
             endingLineNumber = "577"
-            landmarkName = "-minimumDistanceBetweenStations"
+            landmarkName = "-nearestStationFromLocation:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -143,7 +143,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "142"
             endingLineNumber = "142"
-            landmarkName = "+annotationThatShouldBeSelectedOnMapView:forQuery:"
+            landmarkName = "+mapItemAnnotationsThatShouldBeDisplayed:forQuery:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -159,7 +159,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "155"
             endingLineNumber = "155"
-            landmarkName = "-setLayerLevel:"
+            landmarkName = "-createCoordString:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -175,8 +175,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "403"
             endingLineNumber = "403"
-            landmarkName = "+WGStoCH1903:"
-            landmarkType = "5">
+            landmarkName = "@implementation MapUtils"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -240,7 +240,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "104"
             endingLineNumber = "104"
-            landmarkName = "-canDrawMapRect:zoomScale:"
+            landmarkName = "-urlForMapRect:andZoomScale:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -413,8 +413,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "160"
             endingLineNumber = "160"
-            landmarkName = "-getMealsWithDelegate:"
-            landmarkType = "5">
+            landmarkName = "@implementation FoodService"
+            landmarkType = "3">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -781,7 +781,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1013"
-            endingLineNumber = "1013">
+            endingLineNumber = "1013"
+            landmarkName = "@implementation MapViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1765,7 +1767,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "134"
             endingLineNumber = "134"
-            landmarkName = "-dealloc"
+            landmarkName = "-addOrPromoteRecentSearch:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -1968,7 +1970,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "341"
             endingLineNumber = "341"
-            landmarkName = "-addMoodleResourceObserver:forResource:eventBlock:"
+            landmarkName = "-saveToCacheSectionsListReply:forCourse:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1984,7 +1986,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "305"
             endingLineNumber = "305"
-            landmarkName = "-saveToCacheCourseListReply:"
+            landmarkName = "-getEventsList:withDelegate:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2000,7 +2002,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "361"
             endingLineNumber = "361"
-            landmarkName = "-removeMoodleResourceObserver:forResource:"
+            landmarkName = "-addMoodleResourceObserver:forResource:eventBlock:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2180,7 +2182,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "352"
             endingLineNumber = "352"
-            landmarkName = "-getCourseSections:didReturn:"
+            landmarkName = "-searchDisplayController:willHideSearchResultsTableView:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2205,7 +2207,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "542"
             endingLineNumber = "542"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkName = "-tableView:viewForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2221,8 +2223,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "415"
             endingLineNumber = "415"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
+            landmarkName = "@implementation MoodleCourseSectionsViewController"
+            landmarkType = "3">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -2246,7 +2248,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "205"
             endingLineNumber = "205"
-            landmarkName = "-toggleShowAll:"
+            landmarkName = "-computeCurrentWeek"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2438,7 +2440,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "192"
             endingLineNumber = "192"
-            landmarkName = "-error"
+            landmarkName = "-newsItemContentForId:didReturn:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2586,7 +2588,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "49"
             endingLineNumber = "49"
-            landmarkName = "+newsItemsSectionsSortedByDate:"
+            landmarkName = "+eliminateDuplicateNewsItemsInArray:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2611,7 +2613,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "51"
             endingLineNumber = "51"
-            landmarkName = "+newsItemsSectionsSortedByDate:"
+            landmarkName = "+eliminateDuplicateNewsItemsInArray:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2636,7 +2638,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "53"
             endingLineNumber = "53"
-            landmarkName = "+newsItemsSectionsSortedByDate:"
+            landmarkName = "+eliminateDuplicateNewsItemsInArray:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2661,7 +2663,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "55"
             endingLineNumber = "55"
-            landmarkName = "+newsItemsSectionsSortedByDate:"
+            landmarkName = "+eliminateDuplicateNewsItemsInArray:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2686,7 +2688,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "47"
             endingLineNumber = "47"
-            landmarkName = "+newsItemsSectionsSortedByDate:"
+            landmarkName = "+eliminateDuplicateNewsItemsInArray:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2882,7 +2884,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "66"
             endingLineNumber = "66"
-            landmarkName = "-canDrawMapRect:zoomScale:"
+            landmarkName = "-init"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2906,8 +2908,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "96"
             endingLineNumber = "96"
-            landmarkName = "@implementation EPFLTileOverlay"
-            landmarkType = "3">
+            landmarkName = "-canDrawMapRect:zoomScale:"
+            landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
@@ -2930,8 +2932,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "103"
             endingLineNumber = "103"
-            landmarkName = "@implementation EPFLTileOverlay"
-            landmarkType = "3">
+            landmarkName = "-canDrawMapRect:zoomScale:"
+            landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
@@ -3134,8 +3136,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "820"
             endingLineNumber = "820"
-            landmarkName = "@implementation EventPoolViewController"
-            landmarkType = "3">
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3230,7 +3232,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "170"
             endingLineNumber = "170"
-            landmarkName = "-viewWillAppear:"
+            landmarkName = "-initAndLoadEventPoolWithId:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3246,8 +3248,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "98"
             endingLineNumber = "98"
-            landmarkName = "-init"
-            landmarkType = "5">
+            landmarkName = "scanButton"
+            landmarkType = "19">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3278,7 +3280,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "611"
             endingLineNumber = "611"
-            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
+            landmarkName = "-fillCollectionsFromReplyAndSelection"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3294,7 +3296,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "292"
             endingLineNumber = "292"
-            landmarkName = "-actionButtonPressed"
+            landmarkName = "-showButtonsConditionally"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3310,8 +3312,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "442"
             endingLineNumber = "442"
-            landmarkName = "-presentTagsController"
-            landmarkType = "5">
+            landmarkName = "@implementation EventPoolViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3372,7 +3374,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "501"
             endingLineNumber = "501"
-            landmarkName = "-actionSheet:willDismissWithButtonIndex:"
+            landmarkName = "-presentTagsController"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3388,7 +3390,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "306"
             endingLineNumber = "306"
-            landmarkName = "-filterButtonPressed"
+            landmarkName = "-showButtonsConditionally"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3404,7 +3406,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "110"
             endingLineNumber = "110"
-            landmarkName = "-urlForEpflTilesWithX:andY:andZoom:"
+            landmarkName = "-canDrawMapRect:zoomScale:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -3556,7 +3558,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "226"
             endingLineNumber = "226"
-            landmarkName = "-createEventPoolRequest"
+            landmarkName = "-eventPool"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -3581,7 +3583,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "707"
             endingLineNumber = "707"
-            landmarkName = "-getEventPoolForRequest:didReturn:"
+            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3597,8 +3599,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "235"
             endingLineNumber = "235"
-            landmarkName = "-reselectLastSelectedItem"
-            landmarkType = "5">
+            landmarkName = "@implementation EventPoolViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3613,8 +3615,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "228"
             endingLineNumber = "228"
-            landmarkName = "-createEventPoolRequest"
-            landmarkType = "5">
+            landmarkName = "@implementation EventPoolViewController"
+            landmarkType = "3">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -3638,7 +3640,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "230"
             endingLineNumber = "230"
-            landmarkName = "-startGetEventPoolRequest"
+            landmarkName = "-setPoolReply:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3670,8 +3672,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "834"
             endingLineNumber = "834"
-            landmarkName = "@implementation EventPoolViewController"
-            landmarkType = "3">
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3686,7 +3688,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "460"
             endingLineNumber = "460"
-            landmarkName = "-presentTagsController"
+            landmarkName = "-presentCategoriesController"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3751,7 +3753,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "266"
             endingLineNumber = "266"
-            landmarkName = "-showButtonsConditionally"
+            landmarkName = "-reselectLastSelectedItem"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3874,7 +3876,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "115"
             endingLineNumber = "115"
-            landmarkName = "-registerDeviceForPushNotificationsWithPluginLowerIdentifier:reason:success:failure:"
+            landmarkName = "+initObservers"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3936,7 +3938,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "188"
             endingLineNumber = "188"
-            landmarkName = "-registrationSuccessNotification:"
+            landmarkName = "-removeObserver:forPluginLowerIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3976,9 +3978,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "-deleteMappingForDummy:didReturn:"
-            landmarkType = "5">
+            endingLineNumber = "22">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3993,7 +3993,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "143"
             endingLineNumber = "143"
-            landmarkName = "-addPushNotificationObserver:forPluginLowerIdentifier:newNotificationBlock:"
+            landmarkName = "-registerDeviceForPushNotificationsWithPluginLowerIdentifier:reason:success:failure:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4009,7 +4009,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "160"
             endingLineNumber = "160"
-            landmarkName = "-removeObserver:forPluginLowerIdentifier:"
+            landmarkName = "-registerDeviceForPushNotificationsWithPluginLowerIdentifier:reason:success:failure:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4025,7 +4025,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "318"
             endingLineNumber = "318"
-            landmarkName = "-filterButtonPressed"
+            landmarkName = "-actionButtonPressed"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4041,7 +4041,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "510"
             endingLineNumber = "510"
-            landmarkName = "-actionSheet:willDismissWithButtonIndex:"
+            landmarkName = "-presentPeriodSelectionActionSheet"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4057,7 +4057,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "481"
             endingLineNumber = "481"
-            landmarkName = "-presentPeriodSelectionActionSheet"
+            landmarkName = "-presentTagsController"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

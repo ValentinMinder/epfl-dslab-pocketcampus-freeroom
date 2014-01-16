@@ -147,7 +147,7 @@
 }
 
 + (NSString*)keyForLastRefreshForDataIdentifier:(NSString*)dataIdentifier {
-    return [NSString stringWithFormat:@"LGRefreshControlLastRefreshDate-%u", [dataIdentifier hash]];
+    return [NSString stringWithFormat:@"LGRefreshControlLastRefreshDate-%lu", [dataIdentifier hash]];
 }
 
 - (NSString*)keyForLastRefresh {

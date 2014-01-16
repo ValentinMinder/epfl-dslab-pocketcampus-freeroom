@@ -661,7 +661,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         self.floorDownButton.enabled = YES;
         self.floorUpButton.enabled = YES;
     }
-    ((UILabel*)(self.floorLabelItem.customView)).text = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"Floor", @"MapPlugin", nil), self.epflTileOverlay.currentLayerLevel];
+    ((UILabel*)(self.floorLabelItem.customView)).text = [NSString stringWithFormat:@"%@ %ld", NSLocalizedStringFromTable(@"Floor", @"MapPlugin", nil), self.epflTileOverlay.currentLayerLevel];
 }
 
 - (void)setLayersLevel:(NSInteger)level {
@@ -855,7 +855,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     [self setSearchState:SearchStateResults animated:YES];
     
     if (mapItemAnnotations.count > kMaxDisplayedAnnotations) {
-        NSLog(@"-> Search for %@ returned too many results (%d)", query, mapItemAnnotations.count);
+        NSLog(@"-> Search for %@ returned too many results (%lu)", query, mapItemAnnotations.count);
         self.tooManyResultsAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"TooManyResults", @"MapPlugin", nil) message:NSLocalizedStringFromTable(@"CannotDisplayOnMap", @"MapPlugin", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:NSLocalizedStringFromTable(@"PickFromList", @"MapPlugin", nil), nil];
         [self.tooManyResultsAlert show];
     } else {

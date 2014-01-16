@@ -44,7 +44,7 @@
     NSDate* date2 = [[NSDate alloc] initWithTimeInterval:interval sinceDate:date1];
     unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
     NSDateComponents* conversionInfo = [systemCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
-    return [NSString stringWithFormat:@"%d:%02d", [conversionInfo hour], [conversionInfo minute]];
+    return [NSString stringWithFormat:@"%ld:%02ld", [conversionInfo hour], [conversionInfo minute]];
 }
 
 + (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp {
@@ -146,7 +146,7 @@
                 }
             }
             
-            int maxConnections = 0;
+            NSUInteger maxConnections = 0;
             NSMutableArray* linesConnections = [NSMutableArray array];
             for (NSArray* lineDirectConnections in [connectionsForLine allValues]) {
                 if (lineDirectConnections.count >= maxConnections && lineDirectConnections.count > 1) {
@@ -225,7 +225,7 @@
             }
         }
         
-        int maxConnections = 0;
+        NSUInteger maxConnections = 0;
         NSMutableArray* linesConnections = [NSMutableArray array];
         for (NSArray* lineConnections in [repeatingConnectionsForLines allValues]) {
             if (lineConnections.count >= maxConnections && lineConnections.count > 1) {

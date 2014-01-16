@@ -40,6 +40,14 @@
 
 #pragma mark - Cell remote images
 
+/*
+ * If image for URL is cached, sets cell image immediately, using cellsImageViewSelectorString to know which image view
+ * to update. If not cached, starts a request for the image and sets it when request returns using indexPath to get pointer to cell.
+ * If the request fails (no internet, timeout, etc.) the indexPath is marked as failed and started again later (when internet comes
+ * back for e.g.).
+ * IMPORTANT: if you reloadData/Sections/Rows, add, remove or reorder rows, failed index paths are invalidated
+ * and it is *your* responsability to call this method again.
+ */
 - (void)setImageURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
 @property (nonatomic, strong) UIImage* temporaryImage;
