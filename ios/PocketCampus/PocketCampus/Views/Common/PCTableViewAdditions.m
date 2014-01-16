@@ -164,6 +164,53 @@ static id kEmptyImageValue;
     } repeats:NO];
 }
 
+#pragma mark - UITableView overrides
+
+- (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
+    [self invalidateFailedThumbnailsIndexPaths];
+    [super insertRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+}
+
+- (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
+    [self invalidateFailedThumbnailsIndexPaths];
+    [super deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+}
+
+- (void)moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath {
+    [self invalidateFailedThumbnailsIndexPaths];
+    [super moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+}
+
+- (void)insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
+    [self invalidateFailedThumbnailsIndexPaths];
+    [super insertSections:sections withRowAnimation:animation];
+}
+
+- (void)deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
+    [self invalidateFailedThumbnailsIndexPaths];
+    [super deleteSections:sections withRowAnimation:animation];
+}
+
+- (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection {
+    [self invalidateFailedThumbnailsIndexPaths];
+    [self moveSection:section toSection:newSection];
+}
+
+- (void)reloadData {
+    [self invalidateFailedThumbnailsIndexPaths];
+    [super reloadData];
+}
+
+- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
+    [self invalidateFailedThumbnailsIndexPaths];
+    [super reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+}
+
+- (void)reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
+    [self invalidateFailedThumbnailsIndexPaths];
+    [super reloadSections:sections withRowAnimation:animation];
+}
+
 #pragma mark - Public methods
 
 - (void)setImageURL:(NSURL*)url forCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
@@ -355,8 +402,19 @@ static id kEmptyImageValue;
 #pragma clang diagnostic pop
 }
 
+- (void)invalidateFailedThumbnailsIndexPaths {
+    [self.failedThumbsIndexPaths removeAllObjects];
+}
+
 - (void)reloadFailedThumbnailsCells {
-    [self reloadRowsAtIndexPaths:[self.failedThumbsIndexPaths allObjects] withRowAnimation:UITableViewRowAnimationNone];
+    @try {
+        [self reloadRowsAtIndexPaths:[self.failedThumbsIndexPaths allObjects] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    @catch (NSException *exception) {
+        //Not suppose to happen as all data-modifing methods have been
+        //overriden above to invalidate failed index paths.
+        //but in case... too bad to crash.
+    }
 }
 
 - (CGSize)thumbnailSizeForIndexPath:(NSIndexPath*)indexPath {
