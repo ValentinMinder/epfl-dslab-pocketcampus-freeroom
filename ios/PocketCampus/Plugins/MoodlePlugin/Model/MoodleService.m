@@ -343,7 +343,7 @@ static NSString* const kSectionsListReplyForCourseIdWithFormat = @"sectionsListR
 #pragma mark - MoodleResources observation
 
 - (NSString*)keyForMoodleResource:(MoodleResource*)resource {
-    return [NSString stringWithFormat:@"%u", [resource.iUrl hash]];
+    return [NSString stringWithFormat:@"%lu", [resource.iUrl hash]];
 }
 
 - (void)addMoodleResourceObserver:(id)observer_ forResource:(MoodleResource*)resource eventBlock:(MoodleResourceEventBlock)eventBlock {
@@ -435,7 +435,7 @@ static NSString* const kSectionsListReplyForCourseIdWithFormat = @"sectionsListR
         void (^failedBlock)(NSInteger) = ^void (NSInteger statusCode) {
             [[NSFileManager defaultManager] removeItemAtPath:localPath error:nil]; //to be sure not empty/wrong file is there
             if ([weakDelegate respondsToSelector:@selector(downloadFailedForMoodleResource:responseStatusCode:)]) {
-                [weakDelegate downloadFailedForMoodleResource:moodleResource responseStatusCode:statusCode];
+                [weakDelegate downloadFailedForMoodleResource:moodleResource responseStatusCode:(int)statusCode];
             }
         };
         if (![response isKindOfClass:[NSHTTPURLResponse class]]) {

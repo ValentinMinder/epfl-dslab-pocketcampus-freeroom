@@ -312,7 +312,7 @@ double WGStoCHy(double lat, double lng) {
 }
 
 + (MKCoordinateRegion)regionToFitMapItemAnnotations:(NSArray*)annotations {
-    int count = annotations.count;
+    NSUInteger count = annotations.count;
     if (count == 0) {
         return MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(0, 0));
     }

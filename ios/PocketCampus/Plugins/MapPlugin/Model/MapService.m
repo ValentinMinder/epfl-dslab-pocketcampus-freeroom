@@ -93,7 +93,7 @@ static MapService* instance __weak = nil;
     operation.serviceClientSelector = @selector(getLayerItems:);
     operation.delegateDidReturnSelector = @selector(getLayerItemsForLayerId:didReturn:);
     operation.delegateDidFailSelector = @selector(getLayerItemsFailedForLayerId:);
-    [operation addIntArgument:layerId];
+    [operation addLongArgument:layerId];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }

@@ -132,7 +132,7 @@ static NSString* const kURLEnding = @".png";
  * Normal
  */
 - (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
-    NSString* urlString = [NSString stringWithFormat:@"http://plan-epfl-tile1.epfl.ch/batiments%d-merc/%d/%@/%@%@", self.currentLayerLevel, zoom, [self createCoordString:x], [self createCoordString:y], kURLEnding];
+    NSString* urlString = [NSString stringWithFormat:@"http://plan-epfl-tile1.epfl.ch/batiments%ld-merc/%ld/%@/%@%@", self.currentLayerLevel, zoom, [self createCoordString:x], [self createCoordString:y], kURLEnding];
     return urlString;
 }
 
@@ -146,7 +146,7 @@ static NSString* const kURLEnding = @".png";
 }*/
 
 - (NSString*)createCoordString:(NSInteger)coord {
-    NSString* coordString = [NSString stringWithFormat:@"%09d",coord];
+    NSString* coordString = [NSString stringWithFormat:@"%09ld",coord];
     NSString* firstSubString = [[coordString substringToIndex:3] stringByAppendingString:@"/"];
     NSString* secondSubString = [[[coordString substringFromIndex:3] substringToIndex:3] stringByAppendingString:@"/"];
     NSString* thirdSubString = [coordString substringFromIndex:6];

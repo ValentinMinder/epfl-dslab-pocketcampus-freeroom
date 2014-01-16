@@ -96,7 +96,7 @@
     self.depTimeLabel.text = depTimeString;
     self.arrTimeLabel.text = [TransportUtils hourMinutesStringForTimestamp:self.trip.arrivalTime/1000.0];
     self.durationLabel.text = [TransportUtils durationgStringForInterval:((self.trip.arrivalTime/1000.0) - (self.trip.departureTime/1000.0))];
-    self.changesLabel.text = [NSString stringWithFormat:@"%u", self.trip.numberOfChanges];
+    self.changesLabel.text = [NSString stringWithFormat:@"%lu", self.trip.numberOfChanges];
     self.firstLineLabel.text = firstConnection.line.shortName;
     
     static UIColor* normalColor = nil;
