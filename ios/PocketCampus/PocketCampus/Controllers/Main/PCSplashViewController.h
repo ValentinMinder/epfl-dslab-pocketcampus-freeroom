@@ -28,11 +28,16 @@
 
 
 
-//  Created by Loïc Gardiol on 07.08.12.
+//  Created by Loïc Gardiol on 21.10.12.
 
 
 #import <UIKit/UIKit.h>
 
-@interface AboutPCViewController: UIViewController
+@interface PCSplashViewController : UIViewController
+
+@property (nonatomic) CGFloat rightHiddenOffset;
+
+- (id)initWithRightHiddenOffset:(CGFloat)rightHiddenOffset;
+- (void)willMoveToRightWithDuration:(NSTimeInterval)duration hideDrawingOnIdiomPhone:(BOOL)hideDrawingOnIdiomPhone;
 
 @end

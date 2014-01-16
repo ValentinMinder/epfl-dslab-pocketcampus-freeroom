@@ -32,11 +32,11 @@
 
 
 
-#import "AboutPCViewController.h"
+#import "PCAboutViewController.h"
 
 #import "PCConfig.h"
 
-@interface AboutPCViewController() <UIWebViewDelegate>
+@interface PCAboutViewController() <UIWebViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIWebView* webView;
 
@@ -45,11 +45,11 @@
 
 @end
 
-@implementation AboutPCViewController
+@implementation PCAboutViewController
 
 - (id)init
 {
-    self = [super initWithNibName:@"AboutPCView" bundle:nil];
+    self = [super initWithNibName:@"PCAboutView" bundle:nil];
     if (self) {
         self.gaiScreenName = @"/dashboard/settings/about";
     }
@@ -64,7 +64,7 @@
     self.webView.delegate = self;
     self.webView.scrollView.scrollEnabled = NO;
     self.webView.alpha = 0.0;
-    NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"AboutPC" ofType:@"html"];
+    NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"PCAbout" ofType:@"html"];
     NSError* error = nil;
     NSString* htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
     

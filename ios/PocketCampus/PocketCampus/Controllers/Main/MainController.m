@@ -46,9 +46,9 @@
 
 #import "PCSplashView.h"
 
-#import "SplashViewController.h"
+#import "PCSplashViewController.h"
 
-#import "GlobalSettingsViewController.h"
+#import "PCGlobalSettingsViewController.h"
 
 #import "PCURLSchemeHandler.h"
 
@@ -66,7 +66,7 @@
 @property (nonatomic, strong) NSDictionary* plistDicForPluginIdentifier;
 @property (nonatomic, strong) NSArray* logicOnlyPluginsList; //plugin identifiers of plugins that have no UI (logicOnly is YES)
 @property (nonatomic, strong) NSArray* pluginsList; //plugin identifiers of plugins that have a UI (logicOnly is NO)
-@property (nonatomic, strong) SplashViewController* splashViewController;
+@property (nonatomic, strong) PCSplashViewController* splashViewController;
 @property (nonatomic, strong) PCSplashView* splashView;
 @property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
 @property (nonatomic, strong) NSString* initialActivePluginIdentifier;
@@ -303,7 +303,7 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark Pre-config phases
 
 - (void)initAndShowSplashViewViewController {
-    self.splashViewController = [[SplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
+    self.splashViewController = [[PCSplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
     if (![PCUtils isIdiomPad]) {
         self.splashView = [[PCSplashView alloc] initWithSuperview:self.splashViewController.view];
     }
@@ -477,7 +477,7 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)initRevealController {
-    self.splashViewController = [[SplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
+    self.splashViewController = [[PCSplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
     PCNavigationController* mainMenuNavController = [[PCNavigationController alloc] initWithRootViewController:self.mainMenuViewController];
     self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:mainMenuNavController];
     self.revealController.delegate = self;
@@ -513,7 +513,7 @@ static MainController<MainControllerPublic>* instance = nil;
             [self.splashView removeFromSuperview];
         }];
     } else {
-        [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:NO];
+        [(PCSplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:NO];
         NSTimeInterval duration;
         if ([PCUtils isIdiomPad]) {
             [self.revealController revealToggle:self];
@@ -620,7 +620,7 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)showGlobalSettings {
-    GlobalSettingsViewController* settingsViewController = [[GlobalSettingsViewController alloc] initWithMainController:self];
+    PCGlobalSettingsViewController* settingsViewController = [[PCGlobalSettingsViewController alloc] initWithMainController:self];
     UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];

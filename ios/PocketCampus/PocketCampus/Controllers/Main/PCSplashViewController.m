@@ -31,11 +31,11 @@
 //  Created by Loïc Gardiol on 21.10.12.
 
 
-#import "SplashViewController.h"
+#import "PCSplashViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface SplashViewController ()
+@interface PCSplashViewController ()
 
 @property (nonatomic, retain) UIImageView* splashViewImage;
 
@@ -43,7 +43,7 @@
 
 @end
 
-@implementation SplashViewController
+@implementation PCSplashViewController
 
 - (id)initWithRightHiddenOffset:(CGFloat)rightHiddenOffset {
     self = [super init];

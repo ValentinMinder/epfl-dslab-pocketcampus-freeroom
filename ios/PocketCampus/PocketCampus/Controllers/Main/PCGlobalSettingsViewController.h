@@ -35,7 +35,7 @@
 
 @class MainController;
 
-@interface GlobalSettingsViewController : UITableViewController
+@interface PCGlobalSettingsViewController : UITableViewController
 
 - (id)initWithMainController:(MainController*)mainController;
 

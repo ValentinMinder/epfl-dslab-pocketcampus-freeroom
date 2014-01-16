@@ -33,13 +33,13 @@
 
 @import StoreKit;
 
-#import "GlobalSettingsViewController.h"
+#import "PCGlobalSettingsViewController.h"
 
 #import "PCEditableTableViewCell.h"
 
 #import "AuthenticationViewController.h"
 
-#import "AboutPCViewController.h"
+#import "PCAboutViewController.h"
 
 #import "AuthenticationService.h"
 
@@ -65,13 +65,13 @@ static const int kAboutRow = 2;
 
 static const int kUsageRow = 0;
 
-@interface GlobalSettingsViewController () <UITextFieldDelegate, SKStoreProductViewControllerDelegate>
+@interface PCGlobalSettingsViewController () <UITextFieldDelegate, SKStoreProductViewControllerDelegate>
 
 @property (nonatomic, weak) MainController* mainController;
 
 @end
 
-@implementation GlobalSettingsViewController
+@implementation PCGlobalSettingsViewController
 
 - (id)initWithMainController:(MainController*)mainController
 {
@@ -179,7 +179,7 @@ static const int kUsageRow = 0;
                 }
                 case kAboutRow:
                 {
-                    AboutPCViewController* viewController = [AboutPCViewController new];
+                    PCAboutViewController* viewController = [PCAboutViewController new];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
                 }
