@@ -56,7 +56,7 @@
 
 #import <Crashlytics/Crashlytics.h>
 
-@interface MainController ()<ZUUIRevealControllerDelegate, UIGestureRecognizerDelegate>
+@interface MainController ()<CrashlyticsDelegate, UIGestureRecognizerDelegate, ZUUIRevealControllerDelegate>
 
 @property (nonatomic, weak) UIWindow* window;
 @property (nonatomic, strong) PCURLSchemeHandler* urlSchemeHander;
@@ -297,6 +297,7 @@ static MainController<MainControllerPublic>* instance = nil;
     [self initPluginObservers];
     [self revealMenuAndFinalize];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pcConfigUserDefaultsDidChange) name:NSUserDefaultsDidChangeNotification object:[PCConfig defaults]];
 }
 
 #pragma mark Pre-config phases
@@ -312,11 +313,26 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark Post-config phases
 
 - (void)initAnalytics {
-    NSString* crashlyticsAPIKey = [[PCConfig defaults] stringForKey:PC_CONFIG_CRASHLYTICS_APIKEY_KEY];
-    if (crashlyticsAPIKey) {
-        NSLog(@"-> Starting Crashlytics");
-        [Crashlytics startWithAPIKey:crashlyticsAPIKey];
+    
+    //Crashlytics
+    BOOL clEnabledConfig = [[PCConfig defaults] boolForKey:PC_CONFIG_CRASHLYTICS_ENABLED_KEY];
+    BOOL clEnabledUserConfig = [[PCConfig defaults] boolForKey:PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY];
+    if (clEnabledConfig && clEnabledUserConfig) {
+        NSString* crashlyticsAPIKey = [[PCConfig defaults] stringForKey:PC_CONFIG_CRASHLYTICS_APIKEY_KEY];
+        if (crashlyticsAPIKey) {
+            static dispatch_once_t onceToken;
+            dispatch_once(&onceToken, ^{
+                NSLog(@"-> Starting Crashlytics");
+                [Crashlytics startWithAPIKey:crashlyticsAPIKey delegate:self];
+            });
+        } else {
+            NSLog(@"!! WARNING: could not start Crashlytics, did not find APIKey in config.");
+        }
+    } else {
+        NSLog(@"-> Crashlytics disabled (config: %d, user: %d)", clEnabledConfig, clEnabledUserConfig);
     }
+    
+    //Google Analytics
     [[PCGAITracker sharedTracker] trackAppOnce];
 }
 
@@ -536,6 +552,12 @@ static MainController<MainControllerPublic>* instance = nil;
             [self.pluginsControllers removeObjectForKey:pluginController];
         }
     }
+}
+
+#pragma mark - User defaults changes handler
+
+- (void)pcConfigUserDefaultsDidChange {
+    [self initAnalytics];
 }
 
 #pragma mark - Called by MainMenuViewController
@@ -902,6 +924,12 @@ static MainController<MainControllerPublic>* instance = nil;
         NSString* activePluginIdentifier = [self.activePluginController.class identifierName];
         [self.mainMenuViewController setSelectedPluginWithIdentifier:activePluginIdentifier animated:YES];
     }
+}
+
+#pragma mark - CrashlyticsDelegate
+
+- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash {
+    [[PCGAITracker sharedTracker] trackAppCrashedDuringPreviousExecution];
 }
 
 #pragma mark - UIGestureRecognizerDelegate

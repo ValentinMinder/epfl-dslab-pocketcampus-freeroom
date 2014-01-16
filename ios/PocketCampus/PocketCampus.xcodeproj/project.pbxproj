@@ -104,6 +104,7 @@
 		3244B3E816A36976006A7E37 /* MoodleModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3244B3E716A36976006A7E37 /* MoodleModelAdditions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32456C0A184373DE00993F8B /* TransportNextDeparturesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32456C09184373DE00993F8B /* TransportNextDeparturesCell.m */; };
 		32456C0C184373FE00993F8B /* TransportNextDeparturesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32456C0B184373FE00993F8B /* TransportNextDeparturesCell.xib */; };
+		3245DF3018881B5F0072E086 /* PCUsageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3245DF2F18881B5F0072E086 /* PCUsageViewController.m */; };
 		324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */ = {isa = PBXBuildFile; fileRef = 324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3247495017F33B0D00698A9D /* DirectoryPersonBaseInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3247494F17F33B0D00698A9D /* DirectoryPersonBaseInfoCell.xib */; };
 		3247495317F33E3400698A9D /* DirectoryPersonBaseInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3247495217F33E3400698A9D /* DirectoryPersonBaseInfoCell.m */; };
@@ -529,6 +530,8 @@
 		32456C08184373DE00993F8B /* TransportNextDeparturesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TransportNextDeparturesCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32456C09184373DE00993F8B /* TransportNextDeparturesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportNextDeparturesCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32456C0B184373FE00993F8B /* TransportNextDeparturesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportNextDeparturesCell.xib; sourceTree = "<group>"; };
+		3245DF2E18881B5F0072E086 /* PCUsageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCUsageViewController.h; sourceTree = "<group>"; };
+		3245DF2F18881B5F0072E086 /* PCUsageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCUsageViewController.m; sourceTree = "<group>"; };
 		324654C5168BA2D300F2782D /* PluginControllerAuthentified.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginControllerAuthentified.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		324654C6168BA2D400F2782D /* PluginControllerAuthentified.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginControllerAuthentified.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		324715AC15001381007C230C /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Service.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1510,6 +1513,8 @@
 				320A05B115B02C240057B15C /* GlobalSettingsViewController.m */,
 				3293AD1E15D1BC7C0097D414 /* AboutPCViewController.h */,
 				3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */,
+				3245DF2E18881B5F0072E086 /* PCUsageViewController.h */,
+				3245DF2F18881B5F0072E086 /* PCUsageViewController.m */,
 				32CBF0611634812C00FD92E5 /* SplashViewController.h */,
 				32CBF0621634812C00FD92E5 /* SplashViewController.m */,
 			);
@@ -2712,6 +2717,7 @@
 				32FAC0F91500F40700925180 /* DirectoryService.m in Sources */,
 				32FAC0FA1500F40700925180 /* directory.m in Sources */,
 				32102B6615050B9D0076537E /* food.m in Sources */,
+				3245DF3018881B5F0072E086 /* PCUsageViewController.m in Sources */,
 				32102B6C15050C000076537E /* FoodService.m in Sources */,
 				3242DE1F150577050082D720 /* Service.m in Sources */,
 				3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */,

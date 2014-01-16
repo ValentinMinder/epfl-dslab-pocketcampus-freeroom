@@ -23,6 +23,8 @@
 "MainMenu" = "Menu principal";
 "EditMainMenu" = "Personnaliser le menu principal";
 "RestoreDefaultMainMenu" = "Menu principal par défaut";
+"Misc" = "Divers";
+"Usage" = "Utilisation";
 "Close" = "Fermer";
 "RatePCAppStore" = "Évaluer sur l'App Store";
 "RatePCAppStoreSubtitle" = "Merci beaucoup d'avance :)";
@@ -33,3 +35,6 @@
 "Send" = "Envoyer";
 "By" = "Par";
 "SearchNoun" = "Recherche";
+"CrashReports" = "Rapports de crash";
+"SendAutomatically" = "Envoyer automatiquement";
+"CrashReportsExplanations" = "Les rapports de crash sont anonymes et nous aident à améliorer PocketCampus.";

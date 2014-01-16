@@ -44,7 +44,7 @@
     NSDate* date2 = [[NSDate alloc] initWithTimeInterval:interval sinceDate:date1];
     unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
     NSDateComponents* conversionInfo = [systemCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
-    return [NSString stringWithFormat:@"%ld:%02ld", [conversionInfo hour], [conversionInfo minute]];
+    return [NSString stringWithFormat:@"%d:%02d", (int)[conversionInfo hour], (int)[conversionInfo minute]];
 }
 
 + (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp {

@@ -26,12 +26,7 @@
  */
 
 
-
-
-
-
 //  Created by Loïc Gardiol on 20.09.13.
-
 
 
 #import "PCGAITracker.h"
@@ -53,6 +48,8 @@ NSString* const PCGAITrackerActionSearch = @"Search";
 
 
 static NSString* const kFirstLaunchAfterInstallAction = @"FirstLaunchAfterInstall";
+
+static NSString* const kAppCrashedDuringPreviousExecution = @"AppCrashedDuringPreviousExecution";
 
 static id instance __strong = nil;
 
@@ -112,6 +109,10 @@ static id instance __strong = nil;
     [[PCConfig defaults] synchronize];
     [self trackAction:kFirstLaunchAfterInstallAction inScreenWithName:@"/"];
     
+}
+
+- (void)trackAppCrashedDuringPreviousExecution {
+    [self trackAction:kAppCrashedDuringPreviousExecution inScreenWithName:@"/"];
 }
 
 #pragma mark - Private

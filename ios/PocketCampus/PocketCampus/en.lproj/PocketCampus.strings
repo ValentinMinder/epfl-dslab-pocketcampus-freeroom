@@ -23,6 +23,8 @@
 "MainMenu" = "Main menu";
 "EditMainMenu" = "Customize main menu";
 "RestoreDefaultMainMenu" = "Default main menu";
+"Misc" = "Misc";
+"Usage" = "Usage";
 "Close" = "Close";
 "RatePCAppStore" = "Rate on App Store";
 "RatePCAppStoreSubtitle" = "Many thanks in advance :)";
@@ -33,3 +35,6 @@
 "Send" = "Send";
 "By" = "By";
 "SearchNoun" = "Search";
+"CrashReports" = "Crash reports";
+"SendAutomatically" = "Send automatically";
+"CrashReportsExplanations" = "Crash reports are anonymous and help us improve PocketCampus.";

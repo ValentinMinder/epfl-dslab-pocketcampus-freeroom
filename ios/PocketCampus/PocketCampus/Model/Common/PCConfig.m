@@ -54,7 +54,12 @@ NSString* const PC_CONFIG_GAN_ENABLED_KEY = @"GA_ENABLED"; //GAN is Google Analy
 
 NSString* const PC_CONFIG_GAN_TRACKING_CODE_KEY = @"GA_TRACKING_CODE";
 
+NSString* const PC_CONFIG_CRASHLYTICS_ENABLED_KEY = @"CRASHLYTICS_ENABLED";
+
 NSString* const PC_CONFIG_CRASHLYTICS_APIKEY_KEY = @"CRASHLYTICS_APIKEY";
+
+
+NSString* const PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY = @"USER_CRASHLYTICS_ENABLED";
 
 
 NSString* const PC_CONFIG_LOADED_FROM_BUNDLE_KEY = @"CONFIG_LOADED_FROM_BUNDLE";
@@ -93,6 +98,7 @@ static BOOL loaded = NO;
         [self registerDefaultsFromServerWithCompletionHandler:^{
             // Finally load potential overriding dev config Config.plist in ApplicationSupport/<bundle_identifier>/
             [self registerDevDefaultsFromAppSupportIfExist];
+            [self registerDefaultsUserConfigDefaultValuesIfNotDefined];
             [[self _defaults] synchronize]; //persist to disk
             NSLog(@"-> Config loaded.");
             loaded = YES;
@@ -180,5 +186,11 @@ static BOOL loaded = NO;
     }
 }
 
++ (void)registerDefaultsUserConfigDefaultValuesIfNotDefined {
+    NSUserDefaults* defaults = [self _defaults];
+    if (![defaults objectForKey:PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY]) {
+        [defaults setBool:YES forKey:PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY];
+    }
+}
 
 @end

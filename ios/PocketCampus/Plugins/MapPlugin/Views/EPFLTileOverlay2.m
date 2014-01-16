@@ -43,12 +43,12 @@
 }
 
 - (NSURL*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
-    NSString* urlString = [NSString stringWithFormat:@"http://plan-epfl-tile1.epfl.ch/batiments%d-merc/%ld/%@/%@%@", 1, zoom, [self createCoordString:x], [self createCoordString:y], @".png"];
+    NSString* urlString = [NSString stringWithFormat:@"http://plan-epfl-tile1.epfl.ch/batiments%d-merc/%d/%@/%@%@", 1, (int)zoom, [self createCoordString:x], [self createCoordString:y], @".png"];
     return [NSURL URLWithString:urlString];
 }
 
 - (NSString*)createCoordString:(NSInteger)coord {
-    NSString* coordString = [NSString stringWithFormat:@"%09ld",coord];
+    NSString* coordString = [NSString stringWithFormat:@"%09d",(int)coord];
     NSString* firstSubString = [[coordString substringToIndex:3] stringByAppendingString:@"/"];
     NSString* secondSubString = [[[coordString substringFromIndex:3] substringToIndex:3] stringByAppendingString:@"/"];
     NSString* thirdSubString = [coordString substringFromIndex:6];

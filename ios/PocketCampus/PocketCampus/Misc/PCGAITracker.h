@@ -68,4 +68,6 @@ extern NSString* const PCGAITrackerActionSearch;
  */
 - (void)trackAppOnce;
 
+- (void)trackAppCrashedDuringPreviousExecution;
+
 @end

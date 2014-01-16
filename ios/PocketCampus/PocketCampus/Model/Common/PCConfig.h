@@ -54,7 +54,7 @@
 
 
 /*
- * Keys of [PCConfig defaults]
+ * Keys of [PCConfig defaults] that should NOT be modified by user
  * Those are the keys that must be used in Config.plist (see above)
  */
 
@@ -74,7 +74,16 @@ extern NSString* const PC_CONFIG_GAN_ENABLED_KEY; //GAN is Google Analytics
 
 extern NSString* const PC_CONFIG_GAN_TRACKING_CODE_KEY;
 
+extern NSString* const PC_CONFIG_CRASHLYTICS_ENABLED_KEY;
+
 extern NSString* const PC_CONFIG_CRASHLYTICS_APIKEY_KEY;
+
+
+/*
+ * Keys of [PCConfig defaults] that can be modified by user ("settings")
+ */
+
+extern NSString* const PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY; //Default: YES
 
 /*
  * Indications on which config steps were successfull

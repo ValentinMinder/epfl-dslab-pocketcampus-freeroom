@@ -47,10 +47,14 @@
 
 #import "MainMenuViewController.h"
 
+#import "PCUsageViewController.h"
+
 
 static const int kAccountsSection = 0;
 static const int kMainMenuSection = 1;
 static const int kAboutSection = 2;
+
+static const int kMiscSection = 3;
 
 static const int kEditMainMenuRow = 0;
 static const int kRestoreDefaultMainMenuRow = 1;
@@ -58,6 +62,8 @@ static const int kRestoreDefaultMainMenuRow = 1;
 static const int kRatePCRow = 0;
 static const int kLikePCFBRow = 1;
 static const int kAboutRow = 2;
+
+static const int kUsageRow = 0;
 
 @interface GlobalSettingsViewController () <UITextFieldDelegate, SKStoreProductViewControllerDelegate>
 
@@ -91,8 +97,9 @@ static const int kAboutRow = 2;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
+    //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kAccountsSection] withRowAnimation:UITableViewRowAnimationNone];
+    //[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:kAccountsSection]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadData];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -172,15 +179,24 @@ static const int kAboutRow = 2;
                 }
                 case kAboutRow:
                 {
-                    AboutPCViewController* viewController = [[AboutPCViewController alloc] init];
+                    AboutPCViewController* viewController = [AboutPCViewController new];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
                 }
                 default:
                     break;
             }
-        default:
-            break;
+        case kMiscSection:
+            switch (indexPath.row) {
+                case kUsageRow:
+                {
+                    PCUsageViewController* viewController = [PCUsageViewController new];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                    break;
+                }
+                default:
+                    break;
+            }
     }
 }
 
@@ -194,16 +210,16 @@ static const int kAboutRow = 2;
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
-        case kAccountsSection: //gaspar account
+        case kAccountsSection:
             return NSLocalizedStringFromTable(@"Accounts", @"PocketCampus", nil);
         case kMainMenuSection:
             return NSLocalizedStringFromTable(@"MainMenu", @"PocketCampus", nil);
-        case kAboutSection: //about
+        case kAboutSection:
             return @"PocketCampus";
-        default:
-            return @"";
-            break;
+        case kMiscSection:
+            return NSLocalizedStringFromTable(@"Misc", @"PocketCampus", nil);
     }
+    return nil;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -265,6 +281,13 @@ static const int kAboutRow = 2;
             }
             break;
         }
+        case kMiscSection:
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.textLabel.text = NSLocalizedStringFromTable(@"Usage", @"PocketCampus", nil);
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+        }
         default:
             break;
     }
@@ -279,6 +302,8 @@ static const int kAboutRow = 2;
             return 2;
         case kAboutSection:
             return 3;
+        case kMiscSection:
+            return 1;
         default:
             return 0;
             break;
@@ -286,7 +311,7 @@ static const int kAboutRow = 2;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 @end

@@ -2476,11 +2476,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "411143686.006257"
+            timestampString = "411576002.423404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "755"
-            endingLineNumber = "755"
+            startingLineNumber = "777"
+            endingLineNumber = "777"
             landmarkName = "-adaptInitializedNavigationOrSplitViewControllerOfPluginController:"
             landmarkType = "5">
             <Actions>
@@ -2501,13 +2501,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "411143686.006257"
+            timestampString = "411576002.423404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "719"
-            endingLineNumber = "719"
-            landmarkName = "-adaptInitializedNavigationOrSplitViewControllerOfPluginController:"
-            landmarkType = "5">
+            startingLineNumber = "741"
+            endingLineNumber = "741"
+            landmarkName = "@implementation MainController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2838,12 +2838,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "411143686.006257"
+            timestampString = "411576002.423404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400"
-            landmarkName = "-initMainMenu"
+            startingLineNumber = "416"
+            endingLineNumber = "416"
+            landmarkName = "-defaultMainMenuItemsWithoutTopSection"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2867,9 +2867,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "-initWithWindow:"
-            landmarkType = "5">
+            endingLineNumber = "78">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3259,13 +3257,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "411143686.006257"
+            timestampString = "411576002.423404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "579"
-            endingLineNumber = "579"
-            landmarkName = "@implementation MainController"
-            landmarkType = "3">
+            startingLineNumber = "601"
+            endingLineNumber = "601"
+            landmarkName = "-mainMenuEndedEditing"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3446,7 +3444,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "185"
             endingLineNumber = "185"
-            landmarkName = "-handlePocketCampusURL:"
+            landmarkName = "-removePluginStateObserver:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3457,13 +3455,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "411143686.006257"
+            timestampString = "411576002.423404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "571"
-            endingLineNumber = "571"
-            landmarkName = "@implementation MainController"
-            landmarkType = "3">
+            startingLineNumber = "593"
+            endingLineNumber = "593"
+            landmarkName = "-mainMenuEndedEditing"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3494,8 +3492,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "164"
             endingLineNumber = "164"
-            landmarkName = "-handlePocketCampusURL:"
-            landmarkType = "5">
+            landmarkName = "@implementation MainController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3887,12 +3885,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/MainController.m"
-            timestampString = "411143686.006257"
+            timestampString = "411576002.423404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "693"
-            endingLineNumber = "693"
-            landmarkName = "-existsPluginWithIdentifier:"
+            startingLineNumber = "715"
+            endingLineNumber = "715"
+            landmarkName = "-pluginControllerForPluginIdentifier:"
             landmarkType = "5">
             <Locations>
                <Location
