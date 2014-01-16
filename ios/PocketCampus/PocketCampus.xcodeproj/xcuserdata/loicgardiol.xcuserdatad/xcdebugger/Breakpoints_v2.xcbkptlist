@@ -1243,7 +1243,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "117"
             endingLineNumber = "117"
-            landmarkName = "-applicationWillResignActive:"
+            landmarkName = "-applicationDidEnterBackground:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -3623,7 +3623,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "127"
             endingLineNumber = "127"
-            landmarkName = "-applicationDidEnterBackground:"
+            landmarkName = "-applicationWillEnterForeground:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -3849,7 +3849,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "121"
             endingLineNumber = "121"
-            landmarkName = "-applicationWillResignActive:"
+            landmarkName = "-applicationDidEnterBackground:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy

@@ -205,12 +205,13 @@ static CGFloat kRowHeight;
             [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleToCreateContact", @"DirectoryPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             return;
         }
-        
-        if (self.personBaseInfoCell.profilePicture) {
-            NSData* imageData = UIImagePNGRepresentation(self.personBaseInfoCell.profilePicture);
-            ABPersonSetImageData(abPerson,(__bridge CFDataRef)imageData, nil);
-        }
     }
+    
+    if (self.personBaseInfoCell.profilePicture) {
+        NSData* imageData = UIImagePNGRepresentation(self.personBaseInfoCell.profilePicture);
+        ABPersonSetImageData(abPerson,(__bridge CFDataRef)imageData, nil);
+    }
+    
     abPersonController.displayedPerson = abPerson;
     if (addressBook) {
         abPersonController.addressBook = addressBook;
