@@ -343,7 +343,7 @@ static NSString* const kSectionsListReplyForCourseIdWithFormat = @"sectionsListR
 #pragma mark - MoodleResources observation
 
 - (NSString*)keyForMoodleResource:(MoodleResource*)resource {
-    return [NSString stringWithFormat:@"%ud", (unsigned int)[resource.iUrl hash]];
+    return [NSString stringWithFormat:@"%u", (unsigned int)[resource.iUrl hash]];
 }
 
 - (void)addMoodleResourceObserver:(id)observer_ forResource:(MoodleResource*)resource eventBlock:(MoodleResourceEventBlock)eventBlock {

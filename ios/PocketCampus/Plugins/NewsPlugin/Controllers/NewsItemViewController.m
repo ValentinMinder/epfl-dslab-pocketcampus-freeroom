@@ -146,7 +146,7 @@
 #pragma mark - Image management
 
 - (NSString*)pathForImage {
-    NSString* key = [NSString stringWithFormat:@"newsItemImage-%ud", (unsigned int)[self.newsItem.imageUrl hash]];
+    NSString* key = [NSString stringWithFormat:@"newsItemImage-%u", (unsigned int)[self.newsItem.imageUrl hash]];
     return [PCObjectArchiver pathForKey:key pluginName:@"news" customFileExtension:[self.newsItem.imageUrl pathExtension] isCache:YES];
 }
 

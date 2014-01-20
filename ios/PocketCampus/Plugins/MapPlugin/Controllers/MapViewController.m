@@ -855,7 +855,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     [self setSearchState:SearchStateResults animated:YES];
     
     if (mapItemAnnotations.count > kMaxDisplayedAnnotations) {
-        NSLog(@"-> Search for %@ returned too many results (%ud)", query, (unsigned int)mapItemAnnotations.count);
+        NSLog(@"-> Search for %@ returned too many results (%u)", query, (unsigned int)mapItemAnnotations.count);
         self.tooManyResultsAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"TooManyResults", @"MapPlugin", nil) message:NSLocalizedStringFromTable(@"CannotDisplayOnMap", @"MapPlugin", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:NSLocalizedStringFromTable(@"PickFromList", @"MapPlugin", nil), nil];
         [self.tooManyResultsAlert show];
     } else {
