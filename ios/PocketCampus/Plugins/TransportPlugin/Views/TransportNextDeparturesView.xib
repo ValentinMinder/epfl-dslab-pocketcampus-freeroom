@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A2093" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransportNextDeparturesViewController">
             <connections>
+                <outlet property="addStationButton" destination="wyh-1i-Rcp" id="hrZ-g8-Q5Z"/>
                 <outlet property="centerLoadingIndicator" destination="KZE-6o-VUY" id="idQ-6f-QlK"/>
                 <outlet property="centerMessageLabel" destination="14" id="6Rh-pb-r8W"/>
                 <outlet property="fromLabel" destination="7" id="67b-1J-uaG"/>
+                <outlet property="helpButton" destination="49" id="qay-Lg-nEn"/>
                 <outlet property="locationButton" destination="CvN-kc-iXK" id="9FH-Vm-8yE"/>
+                <outlet property="stationsListButton" destination="CfS-K2-wVG" id="fJa-PM-6os"/>
                 <outlet property="tableView" destination="3" id="13"/>
                 <outlet property="toolbar" destination="47" id="52"/>
                 <outlet property="topContainerView" destination="Vf9-Pd-tXX" id="e0N-OW-V5N"/>

@@ -19,6 +19,16 @@
 "ImpossibleLocateUserDenied" = "Impossible de trouver la station la plus proche.\n\nAvez-vous refusé l'accès à la localisation ? Si oui, vous pouvez authoriser \"EPFL\" en allant dans:\n\nRéglages > Confidentialité > Service de localisation\n\nVous pouvez également choisir la station de départ manuellement.";
 "ImpossibleLocateUnknown" = "Désolé, votre position n'a pas\npu être déterminée.\n\nEssayez de rafraîchir, ou sélectionnez une station de départ manuellement.";
 
+//Accessiblity
+"NearestStationButton" = "Station la plus proche";
+"SelectsNearestStationAsDeparture" = "Sélectionne automatiquement votre station la plus proche comme point de départ.";
+"ShowsDepartureSelectionScreen" = "Affiche l'écran de sélection de la station de départ.";
+"ShowsHelpForTransport" = "Affiche l'aide pour Transports.";
+"ShowsScreenToSearchForAStation" = "Affiche l'écran pour chercher une station.";
+"ManageMyStations" = "Gérer mes stations";
+"ShowsScreenThatListsMyStationsToManageThem" = "Affiche l'écran qui liste mes stations et permet de les gérer.";
+
+
 //////////////////////////////////////////
 // TransportDepartureSelectionViewController
 //////////////////////////////////////////

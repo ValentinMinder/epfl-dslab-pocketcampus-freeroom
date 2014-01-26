@@ -4,7 +4,6 @@
 "SearchFieldPlaceholder" = "Name or sciper";
 "SearchNoResult" = "No result\nHave you tried with the exact spelling (accents) ?";
 "OfficeLabel" = "office";
-"(showOnMap)" = "(show on map)";
 "NoContactSelected" = "No contact selected";
 "PhotoButtonTitle" = "Photo";
 "Details" = "Details";
@@ -28,5 +27,9 @@
 
 /* Accessiblity */
 
-"SearchBar" = "Search bar";
-"SearchResults" = "Search results";
+"ClearsRecentSearches" = "Clears recent searches";
+"ShowsOptionsToExportToContacts" = "Shows options to export to contacts";
+"CallsThisNumber" = "Calls this number";
+"SendsAnEmail" = "Sends an email";
+"OpensInBrowser" = "Opens in browser";
+"ShowsOnMap" = "Shows on the map";

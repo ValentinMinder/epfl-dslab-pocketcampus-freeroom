@@ -89,6 +89,9 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* centerLoadingIndicator;
 @property (nonatomic, strong) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, strong) IBOutlet UIToolbar* toolbar;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem* helpButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem* addStationButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem* stationsListButton;
 
 @property (nonatomic, strong) UITableViewController* tableViewController;
 @property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
@@ -131,16 +134,31 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     self.tableViewController.tableView = self.tableView;
-    
-    self.locationButton.tintColor = [PCValues pocketCampusRed];
     self.tableView.hidden = YES;
     self.tableView.rowHeight = 74.0;
     self.tableView.contentInset = UIEdgeInsetsMake(64.0+self.topContainerView.frame.size.height, 0, self.toolbar.frame.size.height, 0);
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshButton;
+    
+    self.locationButton.tintColor = [PCValues pocketCampusRed];
+    self.locationButton.accessibilityLabel = NSLocalizedStringFromTable(@"NearestStationButton", @"TransportPlugin", nil);
+    self.locationButton.accessibilityHint = NSLocalizedStringFromTable(@"SelectsNearestStationAsDeparture", @"TransportPlugin", nil);
+    
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fromLabelPressed)];
     [self.fromLabel addGestureRecognizer:tapGesture];
+    self.fromLabel.accessibilityTraits ^= UIAccessibilityTraitButton;
+    self.fromLabel.accessibilityHint = NSLocalizedStringFromTable(@"ShowsDepartureSelectionScreen", @"TransportPlugin", nil);
+    
+    self.helpButton.accessibilityLabel = NSLocalizedStringFromTable(@"Help", @"PocketCampus", nil);
+    self.helpButton.accessibilityHint = NSLocalizedStringFromTable(@"ShowsHelpForTransport", @"TransportPlugin", nil);
+    
+    self.addStationButton.accessibilityLabel = NSLocalizedStringFromTable(@"AddStation", @"TransportPlugin", nil);
+    self.addStationButton.accessibilityHint = NSLocalizedStringFromTable(@"ShowsScreenToSearchForAStation", @"TransportPlugin", nil);
+    
+    self.stationsListButton.accessibilityLabel = NSLocalizedStringFromTable(@"ManageMyStations", @"TransportPlugin", nil);
+    self.stationsListButton.accessibilityHint = NSLocalizedStringFromTable(@"ShowsScreenThatListsMyStationsToManageThem", @"TransportPlugin", nil);
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTransportStationsModified) name:kTransportUserTransportStationsModifiedNotification object:self.transportService];
     [self.transportService addObserver:self forKeyPath:NSStringFromSelector(@selector(userManualDepartureStation)) options:0 context:nil];

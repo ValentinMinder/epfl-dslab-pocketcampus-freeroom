@@ -130,7 +130,6 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
     self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length+self.searchBar.frame.size.height, 0.0, 0.0, 0.0);
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchFieldPlaceholder", @"DirectoryPlugin", @"");
-    self.searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
     [self searchBar:self.searchBar textDidChange:self.searchBar.text]; //show recent searches if any
     [[MainController publicController] addPluginStateObserver:self selector:@selector(willLoseForeground) notification:PluginWillLoseForegroundNotification pluginIdentifierName:@"Directory"];
     [[MainController publicController] addPluginStateObserver:self selector:@selector(didEnterForeground) notification:PluginDidEnterForegroundNotification pluginIdentifierName:@"Directory"];
@@ -283,7 +282,9 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
             self.messageLabel.hidden = YES;
             self.resultsMode = ResultsModeRecentSearches;
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Clear", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(clearButtonPressed)] animated:YES];
+            UIBarButtonItem* clearButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Clear", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(clearButtonPressed)];
+            clearButton.accessibilityHint = NSLocalizedStringFromTable(@"ClearsHistoryOfRecentSearches", @"PocketCampus", nil);
+            [self.navigationItem setRightBarButtonItem:clearButton animated:YES];
         } else {
             
             self.backgroundIcon.hidden = NO;

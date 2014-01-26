@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 08.03.12.
-
 
 #import "FoodRestaurantsListViewController.h"
 
@@ -299,6 +295,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     }
     cell.textLabel.text = restaurant.rName;
     cell.favoriteIndicationVisible = [self.foodService isRestaurantFavorite:restaurant];
+    cell.accessibilityHint = NSLocalizedStringFromTable(@"ShowsMenuForThisRestaurant", @"FoodPlugin", nil);
     return cell;
 }
 

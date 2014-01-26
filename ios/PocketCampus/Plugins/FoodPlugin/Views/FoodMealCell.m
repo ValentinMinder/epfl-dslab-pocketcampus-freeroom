@@ -113,6 +113,10 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.originalSeparatorInsets = self.separatorInset;
         self.textView.scrollEnabled = NO;
+        self.textView.isAccessibilityElement = NO; //will generate custom accessiblityLabel for whole cell
+        self.mealTypeImageView.isAccessibilityElement = NO;
+        self.pricesLabel.isAccessibilityElement = NO;
+        self.satRateButton.isAccessibilityElement = NO;
         self.mealTypeImageViewLeftConstraint.constant = [PCUtils isIdiomPad] ? kmealTypeImageViewLeftConstraintPad : kmealTypeImageViewLeftConstraintPhone;
         self.textViewWidthConstraint.constant = kTextViewWidth;
         self.textViewBottomConstraint.constant = kBottomZoneHeight;
@@ -122,6 +126,8 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         self.infoContentViewTapGesture.minimumPressDuration = 0.001;
         self.infoContentViewTapGesture.enabled = NO;
         [self.infoContentView addGestureRecognizer:self.infoContentViewTapGesture];
+        self.rateControlsView.isAccessibilityElement = NO;
+        self.rateControlsView.accessibilityElementsHidden = YES;
         [self.contentView insertSubview:self.rateControlsView aboveSubview:self.infoContentView]; //doing that here and not in IB so that we can work on the view that is hidden by infoContentView otherwise :)
         self.rateControlsView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.contentView forView:self.rateControlsView edgeInsets:UIEdgeInsetsMake(0, kNoInsetConstraint, 0, kNoInsetConstraint)]];
@@ -181,7 +187,6 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         self.mealTypeImageView.image = nil;
         self.mealTypeImageViewHeightConstraint.constant = 3.0;
     }
-
     
     // Meal text
     self.textView.attributedText = [self.class attributedStringForMeal:meal];
@@ -219,8 +224,10 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         numberFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"fr_CH"]; //force swiss franc notation
         NSString* priceString = [numberFormatter stringFromNumber:[NSNumber numberWithFloat:price]];*/
         self.pricesLabel.attributedText = attrPriceString;
+        self.accessibilityLabel = [NSString stringWithFormat:NSLocalizedStringFromTable(@"MealWithFormatDescriptionAndPrice", @"FoodPlugin", nil), self.textView.text, attrPriceString.string];
     } else {
         self.pricesLabel.text = nil;
+        self.accessibilityLabel = self.textView.text;
     }
     
     // Rating

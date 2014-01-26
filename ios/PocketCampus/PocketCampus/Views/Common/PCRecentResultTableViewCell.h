@@ -35,4 +35,11 @@
 
 @interface PCRecentResultTableViewCell : PCTableViewCellAdditions
 
+/*
+ * If YES, accessiblityLabel is "Recent search: <textLabel.text>"
+ * and accessibilityHint is "Searches for <textLabel.text>"
+ * Default: YES
+ */
+@property (nonatomic) BOOL overrideAccessibility;
+
 @end

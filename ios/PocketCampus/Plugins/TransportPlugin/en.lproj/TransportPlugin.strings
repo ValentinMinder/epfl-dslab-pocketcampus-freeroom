@@ -19,6 +19,15 @@
 "ImpossibleLocateUserDenied" = "Impossible to find nearest station.\n\n Did you deny access to location ?\nIf so, you can allow \"EPFL\" in:\n\nSettings > Privacy > Location.\n\nAlternatively, you can choose a departure station manually.";
 "ImpossibleLocateUnknown" = "Sorry, your location could\nnot be determined.\n\nTry to refresh, or select the\ndeparture station manually.";
 
+//Accessiblity
+"NearestStationButton" = "Nearest station";
+"SelectsNearestStationAsDeparture" = "Automatically selects nearest of your stations as departure.";
+"ShowsDepartureSelectionScreen" = "Shows departure selection screen.";
+"ShowsHelpForTransport" = "Shows help for Transport.";
+"ShowsScreenToSearchForAStation" = "Shows the screen to search for a station.";
+"ManageMyStations" = "Manage my stations";
+"ShowsScreenThatListsMyStationsToManageThem" = "Shows the screen that lists my stations and allows to manage them.";
+
 //////////////////////////////////////////
 // TransportDepartureSelectionViewController
 //////////////////////////////////////////

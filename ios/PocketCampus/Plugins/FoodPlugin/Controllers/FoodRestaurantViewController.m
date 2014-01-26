@@ -25,13 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 30.10.13.
-
 
 
 #import "FoodRestaurantViewController.h"
@@ -111,8 +105,11 @@ static const NSInteger kMealsSection = 1;
 #pragma mark - Actions
 
 - (void)refreshFavoriteButton {
-    UIImage* image = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:[self.foodService isRestaurantFavorite:self.restaurant]];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(favoritePressed)];
+    BOOL isFavorite = [self.foodService isRestaurantFavorite:self.restaurant];
+    UIImage* image = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
+    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(favoritePressed)];
+    button.accessibilityLabel = isFavorite ? NSLocalizedStringFromTable(@"RemoveRestaurantFromFavorites", @"FoodPlugin", nil) : NSLocalizedStringFromTable(@"AddRestaurantToFavorites", @"FoodPlugin", nil);
+    self.navigationItem.rightBarButtonItem = button;
 }
 
 - (void)favoritePressed {

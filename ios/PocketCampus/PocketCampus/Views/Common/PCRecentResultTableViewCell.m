@@ -39,9 +39,18 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.overrideAccessibility = YES;
         self.imageView.image = [UIImage imageNamed:@"ClockCell"];
     }
     return self;
+}
+
+- (NSString*)accessibilityLabel {
+    return self.overrideAccessibility ? [NSString stringWithFormat:NSLocalizedStringFromTable(@"RecentSearchWithFormat", @"PocketCampus", nil), self.textLabel.text] : [super accessibilityLabel];
+}
+
+- (NSString*)accessibilityHint {
+    return self.overrideAccessibility ? [NSString stringWithFormat:NSLocalizedStringFromTable(@"SearchesForWithFormat", @"PocketCampus", nil), self.textLabel.text] : [super accessibilityLabel];
 }
 
 @end

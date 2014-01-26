@@ -326,8 +326,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchPlaceholder", @"MapPlugin", nil);
             self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
             self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-            self.searchBar.isAccessibilityElement = YES;
-            self.searchBar.accessibilityIdentifier = @"SearchBar";
         }
         UIView* searchBarContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.searchBar.frame.size.width, self.searchBar.frame.size.height)];
         searchBarContainerView.backgroundColor = [UIColor clearColor];
@@ -344,7 +342,9 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     if (!self.resultsListButton) {
         self.resultsListButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ListBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(resultsListPressed)];
+        self.resultsListButton.accessibilityLabel = NSLocalizedStringFromTable(@"AllSearchResults", @"MapPlugin", nil);
     }
+    self.resultsListButton.accessibilityHint = [NSString stringWithFormat:NSLocalizedStringFromTable(@"ShowsAllSearchResultsForSearchWithFormat", @"MapPlugin", nil), self.searchBar.text];
     
     NSArray* items = nil;
     
@@ -437,6 +437,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     if (!self.floorDownButton) {
         self.floorDownButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"FloorDown"] style:UIBarButtonItemStylePlain target:self action:@selector(floorDownPressed)];
+        self.floorDownButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorDown", @"MapPlugin", nil);
     }
     
     if (!self.floorLabelItem) {
@@ -451,10 +452,13 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     if (!self.floorUpButton) {
         self.floorUpButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"FloorUp"] style:UIBarButtonItemStylePlain target:self action:@selector(floorUpPressed)];
+        self.floorUpButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorUp", @"MapPlugin", nil);
     }
     
     if (!self.centerOnEPFLButton) {
         self.centerOnEPFLButton = [[UIBarButtonItem alloc] initWithTitle:@"EPFL" style:UIBarButtonItemStylePlain target:self action:@selector(centerOnEPFLPressed)];
+        self.centerOnEPFLButton.accessibilityLabel = NSLocalizedStringFromTable(@"CenterOnEPFL", @"MapPlugin", nil);
+        self.centerOnEPFLButton.accessibilityHint = NSLocalizedStringFromTable(@"CentersMapToSeelWholeEPFLCampus", @"MapPlugin", nil);
     }
     
     NSArray* items = nil;
@@ -767,10 +771,13 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         pin.annotation = annotation;
     }
     
+    pin.accessibilityValue = annotation.subtitle.length > 0 ? [NSString stringWithFormat:@"%@\n%@", annotation.title, annotation.subtitle] : annotation.title;
+    
     if ([mapItem.category isEqualToString:kMapPersonsMapItemCategoryName] && !self.initialQuery && !self.initialMapItem) {
         UIButton* disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         [disclosureButton addTarget:self action:@selector(annotationAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
         pin.rightCalloutAccessoryView = disclosureButton;
+        pin.rightCalloutAccessoryView.accessibilityHint = NSLocalizedStringFromTable(@"ShowsPersonsDetails", @"MapPlugin", nil);
     } else {
         pin.rightCalloutAccessoryView = nil;
     }

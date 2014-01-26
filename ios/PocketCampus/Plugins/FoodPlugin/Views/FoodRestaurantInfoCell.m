@@ -56,7 +56,9 @@
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"FoodRestaurantInfoCell" owner:nil options:nil];
     self = (FoodRestaurantInfoCell*)elements[0];
     if (self) {
+        self.satRateLabel.isAccessibilityElement = NO;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.showOnMapButton.accessibilityHint = NSLocalizedStringFromTable(@"ShowsRestaurantOnMap", @"FoodPlugin", nil);
         //self.separatorInset = UIEdgeInsetsMake(0, 1000, 0, 0);
         [self.showOnMapButton setTitle:[NSString stringWithFormat:@"  %@  ", NSLocalizedStringFromTable(@"ShowOnMap", @"FoodPlugin", nil)] forState:UIControlStateNormal];
         _showRating = YES; //Default

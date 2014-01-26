@@ -88,8 +88,9 @@ static const int kUsageRow = 0;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(doneBarButtonPressed)];
-    [self.navigationItem setRightBarButtonItem:button animated:YES];
+    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(doneBarButtonPressed)];
+    doneButton.accessibilityHint = NSLocalizedStringFromTable(@"ClosesSettings", @"PocketCampus", nil);
+    [self.navigationItem setRightBarButtonItem:doneButton animated:YES];
 
     
 }
@@ -97,8 +98,6 @@ static const int kUsageRow = 0;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
-    //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kAccountsSection] withRowAnimation:UITableViewRowAnimationNone];
-    //[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:kAccountsSection]] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView reloadData];
 }
 

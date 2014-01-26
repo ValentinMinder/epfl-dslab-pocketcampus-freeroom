@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 25.11.13.
-
-
 
 #import "TransportNextDeparturesCell.h"
 
@@ -80,9 +73,13 @@
         self.originalLineLabelTextColor = self.lineLabel.textColor;
         self.destinationLabel.text = nil;
         self.time1Label.text = nil;
+        self.time1Label.isAccessibilityElement = NO;
         self.time2Label.text = nil;
+        self.time2Label.isAccessibilityElement = NO;
         self.time3Label.text = nil;
+        self.time3Label.isAccessibilityElement = NO;
         self.lineLabel.text = nil;
+        self.lineLabel.isAccessibilityElement = NO;
     }
     return self;
 }

@@ -28,5 +28,8 @@
 
 /* Accessiblity */
 
-"SearchBar" = "Barre de recherche";
-"SearchResults" = "Résultats de la recherche";
+"ShowsOptionsToExportToContacts" = "Affiche des options pour exporter vers les contacts";
+"CallsThisNumber" = "Appelle ce numéro";
+"SendsAnEmail" = "Envoie un email";
+"OpensInBrowser" = "Ouvre dans le navigateur";
+"ShowsOnMap" = "Affiche sur le plan";

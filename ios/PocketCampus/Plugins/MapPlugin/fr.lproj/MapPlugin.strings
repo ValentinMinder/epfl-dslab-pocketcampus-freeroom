@@ -1,8 +1,6 @@
 // Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Plan";
-"CenterOnEPFL" = "Centrer sur l'EPFL";
-"CenterOnResults" = "Centrer sur les résultats";
 "SearchPlaceholder" = "Bâtiment, salle, personne, ...";
 "RemoveElements" = "Effacer les résultats";
 "ShowBuildingsInterior" = "Aff. l'int. des bâtiments";
@@ -21,3 +19,7 @@
 "FloorUp" = "Étage supérieur";
 "FloorDown" = "Étage inférieur";
 "Other" = "Autres";
+"ShowsAllSearchResultsForSearchWithFormat" = "Affiche la liste de tous les résultats pour la recherche '%@'.";
+"CenterOnEPFL" = "Centrer sur l'EPFL";
+"CentersMapToSeelWholeEPFLCampus" = "Centre le plan pour voir tout le campus de l'EPFL.";
+"ShowsPersonsDetails" = "Affiche plus d'informations sur cette personne.";

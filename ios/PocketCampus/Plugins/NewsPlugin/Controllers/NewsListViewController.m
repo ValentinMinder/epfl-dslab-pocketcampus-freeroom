@@ -150,7 +150,6 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         }
     }
     [self.lgRefreshControl endRefreshingAndMarkSuccessful];
-    self.tableView.accessibilityIdentifier = @"NewsList";
 }
 
 - (void)newsItemsFailedForLanguage:(NSString*)language {

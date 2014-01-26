@@ -151,7 +151,9 @@ static CGFloat kRowHeight;
 - (void)setPerson:(Person *)person {
     [PCUtils throwExceptionIfObject:person notKindOfClass:[Person class]];
     _person = person;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
+    UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
+    actionButton.accessibilityHint = NSLocalizedStringFromTable(@"ShowsOptionsToExportToContacts", @"DirectoryPlugin", nil);
+    self.navigationItem.rightBarButtonItem = actionButton;
     self.tableView.hidden = NO;
     [self.tableView reloadData];
 }
@@ -460,16 +462,19 @@ static CGFloat kRowHeight;
                 cell.textLabel.text = NSLocalizedStringFromTable(@"OfficePhone", @"DirectoryPlugin", nil);
                 cell.detailTextLabel.text = self.person.officePhoneNumber;
             }
+            cell.accessibilityHint = NSLocalizedStringFromTable(@"CallsThisNumber", @"DirectoryPlugin", nil);
             break;
         case kEmailSection:
             cell.textLabel.text = NSLocalizedStringFromTable(@"Email", @"DirectoryPlugin", nil);
             cell.detailTextLabel.text = self.person.email;
+            cell.accessibilityHint = NSLocalizedStringFromTable(@"SendsAnEmail", @"DirectoryPlugin", nil);
             break;
         case kWebpageSection:
             cell.textLabel.text = NSLocalizedStringFromTable(@"Webpage", @"DirectoryPlugin", nil);
             cell.detailTextLabel.text = self.person.web;
             cell.detailTextLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
             cell.detailTextLabel.adjustsFontSizeToFitWidth = NO;
+            cell.accessibilityHint = NSLocalizedStringFromTable(@"OpensInBrowser", @"DirectoryPlugin", nil);
             break;
         case kOfficeSection:
         {
@@ -480,6 +485,7 @@ static CGFloat kRowHeight;
             NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:finalString];
             [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[finalString rangeOfString:tapToSeeOnMap]];
             cell.detailTextLabel.attributedText = attrString;
+            cell.accessibilityHint = self.allowShowOfficeOnMap ? NSLocalizedStringFromTable(@"ShowsOnMap", @"DirectoryPlugin", nil) : nil;
             break;
         }
     }

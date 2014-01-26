@@ -38,3 +38,11 @@
 "CrashReports" = "Crash reports";
 "SendAutomatically" = "Send automatically";
 "CrashReportsExplanations" = "Crash reports are anonymous and help us improve PocketCampus.";
+
+//Accessbility
+
+"MainMenu" = "Main menu";
+"ClosesSettings" = "Closes settings.";
+"RecentSearchWithFormat" = "Recent search: '%@'";
+"SearchesForWithFormat" = "Searches for '%@'.";
+"ClearsHistoryOfRecentSearches" = "Clears history of recent searches.";

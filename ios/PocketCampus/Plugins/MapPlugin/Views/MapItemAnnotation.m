@@ -51,10 +51,10 @@
         }
         _mapItem = item;
         if (item.title.length != 0) {
-            _title = [self.mapItem.title copy];
+            _title = [item.title copy];
         }
         if (item.description.length != 0) {
-            _subtitle = [self.mapItem.description copy];
+            _subtitle = [item.description copy];
         }
     }
     return self;

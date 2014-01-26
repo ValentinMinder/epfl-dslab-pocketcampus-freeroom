@@ -806,9 +806,8 @@ static MainController<MainControllerPublic>* instance = nil;
         UINavigationController* navController = (UINavigationController*)pluginRootViewController;
         [navController.view addGestureRecognizer:revealPanGesture];
         [navController.view addSubview:bringToFrontGesturesView];
-        
-        UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
-        [[(UIViewController*)(navController.viewControllers[0]) navigationItem] setLeftBarButtonItem:menuButton];
+
+        [[(UIViewController*)(navController.viewControllers[0]) navigationItem] setLeftBarButtonItem:[self newMainMenuButton]];
     }
     
     if ([pluginRootViewController isKindOfClass:[UISplitViewController class]]) {
@@ -821,13 +820,18 @@ static MainController<MainControllerPublic>* instance = nil;
             if([splitController.viewControllers[i] isKindOfClass:[UINavigationController class]]) {
                 UINavigationController* navController = (UINavigationController*)splitController.viewControllers[i];
                 if (i == 0) {
-                    UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
-                    [navController.viewControllers[0] navigationItem].leftBarButtonItem = menuButton;
+                    [navController.viewControllers[0] navigationItem].leftBarButtonItem = [self newMainMenuButton];
                 }
             }
         }
     }
     
+}
+
+- (UIBarButtonItem*)newMainMenuButton {
+    UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
+    menuButton.accessibilityLabel = NSLocalizedStringFromTable(@"MainMenu", @"PocketCampus", nil);
+    return menuButton;
 }
 
 /* will rotate phone idiom device to portrait if presentedViewController or topviewcontroller only supports portait */
@@ -972,6 +976,7 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - ZUUIRevealControllerDelegate
 
 - (void)revealController:(ZUUIRevealController *)revealController willRevealRearViewController:(UIViewController *)rearViewController {
+    self.mainMenuViewController.view.accessibilityElementsHidden = NO;
     if (self.activePluginController) {
         [self postNotificationWithState:PluginWillLoseForegroundNotification pluginIdentifier:[self identifierNameForPluginController:self.activePluginController]];
     }
@@ -990,9 +995,9 @@ static MainController<MainControllerPublic>* instance = nil;
     gesturesView.hidden = NO;
 }
 
-/*- (void)revealController:(ZUUIRevealController *)revealController willHideRearViewController:(UIViewController *)rearViewController {
-   //nothing
-}*/
+- (void)revealController:(ZUUIRevealController *)revealController willHideRearViewController:(UIViewController *)rearViewController {
+    self.mainMenuViewController.view.accessibilityElementsHidden = YES;
+}
 
 - (void)revealController:(ZUUIRevealController *)revealController didHideRearViewController:(UIViewController *)rearViewController {
     if (!self.activePluginController) {

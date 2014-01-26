@@ -56,12 +56,14 @@
         self.translatesAutoresizingMaskIntoConstraints = NO;
         [self moveToSuperview:superview];
         self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+        self.backgroundImageView.isAccessibilityElement = NO;
         self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundImageView.image = [self imageForDevice];
         [self addSubview:self.backgroundImageView];
         [self addConstraints:[NSLayoutConstraint constraintsToSuperview:self forView:self.backgroundImageView edgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
         
         self.drawingImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PocketCampusDrawing"]];
+        self.drawingImageView.isAccessibilityElement = NO;
         self.drawingImageView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.backgroundImageView addSubview:self.drawingImageView];
         self.drawingImageViewCenterYConstraint = [NSLayoutConstraint constraintForCenterYtoSuperview:self.backgroundImageView forView:self.drawingImageView constant:0.0];
@@ -76,6 +78,10 @@
 - (id)initWithFrame:(CGRect)frame
 {
     return [self init];
+}
+
+- (BOOL)isAccessibilityElement {
+    return NO;
 }
 
 #pragma mark - Public methods

@@ -26,11 +26,7 @@
  */
 
 
-
-
 //  Created by Loïc Gardiol on 24.03.12.
-
-
 
 #import "TransportAddStationViewController.h"
 

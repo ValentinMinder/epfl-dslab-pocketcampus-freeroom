@@ -71,7 +71,9 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     if (!self.showClearButtonWithinTableView) {
         self.title = NSLocalizedStringFromTable(@"Recents", @"PocketCampus", nil);
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Clear", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(clearPressed)];
+        UIBarButtonItem* clearButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Clear", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(clearPressed)];
+        clearButton.accessibilityHint = NSLocalizedStringFromTable(@"ClearsHistoryOfRecentSearches", @"PocketCampus", nil);
+        self.navigationItem.leftBarButtonItem = clearButton;
     }
     __weak __typeof(self) weakSelf = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:kMapRecentSearchesModifiedNotification object:self.mapService queue:nil usingBlock:^(NSNotification *note) {
@@ -108,6 +110,7 @@
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         cell.textLabel.text = NSLocalizedStringFromTable(@"ClearHistory", @"MapPlugin", nil);
+        cell.accessibilityHint = NSLocalizedStringFromTable(@"ClearsHistoryOfRecentSearches", @"PocketCampus", nil);
         return cell;
     }
     NSString* pattern = self.recentSearches[indexPath.row - (self.showClearButtonWithinTableView ? 1 : 0)];
