@@ -3662,7 +3662,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "174"
             endingLineNumber = "174"
-            landmarkName = "-isNow"
+            landmarkName = "-dateString:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -3687,7 +3687,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "177"
             endingLineNumber = "177"
-            landmarkName = "-isNow"
+            landmarkName = "-dateString:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy

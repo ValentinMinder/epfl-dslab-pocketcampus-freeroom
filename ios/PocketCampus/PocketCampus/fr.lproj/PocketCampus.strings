@@ -8,6 +8,7 @@
 "ServerErrorShort" = "Désolé, une erreur est survenue";
 "Cancel" = "Annuler";
 "Error" = "Erreur";
+"Loading" = "Chargement";
 "Loading..." = "Chargement...";
 "Help" = "Aide";
 "Settings" = "Réglages";
@@ -38,6 +39,7 @@
 "CrashReports" = "Rapports de crash";
 "SendAutomatically" = "Envoyer automatiquement";
 "CrashReportsExplanations" = "Les rapports de crash sont anonymes et nous aident à améliorer PocketCampus.";
+"Now" = "Maintenant";
 
 //Accessbility
 

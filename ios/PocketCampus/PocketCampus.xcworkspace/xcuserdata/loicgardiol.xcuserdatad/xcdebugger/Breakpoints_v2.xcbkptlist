@@ -254,9 +254,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "-initWithDirectoryPersonBaseInfoCellStyle:reuseIdentifer:"
-            landmarkType = "5">
+            endingLineNumber = "35">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1787,11 +1785,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Views/TransportNextDeparturesCell.m"
-            timestampString = "412458148.022136"
+            timestampString = "412594969.708033"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "-initWithReuseIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1803,11 +1801,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Views/TransportNextDeparturesCell.m"
-            timestampString = "412458148.022136"
+            timestampString = "412596585.473966"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
             landmarkName = "-setState:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1851,11 +1849,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/TransportPlugin/Views/TransportNextDeparturesCell.m"
-            timestampString = "412458148.022136"
+            timestampString = "412596585.473966"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
             landmarkName = "-setTripResult:"
             landmarkType = "5">
             <Actions>
@@ -1875,11 +1873,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/TransportPlugin/Views/TransportNextDeparturesCell.m"
-            timestampString = "412458148.022136"
+            timestampString = "412596585.473966"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
             landmarkName = "-setTripResult:"
             landmarkType = "5">
             <Actions>
@@ -1899,11 +1897,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/TransportPlugin/Views/TransportNextDeparturesCell.m"
-            timestampString = "412458148.022136"
+            timestampString = "412596585.473966"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
             landmarkName = "-setTripResult:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1922,52 +1920,6 @@
             endingLineNumber = "97"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/TransportPlugin/Model/TransportUtils.m"
-            timestampString = "407346814.217331"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "+automaticTimeStringForTimestamp:maxIntervalForMinutesLeftString:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "+[TransportUtils nextRedundantDeparturesFromMessyResult:purgeAlreadyLeft:]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/TransportPlugin/Model/TransportUtils.m"
-                  timestampString = "407347200.344183"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "92"
-                  endingLineNumber = "92"
-                  offsetFromSymbolStart = "84">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "+[TransportUtils nextRedundantDeparturesFromMessyResult:purgeAlreadyLeft:]"
-                  moduleName = "PocketCampus"
-                  urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/TransportPlugin/Model/TransportUtils.m"
-                  timestampString = "407347200.344453"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "92"
-                  endingLineNumber = "92"
-                  offsetFromSymbolStart = "6812">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2212,7 +2164,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "70"
             endingLineNumber = "70"
-            landmarkName = "-setPerson:"
+            landmarkName = "-initWithDirectoryPersonBaseInfoCellStyle:reuseIdentifer:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2228,7 +2180,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "75"
             endingLineNumber = "75"
-            landmarkName = "-setPerson:"
+            landmarkName = "-initWithDirectoryPersonBaseInfoCellStyle:reuseIdentifer:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2386,8 +2338,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "83"
             endingLineNumber = "83"
-            landmarkName = "-setPerson:"
-            landmarkType = "5">
+            landmarkName = "@implementation DirectoryPersonBaseInfoCell"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3790,6 +3742,54 @@
             startingLineNumber = "979"
             endingLineNumber = "979"
             landmarkName = "-revealController:willRevealRearViewController:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/TransportPlugin/Views/TransportNextDeparturesCell.m"
+            timestampString = "412594969.708033"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "-accessibilityLabel"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/TransportPlugin/Views/TransportNextDeparturesCell.m"
+            timestampString = "412594969.708033"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "-isAccessibilityElement"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/TransportPlugin/Views/TransportNextDeparturesCell.m"
+            timestampString = "412596585.473966"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
+            landmarkName = "-accessibilityTraits"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

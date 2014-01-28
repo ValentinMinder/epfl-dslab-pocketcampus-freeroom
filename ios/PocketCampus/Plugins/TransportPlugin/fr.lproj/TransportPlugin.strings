@@ -30,6 +30,17 @@
 
 
 //////////////////////////////////////////
+// TransportNextDeparturesCell
+//////////////////////////////////////////
+
+//Accessibility
+"NextDeparturesFromToWithFormat" = "Prochains départs de %@ vers %@: ";
+"lineWithFormat" = " ligne '%@': ";
+"platformWithFormat" = " voie %@";
+"LeftAlready" = "Déjà parti";
+"ShowsAllPossibilitiesFromToWithFormat" = "Affiche tous les trajets de %@ vers %@";
+
+//////////////////////////////////////////
 // TransportDepartureSelectionViewController
 //////////////////////////////////////////
 

@@ -38,9 +38,12 @@
 @interface TransportUtils : NSObject
 
 + (NSString*)durationgStringForInterval:(NSTimeInterval)interval;
-+ (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp;
-+ (NSString*)automaticHoursMinutesLeftStringForTimestamp:(NSTimeInterval)timestamp;
-+ (NSString*)automaticTimeStringForTimestamp:(NSTimeInterval)timestamp maxIntervalForMinutesLeftString:(NSTimeInterval)maxIntervalSeconds;
++ (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp; //same as next with accessibilityOriented set to NO
++ (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp accessibilityOriented:(BOOL)accessibilityOriented;
++ (NSString*)automaticHoursMinutesLeftStringForTimestamp:(NSTimeInterval)timestamp; //same as next with accessibilityOriented set to NO
++ (NSString*)automaticHoursMinutesLeftStringForTimestamp:(NSTimeInterval)timestamp accessibilityOriented:(BOOL)accessibilityOriented;
++ (NSString*)automaticTimeStringForTimestamp:(NSTimeInterval)timestamp maxIntervalForMinutesLeftString:(NSTimeInterval)maxIntervalMin; //same as next with accessibilityOriented set to NO
++ (NSString*)automaticTimeStringForTimestamp:(NSTimeInterval)timestamp maxIntervalForMinutesLeftString:(NSTimeInterval)maxIntervalMin accessibilityOriented:(BOOL)accessibilityOriented;
 + (NSTimeInterval)secondsBetweenNowAndTimestamp:(NSTimeInterval)timestamp;
 
 /*

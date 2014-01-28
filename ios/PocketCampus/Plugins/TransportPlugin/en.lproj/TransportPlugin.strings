@@ -29,6 +29,17 @@
 "ShowsScreenThatListsMyStationsToManageThem" = "Shows the screen that lists my stations and allows to manage them.";
 
 //////////////////////////////////////////
+// TransportNextDeparturesCell
+//////////////////////////////////////////
+
+//Accessibility
+"NextDeparturesFromToWithFormat" = "Next departures from %@ to %@: ";
+"lineWithFormat" = " line '%@': ";
+"platformWithFormat" = " platform %@";
+"LeftAlready" = "Left already";
+"ShowsAllPossibilitiesFromToWithFormat" = "Shows all trips from %@ to %@";
+
+//////////////////////////////////////////
 // TransportDepartureSelectionViewController
 //////////////////////////////////////////
 

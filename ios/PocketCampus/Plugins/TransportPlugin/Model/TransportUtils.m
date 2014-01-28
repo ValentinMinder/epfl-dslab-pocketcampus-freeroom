@@ -48,59 +48,76 @@
 }
 
 + (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp {
-    NSDateFormatter* dateFormatter = [NSDateFormatter new];
-    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
-    [dateFormatter setLocale:[NSLocale systemLocale]];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [dateFormatter setDateFormat:@"HH:mm"];
+    return [self hourMinutesStringForTimestamp:timestamp accessibilityOriented:NO];
+}
+
++ (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp accessibilityOriented:(BOOL)accessibilityOriented {
+    static NSDateFormatter* dateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [NSDateFormatter new];
+        dateFormatter.timeZone = [NSTimeZone systemTimeZone];
+        dateFormatter.locale = [NSLocale systemLocale];
+        dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        dateFormatter.dateStyle = NSDateFormatterNoStyle;
+    });
+    dateFormatter.dateFormat = accessibilityOriented ? @"HH'h'mm" : @"HH:mm"; //h to pronouce have VoiceOver pronouce "hour"
     return [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timestamp]];
 }
 
 + (NSString*)automaticHoursMinutesLeftStringForTimestamp:(NSTimeInterval)timestamp {
+    return [self automaticHoursMinutesLeftStringForTimestamp:timestamp accessibilityOriented:NO];
+}
+
++ (NSString*)automaticHoursMinutesLeftStringForTimestamp:(NSTimeInterval)timestamp accessibilityOriented:(BOOL)accessibilityOriented {
     NSDate* nowDate = [NSDate date];
     NSTimeInterval seconds = timestamp - [nowDate timeIntervalSince1970];
     if (seconds < 0.0) {
         if (seconds > -60.0) { //might still consider that it (train, bus, ...) is not left yet
-            return @"Now";
+            return accessibilityOriented ? NSLocalizedStringFromTable(@"Now", @"PocketCampus", nil) : @"Now";
         } else {
-            return @"Left"; //already left, should not show this result
+            return accessibilityOriented ? NSLocalizedStringFromTable(@"LeftAlready", @"TransportPlugin", nil) : @"Left"; //already left, should not show this result
         }
     }
     double minutesLeft = floor((seconds/60.0)+0.5);
     if (minutesLeft == 0.0) {
-        return @"Now";
+        return accessibilityOriented ? NSLocalizedStringFromTable(@"Now", @"PocketCampus", nil) : @"Now";
     }
     
     double hoursLeft = floor(minutesLeft/60.0);
     if (hoursLeft > 0.0) {
-        return [NSString stringWithFormat:@"%1.0lfh%2.0lf'",hoursLeft, minutesLeft];
+        return [NSString stringWithFormat:@"%1.0lfh%2.0lf%@",hoursLeft, minutesLeft, accessibilityOriented ? @"min" : @"'"];
     }
     
-    return [NSString stringWithFormat:@"%2.0lf'", minutesLeft];
+    return [NSString stringWithFormat:@"%2.0lf%@", minutesLeft, accessibilityOriented ? @"min" : @"'"];
 }
 
 
-+ (NSString*)automaticTimeStringForTimestamp:(NSTimeInterval)timestamp maxIntervalForMinutesLeftString:(NSTimeInterval)maxIntervalMinutes {
++ (NSString*)automaticTimeStringForTimestamp:(NSTimeInterval)timestamp maxIntervalForMinutesLeftString:(NSTimeInterval)maxIntervalMin {
+    return [self automaticTimeStringForTimestamp:timestamp maxIntervalForMinutesLeftString:maxIntervalMin accessibilityOriented:NO];
+}
+
++ (NSString*)automaticTimeStringForTimestamp:(NSTimeInterval)timestamp maxIntervalForMinutesLeftString:(NSTimeInterval)maxIntervalMin accessibilityOriented:(BOOL)accessibilityOriented {
     NSDate* nowDate = [NSDate dateWithTimeIntervalSinceNow:0]; //timestamp GMT
     
     /*NSTimeZone* zone = [NSTimeZone systemTimeZone];
+     
+     NSTimeInterval nowTimestampLocal = [nowDate timeIntervalSince1970] + [zone secondsFromGMTForDate:nowDate]; //timestamp local
+     
+     NSDate* nowLocalDate = [NSDate dateWithTimeIntervalSince1970:nowTimestampLocal];
+     
+     NSDate* depDate = [NSDate dateWithTimeIntervalSince1970:timestamp];
+     
+     NSTimeInterval depTimestampLocal = timestamp + [zone secondsFromGMTForDate:depDate];
+     
+     NSDate* depLocalDate = [NSDate dateWithTimeIntervalSince1970:depTimestampLocal];
+     
+     NSLog(@"now : %@, arr : %@",nowLocalDate, depLocalDate);*/
     
-    NSTimeInterval nowTimestampLocal = [nowDate timeIntervalSince1970] + [zone secondsFromGMTForDate:nowDate]; //timestamp local
-    
-    NSDate* nowLocalDate = [NSDate dateWithTimeIntervalSince1970:nowTimestampLocal];
-    
-    NSDate* depDate = [NSDate dateWithTimeIntervalSince1970:timestamp];
-    
-    NSTimeInterval depTimestampLocal = timestamp + [zone secondsFromGMTForDate:depDate];
-    
-    NSDate* depLocalDate = [NSDate dateWithTimeIntervalSince1970:depTimestampLocal];
-    
-    NSLog(@"now : %@, arr : %@",nowLocalDate, depLocalDate);*/
-    
-    if (timestamp - [nowDate timeIntervalSince1970] > maxIntervalMinutes*60) {
-        return [self hourMinutesStringForTimestamp:timestamp];
+    if (timestamp - [nowDate timeIntervalSince1970] > maxIntervalMin*60) {
+        return [self hourMinutesStringForTimestamp:timestamp accessibilityOriented:accessibilityOriented];
     } else {
-        return [self automaticHoursMinutesLeftStringForTimestamp:timestamp];
+        return [self automaticHoursMinutesLeftStringForTimestamp:timestamp accessibilityOriented:accessibilityOriented];
     }
 }
 

@@ -537,6 +537,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         self.cellForDestinationName[station.name] = cell;
     }
     if (!trip) { //common case, still loading, as requests were just started
+        cell.departureStation = self.departureStation;
         cell.destinationStation = station;
         cell.state = TransportNextDeparturesCellStateLoading;
     } else {
@@ -545,6 +546,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
          * When responses arrive, respective methods update cells using self.cellForDestinationName directly, without reloading the table
          */
         if ([trip isEqual:[NSNull null]]) { //means error
+            cell.departureStation = self.departureStation;
             cell.destinationStation = station;
             cell.state = TransportNextDeparturesCellStateError;
         } else { //means trip != nil and not NSNull => is a QueryTripResult
