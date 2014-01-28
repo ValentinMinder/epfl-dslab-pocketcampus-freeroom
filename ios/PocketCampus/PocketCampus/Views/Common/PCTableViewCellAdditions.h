@@ -85,4 +85,11 @@ extern NSString* PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle;
  */
 + (CGFloat)preferredHeightForDefaultTextStylesForCellStyle:(UITableViewCellStyle)style;
 
+
+/*
+ * If YES, isAccessibilityElement returns NO and accessibilityElementCount returns 0. Returns super's implementation otherwise.
+ * Default: NO
+ */
+@property (nonatomic) BOOL accessibilityDisabled;
+
 @end

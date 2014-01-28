@@ -79,3 +79,15 @@
 //////////////////////////////////////////
 
 "Trips" = "Trajets";
+
+//////////////////////////////////////////
+// TransportTripCell
+//////////////////////////////////////////
+
+//Accessibility
+"DepartureTimeWithFormat" = "Heure de départ: %@, ";
+"arrivalTimeWithFormat" = "heure d'arrivée: %@, ";
+"durationWithFormat" = "durée: %@, ";
+"numberOfChangesWithFormat" = "nombre de changements: %@,  ";
+"startsWithLineWithFormat" = "commence avec la ligne '%@'.";
+"ShowsDetailsForThisTrip" = "Affiche les détails de ce trajet.";

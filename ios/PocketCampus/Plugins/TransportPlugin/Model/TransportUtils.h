@@ -37,7 +37,8 @@
 
 @interface TransportUtils : NSObject
 
-+ (NSString*)durationgStringForInterval:(NSTimeInterval)interval;
++ (NSString*)durationgStringForInterval:(NSTimeInterval)interval; //same as next with accessibilityOriented set to NO
++ (NSString*)durationgStringForInterval:(NSTimeInterval)interval accessibilityOriented:(BOOL)accessibilityOriented;
 + (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp; //same as next with accessibilityOriented set to NO
 + (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp accessibilityOriented:(BOOL)accessibilityOriented;
 + (NSString*)automaticHoursMinutesLeftStringForTimestamp:(NSTimeInterval)timestamp; //same as next with accessibilityOriented set to NO

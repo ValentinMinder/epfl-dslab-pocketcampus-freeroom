@@ -78,3 +78,15 @@
 //////////////////////////////////////////
 
 "Trips" = "Trips";
+
+//////////////////////////////////////////
+// TransportTripCell
+//////////////////////////////////////////
+
+//Accessibility
+"DepartureTimeWithFormat" = "Departure time: %@, ";
+"arrivalTimeWithFormat" = "arrival time: %@, ";
+"durationWithFormat" = "duration: %@, ";
+"numberOfChangesWithFormat" = "number of changes: %@,  ";
+"startsWithLineWithFormat" = "starts with line %@.";
+"ShowsDetailsForThisTrip" = "Shows details for this trip.";

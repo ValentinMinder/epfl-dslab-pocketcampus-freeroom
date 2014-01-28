@@ -50,6 +50,8 @@
 @property (nonatomic, strong) IBOutlet UILabel* changesLabel;
 @property (nonatomic, strong) IBOutlet UILabel* firstLineLabel;
 
+@property (nonatomic, strong) TransportConnection* firstConnection;
+
 @end
 
 @implementation TransportTripCell
@@ -64,10 +66,16 @@
     if (self) {
         self.reuseIdentifier = reuseIdentifier;
         self.depTimeLabel.text = nil;
+        self.depTimeLabel.isAccessibilityElement = NO;
         self.arrTimeLabel.text = nil;
+        self.arrTimeLabel.isAccessibilityElement = NO;
         self.durationLabel.text = nil;
+        self.durationLabel.isAccessibilityElement = NO;
         self.changesLabel.text = nil;
+        self.changesLabel.isAccessibilityElement = NO;
         self.firstLineLabel.text = nil;
+        self.firstLineLabel.isAccessibilityElement = NO;
+        self.isAccessibilityElement = YES;
     }
     return self;
 }
@@ -75,6 +83,34 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     return [self initWithReuseIdentifier:reuseIdentifier];
+}
+
+#pragma mark - Accessibility
+
+- (NSString*)accessibilityLabel {
+    if (!self.trip) {
+        return nil;
+    }
+    NSTimeInterval depTimestamp = self.firstConnection ? self.firstConnection.departureTime/1000.0 : self.trip.departureTime/1000.0;
+    NSString* string = [NSString stringWithFormat:NSLocalizedStringFromTable(@"DepartureTimeWithFormat", @"TransportPlugin", nil), [TransportUtils hourMinutesStringForTimestamp:depTimestamp accessibilityOriented:YES]];
+    string = [string stringByAppendingFormat:NSLocalizedStringFromTable(@"arrivalTimeWithFormat", @"TransportPlugin", nil), [TransportUtils hourMinutesStringForTimestamp:self.trip.arrivalTime/1000.0 accessibilityOriented:YES]];
+    string = [string stringByAppendingFormat:NSLocalizedStringFromTable(@"durationWithFormat", @"TransportPlugin", nil), [TransportUtils durationgStringForInterval:((self.trip.arrivalTime/1000.0) - depTimestamp) accessibilityOriented:YES]];
+    string = [string stringByAppendingFormat:NSLocalizedStringFromTable(@"numberOfChangesWithFormat", @"TransportPlugin", nil), [NSString stringWithFormat:@"%u", (unsigned int)self.trip.numberOfChanges]];
+    if (self.firstConnection.line.shortName) {
+        string = [string stringByAppendingFormat:NSLocalizedStringFromTable(@"startsWithLineWithFormat", @"TransportPlugin", nil), self.firstConnection.line.shortName];
+    }
+    return string;
+}
+
+- (NSString*)accessibilityHint {
+    if (!self.trip) {
+        return nil;
+    }
+    return NSLocalizedStringFromTable(@"ShowsDetailsForThisTrip", @"TransportPlugin", nil);
+}
+
+- (UIAccessibilityTraits)accessibilityTraits {
+    return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
 }
 
 #pragma mark - Properties
@@ -87,15 +123,13 @@
     _trip = trip;
     
     TransportConnection* firstConnection = self.trip.firstConnection;
+    self.firstConnection = firstConnection;
     NSString* depTimeString = nil;
-    if (firstConnection) {
-        depTimeString = [TransportUtils hourMinutesStringForTimestamp:firstConnection.departureTime/1000.0];
-    } else {
-        depTimeString = [TransportUtils hourMinutesStringForTimestamp:self.trip.departureTime/1000.0];
-    }
+    NSTimeInterval depTimestamp = firstConnection ? firstConnection.departureTime/1000.0 : self.trip.departureTime/1000.0;
+    depTimeString = [TransportUtils hourMinutesStringForTimestamp:depTimestamp];
     self.depTimeLabel.text = depTimeString;
     self.arrTimeLabel.text = [TransportUtils hourMinutesStringForTimestamp:self.trip.arrivalTime/1000.0];
-    self.durationLabel.text = [TransportUtils durationgStringForInterval:((self.trip.arrivalTime/1000.0) - (self.trip.departureTime/1000.0))];
+    self.durationLabel.text = [TransportUtils durationgStringForInterval:((self.trip.arrivalTime/1000.0) - depTimestamp)];
     self.changesLabel.text = [NSString stringWithFormat:@"%u", (unsigned int)self.trip.numberOfChanges];
     self.firstLineLabel.text = firstConnection.line.shortName;
     

@@ -119,9 +119,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) { //header cell
-        UITableViewCell* headerCell = [[NSBundle mainBundle] loadNibNamed:@"TransportTripsHeaderCell" owner:self options:nil][0];
+        PCTableViewCellAdditions* headerCell = [[NSBundle mainBundle] loadNibNamed:@"TransportTripsHeaderCell" owner:self options:nil][0];
         headerCell.selectionStyle = UITableViewCellSelectionStyleNone;
         headerCell.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.04];
+        headerCell.accessibilityDisabled = YES;
         return headerCell;
     }
     

@@ -209,6 +209,16 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     }
 }
 
+#pragma mark - Accessibility
+
+- (BOOL)isAccessibilityElement {
+    return self.accessibilityDisabled ? NO : [super isAccessibilityElement];
+}
+
+- (NSInteger)accessibilityElementCount {
+    return self.accessibilityDisabled ? 0 : [super accessibilityElementCount];
+}
+
 #pragma mark - Private
 
 - (void)updateCornerIcon {

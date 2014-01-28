@@ -346,6 +346,7 @@
 		32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */; };
 		32DE5B2817F2003800E03423 /* NSLayoutConstraint+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
+		32E3E5CB1897D1F200D263C5 /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32E3E5CD1897D1F200D263C5 /* TransportPlugin.strings */; };
 		32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBA16847A0900E5CFF6 /* ClockCell.png */; };
 		32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */; };
 		32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */; };
@@ -371,7 +372,6 @@
 		32FAC0F91500F40700925180 /* DirectoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0ED1500F40700925180 /* DirectoryService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32FAC0FA1500F40700925180 /* directory.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0F01500F40700925180 /* directory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32FAC0FD1500F40700925180 /* DirectorySearchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FAC0F41500F40700925180 /* DirectorySearchView.xib */; };
-		32FB2E0915179014007AE82B /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FB2DFE15179014007AE82B /* TransportPlugin.strings */; };
 		32FB2E0A15179014007AE82B /* transport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0415179014007AE82B /* transport.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32FB2E0B15179014007AE82B /* TransportService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB2E0615179014007AE82B /* TransportService.m */; };
 		32FB442017650268008C8282 /* NSDate+Addtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FB441F17650268008C8282 /* NSDate+Addtions.m */; };
@@ -884,6 +884,8 @@
 		32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+LGAdditions.m"; sourceTree = "<group>"; };
 		32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodLarge.png; sourceTree = "<group>"; };
 		32E280AA156E613100B74825 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		32E3E5CC1897D1F200D263C5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TransportPlugin.strings; sourceTree = "<group>"; };
+		32E3E5CE1897D1F500D263C5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/TransportPlugin.strings; sourceTree = "<group>"; };
 		32E67DBA16847A0900E5CFF6 /* ClockCell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockCell.png; sourceTree = "<group>"; };
 		32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCell@2x.png"; sourceTree = "<group>"; };
 		32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryEmptyDetailView.xib; sourceTree = "<group>"; };
@@ -926,8 +928,6 @@
 		32FAC0EF1500F40700925180 /* directory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = directory.h; sourceTree = "<group>"; };
 		32FAC0F01500F40700925180 /* directory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = directory.m; sourceTree = "<group>"; };
 		32FAC0F41500F40700925180 /* DirectorySearchView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectorySearchView.xib; sourceTree = "<group>"; };
-		32FB2DFF15179014007AE82B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = en; path = en.lproj/TransportPlugin.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		32FB2E0015179014007AE82B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = fr; path = fr.lproj/TransportPlugin.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		32FB2E0315179014007AE82B /* transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transport.h; sourceTree = "<group>"; };
 		32FB2E0415179014007AE82B /* transport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = transport.m; sourceTree = "<group>"; };
 		32FB2E0515179014007AE82B /* TransportService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TransportService.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -2187,7 +2187,7 @@
 		32FB2E0C1517901D007AE82B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				32FB2DFE15179014007AE82B /* TransportPlugin.strings */,
+				32E3E5CD1897D1F200D263C5 /* TransportPlugin.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2456,10 +2456,10 @@
 				32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */,
 				3276BE10150BBEE9001F2A88 /* RatingPoint.png in Resources */,
 				3276BE11150BBEE9001F2A88 /* RatingPoint@2x.png in Resources */,
-				32FB2E0915179014007AE82B /* TransportPlugin.strings in Resources */,
 				32442FEE151CFDED00685D10 /* Transport.png in Resources */,
 				32442FEF151CFDED00685D10 /* Transport@2x.png in Resources */,
 				32442FF1151D0F3000685D10 /* TransportNextDeparturesView.xib in Resources */,
+				32E3E5CB1897D1F200D263C5 /* TransportPlugin.strings in Resources */,
 				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
 				327513311825465D0037FE00 /* FavoriteCorner.png in Resources */,
 				324A599A151DFDF700977F33 /* TransportAddStationView.xib in Resources */,
@@ -2988,6 +2988,15 @@
 			path = Plugins/IsAcademiaPlugin;
 			sourceTree = SOURCE_ROOT;
 		};
+		32E3E5CD1897D1F200D263C5 /* TransportPlugin.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32E3E5CC1897D1F200D263C5 /* en */,
+				32E3E5CE1897D1F500D263C5 /* fr */,
+			);
+			name = TransportPlugin.strings;
+			sourceTree = "<group>";
+		};
 		32FAC0E81500F40700925180 /* DirectoryPlugin.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2995,15 +3004,6 @@
 				32FAC0EA1500F40700925180 /* fr */,
 			);
 			name = DirectoryPlugin.strings;
-			sourceTree = "<group>";
-		};
-		32FB2DFE15179014007AE82B /* TransportPlugin.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				32FB2DFF15179014007AE82B /* en */,
-				32FB2E0015179014007AE82B /* fr */,
-			);
-			name = TransportPlugin.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

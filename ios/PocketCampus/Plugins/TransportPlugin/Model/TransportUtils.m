@@ -37,14 +37,17 @@
 
 @implementation TransportUtils
 
-
 + (NSString*)durationgStringForInterval:(NSTimeInterval)interval {
+    return [self durationgStringForInterval:interval accessibilityOriented:NO];
+}
+
++ (NSString*)durationgStringForInterval:(NSTimeInterval)interval accessibilityOriented:(BOOL)accessibilityOriented {
     NSCalendar* systemCalendar = [NSCalendar currentCalendar];
     NSDate* date1 = [NSDate new];
     NSDate* date2 = [[NSDate alloc] initWithTimeInterval:interval sinceDate:date1];
     unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
     NSDateComponents* conversionInfo = [systemCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
-    return [NSString stringWithFormat:@"%d:%02d", (int)[conversionInfo hour], (int)[conversionInfo minute]];
+    return [NSString stringWithFormat:@"%d%@%02d%@", (int)[conversionInfo hour], accessibilityOriented ? @"h " : @":", (int)[conversionInfo minute], accessibilityOriented ? @"min" : @""];
 }
 
 + (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp {
