@@ -346,7 +346,7 @@ static NSString* const kLastLocationKey = @"lastLocation";
     self.locationManager.desiredAccuracy = [self minimumDistanceBetweenStations] > 1000 ? kCLLocationAccuracyHundredMeters : kCLLocationAccuracyBest; //improves reliability
     self.locationManager.distanceFilter =  kCLDistanceFilterNone;
     
-    dispatch_sync(dispatch_get_main_queue(), ^{ //timer must be scheduled on other thread not be blocked
+    dispatch_async(dispatch_get_main_queue(), ^{ //timer must be scheduled on other thread not be blocked
         self.checkCancellationAndAdaptDesiredAccuracyTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkCancellationAndAdaptDesiredAccuracy) userInfo:nil repeats:YES];
     });
 }
