@@ -15,3 +15,7 @@
 "LoggedInAsWithFormat" = "Connecté en tant que «%@»";
 "UsernameCannotBeEmpty" = "Le nom d'utilisateur ne peut pas être vide.";
 "PasswordCannotBeEmpty" = "Le mot de passe ne peut pas être vide.";
+
+//Accessibility
+"StartsAuthenticationProcess" = "Démarre le processus d'authentification.";
+"PleaseFirstIndicateBothUsernamePassword" = "Veuillez tout d'abord entrer votre nom d'utilisateur et mot de passe Gaspar.";

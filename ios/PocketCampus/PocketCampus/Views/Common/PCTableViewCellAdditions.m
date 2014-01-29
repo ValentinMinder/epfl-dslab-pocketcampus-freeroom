@@ -220,15 +220,19 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
 }
 
 - (NSString*)accessibilityLabel {
-    return self.accessibilityLabelBlock ? self.accessibilityLabelBlock(self) : [super accessibilityLabel];
+    return self.accessibilityLabelBlock ? self.accessibilityLabelBlock() : [super accessibilityLabel];
 }
 
 - (NSString*)accessibilityHint {
-    return self.accessibilityHintBlock ? self.accessibilityHintBlock(self) : [super accessibilityHint];
+    return self.accessibilityHintBlock ? self.accessibilityHintBlock() : [super accessibilityHint];
 }
 
 - (NSString*)accessibilityValue {
-    return self.accessibilityValueBlock ? self.accessibilityValueBlock(self) : [super accessibilityValue];
+    return self.accessibilityValueBlock ? self.accessibilityValueBlock() : [super accessibilityValue];
+}
+
+- (UIAccessibilityTraits)accessibilityTraits {
+    return self.accessibilityTraitsBlock ? self.accessibilityTraitsBlock() : [super accessibilityTraits];
 }
 
 #pragma mark - Private

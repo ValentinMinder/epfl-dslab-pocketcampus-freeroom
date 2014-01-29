@@ -96,18 +96,24 @@ extern NSString* PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle;
  * If not nil, accessibilityLabel returns value returned by this block, otherwise super's implementation
  * Default: nil
  */
-@property (nonatomic, copy) NSString* (^accessibilityLabelBlock)(PCTableViewCellAdditions*);
+@property (nonatomic, copy) NSString* (^accessibilityLabelBlock)(void);
 
 /*
  * If not nil, accessibilityHint returns value returned by this block, otherwise super's implementation
  * Default: nil
  */
-@property (nonatomic, copy) NSString* (^accessibilityHintBlock)(PCTableViewCellAdditions*);
+@property (nonatomic, copy) NSString* (^accessibilityHintBlock)(void);
 
 /*
  * If not nil, accessibilityValue returns value returned by this block, otherwise super's implementation
  * Default: nil
  */
-@property (nonatomic, copy) NSString* (^accessibilityValueBlock)(PCTableViewCellAdditions*);
+@property (nonatomic, copy) NSString* (^accessibilityValueBlock)(void);
+
+/*
+ * If not nil, accessibilityTraits returns value returned by this block, otherwise super's implementation
+ * Default: nil
+ */
+@property (nonatomic, copy) UIAccessibilityTraits (^accessibilityTraitsBlock)(void);
 
 @end

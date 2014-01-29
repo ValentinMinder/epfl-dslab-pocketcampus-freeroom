@@ -45,7 +45,7 @@
 @property (nonatomic, strong) UISwitch* savePasswordSwitch;
 @property (nonatomic, strong) PCEditableTableViewCell* usernameCell;
 @property (nonatomic, strong) PCEditableTableViewCell* passwordCell;
-@property (nonatomic, strong) UITableViewCell* loginCell;
+@property (nonatomic, strong) PCTableViewCellAdditions* loginCell;
 @property (nonatomic, strong) NSString* errorMessage;
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
@@ -389,9 +389,12 @@
         {
             
             if (self.isLoggedIn) { //logout button
-                UITableViewCell* logoutCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                PCTableViewCellAdditions* logoutCell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
                 logoutCell.textLabel.text = NSLocalizedStringFromTable(@"Logout", @"AuthenticationPlugin", nil);
                 logoutCell.textLabel.textColor = [PCValues pocketCampusRed];
+                [logoutCell setAccessibilityTraitsBlock:^UIAccessibilityTraits() {
+                    return UIAccessibilityTraitStaticText | UIAccessibilityTraitButton;
+                }];
                 return logoutCell;
             } else { //username, password
                 switch (indexPath.row) {
@@ -442,11 +445,18 @@
         }
         case 1: //login cell button
         {
-            UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            PCTableViewCellAdditions* cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             self.loginCell = cell;
             self.loginCell.textLabel.text = NSLocalizedStringFromTable(@"Login", @"AuthenticationPlugin", nil);
             self.loginCell.textLabel.textColor = [PCValues pocketCampusRed];
             self.loginCell.textLabel.enabled = NO;
+            __weak __typeof(self) weakSelf = self;
+            [self.loginCell setAccessibilityHintBlock:^NSString *{
+                return weakSelf.loginCell.textLabel.enabled ? NSLocalizedStringFromTable(@"StartsAuthenticationProcess", @"AuthenticationPlugin", nil) : NSLocalizedStringFromTable(@"PleaseFirstIndicateBothUsernamePassword", @"AuthenticationPlugin", nil);
+            }];
+            [self.loginCell setAccessibilityTraitsBlock:^UIAccessibilityTraits{
+                return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
+            }];
             self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             [self.loginCell.contentView addSubview:self.loadingIndicator];
             self.loadingIndicator.center = CGPointMake(294.0, 22.0);

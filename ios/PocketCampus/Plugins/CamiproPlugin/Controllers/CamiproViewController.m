@@ -493,7 +493,7 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
         //balanceLabel.textColor = [UIColor darkGrayColor];
         balanceLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         balanceLabel.isAccessibilityElement = NO;
-        [cell setAccessibilityLabelBlock:^NSString *(PCTableViewCellAdditions * cell) {
+        [cell setAccessibilityLabelBlock:^NSString* {
             return [NSString stringWithFormat:NSLocalizedStringFromTable(@"CamiproBalanceWithFormat", @"CamiproPlugin", nil), balanceLabel.text];
         }];
         [cell.contentView addSubview:balanceLabel];

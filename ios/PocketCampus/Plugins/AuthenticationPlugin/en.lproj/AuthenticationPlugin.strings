@@ -15,3 +15,8 @@
 "LoggedInAsWithFormat" = "Logged in as \"%@\"";
 "UsernameCannotBeEmpty" = "Username cannot be empty.";
 "PasswordCannotBeEmpty" = "Password cannot be empty.";
+
+//Accessibility
+
+"StartsAuthenticationProcess" = "Starts authentication process.";
+"PleaseFirstIndicateBothUsernamePassword" = "Please first enter both Gaspar username and password.";
