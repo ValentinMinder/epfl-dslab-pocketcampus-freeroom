@@ -221,9 +221,9 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"NewsCell"];
     NewsItem* newsItem = self.sections[indexPath.section][indexPath.row];
-    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    PCTableViewCellAdditions* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         UIFont* font = [UIFont preferredFontForTextStyle:kCellTextLabelTextStyle];
         cell.textLabel.font = [UIFont boldSystemFontOfSize:font.pointSize];
         cell.textLabel.numberOfLines = 3;
@@ -231,6 +231,9 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         if (![PCUtils isIdiomPad]) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
+        [cell setAccessibilityTraitsBlock:^UIAccessibilityTraits{
+            return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
+        }];
     }
     
     cell.textLabel.text = newsItem.title;

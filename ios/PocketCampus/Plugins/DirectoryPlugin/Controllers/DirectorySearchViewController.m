@@ -456,6 +456,12 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
                 cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
                 cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle];
                 cell.detailTextLabel.textColor = [UIColor grayColor];
+                [cell setAccessibilityTraitsBlock:^UIAccessibilityTraits{
+                    return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
+                }];
+                [cell setAccessibilityHintBlock:^NSString *{
+                    return NSLocalizedStringFromTable(@"ShowInfoAboutThisPerson", @"DirectoryPlugin", nil);
+                }];
             }
             Person* person = self.searchResults[indexPath.row];
             cell.textLabel.text = person.firstnameLastname;
@@ -473,6 +479,9 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
                 cell.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellEditingStyleNone : UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
                 cell.accessoryView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                [cell setAccessibilityTraitsBlock:^UIAccessibilityTraits{
+                    return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
+                }];
             } else {
                 [(UIActivityIndicatorView*)(cell.accessoryView) stopAnimating];
             }

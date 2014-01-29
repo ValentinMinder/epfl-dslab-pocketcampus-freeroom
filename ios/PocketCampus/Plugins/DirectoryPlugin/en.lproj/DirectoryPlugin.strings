@@ -27,7 +27,7 @@
 
 /* Accessiblity */
 
-"ClearsRecentSearches" = "Clears recent searches";
+"ShowInfoAboutThisPerson" = "Shows information about this person.";
 "ShowsOptionsToExportToContacts" = "Shows options to export to contacts";
 "CallsThisNumber" = "Calls this number";
 "SendsAnEmail" = "Sends an email";

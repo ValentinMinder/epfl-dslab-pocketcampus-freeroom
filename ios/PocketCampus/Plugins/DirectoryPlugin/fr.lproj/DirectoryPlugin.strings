@@ -4,7 +4,6 @@
 "SearchFieldPlaceholder" = "Nom ou sciper";
 "SearchNoResult" = "Aucun résultat\nEssayez avec l'orthographe exacte (accents)";
 "OfficeLabel" = "bureau";
-"(showOnMap)" = "(voir sur le plan)";
 "NoContactSelected" = "Aucun contact séléctionné";
 "PhotoButtonTitle" = "Photo";
 "Details" = "Détails";
@@ -28,6 +27,7 @@
 
 /* Accessiblity */
 
+"ShowInfoAboutThisPerson" = "Affiche les informations sur cette personne.";
 "ShowsOptionsToExportToContacts" = "Affiche des options pour exporter vers les contacts";
 "CallsThisNumber" = "Appelle ce numéro";
 "SendsAnEmail" = "Envoie un email";
