@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 04.12.12.
-
 
 #import "MoodleCoursesListViewController.h"
 
@@ -197,14 +193,20 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     }
     NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"CourseCell"];
     MoodleCourse* course = self.courses[indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    PCTableViewCellAdditions *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         cell.textLabel.numberOfLines = 2;
         cell.textLabel.adjustsFontSizeToFitWidth = YES;
+        [cell setAccessibilityHintBlock:^NSString *{
+            return NSLocalizedStringFromTable(@"ShowsDocumentsForThisCourse", @"MoodlePlugin", nil);
+        }];
+        [cell setAccessibilityTraitsBlock:^UIAccessibilityTraits{
+            return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
+        }];
     }
     
     cell.textLabel.text = course.iTitle;

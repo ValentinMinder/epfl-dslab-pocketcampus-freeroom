@@ -18,3 +18,10 @@
 "DownloadingFile" = "Téléchargement du fichier...";
 "DeleteFileFromCacheQuestion" = "Supprimer le fichier du stockage local ?\nVous devrez le télécharger à nouveau pour pouvoir le lire.";
 "ImpossibleDeleteFile" = "Désolé, une erreur s'est produite lors de la suppression du fichier.";
+
+//Accessibility
+"ShowsDocumentsForThisCourse" = "Affiche les documents de ce cours.";
+"DocumentDescriptionWithFormat" = "%@, fichier '%@', téléchargé: %@";
+"AddDocumentToFavorites" = "Ajouter ce document aux favoris";
+"RemoveDocumentFromFavorites" = "Enlever ce document des favoris";
+"DeleteDocumentFromLocalStorage" = "Supprimer ce fichier du stockage local";

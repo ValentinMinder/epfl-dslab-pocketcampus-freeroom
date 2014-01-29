@@ -55,6 +55,10 @@
     return value;
 }
 
+- (NSString*)fileExtension {
+    return [self.filename pathExtension];
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;

@@ -40,6 +40,8 @@
 "SendAutomatically" = "Send automatically";
 "CrashReportsExplanations" = "Crash reports are anonymous and help us improve PocketCampus.";
 "Now" = "Now";
+"yes" = "yes";
+"no" = "no";
 
 //Accessbility
 
@@ -48,3 +50,5 @@
 "RecentSearchWithFormat" = "Recent search: '%@'";
 "SearchesForWithFormat" = "Searches for '%@'.";
 "ClearsHistoryOfRecentSearches" = "Clears history of recent searches.";
+"ShowMaster" = "Show left column";
+"HideMaster" = "Hide left column";

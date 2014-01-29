@@ -18,3 +18,10 @@
 "DownloadingFile" = "Downloading file...";
 "DeleteFileFromCacheQuestion" = "Delete file from local storage ?\nYou will have to download it again to read it.";
 "ImpossibleDeleteFile" = "Sorry, an error occured while deleting file.";
+
+//Accessibility
+"ShowsDocumentsForThisCourse" = "Shows documents for this course.";
+"DocumentDescriptionWithFormat" = "%@, '%@' file, downloaded: %@";
+"AddDocumentToFavorites" = "Add this document to favorites";
+"RemoveDocumentFromFavorites" = "Remove this document from favorites";
+"DeleteDocumentFromLocalStorage" = "Delete this document from local storage";

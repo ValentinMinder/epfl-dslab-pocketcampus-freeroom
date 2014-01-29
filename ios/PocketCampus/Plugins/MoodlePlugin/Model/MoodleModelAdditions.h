@@ -44,6 +44,12 @@
  */
 @property (nonatomic, readonly) NSString* filename;
 
+/*
+ * Returns filename's extension in capitals
+ * E.g. PDF, ZIP, ...
+ */
+@property (nonatomic, readonly) NSString* fileExtension;
+
 - (BOOL)isEqual:(id)object;
 - (BOOL)isEqualToMoodleResource:(MoodleResource*)moodleResource;
 - (NSUInteger)hash;

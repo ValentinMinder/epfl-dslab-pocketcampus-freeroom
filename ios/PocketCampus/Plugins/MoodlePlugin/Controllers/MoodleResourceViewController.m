@@ -107,10 +107,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     UIImage* favoriteImageLandscape = [PCValues imageForFavoriteNavBarButtonLandscapePhone:YES glow:isFavorite];
     
     UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithImage:favoriteImage landscapeImagePhone:favoriteImageLandscape style:UIBarButtonItemStylePlain target:self action:@selector(favoriteButtonPressed)];
+    favoriteButton.accessibilityLabel = isFavorite ? NSLocalizedStringFromTable(@"RemoveDocumentFromFavorites", @"MoodlePlugin", nil) : NSLocalizedStringFromTable(@"AddDocumentToFavorites", @"MoodlePlugin", nil);
     [rightButtons addObject:favoriteButton];
     
     UIBarButtonItem* deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonPressed)];
     deleteButton.enabled = NO;
+    deleteButton.accessibilityHint = NSLocalizedStringFromTable(@"DeleteDocumentFromLocalStorage", @"MoodlePlugin", nil);
     [rightButtons addObject:deleteButton];
 
     self.navigationItem.rightBarButtonItems = rightButtons;
@@ -171,6 +173,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     UIImage* favoriteImage = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
     UIImage* favoriteImageLandscape = [PCValues imageForFavoriteNavBarButtonLandscapePhone:YES glow:isFavorite];
     UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithImage:favoriteImage landscapeImagePhone:favoriteImageLandscape style:UIBarButtonItemStylePlain target:self action:@selector(favoriteButtonPressed)];
+    favoriteButton.accessibilityLabel = isFavorite ? NSLocalizedStringFromTable(@"RemoveDocumentFromFavorites", @"MoodlePlugin", nil) : NSLocalizedStringFromTable(@"AddDocumentToFavorites", @"MoodlePlugin", nil);
     NSUInteger index = [self.navigationItem.rightBarButtonItems indexOfObject:[self favoriteButton]];
     NSMutableArray* items = [self.navigationItem.rightBarButtonItems mutableCopy];
     [items replaceObjectAtIndex:index withObject:favoriteButton];

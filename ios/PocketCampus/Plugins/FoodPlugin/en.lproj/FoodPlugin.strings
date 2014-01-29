@@ -27,7 +27,7 @@
 /* Accessiblity */
 
 "ShowsMenuForThisRestaurant" = "Shows menu for this restaurant";
-"AddRestaurantToFavorites" = "Add restaurant to favorites";
-"RemoveRestaurantFromFavorites" = "Remove restaurant from favorites";
+"AddRestaurantToFavorites" = "Add this restaurant to favorites";
+"RemoveRestaurantFromFavorites" = "Remove this restaurant from favorites";
 "ShowsRestaurantOnMap" = "Shows this restaurant on the map";
 "MealWithFormatDescriptionAndPrice" = "%@.\nPrice: %@";

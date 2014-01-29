@@ -280,6 +280,14 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
             MoodleCourseSectionsViewController* weakSelf __weak = self;
             PCTableViewCellAdditions* cellWeak __weak = cell;
             
+            [cell setAccessibilityLabelBlock:^NSString *{
+                return [NSString stringWithFormat:NSLocalizedStringFromTable(@"DocumentDescriptionWithFormat", @"MoodlePlugin", nil), resource.iName, resource.fileExtension, [weakSelf.moodleService isMoodleResourceDownloaded:resource] ? NSLocalizedStringFromTable(@"yes", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"no", @"PocketCampus", nil)];
+            }];
+            
+            [cell setAccessibilityTraitsBlock:^UIAccessibilityTraits{
+                return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
+            }];
+            
             [self.moodleService removeMoodleResourceObserver:self forResource:resource];
             [self.moodleService addMoodleResourceObserver:self forResource:resource eventBlock:^(MoodleResourceEvent event) {
                 if (event == MoodleResourceEventDeleted) {
