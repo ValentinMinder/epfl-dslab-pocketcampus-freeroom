@@ -10,6 +10,7 @@
 "CannotDisplayOnMap" = "Cannot display them on the map";
 "PickFromList" = "Pick from list";
 "Floor" = "Floor";
+"floor" = "floor";
 "Details" = "Details";
 "AllSearchResults" = "All search results";
 "ClearHistory" = "Clear history";

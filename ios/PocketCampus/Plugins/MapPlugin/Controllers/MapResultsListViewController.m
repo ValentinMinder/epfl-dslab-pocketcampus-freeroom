@@ -25,18 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 15.10.13.
-
-
 
 #import "MapResultsListViewController.h"
 
-#import "map.h"
+#import "MapModelAdditions.h"
 
 #import "PCCenterMessageCell.h"
 
@@ -124,12 +117,13 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
         cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
         cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle];
+        cell.detailTextLabel.textColor = [UIColor grayColor];
     }
     
     MapItem* mapItem = self.mapItems[indexPath.row];
     
     cell.textLabel.text = mapItem.title;
-    cell.detailTextLabel.text = mapItem.description;
+    cell.detailTextLabel.text = mapItem.detailedSubtitle;
     
     return cell;
 }

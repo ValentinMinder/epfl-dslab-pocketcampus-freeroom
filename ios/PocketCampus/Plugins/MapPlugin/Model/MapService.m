@@ -33,11 +33,6 @@
 
 #import "MapService.h"
 
-#import "map.h"
-
-#import "PCObjectArchiver.h"
-
-NSString* const kMapPersonsMapItemCategoryName = @"persons";
 NSString* const kMapRecentSearchesModifiedNotification = @"kMapRecentSearchesModifiedNotification";
 
 static NSString* const kRecentSearchesKey = @"recentSearches";

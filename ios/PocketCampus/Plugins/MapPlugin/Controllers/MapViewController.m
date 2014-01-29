@@ -773,7 +773,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     pin.accessibilityValue = annotation.subtitle.length > 0 ? [NSString stringWithFormat:@"%@\n%@", annotation.title, annotation.subtitle] : annotation.title;
     
-    if ([mapItem.category isEqualToString:kMapPersonsMapItemCategoryName] && !self.initialQuery && !self.initialMapItem) {
+    if ([mapItem.category isEqualToString:kMapItemCategoryPerson] && !self.initialQuery && !self.initialMapItem) {
         UIButton* disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         [disclosureButton addTarget:self action:@selector(annotationAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
         pin.rightCalloutAccessoryView = disclosureButton;

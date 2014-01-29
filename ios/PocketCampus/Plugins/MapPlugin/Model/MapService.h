@@ -35,7 +35,8 @@
 
 #import "map.h"
 
-extern NSString* const kMapPersonsMapItemCategoryName;
+#import "MapModelAdditions.h"
+
 extern NSString* const kMapRecentSearchesModifiedNotification; //posted by self on default notification center
 
 @interface MapService : Service<ServiceProtocol>

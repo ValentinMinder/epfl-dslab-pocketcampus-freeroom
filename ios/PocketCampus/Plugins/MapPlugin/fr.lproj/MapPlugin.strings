@@ -10,6 +10,7 @@
 "CannotDisplayOnMap" = "Impossible de les afficher sur le plan";
 "PickFromList" = "Liste des résultats";
 "Floor" = "Étage";
+"floor" = "étage";
 "Details" = "Détails";
 "AllSearchResults" = "Tous les résultats";
 "ClearHistory" = "Effacer l'historique";

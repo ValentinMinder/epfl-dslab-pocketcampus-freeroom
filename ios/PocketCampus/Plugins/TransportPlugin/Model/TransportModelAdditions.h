@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -26,13 +26,7 @@
  */
 
 
-
-
-
-
 //  Created by Loïc Gardiol on 23.11.13.
-
-
 
 #import "transport.h"
 

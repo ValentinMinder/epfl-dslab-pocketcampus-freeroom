@@ -347,6 +347,7 @@
 		32DE5B2817F2003800E03423 /* NSLayoutConstraint+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
 		32E3E5CB1897D1F200D263C5 /* TransportPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32E3E5CD1897D1F200D263C5 /* TransportPlugin.strings */; };
+		32E3E5D11899370600D263C5 /* MapModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E3E5D01899370600D263C5 /* MapModelAdditions.m */; };
 		32E67DBC16847A0900E5CFF6 /* ClockCell.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBA16847A0900E5CFF6 /* ClockCell.png */; };
 		32E67DBD16847A0900E5CFF6 /* ClockCell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */; };
 		32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */; };
@@ -886,6 +887,8 @@
 		32E280AA156E613100B74825 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		32E3E5CC1897D1F200D263C5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TransportPlugin.strings; sourceTree = "<group>"; };
 		32E3E5CE1897D1F500D263C5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/TransportPlugin.strings; sourceTree = "<group>"; };
+		32E3E5CF1899370600D263C5 /* MapModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapModelAdditions.h; sourceTree = "<group>"; };
+		32E3E5D01899370600D263C5 /* MapModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapModelAdditions.m; sourceTree = "<group>"; };
 		32E67DBA16847A0900E5CFF6 /* ClockCell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClockCell.png; sourceTree = "<group>"; };
 		32E67DBB16847A0900E5CFF6 /* ClockCell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ClockCell@2x.png"; sourceTree = "<group>"; };
 		32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryEmptyDetailView.xib; sourceTree = "<group>"; };
@@ -1281,6 +1284,8 @@
 			children = (
 				324151D615373BA300CCFB22 /* MapService.h */,
 				324151D715373BA300CCFB22 /* MapService.m */,
+				32E3E5CF1899370600D263C5 /* MapModelAdditions.h */,
+				32E3E5D01899370600D263C5 /* MapModelAdditions.m */,
 				3275435D153872DF00C94F3D /* MapUtils.h */,
 				3275435E153872DF00C94F3D /* MapUtils.m */,
 				324151D215373B5900CCFB22 /* ThriftTypes+Services */,
@@ -2849,6 +2854,7 @@
 				32930AB317F898910025F864 /* TNSFileHandleTransport.m in Sources */,
 				32930AB017F898910025F864 /* TFramedTransport.m in Sources */,
 				32930AAB17F898910025F864 /* TProtocolException.m in Sources */,
+				32E3E5D11899370600D263C5 /* MapModelAdditions.m in Sources */,
 				32930AAA17F898910025F864 /* TBinaryProtocol.m in Sources */,
 				324FD736176574FE0003EE30 /* CamiproTransactionCell.m in Sources */,
 				18BE4633A56CF967183FC968 /* IsAcademiaController.m in Sources */,

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,48 +22,21 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 12.04.12.
+//  Created by Loïc Gardiol on 29.01.14.
 
-#import "MapItemAnnotation.h"
+#import "map.h"
 
-#import "MapModelAdditions.h"
+extern NSString* const kMapItemCategoryPerson;
 
-@interface MapItemAnnotation ()
+@interface MapItem (Additions)
 
-@property (nonatomic, readwrite, strong) MapItem* mapItem;
-@property (nonatomic, readwrite, copy) NSString* title;
-@property (nonatomic, readwrite, copy) NSString* subtitle;
-
-@end
-
-@implementation MapItemAnnotation
-
-- (id)initWithMapItem:(MapItem*)item {
-    self = [super init];
-    if (self) {
-        if (![item isKindOfClass:[MapItem class]]) {
-            @throw [NSException exceptionWithName:@"Illegal argument" reason:@"item must be kind of class MapItem" userInfo:nil];
-        }
-        _mapItem = item;
-        if (item.title.length != 0) {
-            _title = [item.title copy];
-        }
-        if (item.detailedSubtitle != 0) {
-            _subtitle = [item.detailedSubtitle copy];
-        }
-    }
-    return self;
-}
-
-- (CLLocationCoordinate2D)coordinate {
-    return CLLocationCoordinate2DMake(self.mapItem.latitude, self.mapItem.longitude);
-}
-
-- (BOOL)isEqualToMapItemAnnotation:(MapItemAnnotation*)annotation {
-    return [self.mapItem isEqual:annotation.mapItem];
-}
+/*
+ * If self.category is kMapPersonsMapItemCategoryName and self.description.length > 0,
+ * returns <room (floor #)>, otherwise, simply <Floor #>
+ */
+@property (nonatomic, readonly) NSString* detailedSubtitle;
 
 @end
