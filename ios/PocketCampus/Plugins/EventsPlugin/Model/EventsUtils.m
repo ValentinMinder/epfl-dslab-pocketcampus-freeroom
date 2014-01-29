@@ -25,18 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 02.03.13.
-
-
 
 #import "EventsUtils.h"
 
 #import "EventsService.h"
+
+#import "EventItem+Additions.h"
 
 static NSNumber* favoriteCategNSNumber = nil;
 static NSNumber* featuredCategNSNumber = nil;
@@ -90,7 +85,7 @@ static NSNumber* featuredCategNSNumber = nil;
 }
 
 + (NSNumber*)nsNumberForEventId:(int64_t)eventId {
-    return [NSNumber numberWithLong:eventId];
+    return [NSNumber numberWithLong:(long)eventId];
 }
 
 + (NSNumber*)favoriteCategory {

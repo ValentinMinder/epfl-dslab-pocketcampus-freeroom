@@ -14,3 +14,9 @@
 "StatsWithFormat" = "Last 30 days expenses\nCHF %.2lf\n\nLast 90 days expenses\nCHF %.2lf\n\nAverage over 3 months\nCHF %.2lf / month";
 "CamiproDown" = "Sorry, Camipro servers seem to be down. Please try again later.";
 "LastUpdate" = "Last update";
+
+//Accessibility
+
+"CamiproBalanceWithFormat" = "Camipro card balance: %@";
+"CamiproTransactionDescriptionWithFormat" = "Transaction. Location: '%@', Date: %@, Amount: %@";
+"AllowsToReceiveByEmailBankingInformationToReloadCard" = "Allows to receive by email banking information to reload card.";

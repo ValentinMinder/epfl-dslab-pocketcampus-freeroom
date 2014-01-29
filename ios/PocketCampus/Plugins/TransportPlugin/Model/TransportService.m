@@ -111,7 +111,7 @@ static TransportService* instance __weak = nil;
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(autocomplete:);
     operation.delegateDidReturnSelector = @selector(autocompleteFor:didReturn:);
-    operation.delegateDidFailSelector = @selector(autocompleteFailedFor::);
+    operation.delegateDidFailSelector = @selector(autocompleteFailedFor:);
     [operation addObjectArgument:constraint];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
@@ -139,19 +139,6 @@ static TransportService* instance __weak = nil;
     operation.delegateDidReturnSelector = @selector(locationsForNames:didReturn:);
     operation.delegateDidFailSelector = @selector(locationsFailedForNames:);
     [operation addObjectArgument:names];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-- (void)nextDeparturesForStationID:(NSString*)stationID delegate:(id)delegate {
-    if (![stationID isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad IDStation" reason:@"IDStation is either nil or not of class NSString" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(nextDepartures:);
-    operation.delegateDidReturnSelector = @selector(nextDeparturesForStationID:didReturn:);
-    operation.delegateDidFailSelector = @selector(nextDeparturesFailedForStationID:);
-    [operation addObjectArgument:stationID];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }

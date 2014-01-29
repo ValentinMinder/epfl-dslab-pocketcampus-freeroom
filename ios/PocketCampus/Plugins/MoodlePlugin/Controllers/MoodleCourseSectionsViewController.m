@@ -199,7 +199,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     for (NSInteger i = 0; i < self.sections.count; i++) {
         MoodleSection* section = self.sections[i];
         if(section.iResources.count != 0 && section.iCurrent) {
-            self.currentWeek = i;
+            self.currentWeek = (int)i;
             break;
         }
     }

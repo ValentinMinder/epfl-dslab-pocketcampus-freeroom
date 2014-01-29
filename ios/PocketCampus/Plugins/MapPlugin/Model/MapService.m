@@ -78,7 +78,7 @@ static MapService* instance __weak = nil;
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getLayerList);
     operation.delegateDidReturnSelector = @selector(getLayerListDidReturn:);
-    operation.delegateDidFailSelector = @selector(getLayerListFailed:);
+    operation.delegateDidFailSelector = @selector(getLayerListFailed);
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }
@@ -88,7 +88,7 @@ static MapService* instance __weak = nil;
     operation.serviceClientSelector = @selector(getLayerItems:);
     operation.delegateDidReturnSelector = @selector(getLayerItemsForLayerId:didReturn:);
     operation.delegateDidFailSelector = @selector(getLayerItemsFailedForLayerId:);
-    [operation addLongArgument:layerId];
+    [operation addLongArgument:(long)layerId];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }

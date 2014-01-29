@@ -250,13 +250,4 @@
     return self.refreshControl.refreshing;
 }
 
-- (void)hideInTimeInterval:(NSTimeInterval)timeInterval {
-    
-    if (!self.isVisible) {
-        return;
-    }
-    [self.showHideTimer invalidate];
-    self.showHideTimer = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(_hide) userInfo:nil repeats:NO];
-}
-
 @end

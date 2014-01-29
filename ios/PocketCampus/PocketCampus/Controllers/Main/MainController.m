@@ -584,7 +584,7 @@ static MainController<MainControllerPublic>* instance = nil;
     NSMutableDictionary* menuItemsInfo __block = [NSMutableDictionary dictionary];
     [self.mainMenuViewController.pluginsMenuItems enumerateObjectsUsingBlock:^(MainMenuItem* item, NSUInteger index, BOOL *stop) {
         NSMutableDictionary* infos = [NSMutableDictionary dictionaryWithCapacity:2];
-        infos[kPluginsMainMenuItemsInfoOrderNumberKey] = [NSNumber numberWithUnsignedInt:index];
+        infos[kPluginsMainMenuItemsInfoOrderNumberKey] = [NSNumber numberWithUnsignedInt:(unsigned int)index];
         infos[kPluginsMainMenuItemsInfoHiddenKey] = [NSNumber numberWithBool:item.hidden];
         if ([item.identifier isEqualToString:activePluginIdentifier] && item.hidden) {
             shouldLeaveActivePluginController = YES;

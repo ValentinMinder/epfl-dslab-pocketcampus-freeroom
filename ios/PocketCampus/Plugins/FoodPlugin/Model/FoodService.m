@@ -99,7 +99,7 @@ static FoodService* instance __weak = nil;
 }
 
 - (NSNumber*)nsNumberForRestaurantId:(int64_t)restaurantId {
-    return [NSNumber numberWithInteger:restaurantId];
+    return [NSNumber numberWithInteger:(NSInteger)restaurantId];
 }
 
 - (void)addFavoriteRestaurant:(EpflRestaurant*)restaurant {

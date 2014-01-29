@@ -92,4 +92,22 @@ extern NSString* PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle;
  */
 @property (nonatomic) BOOL accessibilityDisabled;
 
+/*
+ * If not nil, accessibilityLabel returns value returned by this block, otherwise super's implementation
+ * Default: nil
+ */
+@property (nonatomic, copy) NSString* (^accessibilityLabelBlock)(PCTableViewCellAdditions*);
+
+/*
+ * If not nil, accessibilityHint returns value returned by this block, otherwise super's implementation
+ * Default: nil
+ */
+@property (nonatomic, copy) NSString* (^accessibilityHintBlock)(PCTableViewCellAdditions*);
+
+/*
+ * If not nil, accessibilityValue returns value returned by this block, otherwise super's implementation
+ * Default: nil
+ */
+@property (nonatomic, copy) NSString* (^accessibilityValueBlock)(PCTableViewCellAdditions*);
+
 @end

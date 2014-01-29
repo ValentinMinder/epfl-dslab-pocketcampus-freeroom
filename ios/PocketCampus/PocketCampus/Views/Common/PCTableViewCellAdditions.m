@@ -219,6 +219,18 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     return self.accessibilityDisabled ? 0 : [super accessibilityElementCount];
 }
 
+- (NSString*)accessibilityLabel {
+    return self.accessibilityLabelBlock ? self.accessibilityLabelBlock(self) : [super accessibilityLabel];
+}
+
+- (NSString*)accessibilityHint {
+    return self.accessibilityHintBlock ? self.accessibilityHintBlock(self) : [super accessibilityHint];
+}
+
+- (NSString*)accessibilityValue {
+    return self.accessibilityValueBlock ? self.accessibilityValueBlock(self) : [super accessibilityValue];
+}
+
 #pragma mark - Private
 
 - (void)updateCornerIcon {

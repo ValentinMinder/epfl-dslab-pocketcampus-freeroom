@@ -109,9 +109,11 @@
     if ([PCUtils isIdiomPad]) {
         self.statsLabel.text = NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil);
         [self.reloadCardButton setTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) forState:UIControlStateNormal];
+        self.reloadCardButton.accessibilityHint = NSLocalizedStringFromTable(@"AllowsToReceiveByEmailBankingInformationToReloadCard", @"CamiproPlugin", nil);
         self.verticalLine.backgroundColor = self.tableView.separatorColor;
     } else {
         self.reloadCardBarButton.title = NSLocalizedStringFromTable(@"ReloadCard", @"CamiproPlugin", nil);
+        self.reloadCardBarButton.accessibilityHint = NSLocalizedStringFromTable(@"AllowsToReceiveByEmailBankingInformationToReloadCard", @"CamiproPlugin", nil);
         self.statsBarButton.title = NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil);
     }
     
@@ -473,9 +475,9 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell* cell = nil;
+    PCTableViewCellAdditions* cell = nil;
     if (indexPath.section == 0) { //balance cell
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         UILabel* balanceLabel = nil;
         if ([PCUtils isIdiomPad]) {
@@ -490,6 +492,10 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
         balanceLabel.backgroundColor = [UIColor clearColor];
         //balanceLabel.textColor = [UIColor darkGrayColor];
         balanceLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        balanceLabel.isAccessibilityElement = NO;
+        [cell setAccessibilityLabelBlock:^NSString *(PCTableViewCellAdditions * cell) {
+            return [NSString stringWithFormat:NSLocalizedStringFromTable(@"CamiproBalanceWithFormat", @"CamiproPlugin", nil), balanceLabel.text];
+        }];
         [cell.contentView addSubview:balanceLabel];
         
         return cell;

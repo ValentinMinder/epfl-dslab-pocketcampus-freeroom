@@ -25,18 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 09.06.13.
 
-
-
 #import "CamiproTransactionCell.h"
-
-#import "PCValues.h"
 
 @interface CamiproTransactionCell ()
 
@@ -59,6 +50,9 @@
     if (self) {
         self.reuseIdentifier = reuseIdentifier;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.priceLabel.isAccessibilityElement = NO;
+        self.dateLabel.isAccessibilityElement = NO;
+        self.priceLabel.isAccessibilityElement = NO;
     }
     return self;
 }
@@ -74,6 +68,12 @@
         self.priceLabel.textColor = [UIColor darkGrayColor];
         self.priceLabel.text = [NSString stringWithFormat:@"- CHF %.2lf", fabs(self.transaction.iAmount)];
     }
+}
+
+#pragma mark - Accessibility
+
+- (NSString*)accessibilityLabel {
+    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"CamiproTransactionDescriptionWithFormat", @"CamiproPlugin", nil), self.transaction.iPlace, self.transaction.iDate, self.priceLabel.text];
 }
 
 @end
