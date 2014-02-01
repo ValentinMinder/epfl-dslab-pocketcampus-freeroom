@@ -37,7 +37,7 @@
 
 NSString* const PCGAITrackerActionMarkFavorite = @"MarkFavorite";
 NSString* const PCGAITrackerActionUnmarkFavorite = @"UnmarkFavorite";
-NSString* const PCGAITrackerActionActionButtonPressed = @"ActionButtonPressed";
+NSString* const PCGAITrackerActionActionButtonPressed = @"Share";
 NSString* const PCGAITrackerActionClearHistory = @"ClearHistory";
 NSString* const PCGAITrackerActionAdd = @"Add";
 NSString* const PCGAITrackerActionDelete = @"Delete";

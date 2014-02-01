@@ -91,7 +91,7 @@ static CGFloat kRowHeight;
     if (self) {
         self.directoryService = [DirectoryService sharedInstanceToRetain];
         self.allowShowOfficeOnMap = YES; //default
-        self.gaiScreenName = @"/directory/personDetails";
+        self.gaiScreenName = @"/directory/person";
     }
     return self;
 }
@@ -366,14 +366,14 @@ static CGFloat kRowHeight;
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         case kWebpageSection:
-            [self trackAction:@"OpenWebpage"];
+            [self trackAction:@"ViewWebsite"];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.person.web]];
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         case kOfficeSection:
         {
             if (self.allowShowOfficeOnMap) {
-                [self trackAction:@"ShowOnMap"];
+                [self trackAction:@"ViewOffice"];
                 UIViewController* viewController = [MapController viewControllerWithInitialSearchQuery:self.person.office pinLabelText:self.person.fullFirstnameLastname];
                 [self.navigationController pushViewController:viewController animated:YES];
             } else {

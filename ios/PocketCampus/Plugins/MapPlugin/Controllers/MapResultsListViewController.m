@@ -94,6 +94,7 @@
     if (!self.userValidatedSelectionBlock) {
         return;
     }
+    [self trackAction:@"selectResult"];
     self.userValidatedSelectionBlock(@[self.mapItems[indexPath.row]]);
 }
 

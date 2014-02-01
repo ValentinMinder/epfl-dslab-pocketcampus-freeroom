@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 22.11.13.
-
-
 
 #import "TransportStationsManagerViewController.h"
 
@@ -60,6 +53,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
+        self.gaiScreenName = @"/transport/userStations";
         self.title = NSLocalizedStringFromTable(@"MyStations", @"TransportPlugin", nil);
         self.transportService = [TransportService sharedInstanceToRetain];
     }
@@ -83,6 +77,11 @@ static const NSUInteger kRestoreDefaultSection = 1;
     [self refreshFromModel];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
+}
+
 #pragma mark - Actions
 
 - (void)donePressed {
@@ -91,6 +90,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
 }
 
 - (void)addPressed {
+    [self trackAction:PCGAITrackerActionAdd];
     self.transportService.userTransportStations = self.stations; //saving changes first
     TransportAddStationViewController* viewController = [TransportAddStationViewController new];
     [self presentViewController:[[PCNavigationController alloc] initWithRootViewController:viewController] animated:YES completion:NULL];
@@ -112,6 +112,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
 
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (alertView == self.restoreAlertView && buttonIndex == 1) { //OK
+        [self trackAction:@"RestoreDefaultStations"];
         self.transportService.userTransportStations = nil;
         [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     } else {
@@ -210,6 +211,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
     if (sourceIndexPath.row == destinationIndexPath.row) {
         return;
     }
+    [self trackAction:PCGAITrackerActionReorder];
     TransportStation* station = self.stations[sourceIndexPath.row];
     [self.stations removeObjectAtIndex:sourceIndexPath.row];
     if (destinationIndexPath.row > [self.stations count]) {
@@ -224,6 +226,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
     if (editingStyle != UITableViewCellEditingStyleDelete) {
         return;
     }
+    [self trackAction:PCGAITrackerActionDelete];
     [self.stations removeObjectAtIndex:indexPath.row];
     self.transportService.userTransportStations = self.stations;
 }

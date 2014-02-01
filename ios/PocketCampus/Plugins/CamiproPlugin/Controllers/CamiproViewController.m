@@ -117,7 +117,7 @@
         self.statsBarButton.title = NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil);
     }
     
-    UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+    UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshPressed)];
     [self.navigationItem setRightBarButtonItem:refreshButton animated:YES];
     [self refresh];
 }
@@ -193,15 +193,19 @@
 
 #pragma mark - Actions
 
+- (void)refreshPressed {
+    [self trackAction:@"Refresh"];
+    [self refresh];
+}
+
 - (IBAction)statsPressed {
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/camipro/stats"];
+    [self trackAction:@"Stats"];
     self.statsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:nil];
     [self.statsAlertView show];
     [self startGetStatsRequest];
 }
 
 - (IBAction)reloadCardPressed {
-    [[PCGAITracker sharedTracker] trackScreenWithName:@"/camipro/charge"];
     self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"ReloadInstructionsSendMailExplanations", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Send", @"CamiproPlugin", nil), nil];
     [self.sendMailAlertView show];
 }
@@ -417,7 +421,7 @@
             [self.camiproService cancelOperationsForDelegate:self];
             return;
         }
-        [[PCGAITracker sharedTracker] trackScreenWithName:@"/camipro/charge/email"];
+        [self trackAction:@"RequestEmail"];
         self.sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
         [self.sendMailAlertView show];
         

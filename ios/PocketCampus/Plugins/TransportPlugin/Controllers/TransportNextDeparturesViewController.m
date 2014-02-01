@@ -277,7 +277,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 #pragma mark - Actions
 
 - (IBAction)locationButtonPressed {
-    [self trackAction:@"LocationButtonPressed"];
+    [self trackAction:@"NearestUserStationAsDeparture"];
     if (self.locationState == LocationStateManualSelection) {
         self.transportService.userManualDepartureStation = nil;
         [self refresh];
@@ -285,24 +285,28 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 }
 
 - (void)fromLabelPressed {
+    [self trackAction:@"SelectDeparture"];
     TransportDepartureSelectionViewController* viewController = [TransportDepartureSelectionViewController new];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navController animated:YES completion:NULL];
 }
 
 - (IBAction)addStationButtonPressed {
+    [self trackAction:@"AddStation"];
     TransportAddStationViewController* viewController = [TransportAddStationViewController new];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navController animated:YES completion:NULL];
 }
 
 - (IBAction)stationsButtonsPressed {
+    [self trackAction:@"UserStations"];
     TransportStationsManagerViewController* viewController = [TransportStationsManagerViewController new];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navController animated:YES completion:NULL];
 }
 
 - (IBAction)presentHelpViewController:(id)sender {
+    [self trackAction:@"Help"];
     TransportHelpViewController* viewController = [TransportHelpViewController new];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navController animated:YES completion:NULL];

@@ -121,7 +121,13 @@
 
 - (void)actionButtonPressed {
     NSURL* newsItemURL = [NSURL URLWithString:self.newsItem.link];
-    UIActivityViewController* viewController = [[UIActivityViewController alloc] initWithActivityItems:@[newsItemURL] applicationActivities:@[[TUSafariActivity new]]];
+    UIActivity* safariActivity = [TUSafariActivity new];
+    UIActivityViewController* viewController = [[UIActivityViewController alloc] initWithActivityItems:@[newsItemURL] applicationActivities:@[safariActivity]];
+    viewController.completionHandler = ^(NSString* activityType, BOOL completed) {
+        if ([activityType isEqualToString:safariActivity.activityType]) {
+            [self trackAction:@"ViewInBrowser"];
+        }
+    };
     [self trackAction:PCGAITrackerActionActionButtonPressed];
     if (self.splitViewController) {
         if (!self.actionsPopover) {

@@ -47,6 +47,7 @@
 {
     self = [super initWithNibName:@"TransportHelpView" bundle:nil];
     if (self) {
+        self.gaiScreenName = @"/transport/help";
         self.title = NSLocalizedStringFromTable(@"TransportHelp", @"TransportPlugin", nil);
     }
     return self;
@@ -65,6 +66,11 @@
     if (!error) {
         [self.webView loadHTMLString:htmlString baseURL:nil];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6

@@ -123,7 +123,7 @@ static const NSInteger kMealsSection = 1;
 }
 
 - (void)showOnMapPressed {
-    [self trackAction:@"ShowOnMap"];
+    [self trackAction:@"ViewRestaurantOnMap"];
     UIViewController* mapViewController = [MapController viewControllerWithInitialMapItem:self.restaurant.rLocation];
     [self.navigationController pushViewController:mapViewController animated:YES];
 }

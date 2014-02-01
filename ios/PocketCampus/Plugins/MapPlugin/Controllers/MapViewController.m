@@ -630,7 +630,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 }
 
 - (void)floorDownPressed {
-    [self trackAction:@"FloorDownPressed"];
+    [self trackAction:@"DecreaseFloor"];
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) { //copy in case they are modified in the meantime (highly unlikely though)
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
@@ -640,7 +640,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 }
 
 - (void)floorUpPressed {
-    [self trackAction:@"FloorUpPressed"];
+    [self trackAction:@"IncreaseFloor"];
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) {
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
@@ -650,7 +650,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 }
 
 - (void)centerOnEPFLPressed {
-    [self trackAction:@"CenterOnEPFL"];
+    [self trackAction:@"CenterOnCampus"];
     [self.mapView setRegion:self.epflRegion animated:YES];
 }
 
@@ -682,7 +682,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 #pragma mark - UISearchBarDelegate
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar_ {
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self trackAction:@"Search"];
     [self startSearchForQuery:self.searchBar.text];
 }
 
@@ -831,6 +832,12 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     }
 }
 
+- (void)mapView:(MKMapView *)mapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated {
+    if (mode == MKUserTrackingModeFollow) {
+        [self trackAction:@"CenterOnSelf"];
+    }
+}
+
 
 #pragma mark - MapServiceDelegate
 
@@ -893,7 +900,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     DirectoryPersonViewController* personViewController = [[DirectoryPersonViewController alloc] initAndLoadPersonWithFullName:annotationTitle];
     personViewController.allowShowOfficeOnMap = NO; //prevent loop
-    [self trackAction:@"AnnotationInfoPressed"];
+    [self trackAction:@"PinViewMoreInfo"];
     if ([PCUtils isIdiomPad]) {
         if (!self.personPopOverController) {
             personViewController.title = NSLocalizedStringFromTable(@"Details", @"MapPlugin", nil);

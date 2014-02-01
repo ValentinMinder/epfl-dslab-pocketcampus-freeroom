@@ -228,7 +228,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 }
 
 - (void)toggleShowAll:(id)sender {
-    [self trackAction:@"AllCurrentWeekTogglePressed"];
+    [self trackAction:@"SwitchBetweenCurrentAndAllWeeks"];
     if (self.currentWeek > 0) {
         self.currentWeek = 0;
     } else {
@@ -448,8 +448,8 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     if (self.splitViewController && [resource isEqualToMoodleResource:self.selectedResource]) {
         return;
     }
+    [self trackAction:@"DownloadAndOpenFile"];
     MoodleResourceViewController* detailViewController = [[MoodleResourceViewController alloc] initWithMoodleResource:resource];
-
     if (self.splitViewController) { // iPad
         if (self.selectedResource) {
             PCTableViewCellAdditions* prevCell = self.cellForMoodleResource[self.selectedResource];

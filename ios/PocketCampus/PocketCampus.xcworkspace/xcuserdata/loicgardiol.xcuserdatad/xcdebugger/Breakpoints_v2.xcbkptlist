@@ -1750,7 +1750,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "196"
             endingLineNumber = "196"
-            landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -1918,7 +1918,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "97"
             endingLineNumber = "97"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkName = "-addPressed"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

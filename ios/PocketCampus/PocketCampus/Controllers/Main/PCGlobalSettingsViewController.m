@@ -123,6 +123,7 @@ static const int kUsageRow = 0;
             switch (indexPath.row) {
                 case 0: //gaspar account
                 {
+                    [self trackAction:@"OpenAuthentication"];
                     AuthenticationViewController* viewController = [[AuthenticationViewController alloc] init];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
@@ -135,14 +136,14 @@ static const int kUsageRow = 0;
             switch (indexPath.row) {
                 case kEditMainMenuRow:
                 {
-                    [self trackAction:@"EditMainMenu"];
+                    [self trackAction:@"EditDashboard"];
                     [self.mainController.mainMenuViewController setEditing:YES];
                     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
                     break;
                 }
                 case kRestoreDefaultMainMenuRow:
                 {
-                    [self trackAction:@"RestoreDefaultMainMenu"];
+                    [self trackAction:@"RestoreDefaultDashboard"];
                     [self.mainController restoreDefaultMainMenu];
                     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
                     break;
@@ -155,7 +156,7 @@ static const int kUsageRow = 0;
             switch (indexPath.row) {
                 case kRatePCRow:
                 {
-                    [self trackAction:@"RateOnAppStore"];
+                    [self trackAction:@"RateOnStore"];
                     //iOS 7 bug makes that "Write review" button is not available when using SKStoreProductViewController
                     //Thus simply opening app in App Store app instead
                     /*SKStoreProductViewController* productViewController = [SKStoreProductViewController new];
@@ -178,6 +179,7 @@ static const int kUsageRow = 0;
                 }
                 case kAboutRow:
                 {
+                    [self trackAction:@"About"];
                     PCAboutViewController* viewController = [PCAboutViewController new];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;

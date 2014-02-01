@@ -163,7 +163,7 @@
 #pragma mark - Listening
 
 - (void)savePasswordSwitchValueChanged {
-    [self trackAction:[NSString stringWithFormat:@"SetSavePassword:%@", self.savePasswordSwitch.isOn ? @"YES" : @"NO"]];
+    [self trackAction:[NSString stringWithFormat:@"SavePassword:%@", self.savePasswordSwitch.isOn ? @"YES" : @"NO"]];
     [AuthenticationService savePasswordSwitchState:self.savePasswordSwitch.isOn];
 }
 

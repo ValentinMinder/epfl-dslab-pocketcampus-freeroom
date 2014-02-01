@@ -414,6 +414,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.resultsMode == ResultsModeSearch) {
+        [self trackAction:@"ViewPerson"];
         Person* person = self.searchResults[indexPath.row];
         if (self.splitViewController && [person.sciper isEqualToString:self.displayedPerson.sciper]) { //isEqual not implemented in Thrift
             [self.personViewController.navigationController popToRootViewControllerAnimated:YES]; //return to contact info if in map for example
@@ -426,6 +427,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
             }
         }
     } else if (self.resultsMode == ResultsModeRecentSearches) {
+        [self trackAction:@"ViewRecentPerson"];
         UIActivityIndicatorView* activityIndicatorView = (UIActivityIndicatorView*)[[self.tableView cellForRowAtIndexPath:indexPath] accessoryView];
          NSString* searchString = [NSString stringWithFormat:@"%@", [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
         if ([activityIndicatorView isAnimating] || (self.displayedPerson && [searchString rangeOfString:self.displayedPerson.firstName].location != NSNotFound && [searchString rangeOfString:self.displayedPerson.lastName].location != NSNotFound)) {

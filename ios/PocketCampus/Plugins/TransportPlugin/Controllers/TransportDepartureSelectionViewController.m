@@ -134,7 +134,7 @@ static const NSUInteger kStationsSection = 1;
             break;
         case kStationsSection:
         {
-            [self trackAction:@"StationManuallySelected"];
+            [self trackAction:@"SelectManualStation"];
             TransportStation* station = self.stations[indexPath.row];
             self.transportService.userManualDepartureStation = station;
             [self dismiss];

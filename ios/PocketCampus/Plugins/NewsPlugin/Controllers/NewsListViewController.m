@@ -205,7 +205,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     if ([self.selectedItem isEqual:newsItem]) {
         return;
     }
-    
+    [self trackAction:@"OpenNewsItem"];
     NewsItemViewController* newsItemViewController = [[NewsItemViewController alloc] initWithNewsItem:newsItem cachedImageOrNil:[(PCTableViewAdditions*)(self.tableView) cachedRawImageAtIndexPath:indexPath]];
     
     if (self.splitViewController) { // iPad
