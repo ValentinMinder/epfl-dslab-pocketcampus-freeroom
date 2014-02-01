@@ -46,6 +46,7 @@ NSString* const PCGAITrackerActionCopy = @"Copy";
 NSString* const PCGAITrackerActionHelp = @"Help";
 NSString* const PCGAITrackerActionSearch = @"Search";
 
+static NSString* const kAccessibilityEnabledKey = @"AccessibilityEnabled";
 
 static NSString* const kFirstLaunchAfterInstallAction = @"FirstLaunchAfterInstall";
 
@@ -87,6 +88,7 @@ static id instance __strong = nil;
         return;
     }
     [self.gaiTracker set:kGAIScreenName value:screenName];
+    [self.gaiTracker set:kAccessibilityEnabledKey value:UIAccessibilityIsVoiceOverRunning() ? @"YES" : @"NO"];
     [self.gaiTracker send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
