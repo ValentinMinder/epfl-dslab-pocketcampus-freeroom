@@ -2506,8 +2506,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "741"
             endingLineNumber = "741"
-            landmarkName = "@implementation MainController"
-            landmarkType = "3">
+            landmarkName = "-pluginControllerForPluginIdentifier:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

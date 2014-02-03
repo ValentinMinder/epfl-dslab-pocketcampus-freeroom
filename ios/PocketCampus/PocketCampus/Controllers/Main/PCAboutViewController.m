@@ -93,6 +93,7 @@
 - (void)showInfos {
     NSString* build = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
     BOOL loadedFromBundle = [[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY];
+    BOOL loadedFromPersistedServer = [[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_PERSISTED_SERVER_CONFIG_KEY];
     BOOL loadedFromServer = [[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
     BOOL loadedFromAppSupport = [[PCConfig defaults] boolForKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
     NSString* serverAddress = [[PCConfig defaults] objectForKey:PC_CONFIG_SERVER_ADDRESS_KEY];
@@ -100,7 +101,7 @@
     NSString* serverPort = [[PCConfig defaults] objectForKey:PC_CONFIG_SERVER_PORT_KEY];
     NSString* serverUri = [[PCConfig defaults] objectForKey:PC_CONFIG_SERVER_URI_KEY];
     
-    NSString* message = [NSString stringWithFormat:@"%@:%@\n\n%@:%d\n%@:%d\n%@:%d\n\n%@:%@\n%@:%@\n%@:%@\n%@:%@",@"Build", build, @"Bundle", loadedFromBundle, @"Server", loadedFromServer, @"AppSupport", loadedFromAppSupport, @"Address", serverAddress, @"Prot", serverProtocol, @"Port", serverPort, @"URI", serverUri];
+    NSString* message = [NSString stringWithFormat:@"%@:%@\n\n%@:%d\n%@:%d\n%@:%d\n%@:%d\n\n%@:%@\n%@:%@\n%@:%@\n%@:%@", @"Build", build, @"Bundle", loadedFromBundle, @"Persisted server", loadedFromPersistedServer, @"Server", loadedFromServer, @"AppSupport", loadedFromAppSupport, @"Address", serverAddress, @"Prot", serverProtocol, @"Port", serverPort, @"URI", serverUri];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"PCConfig state" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
 }

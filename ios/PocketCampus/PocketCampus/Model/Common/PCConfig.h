@@ -38,18 +38,19 @@
 
 
 /*
- * Note on PocketCampus configation
+ * PocketCampus configuration
  *
  * Configuration is of the form key-value.
  *
  * Values are populated into the defaults [PCConfig defaults] in the follow order of *overriding* priority (i overrides i+1):
  *
- * 1) Key-values found in "Application Support/<bundle_identifier>/Config.plist" (for DEV purposes)
- * 2) Fetched from server with address http://pocketcampus.epfl.ch/backend/get_config.php
- * 3) Key-values found in bundle file Config.plist
+ * 1. Key-values found in "Application Support/<bundle_identifier>/Config.plist" (for DEV purposes)
+ * 2. Key-values fetched from server with address http://pocketcampus.epfl.ch/backend/get_config.php
+ * 3. Server key-values persisted from previous fetch (2.) (persisted in Application Support/<bundle_identifier>/ConfigFromServer.plist)
+ * 4. Key-values found in bundle file Config.plist
  *
- * First, keys from Config.plist are loaded, then any key-value pair returned by the server
- * overrides those and finally the ones in Application Support override those again.
+ * First, keys from Config.plist are loaded, then from cached ConfigFromServer.plist overrides then,
+ * then any key-value pair returned by the server overrides those and finally the ones in Application Support override those again.
  */
 
 
@@ -90,11 +91,13 @@ extern NSString* const PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY; //Default: YES
  * Keys for booleans values stored in defaults as well
  */
 
-extern NSString* const PC_CONFIG_LOADED_FROM_BUNDLE_KEY;
+extern NSString* const PC_CONFIG_LOADED_FROM_BUNDLE_KEY; //4.
 
-extern NSString* const PC_CONFIG_LOADED_FROM_SERVER_KEY;
+extern NSString* const PC_CONFIG_LOADED_FROM_PERSISTED_SERVER_CONFIG_KEY; //3.
 
-extern NSString* const PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT;
+extern NSString* const PC_CONFIG_LOADED_FROM_SERVER_KEY; //2.
+
+extern NSString* const PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT; //1.
 
 /*
  * Constants

@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 22.01.13.
-
-
 
 #import "PCConfig.h"
 
@@ -64,6 +57,8 @@ NSString* const PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY = @"USER_CRASHLYTICS_ENAB
 
 NSString* const PC_CONFIG_LOADED_FROM_BUNDLE_KEY = @"CONFIG_LOADED_FROM_BUNDLE";
 
+NSString* const PC_CONFIG_LOADED_FROM_PERSISTED_SERVER_CONFIG_KEY = @"CONFIG_LOADED_FROM_PERSISTED_SERVER_CONFIG";
+
 NSString* const PC_CONFIG_LOADED_FROM_SERVER_KEY = @"CONFIG_LOADED_FROM_SERVER";
 
 NSString* const PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT = @"CONFIG_LOADED_FROM_APP_SUPPORT";
@@ -82,6 +77,10 @@ static NSString* const kGetConfigURLString = @"https://pocketcampus.epfl.ch/back
 static NSString* const kGetConfigPlatformParameterName = @"platform";
 static NSString* const kGetConfigAppVersionParameterName = @"app_version";
 
+static NSTimeInterval const kConfigRequestTimeoutIntervalSeconds = 3.0; //should not be too large, otherwsie slows app startup in case of bad connection
+
+static NSString* const kPersistedServerConfigFilename = @"ConfigFromServer.plist";
+
 static BOOL loaded = NO;
 
 @implementation PCConfig
@@ -94,10 +93,12 @@ static BOOL loaded = NO;
         NSLog(@"-> Loading config...");
         // First load config from Config.plist
         [self registerDefaultsFromBundle];
+        // Then load cached server config (from previous fetch)
+        [self registerDefaultsFromPersistedServerConfigIfExists];
         // Then fetch overriding key-values from server
-        [self registerDefaultsFromServerWithCompletionHandler:^{
+        [self registerAndPersistDefaultsFromServerWithCompletionHandler:^{
             // Finally load potential overriding dev config Config.plist in ApplicationSupport/<bundle_identifier>/
-            [self registerDevDefaultsFromAppSupportIfExist];
+            [self registerDevDefaultsFromAppSupportIfExists];
             [self registerDefaultsUserConfigDefaultValuesIfNotDefined];
             [[self _defaults] synchronize]; //persist to disk
             NSLog(@"-> Config loaded.");
@@ -137,14 +138,25 @@ static BOOL loaded = NO;
     NSLog(@"   1. Config loaded from bundle");
 }
 
-+ (void)registerDefaultsFromServerWithCompletionHandler:(VoidBlock)completion {
++ (void)registerDefaultsFromPersistedServerConfigIfExists {
+    NSDictionary* persistedServerConfig = [self persistedServerConfig];
+    if (persistedServerConfig) {
+        [[self _defaults] registerDefaults:persistedServerConfig];
+        NSLog(@"   2. Config loaded from persisted server config");
+    } else {
+        NSLog(@"   2. No persisted server config");
+    }
+    [[self _defaults] setBool:(persistedServerConfig != nil) forKey:PC_CONFIG_LOADED_FROM_PERSISTED_SERVER_CONFIG_KEY];
+}
+
++ (void)registerAndPersistDefaultsFromServerWithCompletionHandler:(VoidBlock)completion {
     if ([[AFNetworkReachabilityManager sharedManager] isReachable]) {
         [[self _defaults] setBool:NO forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
         NSLog(@"   !! No internet connection. Cannot fetch config from server.");
     }
     NSURLSessionConfiguration* config = [NSURLSessionConfiguration defaultSessionConfiguration];
     config.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
-    config.timeoutIntervalForRequest = 3.0; //must NOT delay app start time too much if server is not reachable
+    config.timeoutIntervalForRequest = kConfigRequestTimeoutIntervalSeconds;
     
     AFHTTPSessionManager* manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -156,7 +168,11 @@ static BOOL loaded = NO;
          success:^(NSURLSessionDataTask *task, NSDictionary* jsonServerConfig) {
              [[self _defaults] registerDefaults:jsonServerConfig];
              [[self _defaults] setBool:YES forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
-             NSLog(@"   2. Config loaded from server");
+             if ([self persistServerConfig:jsonServerConfig]) {
+                 NSLog(@"   3. Config loaded from server and persisted");
+             } else {
+                 NSLog(@"   3. Config loaded from server (WARNING: could not be persisted)");
+             }
              completion();
          } failure:^(NSURLSessionDataTask *task, NSError *error) {
              [[self _defaults] setBool:NO forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
@@ -164,8 +180,7 @@ static BOOL loaded = NO;
              completion();
          }];
 }
-
-+ (void)registerDevDefaultsFromAppSupportIfExist {
++ (void)registerDevDefaultsFromAppSupportIfExists {
     NSString* pathAppSupportConfig = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
 	pathAppSupportConfig = [pathAppSupportConfig stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
     pathAppSupportConfig = [pathAppSupportConfig stringByAppendingPathComponent:@"Config.plist"];
@@ -175,7 +190,7 @@ static BOOL loaded = NO;
         if ([fileManager fileExistsAtPath:pathAppSupportConfig]) {
             [[self _defaults] registerDefaults:[NSDictionary dictionaryWithContentsOfFile:pathAppSupportConfig]];
             [[self _defaults] setBool:YES forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
-            NSLog(@"   3. Detected and loaded overriding DEV config (%@)", pathAppSupportConfig);
+            NSLog(@"   4. Detected and loaded overriding DEV config (%@)", pathAppSupportConfig);
         } else {
             [[self _defaults] setBool:NO forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
         }
@@ -192,5 +207,24 @@ static BOOL loaded = NO;
         [defaults setBool:YES forKey:PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY];
     }
 }
+
+#pragma mark Utilities
+
++ (NSString*)pathForPersistedServerConfig {
+    NSString* appSupport = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+	NSString* pcAppSupport = [appSupport stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    [PCObjectArchiver createComponentsForPath:pcAppSupport];
+    NSString* configFilePath = [pcAppSupport stringByAppendingPathComponent:kPersistedServerConfigFilename];
+    return configFilePath;
+}
+
++ (BOOL)persistServerConfig:(NSDictionary*)serverConfig {
+    return [serverConfig writeToFile:[self pathForPersistedServerConfig] atomically:YES]; //avoid corruption if crash (see doc.)
+}
+
++ (NSDictionary*)persistedServerConfig {
+    return [NSDictionary dictionaryWithContentsOfFile:[self pathForPersistedServerConfig]];
+}
+
 
 @end
