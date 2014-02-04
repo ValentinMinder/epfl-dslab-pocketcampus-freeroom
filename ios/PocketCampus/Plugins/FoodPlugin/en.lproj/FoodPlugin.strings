@@ -22,6 +22,7 @@
 "NoRating" = "No rating";
 "RatingStatusReadyText" = "How did you like this meal ?";
 "RatingStatusRatedText" = "Thank you !";
+"UnknownPrice" = "Unknown\nprice";
 
 
 /* Accessiblity */

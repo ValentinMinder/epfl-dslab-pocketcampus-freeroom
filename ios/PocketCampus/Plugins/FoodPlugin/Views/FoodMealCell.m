@@ -202,7 +202,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     if (price == 0.0) {
         price = [self.meal.mPrices[[NSNumber numberWithInteger:PriceTarget_STAFF]] floatValue];
     }
-    
+ 
     if (price > 0.0) {
         BOOL integer = ((price - (float)((int)price)) == 0.0);
         NSString* priceString = nil;
@@ -226,7 +226,9 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         self.pricesLabel.attributedText = attrPriceString;
         self.accessibilityLabel = [NSString stringWithFormat:NSLocalizedStringFromTable(@"MealWithFormatDescriptionAndPrice", @"FoodPlugin", nil), self.textView.text, attrPriceString.string];
     } else {
-        self.pricesLabel.text = nil;
+        self.pricesLabel.numberOfLines = 2;
+        NSAttributedString* attrString = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"UnknownPrice", @"FoodPlugin", nil) attributes:@{NSFontAttributeName:[self.pricesLabel.font fontWithSize:self.pricesLabel.font.pointSize-6.0]}];
+        self.pricesLabel.attributedText = attrString;
         self.accessibilityLabel = self.textView.text;
     }
     
