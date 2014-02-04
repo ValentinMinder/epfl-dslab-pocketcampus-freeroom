@@ -150,14 +150,12 @@ public final class MenuImpl implements Menu {
 					prices.put(PRICE_TARGETS.get(target), price);
 				}
 			}
+			
 			meal.setMPrices(prices);
-
-			if (isValid(meal, restaurantName)) {
-				fix(meal, restaurantName);
-				meal.setMRating(new EpflRating(0.0, 0));
-				meal.setMId(generateMealId(meal.getMName(), meal.getMDescription(), restaurantName));
-				addMealToList(menu, meal, restaurantName);
-			}
+			fix(meal, restaurantName);
+			meal.setMRating(new EpflRating(0.0, 0));
+			meal.setMId(generateMealId(meal.getMName(), meal.getMDescription(), restaurantName));
+			addMealToList(menu, meal, restaurantName);
 		}
 
 		return new FoodResponse().setStatusCode(FoodStatusCode.OK).setMenu(menu);
@@ -231,11 +229,6 @@ public final class MenuImpl implements Menu {
 			lines.add(n.text().trim());
 		}
 		return StringUtils.join(lines, MEAL_LIST_LINE_SEPARATOR);
-	}
-
-	/** Indicates whether the specified meal is valid. */
-	private static boolean isValid(EpflMeal meal, String restaurantName) {
-		return !restaurantName.equals("Le Vinci"); // De facto duplicate of "Le Parmentier"
 	}
 
 	/** If necessary, fixes the specified meal. */
