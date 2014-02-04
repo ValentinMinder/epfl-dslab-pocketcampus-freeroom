@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.food.server;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -57,6 +58,10 @@ public final class MenuImpl implements Menu {
 	private static final Map<Integer, MealType> MEAL_PRIMARY_TYPES = new HashMap<Integer, MealType>();
 	private static final Map<Integer, MealType> MEAL_SECONDARY_TYPES = new HashMap<Integer, MealType>();
 
+	private static final String RESTAURANTS_PHOTOS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/restaurant-pics/";
+	private static final String RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH = "/var/www/backend/restaurant-pics/";
+	private static final String RESTAURANTS_PHOTOS_FILE_EXTENSION = ".jpg";
+	
 	// The HTTP client used to get the HTML data.
 	private final HttpClient _client;
 
@@ -198,7 +203,6 @@ public final class MenuImpl implements Menu {
 			if (searchResults == null || searchResults.size() == 0) {
 				System.err.println("INFO: map plugin returned 0 result for restaurant " + restaurant.getRName());
 			} else {
-				System.out.println(searchResults);
 				MapItem restaurantMapItem = searchResults.get(0); // assuming first result is the right one
 				restaurant.setRLocation(restaurantMapItem);
 			}
@@ -207,7 +211,44 @@ public final class MenuImpl implements Menu {
 			e.printStackTrace();
 		}
 
-		// TODO: Set picture url
+		String pictureURLString = restaurantPhotoURLStringIfExists(restaurant.getRName());
+		if (pictureURLString != null) {
+			// Checking in case Thrift definition does not accept
+			// setting NULL for this parameter in the future
+			restaurant.setRPictureUrl(pictureURLString);
+		}
+	}
+	
+	/**
+	 * @param restaurantName
+	 * @return url of restaurant's photo if it exists, null otherwise
+	 */
+	private static String restaurantPhotoURLStringIfExists(String restaurantName) {
+		String normalizedName = normalizedNameForFilename(restaurantName);
+		String filePath = RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION;
+		File file = new File(filePath);
+		if (!file.isFile()) {
+			System.err.println("INFO: did not find expected photo file for restaurant " + restaurantName + " at path '" + filePath + "'");
+			return null;
+		}
+		String urlString = RESTAURANTS_PHOTOS_FOLDER_URL + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION;
+		return urlString;
+	}
+	
+	/**
+	 * @param restaurantName
+	 * @return restaurantName that is accents-freed, lower-cased,
+	 * and apostrophes and spaces replaced by _ 
+	 * Examples:
+	 * L'Atlantide => l_atlantide
+	 * Cafétéria BC => cafeteria_bc
+	 */
+	private static String normalizedNameForFilename(String restaurantName) {
+		restaurantName = StringUtils.stripAccents(restaurantName);
+		restaurantName = restaurantName.toLowerCase();
+		restaurantName = restaurantName.replace("'", "_");
+		restaurantName = restaurantName.replace(" ", "_");
+		return restaurantName;
 	}
 
 	private static String compatibleRestaurantNameForMap(String restaurantName) {

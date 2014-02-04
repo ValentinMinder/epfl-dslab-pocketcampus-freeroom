@@ -10,6 +10,7 @@ scp server/PocketCampusServer/PocketCampusServer.jar $user@dslabpc36.epfl.ch:/Us
 
 if [ $? -ne 0 ]; then
 	echo "!! Upload failed. Aborting. INFO: you have to run this script from repo's root.";
+	exit 1
 fi
 
 echo "2. Starting new binary on dev server..."
