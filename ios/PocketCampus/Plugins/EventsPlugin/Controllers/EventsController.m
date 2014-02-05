@@ -26,12 +26,6 @@
  */
 
 
-
-
-
-
-
-
 #import "EventsController.h"
 
 #import "EventPoolViewController.h"
@@ -79,7 +73,7 @@ static EventsController* instance __weak = nil;
             
             self.eventsService = [EventsService sharedInstanceToRetain];
             //#warning TO REMOVE
-            //[self.eventsService addUserTicket:@"amer"];
+            //[self.eventsService addUserTicket:@"d3f760d257605db44b40ea81fb69040e"]; //Loïc Privacy Congress 2013
             
             instance = self;
         }

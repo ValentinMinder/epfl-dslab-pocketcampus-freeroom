@@ -45,10 +45,19 @@
 }
 
 - (BOOL)isSameDayAsDate:(NSDate*)date {
+    return [self isSameDayAsDate:date countMidnightAsSameDay:NO];
+}
+
+- (BOOL)isSameDayAsDate:(NSDate*)date countMidnightAsSameDay:(BOOL)countMidnightAsSameDay {
     NSCalendar* calendar = [NSCalendar currentCalendar];
     
-    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit;
     NSDateComponents* comp1 = [calendar components:unitFlags fromDate:self];
+    if (countMidnightAsSameDay) {
+        NSDateComponents* minus1Min = [NSDateComponents new];
+        minus1Min.minute = -1;
+        date = [calendar dateByAddingComponents:minus1Min toDate:date options:0];
+    }
     NSDateComponents* comp2 = [calendar components:unitFlags fromDate:date];
     
     return ([comp1 day]   == [comp2 day] &&

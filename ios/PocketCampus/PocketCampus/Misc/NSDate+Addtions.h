@@ -43,7 +43,9 @@
  */
 + (NSDate*)dateWithTimestampInt64_t:(int64_t)timestamp;
 
-- (BOOL)isSameDayAsDate:(NSDate*)date;
+- (BOOL)isSameDayAsDate:(NSDate*)date; //same as next with countMidnightAsSameDay = NO
+
+- (BOOL)isSameDayAsDate:(NSDate*)date countMidnightAsSameDay:(BOOL)countMidnightAsSameDay;
 
 /*
  * Returns whether self is in the range [earlyDate, lateDate] (=> bounds included)

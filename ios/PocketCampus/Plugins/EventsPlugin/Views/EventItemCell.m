@@ -26,19 +26,11 @@
  */
 
 
-
-
-
-
 //  Created by Loïc Gardiol on 01.03.13.
-
-
 
 #import "EventItemCell.h"
 
 #import "EventItem+Additions.h"
-
-#import "PCUtils.h"
 
 #import "UIImage+Additions.h"
 
@@ -64,13 +56,14 @@
         self.textLabel.numberOfLines = 2;
         self.textLabel.font = [UIFont boldSystemFontOfSize:13.0];
         self.detailTextLabel.textColor = [UIColor grayColor];
+        self.detailTextLabel.numberOfLines = 3;
         self.eventItem = eventItem;
     }
     return self;
 }
 
 + (CGFloat)preferredHeight {
-    return 70.0;
+    return 80.0;
 }
 
 /*- (void)layoutSubviews {
@@ -81,9 +74,24 @@
 - (void)setEventItem:(EventItem *)eventItem {
     _eventItem = eventItem;
     self.textLabel.text = self.eventItem.eventTitle;
-    self.detailTextLabel.text = self.eventItem.secondLine ? self.eventItem.secondLine : (self.eventItem.timeSnippet ? self.eventItem.timeSnippet : [eventItem dateString:EventItemDateStyleMedium]);
+    //self.detailTextLabel.text = self.eventItem.secondLine ? self.eventItem.secondLine : (self.eventItem.timeSnippet ? self.eventItem.timeSnippet : [eventItem dateString:EventItemDateStyleMedium]);
     
-    self.favoriteIndicationVisible = self.eventItem ? [[EventsService sharedInstanceToRetain] isEventItemIdFavorite:self.eventItem.eventId] : NO;
+    NSString* secondaryInfo = eventItem.secondLine ?: (eventItem.eventPlace ?: eventItem.eventSpeaker);
+    NSString* dateTimeInfo = eventItem.timeSnippet ?: self.eventItem.dateString;
+    
+    NSString* fullString = nil;
+    if (secondaryInfo.length > 0 && dateTimeInfo.length > 0) {
+        fullString = [NSString stringWithFormat:@"%@\n%@", secondaryInfo, dateTimeInfo];
+    } else if (secondaryInfo.length > 0) {
+        fullString = secondaryInfo;
+    } else {
+        fullString = dateTimeInfo;
+    }
+    
+    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+    self.detailTextLabel.attributedText = attrString;
+    
+    self.favoriteIndicationVisible = eventItem ? [[EventsService sharedInstanceToRetain] isEventItemIdFavorite:eventItem.eventId] : NO;
 }
 
 - (void)setGlowIfEventItemIsNow:(BOOL)glowIfEventItemIsNow {

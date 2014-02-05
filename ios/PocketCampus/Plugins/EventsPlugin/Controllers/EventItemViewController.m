@@ -248,7 +248,7 @@ static NSString* const kPoolCell = @"PoolCell";
             if (self.eventItem.timeSnippet) {
                 replacements[@"$EVENT_ITEM_DATE_TIME$"] = [NSString stringWithFormat:@"%@<br>", self.eventItem.timeSnippet];
             } else {
-                replacements[@"$EVENT_ITEM_DATE_TIME$"] = [NSString stringWithFormat:@"<b>%@:</b> %@<br>", NSLocalizedStringFromTable(@"Date&Time", @"EventsPlugin", nil), [self.eventItem dateString:EventItemDateStyleLong]];
+                replacements[@"$EVENT_ITEM_DATE_TIME$"] = [NSString stringWithFormat:@"<b>%@:</b> %@<br>", NSLocalizedStringFromTable(@"Date&Time", @"EventsPlugin", nil), self.eventItem.dateString];
             }
         }
         

@@ -36,12 +36,6 @@
 
 #import "events.h"
 
-typedef enum {
-    EventItemDateStyleShort = 0,
-    EventItemDateStyleMedium = 1,
-    EventItemDateStyleLong = 2
-} EventItemDateStyle;
-
 @interface EventItem (Additions)
 
 - (BOOL)isEqual:(id)object;
@@ -59,7 +53,10 @@ typedef enum {
  */
 - (NSComparisonResult)inverseCompare:(EventItem*)object;
 
-- (NSString*)dateString:(EventItemDateStyle)dateStyle;
+/*
+ * Nil if startDate is 0
+ */
+@property (nonatomic, readonly) NSString* dateString;
 
 /*
  * Returns YES if now is in range [startDate, endDate], NO otherwise

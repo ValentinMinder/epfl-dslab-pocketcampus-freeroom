@@ -97,7 +97,10 @@
     }
 }
 
-- (NSString*)dateString:(EventItemDateStyle)dateStyle {
+- (NSString*)dateString {
+    if (self.startDate == 0) {
+        return nil;
+    }
     
     static NSDateFormatter* formatter = nil;
     static dispatch_once_t onceToken;
@@ -105,93 +108,24 @@
         formatter = [NSDateFormatter new];
     });
     
-    
     NSDate* startDate = [NSDate dateWithTimeIntervalSince1970:self.startDate/1000];
     NSDate* endDate = [NSDate dateWithTimeIntervalSince1970:self.endDate/1000];
     
-    if (self.fullDay) {
-        
-        formatter.dateStyle = NSDateFormatterShortStyle;
-        if (dateStyle == EventItemDateStyleLong) {
-            NSDateComponents* componentsStartDate = [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit | NSHourCalendarUnit fromDate:startDate];
-            
-            if (!([componentsStartDate minute] == 0 && [componentsStartDate hour] == 0)) {
-                formatter.timeStyle = NSDateFormatterShortStyle; //will show time
-            }
-        }
-        
-        
-        NSString* startDateString = @"";
-        NSString* endDateString = @"";
-        
-        if (self.startDate) {
-            startDateString = [formatter stringFromDate:startDate];
-        }
-        
-        if (self.endDate && self.endDate != self.startDate) {
-            endDateString = [NSString stringWithFormat:@" - %@", [formatter stringFromDate:endDate]];
-        }
-        
-        return [NSString stringWithFormat:@"%@%@", startDateString, endDateString];
-    } else {
-        
-        NSString* startDateString = @"";
-        NSString* endDateString = @"";
-        
-        NSDateComponents* componentsStartDate = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:startDate];
-
-        NSDateComponents* componentsEndDate = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:endDate];
-        
-        if ([componentsStartDate day] == [componentsEndDate day] && [componentsStartDate month] == [componentsEndDate month] && [componentsStartDate year] == [componentsEndDate year]) { //same day
-            formatter.dateStyle = NSDateFormatterShortStyle;
-            
-            if (dateStyle == EventItemDateStyleLong || dateStyle == EventItemDateStyleMedium) {
-                formatter.timeStyle = NSDateFormatterShortStyle; //will show time
-            }
-            
-            if (self.startDate) {
-                startDateString = [formatter stringFromDate:startDate];
-            }
-            
-            NSCalendar* gmtCal = [NSCalendar currentCalendar];
-            [gmtCal setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]]; //GMT
-            NSDateComponents* gmtStartDateComp = [gmtCal components:NSDayCalendarUnit fromDate:startDate];
-            NSDateComponents* gmtEndDateComp = [gmtCal components:NSDayCalendarUnit fromDate:endDate];
-            BOOL endTimeValid = ([gmtEndDateComp day] >= [gmtStartDateComp day]);
-            
-            if (endTimeValid && (dateStyle == EventItemDateStyleLong) && self.endDate && self.endDate != self.startDate) {
-            
-                formatter.dateStyle = NSDateFormatterNoStyle;
-                formatter.timeStyle = NSDateFormatterShortStyle;
-            
-                endDateString = [NSString stringWithFormat:@" - %@", [formatter stringFromDate:endDate]];
-            
-            }
-            
-            return [NSString stringWithFormat:@"%@%@", startDateString, endDateString];
-            
-        } else {
-            formatter.dateStyle = NSDateFormatterShortStyle;
-            formatter.timeStyle = NSDateFormatterNoStyle;
-            
-            if (self.startDate) {
-                startDateString = [formatter stringFromDate:startDate];
-            }
-            
-            if (self.endDate && self.endDate != self.startDate) {
-                
-                formatter.dateStyle = NSDateFormatterShortStyle;
-                formatter.timeStyle = NSDateFormatterNoStyle;
-                
-                endDateString = [NSString stringWithFormat:@" - %@", [formatter stringFromDate:endDate]];
-                
-            }
-            
-            return [NSString stringWithFormat:@"%@%@", startDateString, endDateString];
-        }
-        
-    }
-
+    formatter.dateStyle = NSDateFormatterShortStyle;
+    formatter.timeStyle = self.fullDay ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
+    
+    NSString* startDateString = [formatter stringFromDate:startDate];
+    
+    BOOL oneDayEvent = [startDate isSameDayAsDate:endDate countMidnightAsSameDay:YES];
+    
+    formatter.dateStyle = oneDayEvent ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
+    formatter.timeStyle = self.fullDay ? NSDateFormatterNoStyle : formatter.dateStyle;
+    
+    NSString* endDateString = [formatter stringFromDate:endDate];
+    
+    NSString* finalDateString = endDateString.length > 0 ? [NSString stringWithFormat:@"%@ – %@", startDateString, endDateString] : startDateString;
+    
+    return finalDateString;
 }
 
 - (BOOL)isNow {
