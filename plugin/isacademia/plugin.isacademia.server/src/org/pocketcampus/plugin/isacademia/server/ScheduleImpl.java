@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.isacademia.server;
 
 import java.io.ByteArrayInputStream;
-import java.nio.charset.*;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -30,7 +30,7 @@ import org.joda.time.format.*;
 public final class ScheduleImpl implements Schedule {
 	private static final String ISA_SCHEDULE_URL = "https://isa.epfl.ch/service/secure/student/timetable/period";
 	// The encoding of IS-Academia's schedule API.
-	private static final Charset ISA_CHARSET = StandardCharsets.ISO_8859_1;
+	private static final Charset ISA_CHARSET = Charset.forName("ISO-8859-1");
 	// The parameters of IS-Academia's API.
 	private static final String URL_FROM_PARAMETER = "from", URL_TO_PARAMETER = "to", URL_KEY_PARAMETER = "key";
 	// The date format for IS-Academia's API.
@@ -86,7 +86,7 @@ public final class ScheduleImpl implements Schedule {
 		try {
 			result = _client.get(ISA_SCHEDULE_URL, ISA_CHARSET, new ArrayList<Cookie>());
 		} catch (Exception e) {
-			return new ScheduleTokenResponse().setErrorCode(ScheduleErrorCode.NETWORK_ERROR);
+			return new ScheduleTokenResponse(ScheduleStatusCode.NETWORK_ERROR);
 		}
 
 		String tequilaKey = result.url.split(TEQUILA_URL_KEY_SEPARATOR)[1];
@@ -100,7 +100,7 @@ public final class ScheduleImpl implements Schedule {
 			throw new Exception("ScheduleImpl#getToken: No ISA session ID found.");
 		}
 
-		return new ScheduleTokenResponse().setToken(new ScheduleToken(tequilaKey, sessionId));
+		return new ScheduleTokenResponse(ScheduleStatusCode.OK).setToken(new ScheduleToken(tequilaKey, sessionId));
 	}
 
 	@Override
@@ -122,19 +122,22 @@ public final class ScheduleImpl implements Schedule {
 			HttpResult result = _client.get(url, ISA_CHARSET, cookies);
 
 			if (!result.url.contains(ISA_SCHEDULE_URL)) {
-				return new ScheduleResponse().setErrorCode(ScheduleErrorCode.INVALID_SESSION);
+				return new ScheduleResponse(ScheduleStatusCode.INVALID_SESSION);
 			}
 
 			xml = result.content;
 		} catch (Exception e) {
-			return new ScheduleResponse().setErrorCode(ScheduleErrorCode.NETWORK_ERROR);
+			return new ScheduleResponse(ScheduleStatusCode.NETWORK_ERROR);
 		}
 
 		Element xdoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-				.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)))
+				.parse(new ByteArrayInputStream(xml.getBytes()))
 				.getDocumentElement();
 
 		List<StudyPeriod> periods = new ArrayList<StudyPeriod>();
+
+		// I'm not sure this is needed, but everybody does it
+		xdoc.normalize();
 
 		for (Node periodNode : getNodes(xdoc, STUDY_PERIOD_TAG)) {
 			StudyPeriod period = new StudyPeriod();
@@ -142,8 +145,8 @@ public final class ScheduleImpl implements Schedule {
 			LocalDate periodDate = LocalDate.parse(getText(periodNode, DATE_ELEMENT), DATE_FORMATTER);
 			LocalTime startTime = LocalTime.parse(getText(periodNode, START_TIME_ELEMENT), TIME_FORMATTER);
 			LocalTime endTime = LocalTime.parse(getText(periodNode, END_TIME_ELEMENT), TIME_FORMATTER);
-			period.setStartTime(periodDate.toDateTime(startTime).getMillis());
-			period.setEndTime(periodDate.toDateTime(endTime).getMillis());
+			period.setStartTime(periodDate.toDateTime(startTime, DateTimeZone.UTC).getMillis());
+			period.setEndTime(periodDate.toDateTime(endTime, DateTimeZone.UTC).getMillis());
 
 			period.setPeriodType(STUDY_PERIOD_TYPES.get(getLocalizedText(getNode(periodNode, PERIOD_TYPE_ELEMENT), DEFAULT_LANGUAGE)));
 
@@ -158,7 +161,7 @@ public final class ScheduleImpl implements Schedule {
 			periods.add(period);
 		}
 
-		return new ScheduleResponse().setDays(groupPeriodsByDay(weekBeginning, periods));
+		return new ScheduleResponse(ScheduleStatusCode.OK).setDays(groupPeriodsByDay(weekBeginning, periods));
 	}
 
 	private static List<StudyDay> groupPeriodsByDay(LocalDate weekBegin, List<StudyPeriod> periods) {
@@ -166,7 +169,7 @@ public final class ScheduleImpl implements Schedule {
 		// First, add all days of the working week; we want to display them even if they're empty
 		for (int n = 0; n < 5; n++) {
 			LocalDate date = weekBegin.plusDays(n);
-			days.put(date, new StudyDay(date.toDateTimeAtStartOfDay().getMillis(), new ArrayList<StudyPeriod>()));
+			days.put(date, new StudyDay(date.toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(), new ArrayList<StudyPeriod>()));
 		}
 
 		// Then add periods to them, adding new days as needed
@@ -175,7 +178,7 @@ public final class ScheduleImpl implements Schedule {
 			if (days.containsKey(date)) {
 				days.get(date).addToPeriods(period);
 			} else {
-				days.put(date, new StudyDay(date.toDateTimeAtStartOfDay().getMillis(), new ArrayList<StudyPeriod>()));
+				days.put(date, new StudyDay(date.toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(), new ArrayList<StudyPeriod>()));
 			}
 		}
 

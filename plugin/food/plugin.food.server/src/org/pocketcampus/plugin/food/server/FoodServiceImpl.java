@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.food.server;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -24,7 +23,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 	private final DeviceDatabase _deviceDatabase;
 	private final RatingDatabase _ratingDatabase;
-	private final MealList _mealList;
+	private final Menu _mealList;
 
 	static {
 		for (MealType type : MealType.values()) {
@@ -33,7 +32,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 	}
 
-	public FoodServiceImpl(DeviceDatabase deviceDatabase, RatingDatabase ratingDatabase, MealList mealList) {
+	public FoodServiceImpl(DeviceDatabase deviceDatabase, RatingDatabase ratingDatabase, Menu mealList) {
 		_deviceDatabase = deviceDatabase;
 		_ratingDatabase = ratingDatabase;
 		_mealList = mealList;
@@ -41,7 +40,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 	public FoodServiceImpl() {
 		this(new DeviceDatabaseImpl(), new RatingDatabaseImpl(),
-				CachingProxy.create(new MealListImpl(new HttpClientImpl()), new CacheValidator() {
+				CachingProxy.create(new MenuImpl(new HttpClientImpl()), new CacheValidator() {
 					@Override
 					public boolean isValid(DateTime lastGenerationDate) {
 						return Days.daysBetween(lastGenerationDate, DateTime.now()) == Days.ZERO
@@ -61,18 +60,17 @@ public class FoodServiceImpl implements FoodService.Iface {
 			time = foodReq.getMealTime();
 		}
 
-		List<EpflRestaurant> menu = null;
+		FoodResponse response = null;
 
 		try {
-			menu = _mealList.getMenu(time, date);
-			_ratingDatabase.insertMenu(menu);
+			response = _mealList.get(time, date);
 		} catch (Exception e) {
-			menu = new ArrayList<EpflRestaurant>();
+			throw new TException("An exception occurred while getting the menu", e);
 		}
+		_ratingDatabase.insertMenu(response.getMenu());
+		_ratingDatabase.setRatings(response.getMenu());
 
-		_ratingDatabase.setRatings(menu);
-
-		return new FoodResponse(menu, MEAL_TYPE_PICTURE_URLS);
+		return response.setMealTypePictureUrls(MEAL_TYPE_PICTURE_URLS);
 	}
 
 	@Override

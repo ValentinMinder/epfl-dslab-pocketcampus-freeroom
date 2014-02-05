@@ -52,7 +52,6 @@ public class MapServiceImpl implements MapService.Iface {
 	public List<MapItem> search(String query) throws TException {
 		System.out.println("search(query: "+query+")");
 		List<MapItem> results = Search.searchTextOnEpflWebsite(query, 100);
-		System.out.println(results);
 		return results;
 	}
 

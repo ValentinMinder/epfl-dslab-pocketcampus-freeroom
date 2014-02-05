@@ -25,19 +25,19 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ScheduleTokenResponse");
 
   private static final org.apache.thrift.protocol.TField TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("token", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-  private static final org.apache.thrift.protocol.TField ERROR_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("errorCode", org.apache.thrift.protocol.TType.I32, (short)2);
+  private static final org.apache.thrift.protocol.TField STATUS_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("statusCode", org.apache.thrift.protocol.TType.I32, (short)2);
 
   private ScheduleToken token; // required
-  private ScheduleErrorCode errorCode; // required
+  private ScheduleStatusCode statusCode; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     TOKEN((short)1, "token"),
     /**
      * 
-     * @see ScheduleErrorCode
+     * @see ScheduleStatusCode
      */
-    ERROR_CODE((short)2, "errorCode");
+    STATUS_CODE((short)2, "statusCode");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -54,8 +54,8 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
       switch(fieldId) {
         case 1: // TOKEN
           return TOKEN;
-        case 2: // ERROR_CODE
-          return ERROR_CODE;
+        case 2: // STATUS_CODE
+          return STATUS_CODE;
         default:
           return null;
       }
@@ -102,13 +102,20 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ScheduleToken.class)));
-    tmpMap.put(_Fields.ERROR_CODE, new org.apache.thrift.meta_data.FieldMetaData("errorCode", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, ScheduleErrorCode.class)));
+    tmpMap.put(_Fields.STATUS_CODE, new org.apache.thrift.meta_data.FieldMetaData("statusCode", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, ScheduleStatusCode.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ScheduleTokenResponse.class, metaDataMap);
   }
 
   public ScheduleTokenResponse() {
+  }
+
+  public ScheduleTokenResponse(
+    ScheduleStatusCode statusCode)
+  {
+    this();
+    this.statusCode = statusCode;
   }
 
   /**
@@ -118,8 +125,8 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
     if (other.isSetToken()) {
       this.token = new ScheduleToken(other.token);
     }
-    if (other.isSetErrorCode()) {
-      this.errorCode = other.errorCode;
+    if (other.isSetStatusCode()) {
+      this.statusCode = other.statusCode;
     }
   }
 
@@ -130,7 +137,7 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
   @Override
   public void clear() {
     this.token = null;
-    this.errorCode = null;
+    this.statusCode = null;
   }
 
   public ScheduleToken getToken() {
@@ -159,33 +166,33 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
 
   /**
    * 
-   * @see ScheduleErrorCode
+   * @see ScheduleStatusCode
    */
-  public ScheduleErrorCode getErrorCode() {
-    return this.errorCode;
+  public ScheduleStatusCode getStatusCode() {
+    return this.statusCode;
   }
 
   /**
    * 
-   * @see ScheduleErrorCode
+   * @see ScheduleStatusCode
    */
-  public ScheduleTokenResponse setErrorCode(ScheduleErrorCode errorCode) {
-    this.errorCode = errorCode;
+  public ScheduleTokenResponse setStatusCode(ScheduleStatusCode statusCode) {
+    this.statusCode = statusCode;
     return this;
   }
 
-  public void unsetErrorCode() {
-    this.errorCode = null;
+  public void unsetStatusCode() {
+    this.statusCode = null;
   }
 
-  /** Returns true if field errorCode is set (has been assigned a value) and false otherwise */
-  public boolean isSetErrorCode() {
-    return this.errorCode != null;
+  /** Returns true if field statusCode is set (has been assigned a value) and false otherwise */
+  public boolean isSetStatusCode() {
+    return this.statusCode != null;
   }
 
-  public void setErrorCodeIsSet(boolean value) {
+  public void setStatusCodeIsSet(boolean value) {
     if (!value) {
-      this.errorCode = null;
+      this.statusCode = null;
     }
   }
 
@@ -199,11 +206,11 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
       }
       break;
 
-    case ERROR_CODE:
+    case STATUS_CODE:
       if (value == null) {
-        unsetErrorCode();
+        unsetStatusCode();
       } else {
-        setErrorCode((ScheduleErrorCode)value);
+        setStatusCode((ScheduleStatusCode)value);
       }
       break;
 
@@ -215,8 +222,8 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
     case TOKEN:
       return getToken();
 
-    case ERROR_CODE:
-      return getErrorCode();
+    case STATUS_CODE:
+      return getStatusCode();
 
     }
     throw new IllegalStateException();
@@ -231,8 +238,8 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
     switch (field) {
     case TOKEN:
       return isSetToken();
-    case ERROR_CODE:
-      return isSetErrorCode();
+    case STATUS_CODE:
+      return isSetStatusCode();
     }
     throw new IllegalStateException();
   }
@@ -259,12 +266,12 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
         return false;
     }
 
-    boolean this_present_errorCode = true && this.isSetErrorCode();
-    boolean that_present_errorCode = true && that.isSetErrorCode();
-    if (this_present_errorCode || that_present_errorCode) {
-      if (!(this_present_errorCode && that_present_errorCode))
+    boolean this_present_statusCode = true && this.isSetStatusCode();
+    boolean that_present_statusCode = true && that.isSetStatusCode();
+    if (this_present_statusCode || that_present_statusCode) {
+      if (!(this_present_statusCode && that_present_statusCode))
         return false;
-      if (!this.errorCode.equals(that.errorCode))
+      if (!this.statusCode.equals(that.statusCode))
         return false;
     }
 
@@ -280,10 +287,10 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
     if (present_token)
       builder.append(token);
 
-    boolean present_errorCode = true && (isSetErrorCode());
-    builder.append(present_errorCode);
-    if (present_errorCode)
-      builder.append(errorCode.getValue());
+    boolean present_statusCode = true && (isSetStatusCode());
+    builder.append(present_statusCode);
+    if (present_statusCode)
+      builder.append(statusCode.getValue());
 
     return builder.toHashCode();
   }
@@ -306,12 +313,12 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetErrorCode()).compareTo(typedOther.isSetErrorCode());
+    lastComparison = Boolean.valueOf(isSetStatusCode()).compareTo(typedOther.isSetStatusCode());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetErrorCode()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorCode, typedOther.errorCode);
+    if (isSetStatusCode()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.statusCode, typedOther.statusCode);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -341,9 +348,9 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // ERROR_CODE
+        case 2: // STATUS_CODE
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.errorCode = ScheduleErrorCode.findByValue(iprot.readI32());
+            this.statusCode = ScheduleStatusCode.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -370,12 +377,10 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
         oprot.writeFieldEnd();
       }
     }
-    if (this.errorCode != null) {
-      if (isSetErrorCode()) {
-        oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
-        oprot.writeI32(this.errorCode.getValue());
-        oprot.writeFieldEnd();
-      }
+    if (this.statusCode != null) {
+      oprot.writeFieldBegin(STATUS_CODE_FIELD_DESC);
+      oprot.writeI32(this.statusCode.getValue());
+      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -395,22 +400,23 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
       }
       first = false;
     }
-    if (isSetErrorCode()) {
-      if (!first) sb.append(", ");
-      sb.append("errorCode:");
-      if (this.errorCode == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.errorCode);
-      }
-      first = false;
+    if (!first) sb.append(", ");
+    sb.append("statusCode:");
+    if (this.statusCode == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.statusCode);
     }
+    first = false;
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (statusCode == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'statusCode' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
