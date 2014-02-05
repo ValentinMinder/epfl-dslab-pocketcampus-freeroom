@@ -19,6 +19,9 @@ import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuated;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LazyAdapter.Actuator;
 import org.pocketcampus.android.platform.sdk.ui.adapter.SeparatedListAdapter;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.utils.Preparated;
+import org.pocketcampus.android.platform.sdk.utils.Preparator;
+import org.pocketcampus.android.platform.sdk.utils.ScrollStateSaver;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
 import org.pocketcampus.plugin.events.shared.Constants;
 import org.pocketcampus.plugin.events.shared.EventItem;
@@ -356,7 +359,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 							return startDay + " - " + startTime;
 					case R.id.event_fav_star:
 						if(thisEventPool.isDisableStar())
-							return R.drawable.events_transparent;
+							return R.drawable.sdk_transparent;
 						Integer fav = android.R.drawable.star_off;
 						if(e.getEventCateg() == -2)
 							fav = android.R.drawable.star_on;

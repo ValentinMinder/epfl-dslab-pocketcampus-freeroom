@@ -27,7 +27,8 @@
 
 	<string name="sdk_upstream_server_down">The upstream server is down</string>
 	<string name="sdk_connection_no_cache_yes">Connection error, serving from cache</string>
-				
+	<string name="sdk_server_failed">An unexpected server error has occurred</string>
+						
 	<string name="actionbar_activity_not_found">Failed to open intent...</string>
 
 </resources>
