@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -17,6 +18,7 @@ namespace PocketCampus.Main.Services
     /// </summary>
     public sealed class HttpClient : IHttpClient
     {
+        private static readonly TimeSpan Timeout = TimeSpan.FromSeconds( 5 );
         private static readonly Encoding DefaultEncoding = Encoding.UTF8;
 
         // The client used to perform requests; its full name is required to avoid ambiguity
@@ -29,6 +31,7 @@ namespace PocketCampus.Main.Services
         public HttpClient()
         {
             _client = new System.Net.Http.HttpClient( new System.Net.Http.HttpClientHandler { AllowAutoRedirect = false } );
+            _client.Timeout = Timeout;
         }
 
 

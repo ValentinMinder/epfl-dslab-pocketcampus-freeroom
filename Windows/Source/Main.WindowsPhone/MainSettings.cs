@@ -22,6 +22,15 @@ namespace PocketCampus.Main
         }
 
         /// <summary>
+        /// Gets or sets the server configuration used to connect.
+        /// </summary>
+        public ServerConfiguration ServerConfiguration
+        {
+            get { return Get<ServerConfiguration>(); }
+            set { Set( value ); }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the user is authenticated.
         /// </summary>
         public bool IsAuthenticated
@@ -72,6 +81,8 @@ namespace PocketCampus.Main
             return new SettingsDefaultValues<MainSettings>
             {
                 { x => x.IsFirstRun, () => true },
+                { x => x.ServerConfiguration, 
+                    () => new ServerConfiguration( "https", 4433, "Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Directory", "IsAcademia" ) },
                 { x => x.IsAuthenticated, () => false },
                 { x => x.UserName, () => null },
                 { x => x.Password, () => null },

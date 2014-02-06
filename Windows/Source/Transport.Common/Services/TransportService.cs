@@ -14,8 +14,8 @@ namespace PocketCampus.Transport.Services
 {
     public sealed class TransportService : ThriftServiceImplementation<ITransportService>, ITransportService
     {
-        public TransportService( IServerConfiguration config )
-            : base( config.CreateCommunication( "transport" ) )
+        public TransportService( IServerAccess access )
+            : base( access.CreateCommunication( "transport" ) )
         {
 
         }

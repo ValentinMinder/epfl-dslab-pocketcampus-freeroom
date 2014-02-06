@@ -21,7 +21,7 @@ namespace PocketCampus.Main.ViewModels
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly INavigationService _navigationService;
-        private readonly IServerConfiguration _configLoader;
+        private readonly IServerAccess _serverAccess;
         private readonly IPluginLoader _pluginLoader;
         private readonly IMainSettings _settings;
         private readonly ITileCreator _tileCreator;
@@ -78,12 +78,12 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( INavigationService navigationService, IServerConfiguration configLoader,
+        public MainViewModel( INavigationService navigationService, IServerAccess serverAccess,
                               IPluginLoader pluginLoader, IMainSettings settings, ITileCreator tileCreator )
         {
             _navigationService = navigationService;
             _pluginLoader = pluginLoader;
-            _configLoader = configLoader;
+            _serverAccess = serverAccess;
             _settings = settings;
             _tileCreator = tileCreator;
         }
@@ -96,7 +96,18 @@ namespace PocketCampus.Main.ViewModels
         {
             if ( Plugins == null )
             {
-                await _configLoader.LoadAsync();
+                ServerConfiguration config;
+                try
+                {
+                    config = await _serverAccess.LoadConfigurationAsync();
+                    _settings.ServerConfiguration = config;
+                }
+                catch
+                {
+                    // something went wrong during the fetch, use the saved config
+                }
+
+                _serverAccess.CurrentConfiguration = _settings.ServerConfiguration;
 
                 Plugins = _pluginLoader.GetPlugins();
                 FilterPlugins();
@@ -106,7 +117,7 @@ namespace PocketCampus.Main.ViewModels
         [Conditional( "RELEASE" )]
         private void FilterPlugins()
         {
-            Plugins = Plugins.Where( p => _configLoader.EnabledPlugins.Contains( p.Id ) ).ToArray();
+            Plugins = Plugins.Where( p => _settings.ServerConfiguration.EnabledPlugins.Contains( p.Id ) ).ToArray();
         }
 
         /// <summary>

@@ -52,7 +52,7 @@
     <Compile Include="Services\ITileCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SecureRequestHandler.cs" />
-    <Compile Include="Services\ServerConfiguration.cs" />
+    <Compile Include="Services\ServerAccess.cs" />
     <Compile Include="Services\TequilaAuthenticator.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AuthenticationStatus.cs" />

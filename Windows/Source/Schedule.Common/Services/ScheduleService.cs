@@ -13,8 +13,8 @@ namespace PocketCampus.Schedule.Services
 {
     public sealed class ScheduleService : ThriftServiceImplementation<IScheduleService>, IScheduleService
     {
-        public ScheduleService( IServerConfiguration config )
-            : base( config.CreateCommunication( "isacademia" ) )
+        public ScheduleService( IServerAccess access )
+            : base( access.CreateCommunication( "isacademia" ) )
         {
 
         }

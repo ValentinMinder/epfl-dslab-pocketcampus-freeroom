@@ -13,8 +13,8 @@ namespace PocketCampus.Moodle.Services
 {
     public sealed class MoodleService : ThriftServiceImplementation<IMoodleService>, IMoodleService
     {
-        public MoodleService( IServerConfiguration config )
-            : base( config.CreateCommunication( "moodle" ) )
+        public MoodleService( IServerAccess access )
+            : base( access.CreateCommunication( "moodle" ) )
         {
 
         }

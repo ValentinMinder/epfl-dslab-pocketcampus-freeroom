@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using PocketCampus.Main.ViewModels;
@@ -37,18 +38,32 @@ namespace PocketCampus.Main.Views
                 return;
             }
 
-            // TODO: This is ugly, any way to avoid so many Container.Get calls?
+            // TODO: This is ugly. Really ugly.
 
             var navSvc = (INavigationService) Container.Get( typeof( INavigationService ), null );
 
             string id;
             if ( NavigationContext.QueryString.TryGetValue( TileCreator.PluginArgumentKey, out id ) )
             {
-                var config = (IServerConfiguration) Container.Get( typeof( IServerConfiguration ), null );
-                await config.LoadAsync();
+                var access = (IServerAccess) Container.Get( typeof( IServerAccess ), null );
+                var settings = (IMainSettings) Container.Get( typeof( IMainSettings ), null );
+
+                ServerConfiguration config;
+                try
+                {
+                    config = await access.LoadConfigurationAsync();
+                    settings.ServerConfiguration = config;
+                }
+                catch
+                {
+                    // something went wrong, use the cached config
+                }
+
+                access.CurrentConfiguration = settings.ServerConfiguration;
+
                 var loader = (IPluginLoader) Container.Get( typeof( IPluginLoader ), null );
                 var plugin = loader.GetPlugins().First( p => p.Id == id );
-                var settings = (IMainSettings) Container.Get( typeof( IMainSettings ), null );
+
 
                 if ( plugin.RequiresAuthentication && !settings.IsAuthenticated )
                 {

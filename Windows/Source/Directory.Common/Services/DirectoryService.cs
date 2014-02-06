@@ -13,8 +13,8 @@ namespace PocketCampus.Directory.Services
 {
     public sealed class DirectoryService : ThriftServiceImplementation<IDirectoryService>, IDirectoryService
     {
-        public DirectoryService( IServerConfiguration config )
-            : base( config.CreateCommunication( "directory" ) )
+        public DirectoryService( IServerAccess access )
+            : base( access.CreateCommunication( "directory" ) )
         {
         }
 
