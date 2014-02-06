@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using System.Reflection;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
@@ -18,14 +17,15 @@ namespace PocketCampus.Main.ViewModels
     public sealed class AboutViewModel : ViewModel<NoParameter>
     {
         private readonly IBrowserService _browserService;
+        private readonly IEmailService _emailService;
         private readonly IRatingService _ratingService;
 
         /// <summary>
         /// Gets the app version.
         /// </summary>
-        public Version AppVersion
+        public string AppVersion
         {
-            get { return typeof( AboutViewModel ).GetTypeInfo().Assembly.GetName().Version; }
+            get { return typeof( AboutViewModel ).GetTypeInfo().Assembly.GetName().Version.ToString( 2 ); }
         }
 
         /// <summary>
@@ -35,6 +35,12 @@ namespace PocketCampus.Main.ViewModels
         public Command<string> BrowseUrlCommand
         {
             get { return GetCommand<string>( _browserService.NavigateTo ); }
+        }
+
+        [CommandLogId( "SendEmail" )]
+        public Command<string> SendEmailCommand
+        {
+            get { return GetCommand<string>( _emailService.ComposeEmail ); }
         }
 
         /// <summary>
@@ -50,9 +56,10 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Creates a new AboutViewModel.
         /// </summary>
-        public AboutViewModel( IBrowserService browserService, IRatingService ratingService )
+        public AboutViewModel( IBrowserService browserService, IEmailService emailService, IRatingService ratingService )
         {
             _browserService = browserService;
+            _emailService = emailService;
             _ratingService = ratingService;
         }
     }

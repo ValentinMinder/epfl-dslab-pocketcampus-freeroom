@@ -70,15 +70,6 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to version.
-        /// </summary>
-        public static string AboutAppVersion {
-            get {
-                return ResourceManager.GetString("AboutAppVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to about....
         /// </summary>
         public static string AboutButton {
@@ -88,10 +79,29 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to support.epfl@pocketcampus.org.
+        /// </summary>
+        public static string AboutContact {
+            get {
+                return ResourceManager.GetString("AboutContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to contact &amp; support.
+        /// </summary>
+        public static string AboutContactHeader {
+            get {
+                return ResourceManager.GetString("AboutContactHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Solal Pirelli
         ///Amer Chamseddine
         ///Loïc Gardiol
-        ///Silviu Andrica.
+        ///Silviu Andrica
+        ///George Candea.
         /// </summary>
         public static string AboutDevelopers {
             get {
@@ -105,6 +115,15 @@ namespace PocketCampus.Main.Resources {
         public static string AboutDevelopersHeader {
             get {
                 return ResourceManager.GetString("AboutDevelopersHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PocketCampus.Org.
+        /// </summary>
+        public static string AboutOrganizationName {
+            get {
+                return ResourceManager.GetString("AboutOrganizationName", resourceCulture);
             }
         }
         
@@ -132,24 +151,6 @@ namespace PocketCampus.Main.Resources {
         public static string AboutRateAppButton {
             get {
                 return ResourceManager.GetString("AboutRateAppButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Prof. George Candea.
-        /// </summary>
-        public static string AboutSupervisor {
-            get {
-                return ResourceManager.GetString("AboutSupervisor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to supervisor.
-        /// </summary>
-        public static string AboutSupervisorHeader {
-            get {
-                return ResourceManager.GetString("AboutSupervisorHeader", resourceCulture);
             }
         }
         
