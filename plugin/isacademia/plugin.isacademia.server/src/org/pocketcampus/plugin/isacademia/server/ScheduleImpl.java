@@ -18,7 +18,6 @@ import org.pocketcampus.plugin.isacademia.server.HttpsClient.HttpResult;
 import org.pocketcampus.plugin.isacademia.shared.*;
 
 import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.cookie.BasicClientCookie;
 import org.joda.time.*;
 import org.joda.time.format.*;
 
@@ -32,17 +31,17 @@ public final class ScheduleImpl implements Schedule {
 	// The encoding of IS-Academia's schedule API.
 	private static final Charset ISA_CHARSET = Charset.forName("ISO-8859-1");
 	// The parameters of IS-Academia's API.
-	private static final String URL_FROM_PARAMETER = "from", URL_TO_PARAMETER = "to", URL_KEY_PARAMETER = "key";
+	private static final String URL_FROM_PARAMETER = "from", URL_TO_PARAMETER = "to", URL_SCIPER_PARAMETER = "sciper";
 	// The date format for IS-Academia's API.
 	private static final String URL_PARAMETER_FORMAT = "dd.MM.yyyy";
 
 	// The separator for the request key in a Tequila URL
-	private static final String TEQUILA_URL_KEY_SEPARATOR = "requestkey=";
+//	private static final String TEQUILA_URL_KEY_SEPARATOR = "requestkey=";
 
 	// The properties of the cookie for IS-Academia
-	private static final String ISA_COOKIE_NAME = "JSESSIONID";
-	private static final String ISA_COOKIE_DOMAIN = "isa.epfl.ch";
-	private static final String COOKIE_PATH_ALL = "/";
+//	private static final String ISA_COOKIE_NAME = "JSESSIONID";
+//	private static final String ISA_COOKIE_DOMAIN = "isa.epfl.ch";
+//	private static final String COOKIE_PATH_ALL = "/";
 
 	// The default language for localized text.
 	private static final String DEFAULT_LANGUAGE = "en";
@@ -81,53 +80,30 @@ public final class ScheduleImpl implements Schedule {
 	}
 
 	@Override
-	public ScheduleTokenResponse getToken() throws Exception {
-		HttpResult result;
-		try {
-			result = _client.get(ISA_SCHEDULE_URL, ISA_CHARSET, new ArrayList<Cookie>());
-		} catch (Exception e) {
-			return new ScheduleTokenResponse(ScheduleStatusCode.NETWORK_ERROR);
-		}
-
-		String tequilaKey = result.url.split(TEQUILA_URL_KEY_SEPARATOR)[1];
-		String sessionId = null;
-		for (Cookie cookie : result.cookies) {
-			if (cookie.getName().equals(ISA_COOKIE_NAME)) {
-				sessionId = cookie.getValue();
-			}
-		}
-		if (sessionId == null) {
-			throw new Exception("ScheduleImpl#getToken: No ISA session ID found.");
-		}
-
-		return new ScheduleTokenResponse(ScheduleStatusCode.OK).setToken(new ScheduleToken(tequilaKey, sessionId));
-	}
-
-	@Override
-	public ScheduleResponse get(LocalDate weekBeginning, String language, ScheduleToken token) throws Exception {
+	public ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) throws Exception {
 		LocalDate weekEnd = weekBeginning.plusDays(6);
 		String url = ISA_SCHEDULE_URL
 				+ "?" + URL_FROM_PARAMETER + "=" + weekBeginning.toString(URL_PARAMETER_FORMAT)
 				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT)
-				+ "&" + URL_KEY_PARAMETER + "=" + token.getTequilaToken();
+				+ "&" + URL_SCIPER_PARAMETER + "=" + sciper;
 
 		List<Cookie> cookies = new ArrayList<Cookie>();
-		BasicClientCookie isaCookie = new BasicClientCookie(ISA_COOKIE_NAME, token.getSessionId());
-		isaCookie.setDomain(ISA_COOKIE_DOMAIN);
-		isaCookie.setPath(COOKIE_PATH_ALL);
-		cookies.add(isaCookie);
+//		BasicClientCookie isaCookie = new BasicClientCookie(ISA_COOKIE_NAME, token.getSessionId());
+//		isaCookie.setDomain(ISA_COOKIE_DOMAIN);
+//		isaCookie.setPath(COOKIE_PATH_ALL);
+//		cookies.add(isaCookie);
 
 		String xml = null;
 		try {
 			HttpResult result = _client.get(url, ISA_CHARSET, cookies);
 
 			if (!result.url.contains(ISA_SCHEDULE_URL)) {
-				return new ScheduleResponse(ScheduleStatusCode.INVALID_SESSION);
+				return new ScheduleResponse(IsaStatusCode.INVALID_SESSION);
 			}
 
 			xml = result.content;
 		} catch (Exception e) {
-			return new ScheduleResponse(ScheduleStatusCode.NETWORK_ERROR);
+			return new ScheduleResponse(IsaStatusCode.NETWORK_ERROR);
 		}
 
 		Element xdoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
@@ -161,7 +137,7 @@ public final class ScheduleImpl implements Schedule {
 			periods.add(period);
 		}
 
-		return new ScheduleResponse(ScheduleStatusCode.OK).setDays(groupPeriodsByDay(weekBeginning, periods));
+		return new ScheduleResponse(IsaStatusCode.OK).setDays(groupPeriodsByDay(weekBeginning, periods));
 	}
 
 	private static List<StudyDay> groupPeriodsByDay(LocalDate weekBegin, List<StudyPeriod> periods) {

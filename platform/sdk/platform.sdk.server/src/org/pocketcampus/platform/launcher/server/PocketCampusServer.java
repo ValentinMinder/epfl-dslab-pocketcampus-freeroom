@@ -2,6 +2,7 @@ package org.pocketcampus.platform.launcher.server;
 
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TServlet;
+
+import ch.epfl.tequila.client.model.ClientConfig;
+import ch.epfl.tequila.client.model.TequilaPrincipal;
+import ch.epfl.tequila.client.service.TequilaService;
 
 public class PocketCampusServer extends ServerBase {
 
@@ -162,5 +167,44 @@ public class PocketCampusServer extends ServerBase {
 		}
 		return false;
 	}
+	
+	/*****
+	 * TEQUILA AUTHENTICATION CRAP 
+	 * @author amer
+	 *
+	 */
+	
+	public static String authGetTequilaToken(String plugin) {
 
+		ClientConfig config = new ClientConfig();
+		config.setHost("tequila.epfl.ch");
+		//config.setOrg("PocketCampusOrg");
+		config.setService(plugin + "@pocketcampus");
+		config.setRequest("name firstname email title unit office phone username uniqueid unixid groupid where categorie");
+		config.setAllows("categorie=epfl-guests");
+		//config.setAuthstrength("2");
+
+		try {
+			return TequilaService.instance().createRequest(config, "pocketcampus://" + plugin + ".plugin.pocketcampus.org/authenticated");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+
+	public static TequilaPrincipal authGetTequilaPrincipal(String token) throws SecurityException {
+
+		ClientConfig config = new ClientConfig();
+		config.setHost("tequila.epfl.ch");
+
+		try {
+			return TequilaService.instance().validateKey(config, token);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	
 }

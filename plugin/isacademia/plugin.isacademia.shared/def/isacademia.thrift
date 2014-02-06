@@ -23,20 +23,15 @@ struct StudyDay {
   2: required list<StudyPeriod> periods;
 }
 
-struct ScheduleToken {
-  1: required string tequilaToken;
-  2: required string sessionId;
-}
-
 struct ScheduleRequest {
-  1: required ScheduleToken token;
+  1: required string sessionId;
   // default is current week
   2: optional timestamp weekStart;
   // default is "fr"
   3: optional string language;
 }
 
-enum ScheduleStatusCode {
+enum IsaStatusCode {
   // The request was successful
   OK = 200,
   // A network error occurred
@@ -45,19 +40,26 @@ enum ScheduleStatusCode {
   INVALID_SESSION = 407
 }
 
-struct ScheduleTokenResponse {
+struct IsaTokenResponse {
   // Required if the request completed successfully
-  1: optional ScheduleToken token;
-  2: required ScheduleStatusCode statusCode;
+  1: optional string tequilaToken;
+  2: required IsaStatusCode statusCode;
+}
+
+struct IsaSessionResponse {
+  // Required if the request completed successfully
+  1: optional string sessionId;
+  2: required IsaStatusCode statusCode;
 }
 
 struct ScheduleResponse {
   // Required if the request completed successfully
   1: optional list<StudyDay> days;
-  2: required ScheduleStatusCode statusCode;
+  2: required IsaStatusCode statusCode;
 }
 
 service IsAcademiaService {
-    ScheduleTokenResponse getScheduleToken();
+    IsaTokenResponse getIsaTequilaToken();
+    IsaSessionResponse getIsaSessionId(1: string tequilaToken);
     ScheduleResponse getSchedule(1: ScheduleRequest req);
 }

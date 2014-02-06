@@ -21,21 +21,21 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTokenResponse, ScheduleTokenResponse._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ScheduleTokenResponse");
+public class IsaSessionResponse implements org.apache.thrift.TBase<IsaSessionResponse, IsaSessionResponse._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("IsaSessionResponse");
 
-  private static final org.apache.thrift.protocol.TField TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("token", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+  private static final org.apache.thrift.protocol.TField SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("sessionId", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField STATUS_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("statusCode", org.apache.thrift.protocol.TType.I32, (short)2);
 
-  private ScheduleToken token; // required
-  private ScheduleStatusCode statusCode; // required
+  private String sessionId; // required
+  private IsaStatusCode statusCode; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    TOKEN((short)1, "token"),
+    SESSION_ID((short)1, "sessionId"),
     /**
      * 
-     * @see ScheduleStatusCode
+     * @see IsaStatusCode
      */
     STATUS_CODE((short)2, "statusCode");
 
@@ -52,8 +52,8 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // TOKEN
-          return TOKEN;
+        case 1: // SESSION_ID
+          return SESSION_ID;
         case 2: // STATUS_CODE
           return STATUS_CODE;
         default:
@@ -100,19 +100,19 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ScheduleToken.class)));
+    tmpMap.put(_Fields.SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("sessionId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.STATUS_CODE, new org.apache.thrift.meta_data.FieldMetaData("statusCode", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, ScheduleStatusCode.class)));
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, IsaStatusCode.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ScheduleTokenResponse.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(IsaSessionResponse.class, metaDataMap);
   }
 
-  public ScheduleTokenResponse() {
+  public IsaSessionResponse() {
   }
 
-  public ScheduleTokenResponse(
-    ScheduleStatusCode statusCode)
+  public IsaSessionResponse(
+    IsaStatusCode statusCode)
   {
     this();
     this.statusCode = statusCode;
@@ -121,62 +121,62 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public ScheduleTokenResponse(ScheduleTokenResponse other) {
-    if (other.isSetToken()) {
-      this.token = new ScheduleToken(other.token);
+  public IsaSessionResponse(IsaSessionResponse other) {
+    if (other.isSetSessionId()) {
+      this.sessionId = other.sessionId;
     }
     if (other.isSetStatusCode()) {
       this.statusCode = other.statusCode;
     }
   }
 
-  public ScheduleTokenResponse deepCopy() {
-    return new ScheduleTokenResponse(this);
+  public IsaSessionResponse deepCopy() {
+    return new IsaSessionResponse(this);
   }
 
   @Override
   public void clear() {
-    this.token = null;
+    this.sessionId = null;
     this.statusCode = null;
   }
 
-  public ScheduleToken getToken() {
-    return this.token;
+  public String getSessionId() {
+    return this.sessionId;
   }
 
-  public ScheduleTokenResponse setToken(ScheduleToken token) {
-    this.token = token;
+  public IsaSessionResponse setSessionId(String sessionId) {
+    this.sessionId = sessionId;
     return this;
   }
 
-  public void unsetToken() {
-    this.token = null;
+  public void unsetSessionId() {
+    this.sessionId = null;
   }
 
-  /** Returns true if field token is set (has been assigned a value) and false otherwise */
-  public boolean isSetToken() {
-    return this.token != null;
+  /** Returns true if field sessionId is set (has been assigned a value) and false otherwise */
+  public boolean isSetSessionId() {
+    return this.sessionId != null;
   }
 
-  public void setTokenIsSet(boolean value) {
+  public void setSessionIdIsSet(boolean value) {
     if (!value) {
-      this.token = null;
+      this.sessionId = null;
     }
   }
 
   /**
    * 
-   * @see ScheduleStatusCode
+   * @see IsaStatusCode
    */
-  public ScheduleStatusCode getStatusCode() {
+  public IsaStatusCode getStatusCode() {
     return this.statusCode;
   }
 
   /**
    * 
-   * @see ScheduleStatusCode
+   * @see IsaStatusCode
    */
-  public ScheduleTokenResponse setStatusCode(ScheduleStatusCode statusCode) {
+  public IsaSessionResponse setStatusCode(IsaStatusCode statusCode) {
     this.statusCode = statusCode;
     return this;
   }
@@ -198,11 +198,11 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case TOKEN:
+    case SESSION_ID:
       if (value == null) {
-        unsetToken();
+        unsetSessionId();
       } else {
-        setToken((ScheduleToken)value);
+        setSessionId((String)value);
       }
       break;
 
@@ -210,7 +210,7 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
       if (value == null) {
         unsetStatusCode();
       } else {
-        setStatusCode((ScheduleStatusCode)value);
+        setStatusCode((IsaStatusCode)value);
       }
       break;
 
@@ -219,8 +219,8 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case TOKEN:
-      return getToken();
+    case SESSION_ID:
+      return getSessionId();
 
     case STATUS_CODE:
       return getStatusCode();
@@ -236,8 +236,8 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
     }
 
     switch (field) {
-    case TOKEN:
-      return isSetToken();
+    case SESSION_ID:
+      return isSetSessionId();
     case STATUS_CODE:
       return isSetStatusCode();
     }
@@ -248,21 +248,21 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof ScheduleTokenResponse)
-      return this.equals((ScheduleTokenResponse)that);
+    if (that instanceof IsaSessionResponse)
+      return this.equals((IsaSessionResponse)that);
     return false;
   }
 
-  public boolean equals(ScheduleTokenResponse that) {
+  public boolean equals(IsaSessionResponse that) {
     if (that == null)
       return false;
 
-    boolean this_present_token = true && this.isSetToken();
-    boolean that_present_token = true && that.isSetToken();
-    if (this_present_token || that_present_token) {
-      if (!(this_present_token && that_present_token))
+    boolean this_present_sessionId = true && this.isSetSessionId();
+    boolean that_present_sessionId = true && that.isSetSessionId();
+    if (this_present_sessionId || that_present_sessionId) {
+      if (!(this_present_sessionId && that_present_sessionId))
         return false;
-      if (!this.token.equals(that.token))
+      if (!this.sessionId.equals(that.sessionId))
         return false;
     }
 
@@ -282,10 +282,10 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_token = true && (isSetToken());
-    builder.append(present_token);
-    if (present_token)
-      builder.append(token);
+    boolean present_sessionId = true && (isSetSessionId());
+    builder.append(present_sessionId);
+    if (present_sessionId)
+      builder.append(sessionId);
 
     boolean present_statusCode = true && (isSetStatusCode());
     builder.append(present_statusCode);
@@ -295,20 +295,20 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
     return builder.toHashCode();
   }
 
-  public int compareTo(ScheduleTokenResponse other) {
+  public int compareTo(IsaSessionResponse other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    ScheduleTokenResponse typedOther = (ScheduleTokenResponse)other;
+    IsaSessionResponse typedOther = (IsaSessionResponse)other;
 
-    lastComparison = Boolean.valueOf(isSetToken()).compareTo(typedOther.isSetToken());
+    lastComparison = Boolean.valueOf(isSetSessionId()).compareTo(typedOther.isSetSessionId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetToken()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.token, typedOther.token);
+    if (isSetSessionId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sessionId, typedOther.sessionId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -340,17 +340,16 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
         break;
       }
       switch (field.id) {
-        case 1: // TOKEN
-          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.token = new ScheduleToken();
-            this.token.read(iprot);
+        case 1: // SESSION_ID
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.sessionId = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case 2: // STATUS_CODE
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.statusCode = ScheduleStatusCode.findByValue(iprot.readI32());
+            this.statusCode = IsaStatusCode.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -370,10 +369,10 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.token != null) {
-      if (isSetToken()) {
-        oprot.writeFieldBegin(TOKEN_FIELD_DESC);
-        this.token.write(oprot);
+    if (this.sessionId != null) {
+      if (isSetSessionId()) {
+        oprot.writeFieldBegin(SESSION_ID_FIELD_DESC);
+        oprot.writeString(this.sessionId);
         oprot.writeFieldEnd();
       }
     }
@@ -388,15 +387,15 @@ public class ScheduleTokenResponse implements org.apache.thrift.TBase<ScheduleTo
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("ScheduleTokenResponse(");
+    StringBuilder sb = new StringBuilder("IsaSessionResponse(");
     boolean first = true;
 
-    if (isSetToken()) {
-      sb.append("token:");
-      if (this.token == null) {
+    if (isSetSessionId()) {
+      sb.append("sessionId:");
+      if (this.sessionId == null) {
         sb.append("null");
       } else {
-        sb.append(this.token);
+        sb.append(this.sessionId);
       }
       first = false;
     }

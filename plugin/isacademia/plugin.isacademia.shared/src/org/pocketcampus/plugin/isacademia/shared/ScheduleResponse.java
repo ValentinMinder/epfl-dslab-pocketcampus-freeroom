@@ -28,14 +28,14 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
   private static final org.apache.thrift.protocol.TField STATUS_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("statusCode", org.apache.thrift.protocol.TType.I32, (short)2);
 
   private List<StudyDay> days; // required
-  private ScheduleStatusCode statusCode; // required
+  private IsaStatusCode statusCode; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     DAYS((short)1, "days"),
     /**
      * 
-     * @see ScheduleStatusCode
+     * @see IsaStatusCode
      */
     STATUS_CODE((short)2, "statusCode");
 
@@ -104,7 +104,7 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, StudyDay.class))));
     tmpMap.put(_Fields.STATUS_CODE, new org.apache.thrift.meta_data.FieldMetaData("statusCode", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, ScheduleStatusCode.class)));
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, IsaStatusCode.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ScheduleResponse.class, metaDataMap);
   }
@@ -113,7 +113,7 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
   }
 
   public ScheduleResponse(
-    ScheduleStatusCode statusCode)
+    IsaStatusCode statusCode)
   {
     this();
     this.statusCode = statusCode;
@@ -186,17 +186,17 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
 
   /**
    * 
-   * @see ScheduleStatusCode
+   * @see IsaStatusCode
    */
-  public ScheduleStatusCode getStatusCode() {
+  public IsaStatusCode getStatusCode() {
     return this.statusCode;
   }
 
   /**
    * 
-   * @see ScheduleStatusCode
+   * @see IsaStatusCode
    */
-  public ScheduleResponse setStatusCode(ScheduleStatusCode statusCode) {
+  public ScheduleResponse setStatusCode(IsaStatusCode statusCode) {
     this.statusCode = statusCode;
     return this;
   }
@@ -230,7 +230,7 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
       if (value == null) {
         unsetStatusCode();
       } else {
-        setStatusCode((ScheduleStatusCode)value);
+        setStatusCode((IsaStatusCode)value);
       }
       break;
 
@@ -380,7 +380,7 @@ public class ScheduleResponse implements org.apache.thrift.TBase<ScheduleRespons
           break;
         case 2: // STATUS_CODE
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.statusCode = ScheduleStatusCode.findByValue(iprot.readI32());
+            this.statusCode = IsaStatusCode.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
