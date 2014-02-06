@@ -18,13 +18,14 @@ namespace PocketCampus.Main.ViewModels
     /// The main ViewModel.
     /// </summary>
     [PageLogId( "/dashboard" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    public sealed class MainViewModel : DataViewModel<string>
     {
         private readonly INavigationService _navigationService;
         private readonly IServerAccess _serverAccess;
         private readonly IPluginLoader _pluginLoader;
         private readonly IMainSettings _settings;
         private readonly ITileCreator _tileCreator;
+        private readonly string _requestedPlugin;
 
         private IPlugin[] _plugins;
 
@@ -79,18 +80,21 @@ namespace PocketCampus.Main.ViewModels
         /// Creates a new MainViewModel.
         /// </summary>
         public MainViewModel( INavigationService navigationService, IServerAccess serverAccess,
-                              IPluginLoader pluginLoader, IMainSettings settings, ITileCreator tileCreator )
+                              IPluginLoader pluginLoader, IMainSettings settings, ITileCreator tileCreator,
+                              string requestedPlugin )
         {
             _navigationService = navigationService;
             _pluginLoader = pluginLoader;
             _serverAccess = serverAccess;
             _settings = settings;
             _tileCreator = tileCreator;
+
+            _requestedPlugin = requestedPlugin;
         }
 
 
         /// <summary>
-        /// Loads plugins and authenticates if needed.
+        /// Loads plugins.
         /// </summary>
         protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
@@ -111,9 +115,22 @@ namespace PocketCampus.Main.ViewModels
 
                 Plugins = _pluginLoader.GetPlugins();
                 FilterPlugins();
+
+                if ( _requestedPlugin != "" )
+                {
+                    var plugin = Plugins.FirstOrDefault( p => p.Id == _requestedPlugin );
+                    if ( plugin != null )
+                    {
+                        _navigationService.PopBackStack();
+                        OpenPlugin( plugin );
+                    }
+                }
             }
         }
 
+        /// <summary>
+        /// Filters plugins to only display the ones that are enabled.
+        /// </summary>
         [Conditional( "RELEASE" )]
         private void FilterPlugins()
         {
