@@ -89,12 +89,6 @@
     <Compile Include="Controls\DayPicker.xaml.cs">
       <DependentUpon>DayPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RatingDisplay.xaml.cs">
-      <DependentUpon>RatingDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\RatingPicker.xaml.cs">
-      <DependentUpon>RatingPicker.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\MealTimePicker.xaml.cs">
       <DependentUpon>MealTimePicker.xaml</DependentUpon>
     </Compile>
@@ -118,9 +112,6 @@
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RatingView.xaml.cs">
-      <DependentUpon>RatingView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -151,10 +142,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\RatingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\PluginResources.fr.resx">
@@ -167,14 +154,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\RatingDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\RatingPicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

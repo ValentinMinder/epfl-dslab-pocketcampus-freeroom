@@ -88,15 +88,6 @@ namespace PocketCampus.Food.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} votes.
-        /// </summary>
-        public static string ManyVotesCast {
-            get {
-                return ResourceManager.GetString("ManyVotesCast", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to My budget is.
         /// </summary>
         public static string MaximumBudget {
@@ -205,24 +196,6 @@ namespace PocketCampus.Food.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to no votes.
-        /// </summary>
-        public static string NoVotesCast {
-            get {
-                return ResourceManager.GetString("NoVotesCast", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 1 vote.
-        /// </summary>
-        public static string OneVoteCast {
-            get {
-                return ResourceManager.GetString("OneVoteCast", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to MENUS.
         /// </summary>
         public static string PagesHeader {
@@ -282,78 +255,6 @@ namespace PocketCampus.Food.Resources {
         public static string PriceTarget_Visitor {
             get {
                 return ResourceManager.GetString("PriceTarget_Visitor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to rate.
-        /// </summary>
-        public static string RateButton {
-            get {
-                return ResourceManager.GetString("RateButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to rate.
-        /// </summary>
-        public static string RateMealButton {
-            get {
-                return ResourceManager.GetString("RateMealButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You have already rated a meal today..
-        /// </summary>
-        public static string RatingStatus_AlreadyVotedToday {
-            get {
-                return ResourceManager.GetString("RatingStatus_AlreadyVotedToday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Future meals cannot be rated..
-        /// </summary>
-        public static string RatingStatus_MealFromTheFuture {
-            get {
-                return ResourceManager.GetString("RatingStatus_MealFromTheFuture", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Past meals cannot be rated..
-        /// </summary>
-        public static string RatingStatus_MealFromThePast {
-            get {
-                return ResourceManager.GetString("RatingStatus_MealFromThePast", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  .
-        /// </summary>
-        public static string RatingStatus_Ok {
-            get {
-                return ResourceManager.GetString("RatingStatus_Ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to It&apos;s too early to rate meals..
-        /// </summary>
-        public static string RatingStatus_TooEarly {
-            get {
-                return ResourceManager.GetString("RatingStatus_TooEarly", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to rate.
-        /// </summary>
-        public static string RatingViewTitle {
-            get {
-                return ResourceManager.GetString("RatingViewTitle", resourceCulture);
             }
         }
         

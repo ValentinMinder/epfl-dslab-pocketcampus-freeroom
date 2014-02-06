@@ -75,14 +75,6 @@
                                Visibility="{Binding Description, Converter={StaticResource StringToVisibility}}"
                                Style="{StaticResource PhoneTextSubtleStyle}" />
 
-                    <!-- Rating -->
-                    <myControls:RatingDisplay Grid.Column="1"
-                                              Grid.RowSpan="2"
-                                              Grid.Row="2"
-                                              Rating="{Binding Rating}"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"/>
-
                     <!-- Price -->
                     <TextBlock Grid.Column="1"
                                Grid.Row="2"
@@ -105,40 +97,19 @@
                                    Style="{StaticResource PhoneTextNormalStyle}"
                                    Foreground="{StaticResource PhoneAccentBrush}" />
                     </StackPanel>
-
-                    <!-- Context menu -->
-                    <tool:ContextMenuService.ContextMenu>
-                        <tool:ContextMenu>
-                            <!-- "Rate" button -->
-                            <tool:MenuItem Header="{Binding Resources.RateMealButton, Source={StaticResource Strings}}"
-                                           Command="{Binding DataContext.RateMealCommand, ElementName=LayoutRoot}"
-                                           CommandParameter="{Binding}" />
-                        </tool:ContextMenu>
-                    </tool:ContextMenuService.ContextMenu>
                 </Grid>
             </DataTemplate>
 
             <!-- Restaurant header template -->
             <DataTemplate x:Key="RestaurantHeaderTemplate">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
+                <Grid Background="Transparent">
                     <!-- Name -->
                     <TextBlock Text="{Binding Name}"
                                TextTrimming="WordEllipsis"
                                Style="{StaticResource PhoneTextLargeStyle}"
                                Foreground="{StaticResource PhoneSubtleBrush}"
                                Margin="0" />
-
-                    <!-- Rating -->
-                    <myControls:RatingDisplay Grid.Column="1"
-                                              Rating="{Binding Rating}"
-                                              Margin="0,0,0,-6"
-                                              VerticalAlignment="Center" />
-
+                    
                     <!-- Context menu -->
                     <tool:ContextMenuService.ContextMenu>
                         <tool:ContextMenu>

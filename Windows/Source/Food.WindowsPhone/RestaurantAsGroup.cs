@@ -16,14 +16,11 @@ namespace PocketCampus.Food
 
         public MapItem MapItem { get; set; }
 
-        public Rating Rating { get; set; }
-
         public RestaurantAsGroup( Restaurant restaurant )
             : base( restaurant.Meals )
         {
             Name = restaurant.Name;
             MapItem = restaurant.MapItem;
-            Rating = restaurant.Rating;
         }
     }
 }

@@ -192,42 +192,8 @@
   <data name="MainViewTitle" xml:space="preserve">
     <value>Menus</value>
   </data>
-  <data name="NoVotesCast" xml:space="preserve">
-    <value>aucune évaluation</value>
-  </data>
-  <data name="ManyVotesCast" xml:space="preserve">
-    <value>{0} évaluations</value>
-  </data>
-  <data name="OneVoteCast" xml:space="preserve">
-    <value>1 évaluation</value>
-  </data>
-  <data name="RatingStatus_AlreadyVotedToday" xml:space="preserve">
-    <value>Vous avez déjà évalué un plat aujourd'hui.</value>
-  </data>
-  <data name="RatingStatus_MealFromTheFuture" xml:space="preserve">
-    <value>Impossible d'évaluer un plat futur.</value>
-  </data>
-  <data name="RatingStatus_MealFromThePast" xml:space="preserve">
-    <value>Impossible d'évaluer un ancien plat.</value>
-  </data>
-  <data name="RatingStatus_Ok" xml:space="preserve">
-    <value> </value>
-    <comment>Must be empty</comment>
-  </data>
-  <data name="RatingStatus_TooEarly" xml:space="preserve">
-    <value>Il est trop tôt pour évaluer un plat.</value>
-  </data>
-  <data name="RateButton" xml:space="preserve">
-    <value>évaluer</value>
-  </data>
-  <data name="RateMealButton" xml:space="preserve">
-    <value>évaluer</value>
-  </data>
   <data name="ViewRestaurantOnMap" xml:space="preserve">
     <value>afficher sur la carte</value>
-  </data>
-  <data name="RatingViewTitle" xml:space="preserve">
-    <value>évaluer</value>
   </data>
   <data name="UnknownPrice" xml:space="preserve">
     <value>prix inconnu</value>

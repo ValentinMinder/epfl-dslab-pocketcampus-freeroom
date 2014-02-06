@@ -94,29 +94,4 @@ namespace PocketCampus.Food
             return value.Select( r => new RestaurantAsGroup( r ) ).ToArray();
         }
     }
-
-
-    /// <summary>
-    /// Converts a rating value to a percentage.
-    /// </summary>
-    public sealed class RatingValueToPercentageConverter : ValueConverter<double, int>
-    {
-        protected override int Convert( double value )
-        {
-            return (int) Math.Round( 100 * value );
-        }
-    }
-
-    /// <summary>
-    /// Converts a number of votes to a human-readable string.
-    /// </summary>
-    public sealed class VoteCountToStringConverter : ValueConverter<int, string>
-    {
-        protected override string Convert( int value )
-        {
-            return value == 0 ? PluginResources.NoVotesCast
-                 : value == 1 ? PluginResources.OneVoteCast
-                              : string.Format( PluginResources.ManyVotesCast, value );
-        }
-    }
 }

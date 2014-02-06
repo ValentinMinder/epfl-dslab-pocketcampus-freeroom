@@ -39,12 +39,6 @@ namespace PocketCampus.Food.Models
         [ThriftField( 4, false, "rLocation" )]
         public MapItem MapItem { get; set; }
 
-        /// <summary>
-        /// The restaurant's rating.
-        /// </summary>
-        [ThriftField( 5, true, "rRating" )]
-        public Rating Rating { get; set; }
-
 
         /// <summary>
         /// Creates a copy of the restaurant, replacing the meals with the specified ones.
@@ -56,8 +50,7 @@ namespace PocketCampus.Food.Models
                 Id = this.Id,
                 Name = this.Name,
                 Meals = meals.ToArray(),
-                MapItem = this.MapItem,
-                Rating = this.Rating
+                MapItem = this.MapItem
             };
         }
     }
