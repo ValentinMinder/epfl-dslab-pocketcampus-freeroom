@@ -1,0 +1,123 @@
+<!-- Copyright (c) PocketCampus.Org 2014
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<comControls:BasePage x:Class="PocketCampus.News.Views.MainView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+                      xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+                      xmlns:my="clr-namespace:PocketCampus.News"
+                      xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      mc:Ignorable="d">
+    <!-- Design-time DataContext -->
+    <d:DesignProperties.DataContext>
+        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.News.ViewModels.Design;assembly=PocketCampus.News.Common" />
+    </d:DesignProperties.DataContext>
+
+    <!-- Page resources -->
+    <comControls:BasePage.Resources>
+        <!-- Localized strings -->
+        <my:LocalizedStrings x:Key="Strings" />
+
+        <!-- Converters -->
+        <my:OnlineImageDisplayConverter x:Key="ImageDisplay"
+                                        Width="200"
+                                        Height="150" />
+
+        <!-- Simple button template without any border or background -->
+        <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
+            <Grid Background="Transparent">
+                <ContentPresenter />
+            </Grid>
+        </ControlTemplate>
+
+        <!-- FeedItem template -->
+        <!-- BUG: When loading the page, it seems the DataContext passed to these items is the Feed
+                  itself, which causes a ton of binding errors... in the end it works, but there's
+                  something fishy going on here -->
+        <DataTemplate x:Key="FeedItemTemplate">
+            <Button Template="{StaticResource SimpleButtonTemplate}"
+                    Command="{Binding DataContext.ViewFeedItemCommand, ElementName=LayoutRoot}"
+                    CommandParameter="{Binding}"
+                    Margin="0,0,0,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="172" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Progress bar behind the image; will disappear when the image is displayed -->
+                    <ProgressBar Grid.RowSpan="2"
+                                 IsIndeterminate="True" />
+
+                    <!-- Image -->
+                    <Image Source="{Binding Image, Converter={StaticResource ImageDisplay}}" />
+
+                    <StackPanel Grid.Column="1">
+                        <!-- Title -->
+                        <TextBlock Grid.Column="1"
+                               Text="{Binding Title}"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                               TextWrapping="Wrap" />
+
+                        <!-- Date -->
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="1"
+                                   Text="{Binding Date, StringFormat='D'}"
+                                   Style="{StaticResource PhoneTextSmallStyle}" />
+                    </StackPanel>
+                </Grid>
+            </Button>
+        </DataTemplate>
+
+        <!-- Feed pivot item template -->
+        <DataTemplate x:Key="FeedTemplate">
+            <ItemsControl ItemsSource="{Binding Items}"
+                          ItemTemplate="{StaticResource FeedItemTemplate}"
+                          Style="{StaticResource ScrollingItemsControlStyle}" />
+        </DataTemplate>
+
+        <!-- Feed pivot header template -->
+        <DataTemplate x:Key="FeedHeaderTemplate">
+            <Border Height="96">
+                <TextBlock Text="{Binding Name}"
+                           TextWrapping="Wrap"
+                           FontSize="{StaticResource PhoneFontSizeLarge}"
+                           VerticalAlignment="Bottom"
+                           MaxWidth="400" />
+            </Border>
+        </DataTemplate>
+    </comControls:BasePage.Resources>
+
+    <!-- Main grid -->
+    <Grid x:Name="LayoutRoot">
+        <!-- Pivot title & header background -->
+        <Rectangle Fill="{StaticResource AppHeaderBackgroundBrush}"
+                   VerticalAlignment="Top"
+                   Height="150" />
+
+        <!-- Pivot -->
+        <phone:Pivot ItemsSource="{Binding Feeds}"
+                     ItemTemplate="{StaticResource FeedTemplate}"
+                     HeaderTemplate="{StaticResource FeedHeaderTemplate}"
+                     Title="{Binding Resources.MainViewTitle, Source={StaticResource Strings}}"
+                     Foreground="{StaticResource AppHeaderForegroundBrush}" />
+
+        <!-- Loading & error -->
+        <comControls:LoadingAndError Margin="0,65,0,0" />
+    </Grid>
+
+    <!-- App bar -->
+    <bar:Bindable.ApplicationBar>
+        <bar:BindableApplicationBar>
+            <!-- "Refresh" button -->
+            <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"
+                                              Text="{Binding Resources.RefreshButton, Source={StaticResource Strings}}"
+                                              IconUri="/Assets/Refresh.png" />
+        </bar:BindableApplicationBar>
+    </bar:Bindable.ApplicationBar>
+</comControls:BasePage>

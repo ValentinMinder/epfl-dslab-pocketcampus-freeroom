@@ -1,0 +1,217 @@
+<!-- Copyright (c) PocketCampus.Org 2014
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<comControls:BasePage x:Class="PocketCampus.Directory.Views.PersonView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:tool="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                      xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+                      xmlns:com="clr-namespace:PocketCampus.Common;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:my="clr-namespace:PocketCampus.Directory"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      mc:Ignorable="d">
+    <!-- Design-time DataContext -->
+    <d:DesignProperties.DataContext>
+        <design:DesignPersonViewModel xmlns:design="clr-namespace:PocketCampus.Directory.ViewModels.Design;assembly=PocketCampus.Directory.Common" />
+    </d:DesignProperties.DataContext>
+
+    <!-- Page resources -->
+    <comControls:BasePage.Resources>
+        <!-- Localized strings -->
+        <my:LocalizedStrings x:Key="Strings" />
+
+        <!-- Converters -->
+        <com:StringToVisibilityConverter x:Key="StringToVisibility" />
+
+        <!-- Style that forces hyperlinks to have normal margins -->
+        <Style TargetType="HyperlinkButton">
+            <Setter Property="Margin" Value="-6,5" />
+        </Style>
+
+        <!-- Style for "label" text blocks -->
+        <Style x:Key="TextLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource PhoneTextSubtleStyle}">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Style for "value" text blocks -->
+        <Style x:Key="TextValueStyle" TargetType="TextBlock" BasedOn="{StaticResource PhoneTextNormalStyle}">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Items panel that wraps its elements if they overflow -->
+        <ItemsPanelTemplate x:Key="WrapItemsPanel">
+            <tool:WrapPanel />
+        </ItemsPanelTemplate>
+
+        <!-- Unit template -->
+        <DataTemplate x:Key="UnitTemplate">
+            <TextBlock Text="{Binding}"
+                       Style="{StaticResource PhoneTextTitle3Style}"
+                       FontFamily="{StaticResource PhoneFontFamilySemiBold}" />
+        </DataTemplate>
+    </comControls:BasePage.Resources>
+
+    <!-- Main grid -->
+    <Grid VerticalAlignment="Top">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.ColumnSpan="2"
+                Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
+                       Style="{StaticResource AppTextTitle2Style}" />
+        </Border>
+
+        <!-- Name & picture background -->
+        <Rectangle Grid.ColumnSpan="2"
+                   Grid.Row="1"
+                   Fill="{StaticResource AppSecondaryHeaderBackgroundBrush}" />
+
+        <!-- Name -->
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Person.FullName}"
+                   Style="{StaticResource PhoneTextTitle1Style}"
+                   Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
+                   FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                   VerticalAlignment="Center"
+                   TextWrapping="Wrap" />
+
+        <!-- Picture -->
+        <Image Grid.Column="1"
+               Grid.Row="1"
+               Source="{Binding Person.PictureUrl}"
+               MaxWidth="150"
+               MaxHeight="200"
+               Margin="5" />
+
+        <!-- Units -->
+        <TextBlock Grid.Row="2"
+                   Text="{Binding Resources.PersonUnits, Source={StaticResource Strings}}"
+                   Style="{StaticResource TextLabelStyle}" />
+        <ItemsControl Grid.Column="1"
+                      Grid.Row="2"
+                      ItemsSource="{Binding Person.Units}"
+                      ItemTemplate="{StaticResource UnitTemplate}"
+                      ItemsPanel="{StaticResource WrapItemsPanel}"
+                      Margin="0,3,0,0" />
+
+
+        <!-- Website -->
+        <TextBlock Grid.Row="3"
+                   Text="{Binding Resources.PersonWebsite, Source={StaticResource Strings}}"
+                   Style="{StaticResource TextLabelStyle}" />
+        <Viewbox Grid.Column="1"
+                 Grid.Row="3"
+                 StretchDirection="DownOnly"
+                 HorizontalAlignment="Left">
+            <HyperlinkButton Content="{Binding Person.Website}"
+                             Command="{Binding OpenWebsiteCommand}"
+                             FontSize="{StaticResource PhoneFontSizeNormal}" />
+        </Viewbox>
+
+        <!-- E-mail -->
+        <TextBlock Grid.Row="4"
+                   Text="{Binding Resources.PersonEmail, Source={StaticResource Strings}}"
+                   Style="{StaticResource TextLabelStyle}" />
+        <Viewbox Grid.Column="1"
+                 Grid.Row="4"
+                 StretchDirection="DownOnly"
+                 HorizontalAlignment="Left">
+            <HyperlinkButton Content="{Binding Person.EmailAddress}"
+                             Command="{Binding SendEmailCommand}"
+                             FontSize="{StaticResource PhoneFontSizeNormal}" />
+        </Viewbox>
+
+        <!-- Private phone number -->
+        <TextBlock Grid.Row="5"
+                   Text="{Binding Resources.PersonPrivatePhone, Source={StaticResource Strings}}"
+                   Style="{StaticResource TextLabelStyle}"
+                   Visibility="{Binding Person.PrivatePhoneNumber, Converter={StaticResource StringToVisibility}}" />
+        <HyperlinkButton Grid.Column="1"
+                         Grid.Row="5"
+                         Content="{Binding Person.PrivatePhoneNumber}"
+                         Command="{Binding CallCommand}"
+                         CommandParameter="{Binding Person.OfficePhoneNumber}"
+                         Visibility="{Binding Person.PrivatePhoneNumber, Converter={StaticResource StringToVisibility}}"
+                         HorizontalAlignment="Left"
+                         FontSize="{StaticResource PhoneFontSizeNormal}" />
+
+        <!-- Office phone number -->
+        <TextBlock Grid.Row="6"
+                   Text="{Binding Resources.PersonOfficePhone, Source={StaticResource Strings}}"
+                   Style="{StaticResource TextLabelStyle}"
+                   Visibility="{Binding Person.OfficePhoneNumber, Converter={StaticResource StringToVisibility}}" />
+        <HyperlinkButton Grid.Column="1"
+                         Grid.Row="6"
+                         Content="{Binding Person.OfficePhoneNumber}"
+                         Command="{Binding CallCommand}"
+                         CommandParameter="{Binding Person.OfficePhoneNumber}"
+                         Visibility="{Binding Person.OfficePhoneNumber, Converter={StaticResource StringToVisibility}}"
+                         HorizontalAlignment="Left"
+                         FontSize="{StaticResource PhoneFontSizeNormal}" />
+
+        <!-- Office -->
+        <TextBlock Grid.Row="7"
+                   Text="{Binding Resources.PersonOffice, Source={StaticResource Strings}}"
+                   Style="{StaticResource TextLabelStyle}"
+                   Visibility="{Binding Person.Office, Converter={StaticResource StringToVisibility}}" />
+        <HyperlinkButton Grid.Column="1"
+                         Grid.Row="7"
+                         Content="{Binding Person.Office}"
+                         Command="{Binding ViewOfficeCommand}"
+                         HorizontalAlignment="Left"
+                         FontSize="{StaticResource PhoneFontSizeNormal}"
+                         Visibility="{Binding Person.Office, Converter={StaticResource StringToVisibility}}" />
+
+        <!-- TODO: Are the SCIPER and GASPAR too private?
+                   Wait for confirmation from EPFL before adding them back / removing them permanently -->
+
+        <!-- SCIPER number -->
+        <!--<TextBlock Grid.Row="8"
+                   Text="{Binding Resources.PersonSciper, Source={StaticResource Strings}}"
+                   Style="{StaticResource TextLabelStyle}" />
+        <TextBlock Grid.Column="1"
+                   Grid.Row="8"
+                   Text="{Binding Person.SciperNumber}"
+                   Style="{StaticResource TextValueStyle}" />-->
+
+        <!-- GASPAR identifier -->
+        <!--<TextBlock Grid.Row="9"
+                   Text="{Binding Resources.PersonGaspar, Source={StaticResource Strings}}"
+                   Style="{StaticResource TextLabelStyle}" />
+        <TextBlock Grid.Column="1"
+                   Grid.Row="9"
+                   Text="{Binding Person.GasparIdentifier}"
+                   Style="{StaticResource TextValueStyle}" />-->
+    </Grid>
+
+    <!-- App bar -->
+    <bar:Bindable.ApplicationBar>
+        <bar:BindableApplicationBar>
+            <!-- "Add as contact" button -->
+            <bar:BindableApplicationBarButton Command="{Binding AddAsContactCommand}"
+                                              Text="{Binding Resources.AddAsContactButton, Source={StaticResource Strings}}"
+                                              IconUri="/Assets/AddContact.png" />
+        </bar:BindableApplicationBar>
+    </bar:Bindable.ApplicationBar>
+</comControls:BasePage>
