@@ -19,3 +19,13 @@ gen/
 target/
 
 
+# Visual Studio
+*.suo
+*.user
+[Oo]bj/
+[Bb]in/
+TestResults/
+[Pp]ackages/
+# WP app
+Windows/Source/Main.WindowsPhone/analytics.xml
+Windows/Source/Map.WindowsPhone/MapTokens.txt
