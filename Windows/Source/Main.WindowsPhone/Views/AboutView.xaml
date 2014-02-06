@@ -1,0 +1,118 @@
+<!-- Copyright (c) PocketCampus.Org 2014
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<comControls:BasePage x:Class="PocketCampus.Main.Views.AboutView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      mc:Ignorable="d">
+    <!-- Design-time DataContext -->
+    <d:DesignProperties.DataContext>
+        <design:DesignAboutViewModel xmlns:design="clr-namespace:PocketCampus.Main.ViewModels.Design;assembly=PocketCampus.Main.Common" />
+    </d:DesignProperties.DataContext>
+
+    <!-- Page resources -->
+    <comControls:BasePage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../AppResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </comControls:BasePage.Resources>
+
+    <!-- Main grid -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Page header -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{Binding Resources.AboutPageTitle, Source={StaticResource Strings}}"
+                       Style="{StaticResource AppTextTitle2Style}" />
+        </Border>
+
+        <StackPanel Grid.Row="1">
+            <!-- App name -->
+            <Viewbox StretchDirection="DownOnly">
+                <TextBlock Text="{Binding Resources.AboutAppName, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextTitle1Style}" />
+            </Viewbox>
+
+            <!-- App version -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Resources.AboutAppVersion, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextTitle3Style}"
+                           Foreground="{StaticResource PhoneSubtleBrush}"
+                           Margin="12,0,0,0" />
+
+                <TextBlock Text="{Binding AppVersion}"
+                           Style="{StaticResource PhoneTextTitle3Style}"
+                           Foreground="{StaticResource PhoneSubtleBrush}"
+                           Margin="6,0" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Supervisor -->
+        <StackPanel Grid.Row="2"
+                    Margin="0,30">
+            <TextBlock Text="{Binding Resources.AboutSupervisorHeader, Source={StaticResource Strings}}"
+                       Style="{StaticResource PhoneTextTitle3Style}" />
+
+            <TextBlock Text="{Binding Resources.AboutSupervisor, Source={StaticResource Strings}}"
+                       Style="{StaticResource PhoneTextTitle2Style}"
+                       Foreground="{StaticResource PhoneSubtleBrush}" />
+        </StackPanel>
+
+
+        <!-- Developers -->
+        <StackPanel Grid.Row="3">
+            <TextBlock Text="{Binding Resources.AboutDevelopersHeader, Source={StaticResource Strings}}"
+                       Style="{StaticResource PhoneTextTitle3Style}" />
+
+            <TextBlock Text="{Binding Resources.AboutDevelopers, Source={StaticResource Strings}}"
+                       Style="{StaticResource PhoneTextTitle2Style}"
+                       Foreground="{StaticResource PhoneSubtleBrush}" />
+        </StackPanel>
+
+        <!-- Website -->
+        <StackPanel Grid.Row="4"
+                    Margin="0,30">
+            <TextBlock Text="{Binding Resources.AboutWebsiteHeader, Source={StaticResource Strings}}"
+                       Style="{StaticResource PhoneTextTitle3Style}" />
+
+            <HyperlinkButton Command="{Binding BrowseUrlCommand}"
+                             CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}"
+                             Content="{Binding Resources.AboutWebsite, Source={StaticResource Strings}}"
+                             HorizontalAlignment="Left"
+                             FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                             Foreground="{StaticResource PhoneSubtleBrush}" />
+        </StackPanel>
+
+        <!-- "Rate the app" button -->
+        <Button Grid.Row="5"
+                Content="{Binding Resources.AboutRateAppButton, Source={StaticResource Strings}}"
+                BorderBrush="{StaticResource PhoneSubtleBrush}"
+                HorizontalAlignment="Left"
+                Command="{Binding RateAppCommand}" />
+
+
+        <!-- Windows Phone specific privacy policy -->
+        <HyperlinkButton Grid.Row="6"
+                         Content="{Binding Resources.AboutPrivacyPolicy, Source={StaticResource Strings}}"
+                         FontSize="{StaticResource PhoneFontSizeNormal}"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Bottom"
+                         Margin="0,10"
+                         Tap="PrivacyPolicyButton_Tap" />
+    </Grid>
+</comControls:BasePage>
