@@ -36,6 +36,9 @@
 
 #import "EventsService.h"
 
+static NSString* kTextLabelTextStyle;
+static NSString* kDetailTextLabelTextStyle;
+
 @interface EventItemCell ()
 
 @property (nonatomic, strong) NSString* customReuseIdentifier;
@@ -46,42 +49,47 @@
 
 @implementation EventItemCell
 
+#pragma mark - Init
+
 - (id)initWithEventItem:(EventItem*)eventItem reuseIdentifier:(NSString*)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        if (![PCUtils isIdiomPad]) {
-            self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            kTextLabelTextStyle = UIFontTextStyleFootnote;
+            kDetailTextLabelTextStyle = UIFontTextStyleFootnote;
+        });
+        self.accessoryType = [PCUtils isIdiomPad] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
         self.textLabel.numberOfLines = 2;
-        self.textLabel.font = [UIFont boldSystemFontOfSize:13.0];
-        self.detailTextLabel.textColor = [UIColor grayColor];
-        self.detailTextLabel.numberOfLines = 3;
+        self.textLabel.font = [UIFont boldSystemFontOfSize:[UIFont preferredFontForTextStyle:kTextLabelTextStyle].pointSize];;
+        self.detailTextLabel.numberOfLines = 0;
+        self.detailTextLabel.font = [UIFont preferredFontForTextStyle:kDetailTextLabelTextStyle];
         self.eventItem = eventItem;
     }
     return self;
 }
 
+#pragma mark - Public
+
 + (CGFloat)preferredHeight {
-    return 80.0;
+    return floorf([self preferredHeightForStyle:UITableViewCellStyleSubtitle textLabelTextStyle:UIFontTextStyleFootnote detailTextLabelTextStyle:UIFontTextStyleFootnote]*1.9);
 }
 
-/*- (void)layoutSubviews {
-    [super layoutSubviews];
-    self.imageView.frame = CGRectMake(self.imageView.frame.origin.x, self.imageView.frame.origin.y, [self.class preferredHeight], [self.class preferredHeight]);
-}*/
++ (CGSize)preferredImageSize {
+    return CGSizeMake([EventItemCell preferredHeight], [EventItemCell preferredHeight]);
+}
 
 - (void)setEventItem:(EventItem *)eventItem {
     _eventItem = eventItem;
     self.textLabel.text = self.eventItem.eventTitle;
-    //self.detailTextLabel.text = self.eventItem.secondLine ? self.eventItem.secondLine : (self.eventItem.timeSnippet ? self.eventItem.timeSnippet : [eventItem dateString:EventItemDateStyleMedium]);
-    
+
     NSString* secondaryInfo = eventItem.secondLine ?: (eventItem.eventPlace ?: eventItem.eventSpeaker);
-    NSString* dateTimeInfo = eventItem.timeSnippet ?: self.eventItem.dateString;
+    NSString* dateTimeInfo = eventItem.timeSnippet ?: self.eventItem.shortDateString;
     
     NSString* fullString = nil;
-    if (secondaryInfo.length > 0 && dateTimeInfo.length > 0) {
-        fullString = [NSString stringWithFormat:@"%@\n%@", secondaryInfo, dateTimeInfo];
+    if (dateTimeInfo.length > 0 && secondaryInfo.length > 0) {
+        fullString = [NSString stringWithFormat:@"%@\n%@", dateTimeInfo, secondaryInfo];
     } else if (secondaryInfo.length > 0) {
         fullString = secondaryInfo;
     } else {
@@ -89,6 +97,12 @@
     }
     
     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+    /*if (dateTimeInfo.length > 0) {
+        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:[fullString rangeOfString:dateTimeInfo]];
+    }*/
+    if (secondaryInfo.length > 0) {
+        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[fullString rangeOfString:secondaryInfo]];
+    }
     self.detailTextLabel.attributedText = attrString;
     
     self.favoriteIndicationVisible = eventItem ? [[EventsService sharedInstanceToRetain] isEventItemIdFavorite:eventItem.eventId] : NO;
@@ -106,6 +120,8 @@
         self.backgroundView = nil;
     }
 }
+
+#pragma mark - Private
 
 - (void)glowIfNow {
     if (!self.backgroundView) {

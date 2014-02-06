@@ -113,8 +113,6 @@ static const NSInteger kOneWeekPeriodIndex = 0;
 static const NSInteger kOneMonthPeriodIndex = 1;
 static const NSInteger kSixMonthsPeriodIndex = 2;
 
-static NSString* const kEventCell = @"EventCell";
-
 @implementation EventPoolViewController
 
 #pragma mark - Inits
@@ -180,11 +178,12 @@ static NSString* const kEventCell = @"EventCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromCurrentData) name:kEventsFavoritesEventItemsUpdatedNotification object:self.eventsService];
-    self.tableView = [[PCTableViewAdditions alloc] init];
-    PCTableViewAdditions* tableViewAdditions = ((PCTableViewAdditions*)(self.tableView));
+    PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] init];
+    self.tableView = tableViewAdditions;
     tableViewAdditions.imageProcessingBlock = ^UIImage*(PCTableViewAdditions* tableView, NSIndexPath* indexPath, UIImage* image) {
-        return [image imageByScalingAndCroppingForSize:CGSizeMake([EventItemCell preferredHeight], [EventItemCell preferredHeight]) applyDeviceScreenMultiplyingFactor:YES];
+        return [image imageByScalingAndCroppingForSize:[EventItemCell preferredImageSize] applyDeviceScreenMultiplyingFactor:YES];
     };
+    tableViewAdditions.reprocessesImagesWhenContentSizeCategoryChanges = YES;
     tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
         return [EventItemCell preferredHeight];
     };
@@ -820,12 +819,12 @@ static NSString* const kEventCell = @"EventCell";
             return cell;
         }
     }
-    
+    NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"EventCell"];
     EventItem* eventItem = self.itemsForSection[indexPath.section][indexPath.row];
-    EventItemCell *cell = (EventItemCell*)[tableView dequeueReusableCellWithIdentifier:kEventCell];
+    EventItemCell *cell = (EventItemCell*)[tableView dequeueReusableCellWithIdentifier:identifier];
     
     if (!cell) {
-        cell = [[EventItemCell alloc] initWithEventItem:eventItem reuseIdentifier:kEventCell];
+        cell = [[EventItemCell alloc] initWithEventItem:eventItem reuseIdentifier:identifier];
         //cell.glowIfEventItemIsNow = YES;
     }
     

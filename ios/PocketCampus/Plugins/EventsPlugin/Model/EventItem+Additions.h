@@ -56,6 +56,11 @@
 /*
  * Nil if startDate is 0
  */
+@property (nonatomic, readonly) NSString* shortDateString;
+
+/*
+ * Nil if startDate is 0
+ */
 @property (nonatomic, readonly) NSString* dateString;
 
 /*

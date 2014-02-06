@@ -46,6 +46,8 @@
 
 + (CGFloat)preferredHeight;
 
++ (CGSize)preferredImageSize;
+
 @property (nonatomic, strong) EventItem* eventItem;
 
 @property (nonatomic) BOOL glowIfEventItemIsNow;

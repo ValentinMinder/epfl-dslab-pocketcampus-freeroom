@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 01.03.13.
-
-
 
 #import "EventItem+Additions.h"
 
@@ -97,7 +90,15 @@
     }
 }
 
+- (NSString*)shortDateString {
+    return [self dateStringShort:YES];
+}
+
 - (NSString*)dateString {
+    return [self dateStringShort:NO];
+}
+
+- (NSString*)dateStringShort:(BOOL)shortBool {
     if (self.startDate == 0) {
         return nil;
     }
@@ -111,15 +112,15 @@
     NSDate* startDate = [NSDate dateWithTimeIntervalSince1970:self.startDate/1000];
     NSDate* endDate = [NSDate dateWithTimeIntervalSince1970:self.endDate/1000];
     
+    BOOL oneDayEvent = [startDate isSameDayAsDate:endDate countMidnightAsSameDay:YES];
+    
     formatter.dateStyle = NSDateFormatterShortStyle;
-    formatter.timeStyle = self.fullDay ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
+    formatter.timeStyle = self.fullDay || (!oneDayEvent && shortBool) ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
     
     NSString* startDateString = [formatter stringFromDate:startDate];
     
-    BOOL oneDayEvent = [startDate isSameDayAsDate:endDate countMidnightAsSameDay:YES];
-    
     formatter.dateStyle = oneDayEvent ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
-    formatter.timeStyle = self.fullDay ? NSDateFormatterNoStyle : formatter.dateStyle;
+    formatter.timeStyle = self.fullDay || (!oneDayEvent && shortBool) ? NSDateFormatterNoStyle : formatter.dateStyle;
     
     NSString* endDateString = [formatter stringFromDate:endDate];
     

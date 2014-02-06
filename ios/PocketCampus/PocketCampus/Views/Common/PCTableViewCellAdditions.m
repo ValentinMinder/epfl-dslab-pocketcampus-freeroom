@@ -282,7 +282,7 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     static CGFloat height = 0.0;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *notif) {
             height = 0.0;
         }];
     });
