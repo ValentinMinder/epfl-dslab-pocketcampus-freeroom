@@ -3835,11 +3835,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Views/EventItemCell.m"
-            timestampString = "413382374.526313"
+            timestampString = "413477422.954054"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
             landmarkName = "-setEventItem:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3851,12 +3851,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Views/EventItemCell.m"
-            timestampString = "413383246.82927"
+            timestampString = "413477422.954054"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
             landmarkName = "-setEventItem:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/EventsPlugin/Views/EventItemCell.m"
+            timestampString = "413477422.954054"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "-setEventItem:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/EventsPlugin/Views/EventItemCell.m"
+            timestampString = "413477422.954054"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
+            landmarkName = "-setEventItem:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/EventsPlugin/Views/EventItemCell.m"
+            timestampString = "413477482.871263"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "+preferredHeight"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

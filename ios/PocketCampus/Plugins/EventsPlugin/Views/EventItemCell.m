@@ -73,7 +73,25 @@ static NSString* kDetailTextLabelTextStyle;
 #pragma mark - Public
 
 + (CGFloat)preferredHeight {
-    return floorf([self preferredHeightForStyle:UITableViewCellStyleSubtitle textLabelTextStyle:UIFontTextStyleFootnote detailTextLabelTextStyle:UIFontTextStyleFootnote]*1.9);
+    static const CGFloat kDefaultCoeff = 2.0;
+    static CGFloat coeff = kDefaultCoeff;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *notif) {
+            coeff = 0.0;
+        }];
+    });
+    if (coeff == 0.0) {
+        NSString* contentSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
+        if ([contentSize isEqualToString:UIContentSizeCategoryExtraSmall]) {
+            coeff = 2.3;
+        } else if ([contentSize isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge]) {
+            coeff = 2.3;
+        } else {
+            coeff = kDefaultCoeff; //Default
+        }
+    }
+    return floorf([self preferredHeightForStyle:UITableViewCellStyleSubtitle textLabelTextStyle:kTextLabelTextStyle detailTextLabelTextStyle:kDetailTextLabelTextStyle]*coeff);
 }
 
 + (CGSize)preferredImageSize {
@@ -84,8 +102,13 @@ static NSString* kDetailTextLabelTextStyle;
     _eventItem = eventItem;
     self.textLabel.text = self.eventItem.eventTitle;
 
-    NSString* secondaryInfo = eventItem.secondLine ?: (eventItem.eventPlace ?: eventItem.eventSpeaker);
     NSString* dateTimeInfo = eventItem.timeSnippet ?: self.eventItem.shortDateString;
+    NSString* secondaryInfo = eventItem.secondLine ?: (eventItem.eventPlace ?: eventItem.eventSpeaker);
+    
+    static const NSUInteger kMaxSecondaryInfoLength = 40;
+    if (secondaryInfo.length > kMaxSecondaryInfoLength) {
+        secondaryInfo = [[secondaryInfo substringToIndex:kMaxSecondaryInfoLength] stringByAppendingString:@"…"];
+    }
     
     NSString* fullString = nil;
     if (dateTimeInfo.length > 0 && secondaryInfo.length > 0) {
