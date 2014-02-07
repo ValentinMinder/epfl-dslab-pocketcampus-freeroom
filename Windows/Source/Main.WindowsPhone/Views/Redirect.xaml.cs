@@ -7,7 +7,6 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using PocketCampus.Main.Services;
 using PocketCampus.Main.ViewModels;
-using PocketCampus.Mvvm;
 
 namespace PocketCampus.Main.Views
 {
@@ -37,9 +36,7 @@ namespace PocketCampus.Main.Views
 
             string id;
             NavigationContext.QueryString.TryGetValue( TileCreator.PluginArgumentKey, out id );
-
-            var navSvc = (INavigationService) Container.Get( typeof( INavigationService ), null );
-            navSvc.NavigateTo<MainViewModel, string>( id ?? "" );
+            App.NavigationService.NavigateTo<MainViewModel, string>( id ?? "" );
         }
     }
 }

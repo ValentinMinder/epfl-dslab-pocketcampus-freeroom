@@ -27,10 +27,17 @@ namespace PocketCampus.Main
     /// </summary>
     public partial class App : Application
     {
+        private IMainSettings _mainSettings;
+
         /// <summary>
         /// Gets the root frame of the app.
         /// </summary>
         public static PhoneApplicationFrame RootFrame { get; private set; }
+
+        /// <summary>
+        /// Gets the navigation service used by the app.
+        /// </summary>
+        public static FrameNavigationService NavigationService { get; private set; }
 
 
         /// <summary>
@@ -58,7 +65,7 @@ namespace PocketCampus.Main
             // Basic building blocks
             Container.Bind<IHttpClient, HttpClient>();
             Container.Bind<IApplicationSettings, ApplicationSettings>();
-            Container.BindOnce<IMainSettings, MainSettings>();
+            _mainSettings = Container.BindOnce<IMainSettings, MainSettings>();
 
             // Common services
             AppInitializer.BindImplementations();
@@ -75,17 +82,17 @@ namespace PocketCampus.Main
 
             // Services required for plugins
             var pluginLoader = Container.BindOnce<IPluginLoader, PluginLoader>();
-            var navigationService = Container.BindOnce<PocketCampus.Mvvm.INavigationService, FrameNavigationService>();
-            navigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
-            navigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
-            navigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
-            navigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
+            App.NavigationService = Container.BindOnce<PocketCampus.Mvvm.INavigationService, FrameNavigationService>();
+            App.NavigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
+            App.NavigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
+            App.NavigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
+            App.NavigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
 
             // Common part of plugin initialization
-            AppInitializer.InitializePlugins( pluginLoader, navigationService );
+            AppInitializer.InitializePlugins( pluginLoader, App.NavigationService );
 
             // WP-specific part of plugin initialization
-            InitializeWindowsPhonePlugins( pluginLoader, navigationService );
+            InitializeWindowsPhonePlugins( pluginLoader, App.NavigationService );
         }
 
         private void InitializeWindowsPhonePlugins( PluginLoader pluginLoader, IWindowsPhoneNavigationService navigationService )
@@ -169,15 +176,11 @@ namespace PocketCampus.Main
                 RootVisual = RootFrame;
             }
 
-
             // Displays the first-run popup if needed
-            // TODO find a better way to do that
-            var settings = (IMainSettings) Container.Get( typeof( IMainSettings ), null );
-
-            if ( settings.IsFirstRun )
+            if ( _mainSettings.IsFirstRun )
             {
                 MessageBoxEx.ShowDialog( AppResources.FirstRunCaption, AppResources.FirstRunMessage );
-                settings.IsFirstRun = false;
+                _mainSettings.IsFirstRun = false;
             }
 
             RootFrame.Navigated -= RootFrame_Navigated;
