@@ -25,7 +25,9 @@ public class IsAcademiaService {
 
   public interface Iface {
 
-    public ScheduleTokenResponse getScheduleToken() throws org.apache.thrift.TException;
+    public IsaTokenResponse getIsaTequilaToken() throws org.apache.thrift.TException;
+
+    public IsaSessionResponse getIsaSessionId(String tequilaToken) throws org.apache.thrift.TException;
 
     public ScheduleResponse getSchedule(ScheduleRequest req) throws org.apache.thrift.TException;
 
@@ -33,7 +35,9 @@ public class IsAcademiaService {
 
   public interface AsyncIface {
 
-    public void getScheduleToken(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getScheduleToken_call> resultHandler) throws org.apache.thrift.TException;
+    public void getIsaTequilaToken(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getIsaTequilaToken_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getIsaSessionId(String tequilaToken, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getIsaSessionId_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getSchedule(ScheduleRequest req, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getSchedule_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -59,26 +63,49 @@ public class IsAcademiaService {
       super(iprot, oprot);
     }
 
-    public ScheduleTokenResponse getScheduleToken() throws org.apache.thrift.TException
+    public IsaTokenResponse getIsaTequilaToken() throws org.apache.thrift.TException
     {
-      send_getScheduleToken();
-      return recv_getScheduleToken();
+      send_getIsaTequilaToken();
+      return recv_getIsaTequilaToken();
     }
 
-    public void send_getScheduleToken() throws org.apache.thrift.TException
+    public void send_getIsaTequilaToken() throws org.apache.thrift.TException
     {
-      getScheduleToken_args args = new getScheduleToken_args();
-      sendBase("getScheduleToken", args);
+      getIsaTequilaToken_args args = new getIsaTequilaToken_args();
+      sendBase("getIsaTequilaToken", args);
     }
 
-    public ScheduleTokenResponse recv_getScheduleToken() throws org.apache.thrift.TException
+    public IsaTokenResponse recv_getIsaTequilaToken() throws org.apache.thrift.TException
     {
-      getScheduleToken_result result = new getScheduleToken_result();
-      receiveBase(result, "getScheduleToken");
+      getIsaTequilaToken_result result = new getIsaTequilaToken_result();
+      receiveBase(result, "getIsaTequilaToken");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getScheduleToken failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getIsaTequilaToken failed: unknown result");
+    }
+
+    public IsaSessionResponse getIsaSessionId(String tequilaToken) throws org.apache.thrift.TException
+    {
+      send_getIsaSessionId(tequilaToken);
+      return recv_getIsaSessionId();
+    }
+
+    public void send_getIsaSessionId(String tequilaToken) throws org.apache.thrift.TException
+    {
+      getIsaSessionId_args args = new getIsaSessionId_args();
+      args.setTequilaToken(tequilaToken);
+      sendBase("getIsaSessionId", args);
+    }
+
+    public IsaSessionResponse recv_getIsaSessionId() throws org.apache.thrift.TException
+    {
+      getIsaSessionId_result result = new getIsaSessionId_result();
+      receiveBase(result, "getIsaSessionId");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getIsaSessionId failed: unknown result");
     }
 
     public ScheduleResponse getSchedule(ScheduleRequest req) throws org.apache.thrift.TException
@@ -122,32 +149,64 @@ public class IsAcademiaService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getScheduleToken(org.apache.thrift.async.AsyncMethodCallback<getScheduleToken_call> resultHandler) throws org.apache.thrift.TException {
+    public void getIsaTequilaToken(org.apache.thrift.async.AsyncMethodCallback<getIsaTequilaToken_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getScheduleToken_call method_call = new getScheduleToken_call(resultHandler, this, ___protocolFactory, ___transport);
+      getIsaTequilaToken_call method_call = new getIsaTequilaToken_call(resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getScheduleToken_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getScheduleToken_call(org.apache.thrift.async.AsyncMethodCallback<getScheduleToken_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getIsaTequilaToken_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public getIsaTequilaToken_call(org.apache.thrift.async.AsyncMethodCallback<getIsaTequilaToken_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getScheduleToken", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getScheduleToken_args args = new getScheduleToken_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getIsaTequilaToken", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getIsaTequilaToken_args args = new getIsaTequilaToken_args();
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public ScheduleTokenResponse getResult() throws org.apache.thrift.TException {
+      public IsaTokenResponse getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getScheduleToken();
+        return (new Client(prot)).recv_getIsaTequilaToken();
+      }
+    }
+
+    public void getIsaSessionId(String tequilaToken, org.apache.thrift.async.AsyncMethodCallback<getIsaSessionId_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getIsaSessionId_call method_call = new getIsaSessionId_call(tequilaToken, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getIsaSessionId_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String tequilaToken;
+      public getIsaSessionId_call(String tequilaToken, org.apache.thrift.async.AsyncMethodCallback<getIsaSessionId_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.tequilaToken = tequilaToken;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getIsaSessionId", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getIsaSessionId_args args = new getIsaSessionId_args();
+        args.setTequilaToken(tequilaToken);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public IsaSessionResponse getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getIsaSessionId();
       }
     }
 
@@ -196,23 +255,40 @@ public class IsAcademiaService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("getScheduleToken", new getScheduleToken());
+      processMap.put("getIsaTequilaToken", new getIsaTequilaToken());
+      processMap.put("getIsaSessionId", new getIsaSessionId());
       processMap.put("getSchedule", new getSchedule());
       return processMap;
     }
 
-    private static class getScheduleToken<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getScheduleToken_args> {
-      public getScheduleToken() {
-        super("getScheduleToken");
+    private static class getIsaTequilaToken<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getIsaTequilaToken_args> {
+      public getIsaTequilaToken() {
+        super("getIsaTequilaToken");
       }
 
-      protected getScheduleToken_args getEmptyArgsInstance() {
-        return new getScheduleToken_args();
+      protected getIsaTequilaToken_args getEmptyArgsInstance() {
+        return new getIsaTequilaToken_args();
       }
 
-      protected getScheduleToken_result getResult(I iface, getScheduleToken_args args) throws org.apache.thrift.TException {
-        getScheduleToken_result result = new getScheduleToken_result();
-        result.success = iface.getScheduleToken();
+      protected getIsaTequilaToken_result getResult(I iface, getIsaTequilaToken_args args) throws org.apache.thrift.TException {
+        getIsaTequilaToken_result result = new getIsaTequilaToken_result();
+        result.success = iface.getIsaTequilaToken();
+        return result;
+      }
+    }
+
+    private static class getIsaSessionId<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getIsaSessionId_args> {
+      public getIsaSessionId() {
+        super("getIsaSessionId");
+      }
+
+      protected getIsaSessionId_args getEmptyArgsInstance() {
+        return new getIsaSessionId_args();
+      }
+
+      protected getIsaSessionId_result getResult(I iface, getIsaSessionId_args args) throws org.apache.thrift.TException {
+        getIsaSessionId_result result = new getIsaSessionId_result();
+        result.success = iface.getIsaSessionId(args.tequilaToken);
         return result;
       }
     }
@@ -235,8 +311,8 @@ public class IsAcademiaService {
 
   }
 
-  public static class getScheduleToken_args implements org.apache.thrift.TBase<getScheduleToken_args, getScheduleToken_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getScheduleToken_args");
+  public static class getIsaTequilaToken_args implements org.apache.thrift.TBase<getIsaTequilaToken_args, getIsaTequilaToken_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getIsaTequilaToken_args");
 
 
 
@@ -299,20 +375,20 @@ public class IsAcademiaService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getScheduleToken_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getIsaTequilaToken_args.class, metaDataMap);
     }
 
-    public getScheduleToken_args() {
+    public getIsaTequilaToken_args() {
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getScheduleToken_args(getScheduleToken_args other) {
+    public getIsaTequilaToken_args(getIsaTequilaToken_args other) {
     }
 
-    public getScheduleToken_args deepCopy() {
-      return new getScheduleToken_args(this);
+    public getIsaTequilaToken_args deepCopy() {
+      return new getIsaTequilaToken_args(this);
     }
 
     @Override
@@ -345,12 +421,12 @@ public class IsAcademiaService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getScheduleToken_args)
-        return this.equals((getScheduleToken_args)that);
+      if (that instanceof getIsaTequilaToken_args)
+        return this.equals((getIsaTequilaToken_args)that);
       return false;
     }
 
-    public boolean equals(getScheduleToken_args that) {
+    public boolean equals(getIsaTequilaToken_args that) {
       if (that == null)
         return false;
 
@@ -364,13 +440,13 @@ public class IsAcademiaService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getScheduleToken_args other) {
+    public int compareTo(getIsaTequilaToken_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getScheduleToken_args typedOther = (getScheduleToken_args)other;
+      getIsaTequilaToken_args typedOther = (getIsaTequilaToken_args)other;
 
       return 0;
     }
@@ -410,7 +486,7 @@ public class IsAcademiaService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getScheduleToken_args(");
+      StringBuilder sb = new StringBuilder("getIsaTequilaToken_args(");
       boolean first = true;
 
       sb.append(")");
@@ -439,12 +515,12 @@ public class IsAcademiaService {
 
   }
 
-  public static class getScheduleToken_result implements org.apache.thrift.TBase<getScheduleToken_result, getScheduleToken_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getScheduleToken_result");
+  public static class getIsaTequilaToken_result implements org.apache.thrift.TBase<getIsaTequilaToken_result, getIsaTequilaToken_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getIsaTequilaToken_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    private ScheduleTokenResponse success; // required
+    private IsaTokenResponse success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -510,16 +586,16 @@ public class IsAcademiaService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ScheduleTokenResponse.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, IsaTokenResponse.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getScheduleToken_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getIsaTequilaToken_result.class, metaDataMap);
     }
 
-    public getScheduleToken_result() {
+    public getIsaTequilaToken_result() {
     }
 
-    public getScheduleToken_result(
-      ScheduleTokenResponse success)
+    public getIsaTequilaToken_result(
+      IsaTokenResponse success)
     {
       this();
       this.success = success;
@@ -528,14 +604,14 @@ public class IsAcademiaService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getScheduleToken_result(getScheduleToken_result other) {
+    public getIsaTequilaToken_result(getIsaTequilaToken_result other) {
       if (other.isSetSuccess()) {
-        this.success = new ScheduleTokenResponse(other.success);
+        this.success = new IsaTokenResponse(other.success);
       }
     }
 
-    public getScheduleToken_result deepCopy() {
-      return new getScheduleToken_result(this);
+    public getIsaTequilaToken_result deepCopy() {
+      return new getIsaTequilaToken_result(this);
     }
 
     @Override
@@ -543,11 +619,11 @@ public class IsAcademiaService {
       this.success = null;
     }
 
-    public ScheduleTokenResponse getSuccess() {
+    public IsaTokenResponse getSuccess() {
       return this.success;
     }
 
-    public getScheduleToken_result setSuccess(ScheduleTokenResponse success) {
+    public getIsaTequilaToken_result setSuccess(IsaTokenResponse success) {
       this.success = success;
       return this;
     }
@@ -573,7 +649,7 @@ public class IsAcademiaService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((ScheduleTokenResponse)value);
+          setSuccess((IsaTokenResponse)value);
         }
         break;
 
@@ -606,12 +682,12 @@ public class IsAcademiaService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getScheduleToken_result)
-        return this.equals((getScheduleToken_result)that);
+      if (that instanceof getIsaTequilaToken_result)
+        return this.equals((getIsaTequilaToken_result)that);
       return false;
     }
 
-    public boolean equals(getScheduleToken_result that) {
+    public boolean equals(getIsaTequilaToken_result that) {
       if (that == null)
         return false;
 
@@ -639,13 +715,13 @@ public class IsAcademiaService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getScheduleToken_result other) {
+    public int compareTo(getIsaTequilaToken_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getScheduleToken_result typedOther = (getScheduleToken_result)other;
+      getIsaTequilaToken_result typedOther = (getIsaTequilaToken_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -676,7 +752,7 @@ public class IsAcademiaService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new ScheduleTokenResponse();
+              this.success = new IsaTokenResponse();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -707,7 +783,615 @@ public class IsAcademiaService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getScheduleToken_result(");
+      StringBuilder sb = new StringBuilder("getIsaTequilaToken_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getIsaSessionId_args implements org.apache.thrift.TBase<getIsaSessionId_args, getIsaSessionId_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getIsaSessionId_args");
+
+    private static final org.apache.thrift.protocol.TField TEQUILA_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("tequilaToken", org.apache.thrift.protocol.TType.STRING, (short)1);
+
+    private String tequilaToken; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      TEQUILA_TOKEN((short)1, "tequilaToken");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // TEQUILA_TOKEN
+            return TEQUILA_TOKEN;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.TEQUILA_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("tequilaToken", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getIsaSessionId_args.class, metaDataMap);
+    }
+
+    public getIsaSessionId_args() {
+    }
+
+    public getIsaSessionId_args(
+      String tequilaToken)
+    {
+      this();
+      this.tequilaToken = tequilaToken;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getIsaSessionId_args(getIsaSessionId_args other) {
+      if (other.isSetTequilaToken()) {
+        this.tequilaToken = other.tequilaToken;
+      }
+    }
+
+    public getIsaSessionId_args deepCopy() {
+      return new getIsaSessionId_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.tequilaToken = null;
+    }
+
+    public String getTequilaToken() {
+      return this.tequilaToken;
+    }
+
+    public getIsaSessionId_args setTequilaToken(String tequilaToken) {
+      this.tequilaToken = tequilaToken;
+      return this;
+    }
+
+    public void unsetTequilaToken() {
+      this.tequilaToken = null;
+    }
+
+    /** Returns true if field tequilaToken is set (has been assigned a value) and false otherwise */
+    public boolean isSetTequilaToken() {
+      return this.tequilaToken != null;
+    }
+
+    public void setTequilaTokenIsSet(boolean value) {
+      if (!value) {
+        this.tequilaToken = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case TEQUILA_TOKEN:
+        if (value == null) {
+          unsetTequilaToken();
+        } else {
+          setTequilaToken((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case TEQUILA_TOKEN:
+        return getTequilaToken();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case TEQUILA_TOKEN:
+        return isSetTequilaToken();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getIsaSessionId_args)
+        return this.equals((getIsaSessionId_args)that);
+      return false;
+    }
+
+    public boolean equals(getIsaSessionId_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_tequilaToken = true && this.isSetTequilaToken();
+      boolean that_present_tequilaToken = true && that.isSetTequilaToken();
+      if (this_present_tequilaToken || that_present_tequilaToken) {
+        if (!(this_present_tequilaToken && that_present_tequilaToken))
+          return false;
+        if (!this.tequilaToken.equals(that.tequilaToken))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_tequilaToken = true && (isSetTequilaToken());
+      builder.append(present_tequilaToken);
+      if (present_tequilaToken)
+        builder.append(tequilaToken);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getIsaSessionId_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getIsaSessionId_args typedOther = (getIsaSessionId_args)other;
+
+      lastComparison = Boolean.valueOf(isSetTequilaToken()).compareTo(typedOther.isSetTequilaToken());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetTequilaToken()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.tequilaToken, typedOther.tequilaToken);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // TEQUILA_TOKEN
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.tequilaToken = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.tequilaToken != null) {
+        oprot.writeFieldBegin(TEQUILA_TOKEN_FIELD_DESC);
+        oprot.writeString(this.tequilaToken);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getIsaSessionId_args(");
+      boolean first = true;
+
+      sb.append("tequilaToken:");
+      if (this.tequilaToken == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.tequilaToken);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getIsaSessionId_result implements org.apache.thrift.TBase<getIsaSessionId_result, getIsaSessionId_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getIsaSessionId_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private IsaSessionResponse success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, IsaSessionResponse.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getIsaSessionId_result.class, metaDataMap);
+    }
+
+    public getIsaSessionId_result() {
+    }
+
+    public getIsaSessionId_result(
+      IsaSessionResponse success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getIsaSessionId_result(getIsaSessionId_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new IsaSessionResponse(other.success);
+      }
+    }
+
+    public getIsaSessionId_result deepCopy() {
+      return new getIsaSessionId_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public IsaSessionResponse getSuccess() {
+      return this.success;
+    }
+
+    public getIsaSessionId_result setSuccess(IsaSessionResponse success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((IsaSessionResponse)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getIsaSessionId_result)
+        return this.equals((getIsaSessionId_result)that);
+      return false;
+    }
+
+    public boolean equals(getIsaSessionId_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getIsaSessionId_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getIsaSessionId_result typedOther = (getIsaSessionId_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new IsaSessionResponse();
+              this.success.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        this.success.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getIsaSessionId_result(");
       boolean first = true;
 
       sb.append("success:");

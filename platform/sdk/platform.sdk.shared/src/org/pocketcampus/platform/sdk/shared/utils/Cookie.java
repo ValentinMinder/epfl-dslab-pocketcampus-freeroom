@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.http.Header;
+
 public class Cookie {
 
 	/**
@@ -12,6 +14,21 @@ public class Cookie {
 	 */
 	public void setCookie(List<String> l) {
         for(String c : l) {
+        	if(c.length() == 0)
+        		continue;
+        	if(c.contains("deleted"))
+        		continue;
+        	addOrUpdateCookie(c.split(";", 2)[0]);
+        }
+	}
+	
+	/**
+	 * setCookie: adds or updates cookies in the store as per the received Set-Cookie header
+	 * @param l: should be the output of HttpResponse.getHeaders("Set-Cookie")
+	 */
+	public void setCookie(Header[] l) {
+        for(Header h : l) {
+        	String c = h.getValue();
         	if(c.length() == 0)
         		continue;
         	if(c.contains("deleted"))
@@ -60,6 +77,6 @@ public class Cookie {
 		cookie.put(v[0], v[1]);
 	}
 	
-	private HashMap<String, String> cookie = new HashMap<String, String>();
+	public HashMap<String, String> cookie = new HashMap<String, String>();
 	
 }

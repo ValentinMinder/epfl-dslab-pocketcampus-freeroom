@@ -91,18 +91,6 @@ public final class MenuTests {
 		assertEquals(18.00, prices.get(PriceTarget.ALL), Double.MIN_VALUE);
 	}
 
-	// Meals from 'Le Vinci' shouldn't be parsed
-	@Test
-	public void mealsFromLeVinciAreIgnored() {
-		List<EpflRestaurant> menu = getMenu();
-
-		for (EpflRestaurant restaurant : menu) {
-			if (restaurant.getRName().equals("Le Vinci")) {
-				fail("There should be no meals from 'Le Vinci' as it's a duplicate of 'Le Parmentier' (same menus).");
-			}
-		}
-	}
-
 	// Maharaja dishes are not thai, even if the list says so
 	@Test
 	public void mealsFromMaharajaAreNeverThai() {

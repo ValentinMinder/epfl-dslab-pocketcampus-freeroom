@@ -29,7 +29,7 @@ public final class FoodServiceTests {
 
 		FoodResponse response = service.getFood(new FoodRequest());
 
-		assertEquals(mealList.get(MealTime.LUNCH, LocalDate.now()), response.getMenu());
+		assertEquals(mealList.get(MealTime.LUNCH, LocalDate.now()).getMenu(), response.getMenu());
 	}
 
 	// getFood sets the ratings on the meals

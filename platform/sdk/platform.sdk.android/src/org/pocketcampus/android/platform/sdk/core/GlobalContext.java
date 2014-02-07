@@ -60,11 +60,15 @@ public class GlobalContext extends Application {
 
 		for(ResolveInfo resolveInfo : resolveInfos) {
 			ActivityInfo activityInfo = resolveInfo.activityInfo;
-			if(!activityInfo.name.startsWith("org.pocketcampus.plugin."))
+			if(!activityInfo.name.startsWith("org.pocketcampus.plugin.")) {
 				continue;
+			}
 			String shName = activityInfo.name.split("[.]")[3].toLowerCase();
-			if(!enabledPlugins.contains(shName))
+			if(!enabledPlugins.contains(shName)) {
+//				if(getPackageName().equals(activityInfo.packageName))
+//					pm.setComponentEnabledSetting(new ComponentName(activityInfo.packageName, activityInfo.name), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 				continue;
+			}
 			PluginInfo pluginInfo = new PluginInfo();
 			try {
 				pluginInfo.setMainClassName(activityInfo.name);

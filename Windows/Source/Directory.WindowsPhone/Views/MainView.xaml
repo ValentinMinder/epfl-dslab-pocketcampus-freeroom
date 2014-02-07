@@ -1,0 +1,139 @@
+<!-- Copyright (c) PocketCampus.Org 2014
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<comControls:BasePage x:Class="PocketCampus.Directory.Views.MainView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:tool="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                      xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:my="clr-namespace:PocketCampus.Directory"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      mc:Ignorable="d">
+    <!-- Design-time DataContext -->
+    <d:DesignProperties.DataContext>
+        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Directory.ViewModels.Design;assembly=PocketCampus.Directory.Common" />
+    </d:DesignProperties.DataContext>
+
+    <!-- Page resources -->
+    <comControls:BasePage.Resources>
+        <!-- Localized strings -->
+        <my:LocalizedStrings x:Key="Strings" />
+
+        <!-- Simple button template without any border or background -->
+        <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
+            <ContentPresenter />
+        </ControlTemplate>
+
+        <!-- Person template -->
+        <DataTemplate x:Key="PersonTemplate">
+            <Button Command="{Binding DataContext.ViewPersonCommand, ElementName=LayoutRoot}"
+                    CommandParameter="{Binding}"
+                    Template="{StaticResource SimpleButtonTemplate}"
+                    Background="Transparent">
+                <Grid Margin="5,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Default picture (hidden by the actual picture if there is one) -->
+                    <Image Grid.RowSpan="3"
+                           Source="/Assets/DefaultImage.png"
+                           Width="75"
+                           Height="100" />
+
+                    <!-- Picture (may not be there) -->
+                    <Image Grid.RowSpan="3"
+                           Source="{Binding PictureUrl}"
+                           Width="75"
+                           Height="100" />
+
+                    <!-- Name -->
+                    <Viewbox Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             StretchDirection="DownOnly"
+                             Margin="12,-6,12,6">
+                        <TextBlock Text="{Binding FullName}"
+                                   Style="{StaticResource PhoneTextTitle2Style}"
+                                   Margin="0" />
+                    </Viewbox>
+
+                    <!-- Office -->
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="1"
+                               Text="{Binding Office}"
+                               Style="{StaticResource PhoneTextTitle3Style}"
+                               Foreground="{StaticResource PhoneSubtleBrush}"
+                               FontFamily="{StaticResource PhoneFontFamilySemiBold}" />
+
+                    <!-- Units -->
+                    <ItemsControl Grid.Column="1"
+                                  Grid.Row="2"
+                                  ItemsSource="{Binding Units}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <tool:WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"
+                                           Style="{StaticResource PhoneTextSubtleStyle}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Button>
+        </DataTemplate>
+    </comControls:BasePage.Resources>
+
+    <!-- Main grid -->
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
+                       Style="{StaticResource AppTextTitle2Style}" />
+        </Border>
+
+        <!-- Search box background -->
+        <Rectangle Grid.Row="1"
+                   Fill="{StaticResource AppSecondaryHeaderBackgroundBrush}" />
+
+        <!-- Search box -->
+        <comControls:SearchBox Grid.Row="1"
+                               AutoCompleteProvider="{Binding SearchAutoCompleteProvider}"
+                               SearchCommand="{Binding SearchCommand}" />
+
+        <!-- Search results -->
+        <ScrollViewer Grid.Row="2">
+            <ItemsControl ItemsSource="{Binding SearchResults}"
+                          ItemTemplate="{StaticResource PersonTemplate}" />
+        </ScrollViewer>
+
+        <!-- "No search results" message-->
+        <Border Grid.Row="2"
+                Visibility="{Binding AnySearchResults, Converter={StaticResource BoolToOppositeVisibility}}">
+            <TextBlock Text="{Binding Resources.NoSearchResults, Source={StaticResource Strings}}"
+                       Style="{StaticResource PhoneTextTitle2Style}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap" />
+        </Border>
+
+        <!-- Loading and error -->
+        <comControls:LoadingAndError Grid.Row="2" />
+    </Grid>
+</comControls:BasePage>

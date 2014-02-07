@@ -45,7 +45,6 @@ import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 
 /**
  * EventsController - Main logic for the Events Plugin.
@@ -167,49 +166,6 @@ public class EventsController extends PluginController implements IEventsControl
 	/*****
 	 * HELPER CLASSES AND FUNCTIONS
 	 */
-	
-	public static interface Preparator<T> {
-		public Object content(int res, T item);
-		public int[] resources();
-		public void finalize(Map<String, Object> map, T item);
-	}
-	
-	public static class Preparated<T> {
-		List<T> events;
-		Preparator<T> prep;
-		List<Map<String, ?>> data = null;
-		String[] keys = null;
-		int[] res = null;
-		public Preparated(List<T> events, Preparator<T> prep) {
-			this.events = events;
-			this.prep = prep;
-			compute();
-		}
-		private void compute() {
-			res = prep.resources();
-			keys = new String[res.length];
-			for(int j = 0; j < res.length; j++)
-				keys[j] = "KEY_" + j;
-			data = new LinkedList<Map<String,?>>();
-			for(int i = 0; i < events.size(); i++) {
-				Map<String, Object> map = new HashMap<String, Object>();
-				T e = events.get(i);
-				for(int j = 0; j < res.length; j++)
-					map.put(keys[j], prep.content(res[j], e));
-				prep.finalize(map, e);
-				data.add(map);
-			}
-		}
-		public List<Map<String, ?>> getMap() {
-			return data;
-		}
-		public String[] getKeys() {
-			return keys;
-		}
-		public int[] getResources() {
-			return res;
-		}
-	}
 	
 	public static interface SingleChoiceHandler<T> {
 		void saveSelection(T t);
@@ -424,19 +380,6 @@ public class EventsController extends PluginController implements IEventsControl
 				newMap.put(k, map.get(k));
 		}
 		return newMap;
-	}
-	
-	public static class ScrollStateSaver {
-		int index;
-		int top;
-		public ScrollStateSaver(ListView mList) {
-			index = mList.getFirstVisiblePosition();
-			View v = mList.getChildAt(0);
-			top = (v == null ? 0 : v.getTop());
-		}
-		public void restore(ListView mList) {
-			mList.setSelectionFromTop(index, top);
-		}
 	}
 	
 	public static void updateEventCategs(Map<Integer, String> updated) {

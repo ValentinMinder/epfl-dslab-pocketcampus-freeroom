@@ -1,0 +1,146 @@
+<!-- Copyright (c) PocketCampus.Org 2014
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<comControls:BasePage x:Class="PocketCampus.Main.Views.MainView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:tool="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                      xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+                      xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      mc:Ignorable="d">
+    <!-- Design-time DataContext -->
+    <d:DesignProperties.DataContext>
+        <design:DesignMainViewModel xmlns:design="clr-namespace:PocketCampus.Main.ViewModels.Design;assembly=PocketCampus.Main.Common" />
+    </d:DesignProperties.DataContext>
+
+    <!-- Page resources -->
+    <comControls:BasePage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../AppResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Items panel that wraps its elements in an uniform grid -->
+            <ItemsPanelTemplate x:Key="WrapGridPanel">
+                <comControls:UniformWrapGrid ColumnCount="3" />
+            </ItemsPanelTemplate>
+
+            <!-- Button template with a bar containing the tag on the bottom -->
+            <!-- HACK: I tried creating a control for this, but setting DataContext to a DependencyObject
+                   (in this case, an UserControl) crashes. So instead of having a nice Text property,
+                   we're stuck with the tag. Great.
+                 TODO: Investigate further -->
+            <ControlTemplate x:Key="TileButtonTemplate" TargetType="Button">
+                <Grid x:Name="Container"
+                      Margin="{TemplateBinding Margin}"
+                      Background="{TemplateBinding Background}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- HACK: Without the margin, icons are pushed to the top for some reason -->
+                    <ContentPresenter Content="{TemplateBinding Content}"
+                                      Margin="0,0,0,-10" />
+
+                    <Border Grid.Row="1">
+                        <TextBlock Text="{TemplateBinding Tag}"
+                                   Margin="{TemplateBinding Padding}"
+                                   Foreground="White" />
+                    </Border>
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="Container"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="1" />
+                                </Storyboard>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <Storyboard>
+                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Container"
+                                                                   Storyboard.TargetProperty="Background">
+                                        <DiscreteObjectKeyFrame KeyTime="0" Value="Gray" />
+                                    </ObjectAnimationUsingKeyFrames>
+                                    <DoubleAnimation Storyboard.TargetName="Container"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="0.5" />
+                                </Storyboard>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                </Grid>
+            </ControlTemplate>
+
+            <!-- Plugin template -->
+            <DataTemplate x:Key="PluginTemplate">
+                <Grid Margin="10">
+                    <Button Template="{StaticResource TileButtonTemplate}"
+                            Tag="{Binding Name}"
+                            Command="{Binding DataContext.OpenPluginCommand, ElementName=LayoutRoot}"
+                            CommandParameter="{Binding}"
+                            Background="{StaticResource AppTileBrush}">
+                        <Image Source="{Binding Icon}" />
+                        <tool:ContextMenuService.ContextMenu>
+                            <tool:ContextMenu>
+                                <tool:MenuItem Header="{Binding Resources.CreatePluginTile, Source={StaticResource Strings}}"
+                                               Command="{Binding DataContext.CreatePluginTileCommand, ElementName=LayoutRoot}"
+                                               CommandParameter="{Binding}" />
+                            </tool:ContextMenu>
+                        </tool:ContextMenuService.ContextMenu>
+                    </Button>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </comControls:BasePage.Resources>
+
+    <!-- Main grid -->
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Application title -->
+        <Border  Background="{StaticResource AppHeaderBackgroundBrush}">
+            <Viewbox StretchDirection="DownOnly">
+                <TextBlock Text="{Binding Resources.ApplicationTitle, Source={StaticResource Strings}}"
+                           Style="{StaticResource AppTextTitleStyle}"
+                           Margin="12,0" />
+            </Viewbox>
+        </Border>
+
+        <!-- Plugins -->
+        <ScrollViewer Grid.Row="1"
+                      Margin="0,20">
+            <ItemsControl ItemsSource="{Binding Plugins}"
+                          ItemsPanel="{StaticResource WrapGridPanel}"
+                          ItemTemplate="{StaticResource PluginTemplate}"
+                          VerticalAlignment="Top" />
+        </ScrollViewer>
+
+        <!-- Loading & error -->
+        <comControls:LoadingAndError Grid.Row="1" />
+    </Grid>
+
+    <!-- App bar -->
+    <bar:Bindable.ApplicationBar>
+        <bar:BindableApplicationBar>
+            <!-- "Open settings" button -->
+            <bar:BindableApplicationBarButton Command="{Binding OpenSettingsPageCommand}"
+                                              Text="{Binding Resources.SettingsButton, Source={StaticResource Strings}}"
+                                              IconUri="/Assets/Settings.png" />
+
+            <bar:BindableApplicationBar.MenuItems>
+                <!-- "About" menu item -->
+                <bar:BindableApplicationBarMenuItem Command="{Binding OpenAboutPageCommand}"
+                                                    Text="{Binding Resources.AboutButton, Source={StaticResource Strings}}" />
+            </bar:BindableApplicationBar.MenuItems>
+        </bar:BindableApplicationBar>
+    </bar:Bindable.ApplicationBar>
+</comControls:BasePage>

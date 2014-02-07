@@ -1,0 +1,87 @@
+<!-- Copyright (c) PocketCampus.Org 2014
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<comControls:BasePage x:Class="PocketCampus.Main.Views.SettingsView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      mc:Ignorable="d">
+    <!-- Design-time DataContext -->
+    <d:DesignerProperties.DataContext>
+        <design:DesignSettingsViewModel xmlns:design="clr-namespace:PocketCampus.Main.ViewModels.Design;assembly=PocketCampus.Main.Common" />
+    </d:DesignerProperties.DataContext>
+
+    <!-- Page resources -->
+    <comControls:BasePage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../AppResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </comControls:BasePage.Resources>
+
+    <!-- Main grid -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Page header -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
+                       Style="{StaticResource AppTextHeaderStyle}" />
+        </Border>
+
+        <!-- Page title -->
+        <Border Grid.Row="1"
+                Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{Binding Resources.SettingsViewTitle, Source={StaticResource Strings}}"
+                       Style="{StaticResource AppTextTitleStyle}" />
+        </Border>
+
+        <!-- "You are not connected" -->
+        <TextBlock Grid.Row="2"
+                   Text="{Binding Resources.YouAreNotAuthenticated, Source={StaticResource Strings}}"
+                   Style="{StaticResource PhoneTextNormalStyle}"
+                   Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToOppositeVisibility}}"
+                   Margin="12,20" />
+
+        <!-- "You are connected as" -->
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="2"
+                    Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToVisibility}}"
+                    Margin="12,20">
+            <TextBlock Text="{Binding Resources.YouAreAuthenticatedAs, Source={StaticResource Strings}}"
+                       Style="{StaticResource PhoneTextNormalStyle}"
+                       Margin="0" />
+
+            <TextBlock Text="{Binding Settings.UserName}"
+                       Style="{StaticResource PhoneTextNormalStyle}"
+                       FontFamily="{StaticResource PhoneFontFamilyBold}"
+                       Margin="6,0" />
+        </StackPanel>
+
+        <!-- "Log on" button -->
+        <Button Grid.Row="3"
+                Content="{Binding Resources.LogOn, Source={StaticResource Strings}}"
+                Command="{Binding LogOnCommand}"
+                Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToOppositeVisibility}}"
+                HorizontalAlignment="Center"
+                MinWidth="300" />
+
+        <!-- "Log off" button -->
+        <Button Grid.Row="3"
+                Content="{Binding Resources.LogOff, Source={StaticResource Strings}}"
+                Command="{Binding LogOffCommand}"
+                Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToVisibility}}"
+                HorizontalAlignment="Center"
+                MinWidth="300" />
+    </Grid>
+</comControls:BasePage>
