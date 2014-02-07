@@ -30,73 +30,69 @@
             <my:MealPriceConverter x:Key="MealToPrice"
                                    Settings="{Binding Settings}" />
 
-            <!-- Meal type template -->
-            <DataTemplate x:Key="MealTypeTemplate">
-                <Border Background="{Binding Converter={StaticResource MealTypeToBrush}}"
-                        Margin="0,0,0,5">
-                    <Image Source="{Binding Converter={StaticResource EnumToImage}}"
-                           Width="32" Height="32"
-                           Margin="6,6,4,6" />
-                </Border>
-            </DataTemplate>
-
             <!-- Meal template -->
             <DataTemplate x:Key="MealItemTemplate">
-                <Grid Margin="0,10">
+                <Grid Margin="0,0,0,25">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="120" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                    
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
 
-                    <!-- Types -->
-                    <ItemsControl Grid.RowSpan="3"
-                                  ItemsSource="{Binding MealTypes}"
-                                  ItemTemplate="{StaticResource MealTypeTemplate}"
-                                  Margin="-3,8,2,0" />
+                        <!-- Image -->
+                        <Image Source="{Binding Converter={StaticResource MealToImage}}"
+                               Width="100"
+                               Height="100" />
 
-                    <!-- Name -->
-                    <TextBlock Grid.Column="1"
-                               Text="{Binding Name}"
-                               TextWrapping="Wrap"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               FontSize="24" />
-
-                    <!-- Description -->
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="1"
-                               Text="{Binding Description}"
-                               TextWrapping="Wrap"
-                               Visibility="{Binding Description, Converter={StaticResource StringToVisibility}}"
-                               Style="{StaticResource PhoneTextSubtleStyle}" />
-
-                    <!-- Price -->
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="2"
-                               Text="{Binding Converter={StaticResource MealToPrice}}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               Foreground="{StaticResource PhoneAccentBrush}"
-                               HorizontalAlignment="Right" />
-
-                    <!-- Half-portion price -->
-                    <StackPanel Grid.Column="2"
-                                Grid.Row="3"
-                                HorizontalAlignment="Right"
-                                Orientation="Horizontal"
-                                Visibility="{Binding HalfPortionPrice, Converter={StaticResource NonNullToVisibility}}">
-                        <TextBlock Text="{Binding Resources.HalfPrice, Source={StaticResource Strings}}"
+                        <!-- Price -->
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Converter={StaticResource MealToPrice}}"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
                                    Style="{StaticResource PhoneTextNormalStyle}"
                                    Margin="0" />
 
-                        <TextBlock Text="{Binding HalfPortionPrice, StringFormat='{}{0:0.00} CHF'}"
-                                   Style="{StaticResource PhoneTextNormalStyle}"
-                                   Foreground="{StaticResource PhoneAccentBrush}" />
-                    </StackPanel>
+                        <!-- Half-portion price -->
+                        <StackPanel Grid.Row="2"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Visibility="{Binding HalfPortionPrice, Converter={StaticResource NonNullToVisibility}}">
+                            <TextBlock Text="{Binding Resources.HalfPrice, Source={StaticResource Strings}}"
+                                       Style="{StaticResource PhoneTextNormalStyle}"
+                                       Foreground="{StaticResource PhoneSubtleBrush}"
+                                       Margin="0" />
+
+                            <TextBlock Text="{Binding HalfPortionPrice, StringFormat='{}{0:0.00} CHF'}"
+                                       Style="{StaticResource PhoneTextNormalStyle}"
+                                       Margin="6,0,0,0" />
+                        </StackPanel>
+                    </Grid>
+                    
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <!-- Name -->
+                        <TextBlock Text="{Binding Name}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   FontSize="{StaticResource PhoneFontSizeMediumLarge}"/>
+
+                        <!-- Description -->
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Description}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource PhoneTextSubtleStyle}" />
+                    </Grid>
                 </Grid>
             </DataTemplate>
 

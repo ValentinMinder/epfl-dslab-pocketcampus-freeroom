@@ -187,7 +187,8 @@
     <value>actualiser</value>
   </data>
   <data name="HalfPrice" xml:space="preserve">
-    <value>1/2 portion :</value>
+    <value>1/2 :</value>
+    <comment>Must be VERY short</comment>
   </data>
   <data name="MainViewTitle" xml:space="preserve">
     <value>Menus</value>
@@ -197,5 +198,8 @@
   </data>
   <data name="UnknownPrice" xml:space="preserve">
     <value>prix inconnu</value>
+  </data>
+  <data name="MealTypeFilterExplanation" xml:space="preserve">
+    <value>touchez un type de plat pour l'afficher / le masquer</value>
   </data>
 </root>

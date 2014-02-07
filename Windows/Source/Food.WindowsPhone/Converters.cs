@@ -3,12 +3,12 @@
 // File author: Solal Pirelli
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using PocketCampus.Common;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Resources;
@@ -52,30 +52,14 @@ namespace PocketCampus.Food
     }
 
     /// <summary>
-    /// Converts a meal type to a brush.
+    /// Converts meals to images of their main type.
     /// </summary>
-    public sealed class MealTypeToBrushConverter : ValueConverter<MealTypes, Brush>
+    public sealed class MealToImageConverter : ValueConverter<Meal, ImageSource>
     {
-        private const byte Alpha = 255;
-
-        private static Dictionary<MealTypes, Brush> Values = new Dictionary<MealTypes, Brush>
+        protected override ImageSource Convert( Meal value )
         {
-            { MealTypes.Unknown, new SolidColorBrush( Color.FromArgb( Alpha, 0x00, 0x00, 0x00 ) ) },
-            { MealTypes.GreenFork, new SolidColorBrush( Color.FromArgb( Alpha, 0x77, 0xD9, 0x4E ) ) },
-            { MealTypes.Fish, new SolidColorBrush( Color.FromArgb( Alpha, 0x00, 0xA2, 0xFF ) ) },
-            { MealTypes.Meat, new SolidColorBrush( Color.FromArgb( Alpha, 0xEF, 0x07, 0x07 ) ) },
-            { MealTypes.Poultry, new SolidColorBrush( Color.FromArgb( Alpha, 0xC4, 0x6C, 0x00 ) ) },
-            { MealTypes.Vegetarian, new SolidColorBrush( Color.FromArgb( Alpha, 0x45, 0xDE, 0x46 ) ) },
-            { MealTypes.Pasta, new SolidColorBrush( Color.FromArgb( Alpha, 0xF2, 0xE1, 0x32 ) ) },
-            { MealTypes.Pizza, new SolidColorBrush( Color.FromArgb( Alpha, 0xEA, 0xC5, 0x4F ) ) },
-            { MealTypes.Thai, new SolidColorBrush( Color.FromArgb( Alpha, 0xE0, 0xE0, 0xE0 ) ) },
-            { MealTypes.Indian, new SolidColorBrush( Color.FromArgb( Alpha, 0xE0, 0xE0, 0xE0 ) ) },
-            { MealTypes.Lebanese, new SolidColorBrush( Color.FromArgb( Alpha, 0xE0, 0xE0, 0xE0 ) ) }
-        };
-
-        protected override Brush Convert( MealTypes value )
-        {
-            return Values[value];
+            string type = value.MealTypes.OrderByDescending( x => x ).First().ToString();
+            return new BitmapImage( new Uri( string.Format( "/Assets/MealTypes_{0}.png", type ), UriKind.Relative ) );
         }
     }
 

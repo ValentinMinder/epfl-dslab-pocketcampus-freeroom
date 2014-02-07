@@ -120,18 +120,18 @@
     <Content Include="Assets\MealTypes_GreenFork.png" />
     <Content Include="Assets\MealTypes_Indian.png" />
     <Content Include="Assets\MealTypes_Lebanese.png" />
+    <Content Include="Assets\FoodIcon.png" />
+    <Content Include="Assets\Lunch.png" />
     <Content Include="Assets\MealTypes_Meat.png" />
     <Content Include="Assets\MealTypes_Pasta.png" />
     <Content Include="Assets\MealTypes_Pizza.png" />
     <Content Include="Assets\MealTypes_Poultry.png" />
-    <Content Include="Assets\MealTypes_Thai.png" />
-    <Content Include="Assets\MealTypes_Unknown.png" />
-    <Content Include="Assets\MealTypes_Vegetarian.png" />
-    <Content Include="Assets\FoodIcon.png" />
-    <Content Include="Assets\Lunch.png" />
     <Content Include="Assets\Refresh.png" />
     <Content Include="Assets\FoodSmallIcon.png" />
     <Content Include="Assets\Settings.png" />
+    <Content Include="Assets\MealTypes_Thai.png" />
+    <Content Include="Assets\MealTypes_Unknown.png" />
+    <Content Include="Assets\MealTypes_Vegetarian.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\DayPicker.xaml">

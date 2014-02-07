@@ -70,7 +70,7 @@ namespace PocketCampus.Food.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1/2 portion :.
+        ///   Looks up a localized string similar to 1/2:.
         /// </summary>
         public static string HalfPrice {
             get {
@@ -93,6 +93,15 @@ namespace PocketCampus.Food.Resources {
         public static string MaximumBudget {
             get {
                 return ResourceManager.GetString("MaximumBudget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tap a meal type to show / hide it.
+        /// </summary>
+        public static string MealTypeFilterExplanation {
+            get {
+                return ResourceManager.GetString("MealTypeFilterExplanation", resourceCulture);
             }
         }
         
