@@ -107,7 +107,6 @@
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\PhoneService.cs" />
     <Compile Include="Services\PluginLoader.cs" />
-    <Compile Include="MainSettings.cs" />
     <Compile Include="Controls\OrientationChangingFrame.cs" />
     <Compile Include="Services\FrameNavigationService.cs" />
     <Compile Include="Services\HttpClient.cs" />

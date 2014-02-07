@@ -12,6 +12,9 @@ namespace PocketCampus.Main.ViewModels.Design
         public string UserName { get { return "johndoe"; } }
         public string Password { get { return "12345"; } }
 
+        public bool SaveCredentials { get { return true; } }
+        public bool CanSaveCredentials { get { return true; } }
+
         public bool IsAuthenticating { get { return false; } }
 
         public AuthenticationStatus Status { get { return AuthenticationStatus.WrongCredentials; } }

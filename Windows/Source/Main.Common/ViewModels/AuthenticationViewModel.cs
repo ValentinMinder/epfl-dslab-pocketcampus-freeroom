@@ -13,7 +13,7 @@ namespace PocketCampus.Main.ViewModels
     /// The ViewModel that authenticates the user.
     /// </summary>
     [PageLogId( "/dashboard/authenticate" )]
-    public sealed class AuthenticationViewModel : ViewModel<NoParameter>
+    public sealed class AuthenticationViewModel : ViewModel<AuthenticationMode>
     {
         private readonly INavigationService _navigationService;
         private readonly ITequilaAuthenticator _authenticator;
@@ -21,6 +21,7 @@ namespace PocketCampus.Main.ViewModels
 
         private string _userName;
         private string _password;
+        private bool _saveCredentials;
         private bool _isAuthenticating;
         private AuthenticationStatus _status;
 
@@ -41,6 +42,20 @@ namespace PocketCampus.Main.ViewModels
             get { return _password; }
             set { SetProperty( ref _password, value ); }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether credentials should be saved.
+        /// </summary>
+        public bool SaveCredentials
+        {
+            get { return _saveCredentials; }
+            set { SetProperty( ref _saveCredentials, value ); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the user should be allowed to opt-out of saving credentials.
+        /// </summary>
+        public bool CanSaveCredentials { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether authentication is in progress.
@@ -73,11 +88,15 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Creates a new AuthenticationViewModel.
         /// </summary>
-        public AuthenticationViewModel( INavigationService navigationService, ITequilaAuthenticator authenticator, IMainSettings settings )
+        public AuthenticationViewModel( INavigationService navigationService, ITequilaAuthenticator authenticator, IMainSettings settings,
+                                        AuthenticationMode authMode )
         {
             _navigationService = navigationService;
             _authenticator = authenticator;
             _settings = settings;
+
+            SaveCredentials = true;
+            CanSaveCredentials = authMode == AuthenticationMode.Dialog;
         }
 
 
@@ -86,15 +105,17 @@ namespace PocketCampus.Main.ViewModels
         /// </summary>
         private async Task AuthenticateAsync()
         {
+            bool authOk = false;
             IsAuthenticating = true;
 
             try
             {
                 if ( await _authenticator.AuthenticateAsync( UserName, Password ) )
                 {
-                    _settings.IsAuthenticated = true;
+                    _settings.IsAuthenticated = SaveCredentials;
                     _settings.UserName = UserName;
                     _settings.Password = Password;
+                    authOk = true;
                 }
                 else
                 {
@@ -106,7 +127,7 @@ namespace PocketCampus.Main.ViewModels
                 Status = AuthenticationStatus.Error;
             }
 
-            if ( _settings.IsAuthenticated )
+            if ( authOk )
             {
                 _navigationService.NavigateBack();
             }

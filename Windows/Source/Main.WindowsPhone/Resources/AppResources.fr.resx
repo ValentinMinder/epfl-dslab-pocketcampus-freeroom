@@ -231,4 +231,7 @@ George Candea</value>
   <data name="AboutOrganizationName" xml:space="preserve">
     <value>PocketCampus.Org</value>
   </data>
+  <data name="AuthenticationSaveCredentials" xml:space="preserve">
+    <value>se souvenir de moi</value>
+  </data>
 </root>

@@ -200,6 +200,15 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to remember me.
+        /// </summary>
+        public static string AuthenticationSaveCredentials {
+            get {
+                return ResourceManager.GetString("AuthenticationSaveCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred while connecting to Tequila. Please try again later..
         /// </summary>
         public static string AuthenticationStatus_Error {

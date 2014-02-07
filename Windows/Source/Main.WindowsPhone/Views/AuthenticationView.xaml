@@ -33,6 +33,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -66,9 +67,15 @@
         <PasswordBox Grid.Row="5"
                      Password="{Binding Password, Mode=TwoWay}"
                      com:TextBoxEx.EnterCommand="{Binding AuthenticateCommand}" />
+        
+        <!-- "Remember me" checkbox -->
+        <CheckBox Grid.Row="6"
+                  IsChecked="{Binding SaveCredentials, Mode=TwoWay}"
+                  Content="{Binding Resources.AuthenticationSaveCredentials, Source={StaticResource Strings}}"
+                  Visibility="{Binding CanSaveCredentials, Converter={StaticResource BoolToVisibility}}" />
 
         <!-- Status -->
-        <TextBlock Grid.Row="6"
+        <TextBlock Grid.Row="7"
                    Text="{Binding Status, Converter={StaticResource EnumToString}}"
                    Style="{StaticResource PhoneTextNormalStyle}"
                    Visibility="{Binding IsAuthenticating, Converter={StaticResource BoolToOppositeVisibility}}"
@@ -78,7 +85,7 @@
                    Foreground="Red" />
 
         <!-- "Authenticating" indicator -->
-        <Grid Grid.Row="6"
+        <Grid Grid.Row="7"
               Visibility="{Binding IsAuthenticating, Converter={StaticResource BoolToVisibility}}">
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -98,7 +105,7 @@
 
 
         <!-- "Authenticate" button -->
-        <Button Grid.Row="7"
+        <Button Grid.Row="8"
                 Content="{Binding Resources.LogOn, Source={StaticResource Strings}}"
                 Command="{Binding AuthenticateCommand}" />
     </Grid>

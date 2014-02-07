@@ -22,11 +22,14 @@ namespace PocketCampus.Main.Services
 
         private readonly NavigationLogger _logger;
         private readonly Dictionary<Type, Uri> _views;
-        private readonly Stack<IViewModel<object>> _backStack;
+        // HACK: IViewModel can't be covariant to be used with value types
+        //       and having a non-generic IViewModel that shouldn't be implemented is a terrible idea
+        //       so we use dynamic to call OnNavigatedTo/From
+        private readonly Stack<dynamic> _backStack;
 
         private bool _isInDialog;
         private bool _ignoreNext;
-        private IViewModel<object> _afterDialog;
+        private object _afterDialog;
 
         private bool _removeCurrentFromBackstack;
 
@@ -38,7 +41,7 @@ namespace PocketCampus.Main.Services
         {
             _logger = logger;
             _views = new Dictionary<Type, Uri>();
-            _backStack = new Stack<IViewModel<object>>();
+            _backStack = new Stack<dynamic>();
 
             App.RootFrame.Navigated += Frame_Navigated;
         }
@@ -47,7 +50,7 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Navigates to the specified ViewModel.
         /// </summary>
-        private void NavigateToPrivate( IViewModel<object> viewModel )
+        private void NavigateToPrivate( object viewModel )
         {
             var viewModelType = viewModel.GetType();
             _logger.LogNavigation( viewModel );
@@ -58,7 +61,7 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Navigates to the specified ViewModel, as a dialog.
         /// </summary>
-        private void NavigateToDialogPrivate( IViewModel<object> viewModel )
+        private void NavigateToDialogPrivate( object viewModel )
         {
             if ( _isInDialog )
             {
@@ -135,7 +138,7 @@ namespace PocketCampus.Main.Services
             where T : IViewModel<NoParameter>
         {
             var vmType = typeof( T );
-            var vm = (IViewModel<object>) Container.Get( vmType, null );
+            var vm = Container.Get( vmType, null );
 
             if ( _isInDialog )
             {
@@ -155,7 +158,7 @@ namespace PocketCampus.Main.Services
             where TViewModel : IViewModel<TArg>
         {
             var vmType = typeof( TViewModel );
-            var vm = (IViewModel<object>) Container.Get( vmType, arg );
+            var vm = Container.Get( vmType, arg );
 
             if ( _isInDialog )
             {
@@ -174,7 +177,7 @@ namespace PocketCampus.Main.Services
             where T : IViewModel<NoParameter>
         {
             var vmType = typeof( T );
-            var vm = (IViewModel<object>) Container.Get( vmType, null );
+            var vm = Container.Get( vmType, null );
 
             NavigateToDialogPrivate( vm );
         }
@@ -186,7 +189,7 @@ namespace PocketCampus.Main.Services
             where TViewModel : IViewModel<TArg>
         {
             var vmType = typeof( TViewModel );
-            var vm = (IViewModel<object>) Container.Get( vmType, arg );
+            var vm = Container.Get( vmType, arg );
 
             NavigateToDialogPrivate( vm );
         }

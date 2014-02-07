@@ -46,7 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppInitializer.cs" />
+    <Compile Include="AuthenticationMode.cs" />
     <Compile Include="IMainSettings.cs" />
+    <Compile Include="MainSettings.cs" />
     <Compile Include="Services\IRatingService.cs" />
     <Compile Include="Services\IPluginLoader.cs" />
     <Compile Include="Services\ITileCreator.cs" />

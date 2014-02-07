@@ -29,8 +29,8 @@ namespace PocketCampus.Main.Services
 #if DEBUG && IS_AT_EPFL
         private const string ThriftServerUrlFormat = "http://dslabpc36.epfl.ch:9090/v3r1";
 #else
-        //private const string ThriftServerUrlFormat = "{0}://pocketcampus.epfl.ch:{1}/v3r1";
-        private const string ThriftServerUrlFormat = "https://pocketcampus.epfl.ch:8888/v3r1";
+        private const string ThriftServerUrlFormat = "{0}://pocketcampus.epfl.ch:{1}/v3r1";
+        //private const string ThriftServerUrlFormat = "https://pocketcampus.epfl.ch:8888/v3r1";
 #endif
         // The format of a service URL
         // Parameters are the server URL and the service name

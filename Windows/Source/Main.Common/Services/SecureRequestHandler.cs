@@ -54,14 +54,24 @@ namespace PocketCampus.Main.Services
                 if ( await _authenticator.AuthenticateAsync( _mainSettings.UserName, _mainSettings.Password, token.AuthenticationKey ) )
                 {
                     session = await authenticator.GetSessionAsync( token );
-                    SaveSession( typeof( TViewModel ), session );
+
+                    // if we're not authenticated, the user doesn't want to be remembered
+                    if ( _mainSettings.IsAuthenticated )
+                    {
+                        SaveSession( typeof( TViewModel ), session );
+                    }
+                    else
+                    {
+                        _mainSettings.UserName = null;
+                        _mainSettings.Password = null;
+                    }
                 }
                 else
                 {
                     // Authenticate, and then go to this plugin if it succeeds
                     // but go back to whatever was the previous plugin rather than to this one if it doesn't
                     _navigationService.PopBackStack();
-                    _navigationService.NavigateToDialog<AuthenticationViewModel>();
+                    _navigationService.NavigateToDialog<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Dialog );
                     _navigationService.NavigateTo<TViewModel>();
                     return;
                 }

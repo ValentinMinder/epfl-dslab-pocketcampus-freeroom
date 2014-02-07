@@ -29,7 +29,7 @@ namespace PocketCampus.Mvvm.Logging
         /// <summary>
         /// Logs a navigation to the specified ViewModel.
         /// </summary>
-        public void LogNavigation( IViewModel<object> viewModel )
+        public void LogNavigation( object viewModel )
         {
             var viewModelType = viewModel.GetType();
 

@@ -148,7 +148,7 @@ namespace PocketCampus.Main.ViewModels
             }
             else if ( !_settings.IsAuthenticated )
             {
-                _navigationService.NavigateToDialog<AuthenticationViewModel>();
+                _navigationService.NavigateToDialog<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Dialog );
                 plugin.NavigateTo( _navigationService );
             }
         }

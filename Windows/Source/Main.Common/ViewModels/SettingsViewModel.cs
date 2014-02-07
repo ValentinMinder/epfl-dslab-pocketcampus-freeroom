@@ -30,7 +30,7 @@ namespace PocketCampus.Main.ViewModels
         [CommandLogId( "LogOn" )]
         public Command LogOnCommand
         {
-            get { return GetCommand( _navigationService.NavigateTo<AuthenticationViewModel> ); }
+            get { return GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Standalone ) ); }
         }
 
         /// <summary>
