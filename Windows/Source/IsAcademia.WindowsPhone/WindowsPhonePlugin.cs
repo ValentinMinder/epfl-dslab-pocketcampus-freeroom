@@ -28,7 +28,7 @@ namespace PocketCampus.IsAcademia
         /// </summary>
         public Uri Icon
         {
-            get { return new Uri( "/Assets/ScheduleIcon.png", UriKind.Relative ); }
+            get { return new Uri( "/Assets/IsAcademiaIcon.png", UriKind.Relative ); }
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace PocketCampus.IsAcademia
         /// </summary>
         public Uri SmallIcon
         {
-            get { return new Uri( "/Assets/ScheduleSmallIcon.png", UriKind.Relative ); }
+            get { return new Uri( "/Assets/IsAcademiaSmallIcon.png", UriKind.Relative ); }
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace PocketCampus.IsAcademia
         /// </summary>
         public void Initialize( IWindowsPhoneNavigationService navigationService )
         {
-            navigationService.Bind<MainViewModel>( "/PocketCampus.Schedule.WindowsPhone;component/Views/MainView.xaml" );
+            navigationService.Bind<MainViewModel>( "/PocketCampus.IsAcademia.WindowsPhone;component/Views/MainView.xaml" );
         }
     }
 }

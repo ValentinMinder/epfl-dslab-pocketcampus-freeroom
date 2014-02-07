@@ -81,7 +81,7 @@ namespace PocketCampus.IsAcademia.ViewModels
         /// </summary>
         protected override Task RefreshAsync( CancellationToken cancellationToken, bool force )
         {
-            return _requestHandler.ExecuteAsync<MainViewModel, AuthenticationToken, string>( _isaService, async token =>
+            return _requestHandler.ExecuteAsync<MainViewModel, AuthenticationToken, string>( _isaService, async session =>
             {
                 if ( !force )
                 {
@@ -91,7 +91,7 @@ namespace PocketCampus.IsAcademia.ViewModels
                 var request = new ScheduleRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                    Token = token,
+                    SessionId = session,
                     WeekStart = WeekDate
                 };
                 var response = await _isaService.GetScheduleAsync( request );

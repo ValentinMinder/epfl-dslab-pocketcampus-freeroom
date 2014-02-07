@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle( "PocketCampus.Schedule.WindowsPhone" )]
+[assembly: AssemblyTitle( "PocketCampus.IsAcademia.WindowsPhone" )]
 [assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014" )]
 [assembly: AssemblyCulture( "" )]
 [assembly: NeutralResourcesLanguageAttribute( "en" )]

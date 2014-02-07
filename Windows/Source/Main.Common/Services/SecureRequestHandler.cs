@@ -77,9 +77,14 @@ namespace PocketCampus.Main.Services
                 _isRetrying = true;
                 SaveSession( typeof( TViewModel ), (TSession) null );
 
-                await ExecuteAsync<TViewModel, TToken, TSession>( authenticator, attempt );
-
-                _isRetrying = false;
+                try
+                {
+                    await ExecuteAsync<TViewModel, TToken, TSession>( authenticator, attempt );
+                }
+                finally
+                {
+                    _isRetrying = false;
+                }
             }
         }
 

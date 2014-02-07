@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PocketCampus.IsAcademia</RootNamespace>
-    <AssemblyName>PocketCampus.Schedule.WindowsPhone</AssemblyName>
+    <AssemblyName>PocketCampus.IsAcademia.WindowsPhone</AssemblyName>
     <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
@@ -129,10 +129,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Previous.png" />
-    <Content Include="Assets\ScheduleIcon.png" />
+    <Content Include="Assets\IsAcademiaIcon.png" />
     <Content Include="Assets\Next.png" />
     <Content Include="Assets\Refresh.png" />
-    <Content Include="Assets\ScheduleSmallIcon.png" />
+    <Content Include="Assets\IsAcademiaSmallIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\WeekPicker.xaml">

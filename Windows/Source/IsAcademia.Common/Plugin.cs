@@ -3,9 +3,9 @@
 // File author: Solal Pirelli
 
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
 using PocketCampus.IsAcademia.Services;
 using PocketCampus.IsAcademia.ViewModels;
+using PocketCampus.Mvvm;
 
 namespace PocketCampus.IsAcademia
 {
@@ -19,7 +19,7 @@ namespace PocketCampus.IsAcademia
         /// </summary>
         public string Id
         {
-            get { return "DISABLED IsAcademia"; }
+            get { return "IsAcademia"; }
         }
 
         /// <summary>

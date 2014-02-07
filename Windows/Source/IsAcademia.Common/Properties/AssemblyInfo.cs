@@ -5,7 +5,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle( "PocketCampus.Schedule.Common" )]
+[assembly: AssemblyTitle( "PocketCampus.IsAcademia.Common" )]
 [assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014" )]
 [assembly: AssemblyCulture( "" )]
 
