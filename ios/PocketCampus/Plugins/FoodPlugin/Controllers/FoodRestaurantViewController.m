@@ -42,7 +42,7 @@ static const NSInteger kMealsSection = 1;
 @property (nonatomic, strong) FoodService* foodService;
 @property (nonatomic, strong) FoodRestaurantInfoCell* restaurantInfoCell;
 @property (nonatomic, strong) UITableViewCell* showOnMapCell;
-@property (nonatomic, strong) NSMutableDictionary* cellForMealName;
+@property (nonatomic, strong) NSMutableDictionary* cellForMealId; //key: NSNumber of EpflMeal.mId
 
 
 @end
@@ -60,7 +60,7 @@ static const NSInteger kMealsSection = 1;
         self.foodService = [FoodService sharedInstanceToRetain];
         _restaurant = restaurant;
         self.title = self.restaurant.rName;
-        self.cellForMealName = [NSMutableDictionary dictionaryWithCapacity:self.restaurant.rUniqueMeals.count];
+        self.cellForMealId = [NSMutableDictionary dictionaryWithCapacity:self.restaurant.rUniqueMeals.count];
 //#warning TO REMOVE
         //self.restaurant.rPictureUrl = @"http://pocketcampus.epfl.ch/backend/restaurant-pics/vallotton.png";
         //self.restaurant.rRating.ratingValue = 0.76;
@@ -78,7 +78,7 @@ static const NSInteger kMealsSection = 1;
     self.tableView = tableViewAdditions;
     __weak __typeof(self) weakSelf = self;
     tableViewAdditions.contentSizeCategoryDidChangeBlock = ^(PCTableViewAdditions* tableView) {
-        [weakSelf.cellForMealName removeAllObjects];
+        [weakSelf.cellForMealId removeAllObjects];
     };
     [self refreshFavoriteButton];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
@@ -98,7 +98,7 @@ static const NSInteger kMealsSection = 1;
 - (void)setRestaurant:(EpflRestaurant *)restaurant {
     _restaurant = restaurant;
     self.restaurantInfoCell = nil,
-    [self.cellForMealName removeAllObjects];
+    [self.cellForMealId removeAllObjects];
     [self.tableView reloadData];
 }
 
@@ -163,7 +163,8 @@ static const NSInteger kMealsSection = 1;
         case kMealsSection:
         {
             EpflMeal* meal = self.restaurant.rUniqueMeals[indexPath.row];
-            FoodMealCell* mealCell = self.cellForMealName[meal.mName];
+            NSNumber* nsMealId = [NSNumber numberWithLongLong:(long long)meal.mId];
+            FoodMealCell* mealCell = self.cellForMealId[nsMealId];
 /*#warning TO REMOVE
             if (indexPath.row > 1) {
                 meal.mRating.voteCount = 6;
@@ -173,7 +174,7 @@ static const NSInteger kMealsSection = 1;
             if (!mealCell) {
                 mealCell = [[FoodMealCell alloc] initWithReuseIdentifier:nil];
                 mealCell.meal = meal;
-                self.cellForMealName[meal.mName] = mealCell;
+                self.cellForMealId[nsMealId] = mealCell;
             }
             cell = mealCell;
             break;
