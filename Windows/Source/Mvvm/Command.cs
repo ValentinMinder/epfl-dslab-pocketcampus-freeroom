@@ -116,7 +116,13 @@ namespace PocketCampus.Mvvm
         /// <returns>True if this command can be executed; otherwise, false.</returns>
         bool ICommand.CanExecute( object parameter )
         {
-            return CanExecute( (T) parameter );
+            if ( parameter is T )
+            {
+                return CanExecute( (T) parameter );
+            }
+
+            // can occur with wrong bindings
+            return false;
         }
 
         /// <summary>
@@ -125,7 +131,11 @@ namespace PocketCampus.Mvvm
         /// <param name="parameter">Data used by the command.</param>
         void ICommand.Execute( object parameter )
         {
-            Execute( (T) parameter );
+            if ( parameter is T )
+            {
+                // the opposite can occur with wrong bindings
+                Execute( (T) parameter );
+            }
         }
         #endregion
     }

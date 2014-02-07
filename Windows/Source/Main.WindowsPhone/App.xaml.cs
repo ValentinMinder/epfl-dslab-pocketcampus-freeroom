@@ -37,7 +37,7 @@ namespace PocketCampus.Main
         /// <summary>
         /// Gets the navigation service used by the app.
         /// </summary>
-        public static FrameNavigationService NavigationService { get; private set; }
+        public static IWindowsPhoneNavigationService NavigationService { get; private set; }
 
 
         /// <summary>

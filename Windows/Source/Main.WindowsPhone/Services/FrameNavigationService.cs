@@ -30,7 +30,6 @@ namespace PocketCampus.Main.Services
         private bool _isInDialog;
         private bool _ignoreNext;
         private object _afterDialog;
-
         private bool _removeCurrentFromBackstack;
 
 
@@ -100,7 +99,9 @@ namespace PocketCampus.Main.Services
 
                 if ( _backStack.Count > 0 )
                 {
-                    _backStack.Pop().OnNavigatedFrom();
+                    var currentTop = _backStack.Pop();
+                    currentTop.OnNavigatedFrom();
+                    DisposeIfNeeded( currentTop );
                 }
                 if ( _backStack.Count > 0 )
                 {
@@ -114,9 +115,11 @@ namespace PocketCampus.Main.Services
                 {
                     App.RootFrame.RemoveBackEntry();
 
-                    var temp = _backStack.Pop();
-                    _backStack.Pop();
-                    _backStack.Push( temp );
+                    var newTop = _backStack.Pop();
+                    var currentTop = _backStack.Pop();
+                    _backStack.Push( newTop );
+
+                    DisposeIfNeeded( currentTop );
 
                     _removeCurrentFromBackstack = false;
                 }
@@ -126,6 +129,15 @@ namespace PocketCampus.Main.Services
                     _backStack.Peek().OnNavigatedTo();
                     page.DataContext = _backStack.Peek();
                 }
+            }
+        }
+
+        private static void DisposeIfNeeded( object obj )
+        {
+            var disposable = obj as IDisposable;
+            if ( disposable != null )
+            {
+                disposable.Dispose();
             }
         }
 

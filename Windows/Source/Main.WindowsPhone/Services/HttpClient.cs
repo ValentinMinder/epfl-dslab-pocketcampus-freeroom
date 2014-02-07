@@ -22,13 +22,14 @@ namespace PocketCampus.Main.Services
         private static readonly Encoding DefaultEncoding = Encoding.UTF8;
 
         // The client used to perform requests; its full name is required to avoid ambiguity
-        private System.Net.Http.HttpClient _client;
+        // HACK: HttpClient is thread-safe, so we use one shared instance to avoid disposal problems
+        private static readonly System.Net.Http.HttpClient _client;
 
 
         /// <summary>
-        /// Creates a new HttpClient.
+        /// Initializes static members of HttpClient.
         /// </summary>
-        public HttpClient()
+        static HttpClient()
         {
             _client = new System.Net.Http.HttpClient( new System.Net.Http.HttpClientHandler { AllowAutoRedirect = false } );
             _client.Timeout = Timeout;
