@@ -8,10 +8,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
 using PocketCampus.IsAcademia.Models;
 using PocketCampus.IsAcademia.Services;
+using PocketCampus.Mvvm;
+using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.IsAcademia.ViewModels
 {
@@ -21,8 +21,8 @@ namespace PocketCampus.IsAcademia.ViewModels
     [PageLogId( "/schedule" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
-        private readonly IScheduleService _scheduleService;
-        private readonly ISecureRequestHandler _secureService;
+        private readonly IIsAcademiaService _isaService;
+        private readonly ISecureRequestHandler _requestHandler;
 
         private DayInfo[] _days;
         private DayInfo _currentDay;
@@ -59,10 +59,10 @@ namespace PocketCampus.IsAcademia.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IScheduleService scheduleService, ISecureRequestHandler secureService )
+        public MainViewModel( IIsAcademiaService isaService, ISecureRequestHandler requestHandler )
         {
-            _scheduleService = scheduleService;
-            _secureService = secureService;
+            _isaService = isaService;
+            _requestHandler = requestHandler;
 
             _weekDate = GetWeekStart( DateTime.Now );
         }
@@ -81,7 +81,7 @@ namespace PocketCampus.IsAcademia.ViewModels
         /// </summary>
         protected override Task RefreshAsync( CancellationToken cancellationToken, bool force )
         {
-            return _secureService.ExecuteAsync<MainViewModel, ScheduleToken, ScheduleToken>( _scheduleService, async token =>
+            return _requestHandler.ExecuteAsync<MainViewModel, AuthenticationToken, string>( _isaService, async token =>
             {
                 if ( !force )
                 {
@@ -94,7 +94,7 @@ namespace PocketCampus.IsAcademia.ViewModels
                     Token = token,
                     WeekStart = WeekDate
                 };
-                var response = await _scheduleService.GetScheduleAsync( request );
+                var response = await _isaService.GetScheduleAsync( request );
                 if ( response.Status == ResponseStatus.AuthenticationError )
                 {
                     return false;

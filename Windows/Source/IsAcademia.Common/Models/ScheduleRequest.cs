@@ -17,7 +17,7 @@ namespace PocketCampus.IsAcademia.Models
         /// The token used to identify the user.
         /// </summary>
         [ThriftField( 1, true, "token" )]
-        public ScheduleToken Token { get; set; }
+        public string Token { get; set; }
 
         /// <summary>
         /// The start of the week.

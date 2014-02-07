@@ -9,7 +9,7 @@ namespace PocketCampus.IsAcademia.Models
     /// <summary>
     /// The possible response statuses of server requests.
     /// </summary>
-    [ThriftEnum( "ScheduleStatusCode" )]
+    [ThriftEnum( "IsaStatusCode" )]
     public enum ResponseStatus
     {
         /// <summary>

@@ -35,7 +35,7 @@ namespace PocketCampus.IsAcademia
         /// </summary>
         public void Initialize( INavigationService navigationService )
         {
-            Container.Bind<IScheduleService, ScheduleService>();
+            Container.Bind<IIsAcademiaService, IsAcademiaService>();
         }
 
         /// <summary>

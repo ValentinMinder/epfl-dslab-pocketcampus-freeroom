@@ -1,21 +1,20 @@
-// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using PocketCampus.Common;
-using ThriftSharp;
-
 // Plumbing for authentication
+
+using PocketCampus.Common;
 
 namespace PocketCampus.IsAcademia.Models
 {
-    [ThriftStruct( "ScheduleToken" )]
-    public sealed class ScheduleToken : IAuthenticationToken
+    public sealed class AuthenticationToken : IAuthenticationToken
     {
-        [ThriftField( 1, true, "tequilaToken" )]
-        public string AuthenticationKey { get; set; }
+        public string AuthenticationKey { get; private set; }
 
-        [ThriftField( 2, true, "sessionId" )]
-        public string SessionId { get; set; }
+        public AuthenticationToken( string key )
+        {
+            AuthenticationKey = key;
+        }
     }
 }

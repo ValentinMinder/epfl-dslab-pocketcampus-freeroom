@@ -13,16 +13,19 @@ namespace PocketCampus.IsAcademia.Services
     /// The schedule server service.
     /// </summary>
     [ThriftService( "IsAcademiaService" )]
-    public interface IScheduleService : ITwoStepAuthenticator<ScheduleToken, ScheduleToken>
+    public interface IIsAcademiaService : ITwoStepAuthenticator<AuthenticationToken, string>
     {
         /// <summary>
-        /// Asynchronously gets a token.
+        /// First authentication step: asynchronously gets a token.
         /// </summary>
-        /// <remarks>
-        /// Single-step authentication (for now).
-        /// </remarks>
         [ThriftMethod( "getScheduleToken" )]
-        Task<ScheduleTokenResponse> GetTokenResponseAsync();
+        Task<TokenResponse> GetTokenAsync();
+
+        /// <summary>
+        /// Second authentication step: get a session from a token.
+        /// </summary>
+        [ThriftMethod( "getIsaSessionId" )]
+        Task<SessionResponse> GetSessionAsync( [ThriftParameter( 1, "tequilaToken" )]string token );
 
         /// <summary>
         /// Asynchronously gets the schedule for the specified request.
