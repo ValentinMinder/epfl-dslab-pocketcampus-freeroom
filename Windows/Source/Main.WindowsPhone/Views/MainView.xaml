@@ -25,7 +25,7 @@
 
             <!-- Items panel that wraps its elements in an uniform grid -->
             <ItemsPanelTemplate x:Key="WrapGridPanel">
-                <comControls:UniformWrapGrid ColumnCount="3" />
+                <tool:WrapPanel Orientation="Horizontal" />
             </ItemsPanelTemplate>
 
             <!-- Button template with a bar containing the tag on the bottom -->
@@ -79,7 +79,9 @@
 
             <!-- Plugin template -->
             <DataTemplate x:Key="PluginTemplate">
-                <Grid Margin="10">
+                <Grid Margin="10"
+                      Width="140"
+                      Height="140">
                     <Button Template="{StaticResource TileButtonTemplate}"
                             Tag="{Binding Name}"
                             Command="{Binding DataContext.OpenPluginCommand, ElementName=LayoutRoot}"
