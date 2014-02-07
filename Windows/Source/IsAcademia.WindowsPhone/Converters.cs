@@ -22,7 +22,7 @@ namespace PocketCampus.IsAcademia
             { PeriodType.Lab, new SolidColorBrush( Color.FromArgb( 0xFF, 0xFF, 0xA1, 0x4F ) ) }
         };
 
-        protected override Brush Convert( PeriodType value )
+        public override Brush Convert( PeriodType value )
         {
             return Values[value];
         }

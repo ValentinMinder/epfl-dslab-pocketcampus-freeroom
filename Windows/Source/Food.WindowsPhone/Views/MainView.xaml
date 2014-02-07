@@ -69,7 +69,7 @@
                                        Foreground="{StaticResource PhoneSubtleBrush}"
                                        Margin="0" />
 
-                            <TextBlock Text="{Binding HalfPortionPrice, StringFormat='{}{0:0.00} CHF'}"
+                            <TextBlock Text="{Binding HalfPortionPrice, Converter={StaticResource PriceToString}}"
                                        Style="{StaticResource PhoneTextNormalStyle}"
                                        Margin="6,0,0,0" />
                         </StackPanel>

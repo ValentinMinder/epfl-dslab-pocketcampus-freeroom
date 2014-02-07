@@ -14,7 +14,7 @@ namespace PocketCampus.Satellite
     /// </summary>
     public sealed class BeerMenuPartsToGroupsConverter : ValueConverter<IDictionary<BeerContainer, BeerMenuPart>, IList<BeerMenuPartAsGroup>>
     {
-        protected override IList<BeerMenuPartAsGroup> Convert( IDictionary<BeerContainer, BeerMenuPart> value )
+        public override IList<BeerMenuPartAsGroup> Convert( IDictionary<BeerContainer, BeerMenuPart> value )
         {
             if ( value == null )
             {

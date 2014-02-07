@@ -18,7 +18,7 @@ namespace PocketCampus.Camipro
         private static readonly Brush PositiveBrush = new SolidColorBrush( Color.FromArgb( 0xFF, 0x26, 0x7F, 0x00 ) );
         private static readonly Brush NegativeBrush = new SolidColorBrush( Color.FromArgb( 0xFF, 0xC4, 0x00, 0x00 ) );
 
-        protected override Brush Convert( double value )
+        public override Brush Convert( double value )
         {
             return value == 0.0 ? ZeroBrush
                  : value > 0.0 ? PositiveBrush
@@ -31,7 +31,7 @@ namespace PocketCampus.Camipro
     /// </summary>
     public sealed class EmailNotRequestedToVisibilityConverter : ValueConverter<EmailSendingStatus, Visibility>
     {
-        protected override Visibility Convert( EmailSendingStatus value )
+        public override Visibility Convert( EmailSendingStatus value )
         {
             return value == EmailSendingStatus.NoneRequested ? Visibility.Visible : Visibility.Collapsed;
         }

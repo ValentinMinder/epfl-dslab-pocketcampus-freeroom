@@ -28,8 +28,8 @@ namespace PocketCampus.Common
             return ConvertBack( (TTo) value );
         }
 
-        protected abstract TTo Convert( TFrom value );
-        protected virtual TFrom ConvertBack( TTo value ) { throw new NotSupportedException(); }
+        public abstract TTo Convert( TFrom value );
+        public virtual TFrom ConvertBack( TTo value ) { throw new NotSupportedException(); }
     }
 
 
@@ -50,7 +50,7 @@ namespace PocketCampus.Common
 
         private ResourceManager _manager;
 
-        protected override string Convert( Enum value )
+        public override string Convert( Enum value )
         {
             if ( _manager == null )
             {
@@ -72,12 +72,12 @@ namespace PocketCampus.Common
     /// </remarks>
     public sealed class DoubleToStringConverter : ValueConverter<double, string>
     {
-        protected override string Convert( double value )
+        public override string Convert( double value )
         {
             return value.ToString( NumberFormatInfo.InvariantInfo );
         }
 
-        protected override double ConvertBack( string value )
+        public override double ConvertBack( string value )
         {
             return double.Parse( value, NumberFormatInfo.InvariantInfo );
         }
@@ -88,7 +88,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class EnumToImageSourceConverter : ValueConverter<Enum, ImageSource>
     {
-        protected override ImageSource Convert( Enum value )
+        public override ImageSource Convert( Enum value )
         {
             string enumName = value.GetType().Name;
             string uriString = string.Format( "/Assets/{0}_{1}.png", enumName, value.ToString() );
@@ -101,7 +101,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class GeoLocationStatusToErrorBooleanConverter : ValueConverter<GeoLocationStatus, bool>
     {
-        protected override bool Convert( GeoLocationStatus value )
+        public override bool Convert( GeoLocationStatus value )
         {
             return value == GeoLocationStatus.Error;
         }
@@ -114,12 +114,12 @@ namespace PocketCampus.Common
     {
         public bool IsReversed { get; set; }
 
-        protected override Visibility Convert( bool value )
+        public override Visibility Convert( bool value )
         {
             return ( IsReversed ? !value : value ) ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        protected override bool ConvertBack( Visibility value )
+        public override bool ConvertBack( Visibility value )
         {
             return IsReversed ? value == Visibility.Collapsed : value == Visibility.Visible;
         }
@@ -130,7 +130,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class StringToVisibilityConverter : ValueConverter<string, Visibility>
     {
-        protected override Visibility Convert( string value )
+        public override Visibility Convert( string value )
         {
             return string.IsNullOrWhiteSpace( value ) ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -141,7 +141,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class NonNullToVisibilityConverter : ValueConverter<object, Visibility>
     {
-        protected override Visibility Convert( object value )
+        public override Visibility Convert( object value )
         {
             return value == null ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -152,7 +152,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class IntegerToVisibilityConverter : ValueConverter<int, Visibility>
     {
-        protected override Visibility Convert( int value )
+        public override Visibility Convert( int value )
         {
             return value == 0 ? Visibility.Collapsed : Visibility.Visible;
         }

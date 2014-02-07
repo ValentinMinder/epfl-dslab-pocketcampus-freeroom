@@ -12,6 +12,7 @@
     <!-- Converters -->
     <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                         Strings="{StaticResource Strings}" />
+    <my:PriceToStringConverter x:Key="PriceToString" />
     <my:MealToImageConverter x:Key="MealToImage" />
     <my:RestaurantsToGroupsConverter x:Key="RestaurantsToGroups" />
 </ResourceDictionary>

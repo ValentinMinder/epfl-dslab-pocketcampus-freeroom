@@ -16,6 +16,28 @@ using PocketCampus.Food.Resources;
 namespace PocketCampus.Food
 {
     /// <summary>
+    /// Converts a price to a display-friendly version.
+    /// </summary>
+    public sealed class PriceToStringConverter : ValueConverter<double?, string>
+    {
+        private const string IntegerPriceFormat = "{0}.- CHF";
+        private const string DecimalPriceFormat = "{0:0.00} CHF";
+
+        public override string Convert( double? value )
+        {
+            if ( value == null || value == 0.0 )
+            {
+                return PluginResources.UnknownPrice;
+            }
+            if ( Math.Round( (double) value ) == value )
+            {
+                return string.Format( CultureInfo.InvariantCulture, IntegerPriceFormat, value );
+            }
+            return string.Format( CultureInfo.InvariantCulture, DecimalPriceFormat, value );
+        }
+    }
+
+    /// <summary>
     /// Converts meals to their price according to the current settings.
     /// </summary>
     /// <remarks>
@@ -23,7 +45,7 @@ namespace PocketCampus.Food
     /// </remarks>
     public sealed class MealPriceConverter : DependencyObject, IValueConverter
     {
-        private const string PriceFormat = "{0:0.00} CHF";
+        private PriceToStringConverter _priceToString = new PriceToStringConverter();
 
         public IPluginSettings Settings
         {
@@ -40,9 +62,7 @@ namespace PocketCampus.Food
 
             // Settings == null in design mode for some reason
             var target = Settings == null ? PriceTarget.All : Settings.PriceTarget;
-
-            double? price = meal.GetPrice( target );
-            return price == null ? PluginResources.UnknownPrice : string.Format( PriceFormat, price );
+            return _priceToString.Convert( meal.GetPrice( target ) );
         }
 
         public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
@@ -56,7 +76,7 @@ namespace PocketCampus.Food
     /// </summary>
     public sealed class MealToImageConverter : ValueConverter<Meal, ImageSource>
     {
-        protected override ImageSource Convert( Meal value )
+        public override ImageSource Convert( Meal value )
         {
             string type = value.MealTypes.OrderByDescending( x => x ).First().ToString();
             return new BitmapImage( new Uri( string.Format( "/Assets/MealTypes_{0}.png", type ), UriKind.Relative ) );
@@ -68,7 +88,7 @@ namespace PocketCampus.Food
     /// </summary>
     public sealed class RestaurantsToGroupsConverter : ValueConverter<Restaurant[], RestaurantAsGroup[]>
     {
-        protected override RestaurantAsGroup[] Convert( Restaurant[] value )
+        public override RestaurantAsGroup[] Convert( Restaurant[] value )
         {
             if ( value == null )
             {
