@@ -65,12 +65,10 @@
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* loadingIndicator;
 @property (nonatomic, strong) IBOutlet UILabel* centerMessageLabel;
-@property (nonatomic, strong) IBOutlet UITableView* tableView;
+@property (nonatomic, strong) IBOutlet PCTableViewAdditions* tableView;
 @property (nonatomic, strong) UIWebView* webView;
 
 @end
-
-static NSString* const kPoolCell = @"PoolCell";
 
 @implementation EventItemViewController
 
@@ -110,6 +108,16 @@ static NSString* const kPoolCell = @"PoolCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor clearColor];
+    
+    self.tableView.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+        return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle];
+    };
+    
+    __weak __typeof(self) weakSelf = self;
+    self.tableView.contentSizeCategoryDidChangeBlock = ^(PCTableViewAdditions* tableView) {
+        [weakSelf repositionTableViewHeader];
+    };
+    
     if (self.eventItem && self.eventItem.childrenPools.count == 0) {
         [self loadEvent];
     } else {
@@ -397,16 +405,18 @@ static NSString* const kPoolCell = @"PoolCell";
 
 #pragma mark - UITableViewDataSource
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     EventPool* eventPool = self.childrenPools[indexPath.row];
     
-    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:kPoolCell];
+    NSString* const identifier = [self.tableView autoInvalidatingReuseIdentifierForIdentifier:@"PoolCell"];
+    PCTableViewCellAdditions* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kPoolCell];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultTextLabelTextStyle];
+        cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle];
+        cell.detailTextLabel.textColor = [UIColor grayColor];
     }
     
     cell.textLabel.text = eventPool.poolTitle;
@@ -427,12 +437,11 @@ static NSString* const kPoolCell = @"PoolCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.childrenPools count];
+    return self.childrenPools.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     if (!self.childrenPools) {
         return 0;
     }

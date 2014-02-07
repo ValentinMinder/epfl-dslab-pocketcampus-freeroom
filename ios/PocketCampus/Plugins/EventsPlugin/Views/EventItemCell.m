@@ -120,9 +120,6 @@ static NSString* kDetailTextLabelTextStyle;
     }
     
     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
-    /*if (dateTimeInfo.length > 0) {
-        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:[fullString rangeOfString:dateTimeInfo]];
-    }*/
     if (secondaryInfo.length > 0) {
         [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[fullString rangeOfString:secondaryInfo]];
     }
