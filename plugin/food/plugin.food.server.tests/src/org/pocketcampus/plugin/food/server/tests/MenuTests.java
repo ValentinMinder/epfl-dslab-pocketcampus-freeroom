@@ -90,6 +90,16 @@ public final class MenuTests {
 		assertTrue(prices.containsKey(PriceTarget.ALL));
 		assertEquals(18.00, prices.get(PriceTarget.ALL), Double.MIN_VALUE);
 	}
+	
+	// Price to 0 => no price
+	@Test
+	public void mealWithZeroPrice() {
+		List<EpflRestaurant> meals = getMenu();
+		EpflMeal m = meals.get(10).getRMeals().get(1);
+		Map<PriceTarget, Double> prices = m.getMPrices();
+		
+		assertEquals(0, prices.size());
+	}
 
 	// Maharaja dishes are not thai, even if the list says so
 	@Test
