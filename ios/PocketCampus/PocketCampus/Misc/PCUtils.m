@@ -183,7 +183,11 @@
 }
 
 + (BOOL)hasDeviceInternetConnection {
-    return [[AFNetworkReachabilityManager sharedManager] isReachable];
+    AFNetworkReachabilityManager* manager = [AFNetworkReachabilityManager sharedManager];
+    if (manager.networkReachabilityStatus == AFNetworkReachabilityStatusUnknown) {
+        return YES;
+    }
+    return [manager isReachable];
 }
 
 + (BOOL)hasAppAccessToLocation {
