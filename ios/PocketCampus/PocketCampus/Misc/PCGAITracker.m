@@ -52,6 +52,9 @@ static NSString* const kFirstLaunchAfterInstallAction = @"FirstLaunchAfterInstal
 
 static NSString* const kAppCrashedDuringPreviousExecution = @"AppCrashedDuringPreviousExecution";
 
+static NSString* const kEventCategoryUserAction = @"UserAction";
+static NSString* const kEventCategoryOther = @"Other";
+
 static id instance __strong = nil;
 
 @interface PCGAITracker ()
@@ -88,18 +91,15 @@ static id instance __strong = nil;
         return;
     }
     [self.gaiTracker set:kGAIScreenName value:screenName];
-    [self.gaiTracker set:kAccessibilityEnabledKey value:UIAccessibilityIsVoiceOverRunning() ? @"YES" : @"NO"];
     [self.gaiTracker send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
 - (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName {
-    if (action.length == 0) {
-        NSLog(@"!! ERROR: cannot track nil action or of length 0.");
-        return;
-    }
-    action = screenName.length > 0 ? [screenName stringByAppendingFormat:@"-%@", action] : action;
-    [self.gaiTracker set:kGAIScreenName value:screenName];
-    [self.gaiTracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action" action:action label:nil value:nil] build]];
+    [self trackAction:action inScreenWithName:screenName contentInfo:nil];
+}
+
+- (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName contentInfo:(NSString*)contentInfo {
+    [self trackAction:action inScreenWithName:screenName category:kEventCategoryUserAction contentInfo:contentInfo];
 }
 
 - (void)trackAppOnce {
@@ -109,15 +109,25 @@ static id instance __strong = nil;
     NSLog(@"-> First app launch, sending '%@' event to Google Analytics", kFirstLaunchAfterInstallAction);
     [[PCConfig defaults] setBool:YES forKey:kFirstLaunchAfterInstallAction];
     [[PCConfig defaults] synchronize];
-    [self trackAction:kFirstLaunchAfterInstallAction inScreenWithName:@"/"];
+    [self trackAction:kFirstLaunchAfterInstallAction inScreenWithName:@"/" category:kEventCategoryOther contentInfo:nil];
     
 }
 
 - (void)trackAppCrashedDuringPreviousExecution {
-    [self trackAction:kAppCrashedDuringPreviousExecution inScreenWithName:@"/"];
+    [self trackAction:kAppCrashedDuringPreviousExecution inScreenWithName:@"/" category:kEventCategoryOther contentInfo:nil];
 }
 
 #pragma mark - Private
+
+- (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName category:(NSString*)category contentInfo:(NSString*)contentInfo {
+    if (action.length == 0) {
+        NSLog(@"!! ERROR: cannot track nil action or of length 0.");
+        return;
+    }
+    action = screenName.length > 0 ? [screenName stringByAppendingFormat:@"-%@", action] : action;
+    [self.gaiTracker set:kGAIScreenName value:screenName];
+    [self.gaiTracker send:[[GAIDictionaryBuilder createEventWithCategory:category action:action label:contentInfo value:nil] build]];
+}
 
 - (void)initGAIConfig {
     NSString* ganId = (NSString*)[[PCConfig defaults] objectForKey:PC_CONFIG_GAN_TRACKING_CODE_KEY];

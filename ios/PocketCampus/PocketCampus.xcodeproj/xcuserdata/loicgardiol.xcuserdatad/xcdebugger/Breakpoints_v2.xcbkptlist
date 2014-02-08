@@ -782,8 +782,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1021"
             endingLineNumber = "1021"
-            landmarkName = "@implementation MapViewController"
-            landmarkType = "3">
+            landmarkName = "-mapItemAnnotationsForMapItems:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1419,11 +1419,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Common/PluginSplitViewController.m"
-            timestampString = "412705353.064852"
+            timestampString = "413567223.66152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
             landmarkName = "-setMasterViewControllerHidden:animated:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2465,8 +2465,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "171"
             endingLineNumber = "171"
-            landmarkName = "-newsItemContentForId:didReturn:"
-            landmarkType = "5">
+            landmarkName = "@implementation NewsItemViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3070,11 +3070,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Controllers/EventItemViewController.m"
-            timestampString = "413479040.63131"
+            timestampString = "413567223.66152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "243"
-            endingLineNumber = "243"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
             landmarkName = "-loadWebView"
             landmarkType = "5">
          </BreakpointContent>
@@ -3086,11 +3086,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-            timestampString = "413382032.468514"
+            timestampString = "413567223.66152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "819"
-            endingLineNumber = "819"
+            startingLineNumber = "828"
+            endingLineNumber = "828"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3212,11 +3212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-            timestampString = "413382032.468514"
+            timestampString = "413567223.66152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "610"
-            endingLineNumber = "610"
+            startingLineNumber = "615"
+            endingLineNumber = "615"
             landmarkName = "-fillCollectionsFromReplyAndSelection"
             landmarkType = "5">
          </BreakpointContent>
@@ -3467,11 +3467,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-            timestampString = "413382032.468514"
+            timestampString = "413567223.66152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "706"
-            endingLineNumber = "706"
+            startingLineNumber = "711"
+            endingLineNumber = "711"
             landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3540,11 +3540,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Controllers/EventItemViewController.m"
-            timestampString = "413479040.63131"
+            timestampString = "413567223.66152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "355"
-            endingLineNumber = "355"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
             landmarkName = "@implementation EventItemViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -3556,11 +3556,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
-            timestampString = "413382032.468514"
+            timestampString = "413567223.66152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "833"
-            endingLineNumber = "833"
+            startingLineNumber = "842"
+            endingLineNumber = "842"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3588,12 +3588,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/EventsPlugin/Controllers/EventsTagsViewController.m"
-            timestampString = "410718008.689898"
+            timestampString = "413567223.66152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
-            landmarkName = "-tableView:numberOfRowsInSection:"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy

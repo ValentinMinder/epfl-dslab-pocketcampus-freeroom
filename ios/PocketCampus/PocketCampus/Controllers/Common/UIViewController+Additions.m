@@ -55,6 +55,10 @@ static NSString* const kGAIScreenNameKey = @"GAIScreenName";
 }
 
 - (void)trackAction:(NSString*)action {
+    [self trackAction:action contentInfo:nil];
+}
+
+- (void)trackAction:(NSString*)action contentInfo:(NSString*)contentInfo {
     if (!action) {
         NSLog(@"!! WARNING: cannot trackAction if action is nil. Returning.");
         return;
@@ -64,7 +68,7 @@ static NSString* const kGAIScreenNameKey = @"GAIScreenName";
         NSLog(@"!! WARNING: cannot trackScreen if self.gaiScreenName is nil. Returning.");
         return;
     }
-    [[PCGAITracker sharedTracker] trackAction:action inScreenWithName:screenName];
+    [[PCGAITracker sharedTracker] trackAction:action inScreenWithName:screenName contentInfo:contentInfo];
 }
 
 @end

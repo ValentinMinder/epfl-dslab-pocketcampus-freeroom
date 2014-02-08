@@ -40,7 +40,7 @@ static int const kCrashlyticsEnabledSection = 0;
 #pragma mark - Values observing
 
 - (void)crashlyticsEnabledSwitchValueChanged:(UISwitch*)toggle {
-    [self trackAction:toggle.isOn ? @"SetCrashlyticsON" : @"SetCrashlyticsOFF"];
+    [self trackAction:@"SendCrashReportsAutomatically" contentInfo:toggle.isOn ? @"YES" : @"NO"];
     [[PCConfig defaults] setBool:toggle.isOn forKey:PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY];
 }
 

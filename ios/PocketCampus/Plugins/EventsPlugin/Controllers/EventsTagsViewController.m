@@ -68,6 +68,7 @@ static NSString* kCellTextLabelTextStyle;
             kCellTextLabelTextStyle = UIFontTextStyleFootnote;
         });
         [PCUtils throwExceptionIfObject:allTags notKindOfClass:[NSArray class]];
+        self.gaiScreenName = @"/events/tags";
         self.allTags = allTags;
         self.selectedInitially = selectedInitially;
         self.userValidatedSelectionBlock = userValidatedSelectionBlock;
@@ -96,6 +97,11 @@ static NSString* kCellTextLabelTextStyle;
         [self.deselectAllButton setTitle:NSLocalizedStringFromTable(@"DeselectAll", @"EventsPlugin", nil) forState:UIControlStateNormal];
         self.tableView.tableHeaderView = self.headerView;
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations

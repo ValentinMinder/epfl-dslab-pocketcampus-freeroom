@@ -97,7 +97,6 @@
 #pragma mark - Master view controller visibility management
 
 - (void)toggleMasterVideoControllerHidden:(UIBarButtonItem*)button {
-    [self trackAction:@"ToggleMasterViewControllerHidden"];
     button.image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterVisible" : @"MasterHidden"];
     button.accessibilityLabel = self.isMasterViewControllerHidden ? NSLocalizedStringFromTable(@"HideMaster", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"ShowMaster", @"PocketCampus", nil);
     [self setMasterViewControllerHidden:!self.isMasterViewControllerHidden animated:YES];

@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 08.03.13.
-
-
 
 #import "EventsCategorySelectorViewController.h"
 
@@ -54,6 +47,7 @@
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         [PCUtils throwExceptionIfObject:allCategories notKindOfClass:[NSArray class]];
+        self.gaiScreenName = @"/events/categories";
         self.allCategories = allCategories;
         self.selectedInitially = selectedInitially;
         self.userValidatedSelectionBlock = userValidatedSelectionBlock;
@@ -71,6 +65,11 @@
         return [PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleDefault];
     };
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed)];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -98,7 +97,9 @@
     if (!self.userValidatedSelectionBlock) {
         return;
     }
-    self.userValidatedSelectionBlock([NSArray arrayWithObject:self.allCategories[indexPath.row]]);
+    NSString* selectedCategory = self.allCategories[indexPath.row];
+    [self trackAction:@"SelectCategory" contentInfo:selectedCategory];
+    self.userValidatedSelectionBlock(@[selectedCategory]);
 }
 
 #pragma mark - UITableViewDataSource

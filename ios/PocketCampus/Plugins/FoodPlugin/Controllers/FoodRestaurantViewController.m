@@ -113,16 +113,16 @@ static const NSInteger kMealsSection = 1;
 
 - (void)favoritePressed {
     if ([self.foodService isRestaurantFavorite:self.restaurant]) {
-        [self trackAction:PCGAITrackerActionUnmarkFavorite];
+        [self trackAction:PCGAITrackerActionUnmarkFavorite contentInfo:self.restaurant.rName];
         [self.foodService removeFavoritRestaurant:self.restaurant];
     } else {
-        [self trackAction:PCGAITrackerActionMarkFavorite];
+        [self trackAction:PCGAITrackerActionMarkFavorite contentInfo:self.restaurant.rName];
         [self.foodService addFavoriteRestaurant:self.restaurant];
     }
 }
 
 - (void)showOnMapPressed {
-    [self trackAction:@"ViewRestaurantOnMap"];
+    [self trackAction:@"ViewRestaurantOnMap" contentInfo:self.restaurant.rName];
     UIViewController* mapViewController = [MapController viewControllerWithInitialMapItem:self.restaurant.rLocation];
     [self.navigationController pushViewController:mapViewController animated:YES];
 }
@@ -186,6 +186,9 @@ static const NSInteger kMealsSection = 1;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case kRestaurantInfoSection:
+            if (![[PCConfig defaults] boolForKey:PC_CONFIG_FOOD_RATINGS_ENABLED] && !self.restaurant.rLocation) {
+                return 0;
+            }
             return 1;
         case kMealsSection:
             return self.restaurant.rUniqueMeals.count;

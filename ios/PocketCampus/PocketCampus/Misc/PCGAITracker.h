@@ -59,8 +59,14 @@ extern NSString* const PCGAITrackerActionSearch;
 
 /*
  * Action can be either one of the PCGAITrackerAction above, or custom (string should be CamelCased)
+ * Same as next with nil contentInfo.
  */
 - (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName;
+
+/*
+ * Same as previous one, with possiblity to pass custom key-values to be added to the GAN event.
+ */
+- (void)trackAction:(NSString*)action inScreenWithName:(NSString*)screenName contentInfo:(NSString*)contentInfo;
 
 /*
  * The first time ever this method is called (even between app launched)

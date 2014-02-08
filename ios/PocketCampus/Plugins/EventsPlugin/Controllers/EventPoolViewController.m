@@ -425,7 +425,7 @@ static const NSInteger kSixMonthsPeriodIndex = 2;
 }
 
 - (void)cameraButtonPressed {
-    [self trackAction:@"CameraButtonPressed"];
+    [self trackAction:@"ShowCodeScanner"];
     ZBarReaderViewController *reader = [ZBarReaderViewController new];
     reader.readerDelegate = self;
     reader.supportedOrientationsMask = ZBarOrientationMask(UIInterfaceOrientationPortrait);
@@ -553,18 +553,23 @@ static const NSInteger kSixMonthsPeriodIndex = 2;
         }
         self.filterSelectionActionSheet = nil;
     } else if (actionSheet == self.periodsSelectionActionSheet) {
-        [self trackAction:@"ChangePeriod"];
+        NSInteger nbDays = 0;
         switch (buttonIndex) {
             case kOneWeekPeriodIndex:
                 self.selectedPeriod = EventsPeriods_ONE_WEEK;
+                nbDays = 7;
                 break;
             case kOneMonthPeriodIndex:
                 self.selectedPeriod = EventsPeriods_ONE_MONTH;
+                nbDays = 31;
                 break;
             case kSixMonthsPeriodIndex:
                 self.selectedPeriod = EventsPeriods_SIX_MONTHS;
+                nbDays = 6 * 31;
                 break;
         }
+        [self trackAction:@"ChangePeriod" contentInfo:[NSString stringWithFormat:@"%d", (int)nbDays]];
+        
         [self.eventsService saveSelectedPoolPeriod:self.selectedPeriod];
         if (buttonIndex >= 0 && (buttonIndex != [self.periodsSelectionActionSheet cancelButtonIndex])) {
             [self.tableView scrollsToTop];
@@ -798,6 +803,10 @@ static const NSInteger kSixMonthsPeriodIndex = 2;
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[UINavigationController alloc] initWithRootViewController:eventItemViewController]];
     } else {
         [self.navigationController pushViewController:eventItemViewController animated:YES];
+    }
+    
+    if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
+        [self trackAction:@"ShowEvent" contentInfo:eventItem.eventTitle];
     }
 }
 

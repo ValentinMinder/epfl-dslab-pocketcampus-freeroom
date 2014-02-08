@@ -78,6 +78,7 @@
 {
     self = [super initWithNibName:@"EventItemView" bundle:nil];
     if (self) {
+        self.gaiScreenName = @"/events/event";
         self.eventId = 0;
         self.eventsService = [EventsService sharedInstanceToRetain];
     }
@@ -128,7 +129,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 #warning TODO
-    [[PCGAITracker sharedTracker] trackScreenWithName:[NSString stringWithFormat:@"/v3r1/events/%lld", self.eventId]];
+    [self trackScreen];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 

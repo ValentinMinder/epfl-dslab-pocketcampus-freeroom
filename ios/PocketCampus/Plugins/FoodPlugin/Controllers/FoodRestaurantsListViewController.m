@@ -259,6 +259,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     } else {
         [self.navigationController pushViewController:self.restaurantViewController animated:YES];
     }
+    [self trackAction:@"ShowRestaurant" contentInfo:restaurant.rName];
 }
 
 #pragma mark - UITableViewDataSource

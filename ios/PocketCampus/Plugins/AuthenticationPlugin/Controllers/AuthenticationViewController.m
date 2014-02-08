@@ -163,7 +163,6 @@
 #pragma mark - Listening
 
 - (void)savePasswordSwitchValueChanged {
-    [self trackAction:[NSString stringWithFormat:@"SavePassword:%@", self.savePasswordSwitch.isOn ? @"YES" : @"NO"]];
     [AuthenticationService savePasswordSwitchState:self.savePasswordSwitch.isOn];
 }
 
@@ -304,7 +303,7 @@
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.isLoggedIn) {
         if (indexPath.section == 0) { //logout button
-            [self trackAction:@"Logout"];
+            [self trackAction:@"LogOut"];
             [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
             [AuthenticationService saveUsername:nil];
             [AuthenticationService enqueueLogoutNotificationDelayed:NO];
@@ -316,7 +315,7 @@
         }
     } else {
         if (indexPath.section == 1 && self.loginCell.textLabel.enabled) { //login button
-            [self trackAction:@"Login"];
+            [self trackAction:@"LogIn" contentInfo:self.savePasswordSwitch.isOn || !self.showSavePasswordSwitch ? @"SavePasswordYes" : @"SavePasswordNo"];
             [self.loadingIndicator startAnimating];
             [self.usernameTextField resignFirstResponder];
             [self.passwordTextField resignFirstResponder];

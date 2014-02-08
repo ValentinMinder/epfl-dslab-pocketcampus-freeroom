@@ -235,8 +235,8 @@ static const int kPluginsSection = 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self trackAction:@"OpenPlugin"];
     MainMenuItem* item = self.menuItems[indexPath.row];
+    [self trackAction:@"OpenPlugin" contentInfo:item.identifier];
     [self.mainController setActivePluginWithIdentifier:item.identifier];
 }
 

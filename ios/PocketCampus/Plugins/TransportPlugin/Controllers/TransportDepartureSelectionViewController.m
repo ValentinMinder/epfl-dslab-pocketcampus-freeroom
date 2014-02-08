@@ -128,7 +128,7 @@ static const NSUInteger kStationsSection = 1;
                 [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                 return;
             }
-            [self trackAction:@"AutomaticModeSelected"];
+            [self trackAction:@"SelectAutomaticMode"];
             self.transportService.userManualDepartureStation = nil;
             [self dismiss];
             break;

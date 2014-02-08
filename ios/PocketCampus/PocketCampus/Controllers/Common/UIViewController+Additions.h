@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 06.01.14.
-
-
 
 #import <UIKit/UIKit.h>
 
@@ -47,9 +40,15 @@
 - (void)trackScreen;
 
 /*
- * Shortcut for PCGAITracker trackScreenWithName:action:
+ * Shortcut for PCGAITracker trackScreenWithName:action: with screenName = self.gaiScreenName
  * Does nothing (emits a warning) if self.gaiScreenName is nil
  */
 - (void)trackAction:(NSString*)action;
+
+/*
+ * Shortcut for PCGAITracker trackScreenWithName:action:contentInfo: with screenName = self.gaiScreenName
+ * Does nothing (emits a warning) if self.gaiScreenName is nil
+ */
+- (void)trackAction:(NSString*)action contentInfo:(NSString*)contentInfo;
 
 @end
