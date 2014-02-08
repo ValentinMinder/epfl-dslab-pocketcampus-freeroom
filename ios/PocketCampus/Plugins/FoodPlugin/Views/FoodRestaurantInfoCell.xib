@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5051" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,25 +14,25 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Idy-LA-NMz">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="36" id="hzI-Gl-qHd"/>
+                            <constraint firstAttribute="height" constant="30" id="hzI-Gl-qHd"/>
                         </constraints>
                     </navigationBar>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k5o-VX-bhR" userLabel="Top view">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Sat rate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eKw-5t-QSY" userLabel="Satisfaction rate label">
-                                <rect key="frame" x="10" y="0.0" width="200" height="36"/>
+                                <rect key="frame" x="10" y="0.0" width="200" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
                                 <nil key="highlightedColor"/>
                                 <size key="shadowOffset" width="0.0" height="1"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T1D-Mg-5rG">
-                                <rect key="frame" x="220" y="0.0" width="95" height="36"/>
+                                <rect key="frame" x="220" y="0.0" width="95" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Show on map">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -40,7 +40,7 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="height" constant="36" id="0MX-e7-XTa"/>
+                            <constraint firstAttribute="height" constant="30" id="0MX-e7-XTa"/>
                             <constraint firstAttribute="centerY" secondItem="T1D-Mg-5rG" secondAttribute="centerY" id="2qn-7K-Tzz"/>
                             <constraint firstItem="eKw-5t-QSY" firstAttribute="top" secondItem="k5o-VX-bhR" secondAttribute="top" id="E16-pn-P50"/>
                             <constraint firstAttribute="bottom" secondItem="T1D-Mg-5rG" secondAttribute="bottom" id="WlV-pM-6TF"/>
@@ -52,17 +52,17 @@
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Cq-eP-KMy" userLabel="Background Image View">
-                        <rect key="frame" x="0.0" y="36" width="320" height="113"/>
+                        <rect key="frame" x="0.0" y="30" width="320" height="119"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="7Cq-eP-KMy" firstAttribute="top" secondItem="k5o-VX-bhR" secondAttribute="bottom" priority="500" id="0Nz-rb-DP3"/>
                     <constraint firstAttribute="trailing" secondItem="k5o-VX-bhR" secondAttribute="trailing" id="BI9-fJ-RO9"/>
                     <constraint firstAttribute="trailing" secondItem="7Cq-eP-KMy" secondAttribute="trailing" id="FYB-za-Ei4"/>
                     <constraint firstAttribute="trailing" secondItem="Idy-LA-NMz" secondAttribute="trailing" id="JQf-hw-9zi"/>
                     <constraint firstItem="Idy-LA-NMz" firstAttribute="leading" secondItem="yVO-ja-whO" secondAttribute="leading" id="KGa-n1-JOp"/>
                     <constraint firstItem="Idy-LA-NMz" firstAttribute="top" secondItem="yVO-ja-whO" secondAttribute="top" id="KgR-Kl-dDN"/>
+                    <constraint firstItem="7Cq-eP-KMy" firstAttribute="top" secondItem="k5o-VX-bhR" secondAttribute="bottom" id="Q3G-lY-Yi6"/>
                     <constraint firstAttribute="bottom" secondItem="7Cq-eP-KMy" secondAttribute="bottom" id="QKt-cV-In5"/>
                     <constraint firstItem="k5o-VX-bhR" firstAttribute="leading" secondItem="yVO-ja-whO" secondAttribute="leading" id="U5X-xP-HzZ"/>
                     <constraint firstItem="7Cq-eP-KMy" firstAttribute="leading" secondItem="yVO-ja-whO" secondAttribute="leading" id="bNt-bJ-qb7"/>

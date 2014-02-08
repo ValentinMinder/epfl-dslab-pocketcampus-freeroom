@@ -132,7 +132,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         self.infoContentViewTapGesture.minimumPressDuration = 0.001;
         self.infoContentViewTapGesture.enabled = NO;
         [self.infoContentView addGestureRecognizer:self.infoContentViewTapGesture];
-        //self.rateControlsView.hidden = !kRatingsEnabled;
+        self.rateControlsView.hidden = !ratingsEnabled;
         self.satRateButton.hidden = !ratingsEnabled;
         self.rateControlsView.isAccessibilityElement = NO;
         self.rateControlsView.accessibilityElementsHidden = YES;
