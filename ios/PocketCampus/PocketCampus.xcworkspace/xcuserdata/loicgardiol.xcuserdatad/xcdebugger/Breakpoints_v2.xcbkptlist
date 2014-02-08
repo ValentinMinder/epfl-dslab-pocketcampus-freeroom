@@ -1327,22 +1327,6 @@
             timestampString = "412446618.176863"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "-supportedInterfaceOrientations"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/FoodPlugin/Controllers/FoodRestaurantViewController.m"
-            timestampString = "412446618.176863"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
             startingLineNumber = "37"
             endingLineNumber = "37">
          </BreakpointContent>
@@ -1354,11 +1338,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
             landmarkName = "-setMeal:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1370,11 +1354,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "190"
-            endingLineNumber = "190"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
             landmarkName = "-setMeal:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1386,11 +1370,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
             landmarkName = "-initWithStyle:reuseIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1418,11 +1402,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
             landmarkName = "-setRatingStatus:"
             landmarkType = "5">
             <Actions>
@@ -1443,11 +1427,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
+            startingLineNumber = "316"
+            endingLineNumber = "316"
             landmarkName = "-setRatingStatus:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1459,11 +1443,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "279"
-            endingLineNumber = "279"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
             landmarkName = "@implementation FoodMealCell"
             landmarkType = "3">
             <Actions>
@@ -1562,11 +1546,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
+            startingLineNumber = "340"
+            endingLineNumber = "340"
             landmarkName = "-setRateModeEnabled:animated:postNotif:force:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1594,11 +1578,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "348"
-            endingLineNumber = "348"
+            startingLineNumber = "367"
+            endingLineNumber = "367"
             landmarkName = "-setRateModeEnabled:animated:postNotif:force:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1610,11 +1594,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/FoodPlugin/Views/FoodRestaurantInfoCell.m"
-            timestampString = "412448082.904074"
+            timestampString = "413550846.365257"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
             landmarkName = "-setRestaurant:"
             landmarkType = "5">
             <Actions>
@@ -1634,11 +1618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodRestaurantInfoCell.m"
-            timestampString = "412448082.904074"
+            timestampString = "413550846.365257"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "-setRestaurant:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1673,11 +1657,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
             landmarkName = "-initWithReuseIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1815,11 +1799,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodRestaurantInfoCell.m"
-            timestampString = "412448082.904074"
+            timestampString = "413550846.365257"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
             landmarkName = "-initWithEpflRestaurant:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2204,28 +2188,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/FoodPlugin/Controllers/FoodRestaurantViewController.m"
-            timestampString = "412446618.176863"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "294"
-            endingLineNumber = "294"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
             landmarkName = "-setRatingStatus:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2395,11 +2363,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCConfig.m"
-            timestampString = "413126480.255942"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
             landmarkName = "@implementation PCConfig"
             landmarkType = "3">
          </BreakpointContent>
@@ -2411,11 +2379,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCConfig.m"
-            timestampString = "413126480.255942"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
             landmarkName = "+registerDefaultsFromBundle"
             landmarkType = "5">
          </BreakpointContent>
@@ -2427,11 +2395,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Model/Common/PCConfig.m"
-            timestampString = "413126480.255942"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
             landmarkName = "+registerDefaultsFromBundle"
             landmarkType = "5">
          </BreakpointContent>
@@ -2617,11 +2585,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
+            startingLineNumber = "188"
+            endingLineNumber = "188"
             landmarkName = "-setMeal:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2788,28 +2756,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/FoodPlugin/Controllers/FoodRestaurantViewController.m"
-            timestampString = "412447301.955544"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
-            timestampString = "413374991.886131"
+            timestampString = "413546837.189763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
             landmarkName = "-setMeal:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3905,6 +3857,54 @@
             startingLineNumber = "85"
             endingLineNumber = "85"
             landmarkName = "+preferredHeight"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/FoodPlugin/Model/FoodModelAdditions.m"
+            timestampString = "413483837.181368"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "-rUniqueMeals"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
+            timestampString = "413546837.189763"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
+            landmarkName = "-initWithReuseIdentifier:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Plugins/FoodPlugin/Views/FoodMealCell.m"
+            timestampString = "413546837.189763"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
+            landmarkName = "-layoutSubviews"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

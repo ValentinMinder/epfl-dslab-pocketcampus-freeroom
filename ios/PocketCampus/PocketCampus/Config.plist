@@ -18,5 +18,7 @@
 	<true/>
 	<key>CRASHLYTICS_APIKEY</key>
 	<string>5501169cb5b463b5f215a0033b2c4d4f5f214bd7</string>
+	<key>FOOD_RATINGS_ENABLED</key>
+	<false/>
 </dict>
 </plist>

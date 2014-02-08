@@ -44,7 +44,6 @@ static const NSInteger kMealsSection = 1;
 @property (nonatomic, strong) UITableViewCell* showOnMapCell;
 @property (nonatomic, strong) NSMutableDictionary* cellForMealId; //key: NSNumber of EpflMeal.mId
 
-
 @end
 
 @implementation FoodRestaurantViewController
@@ -157,6 +156,7 @@ static const NSInteger kMealsSection = 1;
                 } else {
                     self.restaurantInfoCell.showOnMapButton.hidden = YES;
                 }
+                self.restaurantInfoCell.showRating = [[PCConfig defaults] boolForKey:PC_CONFIG_FOOD_RATINGS_ENABLED];
             }
             cell = self.restaurantInfoCell;
             break;

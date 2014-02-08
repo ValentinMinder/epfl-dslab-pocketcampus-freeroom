@@ -37,6 +37,8 @@
 
 #import "NSTimer+Blocks.h"
 
+#import "PCConfig.h"
+
 @import CoreText;
 
 typedef enum {
@@ -48,12 +50,17 @@ typedef enum {
 NSString* const kFoodMealCellDidEnableRateModeNotification = @"kFoodMealCellDidEnableRateModeNotification";
 NSString* const kFoodMealCellUserSuccessfullyRatedMealNotification = @"kFoodMealCellUserSuccessfullyRatedMealNotification";
 
+static BOOL ratingsEnabled = NO;
+
 static const CGFloat kMinHeight = 110.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPhone = 10.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPad = 25.0;
 static const CGFloat kmealTypeImageViewDefaultHeightConstraint = 50.0;
 static const CGFloat kTextViewWidth = 252.0;
-static const CGFloat kBottomZoneHeight = 30.0;
+static const CGFloat kRatingsEnabledHorizontalLineHeight = 0.5;
+static const CGFloat kRatingsDisabledHorizontalLineHeight = 0.0;
+static const CGFloat kRatingsEnabledBottomZoneHeight = 30.0;
+static const CGFloat kRatingsDisabledBottomZoneHeight = 0.0;
 static const CGFloat kRateControlsViewWidth = 248.0;
 
 @interface FoodMealCell ()<FoodServiceDelegate>
@@ -83,6 +90,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* mealTypeImageViewHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* textViewBottomConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* horizontalLineHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint* rateControlsViewLeftConstraint;
 
 @property (nonatomic, strong) UILongPressGestureRecognizer* infoContentViewTapGesture; //actually using for touchDown, because tap gesture does not support it
@@ -96,6 +104,10 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 @synthesize reuseIdentifier = _reuseIdentifier;
 
 #pragma mark - Init
+
++ (void)initialize {
+    ratingsEnabled = [[PCConfig defaults] boolForKey:PC_CONFIG_FOOD_RATINGS_ENABLED];
+}
 
 - (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier {
     NSArray* elements = [[NSBundle mainBundle] loadNibNamed:@"FoodMealCell" owner:nil options:nil];
@@ -112,13 +124,16 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         self.satRateButton.isAccessibilityElement = NO;
         self.mealTypeImageViewLeftConstraint.constant = [PCUtils isIdiomPad] ? kmealTypeImageViewLeftConstraintPad : kmealTypeImageViewLeftConstraintPhone;
         self.textViewWidthConstraint.constant = kTextViewWidth;
-        self.textViewBottomConstraint.constant = kBottomZoneHeight;
+        self.textViewBottomConstraint.constant = [self.class bottomZoneHeight];
+        self.horizontalLineHeightConstraint.constant = ratingsEnabled ? kRatingsEnabledHorizontalLineHeight : kRatingsDisabledHorizontalLineHeight;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.satRateButton addTarget:self action:@selector(ratePressed) forControlEvents:UIControlEventTouchUpInside];
         self.infoContentViewTapGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(infoContentViewTapped)];
         self.infoContentViewTapGesture.minimumPressDuration = 0.001;
         self.infoContentViewTapGesture.enabled = NO;
         [self.infoContentView addGestureRecognizer:self.infoContentViewTapGesture];
+        //self.rateControlsView.hidden = !kRatingsEnabled;
+        self.satRateButton.hidden = !ratingsEnabled;
         self.rateControlsView.isAccessibilityElement = NO;
         self.rateControlsView.accessibilityElementsHidden = YES;
         [self.contentView insertSubview:self.rateControlsView aboveSubview:self.infoContentView]; //doing that here and not in IB so that we can work on the view that is hidden by infoContentView otherwise :)
@@ -259,7 +274,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     CGSize targetSize = CGSizeMake(kTextViewWidth-10.0, CGFLOAT_MAX); //account for text left and right insets of the text view
     CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
     CFRelease(framesetter);
-    CGFloat finalHeight = size.height + kBottomZoneHeight + 22.0; //give some margin so that text is not too tight between top and bottom lines
+    CGFloat finalHeight = size.height + [self bottomZoneHeight] + (ratingsEnabled ? 22.0 : 0.0); //give some margin so that text is not too tight between top and bottom lines
     return finalHeight > kMinHeight ? finalHeight : kMinHeight;
 }
 
@@ -273,6 +288,10 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] range:[fullString rangeOfString:meal.mName]];
     [attrString addAttribute:NSFontAttributeName value:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] range:[fullString rangeOfString:meal.mDescription]];
     return attrString;
+}
+
++ (CGFloat)bottomZoneHeight {
+    return ratingsEnabled ? kRatingsEnabledBottomZoneHeight : kRatingsDisabledBottomZoneHeight;
 }
 
 #pragma mark - Ratings

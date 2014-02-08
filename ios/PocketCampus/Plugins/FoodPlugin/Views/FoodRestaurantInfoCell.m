@@ -43,6 +43,9 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView* backgroundImageView;
 @property (nonatomic, strong) IBOutlet UILabel* satRateLabel;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint* satRateLabelLeftConstraint;
+
+@property (nonatomic, strong) NSLayoutConstraint* satRatLabelNullWidthConstraint;
 
 @end
 
@@ -112,6 +115,16 @@
 - (void)setShowRating:(BOOL)showRating {
     _showRating = showRating;
     self.satRateLabel.hidden = !showRating;
+    if (!self.satRatLabelNullWidthConstraint) {
+        self.satRatLabelNullWidthConstraint = [NSLayoutConstraint widthConstraint:0.0 forView:self.satRateLabel];
+    }
+    if (showRating) {
+        self.satRateLabelLeftConstraint.constant = 5.0;
+        [self.satRateLabel removeConstraint:self.satRatLabelNullWidthConstraint];
+    } else {
+        self.satRateLabelLeftConstraint.constant = 0.0;
+        [self.satRateLabel addConstraint:self.satRatLabelNullWidthConstraint];
+    }
 }
 
 /*

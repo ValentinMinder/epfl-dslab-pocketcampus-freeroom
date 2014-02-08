@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5037.2" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5051" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -72,6 +72,7 @@
             <connections>
                 <outlet property="backgroundImageView" destination="7Cq-eP-KMy" id="ag2-az-N66"/>
                 <outlet property="satRateLabel" destination="eKw-5t-QSY" id="Pju-NK-GVQ"/>
+                <outlet property="satRateLabelLeftConstraint" destination="fCj-vM-h2Q" id="frM-lI-R4w"/>
                 <outlet property="showOnMapButton" destination="T1D-Mg-5rG" id="3I6-q2-tqf"/>
             </connections>
         </tableViewCell>
