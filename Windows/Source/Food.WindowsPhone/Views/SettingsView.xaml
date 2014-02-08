@@ -114,10 +114,11 @@
             </Grid.ColumnDefinitions>
             <TextBlock Text="{Binding Resources.PriceTarget, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextLargeStyle}"
-                       FontSize="26"
+                       FontSize="{Binding FontSize, ElementName=PriceTargetPicker}"
                        VerticalAlignment="Center" />
             <!-- HACK: See code-behind for SelectedItem binding and explanation -->
-            <tool:ListPicker Grid.Column="1"
+            <tool:ListPicker x:Name="PriceTargetPicker"
+                             Grid.Column="1"
                              ItemsSource="{Binding PriceTargets}"
                              ItemTemplate="{StaticResource PriceTargetTemplate}"
                              FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -130,15 +131,16 @@
                     Orientation="Horizontal">
             <TextBlock Text="{Binding Resources.MaximumBudget, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextLargeStyle}"
-                       FontSize="26"
+                       FontSize="{Binding FontSize, ElementName=MaximumBudgetBox}"
                        VerticalAlignment="Center" />
-            <TextBox InputScope="Number"
+            <TextBox x:Name="MaximumBudgetBox"
+                     InputScope="Number"
                      Text="{Binding Settings.MaximumBudget, Converter={StaticResource DoubleToString}, Mode=TwoWay}"
                      Width="120"
                      Margin="-10,0" />
             <TextBlock Text="CHF"
                        Style="{StaticResource PhoneTextLargeStyle}"
-                       FontSize="26"
+                       FontSize="{Binding FontSize, ElementName=MaximumBudgetBox}"
                        VerticalAlignment="Center" />
         </StackPanel>
         

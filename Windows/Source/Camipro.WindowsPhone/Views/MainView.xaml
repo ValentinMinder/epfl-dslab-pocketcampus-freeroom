@@ -167,21 +167,21 @@
                                Style="{StaticResource PhoneTextSubtleStyle}" />
                     <TextBlock Text="{Binding EbankingInfo.PaymentInfo.AccountName}"
                                Style="{StaticResource PhoneTextNormalStyle}"
-                               FontSize="22" />
+                               FontSize="{StaticResource PhoneFontSizeMedium}" />
 
                     <!-- Account number -->
                     <TextBlock Text="{Binding Resources.EbankingAccountNumber, Source={StaticResource Strings}}"
                                Style="{StaticResource PhoneTextSubtleStyle}" />
                     <TextBlock Text="{Binding EbankingInfo.PaymentInfo.AccountNumber}"
                                Style="{StaticResource PhoneTextNormalStyle}"
-                               FontSize="22" />
+                               FontSize="{StaticResource PhoneFontSizeMedium}" />
 
                     <!-- Reference number -->
                     <TextBlock Text="{Binding Resources.EbankingReferenceNumber, Source={StaticResource Strings}}"
                                Style="{StaticResource PhoneTextSubtleStyle}" />
                     <TextBlock Text="{Binding EbankingInfo.PaymentInfo.ReferenceNumber}"
                                Style="{StaticResource PhoneTextNormalStyle}"
-                               FontSize="22" />
+                               FontSize="{StaticResource PhoneFontSizeMedium}" />
 
                     <!-- Various warnings -->
                     <TextBlock Text="{Binding Resources.EbankingWarning, Source={StaticResource Strings}}"
