@@ -153,7 +153,7 @@ namespace PocketCampus.Food.ViewModels
 
             // using Any() on Settings.DisplayedDishTypes allows dishes with more than one type to be displayed
             // even if the user doesn't want the second type to appear
-            var forbiddenTypes = EnumEx.GetValues<MealTypes>().Where( type => !Settings.DisplayedMealTypes.Contains( type ) );
+            var forbiddenTypes = EnumEx.GetValues<MealType>().Where( type => !Settings.DisplayedMealTypes.Contains( type ) );
 
             var menu = from restaurant in _fullMenu
                        let meals = from meal in restaurant.Meals

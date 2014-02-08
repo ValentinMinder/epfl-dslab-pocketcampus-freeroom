@@ -36,9 +36,9 @@ namespace PocketCampus.Food
         /// <summary>
         /// Gets a list of food type filters set by the user.
         /// </summary>
-        public MealTypes[] DisplayedMealTypes
+        public MealType[] DisplayedMealTypes
         {
-            get { return Get<MealTypes[]>(); }
+            get { return Get<MealType[]>(); }
             set { Set( value ); }
         }
 
@@ -76,7 +76,7 @@ namespace PocketCampus.Food
             {
                 { x => x.PriceTarget, () => PriceTarget.Student },
                 { x => x.MaximumBudget, () => 50.0 }, // this is too much, but it ensures no dish is hidden by default
-                { x => x.DisplayedMealTypes, () => EnumEx.GetValues<MealTypes>() },
+                { x => x.DisplayedMealTypes, () => EnumEx.GetValues<MealType>() },
                 { x => x.LastVotes, () => new Dictionary<MealTime, DateTime> { { MealTime.Lunch, DateTime.MinValue }, { MealTime.Dinner, DateTime.MinValue } } }
             };
         }

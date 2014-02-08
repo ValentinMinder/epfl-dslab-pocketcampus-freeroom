@@ -283,20 +283,20 @@ namespace PocketCampus.Main.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to log in.
+        /// </summary>
+        public static string LogIn {
+            get {
+                return ResourceManager.GetString("LogIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to log off.
         /// </summary>
         public static string LogOff {
             get {
                 return ResourceManager.GetString("LogOff", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to log on.
-        /// </summary>
-        public static string LogOn {
-            get {
-                return ResourceManager.GetString("LogOn", resourceCulture);
             }
         }
         

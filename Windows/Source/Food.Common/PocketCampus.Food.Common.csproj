@@ -56,7 +56,7 @@
     <Compile Include="Models\FoodResponse.cs" />
     <Compile Include="Models\FoodStatus.cs" />
     <Compile Include="Models\Meal.cs" />
-    <Compile Include="Models\MealTypes.cs" />
+    <Compile Include="Models\MealType.cs" />
     <Compile Include="Services\IFoodService.cs" />
     <Compile Include="Models\MealTime.cs" />
     <Compile Include="Services\FoodService.cs" />

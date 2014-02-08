@@ -27,8 +27,8 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to log on.
         /// </summary>
-        [CommandLogId( "LogOn" )]
-        public Command LogOnCommand
+        [CommandLogId( "LogIn" )]
+        public Command LogInCommand
         {
             get { return GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Standalone ) ); }
         }

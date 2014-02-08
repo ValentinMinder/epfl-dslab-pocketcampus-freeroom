@@ -146,7 +146,10 @@ namespace PocketCampus.Main.Services
             {
                 return default( T );
             }
-            return (T) new XmlSerializer( typeof( T ) ).Deserialize( new StringReader( serialized ) );
+            using ( var reader = new StringReader( serialized ) )
+            {
+                return (T) new XmlSerializer( typeof( T ) ).Deserialize( reader );
+            }
         }
 
         /// <summary>
@@ -159,14 +162,14 @@ namespace PocketCampus.Main.Services
                 return "";
             }
 
-            var writer = new StringWriter();
-            // Ensure that the BOM isn't saved - weird, but it works
-            var emptyNs = new XmlSerializerNamespaces( new[]
+            using ( var writer = new StringWriter() )
             {
-                new XmlQualifiedName( "", "" ),
-            } );
-            new XmlSerializer( session.GetType() ).Serialize( writer, session, emptyNs );
-            return writer.ToString();
+                // Ensure that the BOM isn't saved - weird, but it works
+                var emptyNs = new XmlSerializerNamespaces( new[] { new XmlQualifiedName( "", "" ) } );
+
+                new XmlSerializer( session.GetType() ).Serialize( writer, session, emptyNs );
+                return writer.ToString();
+            }
         }
     }
 }

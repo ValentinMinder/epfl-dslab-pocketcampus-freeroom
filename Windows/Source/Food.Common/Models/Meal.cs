@@ -50,7 +50,7 @@ namespace PocketCampus.Food.Models
         /// Meals have one or two types.
         /// </summary>
         [ThriftField( 6, true, "mTypes" )]
-        public MealTypes[] MealTypes { get; set; }
+        public MealType[] MealTypes { get; set; }
 
 
         /// <summary>

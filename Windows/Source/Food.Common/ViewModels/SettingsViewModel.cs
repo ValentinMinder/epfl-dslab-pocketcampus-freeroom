@@ -23,7 +23,7 @@ namespace PocketCampus.Food.ViewModels
         /// <summary>
         /// Gets the displayed meal types.
         /// </summary>
-        public Pair<MealTypes, bool>[] DisplayedMealTypes { get; private set; }
+        public Pair<MealType, bool>[] DisplayedMealTypes { get; private set; }
 
         /// <summary>
         /// Gets the available price target.
@@ -40,7 +40,7 @@ namespace PocketCampus.Food.ViewModels
         public SettingsViewModel( IPluginSettings settings )
         {
             Settings = settings;
-            DisplayedMealTypes = SettingsUtils.GetEnumPairs( Settings.DisplayedMealTypes, MealTypes.Unknown );
+            DisplayedMealTypes = SettingsUtils.GetEnumPairs( Settings.DisplayedMealTypes, MealType.Unknown );
         }
 
 

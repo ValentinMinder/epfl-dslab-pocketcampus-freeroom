@@ -10,7 +10,7 @@ namespace PocketCampus.Food.Models
     /// The types of meals.
     /// </summary>
     [ThriftEnum( "MealType" )]
-    public enum MealTypes
+    public enum MealType
     {
         /// <summary>
         /// Unknown type.

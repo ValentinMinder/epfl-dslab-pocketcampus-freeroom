@@ -106,7 +106,7 @@
 
         <!-- "Authenticate" button -->
         <Button Grid.Row="8"
-                Content="{Binding Resources.LogOn, Source={StaticResource Strings}}"
+                Content="{Binding Resources.LogIn, Source={StaticResource Strings}}"
                 Command="{Binding AuthenticateCommand}" />
     </Grid>
 </comControls:BasePage>

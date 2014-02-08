@@ -126,34 +126,34 @@
   <data name="MaximumBudget" xml:space="preserve">
     <value>Mon budget est de</value>
   </data>
-  <data name="MealTypes_Fish" xml:space="preserve">
+  <data name="MealType_Fish" xml:space="preserve">
     <value>Poisson</value>
   </data>
-  <data name="MealTypes_GreenFork" xml:space="preserve">
+  <data name="MealType_GreenFork" xml:space="preserve">
     <value>Fourch. Verte</value>
   </data>
-  <data name="MealTypes_Lebanese" xml:space="preserve">
+  <data name="MealType_Lebanese" xml:space="preserve">
     <value>Libanais</value>
   </data>
-  <data name="MealTypes_Meat" xml:space="preserve">
+  <data name="MealType_Meat" xml:space="preserve">
     <value>Viande</value>
   </data>
-  <data name="MealTypes_Pasta" xml:space="preserve">
+  <data name="MealType_Pasta" xml:space="preserve">
     <value>Pâtes</value>
   </data>
-  <data name="MealTypes_Pizza" xml:space="preserve">
+  <data name="MealType_Pizza" xml:space="preserve">
     <value>Pizza</value>
   </data>
-  <data name="MealTypes_Poultry" xml:space="preserve">
+  <data name="MealType_Poultry" xml:space="preserve">
     <value>Volaille</value>
   </data>
-  <data name="MealTypes_Indian" xml:space="preserve">
+  <data name="MealType_Indian" xml:space="preserve">
     <value>Indien</value>
   </data>
-  <data name="MealTypes_Thai" xml:space="preserve">
+  <data name="MealType_Thai" xml:space="preserve">
     <value>Thaï</value>
   </data>
-  <data name="MealTypes_Vegetarian" xml:space="preserve">
+  <data name="MealType_Vegetarian" xml:space="preserve">
     <value>Végétarien</value>
   </data>
   <data name="PriceTarget_PhDStudent" xml:space="preserve">

@@ -204,7 +204,7 @@ namespace PocketCampus.Mvvm
         /// <summary>
         /// Disposes of the DataViewModel (part of the common IDisposable pattern recommended by Microsoft).
         /// </summary>
-        private void Dispose( bool onlyManaged )
+        protected virtual void Dispose( bool onlyManaged )
         {
             _cancellationSource.Cancel();
             _cancellationSource.Dispose();

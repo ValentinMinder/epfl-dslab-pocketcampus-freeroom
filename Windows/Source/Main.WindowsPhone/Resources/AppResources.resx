@@ -143,8 +143,8 @@
   <data name="LogOff" xml:space="preserve">
     <value>log off</value>
   </data>
-  <data name="LogOn" xml:space="preserve">
-    <value>log on</value>
+  <data name="LogIn" xml:space="preserve">
+    <value>log in</value>
   </data>
   <data name="FirstRunCaption" xml:space="preserve">
     <value>Welcome!</value>

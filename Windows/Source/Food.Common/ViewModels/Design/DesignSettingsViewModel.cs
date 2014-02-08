@@ -19,17 +19,17 @@ namespace PocketCampus.Food.ViewModels.Design
             get { return new[] { PriceTarget.Student, PriceTarget.PhDStudent, PriceTarget.Staff, PriceTarget.Visitor }; }
         }
 
-        public Pair<MealTypes, bool>[] DisplayedMealTypes
+        public Pair<MealType, bool>[] DisplayedMealTypes
         {
             get
             {
                 return new[]
                 {
-                        Pair.Create( MealTypes.GreenFork, true ), Pair.Create( MealTypes.Fish, true ),
-                        Pair.Create( MealTypes.Meat, true ), Pair.Create( MealTypes.Poultry, true ),
-                        Pair.Create( MealTypes.Vegetarian, true ), Pair.Create( MealTypes.Pasta, true ),
-                        Pair.Create( MealTypes.Pizza, true ), Pair.Create( MealTypes.Thai, true ),
-                        Pair.Create( MealTypes.Indian, true ), Pair.Create( MealTypes.Lebanese, false )
+                        Pair.Create( MealType.GreenFork, true ), Pair.Create( MealType.Fish, true ),
+                        Pair.Create( MealType.Meat, true ), Pair.Create( MealType.Poultry, true ),
+                        Pair.Create( MealType.Vegetarian, true ), Pair.Create( MealType.Pasta, true ),
+                        Pair.Create( MealType.Pizza, true ), Pair.Create( MealType.Thai, true ),
+                        Pair.Create( MealType.Indian, true ), Pair.Create( MealType.Lebanese, false )
                 };
             }
         }
@@ -42,7 +42,7 @@ namespace PocketCampus.Food.ViewModels.Design
                 {
                     PriceTarget = PriceTarget.PhDStudent,
                     MaximumBudget = 12.34,
-                    DisplayedMealTypes = new[] { MealTypes.Pasta, MealTypes.Pizza, MealTypes.Fish, MealTypes.Indian }
+                    DisplayedMealTypes = new[] { MealType.Pasta, MealType.Pizza, MealType.Fish, MealType.Indian }
                 };
             }
         }
@@ -51,7 +51,7 @@ namespace PocketCampus.Food.ViewModels.Design
         {
             public PriceTarget PriceTarget { get; set; }
             public double MaximumBudget { get; set; }
-            public MealTypes[] DisplayedMealTypes { get; set; }
+            public MealType[] DisplayedMealTypes { get; set; }
             public Dictionary<MealTime, DateTime> LastVotes { get; set; }
         }
 #endif

@@ -79,7 +79,7 @@ namespace PocketCampus.IsAcademia.ViewModels
         /// <summary>
         /// Fetches the periods and transforms them to a binding-friendly representation.
         /// </summary>
-        protected override Task RefreshAsync( CancellationToken cancellationToken, bool force )
+        protected override Task RefreshAsync( CancellationToken token, bool force )
         {
             return _requestHandler.ExecuteAsync<MainViewModel, AuthenticationToken, string>( _isaService, async session =>
             {
@@ -104,7 +104,7 @@ namespace PocketCampus.IsAcademia.ViewModels
                     throw new Exception( "An error occurred on the server while fetching the schedule." );
                 }
 
-                if ( !cancellationToken.IsCancellationRequested )
+                if ( !token.IsCancellationRequested )
                 {
                     Days = response.Days.Select( d => new DayInfo( d ) ).ToArray();
                     CurrentDay = Days.FirstOrDefault( d => d.Date == DateTime.Now.Date );

@@ -95,7 +95,7 @@ namespace PocketCampus.Main
             InitializeWindowsPhonePlugins( pluginLoader, App.NavigationService );
         }
 
-        private void InitializeWindowsPhonePlugins( PluginLoader pluginLoader, IWindowsPhoneNavigationService navigationService )
+        private void InitializeWindowsPhonePlugins( IPluginLoader pluginLoader, IWindowsPhoneNavigationService navigationService )
         {
             foreach ( var plugin in pluginLoader.GetPlugins().Cast<IWindowsPhonePlugin>() )
             {

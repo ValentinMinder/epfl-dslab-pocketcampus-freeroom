@@ -65,7 +65,10 @@ namespace PocketCampus.Common
         public static ServerConfiguration Deserialize( string json )
         {
             var serializer = new DataContractJsonSerializer( typeof( ServerConfiguration ) );
-            return (ServerConfiguration) serializer.ReadObject( new MemoryStream( Encoding.UTF8.GetBytes( json ) ) );
+            using ( var stream = new MemoryStream( Encoding.UTF8.GetBytes( json ) ) )
+            {
+                return (ServerConfiguration) serializer.ReadObject( stream );
+            }
         }
     }
 }
