@@ -212,8 +212,11 @@
         self.navigationItem.rightBarButtonItem = nil;
         return;
     }
-    UIImage* image = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:[self.eventsService isEventItemIdFavorite:self.eventItem.eventId]];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(addRemoveFavoritesButtonPressed)];
+    BOOL isFavorite = [self.eventsService isEventItemIdFavorite:self.eventItem.eventId];
+    UIImage* image = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
+    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(addRemoveFavoritesButtonPressed)];
+    button.accessibilityLabel = isFavorite ? NSLocalizedStringFromTable(@"RemoveEventFromFavorites", @"EventsPlugin", nil) : NSLocalizedStringFromTable(@"AddEventToFavorites", @"EventsPlugin", nil);
+    self.navigationItem.rightBarButtonItem = button;
 }
 
 - (void)loadWebView {

@@ -292,12 +292,14 @@ static const NSInteger kSixMonthsPeriodIndex = 2;
     if (self.eventPool.enableScan) {
         self.scanButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"CameraBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonPressed)];
         //self.scanButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Scan", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(cameraButtonPressed)];
+        self.scanButton.accessibilityLabel = NSLocalizedStringFromTable(@"ScanACode", @"EventsPlugin", nil);
         [rightElements addObject:self.scanButton];
     }
     
     if (!self.eventPool.disableFilterByCateg || !self.eventPool.disableFilterByTags) { //will also disable period filtering
         //self.filterButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Filter", @"EventsPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(filterButtonPressed)];
         self.filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SortBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonPressed)];
+        self.filterButton.accessibilityLabel = NSLocalizedStringFromTable(@"PresentationOptions", @"EventsPlugin", nil);
         [rightElements addObject:self.filterButton];
     }
     
@@ -838,6 +840,10 @@ static const NSInteger kSixMonthsPeriodIndex = 2;
     }
     
     cell.eventItem = eventItem;
+    
+    [cell setAccessibilityTraitsBlock:^UIAccessibilityTraits{
+        return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
+    }];
     
     [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
     

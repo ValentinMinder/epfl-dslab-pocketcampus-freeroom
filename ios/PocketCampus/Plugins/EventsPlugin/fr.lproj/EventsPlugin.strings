@@ -38,3 +38,9 @@
 "PastEvents" = "Événements passés";
 "PastEventsShort" = "Évén. passés";
 "ShowPastEventsFor..." = "Voir les événements passés jusqu'à";
+
+//Accessibility
+"AddEventToFavorites" = "Ajouter cet événement aux favoris";
+"RemoveEventFromFavorites" = "Enlever cet événement des favoris";
+"PresentationOptions" = "Options d'affichage";
+"ScanACode" = "Scanner un code";
