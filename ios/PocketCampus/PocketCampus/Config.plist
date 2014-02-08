@@ -13,7 +13,7 @@
 	<key>GA_ENABLED</key>
 	<true/>
 	<key>GA_TRACKING_CODE</key>
-	<string>UA-22135241-3</string>
+	<string>UA-22135241-5</string>
 	<key>CRASHLYTICS_ENABLED</key>
 	<true/>
 	<key>CRASHLYTICS_APIKEY</key>
