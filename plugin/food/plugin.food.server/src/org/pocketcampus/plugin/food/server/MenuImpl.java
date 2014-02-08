@@ -61,7 +61,7 @@ public final class MenuImpl implements Menu {
 	private static final String RESTAURANTS_PHOTOS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/restaurant-pics/";
 	private static final String RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH = "/var/www/backend/restaurant-pics/";
 	private static final String RESTAURANTS_PHOTOS_FILE_EXTENSION = ".jpg";
-	
+
 	// The HTTP client used to get the HTML data.
 	private final HttpClient _client;
 
@@ -149,13 +149,15 @@ public final class MenuImpl implements Menu {
 				String target = priceElem.text().trim();
 				double price = Double.parseDouble(((TextNode) priceElem.nextSibling()).text().trim());
 
-				if (target.equals(HALF_PORTION_PRICE_TARGET)) {
-					meal.setMHalfPortionPrice(price);
-				} else if (PRICE_TARGETS.containsKey(target)) {
-					prices.put(PRICE_TARGETS.get(target), price);
+				if (price > 0.0) {
+					if (target.equals(HALF_PORTION_PRICE_TARGET)) {
+						meal.setMHalfPortionPrice(price);
+					} else if (PRICE_TARGETS.containsKey(target)) {
+						prices.put(PRICE_TARGETS.get(target), price);
+					}
 				}
 			}
-			
+
 			meal.setMPrices(prices);
 			fix(meal, restaurantName);
 			meal.setMRating(new EpflRating(0.0, 0));
@@ -218,7 +220,7 @@ public final class MenuImpl implements Menu {
 			restaurant.setRPictureUrl(pictureURLString);
 		}
 	}
-	
+
 	/**
 	 * @param restaurantName
 	 * @return url of restaurant's photo if it exists, null otherwise
@@ -234,14 +236,14 @@ public final class MenuImpl implements Menu {
 		String urlString = RESTAURANTS_PHOTOS_FOLDER_URL + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION;
 		return urlString;
 	}
-	
+
 	/**
 	 * @param restaurantName
 	 * @return restaurantName that is accents-freed, lower-cased,
-	 * and apostrophes and spaces replaced by _ 
-	 * Examples:
-	 * L'Atlantide => l_atlantide
-	 * Cafétéria BC => cafeteria_bc
+	 *         and apostrophes and spaces replaced by _
+	 *         Examples:
+	 *         L'Atlantide => l_atlantide
+	 *         Cafétéria BC => cafeteria_bc
 	 */
 	private static String normalizedNameForFilename(String restaurantName) {
 		restaurantName = StringUtils.stripAccents(restaurantName);

@@ -27,7 +27,7 @@ import org.joda.time.format.*;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public final class ScheduleImpl implements Schedule {
-	private static final String ISA_SCHEDULE_URL = "https://isa.epfl.ch/service/secure/student/timetable/period";
+	private static final String ISA_SCHEDULE_URL = "https://isa.epfl.ch/service/certified/student/timetable/period";
 	// The encoding of IS-Academia's schedule API.
 	private static final Charset ISA_CHARSET = Charset.forName("ISO-8859-1");
 	// The parameters of IS-Academia's API.
