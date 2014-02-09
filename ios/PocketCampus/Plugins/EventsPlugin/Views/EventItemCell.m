@@ -118,12 +118,13 @@ static NSString* kDetailTextLabelTextStyle;
     } else {
         fullString = dateTimeInfo;
     }
-    
-    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
-    if (secondaryInfo.length > 0) {
-        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[fullString rangeOfString:secondaryInfo]];
+    if (fullString) {
+        NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+        if (secondaryInfo.length > 0) {
+            [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[fullString rangeOfString:secondaryInfo]];
+        }
+        self.detailTextLabel.attributedText = attrString;
     }
-    self.detailTextLabel.attributedText = attrString;
     
     self.favoriteIndicationVisible = eventItem ? [[EventsService sharedInstanceToRetain] isEventItemIdFavorite:eventItem.eventId] : NO;
 }
