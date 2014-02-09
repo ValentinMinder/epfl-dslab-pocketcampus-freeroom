@@ -16,7 +16,7 @@ namespace PocketCampus.Satellite.ViewModels
     /// <summary>
     /// The main (and only) ViewModel.
     /// </summary>
-    [PageLogId( "/satellite" )]
+    [LogId( "/satellite" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly ISatelliteService _beerService;

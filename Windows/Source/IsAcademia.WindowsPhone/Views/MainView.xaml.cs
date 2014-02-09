@@ -7,9 +7,9 @@ using System.Windows;
 using System.Windows.Input;
 using PocketCampus.Common;
 using PocketCampus.Common.Controls;
+using PocketCampus.IsAcademia.ViewModels;
 using PocketCampus.Mvvm;
 using PocketCampus.Mvvm.Logging;
-using PocketCampus.IsAcademia.ViewModels;
 
 namespace PocketCampus.IsAcademia.Views
 {
@@ -28,7 +28,7 @@ namespace PocketCampus.IsAcademia.Views
             string text = typeString + Environment.NewLine + period.Rooms;
 
             MessageBox.Show( text, period.CourseName, MessageBoxButton.OK );
-            Messenger.Send( new EventLogRequest( "ViewPeriodProperties" ) );
+            Messenger.Send( new EventLogRequest( "ViewPeriodProperties", period.CourseName ) );
         }
     }
 }

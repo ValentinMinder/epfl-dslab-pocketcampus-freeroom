@@ -22,8 +22,8 @@ namespace PocketCampus.Mvvm
         /// </summary>
         /// <param name="execute">The action to execute when the command is executed.</param>
         /// <param name="canExecute">Optional. The predicate indicating whether the command can be executed.</param>
-        public AsyncCommand( Func<Task> execute, Expression<Func<bool>> canExecute = null )
-            : base( canExecute )
+        public AsyncCommand( object owner, Func<Task> execute, Expression<Func<bool>> canExecute = null )
+            : base( owner, canExecute )
         {
             _execute = execute;
             _canExecute = canExecute == null ? null : canExecute.Compile();
@@ -85,8 +85,8 @@ namespace PocketCampus.Mvvm
         /// </summary>
         /// <param name="execute">The action to execute when the command is executed.</param>
         /// <param name="canExecute">Optional. The predicate indicating whether the command can be executed.</param>
-        public AsyncCommand( Func<T, Task> execute, Expression<Func<T, bool>> canExecute = null )
-            : base( canExecute )
+        public AsyncCommand( object owner, Func<T, Task> execute, Expression<Func<T, bool>> canExecute = null )
+            : base( owner, canExecute )
         {
             _execute = execute;
             _canExecute = canExecute == null ? null : canExecute.Compile();
@@ -101,7 +101,7 @@ namespace PocketCampus.Mvvm
         /// </remarks>
         public Task ExecuteAsync( T parameter )
         {
-            OnExecuted();
+            OnExecuted( parameter );
             return _execute( parameter );
         }
 

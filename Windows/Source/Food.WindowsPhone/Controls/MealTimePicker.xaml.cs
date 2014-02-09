@@ -40,7 +40,7 @@ namespace PocketCampus.Food.Controls
         /// <summary>
         /// Gets the command executed to set the meal to Lunch.
         /// </summary>
-        [CommandLogId( "ViewLunch" )]
+        [LogId( "ViewLunch" )]
         public Command SetLunchCommand
         {
             get { return GetCommand( () => Value = MealTime.Lunch ); }
@@ -49,7 +49,7 @@ namespace PocketCampus.Food.Controls
         /// <summary>
         /// Gets the command executed to set the meal to Dinner.
         /// </summary>
-        [CommandLogId( "ViewDinner" )]
+        [LogId( "ViewDinner" )]
         public Command SetDinnerCommand
         {
             get { return GetCommand( () => Value = MealTime.Dinner ); }

@@ -82,7 +82,7 @@ namespace PocketCampus.Mvvm
         /// <summary>
         /// Command executed to update all data.
         /// </summary>
-        [CommandLogId( "Refresh" )]
+        [LogId( "Refresh" )]
         public AsyncCommand RefreshCommand
         {
             get { return GetAsyncCommand( () => TryRefreshAsync( true ), () => !IsLoading ); }

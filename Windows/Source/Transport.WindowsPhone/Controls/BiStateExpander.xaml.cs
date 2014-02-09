@@ -63,7 +63,7 @@ namespace PocketCampus.Transport.Controls
         /// <summary>
         /// Gets the command executed to switch between the states.
         /// </summary>
-        [CommandLogId( "OpenOrCloseInfo" )]
+        [LogId( "OpenOrCloseInfo" )]
         public Command SwitchStateCommand
         {
             get { return GetCommand( SwitchState ); }

@@ -13,7 +13,7 @@ namespace PocketCampus.Main.ViewModels
     /// <summary>
     /// The settings ViewModel.
     /// </summary>
-    [PageLogId( "/dashboard/settings" )]
+    [LogId( "/dashboard/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
         private readonly ITequilaAuthenticator _authenticator;
@@ -27,7 +27,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to log on.
         /// </summary>
-        [CommandLogId( "LogIn" )]
+        [LogId( "LogIn" )]
         public Command LogInCommand
         {
             get { return GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Standalone ) ); }
@@ -36,7 +36,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to log off.
         /// </summary>
-        [CommandLogId( "LogOff" )]
+        [LogId( "LogOff" )]
         public AsyncCommand LogOffCommand
         {
             get { return GetAsyncCommand( ExecuteLogOffCommand ); }

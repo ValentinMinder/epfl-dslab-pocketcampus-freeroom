@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using PocketCampus.Mvvm.Internals;
 
 namespace PocketCampus.Mvvm
 {
@@ -20,11 +21,18 @@ namespace PocketCampus.Mvvm
     public abstract class CommandBase
     {
         /// <summary>
+        /// Gets the object that owns the command.
+        /// </summary>
+        internal object Owner { get; private set; }
+
+        /// <summary>
         /// Creates a new CommandBase with the specified predicate.
         /// </summary>
         /// <param name="canExecute">The predicate indicating whether the command can be executed, or null to always execute it.</param>
-        public CommandBase( Expression canExecute )
+        public CommandBase( object owner, Expression canExecute )
         {
+            Owner = owner;
+
             if ( canExecute == null )
             {
                 return;
@@ -63,16 +71,16 @@ namespace PocketCampus.Mvvm
         /// <summary>
         /// Occurs when the command is executed.
         /// </summary>
-        internal event EventHandler Executed;
+        internal event EventHandler<CommandExecutedEventArgs> Executed;
         /// <summary>
         /// Fires the Executed event.
         /// </summary>
-        protected void OnExecuted()
+        protected void OnExecuted( object parameter = null )
         {
             var evt = Executed;
             if ( evt != null )
             {
-                evt( this, EventArgs.Empty );
+                evt( this, new CommandExecutedEventArgs( parameter ) );
             }
         }
 

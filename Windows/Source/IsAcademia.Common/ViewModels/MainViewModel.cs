@@ -18,7 +18,7 @@ namespace PocketCampus.IsAcademia.ViewModels
     /// <summary>
     /// The main (and only) ViewModel.
     /// </summary>
-    [PageLogId( "/schedule" )]
+    [LogId( "/schedule" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly IIsAcademiaService _isaService;

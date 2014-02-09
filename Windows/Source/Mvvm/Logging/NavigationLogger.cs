@@ -15,6 +15,7 @@ namespace PocketCampus.Mvvm.Logging
     /// </summary>
     public abstract class NavigationLogger
     {
+        // TODO: Remove the need for this
         private string _currentViewModelId;
 
         /// <summary>
@@ -23,26 +24,29 @@ namespace PocketCampus.Mvvm.Logging
         protected NavigationLogger()
         {
             Messenger.Register<CommandLoggingRequest>( req => EnableCommandLogging( req.Object ) );
-            Messenger.Register<EventLogRequest>( req => LogEvent( _currentViewModelId, req.EventId ) );
+            Messenger.Register<EventLogRequest>( req => LogEvent( _currentViewModelId, req.EventId, req.Label ) );
         }
 
         /// <summary>
-        /// Logs a navigation to the specified ViewModel.
+        /// Logs a navigation to the specified ViewModel, and a value indicating whether it's a navigation to a new one.
         /// </summary>
-        public void LogNavigation( object viewModel )
+        public void LogNavigation( object viewModel, bool isForward )
         {
             var viewModelType = viewModel.GetType();
-
-            var vmLogAttr = viewModelType.GetTypeInfo().GetCustomAttribute<PageLogIdAttribute>();
+            var vmLogAttr = viewModelType.GetTypeInfo().GetCustomAttribute<LogIdAttribute>();
             if ( vmLogAttr == null )
             {
-                Debug.WriteLine( "WARNING: Page {0} has no PageLogId attribute.", viewModelType.FullName );
+                Debug.WriteLine( "WARNING: Page {0} has no LogId attribute.", viewModelType.FullName );
             }
             else
             {
                 _currentViewModelId = vmLogAttr.Id;
-                LogNavigation( vmLogAttr.Id );
-                EnableCommandLogging( viewModel );
+
+                if ( isForward )
+                {
+                    LogNavigation( vmLogAttr.Id );
+                    EnableCommandLogging( viewModel );
+                }
             }
         }
 
@@ -52,9 +56,9 @@ namespace PocketCampus.Mvvm.Logging
         protected abstract void LogNavigation( string id );
 
         /// <summary>
-        /// Logs a command execution on the specified ViewModel with the specified ID.
+        /// Logs a command execution on the specified ViewModel with the specified ID and label.
         /// </summary>
-        protected abstract void LogEvent( string viewModelId, string eventId );
+        protected abstract void LogEvent( string viewModelId, string eventId, string label );
 
 
         /// <summary>
@@ -62,19 +66,54 @@ namespace PocketCampus.Mvvm.Logging
         /// </summary>
         private void EnableCommandLogging( object obj )
         {
-            foreach ( var commandProp in GetAllProperties( obj.GetType().GetTypeInfo() ).Where( pi => IsCommand( pi.PropertyType ) ) )
+            foreach ( var prop in GetAllProperties( obj.GetType().GetTypeInfo() ).Where( pi => IsCommand( pi.PropertyType ) ) )
             {
-                var commandLogAttr = commandProp.GetCustomAttribute<CommandLogIdAttribute>();
-                if ( commandLogAttr == null )
+                var idAttr = prop.GetCustomAttribute<LogIdAttribute>();
+                if ( idAttr == null )
                 {
-                    Debug.WriteLine( "WARNING: Command {0} on object {1} has no CommandLogIdAttribute.", commandProp.Name, obj.GetType().Name );
+                    Debug.WriteLine( "WARNING: Command {0} on object {1} has no LogIdAttribute.", prop.Name, obj.GetType().Name );
                 }
                 else
                 {
-                    var command = (CommandBase) commandProp.GetValue( obj );
+                    var command = (CommandBase) prop.GetValue( obj );
+                    Func<object, string> getLabel = _ => "";
+
+                    var parameterAttr = prop.GetCustomAttribute<LogParameterAttribute>();
+                    if ( parameterAttr != null )
+                    {
+                        var parameterPath = parameterAttr.ParameterPath.Split( LogParameterAttribute.PathSeparator );
+
+                        var valuesAttr = prop.GetCustomAttributes<LogValueConverterAttribute>();
+                        if ( valuesAttr == null )
+                        {
+                            getLabel = param => GetPathValue( parameterPath, _currentViewModelId, param ).ToString();
+                        }
+                        else
+                        {
+                            var dic = valuesAttr.ToDictionary( a => a.Value, a => a.LoggedValue );
+                            getLabel = param =>
+                            {
+                                string value;
+                                object key = GetPathValue( parameterPath, command.Owner, param );
+                                dic.TryGetValue( key, out value );
+                                return value ?? key.ToString();
+                            };
+                        }
+                    }
+
                     command.Executed += ( s, e ) =>
                     {
-                        LogEvent( _currentViewModelId, commandLogAttr.Id );
+                        string label;
+                        try
+                        {
+                            label = getLabel( e.Parameter );
+                        }
+                        catch ( Exception exn )
+                        {
+                            throw new InvalidOperationException( "An error occurred while evaluating the event label.", exn );
+                        }
+
+                        LogEvent( _currentViewModelId, idAttr.Id, label );
                     };
                 }
             }
@@ -105,6 +144,27 @@ namespace PocketCampus.Mvvm.Logging
         private static bool IsCommand( Type type )
         {
             return typeof( CommandBase ).GetTypeInfo().IsAssignableFrom( type.GetTypeInfo() );
+        }
+
+        /// <summary>
+        /// Evaluates a path on a root, with a parameter that may be used depending on the path.
+        /// </summary>
+        private static object GetPathValue( string[] path, object root, object parameter )
+        {
+            int n = 0;
+            if ( path[0] == LogParameterAttribute.ParameterName )
+            {
+                root = parameter;
+                n++;
+            }
+
+            while ( n < path.Length )
+            {
+                root = GetAllProperties( root.GetType().GetTypeInfo() ).First( p => p.Name == path[n] ).GetValue( root );
+                n++;
+            }
+
+            return root;
         }
     }
 }

@@ -7,21 +7,21 @@ using System;
 namespace PocketCampus.Mvvm.Logging
 {
     /// <summary>
-    /// Marks Commands to indicate their log ID.
+    /// Marks Commands and ViewModels to indicate their log ID.
     /// </summary>
-    [AttributeUsage( AttributeTargets.Property )]
-    public sealed class CommandLogIdAttribute : Attribute
+    [AttributeUsage( AttributeTargets.Property | AttributeTargets.Class )]
+    public sealed class LogIdAttribute : Attribute
     {
         /// <summary>
-        /// Gets the ID of the Command this attribute is applied to.
+        /// Gets the ID of the object this attribute is applied to.
         /// </summary>
         public string Id { get; private set; }
 
 
         /// <summary>
-        /// Creates a new CommandLogIdAttribute.
+        /// Creates a new LogIdAttribute.
         /// </summary>
-        public CommandLogIdAttribute( string id )
+        public LogIdAttribute( string id )
         {
             Id = id;
         }

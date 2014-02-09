@@ -11,7 +11,6 @@ using PocketCampus.Common;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Services;
 using PocketCampus.Map;
-using PocketCampus.Map.Models;
 using PocketCampus.Mvvm;
 using PocketCampus.Mvvm.Logging;
 
@@ -20,7 +19,7 @@ namespace PocketCampus.Food.ViewModels
     /// <summary>
     /// The main ViewModel.
     /// </summary>
-    [PageLogId( "/food" )]
+    [LogId( "/food" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         // On startup, lunch is selected if the current hour is less than or equal to this one
@@ -91,16 +90,17 @@ namespace PocketCampus.Food.ViewModels
         /// <summary>
         /// Gets the command executed to view a restaurant on the map.
         /// </summary>
-        [CommandLogId( "ViewRestaurantOnMap" )]
-        public Command<MapItem> ViewMapItemCommand
+        [LogId( "ViewRestaurantOnMap" )]
+        [LogParameter( "$Param.Name" )]
+        public Command<Restaurant> ViewMapItemCommand
         {
-            get { return GetCommand<MapItem>( item => Messenger.Send( new MapSearchRequest( item ) ) ); }
+            get { return GetCommand<Restaurant>( r => Messenger.Send( new MapSearchRequest( r.MapItem ) ) ); }
         }
 
         /// <summary>
         /// Gets the command executed to show the settings.
         /// </summary>
-        [CommandLogId( "OpenSettings" )]
+        [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }

@@ -16,7 +16,7 @@ namespace PocketCampus.Mvvm.Tests
         public async Task ExecuteAsyncCallsTheProvidedExecuteMethod()
         {
             int count = 0;
-            var cmd = new AsyncCommand( () => { count++; return Task.FromResult( 0 ); } );
+            var cmd = new AsyncCommand( null, () => { count++; return Task.FromResult( 0 ); } );
 
             await cmd.ExecuteAsync();
 
@@ -27,7 +27,7 @@ namespace PocketCampus.Mvvm.Tests
         public void ICommandExecuteCallsTheProvidedExecuteMethod()
         {
             int count = 0;
-            var cmd = new AsyncCommand( () => { count++; return Task.FromResult( 0 ); } );
+            var cmd = new AsyncCommand( null, () => { count++; return Task.FromResult( 0 ); } );
 
             ( (ICommand) cmd ).Execute( null );
 
@@ -37,7 +37,7 @@ namespace PocketCampus.Mvvm.Tests
         [TestMethod]
         public void CanExecuteIsTrueWhenNotProvided()
         {
-            var cmd = new AsyncCommand( () => Task.FromResult( 0 ) );
+            var cmd = new AsyncCommand( null, () => Task.FromResult( 0 ) );
 
             Assert.AreEqual( true, cmd.CanExecute(), "CanExecute() should return true when the 'canExecute' parameter is not provided." );
         }
@@ -46,7 +46,7 @@ namespace PocketCampus.Mvvm.Tests
         public void CanExecuteCallsTheProvidedCanExecuteMethod()
         {
             int n = 0;
-            var cmd = new AsyncCommand( () => Task.FromResult( 0 ), () => n == 42 );
+            var cmd = new AsyncCommand( null, () => Task.FromResult( 0 ), () => n == 42 );
 
             Assert.AreEqual( false, cmd.CanExecute(), "CanExecute() should call the provided 'canExecute' parameter." );
             n = 42;
@@ -57,7 +57,7 @@ namespace PocketCampus.Mvvm.Tests
         public void ICommandCanExecuteCallsTheProvidedCanExecuteMethod()
         {
             int n = 0;
-            var cmd = new AsyncCommand( () => Task.FromResult( 0 ), () => n == 42 );
+            var cmd = new AsyncCommand( null, () => Task.FromResult( 0 ), () => n == 42 );
 
             Assert.AreEqual( false, ( (ICommand) cmd ).CanExecute( null ), "ICommand.CanExecute() should call the provided 'canExecute' parameter." );
             n = 42;
@@ -70,7 +70,7 @@ namespace PocketCampus.Mvvm.Tests
 
             public void TestAsyncCommand()
             {
-                var cmd = new AsyncCommand( () => Task.FromResult( 0 ), () => Value == 0 );
+                var cmd = new AsyncCommand( null, () => Task.FromResult( 0 ), () => Value == 0 );
                 int count = 0;
 
                 cmd.CanExecuteChanged += ( s, e ) => count++;

@@ -74,7 +74,7 @@ namespace PocketCampus.IsAcademia.Controls
         /// <summary>
         /// Gets the command that selects the next week.
         /// </summary>
-        [CommandLogId( "NextWeek" )]
+        [LogId( "NextWeek" )]
         public Command NextCommand
         {
             get { return GetCommand( SelectNext ); }
@@ -83,7 +83,7 @@ namespace PocketCampus.IsAcademia.Controls
         /// <summary>
         /// Gets the command that selects the previous week.
         /// </summary>
-        [CommandLogId( "PreviousWeek" )]
+        [LogId( "PreviousWeek" )]
         public Command PreviousCommand
         {
             get { return GetCommand( SelectPrevious ); }

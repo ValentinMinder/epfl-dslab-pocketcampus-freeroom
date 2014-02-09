@@ -100,7 +100,7 @@
             <DataTemplate x:Key="RestaurantHeaderTemplate">
                 <Grid Background="Transparent">
                     <!-- Name -->
-                    <TextBlock Text="{Binding Name}"
+                    <TextBlock Text="{Binding Restaurant.Name}"
                                TextTrimming="WordEllipsis"
                                Style="{StaticResource PhoneTextLargeStyle}"
                                Foreground="{StaticResource PhoneSubtleBrush}"
@@ -112,7 +112,7 @@
                             <!-- "View on map" button -->
                             <tool:MenuItem Header="{Binding Resources.ViewRestaurantOnMap, Source={StaticResource Strings}}"
                                            Command="{Binding DataContext.ViewMapItemCommand, ElementName=LayoutRoot}"
-                                           CommandParameter="{Binding MapItem}" />
+                                           CommandParameter="{Binding Restaurant}" />
                         </tool:ContextMenu>
                     </tool:ContextMenuService.ContextMenu>
                 </Grid>
@@ -120,9 +120,10 @@
 
             <!-- Restaurant menu item template (for the LongListSelector's jump list) -->
             <DataTemplate x:Key="RestaurantJumpListItemTemplate">
-                <TextBlock Text="{Binding Name}"
+                <TextBlock Text="{Binding Restaurant.Name}"
                            Style="{StaticResource AppTextTitle2Style}"
-                           Margin="30,20" />
+                           Margin="30,20"
+                           Tap="RestaurantItem_Tap" />
             </DataTemplate>
 
             <!-- Jump list style for LongListSelector -->

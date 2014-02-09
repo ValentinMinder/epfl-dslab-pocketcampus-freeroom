@@ -12,7 +12,7 @@ namespace PocketCampus.Food.ViewModels
     /// <summary>
     /// The ViewModel for changing settings.
     /// </summary>
-    [PageLogId( "/food/settings" )]
+    [LogId( "/food/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
         /// <summary>

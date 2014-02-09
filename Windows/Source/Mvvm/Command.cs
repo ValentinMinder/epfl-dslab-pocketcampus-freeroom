@@ -17,12 +17,12 @@ namespace PocketCampus.Mvvm
         private readonly Func<bool> _canExecute;
 
         /// <summary>
-        /// Creates a new RelayCommand from the specified action and optional condition.
+        /// Creates a new Command from the specified action and optional condition.
         /// </summary>
         /// <param name="execute">The action to execute when the command is executed.</param>
         /// <param name="canExecute">Optional. The predicate indicating whether the command can be executed.</param>
-        public Command( Action execute, Expression<Func<bool>> canExecute = null )
-            : base( canExecute )
+        public Command( object owner, Action execute, Expression<Func<bool>> canExecute = null )
+            : base( owner, canExecute )
         {
             _execute = execute;
             _canExecute = canExecute == null ? null : canExecute.Compile();
@@ -77,12 +77,12 @@ namespace PocketCampus.Mvvm
         private readonly Func<T, bool> _canExecute;
 
         /// <summary>
-        /// Creates a new RelayCommand from the specified action and optional condition.
+        /// Creates a new Command from the specified action and optional condition.
         /// </summary>
         /// <param name="execute">The action to execute when the command is executed.</param>
         /// <param name="canExecute">Optional. The predicate indicating whether the command can be executed.</param>
-        public Command( Action<T> execute, Expression<Func<T, bool>> canExecute = null )
-            : base( canExecute )
+        public Command( object owner, Action<T> execute, Expression<Func<T, bool>> canExecute = null )
+            : base( owner, canExecute )
         {
             _execute = execute;
             _canExecute = canExecute == null ? null : canExecute.Compile();
@@ -104,7 +104,7 @@ namespace PocketCampus.Mvvm
         /// <param name="parameter">Data used by the command.</param>
         public void Execute( T parameter )
         {
-            OnExecuted();
+            OnExecuted( parameter );
             _execute( parameter );
         }
 

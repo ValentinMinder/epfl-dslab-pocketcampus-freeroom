@@ -34,7 +34,7 @@ namespace PocketCampus.Food.Controls
         /// <summary>
         /// Gets the command executed to select the previous day.
         /// </summary>
-        [CommandLogId( "PreviousDay" )]
+        [LogId( "PreviousDay" )]
         public Command PreviousCommand
         {
             get { return GetCommand( () => Value = Value.AddDays( -1 ) ); }
@@ -43,7 +43,7 @@ namespace PocketCampus.Food.Controls
         /// <summary>
         /// Gets the command executed to select the next day.
         /// </summary>
-        [CommandLogId( "NextDay" )]
+        [LogId( "NextDay" )]
         public Command NextCommand
         {
             get { return GetCommand( () => Value = Value.AddDays( 1 ) ); }

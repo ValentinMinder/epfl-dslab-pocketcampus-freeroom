@@ -17,7 +17,7 @@ namespace PocketCampus.Main.ViewModels
     /// <summary>
     /// The main ViewModel.
     /// </summary>
-    [PageLogId( "/dashboard" )]
+    [LogId( "/dashboard" )]
     public sealed class MainViewModel : DataViewModel<string>
     {
         private readonly INavigationService _navigationService;
@@ -42,7 +42,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to view the about page.
         /// </summary>
-        [CommandLogId( "OpenAbout" )]
+        [LogId( "OpenAbout" )]
         public Command OpenAboutPageCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<AboutViewModel> ); }
@@ -51,7 +51,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to view the settings page.
         /// </summary>
-        [CommandLogId( "OpenSettings" )]
+        [LogId( "OpenSettings" )]
         public Command OpenSettingsPageCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
@@ -60,7 +60,8 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to create a plugin "tile" on the user's home screen.
         /// </summary>
-        [CommandLogId( "CreatePluginTile" )]
+        [LogId( "CreatePluginTile" )]
+        [LogParameter( "$Param.Id" )]
         public Command<IPlugin> CreatePluginTileCommand
         {
             get { return GetCommand<IPlugin>( p => _tileCreator.CreateTile( p ) ); }
@@ -69,7 +70,8 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to open a plugin.
         /// </summary>
-        [CommandLogId( "OpenPlugin" )]
+        [LogId( "OpenPlugin" )]
+        [LogParameter( "$Param.Id" )]
         public Command<IPlugin> OpenPluginCommand
         {
             get { return GetCommand<IPlugin>( OpenPlugin ); }

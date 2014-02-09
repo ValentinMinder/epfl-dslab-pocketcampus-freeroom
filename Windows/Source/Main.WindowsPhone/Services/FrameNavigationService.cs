@@ -32,7 +32,6 @@ namespace PocketCampus.Main.Services
         private object _afterDialog;
         private bool _removeCurrentFromBackstack;
 
-
         /// <summary>
         /// Creates a new FrameNavigationService.
         /// </summary>
@@ -52,7 +51,7 @@ namespace PocketCampus.Main.Services
         private void NavigateToPrivate( object viewModel )
         {
             var viewModelType = viewModel.GetType();
-            _logger.LogNavigation( viewModel );
+            _logger.LogNavigation( viewModel, true );
             _backStack.Push( viewModel );
             App.RootFrame.Navigate( _views[viewModelType] );
         }
@@ -105,8 +104,10 @@ namespace PocketCampus.Main.Services
                 }
                 if ( _backStack.Count > 0 )
                 {
-                    _backStack.Peek().OnNavigatedTo();
-                    page.DataContext = _backStack.Peek();
+                    var currentViewModel = _backStack.Peek();
+                    currentViewModel.OnNavigatedTo();
+                    page.DataContext = currentViewModel;
+                    _logger.LogNavigation( currentViewModel, false );
                 }
             }
             else if ( e.NavigationMode == NavigationMode.Forward || e.NavigationMode == NavigationMode.New )
@@ -126,12 +127,17 @@ namespace PocketCampus.Main.Services
 
                 if ( _backStack.Count > 0 )
                 {
-                    _backStack.Peek().OnNavigatedTo();
-                    page.DataContext = _backStack.Peek();
+                    var currentViewModel = _backStack.Peek();
+                    currentViewModel.OnNavigatedTo();
+                    page.DataContext = currentViewModel;
+                    _logger.LogNavigation( currentViewModel, false );
                 }
             }
         }
 
+        /// <summary>
+        /// Disposes of the specified object, if it is an IDisposable.
+        /// </summary>
         private static void DisposeIfNeeded( object obj )
         {
             var disposable = obj as IDisposable;

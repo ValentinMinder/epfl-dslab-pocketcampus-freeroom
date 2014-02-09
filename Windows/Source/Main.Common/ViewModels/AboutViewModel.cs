@@ -13,7 +13,7 @@ namespace PocketCampus.Main.ViewModels
     /// <summary>
     /// The ViewModel for the About page.
     /// </summary>
-    [PageLogId( "/dashboard/about" )]
+    [LogId( "/dashboard/about" )]
     public sealed class AboutViewModel : ViewModel<NoParameter>
     {
         private readonly IBrowserService _browserService;
@@ -31,13 +31,13 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to navigate to an URL.
         /// </summary>
-        [CommandLogId( "ViewWebsite" )]
+        [LogId( "ViewWebsite" )]
         public Command<string> BrowseUrlCommand
         {
             get { return GetCommand<string>( _browserService.NavigateTo ); }
         }
 
-        [CommandLogId( "SendEmail" )]
+        [LogId( "SendEmail" )]
         public Command<string> SendEmailCommand
         {
             get { return GetCommand<string>( _emailService.ComposeEmail ); }
@@ -46,7 +46,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to rate the application.
         /// </summary>
-        [CommandLogId( "RateOnStore" )]
+        [LogId( "RateOnStore" )]
         public Command RateAppCommand
         {
             get { return GetCommand( _ratingService.RequestRating ); }
