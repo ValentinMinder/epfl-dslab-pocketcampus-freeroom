@@ -100,7 +100,7 @@ namespace PocketCampus.Mvvm.Tests
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
-            private void OnPropertyChanged( string propertyName )
+            public void OnPropertyChanged( string propertyName )
             {
                 var evt = PropertyChanged;
                 if ( evt != null )
@@ -114,6 +114,19 @@ namespace PocketCampus.Mvvm.Tests
         public void CanExecuteChangedShouldBeFiredWhenAPropertyChanges()
         {
             new InpcExample().TestAsyncCommand();
+        }
+
+        [TestMethod]
+        public void CanExecuteChangedShouldBeFiredWhenAPropertyOfAFieldChanges()
+        {
+            var ex = new InpcExample();
+            var cmd = new AsyncCommand<object>( null, _ => Task.FromResult( 0 ), _ => ex.Value == 1 );
+            int count = 0;
+
+            cmd.CanExecuteChanged += ( s, e ) => count++;
+            ex.OnPropertyChanged( "Value" );
+
+            Assert.AreEqual( 1, count, "CanExecuteChanged should be fired exactly once when a property it uses changes, even in a closure." );
         }
     }
 }

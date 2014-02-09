@@ -3,9 +3,6 @@
 // File author: Solal Pirelli
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq.Expressions;
 using PocketCampus.Mvvm.Internals;
 
@@ -81,48 +78,6 @@ namespace PocketCampus.Mvvm
             if ( evt != null )
             {
                 evt( this, new CommandExecutedEventArgs( parameter ) );
-            }
-        }
-
-        /// <summary>
-        /// Visits expressions and builds sequences of (object, property name) tuples for observable properties found in the expressions.
-        /// </summary>
-        private sealed class ObservablePropertyVisitor : ExpressionVisitor
-        {
-            private List<Tuple<INotifyPropertyChanged, string>> _propertyAccesses;
-
-            private ObservablePropertyVisitor( Expression expr )
-            {
-                _propertyAccesses = new List<Tuple<INotifyPropertyChanged, string>>();
-                Visit( expr );
-            }
-
-            public static IEnumerable<Tuple<INotifyPropertyChanged, string>> GetObservablePropertyAccesses( Expression expr )
-            {
-                return new ObservablePropertyVisitor( expr )._propertyAccesses;
-            }
-
-            protected override Expression VisitMember( MemberExpression node )
-            {
-                var owner = GetPropertyOwner( node );
-                var ownerNotif = owner as INotifyPropertyChanged;
-                if ( ownerNotif != null )
-                {
-                    _propertyAccesses.Add( Tuple.Create( ownerNotif, node.Member.Name ) );
-                }
-                return base.VisitMember( node );
-            }
-
-            private static object GetPropertyOwner( MemberExpression propertyExpr )
-            {
-                var constExpr = propertyExpr.Expression as ConstantExpression;
-                if ( constExpr == null )
-                {
-                    Debug.WriteLine( "WARNING: Expression {0} contains a property not on 'this'. Changes will not be tracked.", propertyExpr );
-                    return null;
-                }
-
-                return constExpr.Value;
             }
         }
     }

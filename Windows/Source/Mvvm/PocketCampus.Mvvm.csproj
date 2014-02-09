@@ -56,6 +56,7 @@
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="CommandBase.cs" />
     <Compile Include="Internals\CommandExecutedEventArgs.cs" />
+    <Compile Include="Internals\ObservablePropertyVisitor.cs" />
     <Compile Include="Logging\LogIdAttribute.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="DataViewModel.cs" />
