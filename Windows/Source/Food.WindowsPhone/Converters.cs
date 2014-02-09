@@ -8,7 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using PocketCampus.Common;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Resources;
@@ -76,10 +75,12 @@ namespace PocketCampus.Food
     /// </summary>
     public sealed class MealToImageConverter : ValueConverter<Meal, ImageSource>
     {
+        private EnumToImageSourceConverter _converter = new EnumToImageSourceConverter();
+
         public override ImageSource Convert( Meal value )
         {
-            string type = value.MealTypes.OrderByDescending( x => x ).First().ToString();
-            return new BitmapImage( new Uri( string.Format( "/Assets/MealTypes_{0}.png", type ), UriKind.Relative ) );
+            MealType type = value.MealTypes.OrderByDescending( x => x ).First();
+            return _converter.Convert( type );
         }
     }
 
