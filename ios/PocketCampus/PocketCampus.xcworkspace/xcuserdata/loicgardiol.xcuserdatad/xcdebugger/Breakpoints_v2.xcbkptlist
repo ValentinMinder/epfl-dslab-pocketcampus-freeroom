@@ -2280,8 +2280,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "83"
             endingLineNumber = "83"
-            landmarkName = "@implementation DirectoryPersonBaseInfoCell"
-            landmarkType = "3">
+            landmarkName = "-setPerson:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

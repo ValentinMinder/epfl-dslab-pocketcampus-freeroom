@@ -91,7 +91,7 @@
         [self.imageLoadingIndicator startAnimating];
         self.profilePicture = nil;
         self.profilePictureImageView.image = nil;
-        NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:self.person.pictureUrl parameters:nil];
+        NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:self.person.pictureUrl parameters:nil error:nil];
         request.cachePolicy = NSURLRequestUseProtocolCachePolicy;
         __weak __typeof(self) weakSelf = self;
         [self.profilePictureImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {

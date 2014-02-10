@@ -128,7 +128,7 @@ static AuthenticationService* instance __weak = nil;
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate {    
     [PCUtils throwExceptionIfObject:user notKindOfClass:[NSString class]];
     [PCUtils throwExceptionIfObject:password notKindOfClass:[NSString class]];
-    NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:kTequilaLoginURL parameters:@{@"username":user, @"password":password}];
+    NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:kTequilaLoginURL parameters:@{@"username":user, @"password":password} error:nil];
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     id weakDelegate __weak = delegate;
@@ -173,7 +173,7 @@ static AuthenticationService* instance __weak = nil;
     [PCUtils throwExceptionIfObject:token notKindOfClass:[NSString class]];
     [PCUtils throwExceptionIfObject:tequilaCookie notKindOfClass:[NSHTTPCookie class]];
     
-    NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:kTequilaAuthURL parameters:@{@"requestkey":token}];
+    NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:kTequilaAuthURL parameters:@{@"requestkey":token} error:nil];
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     [request addValue:[NSString stringWithFormat:@"%@=%@", kAuthenticationTequilaCookieName, tequilaCookie.value] forHTTPHeaderField:@"Cookie"];
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
