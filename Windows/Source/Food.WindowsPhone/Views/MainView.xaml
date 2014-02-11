@@ -99,12 +99,16 @@
                                                   Rating="{Binding Rating}"
                                                   Foreground="{StaticResource PhoneForegroundBrush}"
                                                   FontSize="{StaticResource PhoneFontSizeNormal}"
-                                                  VerticalAlignment="Bottom" />
+                                                  VerticalAlignment="Bottom"
+                                                  Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}" />
                     </Grid>
 
                     <!-- Context menu -->
                     <tool:ContextMenuService.ContextMenu>
-                        <tool:ContextMenu>
+                        <!-- Disable the zoom and set Visibility to Collapsed if ratings are disabled, 
+                             to hide the menu completely -->
+                        <tool:ContextMenu IsZoomEnabled="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot}" 
+                                          Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}">
                             <!-- "Rate" button -->
                             <tool:MenuItem Header="{Binding Resources.RateMealButton, Source={StaticResource Strings}}"
                                            Command="{Binding DataContext.RateMealCommand, ElementName=LayoutRoot}"
@@ -135,7 +139,8 @@
                                               Rating="{Binding Restaurant.Rating}"
                                               Margin="-12,0,0,0"
                                               Foreground="{StaticResource PhoneSubtleBrush}" 
-                                              FontSize="{StaticResource PhoneFontSizeSmall}" />
+                                              FontSize="{StaticResource PhoneFontSizeSmall}"
+                                              Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}" />
 
                     <!-- Context menu -->
                     <tool:ContextMenuService.ContextMenu>

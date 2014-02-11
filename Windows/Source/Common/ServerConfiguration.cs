@@ -40,6 +40,12 @@ namespace PocketCampus.Common
         [DataMember( Name = "ENABLED_PLUGINS" )]
         public string[] EnabledPlugins { get; set; }
 
+        /// <summary>
+        /// Gets 1 if the food ratings are enabled, 0 otherwise.
+        /// </summary>
+        [DataMember( Name = "FOOD_RATINGS_ENABLED" )]
+        public int AreFoodRatingsEnabled { get; set; }
+
 
         /// <summary>
         /// Creates a new ServerConfiguration.

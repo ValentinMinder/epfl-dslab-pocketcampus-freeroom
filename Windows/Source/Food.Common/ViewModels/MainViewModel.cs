@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common;
+using PocketCampus.Common.Services;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Services;
 using PocketCampus.Map;
@@ -83,6 +84,11 @@ namespace PocketCampus.Food.ViewModels
         }
 
         /// <summary>
+        /// Gets a value indicating whether the ratings are enabled.
+        /// </summary>
+        public bool AreRatingsEnabled { get; private set; }
+
+        /// <summary>
         /// Gets the settings.
         /// </summary>
         public IPluginSettings Settings { get; private set; }
@@ -111,24 +117,26 @@ namespace PocketCampus.Food.ViewModels
         /// Gets the command executed to vote on a meal.
         /// </summary>
         [LogId( "RateMeal" )]
-        [LogParameter( "$Param.Name" )]
         public Command<Meal> RateMealCommand
         {
-            get { return GetCommand<Meal>( RateMeal ); }
+            get { return GetCommand<Meal>( RateMeal, _ => AreRatingsEnabled ); }
         }
 
 
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( INavigationService navigationService, IPluginSettings settings, IFoodService menuService )
+        public MainViewModel( INavigationService navigationService, IFoodService menuService,
+                              IPluginSettings settings, IServerAccess access )
         {
-            Settings = settings;
             _navigationService = navigationService;
             _menuService = menuService;
 
             _mealDate = DateTime.Now;
             _mealTime = _mealDate.Hour <= LunchLimit ? MealTime.Lunch : MealTime.Dinner;
+
+            AreRatingsEnabled = access.CurrentConfiguration.AreFoodRatingsEnabled != 0;
+            Settings = settings;
         }
 
 

@@ -735,6 +735,8 @@ Pommes à la lyonnaise",
         public MealTime MealTime { get { return MealTime.Lunch; } }
         public DateTime MealDate { get { return DateTime.Now; } }
 
+        public bool AreRatingsEnabled { get { return true; } }
+
         public IPluginSettings Settings
         {
             get
