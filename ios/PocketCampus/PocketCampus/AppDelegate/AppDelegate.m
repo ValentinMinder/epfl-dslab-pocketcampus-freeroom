@@ -52,16 +52,18 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 
 @synthesize window = _window;
 
+#pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    /* Initialize defaults with PC config */
+    // Load PocketCampus configuration (will populate [PCConfig defaults])
     [PCConfig loadConfigAsynchronously];
 
-    /* Apply appearence proxy => specified UI elements will defaut to PC defined look&feel, eg. red navigation bar */
+    // Apply appearence proxy => specified UI elements will defaut to PC defined look&feel
     [PCValues applyAppearenceProxy];
     
+    // Initialize shared NSURLCache that will be used as default cache for all requests by default
     NSURLCache* cache = [[NSURLCache alloc] initWithMemoryCapacity:4*1024*1024 diskCapacity:100*1024*1024 diskPath:nil];
     [NSURLCache setSharedURLCache:cache];
 
@@ -70,28 +72,9 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
     
     self.mainController = [[MainController alloc] initWithWindow:self.window];
     
-    /* TESTS */
-    
-    //test = [[PushNotifControllerTests alloc] init];
-    //[test testRegistrationAuthenticated];
-    
-    //[[[PocketCampusLogicTests alloc] init] testAll];
-    
-    //[[[DirectoryServiceTests alloc] init] tempTest];
-    
-    //[[[MapServiceTests alloc] init] tempTest];
-    
-    //[[[MyEduServiceTests alloc] init] tempTest];
-    
-    //test = [[EventsServiceTests alloc] init];
-    
-    //[test tmpTest]
-    
-    /* END OF TESTS */
-    
     [self.window makeKeyAndVisible];
     
-    /* App might have been opened by notification touch */
+    // App might have been opened by tapping a notification
     NSDictionary* userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (userInfo) {
         [self application:[UIApplication sharedApplication] didReceiveRemoteNotification:userInfo];
@@ -157,6 +140,8 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
     NSLog(@"-> Notification received for plugin %@: %@  (userInfo:%@)", pluginName, message, userInfo);
     [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:[pluginName lowercaseString]] object:self userInfo:userInfo];
 }
+
+#pragma mark - Public
 
 + (NSString*)nsNotificationNameForPluginLowerIdentifier:(NSString*)pluginLowerIdentifier {
     return [NSString stringWithFormat:@"%@_%@", kAppDidReceiveRemoteNotificationForPlugin, pluginLowerIdentifier];
