@@ -52,7 +52,6 @@ namespace PocketCampus.Main
             RootFrame = new OrientationChangingFrame();
 
             InitializeComponent();
-            InitializeApplication();
             InitializePhoneApplication();
         }
 
@@ -174,6 +173,8 @@ namespace PocketCampus.Main
             {
                 // Set the root visual to allow the application to render
                 RootVisual = RootFrame;
+                // Initialize the app
+                InitializeApplication();
             }
 
             // Displays the first-run popup if needed

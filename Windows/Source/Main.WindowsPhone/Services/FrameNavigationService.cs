@@ -32,6 +32,12 @@ namespace PocketCampus.Main.Services
         private object _afterDialog;
         private bool _removeCurrentFromBackstack;
 
+        private PhoneApplicationFrame _rootFrame
+        {
+            get { return (PhoneApplicationFrame) Application.Current.RootVisual; }
+        }
+
+
         /// <summary>
         /// Creates a new FrameNavigationService.
         /// </summary>
@@ -41,7 +47,7 @@ namespace PocketCampus.Main.Services
             _views = new Dictionary<Type, Uri>();
             _backStack = new Stack<dynamic>();
 
-            App.RootFrame.Navigated += Frame_Navigated;
+            _rootFrame.Navigated += Frame_Navigated;
         }
 
 
@@ -53,7 +59,7 @@ namespace PocketCampus.Main.Services
             var viewModelType = viewModel.GetType();
             _logger.LogNavigation( viewModel, true );
             _backStack.Push( viewModel );
-            App.RootFrame.Navigate( _views[viewModelType] );
+            _rootFrame.Navigate( _views[viewModelType] );
         }
 
         /// <summary>
@@ -88,7 +94,7 @@ namespace PocketCampus.Main.Services
                 return;
             }
 
-            var page = (PhoneApplicationPage) App.RootFrame.Content;
+            var page = (PhoneApplicationPage) _rootFrame.Content;
 
             // need to check IsNavigationInitiator to avoid doing stuff when the user
             // long-presses the Back button to multitask
@@ -114,7 +120,7 @@ namespace PocketCampus.Main.Services
             {
                 if ( _removeCurrentFromBackstack )
                 {
-                    App.RootFrame.RemoveBackEntry();
+                    _rootFrame.RemoveBackEntry();
 
                     var newTop = _backStack.Pop();
                     var currentTop = _backStack.Pop();
@@ -229,7 +235,7 @@ namespace PocketCampus.Main.Services
             {
                 if ( _backStack.Count > 0 )
                 {
-                    App.RootFrame.GoBack();
+                    _rootFrame.GoBack();
                 }
                 else
                 {
