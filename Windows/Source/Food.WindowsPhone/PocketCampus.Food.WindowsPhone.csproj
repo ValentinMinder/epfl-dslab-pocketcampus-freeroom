@@ -92,11 +92,20 @@
     <Compile Include="Controls\MealTimePicker.xaml.cs">
       <DependentUpon>MealTimePicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\RatingDisplay.xaml.cs">
+      <DependentUpon>RatingDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RatingPicker.xaml.cs">
+      <DependentUpon>RatingPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters.cs" />
     <Compile Include="Resources\PluginResources.fr.Designer.cs">
       <DependentUpon>PluginResources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\RatingView.xaml.cs">
+      <DependentUpon>RatingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsPhonePlugin.cs" />
     <Compile Include="LocalizedStrings.cs" />
@@ -154,6 +163,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\RatingDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\RatingPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -164,6 +181,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\RatingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -202,4 +202,41 @@
   <data name="MealTypeFilterExplanation" xml:space="preserve">
     <value>touchez un type de plat pour l'afficher / le masquer</value>
   </data>
+  <data name="ManyVotesCast" xml:space="preserve">
+    <value>{0} votes</value>
+  </data>
+  <data name="NoVotesCast" xml:space="preserve">
+    <value>aucun vote</value>
+  </data>
+  <data name="OneVoteCast" xml:space="preserve">
+    <value>1 vote</value>
+  </data>
+  <data name="RateButton" xml:space="preserve">
+    <value>évaluer</value>
+  </data>
+  <data name="RateMealButton" xml:space="preserve">
+    <value>évaluer</value>
+  </data>
+  <data name="RatingStatus_AlreadyVoted" xml:space="preserve">
+    <value>Vous avez déjà évalué un plat aujourd'hui.</value>
+  </data>
+  <data name="RatingStatus_MealFromTheFuture" xml:space="preserve">
+    <value>Les plats du futur ne peuvent pas être évalués.</value>
+  </data>
+  <data name="RatingStatus_MealFromThePast" xml:space="preserve">
+    <value>Les plats du passé ne peuvent pas être évalués.</value>
+  </data>
+  <data name="RatingStatus_Ok" xml:space="preserve">
+    <value />
+    <comment>Must be empty</comment>
+  </data>
+  <data name="RatingStatus_TooEarly" xml:space="preserve">
+    <value>Il est trop tôt pour évaluer un plat.</value>
+  </data>
+  <data name="RatingViewTitle" xml:space="preserve">
+    <value>évaluer</value>
+  </data>
+  <data name="SatisfactionPercentage" xml:space="preserve">
+    <value>de satisfaction</value>
+  </data>
 </root>

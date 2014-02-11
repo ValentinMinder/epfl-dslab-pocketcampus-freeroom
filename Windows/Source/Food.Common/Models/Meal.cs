@@ -52,6 +52,12 @@ namespace PocketCampus.Food.Models
         [ThriftField( 6, true, "mTypes" )]
         public MealType[] MealTypes { get; set; }
 
+        /// <summary>
+        /// The meal's rating.
+        /// </summary>
+        [ThriftField( 7, true, "mRating" )]
+        public Rating Rating { get; set; }
+
 
         /// <summary>
         /// The restaurant the meal is available at.

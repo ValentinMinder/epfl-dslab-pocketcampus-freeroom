@@ -32,7 +32,7 @@
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealItemTemplate">
-                <Grid Margin="0,0,0,25">
+                <Grid Margin="0,0,0,20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120" />
                         <ColumnDefinition />
@@ -78,6 +78,7 @@
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
@@ -92,20 +93,50 @@
                                    Text="{Binding Description}"
                                    TextWrapping="Wrap"
                                    Style="{StaticResource PhoneTextSubtleStyle}" />
+                        
+                        <!-- Rating -->
+                        <myControls:RatingDisplay Grid.Row="2"
+                                                  Rating="{Binding Rating}"
+                                                  Foreground="{StaticResource PhoneForegroundBrush}"
+                                                  FontSize="{StaticResource PhoneFontSizeNormal}"
+                                                  VerticalAlignment="Bottom" />
                     </Grid>
+
+                    <!-- Context menu -->
+                    <tool:ContextMenuService.ContextMenu>
+                        <tool:ContextMenu>
+                            <!-- "Rate" button -->
+                            <tool:MenuItem Header="{Binding Resources.RateMealButton, Source={StaticResource Strings}}"
+                                           Command="{Binding DataContext.RateMealCommand, ElementName=LayoutRoot}"
+                                           CommandParameter="{Binding}" />
+                        </tool:ContextMenu>
+                    </tool:ContextMenuService.ContextMenu>
                 </Grid>
             </DataTemplate>
 
             <!-- Restaurant header template -->
             <DataTemplate x:Key="RestaurantHeaderTemplate">
-                <Grid Background="Transparent">
+                <Grid Background="Transparent"
+                      Margin="0,0,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    
                     <!-- Name -->
                     <TextBlock Text="{Binding Restaurant.Name}"
                                TextTrimming="WordEllipsis"
                                Style="{StaticResource PhoneTextLargeStyle}"
                                Foreground="{StaticResource PhoneSubtleBrush}"
-                               Margin="0" />
+                               Margin="0,0,12,0" />
                     
+                    <!-- Rating -->
+                    <myControls:RatingDisplay Grid.Row="1"
+                                              Rating="{Binding Restaurant.Rating}"
+                                              Margin="-12,0,0,0"
+                                              Foreground="{StaticResource PhoneSubtleBrush}" 
+                                              FontSize="{StaticResource PhoneFontSizeSmall}" />
+
                     <!-- Context menu -->
                     <tool:ContextMenuService.ContextMenu>
                         <tool:ContextMenu>
@@ -116,6 +147,11 @@
                         </tool:ContextMenu>
                     </tool:ContextMenuService.ContextMenu>
                 </Grid>
+            </DataTemplate>
+            
+            <!-- HACK: Empty footer with a certain height to add margin -->
+            <DataTemplate x:Key="MarginFooterTemplate">
+                <Rectangle Height="20" />
             </DataTemplate>
 
             <!-- Restaurant menu item template (for the LongListSelector's jump list) -->
@@ -169,6 +205,7 @@
                                 ItemTemplate="{StaticResource MealItemTemplate}"
                                 IsGroupingEnabled="True"
                                 GroupHeaderTemplate="{StaticResource RestaurantHeaderTemplate}"
+                                GroupFooterTemplate="{StaticResource MarginFooterTemplate}"
                                 JumpListStyle="{StaticResource JumpListStyle}"
                                 Margin="12,0" />
 

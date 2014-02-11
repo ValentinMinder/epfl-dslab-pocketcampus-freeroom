@@ -106,6 +106,18 @@ namespace PocketCampus.Food.ViewModels
             get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
+
+        /// <summary>
+        /// Gets the command executed to vote on a meal.
+        /// </summary>
+        [LogId( "RateMeal" )]
+        [LogParameter( "$Param.Name" )]
+        public Command<Meal> RateMealCommand
+        {
+            get { return GetCommand<Meal>( RateMeal ); }
+        }
+
+
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
@@ -172,6 +184,14 @@ namespace PocketCampus.Food.ViewModels
                 AnyMeals = _fullMenu.Any();
                 AnyFilterResults = Menu.Any();
             }
+        }
+
+        /// <summary>
+        /// Shows a rating page for the specified meal.
+        /// </summary>
+        private void RateMeal( Meal meal )
+        {
+            _navigationService.NavigateTo<RatingViewModel, RatingInfo>( new RatingInfo( meal, MealTime, MealDate ) );
         }
     }
 }

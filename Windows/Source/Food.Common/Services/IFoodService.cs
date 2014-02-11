@@ -19,5 +19,11 @@ namespace PocketCampus.Food.Services
         /// </summary>
         [ThriftMethod( "getFood" )]
         Task<FoodResponse> GetMenusAsync( [ThriftParameter( 1, "foodReq" )] FoodRequest request );
+
+        /// <summary>
+        /// Asynchronously submits the specified vote request.
+        /// </summary>
+        [ThriftMethod( "vote" )]
+        Task<VoteResponse> VoteAsync( [ThriftParameter( 1, "voteReq" )] VoteRequest request );
     }
 }

@@ -15,4 +15,5 @@
     <my:PriceToStringConverter x:Key="PriceToString" />
     <my:MealToImageConverter x:Key="MealToImage" />
     <my:RestaurantsToGroupsConverter x:Key="RestaurantsToGroups" />
+    <my:VoteCountToStringConverter x:Key="VoteCountToString" />
 </ResourceDictionary>

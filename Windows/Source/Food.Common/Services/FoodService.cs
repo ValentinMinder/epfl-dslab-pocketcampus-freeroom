@@ -23,5 +23,10 @@ namespace PocketCampus.Food.Services
         {
             return CallAsync<FoodRequest, FoodResponse>( x => x.GetMenusAsync, request );
         }
+
+        public Task<VoteResponse> VoteAsync( VoteRequest request )
+        {
+            return CallAsync<VoteRequest, VoteResponse>( x => x.VoteAsync, request );
+        }
     }
 }
