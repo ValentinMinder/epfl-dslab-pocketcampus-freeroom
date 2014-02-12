@@ -181,7 +181,7 @@ static NSString* const kURLEnding = @".png";
     //Redraw the overlay.
 
     if (self.mapView == nil) {
-        NSLog(@"-> !! mapView property is nil, cannot setNeedsDisplay");
+        CLSNSLog(@"-> !! mapView property is nil, cannot setNeedsDisplay");
         return;
     }
     

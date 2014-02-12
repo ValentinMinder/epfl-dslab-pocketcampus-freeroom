@@ -113,14 +113,14 @@ static NSString* const kUserTokenKey = @"userToken";
 }
 
 - (void)addUserTicket:(NSString*)ticket {
-    NSLog(@"-> Add user ticket: %@", ticket);
+    CLSNSLog(@"-> Add user ticket: %@", ticket);
     [self initUserTickets];
     [self.userTickets addObject:ticket];
     [self persistUserTickets];
 }
 
 - (void)removeUserTicket:(NSString*)ticket {
-    NSLog(@"-> Remove user ticket: %@", ticket);
+    CLSNSLog(@"-> Remove user ticket: %@", ticket);
     [self initUserTickets];
     [self.userTickets removeObject:ticket];
     [self persistUserTickets];

@@ -216,7 +216,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
         NSFileManager *fileManager= [NSFileManager defaultManager];
         if(![fileManager fileExistsAtPath:directory isDirectory:&isDir]) {
             if(![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL]) {
-                NSLog(@"-> Error while creating directory in cache : %@", directory);
+                CLSNSLog(@"-> Error while creating directory in cache : %@", directory);
             }
         }
     }

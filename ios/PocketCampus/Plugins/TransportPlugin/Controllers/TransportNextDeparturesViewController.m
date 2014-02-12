@@ -208,7 +208,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 }
 
 - (void)refresh {
-    NSLog(@"-> Refresh...");
     [self.lgRefreshControl endRefreshing];
     
     self.usersStations = [self.transportService.userTransportStations copy];
@@ -228,13 +227,13 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         if (self.locationState == LocationStateManualSelection) {
             [self startGetTripsRequests];
         } else {
-            NSLog(@"-> Requesting nearest transport station...");
+            CLSNSLog(@"-> Requesting nearest transport station...");
             self.locationState = LocationStateLocating;
             [self.transportService nearestUserTransportStationWithDelegate:self];
         }
     } else if (self.userStationsState == UserStationsStateLoadingDefault) {
         self.cellForDestinationName = nil;
-        NSLog(@"-> No previously saved user stations. Requesting default stations...");
+        CLSNSLog(@"-> No previously saved user stations. Requesting default stations...");
         [self.transportService getLocationsForNames:@[@"EPFL", @"Lausanne-Flon"] delegate:self];
     }
     
@@ -243,11 +242,11 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 - (void)startGetTripsRequests {
     if (!self.usersStations) {
-        NSLog(@"-> WARNING : tried to startGetTripsRequests when userStations nil. Returning.");
+        CLSNSLog(@"-> WARNING : tried to startGetTripsRequests when userStations nil. Returning.");
         return;
     }
     if (!self.departureStation) {
-        NSLog(@"-> WARNING : tried to startGetTripsRequests when departureStation nil. Returning.");
+        CLSNSLog(@"-> WARNING : tried to startGetTripsRequests when departureStation nil. Returning.");
         return;
     }
     self.tripResults = [NSMutableDictionary dictionaryWithCapacity:self.usersStations.count-1];
@@ -431,7 +430,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     if (names.count == 2 && [names[0] isEqualToString:@"EPFL"] && [names[1] isEqualToString:@"Lausanne-Flon"]) {
         //default stations request returned
         self.transportService.userTransportStations = [NSOrderedSet orderedSetWithArray:locations];
-        NSLog(@"-> Default stations returned and saved in user settings. Refreshing.");
+        CLSNSLog(@"-> Default stations returned and saved in user settings. Refreshing.");
         [self refresh];
     }
 }
@@ -444,7 +443,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 }
 
 - (void)nearestUserTransportStationDidReturn:(TransportStation*)nearestStation {
-    NSLog(@"-> Nearest station found : %@", nearestStation.name);
+    CLSLog(@"-> Nearest station found : %@", nearestStation.name);
     self.departureStation = nearestStation;
     self.locationState = LocationStateLocated;
     [self startGetTripsRequests];
@@ -466,7 +465,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 }
 
 - (void)tripsFrom:(NSString*)from to:(NSString*)to didReturn:(QueryTripsResult*)tripResult {
-    NSLog(@"-> Trip returned : (from: %@ to: %@)", tripResult.from.name, tripResult.to.name);
+    CLSLog(@"-> Trip returned : (from: %@ to: %@)", tripResult.from.name, tripResult.to.name);
     if (!self.usersStations || !self.departureStation) {
         return; //should not happen
     }
@@ -477,7 +476,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         cell.tripResult = tripResult;
     }
     if (self.tripResults.count == self.usersStations.count - 1) { //all results have arrived
-        NSLog(@"-> All trips returned => SchedulesStateLoaded");
+        CLSLog(@"-> All trips returned => SchedulesStateLoaded");
         self.schedulesState = SchedulesStateLoaded;
         [self updateAll];
     }
@@ -488,7 +487,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     TransportNextDeparturesCell* cell = self.cellForDestinationName[to];
     cell.state = TransportNextDeparturesCellStateError;
     if (self.tripResults.count == self.usersStations.count - 1) { //all results have arrived
-        NSLog(@"-> All trips returned (some with error) => SchedulesStateLoaded");
+        CLSLog(@"-> All trips returned (some with error) => SchedulesStateLoaded");
         self.schedulesState = SchedulesStateLoaded;
         [self updateAll];
     }

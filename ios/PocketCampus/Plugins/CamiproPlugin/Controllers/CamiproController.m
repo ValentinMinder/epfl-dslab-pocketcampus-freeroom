@@ -91,7 +91,7 @@ static CamiproController* instance __weak = nil;
 + (void)deleteSessionIfNecessary {
     NSNumber* deleteSession = (NSNumber*)[PCObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
     if (deleteSession && [deleteSession boolValue]) {
-        NSLog(@"-> Delayed logout notification on Camipro now applied : deleting sessionId");
+        CLSNSLog(@"-> Delayed logout notification on Camipro now applied : deleting sessionId");
         [[CamiproService sharedInstanceToRetain] setCamiproSession:nil];
         [PCObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
     }
@@ -103,10 +103,10 @@ static CamiproController* instance __weak = nil;
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
             NSNumber* delayed = notification.userInfo[kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
             if ([delayed boolValue]) {
-                NSLog(@"-> Camipro received %@ notification delayed", kAuthenticationLogoutNotification);
+                CLSNSLog(@"-> Camipro received %@ notification delayed", kAuthenticationLogoutNotification);
                 [PCObjectArchiver saveObject:@YES forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
             } else {
-                NSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotification);
+                CLSNSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotification);
                 [[CamiproService sharedInstanceToRetain] setCamiproSession:nil]; //removing stored session
                 [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"camipro"];
                 [[MainController publicController] requestLeavePlugin:@"Camipro"];
@@ -171,7 +171,7 @@ static CamiproController* instance __weak = nil;
 
 - (void)authenticationSucceeded {
     if (!self.tequilaToken) {
-        NSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
+        CLSNSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
         return;
     }
     [self.camiproService getSessionIdForServiceWithTequilaKey:self.tequilaToken delegate:self];

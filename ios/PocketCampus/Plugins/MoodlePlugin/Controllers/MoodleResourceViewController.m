@@ -319,7 +319,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     if ([self.moodleService lastSession]) {
         successBlock();
     } else {
-        NSLog(@"-> No saved session, loggin in...");
+        CLSNSLog(@"-> No saved session, loggin in...");
         [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             if (self.splitViewController) {
                 MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];

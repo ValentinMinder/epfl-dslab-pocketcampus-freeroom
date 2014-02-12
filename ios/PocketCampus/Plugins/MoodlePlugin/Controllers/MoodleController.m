@@ -98,7 +98,7 @@ static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 + (void)deleteSessionIfNecessary {
     NSNumber* deleteSession = (NSNumber*)[PCObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
     if (deleteSession && [deleteSession boolValue]) {
-        NSLog(@"-> Delayed logout notification on Moodle now applied : deleting sessionId");
+        CLSNSLog(@"-> Delayed logout notification on Moodle now applied : deleting sessionId");
         [[MoodleService sharedInstanceToRetain] deleteSession];
         [PCObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
     }
@@ -110,10 +110,10 @@ static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
             NSNumber* delayed = notification.userInfo[kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
             if ([delayed boolValue]) {
-                NSLog(@"-> Moodle received %@ notification delayed", kAuthenticationLogoutNotification);
+                CLSNSLog(@"-> Moodle received %@ notification delayed", kAuthenticationLogoutNotification);
                 [PCObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
             } else {
-                NSLog(@"-> Moodle received %@ notification", kAuthenticationLogoutNotification);
+                CLSNSLog(@"-> Moodle received %@ notification", kAuthenticationLogoutNotification);
                 MoodleService* moodleService = [MoodleService sharedInstanceToRetain];
                 [moodleService deleteSession]; //removing stored session
                 [moodleService deleteAllDownloadedResources]; //removing all downloaded Moodle files
@@ -177,7 +177,7 @@ static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (void)authenticationSucceeded {
     if (!self.tequilaToken) {
-        NSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
+        CLSNSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
         return;
     }
     [self.moodleService getSessionIdForServiceWithTequilaKey:self.tequilaToken delegate:self];;

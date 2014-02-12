@@ -216,12 +216,12 @@
 - (void)getBalanceAndTransactionsForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(BalanceAndTransactions*)balanceAndTransactions {
     switch (balanceAndTransactions.iStatus) {
         case 407: //user not authenticated (sessionId expired)
-            NSLog(@"-> User session has expired. Requesting credientials...");
+            CLSNSLog(@"-> User session has expired. Requesting credientials...");
             self.camiproService.camiproSession = nil;
             [self startBalanceAndTransactionsRequest];
             break;
         case 404:
-            NSLog(@"-> 404 error in status from getBalanceAndTransactionsForCamiproRequest:didReturn:");
+            CLSNSLog(@"-> 404 error in status from getBalanceAndTransactionsForCamiproRequest:didReturn:");
             [self getBalanceAndTransactionsFailedForCamiproRequest:camiproRequest];
             break;
         case 200: //OK
@@ -256,7 +256,7 @@
             break;
         }
         default:
-            NSLog(@"!! Unknown status code %d in getBalanceAndTransactionsForCamiproRequest:didReturn:", balanceAndTransactions.iStatus);
+            CLSNSLog(@"!! Unknown status code %d in getBalanceAndTransactionsForCamiproRequest:didReturn:", balanceAndTransactions.iStatus);
             [self getBalanceAndTransactionsFailedForCamiproRequest:camiproRequest];
             break;
     }
@@ -290,7 +290,7 @@
         }
         case 404:
         {
-            NSLog(@"-> 404 error in status from sendLoadingInfoByEmailForCamiproRequest:didReturn:");
+            CLSNSLog(@"-> 404 error in status from sendLoadingInfoByEmailForCamiproRequest:didReturn:");
             [self.sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
             UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"CamiproDown", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [errorAlert show];
@@ -303,7 +303,7 @@
             break;
         }
         default:
-            NSLog(@"!! Unknown status code %d in sendLoadingInfoByEmailForCamiproRequest:didReturn:", sendMailResult.iStatus);
+            CLSNSLog(@"!! Unknown status code %d in sendLoadingInfoByEmailForCamiproRequest:didReturn:", sendMailResult.iStatus);
             [self sendLoadingInfoByEmailFailedForCamiproRequest:camiproRequest];
             break;
     }
@@ -342,7 +342,7 @@
         }
         case 404:
         {
-            NSLog(@"-> 404 error in status from getStatsAndLoadingInfoForCamiproRequest:didReturn:");
+            CLSNSLog(@"-> 404 error in status from getStatsAndLoadingInfoForCamiproRequest:didReturn:");
             
             if ([PCUtils isIdiomPad]) {
                 [self.statsActivityIndicator stopAnimating];
@@ -368,7 +368,7 @@
             break;
         }
         default:
-            NSLog(@"!! Unknown status code %d in getStatsAndLoadingInfoForCamiproRequest:didReturn:", statsAndLoadingInfo.iStatus);
+            CLSNSLog(@"!! Unknown status code %d in getStatsAndLoadingInfoForCamiproRequest:didReturn:", statsAndLoadingInfo.iStatus);
             if ([PCUtils isIdiomPad]) {
                 [self.statsActivityIndicator stopAnimating];
                 self.statsContentLabel.text = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
@@ -468,7 +468,6 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
             headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"TransactionsHistory", @"CamiproPlugin", nil) tableView:self.tableView];
             break;
         default:
-            NSLog(@"!! Unexcepted tableview session");
             break;
     }
     //headerView.bounds = CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height);

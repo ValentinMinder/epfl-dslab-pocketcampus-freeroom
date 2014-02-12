@@ -137,7 +137,7 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSString* pluginName = userInfo[@"pluginName"];
     NSString* message = userInfo[@"aps"][@"alert"];
-    NSLog(@"-> Notification received for plugin %@: %@  (userInfo:%@)", pluginName, message, userInfo);
+    CLSNSLog(@"-> Notification received for plugin %@: %@  (userInfo:%@)", pluginName, message, userInfo);
     [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:[pluginName lowercaseString]] object:self userInfo:userInfo];
 }
 

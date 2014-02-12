@@ -92,7 +92,7 @@ static BOOL loaded = NO;
 + (void)loadConfigAsynchronously {
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-        NSLog(@"-> Loading config...");
+        CLSNSLog(@"-> Loading config...");
         // First load config from Config.plist
         [self registerDefaultsFromBundle];
         // Then load cached server config (from previous fetch)
@@ -103,7 +103,7 @@ static BOOL loaded = NO;
             [self registerDevDefaultsFromAppSupportIfExists];
             [self registerDefaultsUserConfigDefaultValuesIfNotDefined];
             [[self _defaults] synchronize]; //persist to disk
-            NSLog(@"-> Config loaded.");
+            CLSNSLog(@"-> Config loaded.");
             loaded = YES;
             [[NSNotificationCenter defaultCenter] postNotificationName:kPCConfigDidFinishLoadingNotification object:nil];
         }];
@@ -116,7 +116,7 @@ static BOOL loaded = NO;
 
 + (NSUserDefaults*)defaults {
     if (!loaded) {
-        NSLog(@"WARNING: tried to access [PCConfig defaults] before config was loaded. Returning nil.");
+        CLSNSLog(@"WARNING: tried to access [PCConfig defaults] before config was loaded. Returning nil.");
         [NSException raise:@"Illegal access" format:nil];
         return nil;
     }
@@ -137,24 +137,26 @@ static BOOL loaded = NO;
     }
     [[self _defaults] registerDefaults:bundleConfig];
     [[self _defaults] setBool:YES forKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY];
-    NSLog(@"   1. Config loaded from bundle");
+    CLSNSLog(@"   1. Config loaded from bundle");
 }
 
 + (void)registerDefaultsFromPersistedServerConfigIfExists {
     NSDictionary* persistedServerConfig = [self persistedServerConfig];
     if (persistedServerConfig) {
         [[self _defaults] registerDefaults:persistedServerConfig];
-        NSLog(@"   2. Config loaded from persisted server config");
+        CLSNSLog(@"   2. Config loaded from persisted server config");
     } else {
-        NSLog(@"   2. No persisted server config");
+        CLSNSLog(@"   2. No persisted server config");
     }
     [[self _defaults] setBool:(persistedServerConfig != nil) forKey:PC_CONFIG_LOADED_FROM_PERSISTED_SERVER_CONFIG_KEY];
 }
 
 + (void)registerAndPersistDefaultsFromServerWithCompletionHandler:(VoidBlock)completion {
-    if ([[AFNetworkReachabilityManager sharedManager] isReachable]) {
+    if (![PCUtils hasDeviceInternetConnection]) {
         [[self _defaults] setBool:NO forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
-        NSLog(@"   !! No internet connection. Cannot fetch config from server.");
+        CLSNSLog(@"   !! No internet connection. Cannot fetch config from server.");
+        completion();
+        return;
     }
     NSURLSessionConfiguration* config = [NSURLSessionConfiguration defaultSessionConfiguration];
     config.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
@@ -171,14 +173,14 @@ static BOOL loaded = NO;
              [[self _defaults] registerDefaults:jsonServerConfig];
              [[self _defaults] setBool:YES forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
              if ([self persistServerConfig:jsonServerConfig]) {
-                 NSLog(@"   3. Config loaded from server and persisted");
+                 CLSNSLog(@"   3. Config loaded from server and persisted");
              } else {
-                 NSLog(@"   3. Config loaded from server (WARNING: could not be persisted)");
+                 CLSNSLog(@"   3. Config loaded from server (WARNING: could not be persisted)");
              }
              completion();
          } failure:^(NSURLSessionDataTask *task, NSError *error) {
              [[self _defaults] setBool:NO forKey:PC_CONFIG_LOADED_FROM_SERVER_KEY];
-             NSLog(@"   !! Error when loading config from server. Continuing with local config.");
+             CLSNSLog(@"   !! Error when loading config from server. Continuing with local config.");
              completion();
          }];
 }
@@ -192,14 +194,14 @@ static BOOL loaded = NO;
         if ([fileManager fileExistsAtPath:pathAppSupportConfig]) {
             [[self _defaults] registerDefaults:[NSDictionary dictionaryWithContentsOfFile:pathAppSupportConfig]];
             [[self _defaults] setBool:YES forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
-            NSLog(@"   4. Detected and loaded overriding DEV config (%@)", pathAppSupportConfig);
+            CLSNSLog(@"   4. Detected and loaded overriding DEV config (%@)", pathAppSupportConfig);
         } else {
             [[self _defaults] setBool:NO forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
         }
     }
     @catch (NSException *exception) {
         [[self _defaults] setBool:NO forKey:PC_DEV_CONFIG_LOADED_FROM_APP_SUPPORT];
-        NSLog(@"   !! ERROR: Detected but unable to parse overriding DEV config (%@)", pathAppSupportConfig);
+        CLSNSLog(@"   !! ERROR: Detected but unable to parse overriding DEV config (%@)", pathAppSupportConfig);
     }
 }
 

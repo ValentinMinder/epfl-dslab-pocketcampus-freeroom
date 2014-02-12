@@ -424,7 +424,7 @@ static CGFloat kRowHeight;
             pasteboard.string = self.person.office;
             break;
     }
-    NSLog(@"-> Copy '%@' to pasteboard.", pasteboard.string);
+    CLSNSLog(@"-> Copy '%@' to pasteboard.", pasteboard.string);
 }
 
 #pragma mark - UITableViewDataSource

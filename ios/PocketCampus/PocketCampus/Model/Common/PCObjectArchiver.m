@@ -60,7 +60,7 @@
             return [NSKeyedArchiver archiveRootObject:object toFile:path];
         }
         @catch (NSException *exception) {
-            NSLog(@"-> Save object exception : impossible to save object");
+            CLSNSLog(@"-> Save object exception : %@", exception);
             return NO;
         }
     }
@@ -78,7 +78,7 @@
         return [NSKeyedUnarchiver unarchiveObjectWithFile:[self pathForKey:key pluginName:pluginName customFileExtension:nil isCache:isCache]];
     }
     @catch (NSException *exception) {
-        NSLog(@"-> Object for key %@ exception : impossible to retrieve archived object", key);
+        CLSNSLog(@"-> Object for key %@ exception : impossible to retrieve archived object (%@)", key, exception);
         return nil;
     }
 }
@@ -96,7 +96,7 @@
     
     NSDictionary* fileAttributes = [self fileAttributesForKey:key andPluginName:pluginName isCache:isCache];
     if (!fileAttributes) {
-        NSLog(@"!! ERROR in objectForKey:andPluginName:nilIfDiffIntervalLargerThan:isCache: : could not read file attributes");
+        CLSNSLog(@"!! ERROR in objectForKey:andPluginName:nilIfDiffIntervalLargerThan:isCache: : could not read file attributes");
         return nil;
     }
     NSDate* modifDate = fileAttributes[@"NSFileModificationDate"];
@@ -119,7 +119,7 @@
     NSError* error = nil;
     NSDictionary* fileAttributes = [fileManager attributesOfItemAtPath:filePath error:&error];
     if (error != nil) {
-        NSLog(@"-> fileAttributeForKey:andPluginName:isCache: impossible to get attribute of file %@", filePath);
+        CLSNSLog(@"-> fileAttributeForKey:andPluginName:isCache: impossible to get attribute of file %@", filePath);
         return nil;
     }
     return fileAttributes;

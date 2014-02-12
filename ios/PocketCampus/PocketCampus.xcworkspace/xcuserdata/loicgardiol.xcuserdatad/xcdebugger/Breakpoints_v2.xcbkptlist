@@ -2754,7 +2754,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "104"
             endingLineNumber = "104"
-            landmarkName = "-addLoginObserver:successBlock:userCancelledBlock:failureBlock:"
+            landmarkName = "+initObservers"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2770,7 +2770,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "124"
             endingLineNumber = "124"
-            landmarkName = "-getTequilaTokenForCamiproDidReturn:"
+            landmarkName = "+identifierName"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2786,7 +2786,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "133"
             endingLineNumber = "133"
-            landmarkName = "-getSessionIdForServiceWithTequilaKey:didReturn:"
+            landmarkName = "-addLoginObserver:successBlock:userCancelledBlock:failureBlock:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2802,7 +2802,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "148"
             endingLineNumber = "148"
-            landmarkName = "-authenticationSucceeded"
+            landmarkName = "-getTequilaTokenForCamiproDidReturn:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4051,6 +4051,22 @@
             startingLineNumber = "58"
             endingLineNumber = "58"
             landmarkName = "-initWithEpflRestaurant:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PocketCampus/Model/Common/PCConfig.m"
+            timestampString = "413807244.6437"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "155"
+            endingLineNumber = "155"
+            landmarkName = "+registerAndPersistDefaultsFromServerWithCompletionHandler:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

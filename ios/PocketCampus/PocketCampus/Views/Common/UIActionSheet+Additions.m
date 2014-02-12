@@ -64,7 +64,7 @@
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"!! WARNING: Exception caught in toggleFromBarButtonItem:animated: because of weakness of UIActionSheet API. You should release the action sheet in actionSheet:didDismissWithButtonIndex:");
+        CLSNSLog(@"!! WARNING: Exception caught in toggleFromBarButtonItem:animated: because of weakness of UIActionSheet API. You should release the action sheet in actionSheet:didDismissWithButtonIndex:");
     }
 }
 

@@ -177,7 +177,7 @@
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"!! ERROR: wrong URL format");
+        CLSNSLog(@"!! ERROR: wrong URL format");
     }
     return  [queryStringDictionary copy]; //non-mutable copy
 }

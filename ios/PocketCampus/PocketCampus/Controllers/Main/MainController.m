@@ -167,13 +167,13 @@ static MainController<MainControllerPublic>* instance = nil;
         @throw [NSException exceptionWithName:@"illegal argument" reason:@"observer cannot be nil" userInfo:nil];
     }
     if (![observer respondsToSelector:selector]) {
-        NSLog(@"!! Warning: observer %@ does not respond to selector %@. Crash will occur when notification is posted.", observer, NSStringFromSelector(selector));
+        CLSNSLog(@"!! Warning: observer %@ does not respond to selector %@. Crash will occur when notification is posted.", observer, NSStringFromSelector(selector));
     }
     [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
     
     NSString* name = [self notificiationNameForPluginStateNotification:notification pluginIdentifierName:pluginIdentifierName];
     [[NSNotificationCenter defaultCenter] addObserver:observer selector:selector name:name object:self];
-    NSLog(@"-> %@ ('%@') registered for PluginStateNotification %d", observer, pluginIdentifierName, notification);
+    CLSNSLog(@"-> %@ ('%@') registered for PluginStateNotification %d", observer, pluginIdentifierName, notification);
 }
 
 - (void)removePluginStateObserver:(id)observer {
@@ -181,7 +181,7 @@ static MainController<MainControllerPublic>* instance = nil;
         @throw [NSException exceptionWithName:@"illegal argument" reason:@"observer cannot be nil" userInfo:nil];
     }
     [[NSNotificationCenter defaultCenter] removeObserver:observer name:nil object:self];
-    NSLog(@"-> %@ unregistered of PluginStateNotifications", observer);
+    CLSNSLog(@"-> %@ unregistered of PluginStateNotifications", observer);
 }
 
 - (PCURLSchemeHandler*)urlSchemeHandlerSharedInstance {
@@ -192,7 +192,7 @@ static MainController<MainControllerPublic>* instance = nil;
     if (![urlTmp isKindOfClass:[NSURL class]]) {
         //do that instead of exception to prevent crashes
         [self showActionNotSupportedAlert];
-        NSLog(@"!! ERROR: tried to handlePocketCampusURL: with URL not kind of class NSURL. Ignoring.");
+        CLSNSLog(@"!! ERROR: tried to handlePocketCampusURL: with URL not kind of class NSURL. Ignoring.");
         return NO;
     }
     
@@ -208,13 +208,13 @@ static MainController<MainControllerPublic>* instance = nil;
     NSString* pluginIdentifier = [self.urlSchemeHander pluginIdentifierForPocketCampusURL:url];
     if (!pluginIdentifier) {
         [self showActionNotSupportedAlert];
-        NSLog(@"!! ERROR: unkown pluginIdentifier in handlePocketCampusURL:");
+        CLSNSLog(@"!! ERROR: unkown pluginIdentifier in handlePocketCampusURL:");
         return NO;
     }
     PluginController<PluginControllerProtocol>* pluginController = [self pluginControllerForPluginIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:pluginIdentifier]];
     if (!pluginController) {
         [self showActionNotSupportedAlert];
-        NSLog(@"!! ERROR: nil pluginController in handlePocketCampusURL:");
+        CLSNSLog(@"!! ERROR: nil pluginController in handlePocketCampusURL:");
         return NO;
     }
     
@@ -231,15 +231,15 @@ static MainController<MainControllerPublic>* instance = nil;
     
     if (!action || !params) {
         [self showActionNotSupportedAlert];
-        NSLog(@"!! ERROR: nil action/parameters in handlePocketCampusURL:");
+        CLSNSLog(@"!! ERROR: nil action/parameters in handlePocketCampusURL:");
         return NO;
     }
     
-    NSLog(@"-> Handling PocketCampus URL with action: %@, parameters: %@", action, params);
+    CLSNSLog(@"-> Handling PocketCampus URL with action: %@, parameters: %@", action, params);
     
     if (![pluginController respondsToSelector:@selector(handleURLQueryAction:parameters:)]) {
         [self showActionNotSupportedAlert];
-        NSLog(@"!! ERROR: pluginController does not respond to handleURLQueryAction:parameters:. Ignoring.");
+        CLSNSLog(@"!! ERROR: pluginController does not respond to handleURLQueryAction:parameters:. Ignoring.");
         return NO;
     }
     
@@ -322,14 +322,14 @@ static MainController<MainControllerPublic>* instance = nil;
         if (crashlyticsAPIKey) {
             static dispatch_once_t onceToken;
             dispatch_once(&onceToken, ^{
-                NSLog(@"-> Starting Crashlytics");
+                CLSNSLog(@"-> Starting Crashlytics");
                 [Crashlytics startWithAPIKey:crashlyticsAPIKey delegate:self];
             });
         } else {
-            NSLog(@"!! WARNING: could not start Crashlytics, did not find APIKey in config.");
+            CLSNSLog(@"!! WARNING: could not start Crashlytics, did not find APIKey in config.");
         }
     } else {
-        NSLog(@"-> Crashlytics disabled (config: %d, user: %d)", clEnabledConfig, clEnabledUserConfig);
+        CLSNSLog(@"-> Crashlytics disabled (config: %d, user: %d)", clEnabledConfig, clEnabledUserConfig);
     }
     
     //Google Analytics
@@ -364,11 +364,11 @@ static MainController<MainControllerPublic>* instance = nil;
         if (minOSVersion) {
             float minVersion = [minOSVersion floatValue];
             if (minVersion == 0.0) {
-                NSLog(@"!! WARNING: minOSVersion '%@' is not valid. Disabling plugin '%@'.", minOSVersion, identifierName);
+                CLSNSLog(@"!! WARNING: minOSVersion '%@' is not valid. Disabling plugin '%@'.", minOSVersion, identifierName);
                 pluginEnabled = NO;
             } else {
                 if ([PCUtils isOSVersionSmallerThan:minVersion]) {
-                    NSLog(@"-> Plugin '%@' requires %.1f (%.1f running) and will be thus disabled.", identifierName, minVersion, [PCUtils OSVersion]);
+                    CLSNSLog(@"-> Plugin '%@' requires %.1f (%.1f running) and will be thus disabled.", identifierName, minVersion, [PCUtils OSVersion]);
                     pluginEnabled = NO;
                 }
             }
@@ -385,15 +385,15 @@ static MainController<MainControllerPublic>* instance = nil;
                 NSNumber* logicOnly = pluginDic[@"logicOnly"];
                 BOOL logicOnlyBool = NO;
                 if (logicOnly && ![logicOnly isKindOfClass:[NSNumber class]]) {
-                    NSLog(@"!! ERROR: logicOnly key must be of type BOOL (found %@). Assuming logicOnly = NO.", logicOnly);
+                    CLSNSLog(@"!! ERROR: logicOnly key must be of type BOOL (found %@). Assuming logicOnly = NO.", logicOnly);
                 } else {
                     logicOnlyBool = [logicOnly boolValue];
                 }
                 if (logicOnlyBool) {
-                    NSLog(@"-> Detected enabled logic only plugin: '%@'", identifierName);
+                    CLSNSLog(@"-> Detected enabled logic only plugin: '%@'", identifierName);
                     [logicOnlyPluginsListTmp addObject:identifierName];
                 } else {
-                    NSLog(@"-> Detected enabled idiom-compatible plugin: '%@' (idiom '%@')", identifierName, idiom);
+                    CLSNSLog(@"-> Detected enabled idiom-compatible plugin: '%@' (idiom '%@')", identifierName, idiom);
                     [pluginsListTmp addObject:identifierName];
                 }
                 tmpPlistDicForPluginIdentifier[identifierName] = pluginDic;
@@ -494,7 +494,7 @@ static MainController<MainControllerPublic>* instance = nil;
     for (NSString* identifier in allPlugins) {
         Class pluginClass = NSClassFromString([self pluginControllerNameForIdentifier:identifier]);
         if (class_getClassMethod(pluginClass, @selector(initObservers))) {
-            NSLog(@"-> Found PluginController with observers : %@", pluginClass);
+            CLSNSLog(@"-> Found PluginController with observers : %@", pluginClass);
             [pluginClass initObservers];
         }
     }
@@ -546,7 +546,7 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (void)appDidReceiveMemoryWarning {
     /* release backgrounded plugins */
-    NSLog(@"-> AppDidReceiveMemoryWarning: releasing backgrounded plugins if any...");
+    CLSNSLog(@"-> AppDidReceiveMemoryWarning: releasing backgrounded plugins if any...");
     for (PluginController* pluginController in [self.pluginsControllers copy]) {
         if (pluginController != self.activePluginController) {
             [self.pluginsControllers removeObjectForKey:pluginController];
@@ -670,7 +670,7 @@ static MainController<MainControllerPublic>* instance = nil;
         UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
         
         if (!pluginRootViewController) {
-            NSLog(@"!! ERROR: could not obtain pluginRootViewController for plugin identifier %@", identifier);
+            CLSNSLog(@"!! ERROR: could not obtain pluginRootViewController for plugin identifier %@", identifier);
             return;
         }
         
@@ -759,7 +759,7 @@ static MainController<MainControllerPublic>* instance = nil;
     } else if (pluginController.mainSplitViewController) {
         pluginRootViewController = pluginController.mainSplitViewController;
     } else {
-        NSLog(@"!! ERROR : PluginController '%@' has no initialized view controller (mainViewController, mainNavigationController, mainSplitViewController are nil)", [(id<PluginControllerProtocol>)pluginController identifierName]);
+        CLSNSLog(@"!! ERROR : PluginController '%@' has no initialized view controller (mainViewController, mainNavigationController, mainSplitViewController are nil)", [(id<PluginControllerProtocol>)pluginController identifierName]);
     }
     return pluginRootViewController;
 }
@@ -880,7 +880,7 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (void)manageBackgroundPlugins {
     if (BACKGROUND_PLUGINS_ENABLED) {
-        NSLog(@"!! WARNING: background plugins management is not fully supported. Plugins will simply stay in memory until app receives memory warning.");
+        CLSNSLog(@"!! WARNING: background plugins management is not fully supported. Plugins will simply stay in memory until app receives memory warning.");
     } else {
         [self.pluginsControllers removeAllObjects];
     }

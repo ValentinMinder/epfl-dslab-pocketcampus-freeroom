@@ -65,7 +65,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
         self.serviceName = serviceName;
         self.thriftServiceClientClassName = thriftServiceClientClassName;
         self.serviceURL = [self.class serviceURLforServiceName:serviceName];
-        NSLog(@"-> Initializing service '%@' with URL (%@)", serviceName, self.serviceURL.absoluteString);
+        CLSNSLog(@"-> Initializing service '%@' with URL (%@)", serviceName, self.serviceURL.absoluteString);
         self.operationQueue = [NSOperationQueue new];
         self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
     }
@@ -107,7 +107,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
         }
     }
     if (nbOps > 0 && delegate) {
-        NSLog(@"-> All operations canceled for delegate %@ (%d cancelled)", delegate, nbOps);
+        CLSNSLog(@"-> All operations canceled for delegate %@ (%d cancelled)", delegate, nbOps);
     }
 }
 
@@ -153,7 +153,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 {
     [self.operationQueue setSuspended:YES];
     [self cancelAllOperations];
-    NSLog(@"-> Service '%@' released", self.serviceName);
+    CLSNSLog(@"-> Service '%@' released", self.serviceName);
 }
 
 @end

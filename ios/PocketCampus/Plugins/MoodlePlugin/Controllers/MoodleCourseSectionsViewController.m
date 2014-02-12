@@ -180,7 +180,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     if ([self.moodleService lastSession]) {
         successBlock();
     } else {
-        NSLog(@"-> No saved session, loggin in...");
+        CLSNSLog(@"-> No saved session, loggin in...");
         [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             [self.lgRefreshControl endRefreshing];
         } failureBlock:^{

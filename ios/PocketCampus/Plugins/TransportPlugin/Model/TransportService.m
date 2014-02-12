@@ -310,20 +310,20 @@ static NSString* const kLastLocationKey = @"lastLocation";
     [self.locationManager startUpdatingLocation];
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
-        NSLog(@"-> User has denied access to location, will return error to delegate.");
+        CLSNSLog(@"-> User has denied access to location, will return error to delegate.");
         [self locationManager:self.locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorDenied userInfo:nil]];
         return;
     }
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
-        NSLog(@"-> Waiting for user to accept access to location...");
+        CLSNSLog(@"-> Waiting for user to accept access to location...");
         self.blockedByAuthStatus = YES;
         return; //self will be called (see delegate method) by CLLocationManager when user has accepted or rejected access to location
     }
     
     CLLocation* lastLocation = (CLLocation*)[PCObjectArchiver objectForKey:kLastLocationKey andPluginName:@"transport"];
     if ([self locationIsStillValid:lastLocation] && [self locationEnglobesOnlyOneStation:lastLocation]) {
-        NSLog(@"-> Last location still valid (%@), will return to delegate.", lastLocation.timestamp);
+        CLSNSLog(@"-> Last location still valid (%@), will return to delegate.", lastLocation.timestamp);
         [self returnLocationToDelegate:lastLocation];
         return;
     }
@@ -390,7 +390,7 @@ static NSString* const kLastLocationKey = @"lastLocation";
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if (self.blockedByAuthStatus) {
-        NSLog(@"-> User has made a decision for location access. Restarting the request.");
+        CLSNSLog(@"-> User has made a decision for location access. Restarting the request.");
         [self main];
     }
 }
@@ -454,32 +454,32 @@ static NSString* const kLastLocationKey = @"lastLocation";
         return;
     }
     
-    NSLog(@"-> Handling location with accuracy : %lf | desired accuarcy : %lf", newLocation.horizontalAccuracy, self.locationManager.desiredAccuracy);
+    CLSLog(@"-> Handling location with accuracy : %lf | desired accuarcy : %lf", newLocation.horizontalAccuracy, self.locationManager.desiredAccuracy);
     
     if (![self locationIsStillValid:newLocation]) {
-        NSLog(@"-> Old location. Ignoring.");
+        CLSLog(@"-> Old location. Ignoring.");
         [PCObjectArchiver saveObject:nil forKey:kLastLocationKey andPluginName:@"transport"];
         return;
     }
     
     if (newLocation.horizontalAccuracy <= 0.0) {
-        NSLog(@"-> Useless/invalid location (accuracy <= 0.0). Ignoring.");
+        CLSLog(@"-> Useless/invalid location (accuracy <= 0.0). Ignoring.");
         return;
     }
     
     if (self.locationManager.desiredAccuracy == kCLLocationAccuracyBest) {
-        NSLog(@"-> Waiting for best accuracy to be achieved : desired accuracy will be switched to 100m in %d seconds.", (3-self.nbRounds));
+        CLSLog(@"-> Waiting for best accuracy to be achieved : desired accuracy will be switched to 100m in %d seconds.", (3-self.nbRounds));
         return;
     }
     
     if (newLocation.horizontalAccuracy > self.locationManager.desiredAccuracy) {
-        NSLog(@"-> Location accuracy (%lf) not sufficient, %lf required.", newLocation.horizontalAccuracy, self.locationManager.desiredAccuracy);
+        CLSLog(@"-> Location accuracy (%lf) not sufficient, %lf required.", newLocation.horizontalAccuracy, self.locationManager.desiredAccuracy);
         return;
     }
     
     if (![self locationEnglobesOnlyOneStation:newLocation]) {
         if (newLocation.horizontalAccuracy > self.locationManager.desiredAccuracy) { //second condition to prevent infinite waiting because accuracy cannot be achieved (desiredAccurary is deacreased by timer)
-            NSLog(@"-> Location not accurate enough. Ignoring.");
+            CLSLog(@"-> Location not accurate enough. Ignoring.");
             return;
         }
     }

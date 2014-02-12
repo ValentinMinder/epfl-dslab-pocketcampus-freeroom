@@ -97,7 +97,7 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
     va_list args;
     va_start(args, format);
     NSString* message = [[NSString alloc] initWithFormat:format arguments:args];
-    NSLog(@"%@ %@", serviceRequest.description, message);
+    CLSNSLog(@"%@ %@", serviceRequest.description, message);
 }
 
 #pragma mark - Cached response only

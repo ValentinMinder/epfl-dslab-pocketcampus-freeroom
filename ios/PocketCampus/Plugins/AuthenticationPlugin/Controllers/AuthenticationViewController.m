@@ -202,7 +202,7 @@
 }
 
 - (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason {
-    NSLog(@"-> loginToTequilaFailedloginToTequilaFailedWithReason: %d", reason);
+    CLSNSLog(@"-> loginToTequilaFailedloginToTequilaFailedWithReason: %d", reason);
     switch (reason) {
         case AuthenticationTequilaLoginFailureReasonBadCredentials:
         {

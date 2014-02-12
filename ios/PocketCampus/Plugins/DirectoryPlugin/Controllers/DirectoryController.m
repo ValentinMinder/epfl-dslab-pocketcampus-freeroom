@@ -129,7 +129,7 @@ static DirectoryController* instance __weak = nil;
             }
         }
         @catch (NSException *exception) {
-            NSLog(@"!! ERROR when converting parameters to Person object: %@", exception);
+            CLSNSLog(@"!! ERROR when converting parameters to Person object: %@", exception);
         }
     }
     return nil;

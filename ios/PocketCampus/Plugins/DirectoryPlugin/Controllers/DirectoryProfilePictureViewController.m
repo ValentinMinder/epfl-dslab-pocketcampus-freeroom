@@ -95,7 +95,7 @@
 }
 
 - (void)saveProfilePictureToCameraRoll {
-    NSLog(@"-> Saving profile picture");
+    CLSNSLog(@"-> Saving profile picture");
     UIImageWriteToSavedPhotosAlbum(self.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
 }
 
