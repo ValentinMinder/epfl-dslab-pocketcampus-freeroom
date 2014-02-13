@@ -11,7 +11,7 @@ using PocketCampus.IsAcademia.ViewModels;
 namespace PocketCampus.IsAcademia
 {
     /// <summary>
-    /// The schedule Windows Phone plugin.
+    /// The IS-Academia Windows Phone plugin.
     /// </summary>
     public class WindowsPhonePlugin : Plugin, IWindowsPhonePlugin
     {

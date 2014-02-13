@@ -10,7 +10,7 @@ using PocketCampus.Mvvm;
 namespace PocketCampus.IsAcademia
 {
     /// <summary>
-    /// The schedule plugin.
+    /// The IS-Academia plugin.
     /// </summary>
     public class Plugin : IPlugin
     {

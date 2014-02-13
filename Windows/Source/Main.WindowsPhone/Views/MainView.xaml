@@ -79,17 +79,23 @@
 
             <!-- Plugin template -->
             <DataTemplate x:Key="PluginTemplate">
-                <Grid Margin="10"
-                      Width="140"
-                      Height="140">
+                <Grid Margin="7"
+                      Width="146"
+                      Height="146">
                     <Button Template="{StaticResource TileButtonTemplate}"
                             Tag="{Binding Name}"
                             Command="{Binding DataContext.OpenPluginCommand, ElementName=LayoutRoot}"
                             CommandParameter="{Binding}"
-                            Background="{StaticResource AppTileBrush}">
+                            Background="{StaticResource AppTileBrush}"
+                            Padding="8,0">
+                        
+                        <!-- Icon -->
                         <Image Source="{Binding Icon}" />
+                        
+                        <!-- Context menu -->
                         <tool:ContextMenuService.ContextMenu>
                             <tool:ContextMenu>
+                                <!-- "Create tile" item -->
                                 <tool:MenuItem Header="{Binding Resources.CreatePluginTile, Source={StaticResource Strings}}"
                                                Command="{Binding DataContext.CreatePluginTileCommand, ElementName=LayoutRoot}"
                                                CommandParameter="{Binding}" />
