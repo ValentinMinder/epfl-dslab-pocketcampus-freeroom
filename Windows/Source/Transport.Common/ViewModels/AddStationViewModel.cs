@@ -15,7 +15,7 @@ namespace PocketCampus.Transport.ViewModels
     /// <summary>
     /// ViewModel that allows the user to add a station.
     /// </summary>
-    [LogId( "/transport/addstation" )]
+    [LogId( "/transport/addStation" )]
     public sealed class AddStationViewModel : DataViewModel<NoParameter>
     {
         private readonly ITransportService _transportService;
