@@ -179,7 +179,7 @@ static const int kUsageRow = 0;
                 }
                 case kAboutRow:
                 {
-                    [self trackAction:@"About"];
+                    [self trackAction:@"OpenAbout"];
                     PCAboutViewController* viewController = [PCAboutViewController new];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
