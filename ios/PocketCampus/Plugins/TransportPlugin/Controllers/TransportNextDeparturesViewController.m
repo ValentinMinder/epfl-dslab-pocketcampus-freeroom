@@ -452,6 +452,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 - (void)nearestUserTransportStationFailed:(LocationFailureReason)reason {
     switch (reason) {
         case LocationFailureReasonUserDenied:
+            [self trackAction:@"UserDeniedAccessToLocation"];
             self.locationState = LocationStateErrorUserDenied;
             break;
         case LocationFailureReasonTimeout:

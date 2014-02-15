@@ -191,6 +191,7 @@ static const int kUsageRow = 0;
             switch (indexPath.row) {
                 case kUsageRow:
                 {
+                    [self trackAction:@"OpenUsage"];
                     PCUsageViewController* viewController = [PCUsageViewController new];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
