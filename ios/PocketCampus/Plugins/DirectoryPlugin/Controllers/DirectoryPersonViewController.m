@@ -179,6 +179,7 @@ static CGFloat kRowHeight;
     if (!self.personBaseInfoCell.profilePicture) {
         return;
     }
+    [self trackAction:@"ShowPictureLarge"];
     DirectoryProfilePictureViewController* viewController = [[DirectoryProfilePictureViewController alloc] initWithImage:self.personBaseInfoCell.profilePicture];
     if (self.splitViewController) {
         if (!self.imagePopoverController) {

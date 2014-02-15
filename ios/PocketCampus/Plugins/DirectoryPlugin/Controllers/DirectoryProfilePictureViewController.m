@@ -54,7 +54,7 @@
 {
     self = [super initWithNibName:@"DirectoryProfilePictureView" bundle:nil];
     if (self) {
-        self.gaiScreenName = @"/directory/personPicture";
+        self.gaiScreenName = @"/directory/person/picture";
         self.image = image;
         self.title = NSLocalizedStringFromTable(@"Photo", @"DirectoryPlugin", nil);
     }
@@ -95,6 +95,7 @@
 }
 
 - (void)saveProfilePictureToCameraRoll {
+    [self trackAction:@"SaveToCameraRoll"];
     CLSNSLog(@"-> Saving profile picture");
     UIImageWriteToSavedPhotosAlbum(self.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
 }
