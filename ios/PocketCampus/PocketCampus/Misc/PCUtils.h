@@ -53,6 +53,7 @@
 + (UILabel*)addCenteredLabelInView:(UIView*)view withMessage:(NSString*)message;
 + (void)removeCenteredLabelInView:(UIView*)view;
 
++ (void)showUnknownErrorAlertTryRefresh:(BOOL)tryRefresh;
 + (void)showServerErrorAlert;
 + (void)showConnectionToServerTimedOutAlert;
 

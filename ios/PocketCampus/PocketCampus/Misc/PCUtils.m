@@ -149,6 +149,9 @@
     [[view viewWithTag:20] removeFromSuperview];
 }
 
++ (void)showUnknownErrorAlertTryRefresh:(BOOL)tryRefresh {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:tryRefresh ? NSLocalizedStringFromTable(@"UnknownErrorTryRefresh", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"UnknownError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
 
 + (void)showServerErrorAlert {
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];

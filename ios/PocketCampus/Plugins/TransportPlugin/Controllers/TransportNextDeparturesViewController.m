@@ -513,7 +513,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TransportNextDeparturesCell* cell = (TransportNextDeparturesCell*)[self.tableView cellForRowAtIndexPath:indexPath];
     if (cell.state != TransportNextDeparturesCellStateLoaded) {
         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
@@ -521,6 +521,11 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     }
     
     QueryTripsResult* queryTripResult = self.tripResults[cell.destinationStation.name];
+    if (!queryTripResult) {
+        [PCUtils showUnknownErrorAlertTryRefresh:YES];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
+    }
     TransportTripsListViewController* viewController = [[TransportTripsListViewController alloc] initWithQueryTripResult:queryTripResult];
     [self.navigationController pushViewController:viewController animated:YES];
 }

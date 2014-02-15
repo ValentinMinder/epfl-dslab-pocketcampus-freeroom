@@ -42,6 +42,8 @@
 "Now" = "Now";
 "yes" = "yes";
 "no" = "no";
+"UnknownError" = "Sorry, an error occured.";
+"UnknownErrorTryRefresh" = "Sorry, an error occured.\nTry to refresh.";
 
 //Accessbility
 
