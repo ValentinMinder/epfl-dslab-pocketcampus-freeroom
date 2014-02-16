@@ -108,6 +108,9 @@ static const CGFloat kTopBarHeight = 30.0;
             
         } else {
             [self.backgroundImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                if (!weakSelf.backgroundImageView) {
+                    return;
+                }
                 CGFloat width = weakSelf.backgroundImageView.frame.size.width;
                 CGFloat height = weakSelf.backgroundImageView.frame.size.height;
                 [weakSelf.backgroundImageView addConstraints:[NSLayoutConstraint width:width height:height constraintsForView:weakSelf.backgroundImageView]];
