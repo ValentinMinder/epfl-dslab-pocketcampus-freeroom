@@ -96,7 +96,10 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
     int nbOps = 0;
     for (NSOperation* operation in self.operationQueue.operations) {
-        if (!delegate || ([operation respondsToSelector:@selector(delegate)])) {
+        if (!delegate) {
+            [operation cancel];
+            nbOps++;
+        } else if ([operation respondsToSelector:@selector(delegate)]) {
             if ([(id)operation delegate] == delegate) {
                 if ([operation respondsToSelector:@selector(setDelegate:)]) {
                     [(id)operation setDelegate:nil];
