@@ -9,5 +9,5 @@ package org.pocketcampus.plugin.isacademia.android.iface;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public interface IIsacademiaController {
+public interface IIsAcademiaController {
 }
