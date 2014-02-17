@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="150" id="DLm-kc-vei" customClass="FoodRestaurantInfoCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DLm-kc-vei" id="yVO-ja-whO">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="149"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Idy-LA-NMz">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="hzI-Gl-qHd"/>
+                        </constraints>
+                    </navigationBar>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k5o-VX-bhR" userLabel="Top view">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Sat rate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eKw-5t-QSY" userLabel="Satisfaction rate label">
+                                <rect key="frame" x="10" y="0.0" width="200" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
+                                <nil key="highlightedColor"/>
+                                <size key="shadowOffset" width="0.0" height="1"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T1D-Mg-5rG">
+                                <rect key="frame" x="220" y="0.0" width="95" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Show on map">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="0MX-e7-XTa"/>
+                            <constraint firstAttribute="centerY" secondItem="T1D-Mg-5rG" secondAttribute="centerY" id="2qn-7K-Tzz"/>
+                            <constraint firstItem="eKw-5t-QSY" firstAttribute="top" secondItem="k5o-VX-bhR" secondAttribute="top" id="E16-pn-P50"/>
+                            <constraint firstAttribute="bottom" secondItem="T1D-Mg-5rG" secondAttribute="bottom" id="WlV-pM-6TF"/>
+                            <constraint firstItem="eKw-5t-QSY" firstAttribute="leading" secondItem="k5o-VX-bhR" secondAttribute="leading" constant="10" id="fCj-vM-h2Q"/>
+                            <constraint firstItem="T1D-Mg-5rG" firstAttribute="top" secondItem="k5o-VX-bhR" secondAttribute="top" id="udy-Wc-XhJ"/>
+                            <constraint firstAttribute="trailing" secondItem="T1D-Mg-5rG" secondAttribute="trailing" constant="5" id="wmK-8Z-jZk"/>
+                            <constraint firstAttribute="bottom" secondItem="eKw-5t-QSY" secondAttribute="bottom" id="xYc-vX-AIp"/>
+                            <constraint firstItem="T1D-Mg-5rG" firstAttribute="leading" secondItem="eKw-5t-QSY" secondAttribute="trailing" constant="10" id="xhJ-Ji-s1w"/>
+                        </constraints>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Cq-eP-KMy" userLabel="Background Image View">
+                        <rect key="frame" x="0.0" y="30" width="320" height="119"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="k5o-VX-bhR" secondAttribute="trailing" id="BI9-fJ-RO9"/>
+                    <constraint firstAttribute="trailing" secondItem="7Cq-eP-KMy" secondAttribute="trailing" id="FYB-za-Ei4"/>
+                    <constraint firstAttribute="trailing" secondItem="Idy-LA-NMz" secondAttribute="trailing" id="JQf-hw-9zi"/>
+                    <constraint firstItem="Idy-LA-NMz" firstAttribute="leading" secondItem="yVO-ja-whO" secondAttribute="leading" id="KGa-n1-JOp"/>
+                    <constraint firstItem="Idy-LA-NMz" firstAttribute="top" secondItem="yVO-ja-whO" secondAttribute="top" id="KgR-Kl-dDN"/>
+                    <constraint firstItem="7Cq-eP-KMy" firstAttribute="top" secondItem="k5o-VX-bhR" secondAttribute="bottom" id="Q3G-lY-Yi6"/>
+                    <constraint firstAttribute="bottom" secondItem="7Cq-eP-KMy" secondAttribute="bottom" id="QKt-cV-In5"/>
+                    <constraint firstItem="k5o-VX-bhR" firstAttribute="leading" secondItem="yVO-ja-whO" secondAttribute="leading" id="U5X-xP-HzZ"/>
+                    <constraint firstItem="7Cq-eP-KMy" firstAttribute="leading" secondItem="yVO-ja-whO" secondAttribute="leading" id="bNt-bJ-qb7"/>
+                    <constraint firstItem="k5o-VX-bhR" firstAttribute="top" secondItem="yVO-ja-whO" secondAttribute="top" id="dNU-JM-Dwr"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="backgroundImageView" destination="7Cq-eP-KMy" id="ag2-az-N66"/>
+                <outlet property="satRateLabel" destination="eKw-5t-QSY" id="Pju-NK-GVQ"/>
+                <outlet property="satRateLabelLeftConstraint" destination="fCj-vM-h2Q" id="frM-lI-R4w"/>
+                <outlet property="showOnMapButton" destination="T1D-Mg-5rG" id="3I6-q2-tqf"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

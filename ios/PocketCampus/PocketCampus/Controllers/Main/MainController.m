@@ -1,12 +1,36 @@
-//
-//  MainController.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
 //  Created by Loïc Gardiol on 07.10.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 //  ARC enabled
-//
 
 #import "MainController.h"
 
@@ -20,23 +44,19 @@
 
 #import "MainMenuItem.h"
 
-#import "PCValues.h"
+#import "PCSplashView.h"
 
-#import "PCUtils.h"
+#import "PCSplashViewController.h"
 
-#import "SplashViewController.h"
-
-#import "GlobalSettingsViewController.h"
-
-#import "ObjectArchiver.h"
-
-#import "PCConfig.h"
+#import "PCGlobalSettingsViewController.h"
 
 #import "PCURLSchemeHandler.h"
 
 #import <objc/message.h>
 
-@interface MainController ()
+#import <Crashlytics/Crashlytics.h>
+
+@interface MainController ()<CrashlyticsDelegate, UIGestureRecognizerDelegate, ZUUIRevealControllerDelegate>
 
 @property (nonatomic, weak) UIWindow* window;
 @property (nonatomic, strong) PCURLSchemeHandler* urlSchemeHander;
@@ -46,7 +66,8 @@
 @property (nonatomic, strong) NSDictionary* plistDicForPluginIdentifier;
 @property (nonatomic, strong) NSArray* logicOnlyPluginsList; //plugin identifiers of plugins that have no UI (logicOnly is YES)
 @property (nonatomic, strong) NSArray* pluginsList; //plugin identifiers of plugins that have a UI (logicOnly is NO)
-@property (nonatomic, strong) SplashViewController* splashViewController;
+@property (nonatomic, strong) PCSplashViewController* splashViewController;
+@property (nonatomic, strong) PCSplashView* splashView;
 @property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
 @property (nonatomic, strong) NSString* initialActivePluginIdentifier;
 @property (nonatomic, copy) NSURL* pcURLToHandle;
@@ -56,13 +77,13 @@
 @end
 
 /* Corresponds to supportedIdioms possible values in config file Plugins.plist */
-static NSString* kSupportedIdiomPhone = @"phone";
-static NSString* kSupportedIdiomPad = @"pad";
-static NSString* kSupportedIdiomPhonePad = @"phone+pad";
+static NSString* const kSupportedIdiomPhone = @"phone";
+static NSString* const kSupportedIdiomPad = @"pad";
+static NSString* const kSupportedIdiomPhonePad = @"phone+pad";
 
-static NSString* kPluginsMainMenuItemsInfoKey = @"pluginsMainMenuItemsInfo";
-static NSString* kPluginsMainMenuItemsInfoOrderNumberKey = @"pluginsMainMenuItemsInfoOrderNumber";
-static NSString* kPluginsMainMenuItemsInfoHiddenKey = @"pluginsMainMenuItemsInfoHidden";
+static NSString* const kPluginsMainMenuItemsInfoKey = @"pluginsMainMenuItemsInfo";
+static NSString* const kPluginsMainMenuItemsInfoOrderNumberKey = @"pluginsMainMenuItemsInfoOrderNumber";
+static NSString* const kPluginsMainMenuItemsInfoHiddenKey = @"pluginsMainMenuItemsInfoHidden";
 
 static int kGesturesViewTag = 50;
 
@@ -77,39 +98,19 @@ static MainController<MainControllerPublic>* instance = nil;
 
 @implementation MainController
 
+#pragma mark - Init
+
 - (id)initWithWindow:(UIWindow *)window
 {
     self = [super init];
     if (self) {
         self.window = window;
+        //self.pcURLToHandle = [NSURL URLWithString:@"pocketcampus://map.plugin.pocketcampus.org/search?q=BC"];
         self.urlSchemeHander = [[PCURLSchemeHandler alloc] initWithMainController:self];
-        self.activePluginController = nil;
-        [self initPluginsList];
-        self.pluginsControllers = [NSMutableDictionary dictionaryWithCapacity:self.pluginsList.count];
-        [self initMainMenu];
-        if ([PCUtils isIdiomPad]) {
-            self.revealWidth = 320.0;
-        } else {
-            self.revealWidth = 261.0;
-        }
-        [self initRevealController];
-        self.revealController.maxRearViewRevealOverdraw = 0.0;
-        if ([PCUtils isIdiomPad]) {
-            self.revealController.toggleAnimationDuration = 0.65;
-        } else {
-            self.revealController.toggleAnimationDuration = 0.65;
-        }
-        self.revealController.delegate = self;
-        self.window.rootViewController = self.revealController;
         instance = self;
-        [self initPluginObservers];
-        //[NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(test) userInfo:nil repeats:NO];
+        [self globalInit];
     }
     return self;
-}
-
-- (void)test {
-    [self requestPluginToForeground:@"Directory"];
 }
 
 + (id<MainControllerPublic>)publicController {
@@ -122,7 +123,7 @@ static MainController<MainControllerPublic>* instance = nil;
     [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
     
     /* If not BACKGROUND_PLUGINS_ENABLED, check that active plugin controller can be released */
-    PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:pluginIdentifierName];
+    PluginController<PluginControllerProtocol>* pluginController = self.pluginsControllers[pluginIdentifierName];
     if (!BACKGROUND_PLUGINS_ENABLED && self.activePluginController == pluginController && [pluginController respondsToSelector:@selector(canBeReleased)] && ![pluginController canBeReleased]) {
         return NO;
     }
@@ -142,7 +143,7 @@ static MainController<MainControllerPublic>* instance = nil;
 - (BOOL)requestLeavePlugin:(NSString*)pluginIdentifierName {
     [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
     
-    PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:pluginIdentifierName];
+    PluginController<PluginControllerProtocol>* pluginController = self.pluginsControllers[pluginIdentifierName];
     
     if (!pluginController) {
         return YES; //plugin is not allocated and not active => desired effect achieved
@@ -166,13 +167,13 @@ static MainController<MainControllerPublic>* instance = nil;
         @throw [NSException exceptionWithName:@"illegal argument" reason:@"observer cannot be nil" userInfo:nil];
     }
     if (![observer respondsToSelector:selector]) {
-        NSLog(@"!! Warning: observer %@ does not respond to selector %@. Crash will occur when notification is posted.", observer, NSStringFromSelector(selector));
+        CLSNSLog(@"!! Warning: observer %@ does not respond to selector %@. Crash will occur when notification is posted.", observer, NSStringFromSelector(selector));
     }
     [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifierName];
     
     NSString* name = [self notificiationNameForPluginStateNotification:notification pluginIdentifierName:pluginIdentifierName];
     [[NSNotificationCenter defaultCenter] addObserver:observer selector:selector name:name object:self];
-    NSLog(@"-> %@ ('%@') registered for PluginStateNotification %d", observer, pluginIdentifierName, notification);
+    CLSNSLog(@"-> %@ ('%@') registered for PluginStateNotification %d", observer, pluginIdentifierName, notification);
 }
 
 - (void)removePluginStateObserver:(id)observer {
@@ -180,7 +181,7 @@ static MainController<MainControllerPublic>* instance = nil;
         @throw [NSException exceptionWithName:@"illegal argument" reason:@"observer cannot be nil" userInfo:nil];
     }
     [[NSNotificationCenter defaultCenter] removeObserver:observer name:nil object:self];
-    NSLog(@"-> %@ unregistered of PluginStateNotifications", observer);
+    CLSNSLog(@"-> %@ unregistered of PluginStateNotifications", observer);
 }
 
 - (PCURLSchemeHandler*)urlSchemeHandlerSharedInstance {
@@ -191,7 +192,7 @@ static MainController<MainControllerPublic>* instance = nil;
     if (![urlTmp isKindOfClass:[NSURL class]]) {
         //do that instead of exception to prevent crashes
         [self showActionNotSupportedAlert];
-        NSLog(@"!! ERROR: tried to handlePocketCampusURL: with URL not kind of class NSURL. Ignoring.");
+        CLSNSLog(@"!! ERROR: tried to handlePocketCampusURL: with URL not kind of class NSURL. Ignoring.");
         return NO;
     }
     
@@ -207,13 +208,13 @@ static MainController<MainControllerPublic>* instance = nil;
     NSString* pluginIdentifier = [self.urlSchemeHander pluginIdentifierForPocketCampusURL:url];
     if (!pluginIdentifier) {
         [self showActionNotSupportedAlert];
-        NSLog(@"!! ERROR: unkown pluginIdentifier in handlePocketCampusURL:");
+        CLSNSLog(@"!! ERROR: unkown pluginIdentifier in handlePocketCampusURL:");
         return NO;
     }
     PluginController<PluginControllerProtocol>* pluginController = [self pluginControllerForPluginIdentifier:[self validPluginIdentifierForAnycasePluginIdentifier:pluginIdentifier]];
     if (!pluginController) {
         [self showActionNotSupportedAlert];
-        NSLog(@"!! ERROR: nil pluginController in handlePocketCampusURL:");
+        CLSNSLog(@"!! ERROR: nil pluginController in handlePocketCampusURL:");
         return NO;
     }
     
@@ -230,15 +231,15 @@ static MainController<MainControllerPublic>* instance = nil;
     
     if (!action || !params) {
         [self showActionNotSupportedAlert];
-        NSLog(@"!! ERROR: nil action/parameters in handlePocketCampusURL:");
+        CLSNSLog(@"!! ERROR: nil action/parameters in handlePocketCampusURL:");
         return NO;
     }
     
-    NSLog(@"-> Handling PocketCampus URL with action: %@, parameters: %@", action, params);
+    CLSNSLog(@"-> Handling PocketCampus URL with action: %@, parameters: %@", action, params);
     
     if (![pluginController respondsToSelector:@selector(handleURLQueryAction:parameters:)]) {
         [self showActionNotSupportedAlert];
-        NSLog(@"!! ERROR: pluginController does not respond to handleURLQueryAction:parameters:. Ignoring.");
+        CLSNSLog(@"!! ERROR: pluginController does not respond to handleURLQueryAction:parameters:. Ignoring.");
         return NO;
     }
     
@@ -262,60 +263,84 @@ static MainController<MainControllerPublic>* instance = nil;
     return [pluginClass localizedName];
 }
 
-#pragma mark Private utilities
+#pragma mark - Initialization
 
-- (void)showActionNotSupportedAlert {
-    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Sorry", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ActionNotSupportedYet", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-}
-
-- (NSString*)notificiationNameForPluginStateNotification:(PluginStateNotification)notification pluginIdentifierName:(NSString*)pluginIdentifierName {
-    return [NSString stringWithFormat:@"%@-%d", pluginIdentifierName, notification];
-}
-
-- (void)postNotificationWithState:(PluginStateNotification)notification pluginIdentifier:(NSString*)pluginIdentifier {
-    [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifier];
-    NSString* name = [self notificiationNameForPluginStateNotification:notification pluginIdentifierName:pluginIdentifier];
-    [[NSNotificationCenter defaultCenter] postNotificationName:name object:self];
-}
-
-- (NSString*)identifierNameForPluginController:(PluginController*)pluginController {
-    if ([self.activePluginController conformsToProtocol:NSProtocolFromString(@"PluginControllerProtocol")]) {
-        id<PluginControllerProtocol> pluginController = self.activePluginController;
-        NSString* identifier = [[pluginController class] identifierName];
-        return identifier;
+- (void)globalInit {
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        [self preConfigInit];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(globalInit) name:kPCConfigDidFinishLoadingNotification object:nil];
+    });
+    if ([PCConfig isLoaded]) {
+        [self postConfigInit];
     }
-    return nil;
 }
 
 /*
- * Can be called only after self.pluginsList has been filled
+ * Iinit code that does NOT need PCConfig to be loaded
  */
-- (void)throwExceptionIfPluginIdentifierNameIsNotValid:(NSString*)identifier {
-    if (!identifier) {
-        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName cannot be nil." userInfo:nil];
-    }
-    if (![identifier isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName is not kind of class NSString." userInfo:nil];
-    }
-    if (![self.pluginsList containsObject:identifier]) {
-        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName does not correspond to any existing identifier. Please use [PluginControllerProtocol identifierName] as argument." userInfo:nil];
-    }
+- (void)preConfigInit {
+    self.window.tintColor = [PCValues pocketCampusRed];
+    self.revealWidth = [PCUtils isIdiomPad] ? 320.0 : 280;
+    [self initAndShowSplashViewViewController];
 }
 
-- (void)selectActivePluginInMainMenuIfNecessary {
-    if (self.activePluginController) {
-        NSString* activePluginIdentifier = [self.activePluginController.class identifierName];
-        [self.mainMenuViewController setSelectedPluginWithIdentifier:activePluginIdentifier animated:YES];
-    }
+/*
+ * Iinit code that needs PCConfig to be loaded
+ */
+- (void)postConfigInit {
+    [self initAnalytics];
+    [self initPluginsList];
+    self.pluginsControllers = [NSMutableDictionary dictionaryWithCapacity:self.pluginsList.count];
+    [self initMainMenu];
+    [self initRevealController];
+    [self initPluginObservers];
+    [self revealMenuAndFinalize];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pcConfigUserDefaultsDidChange) name:NSUserDefaultsDidChangeNotification object:[PCConfig defaults]];
 }
 
-#pragma mark - Inititalizations
+#pragma mark Pre-config phases
+
+- (void)initAndShowSplashViewViewController {
+    self.splashViewController = [[PCSplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
+    if (![PCUtils isIdiomPad]) {
+        self.splashView = [[PCSplashView alloc] initWithSuperview:self.splashViewController.view];
+    }
+    self.window.rootViewController = self.splashViewController;
+}
+
+#pragma mark Post-config phases
+
+- (void)initAnalytics {
+    
+    //Crashlytics
+    BOOL clEnabledConfig = [[PCConfig defaults] boolForKey:PC_CONFIG_CRASHLYTICS_ENABLED_KEY];
+    BOOL clEnabledUserConfig = [[PCConfig defaults] boolForKey:PC_USER_CONFIG_CRASHLYTICS_ENABLED_KEY];
+    if (clEnabledConfig && clEnabledUserConfig) {
+        NSString* crashlyticsAPIKey = [[PCConfig defaults] stringForKey:PC_CONFIG_CRASHLYTICS_APIKEY_KEY];
+        if (crashlyticsAPIKey) {
+            static dispatch_once_t onceToken;
+            dispatch_once(&onceToken, ^{
+                CLSNSLog(@"-> Starting Crashlytics");
+                [Crashlytics startWithAPIKey:crashlyticsAPIKey delegate:self];
+            });
+        } else {
+            CLSNSLog(@"!! WARNING: could not start Crashlytics, did not find APIKey in config.");
+        }
+    } else {
+        CLSNSLog(@"-> Crashlytics disabled (config: %d, user: %d)", clEnabledConfig, clEnabledUserConfig);
+    }
+    
+    //Google Analytics
+    [[PCGAITracker sharedTracker] trackAppOnce];
+}
 
 - (void)initPluginsList {
     
     //Loading plugins list from Plugins.plist
     NSDictionary* plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Plugins" ofType:@"plist"]];
-    NSArray* pluginsFromPlist = [plist objectForKey:@"Plugins"];
+    NSArray* pluginsFromPlist = plist[@"Plugins"];
     NSMutableArray* logicOnlyPluginsListTmp = [NSMutableArray array];
     NSMutableArray* pluginsListTmp = [NSMutableArray arrayWithCapacity:pluginsFromPlist.count];
     NSMutableDictionary* tmpPlistDicForPluginIdentifier = [NSMutableDictionary dictionaryWithCapacity:pluginsFromPlist.count];
@@ -328,9 +353,9 @@ static MainController<MainControllerPublic>* instance = nil;
     
     
     for (NSDictionary* pluginDic in pluginsFromPlist) {
-        NSString* identifierName = [pluginDic objectForKey:@"identifierName"];
+        NSString* identifierName = pluginDic[@"identifierName"];
         
-        BOOL pluginEnabled = [[pluginDic objectForKey:@"enabled"] boolValue];
+        BOOL pluginEnabled = [pluginDic[@"enabled"] boolValue];
         if (pluginsFromServer) { //if server config available, it overrides one from Plugins.plist
             pluginEnabled = [pluginsFromServer containsObject:identifierName];
         }
@@ -339,36 +364,36 @@ static MainController<MainControllerPublic>* instance = nil;
         if (minOSVersion) {
             float minVersion = [minOSVersion floatValue];
             if (minVersion == 0.0) {
-                NSLog(@"!! WARNING: minOSVersion '%@' is not valid. Disabling plugin '%@'.", minOSVersion, identifierName);
+                CLSNSLog(@"!! WARNING: minOSVersion '%@' is not valid. Disabling plugin '%@'.", minOSVersion, identifierName);
                 pluginEnabled = NO;
             } else {
                 if ([PCUtils isOSVersionSmallerThan:minVersion]) {
-                    NSLog(@"-> Plugin '%@' requires %.1f (%.1f running) and will be thus disabled.", identifierName, minVersion, [PCUtils OSVersion]);
+                    CLSNSLog(@"-> Plugin '%@' requires %.1f (%.1f running) and will be thus disabled.", identifierName, minVersion, [PCUtils OSVersion]);
                     pluginEnabled = NO;
                 }
             }
         }
         
         if (pluginEnabled) { //plugin is enabled
-            NSString* idiom = [pluginDic objectForKey:@"supportedIdioms"];
+            NSString* idiom = pluginDic[@"supportedIdioms"];
             if (idiom &&
                 (
                  [idiom isEqualToString:kSupportedIdiomPhonePad]
                  || (isPadIdiom && [idiom isEqualToString:kSupportedIdiomPad])
                  || (!isPadIdiom && [idiom isEqualToString:kSupportedIdiomPhone]))
                 ) {
-                NSNumber* logicOnly = [pluginDic objectForKey:@"logicOnly"];
+                NSNumber* logicOnly = pluginDic[@"logicOnly"];
                 BOOL logicOnlyBool = NO;
                 if (logicOnly && ![logicOnly isKindOfClass:[NSNumber class]]) {
-                    NSLog(@"!! ERROR: logicOnly key must be of type BOOL (found %@). Assuming logicOnly = NO.", logicOnly);
+                    CLSNSLog(@"!! ERROR: logicOnly key must be of type BOOL (found %@). Assuming logicOnly = NO.", logicOnly);
                 } else {
                     logicOnlyBool = [logicOnly boolValue];
                 }
                 if (logicOnlyBool) {
-                    NSLog(@"-> Detected enabled logic only plugin: '%@'", identifierName);
+                    CLSNSLog(@"-> Detected enabled logic only plugin: '%@'", identifierName);
                     [logicOnlyPluginsListTmp addObject:identifierName];
                 } else {
-                    NSLog(@"-> Detected enabled idiom-compatible plugin: '%@' (idiom '%@')", identifierName, idiom);
+                    CLSNSLog(@"-> Detected enabled idiom-compatible plugin: '%@' (idiom '%@')", identifierName, idiom);
                     [pluginsListTmp addObject:identifierName];
                 }
                 tmpPlistDicForPluginIdentifier[identifierName] = pluginDic;
@@ -388,17 +413,6 @@ static MainController<MainControllerPublic>* instance = nil;
     self.plistDicForPluginIdentifier = [tmpPlistDicForPluginIdentifier copy]; //creates a non-mutable copy of the dictionary
 }
 
-- (void)initPluginObservers {
-    NSArray* allPlugins = [self.pluginsList arrayByAddingObjectsFromArray:self.logicOnlyPluginsList];
-    for (NSString* identifier in allPlugins) {
-        Class pluginClass = NSClassFromString([self pluginControllerNameForIdentifier:identifier]);
-        if (class_getClassMethod(pluginClass, @selector(initObservers))) {
-            NSLog(@"-> Found PluginController with observers : %@", pluginClass);
-            [pluginClass initObservers];
-        }
-    }
-}
-
 - (NSMutableArray*)defaultMainMenuItemsWithoutTopSection {
     if (!self.pluginsList) {
         return nil;
@@ -407,7 +421,9 @@ static MainController<MainControllerPublic>* instance = nil;
     for (NSString* pluginIdentifier in self.pluginsList) {
         Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:pluginIdentifier]);
         NSString* localizedName = [pluginClass localizedName];
-        MainMenuItem* item = [MainMenuItem menuItemButtonWithTitle:localizedName leftImage:[UIImage imageNamed:pluginIdentifier] identifier:pluginIdentifier];
+        UIImage* image = [UIImage imageNamed:pluginIdentifier];
+        UIImage* highlightedImage = [UIImage imageNamed:[pluginIdentifier stringByAppendingString:@"Highlighted"]];
+        MainMenuItem* item = [MainMenuItem menuItemButtonWithTitle:localizedName leftImage:image highlightedLeftImage:highlightedImage identifier:pluginIdentifier];
         NSNumber* hiddenByDefault = self.plistDicForPluginIdentifier[item.identifier][@"hiddenByDefault"];
         item.hidden = [hiddenByDefault boolValue];
         NSString* devTeam = self.plistDicForPluginIdentifier[item.identifier][@"devTeam"];
@@ -427,7 +443,7 @@ static MainController<MainControllerPublic>* instance = nil;
     
     /* Restoring previous order / hidden of menu items, saved be used */
     
-    NSDictionary* menuItemsInfo = (NSDictionary*)[ObjectArchiver objectForKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"];
+    NSDictionary* menuItemsInfo = (NSDictionary*)[PCObjectArchiver objectForKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"];
     
     NSMutableArray* menuItemsCopy = [menuItems mutableCopy];
     
@@ -457,64 +473,80 @@ static MainController<MainControllerPublic>* instance = nil;
         menuItems = menuItemsCopy; //if anything bad happens during recovery, go back to standard order.
     }
     
-    /* Adding section at beginning */
-    
-    MainMenuItem* pluginSectionHeader = [MainMenuItem menuItemSectionHeaderWithTitle:@"Plugins"];
-    pluginSectionHeader.hidden = YES;
-    
-    [menuItems insertObject:pluginSectionHeader atIndex:0];
-    
-    MainMenuViewController* mainMenuViewController = [[MainMenuViewController alloc] initWithMenuItems:menuItems mainController:self];
-    self.mainMenuViewController = mainMenuViewController;
+    self.mainMenuViewController = [[MainMenuViewController alloc] initWithMenuItems:menuItems mainController:self];
 }
 
 - (void)initRevealController {
-    self.splashViewController = [[SplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
-    self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:[[UINavigationController alloc] initWithRootViewController:self.mainMenuViewController]];
+    self.splashViewController = [[PCSplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
+    PCNavigationController* mainMenuNavController = [[PCNavigationController alloc] initWithRootViewController:self.mainMenuViewController];
+    self.revealController = [[ZUUIRevealController alloc] initWithFrontViewController:self.splashViewController rearViewController:mainMenuNavController];
+    self.revealController.delegate = self;
     self.revealController.rearViewRevealWidth = self.revealWidth;
+    self.revealController.frontViewShadowRadius = 1.0;
+    self.revealController.maxRearViewRevealOverdraw = 0.0;
+    self.revealController.toggleAnimationDuration = 0.65;
+    [self.splashView moveToSuperview:self.revealController.view];
+    self.window.rootViewController = self.revealController;
 }
 
-- (void)revealMenuAfterSplash {
+- (void)initPluginObservers {
+    NSArray* allPlugins = [self.pluginsList arrayByAddingObjectsFromArray:self.logicOnlyPluginsList];
+    for (NSString* identifier in allPlugins) {
+        Class pluginClass = NSClassFromString([self pluginControllerNameForIdentifier:identifier]);
+        if (class_getClassMethod(pluginClass, @selector(initObservers))) {
+            CLSNSLog(@"-> Found PluginController with observers : %@", pluginClass);
+            [pluginClass initObservers];
+        }
+    }
+}
+
+- (void)revealMenuAndFinalize {
+    static NSTimeInterval const kHideAnimationDelay = 0.4;
+    static NSTimeInterval const kHideAnimationNormalDuration = 0.50;
     if (self.initialActivePluginIdentifier) {
         self.revealController.toggleAnimationDuration = 0.25;
         self.initDone = YES; //must do it before calling setActivePluginWithIdentifier otherwise no effect
         [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
         self.initialActivePluginIdentifier = nil; //initial plugin has been treated, prevent future use
         [self.revealController revealToggle:self];
+        [self.splashView hideWithAnimationDelay:kHideAnimationDelay duration:self.revealController.toggleAnimationDuration completion:^{
+            [self.splashView removeFromSuperview];
+        }];
     } else {
-        [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:NO];
+        [(PCSplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration hideDrawingOnIdiomPhone:NO];
+        NSTimeInterval duration;
         if ([PCUtils isIdiomPad]) {
             [self.revealController revealToggle:self];
+            duration = self.revealController.toggleAnimationDuration;
         } else {
-            [self.revealController hideFrontView];
+            [self.revealController hideFrontViewAnimated:NO];
+            duration = kHideAnimationNormalDuration;
+            [self.splashView hideWithAnimationDelay:kHideAnimationDelay duration:duration completion:^{
+                [self.splashView removeFromSuperview];
+            }];
         }
-        [NSTimer scheduledTimerWithTimeInterval:self.revealController.toggleAnimationDuration+0.1 target:self selector:@selector(setInitDoneYES) userInfo:nil repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:duration+0.1 block:^{
+            self.initDone = YES;
+            if (self.initialActivePluginIdentifier) {
+                [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
+                self.initialActivePluginIdentifier = nil; //initial plugin has been treated, prevent future use
+                if (self.revealController.currentFrontViewPosition != FrontViewPositionLeft) {
+                    [self.revealController showFrontViewCompletely:YES];
+                }
+            }
+            if (self.pcURLToHandle) {
+                [self handlePocketCampusURL:self.pcURLToHandle];
+            }
+        } repeats:NO];
         self.revealController.toggleAnimationDuration = 0.25;
     }
 }
 
-/*
- * Called by timer scheduled in revealMenuAfterSplash.
- */
-- (void)setInitDoneYES {
-    self.initDone = YES;
-    if (self.initialActivePluginIdentifier) {
-        [self setActivePluginWithIdentifier:self.initialActivePluginIdentifier];
-        self.initialActivePluginIdentifier = nil; //initial plugin has been treated, prevent future use
-        if (self.revealController.currentFrontViewPosition != FrontViewPositionLeft) {
-            [self.revealController showFrontViewCompletely:YES];
-        }
-    }
-    if (self.pcURLToHandle) {
-        [self handlePocketCampusURL:self.pcURLToHandle];
-    }
-}
-
-#pragma mark - Called by AppDelegate
+#pragma mark - Memory warning handler
 
 - (void)appDidReceiveMemoryWarning {
     /* release backgrounded plugins */
-    NSLog(@"-> AppDidReceiveMemoryWarning: releasing backgrounded plugins if any...");
+    CLSNSLog(@"-> AppDidReceiveMemoryWarning: releasing backgrounded plugins if any...");
     for (PluginController* pluginController in [self.pluginsControllers copy]) {
         if (pluginController != self.activePluginController) {
             [self.pluginsControllers removeObjectForKey:pluginController];
@@ -522,15 +554,13 @@ static MainController<MainControllerPublic>* instance = nil;
     }
 }
 
-#pragma mark - Called by MainMenuViewController
+#pragma mark - User defaults changes handler
 
-- (void)mainMenuIsReady {
-    if (![self.revealController.frontViewController isViewLoaded]) {
-        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(mainMenuIsReady) userInfo:nil repeats:NO];
-    } else {
-        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(revealMenuAfterSplash) userInfo:nil repeats:NO];
-    }
+- (void)pcConfigUserDefaultsDidChange {
+    [self initAnalytics];
 }
+
+#pragma mark - Called by MainMenuViewController
 
 - (void)mainMenuStartedEditing {
     if (![PCUtils isIdiomPad] && self.activePluginController) {
@@ -554,7 +584,7 @@ static MainController<MainControllerPublic>* instance = nil;
     NSMutableDictionary* menuItemsInfo __block = [NSMutableDictionary dictionary];
     [self.mainMenuViewController.pluginsMenuItems enumerateObjectsUsingBlock:^(MainMenuItem* item, NSUInteger index, BOOL *stop) {
         NSMutableDictionary* infos = [NSMutableDictionary dictionaryWithCapacity:2];
-        infos[kPluginsMainMenuItemsInfoOrderNumberKey] = [NSNumber numberWithUnsignedInt:index];
+        infos[kPluginsMainMenuItemsInfoOrderNumberKey] = [NSNumber numberWithUnsignedInt:(unsigned int)index];
         infos[kPluginsMainMenuItemsInfoHiddenKey] = [NSNumber numberWithBool:item.hidden];
         if ([item.identifier isEqualToString:activePluginIdentifier] && item.hidden) {
             shouldLeaveActivePluginController = YES;
@@ -566,22 +596,19 @@ static MainController<MainControllerPublic>* instance = nil;
         [self requestLeavePlugin:activePluginIdentifier];
     }
     
-    if (![ObjectArchiver saveObject:menuItemsInfo forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
+    if (![PCObjectArchiver saveObject:menuItemsInfo forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while saving the main menu state." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
     }
 }
 
 - (void)restoreDefaultMainMenu {
-    if (![ObjectArchiver saveObject:nil forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
+    if (![PCObjectArchiver saveObject:nil forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while restoring default main menu." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
         return;
     }
     NSMutableArray* menuItems = [self defaultMainMenuItemsWithoutTopSection];
-    MainMenuItem* pluginSectionHeader = [MainMenuItem menuItemSectionHeaderWithTitle:@"Plugins"];
-    pluginSectionHeader.hidden = YES;
-    [menuItems insertObject:pluginSectionHeader atIndex:0];
     
     [self.mainMenuViewController reloadWithMenuItems:menuItems];
     
@@ -589,11 +616,12 @@ static MainController<MainControllerPublic>* instance = nil;
         [self.revealController showFrontViewCompletely:NO];
     }
     
-    [NSTimer scheduledTimerWithTimeInterval:0.0 target:self selector:@selector(selectActivePluginInMainMenuIfNecessary) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(selectActivePluginInMainMenuIfNecessary) userInfo:nil repeats:NO];
 }
 
 - (void)showGlobalSettings {
-    GlobalSettingsViewController* settingsViewController = [[GlobalSettingsViewController alloc] initWithMainController:self];
+    [[PCGAITracker sharedTracker] trackAction:@"OpenSettings" inScreenWithName:@"/dashboard"];
+    PCGlobalSettingsViewController* settingsViewController = [[PCGlobalSettingsViewController alloc] initWithMainController:self];
     UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];
@@ -628,7 +656,7 @@ static MainController<MainControllerPublic>* instance = nil;
     
     [self throwExceptionIfPluginIdentifierNameIsNotValid:identifier];
     
-    PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:identifier];
+    PluginController<PluginControllerProtocol>* pluginController = self.pluginsControllers[identifier];
     if (pluginController) { // pluginController was backgrounded
         UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
         [self.revealController setFrontViewController:pluginRootViewController animated:NO]; //check on whether this is already the front one is done in the method implementation
@@ -642,7 +670,7 @@ static MainController<MainControllerPublic>* instance = nil;
         UIViewController* pluginRootViewController = [self rootViewControllerForPluginController:pluginController];
         
         if (!pluginRootViewController) {
-            NSLog(@"!! ERROR: could not obtain pluginRootViewController for plugin identifier %@", identifier);
+            CLSNSLog(@"!! ERROR: could not obtain pluginRootViewController for plugin identifier %@", identifier);
             return;
         }
         
@@ -731,7 +759,7 @@ static MainController<MainControllerPublic>* instance = nil;
     } else if (pluginController.mainSplitViewController) {
         pluginRootViewController = pluginController.mainSplitViewController;
     } else {
-        NSLog(@"!! ERROR : PluginController '%@' has no initialized view controller (mainViewController, mainNavigationController, mainSplitViewController are nil)", [(id<PluginControllerProtocol>)pluginController identifierName]);
+        CLSNSLog(@"!! ERROR : PluginController '%@' has no initialized view controller (mainViewController, mainNavigationController, mainSplitViewController are nil)", [(id<PluginControllerProtocol>)pluginController identifierName]);
     }
     return pluginRootViewController;
 }
@@ -756,46 +784,55 @@ static MainController<MainControllerPublic>* instance = nil;
         @throw [NSException exceptionWithName:@"incorrect attribute pluginIdentifier" reason:@"root view controller of pluginController must have initialized pluginIdentifier property" userInfo:nil];
     }
     
-    UIPanGestureRecognizer* panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
-    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealToggle:)];
-    UIView* gesturesView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1.0, 1.0)];
-    gesturesView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    //gesturesView.hidden = YES;
-    //gesturesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-    gesturesView.tag = kGesturesViewTag;
-    gesturesView.gestureRecognizers = @[panGestureRecognizer, tapGestureRecognizer];
+    /*
+     * This gesture is added to the view of every plugin's navigation controller or split view controlle to allow user to pan from
+     * left screen edge to reveal the main menu. See UIGestureRecognizerDelegate delegation (below) for reaction to the gesture.
+     */
+    UIPanGestureRecognizer* revealPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
+    revealPanGesture.delegate = self;
     
+    /*
+     * Creating a view entirely covered with pan and tap gestures.
+     * This view is added to the view of every plugin's navigation controller or split view controller to allow user to pan or tap
+     * anywhere on the plugin's view when it is shifted the right (i.e. main menu currently visible) to bring it back into foreground.
+     */
+    UIPanGestureRecognizer* bringToFrontPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
+    UITapGestureRecognizer* bringToFrontTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealToggle:)];
+    UIView* bringToFrontGesturesView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1.0, 1.0)];
+    bringToFrontGesturesView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    bringToFrontGesturesView.tag = kGesturesViewTag;
+    bringToFrontGesturesView.gestureRecognizers = @[bringToFrontPanGesture, bringToFrontTapGesture];
     
     if ([pluginRootViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController* navController = (UINavigationController*)pluginRootViewController;
-        
-        UIPanGestureRecognizer* navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
-        [navController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
-        
-        [navController.view addSubview:gesturesView];
-        
-        UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
-        [[(UIViewController*)(navController.viewControllers[0]) navigationItem] setLeftBarButtonItem:menuButton];
+        [navController.view addGestureRecognizer:revealPanGesture];
+        [navController.view addSubview:bringToFrontGesturesView];
+
+        [[(UIViewController*)(navController.viewControllers[0]) navigationItem] setLeftBarButtonItem:[self newMainMenuButton]];
     }
     
     if ([pluginRootViewController isKindOfClass:[UISplitViewController class]]) {
         UISplitViewController* splitController = (UISplitViewController*)pluginRootViewController;
+        [splitController.view addGestureRecognizer:revealPanGesture];
         splitController.view.autoresizesSubviews = YES;
-        [splitController.view addSubview:gesturesView];
+        [splitController.view addSubview:bringToFrontGesturesView];
         
         for (int i = 0; i<splitController.viewControllers.count; i++) {
             if([splitController.viewControllers[i] isKindOfClass:[UINavigationController class]]) {
                 UINavigationController* navController = (UINavigationController*)splitController.viewControllers[i];
                 if (i == 0) {
-                    UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
-                    [navController.viewControllers[0] navigationItem].leftBarButtonItem = menuButton;
+                    [navController.viewControllers[0] navigationItem].leftBarButtonItem = [self newMainMenuButton];
                 }
-                UIPanGestureRecognizer* navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
-                [navController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
             }
         }
     }
     
+}
+
+- (UIBarButtonItem*)newMainMenuButton {
+    UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
+    menuButton.accessibilityLabel = NSLocalizedStringFromTable(@"MainMenu", @"PocketCampus", nil);
+    return menuButton;
 }
 
 /* will rotate phone idiom device to portrait if presentedViewController or topviewcontroller only supports portait */
@@ -833,23 +870,114 @@ static MainController<MainControllerPublic>* instance = nil;
              * Little hack found on http://ev3r.tumblr.com/post/3854315796/uinavigationcontroller-pushviewcontroller-from 
              * Will actually make view controller retest for supported operations and rotate if necessary.
              */
-            [viewController presentModalViewController:[[UIViewController alloc] init] animated:NO];
-            [viewController dismissModalViewControllerAnimated:NO];
+            [viewController presentViewController:[[UIViewController alloc] init] animated:NO completion:NULL];
+            [viewController dismissViewControllerAnimated:NO completion:NULL];
         }
     }
 }
 
+#pragma mark - Other Utils
+
 - (void)manageBackgroundPlugins {
     if (BACKGROUND_PLUGINS_ENABLED) {
-        NSLog(@"!! WARNING: background plugins management is not fully supported. Plugins will simply stay in memory until app receives memory warning.");
+        CLSNSLog(@"!! WARNING: background plugins management is not fully supported. Plugins will simply stay in memory until app receives memory warning.");
     } else {
         [self.pluginsControllers removeAllObjects];
     }
 }
 
+- (void)showActionNotSupportedAlert {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Sorry", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ActionNotSupportedYet", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
+- (NSString*)notificiationNameForPluginStateNotification:(PluginStateNotification)notification pluginIdentifierName:(NSString*)pluginIdentifierName {
+    return [NSString stringWithFormat:@"%@-%d", pluginIdentifierName, notification];
+}
+
+- (void)postNotificationWithState:(PluginStateNotification)notification pluginIdentifier:(NSString*)pluginIdentifier {
+    [self throwExceptionIfPluginIdentifierNameIsNotValid:pluginIdentifier];
+    NSString* name = [self notificiationNameForPluginStateNotification:notification pluginIdentifierName:pluginIdentifier];
+    [[NSNotificationCenter defaultCenter] postNotificationName:name object:self];
+}
+
+- (NSString*)identifierNameForPluginController:(PluginController*)pluginController {
+    if ([self.activePluginController conformsToProtocol:NSProtocolFromString(@"PluginControllerProtocol")]) {
+        id<PluginControllerProtocol> pluginController = self.activePluginController;
+        NSString* identifier = [[pluginController class] identifierName];
+        return identifier;
+    }
+    return nil;
+}
+
+/*
+ * Can be called only after self.pluginsList has been filled
+ */
+- (void)throwExceptionIfPluginIdentifierNameIsNotValid:(NSString*)identifier {
+    if (!identifier) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName cannot be nil." userInfo:nil];
+    }
+    if (![identifier isKindOfClass:[NSString class]]) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName is not kind of class NSString." userInfo:nil];
+    }
+    if (![self.pluginsList containsObject:identifier]) {
+        @throw [NSException exceptionWithName:@"illegal argument" reason:@"pluginIdentifierName does not correspond to any existing identifier. Please use [PluginControllerProtocol identifierName] as argument." userInfo:nil];
+    }
+}
+
+- (void)selectActivePluginInMainMenuIfNecessary {
+    if (self.activePluginController) {
+        NSString* activePluginIdentifier = [self.activePluginController.class identifierName];
+        [self.mainMenuViewController setSelectedPluginWithIdentifier:activePluginIdentifier animated:YES];
+    }
+}
+
+#pragma mark - CrashlyticsDelegate
+
+- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash {
+    [[PCGAITracker sharedTracker] trackAppCrashedDuringPreviousExecution];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if (![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        return NO;
+    }
+    /*
+     * Assuming gesture is the reveal pan gesture
+     * OK, because self is delegate for this gesture only
+     */
+    
+    if ([touch.view isKindOfClass:[UINavigationBar class]]) {
+        /*
+         * Allow panning anywhere on the navigation bar
+         */
+        return YES;
+    }
+    /*
+     * Accept gesture only if started from the left edge of the screen
+     */
+    CGPoint point = [touch locationInView:gestureRecognizer.view];
+    return point.x < 10.0;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if ([otherGestureRecognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
+        /*
+         * UIScreenEdgePanGestureRecognizer is iOS 7 gesture to pop view controller in navigation controller.
+         * We don't want to do anything when this gesture is in progress => stopping our reveal gesture.
+         */
+        return NO;
+    }
+    otherGestureRecognizer.enabled = NO;
+    otherGestureRecognizer.enabled = YES;
+    return YES;
+}
+
 #pragma mark - ZUUIRevealControllerDelegate
 
 - (void)revealController:(ZUUIRevealController *)revealController willRevealRearViewController:(UIViewController *)rearViewController {
+    self.mainMenuViewController.view.accessibilityElementsHidden = NO;
     if (self.activePluginController) {
         [self postNotificationWithState:PluginWillLoseForegroundNotification pluginIdentifier:[self identifierNameForPluginController:self.activePluginController]];
     }
@@ -869,7 +997,7 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController willHideRearViewController:(UIViewController *)rearViewController {
-    
+    self.mainMenuViewController.view.accessibilityElementsHidden = YES;
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController didHideRearViewController:(UIViewController *)rearViewController {
@@ -886,9 +1014,9 @@ static MainController<MainControllerPublic>* instance = nil;
     gesturesView.hidden = YES;
 }
 
-- (void)revealController:(ZUUIRevealController *)revealController willSwapToFrontViewController:(UIViewController *)frontViewController {
-    
-}
+/*- (void)revealController:(ZUUIRevealController *)revealController willSwapToFrontViewController:(UIViewController *)frontViewController {
+    //nothing
+}*/
 
 - (void)revealController:(ZUUIRevealController *)revealController didSwapToFrontViewController:(UIViewController *)frontViewController {
     if (frontViewController == self.splashViewController) {

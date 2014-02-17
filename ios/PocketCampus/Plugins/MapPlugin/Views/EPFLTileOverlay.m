@@ -1,14 +1,39 @@
-//
-//  EPFLTileOverlay.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
 //  Created by Loïc Gardiol on 23.04.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "EPFLTileOverlay.h"
 
-#import "CustomOverlayView.h"
+#import "RemoteOverlayRenderer.h"
 
 #import "MapUtils.h"
 
@@ -18,7 +43,7 @@
 
 @end
 
-static NSString* URL_ENDING = @".png";
+static NSString* const kURLEnding = @".png";
 
 @implementation EPFLTileOverlay
 
@@ -28,7 +53,7 @@ static NSString* URL_ENDING = @".png";
     self = [super init];
     
     if (self) {
-        self.currentLayerLevel = 1;
+        self.currentLayerLevel = DEFAULT_LAYER_LEVEL;
         // I am still not well-versed in map projections, but the Google Mercator projection
         // is slightly off from the "standard" Mercator projection, used by MapKit. (GMerc is used
         // by the demo tileserver to serve to the Google Maps API script in a user's
@@ -65,7 +90,7 @@ static NSString* URL_ENDING = @".png";
     // Roughly within (48, 4), (44, 10), in degrees.
     // Turn center to bounds
     
-    if (zoomScale < MIN_ZOOM_SCALE) {
+    if (self.mapView.camera.altitude > MAX_ALTITUDE ||self.mapView.camera.altitude < MIN_ALTITUDE) {
         return NO;
     }
     
@@ -107,12 +132,12 @@ static NSString* URL_ENDING = @".png";
  * Normal
  */
 - (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
-    NSString* urlString = [NSString stringWithFormat:@"http://plan-epfl-tile1.epfl.ch/batiments%d-merc/%d/%@/%@%@", self.currentLayerLevel, zoom, [self createCoordString:x], [self createCoordString:y], URL_ENDING];
+    NSString* urlString = [NSString stringWithFormat:@"http://plan-epfl-tile1.epfl.ch/batiments%d-merc/%d/%@/%@%@", (int)self.currentLayerLevel, (int)zoom, [self createCoordString:x], [self createCoordString:y], kURLEnding];
     return urlString;
 }
 
 /*
- * NEW
+ * Dev tiles
  */
 
 /*- (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
@@ -121,7 +146,7 @@ static NSString* URL_ENDING = @".png";
 }*/
 
 - (NSString*)createCoordString:(NSInteger)coord {
-    NSString* coordString = [NSString stringWithFormat:@"%09d",coord];
+    NSString* coordString = [NSString stringWithFormat:@"%09d", (int)coord];
     NSString* firstSubString = [[coordString substringToIndex:3] stringByAppendingString:@"/"];
     NSString* secondSubString = [[[coordString substringFromIndex:3] substringToIndex:3] stringByAppendingString:@"/"];
     NSString* thirdSubString = [coordString substringFromIndex:6];
@@ -156,17 +181,22 @@ static NSString* URL_ENDING = @".png";
     //Redraw the overlay.
 
     if (self.mapView == nil) {
-        NSLog(@"-> !! mapView property is nil, cannot setNeedsDisplay");
+        CLSNSLog(@"-> !! mapView property is nil, cannot setNeedsDisplay");
         return;
     }
     
     for(NSObject<MKOverlay>* overlay in self.mapView.overlays) {
         if([overlay isKindOfClass:self.class]){
-            CustomOverlayView* customOverlayView = (CustomOverlayView*)[self.mapView viewForOverlay:overlay];
-            [customOverlayView cancelTilesDownload:NO];
-            [customOverlayView setNeedsDisplayInMapRect:MKMapRectWorld];
+            RemoteOverlayRenderer* remoteOverlayRenderer = (RemoteOverlayRenderer*)[self.mapView rendererForOverlay:overlay];
+            [remoteOverlayRenderer cancelTilesDownload:NO];
+            [remoteOverlayRenderer setNeedsDisplayInMapRect:MKMapRectWorld];
         }
     }
+}
+
+- (BOOL)shouldAllowLayerChange {
+    CLLocationDistance altitude = self.mapView.camera.altitude/cos(self.mapView.camera.pitch*M_PI/180.0);
+    return altitude < 1200.0;
 }
 
 - (NSString*)identifier {

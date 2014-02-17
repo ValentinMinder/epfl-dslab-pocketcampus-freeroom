@@ -46,7 +46,7 @@
 			<key>hiddenByDefault</key>
 			<false/>
 			<key>supportedIdioms</key>
-			<string>phone</string>
+			<string>phone+pad</string>
 		</dict>
 		<dict>
 			<key>identifierName</key>
@@ -100,6 +100,16 @@
 		</dict>
 		<dict>
 			<key>identifierName</key>
+			<string>IsAcademia</string>
+			<key>enabled</key>
+			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
+			<key>supportedIdioms</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>identifierName</key>
 			<string>Moodle</string>
 			<key>enabled</key>
 			<true/>
@@ -116,7 +126,7 @@
 			<key>hiddenByDefault</key>
 			<true/>
 			<key>supportedIdioms</key>
-			<string>pad</string>
+			<string></string>
 		</dict>
 		<dict>
 			<key>identifierName</key>
@@ -126,7 +136,7 @@
 			<key>hiddenByDefault</key>
 			<false/>
 			<key>supportedIdioms</key>
-			<string>phone</string>
+			<string></string>
 			<key>devTeam</key>
 			<string>Artificial Intelligence Lab (LIA)</string>
 			<key>minOSVersion</key>

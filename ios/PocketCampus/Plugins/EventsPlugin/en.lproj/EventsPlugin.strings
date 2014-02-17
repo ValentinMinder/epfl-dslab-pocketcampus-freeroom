@@ -1,7 +1,3 @@
-/* 
-  Localizable.strings
-  PocketCampus
-*/
 
 "PluginName" = "Events";
 "LoadingEventPool" = "Loading elements...";
@@ -42,3 +38,9 @@
 "PastEvents" = "Past events";
 "PastEventsShort" = "Past events";
 "ShowPastEventsFor..." = "Show past events back to";
+
+//Accessibility
+"PresentationOptions" = "Presentation options";
+"AddEventToFavorites" = "Add this event to favorites";
+"RemoveEventFromFavorites" = "Remove this event from favorites";
+"ScanACode" = "Scan a code";

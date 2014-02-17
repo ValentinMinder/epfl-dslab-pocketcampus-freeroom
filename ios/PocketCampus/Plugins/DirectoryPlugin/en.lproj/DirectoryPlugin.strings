@@ -1,22 +1,35 @@
-/* 
-  Localizable.strings
-  PocketCampus
-
-  Created by Loïc Gardiol on 01.03.12.
-  Copyright (c) 2012 EPFL. All rights reserved.
-*/
+// Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Directory";
 "SearchFieldPlaceholder" = "Name or sciper";
 "SearchNoResult" = "No result\nHave you tried with the exact spelling (accents) ?";
 "OfficeLabel" = "office";
-"(showOnMap)" = "(show on map)";
 "NoContactSelected" = "No contact selected";
 "PhotoButtonTitle" = "Photo";
 "Details" = "Details";
+"LoadingPersonInfo" = "Loading contact info";
 "NoResultPCUnknownViewControllerLoad" = "Sorry, this person could not be found\nwithin EPFL's directory.";
+
+"PrivatePhone" = "Private phone";
+"OfficePhone" = "Office phone";
+"Email" = "Email";
+"Webpage" = "Web page";
+"EPFLWebpage" = "EPFL web page";
+"Office" = "Office";
+"EPFLOffice" = "EPFL office";
+"Sciper" = "Sciper";
+"TapToSeeOnMap" = "see on map";
+
+"AddToExistingContact" = "Add to existing contact";
+"AddToExistingContactError" = "Sorry, this contact could not be updated.";
+"CreateNewContact" = "Create new contact";
+"UpdatedContact" = "Merged Contact";
 
 /* Accessiblity */
 
-"SearchBar" = "Search bar";
-"SearchResults" = "Search results";
+"ShowInfoAboutThisPerson" = "Shows information about this person.";
+"ShowsOptionsToExportToContacts" = "Shows options to export to contacts";
+"CallsThisNumber" = "Calls this number";
+"SendsAnEmail" = "Sends an email";
+"OpensInBrowser" = "Opens in browser";
+"ShowsOnMap" = "Shows on the map";

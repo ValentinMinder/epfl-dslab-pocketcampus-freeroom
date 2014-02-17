@@ -1,42 +1,93 @@
-/* 
-  Localizable.strings
-  PocketCampus
+// Created by Loïc Gardiol on 01.03.12.
 
-  Created by Loïc Gardiol on 01.03.12.
-  Copyright (c) 2012 EPFL. All rights reserved.
-*/
+//////////////////////////////////////////
+// Common
+//////////////////////////////////////////
 
 "PluginName" = "Transports";
-"FromLabel" = "Départ :";
-"NoStation" = "Aucune station";
-"LocationNeedJustification" = "Votre position sera utilisée pour trouver la station de transport la plus proche (EPFL ou Lausanne-Flon par défaut). PocketCampus n'enregistre pas l'historique de vos déplacements. Essayez une fois avant de refuser ;)";
-"ImpossibleLocateShort" = "Localisation impossible";
-"ImpossibleLocateUserDenied" = "Impossible de trouver la station la plus proche. Avez-vous refusé la localisation ? Si oui, vous pouvez activer la localisation dans le menu Réglages de votre iPhone ou choisir manuellement une station de départ.";
-"ImpossibleLocateUnknown" = "Désolé, votre position n'a pas pu être déterminée. Essayez de rafraichir ou essayez plus tard.\n Vous pouvez choisir une station de départ manuellement en touchant le bouton bleu (favoris)";
-"WelcomeTouchInfoInstructions" = "Touchez le bouton signets pour gérer\n vos stations.";
-"Need2StationsTouchInfoInstructions" = "Deux stations sont au minimum nécessaires pour afficher les horaires. Touchez le bouton signets\npour ajouter une deuxième station.";
-"FavoriteStationsTitle" = "Mes stations";
-"TouchAddStationInstructions" = "Touchez le ✚ pour ajouter une station";
-"DepartureStation" = "Station de départ";
-
-"NearestFavoriteStation" = "Automatique (la plus proche)";
-"FavoriteStationsExplanations_NearestSelected" = "Choix actuel : la station la plus proche de vous dans cette liste sera choisie comme point de départ. Les horaires des prochains départs depuis cette station vers toutes les autres stations de la liste seront affichés.";
-"FavoriteStationsExplanations_ManualWithFormat" = "Choix actuel : %@ est sélectionné comme point de départ. Les horaires des prochains départs depuis cette station vers toutes les autres stations de la liste seront affichés.";
-"FavoriteStationsManagementExplanations" = "☞  Touchez le ✚ pour ajouter une station.\n☞  Touchez \"Modifier\" pour supprimer\n      ou réordonner vos stations.";
-
-"ClearAll" = "Tout effacer";
-"SearchFieldPlaceholder" = "Rechercher une station";
-"SearchStationNoResult" = "Aucun résultat";
-"SearchBarStationPrompt" = "Entrez le nom d'une station ou d'un arrêt.";
-"StationAlreadyFavorite" = "Cette station est déjà dans vos stations.";
-"CellMultiplePossibilitiesTrip" = "Plusieurs possibilités";
-"Connections"="Connexions";
-"TransportSettings" = "Préférences";
-"BestResults" = "Meilleur résultat"; //chose singular finally
-"BestResultsExplanation" = "Pour chaque destination, si un trajet\n est meilleur (plus direct, plus fréquent),\nseuls les prochains départs pour la ligne correspondante (ex. M1) sont affichés\ndans la liste principale.";
-"Schedules" = "Horaires";
-"Reset" = "Réinitialiser";
-"ResetFavStations" = "Stations par défaut...";
-"ResetFavStationsExplanations" = "Vos stations seront remplacées par les stations par défaut:\nEPFL et Lausanne-Flon.";
 "PlatformShort" = "voie";
+"Need2StationsClickPlusToAdd" = "Au minimum deux stations sont nécessaires pour afficher les horaires.\n\nTouchez le + pour ajouter une station.";
+
+//////////////////////////////////////////
+// TransportNextDeparturesViewController
+//////////////////////////////////////////
+
+"From:" = "De:";
+"LoadingDefaultStations..." = "Chargement des stations\npar défaut...";
+"locating..." = "localisation...";
+"SearchingNearestStation" = "Recherche de votre\nstation la plus proche";
+"ImpossibleLocateUserDenied" = "Impossible de trouver la station la plus proche.\n\nAvez-vous refusé l'accès à la localisation ? Si oui, vous pouvez authoriser \"EPFL\" en allant dans:\n\nRéglages > Confidentialité > Service de localisation\n\nVous pouvez également choisir la station de départ manuellement.";
+"ImpossibleLocateUnknown" = "Désolé, votre position n'a pas\npu être déterminée.\n\nEssayez de rafraîchir, ou sélectionnez une station de départ manuellement.";
+
+//Accessiblity
+"NearestStationButton" = "Station la plus proche";
+"SelectsNearestStationAsDeparture" = "Sélectionne automatiquement votre station la plus proche comme point de départ.";
+"ShowsDepartureSelectionScreen" = "Affiche l'écran de sélection de la station de départ.";
+"ShowsHelpForTransport" = "Affiche l'aide pour Transports.";
+"ShowsScreenToSearchForAStation" = "Affiche l'écran pour chercher une station.";
+"ManageMyStations" = "Gérer mes stations";
+"ShowsScreenThatListsMyStationsToManageThem" = "Affiche l'écran qui liste mes stations et permet de les gérer.";
+
+
+//////////////////////////////////////////
+// TransportNextDeparturesCell
+//////////////////////////////////////////
+
+//Accessibility
+"NextDeparturesFromToWithFormat" = "Prochains départs de %@ vers %@: ";
+"lineWithFormat" = " ligne '%@': ";
+"platformWithFormat" = " voie %@";
+"LeftAlready" = "Déjà parti";
+"ShowsAllPossibilitiesFromToWithFormat" = "Affiche tous les trajets de %@ vers %@";
+
+//////////////////////////////////////////
+// TransportDepartureSelectionViewController
+//////////////////////////////////////////
+
+"DepartureStation" = "Station de départ";
+"Automatic" = "Automatique";
+"NearestStation" = "La plus proche des stations ci-dessous";
+"AllowPocketCampusLocationToUserAutomaticDepartureFeature" = "Pour pouvoir activer cette fonctionalité, authorisez \"EPFL\" dans Réglages > Confidentialité > Service de localisation";
+"ChooseManually" = "Choisir manuellement";
+
+//////////////////////////////////////////
+// TransportStationsManagerViewController
+//////////////////////////////////////////
+
+"MyStations" = "Mes stations";
+"ResetToDefaultStations" = "Stations par défaut...";
+"Reset" = "Réinitialiser";
+"ResetToDefaultStationsExplanations" = "Vos stations seront remplacées par les stations par défaut:\nEPFL et Lausanne-Flon.";
+
+//////////////////////////////////////////
+// TransportAddStationViewController
+//////////////////////////////////////////
+
+"AddStation" = "Ajouter une station";
+"AddStationSearchFieldPlaceholder" = "Gare, arrêt de bus, métro, ...";
+"SearchStationNoResult" = "Aucun résultat";
+"alreadyInYourStations" = "déjà dans vos stations";
+
+//////////////////////////////////////////
+//TransportHelpViewController
+//////////////////////////////////////////
+
 "TransportHelp" = "Aide Transports";
+
+//////////////////////////////////////////
+//TransportTripsListViewController
+//////////////////////////////////////////
+
+"Trips" = "Trajets";
+
+//////////////////////////////////////////
+// TransportTripCell
+//////////////////////////////////////////
+
+//Accessibility
+"DepartureTimeWithFormat" = "Heure de départ: %@, ";
+"arrivalTimeWithFormat" = "heure d'arrivée: %@, ";
+"durationWithFormat" = "durée: %@, ";
+"numberOfChangesWithFormat" = "nombre de changements: %@,  ";
+"startsWithLineWithFormat" = "commence avec la ligne '%@'.";
+"ShowsDetailsForThisTrip" = "Affiche les détails de ce trajet.";

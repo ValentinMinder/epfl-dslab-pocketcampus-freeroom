@@ -11,7 +11,7 @@
 	<key>SERVER_URI</key>
 	<string>v3r1</string>
 	<key>GA_TRACKING_CODE</key>
-	<string>XXXXXXXXXX</string>
+	<string>XXXXXXX</string>
 	<key>GA_ENABLED</key>
 	<false/>
 </dict>

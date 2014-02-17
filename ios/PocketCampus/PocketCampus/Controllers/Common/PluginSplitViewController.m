@@ -1,10 +1,35 @@
-//
-//  PluginSplitViewController.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
 //  Created by Loïc Gardiol on 25.10.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "PluginSplitViewController.h"
 
@@ -34,8 +59,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.layer.cornerRadius = [PCValues defaultCornerRadius];
-    self.view.layer.masksToBounds = YES;
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -44,36 +67,39 @@
     
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS<=5
-{
-    return YES; //always force support of all orientations on iPad (split view controller)
+#pragma mark - Master and detail properties
+
+- (UIViewController*)masterViewController {
+    return self.viewControllers[0];
+}
+
+- (void)setMasterViewController:(UIViewController *)masterViewController {
+    self.viewControllers = @[masterViewController, self.detailViewController];
+}
+
+- (UIViewController*)detailViewController {
+    return self.viewControllers[1];
+}
+
+- (void)setDetailViewController:(UIViewController *)detailViewController {
+    self.viewControllers = @[self.masterViewController, detailViewController];
 }
 
 #pragma mark - Toggle button generation
 
 - (UIBarButtonItem*)toggleMasterViewBarButtonItem {
-    UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 25.0, 25.0)];
-    if (self.masterViewControllerHidden) {
-        [button setImage:[UIImage imageNamed:@"ArrowShow"] forState:UIControlStateNormal];
-    } else {
-        [button setImage:[UIImage imageNamed:@"ArrowHide"] forState:UIControlStateNormal];
-    }
-    button.adjustsImageWhenHighlighted = NO;
-    button.showsTouchWhenHighlighted = YES;
-    [button addTarget:self action:@selector(toggleMasterVideoControllerHidden:) forControlEvents:UIControlEventTouchUpInside];
-    return [[UIBarButtonItem alloc] initWithCustomView:button];
+    UIImage* image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterHidden" : @"MasterVisible"];
+    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(toggleMasterVideoControllerHidden:)];
+    button.accessibilityLabel = self.isMasterViewControllerHidden ? NSLocalizedStringFromTable(@"ShowMaster", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"HideMaster", @"PocketCampus", nil);
+    return button;
 }
 
 #pragma mark - Master view controller visibility management
 
-- (void)toggleMasterVideoControllerHidden:(UIButton*)sender {
-    if (self.masterViewControllerHidden) {
-        [sender setImage:[UIImage imageNamed:@"ArrowHide"] forState:UIControlStateNormal];
-        [self setMasterViewControllerHidden:NO animated:YES];
-    } else {
-        [sender setImage:[UIImage imageNamed:@"ArrowShow"] forState:UIControlStateNormal];
-        [self setMasterViewControllerHidden:YES animated:YES];
-    }
+- (void)toggleMasterVideoControllerHidden:(UIBarButtonItem*)button {
+    button.image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterVisible" : @"MasterHidden"];
+    button.accessibilityLabel = self.isMasterViewControllerHidden ? NSLocalizedStringFromTable(@"HideMaster", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"ShowMaster", @"PocketCampus", nil);
+    [self setMasterViewControllerHidden:!self.isMasterViewControllerHidden animated:YES];
 }
 
 - (void)setMasterViewControllerHidden:(BOOL)hidden {
@@ -85,6 +111,9 @@
     if ((_masterViewControllerHidden && hidden) || (!_masterViewControllerHidden && !hidden)) {
         return;
     }
+    [self willChangeValueForKey:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
+    _masterViewControllerHidden = hidden;
+    [self didChangeValueForKey:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
     CGRect newFrame = self.view.frame;
     UIViewController* masterViewController = self.viewControllers[0];
     UIViewController* detailViewControler = self.viewControllers[1];
@@ -123,8 +152,18 @@
         detailViewControler.view.frame = CGRectMake(detailFrame.origin.x, detailFrame.origin.y, detailNewWidth, detailFrame.size.height);
     } completion:NULL];
     
-    _masterViewControllerHidden = hidden;
-    
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return self.masterViewControllerHidden ? [self.detailViewController prefersStatusBarHidden] : [self.masterViewController prefersStatusBarHidden] && [self.detailViewController prefersStatusBarHidden];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return self.masterViewControllerHidden ? [self.detailViewController preferredStatusBarStyle] : [self.masterViewController preferredStatusBarStyle];
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    return self.masterViewControllerHidden ? [self.detailViewController preferredStatusBarUpdateAnimation] : [self.masterViewController preferredStatusBarUpdateAnimation];
 }
 
 #pragma mark - UINavigationControllerDelegate

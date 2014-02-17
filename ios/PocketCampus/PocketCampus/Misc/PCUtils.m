@@ -1,14 +1,41 @@
-//
-//  PCUtils.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
 //  Created by Loïc Gardiol on 04.07.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "PCUtils.h"
 
-#import "Reachability.h"
+#import "AFNetworking.h"
+
+#import <CoreLocation/CoreLocation.h>
 
 @implementation PCUtils
 
@@ -39,17 +66,36 @@
    return [[UIDevice currentDevice].systemVersion floatValue];
 }
 
++ (NSString*)uniqueDeviceIdentifier {
+    return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+}
+
++ (NSString*)appVersion {
+    return [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
+}
+
 + (NSString*)userLanguageCode {
-    return [[NSLocale preferredLanguages] objectAtIndex:0];
+    return [NSLocale preferredLanguages][0];
 }
 
 + (NSString*)lastUpdateNowString {
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
-    [dateFormatter setLocale:[NSLocale systemLocale]];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    static NSDateFormatter* dateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [NSDateFormatter new];
+        dateFormatter.timeZone = [NSTimeZone systemTimeZone];
+        dateFormatter.locale = [NSLocale systemLocale];
+        dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        dateFormatter.dateStyle = NSDateFormatterShortStyle;
+    });
     return [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"PocketCampus", nil),[dateFormatter stringFromDate:[NSDate date]]];
+}
+
++ (UIEdgeInsets)edgeInsetsForViewController:(UIViewController*)viewController {
+    CGFloat topBar = [viewController prefersStatusBarHidden] ? 0.0 : 20.0;
+    CGFloat top = viewController.navigationController ? topBar + viewController.navigationController.navigationBar.frame.size.height : topBar;
+    CGFloat bottom = viewController.tabBarController ? viewController.tabBarController.tabBarController.tabBar.frame.size.height : 0.0;
+    return UIEdgeInsetsMake(top, 0, bottom, 0);
 }
 
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration {
@@ -91,7 +137,7 @@
     label.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     label.text = message;
     label.tag = 20;
-    label.textAlignment = UITextAlignmentCenter;
+    label.textAlignment = NSTextAlignmentCenter;
     label.numberOfLines = 0;
     label.textColor = [UIColor colorWithWhite:0.33 alpha:1.0];
     [view addSubview:label];
@@ -103,6 +149,9 @@
     [[view viewWithTag:20] removeFromSuperview];
 }
 
++ (void)showUnknownErrorAlertTryRefresh:(BOOL)tryRefresh {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:tryRefresh ? NSLocalizedStringFromTable(@"UnknownErrorTryRefresh", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"UnknownError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
 
 + (void)showServerErrorAlert {
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
@@ -125,19 +174,27 @@
         
         for (NSString* keyValuePair in paramsComponents) {
             NSArray* pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-            NSString* key = [pairComponents objectAtIndex:0];
-            NSString* value = [pairComponents objectAtIndex:1];
+            NSString* key = pairComponents[0];
+            NSString* value = pairComponents[1];
             [queryStringDictionary setObject:value forKey:key];
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"!! ERROR: wrong URL format");
+        CLSNSLog(@"!! ERROR: wrong URL format");
     }
     return  [queryStringDictionary copy]; //non-mutable copy
 }
 
 + (BOOL)hasDeviceInternetConnection {
-    return [[Reachability reachabilityForInternetConnection] isReachable];
+    AFNetworkReachabilityManager* manager = [AFNetworkReachabilityManager sharedManager];
+    if (manager.networkReachabilityStatus == AFNetworkReachabilityStatusUnknown) {
+        return YES;
+    }
+    return [manager isReachable];
+}
+
++ (BOOL)hasAppAccessToLocation {
+    return ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized);
 }
 
 + (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class; {

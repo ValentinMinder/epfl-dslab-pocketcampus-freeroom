@@ -1,0 +1,7 @@
+platform :ios, '7.0'
+pod 'AFNetworking', '~> 2.0'
+pod 'GoogleAnalytics-iOS-SDK',  '~> 3.0'
+pod 'ZBarSDK', '~> 1.3.1'
+pod 'SSKeychain', '~> 1.2'
+pod 'TUSafariActivity'
+pod 'NSTimer-Blocks'

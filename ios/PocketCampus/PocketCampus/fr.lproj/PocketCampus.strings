@@ -1,10 +1,4 @@
-/* 
-  Localizable.strings
-  PocketCampus
-
-  Created by Loïc Gardiol on 01.03.12.
-  Copyright (c) 2012 EPFL. All rights reserved.
-*/
+// Created by Loïc Gardiol on 01.03.12.
 
 "HomeViewControllerTitle" = "PocketCampus EPFL";
 "ConnectionToServerTimedOut" = "Impossible de se connecter au serveur.\nVérifiez votre connexion internet.";
@@ -14,6 +8,7 @@
 "ServerErrorShort" = "Désolé, une erreur est survenue";
 "Cancel" = "Annuler";
 "Error" = "Erreur";
+"Loading" = "Chargement";
 "Loading..." = "Chargement...";
 "Help" = "Aide";
 "Settings" = "Réglages";
@@ -24,10 +19,13 @@
 "Settings" = "Réglages";
 "LastUpdate" = "Denière mise à jour";
 "LastUpdateNever" = "Denière mise à jour : jamais";
+"Recents" = "Historique";
 "Clear" = "Effacer";
 "MainMenu" = "Menu principal";
-"EditMainMenu" = "Modifier le menu principal";
+"EditMainMenu" = "Personnaliser le menu principal";
 "RestoreDefaultMainMenu" = "Menu principal par défaut";
+"Misc" = "Divers";
+"Usage" = "Utilisation";
 "Close" = "Fermer";
 "RatePCAppStore" = "Évaluer sur l'App Store";
 "RatePCAppStoreSubtitle" = "Merci beaucoup d'avance :)";
@@ -37,3 +35,22 @@
 "ActionNotSupportedYet" = "Cette action n'est pas encore supportée";
 "Send" = "Envoyer";
 "By" = "Par";
+"SearchNoun" = "Recherche";
+"CrashReports" = "Rapports de crash";
+"SendAutomatically" = "Envoyer automatiquement";
+"CrashReportsExplanations" = "Les rapports de crash sont anonymes et nous aident à améliorer PocketCampus.";
+"Now" = "Maintenant";
+"yes" = "oui";
+"no" = "non";
+"UnknownError" = "Désolé, une erreur est survenue.";
+"UnknownErrorTryRefresh" = "Désolé, une erreur est survenue.\nEssayez de rafraîchir.";
+
+//Accessbility
+
+"MainMenu" = "Menu principal";
+"ClosesSettings" = "Ferme les réglages.";
+"RecentSearchWithFormat" = "Recherche récente: '%@'";
+"SearchesForWithFormat" = "Recherche '%@'.";
+"ClearsHistoryOfRecentSearches" = "Efface l'historique des recherches récentes.";
+"ShowMaster" = "Afficher la colonne de gauche";
+"HideMaster" = "Masquer la colonne de gauche";

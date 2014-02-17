@@ -1,6 +1,6 @@
-//
+
 // Prefix header for all source files of the 'PocketCampus' target in the 'PocketCampus' project
-//
+
 
 #import <Availability.h>
 
@@ -11,5 +11,27 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import <Crashlytics/Crashlytics.h>
     typedef void (^VoidBlock)();
+    #import "PCConfig.h"
+    #import "PCUtils.h"
+    #import "PCValues.h"
+    #import "PCObjectArchiver.h"
+    #import "PCGAITracker.h"
+    #import "PCNavigationController.h"
+
+    #import "NSLayoutConstraint+LGAdditions.h"
+    #import "NSCache+LGAdditions.h"
+    #import "UIViewController+Additions.h"
+    #import "UIView+Additions.h"
+    #import "UISearchBar+Additions.h"
+    #import "UIActionSheet+Additions.h"
+    #import "UIPopoverController+Additions.h"
+    #import "UILabel+Additions.h"
+    #import "LGRefreshControl+PCAdditions.h"
+    #import "UIImage+Additions.h"
+    #import "NSTimer+Blocks.h"
+    #import "PCTableViewAdditions.h"
+    #import "PCTableViewCellAdditions.h"
+
 #endif

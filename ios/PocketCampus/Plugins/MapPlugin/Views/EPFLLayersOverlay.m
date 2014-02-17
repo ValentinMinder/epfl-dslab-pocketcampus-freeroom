@@ -1,14 +1,39 @@
-//
-//  EPFLLayersOverlay.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
 //  Created by Loïc Gardiol on 06.06.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "EPFLLayersOverlay.h"
 
-#import "CustomOverlayView.h"
+#import "RemoteOverlayRenderer.h"
 
 #import "MapUtils.h"
 
@@ -135,8 +160,7 @@ static double MIN_ZOOM_SCALE_OVERLAY = 0.1;
 - (NSString*)urlForEpflLayerWithCH1903StartX:(double)startX startY:(double)startY endX:(double)endX endY:(double)endY width:(double)width height:(double)height  {
     NSString* baseURLWithBBoxEmptyParameter = @"http://plan.epfl.ch/wms_themes?FORMAT=image%2Fpng&TRANSPARENT=false&LOCALID=-1&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A21781&BBOX=";
     
-    NSString* urlString = [NSString stringWithFormat:@"%@%lf,%lf,%lf,%lf&WIDTH=%.0lf&HEIGHT=%.0lf&LAYERS=locaux_labels%d,locaux_h%d,batiments_routes_labels,parkings_publicsall,informationall", baseURLWithBBoxEmptyParameter, startY, endX, endY, startX, width, height, currentLayerLevel, currentLayerLevel];
-    NSLog(@"%@", urlString);
+    NSString* urlString = [NSString stringWithFormat:@"%@%lf,%lf,%lf,%lf&WIDTH=%.0lf&HEIGHT=%.0lf&LAYERS=locaux_labels%d,locaux_h%d,batiments_routes_labels,parkings_publicsall,informationall", baseURLWithBBoxEmptyParameter, startY, endX, endY, startX, width, height, (int)currentLayerLevel, (int)currentLayerLevel];
     return urlString;
 }
 
@@ -167,15 +191,15 @@ static double MIN_ZOOM_SCALE_OVERLAY = 0.1;
     //Redraw the overlay.
     
     if (self.mapView == nil) {
-        NSLog(@"-> !! mapView property is nil, cannot setNeedsDisplay");
+        CLSNSLog(@"-> !! mapView property is nil, cannot setNeedsDisplay");
         return;
     }
     
     for(NSObject<MKOverlay>* overlay in mapView.overlays) {
         if([overlay isKindOfClass:self.class]){
-            CustomOverlayView* customOverlayView = (CustomOverlayView*)[mapView viewForOverlay:overlay];
-            [customOverlayView cancelTilesDownload:NO];
-            [customOverlayView setNeedsDisplayInMapRect:MKMapRectWorld];
+            RemoteOverlayRenderer* remoteOverlayRenderer = (RemoteOverlayRenderer*)[mapView rendererForOverlay:overlay];
+            [remoteOverlayRenderer cancelTilesDownload:NO];
+            [remoteOverlayRenderer setNeedsDisplayInMapRect:MKMapRectWorld];
         }
     }
 }

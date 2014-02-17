@@ -1,8 +1,36 @@
-//
-//  PushNotifController.m
-//  PocketCampus
-//
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
+
+
+
 
 #import "AuthenticationController.h"
 
@@ -27,16 +55,14 @@ static NSMutableDictionary* observerInstanceForNSNotificationCenterObserver __st
     self.failureBlock(0);
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     self.failureBlock(0);
 }
 
 @end
 
-static NSString* kNotificationsDeviceTokenKey = @"NotificationsDeviceToken";
+static NSString* const kNotificationsDeviceTokenKey = @"NotificationsDeviceToken";
 static NSString* notificationsDeviceTokenCache __strong = nil;
-
-static BOOL initObserversDone = NO;
 
 static PushNotifController* instance __weak = nil;
 
@@ -84,26 +110,23 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 }
 
 + (void)initObservers {
-    @synchronized(self) {
-        if (initObserversDone) {
-            return;
-        }
-        [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
             if ([self notificationsDeviceToken] == nil) {
-                NSLog(@"-> PushNotif received %@ notification. No saved device token to unregister, returning.", [AuthenticationService logoutNotificationName]);
+                CLSNSLog(@"-> PushNotif received %@ notification. No saved device token to unregister, returning.", kAuthenticationLogoutNotification);
                 return;
             }
-            NSNumber* delayed = [notification.userInfo objectForKey:[AuthenticationService delayedUserInfoKey]];
+            NSNumber* delayed = notification.userInfo[kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
             if ([delayed boolValue]) {
-                NSLog(@"-> PushNotif received %@ notification delayed", [AuthenticationService logoutNotificationName]);
-                NSLog(@"WARNING: delayed logout is not supported in PushNotif. Unregistration for push notifs will be immediate. Users that login with a non-persitent state (not saving credentials) will thus not receive notifications.");
+                CLSNSLog(@"-> PushNotif received %@ notification delayed", kAuthenticationLogoutNotification);
+                CLSNSLog(@"WARNING: delayed logout is not supported in PushNotif. Unregistration for push notifs will be immediate. Users that login with a non-persitent state (not saving credentials) will thus not receive notifications.");
             } else {
-                NSLog(@"-> PushNotif received %@ notification. Now unregistrating from push notifs...", [AuthenticationService logoutNotificationName]);
+                CLSNSLog(@"-> PushNotif received %@ notification. Now unregistrating from push notifs...", kAuthenticationLogoutNotification);
             }
             [self unregisterAfterLogout];
         }];
-        initObserversDone = YES;
-    }
+    });
 }
 
 + (NSString*)notificationsDeviceToken {
@@ -190,9 +213,9 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 #pragma mark - AppDelegate registration notifications
 
 - (void)registrationSuccessNotification:(NSNotification*)notification {
-    NSString* token = notification.userInfo[kPushDeviceTokenStringKey];
+    NSString* token = notification.userInfo[kAppDelegatePushDeviceTokenStringUserInfoKey];
     [self saveNotificationsDeviceToken:token];
-    NSLog(@"-> Registration to push notifications succeeded. Device token has been saved.");
+    CLSNSLog(@"-> Registration to push notifications succeeded. Device token has been saved.");
     for (PushNotifDeviceRegistrationObserver* observer in self.regObservers) {
         if (observer.successBlock) {
             observer.successBlock();
@@ -202,7 +225,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 }
 
 - (void)registrationFailureNotification:(NSNotification*)notification {
-    NSLog(@"!! ERROR: registration to push notifications failed.");
+    CLSNSLog(@"!! ERROR: registration to push notifications failed.");
     [PushNotifController deleteNotificationsDeviceToken];
     for (PushNotifDeviceRegistrationObserver* observer in self.regObservers) {
         if (observer.failureBlock) {
@@ -230,28 +253,28 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
                 [self deleteNotificationsDeviceToken];
                 pushNotifService = nil;
                 unregistrationDelegate = nil;
-                NSLog(@"-> PushNotif device token was successfully unregistered on server and locally after logout");
+                CLSNSLog(@"-> PushNotif device token was successfully unregistered on server and locally after logout");
             };
             unregistrationDelegate.failureBlock = ^(PushNotifDeviceRegistrationError error){
                 //we absolutely need to keep going, add just a time to not be too fast
-                NSLog(@"!! ERROR: PushNotif device token unregistration request to server failed, retrying in 2 seconds...");
+                CLSNSLog(@"!! ERROR: PushNotif device token unregistration request to server failed, retrying in 2 seconds...");
                 [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(unregisterAfterLogout) userInfo:nil repeats:NO];
             };
         }
-        NSLog(@"-> PushNotif: starting unregistration request to server (token: %@).....", tokenToUnregister);
+        CLSNSLog(@"-> PushNotif: starting unregistration request to server (token: %@).....", tokenToUnregister);
         [pushNotifService deleteMappingWithDummy:@"dummy" delegate:unregistrationDelegate];
     }
 }
 
 - (void)observeAndStartDeviceRegistrationProcessOnOS {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationSuccessNotification:) name:AppDidSucceedToRegisterToNotifications object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationFailureNotification:) name:AppDidFailToRegisterToNotifications object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationSuccessNotification:) name:kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationFailureNotification:) name:kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification object:nil];
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
 }
 
 - (void)cleanUpAfterRegistrationProcess {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AppDidSucceedToRegisterToNotifications object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AppDidFailToRegisterToNotifications object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification object:nil];
     [self.regObservers removeAllObjects];
     self.pushNotifsReasonAlert = nil; //should be done already
 }

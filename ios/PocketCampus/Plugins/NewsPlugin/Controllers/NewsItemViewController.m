@@ -1,38 +1,64 @@
-//
-//  NewsItemViewController2.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
+
+
 //  Created by Loïc Gardiol on 24.12.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
+
 
 #import "NewsItemViewController.h"
 
-#import "GANTracker.h"
-
-#import "PCValues.h"
-
-#import "PCUtils.h"
-
 #import "NewsUtils.h"
 
-#import "Reachability.h"
+#import "AFNetworkReachabilityManager.h"
 
-#import "ObjectArchiver.h"
+#import "PCObjectArchiver.h"
 
 #import "PluginSplitViewController.h"
 
 #import "UIActionSheet+Additions.h"
 
-@interface NewsItemViewController ()
+#import "TUSafariActivity.h"
+
+@interface NewsItemViewController ()<NewsServiceDelegate, UIAlertViewDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) UIImage* image;
-@property (nonatomic, strong) UIActionSheet* actionButtonSheet;
+@property (nonatomic, strong) UIPopoverController* actionsPopover;
 @property (nonatomic, strong) NewsItem* newsItem;
 @property (nonatomic, strong) NewsService* newsService;
-@property (nonatomic, strong) ASIHTTPRequest* imageRequest;
 @property (nonatomic, strong) NSURL* urlClicked;
-@property (nonatomic, strong) Reachability* reachability;
+@property (nonatomic, strong) AFNetworkReachabilityManager* reachabilityManager;
+    
+@property (nonatomic, strong) IBOutlet UIWebView* webView;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, strong) IBOutlet UILabel* centerMessageLabel;
+    
+@property (nonatomic) CGFloat lastVerticalOffset;
 
 @end
 
@@ -42,10 +68,11 @@
 {
     self = [super initWithNibName:@"NewsItemView" bundle:nil];
     if (self) {
+        self.gaiScreenName = @"/news/item";
         self.newsService = [NewsService sharedInstanceToRetain];
         self.newsItem = newsItem;
         self.image = image;
-        self.title = self.newsItem.title;
+        self.title = [PCUtils isIdiomPad] ? self.newsItem.title : nil;
     }
     return self;
 }
@@ -53,7 +80,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[[GANTracker sharedTracker] trackPageview:@"/v3r1/news/item" withError:NULL];
     
     if (self.splitViewController) {
         self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
@@ -66,6 +92,11 @@
     [self saveImageToDisk];
     
     [self loadNewsItem];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 - (void)loadNewsItem {
@@ -86,42 +117,42 @@
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
-{
-    return UIInterfaceOrientationIsLandscape(interfaceOrientation) || (UIInterfaceOrientationPortrait);
-}
-
 #pragma mark - Actions
 
 - (void)actionButtonPressed {
+    NSURL* newsItemURL = [NSURL URLWithString:self.newsItem.link];
+    UIActivity* safariActivity = [TUSafariActivity new];
+    UIActivityViewController* viewController = [[UIActivityViewController alloc] initWithActivityItems:@[newsItemURL] applicationActivities:@[safariActivity]];
+    viewController.completionHandler = ^(NSString* activityType, BOOL completed) {
+        if ([activityType isEqualToString:safariActivity.activityType]) {
+            [self trackAction:@"ViewInBrowser"];
+        }
+    };
+    [self trackAction:PCGAITrackerActionActionButtonPressed];
+    if (self.splitViewController) {
+        if (!self.actionsPopover) {
+            self.actionsPopover = [[UIPopoverController alloc] initWithContentViewController:viewController];
+            self.actionsPopover.popoverContentSize = viewController.preferredContentSize;
+        }
+        [self.actionsPopover togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    } else {
+        [self presentViewController:viewController animated:YES completion:NULL];
+    }
+    
+    /*
     if (!self.actionButtonSheet) {
         self.actionButtonSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"OpenInSafari", @"NewsPlugin", nil), nil];
-        self.actionButtonSheet.accessibilityIdentifier = @"NewsItemActionSheet";
     }
     
     [self.actionButtonSheet toggleFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
-}
-
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (actionSheet == self.actionButtonSheet) {
-        switch (buttonIndex) {
-            case 0:
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.newsItem.link]];
-                break;
-            default:
-                break;
-        }
-        self.actionButtonSheet = nil;
-    }
+     */
 }
 
 #pragma mark - Image management
 
 - (NSString*)pathForImage {
-    NSString* key = [NSString stringWithFormat:@"newsItemImage-%u", [self.newsItem.imageUrl hash]];
-    return [ObjectArchiver pathForKey:key pluginName:@"news" customFileExtension:[self.newsItem.imageUrl pathExtension] isCache:YES];
+    NSString* key = [NSString stringWithFormat:@"newsItemImage-%u", (unsigned int)[self.newsItem.imageUrl hash]];
+    return [PCObjectArchiver pathForKey:key pluginName:@"news" customFileExtension:[self.newsItem.imageUrl pathExtension] isCache:YES];
 }
 
 - (void)saveImageToDisk {
@@ -138,8 +169,8 @@
 #pragma mark - NewsServiceDelegate
 
 
-- (void)newsItemContentForId:(Id)newsItemId didReturn:(NSString *)content {
-    
+- (void)newsItemContentForId:(int64_t)newsItemId didReturn:(NSString *)content {
+    [self.reachabilityManager stopMonitoring];
     NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"NewsItem" ofType:@"html"];
     NSError* error = nil;
     NSString* html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
@@ -147,8 +178,20 @@
         [self error];
         return;
     }
+    
     html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_FEED_NAME$" withString:self.newsItem.feed];
-    html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_PUB_DATE$" withString:[NewsUtils dateLocaleStringForTimestamp:self.newsItem.pubDate/1000.0]];
+    
+    NSDate* date = [NSDate dateWithTimeIntervalSince1970:self.newsItem.pubDate/1000.0];
+    static NSDateFormatter* formatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [NSDateFormatter new];
+        formatter.dateStyle = NSDateFormatterLongStyle;
+    });
+    
+    NSString* dateString = [formatter stringFromDate:date];
+    html = [html stringByReplacingOccurrencesOfString:@"$NEW_ITEM_PUB_DATE$" withString:dateString];
+    
     html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_TITLE$" withString:self.newsItem.title];
     
     if (self.newsItem.imageUrl) {
@@ -164,14 +207,14 @@
     }
     html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_CONTENT$" withString:content];
     
-    html = [NewsUtils htmlReplaceWidthWith100PercentInContent:html ifWidthHeigherThan:self.webView.frame.size.width-20.0];
+    html = [NewsUtils htmlReplaceWidthWith100PercentInContent:html ifWidthHeigherThan:self.webView.frame.size.width];
     
     [self.webView loadHTMLString:html baseURL:[NSURL fileURLWithPath:@"/"]];
     self.webView.hidden = NO;
     [self.loadingIndicator stopAnimating];
 }
 
-- (void)newsItemContentFailedForId:(Id)newsItemId {
+- (void)newsItemContentFailedForId:(int64_t)newsItemId {
     [self error];
 }
 
@@ -182,15 +225,20 @@
     self.centerMessageLabel.hidden = NO;
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerFailed {
     self.webView.hidden = YES;
     [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
-    if (!self.reachability) {
-        self.reachability = [Reachability reachabilityForInternetConnection];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadNewsItem) name:kReachabilityChangedNotification object:self.reachability];
-        [self.reachability startNotifier];
+    if (!self.reachabilityManager) {
+        NewsItemViewController* weakSelf __weak = self;
+        self.reachabilityManager = [AFNetworkReachabilityManager managerForDomain:@"google.com"];
+        [self.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            if (status > 0) { //means internet reachable
+                [weakSelf loadNewsItem];
+            }
+        }];
+        [self.reachabilityManager startMonitoring];
     }
 }
 
@@ -230,8 +278,7 @@
 #pragma mark - dealloc
 
 - (void)dealloc {
-    [self.reachability stopNotifier];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:self.reachability];
+    [self.reachabilityManager stopMonitoring];
     self.webView.delegate = nil;
     [self.webView stopLoading];
     [self.newsService cancelOperationsForDelegate:self];

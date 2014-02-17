@@ -1,30 +1,46 @@
-//
-//  AppDelegate.m
-//  PocketCampus
-//
+/* 
+ * Copyright (c) 2014, PocketCampus.Org
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 	* Redistributions of source code must retain the above copyright
+ * 	  notice, this list of conditions and the following disclaimer.
+ * 	* Redistributions in binary form must reproduce the above copyright
+ * 	  notice, this list of conditions and the following disclaimer in the
+ * 	  documentation and/or other materials provided with the distribution.
+ * 	* Neither the name of PocketCampus.Org nor the
+ * 	  names of its contributors may be used to endorse or promote products
+ * 	  derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+
 //  Created by Loïc Gardiol on 28.02.12.
-//  Copyright (c) 2012 EPFL. All rights reserved.
-//
 
 #import "AppDelegate.h"
 
-#import "PCConfig.h"
-
-#import "PCUtils.h"
-
-#import "PCValues.h"
-
-#import "GANTracker.h"
-
-#import "MyEduServiceTests.h"
-
-#import "PushNotifControllerTests.h"
-
-#import "EventsServiceTests.h"
-
 #import "PCURLSchemeHandler.h"
 
+#import <Crashlytics/Crashlytics.h>
+
+NSString* const kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification = @"AppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification";
+NSString* const kAppDelegatePushDeviceTokenStringUserInfoKey = @"AppDelegatePushDeviceTokenStringUserInfoKey";
+NSString* const kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification = @"AppDelegateAppFailedToRegisterForRemoteNotificationsNotification";
+
 static id test __strong __unused = nil;
+
+static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidReceiveRemoteNotificationForPlugin";
 
 @interface AppDelegate ()
 
@@ -36,69 +52,33 @@ static id test __strong __unused = nil;
 
 @synthesize window = _window;
 
-- (void)dealloc
-{
-    [[GANTracker sharedTracker] stopTracker];
-}
+#pragma mark - UIApplicationDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    /* Apply appearence proxy => specified UI elements will defaut to PC defined look&feel, eg. red navigation bar */
+    
+    // Load PocketCampus configuration (will populate [PCConfig defaults])
+    [PCConfig loadConfigAsynchronously];
+
+    // Apply appearence proxy => specified UI elements will defaut to PC defined look&feel
     [PCValues applyAppearenceProxy];
     
-    /* Initialize defaults with PC config */
-    [PCConfig initConfig];
-    
-    /* Start Google Analytics tracker if enabled in config */
-    if ([[PCConfig defaults] boolForKey:PC_CONFIG_GAN_ENABLED_KEY]) {
-        NSLog(@"-> Starting Google Analytics tracker");
-        NSString* ganId = (NSString*)[[PCConfig defaults] objectForKey:PC_CONFIG_GAN_TRACKING_CODE_KEY];
-        if (ganId) {
-            [[GANTracker sharedTracker] startTrackerWithAccountID:ganId dispatchPeriod:10 delegate:self];
-        } else {
-            NSLog(@"!! ERROR: could not start Google Analytics tracker because tracking code is absent from config.");
-        }
-        
-    } else {
-        NSLog(@"-> Google Analytics disabled (config)");
-    }
-    
+    // Initialize shared NSURLCache that will be used as default cache for all requests by default
+    NSURLCache* cache = [[NSURLCache alloc] initWithMemoryCapacity:4*1024*1024 diskCapacity:100*1024*1024 diskPath:nil];
+    [NSURLCache setSharedURLCache:cache];
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
     
     self.mainController = [[MainController alloc] initWithWindow:self.window];
     
-    
-    /* TESTS */
-    
-    //test = [[PushNotifControllerTests alloc] init];
-    //[test testRegistrationAuthenticated];
-    
-    //[[[PocketCampusLogicTests alloc] init] testAll];
-    
-    //[[[DirectoryServiceTests alloc] init] tempTest];
-    
-    //[[[MapServiceTests alloc] init] tempTest];
-    
-    //[[[MyEduServiceTests alloc] init] tempTest];
-    
-    //test = [[EventsServiceTests alloc] init];
-    
-    //[test tmpTest]
-    
-    /* END OF TESTS */
-    
     [self.window makeKeyAndVisible];
     
-    /* App might have been opened by notification touch */
-    NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    // App might have been opened by tapping a notification
+    NSDictionary* userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (userInfo) {
         [self application:[UIApplication sharedApplication] didReceiveRemoteNotification:userInfo];
     }
-    
-    //test
-    //[self application:[UIApplication sharedApplication] didReceiveRemoteNotification:[NSDictionary dictionaryWithObject:@"myedu" forKey:@"pluginName"]];
 
     return YES;
 }
@@ -140,43 +120,31 @@ static id test __strong __unused = nil;
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
-    [self.mainController appDidReceiveMemoryWarning];
-}
-
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
     return [window.rootViewController supportedInterfaceOrientations];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSString* deviceTokenString = [[[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSNotification* notif = [NSNotification notificationWithName:AppDidSucceedToRegisterToNotifications object:nil userInfo:[NSDictionary dictionaryWithObject:deviceTokenString forKey:kPushDeviceTokenStringKey]];
+    NSNotification* notif = [NSNotification notificationWithName:kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification object:self userInfo:@{kAppDelegatePushDeviceTokenStringUserInfoKey:deviceTokenString}];
     [[NSNotificationCenter defaultCenter] postNotification:notif];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    [[NSNotificationCenter defaultCenter] postNotificationName:AppDidFailToRegisterToNotifications object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification object:self];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSString* pluginName = userInfo[@"pluginName"];
     NSString* message = userInfo[@"aps"][@"alert"];
-    NSLog(@"-> Notification received for plugin %@: %@  (userInfo:%@)", pluginName, message, userInfo);
-    [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:[pluginName lowercaseString]] object:nil userInfo:userInfo];
+    CLSNSLog(@"-> Notification received for plugin %@: %@  (userInfo:%@)", pluginName, message, userInfo);
+    [[NSNotificationCenter defaultCenter] postNotificationName:[self.class nsNotificationNameForPluginLowerIdentifier:[pluginName lowercaseString]] object:self userInfo:userInfo];
 }
+
+#pragma mark - Public
 
 + (NSString*)nsNotificationNameForPluginLowerIdentifier:(NSString*)pluginLowerIdentifier {
-    return [NSString stringWithFormat:@"%@_%@", RemoteNotifForPluginName, pluginLowerIdentifier];
-}
-
-/* Google Analytics Delegation */
-
-- (void)trackerDispatchDidComplete:(GANTracker *)tracker eventsDispatched:(NSUInteger)eventsDispatched eventsFailedDispatch:(NSUInteger)eventsFailedDispatch {
-    NSLog(@"-> Google Analytics Dispatch: succeeded:%i, failed:%i",eventsDispatched,eventsFailedDispatch);
-}
-
-- (void)hitDispatched:(NSString *)hitString {
-    //NSLog(@"Google Analytics hitDispatched: %@",hitString);
+    return [NSString stringWithFormat:@"%@_%@", kAppDidReceiveRemoteNotificationForPlugin, pluginLowerIdentifier];
 }
 
 @end
