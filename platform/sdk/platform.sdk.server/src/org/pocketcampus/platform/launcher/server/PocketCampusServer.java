@@ -212,31 +212,27 @@ public class PocketCampusServer extends ServerBase {
 	}
 	
 	public static String authGetUserGaspar(Object firstArg) {
-		HttpServletRequest req = (HttpServletRequest) TServlet.requestsMap.get(firstArg);
-		if(req == null) return null;
-		String pcSessionId = req.getHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID);
-		if(pcSessionId == null) 
-			return null;
-		try {
-			return (String) invokeOnPlugin("authentication", "getGasparFromSession", pcSessionId);
-		} catch (NoSuchObjectException e) {
-		} catch (SecurityException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (NoSuchMethodException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
-		}
-		return null;
+		return authGetUserGasparFromReq((HttpServletRequest) TServlet.requestsMap.get(firstArg));
 	}
 	
 	public static String authGetUserSciper(Object firstArg) {
-		HttpServletRequest req = (HttpServletRequest) TServlet.requestsMap.get(firstArg);
+		return authGetUserSciperFromReq((HttpServletRequest) TServlet.requestsMap.get(firstArg));
+	}
+	
+	public static String authGetUserGasparFromReq(HttpServletRequest req) {
+		return authGetUserAttribute(req, "getGasparFromSession");
+	}
+	
+	public static String authGetUserSciperFromReq(HttpServletRequest req) {
+		return authGetUserAttribute(req, "getSciperFromSession");
+	}
+	
+	private static String authGetUserAttribute(HttpServletRequest req, String func) {
 		if(req == null) return null;
 		String pcSessionId = req.getHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID);
-		if(pcSessionId == null) 
-			return null;
+		if(pcSessionId == null) return null;
 		try {
-			return (String) invokeOnPlugin("authentication", "getSciperFromSession", pcSessionId);
+			return (String) invokeOnPlugin("authentication", func, pcSessionId);
 		} catch (NoSuchObjectException e) {
 		} catch (SecurityException e) {
 		} catch (IllegalArgumentException e) {

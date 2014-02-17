@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.moodle.server;
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
@@ -26,12 +27,15 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
+import org.pocketcampus.plugin.moodle.common.MoodleConstants;
 import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl.NodeJson.ItemJson;
 import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl.SectionNode.ModuleNode;
 import org.pocketcampus.plugin.moodle.shared.TequilaToken;
 import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 import org.pocketcampus.platform.launcher.server.RawPlugin;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
+import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
+import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
 import org.pocketcampus.platform.sdk.shared.utils.URLBuilder;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
 import org.pocketcampus.plugin.moodle.shared.EventsListReply;
@@ -65,7 +69,9 @@ import com.google.gson.reflect.TypeToken;
  *
  */
 public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
-	
+
+	public static final String MOODLE_WEBSERVICE_URL = "http://moodle.epfl.ch/webservice/rest/server.php";
+
 	public MoodleServiceImpl() {
 		System.out.println("Starting Moodle plugin server ...");
 //		try {
@@ -83,13 +89,40 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 			protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 				//InputStream in = request.getInputStream();
 				//request.get
-				System.out.println(request.getQueryString());
-				OutputStream out = response.getOutputStream();
-				out.write("OK1".getBytes());
-				out.flush();
+//				response.setStatus(500);
+//				System.out.println(request.getQueryString());
+//				OutputStream out = response.getOutputStream();
+//				out.write("OK1".getBytes());
+//				out.flush();
+//				doPost(request, response);
 			}
 			protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-				System.out.println(req.getParameterMap().toString());
+				String gaspar = PocketCampusServer.authGetUserGasparFromReq(req);
+				if(gaspar == null) return;
+				
+				String action = req.getParameter(MoodleConstants.MOODLE_RAW_ACTION_KEY);
+				if(MoodleConstants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action)) {
+					String fp = req.getParameter(MoodleConstants.MOODLE_RAW_FILE_PATH);
+					if(fp == null) return;
+					
+					fp = StringUtils.getSubstringBetween(fp, "pluginfile.php", "?");
+					//http://moodle.epfl.ch/webservice/pluginfile.php/1525234/mod_resource/content/4/hwk2_sol.pdf?wstoken=9a00f999e5d329b417a1e578ac489b68
+//					if(fp.indexOf("?") != -1)
+//						fp = fp.substring(0, fp.indexOf("?"));
+//					URLBuilder url = new URLBuilder(fp).addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
+					fp = "http://moodle.epfl.ch/webservice/pluginfile.php" + fp;
+					HttpURLConnection conn = (HttpURLConnection) new URL(fp).openConnection();
+					conn.setDoOutput(true);
+					PostDataBuilder pd = new PostDataBuilder().
+							addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
+					conn.getOutputStream().write(pd.toBytes());
+					OutputStream out = resp.getOutputStream();
+					InputStream in = conn.getInputStream();
+					IOUtils.copy(in, out);
+//					out.flush();
+//					in.close();
+//					out.close();
+				} 
 			}
 		};
 	}
@@ -273,7 +306,7 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 		}
 		
 	}
-	
+
 	@Override
 	public CoursesListReply getCoursesListAPI(String dummy) throws TException {
 		String gaspar = PocketCampusServer.authGetUserGaspar(dummy);
@@ -285,23 +318,27 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 		LinkedList<MoodleCourse> tCourses = new LinkedList<MoodleCourse>();
 
 		try {
-			URLBuilder url = new URLBuilder("http://moodle.epfl.ch/webservice/rest/server.php").
+			HttpURLConnection conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
+			PostDataBuilder pd = new PostDataBuilder().
 					addParam("moodlewsrestformat", "json").
 					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
 					addParam("wsfunction", "core_user_get_users").
 					addParam("criteria[0][key]", "username").
 					addParam("criteria[0][value]", gaspar);
-			HttpURLConnection conn = (HttpURLConnection) new URL(url.toString()).openConnection();
+			conn.setDoOutput(true);
+			conn.getOutputStream().write(pd.toBytes());
 			String result = IOUtils.toString(conn.getInputStream(), "UTF-8");
 			UsersNode usrNodes = gson.fromJson(result, UsersNode.class);
 			int theId = usrNodes.users.get(0).id;
 			
-			url = new URLBuilder("http://moodle.epfl.ch/webservice/rest/server.php").
+			conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
+			pd = new PostDataBuilder().
 					addParam("moodlewsrestformat", "json").
 					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
 					addParam("wsfunction", "core_enrol_get_users_courses").
 					addParam("userid", "" + theId);
-			conn = (HttpURLConnection) new URL(url.toString()).openConnection();
+			conn.setDoOutput(true);
+			conn.getOutputStream().write(pd.toBytes());
 			result = IOUtils.toString(conn.getInputStream(), "UTF-8");
 			Type listType = new TypeToken<List<CourseNode>>() {}.getType();
 			List<CourseNode> lcn = gson.fromJson(result, listType);
@@ -464,12 +501,14 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 
 		try {
 			
-			URLBuilder url = new URLBuilder("http://moodle.epfl.ch/webservice/rest/server.php").
+			HttpURLConnection conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
+			PostDataBuilder pd = new PostDataBuilder().
 					addParam("moodlewsrestformat", "json").
 					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
 					addParam("wsfunction", "core_course_get_contents").
 					addParam("courseid", courseId);
-			HttpURLConnection conn = (HttpURLConnection) new URL(url.toString()).openConnection();
+			conn.setDoOutput(true);
+			conn.getOutputStream().write(pd.toBytes());
 			String result = IOUtils.toString(conn.getInputStream(), "UTF-8");
 			//System.out.println(result);
 			Type listType = new TypeToken<List<SectionNode>>() {}.getType();
