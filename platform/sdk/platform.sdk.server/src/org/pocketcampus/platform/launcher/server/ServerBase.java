@@ -94,6 +94,9 @@ public abstract class ServerBase {
 			TServlet jsonThriftServlet = new TServlet(thriftProcessor, jsonProtocolFactory);
 			context.addServlet(new ServletHolder(binThriftServlet), "/" + processor.getServiceName());
 			context.addServlet(new ServletHolder(jsonThriftServlet), "/json-" + processor.getServiceName());
+			if(processor.getRawProcessor() != null) {
+				context.addServlet(new ServletHolder(processor.getRawProcessor()), "/raw-" + processor.getServiceName());
+			}
 		}
 		
 		// add dummy servlet to ping to check if server is up

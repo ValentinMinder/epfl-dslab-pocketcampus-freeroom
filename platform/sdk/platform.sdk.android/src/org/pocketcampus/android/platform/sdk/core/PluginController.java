@@ -11,6 +11,7 @@ import org.apache.thrift.TServiceClientFactory;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.THttpClient;
+import org.pocketcampus.platform.sdk.shared.utils.PcConstants;
 
 import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
@@ -50,8 +51,12 @@ public abstract class PluginController extends Service {
 			THttpClient httpClient = new THttpClient(url, httpInitialClient);
 			httpClient.setConnectTimeout(5000);
 			httpClient.setReadTimeout(60000);
-			httpClient.setCustomHeader("X-PC-PUSHNOTIF-OS", "ANDROID");
-			httpClient.setCustomHeader("X-PC-PUSHNOTIF-TOKEN", ((GlobalContext) getApplicationContext()).getPushNotifToken());
+			httpClient.setCustomHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_OS, "ANDROID");
+			httpClient.setCustomHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_TOKEN, ((GlobalContext) getApplicationContext()).getPushNotifToken());
+			
+			String pcSessionId = ((GlobalContext) getApplicationContext()).getPcSessionId();
+			if(pcSessionId != null)
+				httpClient.setCustomHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
 
 			TProtocol protocol = new TBinaryProtocol(httpClient);
 			client = clientFactory.getClient(protocol);
