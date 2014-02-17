@@ -31,16 +31,12 @@ public class MoodleEvent implements org.apache.thrift.TBase<MoodleEvent, MoodleE
   private static final org.apache.thrift.protocol.TField I_ASSIGNMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("iAssignment", org.apache.thrift.protocol.TType.STRUCT, (short)5);
   private static final org.apache.thrift.protocol.TField I_USER_EVENT_FIELD_DESC = new org.apache.thrift.protocol.TField("iUserEvent", org.apache.thrift.protocol.TType.STRUCT, (short)6);
 
-  public int iId; // required
-  public String iTitle; // required
-  public long iDate; // required
-  /**
-   * 
-   * @see MoodleEventType
-   */
-  public MoodleEventType iType; // required
-  public MoodleAssignment iAssignment; // required
-  public MoodleUserEvent iUserEvent; // required
+  private int iId; // required
+  private String iTitle; // required
+  private long iDate; // required
+  private MoodleEventType iType; // required
+  private MoodleAssignment iAssignment; // required
+  private MoodleUserEvent iUserEvent; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

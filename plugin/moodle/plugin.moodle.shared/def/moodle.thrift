@@ -97,4 +97,7 @@ service MoodleService {
 	CoursesListReply getCoursesList(1: MoodleRequest iRequest);
 	EventsListReply getEventsList(1: MoodleRequest iRequest);
 	SectionsListReply getCourseSections(1: MoodleRequest iRequest);
+
+	CoursesListReply getCoursesListAPI(1: string dummy);
+	SectionsListReply getCourseSectionsAPI(1: string courseId);
 }
