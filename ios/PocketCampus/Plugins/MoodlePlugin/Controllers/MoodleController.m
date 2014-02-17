@@ -203,10 +203,6 @@ static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     return @"Moodle";
 }
 
-- (NSString*)localizedStringForKey:(NSString*)key {
-    return NSLocalizedStringFromTable(key, [[self class] identifierName], @"");
-}
-
 #pragma mark - UISplitViewControllerDelegate
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
@@ -215,6 +211,8 @@ static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
      }*/
     return NO;
 }
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
