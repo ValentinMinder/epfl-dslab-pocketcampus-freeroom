@@ -30,7 +30,6 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
@@ -81,13 +80,8 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 
 		current = -1;
 		
-		ActionBar a = getActionBar();
-		if (a != null) {
-			RefreshAction refresh = new RefreshAction();
-			ToggleShowAllAction toggle = new ToggleShowAllAction();
-			a.addAction(refresh, 0);
-			a.addAction(toggle, 0);
-		}
+		addActionToActionBar(new RefreshAction(), 0);
+		addActionToActionBar(new ToggleShowAllAction(), 0);
 	}
 
 	/**
@@ -144,7 +138,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 			current = 0;
 			for(int i = 1; i < lms.size(); i++) {
 				List<MoodleResource> lmr = lms.get(i).getIResources();
-				if(lmr.size() != 0 && lms.get(i).iCurrent) {
+				if(lmr.size() != 0 && lms.get(i).isICurrent()) {
 					current = i;
 					break;
 				}
@@ -406,7 +400,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 				return;
 			for(int i = 1; i < lms.size(); i++) {
 				List<MoodleResource> lmr = lms.get(i).getIResources();
-				if(lmr != null && lms.get(i).iCurrent) {
+				if(lmr != null && lms.get(i).isICurrent()) {
 					current = i;
 					break;
 				}
