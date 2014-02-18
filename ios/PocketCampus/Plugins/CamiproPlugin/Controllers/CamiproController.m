@@ -56,6 +56,10 @@ static CamiproController* instance __weak = nil;
 
 #pragma mark - Init
 
++ (void)initialize {
+    [self deleteSessionIfNecessary];
+}
+
 - (id)init {
     @synchronized(self) {
         if (instance) {
@@ -63,7 +67,6 @@ static CamiproController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
-            [[self class] deleteSessionIfNecessary];
             CamiproViewController* camiproViewController = [[CamiproViewController alloc] init];
             camiproViewController.title = [[self class] localizedName];
             PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:camiproViewController];

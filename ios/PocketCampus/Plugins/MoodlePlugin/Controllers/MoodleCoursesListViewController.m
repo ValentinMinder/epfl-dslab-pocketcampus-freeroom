@@ -229,7 +229,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     return 1;
 }
 
-#pragma mark - dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc {
     [[AuthenticationController sharedInstance] removeLoginObserver:self];

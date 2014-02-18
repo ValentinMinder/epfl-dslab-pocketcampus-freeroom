@@ -54,6 +54,8 @@ extern NSString* const kAuthSessionIdPCConfigKey;
  * Same as sharedInstanceToRetain, but once called AuthenticationController
  * becomes a singleton and is thus never released, which is ok as widely
  * used throught PocketCampus.
+ * IMPORTANT: you MUST use this instead of sharedInstanceToRetain
+ * when using new-style authentication (addLoginObserver:...)
  */
 + (instancetype)sharedInstance;
 

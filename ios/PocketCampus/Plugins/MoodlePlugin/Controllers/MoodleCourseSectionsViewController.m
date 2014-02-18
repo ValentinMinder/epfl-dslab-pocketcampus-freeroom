@@ -653,6 +653,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 - (void)dealloc
 {
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self.moodleService removeMoodleResourceObserver:self];
     [self.moodleService cancelOperationsForDelegate:self];
     [self.searchQueue cancelAllOperations];

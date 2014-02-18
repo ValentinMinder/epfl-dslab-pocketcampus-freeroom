@@ -31,6 +31,8 @@
 
 NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
 
+static NSString* kDeleteAuthSessionAtInitBoolKey = @"AuthenticationDeleteAuthSessionAtInit";
+
 #pragma mark - PCLoginObserver implementation
 
 @implementation PCLoginObserver
@@ -83,6 +85,10 @@ static AuthenticationController* instanceStrong __strong = nil;
 
 #pragma mark - Init
 
++ (void)initialize {
+    [self.class deleteAuthSessionIdIfNecessary];
+}
+
 - (id)init
 {
     @synchronized(self) {
@@ -128,8 +134,20 @@ static AuthenticationController* instanceStrong __strong = nil;
     return @"Authentication";
 }
 
-- (NSString*)localizedStringForKey:(NSString*)key {
-    return NSLocalizedStringFromTable(key, [[self class] identifierName], @"");
++ (void)initObservers {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            NSNumber* delayed = notification.userInfo[kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
+            if ([delayed boolValue]) {
+                CLSNSLog(@"-> Authentication received %@ notification delayed", kAuthenticationLogoutNotification);
+                [[PCConfig defaults] setBool:YES forKey:kDeleteAuthSessionAtInitBoolKey];
+            } else {
+                CLSNSLog(@"-> Authentication received %@ notification. Deleting auth sessionId.", kAuthenticationLogoutNotification);
+                [self deleteAuthSessionId];
+            }
+        }];
+    });
 }
 
 #pragma mark - Standard authentication
@@ -163,6 +181,9 @@ static AuthenticationController* instanceStrong __strong = nil;
 #pragma mark - New-style authentication
 
 - (void)addLoginObserver:(id)observer success:(VoidBlock)success userCancelled:(VoidBlock)userCancelled failure:(VoidBlock)failure {
+    if (!instanceStrong) {
+        [NSException raise:@"Illegal use" format:@"you must use [AuthenticationController sharedInstance] instead of [AuthenticationController sharedInstanceToRetain] to be able to use addLoginObserver:..."];
+    }
     @synchronized(self) {
         PCLoginObserver* loginObserver = [[PCLoginObserver alloc] init];
         loginObserver.observer = observer;
@@ -251,14 +272,14 @@ static AuthenticationController* instanceStrong __strong = nil;
 - (void)getAuthSessionIdWithToken:(NSString*)tequilaToken didReturn:(AuthSessionResponse*)response {
     switch (response.statusCode) {
         case AuthStatusCode_OK:
-            [self saveAuthSessionId:response.sessionId];
+            [self.class saveAuthSessionId:response.sessionId];
             [self cleanAndNotifySuccessToObservers];
             break;
         case AuthStatusCode_NETWORK_ERROR:
             [self cleanAndNotifyFailureToObservers];
             break;
         case AuthStatusCode_INVALID_SESSION:
-            [self deleteAuthSessionId];
+            [self.class deleteAuthSessionId];
             [self cleanAndNotifyFailureToObservers];
             break;
         default:
@@ -297,7 +318,16 @@ static AuthenticationController* instanceStrong __strong = nil;
 #pragma mark - SessionId persistence
 #pragma mark Private
 
-- (void)saveAuthSessionId:(NSString*)sessionId {
++ (void)deleteAuthSessionIdIfNecessary {
+    if ([[PCConfig defaults] boolForKey:kDeleteAuthSessionAtInitBoolKey]) {
+        CLSNSLog(@"-> Delayed logout notification on Authentication now applied : deleting auth sessionId");
+        [self deleteAuthSessionId];
+        [[PCConfig defaults] setBool:NO forKey:kDeleteAuthSessionAtInitBoolKey];
+        [[PCConfig defaults] synchronize];
+    }
+}
+
++ (void)saveAuthSessionId:(NSString*)sessionId {
     [PCUtils throwExceptionIfObject:sessionId notKindOfClass:[NSString class]];
     if (!sessionId) {
         [self deleteAuthSessionId];
@@ -307,7 +337,7 @@ static AuthenticationController* instanceStrong __strong = nil;
     [[PCConfig defaults] synchronize];
 }
 
-- (void)deleteAuthSessionId {
++ (void)deleteAuthSessionId {
     [[PCConfig defaults] removeObjectForKey:kAuthSessionIdPCConfigKey];
     [[PCConfig defaults] synchronize];
 }
@@ -316,6 +346,10 @@ static AuthenticationController* instanceStrong __strong = nil;
 
 - (void)dealloc
 {
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
     @synchronized(self) {
         instance = nil;
         instanceStrong = nil;

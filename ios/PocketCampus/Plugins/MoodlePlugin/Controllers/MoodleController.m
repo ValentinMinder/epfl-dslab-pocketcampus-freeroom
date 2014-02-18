@@ -94,9 +94,12 @@ static MoodleController* instance __weak = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            [[MoodleService sharedInstanceToRetain] deleteAllDownloadedResources]; //removing all downloaded Moodle files
-            [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"moodle"];
-            [[MainController publicController] requestLeavePlugin:@"Moodle"];
+            NSNumber* delayed = notification.userInfo[kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
+            if (![delayed boolValue]) {
+                [[MoodleService sharedInstanceToRetain] deleteAllDownloadedResources]; //removing all downloaded Moodle files
+                [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"moodle"];
+                [[MainController publicController] requestLeavePlugin:@"Moodle"];
+            }
         }];
     });
 }

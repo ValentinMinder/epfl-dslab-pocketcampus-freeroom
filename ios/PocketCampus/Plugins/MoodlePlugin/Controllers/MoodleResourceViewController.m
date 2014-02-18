@@ -458,6 +458,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)dealloc
 {
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self removeSplitViewControllerObserver];
     [self.hideNavbarTimer invalidate];
     [self.moodleService cancelOperationsForDelegate:self];
