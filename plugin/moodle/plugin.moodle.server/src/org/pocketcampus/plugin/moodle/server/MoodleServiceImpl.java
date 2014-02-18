@@ -98,12 +98,18 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 			}
 			protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 				String gaspar = PocketCampusServer.authGetUserGasparFromReq(req);
-				if(gaspar == null) return;
+				if(gaspar == null) {
+					resp.setStatus(407);
+					return;
+				}
 				
 				String action = req.getParameter(Constants.MOODLE_RAW_ACTION_KEY);
 				if(Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action)) {
 					String fp = req.getParameter(Constants.MOODLE_RAW_FILE_PATH);
-					if(fp == null) return;
+					if(fp == null) {
+						resp.setStatus(405);
+						return;
+					}
 					
 					fp = StringUtils.getSubstringBetween(fp, "pluginfile.php", "?");
 					//http://moodle.epfl.ch/webservice/pluginfile.php/1525234/mod_resource/content/4/hwk2_sol.pdf?wstoken=9a00f999e5d329b417a1e578ac489b68
