@@ -94,4 +94,11 @@
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate;
 - (void)cancelAllOperations;
 
+/*
+ * Returns a URL request such that the url will be served
+ * proxied through the PocketCampus server. This method appends
+ * the required parameters to the request.
+ */
+- (NSMutableURLRequest*)pcProxiedRequestForURL:(NSURL*)url;
+
 @end

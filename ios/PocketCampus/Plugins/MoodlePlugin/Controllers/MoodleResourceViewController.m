@@ -309,7 +309,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)startMoodleResourceDownload {
     
-    VoidBlock successBlock = ^{
+    /*VoidBlock successBlock = ^{
         self.centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
         self.centerMessageLabel.hidden = NO;
         self.progressView.hidden = NO;
@@ -330,7 +330,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         } failureBlock:^{
             [self serviceConnectionToServerFailed];
         }];
-    }
+    }*/
 }
 
 - (void)loadDownloadedMoodleResourceInWebView {
@@ -375,8 +375,15 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     } else if (statusCode == 303 || statusCode == 407) {
         //mans bad cookie
         self.progressView.progress = 0.0;
-        [self.moodleService deleteSession];
-        [self startMoodleResourceDownload];
+        __weak __typeof(self) weakSelf = self;
+        [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+            [weakSelf startMoodleResourceDownload];
+        } userCancelled:^{
+            [weakSelf serviceConnectionToServerFailed];
+        } failure:^{
+            [weakSelf serviceConnectionToServerFailed];
+        }];
+        
     } else { //other unkown error
         [self serviceConnectionToServerFailed];
     }

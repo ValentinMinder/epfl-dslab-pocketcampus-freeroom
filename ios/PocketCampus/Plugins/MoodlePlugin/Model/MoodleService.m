@@ -78,7 +78,6 @@ static MoodleService* instance __weak = nil;
 
 @interface MoodleService ()
 
-@property (nonatomic, strong) MoodleSession* session;
 @property (strong) NSMutableDictionary* resourcesObserversForResourceKey; //key: [self keyForMoodleResource:] value: NSArray of MoodleResourceObserver
 @property (nonatomic, strong) NSMutableSet* favoriteMoodleResourcesURLs; //set of NSString
 
@@ -116,32 +115,6 @@ static MoodleService* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
-}
-
-#pragma mark - Session
-
-- (MoodleRequest*)createMoodleRequestWithCourseId:(int)courseId {
-    SessionId* sessionId = [[SessionId alloc] initWithTos:TypeOfService_SERVICE_MOODLE pocketCampusSessionId:nil moodleCookie:[self lastSession].moodleCookie camiproCookie:nil isaCookie:nil];
-    MoodleRequest* request = [[MoodleRequest alloc] initWithISessionId:sessionId iLanguage:[PCUtils userLanguageCode] iCourseId:courseId];
-    return request;
-}
-
-- (MoodleSession*)lastSession {
-    if (self.session) {
-        return self.session;
-    }
-    self.session = (MoodleSession*)[PCObjectArchiver objectForKey:kMoodleSessionKey andPluginName:@"moodle"];
-    return self.session;
-}
-
-- (BOOL)saveSession:(MoodleSession*)session {
-    self.session = session;
-    return [PCObjectArchiver saveObject:session forKey:kMoodleSessionKey andPluginName:@"moodle"];
-}
-
-- (BOOL)deleteSession {
-    self.session = nil;
-    return [PCObjectArchiver saveObject:nil forKey:kMoodleSessionKey andPluginName:@"moodle"];
 }
 
 #pragma mark - Resources favorites and file management
@@ -266,51 +239,22 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 
 #pragma mark - Service methods
 
-- (void)getTequilaTokenForMoodleDelegate:(id)delegate {
+- (void)getCoursesListWithDelegate:(id<MoodleServiceDelegate>)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getTequilaTokenForMoodle);
-    operation.delegateDidReturnSelector = @selector(getTequilaTokenForMoodleDidReturn:);
-    operation.delegateDidFailSelector = @selector(getTequilaTokenForMoodleFailed);
+    operation.serviceClientSelector = @selector(getCoursesListAPI:);
+    operation.delegateDidReturnSelector = @selector(getCoursesListDidReturn:);
+    operation.delegateDidFailSelector = @selector(getCoursesListFailed);
+    [operation addObjectArgument:@"dummy"];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }
 
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate {
+- (void)getCoursesSectionsForCourseId:(NSString*)courseId delegate:(id<MoodleServiceDelegate>)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getMoodleSession:);
-    operation.delegateDidReturnSelector = @selector(getSessionIdForServiceWithTequilaKey:didReturn:);
-    operation.delegateDidFailSelector = @selector(getSessionIdForServiceFailedForTequilaKey:);
-    [operation addObjectArgument:tequilaKey];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-- (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getCoursesList:);
-    operation.delegateDidReturnSelector = @selector(getCoursesList:didReturn:);
-    operation.delegateDidFailSelector = @selector(getCoursesListFailed:);
-    [operation addObjectArgument:aMoodleRequest];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-- (void)getEventsList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getEventsList:);
-    operation.delegateDidReturnSelector = @selector(getEventsList:didReturn:);
-    operation.delegateDidFailSelector = @selector(getEventsListFailed:);
-    [operation addObjectArgument:aMoodleRequest];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-- (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstanceWithCustomTimeoutInterval:90.0] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getCourseSections:);
-    operation.delegateDidReturnSelector = @selector(getCourseSections:didReturn:);
-    operation.delegateDidFailSelector = @selector(getCourseSectionsFailed:);
-    [operation addObjectArgument:aMoodleRequest];
+    operation.serviceClientSelector = @selector(getCourseSectionsAPI:);
+    operation.delegateDidReturnSelector = @selector(getCourseSectionsForCourseId:didReturn:);
+    operation.delegateDidFailSelector = @selector(getCourseSectionsFailedForCourseId:);
+    [operation addObjectArgument:courseId];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }
@@ -423,8 +367,9 @@ static NSString* const kSectionsListReplyForCourseIdWithFormat = @"sectionsListR
     __weak __typeof(delegate) weakDelegate = delegate;
     NSString* localPath = [self localPathForMoodleResource:moodleResource createIntermediateDirectories:YES];
     NSURL* localURL = [NSURL fileURLWithPath:localPath];
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:moodleResource.iUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:kFetchMoodleResourceTimeoutSeconds];
-    [request addValue:[self lastSession].moodleCookie forHTTPHeaderField:@"Cookie"];
+    NSMutableURLRequest* request = [self pcProxiedRequestForURL:[NSURL URLWithString:moodleResource.iUrl]];
+    request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
+    request.timeoutInterval = kFetchMoodleResourceTimeoutSeconds; 
     NSURLSessionDownloadTask* downloadTask = [self.resourcesDownloadSessionManager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
         return localURL;
     } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {

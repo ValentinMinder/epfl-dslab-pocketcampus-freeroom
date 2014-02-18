@@ -33,14 +33,11 @@
 
 #import "PCObjectArchiver.h"
 
-#import "AuthenticationController.h"
-
 #import "MoodleService.h"
 
-@interface MoodleController ()<UISplitViewControllerDelegate, AuthenticationCallbackDelegate, MoodleServiceDelegate>
+@interface MoodleController ()<UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) MoodleService* moodleService;
-@property (nonatomic, strong) TequilaToken* tequilaToken;
 
 @end
 
@@ -48,17 +45,15 @@
 
 static MoodleController* instance __weak = nil;
 
-static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
+#pragma mark - Init
 
-- (id)init
-{
+- (id)init {
     @synchronized(self) {
         if (instance) {
             @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MoodleController cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
         }
         self = [super init];
         if (self) {
-            [[self class] deleteSessionIfNecessary];
             MoodleCoursesListViewController* coursesListViewController = [[MoodleCoursesListViewController alloc] init];
             
             if ([PCUtils isIdiomPad]) {
@@ -95,102 +90,15 @@ static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     }
 }
 
-+ (void)deleteSessionIfNecessary {
-    NSNumber* deleteSession = (NSNumber*)[PCObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
-    if (deleteSession && [deleteSession boolValue]) {
-        CLSNSLog(@"-> Delayed logout notification on Moodle now applied : deleting sessionId");
-        [[MoodleService sharedInstanceToRetain] deleteSession];
-        [PCObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
-    }
-}
-
 + (void)initObservers {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            NSNumber* delayed = notification.userInfo[kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
-            if ([delayed boolValue]) {
-                CLSNSLog(@"-> Moodle received %@ notification delayed", kAuthenticationLogoutNotification);
-                [PCObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
-            } else {
-                CLSNSLog(@"-> Moodle received %@ notification", kAuthenticationLogoutNotification);
-                MoodleService* moodleService = [MoodleService sharedInstanceToRetain];
-                [moodleService deleteSession]; //removing stored session
-                [moodleService deleteAllDownloadedResources]; //removing all downloaded Moodle files
-                moodleService = nil;
-                [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"moodle"];
-                [[MainController publicController] requestLeavePlugin:@"Moodle"];
-            }
+            [[MoodleService sharedInstanceToRetain] deleteAllDownloadedResources]; //removing all downloaded Moodle files
+            [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"moodle"];
+            [[MainController publicController] requestLeavePlugin:@"Moodle"];
         }];
     });
-}
-
-#pragma mark - PluginControllerAuthentified
-
-- (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock
-      userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
-    
-    [super addLoginObserver:observer successBlock:successBlock userCancelledBlock:userCancelledblock failureBlock:failureBlock];
-    if (!super.authenticationStarted) {
-        super.authenticationStarted = YES;
-        self.moodleService = [MoodleService sharedInstanceToRetain];
-        [self.moodleService getTequilaTokenForMoodleDelegate:self];
-    }
-}
-
-- (void)removeLoginObserver:(id)observer {
-    [super removeLoginObserver:observer];
-    if ([self.loginObservers count] == 0) {
-        [self.moodleService cancelOperationsForDelegate:self]; //abandon login attempt if no more observer interested
-    }
-}
-
-#pragma mark - MoodleServiceDelegate
-
-- (void)getTequilaTokenForMoodleDidReturn:(TequilaToken *)tequilaKey {
-    self.tequilaToken = tequilaKey;
-    if (self.mainSplitViewController) {
-        [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.mainSplitViewController delegate:self];
-    } else {
-        [self.authController authToken:tequilaKey.iTequilaKey presentationViewController:self.mainNavigationController delegate:self];
-    }
-}
-
-- (void)getTequilaTokenForMoodleFailed {
-    [self cleanAndNotifyFailureToObservers];
-}
-
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)aTequilaKey didReturn:(MoodleSession *)session {
-    [self.moodleService saveSession:session];
-    [self cleanAndNotifySuccessToObservers];
-}
-
-- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken *)aTequilaKey {
-    [self cleanAndNotifyFailureToObservers];
-}
-
-- (void)serviceConnectionToServerFailed {
-    [super cleanAndNotifyConnectionToServerTimedOutToObservers];
-}
-
-#pragma mark - AuthenticationCallbackDelegate
-
-- (void)authenticationSucceeded {
-    if (!self.tequilaToken) {
-        CLSNSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
-        return;
-    }
-    [self.moodleService getSessionIdForServiceWithTequilaKey:self.tequilaToken delegate:self];;
-}
-
-- (void)userCancelledAuthentication {
-    [self.moodleService cancelOperationsForDelegate:self];
-    [self.moodleService deleteSession];
-    [self cleanAndNotifyUserCancelledToObservers];
-}
-
-- (void)invalidToken {
-    [self.moodleService getTequilaTokenForMoodleDelegate:self]; //restart to get new token
 }
 
 #pragma mark - PluginControllerProtocol
@@ -216,8 +124,6 @@ static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (void)dealloc
 {
-    [self.moodleService cancelOperationsForDelegate:self];
-    [[self class] deleteSessionIfNecessary];
     @synchronized(self) {
         instance = nil;
     }

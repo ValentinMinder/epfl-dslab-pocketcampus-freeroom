@@ -48,6 +48,22 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 
 @end
 
+#pragma mark - MoodleServiceDelegate definition
+
+@protocol MoodleServiceDelegate <ServiceDelegate>
+
+@optional
+
+- (void)getCoursesListDidReturn:(CoursesListReply*)reply;
+- (void)getCoursesListFailed;
+- (void)getCourseSectionsForCourseId:(NSString*)courseId didReturn:(SectionsListReply*)reply;
+- (void)getCourseSectionsFailedForCourseId:(NSString*)courseId;
+
+- (void)downloadOfMoodleResource:(MoodleResource*)moodleResource didFinish:(NSURL*)localFileURL;
+- (void)downloadFailedForMoodleResource:(MoodleResource*)moodleResource responseStatusCode:(int)statusCode;
+
+@end
+
 #pragma mark - MoodleService definition
 
 /*
@@ -64,13 +80,6 @@ extern NSString* const kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey;
 
 @interface MoodleService : Service<ServiceProtocol>
 
-#pragma mark - Session
-
-- (MoodleRequest*)createMoodleRequestWithCourseId:(int)courseId; //pass courseId = 0 to ignore it
-- (MoodleSession*)lastSession;
-- (BOOL)saveSession:(MoodleSession*)session;
-- (BOOL)deleteSession;
-
 #pragma mark - Resources favorites and file management
 
 - (void)addFavoriteMoodleResource:(MoodleResource*)moodleResource;
@@ -85,11 +94,13 @@ extern NSString* const kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey;
 
 #pragma mark - Service methods
 
-- (void)getTequilaTokenForMoodleDelegate:(id)delegate;
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate;
-- (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
-- (void)getEventsList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
-- (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
+/*
+ - (CoursesListReply *) getCoursesListAPI: (NSString *) dummy;  // throws TException
+ - (SectionsListReply *) getCourseSectionsAPI: (NSString *) courseId;  // throws TException
+ */
+
+- (void)getCoursesListWithDelegate:(id<MoodleServiceDelegate>)delegate;
+- (void)getCoursesSectionsForCourseId:(NSString*)courseId delegate:(id<MoodleServiceDelegate>)delegate;
 
 #pragma mark - Saved elements
 
@@ -108,27 +119,5 @@ extern NSString* const kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey;
 
 - (void)downloadMoodleResource:(MoodleResource*)moodleResource progressView:(UIProgressView*)progressView delegate:(id)delegate;
 - (void)cancelDownloadOfMoodleResourceForDelegate:(id)delegate;
-
-@end
-
-#pragma mark - MoodleServiceDelegate definition
-
-@protocol MoodleServiceDelegate <ServiceDelegate>
-
-@optional
-- (void)getTequilaTokenForMoodleDidReturn:(TequilaToken*)tequilaKey;
-- (void)getTequilaTokenForMoodleFailed;
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)aTequilaKey didReturn:(MoodleSession*)aSessionId;
-- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)aTequilaKey;
-
-- (void)getCoursesList:(MoodleRequest*)aMoodleRequest didReturn:(CoursesListReply*)coursesListReply;
-- (void)getCoursesListFailed:(MoodleRequest*)aMoodleRequest;
-- (void)getEventsList:(MoodleRequest*)aMoodleRequest didReturn:(EventsListReply*)eventsListReply;
-- (void)getEventsListFailed:(MoodleRequest*)aMoodleRequest;
-- (void)getCourseSections:(MoodleRequest*)aMoodleRequest didReturn:(SectionsListReply*)sectionsListReply;
-- (void)getCourseSectionsFailed:(MoodleRequest*)aMoodleRequest;
-
-- (void)downloadOfMoodleResource:(MoodleResource*)moodleResource didFinish:(NSURL*)localFileURL;
-- (void)downloadFailedForMoodleResource:(MoodleResource*)moodleResource responseStatusCode:(int)statusCode;
 
 @end
