@@ -41,7 +41,7 @@
 
 #import "AuthenticationService.h"
 
-@interface CamiproController ()<CamiproServiceDelegate, AuthenticationCallbackDelegate>
+@interface CamiproController ()<CamiproServiceDelegate, AuthenticationDelegate>
 
 @property (nonatomic, strong) CamiproService* camiproService;
 @property (nonatomic, strong) TequilaToken* tequilaToken;

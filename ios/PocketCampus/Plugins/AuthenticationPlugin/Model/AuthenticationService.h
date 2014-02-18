@@ -41,11 +41,30 @@ extern NSString* const kAuthenticationTequilaCookieName;
 extern NSString* const kAuthenticationLogoutNotification;
 extern NSString* const kAuthenticationLogoutNotificationDelayedBoolUserInfoKey;
 
+#pragma mark - AuthenticationServiceDelegate definition
+
+@protocol AuthenticationServiceDelegate <ServiceDelegate>
+
+@optional
+
+- (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie*)tequilaCookie;
+- (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason;
+- (void)authenticateDidSucceedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie;
+- (void)authenticateFailedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie;
+
+#pragma mark - Service methods delegation
+
+- (void)getAuthTequilaTokenDidReturn:(AuthTokenResponse*)response;
+- (void)getAuthTequilaTokenFailed;
+- (void)getAuthSessionIdWithToken:(NSString*)tequilaToken didReturn:(AuthSessionResponse*)response;
+- (void)getAuthSessionIdFailedForToken:(NSString*)tequilaToken;
+
+@end
+
+#pragma mark - AuthenticationService definition
+
 @interface AuthenticationService : Service<ServiceProtocol>
 
-/*
- authentication service methods
- */
 
 + (BOOL)isLoggedIn;
 + (NSString*)savedUsername;
@@ -60,20 +79,18 @@ extern NSString* const kAuthenticationLogoutNotificationDelayedBoolUserInfoKey;
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate;
 - (void)authenticateToken:(NSString*)token withTequilaCookie:(NSHTTPCookie*)tequilaCookie delegate:(id)delegate;
 
-@end
+#pragma mark - Service methods
 
-@protocol AuthenticationServiceDelegate <ServiceDelegate>
+/*- (AuthTokenResponse *) getAuthTequilaToken;  // throws TException
+ - (AuthSessionResponse *) getAuthSessionId: (NSString *) tequilaToken;  // throws TException*/
 
-@optional
-- (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie*)tequilaCookie;
-- (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason;
+- (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate;
+- (void)getAuthSessionIdWithTequilaToken:(NSString*)tequilaToken delegate:(id<AuthenticationServiceDelegate>)delegate;
 
-- (void)authenticateDidSucceedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie;
-- (void)authenticateFailedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie;
 
 @end
 
-@protocol AuthenticationCallbackDelegate
+@protocol AuthenticationDelegate
 
 @required
 - (void)authenticationSucceeded;

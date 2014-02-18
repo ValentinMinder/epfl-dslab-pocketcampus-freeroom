@@ -198,7 +198,9 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
         TTransportException* texception = [exception isKindOfClass:TTransportException.class] ? (TTransportException*)exception : nil;
         if (!texception) {
             ServiceRequestLog(self, @"EXCEPTION caught in main : %@, %@", exception.name, exception.reason);
-            [self finish];
+            [self indicateFailureToDelegateCompletion:^{
+                [self finish];
+            }];
             return;
         }
         
@@ -229,22 +231,9 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
             return;
         }
         
-        if (![self.delegate respondsToSelector:self.delegateDidFailSelector]) {
-            ServiceRequestLog(self, @"operation failed but delegate does not respond to selector %@. Ignoring", NSStringFromSelector(self.delegateDidFailSelector));
+        [self indicateFailureToDelegateCompletion:^{
             [self finish];
-            return;
-        }
-        
-        NSInvocation* delegateFailInv = [NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidFailSelector]];
-        [delegateFailInv setSelector:self.delegateDidFailSelector];
-        [self setWrappedArgumentsForInvocation:delegateFailInv];
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            if (self.delegate) {
-                [delegateFailInv invokeWithTarget:self.delegate];
-            }
-        });
-        [self finish];
-        
+        }];
     }
 }
 
@@ -440,6 +429,32 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
             [self.delegate serviceConnectionToServerFailed];
         }
     });
+    if (completion) {
+        completion();
+    }
+}
+
+- (void)indicateFailureToDelegateCompletion:(VoidBlock)completion {
+    if (![self.delegate respondsToSelector:self.delegateDidFailSelector]) {
+        ServiceRequestLog(self, @"operation failed but delegate does not respond to selector %@. Ignoring.", NSStringFromSelector(self.delegateDidFailSelector));
+        if (completion) {
+            completion();
+        }
+        return;
+    }
+    @try {
+        NSInvocation* delegateFailInv = [NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidFailSelector]];
+        [delegateFailInv setSelector:self.delegateDidFailSelector];
+        [self setWrappedArgumentsForInvocation:delegateFailInv];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            if (self.delegate) {
+                [delegateFailInv invokeWithTarget:self.delegate];
+            }
+        });
+    }
+    @catch (NSException *exception) {
+        ServiceRequestLog(self, @"EXCEPTION while trying to indicate failure to delegate");
+    }
     if (completion) {
         completion();
     }

@@ -221,6 +221,27 @@ static AuthenticationService* instance __weak = nil;
     [self.operationQueue addOperation:operation];
 }
 
+- (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getAuthTequilaToken);
+    operation.delegateDidReturnSelector = @selector(getAuthTequilaTokenDidReturn:);
+    operation.delegateDidFailSelector = @selector(getAuthTequilaTokenFailed);
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
+- (void)getAuthSessionIdWithTequilaToken:(NSString*)tequilaToken delegate:(id<AuthenticationServiceDelegate>)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getAuthSessionId:);
+    operation.delegateDidReturnSelector = @selector(getAuthSessionIdWithToken:didReturn:);
+    operation.delegateDidFailSelector = @selector(getAuthSessionIdFailedForToken:);
+    [operation addObjectArgument:tequilaToken];
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
+#pragma mark - Dealloc
+
 - (void)dealloc
 {
     @synchronized(self) {

@@ -153,7 +153,7 @@
 }
 
 - (SessionId*)buildSessionIdFromCamiproSession:(CamiproSession*)camiproSession {
-    return [[SessionId alloc] initWithTos:TypeOfService_SERVICE_CAMIPRO pocketCampusSessionId:nil moodleCookie:nil camiproCookie:camiproSession.camiproCookie isaCookie:nil];
+    return [[SessionId alloc] initWithTos:0 camiproCookie:camiproSession.camiproCookie];
 }
 
 - (void)startBalanceAndTransactionsRequest {

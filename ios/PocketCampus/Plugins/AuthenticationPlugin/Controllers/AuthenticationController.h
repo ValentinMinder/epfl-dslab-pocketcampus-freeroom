@@ -33,6 +33,8 @@
 
 #import "AuthenticationViewController.h"
 
+extern NSString* const kAuthSessionIdPCConfigKey;
+
 @class AuthenticationViewController;
 
 @interface PCLoginObserver : NSObject
@@ -47,16 +49,53 @@
 
 @interface AuthenticationController : PluginController<PluginControllerProtocol>
 
+
 /*
- * Use this method to authenticate a tequila token. Caller is called back
- * by implementing methods of protocol AuthenticationCallbackDelegate
- * defined in AuthenticationService.h
+ * Same as sharedInstanceToRetain, but once called AuthenticationController
+ * becomes a singleton and is thus never released, which is ok as widely
+ * used throught PocketCampus.
+ */
++ (instancetype)sharedInstance;
+
+/*
+ * ######### Standard authentication #########
+ * (for plugins that do NOT authenticate using PocketCampus server.
+ *  The plugin controller of these plugins can subclass PluginControllerAuthentified
+ *  to benefit from easy support of login observeration management).
+ *
+ * Use this method to authenticate a tequila token.
+ * Delegte MUST implement AuthenticateDelegate methods.
  * 
  * WARNING: this method cannot be called by multiple instances 
  * at the same time (1 delegate at a time). CRASH might occur if so.
  * This weakness should be corrected in future release by using
  * an observer pattern.
  */
-- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate;
+- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate;
+
+
+/*
+ * ######### New-style authentication #########
+ * (for services that authenticate using PocketCampus server).
+ *
+ * Starts authentication procedure to PocketCampus server if not done already
+ * and add observer to list of observers. On success, the PocketCampus session is
+ * renewed and stored in [PCConfig defaults] under key kAuthSessionIdPCConfigKey
+ * and all services that rely on PocketCampus authentication can start their
+ * requests (they should access this key directly though, ServiceRequest does it
+ * automatically). Observers are removed on success/userCancelled/failure.
+ * 
+ * This method ALWAYS starts the authentication process for the first observer,
+ * i.e. that does check whether a PocketCampus session already exists. It is
+ * responsability of plugins to call it only when necessary.
+ */
+- (void)addLoginObserver:(id)observer success:(VoidBlock)success userCancelled:(VoidBlock)userCancelled failure:(VoidBlock)failure;
+
+/*
+ * Removes observer from list of observers.
+ * Does NOT cancel the authentication if currently in progress.
+ * (finishes silently).
+ */
+- (void)removeLoginObserver:(id)observer;
 
 @end
