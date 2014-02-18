@@ -92,7 +92,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
         kVersionURI = versionURI;
     });
     if (raw) {
-        serviceName = [serviceName stringByAppendingString:@"-raw"];
+        serviceName = [@"raw-" stringByAppendingString:serviceName];
     }
     return [NSURL URLWithString:[kVersionURI stringByAppendingPathComponent:serviceName] relativeToURL:kServerURL];
 }
@@ -169,7 +169,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
     }
     NSString* pcAuthSessionid = [[PCConfig defaults] objectForKey:kAuthSessionIdPCConfigKey];
     if (pcAuthSessionid) {
-        [request setValue:pcAuthSessionid forHTTPHeaderField:@" X-PC-AUTH-PCSESSID"];
+        [request setValue:pcAuthSessionid forHTTPHeaderField:@"X-PC-AUTH-PCSESSID"];
     }
 }
 

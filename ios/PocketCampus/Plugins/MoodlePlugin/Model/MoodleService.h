@@ -54,8 +54,10 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 
 @optional
 
-- (void)getCoursesListDidReturn:(CoursesListReply*)reply;
-- (void)getCoursesListFailed;
+//dummy HAS to be there because of how delegate abstraction is built in ServiceRequest
+//simply ignore it
+- (void)getCoursesListForDummy:(NSString*)dummy didReturn:(CoursesListReply*)reply;
+- (void)getCoursesListFailedForDummy:(NSString*)dummy;
 - (void)getCourseSectionsForCourseId:(NSString*)courseId didReturn:(SectionsListReply*)reply;
 - (void)getCourseSectionsFailedForCourseId:(NSString*)courseId;
 

@@ -114,7 +114,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
 #pragma mark - MoodleServiceDelegate
 
-- (void)getCoursesListDidReturn:(CoursesListReply *)reply {
+- (void)getCoursesListForDummy:(NSString *)dummy didReturn:(CoursesListReply *)reply {
     switch (reply.iStatus) {
         case 200:
             self.courses = reply.iCourses;
@@ -142,14 +142,15 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
             [self.lgRefreshControl endRefreshing];
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
+            break;
         }
         default:
-            [self getCoursesListFailed];
+            [self getCoursesListFailedForDummy:dummy];
             break;
     }
 }
 
-- (void)getCoursesListFailed {
+- (void)getCoursesListFailedForDummy:(NSString *)dummy {
     [self error];
 }
 

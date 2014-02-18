@@ -168,7 +168,13 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     if (![moodleResource isKindOfClass:[MoodleResource class]]) {
         @throw [NSException exceptionWithName:@"bad moodleResource argument" reason:@"moodleResource is not kind of class MoodleResource" userInfo:nil];
     }
-    NSString* urlString = moodleResource.iUrl;
+    
+    //Trick to remove url query paramters if any (we don't want them for the filename)
+    //http://stackoverflow.com/a/4272070/1423774
+    NSURL* url = [NSURL URLWithString:moodleResource.iUrl];
+    url = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];
+    NSString* urlString = [url absoluteString];
+    
     NSRange nsr = [urlString rangeOfString:@"/file.php/"];
     if (nsr.location == NSNotFound) {
         nsr = [urlString rangeOfString:@"/resource.php/"];
@@ -242,8 +248,8 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 - (void)getCoursesListWithDelegate:(id<MoodleServiceDelegate>)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getCoursesListAPI:);
-    operation.delegateDidReturnSelector = @selector(getCoursesListDidReturn:);
-    operation.delegateDidFailSelector = @selector(getCoursesListFailed);
+    operation.delegateDidReturnSelector = @selector(getCoursesListForDummy:didReturn:);
+    operation.delegateDidFailSelector = @selector(getCoursesListFailedForDummy:);
     [operation addObjectArgument:@"dummy"];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
