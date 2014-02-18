@@ -27,7 +27,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
-import org.pocketcampus.plugin.moodle.common.MoodleConstants;
 import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl.NodeJson.ItemJson;
 import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl.SectionNode.ModuleNode;
 import org.pocketcampus.plugin.moodle.shared.TequilaToken;
@@ -37,6 +36,7 @@ import org.pocketcampus.platform.sdk.shared.utils.Cookie;
 import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
 import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
 import org.pocketcampus.platform.sdk.shared.utils.URLBuilder;
+import org.pocketcampus.plugin.moodle.shared.Constants;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
 import org.pocketcampus.plugin.moodle.shared.EventsListReply;
 import org.pocketcampus.plugin.moodle.shared.MoodleAssignment;
@@ -100,9 +100,9 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 				String gaspar = PocketCampusServer.authGetUserGasparFromReq(req);
 				if(gaspar == null) return;
 				
-				String action = req.getParameter(MoodleConstants.MOODLE_RAW_ACTION_KEY);
-				if(MoodleConstants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action)) {
-					String fp = req.getParameter(MoodleConstants.MOODLE_RAW_FILE_PATH);
+				String action = req.getParameter(Constants.MOODLE_RAW_ACTION_KEY);
+				if(Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action)) {
+					String fp = req.getParameter(Constants.MOODLE_RAW_FILE_PATH);
 					if(fp == null) return;
 					
 					fp = StringUtils.getSubstringBetween(fp, "pluginfile.php", "?");
