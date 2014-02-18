@@ -28,7 +28,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.markupartist.android.widget.ActionBar.Action;
 
@@ -52,7 +51,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	private StandardTitledLayout mLayout;
 	private ListView fillerView;
 	
-	private Integer courseId;
+	private String courseId;
 	private String courseTitle;
 
 	private int current;
@@ -80,7 +79,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 
 		current = -1;
 		
-		addActionToActionBar(new RefreshAction(), 0);
+		//addActionToActionBar(new RefreshAction(), 0);
 		addActionToActionBar(new ToggleShowAllAction(), 0);
 	}
 
@@ -94,12 +93,13 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 		if(aIntent != null) {
 			Bundle aExtras = aIntent.getExtras();
 			if(aExtras != null && aExtras.containsKey("courseId")) {
-				courseId = aExtras.getInt("courseId");
+				courseId = aExtras.getString("courseId");
 				courseTitle = aExtras.getString("courseTitle");
 			}
 		}
 		
-		mController.refreshSectionsList(false, courseId);
+		mController.refreshCourseSections(this, courseId, true);
+
 		//updateDisplay(); // might contain data for a different course
 	}
 
@@ -122,10 +122,6 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 
 	@Override
 	public void coursesListUpdated() {
-	}
-
-	@Override
-	public void eventsListUpdated() {
 	}
 
 	@Override
@@ -184,31 +180,26 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 				} else {
 					/*Toast.makeText(getApplicationContext(), getResources().getString(
 							R.string.moodle_file_downloading), Toast.LENGTH_SHORT).show();*/
-					mController.fetchFileResource(resourceInfo.value);
+					mController.fetchFileResource(MoodleCurrentWeekView.this, resourceInfo.value);
 				}
 			}
 		});
-		fillerView.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Intent i = new Intent(MoodleCurrentWeekView.this, MoodleCourseSectionsView.class);
-				i.putExtra("courseId", courseId);
-				i.putExtra("courseTitle", courseTitle);
-				MoodleCurrentWeekView.this.startActivity(i);
-				return true;
-			}
-		});
+//		fillerView.setOnItemLongClickListener(new OnItemLongClickListener() {
+//			@Override
+//			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//				Intent i = new Intent(MoodleCurrentWeekView.this, MoodleCourseSectionsView.class);
+//				i.putExtra("courseId", courseId);
+//				i.putExtra("courseTitle", courseTitle);
+//				MoodleCurrentWeekView.this.startActivity(i);
+//				return true;
+//			}
+//		});
 		
 		mLayout.hideTitle();
 		mLayout.removeFillerView();
 		mLayout.addFillerView(fillerView);
 	}
 
-	@Override
-	public void gotMoodleCookie() {
-		mController.refreshSectionsList(true, courseId);
-	}
-	
 	/*private void updateDisplay() {
 		sectionsListUpdated();
 	}*/
@@ -242,6 +233,28 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 		/*Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
 	}
+	
+
+	@Override
+	public void networkErrorCacheExists() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_connection_no_cache_yes), Toast.LENGTH_SHORT).show();
+		mController.refreshCourseSections(this, courseId, true);
+		
+	}
+
+	@Override
+	public void notLoggedIn() {
+		MoodleController.pingAuthPlugin(this);
+		
+	}
+
+	@Override
+	public void authenticationFinished() {
+		mController.refreshCourseSections(this, courseId, false);
+		
+	}
+
 
 	public static void openFile(Context c, File file) {
 		Uri uri = Uri.fromFile(file);
@@ -336,31 +349,31 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	 * @author Amer <amer.chamseddine@epfl.ch>
 	 * 
 	 */
-	private class RefreshAction implements Action {
-
-		/**
-		 * The constructor which doesn't do anything
-		 */
-		RefreshAction() {
-		}
-
-		/**
-		 * Returns the resource for the icon of the button in the action bar
-		 */
-		@Override
-		public int getDrawable() {
-			return R.drawable.sdk_action_bar_refresh;
-		}
-
-		/**
-		 * Defines what is to be performed when the user clicks on the button in
-		 * the action bar
-		 */
-		@Override
-		public void performAction(View view) {
-			mController.refreshSectionsList(true, courseId);
-		}
-	}
+//	private class RefreshAction implements Action {
+//
+//		/**
+//		 * The constructor which doesn't do anything
+//		 */
+//		RefreshAction() {
+//		}
+//
+//		/**
+//		 * Returns the resource for the icon of the button in the action bar
+//		 */
+//		@Override
+//		public int getDrawable() {
+//			return R.drawable.sdk_action_bar_refresh;
+//		}
+//
+//		/**
+//		 * Defines what is to be performed when the user clicks on the button in
+//		 * the action bar
+//		 */
+//		@Override
+//		public void performAction(View view) {
+//			mController.refreshSectionsList(true, courseId);
+//		}
+//	}
 
 	/**
 	 * ToggleShowAllAction

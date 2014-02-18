@@ -91,10 +91,6 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 	}
 
 	@Override
-	public void eventsListUpdated() {
-	}
-
-	@Override
 	public void sectionsListUpdated() {
 		List<MoodleSection> lms = mModel.getSections();
 		if(lms == null)
@@ -131,7 +127,7 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 				} else {
 					Toast.makeText(getApplicationContext(), getResources().getString(
 							R.string.moodle_file_downloading), Toast.LENGTH_SHORT).show();
-					mController.fetchFileResource(resourceInfo.value);
+					mController.fetchFileResource(MoodleCourseSectionResourcesView.this, resourceInfo.value);
 				}
 			}
 		});
@@ -141,10 +137,6 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 		mLayout.addFillerView(lv);
 	}
 
-	@Override
-	public void gotMoodleCookie() {
-	}
-	
 	private void updateDisplay() {
 		sectionsListUpdated();
 	}
@@ -177,6 +169,18 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 		MoodleCurrentWeekView.openFile(this, localFile);
 		/*Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
+	}
+
+	@Override
+	public void networkErrorCacheExists() {
+	}
+
+	@Override
+	public void notLoggedIn() {
+	}
+	
+	@Override
+	public void authenticationFinished() {
 	}
 
 

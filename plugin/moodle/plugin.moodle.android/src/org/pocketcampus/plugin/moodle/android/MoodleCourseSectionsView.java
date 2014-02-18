@@ -26,9 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.markupartist.android.widget.ActionBar;
-import com.markupartist.android.widget.ActionBar.Action;
-
 /**
  * MoodleMainView - Main view that shows Moodle courses.
  * 
@@ -48,7 +45,7 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	
 	private StandardTitledLayout mLayout;
 	
-	private Integer courseId;
+	private String courseId;
 	private String courseTitle;
 	
 	@Override
@@ -72,11 +69,11 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		setContentView(mLayout);
 		mLayout.hideTitle();
 
-		ActionBar a = getActionBar();
-		if (a != null) {
-			RefreshAction refresh = new RefreshAction();
-			a.addAction(refresh, 0);
-		}
+//		ActionBar a = getActionBar();
+//		if (a != null) {
+//			RefreshAction refresh = new RefreshAction();
+//			a.addAction(refresh, 0);
+//		}
 	}
 
 	/**
@@ -89,21 +86,17 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		if(aIntent != null) {
 			Bundle aExtras = aIntent.getExtras();
 			if(aExtras != null && aExtras.containsKey("courseId")) {
-				courseId = aExtras.getInt("courseId");
+				courseId = aExtras.getString("courseId");
 				courseTitle = aExtras.getString("courseTitle");
 			}
 		}
 		
-		mController.refreshSectionsList(false, courseId);
+		mController.refreshCourseSections(this, courseId, false);
 		//updateDisplay(); // might contain data for a different course
 	}
 
 	@Override
 	public void coursesListUpdated() {
-	}
-
-	@Override
-	public void eventsListUpdated() {
 	}
 
 	@Override
@@ -147,11 +140,6 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		mLayout.addFillerView(lv);
 	}
 
-	@Override
-	public void gotMoodleCookie() {
-		mController.refreshSectionsList(true, courseId);
-	}
-	
 	/*private void updateDisplay() {
 		sectionsListUpdated();
 	}*/
@@ -183,6 +171,18 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	public void downloadComplete(File localFile) {
 		/*Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
+	}
+
+	@Override
+	public void networkErrorCacheExists() {
+	}
+
+	@Override
+	public void notLoggedIn() {
+	}
+	
+	@Override
+	public void authenticationFinished() {
 	}
 
 
@@ -253,32 +253,32 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	 * @author Amer <amer.chamseddine@epfl.ch>
 	 * 
 	 */
-	private class RefreshAction implements Action {
-
-		/**
-		 * The constructor which doesn't do anything
-		 */
-		RefreshAction() {
-		}
-
-		/**
-		 * Returns the resource for the icon of the button in the action bar
-		 */
-		@Override
-		public int getDrawable() {
-			return R.drawable.sdk_action_bar_refresh;
-		}
-
-		/**
-		 * Defines what is to be performed when the user clicks on the button in
-		 * the action bar
-		 */
-		@Override
-		public void performAction(View view) {
-			//Tracker
-			Tracker.getInstance().trackPageView("moodle/sections/refresh");
-			mController.refreshSectionsList(true, courseId);
-		}
-	}
+//	private class RefreshAction implements Action {
+//
+//		/**
+//		 * The constructor which doesn't do anything
+//		 */
+//		RefreshAction() {
+//		}
+//
+//		/**
+//		 * Returns the resource for the icon of the button in the action bar
+//		 */
+//		@Override
+//		public int getDrawable() {
+//			return R.drawable.sdk_action_bar_refresh;
+//		}
+//
+//		/**
+//		 * Defines what is to be performed when the user clicks on the button in
+//		 * the action bar
+//		 */
+//		@Override
+//		public void performAction(View view) {
+//			//Tracker
+//			Tracker.getInstance().trackPageView("moodle/sections/refresh");
+//			mController.refreshSectionsList(true, courseId);
+//		}
+//	}
 
 }

@@ -3,14 +3,21 @@ package org.pocketcampus.plugin.moodle.android.req;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.moodle.android.MoodleController;
-import org.pocketcampus.plugin.moodle.android.MoodleModel.ResourceCookieComplex;
-import org.pocketcampus.plugin.moodle.android.MoodleModel;
+import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
+import org.pocketcampus.plugin.moodle.shared.Constants;
 
 /**
  * FetchMoodleResourceRequest
@@ -21,44 +28,50 @@ import org.pocketcampus.plugin.moodle.android.MoodleModel;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class FetchMoodleResourceRequest extends Request<MoodleController, DefaultHttpClient, ResourceCookieComplex, Integer> {
+public class FetchMoodleResourceRequest extends Request<MoodleController, DefaultHttpClient, String, Integer> {
 	
-	File localFile;
+	private File localFile;
+	private IMoodleView caller;
+	private HttpPost post;
+	
+	public FetchMoodleResourceRequest(IMoodleView caller, HttpPost post) {
+		this.caller = caller;
+		this.post = post;
+	}
 	
 	@Override
-	protected Integer runInBackground(DefaultHttpClient client, ResourceCookieComplex param) throws Exception {
-		HttpGet get = new HttpGet(param.resource);
-		get.addHeader("Cookie", param.cookie);
-		HttpResponse resp = client.execute(get);
+	protected Integer runInBackground(DefaultHttpClient client, String param) throws Exception {
+		List<NameValuePair> params = new LinkedList<NameValuePair>();
+		params.add(new BasicNameValuePair(Constants.MOODLE_RAW_ACTION_KEY, Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE));
+		params.add(new BasicNameValuePair(Constants.MOODLE_RAW_FILE_PATH, param));
+		post.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+		HttpResponse resp = client.execute(post);
 		InputStream in = resp.getEntity().getContent();
 		if(resp.getStatusLine().getStatusCode() != 200)
 			return resp.getStatusLine().getStatusCode();
-		localFile = new File(MoodleController.getLocalPath(param.resource));
+		localFile = new File(MoodleController.getLocalPath(param));
 		FileOutputStream fos = new FileOutputStream(localFile);
-		byte[] buffer = new byte[4096];
-		int length; 
-		while((length = in.read(buffer)) > 0) {
-			fos.write(buffer, 0, length);
-		}
-		fos.close();
+		IOUtils.copy(in, fos);
 		return 200;
 	}
 
 	@Override
 	protected void onResult(MoodleController controller, Integer result) {
-		MoodleModel am = ((MoodleModel) controller.getModel());
 		if(result == 200) {
-			am.getListenersToNotify().downloadComplete(localFile);
-		} else if(result / 100 == 3) {
-			controller.notLoggedIn();
+			caller.downloadComplete(localFile);
+			
+		} else if(result == 407) {
+			caller.notLoggedIn();
+			
 		} else {
-			am.getListenersToNotify().moodleServersDown();
+			caller.moodleServersDown();
+			
 		}
 	}
 	
 	@Override
 	protected void onError(MoodleController controller, Exception e) {
-		controller.getModel().notifyNetworkError();
+		caller.networkErrorHappened();
 		if(localFile != null && localFile.exists())
 			localFile.delete();
 		e.printStackTrace();
