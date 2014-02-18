@@ -69,7 +69,7 @@ NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
 
 @property (nonatomic, strong) AuthenticationViewController* gasparViewController;
 @property (nonatomic, strong) AuthenticationService* authService;
-@property (nonatomic, strong) NSMutableArray* loginObservers;
+@property (nonatomic, strong) NSMutableSet* loginObservers;
 
 @property (nonatomic, strong) NSString* tequilaToken;
 
@@ -171,7 +171,7 @@ static AuthenticationController* instanceStrong __strong = nil;
         loginObserver.userCancelledBlock = userCancelled;
         loginObserver.failureBlock = failure;
         if (!self.loginObservers) {
-            self.loginObservers = [NSMutableArray array];
+            self.loginObservers = [NSMutableSet set];
         }
         [self.loginObservers addObject:loginObserver];
         if (!self.authService) {
@@ -186,6 +186,7 @@ static AuthenticationController* instanceStrong __strong = nil;
         for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
             if (loginObserver.observer == observer) {
                 [self.loginObservers removeObject:loginObserver];
+                break;
             }
         }
     }

@@ -364,12 +364,28 @@ static NSString* const kSectionsListReplyForCourseIdWithFormat = @"sectionsListR
 }
 
 - (void)downloadMoodleResource:(MoodleResource*)moodleResource progressView:(UIProgressView*)progressView delegate:(id)delegate {
+    
     __weak __typeof(delegate) weakDelegate = delegate;
     NSString* localPath = [self localPathForMoodleResource:moodleResource createIntermediateDirectories:YES];
     NSURL* localURL = [NSURL fileURLWithPath:localPath];
-    NSMutableURLRequest* request = [self pcProxiedRequestForURL:[NSURL URLWithString:moodleResource.iUrl]];
-    request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
-    request.timeoutInterval = kFetchMoodleResourceTimeoutSeconds; 
+    
+    NSMutableURLRequest* mRequest = [self pcProxiedRequest];
+    mRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
+    mRequest.timeoutInterval = kFetchMoodleResourceTimeoutSeconds;
+    mRequest.HTTPMethod = @"POST";
+    NSError* error = nil;
+    NSDictionary* parameters = @{
+                                 [moodleConstants MOODLE_RAW_ACTION_KEY]:[moodleConstants MOODLE_RAW_ACTION_DOWNLOAD_FILE],
+                                 [moodleConstants MOODLE_RAW_FILE_PATH]:moodleResource.iUrl
+                                 };
+    NSURLRequest* request = [[AFHTTPRequestSerializer serializer] requestBySerializingRequest:mRequest withParameters:parameters error:&error];
+    if (error) {
+        if ([delegate respondsToSelector:@selector(downloadFailedForMoodleResource:responseStatusCode:)]) {
+            [delegate downloadFailedForMoodleResource:moodleResource responseStatusCode:-1];
+        }
+        return;
+    }
+    
     NSURLSessionDownloadTask* downloadTask = [self.resourcesDownloadSessionManager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
         return localURL;
     } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {

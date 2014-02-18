@@ -398,4 +398,7 @@ enum MoodleEventType {
 
 @interface moodleConstants : NSObject {
 }
++ (NSString *) MOODLE_RAW_ACTION_KEY;
++ (NSString *) MOODLE_RAW_ACTION_DOWNLOAD_FILE;
++ (NSString *) MOODLE_RAW_FILE_PATH;
 @end

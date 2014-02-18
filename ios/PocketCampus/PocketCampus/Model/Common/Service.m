@@ -153,10 +153,9 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
     return [[TBinaryProtocol alloc] initWithTransport:client strictRead:YES strictWrite:YES];
 }
 
-- (NSMutableURLRequest*)pcProxiedRequestForURL:(NSURL*)url {
+- (NSMutableURLRequest*)pcProxiedRequest {
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:self.serviceRawURL];
     [self addSpecificHeadersToRequest:request];
-#warning TODO add POST parameter of url
     return request;
 }
 

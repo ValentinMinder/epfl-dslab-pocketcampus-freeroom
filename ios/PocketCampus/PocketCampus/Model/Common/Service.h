@@ -95,10 +95,11 @@
 - (void)cancelAllOperations;
 
 /*
- * Returns a URL request such that the url will be served
- * proxied through the PocketCampus server. This method appends
- * the required parameters to the request.
+ * Returns a URL request pointing to raw service
+ * You can then add parameters to this request, corresponding
+ * to the action you want to execute.
+ * WARNING: you must NOT remove the request headers.
  */
-- (NSMutableURLRequest*)pcProxiedRequestForURL:(NSURL*)url;
+- (NSMutableURLRequest*)pcProxiedRequest;
 
 @end

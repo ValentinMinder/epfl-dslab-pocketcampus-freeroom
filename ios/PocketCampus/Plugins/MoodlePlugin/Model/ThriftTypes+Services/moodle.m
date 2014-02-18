@@ -14,9 +14,21 @@
 
 #import "moodle.h"
 
+static NSString * MOODLE_RAW_ACTION_KEY = @"action";
+static NSString * MOODLE_RAW_ACTION_DOWNLOAD_FILE = @"download_file";
+static NSString * MOODLE_RAW_FILE_PATH = @"file_path";
 
 @implementation moodleConstants
 + (void) initialize {
+}
++ (NSString *) MOODLE_RAW_ACTION_KEY{
+  return MOODLE_RAW_ACTION_KEY;
+}
++ (NSString *) MOODLE_RAW_ACTION_DOWNLOAD_FILE{
+  return MOODLE_RAW_ACTION_DOWNLOAD_FILE;
+}
++ (NSString *) MOODLE_RAW_FILE_PATH{
+  return MOODLE_RAW_FILE_PATH;
 }
 @end
 
