@@ -1,6 +1,11 @@
 namespace java org.pocketcampus.plugin.moodle.shared
 namespace csharp org.pocketcampus.plugin.moodle.shared
 
+const string MOODLE_RAW_ACTION_KEY = "action";
+const string MOODLE_RAW_ACTION_DOWNLOAD_FILE = "download_file";
+const string MOODLE_RAW_FILE_PATH = "file_path";
+
+
 struct TequilaToken {
 	1: required string iTequilaKey;
 	2: optional string loginCookie;
