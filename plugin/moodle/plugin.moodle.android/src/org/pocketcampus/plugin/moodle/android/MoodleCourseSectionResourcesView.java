@@ -117,7 +117,7 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				ResourceInfo resourceInfo = ((ResourceInfo) arg0.getItemAtPosition(arg2));
-				File resourceFile = new File(MoodleController.getLocalPath(resourceInfo.value));
+				File resourceFile = new File(MoodleController.getLocalPath(resourceInfo.value, false));
 				if(resourceFile.exists()) {
 					Uri uri = Uri.fromFile(resourceFile);
 					Intent viewFileIntent = new Intent(Intent.ACTION_VIEW);

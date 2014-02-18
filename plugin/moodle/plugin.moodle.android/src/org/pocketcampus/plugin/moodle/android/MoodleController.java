@@ -92,6 +92,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 			Bundle extras = aIntent.getExtras();
 			if(extras != null && extras.getInt("selfauthok") != 0) {
 				Log.v("DEBUG", "MoodleController::onStartCommand auth succ");
+				mClient = (Iface) getClient(new Client.Factory(), mPluginName); // need to recreate thrift client coz old one will not have the sessId http header attached
 				mModel.getListenersToNotify().authenticationFinished();
 			} else if(extras != null && extras.getInt("usercancelled") != 0) {
 				Log.v("DEBUG", "MoodleController::onStartCommand user cancelled");
@@ -105,6 +106,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 			Log.v("DEBUG", "MoodleController::onStartCommand logout");
 			RequestCache.invalidateCache(this, CoursesListRequest.class.getCanonicalName());
 			RequestCache.invalidateCache(this, SectionsListRequest.class.getCanonicalName());
+			deleteRecursive(new File(getMoodleFilesPath()));
 		}
 		stopSelf();
 		return START_NOT_STICKY;
@@ -115,13 +117,13 @@ public class MoodleController extends PluginController implements IMoodleControl
 		return mModel;
 	}
 	
-	public static String getLocalPath(String fileName) {
+	public static String getLocalPath(String fileName, boolean prepareFolder) {
 		final String filePHP = "/pluginfile.php/";
 		fileName = fileName.substring(fileName.indexOf(filePHP) + filePHP.length());
-		String extStr = Environment.getExternalStorageDirectory().getAbsolutePath();
-		fileName = extStr + "/" + PC_ANDR_CFG.getString("SDCARD_FILES_PATH") + "/moodle/" + fileName;
+		fileName = getMoodleFilesPath() + fileName;
 		File fileDir = new File(fileName.substring(0, fileName.lastIndexOf("/")));
-		fileDir.mkdirs();
+		if(prepareFolder)
+			fileDir.mkdirs();
 		return fileName;
 	}
 
@@ -143,6 +145,20 @@ public class MoodleController extends PluginController implements IMoodleControl
 		authIntent.putExtra("callbackurl", "pocketcampus://moodle.plugin.pocketcampus.org/tokenauthenticated");
 		authIntent.putExtra("selfauth", true);
 		context.startService(authIntent);
+	}
+	
+	public static void deleteRecursive(File fileOrDirectory) {
+	    if (fileOrDirectory.isDirectory())
+	        for (File child : fileOrDirectory.listFiles())
+	            deleteRecursive(child);
+
+	    fileOrDirectory.delete();
+	}
+	
+	public static String getMoodleFilesPath() {
+		String extStr = Environment.getExternalStorageDirectory().getAbsolutePath();
+		return  extStr + "/" + PC_ANDR_CFG.getString("SDCARD_FILES_PATH") + "/moodle/files/";
+
 	}
 	
 }

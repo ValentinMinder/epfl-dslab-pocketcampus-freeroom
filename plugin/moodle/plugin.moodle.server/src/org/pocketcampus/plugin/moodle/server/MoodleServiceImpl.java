@@ -105,6 +105,7 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 				
 				String action = req.getParameter(Constants.MOODLE_RAW_ACTION_KEY);
 				if(Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action)) {
+					// TODO check if requested file belongs to course registered by user 
 					String fp = req.getParameter(Constants.MOODLE_RAW_FILE_PATH);
 					if(fp == null) {
 						resp.setStatus(405);
@@ -499,6 +500,7 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 			return new SectionsListReply(405);
 		String gaspar = PocketCampusServer.authGetUserGaspar(courseId);
 		if(gaspar == null){
+			// TODO check if user is enrolled in this course
 			return new SectionsListReply(407);
 		}
 		Gson gson = new Gson();
