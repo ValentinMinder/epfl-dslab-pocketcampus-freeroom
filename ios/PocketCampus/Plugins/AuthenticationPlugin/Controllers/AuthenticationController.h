@@ -33,8 +33,6 @@
 
 #import "AuthenticationViewController.h"
 
-extern NSString* const kAuthSessionIdPCConfigKey;
-
 @class AuthenticationViewController;
 
 @interface PCLoginObserver : NSObject
@@ -75,16 +73,15 @@ extern NSString* const kAuthSessionIdPCConfigKey;
  */
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate;
 
-
 /*
  * ######### New-style authentication #########
  * (for services that authenticate using PocketCampus server).
  *
  * Starts authentication procedure to PocketCampus server if not done already
  * and add observer to list of observers. On success, the PocketCampus session is
- * renewed and stored in [PCConfig defaults] under key kAuthSessionIdPCConfigKey
- * and all services that rely on PocketCampus authentication can start their
- * requests (they should access this key directly though, ServiceRequest does it
+ * renewed and accessible via the property pocketCampusAuthSessionId.
+ * All services that rely on PocketCampus authentication can then start their
+ * requests (they should NOT access this property though, ServiceRequest does it
  * automatically). Observers are removed on success/userCancelled/failure.
  * 
  * This method ALWAYS starts the authentication process for the first observer,
@@ -99,5 +96,12 @@ extern NSString* const kAuthSessionIdPCConfigKey;
  * (finishes silently).
  */
 - (void)removeLoginObserver:(id)observer;
+
+/*
+ * Renewed when addLoginObserver:... authentication succeeds.
+ * You should though typically NOT access this property directly.
+ * ServiceRequest automatically attaches this session to all requests.
+ */
+@property (nonatomic, readonly) NSString* pocketCampusAuthSessionId;
 
 @end

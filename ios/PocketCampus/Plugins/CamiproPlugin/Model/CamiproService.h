@@ -45,11 +45,10 @@
  
 */
 
-/*
- * Use this property to store the camipro session
- * This property is persisted
- */
-@property (nonatomic,readwrite, strong) CamiproSession* camiproSession;
+
+- (CamiproSession*)camiproSession;
+- (void)setCamiproSession:(CamiproSession*)camipro persist:(BOOL)persist;
+- (void)deleteCamiproSession;
 
 - (void)getTequilaTokenForCamiproDelegate:(id)delegate;
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate;

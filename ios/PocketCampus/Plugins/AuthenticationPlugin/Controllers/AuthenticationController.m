@@ -29,10 +29,6 @@
 
 #import "AuthenticationController.h"
 
-NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
-
-static NSString* kDeleteAuthSessionAtInitBoolKey = @"AuthenticationDeleteAuthSessionAtInit";
-
 #pragma mark - PCLoginObserver implementation
 
 @implementation PCLoginObserver
@@ -67,6 +63,9 @@ static NSString* kDeleteAuthSessionAtInitBoolKey = @"AuthenticationDeleteAuthSes
 
 #pragma mark - AuthenticationController implementation
 
+static AuthenticationController* instance __weak = nil;
+static AuthenticationController* instanceStrong __strong = nil;
+
 @interface AuthenticationController ()<AuthenticationServiceDelegate, AuthenticationDelegate>
 
 @property (nonatomic, strong) AuthenticationViewController* gasparViewController;
@@ -75,19 +74,15 @@ static NSString* kDeleteAuthSessionAtInitBoolKey = @"AuthenticationDeleteAuthSes
 
 @property (nonatomic, strong) NSString* tequilaToken;
 
+@property (nonatomic) BOOL persistSession;
+
 @end
-
-static AuthenticationController* instance __weak = nil;
-
-static AuthenticationController* instanceStrong __strong = nil;
 
 @implementation AuthenticationController
 
-#pragma mark - Init
+@synthesize pocketCampusAuthSessionId = _pocketCampusAuthSessionId;
 
-+ (void)initialize {
-    [self.class deleteAuthSessionIdIfNecessary];
-}
+#pragma mark - Init
 
 - (id)init
 {
@@ -138,14 +133,8 @@ static AuthenticationController* instanceStrong __strong = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            NSNumber* delayed = notification.userInfo[kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
-            if ([delayed boolValue]) {
-                CLSNSLog(@"-> Authentication received %@ notification delayed", kAuthenticationLogoutNotification);
-                [[PCConfig defaults] setBool:YES forKey:kDeleteAuthSessionAtInitBoolKey];
-            } else {
-                CLSNSLog(@"-> Authentication received %@ notification. Deleting auth sessionId.", kAuthenticationLogoutNotification);
-                [self deleteAuthSessionId];
-            }
+            CLSNSLog(@"-> Authentication received %@ notification. Deleting auth sessionId.", kAuthenticationLogoutNotification);
+            [[AuthenticationController sharedInstance] deletePocketCampusAuthSessionId];
         }];
     });
 }
@@ -272,14 +261,14 @@ static AuthenticationController* instanceStrong __strong = nil;
 - (void)getAuthSessionIdWithToken:(NSString*)tequilaToken didReturn:(AuthSessionResponse*)response {
     switch (response.statusCode) {
         case AuthStatusCode_OK:
-            [self.class saveAuthSessionId:response.sessionId];
+            [self setPocketCampusAuthSessionId:response.sessionId persist:self.persistSession];
             [self cleanAndNotifySuccessToObservers];
             break;
         case AuthStatusCode_NETWORK_ERROR:
             [self cleanAndNotifyFailureToObservers];
             break;
         case AuthStatusCode_INVALID_SESSION:
-            [self.class deleteAuthSessionId];
+            [self deletePocketCampusAuthSessionId];
             [self cleanAndNotifyFailureToObservers];
             break;
         default:
@@ -298,12 +287,13 @@ static AuthenticationController* instanceStrong __strong = nil;
 
 #pragma mark - AuthenticationDelegate
 
-- (void)authenticationSucceeded {
+- (void)authenticationSucceededPersistSession:(BOOL)persistSession {
     if (!self.tequilaToken) {
         CLSNSLog(@"!! ERROR: authentication succeeded but no saved tequila token. Notifying failure to observers.");
         [self cleanAndNotifyFailureToObservers];
         return;
     }
+    self.persistSession = persistSession;
     [self.authService getAuthSessionIdWithTequilaToken:self.tequilaToken delegate:self];
 }
 
@@ -318,26 +308,31 @@ static AuthenticationController* instanceStrong __strong = nil;
 #pragma mark - SessionId persistence
 #pragma mark Private
 
-+ (void)deleteAuthSessionIdIfNecessary {
-    if ([[PCConfig defaults] boolForKey:kDeleteAuthSessionAtInitBoolKey]) {
-        CLSNSLog(@"-> Delayed logout notification on Authentication now applied : deleting auth sessionId");
-        [self deleteAuthSessionId];
-        [[PCConfig defaults] setBool:NO forKey:kDeleteAuthSessionAtInitBoolKey];
+static NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
+
+- (NSString*)pocketCampusAuthSessionId {
+    if (_pocketCampusAuthSessionId) {
+        return _pocketCampusAuthSessionId;
+    }
+    _pocketCampusAuthSessionId = [[PCConfig defaults] objectForKey:kAuthSessionIdPCConfigKey];
+    return _pocketCampusAuthSessionId;
+}
+
+- (void)setPocketCampusAuthSessionId:(NSString*)sessionId persist:(BOOL)persist {
+    if (sessionId) {
+        [PCUtils throwExceptionIfObject:sessionId notKindOfClass:[NSString class]];
+    }
+    _pocketCampusAuthSessionId = sessionId;
+    if (persist) {
+        [[PCConfig defaults] setObject:sessionId forKey:kAuthSessionIdPCConfigKey];
         [[PCConfig defaults] synchronize];
+    } else {
+        [self deletePocketCampusAuthSessionId];
     }
 }
 
-+ (void)saveAuthSessionId:(NSString*)sessionId {
-    [PCUtils throwExceptionIfObject:sessionId notKindOfClass:[NSString class]];
-    if (!sessionId) {
-        [self deleteAuthSessionId];
-        return;
-    }
-    [[PCConfig defaults] setObject:sessionId forKey:kAuthSessionIdPCConfigKey];
-    [[PCConfig defaults] synchronize];
-}
-
-+ (void)deleteAuthSessionId {
+- (void)deletePocketCampusAuthSessionId {
+    _pocketCampusAuthSessionId = nil;
     [[PCConfig defaults] removeObjectForKey:kAuthSessionIdPCConfigKey];
     [[PCConfig defaults] synchronize];
 }
@@ -352,7 +347,6 @@ static AuthenticationController* instanceStrong __strong = nil;
     @catch (NSException *exception) {}
     @synchronized(self) {
         instance = nil;
-        instanceStrong = nil;
     }
 #if __has_feature(objc_arc)
 #else

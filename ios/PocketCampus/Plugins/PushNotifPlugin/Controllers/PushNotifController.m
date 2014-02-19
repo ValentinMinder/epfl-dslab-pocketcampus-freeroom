@@ -26,12 +26,6 @@
  */
 
 
-
-
-
-
-
-
 #import "AuthenticationController.h"
 
 #import "PushNotifController.h"
@@ -40,9 +34,11 @@
 
 #import "AppDelegate.h"
 
-#import "PCUtils.h"
-
 static NSMutableDictionary* observerInstanceForNSNotificationCenterObserver __strong = nil;
+
+@interface PushNotifController ()<UIAlertViewDelegate>
+
+@end
 
 @implementation PushNotifDeviceRegistrationObserver
 
@@ -78,6 +74,8 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 
 @implementation PushNotifController
 
+#pragma mark - Init
+
 - (id)init
 {
     @synchronized(self) {
@@ -96,6 +94,8 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     }
 }
 
+#pragma mark - PluginController
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -109,7 +109,9 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     }
 }
 
-+ (void)initObservers {
+//new push-notif system makes that plugins are responsible for user-to-device mapping, so no
+//obvious relation with authentication logout. Might need to keep token even after logout.
+/*+ (void)initObservers {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
@@ -117,17 +119,21 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
                 CLSNSLog(@"-> PushNotif received %@ notification. No saved device token to unregister, returning.", kAuthenticationLogoutNotification);
                 return;
             }
-            NSNumber* delayed = notification.userInfo[kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
-            if ([delayed boolValue]) {
-                CLSNSLog(@"-> PushNotif received %@ notification delayed", kAuthenticationLogoutNotification);
-                CLSNSLog(@"WARNING: delayed logout is not supported in PushNotif. Unregistration for push notifs will be immediate. Users that login with a non-persitent state (not saving credentials) will thus not receive notifications.");
-            } else {
-                CLSNSLog(@"-> PushNotif received %@ notification. Now unregistrating from push notifs...", kAuthenticationLogoutNotification);
-            }
+            CLSNSLog(@"-> PushNotif received %@ notification. Now unregistrating from push notifs...", kAuthenticationLogoutNotification);
             [self unregisterAfterLogout];
         }];
     });
+}*/
+
++ (NSString*)localizedName {
+    return NSLocalizedStringFromTable(@"PluginName", @"PushNotifPlugin", @"");
 }
+
++ (NSString*)identifierName {
+    return @"PushNotif";
+}
+
+#pragma mark - Public
 
 + (NSString*)notificationsDeviceToken {
     if (!notificationsDeviceTokenCache) {
@@ -237,7 +243,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
 
 #pragma mark - Private utils
 
-+ (void)unregisterAfterLogout {
+/*+ (void)unregisterAfterLogout {
     [[UIApplication sharedApplication] unregisterForRemoteNotifications]; //even though doc says it should be used in rare occasions only, we really want to prevent newly logged in user from receiving old notifications. This is a good way (if unregistraton to server fails).
     NSString* tokenToUnregister = [self notificationsDeviceToken];
     if (tokenToUnregister) {
@@ -264,7 +270,7 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
         CLSNSLog(@"-> PushNotif: starting unregistration request to server (token: %@).....", tokenToUnregister);
         [pushNotifService deleteMappingWithDummy:@"dummy" delegate:unregistrationDelegate];
     }
-}
+}*/
 
 - (void)observeAndStartDeviceRegistrationProcessOnOS {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationSuccessNotification:) name:kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification object:nil];
@@ -298,19 +304,14 @@ static PushNotifDeviceRegistrationObserver* unregistrationDelegate __strong = ni
     notificationsDeviceTokenCache = nil;
 }
 
-#pragma mark - PluginController overrides
-
-+ (NSString*)localizedName {
-    return NSLocalizedStringFromTable(@"PluginName", @"PushNotifPlugin", @"");
-}
-
-+ (NSString*)identifierName {
-    return @"PushNotif";
-}
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
     [pushNotifService cancelOperationsForDelegate:unregistrationDelegate];
     @synchronized(self) {
         instance = nil;

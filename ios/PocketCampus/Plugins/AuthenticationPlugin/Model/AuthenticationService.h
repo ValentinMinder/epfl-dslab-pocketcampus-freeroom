@@ -39,7 +39,6 @@ typedef enum {
 
 extern NSString* const kAuthenticationTequilaCookieName;
 extern NSString* const kAuthenticationLogoutNotification;
-extern NSString* const kAuthenticationLogoutNotificationDelayedBoolUserInfoKey;
 
 #pragma mark - AuthenticationServiceDelegate definition
 
@@ -72,9 +71,7 @@ extern NSString* const kAuthenticationLogoutNotificationDelayedBoolUserInfoKey;
 + (NSString*)savedPasswordForUsername:(NSString*)username;
 + (BOOL)savePassword:(NSString*)password forUsername:(NSString*)username;
 + (BOOL)deleteSavedPasswordForUsername:(NSString*)username;
-+ (NSNumber*)savePasswordSwitchWasOn;
-+ (BOOL)savePasswordSwitchState:(BOOL)isOn;
-+ (void)enqueueLogoutNotificationDelayed:(BOOL)delayed; //set delayed to YES to inform the receiver of the notif. that it should logout only when user has finished (leaving plugin)
++ (void)enqueueLogoutNotification;
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate;
 - (void)authenticateToken:(NSString*)token withTequilaCookie:(NSHTTPCookie*)tequilaCookie delegate:(id)delegate;
@@ -93,7 +90,7 @@ extern NSString* const kAuthenticationLogoutNotificationDelayedBoolUserInfoKey;
 @protocol AuthenticationDelegate
 
 @required
-- (void)authenticationSucceeded;
+- (void)authenticationSucceededPersistSession:(BOOL)persistSession;
 - (void)userCancelledAuthentication;
 - (void)invalidToken;
 

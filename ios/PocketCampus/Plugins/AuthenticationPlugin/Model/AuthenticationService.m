@@ -39,7 +39,6 @@
 
 NSString* const kAuthenticationTequilaCookieName = @"tequila_key";
 NSString* const kAuthenticationLogoutNotification = @"kAuthenticationLogoutNotification";
-NSString* const kAuthenticationLogoutNotificationDelayedBoolUserInfoKey = @"kAuthenticationLogoutNotificationDelayedBoolUserInfoKey";
 
 static NSString* const kTequilaLoginURL = @"https://tequila.epfl.ch/cgi-bin/tequila/login";
 static NSString* const kTequilaAuthURL = @"https://tequila.epfl.ch/cgi-bin/tequila/requestauth";
@@ -47,7 +46,7 @@ static NSString* const kTequilaAuthURL = @"https://tequila.epfl.ch/cgi-bin/tequi
 static NSString* const kLastUsedUseramesKey = @"lastUsedUsernames";
 static NSString* const kKeychainServiceKey = @"PCGasparPassword";
 static NSString* const kSavedUsernameKey = @"savedUsername";
-static NSString* const kSavePasswordSwitchStateKey = @"savePasswordSwitch";
+//static NSString* const kSavePasswordSwitchStateKey = @"savePasswordSwitch";
 
 static AuthenticationService* instance __weak = nil;
 
@@ -112,16 +111,16 @@ static AuthenticationService* instance __weak = nil;
     return [SSKeychain deletePasswordForService:kKeychainServiceKey account:username];
 }
 
-+ (NSNumber*)savePasswordSwitchWasOn {
+/*+ (NSNumber*)savePasswordSwitchWasOn {
     return (NSNumber*)[PCObjectArchiver objectForKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
 }
 
 + (BOOL)savePasswordSwitchState:(BOOL)isOn {
     return [PCObjectArchiver saveObject:[NSNumber numberWithBool:isOn] forKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
-}
+}*/
 
-+ (void)enqueueLogoutNotificationDelayed:(BOOL)delayed {
-    NSNotification* notification = [NSNotification notificationWithName:kAuthenticationLogoutNotification object:nil userInfo:@{kAuthenticationLogoutNotificationDelayedBoolUserInfoKey:[NSNumber numberWithBool:delayed]}];
++ (void)enqueueLogoutNotification {
+    NSNotification* notification = [NSNotification notificationWithName:kAuthenticationLogoutNotification object:nil userInfo:nil];
     [[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostASAP coalesceMask:NSNotificationCoalescingOnName forModes:nil]; //NSNotificationCoalescingOnName so that only 1 notif is added
 }
 

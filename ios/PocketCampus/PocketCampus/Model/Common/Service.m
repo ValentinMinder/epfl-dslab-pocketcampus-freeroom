@@ -162,12 +162,12 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 #pragma mark - Private utils
 
 - (void)addSpecificHeadersToRequest:(NSMutableURLRequest*)request {
-    [request setValue:@"IOS" forHTTPHeaderField:@"X-PC-PUSHNOTIF-OS"];
     NSString* deviceToken = [PushNotifController notificationsDeviceToken];
     if (deviceToken) {
+        [request setValue:@"IOS" forHTTPHeaderField:@"X-PC-PUSHNOTIF-OS"];
         [request setValue:deviceToken forHTTPHeaderField:@"X-PC-PUSHNOTIF-TOKEN"];
     }
-    NSString* pcAuthSessionid = [[PCConfig defaults] objectForKey:kAuthSessionIdPCConfigKey];
+    NSString* pcAuthSessionid = [[AuthenticationController sharedInstance] pocketCampusAuthSessionId];
     if (pcAuthSessionid) {
         [request setValue:pcAuthSessionid forHTTPHeaderField:@"X-PC-AUTH-PCSESSID"];
     }
