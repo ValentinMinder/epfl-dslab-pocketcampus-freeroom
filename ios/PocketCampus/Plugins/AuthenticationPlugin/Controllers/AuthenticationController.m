@@ -325,10 +325,10 @@ static NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
     _pocketCampusAuthSessionId = sessionId;
     if (persist) {
         [[PCConfig defaults] setObject:sessionId forKey:kAuthSessionIdPCConfigKey];
-        [[PCConfig defaults] synchronize];
     } else {
-        [self deletePocketCampusAuthSessionId];
+        [[PCConfig defaults] removeObjectForKey:kAuthSessionIdPCConfigKey];
     }
+    [[PCConfig defaults] synchronize];
 }
 
 - (void)deletePocketCampusAuthSessionId {
