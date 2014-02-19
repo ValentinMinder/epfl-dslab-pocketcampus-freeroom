@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.platform.sdk.shared.CachingProxy;
-import org.pocketcampus.platform.sdk.shared.CachingProxy.CacheValidator;
-import org.pocketcampus.platform.sdk.shared.HttpClientImpl;
+import org.pocketcampus.platform.sdk.server.CachingProxy;
+import org.pocketcampus.platform.sdk.server.CachingProxy.CacheValidator;
+import org.pocketcampus.platform.sdk.server.HttpClientImpl;
 import org.pocketcampus.plugin.food.shared.*;
 import org.joda.time.*;
 

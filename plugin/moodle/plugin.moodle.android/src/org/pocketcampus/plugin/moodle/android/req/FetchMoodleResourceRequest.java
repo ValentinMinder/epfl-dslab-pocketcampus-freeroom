@@ -49,7 +49,7 @@ public class FetchMoodleResourceRequest extends Request<MoodleController, Defaul
 		InputStream in = resp.getEntity().getContent();
 		if(resp.getStatusLine().getStatusCode() != 200)
 			return resp.getStatusLine().getStatusCode();
-		localFile = new File(MoodleController.getLocalPath(param));
+		localFile = new File(MoodleController.getLocalPath(param, true));
 		FileOutputStream fos = new FileOutputStream(localFile);
 		IOUtils.copy(in, fos);
 		return 200;

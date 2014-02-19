@@ -113,7 +113,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
         	int j = fillerView.getHeaderViewsCount();
 			for(int i = fillerView.getFirstVisiblePosition(); i <= fillerView.getLastVisiblePosition(); i++) {
 				String file = ((ResourceInfo) fillerView.getItemAtPosition(i)).value;
-		        if(file != null && new File(MoodleController.getLocalPath(file)).exists())
+		        if(file != null && new File(MoodleController.getLocalPath(file, false)).exists())
 		        	((TextView) fillerView.getChildAt(j).findViewById(R.id.moodle_course_resource_state)).setText("Saved");
 		        j++;
 			}
@@ -157,6 +157,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 			for(MoodleResource r : lmr) {
 				empty = false;
 				String basename = r.getIUrl();
+				basename = basename.split("[?]")[0];
 				//basename = basename.substring(basename.lastIndexOf("/") + 1);
 				einfos.add(new ResourceInfo(r.getIName(), basename, false));
 			}
@@ -174,7 +175,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 				ResourceInfo resourceInfo = ((ResourceInfo) arg0.getItemAtPosition(arg2));
 				if(resourceInfo.value == null)
 					return;
-				File resourceFile = new File(MoodleController.getLocalPath(resourceInfo.value));
+				File resourceFile = new File(MoodleController.getLocalPath(resourceInfo.value, false));
 				if(resourceFile.exists()) {
 					openFile(MoodleCurrentWeekView.this, resourceFile);
 				} else {
@@ -329,7 +330,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	        	tv.setVisibility(t.value == null ? View.GONE : View.VISIBLE);
 	        	
 		        tv = (TextView)v.findViewById(R.id.moodle_course_resource_state);
-	        	tv.setText(t.value != null && new File(MoodleController.getLocalPath(t.value)).exists() ? "Saved" : "");
+	        	tv.setText(t.value != null && new File(MoodleController.getLocalPath(t.value, false)).exists() ? "Saved" : "");
 	        	tv.setVisibility(t.value == null ? View.GONE : View.VISIBLE);
 	        }
 	        return v;
