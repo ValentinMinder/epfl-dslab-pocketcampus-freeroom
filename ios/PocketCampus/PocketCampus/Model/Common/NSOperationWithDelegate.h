@@ -26,19 +26,14 @@
  */
 
 
-
-
-
-
 //  Created by Loïc Gardiol on 08.12.13.
-
 
 
 @import Foundation;
 
 @interface NSOperationWithDelegate : NSOperation
 
-@property (weak) id delegate;
+@property (unsafe_unretained) id delegate;
 @property SEL delegateDidReturnSelector;
 @property SEL delegateDidFailSelector;
 
