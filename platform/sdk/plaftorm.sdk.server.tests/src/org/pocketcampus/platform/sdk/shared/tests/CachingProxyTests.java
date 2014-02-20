@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import org.pocketcampus.platform.sdk.shared.CachingProxy;
+import org.pocketcampus.platform.sdk.server.CachingProxy;
 
 import org.joda.time.*;
 
@@ -73,7 +73,7 @@ public class CachingProxyTests {
 	}
 
 	// This is a "manual" test
-	// Un-ignoe it, run it, and look at your task manager
+	// Un-ignore it, run it, and look at your task manager
 	// Memory usage should peak and then stay flat, not continually increase until it hits an OOM
 	@Test
 	@Ignore

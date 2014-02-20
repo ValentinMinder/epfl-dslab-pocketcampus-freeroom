@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.nio.charset.Charset;
 
-import org.pocketcampus.platform.sdk.shared.HttpClientImpl;
+import org.pocketcampus.platform.sdk.server.HttpClientImpl;
 
 /** 
  * Tests for HttpClientImpl.
