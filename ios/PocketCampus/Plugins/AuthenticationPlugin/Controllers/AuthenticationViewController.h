@@ -46,7 +46,7 @@ typedef enum {
 @interface AuthenticationViewController : UITableViewController
 
 
-@property (nonatomic, weak) id<AuthenticationCallbackDelegate> delegate;
+@property (nonatomic, weak) id<AuthenticationDelegate> delegate;
 @property (nonatomic, copy) NSString* token;
 
 @property (nonatomic) PresentationMode presentationMode;
@@ -56,7 +56,7 @@ typedef enum {
 
 + (NSString*)localizedTitle;
 
-- (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationCallbackDelegate>)delegate_; //Warning, should be called only if user/pass already stored and presentationMode is PresentationModeHidden
+- (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationDelegate>)delegate_; //Warning, should be called only if user/pass already stored and presentationMode is PresentationModeHidden
 - (void)focusOnInput;
 
 @end

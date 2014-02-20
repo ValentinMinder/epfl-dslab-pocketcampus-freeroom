@@ -53,6 +53,9 @@
 @property (nonatomic, strong) NSString* username;
 @property (nonatomic, strong) NSString* password;
 
+//Persisted property, reflects last value if savePasswordSwitch
+@property (nonatomic) BOOL savePassword;
+
 @end
 
 @implementation AuthenticationViewController
@@ -109,7 +112,7 @@
 
 #pragma mark - Public methods
 
-- (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationCallbackDelegate>)delegate_ {
+- (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationDelegate>)delegate_ {
     self.token = token_;
     if (!delegate_) {
         @throw [NSException exceptionWithName:@"askCredientialsForTypeOfService:delegate: bad delegate" reason:@"delegate cannot be nil" userInfo:nil];
@@ -146,11 +149,11 @@
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
             if ([(NSObject*)self.delegate respondsToSelector:@selector(userCancelledAuthentication)]) {
                 [(NSObject*)self.delegate performSelectorOnMainThread:@selector(userCancelledAuthentication) withObject:nil waitUntilDone:YES];
-                [AuthenticationService enqueueLogoutNotificationDelayed:NO];
+                [AuthenticationService enqueueLogoutNotification];
             }
         }];
     } else {
-        [AuthenticationService enqueueLogoutNotificationDelayed:NO];
+        [AuthenticationService enqueueLogoutNotification];
     }
 }
 
@@ -160,10 +163,44 @@
     }
 }
 
-#pragma mark - Listening
+#pragma mark - Save password switch
 
 - (void)savePasswordSwitchValueChanged {
-    [AuthenticationService savePasswordSwitchState:self.savePasswordSwitch.isOn];
+    self.savePassword = self.savePasswordSwitch.isOn;
+}
+
+static NSString* const kSavePasswordBoolKey = @"AuthenticationSavePassword";
+static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; //old key
+
+- (BOOL)savePassword {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        //check if transferred from PCObjectArchiver to PCConfig default
+        static NSString* const kAuthTransferedPasswordSwitchStateKey = @"AuthTransferedPasswordSwitchState";
+        if (![[PCConfig defaults] boolForKey:kAuthTransferedPasswordSwitchStateKey]) {
+            NSNumber* nsBool = (NSNumber*)[PCObjectArchiver objectForKey:kSavePasswordSwitchStateOldKey andPluginName:@"authentication"];
+            if (nsBool) {
+                [[PCConfig defaults] setBool:[nsBool boolValue] forKey:kSavePasswordBoolKey];
+            }
+            [[PCConfig defaults] setBool:YES forKey:kAuthTransferedPasswordSwitchStateKey];
+            [[PCConfig defaults] synchronize];
+        }
+    });
+    NSNumber* boolNb = [[PCConfig defaults] objectForKey:kSavePasswordBoolKey];
+    if (boolNb) {
+        return [boolNb boolValue];
+    }
+    return YES; //default if not specified yet
+}
+
+- (void)setSavePassword:(BOOL)savePassword {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        //delete old saved state if any
+        [PCObjectArchiver saveObject:nil forKey:kSavePasswordSwitchStateOldKey andPluginName:@"authentication"];
+    });
+    [[PCConfig defaults] setBool:savePassword forKey:kSavePasswordBoolKey];
+    [[PCConfig defaults] synchronize];
 }
 
 #pragma mark - Inputs things
@@ -238,11 +275,8 @@
 /* STEP 2 */
 
 - (void)authenticateDidSucceedForToken:(NSString *)token tequilaCookie:(NSHTTPCookie *)tequilaCookie {
-    if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceeded)]) {
-        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(authenticationSucceeded) withObject:nil waitUntilDone:YES];
-    }
-    if (self.presentationMode != PresentationModeTryHidden && (self.showSavePasswordSwitch && ![self.savePasswordSwitch isOn])) {
-        [AuthenticationService enqueueLogoutNotificationDelayed:YES];
+    if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceededPersistSession:)]) {
+        [self.delegate authenticationSucceededPersistSession:self.savePassword];
     }
     [self.loadingIndicator stopAnimating];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
@@ -306,7 +340,7 @@
             [self trackAction:@"LogOut"];
             [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
             [AuthenticationService saveUsername:nil];
-            [AuthenticationService enqueueLogoutNotificationDelayed:NO];
+            [AuthenticationService enqueueLogoutNotification];
             self.username = nil;
             self.password = nil;
             self.usernameCell = nil;
@@ -470,12 +504,7 @@
             cell.textLabel.text = NSLocalizedStringFromTable(@"SavePassword", @"AuthenticationPlugin", nil);
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             self.savePasswordSwitch = [[UISwitch alloc] init];
-            BOOL on = YES; //default
-            NSNumber* onNSNumber = [AuthenticationService savePasswordSwitchWasOn];
-            if (onNSNumber != nil && ![onNSNumber boolValue]) { //previously save state AND this state was off
-                on = NO;
-            }
-            self.savePasswordSwitch.on = on;
+            self.savePasswordSwitch.on = self.savePassword;
             [self.savePasswordSwitch addTarget:self action:@selector(savePasswordSwitchValueChanged) forControlEvents:UIControlEventValueChanged];
             cell.accessoryView = self.savePasswordSwitch;
             return cell;

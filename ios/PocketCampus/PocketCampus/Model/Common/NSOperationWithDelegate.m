@@ -26,12 +26,7 @@
  */
 
 
-
-
-
-
 //  Created by Loïc Gardiol on 08.12.13.
-
 
 
 #import "NSOperationWithDelegate.h"

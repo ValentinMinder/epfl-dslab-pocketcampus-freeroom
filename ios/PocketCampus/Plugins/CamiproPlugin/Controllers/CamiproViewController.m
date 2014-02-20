@@ -153,7 +153,7 @@
 }
 
 - (SessionId*)buildSessionIdFromCamiproSession:(CamiproSession*)camiproSession {
-    return [[SessionId alloc] initWithTos:TypeOfService_SERVICE_CAMIPRO pocketCampusSessionId:nil moodleCookie:nil camiproCookie:camiproSession.camiproCookie isaCookie:nil];
+    return [[SessionId alloc] initWithTos:0 camiproCookie:camiproSession.camiproCookie];
 }
 
 - (void)startBalanceAndTransactionsRequest {
@@ -217,7 +217,7 @@
     switch (balanceAndTransactions.iStatus) {
         case 407: //user not authenticated (sessionId expired)
             CLSNSLog(@"-> User session has expired. Requesting credientials...");
-            self.camiproService.camiproSession = nil;
+            [self.camiproService deleteCamiproSession];
             [self startBalanceAndTransactionsRequest];
             break;
         case 404:

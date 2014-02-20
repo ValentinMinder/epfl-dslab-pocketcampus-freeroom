@@ -15,7 +15,7 @@ import org.pocketcampus.android.platform.sdk.core.IView;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public interface IIsacademiaView extends IView {
+public interface IIsAcademiaView extends IView {
 	
 	/**
 	 * Update display when we get new data.

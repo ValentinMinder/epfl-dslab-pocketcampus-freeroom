@@ -102,19 +102,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 }
 
 - (void)startGetCoursesListRequest {
-    VoidBlock successBlock = ^{
-        [self.moodleService getCoursesList:[self.moodleService createMoodleRequestWithCourseId:0] withDelegate:self];
-    };
-    if ([self.moodleService lastSession]) {
-        successBlock();
-    } else {
-        CLSNSLog(@"-> No saved session, loggin in...");
-        [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
-            [self.lgRefreshControl endRefreshing];
-        } failureBlock:^{
-            [self error];
-        }];
-    }
+    [self.moodleService getCoursesListWithDelegate:self];
 }
 
 #pragma mark - PCMasterSplitDelegate /* used on iPad */
@@ -126,18 +114,26 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
 #pragma mark - MoodleServiceDelegate
 
-- (void)getCoursesList:(MoodleRequest *)aMoodleRequest didReturn:(CoursesListReply *)coursesListReply {
-    switch (coursesListReply.iStatus) {
+- (void)getCoursesListForDummy:(NSString *)dummy didReturn:(CoursesListReply *)reply {
+    switch (reply.iStatus) {
         case 200:
-            self.courses = coursesListReply.iCourses;
-            [self.moodleService saveToCacheCourseListReply:coursesListReply];
+            self.courses = reply.iCourses;
+            [self.moodleService saveToCacheCourseListReply:reply];
             [self.tableView reloadData];
             [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             break;
         case 407:
-            [self.moodleService deleteSession];
-            [self startGetCoursesListRequest];
+        {
+            __weak __typeof(self) weakSelf = self;
+            [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+                [weakSelf startGetCoursesListRequest];
+            } userCancelled:^{
+                [weakSelf.lgRefreshControl endRefreshing];
+            } failure:^{
+                [weakSelf error];
+            }];
             break;
+        }
         case 405:
             [self error];
             break;
@@ -146,14 +142,15 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
             [self.lgRefreshControl endRefreshing];
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
+            break;
         }
         default:
-            [self getCoursesListFailed:aMoodleRequest];
+            [self getCoursesListFailedForDummy:dummy];
             break;
     }
 }
 
-- (void)getCoursesListFailed:(MoodleRequest *)aMoodleRequest {
+- (void)getCoursesListFailedForDummy:(NSString *)dummy {
     [self error];
 }
 
@@ -232,9 +229,10 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     return 1;
 }
 
-#pragma mark - dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc {
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self.moodleService cancelOperationsForDelegate:self];
 }
 

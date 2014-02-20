@@ -28,9 +28,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.markupartist.android.widget.ActionBar;
-import com.markupartist.android.widget.ActionBar.Action;
-
 /**
  * MoodleMainView - Main view that shows Moodle courses.
  * 
@@ -71,11 +68,11 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		setContentView(mLayout);
 		mLayout.hideTitle();
 
-		ActionBar a = getActionBar();
-		if (a != null) {
-			RefreshAction refresh = new RefreshAction();
-			a.addAction(refresh, 0);
-		}
+//		ActionBar a = getActionBar();
+//		if (a != null) {
+//			RefreshAction refresh = new RefreshAction();
+//			a.addAction(refresh, 0);
+//		}
 	}
 
 	/**
@@ -89,7 +86,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	protected void handleIntent(Intent aIntent) {
 		
 		
-		mController.refreshCoursesList(false);
+		mController.refreshCourseList(this, false);
 		updateDisplay();
 		
 		
@@ -134,7 +131,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				CourseInfo courseInfo = ((CourseInfo) arg0.getItemAtPosition(arg2));
 				Intent i = new Intent(MoodleMainView.this, MoodleCurrentWeekView.class);
-				i.putExtra("courseId", Integer.parseInt(courseInfo.value));
+				i.putExtra("courseId", courseInfo.value);
 				i.putExtra("courseTitle", courseInfo.title);
 				MoodleMainView.this.startActivity(i);
 			}
@@ -150,19 +147,9 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	}
 
 	@Override
-	public void eventsListUpdated() {
-	}
-
-	@Override
 	public void sectionsListUpdated() {
 	}
 
-	@Override
-	public void gotMoodleCookie() {
-		// TODO check if activity is visible
-		mController.refreshCoursesList(true);
-	}
-	
 	private void updateDisplay() {
 		coursesListUpdated();
 	}
@@ -216,6 +203,26 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	public void downloadComplete(File localFile) {
 		/*Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
+	}
+
+	@Override
+	public void networkErrorCacheExists() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_connection_no_cache_yes), Toast.LENGTH_SHORT).show();
+		mController.refreshCourseList(this, true);
+		
+	}
+
+	@Override
+	public void notLoggedIn() {
+		MoodleController.pingAuthPlugin(this);
+		
+	}
+
+	@Override
+	public void authenticationFinished() {
+		mController.refreshCourseList(this, false);
+		
 	}
 
 
@@ -286,32 +293,32 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	 * @author Amer <amer.chamseddine@epfl.ch>
 	 * 
 	 */
-	private class RefreshAction implements Action {
-
-		/**
-		 * The constructor which doesn't do anything
-		 */
-		RefreshAction() {
-		}
-
-		/**
-		 * Returns the resource for the icon of the button in the action bar
-		 */
-		@Override
-		public int getDrawable() {
-			return R.drawable.sdk_action_bar_refresh;
-		}
-
-		/**
-		 * Defines what is to be performed when the user clicks on the button in
-		 * the action bar
-		 */
-		@Override
-		public void performAction(View view) {
-			//Tracker
-			Tracker.getInstance().trackPageView("moodle/refresh");
-			mController.refreshCoursesList(true);
-		}
-	}
+//	private class RefreshAction implements Action {
+//
+//		/**
+//		 * The constructor which doesn't do anything
+//		 */
+//		RefreshAction() {
+//		}
+//
+//		/**
+//		 * Returns the resource for the icon of the button in the action bar
+//		 */
+//		@Override
+//		public int getDrawable() {
+//			return R.drawable.sdk_action_bar_refresh;
+//		}
+//
+//		/**
+//		 * Defines what is to be performed when the user clicks on the button in
+//		 * the action bar
+//		 */
+//		@Override
+//		public void performAction(View view) {
+//			//Tracker
+//			Tracker.getInstance().trackPageView("moodle/refresh");
+//			mController.refreshCoursesList(true);
+//		}
+//	}
 
 }

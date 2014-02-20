@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TServlet;
+import org.pocketcampus.platform.sdk.shared.utils.PcConstants;
 
 import ch.epfl.tequila.client.model.ClientConfig;
 import ch.epfl.tequila.client.model.TequilaPrincipal;
@@ -40,7 +41,10 @@ public class PocketCampusServer extends ServerBase {
 				Object obj_impl = con_impl.newInstance();
 				Constructor con_srvc = cls_srvc.getConstructor(cls_ifce);
 				Object obj_srvc = con_srvc.newInstance(obj_impl);
-				processors.add(new Processor((TProcessor) obj_srvc, plugin.toLowerCase()));
+				Processor proc = new Processor((TProcessor) obj_srvc, plugin.toLowerCase());
+				if(obj_impl instanceof RawPlugin)
+					proc.setRawProcessor(((RawPlugin) obj_impl).getServlet());
+				processors.add(proc);
 				pluginsImpl.put(plugin.toLowerCase(), obj_impl);
 				skipped = false;
 			} catch (ClassNotFoundException e) {
@@ -123,8 +127,8 @@ public class PocketCampusServer extends ServerBase {
 	public static boolean pushNotifMap(Object firstArg, String plugin, String userId) {
 		HttpServletRequest req = (HttpServletRequest) TServlet.requestsMap.get(firstArg);
 		if(req == null) return false;
-		String os = req.getHeader("X-PC-PUSHNOTIF-OS");
-		String token = req.getHeader("X-PC-PUSHNOTIF-TOKEN");
+		String os = req.getHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_OS);
+		String token = req.getHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_TOKEN);
 		if(os == null || token == null || plugin == null || userId == null) return false;
 		try {
 			return (Boolean) invokeOnPlugin("pushnotif", "addMapping", new PushNotifMapReq(plugin, userId, os, token));
@@ -205,6 +209,38 @@ public class PocketCampusServer extends ServerBase {
 			return null;
 		}
 
+	}
+	
+	public static String authGetUserGaspar(Object firstArg) {
+		return authGetUserGasparFromReq((HttpServletRequest) TServlet.requestsMap.get(firstArg));
+	}
+	
+	public static String authGetUserSciper(Object firstArg) {
+		return authGetUserSciperFromReq((HttpServletRequest) TServlet.requestsMap.get(firstArg));
+	}
+	
+	public static String authGetUserGasparFromReq(HttpServletRequest req) {
+		return authGetUserAttribute(req, "getGasparFromSession");
+	}
+	
+	public static String authGetUserSciperFromReq(HttpServletRequest req) {
+		return authGetUserAttribute(req, "getSciperFromSession");
+	}
+	
+	private static String authGetUserAttribute(HttpServletRequest req, String func) {
+		if(req == null) return null;
+		String pcSessionId = req.getHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID);
+		if(pcSessionId == null) return null;
+		try {
+			return (String) invokeOnPlugin("authentication", func, pcSessionId);
+		} catch (NoSuchObjectException e) {
+		} catch (SecurityException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+		return null;
 	}
 	
 }

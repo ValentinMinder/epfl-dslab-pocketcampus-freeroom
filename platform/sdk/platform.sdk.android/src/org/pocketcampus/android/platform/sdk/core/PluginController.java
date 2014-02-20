@@ -1,6 +1,9 @@
 package org.pocketcampus.android.platform.sdk.core;
 
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
@@ -11,6 +14,7 @@ import org.apache.thrift.TServiceClientFactory;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.THttpClient;
+import org.pocketcampus.platform.sdk.shared.utils.PcConstants;
 
 import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
@@ -40,8 +44,7 @@ public abstract class PluginController extends Service {
 			TServiceClientFactory<? extends TServiceClient> clientFactory,
 			String pluginName) {
 		TServiceClient client = null;
-		String url = PC_ANDR_CFG.getString("SERVER_PROTOCOL") + "://" + PC_ANDR_CFG.getString("SERVER_ADDRESS") + ":"
-				+ PC_ANDR_CFG.getInteger("SERVER_PORT") + "/v3r1/" + pluginName;
+		String url = getBackendUrl(pluginName, false);
 
 		System.out.println(url);
 		try {
@@ -50,8 +53,12 @@ public abstract class PluginController extends Service {
 			THttpClient httpClient = new THttpClient(url, httpInitialClient);
 			httpClient.setConnectTimeout(5000);
 			httpClient.setReadTimeout(60000);
-			httpClient.setCustomHeader("X-PC-PUSHNOTIF-OS", "ANDROID");
-			httpClient.setCustomHeader("X-PC-PUSHNOTIF-TOKEN", ((GlobalContext) getApplicationContext()).getPushNotifToken());
+			httpClient.setCustomHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_OS, "ANDROID");
+			httpClient.setCustomHeader(PcConstants.HTTP_HEADER_PUSHNOTIF_TOKEN, ((GlobalContext) getApplicationContext()).getPushNotifToken());
+			
+			String pcSessionId = ((GlobalContext) getApplicationContext()).getPcSessionId();
+			if(pcSessionId != null)
+				httpClient.setCustomHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
 
 			TProtocol protocol = new TBinaryProtocol(httpClient);
 			client = clientFactory.getClient(protocol);
@@ -61,6 +68,29 @@ public abstract class PluginController extends Service {
 		}
 
 		return client;
+	}
+	
+	private String getBackendUrl(String pluginName, boolean raw) {
+		return PC_ANDR_CFG.getString("SERVER_PROTOCOL") + "://" + PC_ANDR_CFG.getString("SERVER_ADDRESS") + ":"
+				+ PC_ANDR_CFG.getInteger("SERVER_PORT") + "/v3r1/" + (raw ? "raw-" : "") + pluginName;
+	}
+	
+	protected HttpGet getHttpGet(String pluginName) { // raw
+		HttpGet get = new HttpGet(getBackendUrl(pluginName, true));
+		attachPcSession(get);
+		return get;
+	}
+	
+	protected HttpPost getHttpPost(String pluginName) { // raw
+		HttpPost post = new HttpPost(getBackendUrl(pluginName, true));
+		attachPcSession(post);
+		return post;
+	}
+	
+	private void attachPcSession(HttpRequestBase reqObj) {
+		String pcSessionId = ((GlobalContext) getApplicationContext()).getPcSessionId();
+		if(pcSessionId != null)
+			reqObj.setHeader(PcConstants.HTTP_HEADER_AUTH_PCSESSID, pcSessionId);
 	}
 
 	/**

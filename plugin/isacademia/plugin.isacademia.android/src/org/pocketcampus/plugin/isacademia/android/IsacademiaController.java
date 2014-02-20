@@ -8,7 +8,7 @@ import org.apache.http.client.RedirectHandler;
 import org.apache.http.protocol.HttpContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.plugin.isacademia.android.iface.IIsacademiaController;
+import org.pocketcampus.plugin.isacademia.android.iface.IIsAcademiaController;
 import org.pocketcampus.plugin.isacademia.android.req.GetIsacademiaSessionRequest;
 import org.pocketcampus.plugin.isacademia.android.req.GetTequilaTokenRequest;
 import org.pocketcampus.plugin.isacademia.android.req.GetUserCoursesRequest;
@@ -35,7 +35,7 @@ import android.util.Log;
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
-public class IsacademiaController extends PluginController implements IIsacademiaController{
+public class IsAcademiaController extends PluginController implements IIsAcademiaController{
 
 	public static class Logouter extends BroadcastReceiver {
 		@Override
@@ -58,7 +58,7 @@ public class IsacademiaController extends PluginController implements IIsacademi
 
 	private String mPluginName = "isacademia";
 	
-	private IsacademiaModel mModel;
+	private IsAcademiaModel mModel;
 	private Iface mClient;
 	private Iface mClientC;
 	private Iface mClientE;
@@ -66,7 +66,7 @@ public class IsacademiaController extends PluginController implements IIsacademi
 	
 	@Override
 	public void onCreate() {
-		mModel = new IsacademiaModel(getApplicationContext());
+		mModel = new IsAcademiaModel(getApplicationContext());
 		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 		mClientC = (Iface) getClient(new Client.Factory(), mPluginName);
 		mClientE = (Iface) getClient(new Client.Factory(), mPluginName);

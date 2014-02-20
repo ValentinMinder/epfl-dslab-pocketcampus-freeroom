@@ -174,19 +174,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 }
 
 - (void)startGetCourseSectionsRequest {
-    VoidBlock successBlock = ^{
-        [self.moodleService getCourseSections:[self.moodleService createMoodleRequestWithCourseId:self.course.iId] withDelegate:self];
-    };
-    if ([self.moodleService lastSession]) {
-        successBlock();
-    } else {
-        CLSNSLog(@"-> No saved session, loggin in...");
-        [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
-            [self.lgRefreshControl endRefreshing];
-        } failureBlock:^{
-            [self error];
-        }];
-    }
+    [self.moodleService getCoursesSectionsForCourseId:[NSString stringWithFormat:@"%ld", (NSInteger)self.course.iId] delegate:self];
 }
 
 #pragma mark - Utils and toggle week button
@@ -381,11 +369,11 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 #pragma mark - MoodleServiceDelegate
 
-- (void)getCourseSections:(MoodleRequest *)aMoodleRequest didReturn:(SectionsListReply *)sectionsListReply {
-    switch (sectionsListReply.iStatus) {
+- (void)getCourseSectionsForCourseId:(NSString *)courseId didReturn:(SectionsListReply *)reply {
+    switch (reply.iStatus) {
         case 200:
-            self.sections = sectionsListReply.iSections;
-            [self.moodleService saveToCacheSectionsListReply:sectionsListReply forCourse:self.course];
+            self.sections = reply.iSections;
+            [self.moodleService saveToCacheSectionsListReply:reply forCourse:self.course];
             [self showToggleButtonIfPossible];
             [self fillCellsFromSections];
             [self.tableView reloadData];
@@ -393,9 +381,17 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
             [self.lgRefreshControl markRefreshSuccessful];
             break;
         case 407:
-            [self.moodleService deleteSession];
-            [self startGetCourseSectionsRequest];
+        {
+            __weak __typeof(self) weakSelf = self;
+            [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+                [weakSelf startGetCourseSectionsRequest];
+            } userCancelled:^{
+                [weakSelf.lgRefreshControl endRefreshing];
+            } failure:^{
+                [weakSelf error];
+            }];
             break;
+        }
         case 405:
             [self error];
             break;
@@ -406,12 +402,12 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
             [alert show];
         }
         default:
-            [self getCourseSectionsFailed:aMoodleRequest];
+            [self getCourseSectionsFailedForCourseId:courseId];
             break;
     }
 }
 
-- (void)getCourseSectionsFailed:(MoodleRequest *)aMoodleRequest {
+- (void)getCourseSectionsFailedForCourseId:(NSString *)courseId {
     [self error];
 }
 
@@ -657,6 +653,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 - (void)dealloc
 {
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self.moodleService removeMoodleResourceObserver:self];
     [self.moodleService cancelOperationsForDelegate:self];
     [self.searchQueue cancelAllOperations];

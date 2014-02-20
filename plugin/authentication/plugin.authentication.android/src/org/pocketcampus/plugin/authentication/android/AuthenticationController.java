@@ -7,14 +7,19 @@ import org.apache.http.client.RedirectHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.pocketcampus.plugin.authentication.R;
+import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCookieComplex;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationController;
 import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithTequilaRequest;
+import org.pocketcampus.plugin.authentication.android.req.GetPcSessionRequest;
+import org.pocketcampus.plugin.authentication.android.req.GetPcTokenRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetServiceDetailsRequest;
 import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
+import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
+import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -105,10 +110,22 @@ public class AuthenticationController extends PluginController implements IAuthe
 	};
 
 	/**
+	 *  This name must match given in the Server.java file in plugin.launcher.server.
+	 *  It's used to route the request to the right server implementation.
+	 */
+	private String mPluginName = "authentication";
+	
+	/**
 	 * Stores reference to the Model associated with this plugin.
 	 */
 	private AuthenticationModel mModel;
-	
+
+	/**
+	 * HTTP Clients used to communicate with the PocketCampus server.
+	 * Use thrift to transport the data.
+	 */
+	private Iface mClient;
+
 	/**
 	 * HTTP Client used to communicate directly with servers.
 	 * Used to communicate with Tequila Server, ISA Server, etc.
@@ -135,7 +152,9 @@ public class AuthenticationController extends PluginController implements IAuthe
 	public void onCreate() {
 		// Initializing the model is part of the controller's job...
 		mModel = new AuthenticationModel(getApplicationContext());
-		
+
+		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+
 		threadSafeClient = getThreadSafeClient();
 		threadSafeClient.setRedirectHandler(redirectNoFollow);
 	}
@@ -154,6 +173,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 			mModel.setSavedGasparPassword(null);
 			mModel.setGasparUsername(null);
 			mModel.setStorePassword(true);
+			((GlobalContext) getApplicationContext()).setPcSessionId(null, true);
 			stopSelf();
 			return START_NOT_STICKY;
 		}
@@ -165,10 +185,11 @@ public class AuthenticationController extends PluginController implements IAuthe
 			if(intentUri != null && "pocketcampus".equals(intentUri.getScheme())) {
 				Bundle extras = aIntent.getExtras();
 				if(extras != null &&
-						extras.getString("tequilatoken") != null &&
-						extras.getString("callbackurl") != null) {
+						extras.getString("callbackurl") != null &&
+						(extras.getString("tequilatoken") != null || extras.getBoolean("selfauth"))) {
 					mModel.setCallbackUrl(extras.getString("callbackurl"));
 					mModel.setTequilaToken(extras.getString("tequilatoken"));
+					mModel.setSelfAuth(extras.getBoolean("selfauth"));
 					mModel.setFromBrowser(false);
 					argsOk = true;
 				}
@@ -179,17 +200,23 @@ public class AuthenticationController extends PluginController implements IAuthe
 			return START_NOT_STICKY;
 		}
 
+		if(mModel.getSelfAuth()) {
+			mModel.setTequilaToken(null);
+		}
+		
 		if(mModel.getSavedGasparPassword() != null) {
 			// use saved password
 			mModel.setTempGasparPassword(mModel.getSavedGasparPassword());
 			startPreLogin();
-			return START_NOT_STICKY;
+		} else {
+			// ELSE open dialog to login
+			openDialog(null);
 		}
-		// ELSE open dialog to login
-		openDialog(null);
 		return START_NOT_STICKY;
 	}
 	
+	
+
 	/**
 	 * Returns the Model associated with this plugin.
 	 */
@@ -218,7 +245,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 			if(tequilaToken != null)
 				intenteye.putExtra("tequilatoken", tequilaToken); // success
 			if(extra != null)
-				intenteye.putExtra(extra, 1); // user cancelled, user denied, or invalid token (in case of success this could indicate if plugin should not store session)
+				intenteye.putExtra(extra, 1); // user cancelled, user denied, or invalid token (in case of success this could indicate if plugin should not store session; in case of selfAuth for PC this indicates success)
 			startService(intenteye);
 		}
 		mModel.mListeners.shouldFinish();
@@ -410,7 +437,10 @@ public class AuthenticationController extends PluginController implements IAuthe
 	////////////// BUTTON HANDLERS
 	
 	public void startPreLogin() {
-		new GetServiceDetailsRequest().start(this, threadSafeClient, mModel.getTequilaToken());
+		if(mModel.getTequilaToken() != null)
+			new GetServiceDetailsRequest().start(this, threadSafeClient, mModel.getTequilaToken());
+		else 
+			new GetPcTokenRequest().start(this, mClient, null);
 	}
 
 	public void allowService(boolean always) {
@@ -427,7 +457,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 	
 	///////////// CALLBACKS
-	
+
 	public void fetchedServiceDetails() {
 		Log.v("DEBUG", "fetchedServiceDetails");
 		startActualLogin();
@@ -444,7 +474,17 @@ public class AuthenticationController extends PluginController implements IAuthe
 	
 	public void tokenAuthenticationFinished() {
 		Log.v("DEBUG", "tokenAuthenticationFinished");
-		pingBack(mModel.getTequilaToken(), ( mModel.getStorePassword() ? null : "forcereauth" ));
+		if(mModel.getSelfAuth()) {
+			new GetPcSessionRequest().start(this, mClient, mModel.getTequilaToken());
+		} else {
+			pingBack(mModel.getTequilaToken(), ( mModel.getStorePassword() ? null : "forcereauth" ));
+			stopSelf();
+		}
+	}
+	
+	public void pcAuthenticationFinished() {
+		Log.v("DEBUG", "pcAuthenticationFinished");
+		pingBack(null, "selfauthok");
 		stopSelf();
 	}
 	

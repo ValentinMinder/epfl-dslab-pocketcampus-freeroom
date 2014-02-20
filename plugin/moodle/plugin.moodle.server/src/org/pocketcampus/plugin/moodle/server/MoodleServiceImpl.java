@@ -1,7 +1,12 @@
 package org.pocketcampus.plugin.moodle.server;
 
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -12,14 +17,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl.NodeJson.ItemJson;
+import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl.SectionNode.ModuleNode;
 import org.pocketcampus.plugin.moodle.shared.TequilaToken;
+import org.pocketcampus.platform.launcher.server.PocketCampusServer;
+import org.pocketcampus.platform.launcher.server.RawPlugin;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
+import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
+import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
+import org.pocketcampus.platform.sdk.shared.utils.URLBuilder;
+import org.pocketcampus.plugin.moodle.shared.Constants;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
 import org.pocketcampus.plugin.moodle.shared.EventsListReply;
 import org.pocketcampus.plugin.moodle.shared.MoodleAssignment;
@@ -36,10 +53,10 @@ import org.pocketcampus.plugin.moodle.shared.SectionsListReply;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * MoodleServiceImpl
@@ -51,12 +68,72 @@ import com.google.gson.JsonSyntaxException;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class MoodleServiceImpl implements MoodleService.Iface {
-	
+public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
+
+	public static final String MOODLE_WEBSERVICE_URL = "http://moodle.epfl.ch/webservice/rest/server.php";
+
 	public MoodleServiceImpl() {
 		System.out.println("Starting Moodle plugin server ...");
+//		try {
+//			getCoursesListAPI("");
+//			getCourseSectionsAPI("225");
+//		} catch (TException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
+	@Override
+	public HttpServlet getServlet() {
+		return new HttpServlet() {
+			private static final long serialVersionUID = -2572366584222819828L;
+			protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				//InputStream in = request.getInputStream();
+				//request.get
+//				response.setStatus(500);
+//				System.out.println(request.getQueryString());
+//				OutputStream out = response.getOutputStream();
+//				out.write("OK1".getBytes());
+//				out.flush();
+//				doPost(request, response);
+			}
+			protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+				String gaspar = PocketCampusServer.authGetUserGasparFromReq(req);
+				if(gaspar == null) {
+					resp.setStatus(407);
+					return;
+				}
+				
+				String action = req.getParameter(Constants.MOODLE_RAW_ACTION_KEY);
+				if(Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE.equals(action)) {
+					// TODO check if requested file belongs to course registered by user 
+					String fp = req.getParameter(Constants.MOODLE_RAW_FILE_PATH);
+					if(fp == null) {
+						resp.setStatus(405);
+						return;
+					}
+					
+					fp = StringUtils.getSubstringBetween(fp, "pluginfile.php", "?");
+					//http://moodle.epfl.ch/webservice/pluginfile.php/1525234/mod_resource/content/4/hwk2_sol.pdf?wstoken=9a00f999e5d329b417a1e578ac489b68
+//					if(fp.indexOf("?") != -1)
+//						fp = fp.substring(0, fp.indexOf("?"));
+//					URLBuilder url = new URLBuilder(fp).addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
+					fp = "http://moodle.epfl.ch/webservice/pluginfile.php" + fp;
+					HttpURLConnection conn = (HttpURLConnection) new URL(fp).openConnection();
+					conn.setDoOutput(true);
+					PostDataBuilder pd = new PostDataBuilder().
+							addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
+					conn.getOutputStream().write(pd.toBytes());
+					OutputStream out = resp.getOutputStream();
+					InputStream in = conn.getInputStream();
+					IOUtils.copy(in, out);
+//					out.flush();
+//					in.close();
+//					out.close();
+				} 
+			}
+		};
+	}
+
 	@Override
 	public TequilaToken getTequilaTokenForMoodle() throws TException {
 		System.out.println("getTequilaTokenForMoodle");
@@ -170,7 +247,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		
 		System.out.println("getCoursesList");
 		String page = null;
-		Gson gson = new Gson();
+//		Gson gson = new Gson();
 		//NodeJson courses = null;
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getMoodleCookie());
@@ -203,6 +280,94 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		CoursesListReply cl = new CoursesListReply(200);
 		cl.setICourses(tCourses);
 		return cl;
+	}
+
+	public static class CourseNode {
+		int id;
+		String shortname;
+		String fullname;
+		int enrolledusercount;
+		String idnumber;
+		int visible;
+	}
+//	public static interface CourseList extends List<CourseNode> {	
+//	}
+	public static class UsersNode {
+		List<UserNode> users;
+		public static class UserNode {
+			int id;
+			String username;
+			String firstname;
+			String lastname;
+			String fullname;
+			String email;
+			String address;
+			String phone1;
+			String department;
+			String institution;
+			String idnumber;
+			String url;
+			String city;
+			String country;
+			String profileimageurlsmall;
+		}
+		
+	}
+
+	@Override
+	public CoursesListReply getCoursesListAPI(String dummy) throws TException {
+		String gaspar = PocketCampusServer.authGetUserGaspar(dummy);
+		if(gaspar == null){
+			return new CoursesListReply(407);
+		}
+		Gson gson = new Gson();
+
+		LinkedList<MoodleCourse> tCourses = new LinkedList<MoodleCourse>();
+
+		try {
+			HttpURLConnection conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
+			PostDataBuilder pd = new PostDataBuilder().
+					addParam("moodlewsrestformat", "json").
+					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
+					addParam("wsfunction", "core_user_get_users").
+					addParam("criteria[0][key]", "username").
+					addParam("criteria[0][value]", gaspar);
+			conn.setDoOutput(true);
+			conn.getOutputStream().write(pd.toBytes());
+			String result = IOUtils.toString(conn.getInputStream(), "UTF-8");
+			UsersNode usrNodes = gson.fromJson(result, UsersNode.class);
+			int theId = usrNodes.users.get(0).id;
+			
+			conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
+			pd = new PostDataBuilder().
+					addParam("moodlewsrestformat", "json").
+					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
+					addParam("wsfunction", "core_enrol_get_users_courses").
+					addParam("userid", "" + theId);
+			conn.setDoOutput(true);
+			conn.getOutputStream().write(pd.toBytes());
+			result = IOUtils.toString(conn.getInputStream(), "UTF-8");
+			Type listType = new TypeToken<List<CourseNode>>() {}.getType();
+			List<CourseNode> lcn = gson.fromJson(result, listType);
+			for(CourseNode mcj : lcn) {
+				if(mcj.visible != 1)
+					continue;
+				MoodleCourse mc = new MoodleCourse();
+				mc.setITitle(mcj.fullname);
+				mc.setIId(mcj.id);
+				tCourses.add(mc);
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+
+		
+		CoursesListReply cl = new CoursesListReply(200);
+		cl.setICourses(tCourses);
+		return cl;
+		
 	}
 
 	@Override
@@ -293,6 +458,97 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		return sl;
 	}
 	
+	public static class SectionNode {
+		int id;
+		String name;
+		int visible;
+		String summary;
+		int summaryformat;
+		List<ModuleNode> modules;
+		public static class ModuleNode {
+			int id;
+			String url;
+			String name;
+			int visible;
+			String modicon;
+			String modname;
+			String modplural;
+			int availablefrom;
+			int availableuntil;
+			int indent;
+			String description;
+			List<ModuleContent> contents;
+			public static class ModuleContent {
+				String author;
+				String filename;
+				String filepath;
+				int filesize;
+				String fileurl;
+				String license;
+				int sortorder;
+				long timecreated;
+				long timemodified;
+				String type;
+				int userid;
+			}
+		}
+	}
+
+	@Override
+	public SectionsListReply getCourseSectionsAPI(String courseId) throws TException {
+		if(courseId == null)
+			return new SectionsListReply(405);
+		String gaspar = PocketCampusServer.authGetUserGaspar(courseId);
+		if(gaspar == null){
+			// TODO check if user is enrolled in this course
+			return new SectionsListReply(407);
+		}
+		Gson gson = new Gson();
+
+		LinkedList<MoodleSection> msl = new LinkedList<MoodleSection>();
+
+		try {
+			
+			HttpURLConnection conn = (HttpURLConnection) new URL(MOODLE_WEBSERVICE_URL).openConnection();
+			PostDataBuilder pd = new PostDataBuilder().
+					addParam("moodlewsrestformat", "json").
+					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
+					addParam("wsfunction", "core_course_get_contents").
+					addParam("courseid", courseId);
+			conn.setDoOutput(true);
+			conn.getOutputStream().write(pd.toBytes());
+			String result = IOUtils.toString(conn.getInputStream(), "UTF-8");
+			//System.out.println(result);
+			Type listType = new TypeToken<List<SectionNode>>() {}.getType();
+			List<SectionNode> lsn = gson.fromJson(result, listType);
+			for(SectionNode sn : lsn) {
+				if(sn.visible != 1)
+					continue;
+				LinkedList<MoodleResource> mrl = new LinkedList<MoodleResource>();
+				for(ModuleNode mn : sn.modules) {
+					if(mn.visible != 1)
+						continue;
+					if(!"resource".equals(mn.modname))
+						continue;
+					mrl.add(new MoodleResource(mn.name, mn.contents.get(0).fileurl));
+				}
+				MoodleSection ms = new MoodleSection(mrl, sn.name);
+				msl.add(ms);
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+
+
+		SectionsListReply sl = new SectionsListReply(200);
+		sl.setISections(msl);
+		return sl;
+		
+	}
+
+
 	
 	/**
 	 * HELPER FUNCTIONS
@@ -452,7 +708,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		desc = desc.substring(b + 1);
 		int a = desc.lastIndexOf("</div>");
 		desc = stripHtmlTags(desc.substring(0, a));
-		// <div id="dates" class="box generalbox generalboxcontent boxaligncenter"><table><tr><td class="c0">Disponible dès le:</td>    <td class="c1">vendredi 9 décembre 2011, 13:40</td></tr><tr><td class="c0">À rendre jusqu'au:</td>    <td class="c1">samedi  24 décembre 2011, 00:00</td></tr></table></div>
+		// <div id="dates" class="box generalbox generalboxcontent boxaligncenter"><table><tr><td class="c0">Disponible d��s le:</td>    <td class="c1">vendredi 9 d��cembre 2011, 13:40</td></tr><tr><td class="c0">�� rendre jusqu'au:</td>    <td class="c1">samedi  24 d��cembre 2011, 00:00</td></tr></table></div>
 		String dateHTML = getSubstringBetween(page, "id=\"dates\"", "</div>");
 		LinkedList<String> byDate = getAllSubstringsBetween(dateHTML, "<td class=\"c1\">", "</td>");
 		Long postingDate = null;

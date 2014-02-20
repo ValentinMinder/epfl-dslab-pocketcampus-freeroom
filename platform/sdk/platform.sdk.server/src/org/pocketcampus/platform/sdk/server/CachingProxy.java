@@ -1,4 +1,4 @@
-package org.pocketcampus.platform.sdk.shared;
+package org.pocketcampus.platform.sdk.server;
 
 import java.lang.ref.*;
 import java.lang.reflect.*;

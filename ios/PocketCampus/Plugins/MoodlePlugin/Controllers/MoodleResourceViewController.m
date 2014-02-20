@@ -309,7 +309,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)startMoodleResourceDownload {
     
-    VoidBlock successBlock = ^{
+    /*VoidBlock successBlock = ^{
         self.centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
         self.centerMessageLabel.hidden = NO;
         self.progressView.hidden = NO;
@@ -330,7 +330,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         } failureBlock:^{
             [self serviceConnectionToServerFailed];
         }];
-    }
+    }*/
+    
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
+    self.centerMessageLabel.hidden = NO;
+    self.progressView.hidden = NO;
+    [self.moodleService downloadMoodleResource:self.moodleResource progressView:self.progressView delegate:self];
 }
 
 - (void)loadDownloadedMoodleResourceInWebView {
@@ -373,10 +378,22 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         [errorAlert show];
         [self serviceConnectionToServerFailed];
     } else if (statusCode == 303 || statusCode == 407) {
-        //mans bad cookie
+        //mans not logged in
         self.progressView.progress = 0.0;
-        [self.moodleService deleteSession];
-        [self startMoodleResourceDownload];
+        __weak __typeof(self) weakSelf = self;
+        [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+            [weakSelf startMoodleResourceDownload];
+        } userCancelled:^{
+            if (weakSelf.splitViewController) {
+                MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
+                weakSelf.splitViewController.viewControllers = @[weakSelf.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
+            } else {
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        } failure:^{
+            [weakSelf serviceConnectionToServerFailed];
+        }];
+        
     } else { //other unkown error
         [self serviceConnectionToServerFailed];
     }
@@ -441,6 +458,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)dealloc
 {
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self removeSplitViewControllerObserver];
     [self.hideNavbarTimer invalidate];
     [self.moodleService cancelOperationsForDelegate:self];

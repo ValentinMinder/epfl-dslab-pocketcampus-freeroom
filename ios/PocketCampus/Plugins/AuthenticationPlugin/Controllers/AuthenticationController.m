@@ -29,9 +29,6 @@
 
 #import "AuthenticationController.h"
 
-#import "PCValues.h"
-
-
 #pragma mark - PCLoginObserver implementation
 
 @implementation PCLoginObserver
@@ -66,15 +63,26 @@
 
 #pragma mark - AuthenticationController implementation
 
-@interface AuthenticationController ()
+static AuthenticationController* instance __weak = nil;
+static AuthenticationController* instanceStrong __strong = nil;
+
+@interface AuthenticationController ()<AuthenticationServiceDelegate, AuthenticationDelegate>
 
 @property (nonatomic, strong) AuthenticationViewController* gasparViewController;
+@property (nonatomic, strong) AuthenticationService* authService;
+@property (nonatomic, strong) NSMutableSet* loginObservers;
+
+@property (nonatomic, strong) NSString* tequilaToken;
+
+@property (nonatomic) BOOL persistSession;
 
 @end
 
-static AuthenticationController* instance __weak = nil;
-
 @implementation AuthenticationController
+
+@synthesize pocketCampusAuthSessionId = _pocketCampusAuthSessionId;
+
+#pragma mark - Init
 
 - (id)init
 {
@@ -90,6 +98,16 @@ static AuthenticationController* instance __weak = nil;
     }
 }
 
++ (instancetype)sharedInstance {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instanceStrong = [self sharedInstanceToRetain];
+    });
+    return instanceStrong;
+}
+
+#pragma mark - PluginController
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -103,7 +121,27 @@ static AuthenticationController* instance __weak = nil;
     }
 }
 
-- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate; {
++ (NSString*)localizedName {
+    return NSLocalizedStringFromTable(@"PluginName", @"AuthenticationPlugin", @"");
+}
+
++ (NSString*)identifierName {
+    return @"Authentication";
+}
+
++ (void)initObservers {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            CLSNSLog(@"-> Authentication received %@ notification. Deleting auth sessionId.", kAuthenticationLogoutNotification);
+            [[AuthenticationController sharedInstance] deletePocketCampusAuthSessionId];
+        }];
+    });
+}
+
+#pragma mark - Standard authentication
+
+- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate; {
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]];
     self.gasparViewController = [[AuthenticationViewController alloc] init];
     if (savedPassword) {
@@ -129,20 +167,184 @@ static AuthenticationController* instance __weak = nil;
     
 }
 
-+ (NSString*)localizedName {
-    return NSLocalizedStringFromTable(@"PluginName", @"AuthenticationPlugin", @"");
+#pragma mark - New-style authentication
+
+- (void)addLoginObserver:(id)observer success:(VoidBlock)success userCancelled:(VoidBlock)userCancelled failure:(VoidBlock)failure {
+    if (!instanceStrong) {
+        [NSException raise:@"Illegal use" format:@"you must use [AuthenticationController sharedInstance] instead of [AuthenticationController sharedInstanceToRetain] to be able to use addLoginObserver:..."];
+    }
+    @synchronized(self) {
+        PCLoginObserver* loginObserver = [[PCLoginObserver alloc] init];
+        loginObserver.observer = observer;
+        loginObserver.successBlock = success;
+        loginObserver.operationIdentifier = nil;
+        loginObserver.userCancelledBlock = userCancelled;
+        loginObserver.failureBlock = failure;
+        if (!self.loginObservers) {
+            self.loginObservers = [NSMutableSet set];
+        }
+        [self.loginObservers addObject:loginObserver];
+        if (!self.authService) {
+            self.authService = [AuthenticationService sharedInstanceToRetain];
+            [self.authService getAuthTequilaTokenWithDelegate:self];
+        }
+    }
 }
 
-+ (NSString*)identifierName {
-    return @"Authentication";
+- (void)removeLoginObserver:(id)observer {
+    @synchronized(self) {
+        for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
+            if (loginObserver.observer == observer) {
+                [self.loginObservers removeObject:loginObserver];
+                break;
+            }
+        }
+    }
 }
 
-- (NSString*)localizedStringForKey:(NSString*)key {
-    return NSLocalizedStringFromTable(key, [[self class] identifierName], @"");
+#pragma mark Private
+
+- (void)cleanAndNotifySuccessToObservers {
+    self.authService = nil;
+    self.tequilaToken = nil;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.successBlock();
+        }
+        [self.loginObservers removeAllObjects];
+    }
 }
+
+- (void)cleanAndNotifyUserCancelledToObservers {
+    self.authService = nil;
+    self.tequilaToken = nil;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.userCancelledBlock();
+        }
+        [self.loginObservers removeAllObjects];
+    }
+}
+
+- (void)cleanAndNotifyFailureToObservers {
+    self.authService = nil;
+    self.tequilaToken = nil;
+    @synchronized (self) {
+        for (PCLoginObserver* loginObserver in self.loginObservers) {
+            loginObserver.failureBlock();
+        }
+        [self.loginObservers removeAllObjects];
+    }
+}
+
+#pragma mark - AuthenticationServiceDelegate
+
+- (void)getAuthTequilaTokenDidReturn:(AuthTokenResponse*)response {
+    switch (response.statusCode) {
+        case AuthStatusCode_OK:
+        {
+            self.tequilaToken = response.tequilaToken;
+            UIViewController* rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
+            [self authToken:response.tequilaToken presentationViewController:rootViewController delegate:self];
+            break;
+        }
+        default:
+            [self cleanAndNotifyFailureToObservers];
+            break;
+    }
+}
+
+- (void)getAuthTequilaTokenFailed {
+    [self cleanAndNotifyFailureToObservers];
+}
+
+- (void)getAuthSessionIdWithToken:(NSString*)tequilaToken didReturn:(AuthSessionResponse*)response {
+    switch (response.statusCode) {
+        case AuthStatusCode_OK:
+            [self setPocketCampusAuthSessionId:response.sessionId persist:self.persistSession];
+            [self cleanAndNotifySuccessToObservers];
+            break;
+        case AuthStatusCode_NETWORK_ERROR:
+            [self cleanAndNotifyFailureToObservers];
+            break;
+        case AuthStatusCode_INVALID_SESSION:
+            [self deletePocketCampusAuthSessionId];
+            [self cleanAndNotifyFailureToObservers];
+            break;
+        default:
+            [self cleanAndNotifyFailureToObservers];
+            break;
+    }
+}
+
+- (void)getAuthSessionIdFailedForToken:(NSString*)tequilaToken {
+    [self cleanAndNotifyFailureToObservers];
+}
+
+- (void)serviceConnectionToServerFailed {
+    [self cleanAndNotifyFailureToObservers];
+}
+
+#pragma mark - AuthenticationDelegate
+
+- (void)authenticationSucceededPersistSession:(BOOL)persistSession {
+    if (!self.tequilaToken) {
+        CLSNSLog(@"!! ERROR: authentication succeeded but no saved tequila token. Notifying failure to observers.");
+        [self cleanAndNotifyFailureToObservers];
+        return;
+    }
+    self.persistSession = persistSession;
+    [self.authService getAuthSessionIdWithTequilaToken:self.tequilaToken delegate:self];
+}
+
+- (void)userCancelledAuthentication {
+    [self cleanAndNotifyUserCancelledToObservers];
+}
+
+- (void)invalidToken {
+    [self cleanAndNotifyFailureToObservers];
+}
+
+#pragma mark - SessionId persistence
+#pragma mark Private
+
+static NSString* const kAuthSessionIdPCConfigKey = @"PocketCampusAuthSessionId";
+
+- (NSString*)pocketCampusAuthSessionId {
+    if (_pocketCampusAuthSessionId) {
+        return _pocketCampusAuthSessionId;
+    }
+    _pocketCampusAuthSessionId = [[PCConfig defaults] objectForKey:kAuthSessionIdPCConfigKey];
+    return _pocketCampusAuthSessionId;
+}
+
+- (void)setPocketCampusAuthSessionId:(NSString*)sessionId persist:(BOOL)persist {
+    if (sessionId) {
+        [PCUtils throwExceptionIfObject:sessionId notKindOfClass:[NSString class]];
+    }
+    _pocketCampusAuthSessionId = sessionId;
+    if (persist) {
+        [[PCConfig defaults] setObject:sessionId forKey:kAuthSessionIdPCConfigKey];
+    } else {
+        [[PCConfig defaults] removeObjectForKey:kAuthSessionIdPCConfigKey];
+    }
+    [[PCConfig defaults] synchronize];
+}
+
+- (void)deletePocketCampusAuthSessionId {
+    _pocketCampusAuthSessionId = nil;
+    [[PCConfig defaults] removeObjectForKey:kAuthSessionIdPCConfigKey];
+    [[PCConfig defaults] synchronize];
+}
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
     @synchronized(self) {
         instance = nil;
     }

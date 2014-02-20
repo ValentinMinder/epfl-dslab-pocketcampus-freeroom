@@ -21,23 +21,29 @@ public interface IMoodleView extends IView {
 	
 	/**
 	 * Update display when we get data.
+	 * Called from Model
+	 * Called on ALL listeners
 	 */
 	void coursesListUpdated();
-	void eventsListUpdated();
 	void sectionsListUpdated();
 	
 	/**
-	 * Authentication callbacks.
-	 */
-	void gotMoodleCookie();
-	void authenticationFailed();
-	void userCancelledAuthentication();
-	
-	/**
 	 * Display errors and notices.
+	 * Called from Request
+	 * Called on the particular object that issued the request
 	 */
 	void networkErrorHappened();
+	void networkErrorCacheExists();
 	void moodleServersDown();
-	void downloadComplete(File localFile);
+	void notLoggedIn();
+	void downloadComplete(File localFile);	
+
+	/**
+	 * Authentication callbacks.
+	 * Called FROM Controller on ALL listeners because we dunno who is instantiated 
+	 */
+	void authenticationFinished();
+	void authenticationFailed();
+	void userCancelledAuthentication();
 	
 }

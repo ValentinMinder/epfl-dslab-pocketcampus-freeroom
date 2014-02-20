@@ -48,7 +48,11 @@
     });
     id value = objc_getAssociatedObject(self, (__bridge const void *)(key));
     if (!value) {
-        value = [[self.iUrl pathComponents] lastObject];
+        //Trick to remove url query paramters if any (we don't want them for the filename)
+        //http://stackoverflow.com/a/4272070/1423774
+        NSURL* url = [NSURL URLWithString:self.iUrl];
+        url = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];
+        value = [[[url absoluteString] pathComponents] lastObject];
         value = [value stringByRemovingPercentEncoding];
         objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
