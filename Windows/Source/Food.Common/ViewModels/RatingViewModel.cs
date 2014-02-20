@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -14,7 +14,7 @@ namespace PocketCampus.Food.ViewModels
     /// <summary>
     /// The ViewModel that lets the user rate meals.
     /// </summary>
-    [PageLogId( "/food/rating" )]
+    [LogId( "/food/rating" )]
     public sealed class RatingViewModel : DataViewModel<RatingInfo>
     {
         private const int MinRatingHour = 11;
@@ -55,7 +55,7 @@ namespace PocketCampus.Food.ViewModels
         /// <summary>
         /// Gets the command executed to rate the meal.
         /// </summary>
-        [CommandLogId( "Rate" )]
+        [LogId( "Rate" )]
         public Command RateCommand
         {
             get { return GetCommand( Rate, () => Status == RatingStatus.Ok && !IsLoading ); }

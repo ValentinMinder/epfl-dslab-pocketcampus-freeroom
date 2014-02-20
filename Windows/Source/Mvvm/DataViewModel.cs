@@ -40,7 +40,7 @@ namespace PocketCampus.Mvvm
     /// <summary>
     /// ViewModel that loads data.
     /// </summary>
-    public abstract class DataViewModel<TArg> : ViewModel<TArg>
+    public abstract class DataViewModel<TArg> : ViewModel<TArg>, IDisposable
     {
         // Lock to ensure cancellation doesn't cause race conditions
         private object _lock = new object();
@@ -82,7 +82,7 @@ namespace PocketCampus.Mvvm
         /// <summary>
         /// Command executed to update all data.
         /// </summary>
-        [CommandLogId( "Refresh" )]
+        [LogId( "Refresh" )]
         public AsyncCommand RefreshCommand
         {
             get { return GetAsyncCommand( () => TryRefreshAsync( true ), () => !IsLoading ); }
@@ -180,6 +180,34 @@ namespace PocketCampus.Mvvm
         public async override void OnNavigatedTo()
         {
             await OnNavigatedToAsync();
+        }
+        #endregion
+
+        #region IDisposable implementation
+        /// <summary>
+        /// Destroys the DataViewModel.
+        /// </summary>
+        ~DataViewModel()
+        {
+            Dispose( false );
+        }
+
+        /// <summary>
+        /// Disposes of the DataViewModel.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose( true );
+            GC.SuppressFinalize( this );
+        }
+
+        /// <summary>
+        /// Disposes of the DataViewModel (part of the common IDisposable pattern recommended by Microsoft).
+        /// </summary>
+        protected virtual void Dispose( bool onlyManaged )
+        {
+            _cancellationSource.Cancel();
+            _cancellationSource.Dispose();
         }
         #endregion
     }

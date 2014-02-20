@@ -15,7 +15,7 @@ namespace PocketCampus.Directory.ViewModels
     /// <summary>
     /// The main ViewModel.
     /// </summary>
-    [PageLogId( "/directory" )]
+    [LogId( "/directory" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly IDirectoryService _directoryService;
@@ -54,7 +54,7 @@ namespace PocketCampus.Directory.ViewModels
         /// <summary>
         /// Gets the command executed to search for people.
         /// </summary>
-        [CommandLogId( "Search" )]
+        [LogId( "Search" )]
         public AsyncCommand<string> SearchCommand
         {
             get { return GetAsyncCommand<string>( ExecuteSearchCommand ); }
@@ -63,7 +63,7 @@ namespace PocketCampus.Directory.ViewModels
         /// <summary>
         /// Gets the command executed to view a person's details.
         /// </summary>
-        [CommandLogId( "ViewPersion" )]
+        [LogId( "ViewPersion" )]
         public Command<Person> ViewPersonCommand
         {
             get { return GetCommand<Person>( _navigationService.NavigateTo<PersonViewModel, Person> ); }

@@ -22,13 +22,20 @@ namespace PocketCampus.Main.Services
 
         private readonly NavigationLogger _logger;
         private readonly Dictionary<Type, Uri> _views;
-        private readonly Stack<IViewModel<object>> _backStack;
+        // HACK: IViewModel can't be covariant to be used with value types
+        //       and having a non-generic IViewModel that shouldn't be implemented is a terrible idea
+        //       so we use dynamic to call OnNavigatedTo/From
+        private readonly Stack<dynamic> _backStack;
 
         private bool _isInDialog;
         private bool _ignoreNext;
-        private IViewModel<object> _afterDialog;
-
+        private object _afterDialog;
         private bool _removeCurrentFromBackstack;
+
+        private PhoneApplicationFrame _rootFrame
+        {
+            get { return (PhoneApplicationFrame) Application.Current.RootVisual; }
+        }
 
 
         /// <summary>
@@ -38,27 +45,27 @@ namespace PocketCampus.Main.Services
         {
             _logger = logger;
             _views = new Dictionary<Type, Uri>();
-            _backStack = new Stack<IViewModel<object>>();
+            _backStack = new Stack<dynamic>();
 
-            App.RootFrame.Navigated += Frame_Navigated;
+            _rootFrame.Navigated += Frame_Navigated;
         }
 
 
         /// <summary>
         /// Navigates to the specified ViewModel.
         /// </summary>
-        private void NavigateToPrivate( IViewModel<object> viewModel )
+        private void NavigateToPrivate( object viewModel )
         {
             var viewModelType = viewModel.GetType();
-            _logger.LogNavigation( viewModel );
+            _logger.LogNavigation( viewModel, true );
             _backStack.Push( viewModel );
-            App.RootFrame.Navigate( _views[viewModelType] );
+            _rootFrame.Navigate( _views[viewModelType] );
         }
 
         /// <summary>
         /// Navigates to the specified ViewModel, as a dialog.
         /// </summary>
-        private void NavigateToDialogPrivate( IViewModel<object> viewModel )
+        private void NavigateToDialogPrivate( object viewModel )
         {
             if ( _isInDialog )
             {
@@ -87,7 +94,7 @@ namespace PocketCampus.Main.Services
                 return;
             }
 
-            var page = (PhoneApplicationPage) App.RootFrame.Content;
+            var page = (PhoneApplicationPage) _rootFrame.Content;
 
             // need to check IsNavigationInitiator to avoid doing stuff when the user
             // long-presses the Back button to multitask
@@ -97,32 +104,52 @@ namespace PocketCampus.Main.Services
 
                 if ( _backStack.Count > 0 )
                 {
-                    _backStack.Pop().OnNavigatedFrom();
+                    var currentTop = _backStack.Pop();
+                    currentTop.OnNavigatedFrom();
+                    DisposeIfNeeded( currentTop );
                 }
                 if ( _backStack.Count > 0 )
                 {
-                    _backStack.Peek().OnNavigatedTo();
-                    page.DataContext = _backStack.Peek();
+                    var currentViewModel = _backStack.Peek();
+                    currentViewModel.OnNavigatedTo();
+                    page.DataContext = currentViewModel;
+                    _logger.LogNavigation( currentViewModel, false );
                 }
             }
             else if ( e.NavigationMode == NavigationMode.Forward || e.NavigationMode == NavigationMode.New )
             {
                 if ( _removeCurrentFromBackstack )
                 {
-                    App.RootFrame.RemoveBackEntry();
+                    _rootFrame.RemoveBackEntry();
 
-                    var temp = _backStack.Pop();
-                    _backStack.Pop();
-                    _backStack.Push( temp );
+                    var newTop = _backStack.Pop();
+                    var currentTop = _backStack.Pop();
+                    _backStack.Push( newTop );
+
+                    DisposeIfNeeded( currentTop );
 
                     _removeCurrentFromBackstack = false;
                 }
 
                 if ( _backStack.Count > 0 )
                 {
-                    _backStack.Peek().OnNavigatedTo();
-                    page.DataContext = _backStack.Peek();
+                    var currentViewModel = _backStack.Peek();
+                    currentViewModel.OnNavigatedTo();
+                    page.DataContext = currentViewModel;
+                    _logger.LogNavigation( currentViewModel, false );
                 }
+            }
+        }
+
+        /// <summary>
+        /// Disposes of the specified object, if it is an IDisposable.
+        /// </summary>
+        private static void DisposeIfNeeded( object obj )
+        {
+            var disposable = obj as IDisposable;
+            if ( disposable != null )
+            {
+                disposable.Dispose();
             }
         }
 
@@ -135,7 +162,7 @@ namespace PocketCampus.Main.Services
             where T : IViewModel<NoParameter>
         {
             var vmType = typeof( T );
-            var vm = (IViewModel<object>) Container.Get( vmType, null );
+            var vm = Container.Get( vmType, null );
 
             if ( _isInDialog )
             {
@@ -155,7 +182,7 @@ namespace PocketCampus.Main.Services
             where TViewModel : IViewModel<TArg>
         {
             var vmType = typeof( TViewModel );
-            var vm = (IViewModel<object>) Container.Get( vmType, arg );
+            var vm = Container.Get( vmType, arg );
 
             if ( _isInDialog )
             {
@@ -174,7 +201,7 @@ namespace PocketCampus.Main.Services
             where T : IViewModel<NoParameter>
         {
             var vmType = typeof( T );
-            var vm = (IViewModel<object>) Container.Get( vmType, null );
+            var vm = Container.Get( vmType, null );
 
             NavigateToDialogPrivate( vm );
         }
@@ -186,7 +213,7 @@ namespace PocketCampus.Main.Services
             where TViewModel : IViewModel<TArg>
         {
             var vmType = typeof( TViewModel );
-            var vm = (IViewModel<object>) Container.Get( vmType, arg );
+            var vm = Container.Get( vmType, arg );
 
             NavigateToDialogPrivate( vm );
         }
@@ -208,7 +235,7 @@ namespace PocketCampus.Main.Services
             {
                 if ( _backStack.Count > 0 )
                 {
-                    App.RootFrame.GoBack();
+                    _rootFrame.GoBack();
                 }
                 else
                 {

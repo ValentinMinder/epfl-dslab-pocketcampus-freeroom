@@ -25,7 +25,7 @@ namespace PocketCampus.News
         /// </summary>
         public int Height { get; set; }
 
-        protected override ImageSource Convert( OnlineImage value )
+        public override ImageSource Convert( OnlineImage value )
         {
             if ( value == null )
             {

@@ -17,7 +17,7 @@ namespace PocketCampus.Transport.ViewModels
     /// <summary>
     /// The main ViewModel.
     /// </summary>
-    [PageLogId( "/transport" )]
+    [LogId( "/transport" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private static readonly string[] DefaultStations = { "EPFL", "Lausanne-Flon" };
@@ -72,7 +72,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Gets the command executed to add a station.
         /// </summary>
-        [CommandLogId( "AddStation" )]
+        [LogId( "AddStation" )]
         public Command AddStationCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<AddStationViewModel> ); }
@@ -81,7 +81,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Gets the command executed to remove a station.
         /// </summary>
-        [CommandLogId( "RemoveStation" )]
+        [LogId( "RemoveStation" )]
         public Command<Station> RemoveStationCommand
         {
             get { return GetCommand<Station>( RemoveStation ); }
@@ -90,7 +90,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Gets the command executed to view the settings.
         /// </summary>
-        [CommandLogId( "OpenSettings" )]
+        [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }

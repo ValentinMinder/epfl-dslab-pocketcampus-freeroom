@@ -1,4 +1,4 @@
-<!-- Copyright (c) PocketCampus.Org 2014
+﻿<!-- Copyright (c) PocketCampus.Org 2014
      See LICENSE file for more details
      File author: Solal Pirelli -->
 
@@ -14,39 +14,40 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <!-- Main grid -->
-    <Grid x:Name="LayoutRoot">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <!-- Main panel -->
+    <StackPanel x:Name="LayoutRoot"
+                Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal"
+                    Visibility="{Binding Rating.VoteCount, Converter={StaticResource NonZeroToVisibility}}">
+            <!-- Satisfaction percentage -->
+            <TextBlock Text="{Binding Rating.Value, StringFormat='0%'}"
+                       Style="{StaticResource PhoneTextNormalStyle}"
+                       FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                       Foreground="{Binding DataContext.Foreground, ElementName=LayoutRoot}"
+                       FontSize="{Binding DataContext.FontSize, ElementName=LayoutRoot}" 
+                       Margin="12,0,6,0" />
 
-        <!-- "progress bar" displaying the rating value -->
-        <Viewbox Height="5"
-                 Width="100"
-                 Margin="12,0"
-                 Stretch="Fill"
-                 Visibility="{Binding Rating.VoteCount, Converter={StaticResource NonZeroToVisibility}}">
-            <Grid>
-                <!-- Filled part -->
-                <Rectangle Fill="{StaticResource AppAccentBrush}"
-                           Opacity="0.75"
-                           HorizontalAlignment="Left"
-                           Width="{Binding Rating.Value, Converter={StaticResource ValueToPercentage}}"
-                           Height="5" />
+            <!-- Satisfaction text -->
+            <TextBlock Text="{Binding Resources.SatisfactionPercentage, Source={StaticResource Strings}}"
+                       Style="{StaticResource PhoneTextNormalStyle}"
+                       Foreground="{Binding DataContext.Foreground, ElementName=LayoutRoot}"
+                       FontSize="{Binding DataContext.FontSize, ElementName=LayoutRoot}" 
+                       Margin="0,0,6,0" />
 
-                <!-- Background -->
-                <Rectangle Fill="{StaticResource PhoneSubtleBrush}"
-                           Opacity="0.2"
-                           Width="100"
-                           Height="5" />
-            </Grid>
-        </Viewbox>
+            <!-- Separator -->
+            <TextBlock Text="-"
+                       Style="{StaticResource PhoneTextNormalStyle}"
+                       Foreground="{Binding DataContext.Foreground, ElementName=LayoutRoot}"
+                       FontSize="{Binding DataContext.FontSize, ElementName=LayoutRoot}" 
+                       Opacity="0.5"
+                       Margin="0,0,-6,0" />
+        </StackPanel>
 
         <!-- Number of votes -->
         <TextBlock Grid.Row="1"
                    Text="{Binding Rating.VoteCount, Converter={StaticResource VoteCountToString}}"
-                   Style="{StaticResource PhoneTextSubtleStyle}"
-                   FontSize="16" />
-    </Grid>
+                   Style="{StaticResource PhoneTextNormalStyle}"
+                   Foreground="{Binding DataContext.Foreground, ElementName=LayoutRoot}"
+                   FontSize="{Binding DataContext.FontSize, ElementName=LayoutRoot}" />
+    </StackPanel>
 </UserControl>

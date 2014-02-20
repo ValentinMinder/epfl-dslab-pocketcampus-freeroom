@@ -14,7 +14,7 @@ namespace PocketCampus.News.ViewModels
     /// <summary>
     /// The ViewModel for feed items.
     /// </summary>
-    [PageLogId( "/news/item" )]
+    [LogId( "/news/item" )]
     public sealed class FeedItemViewModel : DataViewModel<FeedItem>
     {
         private readonly INewsService _newsService;
@@ -39,7 +39,7 @@ namespace PocketCampus.News.ViewModels
         /// <summary>
         /// Gets the command executed to open the feed item in the browser.
         /// </summary>
-        [CommandLogId( "ViewInBrowser" )]
+        [LogId( "ViewInBrowser" )]
         public Command OpenInBrowserCommand
         {
             get { return GetCommand( () => _browserService.NavigateTo( Item.Url ) ); }

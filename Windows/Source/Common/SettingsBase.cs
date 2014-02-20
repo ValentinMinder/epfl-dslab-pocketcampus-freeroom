@@ -47,7 +47,7 @@ namespace PocketCampus.Common
         /// </summary>
         protected T Get<T>( [CallerMemberName] string propertyName = "" )
         {
-            SetIfUndefined<T>( propertyName, false );
+            SetIfUndefined( propertyName, false );
             return Settings.Get<T>( _pluginKey, propertyName );
         }
 
@@ -81,7 +81,7 @@ namespace PocketCampus.Common
         /// </summary>
         protected string GetEncrypted( [CallerMemberName] string propertyName = "" )
         {
-            SetIfUndefined<string>( propertyName, true );
+            SetIfUndefined( propertyName, true );
             return Settings.GetEncrypted( _pluginKey, propertyName );
         }
 
@@ -100,7 +100,7 @@ namespace PocketCampus.Common
         /// <summary>
         /// If the specified setting is undefined, set it to its default value.
         /// </summary>
-        private void SetIfUndefined<T>( string propertyName, bool encrypted )
+        private void SetIfUndefined( string propertyName, bool encrypted )
         {
             if ( Settings.IsDefined( _pluginKey, propertyName ) )
             {

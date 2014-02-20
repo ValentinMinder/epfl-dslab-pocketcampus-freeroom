@@ -27,7 +27,7 @@ namespace PocketCampus.Food
         /// <summary>
         /// Gets or sets the food type filters set by the user.
         /// </summary>
-        MealTypes[] DisplayedMealTypes { get; set; }
+        MealType[] DisplayedMealTypes { get; set; }
 
         /// <summary>
         /// Gets the dates at which the last vote for a meal at that time was cast.

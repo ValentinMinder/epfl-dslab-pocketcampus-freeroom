@@ -71,8 +71,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -182,27 +180,6 @@
                          HorizontalAlignment="Left"
                          FontSize="{StaticResource PhoneFontSizeNormal}"
                          Visibility="{Binding Person.Office, Converter={StaticResource StringToVisibility}}" />
-
-        <!-- TODO: Are the SCIPER and GASPAR too private?
-                   Wait for confirmation from EPFL before adding them back / removing them permanently -->
-
-        <!-- SCIPER number -->
-        <!--<TextBlock Grid.Row="8"
-                   Text="{Binding Resources.PersonSciper, Source={StaticResource Strings}}"
-                   Style="{StaticResource TextLabelStyle}" />
-        <TextBlock Grid.Column="1"
-                   Grid.Row="8"
-                   Text="{Binding Person.SciperNumber}"
-                   Style="{StaticResource TextValueStyle}" />-->
-
-        <!-- GASPAR identifier -->
-        <!--<TextBlock Grid.Row="9"
-                   Text="{Binding Resources.PersonGaspar, Source={StaticResource Strings}}"
-                   Style="{StaticResource TextLabelStyle}" />
-        <TextBlock Grid.Column="1"
-                   Grid.Row="9"
-                   Text="{Binding Person.GasparIdentifier}"
-                   Style="{StaticResource TextValueStyle}" />-->
     </Grid>
 
     <!-- App bar -->

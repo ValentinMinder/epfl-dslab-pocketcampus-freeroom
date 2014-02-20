@@ -70,8 +70,8 @@
 
         <!-- "Log on" button -->
         <Button Grid.Row="3"
-                Content="{Binding Resources.LogOn, Source={StaticResource Strings}}"
-                Command="{Binding LogOnCommand}"
+                Content="{Binding Resources.LogIn, Source={StaticResource Strings}}"
+                Command="{Binding LogInCommand}"
                 Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToOppositeVisibility}}"
                 HorizontalAlignment="Center"
                 MinWidth="300" />

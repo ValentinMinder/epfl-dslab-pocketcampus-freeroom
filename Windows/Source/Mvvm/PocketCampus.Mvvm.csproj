@@ -55,18 +55,21 @@
   <ItemGroup>
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="CommandBase.cs" />
-    <Compile Include="Logging\CommandLogIdAttribute.cs" />
+    <Compile Include="Internals\CommandExecutedEventArgs.cs" />
+    <Compile Include="Internals\ObservablePropertyVisitor.cs" />
+    <Compile Include="Logging\LogIdAttribute.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="DataViewModel.cs" />
     <Compile Include="Internals\ExpressionHelper.cs" />
     <Compile Include="INavigationService.cs" />
     <Compile Include="Logging\CommandLoggingRequest.cs" />
+    <Compile Include="Logging\LogParameterAttribute.cs" />
     <Compile Include="Logging\EventLogRequest.cs" />
+    <Compile Include="Logging\LogValueConverterAttribute.cs" />
     <Compile Include="Logging\NavigationLogger.cs" />
     <Compile Include="Messenger.cs" />
     <Compile Include="NoParameter.cs" />
     <Compile Include="ObservableObject.cs" />
-    <Compile Include="Logging\PageLogIdAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="IViewModel.cs" />

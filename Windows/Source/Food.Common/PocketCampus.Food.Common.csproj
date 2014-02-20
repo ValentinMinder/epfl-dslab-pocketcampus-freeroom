@@ -50,32 +50,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPluginSettings.cs" />
+    <Compile Include="Models\Rating.cs" />
+    <Compile Include="Models\VoteRequest.cs" />
+    <Compile Include="Models\VoteResponse.cs" />
+    <Compile Include="Models\VoteStatus.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginSettings.cs" />
-    <Compile Include="UserRating.cs" />
     <Compile Include="Models\FoodRequest.cs" />
     <Compile Include="Models\FoodResponse.cs" />
     <Compile Include="Models\FoodStatus.cs" />
     <Compile Include="Models\Meal.cs" />
-    <Compile Include="Models\MealTypes.cs" />
+    <Compile Include="Models\MealType.cs" />
+    <Compile Include="RatingInfo.cs" />
+    <Compile Include="RatingStatus.cs" />
     <Compile Include="Services\IFoodService.cs" />
     <Compile Include="Models\MealTime.cs" />
     <Compile Include="Services\FoodService.cs" />
     <Compile Include="Models\PriceTarget.cs" />
     <Compile Include="Models\Restaurant.cs" />
-    <Compile Include="Models\VoteRequest.cs" />
-    <Compile Include="Models\VoteResponse.cs" />
-    <Compile Include="Models\VoteStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Rating.cs" />
+    <Compile Include="UserRating.cs" />
     <Compile Include="ViewModels\Design\DesignMainViewModel.cs" />
-    <Compile Include="ViewModels\Design\DesignSettingsViewModel.cs" />
     <Compile Include="ViewModels\Design\DesignRatingViewModel.cs" />
+    <Compile Include="ViewModels\Design\DesignSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="RatingInfo.cs" />
     <Compile Include="ViewModels\RatingViewModel.cs" />
-    <Compile Include="RatingStatus.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThriftSharp">

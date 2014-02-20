@@ -23,7 +23,7 @@ namespace PocketCampus.Satellite.Views
         {
             var beer = (Beer) ( (FrameworkElement) sender ).DataContext;
             MessageBox.Show( beer.Description, beer.Name, MessageBoxButton.OK );
-            Messenger.Send( new EventLogRequest( "ViewBeerDescription" ) );
+            Messenger.Send( new EventLogRequest( "ViewBeerDescription", beer.Name ) );
         }
     }
 }

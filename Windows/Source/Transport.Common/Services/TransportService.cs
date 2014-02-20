@@ -14,8 +14,8 @@ namespace PocketCampus.Transport.Services
 {
     public sealed class TransportService : ThriftServiceImplementation<ITransportService>, ITransportService
     {
-        public TransportService( IServerConfiguration config )
-            : base( config.CreateCommunication( "transport" ) )
+        public TransportService( IServerAccess access )
+            : base( access.CreateCommunication( "transport" ) )
         {
 
         }
@@ -30,9 +30,9 @@ namespace PocketCampus.Transport.Services
             return CallAsync<string[], Station[]>( x => x.GetStationsAsync, names );
         }
 
-        public async Task<TripsResult> GetTripsAsync( string fromId, string toId )
+        public async Task<TripsResult> GetTripsAsync( string fromName, string toName )
         {
-            var result = await CallAsync<string, string, TripsResult>( x => x.GetTripsAsync, fromId, toId );
+            var result = await CallAsync<string, string, TripsResult>( x => x.GetTripsAsync, fromName, toName );
             foreach ( var trip in result.Trips )
             {
                 // remove weird connections without a line

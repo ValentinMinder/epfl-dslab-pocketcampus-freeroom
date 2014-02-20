@@ -15,7 +15,7 @@ namespace PocketCampus.News.ViewModels
     /// <summary>
     /// The main ViewModel.
     /// </summary>
-    [PageLogId( "/news" )]
+    [LogId( "/news" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly INewsService _feedsService;
@@ -35,7 +35,7 @@ namespace PocketCampus.News.ViewModels
         /// <summary>
         /// Gets the command executed to view a feed item.
         /// </summary>
-        [CommandLogId( "OpenNewsItem" )]
+        [LogId( "OpenNewsItem" )]
         public Command<FeedItem> ViewFeedItemCommand
         {
             get { return GetCommand<FeedItem>( _navigationService.NavigateTo<FeedItemViewModel, FeedItem> ); }

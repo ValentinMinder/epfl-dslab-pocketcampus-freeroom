@@ -34,7 +34,7 @@ namespace PocketCampus.Main.ViewModels.Design
 
         public ICommand OpenPluginCommand
         {
-            get { return new Command<IPlugin>( _ => { }, p => p == null || !( (IPlugin) p ).RequiresAuthentication ); }
+            get { return new Command<IPlugin>( this, _ => { }, p => p == null || !( (IPlugin) p ).RequiresAuthentication ); }
         }
 
 

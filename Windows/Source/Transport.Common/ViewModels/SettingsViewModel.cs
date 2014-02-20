@@ -10,7 +10,7 @@ namespace PocketCampus.Transport.ViewModels
     /// <summary>
     /// The settings ViewModel.
     /// </summary>
-    [PageLogId( "/transport/settings" )]
+    [LogId( "/transport/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
         private readonly IPluginSettings _settings;
