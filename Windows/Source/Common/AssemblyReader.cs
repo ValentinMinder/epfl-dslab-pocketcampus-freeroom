@@ -17,8 +17,7 @@ namespace PocketCampus.Common
         /// </summary>
         public static string GetText( Assembly assembly, string fileName )
         {
-            using ( Stream stream = assembly.GetManifestResourceStream( fileName ) )
-            using ( StreamReader reader = new StreamReader( stream ) )
+            using ( StreamReader reader = new StreamReader( assembly.GetManifestResourceStream( fileName ) ) )
             {
                 return reader.ReadToEnd();
             }

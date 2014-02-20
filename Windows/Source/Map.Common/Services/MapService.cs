@@ -13,8 +13,8 @@ namespace PocketCampus.Map.Services
 {
     public sealed class MapService : ThriftServiceImplementation<IMapService>, IMapService
     {
-        public MapService( IServerConfiguration config )
-            : base( config.CreateCommunication( "map" ) )
+        public MapService( IServerAccess access )
+            : base( access.CreateCommunication( "map" ) )
         {
 
         }

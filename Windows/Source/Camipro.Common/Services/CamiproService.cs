@@ -13,7 +13,7 @@ namespace PocketCampus.Camipro.Services
 {
     public sealed class CamiproService : ThriftServiceImplementation<ICamiproService>, ICamiproService
     {
-        public CamiproService( IServerConfiguration config )
+        public CamiproService( IServerAccess config )
             : base( config.CreateCommunication( "camipro" ) )
         {
         }

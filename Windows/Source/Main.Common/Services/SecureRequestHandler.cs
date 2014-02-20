@@ -54,14 +54,24 @@ namespace PocketCampus.Main.Services
                 if ( await _authenticator.AuthenticateAsync( _mainSettings.UserName, _mainSettings.Password, token.AuthenticationKey ) )
                 {
                     session = await authenticator.GetSessionAsync( token );
-                    SaveSession( typeof( TViewModel ), session );
+
+                    // if we're not authenticated, the user doesn't want to be remembered
+                    if ( _mainSettings.IsAuthenticated )
+                    {
+                        SaveSession( typeof( TViewModel ), session );
+                    }
+                    else
+                    {
+                        _mainSettings.UserName = null;
+                        _mainSettings.Password = null;
+                    }
                 }
                 else
                 {
                     // Authenticate, and then go to this plugin if it succeeds
                     // but go back to whatever was the previous plugin rather than to this one if it doesn't
                     _navigationService.PopBackStack();
-                    _navigationService.NavigateToDialog<AuthenticationViewModel>();
+                    _navigationService.NavigateToDialog<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Dialog );
                     _navigationService.NavigateTo<TViewModel>();
                     return;
                 }
@@ -77,9 +87,14 @@ namespace PocketCampus.Main.Services
                 _isRetrying = true;
                 SaveSession( typeof( TViewModel ), (TSession) null );
 
-                await ExecuteAsync<TViewModel, TToken, TSession>( authenticator, attempt );
-
-                _isRetrying = false;
+                try
+                {
+                    await ExecuteAsync<TViewModel, TToken, TSession>( authenticator, attempt );
+                }
+                finally
+                {
+                    _isRetrying = false;
+                }
             }
         }
 
@@ -131,7 +146,10 @@ namespace PocketCampus.Main.Services
             {
                 return default( T );
             }
-            return (T) new XmlSerializer( typeof( T ) ).Deserialize( new StringReader( serialized ) );
+            using ( var reader = new StringReader( serialized ) )
+            {
+                return (T) new XmlSerializer( typeof( T ) ).Deserialize( reader );
+            }
         }
 
         /// <summary>
@@ -144,14 +162,14 @@ namespace PocketCampus.Main.Services
                 return "";
             }
 
-            var writer = new StringWriter();
-            // Ensure that the BOM isn't saved - weird, but it works
-            var emptyNs = new XmlSerializerNamespaces( new[]
+            using ( var writer = new StringWriter() )
             {
-                new XmlQualifiedName( "", "" ),
-            } );
-            new XmlSerializer( session.GetType() ).Serialize( writer, session, emptyNs );
-            return writer.ToString();
+                // Ensure that the BOM isn't saved - weird, but it works
+                var emptyNs = new XmlSerializerNamespaces( new[] { new XmlQualifiedName( "", "" ) } );
+
+                new XmlSerializer( session.GetType() ).Serialize( writer, session, emptyNs );
+                return writer.ToString();
+            }
         }
     }
 }

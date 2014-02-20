@@ -62,7 +62,7 @@ namespace PocketCampus.Common.Controls
         {
             if ( !_cache.ContainsKey( name ) )
             {
-                _cache.Add( name, new Command( execute, canExecute ) );
+                _cache.Add( name, new Command( this, execute, canExecute ) );
             }
 
             return (Command) _cache[name];
@@ -75,7 +75,7 @@ namespace PocketCampus.Common.Controls
         {
             if ( !_cache.ContainsKey( name ) )
             {
-                _cache.Add( name, new Command<T>( execute, canExecute ) );
+                _cache.Add( name, new Command<T>( this, execute, canExecute ) );
             }
 
             return (Command<T>) _cache[name];
@@ -91,7 +91,7 @@ namespace PocketCampus.Common.Controls
         {
             if ( !_cache.ContainsKey( name ) )
             {
-                _cache.Add( name, new AsyncCommand( execute, canExecute ) );
+                _cache.Add( name, new AsyncCommand( this, execute, canExecute ) );
             }
 
             return (AsyncCommand) _cache[name];
@@ -104,7 +104,7 @@ namespace PocketCampus.Common.Controls
         {
             if ( !_cache.ContainsKey( name ) )
             {
-                _cache.Add( name, new AsyncCommand<T>( execute, canExecute ) );
+                _cache.Add( name, new AsyncCommand<T>( this, execute, canExecute ) );
             }
 
             return (AsyncCommand<T>) _cache[name];

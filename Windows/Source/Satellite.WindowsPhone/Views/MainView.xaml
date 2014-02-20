@@ -42,8 +42,7 @@
                 <!-- Beer name -->
                 <TextBlock Text="{Binding Name}"
                            Style="{StaticResource PhoneTextLargeStyle}"
-                           TextTrimming="WordEllipsis"
-                           FontSize="26" />
+                           TextTrimming="WordEllipsis" />
 
                 <!-- Brewery name & country -->
                 <Grid Grid.Row="1">

@@ -32,51 +32,39 @@
                 <tool:WrapPanel Orientation="Horizontal" />
             </ItemsPanelTemplate>
 
-            <!-- ToggleButton template that shows its background only if it's selected -->
+            <!-- Simple ToggleButton template that changes the content opacity when not enabled -->
             <ControlTemplate x:Key="SimpleToggleButtonTemplate" TargetType="ToggleButton">
-                <Border BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        Margin="{TemplateBinding Margin}">
-                    <Grid>
-                        <Rectangle Fill="{TemplateBinding Background}"
-                                   Visibility="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibility}}" />
-                        <ContentPresenter Margin="{TemplateBinding Padding}" />
-                    </Grid>
-                </Border>
+                <Grid>
+                    <ContentControl Content="{TemplateBinding Content}" />
+
+                    <Border Background="{StaticResource PhoneBackgroundBrush}"
+                            Opacity="0.7"
+                            Visibility="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, 
+                                                 Converter={StaticResource BoolToOppositeVisibility}}" />
+                </Grid>
             </ControlTemplate>
 
             <!-- Meal type template -->
             <DataTemplate x:Key="MealTypeTemplate">
                 <ToggleButton IsChecked="{Binding Item2, Mode=TwoWay}"
-                              Template="{StaticResource SimpleToggleButtonTemplate}"
-                              Margin="4"
-                              BorderThickness="0"
-                              Padding="0"
-                              Background="{Binding Item1, Converter={StaticResource MealTypeToBrush}}">
-                    <Border Padding="12,8"
-                            BorderBrush="#50FFFFFF"
-                            BorderThickness="2">
-                        <Grid Width="195">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
+                              Template="{StaticResource SimpleToggleButtonTemplate}">
+                    <Grid Width="160"
+                          Margin="0,0,0,5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                            <!-- Empty image placeholder to avoid moving the text when the image is invisible -->
-                            <Rectangle Width="32" Height="32" />
-
-                            <!-- Type image -->
-                            <Image Source="{Binding Item1, Converter={StaticResource EnumToImage}}"
-                                   Width="32" Height="32"
-                                   Visibility="{Binding Item2, Converter={StaticResource BoolToVisibility}}"/>
-
-                            <!-- Name -->
-                            <TextBlock Grid.Column="1"
-                                       Text="{Binding Item1, Converter={StaticResource EnumToString}}"
-                                       Style="{StaticResource PhoneTextNormalStyle}" />
-                        </Grid>
-                    </Border>
-
+                        <!-- Image -->
+                        <Image Source="{Binding Item1, Converter={StaticResource EnumToImage}}"
+                               Width="100" Height="100" />
+                        
+                        <!-- Name -->
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Item1, Converter={StaticResource EnumToString}}"
+                                   HorizontalAlignment="Center"
+                                   Style="{StaticResource PhoneTextNormalStyle}" />
+                    </Grid>
                 </ToggleButton>
             </DataTemplate>
 
@@ -96,6 +84,7 @@
     <!-- Main grid -->
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -125,10 +114,11 @@
             </Grid.ColumnDefinitions>
             <TextBlock Text="{Binding Resources.PriceTarget, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextLargeStyle}"
-                       FontSize="26"
+                       FontSize="{Binding FontSize, ElementName=PriceTargetPicker}"
                        VerticalAlignment="Center" />
             <!-- HACK: See code-behind for SelectedItem binding and explanation -->
-            <tool:ListPicker Grid.Column="1"
+            <tool:ListPicker x:Name="PriceTargetPicker"
+                             Grid.Column="1"
                              ItemsSource="{Binding PriceTargets}"
                              ItemTemplate="{StaticResource PriceTargetTemplate}"
                              FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -141,22 +131,29 @@
                     Orientation="Horizontal">
             <TextBlock Text="{Binding Resources.MaximumBudget, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextLargeStyle}"
-                       FontSize="26"
+                       FontSize="{Binding FontSize, ElementName=MaximumBudgetBox}"
                        VerticalAlignment="Center" />
-            <TextBox InputScope="Number"
+            <TextBox x:Name="MaximumBudgetBox"
+                     InputScope="Number"
                      Text="{Binding Settings.MaximumBudget, Converter={StaticResource DoubleToString}, Mode=TwoWay}"
                      Width="120"
                      Margin="-10,0" />
             <TextBlock Text="CHF"
                        Style="{StaticResource PhoneTextLargeStyle}"
-                       FontSize="26"
+                       FontSize="{Binding FontSize, ElementName=MaximumBudgetBox}"
                        VerticalAlignment="Center" />
         </StackPanel>
+        
+        <!-- Meal type filters explanation -->
+        <TextBlock Grid.Row="4"
+                   Text="{Binding Resources.MealTypeFilterExplanation, Source={StaticResource Strings}}"
+                   Style="{StaticResource PhoneTextSmallStyle}" />
 
-        <!-- Meal types -->
-        <ItemsControl Grid.Row="4"
-                      ItemsSource="{Binding DisplayedMealTypes}"
-                      ItemTemplate="{StaticResource MealTypeTemplate}"
-                      ItemsPanel="{StaticResource WrapItemsPanel}" />
+        <!-- Meal type filters -->
+        <ScrollViewer Grid.Row="5">
+            <ItemsControl ItemsSource="{Binding DisplayedMealTypes}"
+                          ItemTemplate="{StaticResource MealTypeTemplate}"
+                          ItemsPanel="{StaticResource WrapItemsPanel}" />
+        </ScrollViewer>
     </Grid>
 </comControls:BasePage>

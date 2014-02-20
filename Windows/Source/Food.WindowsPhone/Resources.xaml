@@ -12,8 +12,8 @@
     <!-- Converters -->
     <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                         Strings="{StaticResource Strings}" />
-    <my:MealTypeToBrushConverter x:Key="MealTypeToBrush" />
+    <my:PriceToStringConverter x:Key="PriceToString" />
+    <my:MealToImageConverter x:Key="MealToImage" />
     <my:RestaurantsToGroupsConverter x:Key="RestaurantsToGroups" />
-    <my:RatingValueToPercentageConverter x:Key="ValueToPercentage" />
     <my:VoteCountToStringConverter x:Key="VoteCountToString" />
 </ResourceDictionary>

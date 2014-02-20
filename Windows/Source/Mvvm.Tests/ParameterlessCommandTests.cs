@@ -15,7 +15,7 @@ namespace PocketCampus.Mvvm.Tests
         public void ExecuteCallsTheProvidedExecuteMethod()
         {
             int count = 0;
-            var cmd = new Command( () => count++ );
+            var cmd = new Command( null, () => count++ );
 
             cmd.Execute();
 
@@ -26,7 +26,7 @@ namespace PocketCampus.Mvvm.Tests
         public void ICommandExecuteCallsTheProvidedExecuteMethod()
         {
             int count = 0;
-            var cmd = new Command( () => count++ );
+            var cmd = new Command( null, () => count++ );
 
             ( (ICommand) cmd ).Execute( null );
 
@@ -36,7 +36,7 @@ namespace PocketCampus.Mvvm.Tests
         [TestMethod]
         public void CanExecuteIsTrueWhenNotProvided()
         {
-            var cmd = new Command( () => { } );
+            var cmd = new Command( null, () => { } );
 
             Assert.AreEqual( true, cmd.CanExecute(), "CanExecute() should return true when the 'canExecute' parameter is not provided." );
         }
@@ -45,7 +45,7 @@ namespace PocketCampus.Mvvm.Tests
         public void CanExecuteCallsTheProvidedCanExecuteMethod()
         {
             int n = 0;
-            var cmd = new Command( () => { }, () => n == 42 );
+            var cmd = new Command( null, () => { }, () => n == 42 );
 
             Assert.AreEqual( false, cmd.CanExecute(), "CanExecute() should call the provided 'canExecute' parameter." );
             n = 42;
@@ -56,7 +56,7 @@ namespace PocketCampus.Mvvm.Tests
         public void ICommandCanExecuteCallsTheProvidedCanExecuteMethod()
         {
             int n = 0;
-            var cmd = new Command( () => { }, () => n == 42 );
+            var cmd = new Command( null, () => { }, () => n == 42 );
 
             Assert.AreEqual( false, ( (ICommand) cmd ).CanExecute( null ), "ICommand.CanExecute() should call the provided 'canExecute' parameter." );
             n = 42;
@@ -69,7 +69,7 @@ namespace PocketCampus.Mvvm.Tests
 
             public void TestAsyncCommand()
             {
-                var cmd = new Command( () => { }, () => Value == 0 );
+                var cmd = new Command( null, () => { }, () => Value == 0 );
                 int count = 0;
 
                 cmd.CanExecuteChanged += ( s, e ) => count++;
@@ -79,7 +79,7 @@ namespace PocketCampus.Mvvm.Tests
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
-            private void OnPropertyChanged( string propertyName )
+            public void OnPropertyChanged( string propertyName )
             {
                 var evt = PropertyChanged;
                 if ( evt != null )
@@ -93,6 +93,19 @@ namespace PocketCampus.Mvvm.Tests
         public void CanExecuteChangedShouldBeFiredWhenAPropertyChanges()
         {
             new InpcExample().TestAsyncCommand();
+        }
+
+        [TestMethod]
+        public void CanExecuteChangedShouldBeFiredWhenAPropertyOfAFieldChanges()
+        {
+            var ex = new InpcExample();
+            var cmd = new Command( null, () => { }, () => ex.Value == 1 );
+            int count = 0;
+
+            cmd.CanExecuteChanged += ( s, e ) => count++;
+            ex.OnPropertyChanged( "Value" );
+
+            Assert.AreEqual( 1, count, "CanExecuteChanged should be fired exactly once when a property it uses changes, even in a closure." );
         }
     }
 }

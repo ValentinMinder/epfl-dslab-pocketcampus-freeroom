@@ -22,8 +22,8 @@ namespace PocketCampus.Mvvm
         /// </summary>
         /// <param name="execute">The action to execute when the command is executed.</param>
         /// <param name="canExecute">Optional. The predicate indicating whether the command can be executed.</param>
-        public AsyncCommand( Func<Task> execute, Expression<Func<bool>> canExecute = null )
-            : base( canExecute )
+        public AsyncCommand( object owner, Func<Task> execute, Expression<Func<bool>> canExecute = null )
+            : base( owner, canExecute )
         {
             _execute = execute;
             _canExecute = canExecute == null ? null : canExecute.Compile();
@@ -85,8 +85,8 @@ namespace PocketCampus.Mvvm
         /// </summary>
         /// <param name="execute">The action to execute when the command is executed.</param>
         /// <param name="canExecute">Optional. The predicate indicating whether the command can be executed.</param>
-        public AsyncCommand( Func<T, Task> execute, Expression<Func<T, bool>> canExecute = null )
-            : base( canExecute )
+        public AsyncCommand( object owner, Func<T, Task> execute, Expression<Func<T, bool>> canExecute = null )
+            : base( owner, canExecute )
         {
             _execute = execute;
             _canExecute = canExecute == null ? null : canExecute.Compile();
@@ -101,7 +101,7 @@ namespace PocketCampus.Mvvm
         /// </remarks>
         public Task ExecuteAsync( T parameter )
         {
-            OnExecuted();
+            OnExecuted( parameter );
             return _execute( parameter );
         }
 
@@ -123,7 +123,13 @@ namespace PocketCampus.Mvvm
         /// <returns>True if this command can be executed; otherwise, false.</returns>
         bool ICommand.CanExecute( object parameter )
         {
-            return CanExecute( (T) parameter );
+            if ( parameter is T )
+            {
+                return CanExecute( (T) parameter );
+            }
+
+            // can occur with wrong bindings
+            return false;
         }
 
         /// <summary>
@@ -132,7 +138,11 @@ namespace PocketCampus.Mvvm
         /// <param name="parameter">Data used by the command.</param>
         async void ICommand.Execute( object parameter )
         {
-            await ExecuteAsync( (T) parameter );
+            if ( parameter is T )
+            {
+                // the opposite can occur with wrong bindings
+                await ExecuteAsync( (T) parameter );
+            }
         }
         #endregion
     }

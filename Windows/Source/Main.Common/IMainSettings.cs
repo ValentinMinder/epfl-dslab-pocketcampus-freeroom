@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
+using PocketCampus.Common;
 namespace PocketCampus.Main
 {
     /// <summary>
@@ -14,6 +15,11 @@ namespace PocketCampus.Main
         /// Gets or sets a value indicating whether this is the app's first run.
         /// </summary>
         bool IsFirstRun { get; set; }
+
+        /// <summary>
+        /// Gets or sets the server configuration used to connect.
+        /// </summary>
+        ServerConfiguration ServerConfiguration { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the user is authenticated.

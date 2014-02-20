@@ -18,7 +18,7 @@ namespace PocketCampus.Mvvm.Tests
             int count = 0;
             bool paramOk = false;
             object obj = new object();
-            var cmd = new AsyncCommand<object>( o =>
+            var cmd = new AsyncCommand<object>( null, o =>
             {
                 count++;
                 if ( o == obj )
@@ -40,7 +40,7 @@ namespace PocketCampus.Mvvm.Tests
             int count = 0;
             bool paramOk = false;
             object obj = new object();
-            var cmd = new AsyncCommand<object>( o =>
+            var cmd = new AsyncCommand<object>( null, o =>
             {
                 count++;
                 if ( o == obj )
@@ -59,7 +59,7 @@ namespace PocketCampus.Mvvm.Tests
         [TestMethod]
         public void CanExecuteIsTrueWhenNotProvided()
         {
-            var cmd = new AsyncCommand<object>( _ => Task.FromResult( 0 ) );
+            var cmd = new AsyncCommand<object>( null, _ => Task.FromResult( 0 ) );
 
             Assert.AreEqual( true, cmd.CanExecute( null ), "CanExecute() should return true when the 'canExecute' parameter is not provided." );
         }
@@ -68,7 +68,7 @@ namespace PocketCampus.Mvvm.Tests
         public void CanExecuteCallsTheProvidedCanExecuteMethod()
         {
             object obj = new object();
-            var cmd = new AsyncCommand<object>( _ => Task.FromResult( 0 ), o => o == obj );
+            var cmd = new AsyncCommand<object>( null, _ => Task.FromResult( 0 ), o => o == obj );
 
             Assert.AreEqual( false, cmd.CanExecute( new object() ), "CanExecute() should call the provided 'canExecute' parameter with the correct parameter." );
             Assert.AreEqual( true, cmd.CanExecute( obj ), "CanExecute() should call the provided 'canExecute' parameter with the correct parameter." );
@@ -78,7 +78,7 @@ namespace PocketCampus.Mvvm.Tests
         public void ICommandCanExecuteCallsTheProvidedCanExecuteMethod()
         {
             object obj = new object();
-            var cmd = new AsyncCommand<object>( _ => Task.FromResult( 0 ), o => o == obj );
+            var cmd = new AsyncCommand<object>( null, _ => Task.FromResult( 0 ), o => o == obj );
 
             Assert.AreEqual( false, ( (ICommand) cmd ).CanExecute( new object() ), "ICommand.CanExecute() should call the provided 'canExecute' parameter." );
             Assert.AreEqual( true, ( (ICommand) cmd ).CanExecute( obj ), "ICommand.CanExecute() should call the provided 'canExecute' parameter." );
@@ -90,7 +90,7 @@ namespace PocketCampus.Mvvm.Tests
 
             public void TestAsyncCommand()
             {
-                var cmd = new AsyncCommand<object>( _ => Task.FromResult( 0 ), _ => Value == 0 );
+                var cmd = new AsyncCommand<object>( null, _ => Task.FromResult( 0 ), _ => Value == 0 );
                 int count = 0;
 
                 cmd.CanExecuteChanged += ( s, e ) => count++;
@@ -100,7 +100,7 @@ namespace PocketCampus.Mvvm.Tests
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
-            private void OnPropertyChanged( string propertyName )
+            public void OnPropertyChanged( string propertyName )
             {
                 var evt = PropertyChanged;
                 if ( evt != null )
@@ -114,6 +114,19 @@ namespace PocketCampus.Mvvm.Tests
         public void CanExecuteChangedShouldBeFiredWhenAPropertyChanges()
         {
             new InpcExample().TestAsyncCommand();
+        }
+
+        [TestMethod]
+        public void CanExecuteChangedShouldBeFiredWhenAPropertyOfAFieldChanges()
+        {
+            var ex = new InpcExample();
+            var cmd = new AsyncCommand<object>( null, _ => Task.FromResult( 0 ), _ => ex.Value == 1 );
+            int count = 0;
+
+            cmd.CanExecuteChanged += ( s, e ) => count++;
+            ex.OnPropertyChanged( "Value" );
+
+            Assert.AreEqual( 1, count, "CanExecuteChanged should be fired exactly once when a property it uses changes, even in a closure." );
         }
     }
 }

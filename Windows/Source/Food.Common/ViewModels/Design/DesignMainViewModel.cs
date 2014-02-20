@@ -35,7 +35,7 @@ namespace PocketCampus.Food.ViewModels.Design
                                 Description = @"Jardinière de légumes
 Riz parfumé
 Buffet de salades",
-                                MealTypes = new[] { MealTypes.Thai },
+                                MealTypes = new[] { MealType.Thai },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 9.50 },
                                                                              { PriceTarget.Visitor, 12.00 },
                                                                              { PriceTarget.PhDStudent, 9.50 },
@@ -56,7 +56,7 @@ Buffet de salades",
                                 Name = "Ragout de porc (CH) mixed-grill au vinaigre balsamique",
                                 Description = @"Épinards en branches
 Pomme purée",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.00 },
                                                                              { PriceTarget.Visitor, 10.50 },
                                                                              { PriceTarget.PhDStudent, 8.00 },
@@ -68,7 +68,7 @@ Pomme purée",
                                 Name = "Tagliatelle au pesto et basilic, graines de courge",
                                 Description = @"Épinards en branches
 Salade mêlée",
-                                MealTypes = new[] { MealTypes.Vegetarian, MealTypes.Pasta },
+                                MealTypes = new[] { MealType.Vegetarian, MealType.Pasta },
                                 Prices = new Dictionary<PriceTarget, double>{},
                                 Rating = new Rating { Value = 0.66, VoteCount = 3 }
                             },
@@ -78,7 +78,7 @@ Salade mêlée",
                                 Description = @"Épinards en branches
 Pomme purée
 Salade mêlée",
-                                MealTypes = new[] { MealTypes.Poultry },
+                                MealTypes = new[] { MealType.Poultry },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 12.00 }},
                                 Rating = new Rating { Value = 0.5, VoteCount = 1 }
                             },
@@ -96,7 +96,7 @@ Salade mêlée",
                                 Description = @"Haricots verts
 Pommes de terre au four
 Salade",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 25.00 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 1 }
                             }
@@ -112,7 +112,7 @@ Salade",
                             {
                                 Name = "Pavé de loup de mer à l'huile vierge",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Fish },
+                                MealTypes = new[] { MealType.Fish },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 26.00 }},
                                 Rating = new Rating { Value = 0.8, VoteCount = 5 }
                             },
@@ -120,7 +120,7 @@ Salade",
                             {
                                 Name = "Filet de rouget grondin",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Fish },
+                                MealTypes = new[] { MealType.Fish },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 26.00 }},
                                 Rating = new Rating { Value = 1.0, VoteCount = 1 }
                             },
@@ -128,7 +128,7 @@ Salade",
                             {
                                 Name = "Saladine d'oranges sanguine, sébaste aux crevettes",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Fish },
+                                MealTypes = new[] { MealType.Fish },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 20.00 }} ,
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -136,7 +136,7 @@ Salade",
                             {
                                 Name = "Escalope de saumon poêlé à la piperade",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Fish },
+                                MealTypes = new[] { MealType.Fish },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 18.50 }},
                                 Rating = new Rating { Value = 1.0, VoteCount = 1 }
                             },
@@ -144,7 +144,7 @@ Salade",
                             {
                                 Name = "Pavé de boeuf Angus Irlandais, cuisson à votre convenance",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 27.00 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -152,7 +152,7 @@ Salade",
                             {
                                 Name = "Panzerrotti au jambon cru, crème de basilic",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Pasta },
+                                MealTypes = new[] { MealType.Pasta },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 18.50 }},
                                 Rating = new Rating { Value = 0.5, VoteCount = 1 }
                             },
@@ -160,7 +160,7 @@ Salade",
                             {
                                 Name = "Filet de volaille FR jaune farcie, sauce aux morilles",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Poultry },
+                                MealTypes = new[] { MealType.Poultry },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 25.00 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -168,7 +168,7 @@ Salade",
                             {
                                 Name = "Tartare de boulgour ou Gaspacho comme un bloody Mary",
                                 Description = "",
-                                MealTypes= new[] { MealTypes.Vegetarian },
+                                MealTypes= new[] { MealType.Vegetarian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 8.00 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -176,7 +176,7 @@ Salade",
                             {
                                 Name = "Risotto de polenta aux pleurotes",
                                 Description = "Bol de salade",
-                                MealTypes = new[] { MealTypes.Vegetarian },
+                                MealTypes = new[] { MealType.Vegetarian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 18.50 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -194,7 +194,7 @@ Salade",
                                 Description = @"Pommes frites
 Carottes Vichy
 ou salade ou potage",
-                                MealTypes = new[] { MealTypes.Poultry },
+                                MealTypes = new[] { MealType.Poultry },
                                 Prices  =new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.00 },
                                                                              { PriceTarget.Visitor, 10.50 },
                                                                              { PriceTarget.PhDStudent, 8.00 },
@@ -207,7 +207,7 @@ ou salade ou potage",
                                 Description = @"Pâtes au beurre
 Carottes Vichy
 Salade ou potage",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 11.00 },
                                                                              { PriceTarget.Visitor, 11.00 },
                                                                              { PriceTarget.PhDStudent, 11.00 },
@@ -220,7 +220,7 @@ Salade ou potage",
                                 Description = @"Pâtes au beurre
 Légume du jour
 Salade ou potage",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 9.00 },
                                                                              { PriceTarget.Visitor, 10.00 },
                                                                              { PriceTarget.PhDStudent, 11.00 },
@@ -233,7 +233,7 @@ Salade ou potage",
                                 Description = @"sauce crème ou tomate
 garniture à choi
 Xaussi à l'emporter",
-                                MealTypes = new[] { MealTypes.Pizza },
+                                MealTypes = new[] { MealType.Pizza },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 9.00 },
                                                                              { PriceTarget.Visitor, 9.00 },
                                                                              { PriceTarget.PhDStudent, 9.00 },
@@ -245,7 +245,7 @@ Xaussi à l'emporter",
                                 Name = "penne à la diavola",
                                 Description = @"Légumes,épices,tomate et sauge
 Salade ou potage",
-                                MealTypes = new[] { MealTypes.Vegetarian },
+                                MealTypes = new[] { MealType.Vegetarian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.00 },
                                                                              { PriceTarget.Visitor, 10.50 },
                                                                              { PriceTarget.PhDStudent, 8.00 },
@@ -265,7 +265,7 @@ Salade ou potage",
                                 Name = "Steak de cheval(CA) Jus a la diable",
                                 Description = @"Haricots verts
 Pommes de terre au four",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.00 },
                                                                              { PriceTarget.Visitor, 10.50 },
                                                                              { PriceTarget.PhDStudent, 8.00 },
@@ -285,7 +285,7 @@ Pommes de terre au four",
                                 Name = "Entrecôte de boeuf, double cheese burger",
                                 Description = @"Légumes du jour
 ou garniture du jour",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 14.00 }},
                                 Rating = new Rating { Value = 0.9, VoteCount = 10 }
                             },
@@ -294,7 +294,7 @@ ou garniture du jour",
                                 Name = "Hamburger",
                                 Description = @"Légumes du jour
 ou garniture du jour",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 12.00 }},
                                 Rating = new Rating { Value = 1.0, VoteCount = 2 }
                             },
@@ -303,7 +303,7 @@ ou garniture du jour",
                                 Name = "Cheese burger",
                                 Description = @"Légumes du jour
 ou garniture du jour",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 12.50 }},
                                 Rating = new Rating { Value = 0.5, VoteCount = 2 }
                             },
@@ -313,7 +313,7 @@ ou garniture du jour",
                                 Description = @"Végétarienne, calzone, 3 fromages
 Reine
 Pizza de la semaine : roquette, poivrons, crevettes et parmesan",
-                                MealTypes = new[] { MealTypes.Pizza },
+                                MealTypes = new[] { MealType.Pizza },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 10.00 }},
                                 Rating = new Rating { Value = 0.5, VoteCount = 1 }
                             },
@@ -322,7 +322,7 @@ Pizza de la semaine : roquette, poivrons, crevettes et parmesan",
                                 Name = "Poitrine de poulet à l'ail d'ours",
                                 Description = @"Carottes persillées
 Riz pilaw",
-                                MealTypes = new[] { MealTypes.Poultry },
+                                MealTypes = new[] { MealType.Poultry },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.00 },
                                                                              { PriceTarget.Visitor, 10.50 },
                                                                              { PriceTarget.PhDStudent, 8.00 },
@@ -334,7 +334,7 @@ Riz pilaw",
                                 Name = "Dal de lentilles corail",
                                 Description = @"aux épices douces
 Salade mêlée",
-                                MealTypes = new[] { MealTypes.Vegetarian },
+                                MealTypes = new[] { MealType.Vegetarian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 10.00 }}
                             }
                         }
@@ -349,7 +349,7 @@ Salade mêlée",
                             {
                                 Name = "Nouilles jaunes sautées aux crevettes",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Thai },
+                                MealTypes = new[] { MealType.Thai },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 11.00 }},
                                 Rating = new Rating { Value = 0.7, VoteCount = 10 }
                             },
@@ -357,7 +357,7 @@ Salade mêlée",
                             {
                                 Name = "Boeuf (CH) sauté au basilic thaï",
                                 Description = "Riz parfumé",
-                                MealTypes = new[] { MealTypes.Meat, MealTypes.Thai },
+                                MealTypes = new[] { MealType.Meat, MealType.Thai },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 11.00 }},
                                 Rating = new Rating { Value = 0.8, VoteCount = 5 }
                             },
@@ -365,7 +365,7 @@ Salade mêlée",
                             {
                                 Name = "Porc (CH) au curry rouge, lait de coco et ananas",
                                 Description = "Riz parfumé",
-                                MealTypes = new[] { MealTypes.Meat, MealTypes.Thai },
+                                MealTypes = new[] { MealType.Meat, MealType.Thai },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 11.00 }},
                                 Rating = new Rating { Value = 0.5, VoteCount = 4 }
                             },
@@ -373,7 +373,7 @@ Salade mêlée",
                             {
                                 Name = "Tofu et légumes sautés au gingembre",
                                 Description = "Riz parfumé",
-                                MealTypes = new[] { MealTypes.Vegetarian, MealTypes.Thai },
+                                MealTypes = new[] { MealType.Vegetarian, MealType.Thai },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 11.00 }},
                                 Rating = new Rating { Value = 0.75, VoteCount = 4 }
                             },
@@ -390,7 +390,7 @@ Salade mêlée",
                                 Name = "Petits carrés de porc (CH) frits au piment",
                                 Description = @"Dhal (lentilles)
 Riz basmati",
-                                MealTypes = new[] { MealTypes.Meat, MealTypes.Indian },
+                                MealTypes = new[] { MealType.Meat, MealType.Indian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 11.50 }},
                                 Rating = new Rating { Value = 1.0, VoteCount = 5 }
                             },
@@ -399,7 +399,7 @@ Riz basmati",
                                 Name = "Mélange de légumes et d'épices assorties",
                                 Description = @"Raita (yogourt épicé)
 Riz basmati",
-                                MealTypes = new[] { MealTypes.Vegetarian, MealTypes.Indian },
+                                MealTypes = new[] { MealType.Vegetarian, MealType.Indian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 11.50 }},
                                 Rating = new Rating { Value = 0.6, VoteCount = 5 }
                             },
@@ -408,7 +408,7 @@ Riz basmati",
                                 Name = "Pois chiches à la sauce épicée",
                                 Description = @"Raita (yogourt épicé)
 Riz basmati",
-                                MealTypes = new[] { MealTypes.Vegetarian, MealTypes.Indian },
+                                MealTypes = new[] { MealType.Vegetarian, MealType.Indian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 11.50 }},
                                 Rating = new Rating { Value = 1.0, VoteCount = 2 }
                             },
@@ -417,7 +417,7 @@ Riz basmati",
                                 Name = "Émincé de poulet (CH) sauce Tikka Masala",
                                 Description = @"Dhal (lentilles)
 Riz basmati",
-                                MealTypes = new[] { MealTypes.Poultry, MealTypes.Indian },
+                                MealTypes = new[] { MealType.Poultry, MealType.Indian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 11.50 }},
                                 Rating = new Rating { Value = 0.66, VoteCount = 3 }
                             },
@@ -435,7 +435,7 @@ Riz basmati",
                                 Description = @"Petits pois et carottes
 Riz au curcuma
 Entrée : Potage",
-                                MealTypes = new[] { MealTypes.Poultry },
+                                MealTypes = new[] { MealType.Poultry },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.00 },
                                                                              { PriceTarget.Visitor, 12.00 },
                                                                              { PriceTarget.PhDStudent, 8.00 },
@@ -454,7 +454,7 @@ Entrée : Potage",
                             {
                                 Name = "Arousse Chawarma Lahmé",
                                 Description = "Emincé de viande marinée rôtie à la broche, persil, cornichon, oignon, tomate et sauce tarator",
-                                MealTypes = new[] { MealTypes.Meat, MealTypes.Lebanese },
+                                MealTypes = new[] { MealType.Meat, MealType.Lebanese },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 7.90 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -462,7 +462,7 @@ Entrée : Potage",
                             {
                                 Name = "Poulet à l'Oriental",
                                 Description = "Poulet au four et sauce brune accompagnériz à la viande hachée, épices d'orient, pignons de pins, amandes et pistaches roties",
-                                MealTypes = new[] { MealTypes.Poultry, MealTypes.Lebanese },
+                                MealTypes = new[] { MealType.Poultry, MealType.Lebanese },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 11.50 }},
                                 Rating = new Rating{ Value = 0.0, VoteCount = 0 }
                             },
@@ -473,7 +473,7 @@ Entrée : Potage",
 + Hommos, Moutabbal
 + Tabboulé
 Entrée : + Pain Libanais",
-                                MealTypes = new[] { MealTypes.Poultry, MealTypes.Lebanese },
+                                MealTypes = new[] { MealType.Poultry, MealType.Lebanese },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 14.90 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -489,7 +489,7 @@ Entrée : + Pain Libanais",
                             {
                                 Name = "Crevettes sautées (VIE) ail et persil plat",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Fish },
+                                MealTypes = new[] { MealType.Fish },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 10.20 },
                                                                              { PriceTarget.Visitor, 12.00 },
                                                                              { PriceTarget.PhDStudent, 10.20 },
@@ -500,7 +500,7 @@ Entrée : + Pain Libanais",
                             {
                                 Name = "Risotto au jambon (CH), petits pois et parmesan",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 11.05 },
                                                                              { PriceTarget.Visitor, 13.00 },
                                                                              { PriceTarget.PhDStudent, 11.05 },
@@ -511,7 +511,7 @@ Entrée : + Pain Libanais",
                             {
                                 Name = "Lasagne Verdura",
                                 Description = "Salade verte",
-                                MealTypes = new[] { MealTypes.Vegetarian, MealTypes.Pasta },
+                                MealTypes = new[] { MealType.Vegetarian, MealType.Pasta },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.65 },
                                                                              { PriceTarget.Visitor, 9.00 },
                                                                              { PriceTarget.PhDStudent, 7.65 },
@@ -522,7 +522,7 @@ Entrée : + Pain Libanais",
                             {
                                 Name = "Pâtes sauce à l'arrabiata",
                                 Description = "Salade verte",
-                                MealTypes = new[] { MealTypes.Vegetarian, MealTypes.Pasta },
+                                MealTypes = new[] { MealType.Vegetarian, MealType.Pasta },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.65 },
                                                                              { PriceTarget.Visitor, 9.00 },
                                                                              { PriceTarget.PhDStudent, 7.65 },
@@ -533,7 +533,7 @@ Entrée : + Pain Libanais",
                             {
                                 Name = "Tartine aux légumes du soleil",
                                 Description = @"Salade verte",
-                                MealTypes = new[] { MealTypes.Vegetarian },
+                                MealTypes = new[] { MealType.Vegetarian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.65 },
                                                                              { PriceTarget.Visitor, 9.00 },
                                                                              { PriceTarget.PhDStudent, 7.65 },
@@ -553,7 +553,7 @@ Entrée : + Pain Libanais",
                                 Name = "Petits filets de poulet (CH) aux champignons chinois",
                                 Description = @"Petits pois et carottes
 Riz au curcuma",
-                                MealTypes = new[] { MealTypes.Poultry },
+                                MealTypes = new[] { MealType.Poultry },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.00 },
                                                                              { PriceTarget.Visitor, 10.50 },
                                                                              { PriceTarget.PhDStudent, 8.00 },
@@ -565,7 +565,7 @@ Riz au curcuma",
                                 Name = "Saltimbocca de porc (CH) vénitienne",
                                 Description = @"Brocolis vapeur
 Pommes de terre sautées",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 12.00 },
                                                                              { PriceTarget.Visitor, 12.00 },
                                                                              { PriceTarget.PhDStudent, 12.00 },
@@ -576,7 +576,7 @@ Pommes de terre sautées",
                             {
                                 Name = "haché végétal au curry jaune et haricots coco",
                                 Description = "Salade de céleri betterave au gomasio",
-                                MealTypes = new[] { MealTypes.Vegetarian },
+                                MealTypes = new[] { MealType.Vegetarian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 7.00 },
                                                                            { PriceTarget.Visitor, 10.50 },
                                                                            { PriceTarget.PhDStudent, 8.00 },
@@ -588,7 +588,7 @@ Pommes de terre sautées",
                                 Name = "Omelette au gruyère et fines herbes",
                                 Description = @"Petits légumes
 Petits palets de roestis au four",
-                                MealTypes = new[] { MealTypes.Vegetarian },
+                                MealTypes = new[] { MealType.Vegetarian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.Student, 9.00 },
                                                                              { PriceTarget.Visitor, 12.00 },
                                                                              { PriceTarget.PhDStudent, 10.00 },
@@ -607,7 +607,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Salade Niçoise avec thon et olives",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Fish },
+                                MealTypes = new[] { MealType.Fish },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 12.50 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -615,7 +615,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Gigot d'agneau (NZ) avec sauce aux échalotes et miel. Riz pilaw",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 13.90 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -623,7 +623,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Escalope de quasi de porc (CH) avec sauce au citron vert, courgettes et pommes de terre à l'origan",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 14.90 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -631,7 +631,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Pâtes fraiches maisonà la carbonara avec lardons (CH), jambon (CH), oignons et sauce au parmesan",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Meat, MealTypes.Pasta },
+                                MealTypes = new[] { MealType.Meat, MealType.Pasta },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 13.50 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -639,7 +639,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Pâtes fraiches maison à la Carbonara di verdura avec légumes, oignons et sauce au parmesan",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Vegetarian, MealTypes.Pasta },
+                                MealTypes = new[] { MealType.Vegetarian, MealType.Pasta },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 13.50 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -647,7 +647,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Salade Caesar avec poulet (CH) pané",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Poultry },
+                                MealTypes = new[] { MealType.Poultry },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 12.50 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -655,7 +655,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "nuggets de poulet sauce aigre douce",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Vegetarian },
+                                MealTypes = new[] { MealType.Vegetarian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 5.90 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -663,7 +663,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Salade de taboulé avec boulettes de fallafel",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Vegetarian },
+                                MealTypes = new[] { MealType.Vegetarian },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 12.50 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -679,7 +679,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Tartare de thon coupé au couteau accompagné des ses toasts",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Fish },
+                                MealTypes = new[] { MealType.Fish },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 31.00 }},
                                 Rating = new Rating { Value = 1.0, VoteCount = 1 }
                             },
@@ -687,7 +687,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Mi cuit de thon, marinade minute au gingembre et riz à la coriandre",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Fish },
+                                MealTypes = new[] { MealType.Fish },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 31.00 }},
                                 Rating = new Rating { Value = 0.5, VoteCount = 1 }
                             },
@@ -695,7 +695,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Tous les midi un dessert du jour est proposé selon l'inspiration de notre chef pâtissier",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.GreenFork },
+                                MealTypes = new[] { MealType.GreenFork },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 0.00 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -703,7 +703,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Salade Gourmande (foie gras, gésiers et magret de canard) et pignons torréfiés",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 10.00 }},
                                 Rating = new Rating { Value = 0.5, VoteCount = 1 }
                             },
@@ -711,7 +711,7 @@ Petits palets de roestis au four",
                             {
                                 Name = "Tartare de boeuf coupé au couteau (façcon traditionnelle ou italienne) servi avec ses toasts",
                                 Description = "",
-                                MealTypes = new[] { MealTypes.Meat },
+                                MealTypes = new[] { MealType.Meat },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 31.00 }},
                                 Rating = new Rating { Value = 0.5, VoteCount = 1 }
                             },
@@ -720,7 +720,7 @@ Petits palets de roestis au four",
                                 Name = "Suprême de pintade fermière au poivre vert",
                                 Description = @"Légumes grillés
 Pommes à la lyonnaise",
-                                MealTypes = new[] { MealTypes.Poultry },
+                                MealTypes = new[] { MealType.Poultry },
                                 Prices = new Dictionary<PriceTarget, double>{{ PriceTarget.All, 25.00 }},
                                 Rating = new Rating { Value = 0.0, VoteCount = 0 }
                             },
@@ -735,6 +735,8 @@ Pommes à la lyonnaise",
         public MealTime MealTime { get { return MealTime.Lunch; } }
         public DateTime MealDate { get { return DateTime.Now; } }
 
+        public bool AreRatingsEnabled { get { return true; } }
+
         public IPluginSettings Settings
         {
             get
@@ -743,7 +745,7 @@ Pommes à la lyonnaise",
                 {
                     PriceTarget = PriceTarget.Student,
                     MaximumBudget = 50.0,
-                    DisplayedMealTypes = new[] { MealTypes.Meat, MealTypes.Pasta, MealTypes.Fish },
+                    DisplayedMealTypes = new[] { MealType.Meat, MealType.Pasta, MealType.Fish },
                 };
             }
         }
@@ -752,7 +754,7 @@ Pommes à la lyonnaise",
         {
             public PriceTarget PriceTarget { get; set; }
             public double MaximumBudget { get; set; }
-            public MealTypes[] DisplayedMealTypes { get; set; }
+            public MealType[] DisplayedMealTypes { get; set; }
             public Dictionary<MealTime, DateTime> LastVotes { get; set; }
         }
 #endif

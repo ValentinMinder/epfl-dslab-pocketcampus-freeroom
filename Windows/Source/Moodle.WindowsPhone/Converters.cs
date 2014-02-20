@@ -18,7 +18,7 @@ namespace PocketCampus.Moodle
     /// </summary>
     public sealed class FileNameToImageConverter : ValueConverter<string, ImageSource>
     {
-        protected override ImageSource Convert( string value )
+        public override ImageSource Convert( string value )
         {
             string ext = Path.GetExtension( value ).Substring( 1 ).ToLower();
             string uri = string.Format( "/Assets/Extension_{0}.png", ext );
@@ -31,7 +31,7 @@ namespace PocketCampus.Moodle
     /// </summary>
     public sealed class RemoveExtensionConverter : ValueConverter<string, string>
     {
-        protected override string Convert( string value )
+        public override string Convert( string value )
         {
             return Path.GetFileNameWithoutExtension( value );
         }
@@ -42,7 +42,7 @@ namespace PocketCampus.Moodle
     /// </summary>
     public sealed class DownloadStateToBooleanConverter : ValueConverter<DownloadState, bool>
     {
-        protected override bool Convert( DownloadState value )
+        public override bool Convert( DownloadState value )
         {
             return value == DownloadState.Downloading;
         }
@@ -53,7 +53,7 @@ namespace PocketCampus.Moodle
     /// </summary>
     public sealed class CourseSectionsToGroupsConverter : ValueConverter<CourseSection[], CourseSectionAsGroup[]>
     {
-        protected override CourseSectionAsGroup[] Convert( CourseSection[] value )
+        public override CourseSectionAsGroup[] Convert( CourseSection[] value )
         {
             return value.Select( section => new CourseSectionAsGroup( section ) ).ToArray();
         }

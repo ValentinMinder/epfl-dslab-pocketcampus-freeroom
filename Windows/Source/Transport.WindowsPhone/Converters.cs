@@ -23,7 +23,7 @@ namespace PocketCampus.Transport
         /// </summary>
         public string Format { get; set; }
 
-        protected override string Convert( DateTime value )
+        public override string Convert( DateTime value )
         {
             int mins = (int) ( value.Subtract( DateTime.Now ) ).TotalMinutes;
             if ( mins == 0 || ( mins < 0 && mins > NegativeThreshold ) )
@@ -48,7 +48,7 @@ namespace PocketCampus.Transport
         /// </summary>
         public int Count { get; set; }
 
-        protected override IEnumerable<object> Convert( IEnumerable<object> value )
+        public override IEnumerable<object> Convert( IEnumerable<object> value )
         {
             return value.Take( Count );
         }

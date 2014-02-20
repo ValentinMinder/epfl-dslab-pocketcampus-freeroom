@@ -19,7 +19,7 @@ namespace PocketCampus.Moodle.ViewModels
     /// <summary>
     /// The main (and only) ViewModel.
     /// </summary>
-    [PageLogId( "/moodle" )]
+    [LogId( "/moodle" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly IMoodleService _moodleService;
@@ -64,7 +64,7 @@ namespace PocketCampus.Moodle.ViewModels
         /// <summary>
         /// Gets the command executed to download and open a file.
         /// </summary>
-        [CommandLogId( "DownloadAndOpenFile" )]
+        [LogId( "DownloadAndOpenFile" )]
         public AsyncCommand<CourseFile> DownloadAndOpenCommand
         {
             get { return GetAsyncCommand<CourseFile>( DownloadAndOpenAsync ); }
