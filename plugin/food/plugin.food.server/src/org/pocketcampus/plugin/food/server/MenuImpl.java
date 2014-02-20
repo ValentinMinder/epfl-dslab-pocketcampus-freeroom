@@ -13,11 +13,9 @@ import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 import org.pocketcampus.platform.sdk.server.HttpClient;
 import org.pocketcampus.plugin.food.shared.*;
 import org.pocketcampus.plugin.map.shared.MapItem;
+
+import com.google.gson.GsonBuilder;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
 import org.joda.time.LocalDate;
 
 /**
@@ -26,37 +24,22 @@ import org.joda.time.LocalDate;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public final class MenuImpl implements Menu {
-	// The URL to the meal list. Not really an API, but we have no choice.
-	private static final String MEAL_LIST_URL = "http://menus.epfl.ch/cgi-bin/getMenus";
+	// The URL to the meal list JSON.
+	private static final String MEAL_LIST_URL = "http://menus.epfl.ch/cgi-bin/ws-getMenus";
+
+	// The charset of the meal list JSON.
+	private static final Charset MEAL_LIST_CHARSET = Charset.forName("UTF-8");
+
 	// The URL parameters and values.
 	private static final String URL_TIME_PARAMETER = "midisoir";
 	private static final String URL_TIME_VALUE_LUNCH = "midi", URL_TIME_VALUE_DINNER = "soir";
 	private static final String URL_DATE_PARAMETER = "date";
 	private static final String URL_DATE_VALUE_FORMAT = "dd/MM/yyyy";
-	// The meal list's encoding. Should be windows-1252 but we might not run on Windows.
-	private static final Charset MEAL_LIST_CHARSET = Charset.forName("ISO-8859-1");
-	// The various HTML node tags, IDs and classes in the meal list.
-	private static final String LIST_ROOT_ID = "menulist";
-	private static final String MEAL_ROOT_TAG = "li";
-	private static final String MEAL_TYPE_CONTAINER_CLASS = "logo";
-	private static final String MEAL_TYPE_ID_PREFIX = "logo icon";
-	private static final String MEAL_NAME_AND_DESCRIPTION_CLASS = "desc";
-	private static final String MEAL_NAME_TAG = "strong";
-	private static final String MEAL_RESTAURANT_CONTAINER_CLASS = "resto";
-	private static final String MEAL_PRICES_CONTAINER_CLASS = "prix";
-	private static final String MEAL_PRICE_CONTAINER_TAG = "span";
 
-	// Constants related to string parsing
-	private static final String MEAL_LIST_LINE_SEPARATOR = "\n";
-	private static final Map<Character, Character> CHARACTERS_FIXES = new HashMap<Character, Character>();
-
-	// Constants related to meal price
-	private static final String HALF_PORTION_PRICE_TARGET = "1/2";
+	// Constants related to meals
+	private static final String HALF_PORTION_PRICE_TARGET = "demi Portion";
 	private static final Map<String, PriceTarget> PRICE_TARGETS = new HashMap<String, PriceTarget>();
-
-	// Constants related to meal types.
-	private static final Map<Integer, MealType> MEAL_PRIMARY_TYPES = new HashMap<Integer, MealType>();
-	private static final Map<Integer, MealType> MEAL_SECONDARY_TYPES = new HashMap<Integer, MealType>();
+	private static final Map<String, MealType> MEAL_TYPES = new HashMap<String, MealType>();
 
 	private static final String RESTAURANTS_PHOTOS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/restaurant-pics/";
 	private static final String RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH = "/var/www/backend/restaurant-pics/";
@@ -66,27 +49,27 @@ public final class MenuImpl implements Menu {
 	private final HttpClient _client;
 
 	static {
-		CHARACTERS_FIXES.put('', 'œ'); // the first char is non printable
-
-		PRICE_TARGETS.put("E", PriceTarget.STUDENT);
-		PRICE_TARGETS.put("D", PriceTarget.PHD_STUDENT);
-		PRICE_TARGETS.put("C", PriceTarget.STAFF);
-		PRICE_TARGETS.put("V", PriceTarget.VISITOR);
-		PRICE_TARGETS.put("", PriceTarget.ALL);
+		PRICE_TARGETS.put("Etudiant", PriceTarget.STUDENT);
+		PRICE_TARGETS.put("Doctorant", PriceTarget.PHD_STUDENT);
+		PRICE_TARGETS.put("Campus", PriceTarget.STAFF);
+		PRICE_TARGETS.put("Visiteur", PriceTarget.VISITOR);
+		PRICE_TARGETS.put("Prix unique", PriceTarget.ALL);
+		// When there's a half-price, there's a full price...
+		PRICE_TARGETS.put("Portion", PriceTarget.ALL);
 		// The "Copernic" restaurant uses this - it stands for "Plat" ("Main course").
-		PRICE_TARGETS.put("P", PriceTarget.ALL);
+		PRICE_TARGETS.put("Plat", PriceTarget.ALL);
 
-		MEAL_PRIMARY_TYPES.put(1, MealType.THAI);
-		MEAL_PRIMARY_TYPES.put(2, MealType.INDIAN);
-		MEAL_PRIMARY_TYPES.put(3, MealType.GREEN_FORK);
-		MEAL_PRIMARY_TYPES.put(4, MealType.PASTA);
-		MEAL_PRIMARY_TYPES.put(5, MealType.PIZZA);
-		MEAL_PRIMARY_TYPES.put(6, MealType.LEBANESE);
+		MEAL_TYPES.put("poisson", MealType.FISH);
+		MEAL_TYPES.put("viande", MealType.MEAT);
+		MEAL_TYPES.put("volaille", MealType.POULTRY);
+		MEAL_TYPES.put("végétarien", MealType.VEGETARIAN);
+		MEAL_TYPES.put("thaï", MealType.THAI);
+		MEAL_TYPES.put("indien", MealType.INDIAN);
+		MEAL_TYPES.put("Fourchette verte", MealType.GREEN_FORK);
+		MEAL_TYPES.put("pasta", MealType.PASTA);
+		MEAL_TYPES.put("pizza", MealType.PIZZA);
+		MEAL_TYPES.put("libanais", MealType.LEBANESE);
 
-		MEAL_SECONDARY_TYPES.put(1, MealType.FISH);
-		MEAL_SECONDARY_TYPES.put(2, MealType.MEAT);
-		MEAL_SECONDARY_TYPES.put(3, MealType.POULTRY);
-		MEAL_SECONDARY_TYPES.put(4, MealType.VEGETARIAN);
 	}
 
 	public MenuImpl(HttpClient client) {
@@ -95,77 +78,67 @@ public final class MenuImpl implements Menu {
 
 	/** Parses the menu from the official meal list's HTML. */
 	public FoodResponse get(MealTime time, LocalDate date) throws Exception {
-		List<EpflRestaurant> menu = new ArrayList<EpflRestaurant>();
 
 		String timeVal = time == MealTime.LUNCH ? URL_TIME_VALUE_LUNCH : URL_TIME_VALUE_DINNER;
 		String dateVal = date.toString(URL_DATE_VALUE_FORMAT);
 		String url = String.format("%s?%s=%s&%s=%s", MEAL_LIST_URL, URL_TIME_PARAMETER, timeVal, URL_DATE_PARAMETER, dateVal);
 
-		String html = null;
+		String json = null;
 		try {
-			html = _client.getString(url, MEAL_LIST_CHARSET);
+			json = _client.getString(url, MEAL_LIST_CHARSET);
 		} catch (Exception e) {
 			return new FoodResponse().setStatusCode(FoodStatusCode.NETWORK_ERROR);
 		}
 
-		Document doc = Jsoup.parse(html);
+		List<EpflRestaurant> restaurants = new ArrayList<EpflRestaurant>();
+		JsonMenu jmenu = (JsonMenu) new GsonBuilder().create().fromJson(json, JsonMenu.class);
 
-		for (Element elem : doc.getElementById(LIST_ROOT_ID).getElementsByTag(MEAL_ROOT_TAG)) {
+		for (JsonMeal jmeal : jmenu.menus) {
 			EpflMeal meal = new EpflMeal();
+			meal.setMName(jmeal.platPrincipal);
 
-			// <div class="logo iconINDEX">
-			Element typeElem = elem.getElementsByClass(MEAL_TYPE_CONTAINER_CLASS).get(0);
-			int typeId = Integer.parseInt(typeElem.className().substring(MEAL_TYPE_ID_PREFIX.length()));
-			int primType = typeId / 5;
-			int secType = typeId % 5;
+			String description = "";
+			String[] parts = { jmeal.accompLegumes, jmeal.accompFeculents, jmeal.entree, jmeal.salade, jmeal.dessert };
+			for (String part : parts) {
+				if (!part.equals("")) {
+					description += prettyPrint(part);
+					description += System.lineSeparator();
+				}
+			}
+			meal.setMDescription(description.trim());
+
 			List<MealType> types = new ArrayList<MealType>();
-			if (MEAL_PRIMARY_TYPES.containsKey(primType)) {
-				types.add(MEAL_PRIMARY_TYPES.get(primType));
-			}
-			if (MEAL_SECONDARY_TYPES.containsKey(secType)) {
-				types.add(MEAL_SECONDARY_TYPES.get(secType));
-			}
-			if (types.size() == 0) {
-				types.add(MealType.UNKNOWN);
+			for (String type : jmeal.menuTags.split(",")) {
+				if (MEAL_TYPES.containsKey(type)) {
+					types.add(MEAL_TYPES.get(type));
+				}
 			}
 			meal.setMTypes(types);
 
-			// <div class="desc"><strong>NAME</strong>DESC</div>
-			Element nameAndDescElem = elem.getElementsByClass(MEAL_NAME_AND_DESCRIPTION_CLASS).get(0);
-			Element nameElem = nameAndDescElem.getElementsByTag(MEAL_NAME_TAG).get(0);
-			meal.setMName(nameElem.text().trim());
-			nameElem.remove();
-			meal.setMDescription(prettyPrint(getFullText(nameAndDescElem)));
-
-			// <div class="resto"><a ...>RESTAURANT</a></div>
-			Element restaurantElem = elem.getElementsByClass(MEAL_RESTAURANT_CONTAINER_CLASS).get(0);
-			String restaurantName = restaurantElem.text().trim();
-
-			// <div class="prix">
-			// <span ...>TARGET</span>PRICE<br> (1 or more times)
-			// </div>
 			Map<PriceTarget, Double> prices = new HashMap<PriceTarget, Double>();
-			for (Element priceElem : elem.getElementsByClass(MEAL_PRICES_CONTAINER_CLASS).get(0).getElementsByTag(MEAL_PRICE_CONTAINER_TAG)) {
-				String target = priceElem.text().trim();
-				double price = Double.parseDouble(((TextNode) priceElem.nextSibling()).text().trim());
-
-				if (price > 0.0) {
-					if (target.equals(HALF_PORTION_PRICE_TARGET)) {
-						meal.setMHalfPortionPrice(price);
-					} else if (PRICE_TARGETS.containsKey(target)) {
-						prices.put(PRICE_TARGETS.get(target), price);
+			for (Map<String, Double> priceContainer : jmeal.prix) {
+				// there's only one
+				for (Entry<String, Double> price : priceContainer.entrySet()) {
+					if (price.getValue() != 0.0) {
+						if (PRICE_TARGETS.containsKey(price.getKey())) {
+							prices.put(PRICE_TARGETS.get(price.getKey()), price.getValue());
+						} else if (HALF_PORTION_PRICE_TARGET.equals(price.getKey())) {
+							meal.setMHalfPortionPrice(price.getValue());
+						}
 					}
 				}
 			}
-
 			meal.setMPrices(prices);
-			fix(meal, restaurantName);
+
 			meal.setMRating(new EpflRating(0.0, 0));
-			meal.setMId(generateMealId(meal.getMName(), meal.getMDescription(), restaurantName));
-			addMealToList(menu, meal, restaurantName);
+			meal.setMId(generateMealId(meal.getMName(), meal.getMDescription(), jmeal.restoName));
+
+			fix(meal, jmeal.restoName);
+
+			addMealToList(restaurants, meal, jmeal.restoName);
 		}
 
-		return new FoodResponse().setStatusCode(FoodStatusCode.OK).setMenu(menu);
+		return new FoodResponse().setStatusCode(FoodStatusCode.OK).setMenu(restaurants);
 	}
 
 	/** Adds the specified meal to the specified list of restaurant using the specified restaurant name. */
@@ -264,16 +237,6 @@ public final class MenuImpl implements Menu {
 		return compatibleName;
 	}
 
-	/** Gets the full text, newlines included, contained in an HTML element. */
-	private static String getFullText(Element element) {
-		List<TextNode> textNodes = element.textNodes();
-		List<String> lines = new ArrayList<String>(textNodes.size());
-		for (TextNode n : textNodes) {
-			lines.add(n.text().trim());
-		}
-		return StringUtils.join(lines, MEAL_LIST_LINE_SEPARATOR);
-	}
-
 	/** If necessary, fixes the specified meal. */
 	private static void fix(EpflMeal meal, String restaurantName) {
 		// Sometimes meals from "Maharaja", an indian trailer, are marked as thai
@@ -297,20 +260,31 @@ public final class MenuImpl implements Menu {
 		return result;
 	}
 
-	/** Pretty-prints the specified string, capitalizing and trimming each line. */
+	/** Pretty-prints the specified string, capitalizing and trimming it. */
 	private static String prettyPrint(String s) {
-		for (Entry<Character, Character> entry : CHARACTERS_FIXES.entrySet()) {
-			s = s.replace(entry.getKey(), entry.getValue());
+		s = s.trim();
+		if (s.length() > 0) {
+			return Character.toUpperCase(s.charAt(0)) + (s.length() == 1 ? "" : s.substring(1));
 		}
+		return "";
+	}
 
-		List<String> lines = new ArrayList<String>();
-		for (String line : s.split(MEAL_LIST_LINE_SEPARATOR)) {
-			line = line.trim();
-			if (line.length() > 0) {
-				lines.add(Character.toUpperCase(line.charAt(0)) + (line.length() == 1 ? "" : line.substring(1)));
-			}
-		}
+	// Classes that correspond to the JSON schema of the meal list, used for easy deserialization
 
-		return StringUtils.join(lines, MEAL_LIST_LINE_SEPARATOR);
+	private static final class JsonMenu {
+		public JsonMeal[] menus;
+	}
+
+	private static final class JsonMeal {
+		public String restoName;
+		public String menuTags;
+		public String platPrincipal;
+		public String accompLegumes;
+		public String accompFeculents;
+		public String entree;
+		public String salade;
+		public String dessert;
+		// This is awful, but there's no other way to parse [{"key", "value"},{"key", "value"}]
+		public Map<String, Double>[] prix;
 	}
 }
