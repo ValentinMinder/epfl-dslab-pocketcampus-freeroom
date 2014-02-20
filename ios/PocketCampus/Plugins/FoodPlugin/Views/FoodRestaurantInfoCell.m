@@ -100,10 +100,13 @@ static const CGFloat kTopBarHeight = 30.0;
         UIImage* cachedImage __block = [cache cachedImageForRequest:request];
         if (cachedImage) {
             [NSTimer scheduledTimerWithTimeInterval:0.0 block:^{
+                if (!weakSelf.backgroundImageView) {
+                    return;
+                }
                 CGFloat width = weakSelf.backgroundImageView.frame.size.width;
                 CGFloat height = weakSelf.backgroundImageView.frame.size.height;
                 [weakSelf.backgroundImageView addConstraints:[NSLayoutConstraint width:width height:height constraintsForView:weakSelf.backgroundImageView]];
-                self.backgroundImageView.image = cachedImage;
+                weakSelf.backgroundImageView.image = cachedImage;
             } repeats:NO];
             
         } else {

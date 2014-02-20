@@ -34,6 +34,8 @@
 
 #import <Crashlytics/Crashlytics.h>
 
+#import "AFNetworkReachabilityManager.h"
+
 NSString* const kAppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification = @"AppDelegateAppDidSucceedToRegisterForRemoteNotificationsNotification";
 NSString* const kAppDelegatePushDeviceTokenStringUserInfoKey = @"AppDelegatePushDeviceTokenStringUserInfoKey";
 NSString* const kAppDelegateAppFailedToRegisterForRemoteNotificationsNotification = @"AppDelegateAppFailedToRegisterForRemoteNotificationsNotification";
@@ -56,6 +58,10 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    //Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong
+    //Bug in AFNetworkReachabilityManager ?
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     // Load PocketCampus configuration (will populate [PCConfig defaults])
     [PCConfig loadConfigAsynchronously];
