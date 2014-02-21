@@ -72,6 +72,9 @@ static DirectoryService* instance __weak = nil;
 - (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[DirectoryRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = YES;
+    operation.cacheValidityInterval = 60; //1 min
+    operation.returnEvenStaleCacheIfNoInternetConnection = YES;
     operation.serviceClientSelector = @selector(searchDirectory:);
     operation.delegateDidReturnSelector = @selector(searchForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(searchFailedForRequest:);
@@ -79,6 +82,8 @@ static DirectoryService* instance __weak = nil;
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }
+
+#pragma mark - Deprecated service methods
 
 - (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate {
     if (![nameOrSciper isKindOfClass:[NSString class]]) {
@@ -107,6 +112,8 @@ static DirectoryService* instance __weak = nil;
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
