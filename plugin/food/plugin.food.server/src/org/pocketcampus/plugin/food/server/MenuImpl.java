@@ -1,21 +1,16 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.io.File;
 import java.nio.charset.Charset;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 import org.pocketcampus.platform.sdk.server.HttpClient;
 import org.pocketcampus.plugin.food.shared.*;
-import org.pocketcampus.plugin.map.shared.MapItem;
 
 import com.google.gson.GsonBuilder;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 
 /**
@@ -24,6 +19,9 @@ import org.joda.time.LocalDate;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public final class MenuImpl implements Menu {
+	// To avoid different return values on different hosts
+	private static final String LINE_SEPARATOR = "\n";
+	
 	// The URL to the meal list JSON.
 	private static final String MEAL_LIST_URL = "http://menus.epfl.ch/cgi-bin/ws-getMenus";
 
@@ -37,13 +35,10 @@ public final class MenuImpl implements Menu {
 	private static final String URL_DATE_VALUE_FORMAT = "dd/MM/yyyy";
 
 	// Constants related to meals
+	private static final String APPETIZER_PREFIX = "Entrée : ";
 	private static final String HALF_PORTION_PRICE_TARGET = "demi Portion";
 	private static final Map<String, PriceTarget> PRICE_TARGETS = new HashMap<String, PriceTarget>();
 	private static final Map<String, MealType> MEAL_TYPES = new HashMap<String, MealType>();
-
-	private static final String RESTAURANTS_PHOTOS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/restaurant-pics/";
-	private static final String RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH = "/var/www/backend/restaurant-pics/";
-	private static final String RESTAURANTS_PHOTOS_FILE_EXTENSION = ".jpg";
 
 	// The HTTP client used to get the HTML data.
 	private final HttpClient _client;
@@ -69,7 +64,6 @@ public final class MenuImpl implements Menu {
 		MEAL_TYPES.put("pasta", MealType.PASTA);
 		MEAL_TYPES.put("pizza", MealType.PIZZA);
 		MEAL_TYPES.put("libanais", MealType.LEBANESE);
-
 	}
 
 	public MenuImpl(HttpClient client) {
@@ -97,12 +91,16 @@ public final class MenuImpl implements Menu {
 			EpflMeal meal = new EpflMeal();
 			meal.setMName(jmeal.platPrincipal);
 
+			if (jmeal.entree.startsWith(APPETIZER_PREFIX)) {
+				jmeal.entree = jmeal.entree.replaceFirst(APPETIZER_PREFIX, "");
+			}
+
 			String description = "";
 			String[] parts = { jmeal.accompLegumes, jmeal.accompFeculents, jmeal.entree, jmeal.salade, jmeal.dessert };
 			for (String part : parts) {
 				if (!part.equals("")) {
 					description += prettyPrint(part);
-					description += System.lineSeparator();
+					description += LINE_SEPARATOR;
 				}
 			}
 			meal.setMDescription(description.trim());
@@ -153,88 +151,15 @@ public final class MenuImpl implements Menu {
 		}
 
 		if (restaurant == null) {
-			restaurant = new EpflRestaurant();
-			restaurant.setRId(restaurantName.hashCode());
-			restaurant.setRName(restaurantName);
-			restaurant.setRMeals(new ArrayList<EpflMeal>());
-			restaurantSetSpecificAttributes(restaurant);
+			restaurant = new EpflRestaurant()
+					.setRId(restaurantName.hashCode())
+					.setRName(restaurantName)
+					.setRMeals(new ArrayList<EpflMeal>());
+
 			restaurants.add(restaurant);
 		}
 
 		restaurant.getRMeals().add(meal);
-	}
-
-	/**
-	 * Based on restaurant name, sets rPictureUrl and queries map plugin to
-	 * set rLocation attributes
-	 **/
-	@SuppressWarnings("unchecked")
-	private static void restaurantSetSpecificAttributes(EpflRestaurant restaurant) {
-		// Query map plugin to get restaurant location
-		try {
-			String compatibleName = compatibleRestaurantNameForMap(restaurant.getRName());
-			List<MapItem> searchResults = null;
-			searchResults = (List<MapItem>) PocketCampusServer.invokeOnPlugin("map", "search", compatibleName);
-			if (searchResults == null || searchResults.size() == 0) {
-				System.err.println("INFO: map plugin returned 0 result for restaurant " + restaurant.getRName());
-			} else {
-				MapItem restaurantMapItem = searchResults.get(0); // assuming first result is the right one
-				restaurant.setRLocation(restaurantMapItem);
-			}
-		} catch (Exception e) {
-			System.err.println("Exception while querying map plugin for location of restaurant " + restaurant.getRName());
-			e.printStackTrace();
-		}
-
-		String pictureURLString = restaurantPhotoURLStringIfExists(restaurant.getRName());
-		if (pictureURLString != null) {
-			// Checking in case Thrift definition does not accept
-			// setting NULL for this parameter in the future
-			restaurant.setRPictureUrl(pictureURLString);
-		}
-	}
-
-	/**
-	 * @param restaurantName
-	 * @return url of restaurant's photo if it exists, null otherwise
-	 */
-	private static String restaurantPhotoURLStringIfExists(String restaurantName) {
-		String normalizedName = normalizedNameForFilename(restaurantName);
-		String filePath = RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION;
-		File file = new File(filePath);
-		if (!file.isFile()) {
-			System.err.println("INFO: did not find expected photo file for restaurant " + restaurantName + " at path '" + filePath + "'");
-			return null;
-		}
-		String urlString = RESTAURANTS_PHOTOS_FOLDER_URL + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION;
-		return urlString;
-	}
-
-	/**
-	 * @param restaurantName
-	 * @return restaurantName that is accents-freed, lower-cased,
-	 *         and apostrophes and spaces replaced by _
-	 *         Examples:
-	 *         L'Atlantide => l_atlantide
-	 *         Cafétéria BC => cafeteria_bc
-	 */
-	private static String normalizedNameForFilename(String restaurantName) {
-		restaurantName = StringUtils.stripAccents(restaurantName);
-		restaurantName = restaurantName.toLowerCase();
-		restaurantName = restaurantName.replace("'", "_");
-		restaurantName = restaurantName.replace(" ", "_");
-		return restaurantName;
-	}
-
-	private static String compatibleRestaurantNameForMap(String restaurantName) {
-		String normalizedName = Normalizer.normalize(restaurantName, Normalizer.Form.NFC).toLowerCase();
-		String compatibleName = restaurantName;
-		if (normalizedName.contains("puur innovation")) {
-			compatibleName = "Puur Innovation";
-		} else if (normalizedName.contains("table de vallotton")) {
-			compatibleName = "Table de Vallotton";
-		}
-		return compatibleName;
 	}
 
 	/** If necessary, fixes the specified meal. */

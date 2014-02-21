@@ -122,6 +122,16 @@ public final class MenuTests {
 			}
 		}
 	}
+	
+	// No "Entrée : " prefix on descriptions
+	@Test
+	public void mealWithAppetizerInDescription() {
+		List<EpflRestaurant> meals = getMenu();
+		EpflMeal m = meals.get(6).getRMeals().get(1);
+		
+		assertEquals("Burger de poisson au coulis de homard", m.getMName());
+		assertEquals("Mélange de graines étuvées\nVelouté de légumes\nPetite saladine", m.getMDescription());
+	}
 
 	private static List<EpflRestaurant> getMenu() {
 		try {
