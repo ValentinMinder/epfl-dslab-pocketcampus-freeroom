@@ -19,7 +19,6 @@ import org.joda.time.LocalDate;
  * Tests for MenuImpl.
  * 
  * N.B.: The test file was retrieved from the JSON API on 20/02/2014, and has been modified to include a meal with price 0.
- * (also, as of 20/02/2014, I had to manually escape quotes in a string to make the document proper JSON...)
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
