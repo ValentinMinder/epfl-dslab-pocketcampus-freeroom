@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
+	<classpathentry exported="true" kind="lib" path="/platform.sdk.shared/lib/bcprov-jdk15-146.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/httpclient-4.0-alpha1.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/servlet-api-3.0.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2-sources.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2-sources.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

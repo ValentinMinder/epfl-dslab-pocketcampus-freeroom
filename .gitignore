@@ -12,6 +12,10 @@
 
 android/PocketCampus/*
 server/PocketCampusServer/*
+
+#FreeRoom team changes 
+.settings/
+
 local.properties
 *~
 bin/
