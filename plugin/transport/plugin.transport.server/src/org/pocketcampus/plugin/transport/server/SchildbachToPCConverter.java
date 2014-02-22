@@ -42,6 +42,8 @@ public class SchildbachToPCConverter {
 		normalLineNameForSchildName.put("UMm", "UMetm");
 		normalLineNameForSchildName.put("BNFBm", "UMetm");
 		normalLineNameForSchildName.put("TNFT", "Tram ");
+		// Temporary fix, since some buses are now UM instead of BBus
+		normalLineNameForSchildName.put("UM", "BBus"); 
 		// normalLineNameForSchildName.put("UMetm1", "M1");
 		// normalLineNameForSchildName.put("UMetm2", "M2");
 	}
