@@ -63,7 +63,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
         self.gaiScreenName = @"/moodle";
         self.title = NSLocalizedStringFromTable(@"MyCourses", @"MoodlePlugin", nil);
         self.moodleService = [MoodleService sharedInstanceToRetain];
-        self.courses = [self.moodleService getFromCacheCourseListReply].iCourses;
+        self.courses = [self.moodleService getFromCacheCoursesList].iCourses;
     }
     return self;
 }
@@ -87,7 +87,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     }
 }
 
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
+- (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
     
@@ -105,7 +105,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     [self.moodleService getCoursesListWithDelegate:self];
 }
 
-#pragma mark - PCMasterSplitDelegate /* used on iPad */
+#pragma mark - PCMasterSplitDelegate (used on iPad only)
 
 - (UIViewController*)detailViewControllerThatShouldBeDisplayed {
     MoodleSplashDetailViewController* detailViewController = [[MoodleSplashDetailViewController alloc] init];
@@ -118,7 +118,6 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     switch (reply.iStatus) {
         case 200:
             self.courses = reply.iCourses;
-            [self.moodleService saveToCacheCourseListReply:reply];
             [self.tableView reloadData];
             [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             break;

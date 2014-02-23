@@ -37,6 +37,8 @@
 
 static NewsService* instance __weak = nil;
 
+#pragma mark - Init
+
 - (id)init {
     @synchronized(self) {
         if (instance) {
@@ -50,6 +52,8 @@ static NewsService* instance __weak = nil;
     }
 }
 
+#pragma mark - Service overrides
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -62,6 +66,8 @@ static NewsService* instance __weak = nil;
 #endif
     }
 }
+
+#pragma mark - Service methods
 
 - (void)getNewsItemsForLanguage:(NSString*)language delegate:(id)delegate {
     if (![language isKindOfClass:[NSString class]]) {
@@ -117,6 +123,8 @@ static NewsService* instance __weak = nil;
     [self.operationQueue addOperation:operation];
 }
 
+#pragma mark - Cached
+
 - (NSArray*)getFromCacheNewsItemsForLanguage:(NSString*)language {
     if (![language isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
@@ -129,6 +137,8 @@ static NewsService* instance __weak = nil;
     operation.returnType = ReturnTypeObject;
     return [operation cachedResponseObjectEvenIfStale:YES];
 }
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

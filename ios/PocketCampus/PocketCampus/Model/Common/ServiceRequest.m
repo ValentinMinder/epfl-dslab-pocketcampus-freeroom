@@ -398,7 +398,13 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
     [self throwIfCancelled];
     
     if (self.keepInCache) {
-        [PCObjectArchiver saveObject:responseDic forKey:self.hashIdentifier andPluginName:self.service.serviceName isCache:YES];
+        BOOL saveToCache = YES;
+        if (self.keepInCacheBlock) {
+            saveToCache = self.keepInCacheBlock([self.class unwrapArgument:responseDic]);
+        }
+        if (saveToCache) {
+            [PCObjectArchiver saveObject:responseDic forKey:self.hashIdentifier andPluginName:self.service.serviceName isCache:YES];
+        }
     }
     
     NSInvocation* delegateInv = [NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidReturnSelector]];

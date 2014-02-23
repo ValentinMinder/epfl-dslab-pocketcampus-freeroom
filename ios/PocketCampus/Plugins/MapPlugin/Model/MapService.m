@@ -98,8 +98,9 @@ static MapService* instance __weak = nil;
         @throw [NSException exceptionWithName:@"bad query" reason:@"query is either nil or not of class NSString" userInfo:nil];
     }
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    //operation.keepInCache = YES;
-    //operation.cacheValidityInterval = 4*24*3600.0; //4 weeks
+    operation.keepInCache = YES;
+    operation.cacheValidityInterval = 86400; //1 day
+    operation.returnEvenStaleCacheIfNoInternetConnection = YES;
     operation.serviceClientSelector = @selector(search:);
     operation.delegateDidReturnSelector = @selector(searchMapFor:didReturn:);
     operation.delegateDidFailSelector = @selector(searchMapFailedFor:);

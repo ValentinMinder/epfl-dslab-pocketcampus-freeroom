@@ -73,6 +73,10 @@ static DirectoryService* instance __weak = nil;
     [PCUtils throwExceptionIfObject:request notKindOfClass:[DirectoryRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* result) {
+        DirectoryResponse* response = (__bridge id)result;
+        return (response.status == 200);
+    };
     operation.cacheValidityInterval = 60; //1 min
     operation.returnEvenStaleCacheIfNoInternetConnection = YES;
     operation.serviceClientSelector = @selector(searchDirectory:);
