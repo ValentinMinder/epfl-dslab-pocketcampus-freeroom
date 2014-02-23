@@ -112,6 +112,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 1800; //30 min
 static const NSInteger kOneWeekPeriodIndex = 0;
 static const NSInteger kOneMonthPeriodIndex = 1;
 static const NSInteger kSixMonthsPeriodIndex = 2;
+static const NSInteger kOneYearPeriodIndex = 3;
 
 @implementation EventPoolViewController
 
@@ -519,7 +520,8 @@ static const NSInteger kSixMonthsPeriodIndex = 2;
     self.periodsSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:
                                         [EventsUtils periodStringForEventsPeriod:EventsPeriods_ONE_WEEK selected:(self.selectedPeriod == EventsPeriods_ONE_WEEK)],
                                         [EventsUtils periodStringForEventsPeriod:EventsPeriods_ONE_MONTH selected:(self.selectedPeriod == EventsPeriods_ONE_MONTH)],
-                                        [EventsUtils periodStringForEventsPeriod:EventsPeriods_SIX_MONTHS selected:(self.selectedPeriod == EventsPeriods_SIX_MONTHS)]
+                                        [EventsUtils periodStringForEventsPeriod:EventsPeriods_SIX_MONTHS selected:(self.selectedPeriod == EventsPeriods_SIX_MONTHS)],
+                                         [EventsUtils periodStringForEventsPeriod:EventsPeriods_ONE_YEAR selected:(self.selectedPeriod == EventsPeriods_ONE_YEAR)]
                                         , nil];
 
     [self.periodsSelectionActionSheet showFromBarButtonItem:self.filterButton animated:YES];
@@ -568,6 +570,9 @@ static const NSInteger kSixMonthsPeriodIndex = 2;
             case kSixMonthsPeriodIndex:
                 self.selectedPeriod = EventsPeriods_SIX_MONTHS;
                 nbDays = 6 * 31;
+            case kOneYearPeriodIndex:
+                self.selectedPeriod = EventsPeriods_ONE_YEAR;
+                nbDays = 365;
                 break;
         }
         [self trackAction:@"ChangePeriod" contentInfo:[NSString stringWithFormat:@"%d", (int)nbDays]];
