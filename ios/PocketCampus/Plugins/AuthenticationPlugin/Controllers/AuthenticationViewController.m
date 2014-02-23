@@ -225,9 +225,17 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
 - (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie *)tequilaCookie {
     self.errorMessage = nil;
     [AuthenticationService saveUsername:self.username];
-    if(!self.showSavePasswordSwitch || (self.showSavePasswordSwitch && [self.savePasswordSwitch isOn])) {
-        [AuthenticationService savePassword:self.password forUsername:self.username];
+    
+    if (self.showSavePasswordSwitch) {
+        if (self.savePasswordSwitch.isOn) {
+            [AuthenticationService savePassword:self.password forUsername:self.username];
+        } else {
+            [AuthenticationService deleteSavedPasswordForUsername:self.username];
+        }
+    } else {
+        [AuthenticationService savePassword:self.password forUsername:self.username]; //default: save password
     }
+    
     if (self.token) {
         [self.authenticationService authenticateToken:self.token withTequilaCookie:tequilaCookie delegate:self];
     } else { //mean user just wanted to login to tequila without loggin in to service. From settings for example.
@@ -349,7 +357,7 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
         }
     } else {
         if (indexPath.section == 1 && self.loginCell.textLabel.enabled) { //login button
-            [self trackAction:@"LogIn" contentInfo:self.savePasswordSwitch.isOn || !self.showSavePasswordSwitch ? @"SavePasswordYes" : @"SavePasswordNo"];
+            [self trackAction:@"LogIn" contentInfo:(self.savePasswordSwitch.isOn || !self.showSavePasswordSwitch) ? @"SavePasswordYes" : @"SavePasswordNo"];
             [self.loadingIndicator startAnimating];
             [self.usernameTextField resignFirstResponder];
             [self.passwordTextField resignFirstResponder];
