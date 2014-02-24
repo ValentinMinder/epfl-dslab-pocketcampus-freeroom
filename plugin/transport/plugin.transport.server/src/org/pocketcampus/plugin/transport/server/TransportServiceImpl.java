@@ -67,10 +67,10 @@ public class TransportServiceImpl implements TransportService.Iface {
 		// System.out.println("something very bad happend, you probably gonna die");
 		// }
 
-		try {
+		//try {
 			// //System.out.println(autocomplete("Neuchatel").get(0).id);
-			QueryTripsResult res = getTrips("EPFL", "Neuchatel");
-			res.toString();
+			//QueryTripsResult res = getTrips("EPFL", "Neuchatel");
+			//res.toString();
 			// QueryTripsResult res = getTripsFromStationsIDs("8501214",
 			// "8504221");
 			// System.out.println("from "+ res.from.name + " to " +
@@ -90,9 +90,9 @@ public class TransportServiceImpl implements TransportService.Iface {
 			// (new Date(d.plannedTime)).toString());
 			// }
 			// }
-		} catch (TException e1) {
-			e1.printStackTrace();
-		}
+		//} catch (TException e1) {
+			//e1.printStackTrace();
+		//}
 
 	}
 
