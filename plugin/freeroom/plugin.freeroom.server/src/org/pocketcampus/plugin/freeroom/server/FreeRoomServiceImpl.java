@@ -51,11 +51,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 		
 		//Create a string formatted as ?, ? ... ? for the query as well as the list of all hour in the period
-		Set<Integer> listHours = new HashSet<Integer>();
 		
 		String queryStatement = "";
 		for (int i = period.getStartHour(); i < period.getEndHour(); ++i) {
-			listHours.add(i);
 			queryStatement += "?";
 			if (i < period.getEndHour() - 1) {
 				queryStatement += ",";
