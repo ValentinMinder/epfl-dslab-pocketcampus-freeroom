@@ -50,7 +50,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return null;
 		}
 		
-		//Create a string formatted as ?, ? ... ? for the query as well as the list of all hour in the period
+		//Create a string formatted as ?, ? ... ? for the query
 		
 		String queryStatement = "";
 		for (int i = period.getStartHour(); i < period.getEndHour(); ++i) {
