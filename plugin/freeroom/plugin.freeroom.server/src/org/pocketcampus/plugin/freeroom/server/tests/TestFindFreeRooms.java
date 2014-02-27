@@ -9,7 +9,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import junit.framework.Assert;
 import org.apache.commons.io.IOUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -18,7 +21,7 @@ public class TestFindFreeRooms {
 	final String DB_PASSWORD = "root";
 	final String DB_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
 	
-	public void populateDBTest() {
+	public void createDBTest() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -34,12 +37,14 @@ public class TestFindFreeRooms {
 			String query = IOUtils.toString(new FileReader(dbFile));
 			pstmt = conn.prepareStatement(query);
 			pstmt.execute();
+			
+			// TODO: check that the database and two tables are successfully created ?
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Assert.fail("There was an SQL Exception \n " + e);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Assert.fail("Thee test file for the database was not found \n " + e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Assert.fail("There was another IO Exception \n " + e);
 		}
 
 	}
@@ -52,16 +57,25 @@ public class TestFindFreeRooms {
 			
 			PreparedStatement stmt = conn.prepareStatement("DROP DATABASE pocketcampustest");
 			stmt.execute();
+			
+			// TODO : check that the database is successfully deleted ?
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Assert.fail("There was an SQL Exception \n " + e);
 		} 
 	}
 
-	@Test
-	public void test() {
-		populateDBTest();
-		
+	@Before
+	public void setUp() {
+		createDBTest();
+	}
+	
+	@After
+	public void finalize() {
 		removeDBTest();
 	}
-
+	
+	@Test
+	public void testPopulateDB() {
+		// TODO: populate the database with fake values and extract expected results according to the values.
+	}
 }
