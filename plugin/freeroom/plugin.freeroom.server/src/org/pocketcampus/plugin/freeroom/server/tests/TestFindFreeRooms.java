@@ -7,21 +7,28 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import junit.framework.Assert;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.pocketcampus.plugin.freeroom.shared.Room;
 
 
 public class TestFindFreeRooms {
-	final String DB_USERNAME = "root";
-	final String DB_PASSWORD = "root";
-	final String DB_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
+	final static String DB_USERNAME = "root";
+	final static String DB_PASSWORD = "root";
+	final static String DB_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
+	private Connection conn = null;
 	
-	public void createDBTest() {
+	public static void createDBTest() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -32,12 +39,12 @@ public class TestFindFreeRooms {
 			stmt.execute();
 			conn.setCatalog("pocketcampustest");
 			
-			File dbFile = new File("src/org/pocketcampus/plugin/freeroom/server/tests/testdb.sql");
+			File dbFile = new File("src/org/pocketcampus/plugin/freeroom/server/tests/testdb-create.sql");
 
 			String query = IOUtils.toString(new FileReader(dbFile));
 			pstmt = conn.prepareStatement(query);
 			pstmt.execute();
-			
+			pstmt.close();
 			// TODO: check that the database and two tables are successfully created ?
 		} catch (SQLException e) {
 			Assert.fail("There was an SQL Exception \n " + e);
@@ -49,7 +56,7 @@ public class TestFindFreeRooms {
 
 	}
 	
-	public void removeDBTest() {
+	public static void removeDBTest() {
 		Connection conn = null;
 		try {
 			conn = DriverManager
@@ -57,25 +64,79 @@ public class TestFindFreeRooms {
 			
 			PreparedStatement stmt = conn.prepareStatement("DROP DATABASE pocketcampustest");
 			stmt.execute();
-			
+			stmt.close();
 			// TODO : check that the database is successfully deleted ?
 		} catch (SQLException e) {
 			Assert.fail("There was an SQL Exception \n " + e);
 		} 
 	}
 
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void setUpBeforeClass() {
 		createDBTest();
 	}
 	
-	@After
-	public void finalize() {
-		removeDBTest();
+	@AfterClass
+	public static void tearDownAfterClass() {
+//		removeDBTest();
 	}
+	
+	@Before
+	public void setUp() {
+		try {
+			conn = DriverManager
+					.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+			conn.setCatalog("pocketcampustest");
+		} catch (SQLException e) {
+			Assert.fail("There was an SQL Exception \n " + e);
+		}
+	}
+	
+	@After
+	public void tearDown() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			Assert.fail("There was an SQL Exception \n " + e);
+		}
+	}
+	
+	// TODO: populate the database with fake values and extract expected results according to the values.
 	
 	@Test
 	public void testPopulateDB() {
-		// TODO: populate the database with fake values and extract expected results according to the values.
+		try {
+			File dbFile = new File("src/org/pocketcampus/plugin/freeroom/server/tests/testdb-populate.sql");
+
+			String query = IOUtils.toString(new FileReader(dbFile));
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.execute();
+			pstmt.close();
+			
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM `pocketcampustest`.`roomslist`");
+			stmt.execute();
+			
+			ResultSet resultQuery = stmt.getResultSet();
+			ArrayList<Room> freerooms = new ArrayList<Room>();
+			while (resultQuery.next()) {
+				String building = resultQuery.getString("building");
+				int room_number = resultQuery.getInt("room_number");
+				Room r = new Room();
+				r.setBuilding(building);
+				r.setNumber(room_number + "");
+				freerooms.add(r);
+			}
+			for (Room room : freerooms) {
+				System.out.println(room.toString());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
