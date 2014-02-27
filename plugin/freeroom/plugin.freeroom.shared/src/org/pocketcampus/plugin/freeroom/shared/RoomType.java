@@ -12,7 +12,9 @@ import org.apache.thrift.TEnum;
 
 public enum RoomType implements org.apache.thrift.TEnum {
   AUDITORIUM(0),
-  EXERCISES(1);
+  EXERCISES(1),
+  COMPUTER_ROOM(2),
+  CONFERENCE(3);
 
   private final int value;
 
@@ -37,6 +39,10 @@ public enum RoomType implements org.apache.thrift.TEnum {
         return AUDITORIUM;
       case 1:
         return EXERCISES;
+      case 2:
+        return COMPUTER_ROOM;
+      case 3:
+        return CONFERENCE;
       default:
         return null;
     }

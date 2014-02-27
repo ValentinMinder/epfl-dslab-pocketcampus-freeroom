@@ -6,7 +6,7 @@ enum Day{
 }
 
 enum RoomType{
-	AUDITORIUM; EXERCISES;
+	AUDITORIUM; EXERCISES; COMPUTER_ROOM; CONFERENCE;
 }
 
 struct PeriodOfTime{
