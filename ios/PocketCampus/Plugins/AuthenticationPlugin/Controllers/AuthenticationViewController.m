@@ -115,7 +115,7 @@
 - (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationDelegate>)delegate_ {
     self.token = token_;
     if (!delegate_) {
-        @throw [NSException exceptionWithName:@"askCredientialsForTypeOfService:delegate: bad delegate" reason:@"delegate cannot be nil" userInfo:nil];
+        [NSException raise:@"Illegal argumement" format:@"delegate cannot be nil"];
     }
     self.delegate = delegate_;
     self.username = [AuthenticationService savedUsername];
@@ -225,8 +225,7 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
 - (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie *)tequilaCookie {
     self.errorMessage = nil;
     [AuthenticationService saveUsername:self.username];
-    
-    if (self.showSavePasswordSwitch) {
+    if (self.showSavePasswordSwitch && self.savePasswordSwitch) {
         if (self.savePasswordSwitch.isOn) {
             [AuthenticationService savePassword:self.password forUsername:self.username];
         } else {
