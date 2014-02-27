@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IPluginSettings.cs" />
     <Compile Include="Models\EventItem.cs" />
     <Compile Include="Models\EventItemResponse.cs" />
     <Compile Include="Models\EventItemRequest.cs" />
@@ -45,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EventsService.cs" />
     <Compile Include="Services\IEventsService.cs" />
+    <Compile Include="ViewModels\TagFilterViewModel.cs" />
+    <Compile Include="ViewModels\CategoryFilterViewModel.cs" />
+    <Compile Include="ViewModels\EventItemViewModel.cs" />
+    <Compile Include="ViewModels\EventPoolViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThriftSharp">

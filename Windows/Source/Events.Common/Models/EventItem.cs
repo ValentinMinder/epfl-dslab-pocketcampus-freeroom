@@ -62,5 +62,11 @@ namespace PocketCampus.Events.Models
 
         [ThriftField( 23, false, "hideEventInfo" )]
         public bool HideInformation { get; set; }
+
+        [ThriftField( 14, false, "eventCateg" )]
+        public int? CategoryId { get; set; }
+
+        [ThriftField( 15, false, "eventTags" )]
+        public string[] TagIds { get; set; }
     }
 }

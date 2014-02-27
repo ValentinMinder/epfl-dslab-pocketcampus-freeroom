@@ -46,5 +46,8 @@ namespace PocketCampus.Events.Models
 
         [ThriftField( 21, false, "overrideLink" )]
         public bool? OverrideTargetUrl { get; set; }
+
+
+        public EventItem[] Items { get; set; }
     }
 }
