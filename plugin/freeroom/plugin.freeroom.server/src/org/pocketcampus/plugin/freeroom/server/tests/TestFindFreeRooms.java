@@ -26,10 +26,10 @@ import org.junit.Test;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
-import org.pocketcampus.plugin.freeroom.shared.Day;
-import org.pocketcampus.plugin.freeroom.shared.PeriodOfTime;
-import org.pocketcampus.plugin.freeroom.shared.Room;
-import org.pocketcampus.plugin.freeroom.shared.RoomType;
+import org.pocketcampus.plugin.freeroom.shared.FRDay;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriodOfTime;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
 
 
 public class TestFindFreeRooms {
@@ -130,21 +130,21 @@ public class TestFindFreeRooms {
 			stmt.execute();
 			
 			ResultSet resultQuery = stmt.getResultSet();
-			ArrayList<Room> freerooms = new ArrayList<Room>();
+			ArrayList<FRRoom> freerooms = new ArrayList<FRRoom>();
 			while (resultQuery.next()) {
 				String building = resultQuery.getString("building");
 				int room_number = resultQuery.getInt("room_number");
 				String type = resultQuery.getString("type");
 				int capacity = resultQuery.getInt("capacity");
-				Room r = new Room();
+				FRRoom r = new FRRoom();
 				r.setBuilding(building);
 				r.setNumber(room_number + "");
-				r.setType(RoomType.valueOf(type));
+				r.setType(FRRoomType.valueOf(type));
 				r.setCapacity(capacity);
 				freerooms.add(r);
 			}
 			Assert.assertEquals(6, freerooms.size());
-			for (Room room : freerooms) {
+			for (FRRoom room : freerooms) {
 				System.out.println(room.toString());
 			}
 		} catch (SQLException e) {
@@ -194,16 +194,16 @@ public class TestFindFreeRooms {
 	@Test
 	public void testBasicRequest() {
 		//FILL DATABSE BEFORE
-		Set<Room> rooms = new HashSet<Room>();
-		PeriodOfTime pot = new PeriodOfTime();
-		pot.setDay(Day.TUESDAY);
-		pot.setStartHour(10);
-		pot.setEndHour(11);
+		Set<FRRoom> rooms = new HashSet<FRRoom>();
+		FRPeriodOfTime pot = new FRPeriodOfTime();
+		pot.setDay(FRDay.TUESDAY);
+		pot.setStartHour(8);
+		pot.setEndHour(9);
 		
 		try {
 			rooms = (new FreeRoomServiceImpl(new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD))).getFreeRoomsFromTime(pot);
-			ArrayList<Room> arr = new ArrayList<Room>(rooms);
-			for (Room r : arr) {
+			ArrayList<FRRoom> arr = new ArrayList<FRRoom>(rooms);
+			for (FRRoom r : arr) {
 				System.out.println(r.getBuilding() + "" + r.getNumber());
 			} 
 		} catch (TException e) {

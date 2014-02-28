@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Room");
+public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRRoom");
 
   private static final org.apache.thrift.protocol.TField BUILDING_FIELD_DESC = new org.apache.thrift.protocol.TField("building", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("number", org.apache.thrift.protocol.TType.STRING, (short)2);
@@ -31,7 +31,7 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
 
   private String building; // required
   private String number; // required
-  private RoomType type; // required
+  private FRRoomType type; // required
   private int capacity; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -40,7 +40,7 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
     NUMBER((short)2, "number"),
     /**
      * 
-     * @see RoomType
+     * @see FRRoomType
      */
     TYPE((short)3, "type"),
     CAPACITY((short)4, "capacity");
@@ -117,17 +117,17 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
     tmpMap.put(_Fields.NUMBER, new org.apache.thrift.meta_data.FieldMetaData("number", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.TYPE, new org.apache.thrift.meta_data.FieldMetaData("type", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, RoomType.class)));
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRRoomType.class)));
     tmpMap.put(_Fields.CAPACITY, new org.apache.thrift.meta_data.FieldMetaData("capacity", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Room.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRRoom.class, metaDataMap);
   }
 
-  public Room() {
+  public FRRoom() {
   }
 
-  public Room(
+  public FRRoom(
     String building,
     String number)
   {
@@ -139,7 +139,7 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Room(Room other) {
+  public FRRoom(FRRoom other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetBuilding()) {
@@ -154,8 +154,8 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
     this.capacity = other.capacity;
   }
 
-  public Room deepCopy() {
-    return new Room(this);
+  public FRRoom deepCopy() {
+    return new FRRoom(this);
   }
 
   @Override
@@ -171,7 +171,7 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
     return this.building;
   }
 
-  public Room setBuilding(String building) {
+  public FRRoom setBuilding(String building) {
     this.building = building;
     return this;
   }
@@ -195,7 +195,7 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
     return this.number;
   }
 
-  public Room setNumber(String number) {
+  public FRRoom setNumber(String number) {
     this.number = number;
     return this;
   }
@@ -217,17 +217,17 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
 
   /**
    * 
-   * @see RoomType
+   * @see FRRoomType
    */
-  public RoomType getType() {
+  public FRRoomType getType() {
     return this.type;
   }
 
   /**
    * 
-   * @see RoomType
+   * @see FRRoomType
    */
-  public Room setType(RoomType type) {
+  public FRRoom setType(FRRoomType type) {
     this.type = type;
     return this;
   }
@@ -251,7 +251,7 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
     return this.capacity;
   }
 
-  public Room setCapacity(int capacity) {
+  public FRRoom setCapacity(int capacity) {
     this.capacity = capacity;
     setCapacityIsSet(true);
     return this;
@@ -292,7 +292,7 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
       if (value == null) {
         unsetType();
       } else {
-        setType((RoomType)value);
+        setType((FRRoomType)value);
       }
       break;
 
@@ -348,12 +348,12 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Room)
-      return this.equals((Room)that);
+    if (that instanceof FRRoom)
+      return this.equals((FRRoom)that);
     return false;
   }
 
-  public boolean equals(Room that) {
+  public boolean equals(FRRoom that) {
     if (that == null)
       return false;
 
@@ -423,13 +423,13 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
     return builder.toHashCode();
   }
 
-  public int compareTo(Room other) {
+  public int compareTo(FRRoom other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Room typedOther = (Room)other;
+    FRRoom typedOther = (FRRoom)other;
 
     lastComparison = Boolean.valueOf(isSetBuilding()).compareTo(typedOther.isSetBuilding());
     if (lastComparison != 0) {
@@ -504,7 +504,7 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
           break;
         case 3: // TYPE
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.type = RoomType.findByValue(iprot.readI32());
+            this.type = FRRoomType.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -560,7 +560,7 @@ public class Room implements org.apache.thrift.TBase<Room, Room._Fields>, java.i
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Room(");
+    StringBuilder sb = new StringBuilder("FRRoom(");
     boolean first = true;
 
     sb.append("building:");

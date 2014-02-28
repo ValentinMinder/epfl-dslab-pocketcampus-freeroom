@@ -10,15 +10,18 @@ import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum RoomType implements org.apache.thrift.TEnum {
-  AUDITORIUM(0),
-  EXERCISES(1),
-  COMPUTER_ROOM(2),
-  CONFERENCE(3);
+public enum FRDay implements org.apache.thrift.TEnum {
+  MONDAY(0),
+  TUESDAY(1),
+  WEDNESDAY(2),
+  THURSDAY(3),
+  FRIDAY(4),
+  SATURDAY(5),
+  SUNDAY(6);
 
   private final int value;
 
-  private RoomType(int value) {
+  private FRDay(int value) {
     this.value = value;
   }
 
@@ -33,16 +36,22 @@ public enum RoomType implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static RoomType findByValue(int value) { 
+  public static FRDay findByValue(int value) { 
     switch (value) {
       case 0:
-        return AUDITORIUM;
+        return MONDAY;
       case 1:
-        return EXERCISES;
+        return TUESDAY;
       case 2:
-        return COMPUTER_ROOM;
+        return WEDNESDAY;
       case 3:
-        return CONFERENCE;
+        return THURSDAY;
+      case 4:
+        return FRIDAY;
+      case 5:
+        return SATURDAY;
+      case 6:
+        return SUNDAY;
       default:
         return null;
     }

@@ -21,14 +21,14 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, PeriodOfTime._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("PeriodOfTime");
+public class FRPeriodOfTime implements org.apache.thrift.TBase<FRPeriodOfTime, FRPeriodOfTime._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRPeriodOfTime");
 
   private static final org.apache.thrift.protocol.TField DAY_FIELD_DESC = new org.apache.thrift.protocol.TField("day", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField START_HOUR_FIELD_DESC = new org.apache.thrift.protocol.TField("startHour", org.apache.thrift.protocol.TType.I32, (short)2);
   private static final org.apache.thrift.protocol.TField END_HOUR_FIELD_DESC = new org.apache.thrift.protocol.TField("endHour", org.apache.thrift.protocol.TType.I32, (short)3);
 
-  private Day day; // required
+  private FRDay day; // required
   private int startHour; // required
   private int endHour; // required
 
@@ -36,7 +36,7 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     /**
      * 
-     * @see Day
+     * @see FRDay
      */
     DAY((short)1, "day"),
     START_HOUR((short)2, "startHour"),
@@ -109,20 +109,20 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.DAY, new org.apache.thrift.meta_data.FieldMetaData("day", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, Day.class)));
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRDay.class)));
     tmpMap.put(_Fields.START_HOUR, new org.apache.thrift.meta_data.FieldMetaData("startHour", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.END_HOUR, new org.apache.thrift.meta_data.FieldMetaData("endHour", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(PeriodOfTime.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRPeriodOfTime.class, metaDataMap);
   }
 
-  public PeriodOfTime() {
+  public FRPeriodOfTime() {
   }
 
-  public PeriodOfTime(
-    Day day,
+  public FRPeriodOfTime(
+    FRDay day,
     int startHour,
     int endHour)
   {
@@ -137,7 +137,7 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public PeriodOfTime(PeriodOfTime other) {
+  public FRPeriodOfTime(FRPeriodOfTime other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetDay()) {
@@ -147,8 +147,8 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
     this.endHour = other.endHour;
   }
 
-  public PeriodOfTime deepCopy() {
-    return new PeriodOfTime(this);
+  public FRPeriodOfTime deepCopy() {
+    return new FRPeriodOfTime(this);
   }
 
   @Override
@@ -162,17 +162,17 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
 
   /**
    * 
-   * @see Day
+   * @see FRDay
    */
-  public Day getDay() {
+  public FRDay getDay() {
     return this.day;
   }
 
   /**
    * 
-   * @see Day
+   * @see FRDay
    */
-  public PeriodOfTime setDay(Day day) {
+  public FRPeriodOfTime setDay(FRDay day) {
     this.day = day;
     return this;
   }
@@ -196,7 +196,7 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
     return this.startHour;
   }
 
-  public PeriodOfTime setStartHour(int startHour) {
+  public FRPeriodOfTime setStartHour(int startHour) {
     this.startHour = startHour;
     setStartHourIsSet(true);
     return this;
@@ -219,7 +219,7 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
     return this.endHour;
   }
 
-  public PeriodOfTime setEndHour(int endHour) {
+  public FRPeriodOfTime setEndHour(int endHour) {
     this.endHour = endHour;
     setEndHourIsSet(true);
     return this;
@@ -244,7 +244,7 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
       if (value == null) {
         unsetDay();
       } else {
-        setDay((Day)value);
+        setDay((FRDay)value);
       }
       break;
 
@@ -303,12 +303,12 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof PeriodOfTime)
-      return this.equals((PeriodOfTime)that);
+    if (that instanceof FRPeriodOfTime)
+      return this.equals((FRPeriodOfTime)that);
     return false;
   }
 
-  public boolean equals(PeriodOfTime that) {
+  public boolean equals(FRPeriodOfTime that) {
     if (that == null)
       return false;
 
@@ -364,13 +364,13 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
     return builder.toHashCode();
   }
 
-  public int compareTo(PeriodOfTime other) {
+  public int compareTo(FRPeriodOfTime other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    PeriodOfTime typedOther = (PeriodOfTime)other;
+    FRPeriodOfTime typedOther = (FRPeriodOfTime)other;
 
     lastComparison = Boolean.valueOf(isSetDay()).compareTo(typedOther.isSetDay());
     if (lastComparison != 0) {
@@ -421,7 +421,7 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
       switch (field.id) {
         case 1: // DAY
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.day = Day.findByValue(iprot.readI32());
+            this.day = FRDay.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -480,7 +480,7 @@ public class PeriodOfTime implements org.apache.thrift.TBase<PeriodOfTime, Perio
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("PeriodOfTime(");
+    StringBuilder sb = new StringBuilder("FRPeriodOfTime(");
     boolean first = true;
 
     sb.append("day:");

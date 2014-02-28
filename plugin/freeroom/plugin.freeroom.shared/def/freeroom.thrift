@@ -1,27 +1,27 @@
 namespace java org.pocketcampus.plugin.freeroom.shared
 //namespace csharp org.pocketcampus.plugin.freeroom.shared
 
-enum Day{
+enum FRDay{
 	MONDAY; TUESDAY; WEDNESDAY; THURSDAY; FRIDAY; SATURDAY; SUNDAY;
 }
 
-enum RoomType{
+enum FRRoomType{
 	AUDITORIUM; EXERCISES; COMPUTER_ROOM; CONFERENCE;
 }
 
-struct PeriodOfTime{
-	1: required Day day;
+struct FRPeriodOfTime{
+	1: required FRDay day;
 	2: required i32 startHour;
 	3: required i32 endHour;
 }
 
-struct Room{
+struct FRRoom{
 	1: required string building;
 	2: required string number;
-	3: optional RoomType type;
+	3: optional FRRoomType type;
 	4: optional i32 capacity;
 }
 
 service FreeRoomService {
-	set<Room> getFreeRoomsFromTime(1: PeriodOfTime period);
+	set<FRRoom> getFreeRoomsFromTime(1: FRPeriodOfTime period);
 }

@@ -13,8 +13,8 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
-import org.pocketcampus.plugin.freeroom.shared.PeriodOfTime;
-import org.pocketcampus.plugin.freeroom.shared.Room;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriodOfTime;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 /**
  * FreeRoomServiceImpl
@@ -47,7 +47,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	@Override
-	public Set<Room> getFreeRoomsFromTime(PeriodOfTime period)
+	public Set<FRRoom> getFreeRoomsFromTime(FRPeriodOfTime period)
 			throws TException {
 		if (period.getStartHour() < 8 || period.getEndHour() > 19) {
 			return null;
@@ -66,7 +66,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 		}
 				
-		HashSet<Room> freerooms = new HashSet<Room>();
+		HashSet<FRRoom> freerooms = new HashSet<FRRoom>();
 		try {
 			Connection connectBDD = connMgr.getConnection();
 			PreparedStatement query = connectBDD.prepareStatement("SELECT rl.building, rl.room_number " +
@@ -77,14 +77,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			//filling the query with values
 			query.setInt(1, period.getDay().getValue());
 			for (int i = 1; i <= (period.getEndHour() - period.getStartHour()) ; ++i) {
-				query.setInt(i + 1, i + period.getStartHour());
+				query.setInt(i + 1, i + period.getStartHour() - 1);
 			}
 			
 			ResultSet resultQuery = query.executeQuery();
 			while (resultQuery.next()) {
 				String building = resultQuery.getString("building");
 				int room_number = resultQuery.getInt("room_number");
-				Room r = new Room();
+				FRRoom r = new FRRoom();
 				r.setBuilding(building);
 				r.setNumber(room_number + "");
 				freerooms.add(r);
