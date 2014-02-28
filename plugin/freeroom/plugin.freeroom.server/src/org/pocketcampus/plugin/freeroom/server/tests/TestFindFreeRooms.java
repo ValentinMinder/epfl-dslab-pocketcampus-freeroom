@@ -11,15 +11,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.Assert;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.thrift.TException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
+import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.plugin.freeroom.shared.Day;
+import org.pocketcampus.plugin.freeroom.shared.PeriodOfTime;
 import org.pocketcampus.plugin.freeroom.shared.Room;
 import org.pocketcampus.plugin.freeroom.shared.RoomType;
 
@@ -27,7 +35,9 @@ import org.pocketcampus.plugin.freeroom.shared.RoomType;
 public class TestFindFreeRooms {
 	final static String DB_USERNAME = "root";
 	final static String DB_PASSWORD = "root";
-	final static String DB_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
+	final static String DBMS_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
+	final static String DB_URL = "jdbc:mysql://localhost/pocketcampustest?allowMultiQueries=true";
+	
 	private Connection conn = null;
 	
 	public static void createDBTest() {
@@ -35,7 +45,7 @@ public class TestFindFreeRooms {
 		PreparedStatement pstmt = null;
 		try {
 			conn = DriverManager
-					.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+					.getConnection(DBMS_URL, DB_USERNAME, DB_PASSWORD);
 			
 			PreparedStatement stmt = conn.prepareStatement("CREATE DATABASE IF NOT EXISTS pocketcampustest");
 			stmt.execute();
@@ -62,7 +72,7 @@ public class TestFindFreeRooms {
 		Connection conn = null;
 		try {
 			conn = DriverManager
-					.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+					.getConnection(DBMS_URL, DB_USERNAME, DB_PASSWORD);
 			
 			PreparedStatement stmt = conn.prepareStatement("DROP DATABASE pocketcampustest");
 			stmt.execute();
@@ -80,6 +90,7 @@ public class TestFindFreeRooms {
 	
 	@AfterClass
 	public static void tearDownAfterClass() {
+		// TODO: tests should remove their databases and tables, comment it if you want to see them in SQL
 		removeDBTest();
 	}
 	
@@ -87,7 +98,7 @@ public class TestFindFreeRooms {
 	public void setUp() {
 		try {
 			conn = DriverManager
-					.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+					.getConnection(DBMS_URL, DB_USERNAME, DB_PASSWORD);
 			conn.setCatalog("pocketcampustest");
 		} catch (SQLException e) {
 			Assert.fail("There was an SQL Exception \n " + e);
@@ -178,5 +189,32 @@ public class TestFindFreeRooms {
 		} catch (IOException e) {
 			Assert.fail("There was another IO Exception \n " + e);
 		}
+	}
+	
+	@Test
+	public void testBasicRequest() {
+		//FILL DATABSE BEFORE
+		Set<Room> rooms = new HashSet<Room>();
+		PeriodOfTime pot = new PeriodOfTime();
+		pot.setDay(Day.TUESDAY);
+		pot.setStartHour(10);
+		pot.setEndHour(11);
+		
+		try {
+			rooms = (new FreeRoomServiceImpl(new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD))).getFreeRoomsFromTime(pot);
+			ArrayList<Room> arr = new ArrayList<Room>(rooms);
+			for (Room r : arr) {
+				System.out.println(r.getBuilding() + "" + r.getNumber());
+			} 
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+
 	}
 }

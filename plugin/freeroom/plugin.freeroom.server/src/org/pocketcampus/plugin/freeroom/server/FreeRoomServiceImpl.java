@@ -39,6 +39,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			e.printStackTrace();
 		}
 	}
+	
+	//for test purposes ONLY
+	public FreeRoomServiceImpl(ConnectionManager conn) {
+		System.out.println("Starting TEST FreeRoom plugin server ...");
+		connMgr = conn;
+	}
 
 	@Override
 	public Set<Room> getFreeRoomsFromTime(PeriodOfTime period)
@@ -65,7 +71,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			Connection connectBDD = connMgr.getConnection();
 			PreparedStatement query = connectBDD.prepareStatement("SELECT rl.building, rl.room_number " +
 					"FROM roomslist rl " +
-					"JOIN roomsoccupancy ro ON ro.rid = rl.rid " +
 					"WHERE rl.rid NOT IN " +
 					"(SELECT ro2.rid FROM roomsoccupancy ro2 WHERE ro2.day_number = ? AND ro2.startHour IN (" + queryStatement + "))");
 		
