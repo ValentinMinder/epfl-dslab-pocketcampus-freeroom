@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Camipro.Models;
 using PocketCampus.Camipro.Services;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Mvvm;
 using PocketCampus.Mvvm.Logging;

@@ -4,6 +4,7 @@
 
 using System;
 using PocketCampus.Camipro.Models;
+using PocketCampus.Common;
 
 // Design data for MainViewModel.
 

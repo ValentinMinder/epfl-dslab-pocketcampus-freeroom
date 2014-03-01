@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PocketCampus.Common;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Services;
 using PocketCampus.Mvvm;
@@ -14,9 +15,11 @@ namespace PocketCampus.Events.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IEventsService _eventsService;
         private readonly IPluginSettings _settings;
+        private readonly IEmailPrompt _emailPrompt;
         private readonly long _poolId;
 
         private EventPool _pool;
+        private EmailSendingStatus _favoriteEmailStatus;
 
         public EventPool Pool
         {
@@ -24,7 +27,13 @@ namespace PocketCampus.Events.ViewModels
             private set { SetProperty( ref _pool, value ); }
         }
 
-        public Command<EventItem> ViewEventItemCommand
+        public EmailSendingStatus FavoriteEmailStatus
+        {
+            get { return _favoriteEmailStatus; }
+            private set { SetProperty( ref _favoriteEmailStatus, value ); }
+        }
+
+        public Command<EventItem> ViewItemCommand
         {
             get { return GetCommand<EventItem>( item => _navigationService.NavigateTo<EventItemViewModel, long>( item.Id ) ); }
         }
@@ -46,16 +55,21 @@ namespace PocketCampus.Events.ViewModels
 
         public Command ScanCodeCommand
         {
-            get { return GetCommand( () => { }, () => Pool.EnableCodeScanning == true ); }
+            // TODO
+            // URI form: pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=-1&userTicket=6298eb264f3cb42f6faa7b6a7f5c5482
+            // use UriMapper on the root app frame, add something in the plugins to handle that, maybe?
+            get { return GetCommand( () => { }, () => false ); }
+            //get { return GetCommand( () => { }, () => Pool.EnableCodeScanning == true ); }
         }
 
         public EventPoolViewModel( INavigationService navigationService, IEventsService eventsService,
-                                   IPluginSettings settings,
+                                   IPluginSettings settings, IEmailPrompt userPrompt,
                                    long poolId )
         {
             _navigationService = navigationService;
             _eventsService = eventsService;
             _settings = settings;
+            _emailPrompt = userPrompt;
             _poolId = poolId;
         }
 
@@ -81,21 +95,29 @@ namespace PocketCampus.Events.ViewModels
                 _settings.EventTags = response.EventTags;
                 _settings.EventCategories = response.EventCategories;
 
-                response.Pool.Items = response.ChildrenItems.Values.ToArray();
+                response.Pool.Items = response.ChildrenItems == null ? new EventItem[0] : response.ChildrenItems.Values.ToArray();
                 Pool = response.Pool;
             }
         }
 
-        private Task RequestFavoriteEmailAsync()
+        private async Task RequestFavoriteEmailAsync()
         {
-            return TryExecuteAsync( async _ =>
-            {
-                // TODO email and favorites
-                // also, some status thing
+            FavoriteEmailStatus = EmailSendingStatus.NoneRequested;
 
+            string emailAddress = _emailPrompt.GetEmail();
+
+            if ( emailAddress == null )
+            {
+                return;
+            }
+
+            try
+            {
                 var request = new FavoriteEmailRequest
                 {
+                    EmailAddress = emailAddress,
                     PoolId = Pool.Id,
+                    FavoriteItems = _settings.FavoritesByPool[Pool.Id].ToArray(),
                     UserTickets = _settings.UserTickets.ToArray(),
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
@@ -106,7 +128,13 @@ namespace PocketCampus.Events.ViewModels
                 {
                     throw new Exception( "An error occurred while requesting an e-mail with the favorites." );
                 }
-            } );
+
+                FavoriteEmailStatus = EmailSendingStatus.Success;
+            }
+            catch
+            {
+                FavoriteEmailStatus = EmailSendingStatus.Error;
+            }
         }
     }
 }

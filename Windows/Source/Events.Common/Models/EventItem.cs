@@ -68,5 +68,10 @@ namespace PocketCampus.Events.Models
 
         [ThriftField( 15, false, "eventTags" )]
         public string[] TagIds { get; set; }
+
+        [ThriftField( 31, false, "parentPool" )]
+        public long ParentPoolId { get; set; }
+
+        public EventPool[] Pools { get; set; }
     }
 }

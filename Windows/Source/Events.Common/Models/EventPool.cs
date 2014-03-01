@@ -45,7 +45,7 @@ namespace PocketCampus.Events.Models
         public bool? EnableFavoriteEmailRequest { get; set; }
 
         [ThriftField( 21, false, "overrideLink" )]
-        public bool? OverrideTargetUrl { get; set; }
+        public string OverrideTargetUrl { get; set; }
 
 
         public EventItem[] Items { get; set; }

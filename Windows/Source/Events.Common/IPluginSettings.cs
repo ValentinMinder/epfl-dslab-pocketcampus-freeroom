@@ -14,6 +14,8 @@ namespace PocketCampus.Events
 
         IDictionary<string, string> EventTags { get; set; }
 
+        IDictionary<long, IList<long>> FavoritesByPool { get; set; }
+
         IDictionary<long, IList<int>> ExcludedCategoriesByPool { get; set; }
 
         IDictionary<long, IList<string>> ExcludedTagsByPool { get; set; }
