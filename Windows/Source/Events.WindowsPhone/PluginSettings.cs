@@ -59,7 +59,7 @@ namespace PocketCampus.Events
         {
             return new SettingsDefaultValues<PluginSettings>
             {
-                { x => x.UserTickets, () => new string[0] },
+                { x => x.UserTickets, () => new List<string>() },
                 { x => x.SearchPeriod,() => SearchPeriod.OneMonth },
                 { x => x.SearchInPast, () => false },
                 { x => x.EventCategories, () => new Dictionary<int, string>() },

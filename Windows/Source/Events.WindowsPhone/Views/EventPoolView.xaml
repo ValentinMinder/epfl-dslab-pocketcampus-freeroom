@@ -6,66 +6,83 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       mc:Ignorable="d">
+    <!-- The app bar is created in code-behind because it's very dymanic -->
+
     <!-- Design-time DataContext -->
     <d:DesignProperties.DataContext>
         <design:DesignEventPoolViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events.Common" />
     </d:DesignProperties.DataContext>
-    
+
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <!-- Simple button template with only content -->
             <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
                 <ContentPresenter />
             </ControlTemplate>
-            
-            <DataTemplate x:Key="EventItemTemplate">
-                <Grid Margin="10,10,0,30"
-                      Height="100">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    
-                    <Image Grid.RowSpan="4"
-                           Source="{Binding PictureThumbnailUrl}"
-                           Width="100" />
-                    
-                    <TextBlock Grid.Column="1"
-                               Text="{Binding Name}"
-                               TextTrimming="WordEllipsis"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               FontFamily="{StaticResource PhoneFontFamilySemiBold}" />
-                    
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="1"
-                               Text="{Binding SpeakerName}"
-                               TextTrimming="WordEllipsis"
-                               Style="{StaticResource PhoneTextNormalStyle}" />
 
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="2"
-                               Text="{Binding Converter={StaticResource EventItemToShortDate}}"
-                               TextTrimming="WordEllipsis"
-                               Style="{StaticResource PhoneTextSubtleStyle}"
-                               Visibility="{Binding TimeOverride, Converter={StaticResource EmptyStringToVisibility}}" />
-                    
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="2"
-                               Text="{Binding TimeOverride}"
-                               TextTrimming="WordEllipsis"
-                               Style="{StaticResource PhoneTextSubtleStyle}" />
-                </Grid>
+            <DataTemplate x:Key="EventItemTemplate">
+                <Button Template="{StaticResource SimpleButtonTemplate}"
+                        Command="{Binding DataContext.ViewItemCommand, ElementName=LayoutRoot}"
+                        CommandParameter="{Binding}">
+                    <Grid Margin="10,10,0,30"
+                          Height="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Image Grid.RowSpan="4"
+                               Source="{Binding PictureThumbnailUrl}"
+                               Width="100" />
+
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   TextTrimming="WordEllipsis"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}" />
+
+                        <!-- Short details OR location OR speaker name, in that order of preference -->
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="1"
+                                   Text="{Binding ShortDetails}"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Visibility="{Binding ShortDetails, Converter={StaticResource StringToVisibility}}" />
+                        <Grid Grid.Column="1"
+                              Grid.Row="1"
+                              Visibility="{Binding ShortDetails, Converter={StaticResource EmptyStringToVisibility}}">
+                            <TextBlock Text="{Binding Location}"
+                                       Style="{StaticResource PhoneTextNormalStyle}"
+                                       Visibility="{Binding Location, Converter={StaticResource StringToVisibility}}" />
+                            <TextBlock Text="{Binding SpeakerName}"
+                                       Style="{StaticResource PhoneTextNormalStyle}"
+                                       Visibility="{Binding Location, Converter={StaticResource EmptyStringToVisibility}}" />
+                        </Grid>
+
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="2"
+                                   Text="{Binding Converter={StaticResource EventItemToShortDate}}"
+                                   TextTrimming="WordEllipsis"
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Visibility="{Binding TimeOverride, Converter={StaticResource EmptyStringToVisibility}}" />
+
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="2"
+                                   Text="{Binding TimeOverride}"
+                                   TextTrimming="WordEllipsis"
+                                   Style="{StaticResource PhoneTextSubtleStyle}" />
+                    </Grid>
+                </Button>
             </DataTemplate>
 
             <DataTemplate x:Key="EventItemGroupHeaderTemplate">
@@ -74,9 +91,10 @@
                                Style="{StaticResource AppTextSecondaryHeaderStyle}" />
                 </Border>
             </DataTemplate>
-            
+
             <DataTemplate x:Key="EventItemGroupFooterTemplate">
-                <Rectangle Height="40" Width="1" Fill="Transparent" />
+                <Rectangle Height="60" 
+                           Width="0" />
             </DataTemplate>
 
             <!-- Item group item template (for the LongListSelector's jump list) -->
@@ -93,14 +111,14 @@
             </Style>
         </ResourceDictionary>
     </comControls:BasePage.Resources>
-    
+
     <!-- Main grid -->
-    <Grid>
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <!-- Page header -->
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
             <TextBlock Text="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
@@ -117,6 +135,14 @@
                                 JumpListStyle="{StaticResource EventItemGroupJumpListStyle}"
                                 Margin="0,0,-13,0" />
         
+        <!-- "No items" text -->
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Pool.NoResultsFallbackText}"
+                   Style="{StaticResource PhoneTextLargeStyle}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Visibility="{Binding AnyItems, Converter={StaticResource BoolToOppositeVisibility}}" />
+
         <!-- Loading & error -->
         <comControls:LoadingAndError Grid.Row="1" />
     </Grid>

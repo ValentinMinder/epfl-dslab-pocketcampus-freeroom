@@ -30,6 +30,8 @@ namespace PocketCampus.Events.WindowsPhone
             navigationService.Bind<EventPoolViewModel>( "/PocketCampus.Events.WindowsPhone;component/Views/EventPoolView.xaml" );
             navigationService.Bind<EventItemViewModel>( "/PocketCampus.Events.WindowsPhone;component/Views/EventItemView.xaml" );
             navigationService.Bind<SettingsViewModel>( "/PocketCampus.Events.WindowsPhone;component/Views/SettingsView.xaml" );
+            navigationService.Bind<CategoryFilterViewModel>( "/PocketCampus.Events.WindowsPhone;component/Views/CategoryFilterView.xaml" );
+            navigationService.Bind<TagFilterViewModel>( "/PocketCampus.Events.WindowsPhone;component/Views/TagFilterView.xaml" );
 
             Container.Bind<IEmailPrompt, EmailPrompt>();
             Container.Bind<IPluginSettings, PluginSettings>();

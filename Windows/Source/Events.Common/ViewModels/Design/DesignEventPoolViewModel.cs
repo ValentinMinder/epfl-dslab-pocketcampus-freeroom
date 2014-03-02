@@ -33,6 +33,8 @@ namespace PocketCampus.Events.ViewModels.Design
             }
         }
 
+        public bool AnyItems { get { return true; } }
+
         public EventItemGroup[] ItemGroups
         {
             get

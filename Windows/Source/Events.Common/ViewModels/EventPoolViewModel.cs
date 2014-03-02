@@ -21,6 +21,7 @@ namespace PocketCampus.Events.ViewModels
 
         private EventPool _pool;
         private EventItemGroup[] _itemGroups;
+        private bool _anyItems;
         private EmailSendingStatus _favoriteEmailStatus;
 
         public EventPool Pool
@@ -33,6 +34,12 @@ namespace PocketCampus.Events.ViewModels
         {
             get { return _itemGroups; }
             private set { SetProperty( ref _itemGroups, value ); }
+        }
+
+        public bool AnyItems
+        {
+            get { return _anyItems; }
+            private set { SetProperty( ref _anyItems, value ); }
         }
 
         public EmailSendingStatus FavoriteEmailStatus
@@ -84,6 +91,8 @@ namespace PocketCampus.Events.ViewModels
             _settings = settings;
             _emailPrompt = userPrompt;
             _poolId = poolId;
+
+            _settings.UserTickets.Add( "6298eb264f3cb42f6faa7b6a7f5c5482" );
         }
 
         protected override async Task RefreshAsync( CancellationToken token, bool force )
@@ -124,6 +133,12 @@ namespace PocketCampus.Events.ViewModels
 
                 Pool = response.Pool;
                 Pool.Items = response.ChildrenItems == null ? new EventItem[0] : response.ChildrenItems.Values.ToArray();
+                AnyItems = Pool.Items.Any();
+
+                if ( Pool.Id == EventPool.RootId )
+                {
+                    Pool.AlwaysRefresh = true;
+                }
             }
 
             var groups = from item in Pool.Items
@@ -136,58 +151,13 @@ namespace PocketCampus.Events.ViewModels
                                  item.EndDate ascending,
                                  item.Name ascending
                          group item by item.CategoryId into itemGroup
-                         let categName = itemGroup.Key.HasValue ? _settings.EventCategories[itemGroup.Key.Value] : null
+                         let categName = itemGroup.Key.HasValue
+                                      && _settings.EventCategories.ContainsKey( itemGroup.Key.Value )
+                                       ? _settings.EventCategories[itemGroup.Key.Value]
+                                       : null
                          select new EventItemGroup( categName, itemGroup );
 
             ItemGroups = groups.ToArray();
-
-            foreach ( var group in ItemGroups )
-            {
-                System.Diagnostics.Debug.WriteLine(
-    string.Join( Environment.NewLine, string.Format( @"new EventItemGroup( ""{0}"", new[]
-{{
-{1}
-}} ),;
-",
-    group.CategoryName,
-    string.Join( Environment.NewLine, group.Select( i =>
-        string.Format(
-    @"new EventItem
-{{
-    Name = ""{0}"",
-    SpeakerName = ""{1}"",
-    Location = ""{2}"",
-    StartDate = {3},
-    EndDate {4},
-    IsFullDay = {5},
-    TimeOverride = ""{6}"",
-    ShortDetails = @""{7}"",
-    PictureUrl = @""{8}"",
-    PictureThumbnailUrl = @""{9}"",
-    HidePictureThumbnail = {10},
-    HideName = {11},
-    HideInformation = {12},
-    Details = @""{13}"",
-    DetailsUrl = @""{14}""
-}},",
-    i.Name ?? "",
-    i.SpeakerName ?? "",
-    i.Location ?? "",
-    ( i.StartDate.HasValue ? string.Format( "new DateTime( {0}, {1}, {2}, {3}, {4}, {5} )", i.StartDate.Value.Year, i.StartDate.Value.Month, i.StartDate.Value.Day, i.StartDate.Value.Hour, i.StartDate.Value.Minute, i.StartDate.Value.Second ) : "null" ),
-    ( i.EndDate.HasValue ? string.Format( "new DateTime( {0}, {1}, {2}, {3}, {4}, {5} )", i.EndDate.Value.Year, i.EndDate.Value.Month, i.EndDate.Value.Day, i.EndDate.Value.Hour, i.EndDate.Value.Minute, i.EndDate.Value.Second ) : "null" ),
-    i.IsFullDay == null ? "null" : i.IsFullDay.Value.ToString(),
-    i.TimeOverride ?? "",
-    i.ShortDetails ?? "",
-    i.PictureUrl ?? "",
-    i.PictureThumbnailUrl ?? "",
-    i.HidePictureThumbnail == null ? "null" : i.HidePictureThumbnail.ToString(),
-    i.HideName == null ? "null" : i.HideName.Value.ToString(),
-    i.HideInformation == null ? "null" : i.HideInformation.Value.ToString(),
-    i.Details ?? "",
-    i.DetailsUrl ?? ""
-    ) ) ) )
-        .Replace( "True", "true" ).Replace( "False", "false" ).Split( new[] { Environment.NewLine }, StringSplitOptions.None ).Select( s => "                    " + s ) ) );
-            }
         }
 
         private async Task RequestFavoriteEmailAsync()

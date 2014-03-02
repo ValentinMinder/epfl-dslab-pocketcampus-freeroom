@@ -4,12 +4,13 @@
 
 using System;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using HtmlAgilityPack;
 
-namespace PocketCampus.News.Controls
+namespace PocketCampus.Common.Controls
 {
     /// <summary>
     /// A TextBlock that displays HTML.
@@ -36,6 +37,7 @@ namespace PocketCampus.News.Controls
         {
             var block = (HtmlTextBlock) obj;
             string html = (string) args.NewValue;
+            html = HttpUtility.HtmlDecode( html );
             var root = HtmlNode.CreateNode( "<div>" + html + "</div>" );
 
             CleanNodes( root );

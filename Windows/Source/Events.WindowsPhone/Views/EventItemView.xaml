@@ -5,17 +5,22 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       mc:Ignorable="d">
+    <!-- Design-time DataContext -->
+    <d:DesignProperties.DataContext>
+        <design:DesignEventItemViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events.Common" />
+    </d:DesignProperties.DataContext>
+
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
                 <ContentPresenter />
             </ControlTemplate>
-            
+
             <DataTemplate x:Key="ItemPoolTemplate">
                 <Button Template="{StaticResource SimpleButtonTemplate}"
                         Command="{Binding DataContext.ViewPoolCommand, ElementName=LayoutRoot}"
@@ -25,12 +30,12 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        
+
                         <Image Source="{Binding PictureUrl}"
                                Width="100"
                                Height="100"
                                Stretch="None" />
-                        
+
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Name}"
                                    Style="{StaticResource PhoneTextTitle2Style}"
@@ -40,12 +45,10 @@
             </DataTemplate>
         </ResourceDictionary>
     </comControls:BasePage.Resources>
-    
+
     <!-- Main grid -->
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -58,7 +61,7 @@
             <TextBlock Text="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
                        Style="{StaticResource AppTextHeaderStyle}" />
         </Border>
-        
+
         <!-- Name, description and image thumbnail -->
         <Grid Grid.Row="1"
               Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
@@ -67,105 +70,123 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="120" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            
+
             <!-- TODO: Add the favorite button somewhere here -->
-            
+
             <!-- Name -->
-            <TextBlock Text="{Binding Item.Name}"
-                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                       Visibility="{Binding Item.HideName, Converter={StaticResource BoolToOppositeVisibility}}" />
-            
-            <!-- Short details OR location OR speaker name, in that order of preference -->
+            <Viewbox StretchDirection="DownOnly"
+                     HorizontalAlignment="Left"
+                     Visibility="{Binding Item.HideName, Converter={StaticResource BoolToOppositeVisibility}}">
+                <TextBlock Text="{Binding Item.Name}"
+                           TextWrapping="Wrap"
+                           Width="380"
+                           Style="{StaticResource AppTextSecondaryHeaderStyle}" />
+
+            </Viewbox>
+
+            <!-- Short details -->
             <TextBlock Grid.Row="1"
                        Text="{Binding Item.ShortDetails}"
                        Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                       FontSize="{StaticResource PhoneFontSizeMediumLarge}"
-                       Visibility="{Binding Item.ShortDetails, Converter={StaticResource StringToVisibility}}" />
-            <Grid Grid.Row="1"
-                  Visibility="{Binding Item.ShortDetails, Converter={StaticResource EmptyStringToVisibility}}">
-                <TextBlock Text="{Binding Item.Location}"
-                           Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                           FontSize="{StaticResource PhoneFontSizeMediumLarge}"
-                           Visibility="{Binding Item.Location, Converter={StaticResource StringToVisibility}}" />
-                <TextBlock Text="{Binding Item.SpeakerName}"
-                           Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                           FontSize="{StaticResource PhoneFontSizeMediumLarge}"
-                           Visibility="{Binding Item.Location, Converter={StaticResource EmptyStringToVisibility}}" />
-            </Grid>
-            
+                       FontSize="{StaticResource PhoneFontSizeMedium}"
+                       Visibility="{Binding Item.ShortDetails, Converter={StaticResource StringToVisibility}}"/>
+
             <!-- Thumbnail -->
             <Image Grid.Column="1"
                    Grid.RowSpan="2"
-                   Source="{Binding Item.ThumbnailPictureUrl}"
+                   Source="{Binding Item.PictureThumbnailUrl}"
+                   Width="100"
+                   VerticalAlignment="Top"
                    Visibility="{Binding Item.HidePictureThumbnail, Converter={StaticResource BoolToOppositeVisibility}}" />
         </Grid>
-        
+
         <!-- Information -->
-        <StackPanel Grid.Row="1"
+        <StackPanel Grid.Row="2"
                     Visibility="{Binding Item.HideInformation, Converter={StaticResource BoolToOppositeVisibility}}">
             <!-- Date -->
-            <StackPanel Orientation="Horizontal">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
                 <TextBlock Text="{Binding Resources.EventTime, Source={StaticResource Strings}}"
                            Style="{StaticResource PhoneTextSubtleStyle}"
                            Margin="12,0,6,0" />
-                <TextBlock Text="{Binding Item, Converter={StaticResource EventItemToHumanDate}}"
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Item, Converter={StaticResource EventItemToDate}}"
+                           TextWrapping="Wrap"
                            Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="0,0,12,0" />
-            </StackPanel>
-            
+            </Grid>
+
             <!-- Location -->
-            <StackPanel Orientation="Horizontal"
-                        Visibility="{Binding Item.Location, Converter={StaticResource StringToVisibility}}">
+            <Grid Visibility="{Binding Item.Location, Converter={StaticResource StringToVisibility}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
                 <TextBlock Text="{Binding Resources.EventLocation, Source={StaticResource Strings}}"
                            Style="{StaticResource PhoneTextSubtleStyle}"
-                           Margin="12,0,6,0" />
-                <HyperlinkButton Content="{Binding Item.Location}"
+                           Margin="12,0,0,0" />
+                <HyperlinkButton Grid.Column="1"
+                                 Content="{Binding Item.Location}"
                                  Command="{Binding OpenLinkCommand}"
                                  CommandParameter="{Binding Item.LocationUrl}"
+                                 FontSize="{StaticResource PhoneFontSizeNormal}"
                                  HorizontalAlignment="Left"
-                                 Margin="0,0,12,0" />
-            </StackPanel>
-            
+                                 VerticalAlignment="Center"
+                                 Margin="-6,4,12,0" />
+            </Grid>
+
             <!-- Speaker -->
-            <StackPanel Orientation="Horizontal">
+            <Grid Visibility="{Binding Item.SpeakerName, Converter={StaticResource StringToVisibility}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
                 <TextBlock Text="{Binding Resources.EventSpeaker, Source={StaticResource Strings}}"
                            Style="{StaticResource PhoneTextSubtleStyle}"
                            Margin="12,0,6,0" />
-                <TextBlock Text="{Binding Item.SpeakerName}"
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Item.SpeakerName}"
+                           TextWrapping="Wrap"
                            Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="0,0,12,0" />
-            </StackPanel>
+            </Grid>
         </StackPanel>
-        
-        <!-- Large image -->
-        <Image Grid.Row="3"
-               Source="{Binding Item.PictureUrl}"
-               Visibility="{Binding Item.PictureUrl, Converter={StaticResource StringToVisibility}}" />
-        
-        <!-- Details, in HTML -->
-        <!-- TODO: Display as HTML -->
-        <TextBlock Grid.Row="4"
-                   Text="{Binding Item.Details}" />
-        
-        <!-- "More information" button -->
-        <HyperlinkButton Grid.Row="5"
-                         Content="{Binding Resources.MoreEventDetailsButton, Source={StaticResource Strings}}"
-                         Command="{Binding OpenLinkCommand}"
-                         CommandParameter="{Binding Item.DetailsUrl}"
-                         HorizontalAlignment="Left"
-                         Visibility="{Binding Item.DetailsUrl, Converter={StaticResource StringToVisibility}}" />
-        
-        <!-- Child pools -->
-        <ItemsControl Grid.Row="6"
-                      ItemsSource="{Binding Pools}"
-                      ItemTemplate="{StaticResource ItemPoolTemplate}"
-                      Style="{StaticResource ScrollingItemsControlStyle}" />
-        
+
+        <ScrollViewer Grid.Row="4">
+            <StackPanel>
+                <!-- Large image -->
+                <Image Grid.Row="3"
+                       Source="{Binding Item.PictureUrl}"
+                       Visibility="{Binding Item.PictureUrl, Converter={StaticResource StringToVisibility}}" />
+                
+                <!-- Details, in HTML -->
+                <comControls:HtmlTextBlock Html="{Binding Item.Details}" />
+
+                <!-- "More details" button -->
+                <HyperlinkButton Content="{Binding Resources.MoreEventDetailsButton, Source={StaticResource Strings}}"
+                                 Command="{Binding OpenLinkCommand}"
+                                 CommandParameter="{Binding Item.DetailsUrl}"
+                                 HorizontalAlignment="Left"
+                                 Visibility="{Binding Item.DetailsUrl, Converter={StaticResource StringToVisibility}}" />
+
+                <!-- Child pools -->
+                <ItemsControl Grid.Row="5"
+                              ItemsSource="{Binding Pools}"
+                              ItemTemplate="{StaticResource ItemPoolTemplate}" />
+            </StackPanel>
+        </ScrollViewer>
+
         <!-- Loading & error -->
         <comControls:LoadingAndError Grid.Row="1"
-                                     Grid.RowSpan="6" />
+                                     Grid.RowSpan="4" />
     </Grid>
 </comControls:BasePage>

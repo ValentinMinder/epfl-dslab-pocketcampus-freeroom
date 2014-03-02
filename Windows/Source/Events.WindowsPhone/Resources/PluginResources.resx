@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CategoryFilterViewTitle" xml:space="preserve">
+    <value>filter categories</value>
+  </data>
   <data name="DifferentDateFormat" xml:space="preserve">
     <value>{0}, {1} - {2}, {3}</value>
     <comment>0: date1, 1: time1, 2: date2, 3: time2</comment>
@@ -136,6 +139,12 @@
   <data name="EventTime" xml:space="preserve">
     <value>Time:</value>
   </data>
+  <data name="FilterCategoriesButton" xml:space="preserve">
+    <value>categories</value>
+  </data>
+  <data name="FilterTagsButton" xml:space="preserve">
+    <value>tags</value>
+  </data>
   <data name="InvalidEmailCaption" xml:space="preserve">
     <value>invalid e-mail</value>
   </data>
@@ -151,6 +160,9 @@
   </data>
   <data name="PluginName" xml:space="preserve">
     <value>Events</value>
+  </data>
+  <data name="ScanCodeButton" xml:space="preserve">
+    <value>scan QR code</value>
   </data>
   <data name="SearchInPast" xml:space="preserve">
     <value>search in the past</value>
@@ -179,6 +191,9 @@
   <data name="SearchPeriod_TwoWeeks" xml:space="preserve">
     <value>two weeks</value>
   </data>
+  <data name="SendFavoriteEmailButton" xml:space="preserve">
+    <value>send e-mail with favorites...</value>
+  </data>
   <data name="SettingsViewTitle" xml:space="preserve">
     <value>settings</value>
   </data>
@@ -189,5 +204,8 @@
   <data name="SingleDateTimeFormat" xml:space="preserve">
     <value>{0}, {1}</value>
     <comment>0: date, 1: time</comment>
+  </data>
+  <data name="TagFilterViewTitle" xml:space="preserve">
+    <value>filter tags</value>
   </data>
 </root>

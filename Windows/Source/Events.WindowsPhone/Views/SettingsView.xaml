@@ -17,9 +17,15 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <DataTemplate x:Key="SearchPeriodTemplate">
                 <TextBlock Text="{Binding Converter={StaticResource EnumToString}}" />
+            </DataTemplate>
+            
+            <DataTemplate x:Key="SearchPeriodFullModeTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource EnumToString}}"
+                           Style="{StaticResource PhoneTextLargeStyle}"
+                           Margin="20,30" />
             </DataTemplate>
         </ResourceDictionary>
     </comControls:BasePage.Resources>
@@ -48,20 +54,28 @@
         </Border>
         
         <!-- Search period -->
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal">
+        <Grid Grid.Row="2"
+              Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            
             <TextBlock Text="{Binding Resources.SearchPeriod, Source={StaticResource Strings}}"
-                       Style="{StaticResource PhoneTextNormalStyle}"
+                       Style="{StaticResource PhoneTextLargeStyle}"
                        FontSize="{Binding FontSize, ElementName=PeriodPicker}"
                        VerticalAlignment="Center" />
             
             <!-- HACK: See code-behind -->
             <tool:ListPicker x:Name="PeriodPicker"
+                             Grid.Column="1"
                              ItemsSource="{Binding SearchPeriods}"
                              ItemTemplate="{StaticResource SearchPeriodTemplate}"
+                             FullModeItemTemplate="{StaticResource SearchPeriodFullModeTemplate}"
                              FontFamily="{StaticResource PhoneFontFamilyNormal}"
+                             Margin="-6,-7,8,0"
                              Loaded="PeriodPicker_Loaded" />
-        </StackPanel>
+        </Grid>
         
         <!-- Search in past -->
         <CheckBox Grid.Row="3"

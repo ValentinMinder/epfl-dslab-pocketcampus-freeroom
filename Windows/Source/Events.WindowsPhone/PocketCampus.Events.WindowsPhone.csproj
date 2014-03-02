@@ -94,6 +94,12 @@
       <DependentUpon>PluginResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\EmailPrompt.cs" />
+    <Compile Include="Views\TagFilterView.xaml.cs">
+      <DependentUpon>TagFilterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CategoryFilterView.xaml.cs">
+      <DependentUpon>CategoryFilterView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EventItemView.xaml.cs">
       <DependentUpon>EventItemView.xaml</DependentUpon>
     </Compile>
@@ -132,11 +138,23 @@
   <ItemGroup>
     <Content Include="Assets\EventsIcon.png" />
     <Content Include="Assets\EventsSmallIcon.png" />
+    <Content Include="Assets\Filter.png" />
+    <Content Include="Assets\QRCode.png" />
+    <Content Include="Assets\Settings.png" />
+    <Content Include="Assets\Tags.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TagFilterView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CategoryFilterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EventItemView.xaml">
       <SubType>Designer</SubType>
@@ -152,8 +170,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BindableApplicationBar">
-      <HintPath>..\..\packages\BindableApplicationBar.1.1.0.0\lib\wp8\BindableApplicationBar.dll</HintPath>
+    <Reference Include="JeffWilcox.PhoneThemeManager, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\PhoneThemeManager.2.0\lib\windowsphone8\JeffWilcox.PhoneThemeManager.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

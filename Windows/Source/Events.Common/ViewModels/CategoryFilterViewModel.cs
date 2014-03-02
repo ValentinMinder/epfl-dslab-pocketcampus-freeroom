@@ -9,7 +9,7 @@ namespace PocketCampus.Events.ViewModels
         private readonly IPluginSettings _settings;
         private readonly EventPool _pool;
 
-        public CategoryFilter[] Categories { get; private set; }
+        public Filter<int>[] Categories { get; private set; }
 
         public CategoryFilterViewModel( IPluginSettings settings,
                                         EventPool pool )
@@ -20,7 +20,7 @@ namespace PocketCampus.Events.ViewModels
             Categories = pool.Items
                              .Where( i => i.CategoryId.HasValue )
                              .Select( i => i.CategoryId.Value )
-                             .Select( id => new CategoryFilter( _settings.EventCategories[id], id, _settings.ExcludedCategoriesByPool[pool.Id].Contains( id ) ) )
+                             .Select( id => new Filter<int>( _settings.EventCategories[id], id, _settings.ExcludedCategoriesByPool[pool.Id].Contains( id ) ) )
                              .ToArray();
         }
 
@@ -29,29 +29,6 @@ namespace PocketCampus.Events.ViewModels
             var excluded = _settings.ExcludedCategoriesByPool;
             excluded[_pool.Id] = Categories.Where( t => !t.Include ).Select( t => t.Id ).ToArray();
             _settings.ExcludedCategoriesByPool = excluded;
-        }
-
-
-        public sealed class CategoryFilter : ObservableObject
-        {
-            private bool _include;
-
-            public string DisplayName { get; private set; }
-
-            public int Id { get; private set; }
-
-            public bool Include
-            {
-                get { return _include; }
-                set { SetProperty( ref _include, value ); }
-            }
-
-            public CategoryFilter( string displayName, int id, bool include )
-            {
-                DisplayName = displayName;
-                Id = id;
-                Include = include;
-            }
         }
     }
 }

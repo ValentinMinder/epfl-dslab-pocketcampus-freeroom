@@ -1,4 +1,5 @@
-﻿using PocketCampus.Common;
+﻿using System;
+using PocketCampus.Common;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Resources;
 
@@ -6,10 +7,17 @@ namespace PocketCampus.Events
 {
     public sealed class EventItemToHumanDateConverter : ValueConverter<EventItem, string>
     {
+        private static readonly TimeSpan Midnight = new TimeSpan( 0, 0, 0 );
+
         public bool IsCompact { get; set; }
 
         public override string Convert( EventItem value )
         {
+            if ( value == null )
+            {
+                return "";
+            }
+
             string dateFormat = IsCompact ? "d" : "D";
 
             if ( value.StartDate == null )
@@ -24,7 +32,7 @@ namespace PocketCampus.Events
                 return startDate.ToString( dateFormat );
             }
 
-            if ( value.EndDate == null || startDate == value.EndDate.Value )
+            if ( value.EndDate == null || startDate == value.EndDate.Value || value.EndDate.Value.TimeOfDay == Midnight )
             {
                 return string.Format( PluginResources.SingleDateTimeFormat, startDate.ToString( dateFormat ), startDate.ToShortTimeString() );
             }

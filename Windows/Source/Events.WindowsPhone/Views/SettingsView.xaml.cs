@@ -12,9 +12,9 @@ namespace PocketCampus.Events.Views
             InitializeComponent();
         }
 
+        // HACK: The ListPicker has a bug; setting SelectedItem before SelectedIndex is set crashes
         private void PeriodPicker_Loaded( object sender, System.Windows.RoutedEventArgs e )
         {
-            // HACK: The ListPicker has a bug; setting SelectedItem before SelectedIndex is set crashes
             var binding = new Binding
             {
                 Path = new PropertyPath( "Settings.SearchPeriod" ),

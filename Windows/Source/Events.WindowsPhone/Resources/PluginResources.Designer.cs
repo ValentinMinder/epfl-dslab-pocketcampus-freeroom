@@ -61,6 +61,15 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to filter categories.
+        /// </summary>
+        public static string CategoryFilterViewTitle {
+            get {
+                return ResourceManager.GetString("CategoryFilterViewTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}, {1} - {2}, {3}.
         /// </summary>
         public static string DifferentDateFormat {
@@ -115,6 +124,24 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to categories.
+        /// </summary>
+        public static string FilterCategoriesButton {
+            get {
+                return ResourceManager.GetString("FilterCategoriesButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tags.
+        /// </summary>
+        public static string FilterTagsButton {
+            get {
+                return ResourceManager.GetString("FilterTagsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to invalid e-mail.
         /// </summary>
         public static string InvalidEmailCaption {
@@ -156,6 +183,15 @@ namespace PocketCampus.Events.Resources {
         public static string PluginName {
             get {
                 return ResourceManager.GetString("PluginName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to scan QR code.
+        /// </summary>
+        public static string ScanCodeButton {
+            get {
+                return ResourceManager.GetString("ScanCodeButton", resourceCulture);
             }
         }
         
@@ -241,6 +277,15 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to send e-mail with favorites....
+        /// </summary>
+        public static string SendFavoriteEmailButton {
+            get {
+                return ResourceManager.GetString("SendFavoriteEmailButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to settings.
         /// </summary>
         public static string SettingsViewTitle {
@@ -264,6 +309,15 @@ namespace PocketCampus.Events.Resources {
         public static string SingleDateTimeFormat {
             get {
                 return ResourceManager.GetString("SingleDateTimeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to filter tags.
+        /// </summary>
+        public static string TagFilterViewTitle {
+            get {
+                return ResourceManager.GetString("TagFilterViewTitle", resourceCulture);
             }
         }
     }
