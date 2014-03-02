@@ -32,7 +32,7 @@ namespace PocketCampus.Events.Services
                 return email;
             }
 
-            MessageBoxEx.ShowDialog( PluginResources.InvalidEmailCaption, PluginResources.InvalidEmailMessage );
+            MessageBoxEx.ShowDialog( PluginResources.InvalidEmailCaption, string.Format( PluginResources.InvalidEmailMessage, email ) );
             return GetEmail();
         }
     }

@@ -97,6 +97,33 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to an error occurred.
+        /// </summary>
+        public static string EmailSendingStatus_Error {
+            get {
+                return ResourceManager.GetString("EmailSendingStatus_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string EmailSendingStatus_NoneRequested {
+            get {
+                return ResourceManager.GetString("EmailSendingStatus_NoneRequested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e-mail successfully sent.
+        /// </summary>
+        public static string EmailSendingStatus_Success {
+            get {
+                return ResourceManager.GetString("EmailSendingStatus_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location:.
         /// </summary>
         public static string EventLocation {

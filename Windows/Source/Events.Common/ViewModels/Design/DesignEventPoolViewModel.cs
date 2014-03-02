@@ -1,4 +1,5 @@
 ﻿using System;
+using PocketCampus.Common;
 using PocketCampus.Events.Models;
 
 // Design data for EventPoolViewModel
@@ -11,6 +12,8 @@ namespace PocketCampus.Events.ViewModels.Design
         public bool IsLoading { get { return false; } }
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
+
+        public EmailSendingStatus EmailStatus { get { return EmailSendingStatus.Success; } }
 
         public EventPool Pool
         {

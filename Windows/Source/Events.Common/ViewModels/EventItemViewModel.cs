@@ -101,7 +101,7 @@ namespace PocketCampus.Events.ViewModels
 
                 Pools = response.ChildrenPools == null ? new EventPool[0] : response.ChildrenPools.Values.ToArray();
                 Item = response.Item;
-                IsFavorite = _settings.FavoritesByPool[Item.ParentPoolId ?? -1].Contains( Item.Id );
+                IsFavorite = _settings.FavoriteEventIds.Contains( Item.Id );
             }
         }
 
@@ -112,15 +112,13 @@ namespace PocketCampus.Events.ViewModels
                 return;
             }
 
-            long id = Item.ParentPoolId ?? -1;
-
-            if ( IsFavorite && !_settings.FavoritesByPool[id].Contains( Item.Id ) )
+            if ( IsFavorite && !_settings.FavoriteEventIds.Contains( Item.Id ) )
             {
-                _settings.FavoritesByPool[id].Add( Item.Id );
+                _settings.FavoriteEventIds.Add( Item.Id );
             }
-            else if ( !IsFavorite && _settings.FavoritesByPool[id].Contains( Item.Id ) )
+            else if ( !IsFavorite && _settings.FavoriteEventIds.Contains( Item.Id ) )
             {
-                _settings.FavoritesByPool[id].Remove( Item.Id );
+                _settings.FavoriteEventIds.Remove( Item.Id );
             }
         }
     }

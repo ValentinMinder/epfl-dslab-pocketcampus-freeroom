@@ -24,7 +24,7 @@ namespace PocketCampus.Events.ViewModels
         private EventPool _pool;
         private EventItemGroup[] _itemGroups;
         private bool _anyItems;
-        private EmailSendingStatus _favoriteEmailStatus;
+        private EmailSendingStatus _emailStatus;
 
         public EventPool Pool
         {
@@ -44,10 +44,10 @@ namespace PocketCampus.Events.ViewModels
             private set { SetProperty( ref _anyItems, value ); }
         }
 
-        public EmailSendingStatus FavoriteEmailStatus
+        public EmailSendingStatus EmailStatus
         {
-            get { return _favoriteEmailStatus; }
-            private set { SetProperty( ref _favoriteEmailStatus, value ); }
+            get { return _emailStatus; }
+            private set { SetProperty( ref _emailStatus, value ); }
         }
 
         [LogId( "ShowEvent" )]
@@ -98,16 +98,14 @@ namespace PocketCampus.Events.ViewModels
             _settings = settings;
             _emailPrompt = userPrompt;
             _poolId = poolId;
+
+            _settings.UserTickets.Add( "6298eb264f3cb42f6faa7b6a7f5c5482" );
         }
 
         protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
             if ( force || ( _pool != null && _pool.AlwaysRefresh == true ) )
             {
-                if ( !_settings.FavoritesByPool.ContainsKey( _poolId ) )
-                {
-                    _settings.FavoritesByPool.Add( _poolId, new List<long>() );
-                }
                 if ( !_settings.ExcludedCategoriesByPool.ContainsKey( _poolId ) )
                 {
                     _settings.ExcludedCategoriesByPool.Add( _poolId, new List<int>() );
@@ -123,7 +121,7 @@ namespace PocketCampus.Events.ViewModels
                     DayCount = (int) _settings.SearchPeriod,
                     IsInPast = _settings.SearchInPast,
                     UserTickets = _settings.UserTickets.ToArray(),
-                    FavoriteEventIds = _settings.FavoritesByPool[_poolId].ToArray(),
+                    FavoriteEventIds = _settings.FavoriteEventIds.ToArray(),
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
                 var response = await _eventsService.GetEventPoolAsync( request );
@@ -164,7 +162,8 @@ namespace PocketCampus.Events.ViewModels
                          let categName = itemGroup.Key.HasValue
                                       && _settings.EventCategories.ContainsKey( itemGroup.Key.Value )
                                        ? _settings.EventCategories[itemGroup.Key.Value]
-                                       : null
+                                       : "???"
+                         orderby categName ascending
                          select new EventItemGroup( categName, itemGroup );
 
             ItemGroups = groups.ToArray();
@@ -172,7 +171,7 @@ namespace PocketCampus.Events.ViewModels
 
         private async Task RequestFavoriteEmailAsync()
         {
-            FavoriteEmailStatus = EmailSendingStatus.NoneRequested;
+            EmailStatus = EmailSendingStatus.NoneRequested;
 
             string emailAddress = _emailPrompt.GetEmail();
 
@@ -187,7 +186,7 @@ namespace PocketCampus.Events.ViewModels
                 {
                     EmailAddress = emailAddress,
                     PoolId = Pool.Id,
-                    FavoriteItems = _settings.FavoritesByPool[Pool.Id].ToArray(),
+                    FavoriteItems = _settings.FavoriteEventIds.ToArray(),
                     UserTickets = _settings.UserTickets.ToArray(),
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
@@ -199,11 +198,11 @@ namespace PocketCampus.Events.ViewModels
                     throw new Exception( "An error occurred while requesting an e-mail with the favorites." );
                 }
 
-                FavoriteEmailStatus = EmailSendingStatus.Success;
+                EmailStatus = EmailSendingStatus.Success;
             }
             catch
             {
-                FavoriteEmailStatus = EmailSendingStatus.Error;
+                EmailStatus = EmailSendingStatus.Error;
             }
         }
     }

@@ -88,6 +88,7 @@ namespace PocketCampus.Events.Views
                         Text = PluginResources.SendFavoriteEmailButton
                     };
                     item.Click += ( _, __ ) => vm.RequestFavoriteEmailCommand.ExecuteAsync();
+                    items.Add( item );
                 }
 
                 if ( buttons.Count + items.Count == 0 )

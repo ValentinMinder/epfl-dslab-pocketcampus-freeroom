@@ -130,6 +130,16 @@
   <data name="EmailPromptMessage" xml:space="preserve">
     <value>Please set the e-mail address the favorites will be sent to.</value>
   </data>
+  <data name="EmailSendingStatus_Error" xml:space="preserve">
+    <value>an error occurred</value>
+  </data>
+  <data name="EmailSendingStatus_NoneRequested" xml:space="preserve">
+    <value />
+    <comment>Must be empty</comment>
+  </data>
+  <data name="EmailSendingStatus_Success" xml:space="preserve">
+    <value>e-mail successfully sent</value>
+  </data>
   <data name="EventLocation" xml:space="preserve">
     <value>Location:</value>
   </data>

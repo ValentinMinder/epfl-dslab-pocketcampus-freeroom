@@ -35,9 +35,9 @@ namespace PocketCampus.Events
             set { Set( value ); }
         }
 
-        public Dictionary<long, List<long>> FavoritesByPool
+        public List<long> FavoriteEventIds
         {
-            get { return Get<Dictionary<long, List<long>>>(); }
+            get { return Get<List<long>>(); }
             set { Set( value ); }
         }
 
@@ -64,7 +64,7 @@ namespace PocketCampus.Events
                 { x => x.SearchInPast, () => false },
                 { x => x.EventCategories, () => new Dictionary<int, string>() },
                 { x => x.EventTags, () => new Dictionary<string, string>() },
-                { x => x.FavoritesByPool, () => new Dictionary<long, List<long>>() },
+                { x => x.FavoriteEventIds, () => new List<long>() },
                 { x => x.ExcludedCategoriesByPool, () => new Dictionary<long, List<int>>() },
                 { x => x.ExcludedTagsByPool, () => new Dictionary<long, List<string>>() }
             };

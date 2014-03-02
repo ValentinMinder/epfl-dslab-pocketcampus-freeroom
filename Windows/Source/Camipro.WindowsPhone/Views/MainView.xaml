@@ -26,8 +26,8 @@
         <!-- Converters -->
         <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                             Strings="{StaticResource Strings}" />
+        <com:EmailNotRequestedToVisibilityConverter x:Key="NoEmailRequestToVisibility" />
         <my:DoubleToBrushConverter x:Key="MoneyToBrush" />
-        <my:EmailNotRequestedToVisibilityConverter x:Key="NoEmailRequestToVisibility" />
 
         <!-- Transaction item template -->
         <DataTemplate x:Key="TransactionTemplate">

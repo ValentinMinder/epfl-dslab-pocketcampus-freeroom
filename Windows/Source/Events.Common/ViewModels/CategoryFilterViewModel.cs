@@ -23,7 +23,8 @@ namespace PocketCampus.Events.ViewModels
                              .Where( i => i.CategoryId.HasValue )
                              .Select( i => i.CategoryId.Value )
                              .Distinct()
-                             .Select( id => new Filter<int>( _settings.EventCategories[id], id, !_settings.ExcludedCategoriesByPool[pool.Id].Contains( id ) ) )
+                             .Select( id => new Filter<int>( _settings.EventCategories.ContainsKey( id ) ? _settings.EventCategories[id] : "???",
+                                                             id, !_settings.ExcludedCategoriesByPool[pool.Id].Contains( id ) ) )
                              .OrderBy( f => f.DisplayName )
                              .ToArray();
         }

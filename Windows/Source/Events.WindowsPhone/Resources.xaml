@@ -12,6 +12,7 @@
     <!-- Converters -->
     <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                         Strings="{StaticResource Strings}" />
+    <com:EmailRequestedToBooleanConverter x:Key="EmailRequestToBool" />
     <my:EventItemToHumanDateConverter x:Key="EventItemToDate" />
     <my:EventItemToHumanDateConverter x:Key="EventItemToShortDate" 
                                       IsCompact="True" />

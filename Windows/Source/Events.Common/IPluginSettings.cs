@@ -14,7 +14,7 @@ namespace PocketCampus.Events
 
         Dictionary<string, string> EventTags { get; set; }
 
-        Dictionary<long, List<long>> FavoritesByPool { get; set; }
+        List<long> FavoriteEventIds { get; set; }
 
         Dictionary<long, List<int>> ExcludedCategoriesByPool { get; set; }
 
