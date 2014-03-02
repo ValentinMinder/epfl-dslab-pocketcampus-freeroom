@@ -547,11 +547,12 @@ static MainController<MainControllerPublic>* instance = nil;
 - (void)appDidReceiveMemoryWarning {
     /* release backgrounded plugins */
     CLSNSLog(@"-> AppDidReceiveMemoryWarning: releasing backgrounded plugins if any...");
-    for (PluginController* pluginController in [self.pluginsControllers copy]) {
+    [[self.pluginsControllers copy] enumerateKeysAndObjectsUsingBlock:^(NSString* pluginIdentifier, PluginController* pluginController, BOOL *stop) {
         if (pluginController != self.activePluginController) {
-            [self.pluginsControllers removeObjectForKey:pluginController];
+            CLSNSLog(@"-> Releasing %@", pluginController);
+            [self.pluginsControllers removeObjectForKey:pluginIdentifier];
         }
-    }
+    }];
 }
 
 #pragma mark - User defaults changes handler
