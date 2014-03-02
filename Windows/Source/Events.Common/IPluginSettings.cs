@@ -6,7 +6,7 @@ namespace PocketCampus.Events
     {
         IList<string> UserTickets { get; set; }
 
-        int SearchDayCount { get; set; }
+        SearchPeriod SearchPeriod { get; set; }
 
         bool SearchInPast { get; set; }
 

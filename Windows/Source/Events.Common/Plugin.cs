@@ -6,7 +6,7 @@ using PocketCampus.Mvvm;
 
 namespace PocketCampus.Events
 {
-    public sealed class Plugin : IPlugin
+    public class Plugin : IPlugin
     {
         public string Id
         {

@@ -12,7 +12,7 @@ namespace PocketCampus.Events.ViewModels
         public CategoryFilter[] Categories { get; private set; }
 
         public CategoryFilterViewModel( IPluginSettings settings,
-                                   EventPool pool )
+                                        EventPool pool )
         {
             _settings = settings;
             _pool = pool;

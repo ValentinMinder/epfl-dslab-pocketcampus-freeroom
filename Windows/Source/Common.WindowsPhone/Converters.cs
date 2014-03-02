@@ -130,9 +130,12 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class StringToVisibilityConverter : ValueConverter<string, Visibility>
     {
+        public bool IsReversed { get; set; }
+
         public override Visibility Convert( string value )
         {
-            return string.IsNullOrWhiteSpace( value ) ? Visibility.Collapsed : Visibility.Visible;
+            bool isEmpty = string.IsNullOrWhiteSpace( value );
+            return ( IsReversed ? !isEmpty : isEmpty ) ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 

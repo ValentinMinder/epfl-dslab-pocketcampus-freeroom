@@ -15,11 +15,11 @@ namespace PocketCampus.Events.Models
 
         [ThriftField( 2, false, "startDate" )]
         [ThriftConverter( typeof( ThriftJavaDateConverter ) )]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [ThriftField( 3, false, "endDate" )]
         [ThriftConverter( typeof( ThriftJavaDateConverter ) )]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [ThriftField( 4, false, "fullDay" )]
         public bool? IsFullDay { get; set; }
@@ -55,13 +55,13 @@ namespace PocketCampus.Events.Models
         public string TimeOverride { get; set; }
 
         [ThriftField( 21, false, "hideTitle" )]
-        public bool HideTitle { get; set; }
+        public bool? HideName { get; set; }
 
         [ThriftField( 22, false, "hideThumbnail" )]
-        public bool HidePictureThumbnail { get; set; }
+        public bool? HidePictureThumbnail { get; set; }
 
         [ThriftField( 23, false, "hideEventInfo" )]
-        public bool HideInformation { get; set; }
+        public bool? HideInformation { get; set; }
 
         [ThriftField( 14, false, "eventCateg" )]
         public int? CategoryId { get; set; }
@@ -70,8 +70,6 @@ namespace PocketCampus.Events.Models
         public string[] TagIds { get; set; }
 
         [ThriftField( 31, false, "parentPool" )]
-        public long ParentPoolId { get; set; }
-
-        public EventPool[] Pools { get; set; }
+        public long? ParentPoolId { get; set; }
     }
 }

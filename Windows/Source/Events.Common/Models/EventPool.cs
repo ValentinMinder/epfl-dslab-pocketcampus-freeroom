@@ -47,7 +47,6 @@ namespace PocketCampus.Events.Models
         [ThriftField( 21, false, "overrideLink" )]
         public string OverrideTargetUrl { get; set; }
 
-
         public EventItem[] Items { get; set; }
     }
 }
