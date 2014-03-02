@@ -71,5 +71,8 @@ namespace PocketCampus.Events.Models
 
         [ThriftField( 31, false, "parentPool" )]
         public long? ParentPoolId { get; set; }
+
+
+        public EventPool ParentPool { get; set; }
     }
 }

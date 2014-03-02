@@ -7,9 +7,11 @@ using PocketCampus.Common.Services;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Services;
 using PocketCampus.Mvvm;
+using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
+    [LogId( "/events/event" )]
     public sealed class EventItemViewModel : DataViewModel<long>
     {
         private readonly INavigationService _navigationService;
@@ -20,6 +22,7 @@ namespace PocketCampus.Events.ViewModels
 
         private EventItem _item;
         private EventPool[] _pools;
+        private bool _isFavorite;
 
         public EventItem Item
         {
@@ -35,20 +38,11 @@ namespace PocketCampus.Events.ViewModels
 
         public bool IsFavorite
         {
-            get { return _settings.FavoritesByPool[Item.ParentPoolId ?? -1].Contains( Item.Id ); }
-            set
-            {
-                if ( value )
-                {
-                    _settings.FavoritesByPool[Item.ParentPoolId ?? -1].Add( Item.Id );
-                }
-                else
-                {
-                    _settings.FavoritesByPool[Item.ParentPoolId ?? -1].Remove( Item.Id );
-                }
-            }
+            get { return _isFavorite; }
+            set { SetProperty( ref _isFavorite, value ); }
         }
 
+        [LogId( "ViewPool" )]
         public Command<EventPool> ViewPoolCommand
         {
             get
@@ -67,6 +61,7 @@ namespace PocketCampus.Events.ViewModels
             }
         }
 
+        [LogId( "OpenLink" )]
         public Command<string> OpenLinkCommand
         {
             get { return GetCommand<string>( _browserService.NavigateTo ); }
@@ -106,6 +101,26 @@ namespace PocketCampus.Events.ViewModels
 
                 Pools = response.ChildrenPools == null ? new EventPool[0] : response.ChildrenPools.Values.ToArray();
                 Item = response.Item;
+                IsFavorite = _settings.FavoritesByPool[Item.ParentPoolId ?? -1].Contains( Item.Id );
+            }
+        }
+
+        public override void OnNavigatedFrom()
+        {
+            if ( Item == null )
+            {
+                return;
+            }
+
+            long id = Item.ParentPoolId ?? -1;
+
+            if ( IsFavorite && !_settings.FavoritesByPool[id].Contains( Item.Id ) )
+            {
+                _settings.FavoritesByPool[id].Add( Item.Id );
+            }
+            else if ( !IsFavorite && _settings.FavoritesByPool[id].Contains( Item.Id ) )
+            {
+                _settings.FavoritesByPool[id].Remove( Item.Id );
             }
         }
     }

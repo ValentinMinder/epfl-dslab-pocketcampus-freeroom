@@ -18,14 +18,14 @@ namespace PocketCampus.Events.ViewModels.Design
 
         private sealed class DesignSettings : IPluginSettings
         {
-            public IList<string> UserTickets { get; set; }
+            public List<string> UserTickets { get; set; }
             public SearchPeriod SearchPeriod { get; set; }
             public bool SearchInPast { get; set; }
-            public IDictionary<int, string> EventCategories { get; set; }
-            public IDictionary<string, string> EventTags { get; set; }
-            public IDictionary<long, IList<long>> FavoritesByPool { get; set; }
-            public IDictionary<long, IList<int>> ExcludedCategoriesByPool { get; set; }
-            public IDictionary<long, IList<string>> ExcludedTagsByPool { get; set; }
+            public Dictionary<int, string> EventCategories { get; set; }
+            public Dictionary<string, string> EventTags { get; set; }
+            public Dictionary<long, List<long>> FavoritesByPool { get; set; }
+            public Dictionary<long, List<int>> ExcludedCategoriesByPool { get; set; }
+            public Dictionary<long, List<string>> ExcludedTagsByPool { get; set; }
         }
 #endif
     }

@@ -17,7 +17,7 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
+            <ControlTemplate x:Key="SimpleButtonTemplate">
                 <ContentPresenter />
             </ControlTemplate>
 
@@ -104,10 +104,21 @@
         </Grid>
 
         <!-- Information -->
-        <StackPanel Grid.Row="2"
-                    Visibility="{Binding Item.HideInformation, Converter={StaticResource BoolToOppositeVisibility}}">
+        <Grid Grid.Row="2"
+              Margin="0,10"
+              Visibility="{Binding Item.HideInformation, Converter={StaticResource BoolToOppositeVisibility}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
             <!-- Date -->
-            <Grid>
+            <Grid Visibility="{Binding Item.StartDate, Converter={StaticResource NonNullToVisibility}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
@@ -124,7 +135,8 @@
             </Grid>
 
             <!-- Location -->
-            <Grid Visibility="{Binding Item.Location, Converter={StaticResource StringToVisibility}}">
+            <Grid Grid.Row="1"
+                  Visibility="{Binding Item.Location, Converter={StaticResource StringToVisibility}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
@@ -140,11 +152,12 @@
                                  FontSize="{StaticResource PhoneFontSizeNormal}"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Center"
-                                 Margin="-6,4,12,0" />
+                                 Margin="-6,5,12,0" />
             </Grid>
 
             <!-- Speaker -->
-            <Grid Visibility="{Binding Item.SpeakerName, Converter={StaticResource StringToVisibility}}">
+            <Grid Grid.Row="2"
+                  Visibility="{Binding Item.SpeakerName, Converter={StaticResource StringToVisibility}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
@@ -159,7 +172,22 @@
                            Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="0,0,12,0" />
             </Grid>
-        </StackPanel>
+            
+            <!-- "Mark as favorite" button -->
+            <Grid Grid.Column="1"
+                  Grid.RowSpan="3"
+                  Margin="5"
+                  Visibility="{Binding Item.ParentPool.DisableFavorites, Converter={StaticResource BoolToOppositeVisibility}}">
+                <ToggleButton IsChecked="{Binding IsFavorite, Mode=TwoWay}"
+                              Template="{StaticResource SimpleButtonTemplate}">
+                    <Image Source="/Assets/EmptyStar.png" />
+                </ToggleButton>
+
+                <Image Source="/Assets/Star.png"
+                       Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}"
+                       IsHitTestVisible="False" />
+            </Grid>
+        </Grid>
 
         <ScrollViewer Grid.Row="4">
             <StackPanel>
@@ -167,7 +195,7 @@
                 <Image Grid.Row="3"
                        Source="{Binding Item.PictureUrl}"
                        Visibility="{Binding Item.PictureUrl, Converter={StaticResource StringToVisibility}}" />
-                
+
                 <!-- Details, in HTML -->
                 <comControls:HtmlTextBlock Html="{Binding Item.Details}" />
 

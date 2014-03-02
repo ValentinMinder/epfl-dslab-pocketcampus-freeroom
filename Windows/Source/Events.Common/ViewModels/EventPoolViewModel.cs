@@ -8,9 +8,11 @@ using PocketCampus.Common;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Services;
 using PocketCampus.Mvvm;
+using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
+    [LogId( "/events" )]
     public sealed class EventPoolViewModel : DataViewModel<long>
     {
         private readonly INavigationService _navigationService;
@@ -48,36 +50,41 @@ namespace PocketCampus.Events.ViewModels
             private set { SetProperty( ref _favoriteEmailStatus, value ); }
         }
 
+        [LogId( "ShowEvent" )]
         public Command<EventItem> ViewItemCommand
         {
             get { return GetCommand<EventItem>( item => _navigationService.NavigateTo<EventItemViewModel, long>( item.Id ) ); }
         }
 
+        [LogId( "ShowCategories" )]
         public Command FilterByCategoryCommand
         {
             get { return GetCommand( () => _navigationService.NavigateTo<CategoryFilterViewModel, EventPool>( Pool ), () => Pool.DisableCategoryFiltering != true ); }
         }
 
+        [LogId( "ShowTags" )]
         public Command FilterByTagCommand
         {
             get { return GetCommand( () => _navigationService.NavigateTo<TagFilterViewModel, EventPool>( Pool ), () => Pool.DisableTagFiltering != true ); }
         }
 
+        [LogId( "ShowSettings" )]
         public Command ViewSettingsCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
+        [LogId( "RequestEmail" )]
         public AsyncCommand RequestFavoriteEmailCommand
         {
             get { return GetAsyncCommand( RequestFavoriteEmailAsync, () => Pool.EnableFavoriteEmailRequest == true ); }
         }
 
+        [LogId( "ShowCodeScanner" )]
         public Command ScanCodeCommand
         {
             // TODO
-            // URI form: pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=-1&userTicket=6298eb264f3cb42f6faa7b6a7f5c5482
-            // use UriMapper on the root app frame, add something in the plugins to handle that, maybe?
+            // use UriMapper on the root app frame, add something in the plugins to handle that
             get { return GetCommand( () => { }, () => false ); }
             //get { return GetCommand( () => { }, () => Pool.EnableCodeScanning == true ); }
         }
@@ -91,8 +98,6 @@ namespace PocketCampus.Events.ViewModels
             _settings = settings;
             _emailPrompt = userPrompt;
             _poolId = poolId;
-
-            _settings.UserTickets.Add( "6298eb264f3cb42f6faa7b6a7f5c5482" );
         }
 
         protected override async Task RefreshAsync( CancellationToken token, bool force )
@@ -112,13 +117,13 @@ namespace PocketCampus.Events.ViewModels
                     _settings.ExcludedTagsByPool.Add( _poolId, new List<string>() );
                 }
 
-
                 var request = new EventPoolRequest
                 {
                     PoolId = _poolId,
                     DayCount = (int) _settings.SearchPeriod,
                     IsInPast = _settings.SearchInPast,
                     UserTickets = _settings.UserTickets.ToArray(),
+                    FavoriteEventIds = _settings.FavoritesByPool[_poolId].ToArray(),
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
                 var response = await _eventsService.GetEventPoolAsync( request );
@@ -134,6 +139,11 @@ namespace PocketCampus.Events.ViewModels
                 Pool = response.Pool;
                 Pool.Items = response.ChildrenItems == null ? new EventItem[0] : response.ChildrenItems.Values.ToArray();
                 AnyItems = Pool.Items.Any();
+
+                foreach ( var item in Pool.Items )
+                {
+                    item.ParentPool = Pool;
+                }
 
                 if ( Pool.Id == EventPool.RootId )
                 {

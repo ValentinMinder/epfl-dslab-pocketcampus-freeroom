@@ -88,6 +88,7 @@
             <DataTemplate x:Key="EventItemGroupHeaderTemplate">
                 <Border Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
                     <TextBlock Text="{Binding CategoryName}"
+                               TextWrapping="Wrap"
                                Style="{StaticResource AppTextSecondaryHeaderStyle}" />
                 </Border>
             </DataTemplate>
@@ -100,6 +101,7 @@
             <!-- Item group item template (for the LongListSelector's jump list) -->
             <DataTemplate x:Key="EventItemGroupJumpListItemTemplate">
                 <TextBlock Text="{Binding CategoryName}"
+                           TextWrapping="Wrap"
                            Style="{StaticResource AppTextTitle2Style}"
                            Margin="30,20" />
             </DataTemplate>

@@ -1,15 +1,17 @@
 ﻿using System.Linq;
 using PocketCampus.Events.Models;
 using PocketCampus.Mvvm;
+using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
+    [LogId( "/events/tags" )]
     public sealed class TagFilterViewModel : ViewModel<EventPool>
     {
         private readonly IPluginSettings _settings;
         private readonly EventPool _pool;
 
-        public Filter<string>[] Filters { get; private set; }
+        public Filter<string>[] Tags { get; private set; }
 
         public TagFilterViewModel( IPluginSettings settings,
                                    EventPool pool )
@@ -17,17 +19,19 @@ namespace PocketCampus.Events.ViewModels
             _settings = settings;
             _pool = pool;
 
-            Filters = pool.Items
-                          .Where( i => i.TagIds != null )
-                          .SelectMany( i => i.TagIds )
-                          .Select( id => new Filter<string>( _settings.EventTags[id], id, _settings.ExcludedTagsByPool[pool.Id].Contains( id ) ) )
-                          .ToArray();
+            Tags = pool.Items
+                       .Where( i => i.TagIds != null )
+                       .SelectMany( i => i.TagIds )
+                       .Distinct()
+                       .Select( id => new Filter<string>( _settings.EventTags[id], id, !_settings.ExcludedTagsByPool[pool.Id].Contains( id ) ) )
+                       .OrderBy( f => f.DisplayName )
+                       .ToArray();
         }
 
         public override void OnNavigatedFrom()
         {
             var excluded = _settings.ExcludedTagsByPool;
-            excluded[_pool.Id] = Filters.Where( t => !t.Include ).Select( t => t.Id ).ToArray();
+            excluded[_pool.Id] = Tags.Where( t => !t.Include ).Select( t => t.Id ).ToList();
             _settings.ExcludedTagsByPool = excluded;
         }
     }

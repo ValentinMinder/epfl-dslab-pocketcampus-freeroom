@@ -15,6 +15,9 @@ namespace PocketCampus.Events.Models
         [ThriftField( 3, false, "userTickets" )]
         public string[] UserTickets { get; set; }
 
+        [ThriftField( 4, false, "starredEventItems" )]
+        public long[] FavoriteEventIds { get; set; }
+
         [ThriftField( 5, false, "lang" )]
         public string Language { get; set; }
 

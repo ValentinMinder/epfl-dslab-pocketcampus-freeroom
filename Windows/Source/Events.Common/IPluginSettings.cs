@@ -4,20 +4,20 @@ namespace PocketCampus.Events
 {
     public interface IPluginSettings
     {
-        IList<string> UserTickets { get; set; }
+        List<string> UserTickets { get; set; }
 
         SearchPeriod SearchPeriod { get; set; }
 
         bool SearchInPast { get; set; }
 
-        IDictionary<int, string> EventCategories { get; set; }
+        Dictionary<int, string> EventCategories { get; set; }
 
-        IDictionary<string, string> EventTags { get; set; }
+        Dictionary<string, string> EventTags { get; set; }
 
-        IDictionary<long, IList<long>> FavoritesByPool { get; set; }
+        Dictionary<long, List<long>> FavoritesByPool { get; set; }
 
-        IDictionary<long, IList<int>> ExcludedCategoriesByPool { get; set; }
+        Dictionary<long, List<int>> ExcludedCategoriesByPool { get; set; }
 
-        IDictionary<long, IList<string>> ExcludedTagsByPool { get; set; }
+        Dictionary<long, List<string>> ExcludedTagsByPool { get; set; }
     }
 }

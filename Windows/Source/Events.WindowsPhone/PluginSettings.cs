@@ -5,9 +5,9 @@ namespace PocketCampus.Events
 {
     public sealed class PluginSettings : SettingsBase, IPluginSettings
     {
-        public IList<string> UserTickets
+        public List<string> UserTickets
         {
-            get { return Get<IList<string>>(); }
+            get { return Get<List<string>>(); }
             set { Set( value ); }
         }
 
@@ -23,33 +23,33 @@ namespace PocketCampus.Events
             set { Set( value ); }
         }
 
-        public IDictionary<int, string> EventCategories
+        public Dictionary<int, string> EventCategories
         {
-            get { return Get<IDictionary<int, string>>(); }
+            get { return Get<Dictionary<int, string>>(); }
             set { Set( value ); }
         }
 
-        public IDictionary<string, string> EventTags
+        public Dictionary<string, string> EventTags
         {
-            get { return Get<IDictionary<string, string>>(); }
+            get { return Get<Dictionary<string, string>>(); }
             set { Set( value ); }
         }
 
-        public IDictionary<long, IList<long>> FavoritesByPool
+        public Dictionary<long, List<long>> FavoritesByPool
         {
-            get { return Get<IDictionary<long, IList<long>>>(); }
+            get { return Get<Dictionary<long, List<long>>>(); }
             set { Set( value ); }
         }
 
-        public IDictionary<long, IList<int>> ExcludedCategoriesByPool
+        public Dictionary<long, List<int>> ExcludedCategoriesByPool
         {
-            get { return Get<IDictionary<long, IList<int>>>(); }
+            get { return Get<Dictionary<long, List<int>>>(); }
             set { Set( value ); }
         }
 
-        public IDictionary<long, IList<string>> ExcludedTagsByPool
+        public Dictionary<long, List<string>> ExcludedTagsByPool
         {
-            get { return Get<IDictionary<long, IList<string>>>(); }
+            get { return Get<Dictionary<long, List<string>>>(); }
             set { Set( value ); }
         }
 
@@ -64,9 +64,9 @@ namespace PocketCampus.Events
                 { x => x.SearchInPast, () => false },
                 { x => x.EventCategories, () => new Dictionary<int, string>() },
                 { x => x.EventTags, () => new Dictionary<string, string>() },
-                { x => x.FavoritesByPool, () => new Dictionary<long, IList<long>>() },
-                { x => x.ExcludedCategoriesByPool, () => new Dictionary<long, IList<int>>() },
-                { x => x.ExcludedTagsByPool, () => new Dictionary<long, IList<string>>() }
+                { x => x.FavoritesByPool, () => new Dictionary<long, List<long>>() },
+                { x => x.ExcludedCategoriesByPool, () => new Dictionary<long, List<int>>() },
+                { x => x.ExcludedTagsByPool, () => new Dictionary<long, List<string>>() }
             };
         }
     }

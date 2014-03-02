@@ -1,8 +1,10 @@
 ﻿using PocketCampus.Common;
 using PocketCampus.Mvvm;
+using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
+    [LogId( "/events/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
         public SearchPeriod[] SearchPeriods

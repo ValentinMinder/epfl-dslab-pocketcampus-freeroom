@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using PocketCampus.Events.Models;
 using PocketCampus.Mvvm;
+using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
+    [LogId( "/events/categories" )]
     public sealed class CategoryFilterViewModel : ViewModel<EventPool>
     {
         private readonly IPluginSettings _settings;
@@ -20,14 +22,16 @@ namespace PocketCampus.Events.ViewModels
             Categories = pool.Items
                              .Where( i => i.CategoryId.HasValue )
                              .Select( i => i.CategoryId.Value )
-                             .Select( id => new Filter<int>( _settings.EventCategories[id], id, _settings.ExcludedCategoriesByPool[pool.Id].Contains( id ) ) )
+                             .Distinct()
+                             .Select( id => new Filter<int>( _settings.EventCategories[id], id, !_settings.ExcludedCategoriesByPool[pool.Id].Contains( id ) ) )
+                             .OrderBy( f => f.DisplayName )
                              .ToArray();
         }
 
         public override void OnNavigatedFrom()
         {
             var excluded = _settings.ExcludedCategoriesByPool;
-            excluded[_pool.Id] = Categories.Where( t => !t.Include ).Select( t => t.Id ).ToArray();
+            excluded[_pool.Id] = Categories.Where( t => !t.Include ).Select( t => t.Id ).ToList();
             _settings.ExcludedCategoriesByPool = excluded;
         }
     }
