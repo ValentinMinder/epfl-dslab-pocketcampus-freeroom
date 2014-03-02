@@ -67,6 +67,11 @@
 		<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomCurrentWeekView"
 		    android:screenOrientation="nosensor"
 			xmlns:android="http://schemas.android.com/apk/res/android" />
+		
+		<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomSearchView"
+		    android:screenOrientation="nosensor"
+		    xmlns:android="http://schemas.android.com/apk/res/android" />
+		    
 						    
 		<service android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomController"
 			xmlns:android="http://schemas.android.com/apk/res/android">
