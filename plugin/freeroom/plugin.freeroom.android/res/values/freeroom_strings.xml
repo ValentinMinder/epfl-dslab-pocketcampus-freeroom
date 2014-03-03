@@ -15,5 +15,6 @@
     <string name="freeroom_file_downloading">Downloading file... Please wait.</string>
 
     <string name="freeroom_no_app_to_handle_filetype">Could not find any application to open this file.</string>
-        
+    
+    <string name="freeroom_searchbutton">Search !</string>
 </resources>

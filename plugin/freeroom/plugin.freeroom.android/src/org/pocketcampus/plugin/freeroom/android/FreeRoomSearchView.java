@@ -3,7 +3,6 @@ package org.pocketcampus.plugin.freeroom.android;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -12,16 +11,15 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
+import org.pocketcampus.plugin.freeroom.shared.FRDay;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.BaseExpandableListAdapter;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
@@ -30,8 +28,14 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 	private FreeRoomModel mModel;
 
 	private StandardTitledLayout mLayout;
+	private LinearLayout subLayout;
 
 	private ExpandableListView searchParams;
+	private Button searchButton;
+	
+	private int startHour = -1;
+	private int endHour = -1;
+	private FRDay day = null;
 	private boolean advancedSearch = false;
 
 	@Override
@@ -51,7 +55,11 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 
 		// Setup the layout
 		mLayout = new StandardTitledLayout(this);
-
+		subLayout = new LinearLayout(this);
+		subLayout.setOrientation(LinearLayout.VERTICAL);
+	
+		mLayout.addFillerView(subLayout);
+		
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 		mLayout.hideTitle();
@@ -69,9 +77,25 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 				Toast.LENGTH_SHORT).show();
 	}
 
-	private void initializeSearchView() {
+	private void initializeSearchView() {		
+		// Creating and initializing button
+		searchButton = new Button(this);	
+		searchButton.setEnabled(false);
+		searchButton.setText(R.string.freeroom_searchbutton);
+		searchButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (auditSearchButton() == 0) {
+					//TODO action
+				}
+			}
+		});
+		
+		
+		//Creating and initializing the ExpandableListView 
 		searchParams = new ExpandableListView(this);
-
+		
 		ArrayList<String> listHeader = new ArrayList<String>();
 		HashMap<String, List<String>> listData = new HashMap<String, List<String>>();
 
@@ -94,7 +118,7 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 		// TODO display only possible end hour (i.e if user selects 9 for start
 		// hour, display from 10)
 		List<String> endHourList = new ArrayList<String>();
-		for (int i = 8; i <= 19; ++i) {
+		for (int i = 9; i <= 19; ++i) {
 			endHourList.add(i + ":00");
 		}
 
@@ -106,8 +130,53 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 				listHeader, listData);
 
 		searchParams.setAdapter(listAdapter);
-		mLayout.addView(searchParams);
-
+		searchParams.setOnChildClickListener(new OnChildClickListener() {
+			
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				//TODO this is the first version, need to highlight what has been clicked
+				//TODO adjust values of the list in real time (i.e if user select 9am as start, don't show 9am for endHour)
+				if (groupPosition == 0) {
+					day = FRDay.findByValue(childPosition);
+				} else if (groupPosition == 1) {
+					startHour = childPosition + 8;
+				} else {
+					endHour = childPosition + 9;
+				}
+				
+				if (auditSearchButton() == 0) {
+					Toast.makeText(
+							getApplicationContext(),
+							"You selected " + day.toString() + " from " + startHour + " to " + endHour,
+							Toast.LENGTH_SHORT).show();
+					searchButton.setEnabled(true);
+					return true;
+				} else {
+					searchButton.setEnabled(false);
+				}
+				
+				return false;
+			}
+		});
+		
+		//Finally adding the different component to the activity
+		subLayout.addView(searchParams);
+		subLayout.addView(searchButton);
+		
+	}
+	
+	private int auditSearchButton() {
+		//TODO adapt when the code will be more advanced.
+		int error = 0;
+		if (startHour == -1 || endHour == -1 || day == null) {
+			error++;
+		}
+		
+		if (startHour >= endHour) {
+			error++;
+		}
+		return error;
 	}
 
 
