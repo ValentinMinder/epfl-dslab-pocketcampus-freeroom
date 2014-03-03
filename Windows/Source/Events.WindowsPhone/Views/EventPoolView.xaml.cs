@@ -77,7 +77,7 @@ namespace PocketCampus.Events.Views
                 {
                     var button = new ApplicationBarIconButton
                     {
-                        IconUri = new Uri( "/Assets/QRCode.png", UriKind.Relative ),
+                        IconUri = new Uri( "/Assets/Camera.png", UriKind.Relative ),
                         Text = PluginResources.ScanCodeButton
                     };
                     button.Click += ( _, __ ) => vm.ScanCodeCommand.Execute();
