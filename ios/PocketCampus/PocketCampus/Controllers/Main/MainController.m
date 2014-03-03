@@ -549,7 +549,6 @@ static MainController<MainControllerPublic>* instance = nil;
     CLSNSLog(@"-> AppDidReceiveMemoryWarning: releasing backgrounded plugins if any...");
     [[self.pluginsControllers copy] enumerateKeysAndObjectsUsingBlock:^(NSString* pluginIdentifier, PluginController* pluginController, BOOL *stop) {
         if (pluginController != self.activePluginController) {
-            CLSNSLog(@"-> Releasing %@", pluginController);
             [self.pluginsControllers removeObjectForKey:pluginIdentifier];
         }
     }];
