@@ -45,7 +45,7 @@ namespace PocketCampus.Events.Views
                 }
 
                 // Filter categories
-                if ( vm.Pool.DisableCategoryFiltering != true )
+                if ( vm.FilterByCategoryCommand.CanExecute() )
                 {
                     var button = new ApplicationBarIconButton
                     {
@@ -57,7 +57,7 @@ namespace PocketCampus.Events.Views
                 }
 
                 // Filter tags
-                if ( vm.Pool.DisableTagFiltering != true )
+                if ( vm.FilterByTagCommand.CanExecute() )
                 {
                     var button = new ApplicationBarIconButton
                     {
@@ -69,7 +69,7 @@ namespace PocketCampus.Events.Views
                 }
 
                 // Scan code
-                if ( vm.Pool.EnableCodeScanning == true )
+                if ( vm.ScanCodeCommand.CanExecute() )
                 {
                     var button = new ApplicationBarIconButton
                     {
@@ -81,7 +81,7 @@ namespace PocketCampus.Events.Views
                 }
 
                 // Send favorite email
-                if ( vm.Pool.EnableFavoriteEmailRequest == true )
+                if ( vm.RequestFavoriteEmailCommand.CanExecute() )
                 {
                     var item = new ApplicationBarMenuItem
                     {

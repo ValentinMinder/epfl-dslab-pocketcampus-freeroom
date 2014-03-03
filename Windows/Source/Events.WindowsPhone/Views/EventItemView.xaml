@@ -74,8 +74,6 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- TODO: Add the favorite button somewhere here -->
-
             <!-- Name -->
             <TextBlock Text="{Binding Item.Name}"
                        TextWrapping="Wrap"

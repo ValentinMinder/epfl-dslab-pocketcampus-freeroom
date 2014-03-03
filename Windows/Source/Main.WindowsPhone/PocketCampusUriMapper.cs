@@ -32,8 +32,9 @@ namespace PocketCampus.Main
 
             if ( decodedUri.StartsWith( ProtocolPrefix ) )
             {
-                string newTarget = string.Format( "/PocketCampus.Main.WindowsPhone;component/Views/Redirect.xaml?{0}={1}",
-                                                  RedirectRequestKey, decodedUri.Replace( ProtocolPrefix, "" ) );
+                string newUri = decodedUri.Replace( ProtocolPrefix, "" );
+                newUri = HttpUtility.UrlEncode( newUri );
+                string newTarget = string.Format( "/PocketCampus.Main.WindowsPhone;component/Views/Redirect.xaml?{0}={1}", RedirectRequestKey, newUri );
                 return new Uri( newTarget, UriKind.Relative );
             }
             return uri;

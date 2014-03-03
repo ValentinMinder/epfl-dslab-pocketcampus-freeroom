@@ -155,6 +155,9 @@
   <data name="FilterTagsButton" xml:space="preserve">
     <value>tags</value>
   </data>
+  <data name="InitializingCamera" xml:space="preserve">
+    <value>Initializing camera...</value>
+  </data>
   <data name="InvalidEmailCaption" xml:space="preserve">
     <value>invalid e-mail</value>
   </data>
@@ -164,6 +167,12 @@
   </data>
   <data name="MoreEventDetailsButton" xml:space="preserve">
     <value>more details...</value>
+  </data>
+  <data name="NoCameraCaption" xml:space="preserve">
+    <value>no camera</value>
+  </data>
+  <data name="NoCameraMessage" xml:space="preserve">
+    <value>Your phone doesn't seem to have a camera, so it can't scan QR codes. Sorry!</value>
   </data>
   <data name="PagesHeader" xml:space="preserve">
     <value>EVENTS</value>
@@ -217,5 +226,8 @@
   </data>
   <data name="TagFilterViewTitle" xml:space="preserve">
     <value>filter tags</value>
+  </data>
+  <data name="WrongQRCode" xml:space="preserve">
+    <value>This code isn't for PocketCampus</value>
   </data>
 </root>

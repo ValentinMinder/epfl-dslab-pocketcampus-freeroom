@@ -34,6 +34,7 @@ namespace PocketCampus.Events.WindowsPhone
             navigationService.Bind<TagFilterViewModel>( "/PocketCampus.Events.WindowsPhone;component/Views/TagFilterView.xaml" );
 
             Container.Bind<IEmailPrompt, EmailPrompt>();
+            Container.Bind<ICodeScanner, CodeScanner>();
             Container.Bind<IPluginSettings, PluginSettings>();
         }
     }

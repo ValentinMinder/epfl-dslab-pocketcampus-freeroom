@@ -169,6 +169,15 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initializing camera....
+        /// </summary>
+        public static string InitializingCamera {
+            get {
+                return ResourceManager.GetString("InitializingCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to invalid e-mail.
         /// </summary>
         public static string InvalidEmailCaption {
@@ -192,6 +201,24 @@ namespace PocketCampus.Events.Resources {
         public static string MoreEventDetailsButton {
             get {
                 return ResourceManager.GetString("MoreEventDetailsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to no camera.
+        /// </summary>
+        public static string NoCameraCaption {
+            get {
+                return ResourceManager.GetString("NoCameraCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your phone doesn&apos;t seem to have a camera, so it can&apos;t scan QR codes. Sorry!.
+        /// </summary>
+        public static string NoCameraMessage {
+            get {
+                return ResourceManager.GetString("NoCameraMessage", resourceCulture);
             }
         }
         
@@ -345,6 +372,15 @@ namespace PocketCampus.Events.Resources {
         public static string TagFilterViewTitle {
             get {
                 return ResourceManager.GetString("TagFilterViewTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This code isn&apos;t for PocketCampus.
+        /// </summary>
+        public static string WrongQRCode {
+            get {
+                return ResourceManager.GetString("WrongQRCode", resourceCulture);
             }
         }
     }

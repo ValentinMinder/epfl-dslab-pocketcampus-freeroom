@@ -19,6 +19,7 @@ namespace PocketCampus.Events.ViewModels
         private readonly IEventsService _eventsService;
         private readonly IPluginSettings _settings;
         private readonly IEmailPrompt _emailPrompt;
+        private readonly ICodeScanner _codeScanner;
         private readonly long _poolId;
 
         private EventPool _pool;
@@ -83,20 +84,18 @@ namespace PocketCampus.Events.ViewModels
         [LogId( "ShowCodeScanner" )]
         public Command ScanCodeCommand
         {
-            // TODO
-            // use UriMapper on the root app frame, add something in the plugins to handle that
-            get { return GetCommand( () => { }, () => false ); }
-            //get { return GetCommand( () => { }, () => Pool.EnableCodeScanning == true ); }
+            get { return GetCommand( _codeScanner.ScanCode, () => Pool.EnableCodeScanning == true ); }
         }
 
         public EventPoolViewModel( INavigationService navigationService, IEventsService eventsService,
-                                   IPluginSettings settings, IEmailPrompt userPrompt,
+                                   IPluginSettings settings, IEmailPrompt emailPrompt, ICodeScanner codeScanner,
                                    ViewPoolRequest request )
         {
             _navigationService = navigationService;
             _eventsService = eventsService;
             _settings = settings;
-            _emailPrompt = userPrompt;
+            _emailPrompt = emailPrompt;
+            _codeScanner = codeScanner;
             _poolId = request.PoolId;
 
             if ( request.UserTicket != null )
