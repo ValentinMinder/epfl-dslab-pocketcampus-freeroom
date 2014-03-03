@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System.Collections.Generic;
 using PocketCampus.Common;
 
 namespace PocketCampus.Events

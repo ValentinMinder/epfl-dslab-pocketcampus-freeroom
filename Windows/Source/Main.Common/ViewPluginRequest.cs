@@ -1,4 +1,8 @@
-﻿namespace PocketCampus.Main
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+namespace PocketCampus.Main
 {
     /// <summary>
     /// Search request for either a plugin name (or nothing).

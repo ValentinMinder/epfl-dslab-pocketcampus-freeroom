@@ -1,4 +1,8 @@
-﻿namespace PocketCampus.Events.ViewModels.Design
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+namespace PocketCampus.Events.ViewModels.Design
 {
     public sealed class DesignCategoryFilterViewModel
     {

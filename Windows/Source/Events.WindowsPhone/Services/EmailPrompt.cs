@@ -1,4 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.GamerServices;

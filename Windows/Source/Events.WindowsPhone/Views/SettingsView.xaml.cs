@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System.Windows;
 using System.Windows.Data;
 using Microsoft.Phone.Controls;
 using PocketCampus.Common.Controls;

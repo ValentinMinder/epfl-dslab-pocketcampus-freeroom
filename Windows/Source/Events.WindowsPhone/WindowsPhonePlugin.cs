@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using System;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Events.Resources;
