@@ -11,6 +11,7 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -93,7 +94,7 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 		// TODO display only possible end hour (i.e if user selects 9 for start
 		// hour, display from 10)
 		List<String> endHourList = new ArrayList<String>();
-		for (int i = 8; i <= 18; ++i) {
+		for (int i = 8; i <= 19; ++i) {
 			endHourList.add(i + ":00");
 		}
 
@@ -101,7 +102,7 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 		listData.put(listHeader.get(1), startHourList);
 		listData.put(listHeader.get(2), endHourList);
 
-		ExpandableListAdapter listAdapter = new ExpandableListAdapter(this,
+		ExpandableSimpleListViewAdapter listAdapter = new ExpandableSimpleListViewAdapter(this,
 				listHeader, listData);
 
 		searchParams.setAdapter(listAdapter);
@@ -109,107 +110,5 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 
 	}
 
-	public class ExpandableListAdapter extends BaseExpandableListAdapter {
-
-		private Context context;
-		private List<String> headers;
-		private Map<String, List<String>> data;
-
-		public ExpandableListAdapter(Context c, List<String> header,
-				Map<String, List<String>> data) {
-			this.context = c;
-			this.headers = header;
-			this.data = data;
-		}
-
-		@Override
-		public Object getChild(int groupPosition, int childPosition) {
-			if (groupPosition >= headers.size()) {
-				return null;
-			}
-			List<String> groupList = data.get(headers.get(groupPosition));
-
-			if (childPosition >= groupList.size()) {
-				return null;
-			}
-			return data.get(headers.get(groupPosition)).get(childPosition);
-		}
-
-		@Override
-		public long getChildId(int groupPosition, int childPosition) {
-			return childPosition;
-		}
-
-		@Override
-		public View getChildView(int groupPosition, int childPosition,
-				boolean isLastChild, View convertView, ViewGroup parent) {
-
-			if (groupPosition >= headers.size()) {
-				return null;
-			}
-
-			if (convertView == null) {
-				convertView = new TextView(context);
-			}
-			String text = (String) this.getChild(groupPosition, childPosition);
-
-			((TextView) convertView).setText(text);
-			return convertView;
-		}
-
-		@Override
-		public int getChildrenCount(int groupPosition) {
-			if (groupPosition >= data.size()) {
-				return 0;
-			}
-
-			return data.get(headers.get(groupPosition)).size();
-		}
-
-		@Override
-		public Object getGroup(int groupPosition) {
-			if (groupPosition >= data.size()) {
-				return null;
-			}
-			return data.get(headers.get(groupPosition));
-		}
-
-		@Override
-		public int getGroupCount() {
-			return data.size();
-		}
-
-		@Override
-		public long getGroupId(int groupPosition) {
-			return groupPosition;
-		}
-
-		@Override
-		public View getGroupView(int groupPosition, boolean isExpanded,
-				View convertView, ViewGroup parent) {
-			if (groupPosition >= headers.size()) {
-				return null;
-			}
-
-			if (convertView == null) {
-				convertView = new TextView(context);
-			}
-			String text = (String) headers.get(groupPosition);
-			((TextView) convertView).setText(text);
-
-			return convertView;
-		}
-
-		@Override
-		public boolean hasStableIds() {
-			return false;
-		}
-
-		@Override
-		public boolean isChildSelectable(int groupPosition, int childPosition) {
-			return true;
-		}
-
-	}
 
 }
