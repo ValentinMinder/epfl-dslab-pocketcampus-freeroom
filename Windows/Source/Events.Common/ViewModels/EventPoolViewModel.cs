@@ -13,7 +13,7 @@ using PocketCampus.Mvvm.Logging;
 namespace PocketCampus.Events.ViewModels
 {
     [LogId( "/events" )]
-    public sealed class EventPoolViewModel : DataViewModel<long>
+    public sealed class EventPoolViewModel : DataViewModel<ViewPoolRequest>
     {
         private readonly INavigationService _navigationService;
         private readonly IEventsService _eventsService;
@@ -91,15 +91,18 @@ namespace PocketCampus.Events.ViewModels
 
         public EventPoolViewModel( INavigationService navigationService, IEventsService eventsService,
                                    IPluginSettings settings, IEmailPrompt userPrompt,
-                                   long poolId )
+                                   ViewPoolRequest request )
         {
             _navigationService = navigationService;
             _eventsService = eventsService;
             _settings = settings;
             _emailPrompt = userPrompt;
-            _poolId = poolId;
+            _poolId = request.PoolId;
 
-            _settings.UserTickets.Add( "6298eb264f3cb42f6faa7b6a7f5c5482" );
+            if ( request.UserTicket != null )
+            {
+                _settings.UserTickets.Add( request.UserTicket );
+            }
         }
 
         protected override async Task RefreshAsync( CancellationToken token, bool force )

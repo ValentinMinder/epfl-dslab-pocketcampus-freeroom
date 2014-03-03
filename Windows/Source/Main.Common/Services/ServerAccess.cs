@@ -30,7 +30,6 @@ namespace PocketCampus.Main.Services
         private const string ThriftServerUrlFormat = "http://dslabpc36.epfl.ch:9090/v3r1";
 #else
         private const string ThriftServerUrlFormat = "{0}://pocketcampus.epfl.ch:{1}/v3r1";
-        //private const string ThriftServerUrlFormat = "https://pocketcampus.epfl.ch:8888/v3r1";
 #endif
         // The format of a service URL
         // Parameters are the server URL and the service name
@@ -44,11 +43,13 @@ namespace PocketCampus.Main.Services
 
 
         /// <summary>
-        /// Creates a new ServerConfiguration.
+        /// Creates a new ServerAccess.
         /// </summary>
-        public ServerAccess( IHttpClient client )
+        public ServerAccess( IHttpClient client, IMainSettings settings )
         {
             _client = client;
+
+            CurrentConfiguration = settings.ServerConfiguration;
         }
 
 

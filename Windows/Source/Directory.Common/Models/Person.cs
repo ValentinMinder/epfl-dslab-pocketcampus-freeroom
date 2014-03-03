@@ -2,6 +2,9 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using ThriftSharp;
 
 namespace PocketCampus.Directory.Models
@@ -76,6 +79,28 @@ namespace PocketCampus.Directory.Models
         public string FullName
         {
             get { return FirstName + " " + LastName; }
+        }
+
+
+        /// <summary>
+        /// Parses a person from key/value pairs.
+        /// </summary>
+        public static Person Parse( IDictionary<string, string> pairs )
+        {
+            var person = new Person();
+            var typeInfo = typeof( Person ).GetTypeInfo();
+
+            foreach ( var pair in pairs )
+            {
+                var prop = typeInfo.DeclaredProperties.FirstOrDefault( p => p.GetCustomAttribute<ThriftFieldAttribute>().Name == pair.Key );
+                // thankfully there are only strings in this class, apart from units
+                if ( prop != null && prop.PropertyType == typeof( string ) )
+                {
+                    prop.SetValue( person, pair.Value );
+                }
+            }
+
+            return person;
         }
     }
 }

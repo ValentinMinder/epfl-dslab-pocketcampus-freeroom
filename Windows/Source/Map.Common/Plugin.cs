@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Collections.Generic;
 using PocketCampus.Common;
 using PocketCampus.Map.Services;
 using PocketCampus.Map.ViewModels;
@@ -14,6 +15,9 @@ namespace PocketCampus.Map
     /// </summary>
     public class Plugin : IPlugin
     {
+        private const string SearchQuery = "search";
+        private const string SearchQueryParameter = "q";
+
         /// <summary>
         /// Gets the plugin's ID.
         /// </summary>
@@ -46,6 +50,17 @@ namespace PocketCampus.Map
         public void NavigateTo( INavigationService navigationService )
         {
             navigationService.NavigateTo<MainViewModel, MapSearchRequest>( new MapSearchRequest() );
+        }
+
+        /// <summary>
+        /// Navigates to the plugin from an external source, with a destination and parameters.
+        /// </summary>
+        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService )
+        {
+            if ( destination == SearchQuery )
+            {
+                Messenger.Send( new MapSearchRequest( parameters[SearchQueryParameter] ) );
+            }
         }
     }
 }

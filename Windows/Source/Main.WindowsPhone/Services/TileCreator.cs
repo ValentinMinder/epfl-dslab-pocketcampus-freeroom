@@ -14,7 +14,7 @@ namespace PocketCampus.Main.Services
     /// </summary>
     public sealed class TileCreator : ITileCreator
     {
-        public const string PluginArgumentKey = "plugin";
+        public const string PluginKey = "plugin";
 
         /// <summary>
         /// Creates a Live Tile for the specified plugin.
@@ -29,7 +29,7 @@ namespace PocketCampus.Main.Services
                 SmallIconImage = wpPlugin.SmallIcon
             };
 
-            var uri = new Uri( "/Views/Redirect.xaml?" + PluginArgumentKey + "=" + wpPlugin.Id, UriKind.Relative );
+            var uri = new Uri( "/Views/Redirect.xaml?" + PluginKey + "=" + wpPlugin.Id, UriKind.Relative );
 
             if ( !ShellTile.ActiveTiles.Any( t => t.NavigationUri == uri ) )
             {

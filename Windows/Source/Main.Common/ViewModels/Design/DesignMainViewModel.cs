@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using PocketCampus.Common;
 using PocketCampus.Mvvm;
@@ -57,6 +58,8 @@ namespace PocketCampus.Main.ViewModels.Design
             public void Initialize( INavigationService navigationService ) { }
 
             public void NavigateTo( INavigationService navigationService ) { }
+
+            public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
         }
 #endif
     }

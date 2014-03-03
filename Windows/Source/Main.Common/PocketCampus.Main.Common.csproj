@@ -65,6 +65,7 @@
     <Compile Include="ViewModels\Design\DesignSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewPluginRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThriftSharp">

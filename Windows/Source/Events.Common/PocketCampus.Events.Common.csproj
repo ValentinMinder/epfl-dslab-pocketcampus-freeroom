@@ -61,6 +61,7 @@
     <Compile Include="ViewModels\CategoryFilterViewModel.cs" />
     <Compile Include="ViewModels\EventItemViewModel.cs" />
     <Compile Include="ViewModels\EventPoolViewModel.cs" />
+    <Compile Include="ViewPoolRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThriftSharp">

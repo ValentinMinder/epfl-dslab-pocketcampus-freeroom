@@ -20,6 +20,9 @@ using PocketCampus.Main.ViewModels;
 using PocketCampus.Mvvm;
 using PocketCampus.Mvvm.Logging;
 
+// TODO: This is a mess, clean it up.
+// Maybe have a BaseApp class with the common function and a virtual method for init?
+
 namespace PocketCampus.Main
 {
     /// <summary>
@@ -28,6 +31,7 @@ namespace PocketCampus.Main
     public partial class App : Application
     {
         private IMainSettings _mainSettings;
+        private IPluginLoader _pluginLoader;
 
         /// <summary>
         /// Gets the root frame of the app.
@@ -39,6 +43,11 @@ namespace PocketCampus.Main
         /// </summary>
         public static IWindowsPhoneNavigationService NavigationService { get; private set; }
 
+        /// <summary>
+        /// Gets the URI mapper used by the app.
+        /// </summary>
+        public static PocketCampusUriMapper UriMapper { get; private set; }
+
 
         /// <summary>
         /// Creates a new App.
@@ -47,9 +56,11 @@ namespace PocketCampus.Main
         {
             UnhandledException += Application_UnhandledException;
 
-            // Don't set the frame as RootVisual yet; this allows the splash
-            // screen to remain active until the application is ready to render.
             RootFrame = new OrientationChangingFrame();
+
+            // Map custom URIs properly
+            _pluginLoader = Container.BindOnce<IPluginLoader, PluginLoader>();
+            RootFrame.UriMapper = UriMapper = new PocketCampusUriMapper( _pluginLoader.GetPlugins() );
 
             InitializeComponent();
             InitializePhoneApplication();
@@ -66,9 +77,6 @@ namespace PocketCampus.Main
             Container.Bind<IApplicationSettings, ApplicationSettings>();
             _mainSettings = Container.BindOnce<IMainSettings, MainSettings>();
 
-            // Common services
-            AppInitializer.BindImplementations();
-
             // Single-purpose services with no dependencies
             Container.Bind<NavigationLogger, GoogleAnalyticsNavigationLogger>();
             Container.Bind<IBrowserService, BrowserService>();
@@ -79,19 +87,20 @@ namespace PocketCampus.Main
             Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
             Container.Bind<IRatingService, RatingService>();
 
-            // Services required for plugins
-            var pluginLoader = Container.BindOnce<IPluginLoader, PluginLoader>();
-            App.NavigationService = Container.BindOnce<PocketCampus.Mvvm.INavigationService, FrameNavigationService>();
+            // Common services
+            AppInitializer.BindImplementations();
+
+            App.NavigationService = Container.BindOnce<INavigationService, FrameNavigationService>();
             App.NavigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
             App.NavigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
             App.NavigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
             App.NavigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
 
             // Common part of plugin initialization
-            AppInitializer.InitializePlugins( pluginLoader, App.NavigationService );
+            AppInitializer.InitializePlugins( _pluginLoader, App.NavigationService );
 
             // WP-specific part of plugin initialization
-            InitializeWindowsPhonePlugins( pluginLoader, App.NavigationService );
+            InitializeWindowsPhonePlugins( _pluginLoader, App.NavigationService );
         }
 
         private void InitializeWindowsPhonePlugins( IPluginLoader pluginLoader, IWindowsPhoneNavigationService navigationService )

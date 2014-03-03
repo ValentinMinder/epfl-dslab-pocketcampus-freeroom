@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Collections.Generic;
 using PocketCampus.Camipro.Services;
 using PocketCampus.Camipro.ViewModels;
 using PocketCampus.Common;
@@ -45,5 +46,10 @@ namespace PocketCampus.Camipro
         {
             navigationService.NavigateTo<MainViewModel>();
         }
+
+        /// <summary>
+        /// This plugin does not handle external navigation.
+        /// </summary>
+        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
     }
 }

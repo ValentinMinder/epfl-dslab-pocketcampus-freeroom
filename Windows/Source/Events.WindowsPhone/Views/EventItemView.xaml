@@ -70,22 +70,18 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="120" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- TODO: Add the favorite button somewhere here -->
 
             <!-- Name -->
-            <Viewbox StretchDirection="DownOnly"
-                     HorizontalAlignment="Left"
-                     Visibility="{Binding Item.HideName, Converter={StaticResource BoolToOppositeVisibility}}">
-                <TextBlock Text="{Binding Item.Name}"
-                           TextWrapping="Wrap"
-                           Width="380"
-                           Style="{StaticResource AppTextSecondaryHeaderStyle}" />
-
-            </Viewbox>
+            <TextBlock Text="{Binding Item.Name}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                       FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                       Visibility="{Binding Item.HideName, Converter={StaticResource BoolToOppositeVisibility}}" />
 
             <!-- Short details -->
             <TextBlock Grid.Row="1"
@@ -173,7 +169,7 @@
                            Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="0,0,12,0" />
             </Grid>
-            
+
             <!-- "Mark as favorite" button -->
             <Grid Grid.Column="1"
                   Grid.RowSpan="3"

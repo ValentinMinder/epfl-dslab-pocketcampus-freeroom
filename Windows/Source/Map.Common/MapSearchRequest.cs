@@ -30,7 +30,6 @@ namespace PocketCampus.Map
         /// <summary>
         /// Creates a MapSearchRequest with the specified query.
         /// </summary>
-        /// <param name="query"></param>
         public MapSearchRequest( string query )
         {
             Query = query;
@@ -39,7 +38,6 @@ namespace PocketCampus.Map
         /// <summary>
         /// Creates a MapSearchRequest with the specified map item.
         /// </summary>
-        /// <param name="item"></param>
         public MapSearchRequest( MapItem item )
         {
             Item = item;

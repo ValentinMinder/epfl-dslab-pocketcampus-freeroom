@@ -16,7 +16,7 @@ namespace PocketCampus.Directory.ViewModels
     /// The main ViewModel.
     /// </summary>
     [LogId( "/directory" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    public sealed class MainViewModel : DataViewModel<ViewPersonRequest>
     {
         private readonly IDirectoryService _directoryService;
         private readonly INavigationService _navigationService;
@@ -73,11 +73,21 @@ namespace PocketCampus.Directory.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IDirectoryService directoryService, INavigationService navigationService )
+        public MainViewModel( IDirectoryService directoryService, INavigationService navigationService,
+                              ViewPersonRequest request )
         {
             _directoryService = directoryService;
             _navigationService = navigationService;
             _anySearchResults = true;
+
+            if ( request.Name != null )
+            {
+                SearchCommand.ExecuteAsync( request.Name );
+            }
+            if ( request.Person != null )
+            {
+                ViewPersonCommand.Execute( request.Person );
+            }
         }
 
 
@@ -103,6 +113,11 @@ namespace PocketCampus.Directory.ViewModels
                 {
                     SearchResults = results;
                     AnySearchResults = SearchResults.Length > 0;
+
+                    if ( SearchResults.Length == 1 )
+                    {
+                        ViewPersonCommand.Execute( SearchResults[0] );
+                    }
                 }
             } );
         }

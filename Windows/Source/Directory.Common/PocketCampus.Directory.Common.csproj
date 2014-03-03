@@ -46,6 +46,7 @@
     <Compile Include="ViewModels\Design\DesignPersonViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PersonViewModel.cs" />
+    <Compile Include="ViewPersonRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">

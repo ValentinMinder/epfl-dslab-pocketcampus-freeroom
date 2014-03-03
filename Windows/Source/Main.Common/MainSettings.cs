@@ -81,8 +81,8 @@ namespace PocketCampus.Main
             return new SettingsDefaultValues<MainSettings>
             {
                 { x => x.IsFirstRun, () => true },
-                { x => x.ServerConfiguration, 
-                    () => new ServerConfiguration( "https", 4433, "Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Directory", "IsAcademia" ) },
+                { x => x.ServerConfiguration, () => new ServerConfiguration( "https", 4433, "Camipro", "Directory", "Events", "Food", "Map", 
+                                                                             "Moodle", "News", "Satellite", "Transport" ) },
                 { x => x.IsAuthenticated, () => false },
                 { x => x.UserName, () => null },
                 { x => x.Password, () => null },

@@ -51,7 +51,7 @@ namespace PocketCampus.Events.ViewModels
                 {
                     if ( pool.OverrideTargetUrl == null )
                     {
-                        _navigationService.NavigateTo<EventPoolViewModel, long>( pool.Id );
+                        _navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( pool.Id ) );
                     }
                     else
                     {

@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Collections.Generic;
 using PocketCampus.Common;
 using PocketCampus.Food.Services;
 using PocketCampus.Food.ViewModels;
@@ -42,10 +43,14 @@ namespace PocketCampus.Food
         /// <summary>
         /// Navigates to the plugin's main ViewModel.
         /// </summary>
-        /// <param name="navigationService"></param>
         public void NavigateTo( INavigationService navigationService )
         {
             navigationService.NavigateTo<MainViewModel>();
         }
+
+        /// <summary>
+        /// This plugin does not handle external navigation.
+        /// </summary>
+        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
     }
 }
