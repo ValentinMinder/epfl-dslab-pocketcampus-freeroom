@@ -26,6 +26,7 @@
                 <ContentPresenter />
             </ControlTemplate>
 
+            <!-- Template for child events -->
             <DataTemplate x:Key="EventItemTemplate">
                 <Button Template="{StaticResource SimpleButtonTemplate}"
                         Command="{Binding DataContext.ViewItemCommand, ElementName=LayoutRoot}"
@@ -43,10 +44,12 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
+                        <!-- Thumbnail picture -->
                         <Image Grid.RowSpan="4"
                                Source="{Binding PictureThumbnailUrl}"
                                Width="100" />
 
+                        <!-- Name -->
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Name}"
                                    TextTrimming="WordEllipsis"
@@ -70,13 +73,13 @@
                                        Visibility="{Binding Location, Converter={StaticResource EmptyStringToVisibility}}" />
                         </Grid>
 
+                        <!-- Time -->
                         <TextBlock Grid.Column="1"
                                    Grid.Row="2"
                                    Text="{Binding Converter={StaticResource EventItemToShortDate}}"
                                    TextTrimming="WordEllipsis"
                                    Style="{StaticResource PhoneTextSubtleStyle}"
                                    Visibility="{Binding TimeOverride, Converter={StaticResource EmptyStringToVisibility}}" />
-
                         <TextBlock Grid.Column="1"
                                    Grid.Row="2"
                                    Text="{Binding TimeOverride}"
@@ -86,6 +89,7 @@
                 </Button>
             </DataTemplate>
 
+            <!-- Item group header template -->
             <DataTemplate x:Key="EventItemGroupHeaderTemplate">
                 <Border Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
                     <TextBlock Text="{Binding CategoryName}"
@@ -94,6 +98,7 @@
                 </Border>
             </DataTemplate>
 
+            <!-- Item group footer template (just a margin) -->
             <DataTemplate x:Key="EventItemGroupFooterTemplate">
                 <Rectangle Height="60" 
                            Width="0" />
@@ -148,7 +153,7 @@
         
         <!-- "No items" text -->
         <TextBlock Grid.Row="1"
-                   Text="{Binding Pool.NoResultsFallbackText}"
+                   Text="{Binding Pool.NoEventsFallbackText}"
                    TextWrapping="Wrap"
                    TextAlignment="Center"
                    Style="{StaticResource PhoneTextLargeStyle}"

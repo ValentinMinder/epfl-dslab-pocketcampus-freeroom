@@ -18,10 +18,12 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <!-- Search period template for the ListPicker -->
             <DataTemplate x:Key="SearchPeriodTemplate">
                 <TextBlock Text="{Binding Converter={StaticResource EnumToString}}" />
             </DataTemplate>
             
+            <!-- Search period template for the ListPicker's fullscreen mode -->
             <DataTemplate x:Key="SearchPeriodFullModeTemplate">
                 <TextBlock Text="{Binding Converter={StaticResource EnumToString}}"
                            Style="{StaticResource PhoneTextLargeStyle}"

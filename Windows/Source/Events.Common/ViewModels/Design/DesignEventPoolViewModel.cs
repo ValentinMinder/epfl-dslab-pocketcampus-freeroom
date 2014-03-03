@@ -33,7 +33,7 @@ namespace PocketCampus.Events.ViewModels.Design
                     EnableCodeScanning = true,
                     EnableFavoriteEmailRequest = false,
                     Location = "",
-                    NoResultsFallbackText = "",
+                    NoEventsFallbackText = "",
                     OverrideTargetUrl = "",
                     PictureUrl = null
                 }; ;

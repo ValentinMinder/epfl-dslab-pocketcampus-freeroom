@@ -5,6 +5,8 @@
 using System;
 using PocketCampus.Events.Models;
 
+// Design data for EventItemViewModel
+
 namespace PocketCampus.Events.ViewModels.Design
 {
     public sealed class DesignEventItemViewModel

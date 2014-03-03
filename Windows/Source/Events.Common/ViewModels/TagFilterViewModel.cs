@@ -9,14 +9,25 @@ using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
+    /// <summary>
+    /// ViewModel for tag filters.
+    /// </summary>
     [LogId( "/events/tags" )]
     public sealed class TagFilterViewModel : ViewModel<EventPool>
     {
         private readonly IPluginSettings _settings;
         private readonly EventPool _pool;
 
+
+        /// <summary>
+        /// Gets the tag filters.
+        /// </summary>
         public Filter<string>[] Tags { get; private set; }
 
+
+        /// <summary>
+        /// Creates a new TagFilterViewModel.
+        /// </summary>
         public TagFilterViewModel( IPluginSettings settings,
                                    EventPool pool )
         {
@@ -32,6 +43,10 @@ namespace PocketCampus.Events.ViewModels
                        .ToArray();
         }
 
+
+        /// <summary>
+        /// Called when the user navigates away from the ViewModel.
+        /// </summary>
         public override void OnNavigatedFrom()
         {
             var excluded = _settings.ExcludedTagsByPool;

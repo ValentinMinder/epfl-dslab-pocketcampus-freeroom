@@ -9,14 +9,24 @@ using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
+    /// <summary>
+    /// ViewModel for category filters.
+    /// </summary>
     [LogId( "/events/categories" )]
     public sealed class CategoryFilterViewModel : ViewModel<EventPool>
     {
         private readonly IPluginSettings _settings;
         private readonly EventPool _pool;
 
+        /// <summary>
+        /// Gets the category filters.
+        /// </summary>
         public Filter<int>[] Categories { get; private set; }
 
+
+        /// <summary>
+        /// Creates a new CategoryFilterViewModel.
+        /// </summary>
         public CategoryFilterViewModel( IPluginSettings settings,
                                         EventPool pool )
         {
@@ -33,6 +43,10 @@ namespace PocketCampus.Events.ViewModels
                              .ToArray();
         }
 
+
+        /// <summary>
+        /// Called when the user navigates away from the ViewModel.
+        /// </summary>
         public override void OnNavigatedFrom()
         {
             var excluded = _settings.ExcludedCategoriesByPool;

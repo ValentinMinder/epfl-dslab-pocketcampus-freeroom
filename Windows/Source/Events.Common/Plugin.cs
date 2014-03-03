@@ -11,27 +11,43 @@ using PocketCampus.Mvvm;
 
 namespace PocketCampus.Events
 {
+    /// <summary>
+    /// The Events plugin.
+    /// </summary>
     public class Plugin : IPlugin
     {
         private const string ViewPoolQuery = "showEventPool";
         private const string PoolIdParameter = "eventPoolId";
         private const string UserTicketParameter = "userTicket";
 
+
+        /// <summary>
+        /// Gets the plugin's ID.
+        /// </summary>
         public string Id
         {
             get { return "Events"; }
         }
 
+        /// <summary>
+        /// This plugin does not require authentication. (it uses special QR codes for that since it's also aimed at non-EPFL people)
+        /// </summary>
         public bool RequiresAuthentication
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Initializes the plugin.
+        /// </summary>
         public void Initialize( INavigationService navigationService )
         {
             Container.Bind<IEventsService, EventsService>();
         }
 
+        /// <summary>
+        /// Navigates to the plugin's main ViewModel.
+        /// </summary>
         public void NavigateTo( INavigationService navigationService )
         {
             navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( EventPool.RootId ) );

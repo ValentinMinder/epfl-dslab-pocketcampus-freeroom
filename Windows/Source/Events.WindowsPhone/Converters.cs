@@ -9,6 +9,9 @@ using PocketCampus.Events.Resources;
 
 namespace PocketCampus.Events
 {
+    /// <summary>
+    /// Converts an event item to a human-readable date.
+    /// </summary>
     public sealed class EventItemToHumanDateConverter : ValueConverter<EventItem, string>
     {
         private static readonly TimeSpan Midnight = new TimeSpan( 0, 0, 0 );

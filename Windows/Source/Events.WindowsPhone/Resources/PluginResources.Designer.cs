@@ -250,6 +250,15 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scan a QR code.
+        /// </summary>
+        public static string ScanQRCode {
+            get {
+                return ResourceManager.GetString("ScanQRCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to search in the past.
         /// </summary>
         public static string SearchInPast {

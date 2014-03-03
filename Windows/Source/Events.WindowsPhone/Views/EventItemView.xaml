@@ -17,10 +17,12 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <!-- Simple button template with only a content -->
             <ControlTemplate x:Key="SimpleButtonTemplate">
                 <ContentPresenter />
             </ControlTemplate>
 
+            <!-- Template for child pools -->
             <DataTemplate x:Key="ItemPoolTemplate">
                 <Button Template="{StaticResource SimpleButtonTemplate}"
                         Command="{Binding DataContext.ViewPoolCommand, ElementName=LayoutRoot}"
@@ -30,16 +32,20 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-
+                        
                         <Image Source="{Binding PictureUrl}"
                                Width="100"
                                Height="100"
                                Stretch="None" />
 
-                        <TextBlock Grid.Column="1"
-                                   Text="{Binding Name}"
-                                   Style="{StaticResource PhoneTextTitle2Style}"
-                                   VerticalAlignment="Center" />
+                        <StackPanel Grid.Column="1"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Name}"
+                                       Style="{StaticResource PhoneTextTitle2Style}" />
+
+                            <TextBlock Text="{Binding Location}"
+                                       Style="{StaticResource PhoneTextSubtleStyle}" />
+                        </StackPanel>
                     </Grid>
                 </Button>
             </DataTemplate>

@@ -12,14 +12,25 @@
         </ResourceDictionary>
     </comControls:BasePage.Resources>
     
+    <!-- Root grid -->
     <Grid x:Name="LayoutRoot">
+        <!-- "Initializing camera" text (covered by the camera preview when it's initialized) -->
         <TextBlock Text="{Binding Resources.InitializingCamera, Source={StaticResource Strings}}"
                    TextWrapping="Wrap"
                    TextAlignment="Center"
                    Style="{StaticResource PhoneTextTitle2Style}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" />
-        
+
+        <!-- Help text -->
+        <Border VerticalAlignment="Top"
+                Background="#88000000">
+            <TextBlock Text="{Binding Resources.ScanQRCode, Source={StaticResource Strings}}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource AppTextTitle2Style}"/>
+        </Border>
+
+        <!-- Camera preview -->
         <Rectangle Height="{Binding ActualHeight, ElementName=LayoutRoot}" 
                    Width="{Binding ActualWidth, ElementName=LayoutRoot}">
             <Rectangle.Fill>
@@ -33,6 +44,7 @@
             </Rectangle.Fill>
         </Rectangle>
         
+        <!-- "Not a PocketCampus code" message -->
         <Border x:Name="WrongCodeMessage"
                 Visibility="Collapsed"
                 VerticalAlignment="Bottom"

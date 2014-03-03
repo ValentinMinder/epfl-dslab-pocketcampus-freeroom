@@ -11,10 +11,17 @@ using PocketCampus.Events.Resources;
 
 namespace PocketCampus.Events.Services
 {
+    /// <summary>
+    /// Prompts the user for their e-mail address.
+    /// </summary>
     public sealed class EmailPrompt : IEmailPrompt
     {
-        private const string EmailRegex = @"^\S+@\S+$"; // very simplified
+        // A very simplified regex for emails.
+        private const string EmailRegex = @"^\S+@\S+$";
 
+        /// <summary>
+        /// Gets the user's e-mail address.
+        /// </summary>
         public string GetEmail()
         {
             ManualResetEvent evt = new ManualResetEvent( false );

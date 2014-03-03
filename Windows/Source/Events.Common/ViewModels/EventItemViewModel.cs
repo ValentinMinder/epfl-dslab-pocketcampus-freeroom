@@ -15,6 +15,9 @@ using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
+    /// <summary>
+    /// ViewModel for item details.
+    /// </summary>
     [LogId( "/events/event" )]
     public sealed class EventItemViewModel : DataViewModel<long>
     {
@@ -28,24 +31,38 @@ namespace PocketCampus.Events.ViewModels
         private EventPool[] _pools;
         private bool _isFavorite;
 
+
+        /// <summary>
+        /// Gets the item.
+        /// </summary>
         public EventItem Item
         {
             get { return _item; }
             private set { SetProperty( ref _item, value ); }
         }
 
+        /// <summary>
+        /// Gets the item's child pools, if any.
+        /// </summary>
         public EventPool[] Pools
         {
             get { return _pools; }
             private set { SetProperty( ref _pools, value ); }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the item is a favorite of the user.
+        /// </summary>
         public bool IsFavorite
         {
             get { return _isFavorite; }
             set { SetProperty( ref _isFavorite, value ); }
         }
 
+
+        /// <summary>
+        /// Gets the command executed to view a child pool.
+        /// </summary>
         [LogId( "ViewPool" )]
         public Command<EventPool> ViewPoolCommand
         {
@@ -65,12 +82,19 @@ namespace PocketCampus.Events.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets the command executed to open a link.
+        /// </summary>
         [LogId( "OpenLink" )]
         public Command<string> OpenLinkCommand
         {
             get { return GetCommand<string>( _browserService.NavigateTo ); }
         }
 
+
+        /// <summary>
+        /// Creates a new EventItemViewModel.
+        /// </summary>
         public EventItemViewModel( INavigationService navigationService, IBrowserService browserService,
                                    IEventsService eventsService, IPluginSettings settings,
                                    long itemId )
@@ -82,6 +106,10 @@ namespace PocketCampus.Events.ViewModels
             _itemId = itemId;
         }
 
+
+        /// <summary>
+        /// Refreshes the data.
+        /// </summary>
         protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
             if ( force )
@@ -109,6 +137,10 @@ namespace PocketCampus.Events.ViewModels
             }
         }
 
+
+        /// <summary>
+        /// Called when the user navigates away from the ViewModel.
+        /// </summary>
         public override void OnNavigatedFrom()
         {
             if ( Item == null )

@@ -11,8 +11,14 @@ using PocketCampus.Events.Resources;
 
 namespace PocketCampus.Events.Services
 {
+    /// <summary>
+    /// Lets the user scan QR codes for event pool and items.
+    /// </summary>
     public sealed class CodeScanner : ICodeScanner
     {
+        /// <summary>
+        /// Requests a QR code scan to the user.
+        /// </summary>
         public void ScanCode()
         {
             if ( PhotoCamera.IsCameraTypeSupported( CameraType.Primary ) )

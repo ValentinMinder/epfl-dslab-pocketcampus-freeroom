@@ -4,8 +4,14 @@
 
 namespace PocketCampus.Events.Services
 {
+    /// <summary>
+    /// Prompts the user for their e-mail address.
+    /// </summary>
     public interface IEmailPrompt
     {
+        /// <summary>
+        /// Gets the user's e-mail address.
+        /// </summary>
         string GetEmail();
     }
 }

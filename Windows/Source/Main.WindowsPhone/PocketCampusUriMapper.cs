@@ -11,10 +11,15 @@ using PocketCampus.Common;
 
 namespace PocketCampus.Main
 {
+    /// <summary>
+    /// The URI mapper for PocketCampus URIs.
+    /// </summary>
     public sealed class PocketCampusUriMapper : UriMapperBase
     {
+        // The key to the redirect parameter for Redirect.xaml.
         public const string RedirectRequestKey = "redirect";
 
+        // Constants for the parsing of PocketCampus URIs.
         private const string PocketCampusProtocol = "pocketcampus://";
         private const string ProtocolPrefix = "/Protocol?encodedLaunchUri=";
         private const char PluginActionDelimiter = '/';
@@ -25,11 +30,19 @@ namespace PocketCampus.Main
 
         private readonly IPlugin[] _plugins;
 
+
+        /// <summary>
+        /// Creates a new PocketCampusUriMapper.
+        /// </summary>
         public PocketCampusUriMapper( IPlugin[] plugins )
         {
             _plugins = plugins;
         }
 
+
+        /// <summary>
+        /// Maps the specified URI.
+        /// </summary>
         public override Uri MapUri( Uri uri )
         {
             string decodedUri = HttpUtility.UrlDecode( uri.ToString() );
@@ -44,6 +57,9 @@ namespace PocketCampus.Main
             return uri;
         }
 
+        /// <summary>
+        /// Navigates to the specified PocketCampus URI, or returns false if the URI is not a PocketCampus one.
+        /// </summary>
         public bool NavigateToCustomUri( string uri )
         {
             var pluginAndParams = ParseQuery( uri );
@@ -57,6 +73,9 @@ namespace PocketCampus.Main
             return true;
         }
 
+        /// <summary>
+        /// Parses the specified query to get the plugin name, action name and parameters, if it's a PocketCampus URI.
+        /// </summary>
         private static Tuple<string, string, Dictionary<string, string>> ParseQuery( string uri )
         {
             // The URI we get from Windows Phone is URL-encoded...

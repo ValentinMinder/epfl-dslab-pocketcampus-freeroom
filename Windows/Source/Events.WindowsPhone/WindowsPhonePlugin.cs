@@ -12,23 +12,38 @@ using PocketCampus.Mvvm;
 
 namespace PocketCampus.Events.WindowsPhone
 {
+    /// <summary>
+    /// The Events Windows Phone plugin.
+    /// </summary>
     public sealed class WindowsPhonePlugin : Plugin, IWindowsPhonePlugin
     {
+        /// <summary>
+        /// Gets the plugin's name.
+        /// </summary>
         public string Name
         {
             get { return PluginResources.PluginName; }
         }
 
+        /// <summary>
+        /// Gets the plugin's icon (as an Uri).
+        /// </summary>
         public Uri Icon
         {
             get { return new Uri( "/Assets/EventsIcon.png", UriKind.Relative ); }
         }
 
+        /// <summary>
+        /// Gets the plugin's small icon (as an Uri).
+        /// </summary>
         public Uri SmallIcon
         {
             get { return new Uri( "/Assets/EventsSmallIcon.png", UriKind.Relative ); }
         }
 
+        /// <summary>
+        /// Initializes the Windows Phone specific part of the plugin.
+        /// </summary>
         public void Initialize( IWindowsPhoneNavigationService navigationService )
         {
             navigationService.Bind<EventPoolViewModel>( "/PocketCampus.Events.WindowsPhone;component/Views/EventPoolView.xaml" );

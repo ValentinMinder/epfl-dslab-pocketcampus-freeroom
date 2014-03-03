@@ -15,8 +15,19 @@ namespace PocketCampus.Events.Models
     [ThriftEnum( "_" )]
     public enum EventsStatusCode
     {
+        /// <summary>
+        /// The request completed successfully.
+        /// </summary>
         OK = 200,
-        Forbidden = 400,
-        ServerError = 500
+
+        /// <summary>
+        /// A network error occurred while executing the request.
+        /// </summary>
+        NetworkError = 400,
+
+        /// <summary>
+        /// The provided user tickets are invalid or expired.
+        /// </summary>
+        AuthenticationError = 500
     }
 }

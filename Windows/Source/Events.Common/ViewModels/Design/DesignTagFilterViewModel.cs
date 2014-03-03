@@ -2,6 +2,8 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+// Design data for TagFilterViewModel
+
 namespace PocketCampus.Events.ViewModels.Design
 {
     public sealed class DesignTagFilterViewModel

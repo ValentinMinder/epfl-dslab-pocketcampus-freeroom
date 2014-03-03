@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
+            <!-- Template for tag filters -->
             <DataTemplate x:Key="TagFilterTemplate">
                 <CheckBox IsChecked="{Binding Include, Mode=TwoWay}">
                     <CheckBox.Content>

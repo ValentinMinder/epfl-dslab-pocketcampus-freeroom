@@ -2,6 +2,8 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+// Design data for CategoryFilterViewModel
+
 namespace PocketCampus.Events.ViewModels.Design
 {
     public sealed class DesignCategoryFilterViewModel

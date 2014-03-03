@@ -5,6 +5,8 @@
 using System.Collections.Generic;
 using PocketCampus.Common;
 
+// Design data for EventPoolViewModel
+
 namespace PocketCampus.Events.ViewModels.Design
 {
     public sealed class DesignSettingsViewModel

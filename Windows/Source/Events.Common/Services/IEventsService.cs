@@ -8,15 +8,27 @@ using ThriftSharp;
 
 namespace PocketCampus.Events.Services
 {
+    /// <summary>
+    /// The Events service.
+    /// </summary>
     [ThriftService( "EventsService" )]
     public interface IEventsService
     {
+        /// <summary>
+        /// Asynchronously gets an event item.
+        /// </summary>
         [ThriftMethod( "getEventItem" )]
         Task<EventItemResponse> GetEventItemAsync( [ThriftParameter( 1, "iRequest" )] EventItemRequest request );
 
+        /// <summary>
+        /// Asynchronously gets an event pool.
+        /// </summary>
         [ThriftMethod( "getEventPool" )]
         Task<EventPoolResponse> GetEventPoolAsync( [ThriftParameter( 1, "iRequest" )]EventPoolRequest request );
 
+        /// <summary>
+        /// Asynchronously requests an e-mail with the items marked as favorite by the user.
+        /// </summary>
         [ThriftMethod( "sendStarredItemsByEmail" )]
         Task<FavoriteEmailResponse> SendFavoriteItemsByEmailAsync( [ThriftParameter( 1, "iRequest" )] FavoriteEmailRequest request );
     }
