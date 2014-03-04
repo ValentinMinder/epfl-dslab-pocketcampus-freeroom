@@ -118,10 +118,10 @@
                                SearchCommand="{Binding SearchCommand}" />
 
         <!-- Search results -->
-        <ScrollViewer Grid.Row="2">
-            <ItemsControl ItemsSource="{Binding SearchResults}"
-                          ItemTemplate="{StaticResource PersonTemplate}" />
-        </ScrollViewer>
+        <ItemsControl Grid.Row="2"
+                      ItemsSource="{Binding SearchResults}"
+                      ItemTemplate="{StaticResource PersonTemplate}"
+                      Style="{StaticResource ScrollingItemsControlStyle}" />
 
         <!-- "No search results" message-->
         <Border Grid.Row="2"
