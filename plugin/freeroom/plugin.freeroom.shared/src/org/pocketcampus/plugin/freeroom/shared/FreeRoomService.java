@@ -25,13 +25,13 @@ public class FreeRoomService {
 
   public interface Iface {
 
-    public Set<FRRoom> getFreeRoomsFromTime(FRPeriodOfTime period) throws org.apache.thrift.TException;
+    public FRFreeRoomResponseFromTime getFreeRoomFromTime(FRFreeRoomRequestFromTime request) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getFreeRoomsFromTime(FRPeriodOfTime period, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getFreeRoomsFromTime_call> resultHandler) throws org.apache.thrift.TException;
+    public void getFreeRoomFromTime(FRFreeRoomRequestFromTime request, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getFreeRoomFromTime_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -55,27 +55,27 @@ public class FreeRoomService {
       super(iprot, oprot);
     }
 
-    public Set<FRRoom> getFreeRoomsFromTime(FRPeriodOfTime period) throws org.apache.thrift.TException
+    public FRFreeRoomResponseFromTime getFreeRoomFromTime(FRFreeRoomRequestFromTime request) throws org.apache.thrift.TException
     {
-      send_getFreeRoomsFromTime(period);
-      return recv_getFreeRoomsFromTime();
+      send_getFreeRoomFromTime(request);
+      return recv_getFreeRoomFromTime();
     }
 
-    public void send_getFreeRoomsFromTime(FRPeriodOfTime period) throws org.apache.thrift.TException
+    public void send_getFreeRoomFromTime(FRFreeRoomRequestFromTime request) throws org.apache.thrift.TException
     {
-      getFreeRoomsFromTime_args args = new getFreeRoomsFromTime_args();
-      args.setPeriod(period);
-      sendBase("getFreeRoomsFromTime", args);
+      getFreeRoomFromTime_args args = new getFreeRoomFromTime_args();
+      args.setRequest(request);
+      sendBase("getFreeRoomFromTime", args);
     }
 
-    public Set<FRRoom> recv_getFreeRoomsFromTime() throws org.apache.thrift.TException
+    public FRFreeRoomResponseFromTime recv_getFreeRoomFromTime() throws org.apache.thrift.TException
     {
-      getFreeRoomsFromTime_result result = new getFreeRoomsFromTime_result();
-      receiveBase(result, "getFreeRoomsFromTime");
+      getFreeRoomFromTime_result result = new getFreeRoomFromTime_result();
+      receiveBase(result, "getFreeRoomFromTime");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getFreeRoomsFromTime failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getFreeRoomFromTime failed: unknown result");
     }
 
   }
@@ -96,35 +96,35 @@ public class FreeRoomService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getFreeRoomsFromTime(FRPeriodOfTime period, org.apache.thrift.async.AsyncMethodCallback<getFreeRoomsFromTime_call> resultHandler) throws org.apache.thrift.TException {
+    public void getFreeRoomFromTime(FRFreeRoomRequestFromTime request, org.apache.thrift.async.AsyncMethodCallback<getFreeRoomFromTime_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getFreeRoomsFromTime_call method_call = new getFreeRoomsFromTime_call(period, resultHandler, this, ___protocolFactory, ___transport);
+      getFreeRoomFromTime_call method_call = new getFreeRoomFromTime_call(request, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getFreeRoomsFromTime_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private FRPeriodOfTime period;
-      public getFreeRoomsFromTime_call(FRPeriodOfTime period, org.apache.thrift.async.AsyncMethodCallback<getFreeRoomsFromTime_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getFreeRoomFromTime_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private FRFreeRoomRequestFromTime request;
+      public getFreeRoomFromTime_call(FRFreeRoomRequestFromTime request, org.apache.thrift.async.AsyncMethodCallback<getFreeRoomFromTime_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.period = period;
+        this.request = request;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getFreeRoomsFromTime", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getFreeRoomsFromTime_args args = new getFreeRoomsFromTime_args();
-        args.setPeriod(period);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getFreeRoomFromTime", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getFreeRoomFromTime_args args = new getFreeRoomFromTime_args();
+        args.setRequest(request);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public Set<FRRoom> getResult() throws org.apache.thrift.TException {
+      public FRFreeRoomResponseFromTime getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getFreeRoomsFromTime();
+        return (new Client(prot)).recv_getFreeRoomFromTime();
       }
     }
 
@@ -141,38 +141,38 @@ public class FreeRoomService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("getFreeRoomsFromTime", new getFreeRoomsFromTime());
+      processMap.put("getFreeRoomFromTime", new getFreeRoomFromTime());
       return processMap;
     }
 
-    private static class getFreeRoomsFromTime<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getFreeRoomsFromTime_args> {
-      public getFreeRoomsFromTime() {
-        super("getFreeRoomsFromTime");
+    private static class getFreeRoomFromTime<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getFreeRoomFromTime_args> {
+      public getFreeRoomFromTime() {
+        super("getFreeRoomFromTime");
       }
 
-      protected getFreeRoomsFromTime_args getEmptyArgsInstance() {
-        return new getFreeRoomsFromTime_args();
+      protected getFreeRoomFromTime_args getEmptyArgsInstance() {
+        return new getFreeRoomFromTime_args();
       }
 
-      protected getFreeRoomsFromTime_result getResult(I iface, getFreeRoomsFromTime_args args) throws org.apache.thrift.TException {
-        getFreeRoomsFromTime_result result = new getFreeRoomsFromTime_result();
-        result.success = iface.getFreeRoomsFromTime(args.period);
+      protected getFreeRoomFromTime_result getResult(I iface, getFreeRoomFromTime_args args) throws org.apache.thrift.TException {
+        getFreeRoomFromTime_result result = new getFreeRoomFromTime_result();
+        result.success = iface.getFreeRoomFromTime(args.request);
         return result;
       }
     }
 
   }
 
-  public static class getFreeRoomsFromTime_args implements org.apache.thrift.TBase<getFreeRoomsFromTime_args, getFreeRoomsFromTime_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getFreeRoomsFromTime_args");
+  public static class getFreeRoomFromTime_args implements org.apache.thrift.TBase<getFreeRoomFromTime_args, getFreeRoomFromTime_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getFreeRoomFromTime_args");
 
-    private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    private FRPeriodOfTime period; // required
+    private FRFreeRoomRequestFromTime request; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      PERIOD((short)1, "period");
+      REQUEST((short)1, "request");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -187,8 +187,8 @@ public class FreeRoomService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // PERIOD
-            return PERIOD;
+          case 1: // REQUEST
+            return REQUEST;
           default:
             return null;
         }
@@ -233,71 +233,71 @@ public class FreeRoomService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.PERIOD, new org.apache.thrift.meta_data.FieldMetaData("period", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriodOfTime.class)));
+      tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRFreeRoomRequestFromTime.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getFreeRoomsFromTime_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getFreeRoomFromTime_args.class, metaDataMap);
     }
 
-    public getFreeRoomsFromTime_args() {
+    public getFreeRoomFromTime_args() {
     }
 
-    public getFreeRoomsFromTime_args(
-      FRPeriodOfTime period)
+    public getFreeRoomFromTime_args(
+      FRFreeRoomRequestFromTime request)
     {
       this();
-      this.period = period;
+      this.request = request;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getFreeRoomsFromTime_args(getFreeRoomsFromTime_args other) {
-      if (other.isSetPeriod()) {
-        this.period = new FRPeriodOfTime(other.period);
+    public getFreeRoomFromTime_args(getFreeRoomFromTime_args other) {
+      if (other.isSetRequest()) {
+        this.request = new FRFreeRoomRequestFromTime(other.request);
       }
     }
 
-    public getFreeRoomsFromTime_args deepCopy() {
-      return new getFreeRoomsFromTime_args(this);
+    public getFreeRoomFromTime_args deepCopy() {
+      return new getFreeRoomFromTime_args(this);
     }
 
     @Override
     public void clear() {
-      this.period = null;
+      this.request = null;
     }
 
-    public FRPeriodOfTime getPeriod() {
-      return this.period;
+    public FRFreeRoomRequestFromTime getRequest() {
+      return this.request;
     }
 
-    public getFreeRoomsFromTime_args setPeriod(FRPeriodOfTime period) {
-      this.period = period;
+    public getFreeRoomFromTime_args setRequest(FRFreeRoomRequestFromTime request) {
+      this.request = request;
       return this;
     }
 
-    public void unsetPeriod() {
-      this.period = null;
+    public void unsetRequest() {
+      this.request = null;
     }
 
-    /** Returns true if field period is set (has been assigned a value) and false otherwise */
-    public boolean isSetPeriod() {
-      return this.period != null;
+    /** Returns true if field request is set (has been assigned a value) and false otherwise */
+    public boolean isSetRequest() {
+      return this.request != null;
     }
 
-    public void setPeriodIsSet(boolean value) {
+    public void setRequestIsSet(boolean value) {
       if (!value) {
-        this.period = null;
+        this.request = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case PERIOD:
+      case REQUEST:
         if (value == null) {
-          unsetPeriod();
+          unsetRequest();
         } else {
-          setPeriod((FRPeriodOfTime)value);
+          setRequest((FRFreeRoomRequestFromTime)value);
         }
         break;
 
@@ -306,8 +306,8 @@ public class FreeRoomService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case PERIOD:
-        return getPeriod();
+      case REQUEST:
+        return getRequest();
 
       }
       throw new IllegalStateException();
@@ -320,8 +320,8 @@ public class FreeRoomService {
       }
 
       switch (field) {
-      case PERIOD:
-        return isSetPeriod();
+      case REQUEST:
+        return isSetRequest();
       }
       throw new IllegalStateException();
     }
@@ -330,21 +330,21 @@ public class FreeRoomService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getFreeRoomsFromTime_args)
-        return this.equals((getFreeRoomsFromTime_args)that);
+      if (that instanceof getFreeRoomFromTime_args)
+        return this.equals((getFreeRoomFromTime_args)that);
       return false;
     }
 
-    public boolean equals(getFreeRoomsFromTime_args that) {
+    public boolean equals(getFreeRoomFromTime_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_period = true && this.isSetPeriod();
-      boolean that_present_period = true && that.isSetPeriod();
-      if (this_present_period || that_present_period) {
-        if (!(this_present_period && that_present_period))
+      boolean this_present_request = true && this.isSetRequest();
+      boolean that_present_request = true && that.isSetRequest();
+      if (this_present_request || that_present_request) {
+        if (!(this_present_request && that_present_request))
           return false;
-        if (!this.period.equals(that.period))
+        if (!this.request.equals(that.request))
           return false;
       }
 
@@ -355,28 +355,28 @@ public class FreeRoomService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_period = true && (isSetPeriod());
-      builder.append(present_period);
-      if (present_period)
-        builder.append(period);
+      boolean present_request = true && (isSetRequest());
+      builder.append(present_request);
+      if (present_request)
+        builder.append(request);
 
       return builder.toHashCode();
     }
 
-    public int compareTo(getFreeRoomsFromTime_args other) {
+    public int compareTo(getFreeRoomFromTime_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getFreeRoomsFromTime_args typedOther = (getFreeRoomsFromTime_args)other;
+      getFreeRoomFromTime_args typedOther = (getFreeRoomFromTime_args)other;
 
-      lastComparison = Boolean.valueOf(isSetPeriod()).compareTo(typedOther.isSetPeriod());
+      lastComparison = Boolean.valueOf(isSetRequest()).compareTo(typedOther.isSetRequest());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetPeriod()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.period, typedOther.period);
+      if (isSetRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, typedOther.request);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -398,10 +398,10 @@ public class FreeRoomService {
           break;
         }
         switch (field.id) {
-          case 1: // PERIOD
+          case 1: // REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.period = new FRPeriodOfTime();
-              this.period.read(iprot);
+              this.request = new FRFreeRoomRequestFromTime();
+              this.request.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -421,9 +421,9 @@ public class FreeRoomService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.period != null) {
-        oprot.writeFieldBegin(PERIOD_FIELD_DESC);
-        this.period.write(oprot);
+      if (this.request != null) {
+        oprot.writeFieldBegin(REQUEST_FIELD_DESC);
+        this.request.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -432,14 +432,14 @@ public class FreeRoomService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getFreeRoomsFromTime_args(");
+      StringBuilder sb = new StringBuilder("getFreeRoomFromTime_args(");
       boolean first = true;
 
-      sb.append("period:");
-      if (this.period == null) {
+      sb.append("request:");
+      if (this.request == null) {
         sb.append("null");
       } else {
-        sb.append(this.period);
+        sb.append(this.request);
       }
       first = false;
       sb.append(")");
@@ -468,12 +468,12 @@ public class FreeRoomService {
 
   }
 
-  public static class getFreeRoomsFromTime_result implements org.apache.thrift.TBase<getFreeRoomsFromTime_result, getFreeRoomsFromTime_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getFreeRoomsFromTime_result");
+  public static class getFreeRoomFromTime_result implements org.apache.thrift.TBase<getFreeRoomFromTime_result, getFreeRoomFromTime_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getFreeRoomFromTime_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.SET, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    private Set<FRRoom> success; // required
+    private FRFreeRoomResponseFromTime success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -539,17 +539,16 @@ public class FreeRoomService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.SetMetaData(org.apache.thrift.protocol.TType.SET, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRFreeRoomResponseFromTime.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getFreeRoomsFromTime_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getFreeRoomFromTime_result.class, metaDataMap);
     }
 
-    public getFreeRoomsFromTime_result() {
+    public getFreeRoomFromTime_result() {
     }
 
-    public getFreeRoomsFromTime_result(
-      Set<FRRoom> success)
+    public getFreeRoomFromTime_result(
+      FRFreeRoomResponseFromTime success)
     {
       this();
       this.success = success;
@@ -558,18 +557,14 @@ public class FreeRoomService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getFreeRoomsFromTime_result(getFreeRoomsFromTime_result other) {
+    public getFreeRoomFromTime_result(getFreeRoomFromTime_result other) {
       if (other.isSetSuccess()) {
-        Set<FRRoom> __this__success = new HashSet<FRRoom>();
-        for (FRRoom other_element : other.success) {
-          __this__success.add(new FRRoom(other_element));
-        }
-        this.success = __this__success;
+        this.success = new FRFreeRoomResponseFromTime(other.success);
       }
     }
 
-    public getFreeRoomsFromTime_result deepCopy() {
-      return new getFreeRoomsFromTime_result(this);
+    public getFreeRoomFromTime_result deepCopy() {
+      return new getFreeRoomFromTime_result(this);
     }
 
     @Override
@@ -577,26 +572,11 @@ public class FreeRoomService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<FRRoom> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(FRRoom elem) {
-      if (this.success == null) {
-        this.success = new HashSet<FRRoom>();
-      }
-      this.success.add(elem);
-    }
-
-    public Set<FRRoom> getSuccess() {
+    public FRFreeRoomResponseFromTime getSuccess() {
       return this.success;
     }
 
-    public getFreeRoomsFromTime_result setSuccess(Set<FRRoom> success) {
+    public getFreeRoomFromTime_result setSuccess(FRFreeRoomResponseFromTime success) {
       this.success = success;
       return this;
     }
@@ -622,7 +602,7 @@ public class FreeRoomService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((Set<FRRoom>)value);
+          setSuccess((FRFreeRoomResponseFromTime)value);
         }
         break;
 
@@ -655,12 +635,12 @@ public class FreeRoomService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getFreeRoomsFromTime_result)
-        return this.equals((getFreeRoomsFromTime_result)that);
+      if (that instanceof getFreeRoomFromTime_result)
+        return this.equals((getFreeRoomFromTime_result)that);
       return false;
     }
 
-    public boolean equals(getFreeRoomsFromTime_result that) {
+    public boolean equals(getFreeRoomFromTime_result that) {
       if (that == null)
         return false;
 
@@ -688,13 +668,13 @@ public class FreeRoomService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getFreeRoomsFromTime_result other) {
+    public int compareTo(getFreeRoomFromTime_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getFreeRoomsFromTime_result typedOther = (getFreeRoomsFromTime_result)other;
+      getFreeRoomFromTime_result typedOther = (getFreeRoomFromTime_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -724,19 +704,9 @@ public class FreeRoomService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.SET) {
-              {
-                org.apache.thrift.protocol.TSet _set0 = iprot.readSetBegin();
-                this.success = new HashSet<FRRoom>(2*_set0.size);
-                for (int _i1 = 0; _i1 < _set0.size; ++_i1)
-                {
-                  FRRoom _elem2; // required
-                  _elem2 = new FRRoom();
-                  _elem2.read(iprot);
-                  this.success.add(_elem2);
-                }
-                iprot.readSetEnd();
-              }
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new FRFreeRoomResponseFromTime();
+              this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -757,14 +727,7 @@ public class FreeRoomService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (FRRoom _iter3 : this.success)
-          {
-            _iter3.write(oprot);
-          }
-          oprot.writeSetEnd();
-        }
+        this.success.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -773,7 +736,7 @@ public class FreeRoomService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getFreeRoomsFromTime_result(");
+      StringBuilder sb = new StringBuilder("getFreeRoomFromTime_result(");
       boolean first = true;
 
       sb.append("success:");

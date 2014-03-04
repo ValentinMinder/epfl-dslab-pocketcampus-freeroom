@@ -27,9 +27,13 @@ import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.shared.FRDay;
+import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomRequestFromTime;
+import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomResponseFromTime;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriodOfTime;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
+import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
 
 
 public class TestFindFreeRooms {
@@ -194,14 +198,22 @@ public class TestFindFreeRooms {
 	@Test
 	public void testBasicRequest() {
 		//FILL DATABSE BEFORE
-		Set<FRRoom> rooms = new HashSet<FRRoom>();
-		FRPeriodOfTime pot = new FRPeriodOfTime();
-		pot.setDay(FRDay.TUESDAY);
-		pot.setStartHour(8);
-		pot.setEndHour(9);
+		FRTimeStamp timeStampStart = new FRTimeStamp();
+		timeStampStart.setTimeSeconds((int) (System.currentTimeMillis()/1000));
+		FRTimeStamp timeStampEnd = new FRTimeStamp();
+		timeStampEnd.setTimeSeconds((int) (System.currentTimeMillis()/1000 + 3600));
+		FRPeriod period = new FRPeriod();
+		period.setRecurrent(false);
+		period.setTimeStampStart(timeStampStart);
+		period.setTimeStampEnd(timeStampEnd);
+		FRFreeRoomRequestFromTime req = new FRFreeRoomRequestFromTime();
+		req.setPeriod(period);
+		
+		FRFreeRoomResponseFromTime rep = null;
 		
 		try {
-			rooms = (new FreeRoomServiceImpl(new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD))).getFreeRoomsFromTime(pot);
+			rep = (new FreeRoomServiceImpl(new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD))).getFreeRoomFromTime(req);
+			Set<FRRoom> rooms = rep.getRooms();
 			ArrayList<FRRoom> arr = new ArrayList<FRRoom>(rooms);
 			for (FRRoom r : arr) {
 				System.out.println(r.getBuilding() + "" + r.getNumber());
@@ -213,8 +225,6 @@ public class TestFindFreeRooms {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-
+	
 	}
 }
