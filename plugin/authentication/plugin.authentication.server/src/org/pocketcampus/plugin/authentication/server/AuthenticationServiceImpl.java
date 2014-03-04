@@ -43,7 +43,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 			TequilaPrincipal principal = PocketCampusServer.authGetTequilaPrincipal(tequilaToken);
 			if(principal == null)
 				return new AuthSessionResponse(AuthStatusCode.NETWORK_ERROR);
-			String session = _manager.insert(principal.getUser(), principal.getAttribute("uniqueid"));
+			String session = _manager.insert(sanitizeTequilaUsername(principal.getAttribute("username")), principal.getAttribute("uniqueid"));
 			return new AuthSessionResponse(AuthStatusCode.OK).setSessionId(session);
 			
 		} catch(SecurityException e) {
@@ -57,6 +57,12 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	
 	public String getSciperFromSession(String sess) {
 		return _manager.getSciper(sess);
+	}
+	
+	private String sanitizeTequilaUsername(String crap) {
+		crap = crap.split("[,]")[0];
+		crap = crap.split("[@]")[0];
+		return crap;
 	}
 
 }
