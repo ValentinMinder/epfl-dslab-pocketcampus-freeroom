@@ -129,4 +129,10 @@ public class FreeRoomMainView extends PluginView implements IFreeRoomView {
 		});
 		mLayout.addView(mList);
 	}
+
+	@Override
+	public void freeRoomServersDown() {
+		// TODO Auto-generated method stub
+		
+	}
 }

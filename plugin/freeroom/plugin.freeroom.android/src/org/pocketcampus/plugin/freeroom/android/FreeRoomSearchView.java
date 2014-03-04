@@ -10,9 +10,13 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.utils.Converter;
 import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
 import org.pocketcampus.plugin.freeroom.shared.FRDay;
+import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomResponseFromTime;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -82,12 +86,17 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 		searchButton = new Button(this);	
 		searchButton.setEnabled(false);
 		searchButton.setText(R.string.freeroom_searchbutton);
+		final IFreeRoomView view = this;
 		searchButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				if (auditSearchButton() == 0) {
+					mController.search(view, Converter.convert(day, startHour, endHour));
+					
 					//TODO action
+//					Intent i = new Intent(FreeRoomSearchView.this, FreeRoomResultView.class);
+//					FreeRoomSearchView.this.startActivity(i);
 				}
 			}
 		});
@@ -177,6 +186,12 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 			error++;
 		}
 		return error;
+	}
+
+	@Override
+	public void freeRoomServersDown() {
+		// TODO Auto-generated method stub
+		
 	}
 
 
