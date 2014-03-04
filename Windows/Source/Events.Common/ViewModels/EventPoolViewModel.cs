@@ -180,7 +180,7 @@ namespace PocketCampus.Events.ViewModels
                 };
                 var response = await _eventsService.GetEventPoolAsync( request );
 
-                if ( response.Status != EventsStatusCode.OK )
+                if ( response.Status != EventsStatus.Success )
                 {
                     throw new Exception( "An error occurred while fetching the event pool." );
                 }
@@ -251,7 +251,7 @@ namespace PocketCampus.Events.ViewModels
 
                 var response = await _eventsService.SendFavoriteItemsByEmailAsync( request );
 
-                if ( response.Status != EventsStatusCode.OK )
+                if ( response.Status != EventsStatus.Success )
                 {
                     throw new Exception( "An error occurred while requesting an e-mail with the favorites." );
                 }

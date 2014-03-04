@@ -16,7 +16,7 @@ namespace PocketCampus.Food.Models
         /// The request completed successfully.
         /// </summary>
         [ThriftEnumMember( "VALID", 2 )]
-        Ok,
+        Success,
 
         /// <summary>
         /// The user has already voted.

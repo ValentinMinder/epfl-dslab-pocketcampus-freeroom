@@ -123,7 +123,7 @@ namespace PocketCampus.Events.ViewModels
 
                 var response = await _eventsService.GetEventItemAsync( request );
 
-                if ( response.Status != EventsStatusCode.OK )
+                if ( response.Status != EventsStatus.Success )
                 {
                     throw new Exception( "An error occured while fetching an event item." );
                 }

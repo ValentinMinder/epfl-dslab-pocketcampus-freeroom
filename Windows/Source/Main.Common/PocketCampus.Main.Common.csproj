@@ -51,7 +51,7 @@
     <Compile Include="MainSettings.cs" />
     <Compile Include="Models\AuthenticationSessionResponse.cs" />
     <Compile Include="Models\AuthenticationTokenResponse.cs" />
-    <Compile Include="Models\AuthenticationStatusCode.cs" />
+    <Compile Include="Models\AuthenticationStatus.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\IRatingService.cs" />
@@ -62,7 +62,7 @@
     <Compile Include="Services\ServerAccess.cs" />
     <Compile Include="Services\TequilaAuthenticator.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
-    <Compile Include="ViewModels\AuthenticationStatus.cs" />
+    <Compile Include="AuthenticationAttemptStatus.cs" />
     <Compile Include="ViewModels\AuthenticationViewModel.cs" />
     <Compile Include="ViewModels\Design\DesignAboutViewModel.cs" />
     <Compile Include="ViewModels\Design\DesignAuthenticationViewModel.cs" />

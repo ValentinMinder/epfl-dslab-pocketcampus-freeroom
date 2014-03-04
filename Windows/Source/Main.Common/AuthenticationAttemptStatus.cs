@@ -2,12 +2,12 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-namespace PocketCampus.Main.ViewModels
+namespace PocketCampus.Main
 {
     /// <summary>
-    /// Display-friendly values for the authentication statuses.
+    /// Display-friendly values for the authentication attempt statuses.
     /// </summary>
-    public enum AuthenticationStatus
+    public enum AuthenticationAttemptStatus
     {
         /// <summary>
         /// No authentication has been attempted.

@@ -33,7 +33,7 @@ namespace PocketCampus.IsAcademia.Services
         async Task<AuthenticationToken> ITwoStepAuthenticator<AuthenticationToken, string>.GetTokenAsync()
         {
             var response = await GetTokenAsync();
-            if ( response.Status == ResponseStatus.Ok )
+            if ( response.Status == ResponseStatus.Success )
             {
                 return new AuthenticationToken( response.Token );
             }
@@ -43,7 +43,7 @@ namespace PocketCampus.IsAcademia.Services
         async Task<string> ITwoStepAuthenticator<AuthenticationToken, string>.GetSessionAsync( AuthenticationToken token )
         {
             var response = await GetSessionAsync( token.AuthenticationKey );
-            if ( response.Status == ResponseStatus.Ok )
+            if ( response.Status == ResponseStatus.Success )
             {
                 return response.Session;
             }

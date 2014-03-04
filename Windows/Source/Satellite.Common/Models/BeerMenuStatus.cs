@@ -16,12 +16,12 @@ namespace PocketCampus.Satellite.Models
         /// The request completed successfully.
         /// </summary>
         [ThriftEnumMember( "OK", 200 )]
-        Ok = 200,
+        Success,
 
         /// <summary>
         /// A network error occurred while executing the request.
         /// </summary>
         [ThriftEnumMember( "NETWORK_ERROR", 407 )]
-        NetworkError = 407
+        NetworkError
     }
 }

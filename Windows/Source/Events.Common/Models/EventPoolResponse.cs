@@ -17,7 +17,7 @@ namespace PocketCampus.Events.Models
         /// The request's status.
         /// </summary>
         [ThriftField( 1, true, "status" )]
-        public EventsStatusCode Status { get; set; }
+        public EventsStatus Status { get; set; }
 
         /// <summary>
         /// The requested pool.

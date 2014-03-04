@@ -28,7 +28,7 @@ namespace PocketCampus.Main.ViewModels
         private string _password;
         private bool _saveCredentials;
         private bool _isAuthenticating;
-        private AuthenticationStatus _status;
+        private AuthenticationAttemptStatus _status;
 
         /// <summary>
         /// Gets or sets the user name (GASPAR identifier or SCIPER number).
@@ -72,9 +72,9 @@ namespace PocketCampus.Main.ViewModels
         }
 
         /// <summary>
-        /// Gets the authentication status.
+        /// Gets the authentication attempt status.
         /// </summary>
-        public AuthenticationStatus Status
+        public AuthenticationAttemptStatus Status
         {
             get { return _status; }
             private set { SetProperty( ref _status, value ); }
@@ -123,7 +123,7 @@ namespace PocketCampus.Main.ViewModels
             try
             {
                 var tokenResponse = await _authenticationService.GetTokenAsync();
-                if ( tokenResponse.Status != AuthenticationStatusCode.Success )
+                if ( tokenResponse.Status != AuthenticationStatus.Success )
                 {
                     throw new Exception( "An error occurred while getting a token." );
                 }
@@ -131,7 +131,7 @@ namespace PocketCampus.Main.ViewModels
                 if ( await _authenticator.AuthenticateAsync( UserName, Password, tokenResponse.Token ) )
                 {
                     var sessionResponse = await _authenticationService.GetSessionAsync( tokenResponse.Token );
-                    if ( sessionResponse.Status != AuthenticationStatusCode.Success )
+                    if ( sessionResponse.Status != AuthenticationStatus.Success )
                     {
                         throw new Exception( "An error occurred while getting a session." );
                     }
@@ -145,12 +145,12 @@ namespace PocketCampus.Main.ViewModels
                 }
                 else
                 {
-                    Status = AuthenticationStatus.WrongCredentials;
+                    Status = AuthenticationAttemptStatus.WrongCredentials;
                 }
             }
             catch
             {
-                Status = AuthenticationStatus.Error;
+                Status = AuthenticationAttemptStatus.Error;
             }
 
             if ( authOk )

@@ -42,7 +42,7 @@
     <Compile Include="Models\EventPool.cs" />
     <Compile Include="Models\EventPoolRequest.cs" />
     <Compile Include="Models\EventPoolResponse.cs" />
-    <Compile Include="Models\EventsStatusCode.cs" />
+    <Compile Include="Models\EventsStatus.cs" />
     <Compile Include="Models\FavoriteEmailRequest.cs" />
     <Compile Include="Models\FavoriteEmailResponse.cs" />
     <Compile Include="Plugin.cs" />

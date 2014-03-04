@@ -99,7 +99,7 @@ namespace PocketCampus.IsAcademia.ViewModels
                 {
                     return false;
                 }
-                if ( response.Status != ResponseStatus.Ok )
+                if ( response.Status != ResponseStatus.Success )
                 {
                     throw new Exception( "An error occurred on the server while fetching the schedule." );
                 }

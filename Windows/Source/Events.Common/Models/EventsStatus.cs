@@ -4,13 +4,16 @@
 
 using ThriftSharp;
 
-namespace PocketCampus.Main.Models
+namespace PocketCampus.Events.Models
 {
     /// <summary>
-    /// Status for authentication requests.
+    /// The possible response statuses of server requests.
     /// </summary>
-    [ThriftEnum( "AuthStatusCode" )]
-    public enum AuthenticationStatusCode
+    /// <remarks>
+    /// Not in the Thrift interface (it uses undocumented constants).
+    /// </remarks>
+    [ThriftEnum( "_" )]
+    public enum EventsStatus
     {
         /// <summary>
         /// The request completed successfully.
@@ -20,11 +23,11 @@ namespace PocketCampus.Main.Models
         /// <summary>
         /// A network error occurred while executing the request.
         /// </summary>
-        NetworkError = 404,
+        NetworkError = 400,
 
         /// <summary>
-        /// The provided credentials are invalid or expired.
+        /// The provided user tickets are invalid or expired.
         /// </summary>
-        AuthenticationError = 407
+        AuthenticationError = 500
     }
 }
