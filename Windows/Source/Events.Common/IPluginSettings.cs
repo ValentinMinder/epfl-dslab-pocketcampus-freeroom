@@ -37,9 +37,9 @@ namespace PocketCampus.Events
         Dictionary<string, string> EventTags { get; set; }
 
         /// <summary>
-        /// Gets or sets the IDs of the user's favorite events.
+        /// Gets or sets the IDs of the user's favorite items.
         /// </summary>
-        List<long> FavoriteEventIds { get; set; }
+        List<long> FavoriteItemIds { get; set; }
 
         /// <summary>
         /// Gets or sets the excluded category IDs by pool.

@@ -133,7 +133,7 @@ namespace PocketCampus.Events.ViewModels
 
                 Pools = response.ChildrenPools == null ? new EventPool[0] : response.ChildrenPools.Values.ToArray();
                 Item = response.Item;
-                IsFavorite = _settings.FavoriteEventIds.Contains( Item.Id );
+                IsFavorite = _settings.FavoriteItemIds.Contains( Item.Id );
             }
         }
 
@@ -148,13 +148,13 @@ namespace PocketCampus.Events.ViewModels
                 return;
             }
 
-            if ( IsFavorite && !_settings.FavoriteEventIds.Contains( Item.Id ) )
+            if ( IsFavorite && !_settings.FavoriteItemIds.Contains( Item.Id ) )
             {
-                _settings.FavoriteEventIds.Add( Item.Id );
+                _settings.FavoriteItemIds.Add( Item.Id );
             }
-            else if ( !IsFavorite && _settings.FavoriteEventIds.Contains( Item.Id ) )
+            else if ( !IsFavorite && _settings.FavoriteItemIds.Contains( Item.Id ) )
             {
-                _settings.FavoriteEventIds.Remove( Item.Id );
+                _settings.FavoriteItemIds.Remove( Item.Id );
             }
         }
     }

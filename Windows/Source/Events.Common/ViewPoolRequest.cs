@@ -12,21 +12,27 @@ namespace PocketCampus.Events
         /// <summary>
         /// Gets the pool's ID.
         /// </summary>
-        public long PoolId { get; set; }
+        public long PoolId { get; private set; }
 
         /// <summary>
         /// Gets the user's ticket for the pool, if any.
         /// </summary>
-        public string UserTicket { get; set; }
+        public string UserTicket { get; private set; }
+
+        /// <summary>
+        /// Gets the ID of the item that should be marked as favorite, if any.
+        /// </summary>
+        public long? FavoriteItemId { get; private set; }
 
 
         /// <summary>
         /// Creates a new ViewPoolRequest.
         /// </summary>
-        public ViewPoolRequest( long poolId, string userTicket = null )
+        public ViewPoolRequest( long poolId, string userTicket = null, long? favoriteItemId = null )
         {
             PoolId = poolId;
             UserTicket = userTicket;
+            FavoriteItemId = favoriteItemId;
         }
     }
 }

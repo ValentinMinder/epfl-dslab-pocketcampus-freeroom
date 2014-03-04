@@ -29,7 +29,7 @@ namespace PocketCampus.Events.ViewModels.Design
             public bool SearchInPast { get; set; }
             public Dictionary<int, string> EventCategories { get; set; }
             public Dictionary<string, string> EventTags { get; set; }
-            public List<long> FavoriteEventIds { get; set; }
+            public List<long> FavoriteItemIds { get; set; }
             public Dictionary<long, List<int>> ExcludedCategoriesByPool { get; set; }
             public Dictionary<long, List<string>> ExcludedTagsByPool { get; set; }
         }

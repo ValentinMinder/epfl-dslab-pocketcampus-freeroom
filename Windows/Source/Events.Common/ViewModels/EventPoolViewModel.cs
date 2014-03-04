@@ -27,7 +27,7 @@ namespace PocketCampus.Events.ViewModels
         private readonly IPluginSettings _settings;
         private readonly IEmailPrompt _emailPrompt;
         private readonly ICodeScanner _codeScanner;
-        private readonly long _poolId;
+        private readonly ViewPoolRequest _request;
 
         private EventPool _pool;
         private EventItemGroup[] _itemGroups;
@@ -138,11 +138,11 @@ namespace PocketCampus.Events.ViewModels
             _settings = settings;
             _emailPrompt = emailPrompt;
             _codeScanner = codeScanner;
-            _poolId = request.PoolId;
+            _request = request;
 
-            if ( request.UserTicket != null )
+            if ( _request.UserTicket != null )
             {
-                _settings.UserTickets.Add( request.UserTicket );
+                _settings.UserTickets.Add( _request.UserTicket );
             }
         }
 
@@ -152,24 +152,30 @@ namespace PocketCampus.Events.ViewModels
         /// </summary>
         protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
-            if ( force || ( _pool != null && _pool.AlwaysRefresh == true ) )
+            if ( force || Pool == null || ( Pool != null && Pool.AlwaysRefresh == true ) )
             {
-                if ( !_settings.ExcludedCategoriesByPool.ContainsKey( _poolId ) )
+                if ( _request.FavoriteItemId != null )
                 {
-                    _settings.ExcludedCategoriesByPool.Add( _poolId, new List<int>() );
+                    _settings.FavoriteItemIds.Add( _request.FavoriteItemId.Value );
+                    _navigationService.NavigateTo<EventItemViewModel, long>( _request.FavoriteItemId.Value );
                 }
-                if ( !_settings.ExcludedTagsByPool.ContainsKey( _poolId ) )
+
+                if ( !_settings.ExcludedCategoriesByPool.ContainsKey( _request.PoolId ) )
                 {
-                    _settings.ExcludedTagsByPool.Add( _poolId, new List<string>() );
+                    _settings.ExcludedCategoriesByPool.Add( _request.PoolId, new List<int>() );
+                }
+                if ( !_settings.ExcludedTagsByPool.ContainsKey( _request.PoolId ) )
+                {
+                    _settings.ExcludedTagsByPool.Add( _request.PoolId, new List<string>() );
                 }
 
                 var request = new EventPoolRequest
                 {
-                    PoolId = _poolId,
+                    PoolId = _request.PoolId,
                     DayCount = (int) _settings.SearchPeriod,
                     IsInPast = _settings.SearchInPast,
                     UserTickets = _settings.UserTickets.ToArray(),
-                    FavoriteEventIds = _settings.FavoriteEventIds.ToArray(),
+                    FavoriteEventIds = _settings.FavoriteItemIds.ToArray(),
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
                 var response = await _eventsService.GetEventPoolAsync( request );
@@ -199,9 +205,9 @@ namespace PocketCampus.Events.ViewModels
 
             var groups = from item in Pool.Items
                          where item.CategoryId == null
-                            || !_settings.ExcludedCategoriesByPool[_poolId].Contains( item.CategoryId.Value )
+                            || !_settings.ExcludedCategoriesByPool[_request.PoolId].Contains( item.CategoryId.Value )
                          where item.TagIds == null
-                            || !item.TagIds.Any( _settings.ExcludedTagsByPool[_poolId].Contains )
+                            || !item.TagIds.Any( _settings.ExcludedTagsByPool[_request.PoolId].Contains )
                          orderby item.TimeOverride ascending,
                                  item.StartDate descending,
                                  item.EndDate ascending,
@@ -238,7 +244,7 @@ namespace PocketCampus.Events.ViewModels
                 {
                     EmailAddress = emailAddress,
                     PoolId = Pool.Id,
-                    FavoriteItems = _settings.FavoriteEventIds.ToArray(),
+                    FavoriteItems = _settings.FavoriteItemIds.ToArray(),
                     UserTickets = _settings.UserTickets.ToArray(),
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };

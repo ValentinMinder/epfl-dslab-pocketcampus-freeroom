@@ -19,7 +19,7 @@ namespace PocketCampus.Events
         private const string ViewPoolQuery = "showEventPool";
         private const string PoolIdParameter = "eventPoolId";
         private const string UserTicketParameter = "userTicket";
-
+        private const string MarkAsFavoriteParameter = "markFavorite";
 
         /// <summary>
         /// Gets the plugin's ID.
@@ -61,9 +61,18 @@ namespace PocketCampus.Events
             if ( destination == ViewPoolQuery )
             {
                 long id = long.Parse( parameters[PoolIdParameter] );
+
                 string ticket = null;
                 parameters.TryGetValue( UserTicketParameter, out ticket );
-                navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( id, ticket ) );
+
+                long? favoriteId = null;
+                string favoriteIdString = null;
+                if ( parameters.TryGetValue( MarkAsFavoriteParameter, out favoriteIdString ) )
+                {
+                    favoriteId = long.Parse( favoriteIdString );
+                }
+
+                navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( id, ticket, favoriteId ) );
             }
         }
     }
