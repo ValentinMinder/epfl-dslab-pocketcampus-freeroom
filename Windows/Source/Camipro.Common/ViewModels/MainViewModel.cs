@@ -17,7 +17,7 @@ namespace PocketCampus.Camipro.ViewModels
     /// <summary>
     /// The main (and only) ViewModel.
     /// </summary>
-    [PageLogId( "/camipro" )]
+    [LogId( "/camipro" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly ICamiproService _camiproService;
@@ -59,7 +59,7 @@ namespace PocketCampus.Camipro.ViewModels
         /// <summary>
         /// Gets the command executed to request an e-mail with e-banking information.
         /// </summary>
-        [CommandLogId( "RequestEmail" )]
+        [LogId( "RequestEmail" )]
         public AsyncCommand RequestEbankingEmailCommand
         {
             get { return GetAsyncCommand( RequestEbankingEmailAsync ); }

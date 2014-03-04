@@ -107,7 +107,6 @@
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\PhoneService.cs" />
     <Compile Include="Services\PluginLoader.cs" />
-    <Compile Include="MainSettings.cs" />
     <Compile Include="Controls\OrientationChangingFrame.cs" />
     <Compile Include="Services\FrameNavigationService.cs" />
     <Compile Include="Services\HttpClient.cs" />
@@ -241,9 +240,9 @@
       <Project>{F71288EE-9889-4A8E-ABA3-4727AF3D15B2}</Project>
       <Name>PocketCampus.Satellite.WindowsPhone</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Schedule.WindowsPhone\PocketCampus.Schedule.WindowsPhone.csproj">
+    <ProjectReference Include="..\IsAcademia.WindowsPhone\PocketCampus.IsAcademia.WindowsPhone.csproj">
       <Project>{9B1BD61F-84F8-4876-9249-B2B6CC9D9E05}</Project>
-      <Name>PocketCampus.Schedule.WindowsPhone</Name>
+      <Name>PocketCampus.IsAcademia.WindowsPhone</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transport.WindowsPhone\PocketCampus.Transport.WindowsPhone.csproj">
       <Project>{1E86AD7A-26C3-4B45-9029-6F2FDBC40B78}</Project>

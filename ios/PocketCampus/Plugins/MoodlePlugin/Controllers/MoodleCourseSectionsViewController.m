@@ -50,7 +50,7 @@
 #import "MoodleModelAdditions.h"
 
 
-static const NSTimeInterval kRefreshValiditySeconds = 604800.0; //1 week
+static const NSTimeInterval kRefreshValiditySeconds = 86400; //1 day
 
 static const UISearchBarStyle kSearchBarDefaultStyle = UISearchBarStyleDefault;
 static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
@@ -86,7 +86,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         self.course = course;
         self.title = self.course.iTitle;
         self.moodleService = [MoodleService sharedInstanceToRetain];
-        self.sections = [self.moodleService getFromCacheSectionsListReplyForCourse:self.course].iSections;
+        self.sections = [self.moodleService getFromCacheCoursesSectionsForCourseId:[NSString stringWithFormat:@"%ld", (NSInteger)self.course.iId]].iSections;
         self.searchQueue = [NSOperationQueue new];
         self.searchQueue.maxConcurrentOperationCount = 1;
         [self fillCellsFromSections];
@@ -373,7 +373,6 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     switch (reply.iStatus) {
         case 200:
             self.sections = reply.iSections;
-            [self.moodleService saveToCacheSectionsListReply:reply forCourse:self.course];
             [self showToggleButtonIfPossible];
             [self fillCellsFromSections];
             [self.tableView reloadData];
@@ -653,6 +652,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 - (void)dealloc
 {
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self.moodleService removeMoodleResourceObserver:self];
     [self.moodleService cancelOperationsForDelegate:self];
     [self.searchQueue cancelAllOperations];

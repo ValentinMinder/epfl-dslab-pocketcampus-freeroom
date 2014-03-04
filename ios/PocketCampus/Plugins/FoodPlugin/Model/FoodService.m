@@ -136,6 +136,10 @@ static FoodService* instance __weak = nil;
 - (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* result) {
+        FoodResponse* response = (__bridge id)result;
+        return (response.statusCode == FoodStatusCode_OK);
+    };
     operation.cacheValidityInterval = kFoodRequestCacheValidity;
     operation.skipCache = YES; //use getFoodFromCacheForRequest:
     operation.serviceClientSelector = @selector(getFood:);
@@ -170,53 +174,7 @@ static FoodService* instance __weak = nil;
     return [operation cachedResponseObjectEvenIfStale:NO];
 }
 
-#pragma mark Deprecated
-
-- (void)getMealsWithDelegate:(id)delegate {    
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.keepInCache = YES;
-    operation.skipCache = YES;
-    operation.cacheValidityInterval = 3600*24;
-    operation.serviceClientSelector = @selector(getMeals);
-    operation.delegateDidReturnSelector = @selector(getMealsDidReturn:);
-    operation.delegateDidFailSelector = @selector(getMealsFailed);
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-- (NSArray*)getFromCacheMeals {
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
-    operation.serviceClientSelector = @selector(getMeals);
-    operation.delegateDidReturnSelector = @selector(getMealsDidReturn:);
-    operation.delegateDidFailSelector = @selector(getMealsFailed);
-    operation.returnType = ReturnTypeObject;
-    return [operation cachedResponseObjectEvenIfStale:YES];
-}
-
-- (void)getRatingsWithDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getRatings);
-    operation.delegateDidReturnSelector = @selector(getRatingsDidReturn:);
-    operation.delegateDidFailSelector = @selector(getRatingsFailed);
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-- (void)setRatingForMeal:(int64_t)mealId rating:(double)rating deviceId:(NSString*)deviceId delegate:(id)delegate {
-    //Id is primitive type (long long), rating is primitive (double) => cannot be checked
-    if (![deviceId isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad deviceId" reason:@"deviceId is either nil or not of class NSString" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(setRating:::);
-    operation.delegateDidReturnSelector = @selector(setRatingForMeal:rating:deviceId:didReturn:);
-    operation.delegateDidFailSelector = @selector(setRatingFailedForMeal:rating:deviceId:);
-    [operation addLongLongArgument:mealId];
-    [operation addDoubleArgument:rating];
-    [operation addObjectArgument:deviceId];
-    operation.returnType = ReturnTypeInt;
-    [self.operationQueue addOperation:operation];
-}
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

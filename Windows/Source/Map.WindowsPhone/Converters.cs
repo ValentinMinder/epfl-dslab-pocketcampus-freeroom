@@ -12,7 +12,7 @@ namespace PocketCampus.Map
     /// </summary>
     public sealed class GeoPositionToGeoCoordinateConverter : ValueConverter<GeoPosition, GeoCoordinate>
     {
-        protected override GeoCoordinate Convert( GeoPosition value )
+        public override GeoCoordinate Convert( GeoPosition value )
         {
             if ( value == null )
             {
@@ -21,7 +21,7 @@ namespace PocketCampus.Map
             return new GeoCoordinate( value.Latitude, value.Longitude );
         }
 
-        protected override GeoPosition ConvertBack( GeoCoordinate value )
+        public override GeoPosition ConvertBack( GeoCoordinate value )
         {
             if ( value == null )
             {

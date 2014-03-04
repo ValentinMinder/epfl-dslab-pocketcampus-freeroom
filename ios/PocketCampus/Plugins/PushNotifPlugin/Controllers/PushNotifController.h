@@ -27,10 +27,6 @@
 
 
 
-
-
-
-
 #import "PluginController.h"
 
 #import "PushNotifService.h"
@@ -55,7 +51,7 @@ typedef void (^NewNotificationBlock)(NSString* notifMessage, NSDictionary* notif
 
 @end
 
-@interface PushNotifController : PluginController<PluginControllerProtocol, UIAlertViewDelegate>
+@interface PushNotifController : PluginController<PluginControllerProtocol>
 
 
 /*

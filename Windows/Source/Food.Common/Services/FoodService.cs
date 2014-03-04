@@ -13,8 +13,8 @@ namespace PocketCampus.Food.Services
 {
     public sealed class FoodService : ThriftServiceImplementation<IFoodService>, IFoodService
     {
-        public FoodService( IServerConfiguration config )
-            : base( config.CreateCommunication( "food" ) )
+        public FoodService( IServerAccess access )
+            : base( access.CreateCommunication( "food" ) )
         {
 
         }

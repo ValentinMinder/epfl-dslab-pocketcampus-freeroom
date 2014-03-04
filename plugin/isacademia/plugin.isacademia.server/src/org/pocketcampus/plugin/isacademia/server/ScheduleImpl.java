@@ -35,14 +35,6 @@ public final class ScheduleImpl implements Schedule {
 	// The date format for IS-Academia's API.
 	private static final String URL_PARAMETER_FORMAT = "dd.MM.yyyy";
 
-	// The separator for the request key in a Tequila URL
-//	private static final String TEQUILA_URL_KEY_SEPARATOR = "requestkey=";
-
-	// The properties of the cookie for IS-Academia
-//	private static final String ISA_COOKIE_NAME = "JSESSIONID";
-//	private static final String ISA_COOKIE_DOMAIN = "isa.epfl.ch";
-//	private static final String COOKIE_PATH_ALL = "/";
-
 	// The default language for localized text.
 	private static final String DEFAULT_LANGUAGE = "en";
 
@@ -87,15 +79,9 @@ public final class ScheduleImpl implements Schedule {
 				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT)
 				+ "&" + URL_SCIPER_PARAMETER + "=" + sciper;
 
-		List<Cookie> cookies = new ArrayList<Cookie>();
-//		BasicClientCookie isaCookie = new BasicClientCookie(ISA_COOKIE_NAME, token.getSessionId());
-//		isaCookie.setDomain(ISA_COOKIE_DOMAIN);
-//		isaCookie.setPath(COOKIE_PATH_ALL);
-//		cookies.add(isaCookie);
-
 		String xml = null;
 		try {
-			HttpResult result = _client.get(url, ISA_CHARSET, cookies);
+			HttpResult result = _client.get(url, ISA_CHARSET, new ArrayList<Cookie>());
 
 			if (!result.url.contains(ISA_SCHEDULE_URL)) {
 				return new ScheduleResponse(IsaStatusCode.INVALID_SESSION);
@@ -151,11 +137,10 @@ public final class ScheduleImpl implements Schedule {
 		// Then add periods to them, adding new days as needed
 		for (StudyPeriod period : periods) {
 			LocalDate date = new LocalDate(period.getStartTime());
-			if (days.containsKey(date)) {
-				days.get(date).addToPeriods(period);
-			} else {
-				days.put(date, new StudyDay(date.toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(), new ArrayList<StudyPeriod>()));
-			}
+			if (!days.containsKey(date)) {
+				days.put(date, new StudyDay(date.toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(), new ArrayList<StudyPeriod>()));	
+			} 
+			days.get(date).addToPeriods(period);
 		}
 
 		return new ArrayList<StudyDay>(days.values());

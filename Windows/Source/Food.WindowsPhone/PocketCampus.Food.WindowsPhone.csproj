@@ -89,20 +89,23 @@
     <Compile Include="Controls\DayPicker.xaml.cs">
       <DependentUpon>DayPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MealTimePicker.xaml.cs">
+      <DependentUpon>MealTimePicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\RatingDisplay.xaml.cs">
       <DependentUpon>RatingDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\RatingPicker.xaml.cs">
       <DependentUpon>RatingPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MealTimePicker.xaml.cs">
-      <DependentUpon>MealTimePicker.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Converters.cs" />
     <Compile Include="Resources\PluginResources.fr.Designer.cs">
       <DependentUpon>PluginResources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\RatingView.xaml.cs">
+      <DependentUpon>RatingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsPhonePlugin.cs" />
     <Compile Include="LocalizedStrings.cs" />
@@ -119,28 +122,25 @@
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RatingView.xaml.cs">
-      <DependentUpon>RatingView.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Dinner.png" />
-    <Content Include="Assets\MealTypes_Fish.png" />
-    <Content Include="Assets\MealTypes_GreenFork.png" />
-    <Content Include="Assets\MealTypes_Indian.png" />
-    <Content Include="Assets\MealTypes_Lebanese.png" />
-    <Content Include="Assets\MealTypes_Meat.png" />
-    <Content Include="Assets\MealTypes_Pasta.png" />
-    <Content Include="Assets\MealTypes_Pizza.png" />
-    <Content Include="Assets\MealTypes_Poultry.png" />
-    <Content Include="Assets\MealTypes_Thai.png" />
-    <Content Include="Assets\MealTypes_Unknown.png" />
-    <Content Include="Assets\MealTypes_Vegetarian.png" />
+    <Content Include="Assets\MealType_Fish.png" />
+    <Content Include="Assets\MealType_GreenFork.png" />
+    <Content Include="Assets\MealType_Indian.png" />
+    <Content Include="Assets\MealType_Lebanese.png" />
     <Content Include="Assets\FoodIcon.png" />
     <Content Include="Assets\Lunch.png" />
+    <Content Include="Assets\MealType_Meat.png" />
+    <Content Include="Assets\MealType_Pasta.png" />
+    <Content Include="Assets\MealType_Pizza.png" />
+    <Content Include="Assets\MealType_Poultry.png" />
     <Content Include="Assets\Refresh.png" />
     <Content Include="Assets\FoodSmallIcon.png" />
     <Content Include="Assets\Settings.png" />
+    <Content Include="Assets\MealType_Thai.png" />
+    <Content Include="Assets\MealType_Unknown.png" />
+    <Content Include="Assets\MealType_Vegetarian.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\DayPicker.xaml">
@@ -150,10 +150,6 @@
     <Page Include="Controls\MealTimePicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\RatingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +181,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\RatingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

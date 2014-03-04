@@ -217,7 +217,7 @@
     switch (balanceAndTransactions.iStatus) {
         case 407: //user not authenticated (sessionId expired)
             CLSNSLog(@"-> User session has expired. Requesting credientials...");
-            self.camiproService.camiproSession = nil;
+            [self.camiproService deleteCamiproSession];
             [self startBalanceAndTransactionsRequest];
             break;
         case 404:

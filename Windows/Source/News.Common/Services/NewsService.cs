@@ -15,8 +15,8 @@ namespace PocketCampus.News.Services
     {
         private const string FeedNamePrefix = "EPFL ";
 
-        public NewsService( IServerConfiguration config )
-            : base( config.CreateCommunication( "news" ) )
+        public NewsService( IServerAccess access )
+            : base( access.CreateCommunication( "news" ) )
         {
         }
 

@@ -28,7 +28,7 @@ namespace PocketCampus.Mvvm
 
             if ( typeof( TAbstract ) == typeof( TImpl ) )
             {
-                throw new ArgumentException( "Cannot bind a type to itself." );
+                throw new ArgumentException( "Cannot bind a type to itself.", "TImpl" );
             }
             if ( implInfo.IsInterface || implInfo.IsAbstract )
             {

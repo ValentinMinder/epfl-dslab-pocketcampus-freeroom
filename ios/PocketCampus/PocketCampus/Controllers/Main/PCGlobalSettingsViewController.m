@@ -187,6 +187,7 @@ static const int kUsageRow = 0;
                 default:
                     break;
             }
+            break;
         case kMiscSection:
             switch (indexPath.row) {
                 case kUsageRow:
@@ -199,6 +200,9 @@ static const int kUsageRow = 0;
                 default:
                     break;
             }
+            break;
+        default:
+            break;
     }
 }
 

@@ -25,7 +25,7 @@ namespace PocketCampus.Transport
         // If a line name contains one of these, remove everything else
         private static readonly string[] SingleNames = { "RE", "IR", "ICN", "IC", "SS" };
 
-        private static readonly string UselessPrefix = "I";
+        private const string UselessPrefix = "I";
 
         protected override string Convert( string value )
         {

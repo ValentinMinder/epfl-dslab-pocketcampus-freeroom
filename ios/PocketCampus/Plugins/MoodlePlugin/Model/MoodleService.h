@@ -106,10 +106,8 @@ extern NSString* const kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey;
 
 #pragma mark - Saved elements
 
-- (CoursesListReply*)getFromCacheCourseListReply;
-- (BOOL)saveToCacheCourseListReply:(CoursesListReply*)courseListReply;
-- (SectionsListReply*)getFromCacheSectionsListReplyForCourse:(MoodleCourse*)course;
-- (BOOL)saveToCacheSectionsListReply:(SectionsListReply*)sectionsListReply forCourse:(MoodleCourse*)course;
+- (CoursesListReply*)getFromCacheCoursesList;
+- (SectionsListReply*)getFromCacheCoursesSectionsForCourseId:(NSString*)courseId;
 
 #pragma mark - MoodleResources files observation
 

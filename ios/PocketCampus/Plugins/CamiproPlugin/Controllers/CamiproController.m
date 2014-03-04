@@ -26,16 +26,12 @@
  */
 
 
-
-
 //  Created by Loïc Gardiol on 16.05.12.
 
 
 #import "CamiproController.h"
 
 #import "CamiproViewController.h"
-
-#import "PCObjectArchiver.h"
 
 #import "CamiproService.h"
 
@@ -46,11 +42,11 @@
 @property (nonatomic, strong) CamiproService* camiproService;
 @property (nonatomic, strong) TequilaToken* tequilaToken;
 
+@property (nonatomic) BOOL persistSession;
+
 @end
 
 @implementation CamiproController
-
-static NSString* const kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 static CamiproController* instance __weak = nil;
 
@@ -63,7 +59,6 @@ static CamiproController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
-            [[self class] deleteSessionIfNecessary];
             CamiproViewController* camiproViewController = [[CamiproViewController alloc] init];
             camiproViewController.title = [[self class] localizedName];
             PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:camiproViewController];
@@ -87,30 +82,14 @@ static CamiproController* instance __weak = nil;
 #endif
     }
 }
-
-+ (void)deleteSessionIfNecessary {
-    NSNumber* deleteSession = (NSNumber*)[PCObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
-    if (deleteSession && [deleteSession boolValue]) {
-        CLSNSLog(@"-> Delayed logout notification on Camipro now applied : deleting sessionId");
-        [[CamiproService sharedInstanceToRetain] setCamiproSession:nil];
-        [PCObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
-    }
-}
-
 + (void)initObservers {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            NSNumber* delayed = notification.userInfo[kAuthenticationLogoutNotificationDelayedBoolUserInfoKey];
-            if ([delayed boolValue]) {
-                CLSNSLog(@"-> Camipro received %@ notification delayed", kAuthenticationLogoutNotification);
-                [PCObjectArchiver saveObject:@YES forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
-            } else {
-                CLSNSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotification);
-                [[CamiproService sharedInstanceToRetain] setCamiproSession:nil]; //removing stored session
-                [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"camipro"];
-                [[MainController publicController] requestLeavePlugin:@"Camipro"];
-            }
+            CLSNSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotification);
+            [[CamiproService sharedInstanceToRetain] deleteCamiproSession]; //removing stored session
+            [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"camipro"];
+            [[MainController publicController] requestLeavePlugin:@"Camipro"];
         }];
     });
 }
@@ -155,7 +134,7 @@ static CamiproController* instance __weak = nil;
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)tequilaKey didReturn:(CamiproSession *)session {
-    self.camiproService.camiproSession = session;
+    [self.camiproService setCamiproSession:session persist:self.persistSession];
     [self cleanAndNotifySuccessToObservers];
 }
 
@@ -169,17 +148,17 @@ static CamiproController* instance __weak = nil;
 
 #pragma mark - AuthenticationCallbackDelegate
 
-- (void)authenticationSucceeded {
+- (void)authenticationSucceededPersistSession:(BOOL)persistSession {
     if (!self.tequilaToken) {
         CLSNSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
         return;
     }
+    self.persistSession = persistSession;
     [self.camiproService getSessionIdForServiceWithTequilaKey:self.tequilaToken delegate:self];
 }
 
 - (void)userCancelledAuthentication {
     [self.camiproService cancelOperationsForDelegate:self];
-    self.camiproService.camiproSession = nil;
     [self cleanAndNotifyUserCancelledToObservers];
 }
 
@@ -192,7 +171,6 @@ static CamiproController* instance __weak = nil;
 - (void)dealloc
 {
     [self.camiproService cancelOperationsForDelegate:self];
-    [[self class] deleteSessionIfNecessary];
     @synchronized(self) {
         instance = nil;
     }

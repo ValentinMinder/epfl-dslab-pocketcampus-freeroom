@@ -12,5 +12,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/platform.sdk.shared/lib/joda-time-2.3-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.map.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

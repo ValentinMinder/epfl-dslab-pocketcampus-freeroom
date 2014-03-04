@@ -14,7 +14,7 @@
 "NoResultPCUnknownViewControllerLoad" = "Impossible to find this person.";
 "Filter" = "Filter";
 "FilterByTags" = "Filter by tags";
-"FilterByTagsWithFormat" = "Filter by tags (%d/%d)";
+"FilterByTagsWithFormat" = "Filter by tags (%d sel.)";
 "SelectAtLeastOneTag" = "Please select at least one tag";
 "SelectAll" = "Select all";
 "DeselectAll" = "Deselect all";

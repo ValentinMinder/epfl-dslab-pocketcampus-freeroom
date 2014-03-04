@@ -5,9 +5,9 @@
 namespace PocketCampus.Mvvm
 {
     /// <summary>
-    /// ViewModel with a constructor argument (apart from the potential dependencies), INotifyPropertyChanged and navigation methods.
+    /// ViewModel with a constructor argument (apart from the potential dependencies) and navigation methods.
     /// </summary>
-    public interface IViewModel<out TArg>
+    public interface IViewModel<TArg>
     {
         /// <summary>
         /// Called when the user navigates to the ViewModel.

@@ -247,6 +247,12 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 
 - (void)getCoursesListWithDelegate:(id<MoodleServiceDelegate>)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* result) {
+        CoursesListReply* reply = (__bridge id)result;
+        return (reply.iStatus == 200);
+    };
+    operation.skipCache = YES;
     operation.serviceClientSelector = @selector(getCoursesListAPI:);
     operation.delegateDidReturnSelector = @selector(getCoursesListForDummy:didReturn:);
     operation.delegateDidFailSelector = @selector(getCoursesListFailedForDummy:);
@@ -256,7 +262,10 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 }
 
 - (void)getCoursesSectionsForCourseId:(NSString*)courseId delegate:(id<MoodleServiceDelegate>)delegate {
+    [PCUtils throwExceptionIfObject:courseId notKindOfClass:[NSString class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = YES;
+    operation.skipCache = YES;
     operation.serviceClientSelector = @selector(getCourseSectionsAPI:);
     operation.delegateDidReturnSelector = @selector(getCourseSectionsForCourseId:didReturn:);
     operation.delegateDidFailSelector = @selector(getCourseSectionsFailedForCourseId:);
@@ -267,27 +276,25 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 
 #pragma mark - Saved elements
 
-static NSString* const kCourseListReplyKey = @"courseListReply";
-static NSString* const kSectionsListReplyForCourseIdWithFormat = @"sectionsListReply-%d";
-
-- (NSString*)keyForSectionsListReplyForCourse:(MoodleCourse*)course {
-    return [NSString stringWithFormat:kSectionsListReplyForCourseIdWithFormat, course.iId];
+- (CoursesListReply*)getFromCacheCoursesList {
+    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getCoursesListAPI:);
+    operation.delegateDidReturnSelector = @selector(getCoursesListForDummy:didReturn:);
+    operation.delegateDidFailSelector = @selector(getCoursesListFailedForDummy:);
+    [operation addObjectArgument:@"dummy"];
+    operation.returnType = ReturnTypeObject;
+    return [operation cachedResponseObjectEvenIfStale:YES];
 }
 
-- (CoursesListReply*)getFromCacheCourseListReply {
-    return (CoursesListReply*)[PCObjectArchiver objectForKey:kCourseListReplyKey andPluginName:@"moodle" isCache:YES];
-}
-
-- (BOOL)saveToCacheCourseListReply:(CoursesListReply*)courseListReply {
-    return [PCObjectArchiver saveObject:courseListReply forKey:kCourseListReplyKey andPluginName:@"moodle" isCache:YES];
-}
-
-- (SectionsListReply*)getFromCacheSectionsListReplyForCourse:(MoodleCourse*)course {
-    return (SectionsListReply*)[PCObjectArchiver objectForKey:[self keyForSectionsListReplyForCourse:course] andPluginName:@"moodle" isCache:YES];
-}
-
-- (BOOL)saveToCacheSectionsListReply:(SectionsListReply*)sectionsListReply forCourse:(MoodleCourse*)course {
-    return [PCObjectArchiver saveObject:sectionsListReply forKey:[self keyForSectionsListReplyForCourse:course] andPluginName:@"moodle" isCache:YES];
+- (SectionsListReply*)getFromCacheCoursesSectionsForCourseId:(NSString*)courseId {
+    [PCUtils throwExceptionIfObject:courseId notKindOfClass:[NSString class]];
+    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getCourseSectionsAPI:);
+    operation.delegateDidReturnSelector = @selector(getCourseSectionsForCourseId:didReturn:);
+    operation.delegateDidFailSelector = @selector(getCourseSectionsFailedForCourseId:);
+    [operation addObjectArgument:courseId];
+    operation.returnType = ReturnTypeObject;
+    return [operation cachedResponseObjectEvenIfStale:YES];
 }
 
 #pragma mark - MoodleResources observation

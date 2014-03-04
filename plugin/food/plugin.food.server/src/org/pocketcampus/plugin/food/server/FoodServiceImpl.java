@@ -2,13 +2,13 @@ package org.pocketcampus.plugin.food.server;
 
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
-import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.CachingProxy;
 import org.pocketcampus.platform.sdk.server.CachingProxy.CacheValidator;
 import org.pocketcampus.platform.sdk.server.HttpClientImpl;
 import org.pocketcampus.plugin.food.shared.*;
+
+import org.apache.thrift.TException;
 import org.joda.time.*;
 
 /**
@@ -18,24 +18,20 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private static final Hours VOTING_MIN = Hours.hours(11);
 	private static final Hours CACHE_DURATION = Hours.ONE;
 
-	private static final String MEAL_PICS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/meal-pics/";
-	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
-
 	private final DeviceDatabase _deviceDatabase;
 	private final RatingDatabase _ratingDatabase;
-	private final Menu _mealList;
+	private final Menu _menu;
+	private final PictureSource _pictureSource;
+	private final RestaurantLocator _locator;
+	
 
-	static {
-		for (MealType type : MealType.values()) {
-			MEAL_TYPE_PICTURE_URLS.put(type, MEAL_PICS_FOLDER_URL + type + ".png");
-			// => e.g. URL for PIZZA is http://pocketcampus.epfl.ch/backend/meal-pics/PIZZA.png
-		}
-	}
-
-	public FoodServiceImpl(DeviceDatabase deviceDatabase, RatingDatabase ratingDatabase, Menu mealList) {
+	public FoodServiceImpl(DeviceDatabase deviceDatabase, RatingDatabase ratingDatabase, Menu menu,
+						   PictureSource pictureSource, RestaurantLocator locator) {
 		_deviceDatabase = deviceDatabase;
 		_ratingDatabase = ratingDatabase;
-		_mealList = mealList;
+		_menu = menu;
+		_pictureSource = pictureSource;
+		_locator=locator;
 	}
 
 	public FoodServiceImpl() {
@@ -46,7 +42,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 						return Days.daysBetween(lastGenerationDate, DateTime.now()) == Days.ZERO
 								&& Hours.hoursBetween(lastGenerationDate, DateTime.now()).isLessThan(CACHE_DURATION);
 					}
-				}));
+				}),
+				new PictureSourceImpl(), new RestaurantLocatorImpl());
 	}
 
 	@Override
@@ -61,16 +58,20 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 
 		FoodResponse response = null;
-
 		try {
-			response = _mealList.get(time, date);
+			response = _menu.get(time, date);
 		} catch (Exception e) {
 			throw new TException("An exception occurred while getting the menu", e);
 		}
 		_ratingDatabase.insertMenu(response.getMenu());
 		_ratingDatabase.setRatings(response.getMenu());
+		
+		for(EpflRestaurant restaurant:response.getMenu()){
+			restaurant.setRPictureUrl(_pictureSource.forRestaurant(restaurant.getRName()));
+			restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
+		}
 
-		return response.setMealTypePictureUrls(MEAL_TYPE_PICTURE_URLS);
+		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
 	}
 
 	@Override

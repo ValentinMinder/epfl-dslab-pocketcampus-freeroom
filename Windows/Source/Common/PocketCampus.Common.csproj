@@ -48,6 +48,7 @@
     <Compile Include="HttpResponse.cs" />
     <Compile Include="IApplicationSettings.cs" />
     <Compile Include="IAuthenticationToken.cs" />
+    <Compile Include="ServerConfiguration.cs" />
     <Compile Include="Services\IBrowserService.cs" />
     <Compile Include="Services\IDeviceIdentifier.cs" />
     <Compile Include="Services\IEmailService.cs" />
@@ -56,7 +57,7 @@
     <Compile Include="Services\IPhoneService.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="Services\ISecureRequestHandler.cs" />
-    <Compile Include="Services\IServerConfiguration.cs" />
+    <Compile Include="Services\IServerAccess.cs" />
     <Compile Include="Services\ITequilaAuthenticator.cs" />
     <Compile Include="Services\ITwoStepAuthenticator.cs" />
     <Compile Include="LocationChangedEventArgs.cs" />
