@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 09.01.14.
-
-
 
 #import "UIView+Additions.h"
 
@@ -44,6 +37,18 @@
     NSMutableArray* allSubviews = [NSMutableArray array];
     [self subviewsWithBuffer:allSubviews];
     return allSubviews;
+}
+
+- (BOOL)isOrSubviewOfView:(UIView*)superview {
+    if (self == superview) {
+        return YES;
+    }
+    for (UIView* subview in superview.allSubviews) {
+        if (self == subview) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark - Private
