@@ -113,7 +113,6 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 					}
 					
 					fp = StringUtils.getSubstringBetween(fp, "pluginfile.php", "?");
-					//http://moodle.epfl.ch/webservice/pluginfile.php/1525234/mod_resource/content/4/hwk2_sol.pdf?wstoken=9a00f999e5d329b417a1e578ac489b68
 //					if(fp.indexOf("?") != -1)
 //						fp = fp.substring(0, fp.indexOf("?"));
 //					URLBuilder url = new URLBuilder(fp).addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
@@ -123,12 +122,17 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 					PostDataBuilder pd = new PostDataBuilder().
 							addParam("token", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN"));
 					conn.getOutputStream().write(pd.toBytes());
-					OutputStream out = resp.getOutputStream();
 					InputStream in = conn.getInputStream();
+					//System.out.println("encoding=" + conn.getContentEncoding() + " length=" + conn.getContentLength());
+					//System.out.println(conn.getHeaderFields().toString());
+					resp.setContentType(conn.getContentType());
+					resp.setContentLength(conn.getContentLength());
+					resp.addHeader("Content-Disposition", conn.getHeaderField("Content-Disposition"));
+					OutputStream out = resp.getOutputStream();
 					IOUtils.copy(in, out);
 //					out.flush();
-//					in.close();
-//					out.close();
+					in.close();
+					out.close();
 				} 
 			}
 		};
