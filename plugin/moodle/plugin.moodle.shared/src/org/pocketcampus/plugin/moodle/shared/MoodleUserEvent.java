@@ -30,11 +30,11 @@ public class MoodleUserEvent implements org.apache.thrift.TBase<MoodleUserEvent,
   private static final org.apache.thrift.protocol.TField I_START_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("iStartDate", org.apache.thrift.protocol.TType.I64, (short)4);
   private static final org.apache.thrift.protocol.TField I_END_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("iEndDate", org.apache.thrift.protocol.TType.I64, (short)5);
 
-  public int iId; // required
-  public String iTitle; // required
-  public String iDesc; // required
-  public long iStartDate; // required
-  public long iEndDate; // required
+  private int iId; // required
+  private String iTitle; // required
+  private String iDesc; // required
+  private long iStartDate; // required
+  private long iEndDate; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

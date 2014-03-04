@@ -56,11 +56,11 @@
  * Creates and returns an ABRecordRef with info of self.
  * WARNING: this record should be released with CFRelease after use.
  */
-- (ABRecordRef)createABRecord;
+- (ABRecordRef)newABRecord;
 
 /*
  * Returns an ABRecordRef person that is contains info of self + person, or nil in case of failure
  */
-- (ABRecordRef)mergedWithABRecord:(ABRecordRef)person addressBook:(ABAddressBookRef)addressBook;
+- (ABRecordRef)newMergedWithABRecord:(ABRecordRef)person addressBook:(ABAddressBookRef)addressBook;
 
 @end

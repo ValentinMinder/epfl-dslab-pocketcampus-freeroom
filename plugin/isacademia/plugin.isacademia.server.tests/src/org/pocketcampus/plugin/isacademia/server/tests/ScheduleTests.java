@@ -31,11 +31,16 @@ public final class ScheduleTests {
 		List<StudyDay> days = getDays("fr");
 
 		assertEquals(5, days.size());
-		assertEquals(new DateTime(2013, 10, 14, 00, 00, 00).getMillis(), days.get(0).getDay());
-		assertEquals(new DateTime(2013, 10, 15, 00, 00, 00).getMillis(), days.get(1).getDay());
-		assertEquals(new DateTime(2013, 10, 16, 00, 00, 00).getMillis(), days.get(2).getDay());
-		assertEquals(new DateTime(2013, 10, 17, 00, 00, 00).getMillis(), days.get(3).getDay());
-		assertEquals(new DateTime(2013, 10, 18, 00, 00, 00).getMillis(), days.get(4).getDay());
+		assertEquals(new LocalDate(2013, 10, 14).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(),
+				days.get(0).getDay());
+		assertEquals(new LocalDate(2013, 10, 15).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(),
+				days.get(1).getDay());
+		assertEquals(new LocalDate(2013, 10, 16).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(),
+				days.get(2).getDay());
+		assertEquals(new LocalDate(2013, 10, 17).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(),
+				days.get(3).getDay());
+		assertEquals(new LocalDate(2013, 10, 18).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(),
+				days.get(4).getDay());
 	}
 
 	// Simple lecture, one room
@@ -45,8 +50,8 @@ public final class ScheduleTests {
 
 		assertEquals("Architecture des ordinateurs I", period.getName());
 		assertEquals(StudyPeriodType.LECTURE, period.getPeriodType());
-		assertEquals(new DateTime(2013, 10, 15, 13, 15, 00), new DateTime(period.getStartTime()));
-		assertEquals(new DateTime(2013, 10, 15, 15, 00, 00), new DateTime(period.getEndTime()));
+		assertEquals(new DateTime(2013, 10, 15, 13, 15, 00, DateTimeZone.UTC), new DateTime(period.getStartTime(), DateTimeZone.UTC));
+		assertEquals(new DateTime(2013, 10, 15, 15, 00, 00, DateTimeZone.UTC), new DateTime(period.getEndTime(), DateTimeZone.UTC));
 		assertEquals(Arrays.asList("CO 3"), period.getRooms());
 	}
 
@@ -68,7 +73,7 @@ public final class ScheduleTests {
 
 	private static List<StudyDay> getDays(String lang) {
 		try {
-			return new ScheduleImpl(new TestHttpsClient()).get(new LocalDate(2013, 10, 14), lang, new ScheduleToken()).getDays();
+			return new ScheduleImpl(new TestHttpsClient()).get(new LocalDate(2013, 10, 14), lang, "").getDays();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

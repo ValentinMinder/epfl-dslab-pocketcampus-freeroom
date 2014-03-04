@@ -17,14 +17,15 @@ namespace PocketCampus.Main.ViewModels
     /// <summary>
     /// The main ViewModel.
     /// </summary>
-    [PageLogId( "/dashboard" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    [LogId( "/dashboard" )]
+    public sealed class MainViewModel : DataViewModel<string>
     {
         private readonly INavigationService _navigationService;
-        private readonly IServerConfiguration _configLoader;
+        private readonly IServerAccess _serverAccess;
         private readonly IPluginLoader _pluginLoader;
         private readonly IMainSettings _settings;
         private readonly ITileCreator _tileCreator;
+        private readonly string _requestedPlugin;
 
         private IPlugin[] _plugins;
 
@@ -41,7 +42,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to view the about page.
         /// </summary>
-        [CommandLogId( "OpenAbout" )]
+        [LogId( "OpenAbout" )]
         public Command OpenAboutPageCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<AboutViewModel> ); }
@@ -50,7 +51,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to view the settings page.
         /// </summary>
-        [CommandLogId( "OpenSettings" )]
+        [LogId( "OpenSettings" )]
         public Command OpenSettingsPageCommand
         {
             get { return GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
@@ -59,7 +60,8 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to create a plugin "tile" on the user's home screen.
         /// </summary>
-        [CommandLogId( "CreatePluginTile" )]
+        [LogId( "CreatePluginTile" )]
+        [LogParameter( "$Param.Id" )]
         public Command<IPlugin> CreatePluginTileCommand
         {
             get { return GetCommand<IPlugin>( p => _tileCreator.CreateTile( p ) ); }
@@ -68,7 +70,8 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Gets the command executed to open a plugin.
         /// </summary>
-        [CommandLogId( "OpenPlugin" )]
+        [LogId( "OpenPlugin" )]
+        [LogParameter( "$Param.Id" )]
         public Command<IPlugin> OpenPluginCommand
         {
             get { return GetCommand<IPlugin>( OpenPlugin ); }
@@ -78,35 +81,62 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( INavigationService navigationService, IServerConfiguration configLoader,
-                              IPluginLoader pluginLoader, IMainSettings settings, ITileCreator tileCreator )
+        public MainViewModel( INavigationService navigationService, IServerAccess serverAccess,
+                              IPluginLoader pluginLoader, IMainSettings settings, ITileCreator tileCreator,
+                              string requestedPlugin )
         {
             _navigationService = navigationService;
             _pluginLoader = pluginLoader;
-            _configLoader = configLoader;
+            _serverAccess = serverAccess;
             _settings = settings;
             _tileCreator = tileCreator;
+
+            _requestedPlugin = requestedPlugin;
         }
 
 
         /// <summary>
-        /// Loads plugins and authenticates if needed.
+        /// Loads plugins.
         /// </summary>
         protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
             if ( Plugins == null )
             {
-                await _configLoader.LoadAsync();
+                ServerConfiguration config;
+                try
+                {
+                    config = await _serverAccess.LoadConfigurationAsync();
+                    _settings.ServerConfiguration = config;
+                }
+                catch
+                {
+                    // something went wrong during the fetch, use the saved config
+                }
+
+                _serverAccess.CurrentConfiguration = _settings.ServerConfiguration;
 
                 Plugins = _pluginLoader.GetPlugins();
                 FilterPlugins();
+
+                if ( _requestedPlugin != "" )
+                {
+                    var plugin = Plugins.FirstOrDefault( p => p.Id == _requestedPlugin );
+                    if ( plugin != null )
+                    {
+                        _navigationService.PopBackStack();
+                        OpenPlugin( plugin );
+                    }
+                }
             }
         }
 
+        /// <summary>
+        /// Filters plugins to only display the ones that are enabled.
+        /// </summary>
         [Conditional( "RELEASE" )]
         private void FilterPlugins()
         {
-            Plugins = Plugins.Where( p => _configLoader.EnabledPlugins.Contains( p.Id ) ).ToArray();
+            Plugins = Plugins.Where( p => _settings.ServerConfiguration.EnabledPlugins.Contains( p.Id ) ).ToArray();
         }
 
         /// <summary>
@@ -120,7 +150,7 @@ namespace PocketCampus.Main.ViewModels
             }
             else if ( !_settings.IsAuthenticated )
             {
-                _navigationService.NavigateToDialog<AuthenticationViewModel>();
+                _navigationService.NavigateToDialog<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Dialog );
                 plugin.NavigateTo( _navigationService );
             }
         }

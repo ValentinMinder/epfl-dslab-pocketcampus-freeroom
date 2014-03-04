@@ -46,6 +46,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 @property (nonatomic, readwrite, strong) NSString* serviceName;
 @property (nonatomic, readwrite, strong) NSString* thriftServiceClientClassName;
 @property (nonatomic, readwrite, strong) NSURL* serviceURL;
+@property (nonatomic, readwrite, strong) NSURL* serviceRawURL;
 @property (nonatomic, readwrite, strong) NSOperationQueue* operationQueue;
 
 @end
@@ -64,7 +65,8 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
     if (self) {
         self.serviceName = serviceName;
         self.thriftServiceClientClassName = thriftServiceClientClassName;
-        self.serviceURL = [self.class serviceURLforServiceName:serviceName];
+        self.serviceURL = [self.class serviceURLforServiceName:serviceName raw:NO];
+        self.serviceRawURL = [self.class serviceURLforServiceName:serviceName raw:YES];
         CLSNSLog(@"-> Initializing service '%@' with URL (%@)", serviceName, self.serviceURL.absoluteString);
         self.operationQueue = [NSOperationQueue new];
         self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
@@ -74,7 +76,9 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 
 #pragma mark - Config
 
-+ (NSURL*)serviceURLforServiceName:(NSString*)serviceName {
+
+
++ (NSURL*)serviceURLforServiceName:(NSString*)serviceName raw:(BOOL)raw {
     static NSURL* kServerURL;
     static NSString* kVersionURI;
     static dispatch_once_t onceToken;
@@ -87,6 +91,9 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
         kServerURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@:%@", serverProt, serverAddress, serverPort]];
         kVersionURI = versionURI;
     });
+    if (raw) {
+        serviceName = [@"raw-" stringByAppendingString:serviceName];
+    }
     return [NSURL URLWithString:[kVersionURI stringByAppendingPathComponent:serviceName] relativeToURL:kServerURL];
 }
 
@@ -142,12 +149,28 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 
 - (id)thriftProtocolInstanceWithCustomTimeoutInterval:(NSTimeInterval)timeoutInterval {
     THTTPClient* client = [[THTTPClient alloc] initWithURL:self.serviceURL userAgent:nil timeout:timeoutInterval];
+    [self addSpecificHeadersToRequest:client->mRequest];
+    return [[TBinaryProtocol alloc] initWithTransport:client strictRead:YES strictWrite:YES];
+}
+
+- (NSMutableURLRequest*)pcProxiedRequest {
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:self.serviceRawURL];
+    [self addSpecificHeadersToRequest:request];
+    return request;
+}
+
+#pragma mark - Private utils
+
+- (void)addSpecificHeadersToRequest:(NSMutableURLRequest*)request {
     NSString* deviceToken = [PushNotifController notificationsDeviceToken];
     if (deviceToken) {
-        [client->mRequest setValue:@"IOS" forHTTPHeaderField:@"X-PC-PUSHNOTIF-OS"];
-        [client->mRequest setValue:deviceToken forHTTPHeaderField:@"X-PC-PUSHNOTIF-TOKEN"];
+        [request setValue:@"IOS" forHTTPHeaderField:@"X-PC-PUSHNOTIF-OS"];
+        [request setValue:deviceToken forHTTPHeaderField:@"X-PC-PUSHNOTIF-TOKEN"];
     }
-    return [[TBinaryProtocol alloc] initWithTransport:client strictRead:YES strictWrite:YES];
+    NSString* pcAuthSessionid = [[AuthenticationController sharedInstance] pocketCampusAuthSessionId];
+    if (pcAuthSessionid) {
+        [request setValue:pcAuthSessionid forHTTPHeaderField:@"X-PC-AUTH-PCSESSID"];
+    }
 }
 
 #pragma mark - Dealloc

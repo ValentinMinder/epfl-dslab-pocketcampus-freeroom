@@ -70,7 +70,7 @@ namespace PocketCampus.Food.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1/2 portion :.
+        ///   Looks up a localized string similar to 1/2:.
         /// </summary>
         public static string HalfPrice {
             get {
@@ -108,90 +108,99 @@ namespace PocketCampus.Food.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Fish.
         /// </summary>
-        public static string MealTypes_Fish {
+        public static string MealType_Fish {
             get {
-                return ResourceManager.GetString("MealTypes_Fish", resourceCulture);
+                return ResourceManager.GetString("MealType_Fish", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Green Fork.
         /// </summary>
-        public static string MealTypes_GreenFork {
+        public static string MealType_GreenFork {
             get {
-                return ResourceManager.GetString("MealTypes_GreenFork", resourceCulture);
+                return ResourceManager.GetString("MealType_GreenFork", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Indian.
         /// </summary>
-        public static string MealTypes_Indian {
+        public static string MealType_Indian {
             get {
-                return ResourceManager.GetString("MealTypes_Indian", resourceCulture);
+                return ResourceManager.GetString("MealType_Indian", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Lebanese.
         /// </summary>
-        public static string MealTypes_Lebanese {
+        public static string MealType_Lebanese {
             get {
-                return ResourceManager.GetString("MealTypes_Lebanese", resourceCulture);
+                return ResourceManager.GetString("MealType_Lebanese", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Meat.
         /// </summary>
-        public static string MealTypes_Meat {
+        public static string MealType_Meat {
             get {
-                return ResourceManager.GetString("MealTypes_Meat", resourceCulture);
+                return ResourceManager.GetString("MealType_Meat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Pasta.
         /// </summary>
-        public static string MealTypes_Pasta {
+        public static string MealType_Pasta {
             get {
-                return ResourceManager.GetString("MealTypes_Pasta", resourceCulture);
+                return ResourceManager.GetString("MealType_Pasta", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Pizza.
         /// </summary>
-        public static string MealTypes_Pizza {
+        public static string MealType_Pizza {
             get {
-                return ResourceManager.GetString("MealTypes_Pizza", resourceCulture);
+                return ResourceManager.GetString("MealType_Pizza", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Poultry.
         /// </summary>
-        public static string MealTypes_Poultry {
+        public static string MealType_Poultry {
             get {
-                return ResourceManager.GetString("MealTypes_Poultry", resourceCulture);
+                return ResourceManager.GetString("MealType_Poultry", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Thaï.
         /// </summary>
-        public static string MealTypes_Thai {
+        public static string MealType_Thai {
             get {
-                return ResourceManager.GetString("MealTypes_Thai", resourceCulture);
+                return ResourceManager.GetString("MealType_Thai", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Vegetarian.
         /// </summary>
-        public static string MealTypes_Vegetarian {
+        public static string MealType_Vegetarian {
             get {
-                return ResourceManager.GetString("MealTypes_Vegetarian", resourceCulture);
+                return ResourceManager.GetString("MealType_Vegetarian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tap a meal type to show / hide it.
+        /// </summary>
+        public static string MealTypeFilterExplanation {
+            get {
+                return ResourceManager.GetString("MealTypeFilterExplanation", resourceCulture);
             }
         }
         
@@ -331,7 +340,7 @@ namespace PocketCampus.Food.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string RatingStatus_Ok {
             get {
@@ -363,6 +372,15 @@ namespace PocketCampus.Food.Resources {
         public static string RefreshButton {
             get {
                 return ResourceManager.GetString("RefreshButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to satisfaction.
+        /// </summary>
+        public static string SatisfactionPercentage {
+            get {
+                return ResourceManager.GetString("SatisfactionPercentage", resourceCulture);
             }
         }
         

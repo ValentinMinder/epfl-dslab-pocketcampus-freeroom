@@ -113,6 +113,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 			mModel.setTequilaToken(data.getQueryParameter("requestkey"));
 			mModel.setCallbackUrl(null);
 			mModel.setFromBrowser(true);
+			mModel.setSelfAuth(false);
 			
 			
 			if(mModel.getSavedGasparPassword() != null) {

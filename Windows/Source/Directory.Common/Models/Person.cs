@@ -25,12 +25,6 @@ namespace PocketCampus.Directory.Models
         public string LastName { get; set; }
 
         /// <summary>
-        /// The person's SCIPER number.
-        /// </summary>
-        [ThriftField( 3, true, "sciper" )]
-        public string SciperNumber { get; set; }
-
-        /// <summary>
         /// The person's e-mail address, if it's visible.
         /// </summary>
         [ThriftField( 4, false, "email" )]
@@ -59,12 +53,6 @@ namespace PocketCampus.Directory.Models
         /// </summary>
         [ThriftField( 8, false, "office" )]
         public string Office { get; set; }
-
-        /// <summary>
-        /// The person's GASPAR identifier, if it's visible.
-        /// </summary>
-        [ThriftField( 9, false, "gaspar" )]
-        public string GasparIdentifier { get; set; }
 
         /// <summary>
         /// The organizational units to which the person belongs (e.g. IN-BA3, DSLAB).

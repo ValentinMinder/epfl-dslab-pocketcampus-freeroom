@@ -53,7 +53,7 @@
 
 - (BOOL)isEqualToEpflRestaurant:(EpflRestaurant*)otherRestaurant {
     [PCUtils throwExceptionIfObject:otherRestaurant notKindOfClass:[EpflRestaurant class]];
-    return self.rId == otherRestaurant.rId;
+    return (self.rId == otherRestaurant.rId);
 }
 
 - (NSUInteger)hash {

@@ -34,10 +34,12 @@ public class PushNotifController extends PluginController implements IPushNotifC
 	public static class Logouter extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.v("DEBUG", "PushNotifController$Logouter logging out");
-			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
-					Uri.parse("pocketcampus://pushnotif.plugin.pocketcampus.org/logout"));
-			context.startService(authIntent);
+			// No, why do we have to delete the mapping if the user logs out?
+			// Some plugins use pushnotif without requiring auth!
+//			Log.v("DEBUG", "PushNotifController$Logouter logging out");
+//			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
+//					Uri.parse("pocketcampus://pushnotif.plugin.pocketcampus.org/logout"));
+//			context.startService(authIntent);
 		}
 	};
 
@@ -70,8 +72,9 @@ public class PushNotifController extends PluginController implements IPushNotifC
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
 		Bundle extras = aIntent.getExtras();
 		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
-			Log.v("DEBUG", "PushNotifController::onStartCommand logout");
-			new DeleteMappingRequest().start(this, mClient, "dummy");
+			// Never called
+//			Log.v("DEBUG", "PushNotifController::onStartCommand logout");
+//			new DeleteMappingRequest().start(this, mClient, "dummy");
 		} else if("org.pocketcampus.plugin.pushnotif.GCM_INTENT".equals(aIntent.getAction())) {
 			if(extras != null && extras.getString("registrationid") != null) {
 				Log.v("DEBUG", "PushNotifController::onStartCommand regisration_id ok");

@@ -20,6 +20,8 @@
     #import "PCGAITracker.h"
     #import "PCNavigationController.h"
 
+    #import "AuthenticationController.h"
+
     #import "NSLayoutConstraint+LGAdditions.h"
     #import "NSCache+LGAdditions.h"
     #import "UIViewController+Additions.h"

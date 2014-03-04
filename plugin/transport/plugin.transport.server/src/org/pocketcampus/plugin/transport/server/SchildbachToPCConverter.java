@@ -39,8 +39,8 @@ public class SchildbachToPCConverter {
 
 	static {
 		normalLineNameForSchildName = new HashMap<String, String>();
-		normalLineNameForSchildName.put("UMm", "UMetm");
-		normalLineNameForSchildName.put("BNFBm", "UMetm");
+		//normalLineNameForSchildName.put("UMm", "UMetm");
+		//normalLineNameForSchildName.put("BNFBm", "UMetm");
 		normalLineNameForSchildName.put("TNFT", "Tram ");
 		// normalLineNameForSchildName.put("UMetm1", "M1");
 		// normalLineNameForSchildName.put("UMetm2", "M2");
@@ -257,7 +257,6 @@ public class SchildbachToPCConverter {
 	}
 
 	static protected String nicerLineName(String schildlLineName) {
-		// System.out.println("Line: "+schildlLineName);
 		for (String key : normalLineNameForSchildName.keySet()) {
 			if (schildlLineName.startsWith(key)) {
 				return schildlLineName.replace(key,
@@ -270,9 +269,16 @@ public class SchildbachToPCConverter {
 
 		pattern = Pattern.compile("^BNFB(\\d*)");
 		matcher = pattern.matcher(schildlLineName);
-		if (matcher.find() && matcher.group(1) != null) {
+		if (matcher.find() && matcher.group(1) != null && matcher.group(1).length() > 0) {
 			return "BBus" + matcher.group(1);
 		}
+		
+		pattern = Pattern.compile("^UM(\\d*)");
+		matcher = pattern.matcher(schildlLineName);
+		if (matcher.find() && matcher.group(1) != null && matcher.group(1).length() > 0) {
+			return "BBus" + matcher.group(1);
+		}
+
 
 		return schildlLineName;
 	}

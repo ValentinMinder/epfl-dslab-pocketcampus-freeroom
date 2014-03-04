@@ -10,7 +10,7 @@ namespace PocketCampus.Map.ViewModels
     /// <summary>
     /// The ViewModel for settings.
     /// </summary>
-    [PageLogId( "/map/settings" )]
+    [LogId( "/map/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
         /// <summary>

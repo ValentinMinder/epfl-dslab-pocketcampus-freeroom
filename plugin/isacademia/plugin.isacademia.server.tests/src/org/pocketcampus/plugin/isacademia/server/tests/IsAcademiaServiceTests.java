@@ -19,21 +19,14 @@ public final class IsAcademiaServiceTests {
 		final Flag hit = new Flag();
 		Schedule schedule = new Schedule() {
 			@Override
-			public ScheduleTokenResponse getToken() throws Exception {
-				throw new RuntimeException("This should not be called.");
-			}
-
-			@Override
-			public ScheduleResponse get(LocalDate weekBeginning, String language, ScheduleToken token) throws Exception {
+			public ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) throws Exception {
 				hit.set();
-				assertEquals(language, "fr");
-
-				return new ScheduleResponse();
+				return null;
 			}
 		};
 
 		ScheduleRequest req = new ScheduleRequest();
-		new IsAcademiaServiceImpl(schedule).getSchedule(req);
+		new IsAcademiaServiceImpl(getTestSessionManager(),schedule).getSchedule(req);
 
 		hit.assertIsSet();
 	}
@@ -43,12 +36,7 @@ public final class IsAcademiaServiceTests {
 		final Flag hit = new Flag();
 		Schedule schedule = new Schedule() {
 			@Override
-			public ScheduleTokenResponse getToken() throws Exception {
-				throw new RuntimeException("This should not be called.");
-			}
-
-			@Override
-			public ScheduleResponse get(LocalDate weekBeginning, String language, ScheduleToken token) throws Exception {
+			public ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) throws Exception {
 				hit.set();
 				assertEquals(weekBeginning, new LocalDate(2013, 11, 11));
 
@@ -58,7 +46,7 @@ public final class IsAcademiaServiceTests {
 
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 11, 11, 00, 00, 00).getMillis());
 		ScheduleRequest req = new ScheduleRequest();
-		new IsAcademiaServiceImpl(schedule).getSchedule(req);
+		new IsAcademiaServiceImpl(getTestSessionManager(),schedule ).getSchedule(req);
 
 		hit.assertIsSet();
 	}
@@ -66,31 +54,45 @@ public final class IsAcademiaServiceTests {
 	@Test
 	public void parametersAreTransferredCorrectly() throws Exception {
 		final Flag hit = new Flag();
-		final ScheduleToken tokenParam = new ScheduleToken();
-		Schedule schedule = new Schedule() {
+		final String expectedLanguage = "xyz";
+		final String expectedSciper = "123456";
+		final LocalDate expectedWeek =  new LocalDate(2013, 11, 4);
+		
+		SessionManager manager=  new SessionManager(){
 			@Override
-			public ScheduleTokenResponse getToken() throws Exception {
-				throw new RuntimeException("This should not be called.");
+			public String insert(String gaspar, String sciper) {
+				return "";
 			}
 
 			@Override
-			public ScheduleResponse get(LocalDate weekBeginning, String language, ScheduleToken token) throws Exception {
+			public String getGaspar(String sessionId) {
+				return "";
+			}
+
+			@Override
+			public String getSciper(String sessionId) {
+				return expectedSciper;
+			}	
+		};
+		
+		Schedule schedule = new Schedule() {
+			@Override
+			public ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) throws Exception {
 				hit.set();
-				assertEquals(weekBeginning, new LocalDate(2013, 11, 4));
-				assertEquals(language, "en");
-				assertEquals(token, token);
+				assertEquals(expectedWeek,weekBeginning);
+				assertEquals(expectedLanguage, language);
+				assertEquals(expectedSciper, sciper);
 
 				return new ScheduleResponse();
 			}
 		};
 
-		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 11, 4, 00, 00, 00).getMillis());
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2000, 01, 02, 00, 00, 00).getMillis());
 
 		ScheduleRequest req = new ScheduleRequest()
-				.setWeekStart(new DateTime(2013, 11, 4, 00, 00, 00).getMillis())
-				.setLanguage("en")
-				.setToken(tokenParam);
-		new IsAcademiaServiceImpl(schedule).getSchedule(req);
+				.setWeekStart(expectedWeek.toDateTimeAtStartOfDay().getMillis())
+				.setLanguage(expectedLanguage);
+		new IsAcademiaServiceImpl(manager, schedule).getSchedule(req);
 
 		hit.assertIsSet();
 	}
@@ -108,5 +110,25 @@ public final class IsAcademiaServiceTests {
 			}
 			_isSet = true;
 		}
+	}
+	
+	private static SessionManager getTestSessionManager(){
+		return new SessionManager(){
+			@Override
+			public String insert(String gaspar, String sciper) {
+				return "";
+			}
+
+			@Override
+			public String getGaspar(String sessionId) {
+				return "";
+			}
+
+			@Override
+			public String getSciper(String sessionId) {
+				return "";
+			}
+			
+		};
 	}
 }

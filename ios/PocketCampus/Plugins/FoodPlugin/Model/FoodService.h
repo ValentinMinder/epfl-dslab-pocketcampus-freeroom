@@ -72,16 +72,9 @@ extern NSString* const kFoodFavoritesRestaurantsUpdatedNotification;
 - (void)voteForRequest:(VoteRequest*)request delegate:(id)delegate;
 
 
-- (void)getMealsWithDelegate:(id)delegate __attribute__((deprecated)); //use getFoodForRequest:delegate:
-- (void)getRatingsWithDelegate:(id)delegate __attribute__((deprecated)); //rating are actually in the Meal objects
-- (void)setRatingForMeal:(int64_t)mealId rating:(double)rating deviceId:(NSString*)deviceId delegate:(id)delegate __attribute__((deprecated)); //use voteForRequest:delegate:
-
-
 /* Cached versions */
 
 - (FoodResponse*)getFoodFromCacheForRequest:(FoodRequest*)request;
-
-- (NSArray*)getFromCacheMeals __attribute__((deprecated));
 
 
 @end
@@ -94,13 +87,5 @@ extern NSString* const kFoodFavoritesRestaurantsUpdatedNotification;
 - (void)getFoodFailedForRequest:(FoodRequest *)request;
 - (void)voteForRequest:(VoteRequest*)request didReturn:(VoteResponse*)response;
 - (void)voteFailedForRequest:(VoteRequest*)request;
-
-
-- (void)getRatingsDidReturn:(NSDictionary*)ratings __attribute__((deprecated));
-- (void)getRatingsFailed __attribute__((deprecated));
-- (void)getMealsDidReturn:(NSArray*)meals __attribute__((deprecated));
-- (void)getMealsFailed __attribute__((deprecated));
-- (void)setRatingForMeal:(int64_t)mealId rating:(double)rating deviceId:(NSString*)deviceId didReturn:(int)status __attribute__((deprecated));
-- (void)setRatingFailedForMeal:(int64_t)mealId rating:(double)rating deviceId:(NSString*)deviceId __attribute__((deprecated));
 
 @end

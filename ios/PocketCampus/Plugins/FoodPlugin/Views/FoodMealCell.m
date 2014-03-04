@@ -405,7 +405,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
                 [weakSelf infoContentViewTapped]; //hide rating controls, not longer need them
             } repeats:NO];
             [NSTimer scheduledTimerWithTimeInterval:1.4 block:^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellUserSuccessfullyRatedMealNotification object:self];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kFoodMealCellUserSuccessfullyRatedMealNotification object:weakSelf];
             } repeats:NO];
             break;
         }

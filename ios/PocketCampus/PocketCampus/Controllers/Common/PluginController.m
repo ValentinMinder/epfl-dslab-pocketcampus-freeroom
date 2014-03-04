@@ -35,4 +35,10 @@
 
 @implementation PluginController
 
+#pragma mark - Dealloc
+
+- (void)dealloc {
+    CLSNSLog(@"-> %@ released", self);
+}
+
 @end

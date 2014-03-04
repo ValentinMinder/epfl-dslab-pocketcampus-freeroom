@@ -69,7 +69,7 @@
     return [self.email stringByReplacingCharactersInRange:NSMakeRange(atRange.location, self.email.length-atRange.location) withString:@""];
 }
 
-- (ABRecordRef)createABRecord {
+- (ABRecordRef)newABRecord {
     ABRecordRef abPerson = ABPersonCreate();
     
     CFErrorRef error = NULL;
@@ -144,11 +144,15 @@
      }
      */
     
-	return error ? nil : abPerson;
+	if (error) {
+        CFRelease(abPerson);
+        return nil;
+    }
+    return abPerson;
 }
 
 
-- (ABRecordRef)mergedWithABRecord:(ABRecordRef)abPerson addressBook:(ABAddressBookRef)addressBook {
+- (ABRecordRef)newMergedWithABRecord:(ABRecordRef)abPerson addressBook:(ABAddressBookRef)addressBook {
     
     // Cannot directly work on abPerson, because might be an aggregate of contact info (for e.g. iCloud + Facebook)
     // ABRecordSetValue fails if working on an aggregate contact
@@ -158,8 +162,8 @@
     
     CFStringRef originalFirstname = ABRecordCopyValue(abPerson, kABPersonFirstNameProperty);
     CFStringRef originalLastname = ABRecordCopyValue(abPerson, kABPersonLastNameProperty);
-    
-    CFArrayRef allPersons = ABAddressBookCopyArrayOfAllPeopleInSource(addressBook, ABAddressBookCopyDefaultSource(addressBook));
+    ABRecordRef addressBookDefaultSource = ABAddressBookCopyDefaultSource(addressBook);
+    CFArrayRef allPersons = ABAddressBookCopyArrayOfAllPeopleInSource(addressBook, addressBookDefaultSource);
     BOOL found = NO;
     for (int i = 0; i<CFArrayGetCount(allPersons); i++) {
         ABRecordRef person = CFArrayGetValueAtIndex(allPersons, i);
@@ -211,6 +215,9 @@
     if (allPersons) {
         CFRelease(allPersons);
     }
+    if (addressBookDefaultSource) {
+        CFRelease(addressBookDefaultSource);
+    }
     
     if (!found) {
         return nil;
@@ -222,6 +229,7 @@
     CFErrorRef error = NULL; 
     if (self.officePhoneNumber || self.privatePhoneNumber) {
         ABMultiValueRef phones = ABRecordCopyValue(abPerson, kABPersonPhoneProperty);
+        CFAutorelease(phones);
         phones = phones && ABMultiValueGetCount(phones) > 0 ? ABMultiValueCreateMutableCopy(phones) : ABMultiValueCreateMutable(kABMultiStringPropertyType);
         NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(phones));
         if (self.privatePhoneNumber && ![existingValues containsObject:self.privatePhoneNumber]) {
@@ -241,6 +249,7 @@
     
     if (self.email) {
 		ABMultiValueRef emails = ABRecordCopyValue(abPerson, kABPersonEmailProperty);
+        CFAutorelease(emails);
         emails = emails && ABMultiValueGetCount(emails) > 0 ? ABMultiValueCreateMutableCopy(emails) : ABMultiValueCreateMutable(kABMultiStringPropertyType);
         NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(emails));
         if (![existingValues containsObject:self.email]) {
@@ -257,6 +266,7 @@
 
     if (self.web) {
 		ABMultiValueRef webUrls = ABRecordCopyValue(abPerson, kABPersonURLProperty);
+        CFAutorelease(webUrls);
         webUrls = webUrls && ABMultiValueGetCount(webUrls) > 0 ? ABMultiValueCreateMutableCopy(webUrls) : ABMultiValueCreateMutable(kABMultiStringPropertyType);
         NSArray* existingValues = (__bridge NSArray*)(ABMultiValueCopyArrayOfAllValues(webUrls));
         if (![existingValues containsObject:self.web]) {
@@ -273,6 +283,7 @@
     
     if (self.office) {
         ABMultiValueRef addresses = ABRecordCopyValue(abPerson, kABPersonAddressProperty);
+        CFAutorelease(addresses);
         addresses = addresses && ABMultiValueGetCount(addresses) > 0 ? ABMultiValueCreateMutableCopy(addresses) : ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
         NSMutableDictionary* addressDictionary = [NSMutableDictionary dictionaryWithCapacity:2];
         [addressDictionary setObject:self.office forKey:(NSString *)kABPersonAddressCityKey];
@@ -297,7 +308,11 @@
 		CFRelease(addresses);
 	}
     
-    return error ? nil : abPerson;
+    if (error) {
+        CFRelease(abPerson);
+        return nil;
+    }
+    return abPerson;
 }
 
 #pragma mark - Private methods

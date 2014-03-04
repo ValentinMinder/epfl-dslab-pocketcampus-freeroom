@@ -27,8 +27,8 @@ public class EventsListReply implements org.apache.thrift.TBase<EventsListReply,
   private static final org.apache.thrift.protocol.TField I_EVENTS_FIELD_DESC = new org.apache.thrift.protocol.TField("iEvents", org.apache.thrift.protocol.TType.LIST, (short)1);
   private static final org.apache.thrift.protocol.TField I_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("iStatus", org.apache.thrift.protocol.TType.I32, (short)2);
 
-  public List<MoodleEvent> iEvents; // required
-  public int iStatus; // required
+  private List<MoodleEvent> iEvents; // required
+  private int iStatus; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

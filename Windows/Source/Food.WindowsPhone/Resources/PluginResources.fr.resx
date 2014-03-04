@@ -126,34 +126,34 @@
   <data name="MaximumBudget" xml:space="preserve">
     <value>Mon budget est de</value>
   </data>
-  <data name="MealTypes_Fish" xml:space="preserve">
+  <data name="MealType_Fish" xml:space="preserve">
     <value>Poisson</value>
   </data>
-  <data name="MealTypes_GreenFork" xml:space="preserve">
+  <data name="MealType_GreenFork" xml:space="preserve">
     <value>Fourch. Verte</value>
   </data>
-  <data name="MealTypes_Lebanese" xml:space="preserve">
+  <data name="MealType_Lebanese" xml:space="preserve">
     <value>Libanais</value>
   </data>
-  <data name="MealTypes_Meat" xml:space="preserve">
+  <data name="MealType_Meat" xml:space="preserve">
     <value>Viande</value>
   </data>
-  <data name="MealTypes_Pasta" xml:space="preserve">
+  <data name="MealType_Pasta" xml:space="preserve">
     <value>Pâtes</value>
   </data>
-  <data name="MealTypes_Pizza" xml:space="preserve">
+  <data name="MealType_Pizza" xml:space="preserve">
     <value>Pizza</value>
   </data>
-  <data name="MealTypes_Poultry" xml:space="preserve">
+  <data name="MealType_Poultry" xml:space="preserve">
     <value>Volaille</value>
   </data>
-  <data name="MealTypes_Indian" xml:space="preserve">
+  <data name="MealType_Indian" xml:space="preserve">
     <value>Indien</value>
   </data>
-  <data name="MealTypes_Thai" xml:space="preserve">
+  <data name="MealType_Thai" xml:space="preserve">
     <value>Thaï</value>
   </data>
-  <data name="MealTypes_Vegetarian" xml:space="preserve">
+  <data name="MealType_Vegetarian" xml:space="preserve">
     <value>Végétarien</value>
   </data>
   <data name="PriceTarget_PhDStudent" xml:space="preserve">
@@ -187,35 +187,29 @@
     <value>actualiser</value>
   </data>
   <data name="HalfPrice" xml:space="preserve">
-    <value>1/2 portion :</value>
+    <value>1/2 :</value>
+    <comment>Must be VERY short</comment>
   </data>
   <data name="MainViewTitle" xml:space="preserve">
     <value>Menus</value>
   </data>
-  <data name="NoVotesCast" xml:space="preserve">
-    <value>aucune évaluation</value>
+  <data name="ViewRestaurantOnMap" xml:space="preserve">
+    <value>afficher sur la carte</value>
+  </data>
+  <data name="UnknownPrice" xml:space="preserve">
+    <value>prix inconnu</value>
+  </data>
+  <data name="MealTypeFilterExplanation" xml:space="preserve">
+    <value>touchez un type de plat pour l'afficher / le masquer</value>
   </data>
   <data name="ManyVotesCast" xml:space="preserve">
-    <value>{0} évaluations</value>
+    <value>{0} votes</value>
+  </data>
+  <data name="NoVotesCast" xml:space="preserve">
+    <value>aucun vote</value>
   </data>
   <data name="OneVoteCast" xml:space="preserve">
-    <value>1 évaluation</value>
-  </data>
-  <data name="RatingStatus_AlreadyVotedToday" xml:space="preserve">
-    <value>Vous avez déjà évalué un plat aujourd'hui.</value>
-  </data>
-  <data name="RatingStatus_MealFromTheFuture" xml:space="preserve">
-    <value>Impossible d'évaluer un plat futur.</value>
-  </data>
-  <data name="RatingStatus_MealFromThePast" xml:space="preserve">
-    <value>Impossible d'évaluer un ancien plat.</value>
-  </data>
-  <data name="RatingStatus_Ok" xml:space="preserve">
-    <value> </value>
-    <comment>Must be empty</comment>
-  </data>
-  <data name="RatingStatus_TooEarly" xml:space="preserve">
-    <value>Il est trop tôt pour évaluer un plat.</value>
+    <value>1 vote</value>
   </data>
   <data name="RateButton" xml:space="preserve">
     <value>évaluer</value>
@@ -223,13 +217,26 @@
   <data name="RateMealButton" xml:space="preserve">
     <value>évaluer</value>
   </data>
-  <data name="ViewRestaurantOnMap" xml:space="preserve">
-    <value>afficher sur la carte</value>
+  <data name="RatingStatus_AlreadyVoted" xml:space="preserve">
+    <value>Vous avez déjà évalué un plat aujourd'hui.</value>
+  </data>
+  <data name="RatingStatus_MealFromTheFuture" xml:space="preserve">
+    <value>Les plats du futur ne peuvent pas être évalués.</value>
+  </data>
+  <data name="RatingStatus_MealFromThePast" xml:space="preserve">
+    <value>Les plats du passé ne peuvent pas être évalués.</value>
+  </data>
+  <data name="RatingStatus_Ok" xml:space="preserve">
+    <value />
+    <comment>Must be empty</comment>
+  </data>
+  <data name="RatingStatus_TooEarly" xml:space="preserve">
+    <value>Il est trop tôt pour évaluer un plat.</value>
   </data>
   <data name="RatingViewTitle" xml:space="preserve">
     <value>évaluer</value>
   </data>
-  <data name="UnknownPrice" xml:space="preserve">
-    <value>prix inconnu</value>
+  <data name="SatisfactionPercentage" xml:space="preserve">
+    <value>de satisfaction</value>
   </data>
 </root>

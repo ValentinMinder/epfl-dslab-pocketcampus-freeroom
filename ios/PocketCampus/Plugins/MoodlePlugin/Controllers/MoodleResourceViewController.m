@@ -47,7 +47,7 @@
 
 static NSTimeInterval kHideNavbarSeconds = 5.0;
 
-@interface MoodleResourceViewController ()<UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
+@interface MoodleResourceViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
 
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
@@ -128,8 +128,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         [self actionButton].enabled = NO;
         [self startMoodleResourceDownload];
     }
-    self.splitViewControllerPtr = self.splitViewController;
-    [self.splitViewController addObserver:self forKeyPath:NSStringFromSelector(@selector(isMasterViewControllerHidden)) options:0 context:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
 }
@@ -139,12 +137,17 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self trackScreen];
     self.webView.scrollView.contentInset = [PCUtils edgeInsetsForViewController:self];
     self.webView.scrollView.scrollIndicatorInsets = [PCUtils edgeInsetsForViewController:self];
+    
+    self.splitViewControllerPtr = self.splitViewController;
+    [self.splitViewController addObserver:self forKeyPath:NSStringFromSelector(@selector(isMasterViewControllerHidden)) options:0 context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self showNavbar];
     [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
+    
+    [self removeSplitViewControllerObserver];
 }
 
 - (void)didReceiveMemoryWarning
@@ -308,29 +311,11 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 #pragma mark - Moodle Resource loading
 
 - (void)startMoodleResourceDownload {
-    
-    VoidBlock successBlock = ^{
-        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
-        self.centerMessageLabel.hidden = NO;
-        self.progressView.hidden = NO;
-        [self.moodleService downloadMoodleResource:self.moodleResource progressView:self.progressView delegate:self];
-    };
-    
-    if ([self.moodleService lastSession]) {
-        successBlock();
-    } else {
-        CLSNSLog(@"-> No saved session, loggin in...");
-        [[MoodleController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
-            if (self.splitViewController) {
-                MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
-                self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
-            } else {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-        } failureBlock:^{
-            [self serviceConnectionToServerFailed];
-        }];
-    }
+
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
+    self.centerMessageLabel.hidden = NO;
+    self.progressView.hidden = NO;
+    [self.moodleService downloadMoodleResource:self.moodleResource progressView:self.progressView delegate:self];
 }
 
 - (void)loadDownloadedMoodleResourceInWebView {
@@ -339,19 +324,22 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self.webView loadRequest:[NSURLRequest requestWithURL:localFileURL]];
     
     UITapGestureRecognizer* tapGestureReco = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavbarVisibility)];
-    UITapGestureRecognizer* doubleTapGestureReco = [[UITapGestureRecognizer alloc] initWithTarget:nil action:NULL];
+    tapGestureReco.delegate = self;
+
+    UITapGestureRecognizer* doubleTapGestureReco = [[UITapGestureRecognizer alloc] initWithTarget:nil action:nil];
+    doubleTapGestureReco.delegate = self;
     doubleTapGestureReco.numberOfTapsRequired = 2;
     
     [tapGestureReco requireGestureRecognizerToFail:doubleTapGestureReco]; //must add also double-tap because otherwise, single-tap is triggered immediately, even when double-tapping for zooming into PDF.
     
+    //Like in GoodReader, faster because reacts immediatly (instead of having to wait to check if second tap is coming becore triggering
+    UITapGestureRecognizer* tripleFingerTapReco = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavbarVisibility)];
+    tripleFingerTapReco.delegate = self;
+    tripleFingerTapReco.numberOfTouchesRequired = 3;
+    
     [self.view addGestureRecognizer:tapGestureReco];
     [self.view addGestureRecognizer:doubleTapGestureReco];
-    
-    
-    //Like in GoodReader, faster because reacts immediatly (instead of having to wait to check if second tap is coming becore triggering
-    UITapGestureRecognizer* tripleFingerTapRecp = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavbarVisibility)];
-    tripleFingerTapRecp.numberOfTouchesRequired = 3;
-    [self.view addGestureRecognizer:tripleFingerTapRecp];
+    [self.view addGestureRecognizer:tripleFingerTapReco];
     
     [self rescheduleHideNavbarTimer];
 }
@@ -373,10 +361,22 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         [errorAlert show];
         [self serviceConnectionToServerFailed];
     } else if (statusCode == 303 || statusCode == 407) {
-        //mans bad cookie
+        //mans not logged in
         self.progressView.progress = 0.0;
-        [self.moodleService deleteSession];
-        [self startMoodleResourceDownload];
+        __weak __typeof(self) weakSelf = self;
+        [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+            [weakSelf startMoodleResourceDownload];
+        } userCancelled:^{
+            if (weakSelf.splitViewController) {
+                MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
+                weakSelf.splitViewController.viewControllers = @[weakSelf.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
+            } else {
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        } failure:^{
+            [weakSelf serviceConnectionToServerFailed];
+        }];
+        
     } else { //other unkown error
         [self serviceConnectionToServerFailed];
     }
@@ -389,6 +389,14 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     self.centerMessageLabel.hidden = NO;
 }
 
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if (gestureRecognizer.view == self.view && [otherGestureRecognizer.view isOrSubviewOfView:self.webView]) {
+        return YES;
+    }
+    return NO;
+}
 
 #pragma mark - UIActionSheetDelegate
 
@@ -441,6 +449,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 - (void)dealloc
 {
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self removeSplitViewControllerObserver];
     [self.hideNavbarTimer invalidate];
     [self.moodleService cancelOperationsForDelegate:self];

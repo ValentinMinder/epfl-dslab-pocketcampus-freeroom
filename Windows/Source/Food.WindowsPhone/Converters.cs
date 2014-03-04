@@ -3,7 +3,6 @@
 // File author: Solal Pirelli
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -16,6 +15,28 @@ using PocketCampus.Food.Resources;
 namespace PocketCampus.Food
 {
     /// <summary>
+    /// Converts a price to a display-friendly version.
+    /// </summary>
+    public sealed class PriceToStringConverter : ValueConverter<double?, string>
+    {
+        private const string IntegerPriceFormat = "{0}.- CHF";
+        private const string DecimalPriceFormat = "{0:0.00} CHF";
+
+        public override string Convert( double? value )
+        {
+            if ( value == null || value == 0.0 )
+            {
+                return PluginResources.UnknownPrice;
+            }
+            if ( Math.Round( (double) value ) == value )
+            {
+                return string.Format( CultureInfo.InvariantCulture, IntegerPriceFormat, value );
+            }
+            return string.Format( CultureInfo.InvariantCulture, DecimalPriceFormat, value );
+        }
+    }
+
+    /// <summary>
     /// Converts meals to their price according to the current settings.
     /// </summary>
     /// <remarks>
@@ -23,7 +44,7 @@ namespace PocketCampus.Food
     /// </remarks>
     public sealed class MealPriceConverter : DependencyObject, IValueConverter
     {
-        private const string PriceFormat = "{0:0.00} CHF";
+        private PriceToStringConverter _priceToString = new PriceToStringConverter();
 
         public IPluginSettings Settings
         {
@@ -40,9 +61,7 @@ namespace PocketCampus.Food
 
             // Settings == null in design mode for some reason
             var target = Settings == null ? PriceTarget.All : Settings.PriceTarget;
-
-            double? price = meal.GetPrice( target );
-            return price == null ? PluginResources.UnknownPrice : string.Format( PriceFormat, price );
+            return _priceToString.Convert( meal.GetPrice( target ) );
         }
 
         public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
@@ -52,30 +71,16 @@ namespace PocketCampus.Food
     }
 
     /// <summary>
-    /// Converts a meal type to a brush.
+    /// Converts meals to images of their main type.
     /// </summary>
-    public sealed class MealTypeToBrushConverter : ValueConverter<MealTypes, Brush>
+    public sealed class MealToImageConverter : ValueConverter<Meal, ImageSource>
     {
-        private const byte Alpha = 255;
+        private EnumToImageSourceConverter _converter = new EnumToImageSourceConverter();
 
-        private static Dictionary<MealTypes, Brush> Values = new Dictionary<MealTypes, Brush>
+        public override ImageSource Convert( Meal value )
         {
-            { MealTypes.Unknown, new SolidColorBrush( Color.FromArgb( Alpha, 0x00, 0x00, 0x00 ) ) },
-            { MealTypes.GreenFork, new SolidColorBrush( Color.FromArgb( Alpha, 0x77, 0xD9, 0x4E ) ) },
-            { MealTypes.Fish, new SolidColorBrush( Color.FromArgb( Alpha, 0x00, 0xA2, 0xFF ) ) },
-            { MealTypes.Meat, new SolidColorBrush( Color.FromArgb( Alpha, 0xEF, 0x07, 0x07 ) ) },
-            { MealTypes.Poultry, new SolidColorBrush( Color.FromArgb( Alpha, 0xC4, 0x6C, 0x00 ) ) },
-            { MealTypes.Vegetarian, new SolidColorBrush( Color.FromArgb( Alpha, 0x45, 0xDE, 0x46 ) ) },
-            { MealTypes.Pasta, new SolidColorBrush( Color.FromArgb( Alpha, 0xF2, 0xE1, 0x32 ) ) },
-            { MealTypes.Pizza, new SolidColorBrush( Color.FromArgb( Alpha, 0xEA, 0xC5, 0x4F ) ) },
-            { MealTypes.Thai, new SolidColorBrush( Color.FromArgb( Alpha, 0xE0, 0xE0, 0xE0 ) ) },
-            { MealTypes.Indian, new SolidColorBrush( Color.FromArgb( Alpha, 0xE0, 0xE0, 0xE0 ) ) },
-            { MealTypes.Lebanese, new SolidColorBrush( Color.FromArgb( Alpha, 0xE0, 0xE0, 0xE0 ) ) }
-        };
-
-        protected override Brush Convert( MealTypes value )
-        {
-            return Values[value];
+            MealType type = value.MealTypes.OrderByDescending( x => x ).First();
+            return _converter.Convert( type );
         }
     }
 
@@ -84,7 +89,7 @@ namespace PocketCampus.Food
     /// </summary>
     public sealed class RestaurantsToGroupsConverter : ValueConverter<Restaurant[], RestaurantAsGroup[]>
     {
-        protected override RestaurantAsGroup[] Convert( Restaurant[] value )
+        public override RestaurantAsGroup[] Convert( Restaurant[] value )
         {
             if ( value == null )
             {
@@ -95,24 +100,12 @@ namespace PocketCampus.Food
         }
     }
 
-
-    /// <summary>
-    /// Converts a rating value to a percentage.
-    /// </summary>
-    public sealed class RatingValueToPercentageConverter : ValueConverter<double, int>
-    {
-        protected override int Convert( double value )
-        {
-            return (int) Math.Round( 100 * value );
-        }
-    }
-
     /// <summary>
     /// Converts a number of votes to a human-readable string.
     /// </summary>
     public sealed class VoteCountToStringConverter : ValueConverter<int, string>
     {
-        protected override string Convert( int value )
+        public override string Convert( int value )
         {
             return value == 0 ? PluginResources.NoVotesCast
                  : value == 1 ? PluginResources.OneVoteCast

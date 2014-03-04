@@ -37,9 +37,13 @@
 
 static CamiproService* instance __weak = nil;
 
-@implementation CamiproService
+@interface CamiproService ()
 
-@synthesize camiproSession = _camiproSession;
+@property (nonatomic, strong) CamiproSession* camiproSession;
+
+@end
+
+@implementation CamiproService
 
 #pragma mark - Init
 
@@ -83,9 +87,17 @@ static NSString* const kCamiproSession = @"camiproSession";
     return _camiproSession;
 }
 
-- (void)setCamiproSession:(CamiproSession *)camiproSession {
+- (void)setCamiproSession:(CamiproSession *)camiproSession persist:(BOOL)persist {
     _camiproSession = camiproSession;
-    [PCObjectArchiver saveObject:camiproSession forKey:kCamiproSession andPluginName:@"camipro"];
+    if (persist) {
+        [PCObjectArchiver saveObject:camiproSession forKey:kCamiproSession andPluginName:@"camipro"];
+    } else {
+        [PCObjectArchiver saveObject:nil forKey:kCamiproSession andPluginName:@"camipro"];
+    }
+}
+
+- (void)deleteCamiproSession {
+    [self setCamiproSession:nil persist:YES];
 }
 
 #pragma mark - Service methods

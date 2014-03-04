@@ -28,9 +28,9 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
   private static final org.apache.thrift.protocol.TField I_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("iLanguage", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField I_COURSE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iCourseId", org.apache.thrift.protocol.TType.I32, (short)3);
 
-  public SessionId iSessionId; // required
-  public String iLanguage; // required
-  public int iCourseId; // required
+  private SessionId iSessionId; // required
+  private String iLanguage; // required
+  private int iCourseId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

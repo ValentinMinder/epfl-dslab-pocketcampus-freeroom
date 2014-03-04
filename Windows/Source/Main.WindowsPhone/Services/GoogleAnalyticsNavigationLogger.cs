@@ -12,6 +12,8 @@ namespace PocketCampus.Main.Services
     /// </summary>
     public sealed class GoogleAnalyticsNavigationLogger : NavigationLogger
     {
+        private const string EventCategory = "UserAction";
+
         private readonly Tracker _tracker;
 
         /// <summary>
@@ -33,9 +35,9 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Logs a command execution on the specified ViewModel with the specified ID.
         /// </summary>
-        protected override void LogEvent( string viewModelId, string eventId )
+        protected override void LogEvent( string viewModelId, string eventId, string label )
         {
-            _tracker.SendEvent( viewModelId, viewModelId + "-" + eventId, "", 0 );
+            _tracker.SendEvent( EventCategory, viewModelId + "-" + eventId, label, 0 );
         }
     }
 }

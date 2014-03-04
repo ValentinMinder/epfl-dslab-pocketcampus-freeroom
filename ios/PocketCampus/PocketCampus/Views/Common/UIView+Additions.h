@@ -26,13 +26,7 @@
  */
 
 
-
-
-
-
 //  Created by Loïc Gardiol on 09.01.14.
-
-
 
 #import <UIKit/UIKit.h>
 
@@ -40,8 +34,9 @@
 
 /*
  * Returns all subviews of self in breath search first order
- * Note: stops if too many recursions.
  */
 - (NSArray*)allSubviews;
+
+- (BOOL)isOrSubviewOfView:(UIView*)superview;
 
 @end

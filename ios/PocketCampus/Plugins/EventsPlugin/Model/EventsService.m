@@ -218,11 +218,12 @@ static NSString* const kUserTokenKey = @"userToken";
     [PCUtils throwExceptionIfObject:request notKindOfClass:[EventItemRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* result) {
+        EventItemReply* reply = (__bridge id)result;
+        return reply.status == 200;
+    };
     operation.returnEvenStaleCacheIfNoInternetConnection = YES;
-    operation.cacheValidityInterval = 43200; //half-day
-//#warning TO REMOVE
-    //operation.skipCache = YES;
-    //operation.cacheValidityInterval = 432000;
+    operation.cacheValidityInterval = 600; //10 min
     operation.serviceClientSelector = @selector(getEventItem:);
     operation.delegateDidReturnSelector = @selector(getEventItemForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getEventItemFailedForRequest:);
@@ -235,6 +236,10 @@ static NSString* const kUserTokenKey = @"userToken";
     [PCUtils throwExceptionIfObject:request notKindOfClass:[EventPoolRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* result) {
+        EventPoolReply* reply = (__bridge id)result;
+        return reply.status == 200;
+    };
     operation.skipCache = YES;
     operation.serviceClientSelector = @selector(getEventPool:);
     operation.delegateDidReturnSelector = @selector(getEventPoolForRequest:didReturn:);
@@ -266,6 +271,8 @@ static NSString* const kUserTokenKey = @"userToken";
     [self.operationQueue addOperation:operation];
 }
 
+#pragma mark Cached
+
 - (EventPoolReply*)getFromCacheEventPoolForRequest:(EventPoolRequest*)request {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[EventPoolRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
@@ -277,7 +284,7 @@ static NSString* const kUserTokenKey = @"userToken";
     return [operation cachedResponseObjectEvenIfStale:YES];
 }
 
-#pragma mark - dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

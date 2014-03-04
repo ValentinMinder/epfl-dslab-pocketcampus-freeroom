@@ -179,6 +179,7 @@ static CGFloat kRowHeight;
     if (!self.personBaseInfoCell.profilePicture) {
         return;
     }
+    [self trackAction:@"ShowPictureLarge"];
     DirectoryProfilePictureViewController* viewController = [[DirectoryProfilePictureViewController alloc] initWithImage:self.personBaseInfoCell.profilePicture];
     if (self.splitViewController) {
         if (!self.imagePopoverController) {
@@ -202,7 +203,7 @@ static CGFloat kRowHeight;
         abPerson = person;
         abPersonController.title = NSLocalizedStringFromTable(@"UpdatedContact", @"DirectoryPlugin", nil);
     } else {
-        abPerson = [self.person createABRecord];
+        abPerson = [self.person newABRecord];
         if (!abPerson) {
             [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleToCreateContact", @"DirectoryPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             return;
@@ -240,7 +241,7 @@ static CGFloat kRowHeight;
 #pragma mark - ABPeoplePickerNavigationControllerDelegate
 
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
-    person = [self.person mergedWithABRecord:person addressBook:peoplePicker.addressBook];
+    person = [self.person newMergedWithABRecord:person addressBook:peoplePicker.addressBook];
     if (!person) {
         [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"AddToExistingContactError", @"DirectoryPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         return NO;

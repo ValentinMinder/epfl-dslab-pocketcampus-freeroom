@@ -14,7 +14,7 @@
 "NoResultPCUnknownViewControllerLoad" = "Impossible de trouver cette\npersonne.";
 "Filter" = "Filtrer";
 "FilterByTags" = "Filtrer par tags";
-"FilterByTagsWithFormat" = "Filtrer par tags (%d/%d)";
+"FilterByTagsWithFormat" = "Filtrer par tags (%d sel.)";
 "SelectAtLeastOneTag" = "Séléctionnez au moins un tag";
 "SelectAll" = "Tout sélect.";
 "DeselectAll" = "Tout désélect.";
@@ -31,7 +31,7 @@
 "OneWeek" = "1 semaine";
 "TwoWeeks" = "2 semaines";
 "SixMonths" = "6 mois";
-"OneYear" = "une année";
+"OneYear" = "1 année";
 "Share" = "Partager";
 "SendByEmailInstructions" = "Envoyer votre liste d'éléments\n favoris par email.";
 "BackToUpcomingEvents" = "Retour aux évenements à venir";

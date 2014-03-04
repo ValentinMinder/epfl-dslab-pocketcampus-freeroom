@@ -15,11 +15,18 @@ namespace PocketCampus.Mvvm.Logging
         public string EventId { get; private set; }
 
         /// <summary>
+        /// Gets the label of the event that should be logged.
+        /// </summary>
+        public string Label { get; private set; }
+
+
+        /// <summary>
         /// Creates a new EventLogRequest.
         /// </summary>
-        public EventLogRequest( string eventId )
+        public EventLogRequest( string eventId, string label )
         {
             EventId = eventId;
+            Label = label;
         }
     }
 }

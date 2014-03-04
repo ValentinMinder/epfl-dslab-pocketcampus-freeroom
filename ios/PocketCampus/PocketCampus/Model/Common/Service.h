@@ -94,4 +94,12 @@
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate;
 - (void)cancelAllOperations;
 
+/*
+ * Returns a URL request pointing to raw service
+ * You can then add parameters to this request, corresponding
+ * to the action you want to execute.
+ * WARNING: you must NOT remove the request headers.
+ */
+- (NSMutableURLRequest*)pcProxiedRequest;
+
 @end

@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.satellite.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.satellite.shared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -198,7 +198,9 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
         TTransportException* texception = [exception isKindOfClass:TTransportException.class] ? (TTransportException*)exception : nil;
         if (!texception) {
             ServiceRequestLog(self, @"EXCEPTION caught in main : %@, %@", exception.name, exception.reason);
-            [self finish];
+            [self indicateFailureToDelegateCompletion:^{
+                [self finish];
+            }];
             return;
         }
         
@@ -229,22 +231,9 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
             return;
         }
         
-        if (![self.delegate respondsToSelector:self.delegateDidFailSelector]) {
-            ServiceRequestLog(self, @"operation failed but delegate does not respond to selector %@. Ignoring", NSStringFromSelector(self.delegateDidFailSelector));
+        [self indicateFailureToDelegateCompletion:^{
             [self finish];
-            return;
-        }
-        
-        NSInvocation* delegateFailInv = [NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidFailSelector]];
-        [delegateFailInv setSelector:self.delegateDidFailSelector];
-        [self setWrappedArgumentsForInvocation:delegateFailInv];
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            if (self.delegate) {
-                [delegateFailInv invokeWithTarget:self.delegate];
-            }
-        });
-        [self finish];
-        
+        }];
     }
 }
 
@@ -405,11 +394,17 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
             [NSException raise:@"Illegal returnType" format:@"returnType %d is not supported.", self.returnType];
             break;
     }
-    
+
     [self throwIfCancelled];
     
     if (self.keepInCache) {
-        [PCObjectArchiver saveObject:responseDic forKey:self.hashIdentifier andPluginName:self.service.serviceName isCache:YES];
+        BOOL saveToCache = YES;
+        if (self.keepInCacheBlock) {
+            saveToCache = self.keepInCacheBlock([self.class unwrapArgument:responseDic]);
+        }
+        if (saveToCache) {
+            [PCObjectArchiver saveObject:responseDic forKey:self.hashIdentifier andPluginName:self.service.serviceName isCache:YES];
+        }
     }
     
     NSInvocation* delegateInv = [NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidReturnSelector]];
@@ -421,12 +416,16 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
     } else if (resultPrim) {
         [delegateInv setArgument:resultPrim atIndex:self.arguments.count+2];
     }
-    
+
     [self throwIfCancelled];
     
     dispatch_sync(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:self.delegateDidReturnSelector]) {
-            [delegateInv invokeWithTarget:self.delegate];
+        if ([self isCancelled]) {
+            ServiceRequestLog(self, @"cancelled operation handled.");
+        } else {
+            if ([self.delegate respondsToSelector:self.delegateDidReturnSelector]) {
+                [delegateInv invokeWithTarget:self.delegate];
+            }
         }
     });
     if (completion) {
@@ -436,10 +435,51 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
 
 - (void)indicateConnectionErrorToDelegateCompletion:(VoidBlock)completion {
     dispatch_sync(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(serviceConnectionToServerFailed)]) {
-            [self.delegate serviceConnectionToServerFailed];
+        if ([self isCancelled]) {
+            ServiceRequestLog(self, @"cancelled operation handled.");
+        } else {
+            if ([self.delegate respondsToSelector:@selector(serviceConnectionToServerFailed)]) {
+                [self.delegate serviceConnectionToServerFailed];
+            }
         }
     });
+    if (completion) {
+        completion();
+    }
+}
+
+- (void)indicateFailureToDelegateCompletion:(VoidBlock)completion {
+    if ([self isCancelled]) {
+        ServiceRequestLog(self, @"cancelled operation handled.");
+        if (completion) {
+            completion();
+        }
+        return;
+    }
+    if (![self.delegate respondsToSelector:self.delegateDidFailSelector]) {
+        ServiceRequestLog(self, @"operation failed but delegate does not respond to selector %@. Ignoring.", NSStringFromSelector(self.delegateDidFailSelector));
+        if (completion) {
+            completion();
+        }
+        return;
+    }
+    @try {
+        NSInvocation* delegateFailInv = [NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidFailSelector]];
+        [delegateFailInv setSelector:self.delegateDidFailSelector];
+        [self setWrappedArgumentsForInvocation:delegateFailInv];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            if ([self isCancelled]) {
+                ServiceRequestLog(self, @"cancelled operation handled.");
+            } else {
+                if (self.delegate) {
+                    [delegateFailInv invokeWithTarget:self.delegate];
+                }
+            }
+        });
+    }
+    @catch (NSException *exception) {
+        ServiceRequestLog(self, @"EXCEPTION while trying to indicate failure to delegate");
+    }
     if (completion) {
         completion();
     }

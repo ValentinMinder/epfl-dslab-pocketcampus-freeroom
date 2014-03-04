@@ -274,7 +274,7 @@ static NSCache* veryShortNameForTransportLineName;
             nbChanges++;
         }
     }
-    return nbChanges-1; //les piquets et les potaux...
+    return nbChanges == 0 ? nbChanges : nbChanges-1; //les piquets et les potaux...
 }
 
 @end
