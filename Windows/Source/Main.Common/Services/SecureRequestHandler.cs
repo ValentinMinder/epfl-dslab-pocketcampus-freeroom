@@ -38,6 +38,32 @@ namespace PocketCampus.Main.Services
 
 
         /// <summary>
+        /// Asynchronously executes the specified request for the specified ViewModel type.
+        /// The request asynchronously returns a boolean indicating whether the authentication succeeded.
+        /// </summary>
+        public async Task ExecuteAsync<TViewModel>( Func<Task<bool>> attempt )
+            where TViewModel : IViewModel<NoParameter>
+        {
+            if ( await attempt() )
+            {
+                // if we're not authenticated, the user doesn't want to be remembered
+                if ( !_mainSettings.IsAuthenticated )
+                {
+                    _mainSettings.UserName = null;
+                    _mainSettings.Password = null;
+                }
+            }
+            else
+            {
+                // Authenticate, and then go to this plugin if it succeeds
+                // but go back to whatever was the previous plugin rather than to this one if it doesn't
+                _navigationService.PopBackStack();
+                _navigationService.NavigateToDialog<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Dialog );
+                _navigationService.NavigateTo<TViewModel>();
+            }
+        }
+
+        /// <summary>
         /// Asynchronously executes the specified request, with the specified authenticator, for the specified ViewModel type.
         /// The request asynchronously returns a boolean indicating whether the authentication succeeded.
         /// </summary>

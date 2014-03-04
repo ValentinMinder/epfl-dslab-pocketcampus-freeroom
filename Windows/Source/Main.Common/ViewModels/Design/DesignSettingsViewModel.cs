@@ -45,6 +45,12 @@ namespace PocketCampus.Main.ViewModels.Design
                 set { }
             }
 
+            public string ServerSession
+            {
+                get { return null; }
+                set { }
+            }
+
             public Dictionary<string, string> Sessions
             {
                 get { return null; }

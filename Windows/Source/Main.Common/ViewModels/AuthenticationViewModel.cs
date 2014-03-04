@@ -2,8 +2,11 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
+using PocketCampus.Main.Models;
+using PocketCampus.Main.Services;
 using PocketCampus.Mvvm;
 using PocketCampus.Mvvm.Logging;
 
@@ -15,8 +18,10 @@ namespace PocketCampus.Main.ViewModels
     [LogId( "/dashboard/authenticate" )]
     public sealed class AuthenticationViewModel : ViewModel<AuthenticationMode>
     {
-        private readonly INavigationService _navigationService;
+        private readonly IAuthenticationService _authenticationService;
         private readonly ITequilaAuthenticator _authenticator;
+        private readonly IServerAccess _serverAccess;
+        private readonly INavigationService _navigationService;
         private readonly IMainSettings _settings;
 
         private string _userName;
@@ -91,11 +96,15 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Creates a new AuthenticationViewModel.
         /// </summary>
-        public AuthenticationViewModel( INavigationService navigationService, ITequilaAuthenticator authenticator, IMainSettings settings,
+        public AuthenticationViewModel( IAuthenticationService authenticationService, ITequilaAuthenticator authenticator,
+                                        IServerAccess serverAccess, INavigationService navigationService,
+                                        IMainSettings settings,
                                         AuthenticationMode authMode )
         {
-            _navigationService = navigationService;
+            _authenticationService = authenticationService;
             _authenticator = authenticator;
+            _serverAccess = serverAccess;
+            _navigationService = navigationService;
             _settings = settings;
 
             SaveCredentials = true;
@@ -113,8 +122,22 @@ namespace PocketCampus.Main.ViewModels
 
             try
             {
-                if ( await _authenticator.AuthenticateAsync( UserName, Password ) )
+                var tokenResponse = await _authenticationService.GetTokenAsync();
+                if ( tokenResponse.Status != AuthenticationStatusCode.Success )
                 {
+                    throw new Exception( "An error occurred while getting a token." );
+                }
+
+                if ( await _authenticator.AuthenticateAsync( UserName, Password, tokenResponse.Token ) )
+                {
+                    var sessionResponse = await _authenticationService.GetSessionAsync( tokenResponse.Token );
+                    if ( sessionResponse.Status != AuthenticationStatusCode.Success )
+                    {
+                        throw new Exception( "An error occurred while getting a session." );
+                    }
+
+                    _settings.ServerSession = _serverAccess.ServerSession = sessionResponse.Session;
+
                     _settings.IsAuthenticated = SaveCredentials;
                     _settings.UserName = UserName;
                     _settings.Password = Password;

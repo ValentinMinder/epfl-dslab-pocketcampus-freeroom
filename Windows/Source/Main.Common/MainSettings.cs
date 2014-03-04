@@ -58,6 +58,15 @@ namespace PocketCampus.Main
         }
 
         /// <summary>
+        /// Gets or sets the session for the server. (separate from the per-plugin sessions)
+        /// </summary>
+        public string ServerSession
+        {
+            get { return Get<string>(); }
+            set { Set( value ); }
+        }
+
+        /// <summary>
         /// Gets or sets the saved sessions.
         /// </summary>
         public Dictionary<string, string> Sessions
@@ -86,6 +95,7 @@ namespace PocketCampus.Main
                 { x => x.IsAuthenticated, () => false },
                 { x => x.UserName, () => null },
                 { x => x.Password, () => null },
+                { x => x.ServerSession, () => null },
                 { x => x.Sessions, () => new Dictionary<string, string>() }
             };
         }

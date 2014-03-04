@@ -18,7 +18,7 @@ namespace PocketCampus.Moodle.Models
         /// <summary>
         /// The request was successfully completed.
         /// </summary>
-        Ok = 200,
+        Success = 200,
 
         /// <summary>
         /// A network error occurred while executing the request.

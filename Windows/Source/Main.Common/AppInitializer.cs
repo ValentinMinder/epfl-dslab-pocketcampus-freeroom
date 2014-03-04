@@ -17,6 +17,7 @@ namespace PocketCampus.Main
 
             Container.Bind<ITequilaAuthenticator, TequilaAuthenticator>();
             Container.Bind<ISecureRequestHandler, SecureRequestHandler>();
+            Container.Bind<IAuthenticationService, AuthenticationService>();
             Container.BindOnce<IServerAccess, ServerAccess>();
         }
 

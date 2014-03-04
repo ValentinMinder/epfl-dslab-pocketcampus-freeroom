@@ -19,24 +19,14 @@ namespace PocketCampus.Moodle.Services
 
         }
 
-        public Task<TequilaToken> GetTokenAsync()
+        public Task<CourseListResponse> GetCoursesAsync( string dummy )
         {
-            return CallAsync<TequilaToken>( x => x.GetTokenAsync );
+            return CallAsync<string, CourseListResponse>( x => x.GetCoursesAsync, dummy );
         }
 
-        public Task<MoodleSession> GetSessionAsync( TequilaToken token )
+        public Task<CourseSectionListResponse> GetCourseSectionsAsync( string courseId )
         {
-            return CallAsync<TequilaToken, MoodleSession>( x => x.GetSessionAsync, token );
-        }
-
-        public Task<CourseListResponse> GetCoursesAsync( MoodleRequest request )
-        {
-            return CallAsync<MoodleRequest, CourseListResponse>( x => x.GetCoursesAsync, request );
-        }
-
-        public Task<CourseSectionListResponse> GetCourseSectionsAsync( MoodleRequest request )
-        {
-            return CallAsync<MoodleRequest, CourseSectionListResponse>( x => x.GetCourseSectionsAsync, request );
+            return CallAsync<string, CourseSectionListResponse>( x => x.GetCourseSectionsAsync, courseId );
         }
     }
 }

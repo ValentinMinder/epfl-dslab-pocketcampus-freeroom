@@ -65,14 +65,6 @@
     <Compile Include="ViewPoolRequest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ThriftSharp">
-      <HintPath>..\..\packages\ThriftSharp.1.0.7\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">
       <Project>{f780f0dd-8a14-4e72-9525-a11d792cbfab}</Project>
       <Name>PocketCampus.Common</Name>
@@ -81,6 +73,14 @@
       <Project>{53c14bdb-427e-492e-8bdc-b329d8737d17}</Project>
       <Name>PocketCampus.Mvvm</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ThriftSharp">
+      <HintPath>..\..\packages\ThriftSharp.1.0.8\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

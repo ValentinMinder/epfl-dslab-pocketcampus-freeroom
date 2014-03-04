@@ -16,7 +16,7 @@ namespace PocketCampus.Food.Models
         /// The request completed successfully.
         /// </summary>
         [ThriftEnumMember( "OK", 200 )]
-        Ok,
+        Success = 200,
 
         /// <summary>
         /// A network error occurred on the server while executing the request.

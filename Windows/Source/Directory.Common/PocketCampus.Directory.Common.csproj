@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThriftSharp">
-      <HintPath>..\..\packages\ThriftSharp.1.0.7\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
+      <HintPath>..\..\packages\ThriftSharp.1.0.8\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

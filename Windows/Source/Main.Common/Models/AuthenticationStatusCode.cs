@@ -1,19 +1,16 @@
-// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
 using ThriftSharp;
 
-namespace PocketCampus.Camipro.Models
+namespace PocketCampus.Main.Models
 {
     /// <summary>
-    /// The possible response statuses of server requests.
+    /// Status for authentication requests.
     /// </summary>
-    /// <remarks>
-    /// Not in the Thrift interface (it uses undocumented constants).
-    /// </remarks>
-    [ThriftEnum( "_" )]
-    public enum ResponseStatus
+    [ThriftEnum( "AuthStatusCode" )]
+    public enum AuthenticationStatusCode
     {
         /// <summary>
         /// The request completed successfully.

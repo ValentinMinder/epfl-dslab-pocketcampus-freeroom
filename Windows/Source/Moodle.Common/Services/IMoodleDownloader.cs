@@ -12,8 +12,8 @@ namespace PocketCampus.Moodle.Services
     public interface IMoodleDownloader
     {
         /// <summary>
-        /// Asynchronously downloads a file from the specified URL, with the specified Moodle cookie.
+        /// Asynchronously downloads a file from the specified URL.
         /// </summary>
-        Task<byte[]> DownloadAsync( string url, string cookie );
+        Task<byte[]> DownloadAsync( string url );
     }
 }

@@ -97,7 +97,7 @@ namespace PocketCampus.Camipro.ViewModels.Design
                             Date = new DateTime(2013, 5, 8, 12, 22, 48)
                         },
                     },
-                    Status = ResponseStatus.Ok
+                    Status = ResponseStatus.Success
                 };
             }
         }
@@ -119,7 +119,7 @@ namespace PocketCampus.Camipro.ViewModels.Design
                         MonthTotal = 186.50,
                         ThreeMonthsTotal = 420.60
                     },
-                    Status = ResponseStatus.Ok
+                    Status = ResponseStatus.Success
                 };
             }
         }

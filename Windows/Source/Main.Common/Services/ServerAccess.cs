@@ -5,6 +5,7 @@
 // Uncomment this line if you are connected to the EPFL network (which, for now, means being at EPFL physically)
 // #define IS_AT_EPFL
 
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using PocketCampus.Common;
@@ -19,6 +20,7 @@ namespace PocketCampus.Main.Services
     public sealed class ServerAccess : IServerAccess
     {
         private const int ThriftConnectionTimeout = 30000; // in milliseconds
+        private const string ServerAuthenticationHeader = "X-PC-AUTH-PCSESSID";
 
         // The format of the URL to get the current server configuration
         // The parameter is the app version
@@ -37,9 +39,39 @@ namespace PocketCampus.Main.Services
 
 
         private readonly IHttpClient _client;
+        private readonly IDictionary<string, string> _headers;
 
-
+        /// <summary>
+        /// Gets or sets the currently used server configuration, loaded from the settings by default.
+        /// </summary>
         public ServerConfiguration CurrentConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the session ID sent with each server request.
+        /// </summary>
+        public string ServerSession
+        {
+            get { return _headers.ContainsKey( ServerAuthenticationHeader ) ? _headers[ServerAuthenticationHeader] : null; }
+            set
+            {
+                if ( _headers.ContainsKey( ServerAuthenticationHeader ) )
+                {
+                    if ( value == null )
+                    {
+                        _headers.Remove( ServerAuthenticationHeader );
+                    }
+                    else
+                    {
+                        _headers[ServerAuthenticationHeader] = value;
+                    }
+
+                }
+                else if ( value != null )
+                {
+                    _headers.Add( ServerAuthenticationHeader, value );
+                }
+            }
+        }
 
 
         /// <summary>
@@ -48,8 +80,10 @@ namespace PocketCampus.Main.Services
         public ServerAccess( IHttpClient client, IMainSettings settings )
         {
             _client = client;
+            _headers = new Dictionary<string, string>();
 
             CurrentConfiguration = settings.ServerConfiguration;
+            ServerSession = settings.ServerSession;
         }
 
 
@@ -71,7 +105,7 @@ namespace PocketCampus.Main.Services
         {
             string format = string.Format( ThriftServerUrlFormat, CurrentConfiguration.Protocol, CurrentConfiguration.Port );
             string url = string.Format( ThriftServiceUrlFormat, format, pluginName );
-            return ThriftCommunication.Binary().OverHttp( url, ThriftConnectionTimeout );
+            return ThriftCommunication.Binary().OverHttp( url, ThriftConnectionTimeout, _headers );
         }
     }
 }

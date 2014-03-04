@@ -49,6 +49,11 @@
     <Compile Include="AuthenticationMode.cs" />
     <Compile Include="IMainSettings.cs" />
     <Compile Include="MainSettings.cs" />
+    <Compile Include="Models\AuthenticationSessionResponse.cs" />
+    <Compile Include="Models\AuthenticationTokenResponse.cs" />
+    <Compile Include="Models\AuthenticationStatusCode.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\IRatingService.cs" />
     <Compile Include="Services\IPluginLoader.cs" />
     <Compile Include="Services\ITileCreator.cs" />
@@ -69,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThriftSharp">
-      <HintPath>..\..\packages\ThriftSharp.1.0.7\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
+      <HintPath>..\..\packages\ThriftSharp.1.0.8\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

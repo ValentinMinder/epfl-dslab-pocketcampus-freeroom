@@ -2,7 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-namespace PocketCampus.Moodle.ViewModels
+namespace PocketCampus.Moodle
 {
     /// <summary>
     /// Display-friendly file download statuses.

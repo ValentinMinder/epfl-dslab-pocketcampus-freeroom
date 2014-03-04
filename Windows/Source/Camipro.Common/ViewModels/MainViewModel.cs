@@ -84,7 +84,7 @@ namespace PocketCampus.Camipro.ViewModels
             try
             {
                 var result = await _camiproService.RequestEBankingEMailAsync( _lastRequest );
-                if ( result.Status != ResponseStatus.Ok )
+                if ( result.Status != ResponseStatus.Success )
                 {
                     throw new Exception( "Server error while requesting an e-banking e-mail." );
                 }

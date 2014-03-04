@@ -37,6 +37,11 @@ namespace PocketCampus.Main
         string Password { get; set; }
 
         /// <summary>
+        /// Gets or sets the session for the server. (separate from the per-plugin sessions)
+        /// </summary>
+        string ServerSession { get; set; }
+
+        /// <summary>
         /// Gets or sets the saved sessions.
         /// </summary>
         Dictionary<string, string> Sessions { get; set; }

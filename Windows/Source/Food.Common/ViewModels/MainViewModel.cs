@@ -163,7 +163,7 @@ namespace PocketCampus.Food.ViewModels
                 };
                 var resp = await _menuService.GetMenusAsync( req );
 
-                if ( resp.Status != FoodStatus.Ok )
+                if ( resp.Status != FoodStatus.Success )
                 {
                     throw new Exception( "An error occurred while fetching the menu on the server." );
                 }
