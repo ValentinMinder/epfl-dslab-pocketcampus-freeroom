@@ -137,7 +137,9 @@ public class Utils {
 	    }
 
         AudioRecord recorder = null;
-        int BUFFER_SIZE = 4000;
+        //int  = 4000;
+        int SMPLING_RATE = 8000;
+        //int BUFFER_SIZE = 16000;
         
 	    @SuppressLint("NewApi")
 		@Override
@@ -151,7 +153,8 @@ public class Utils {
 	         */
 	        try
 	        {
-	            recorder = new AudioRecord(AudioSource.VOICE_COMMUNICATION, 8000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, 16000);
+	        	int BUFFER_SIZE = AudioRecord.getMinBufferSize(SMPLING_RATE, AudioFormat.CHANNEL_IN_MONO,AudioFormat.ENCODING_PCM_16BIT);
+	            recorder = new AudioRecord(AudioSource.VOICE_COMMUNICATION, SMPLING_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE);
 	            recorder.startRecording();
 	            
 	            if(AcousticEchoCanceler.isAvailable()) {
@@ -167,8 +170,8 @@ public class Utils {
 	             * Loops until something outside of this thread stops it.
 	             * Reads the data from the recorder and writes it to the audio track for playback.
 	             */
-                short[] buffer = new short [BUFFER_SIZE];
-                byte [] bbuffer = new byte[2 * BUFFER_SIZE];
+                short[] buffer = new short [BUFFER_SIZE / 2];
+                byte [] bbuffer = new byte[BUFFER_SIZE];
 	            while(!stopped)
 	            { 
 	                //Log.i("Map", "Writing new data to buffer");
