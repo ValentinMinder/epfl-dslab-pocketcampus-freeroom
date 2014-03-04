@@ -76,8 +76,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	
 	private Set<FRRoom> getFreeRoom (FRTimeStamp start, FRTimeStamp end) throws TException {
 		Calendar startDate = Calendar.getInstance();
+		startDate.setFirstDayOfWeek(Calendar.MONDAY);
 		startDate.setTimeInMillis((long) start.getTimeSeconds() *1000);
 		Calendar endDate = Calendar.getInstance();
+		endDate.setFirstDayOfWeek(Calendar.SUNDAY);
 		endDate.setTimeInMillis((long) end.getTimeSeconds() *1000);
 	
 //		if (startDate.compareTo(endDate) <= 0) {
@@ -86,7 +88,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		
 		// depends from the structure of database, need to change probably!
 		// doesn't support overnight searches, only MON-SUN 8am-7pm
-		int day = startDate.get(Calendar.DAY_OF_WEEK);
+		int day = startDate.get(Calendar.DAY_OF_WEEK) - 1;
 		int starthour = startDate.get(Calendar.HOUR_OF_DAY);
 		int endhour = endDate.get(Calendar.HOUR_OF_DAY);
 		//TODO: check the day : seems to be false (tuesday = 3 ?!?)
