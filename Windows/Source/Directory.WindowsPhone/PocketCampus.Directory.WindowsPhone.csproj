@@ -86,6 +86,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\PaginatingItemsControl.cs" />
     <Compile Include="Resources\PluginResources.fr.Designer.cs">
       <DependentUpon>PluginResources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>

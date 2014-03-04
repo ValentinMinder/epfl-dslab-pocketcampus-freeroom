@@ -15,6 +15,8 @@ namespace PocketCampus.Directory.ViewModels.Design
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
 
+        public bool IsLoadingMoreResults { get { return false; } }
+
         public string Query { get { return "PocketCampus guys"; } }
 
         public Person[] SearchResults
@@ -42,7 +44,7 @@ namespace PocketCampus.Directory.ViewModels.Design
                         Website = "http://personnes.epfl.ch/silviu.andrica",
                         OfficePhoneNumber = "+41 21 6938188",
                         Office = "INN 329",
-                        Units = new[] { "DSLAB", "EDIC" },
+                        Units = new[] { "DSLAB" },
                         PictureUrl = "http://people.epfl.ch/cgi-bin/people/getPhoto?id=184038"
                     },
                     new Person
@@ -53,7 +55,7 @@ namespace PocketCampus.Directory.ViewModels.Design
                         Website = "http://www.loicgardiol.ch/",
                         OfficePhoneNumber = "+41 21 6938188",
                         Office = "INN 329",
-                        Units = new[] { "IN-PME", "DSLAB" },
+                        Units = new[] { "DSLAB" },
                         PictureUrl = "http://people.epfl.ch/cgi-bin/people/getPhoto?id=185853"
                     },
                     new Person
@@ -64,7 +66,7 @@ namespace PocketCampus.Directory.ViewModels.Design
                         Website = "http://www.accandme.com/",
                         OfficePhoneNumber = "+41 21 6938188",
                         Office = "INN 329",
-                        Units = new[] { "IN-PME", "DSLAB", "EDOC-IC", "EDIC" },
+                        Units = new[] { "DSLAB", "EDOC-IC", "EDIC", "CHILI" },
                         PictureUrl = "http://people.epfl.ch/cgi-bin/people/getPhoto?id=211338"
                     },
                     new Person
@@ -73,7 +75,7 @@ namespace PocketCampus.Directory.ViewModels.Design
                         LastName = "Pirelli",
                         EmailAddress = "solal.pirelli@epfl.ch",
                         Website = "http://personnes.epfl.ch/solal.pirelli",
-                        Units = new[] { "IN-BA3" },
+                        Units = new[] { "IN-BA4" },
                         PictureUrl = "http://people.epfl.ch/cgi-bin/people/getPhoto?id=223572"
                     }
                 };

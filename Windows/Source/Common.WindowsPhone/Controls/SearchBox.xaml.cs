@@ -22,14 +22,14 @@ namespace PocketCampus.Common.Controls
         /// <summary>
         /// Asynchronously provides auto-complete suggestions from a query.
         /// </summary>
-        public Func<string, Task<IEnumerable<object>>> AutoCompleteProvider
+        public Func<string, Task<IEnumerable<string>>> AutoCompleteProvider
         {
-            get { return (Func<string, Task<IEnumerable<object>>>) GetValue( AutoCompleteProviderProperty ); }
+            get { return (Func<string, Task<IEnumerable<string>>>) GetValue( AutoCompleteProviderProperty ); }
             set { SetValue( AutoCompleteProviderProperty, value ); }
         }
 
         public static readonly DependencyProperty AutoCompleteProviderProperty =
-            DependencyProperty.Register( "AutoCompleteProvider", typeof( Func<string, Task<IEnumerable<object>>> ), typeof( SearchBox ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "AutoCompleteProvider", typeof( Func<string, Task<IEnumerable<string>>> ), typeof( SearchBox ), new PropertyMetadata( null ) );
         #endregion
 
         #region SearchCommand DependencyProperty

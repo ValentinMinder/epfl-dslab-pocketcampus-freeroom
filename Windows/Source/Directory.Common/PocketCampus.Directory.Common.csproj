@@ -35,7 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Models\DirectoryException.cs" />
+    <Compile Include="Models\SearchRequest.cs" />
+    <Compile Include="Models\SearchResponse.cs" />
+    <Compile Include="Models\SearchStatus.cs" />
     <Compile Include="Services\DirectoryService.cs" />
     <Compile Include="Services\IContactsService.cs" />
     <Compile Include="Services\IDirectoryService.cs" />

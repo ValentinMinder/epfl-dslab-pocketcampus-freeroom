@@ -44,7 +44,7 @@ namespace PocketCampus.Map.ViewModels
         /// <summary>
         /// Gets the provider for the search autocomplete.
         /// </summary>
-        public Func<string, Task<IEnumerable<object>>> AutoCompleteProvider
+        public Func<string, Task<IEnumerable<string>>> AutoCompleteProvider
         {
             get { return ProvideSearchSuggestionsAsync; }
         }
@@ -91,9 +91,10 @@ namespace PocketCampus.Map.ViewModels
         /// <summary>
         /// Provides search suggestions.
         /// </summary>
-        private Task<IEnumerable<object>> ProvideSearchSuggestionsAsync( string query )
+        private async Task<IEnumerable<string>> ProvideSearchSuggestionsAsync( string query )
         {
-            return _mapService.SearchAsync( query ).ContinueWith( t => (IEnumerable<object>) t.Result.Select( i => i.Name ) );
+            var results = await _mapService.SearchAsync( query );
+            return results.Select( i => i.Name );
         }
 
         /// <summary>
