@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 02.03.13.
-
-
 
 #import "EventItemViewController.h"
 
@@ -49,10 +42,6 @@
 #import "MainController.h"
 
 #import "PCURLSchemeHandler.h"
-
-#import "PCTableViewAdditions.h"
-
-#import "ZBarSDK.h"
 
 @interface EventItemViewController ()<EventsServiceDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource>
 

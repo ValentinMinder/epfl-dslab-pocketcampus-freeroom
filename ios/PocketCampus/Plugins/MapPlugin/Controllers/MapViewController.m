@@ -623,8 +623,12 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             self.resultsListPopOverController = [[UIPopoverController alloc] initWithContentViewController:navController];
             self.resultsListPopOverController.delegate = self;
         }
+        if (!self.resultsListPopOverController.isPopoverVisible) {
+            [self trackAction:@"ShowResultsList"];
+        }
         [self.resultsListPopOverController togglePopoverFromBarButtonItem:self.resultsListButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
+        [self trackAction:@"ShowResultsList"];
         [self presentViewController:navController animated:YES completion:NULL];
     }
 }

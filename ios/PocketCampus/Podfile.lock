@@ -18,26 +18,26 @@ PODS:
   - AFNetworking/UIKit (2.2.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - CDZQRScanningViewController (1.0.6)
   - GoogleAnalytics-iOS-SDK (3.0.3)
   - NSTimer-Blocks (0.0.1)
   - SSKeychain (1.2.1)
   - TUSafariActivity (1.0.0)
-  - ZBarSDK (1.3.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
+  - CDZQRScanningViewController
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - NSTimer-Blocks
   - SSKeychain (~> 1.2)
   - TUSafariActivity
-  - ZBarSDK (~> 1.3.1)
 
 SPEC CHECKSUMS:
   AFNetworking: e8cfd8f3fe3bfe19124a0cc63f4d45752d892a56
+  CDZQRScanningViewController: e175e24edf26ecf707e7de0dd7b6fa38a6e10cb4
   GoogleAnalytics-iOS-SDK: 7b0e55cfe5e70d60478a7b105f15ac71e8bc373e
   NSTimer-Blocks: 99f52d61c29429d7e8ef0c82e596f317addb9421
   SSKeychain: d18926838c2e7cd342e2a49e9f869858e49f035a
   TUSafariActivity: bd9da588f5f9136ba445d89f8f86b6dccf4d46ba
-  ZBarSDK: 6ae54d2077fea894d6a24bd1d7035192c0a7471e
 
 COCOAPODS: 0.29.0

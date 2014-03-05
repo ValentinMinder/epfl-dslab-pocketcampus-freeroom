@@ -202,13 +202,13 @@ static EventsController* instance __weak = nil;
         [self handleSilentParameters:parameters];
     }
     
-    if ([action isEqualToString:@"showEventPool"]) {
-        NSString* poolId = parameters[@"eventPoolId"];
+    if ([action isEqualToString:kEventsURLActionShowEventPool]) {
+        NSString* poolId = parameters[kEventsURLParameterEventPoolId];
         if (poolId) {
             viewController = [[EventPoolViewController alloc] initAndLoadEventPoolWithId:[poolId longLongValue]];
         }
-    } else if ([action isEqualToString:@"showEventItem"]) {
-        NSString* eventId = parameters[@"eventItemId"];
+    } else if ([action isEqualToString:kEventsURLActionShowEventItem]) {
+        NSString* eventId = parameters[kEventsURLParameterEventItemId];
         if (eventId) {
             viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:[eventId longLongValue]];
         }
@@ -216,7 +216,7 @@ static EventsController* instance __weak = nil;
         //no other supported actions
     }
     
-    NSString* eventItemIdToMarkFavorite = parameters[@"markFavorite"];
+    NSString* eventItemIdToMarkFavorite = parameters[kEventsURLParameterMarkFavoriteEventItemId];
     if (eventItemIdToMarkFavorite) {
         int64_t itemId = [eventItemIdToMarkFavorite longLongValue];
         [self.eventsService addFavoriteEventItemId:itemId];
@@ -229,13 +229,13 @@ static EventsController* instance __weak = nil;
 - (BOOL)handleSilentParameters:(NSDictionary*)parameters {
     
     BOOL found = NO;
-    NSString* userToken = parameters[@"userTicket"];
+    NSString* userToken = parameters[kEventsURLParameterUserTicket];
     if (userToken) {
         found = YES;
         [self.eventsService addUserTicket:userToken];
     }
     
-    NSString* exchangeToken = parameters[@"exchangeToken"];
+    NSString* exchangeToken = parameters[kEventsURLParameterExchangeToken];
     if (exchangeToken) {
         found = YES;
         ExchangeRequest* req = [[ExchangeRequest alloc] initWithExchangeToken:exchangeToken userToken:nil userTickets:[self.eventsService allUserTickets]];

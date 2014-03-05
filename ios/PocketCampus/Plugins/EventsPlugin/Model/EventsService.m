@@ -26,19 +26,18 @@
  */
 
 
-
-
-
-
-
-
 #import "EventsService.h"
-
-#import "PCObjectArchiver.h"
 
 #import "EventsUtils.h"
 
-#import "PCUtils.h"
+NSString* const kEventsURLActionShowEventPool = @"showEventPool";
+NSString* const kEventsURLActionShowEventItem = @"showEventItem";
+
+NSString* const kEventsURLParameterEventPoolId = @"eventPoolId";
+NSString* const kEventsURLParameterEventItemId = @"eventItemId";
+NSString* const kEventsURLParameterMarkFavoriteEventItemId = @"markFavorite";
+NSString* const kEventsURLParameterUserTicket = @"userTicket";
+NSString* const kEventsURLParameterExchangeToken = @"exchangeToken";
 
 NSString* const kEventsFavoritesEventItemsUpdatedNotification = @"kFavoritesEventItemsUpdatedNotification";
 

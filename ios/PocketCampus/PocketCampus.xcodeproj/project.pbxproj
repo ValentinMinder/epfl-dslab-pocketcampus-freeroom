@@ -284,6 +284,7 @@
 		32B956231878BA60003B9330 /* DirectoryPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B956221878BA60003B9330 /* DirectoryPersonCell.m */; };
 		32BA30711645D31A00909D82 /* PCCenterMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30701645D31A00909D82 /* PCCenterMessageCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32BBA918187454A600B2A7D3 /* UILabel+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BBA917187454A600B2A7D3 /* UILabel+Additions.m */; };
+		32BDB42D18C74E790014F821 /* PCScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BDB42C18C74E790014F821 /* PCScanningViewController.m */; };
 		32C450AE18241364000C99A3 /* FoodMealCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C450AD18241364000C99A3 /* FoodMealCell.m */; };
 		32C450B01824137B000C99A3 /* FoodMealCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32C450AF1824137B000C99A3 /* FoodMealCell.xib */; };
 		32C509E617FC60B0005A5635 /* CameraBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C509E417FC60B0005A5635 /* CameraBarButton.png */; };
@@ -800,6 +801,8 @@
 		32BA30701645D31A00909D82 /* PCCenterMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCCenterMessageCell.m; sourceTree = "<group>"; };
 		32BBA916187454A600B2A7D3 /* UILabel+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Additions.h"; sourceTree = "<group>"; };
 		32BBA917187454A600B2A7D3 /* UILabel+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Additions.m"; sourceTree = "<group>"; };
+		32BDB42B18C74E790014F821 /* PCScanningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCScanningViewController.h; sourceTree = "<group>"; };
+		32BDB42C18C74E790014F821 /* PCScanningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCScanningViewController.m; sourceTree = "<group>"; };
 		32C450AC18241364000C99A3 /* FoodMealCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodMealCell.h; sourceTree = "<group>"; };
 		32C450AD18241364000C99A3 /* FoodMealCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FoodMealCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32C450AF1824137B000C99A3 /* FoodMealCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FoodMealCell.xib; sourceTree = "<group>"; };
@@ -1484,6 +1487,8 @@
 				32AEEC851747DA61006DBA2F /* EventsShareFavoriteItemsViewController.m */,
 				32F5309016EAB8F700F66484 /* EventsSplashDetailViewController.h */,
 				32F5309116EAB8F700F66484 /* EventsSplashDetailViewController.m */,
+				32BDB42B18C74E790014F821 /* PCScanningViewController.h */,
+				32BDB42C18C74E790014F821 /* PCScanningViewController.m */,
 			);
 			name = Controllers;
 			path = Plugins/EventsPlugin/Controllers;
@@ -2849,6 +2854,7 @@
 				3247495617F340B800698A9D /* Person+Extras.m in Sources */,
 				329C52B1187EE6600045ECB8 /* UIView+Additions.m in Sources */,
 				32290ACF18200A0A005869E7 /* FoodSplashDetailViewController.m in Sources */,
+				32BDB42D18C74E790014F821 /* PCScanningViewController.m in Sources */,
 				32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */,
 				32930AA917F898910025F864 /* LGRefreshControl.m in Sources */,
 				32930AB317F898910025F864 /* TNSFileHandleTransport.m in Sources */,
