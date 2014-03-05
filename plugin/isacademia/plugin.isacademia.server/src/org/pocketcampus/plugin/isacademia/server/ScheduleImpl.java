@@ -73,6 +73,10 @@ public final class ScheduleImpl implements Schedule {
 
 	@Override
 	public ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) throws Exception {
+		if (sciper == null) {
+			return new ScheduleResponse(IsaStatusCode.INVALID_SESSION);
+		}
+		
 		LocalDate weekEnd = weekBeginning.plusDays(6);
 		String url = ISA_SCHEDULE_URL
 				+ "?" + URL_FROM_PARAMETER + "=" + weekBeginning.toString(URL_PARAMETER_FORMAT)
@@ -82,10 +86,6 @@ public final class ScheduleImpl implements Schedule {
 		String xml = null;
 		try {
 			HttpResult result = _client.get(url, ISA_CHARSET, new ArrayList<Cookie>());
-
-			if (!result.url.contains(ISA_SCHEDULE_URL)) {
-				return new ScheduleResponse(IsaStatusCode.INVALID_SESSION);
-			}
 
 			xml = result.content;
 		} catch (Exception e) {
