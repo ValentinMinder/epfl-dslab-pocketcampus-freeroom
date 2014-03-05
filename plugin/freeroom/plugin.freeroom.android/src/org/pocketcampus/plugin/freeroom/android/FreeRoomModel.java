@@ -78,10 +78,10 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Setter for the results of a freeroom request
 	 * @param results the result for the specific freeroom search
 	 */
-	public void setResults(Set<FRRoom> results){
+	public void setFreeRoomResults(Set<FRRoom> results){
 		mFreeRoomResult = results;
 		Log.v("Freeroom","result set via the model");
-		mListeners.resultsUpdated();
+		mListeners.freeRoomResultsUpdated();
 		
 	}
 

@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android.iface;
 
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 /**
@@ -13,5 +14,7 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
  */
 public interface IFreeRoomController {
 
-	void search(IFreeRoomView view, FreeRoomRequest request);
+	void searchFreeRoom(IFreeRoomView view, FreeRoomRequest request);
+
+	void setFreeRoomResults(FreeRoomReply rep);
 }

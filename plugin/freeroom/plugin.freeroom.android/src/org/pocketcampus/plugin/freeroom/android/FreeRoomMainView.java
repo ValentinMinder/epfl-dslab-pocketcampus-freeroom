@@ -122,8 +122,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 	}
 
 	@Override
-	public void resultsUpdated() {
-		// TODO Auto-generated method stub
-		
+	public void freeRoomResultsUpdated() {
+		// we do nothing here
 	}
 }

@@ -79,7 +79,7 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements IFreeRoo
 			@Override
 			public void onClick(View v) {
 				if (auditSearchButton() == 0) {
-					mController.search(view, Converter.convert(intday, startHour, endHour));
+					mController.searchFreeRoom(view, Converter.convert(intday, startHour, endHour));
 					
 					//TODO action
 					Intent i = new Intent(FreeRoomSearchView.this, FreeRoomResultView.class);
@@ -176,9 +176,8 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements IFreeRoo
 	}
 
 	@Override
-	public void resultsUpdated() {
-		// TODO Auto-generated method stub
-		
+	public void freeRoomResultsUpdated() {
+		// we do nothing here
 	}
 
 
