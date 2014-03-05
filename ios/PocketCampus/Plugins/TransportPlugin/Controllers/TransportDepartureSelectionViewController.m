@@ -114,6 +114,7 @@ static const NSUInteger kStationsSection = 1;
 }
 
 - (void)addPressed {
+    [self trackAction:@"AddStation"];
     TransportAddStationViewController* viewController = [TransportAddStationViewController new];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navController animated:YES completion:NULL];
