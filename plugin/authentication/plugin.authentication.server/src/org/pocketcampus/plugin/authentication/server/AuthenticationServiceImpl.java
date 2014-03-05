@@ -25,8 +25,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
 	public AuthenticationServiceImpl() {
 		System.out.println("Starting Authentication plugin server ...");
-		_manager = new SessionManager();
-		new Thread(_manager.getCleaner()).start();
+		_manager = new SessionManagerImpl();
 	}
 
 	@Override
