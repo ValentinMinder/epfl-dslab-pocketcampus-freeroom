@@ -43,6 +43,12 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
+                        
+                        <!-- Thumbnail picture "background", displayed if there's no picture -->
+                        <Rectangle Grid.RowSpan="4"
+                                   Fill="#F0F0F0"
+                                   Width="100"
+                                   Height="100" />
 
                         <!-- Thumbnail picture -->
                         <Image Grid.RowSpan="4"

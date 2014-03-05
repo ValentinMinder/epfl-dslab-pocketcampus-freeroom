@@ -213,11 +213,11 @@ namespace PocketCampus.Events.ViewModels
                                  item.EndDate ascending,
                                  item.Name ascending
                          group item by item.CategoryId into itemGroup
+                         orderby itemGroup.Key ascending
                          let categName = itemGroup.Key.HasValue
                                       && _settings.EventCategories.ContainsKey( itemGroup.Key.Value )
                                        ? _settings.EventCategories[itemGroup.Key.Value]
                                        : "???"
-                         orderby categName ascending
                          select new EventItemGroup( categName, itemGroup );
 
             ItemGroups = groups.ToArray();

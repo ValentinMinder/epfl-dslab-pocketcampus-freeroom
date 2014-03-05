@@ -63,16 +63,19 @@ namespace PocketCampus.Events
                 long id = long.Parse( parameters[PoolIdParameter] );
 
                 string ticket = null;
-                parameters.TryGetValue( UserTicketParameter, out ticket );
+                if ( parameters.TryGetValue( UserTicketParameter, out ticket ) )
+                {
+                    navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( id, userTicket: ticket ) );
+                }
 
                 long? favoriteId = null;
                 string favoriteIdString = null;
                 if ( parameters.TryGetValue( MarkAsFavoriteParameter, out favoriteIdString ) )
                 {
                     favoriteId = long.Parse( favoriteIdString );
+                    // Ignore the pool; just go to the event. This makes for more natural navigation.
+                    navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( id, favoriteItemId: favoriteId ) );
                 }
-
-                navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( id, ticket, favoriteId ) );
             }
         }
     }
