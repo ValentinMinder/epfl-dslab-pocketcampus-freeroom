@@ -24,7 +24,6 @@ struct StudyDay {
 }
 
 struct ScheduleRequest {
-  1: required string sessionId;
   // default is current week
   2: optional timestamp weekStart;
   // default is "fr"
@@ -40,18 +39,6 @@ enum IsaStatusCode {
   INVALID_SESSION = 407
 }
 
-struct IsaTokenResponse {
-  // Required if the request completed successfully
-  1: optional string tequilaToken;
-  2: required IsaStatusCode statusCode;
-}
-
-struct IsaSessionResponse {
-  // Required if the request completed successfully
-  1: optional string sessionId;
-  2: required IsaStatusCode statusCode;
-}
-
 struct ScheduleResponse {
   // Required if the request completed successfully
   1: optional list<StudyDay> days;
@@ -59,7 +46,5 @@ struct ScheduleResponse {
 }
 
 service IsAcademiaService {
-    IsaTokenResponse getIsaTequilaToken();
-    IsaSessionResponse getIsaSessionId(1: string tequilaToken);
     ScheduleResponse getSchedule(1: ScheduleRequest req);
 }

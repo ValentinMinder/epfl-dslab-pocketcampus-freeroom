@@ -7,55 +7,31 @@ import org.apache.thrift.TException;
 
 import org.joda.time.*;
 
-import ch.epfl.tequila.client.model.TequilaPrincipal;
-
 /**
  * Implementation of IsAcademiaService.
  * 
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public final class IsAcademiaServiceImpl implements IsAcademiaService.Iface {
-	private final SessionManager _manager;
 	private final Schedule _schedule;
 
-	public IsAcademiaServiceImpl(SessionManager manager, Schedule schedule) {
-		_manager = manager;
+	public IsAcademiaServiceImpl(Schedule schedule) {
 		_schedule = schedule;
 	}
 
 	public IsAcademiaServiceImpl() {
-		this(new SessionManagerImpl(), new ScheduleImpl(new HttpsClientImpl()));
-	}
-
-	@Override
-	public IsaTokenResponse getIsaTequilaToken() throws TException {
-		String token = PocketCampusServer.authGetTequilaToken("isacademia");
-		if (token == null)
-			return new IsaTokenResponse(IsaStatusCode.NETWORK_ERROR);
-		return new IsaTokenResponse(IsaStatusCode.OK).setTequilaToken(token);
-	}
-
-	@Override
-	public IsaSessionResponse getIsaSessionId(String tequilaToken) throws TException {
-		try {
-			TequilaPrincipal principal = PocketCampusServer.authGetTequilaPrincipal(tequilaToken);
-			if (principal == null)
-				return new IsaSessionResponse(IsaStatusCode.NETWORK_ERROR);
-			String session = _manager.insert(principal.getUser(), principal.getAttribute("uniqueid"));
-			return new IsaSessionResponse(IsaStatusCode.OK).setSessionId(session);
-
-		} catch (SecurityException e) {
-			return new IsaSessionResponse(IsaStatusCode.INVALID_SESSION);
-		}
+		this(new ScheduleImpl(new HttpsClientImpl()));
 	}
 
 	@Override
 	public ScheduleResponse getSchedule(ScheduleRequest req) throws TException {
+		String gaspar = PocketCampusServer.authGetUserGaspar(req);
+
 		LocalDate date = req.isSetWeekStart() ? new LocalDate(req.getWeekStart()) : getCurrentWeekStart();
 		String lang = req.isSetLanguage() ? req.getLanguage() : "fr";
 
 		try {
-			return _schedule.get(date, lang, _manager.getSciper(req.getSessionId()));
+			return _schedule.get(date, lang, gaspar);
 		} catch (Exception e) {
 			throw new TException(e);
 		}

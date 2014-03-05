@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.isacademia.server;
+package org.pocketcampus.plugin.authentication.server;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -7,13 +7,13 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * SessionManager to manage ISA sessions.
+ * SessionManager to manage PC sessions.
  * 
  * @author Amer Chamseddine <amer.chamseddine@epfl.ch>
  */
 public class SessionManagerImpl implements SessionManager {
 
-	private final static long SESSION_VALIDITY = 3600000; // 1 hour
+	private final static long SESSION_VALIDITY = 86400000; // 1 day
 
 	private static class User {
 		private String gaspar;
@@ -84,7 +84,7 @@ public class SessionManagerImpl implements SessionManager {
 							stored++;
 						}
 					}
-					System.out.println("[isacademia] cleaned up " + cleaned + " sessions; " + stored + " in memory.");
+					System.out.println("[auth] cleaned up " + cleaned + " sessions; " + stored + " in memory.");
 				}
 			}
 		};

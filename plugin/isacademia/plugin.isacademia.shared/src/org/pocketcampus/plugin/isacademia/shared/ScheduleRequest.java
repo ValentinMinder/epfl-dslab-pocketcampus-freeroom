@@ -24,17 +24,14 @@ import org.slf4j.LoggerFactory;
 public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest, ScheduleRequest._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ScheduleRequest");
 
-  private static final org.apache.thrift.protocol.TField SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("sessionId", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField WEEK_START_FIELD_DESC = new org.apache.thrift.protocol.TField("weekStart", org.apache.thrift.protocol.TType.I64, (short)2);
   private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  private String sessionId; // required
   private long weekStart; // required
   private String language; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    SESSION_ID((short)1, "sessionId"),
     WEEK_START((short)2, "weekStart"),
     LANGUAGE((short)3, "language");
 
@@ -51,8 +48,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // SESSION_ID
-          return SESSION_ID;
         case 2: // WEEK_START
           return WEEK_START;
         case 3: // LANGUAGE
@@ -103,8 +98,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("sessionId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.WEEK_START, new org.apache.thrift.meta_data.FieldMetaData("weekStart", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
     tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
@@ -116,22 +109,12 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
   public ScheduleRequest() {
   }
 
-  public ScheduleRequest(
-    String sessionId)
-  {
-    this();
-    this.sessionId = sessionId;
-  }
-
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public ScheduleRequest(ScheduleRequest other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    if (other.isSetSessionId()) {
-      this.sessionId = other.sessionId;
-    }
     this.weekStart = other.weekStart;
     if (other.isSetLanguage()) {
       this.language = other.language;
@@ -144,34 +127,9 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
 
   @Override
   public void clear() {
-    this.sessionId = null;
     setWeekStartIsSet(false);
     this.weekStart = 0;
     this.language = null;
-  }
-
-  public String getSessionId() {
-    return this.sessionId;
-  }
-
-  public ScheduleRequest setSessionId(String sessionId) {
-    this.sessionId = sessionId;
-    return this;
-  }
-
-  public void unsetSessionId() {
-    this.sessionId = null;
-  }
-
-  /** Returns true if field sessionId is set (has been assigned a value) and false otherwise */
-  public boolean isSetSessionId() {
-    return this.sessionId != null;
-  }
-
-  public void setSessionIdIsSet(boolean value) {
-    if (!value) {
-      this.sessionId = null;
-    }
   }
 
   public long getWeekStart() {
@@ -223,14 +181,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case SESSION_ID:
-      if (value == null) {
-        unsetSessionId();
-      } else {
-        setSessionId((String)value);
-      }
-      break;
-
     case WEEK_START:
       if (value == null) {
         unsetWeekStart();
@@ -252,9 +202,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case SESSION_ID:
-      return getSessionId();
-
     case WEEK_START:
       return Long.valueOf(getWeekStart());
 
@@ -272,8 +219,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
     }
 
     switch (field) {
-    case SESSION_ID:
-      return isSetSessionId();
     case WEEK_START:
       return isSetWeekStart();
     case LANGUAGE:
@@ -294,15 +239,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
   public boolean equals(ScheduleRequest that) {
     if (that == null)
       return false;
-
-    boolean this_present_sessionId = true && this.isSetSessionId();
-    boolean that_present_sessionId = true && that.isSetSessionId();
-    if (this_present_sessionId || that_present_sessionId) {
-      if (!(this_present_sessionId && that_present_sessionId))
-        return false;
-      if (!this.sessionId.equals(that.sessionId))
-        return false;
-    }
 
     boolean this_present_weekStart = true && this.isSetWeekStart();
     boolean that_present_weekStart = true && that.isSetWeekStart();
@@ -329,11 +265,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_sessionId = true && (isSetSessionId());
-    builder.append(present_sessionId);
-    if (present_sessionId)
-      builder.append(sessionId);
-
     boolean present_weekStart = true && (isSetWeekStart());
     builder.append(present_weekStart);
     if (present_weekStart)
@@ -355,16 +286,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
     int lastComparison = 0;
     ScheduleRequest typedOther = (ScheduleRequest)other;
 
-    lastComparison = Boolean.valueOf(isSetSessionId()).compareTo(typedOther.isSetSessionId());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetSessionId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sessionId, typedOther.sessionId);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetWeekStart()).compareTo(typedOther.isSetWeekStart());
     if (lastComparison != 0) {
       return lastComparison;
@@ -402,13 +323,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
         break;
       }
       switch (field.id) {
-        case 1: // SESSION_ID
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.sessionId = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         case 2: // WEEK_START
           if (field.type == org.apache.thrift.protocol.TType.I64) {
             this.weekStart = iprot.readI64();
@@ -439,11 +353,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.sessionId != null) {
-      oprot.writeFieldBegin(SESSION_ID_FIELD_DESC);
-      oprot.writeString(this.sessionId);
-      oprot.writeFieldEnd();
-    }
     if (isSetWeekStart()) {
       oprot.writeFieldBegin(WEEK_START_FIELD_DESC);
       oprot.writeI64(this.weekStart);
@@ -465,15 +374,7 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
     StringBuilder sb = new StringBuilder("ScheduleRequest(");
     boolean first = true;
 
-    sb.append("sessionId:");
-    if (this.sessionId == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.sessionId);
-    }
-    first = false;
     if (isSetWeekStart()) {
-      if (!first) sb.append(", ");
       sb.append("weekStart:");
       sb.append(this.weekStart);
       first = false;
@@ -494,9 +395,6 @@ public class ScheduleRequest implements org.apache.thrift.TBase<ScheduleRequest,
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (sessionId == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'sessionId' was not present! Struct: " + toString());
-    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
