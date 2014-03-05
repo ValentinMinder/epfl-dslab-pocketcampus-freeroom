@@ -35,6 +35,24 @@
 
 #import "events.h"
 
+/*
+ * Possible action parameter for PocketCampus URL scheme for eEvents
+ */
+extern NSString* const kEventsURLActionShowEventPool;
+extern NSString* const kEventsURLActionShowEventItem;
+
+/*
+ * Other parameters for PocketCampus URL scheme for eEvents
+ */
+extern NSString* const kEventsURLParameterEventPoolId;
+extern NSString* const kEventsURLParameterEventItemId;
+extern NSString* const kEventsURLParameterMarkFavoriteEventItemId;
+extern NSString* const kEventsURLParameterUserTicket;
+extern NSString* const kEventsURLParameterExchangeToken;
+
+/*
+ * Posted on default notification center when favorites are updated
+ */
 extern NSString* const kEventsFavoritesEventItemsUpdatedNotification;
 
 @interface EventsService : Service <ServiceProtocol>

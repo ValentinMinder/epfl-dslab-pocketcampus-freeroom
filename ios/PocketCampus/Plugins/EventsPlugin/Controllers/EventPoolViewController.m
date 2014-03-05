@@ -670,7 +670,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     
     UIViewController* viewController = [handler viewControllerForPocketCampusURL:url];
     
-    if (!viewController && !params[@"userTicket"] && !params[@"exchangeToken"]) { //those parameter do not provide a view controller
+    if (!viewController && !params[kEventsURLParameterUserTicket] && !params[kEventsURLParameterExchangeToken]) { //those parameter do not provide a view controller
         [self showQRCodeError];
         return;
     }
@@ -701,7 +701,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
         [self refresh];
     }
     
-    NSString* exchangeToken = parameters[@"exchangeToken"];
+    NSString* exchangeToken = parameters[kEventsURLParameterExchangeToken];
     if (exchangeToken) {
         found = YES;
         if ([[self.eventsService allUserTickets] count] == 0) {
@@ -712,7 +712,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
         }
     }
     
-    NSString* eventItemIdToMarkFavorite = parameters[@"markFavorite"];
+    NSString* eventItemIdToMarkFavorite = parameters[kEventsURLParameterMarkFavoriteEventItemId];
     if (eventItemIdToMarkFavorite) {
         found = YES;
         int64_t itemId = [eventItemIdToMarkFavorite longLongValue];
