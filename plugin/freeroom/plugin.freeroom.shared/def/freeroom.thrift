@@ -1,6 +1,10 @@
 namespace java org.pocketcampus.plugin.freeroom.shared
 //namespace csharp org.pocketcampus.plugin.freeroom.shared
 
+enum FRDay {
+	Monday; Tuesday; Wednesday; Thursday; Friday; Saturday; Sunday;
+}
+	
 enum FRRoomType{
 	AUDITORIUM; EXERCISES; COMPUTER_ROOM; CONFERENCE;
 }
