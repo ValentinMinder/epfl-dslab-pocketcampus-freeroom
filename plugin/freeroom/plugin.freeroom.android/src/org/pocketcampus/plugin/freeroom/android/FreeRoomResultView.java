@@ -30,6 +30,7 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 	
 	private ListView mList;
 	private ArrayList<String> mListValues;
+	private ArrayAdapter<String> mAdapter;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -84,16 +85,19 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 		mList.setLayoutParams(p);
 
 		mListValues = new ArrayList<String>();
-		mList.setAdapter(new ArrayAdapter<String>(this,
+		mListValues.add("fake"); // TODO delete
+		mAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_dropdown_item_1line,
-				android.R.id.text1, mListValues));
+				android.R.id.text1, mListValues);
+		mList.setAdapter(mAdapter);
 				
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				String s = mListValues.get(arg2);
+				String s = mAdapter.getItem(arg2);
+				// String s = mListValues.get(arg2); // TODO delete
 				System.out.println("selected " + s);
 				mController.getModel();
 				//TODO: display map!
@@ -107,12 +111,14 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 
 	@Override
 	public void freeRoomResultsUpdated() {
+		System.out.println("updated!"); //TODO delete
 		Set<FRRoom> res = mModel.getFreeRoomResults();
 		for (FRRoom frRoom : res) {
-			mListValues.add(frRoom.getBuilding() + " " + frRoom.getNumber());
+//			mListValues.add(frRoom.getBuilding() + " " + frRoom.getNumber()); // TODO delete
+			mAdapter.add(frRoom.getBuilding() + " " + frRoom.getNumber());
 		}
-		mListValues.add("FakeBuilding"); //TODO: delete
-		
+//		mListValues.add("FakeBuilding"); //TODO: delete
+		mAdapter.add("fake building"); //TODO: delete
 	}
 
 }

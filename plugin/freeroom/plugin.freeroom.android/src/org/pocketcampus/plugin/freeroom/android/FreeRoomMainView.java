@@ -8,6 +8,9 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -94,7 +97,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 		mListValues.add("Find me a free room now !");
 		mListValues.add("Search for a free room");
 		mListValues.add("Favorites / History");
-		
+				
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -103,7 +106,12 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 				Intent i = null;
 				switch (arg2) {
 				case 0:
-					i = new Intent(FreeRoomMainView.this, FreeRoomSearchView.class);
+					FRTimeStamp ts_s = new FRTimeStamp(System.currentTimeMillis());
+					FRTimeStamp ts_end = new FRTimeStamp(System.currentTimeMillis() + 3600*1000);
+					FRPeriod period = new FRPeriod(ts_s, ts_end, false);
+					FreeRoomRequest req = new FreeRoomRequest(period);
+					mController.searchFreeRoom(FreeRoomMainView.this, req);
+					i = new Intent(FreeRoomMainView.this, FreeRoomResultView.class);
 					break;
 				case 1:
 					i = new Intent(FreeRoomMainView.this, FreeRoomSearchView.class);
