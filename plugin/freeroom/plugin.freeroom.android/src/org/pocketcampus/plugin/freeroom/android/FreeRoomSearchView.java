@@ -12,11 +12,7 @@ import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.Converter;
 import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
-import org.pocketcampus.plugin.freeroom.shared.FRDay;
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomResponseFromTime;
-import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,7 +35,7 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 	
 	private int startHour = -1;
 	private int endHour = -1;
-	private FRDay day = null;
+	private int intday = -1;
 	private boolean advancedSearch = false;
 
 	@Override
@@ -92,7 +88,7 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 			@Override
 			public void onClick(View v) {
 				if (auditSearchButton() == 0) {
-					mController.search(view, Converter.convert(day, startHour, endHour));
+					mController.search(view, Converter.convert(intday, startHour, endHour));
 					
 					//TODO action
 //					Intent i = new Intent(FreeRoomSearchView.this, FreeRoomResultView.class);
@@ -147,7 +143,7 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 				//TODO this is the first version, need to highlight what has been clicked
 				//TODO adjust values of the list in real time (i.e if user select 9am as start, don't show 9am for endHour)
 				if (groupPosition == 0) {
-					day = FRDay.findByValue(childPosition);
+					intday = childPosition;
 				} else if (groupPosition == 1) {
 					startHour = childPosition + 8;
 				} else {
@@ -157,7 +153,7 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 				if (auditSearchButton() == 0) {
 					Toast.makeText(
 							getApplicationContext(),
-							"You selected " + day.toString() + " from " + startHour + " to " + endHour,
+							"You selected day " + intday + " from " + startHour + " to " + endHour,
 							Toast.LENGTH_SHORT).show();
 					searchButton.setEnabled(true);
 					return true;
@@ -178,7 +174,7 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 	private int auditSearchButton() {
 		//TODO adapt when the code will be more advanced.
 		int error = 0;
-		if (startHour == -1 || endHour == -1 || day == null) {
+		if (startHour == -1 || endHour == -1 || intday == -1) {
 			error++;
 		}
 		

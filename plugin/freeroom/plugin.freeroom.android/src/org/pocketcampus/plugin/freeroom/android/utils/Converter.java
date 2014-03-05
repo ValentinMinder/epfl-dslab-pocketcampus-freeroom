@@ -2,13 +2,12 @@ package org.pocketcampus.plugin.freeroom.android.utils;
 
 import java.util.Calendar;
 
-import org.pocketcampus.plugin.freeroom.shared.FRDay;
 import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomRequestFromTime;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
 
 public class Converter {
-	public static FRFreeRoomRequestFromTime convert (FRDay day, int startHour, int endHour) {
+	public static FRFreeRoomRequestFromTime convert (int day, int startHour, int endHour) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setFirstDayOfWeek(Calendar.MONDAY);
 		int today_day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -18,14 +17,14 @@ public class Converter {
 		//also the case for cases where the given day is different from today
 		//BE CAREFUL WHEN USING FRDay, it is an enum and thus monday is mapped to 0 !
 		long timestampshift = 0;
-		if (now_hour > startHour && day.getValue() + 1 == today_day) {
-			timestampshift = 7*3600*24*1000;
-		} else if (day.getValue() + 1 != today_day) {
-			if (today_day > day.getValue() + 1) {
-				timestampshift = (day.getValue() + 1 - today_day)*24*3600*1000;
+		if (now_hour > startHour && day + 1 == today_day) {
+			timestampshift = 7*3600*24*1000; 
+		} else if (day + 1 != today_day) {
+			if (today_day > day + 1) {
+				timestampshift = (day + 1 - today_day)*24*3600*1000;
 			} else {
 				int daysToCompleteWeek = 7 - today_day;
-				int daysToGo = daysToCompleteWeek + day.getValue() + 1;
+				int daysToGo = daysToCompleteWeek + day + 1;
 				timestampshift = daysToGo*24*3600*1000;
 			}
 		}

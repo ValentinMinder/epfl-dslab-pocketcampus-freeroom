@@ -19,7 +19,6 @@ import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomResponseFromTime;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriodOfTime;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 /**
