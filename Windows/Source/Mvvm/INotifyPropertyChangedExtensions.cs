@@ -17,12 +17,13 @@ namespace PocketCampus.Mvvm
         /// <summary>
         /// Adds a listener to changes on the specified property of the item.
         /// </summary>
-        /// <typeparam name="T">The type of the item.</typeparam>
+        /// <typeparam name="TNotifier">The type of the item.</typeparam>
+        /// <typeparam name="TProp">The type of the property.</typeparam>
         /// <param name="item">The item.</param>
         /// <param name="propertyExpr">An expression that returns the property to listen to.</param>
         /// <param name="listener">The listener.</param>
-        public static void ListenToProperty<T>( this T item, Expression<Func<T, object>> propertyExpr, Action listener )
-            where T : INotifyPropertyChanged
+        public static void ListenToProperty<TNotifier, TProp>( this TNotifier item, Expression<Func<TNotifier, TProp>> propertyExpr, Action listener )
+            where TNotifier : INotifyPropertyChanged
         {
             string name = ExpressionHelper.GetPropertyName( propertyExpr );
             item.PropertyChanged += ( _, e ) =>

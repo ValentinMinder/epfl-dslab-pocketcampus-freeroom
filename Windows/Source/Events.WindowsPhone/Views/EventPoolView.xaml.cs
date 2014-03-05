@@ -11,6 +11,7 @@ using PocketCampus.Common.Controls;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Resources;
 using PocketCampus.Events.ViewModels;
+using PocketCampus.Mvvm;
 
 namespace PocketCampus.Events.Views
 {
@@ -25,14 +26,8 @@ namespace PocketCampus.Events.Views
         private void This_Loaded( object sender, RoutedEventArgs e )
         {
             var vm = (EventPoolViewModel) DataContext;
-
-            vm.PropertyChanged += ( s, pce ) =>
+            vm.ListenToProperty( x => x.Pool, () =>
             {
-                if ( pce.PropertyName != "Pool" )
-                {
-                    return;
-                }
-
                 var buttons = new List<ApplicationBarIconButton>();
                 var items = new List<ApplicationBarMenuItem>();
 
@@ -118,7 +113,7 @@ namespace PocketCampus.Events.Views
 
                     ApplicationBar = bar;
                 }
-            };
+            } );
         }
     }
 }

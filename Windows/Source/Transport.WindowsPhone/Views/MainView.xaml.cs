@@ -2,9 +2,10 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Windows;
+using System.Windows.Data;
+using Microsoft.Phone.Controls;
 using PocketCampus.Common.Controls;
-using PocketCampus.Transport.Models;
-using PocketCampus.Transport.ViewModels;
 
 namespace PocketCampus.Transport.Views
 {
@@ -13,29 +14,16 @@ namespace PocketCampus.Transport.Views
         public MainView()
         {
             InitializeComponent();
+        }
 
-            Loaded += ( _, __ ) =>
+        private void StationsPicker_Loaded( object sender, RoutedEventArgs e )
+        {
+            var binding = new Binding
             {
-                var vm = (MainViewModel) DataContext;
-                vm.PropertyChanged += ( ___, e ) =>
-                {
-                    if ( e.PropertyName == "SelectedStation" || ( StationsPicker.SelectedItem == null && e.PropertyName == "IsLoading" && !vm.IsLoading ) )
-                    {
-                        if ( vm.SelectedStation != StationsPicker.SelectedItem )
-                        {
-                            StationsPicker.SelectedItem = vm.SelectedStation;
-                        }
-                    }
-                };
-
-                StationsPicker.SelectionChanged += ( ___, e ) =>
-                {
-                    if ( e.RemovedItems.Count > 0 )
-                    {
-                        vm.SelectedStation = (Station) e.AddedItems[0];
-                    }
-                };
+                Path = new PropertyPath( "SelectedStation" ),
+                Mode = BindingMode.TwoWay
             };
+            StationsPicker.SetBinding( ListPicker.SelectedItemProperty, binding );
         }
     }
 }
