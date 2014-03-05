@@ -443,12 +443,20 @@ static const NSInteger kOneYearPeriodIndex = 3;
             [self showQRCodeError];
             return;
         }
-        if ([viewController isKindOfClass:[EventPoolViewController class]]) {
-            if ([(EventPoolViewController*)viewController poolId] == self.poolId) {
-                [self refresh];
-            }
+        if ([viewController isKindOfClass:[EventPoolViewController class]] && [(EventPoolViewController*)viewController poolId] == self.poolId) {
+            [self refresh];
         } else {
-            [self.navigationController pushViewController:viewController animated:NO];
+            if ([self.splitViewController.viewControllers[0] isKindOfClass:[UINavigationController class]]) {
+                UINavigationController* navController = self.splitViewController.viewControllers[0];
+                if (navController.topViewController == self) {
+                    PCNavigationController* eventNavController = [[PCNavigationController alloc] initWithRootViewController:viewController];
+                    self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], eventNavController];
+                } else {
+                    [self.navigationController pushViewController:viewController animated:NO];
+                }
+            } else {
+                [self.navigationController pushViewController:viewController animated:NO];
+            }
         }
         [self dismissViewControllerAnimated:YES completion:NULL];
         
@@ -467,6 +475,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     navController.toolbar.barStyle = UIBarStyleBlack;
     navController.toolbar.tintColor = [UIColor whiteColor];
     navController.toolbar.translucent = YES;
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navController animated:YES completion:NULL];
 }
 
@@ -740,7 +749,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     
     if (self.splitViewController && self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
         self.selectedItem = eventItem;
-        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[UINavigationController alloc] initWithRootViewController:eventItemViewController]];
+        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:eventItemViewController]];
     } else {
         [self.navigationController pushViewController:eventItemViewController animated:YES];
     }

@@ -90,11 +90,7 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    if (![[[MainController publicController] urlSchemeHandlerSharedInstance] isValidPocketCampusURL:url]) {
-        return NO;
-    }
-    [self.mainController handlePocketCampusURL:url];
-    return YES;
+    return [self.mainController handlePocketCampusURL:url];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
