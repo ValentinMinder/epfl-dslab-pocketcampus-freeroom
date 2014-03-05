@@ -1,6 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android.iface;
 
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomRequestFromTime;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 /**
  * IFreeRoomController
@@ -13,5 +13,5 @@ import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomRequestFromTime;
  */
 public interface IFreeRoomController {
 
-	void search(IFreeRoomView view, FRFreeRoomRequestFromTime request);
+	void search(IFreeRoomView view, FreeRoomRequest request);
 }

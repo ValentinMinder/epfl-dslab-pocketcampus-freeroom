@@ -4,14 +4,14 @@ import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomRequestFromTime;
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomResponseFromTime;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 
 import android.widget.Toast;
 
-public class GetFreeRoomRequest extends Request<FreeRoomController, Iface, FRFreeRoomRequestFromTime, FRFreeRoomResponseFromTime> {
+public class GetFreeRoomRequest extends Request<FreeRoomController, Iface, FreeRoomRequest, FreeRoomReply> {
 
 		private IFreeRoomView caller;
 		
@@ -20,12 +20,12 @@ public class GetFreeRoomRequest extends Request<FreeRoomController, Iface, FRFre
 		}
 		
 		@Override
-		protected FRFreeRoomResponseFromTime runInBackground(Iface client, FRFreeRoomRequestFromTime param) throws Exception {
+		protected FreeRoomReply runInBackground(Iface client, FreeRoomRequest param) throws Exception {
 			return client.getFreeRoomFromTime(param);
 		}
 
 		@Override
-		protected void onResult(FreeRoomController controller, FRFreeRoomResponseFromTime result) {
+		protected void onResult(FreeRoomController controller, FreeRoomReply result) {
 			
 			for (FRRoom room : result.getRooms()) {
 				System.out.println("Free Room:" + room.getBuilding() + room.getNumber());

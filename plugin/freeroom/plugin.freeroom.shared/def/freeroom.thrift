@@ -28,16 +28,16 @@ struct FRPeriod {
 }
 
 // standard response for a free room
-struct FRFreeRoomResponseFromTime {
+struct FreeRoomReply {
 	1: required set<FRRoom> rooms;
 }
 
 // standard request for a free room
-struct FRFreeRoomRequestFromTime {
+struct FreeRoomRequest {
 	1: required FRPeriod period;
 }
 
 service FreeRoomService {
 	// generic free room service
-	FRFreeRoomResponseFromTime getFreeRoomFromTime(1: FRFreeRoomRequestFromTime request);
+	FreeRoomReply getFreeRoomFromTime(1: FreeRoomRequest request);
 }

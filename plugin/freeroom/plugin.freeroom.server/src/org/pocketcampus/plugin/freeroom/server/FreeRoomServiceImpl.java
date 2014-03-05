@@ -13,8 +13,8 @@ import java.util.Set;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomRequestFromTime;
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomResponseFromTime;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
@@ -51,8 +51,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	@Override
-	public FRFreeRoomResponseFromTime getFreeRoomFromTime(
-			FRFreeRoomRequestFromTime request) throws TException {
+	public FreeRoomReply getFreeRoomFromTime(
+			FreeRoomRequest request) throws TException {
 
 		FRPeriod period = request.getPeriod();
 		FRTimeStamp ts_start = period.getTimeStampStart();
@@ -60,7 +60,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		boolean recurrent = period.isRecurrent();
 		
 		if (!recurrent) {
-			FRFreeRoomResponseFromTime rep = new FRFreeRoomResponseFromTime();
+			FreeRoomReply rep = new FreeRoomReply();
 			rep.setRooms(getFreeRoom(ts_start, ts_end));
 //			rep.setRooms(new HashSet<FRRoom>());
 			rep.setRoomsIsSet(true);

@@ -2,12 +2,12 @@ package org.pocketcampus.plugin.freeroom.android.utils;
 
 import java.util.Calendar;
 
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomRequestFromTime;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
 
 public class Converter {
-	public static FRFreeRoomRequestFromTime convert (int day, int startHour, int endHour) {
+	public static FreeRoomRequest convert (int day, int startHour, int endHour) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setFirstDayOfWeek(Calendar.MONDAY);
 		int today_day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -62,7 +62,7 @@ public class Converter {
 		
 		FRPeriod period = new FRPeriod(ts_start, ts_end, false);
 		
-		FRFreeRoomRequestFromTime req = new FRFreeRoomRequestFromTime(period);
+		FreeRoomRequest req = new FreeRoomRequest(period);
 		
 		return req;
 	}

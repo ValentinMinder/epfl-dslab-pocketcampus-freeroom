@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.Assert;
@@ -26,14 +25,12 @@ import org.junit.Test;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
-import org.pocketcampus.plugin.freeroom.shared.FRDay;
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomRequestFromTime;
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomResponseFromTime;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriodOfTime;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
 import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 
 public class TestFindFreeRooms {
@@ -199,17 +196,17 @@ public class TestFindFreeRooms {
 	public void testBasicRequest() {
 		//FILL DATABSE BEFORE
 		FRTimeStamp timeStampStart = new FRTimeStamp();
-		timeStampStart.setTimeSeconds((int) (System.currentTimeMillis()/1000));
+		timeStampStart.setTimeMillis(System.currentTimeMillis());
 		FRTimeStamp timeStampEnd = new FRTimeStamp();
-		timeStampEnd.setTimeSeconds((int) (System.currentTimeMillis()/1000 + 3600));
+		timeStampEnd.setTimeMillis(System.currentTimeMillis() + 3600*1000);
 		FRPeriod period = new FRPeriod();
 		period.setRecurrent(false);
 		period.setTimeStampStart(timeStampStart);
 		period.setTimeStampEnd(timeStampEnd);
-		FRFreeRoomRequestFromTime req = new FRFreeRoomRequestFromTime();
+		FreeRoomRequest req = new FreeRoomRequest();
 		req.setPeriod(period);
 		
-		FRFreeRoomResponseFromTime rep = null;
+		FreeRoomReply rep = null;
 		
 		try {
 			rep = (new FreeRoomServiceImpl(new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD))).getFreeRoomFromTime(req);

@@ -6,8 +6,8 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.req.GetFreeRoomRequest;
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomRequestFromTime;
-import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomResponseFromTime;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 
@@ -54,7 +54,7 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 	}
 	
 	@Override
-	public void search(IFreeRoomView view, FRFreeRoomRequestFromTime request) {
+	public void search(IFreeRoomView view, FreeRoomRequest request) {
 		new GetFreeRoomRequest(view).start(this, mClient, request );
 		
 	}

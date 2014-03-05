@@ -21,16 +21,16 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFreeRoomResponseFromTime, FRFreeRoomResponseFromTime._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRFreeRoomResponseFromTime");
+public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest, FreeRoomRequest._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FreeRoomRequest");
 
-  private static final org.apache.thrift.protocol.TField ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("rooms", org.apache.thrift.protocol.TType.SET, (short)1);
+  private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-  private Set<FRRoom> rooms; // required
+  private FRPeriod period; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ROOMS((short)1, "rooms");
+    PERIOD((short)1, "period");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -45,8 +45,8 @@ public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFre
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // ROOMS
-          return ROOMS;
+        case 1: // PERIOD
+          return PERIOD;
         default:
           return null;
       }
@@ -91,91 +91,71 @@ public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFre
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ROOMS, new org.apache.thrift.meta_data.FieldMetaData("rooms", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.SetMetaData(org.apache.thrift.protocol.TType.SET, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class))));
+    tmpMap.put(_Fields.PERIOD, new org.apache.thrift.meta_data.FieldMetaData("period", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRFreeRoomResponseFromTime.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FreeRoomRequest.class, metaDataMap);
   }
 
-  public FRFreeRoomResponseFromTime() {
+  public FreeRoomRequest() {
   }
 
-  public FRFreeRoomResponseFromTime(
-    Set<FRRoom> rooms)
+  public FreeRoomRequest(
+    FRPeriod period)
   {
     this();
-    this.rooms = rooms;
+    this.period = period;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public FRFreeRoomResponseFromTime(FRFreeRoomResponseFromTime other) {
-    if (other.isSetRooms()) {
-      Set<FRRoom> __this__rooms = new HashSet<FRRoom>();
-      for (FRRoom other_element : other.rooms) {
-        __this__rooms.add(new FRRoom(other_element));
-      }
-      this.rooms = __this__rooms;
+  public FreeRoomRequest(FreeRoomRequest other) {
+    if (other.isSetPeriod()) {
+      this.period = new FRPeriod(other.period);
     }
   }
 
-  public FRFreeRoomResponseFromTime deepCopy() {
-    return new FRFreeRoomResponseFromTime(this);
+  public FreeRoomRequest deepCopy() {
+    return new FreeRoomRequest(this);
   }
 
   @Override
   public void clear() {
-    this.rooms = null;
+    this.period = null;
   }
 
-  public int getRoomsSize() {
-    return (this.rooms == null) ? 0 : this.rooms.size();
+  public FRPeriod getPeriod() {
+    return this.period;
   }
 
-  public java.util.Iterator<FRRoom> getRoomsIterator() {
-    return (this.rooms == null) ? null : this.rooms.iterator();
-  }
-
-  public void addToRooms(FRRoom elem) {
-    if (this.rooms == null) {
-      this.rooms = new HashSet<FRRoom>();
-    }
-    this.rooms.add(elem);
-  }
-
-  public Set<FRRoom> getRooms() {
-    return this.rooms;
-  }
-
-  public FRFreeRoomResponseFromTime setRooms(Set<FRRoom> rooms) {
-    this.rooms = rooms;
+  public FreeRoomRequest setPeriod(FRPeriod period) {
+    this.period = period;
     return this;
   }
 
-  public void unsetRooms() {
-    this.rooms = null;
+  public void unsetPeriod() {
+    this.period = null;
   }
 
-  /** Returns true if field rooms is set (has been assigned a value) and false otherwise */
-  public boolean isSetRooms() {
-    return this.rooms != null;
+  /** Returns true if field period is set (has been assigned a value) and false otherwise */
+  public boolean isSetPeriod() {
+    return this.period != null;
   }
 
-  public void setRoomsIsSet(boolean value) {
+  public void setPeriodIsSet(boolean value) {
     if (!value) {
-      this.rooms = null;
+      this.period = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ROOMS:
+    case PERIOD:
       if (value == null) {
-        unsetRooms();
+        unsetPeriod();
       } else {
-        setRooms((Set<FRRoom>)value);
+        setPeriod((FRPeriod)value);
       }
       break;
 
@@ -184,8 +164,8 @@ public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFre
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ROOMS:
-      return getRooms();
+    case PERIOD:
+      return getPeriod();
 
     }
     throw new IllegalStateException();
@@ -198,8 +178,8 @@ public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFre
     }
 
     switch (field) {
-    case ROOMS:
-      return isSetRooms();
+    case PERIOD:
+      return isSetPeriod();
     }
     throw new IllegalStateException();
   }
@@ -208,21 +188,21 @@ public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFre
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof FRFreeRoomResponseFromTime)
-      return this.equals((FRFreeRoomResponseFromTime)that);
+    if (that instanceof FreeRoomRequest)
+      return this.equals((FreeRoomRequest)that);
     return false;
   }
 
-  public boolean equals(FRFreeRoomResponseFromTime that) {
+  public boolean equals(FreeRoomRequest that) {
     if (that == null)
       return false;
 
-    boolean this_present_rooms = true && this.isSetRooms();
-    boolean that_present_rooms = true && that.isSetRooms();
-    if (this_present_rooms || that_present_rooms) {
-      if (!(this_present_rooms && that_present_rooms))
+    boolean this_present_period = true && this.isSetPeriod();
+    boolean that_present_period = true && that.isSetPeriod();
+    if (this_present_period || that_present_period) {
+      if (!(this_present_period && that_present_period))
         return false;
-      if (!this.rooms.equals(that.rooms))
+      if (!this.period.equals(that.period))
         return false;
     }
 
@@ -233,28 +213,28 @@ public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFre
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_rooms = true && (isSetRooms());
-    builder.append(present_rooms);
-    if (present_rooms)
-      builder.append(rooms);
+    boolean present_period = true && (isSetPeriod());
+    builder.append(present_period);
+    if (present_period)
+      builder.append(period);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(FRFreeRoomResponseFromTime other) {
+  public int compareTo(FreeRoomRequest other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    FRFreeRoomResponseFromTime typedOther = (FRFreeRoomResponseFromTime)other;
+    FreeRoomRequest typedOther = (FreeRoomRequest)other;
 
-    lastComparison = Boolean.valueOf(isSetRooms()).compareTo(typedOther.isSetRooms());
+    lastComparison = Boolean.valueOf(isSetPeriod()).compareTo(typedOther.isSetPeriod());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetRooms()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.rooms, typedOther.rooms);
+    if (isSetPeriod()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.period, typedOther.period);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -276,20 +256,10 @@ public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFre
         break;
       }
       switch (field.id) {
-        case 1: // ROOMS
-          if (field.type == org.apache.thrift.protocol.TType.SET) {
-            {
-              org.apache.thrift.protocol.TSet _set0 = iprot.readSetBegin();
-              this.rooms = new HashSet<FRRoom>(2*_set0.size);
-              for (int _i1 = 0; _i1 < _set0.size; ++_i1)
-              {
-                FRRoom _elem2; // required
-                _elem2 = new FRRoom();
-                _elem2.read(iprot);
-                this.rooms.add(_elem2);
-              }
-              iprot.readSetEnd();
-            }
+        case 1: // PERIOD
+          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+            this.period = new FRPeriod();
+            this.period.read(iprot);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -309,16 +279,9 @@ public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFre
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.rooms != null) {
-      oprot.writeFieldBegin(ROOMS_FIELD_DESC);
-      {
-        oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRUCT, this.rooms.size()));
-        for (FRRoom _iter3 : this.rooms)
-        {
-          _iter3.write(oprot);
-        }
-        oprot.writeSetEnd();
-      }
+    if (this.period != null) {
+      oprot.writeFieldBegin(PERIOD_FIELD_DESC);
+      this.period.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -327,14 +290,14 @@ public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFre
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("FRFreeRoomResponseFromTime(");
+    StringBuilder sb = new StringBuilder("FreeRoomRequest(");
     boolean first = true;
 
-    sb.append("rooms:");
-    if (this.rooms == null) {
+    sb.append("period:");
+    if (this.period == null) {
       sb.append("null");
     } else {
-      sb.append(this.rooms);
+      sb.append(this.period);
     }
     first = false;
     sb.append(")");
@@ -343,8 +306,8 @@ public class FRFreeRoomResponseFromTime implements org.apache.thrift.TBase<FRFre
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (rooms == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'rooms' was not present! Struct: " + toString());
+    if (period == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'period' was not present! Struct: " + toString());
     }
   }
 
