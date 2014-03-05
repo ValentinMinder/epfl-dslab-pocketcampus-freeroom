@@ -29,7 +29,7 @@ import android.widget.Toast;
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
-public class FreeRoomMainView extends PluginView implements IFreeRoomView {
+public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomView {
 
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
@@ -80,15 +80,6 @@ public class FreeRoomMainView extends PluginView implements IFreeRoomView {
 		 */
 	}
 
-	@Override
-	public void networkErrorHappened() {
-		Toast.makeText(
-				getApplicationContext(),
-				getResources().getString(
-						R.string.freeroom_connection_error_happened),
-				Toast.LENGTH_SHORT).show();
-	}
-
 	private void initializeMainView() {
 		mList = new ListView(this);
 		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT,
@@ -128,12 +119,6 @@ public class FreeRoomMainView extends PluginView implements IFreeRoomView {
 			
 		});
 		mLayout.addView(mList);
-	}
-
-	@Override
-	public void freeRoomServersDown() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

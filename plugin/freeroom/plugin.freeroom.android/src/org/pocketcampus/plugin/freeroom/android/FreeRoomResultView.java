@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
@@ -22,7 +21,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-public class FreeRoomResultView extends PluginView implements IFreeRoomView {
+public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoomView {
 
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
@@ -104,19 +103,6 @@ public class FreeRoomResultView extends PluginView implements IFreeRoomView {
 		});
 		mLayout.addView(mList);
 		
-		
-	}
-	
-	
-	@Override
-	public void networkErrorHappened() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void freeRoomServersDown() {
-		// TODO Auto-generated method stub
 		
 	}
 

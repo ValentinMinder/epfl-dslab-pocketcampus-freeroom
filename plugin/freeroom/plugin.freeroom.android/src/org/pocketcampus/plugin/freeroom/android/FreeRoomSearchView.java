@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
@@ -23,7 +22,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
+public class FreeRoomSearchView extends FreeRoomAbstractView implements IFreeRoomView {
 
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
@@ -67,15 +66,6 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 
 		initializeSearchView();
 
-	}
-
-	@Override
-	public void networkErrorHappened() {
-		Toast.makeText(
-				getApplicationContext(),
-				getResources().getString(
-						R.string.freeroom_connection_error_happened),
-				Toast.LENGTH_SHORT).show();
 	}
 
 	private void initializeSearchView() {		
@@ -183,12 +173,6 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 			error++;
 		}
 		return error;
-	}
-
-	@Override
-	public void freeRoomServersDown() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
