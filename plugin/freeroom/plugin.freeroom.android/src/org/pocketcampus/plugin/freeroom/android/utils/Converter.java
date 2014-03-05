@@ -32,10 +32,10 @@ public class Converter {
 		calendar.setTimeInMillis(calendar.getTimeInMillis() + timestampshift);
 		calendar.set(Calendar.HOUR_OF_DAY, startHour);
 		
-		int t_start = (int) (calendar.getTimeInMillis() / 1000);
+		long t_start = calendar.getTimeInMillis();
 		
 		
-		int t_end = t_start + (endHour - startHour)*3600;
+		long t_end = t_start + (endHour - startHour)*3600*1000;
 //		//find the next day that correspond to the given day
 //		long now_ms = now.getTimeInMillis();
 //		for (int i = day_week+7; i>day.getValue(); i--) {
@@ -52,13 +52,13 @@ public class Converter {
 //		start.set(year, month, day_month, startHour, 0);
 //		int t_start = (int) (start.getTimeInMillis()/1000);
 		FRTimeStamp ts_start = new FRTimeStamp();
-		ts_start.setTimeSeconds(t_start);
+		ts_start.setTimeMillis(t_start);
 //		
 //		Calendar end = Calendar.getInstance();
 //		end.set(year, month, day_month, endHour, 0);
 //		int t_end = (int) (start.getTimeInMillis()/1000);
 		FRTimeStamp ts_end = new FRTimeStamp();
-		ts_end.setTimeSeconds(t_end);
+		ts_end.setTimeMillis(t_end);
 		
 		FRPeriod period = new FRPeriod(ts_start, ts_end, false);
 		

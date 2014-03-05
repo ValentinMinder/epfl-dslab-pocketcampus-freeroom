@@ -12,9 +12,9 @@ struct FRRoom{
 	4: optional i32 capacity;
 }
 
-// represent a timestamp as defined in UNIX standard, the number of seconds form JAN 1 1970
+// represent a timestamp as defined in UNIX standard, the number of milliseconds form JAN 1 1970
 struct FRTimeStamp {
-	1: required i32 timeSeconds;
+	2: required i64 timeMillis;
 }
 
 struct FRPeriod {

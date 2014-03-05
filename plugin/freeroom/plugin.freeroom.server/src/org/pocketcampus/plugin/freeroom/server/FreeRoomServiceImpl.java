@@ -3,7 +3,6 @@ package org.pocketcampus.plugin.freeroom.server;
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,9 +16,9 @@ import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerE
 import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomRequestFromTime;
 import org.pocketcampus.plugin.freeroom.shared.FRFreeRoomResponseFromTime;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
-import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 /**
  * FreeRoomServiceImpl
@@ -76,10 +75,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private Set<FRRoom> getFreeRoom (FRTimeStamp start, FRTimeStamp end) throws TException {
 		Calendar startDate = Calendar.getInstance();
 		startDate.setFirstDayOfWeek(Calendar.MONDAY);
-		startDate.setTimeInMillis((long) start.getTimeSeconds() *1000);
+		startDate.setTimeInMillis((long) start.getTimeMillis());
 		Calendar endDate = Calendar.getInstance();
 		endDate.setFirstDayOfWeek(Calendar.SUNDAY);
-		endDate.setTimeInMillis((long) end.getTimeSeconds() *1000);
+		endDate.setTimeInMillis((long) end.getTimeMillis());
 	
 //		if (startDate.compareTo(endDate) <= 0) {
 //			throw new TException("Start date must be before end date");

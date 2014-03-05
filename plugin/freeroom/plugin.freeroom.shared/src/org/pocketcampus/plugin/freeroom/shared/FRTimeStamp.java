@@ -24,13 +24,13 @@ import org.slf4j.LoggerFactory;
 public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeStamp._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRTimeStamp");
 
-  private static final org.apache.thrift.protocol.TField TIME_SECONDS_FIELD_DESC = new org.apache.thrift.protocol.TField("timeSeconds", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField TIME_MILLIS_FIELD_DESC = new org.apache.thrift.protocol.TField("timeMillis", org.apache.thrift.protocol.TType.I64, (short)2);
 
-  private int timeSeconds; // required
+  private long timeMillis; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    TIME_SECONDS((short)1, "timeSeconds");
+    TIME_MILLIS((short)2, "timeMillis");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -45,8 +45,8 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // TIME_SECONDS
-          return TIME_SECONDS;
+        case 2: // TIME_MILLIS
+          return TIME_MILLIS;
         default:
           return null;
       }
@@ -87,14 +87,14 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
   }
 
   // isset id assignments
-  private static final int __TIMESECONDS_ISSET_ID = 0;
+  private static final int __TIMEMILLIS_ISSET_ID = 0;
   private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.TIME_SECONDS, new org.apache.thrift.meta_data.FieldMetaData("timeSeconds", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.TIME_MILLIS, new org.apache.thrift.meta_data.FieldMetaData("timeMillis", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRTimeStamp.class, metaDataMap);
   }
@@ -103,11 +103,11 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
   }
 
   public FRTimeStamp(
-    int timeSeconds)
+    long timeMillis)
   {
     this();
-    this.timeSeconds = timeSeconds;
-    setTimeSecondsIsSet(true);
+    this.timeMillis = timeMillis;
+    setTimeMillisIsSet(true);
   }
 
   /**
@@ -116,7 +116,7 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
   public FRTimeStamp(FRTimeStamp other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.timeSeconds = other.timeSeconds;
+    this.timeMillis = other.timeMillis;
   }
 
   public FRTimeStamp deepCopy() {
@@ -125,40 +125,40 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
 
   @Override
   public void clear() {
-    setTimeSecondsIsSet(false);
-    this.timeSeconds = 0;
+    setTimeMillisIsSet(false);
+    this.timeMillis = 0;
   }
 
-  public int getTimeSeconds() {
-    return this.timeSeconds;
+  public long getTimeMillis() {
+    return this.timeMillis;
   }
 
-  public FRTimeStamp setTimeSeconds(int timeSeconds) {
-    this.timeSeconds = timeSeconds;
-    setTimeSecondsIsSet(true);
+  public FRTimeStamp setTimeMillis(long timeMillis) {
+    this.timeMillis = timeMillis;
+    setTimeMillisIsSet(true);
     return this;
   }
 
-  public void unsetTimeSeconds() {
-    __isset_bit_vector.clear(__TIMESECONDS_ISSET_ID);
+  public void unsetTimeMillis() {
+    __isset_bit_vector.clear(__TIMEMILLIS_ISSET_ID);
   }
 
-  /** Returns true if field timeSeconds is set (has been assigned a value) and false otherwise */
-  public boolean isSetTimeSeconds() {
-    return __isset_bit_vector.get(__TIMESECONDS_ISSET_ID);
+  /** Returns true if field timeMillis is set (has been assigned a value) and false otherwise */
+  public boolean isSetTimeMillis() {
+    return __isset_bit_vector.get(__TIMEMILLIS_ISSET_ID);
   }
 
-  public void setTimeSecondsIsSet(boolean value) {
-    __isset_bit_vector.set(__TIMESECONDS_ISSET_ID, value);
+  public void setTimeMillisIsSet(boolean value) {
+    __isset_bit_vector.set(__TIMEMILLIS_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case TIME_SECONDS:
+    case TIME_MILLIS:
       if (value == null) {
-        unsetTimeSeconds();
+        unsetTimeMillis();
       } else {
-        setTimeSeconds((Integer)value);
+        setTimeMillis((Long)value);
       }
       break;
 
@@ -167,8 +167,8 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case TIME_SECONDS:
-      return Integer.valueOf(getTimeSeconds());
+    case TIME_MILLIS:
+      return Long.valueOf(getTimeMillis());
 
     }
     throw new IllegalStateException();
@@ -181,8 +181,8 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
     }
 
     switch (field) {
-    case TIME_SECONDS:
-      return isSetTimeSeconds();
+    case TIME_MILLIS:
+      return isSetTimeMillis();
     }
     throw new IllegalStateException();
   }
@@ -200,12 +200,12 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
     if (that == null)
       return false;
 
-    boolean this_present_timeSeconds = true;
-    boolean that_present_timeSeconds = true;
-    if (this_present_timeSeconds || that_present_timeSeconds) {
-      if (!(this_present_timeSeconds && that_present_timeSeconds))
+    boolean this_present_timeMillis = true;
+    boolean that_present_timeMillis = true;
+    if (this_present_timeMillis || that_present_timeMillis) {
+      if (!(this_present_timeMillis && that_present_timeMillis))
         return false;
-      if (this.timeSeconds != that.timeSeconds)
+      if (this.timeMillis != that.timeMillis)
         return false;
     }
 
@@ -216,10 +216,10 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_timeSeconds = true;
-    builder.append(present_timeSeconds);
-    if (present_timeSeconds)
-      builder.append(timeSeconds);
+    boolean present_timeMillis = true;
+    builder.append(present_timeMillis);
+    if (present_timeMillis)
+      builder.append(timeMillis);
 
     return builder.toHashCode();
   }
@@ -232,12 +232,12 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
     int lastComparison = 0;
     FRTimeStamp typedOther = (FRTimeStamp)other;
 
-    lastComparison = Boolean.valueOf(isSetTimeSeconds()).compareTo(typedOther.isSetTimeSeconds());
+    lastComparison = Boolean.valueOf(isSetTimeMillis()).compareTo(typedOther.isSetTimeMillis());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetTimeSeconds()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.timeSeconds, typedOther.timeSeconds);
+    if (isSetTimeMillis()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.timeMillis, typedOther.timeMillis);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -259,10 +259,10 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
         break;
       }
       switch (field.id) {
-        case 1: // TIME_SECONDS
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.timeSeconds = iprot.readI32();
-            setTimeSecondsIsSet(true);
+        case 2: // TIME_MILLIS
+          if (field.type == org.apache.thrift.protocol.TType.I64) {
+            this.timeMillis = iprot.readI64();
+            setTimeMillisIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -275,8 +275,8 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetTimeSeconds()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'timeSeconds' was not found in serialized data! Struct: " + toString());
+    if (!isSetTimeMillis()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'timeMillis' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -285,8 +285,8 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(TIME_SECONDS_FIELD_DESC);
-    oprot.writeI32(this.timeSeconds);
+    oprot.writeFieldBegin(TIME_MILLIS_FIELD_DESC);
+    oprot.writeI64(this.timeMillis);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -297,8 +297,8 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
     StringBuilder sb = new StringBuilder("FRTimeStamp(");
     boolean first = true;
 
-    sb.append("timeSeconds:");
-    sb.append(this.timeSeconds);
+    sb.append("timeMillis:");
+    sb.append(this.timeMillis);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -306,7 +306,7 @@ public class FRTimeStamp implements org.apache.thrift.TBase<FRTimeStamp, FRTimeS
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'timeSeconds' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'timeMillis' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
