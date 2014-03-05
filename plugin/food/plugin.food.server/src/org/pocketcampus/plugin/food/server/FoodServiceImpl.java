@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.pocketcampus.platform.sdk.server.CachingProxy;
-import org.pocketcampus.platform.sdk.server.CachingProxy.CacheValidator;
 import org.pocketcampus.platform.sdk.server.HttpClientImpl;
 import org.pocketcampus.plugin.food.shared.*;
 
@@ -16,34 +15,30 @@ import org.joda.time.*;
  */
 public class FoodServiceImpl implements FoodService.Iface {
 	private static final Hours VOTING_MIN = Hours.hours(11);
-	private static final Hours CACHE_DURATION = Hours.ONE;
+	private static final Duration MENU_CACHE_DURATION = Duration.standardHours(1);
+	private static final Duration PICTURES_CACHE_DURATION = Duration.standardDays(1);
+	private static final Duration LOCATIONS_CACHE_DURATION = Duration.standardDays(1);
 
 	private final DeviceDatabase _deviceDatabase;
 	private final RatingDatabase _ratingDatabase;
 	private final Menu _menu;
 	private final PictureSource _pictureSource;
 	private final RestaurantLocator _locator;
-	
 
 	public FoodServiceImpl(DeviceDatabase deviceDatabase, RatingDatabase ratingDatabase, Menu menu,
-						   PictureSource pictureSource, RestaurantLocator locator) {
+			PictureSource pictureSource, RestaurantLocator locator) {
 		_deviceDatabase = deviceDatabase;
 		_ratingDatabase = ratingDatabase;
 		_menu = menu;
 		_pictureSource = pictureSource;
-		_locator=locator;
+		_locator = locator;
 	}
 
 	public FoodServiceImpl() {
 		this(new DeviceDatabaseImpl(), new RatingDatabaseImpl(),
-				CachingProxy.create(new MenuImpl(new HttpClientImpl()), new CacheValidator() {
-					@Override
-					public boolean isValid(DateTime lastGenerationDate) {
-						return Days.daysBetween(lastGenerationDate, DateTime.now()) == Days.ZERO
-								&& Hours.hoursBetween(lastGenerationDate, DateTime.now()).isLessThan(CACHE_DURATION);
-					}
-				}),
-				new PictureSourceImpl(), new RestaurantLocatorImpl());
+				CachingProxy.create(new MenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, true),
+				CachingProxy.create(new PictureSourceImpl(), PICTURES_CACHE_DURATION, false),
+				CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false));
 	}
 
 	@Override
@@ -65,8 +60,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 		_ratingDatabase.insertMenu(response.getMenu());
 		_ratingDatabase.setRatings(response.getMenu());
-		
-		for(EpflRestaurant restaurant:response.getMenu()){
+
+		for (EpflRestaurant restaurant : response.getMenu()) {
 			restaurant.setRPictureUrl(_pictureSource.forRestaurant(restaurant.getRName()));
 			restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
 		}

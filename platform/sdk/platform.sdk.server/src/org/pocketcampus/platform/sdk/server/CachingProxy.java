@@ -40,11 +40,12 @@ public final class CachingProxy {
 				});
 	}
 
-	public static <T> T create(final T instance, final Duration cacheDuration) {
+	public static <T> T create(final T instance, final Duration cacheDuration, final boolean forceSameDay) {
 		return create(instance, new CacheValidator() {
 			@Override
 			public boolean isValid(DateTime lastGenerationDate) {
-				return new Duration(lastGenerationDate, null).isShorterThan(cacheDuration);
+				return (!forceSameDay || DateTime.now().dayOfYear().equals(lastGenerationDate.dayOfYear()))
+						&& new Duration(lastGenerationDate, null).isShorterThan(cacheDuration);
 			}
 		});
 	}
