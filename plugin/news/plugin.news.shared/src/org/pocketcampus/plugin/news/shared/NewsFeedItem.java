@@ -21,31 +21,25 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("NewsItem");
+public class NewsFeedItem implements org.apache.thrift.TBase<NewsFeedItem, NewsFeedItem._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("NewsFeedItem");
 
-  private static final org.apache.thrift.protocol.TField NEWS_ITEM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("newsItemId", org.apache.thrift.protocol.TType.I64, (short)1);
+  private static final org.apache.thrift.protocol.TField ITEM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("itemId", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("title", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField LINK_FIELD_DESC = new org.apache.thrift.protocol.TField("link", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField FEED_FIELD_DESC = new org.apache.thrift.protocol.TField("feed", org.apache.thrift.protocol.TType.STRING, (short)4);
-  private static final org.apache.thrift.protocol.TField PUB_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("pubDate", org.apache.thrift.protocol.TType.I64, (short)5);
-  private static final org.apache.thrift.protocol.TField IMAGE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("imageUrl", org.apache.thrift.protocol.TType.STRING, (short)6);
+  private static final org.apache.thrift.protocol.TField DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("date", org.apache.thrift.protocol.TType.I64, (short)3);
+  private static final org.apache.thrift.protocol.TField IMAGE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("imageUrl", org.apache.thrift.protocol.TType.STRING, (short)4);
 
-  private long newsItemId; // required
+  private int itemId; // required
   private String title; // required
-  private String link; // required
-  private String feed; // required
-  private long pubDate; // required
+  private long date; // required
   private String imageUrl; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    NEWS_ITEM_ID((short)1, "newsItemId"),
+    ITEM_ID((short)1, "itemId"),
     TITLE((short)2, "title"),
-    LINK((short)3, "link"),
-    FEED((short)4, "feed"),
-    PUB_DATE((short)5, "pubDate"),
-    IMAGE_URL((short)6, "imageUrl");
+    DATE((short)3, "date"),
+    IMAGE_URL((short)4, "imageUrl");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -60,17 +54,13 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // NEWS_ITEM_ID
-          return NEWS_ITEM_ID;
+        case 1: // ITEM_ID
+          return ITEM_ID;
         case 2: // TITLE
           return TITLE;
-        case 3: // LINK
-          return LINK;
-        case 4: // FEED
-          return FEED;
-        case 5: // PUB_DATE
-          return PUB_DATE;
-        case 6: // IMAGE_URL
+        case 3: // DATE
+          return DATE;
+        case 4: // IMAGE_URL
           return IMAGE_URL;
         default:
           return null;
@@ -112,115 +102,99 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   }
 
   // isset id assignments
-  private static final int __NEWSITEMID_ISSET_ID = 0;
-  private static final int __PUBDATE_ISSET_ID = 1;
+  private static final int __ITEMID_ISSET_ID = 0;
+  private static final int __DATE_ISSET_ID = 1;
   private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.NEWS_ITEM_ID, new org.apache.thrift.meta_data.FieldMetaData("newsItemId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+    tmpMap.put(_Fields.ITEM_ID, new org.apache.thrift.meta_data.FieldMetaData("itemId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.TITLE, new org.apache.thrift.meta_data.FieldMetaData("title", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.LINK, new org.apache.thrift.meta_data.FieldMetaData("link", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.FEED, new org.apache.thrift.meta_data.FieldMetaData("feed", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.PUB_DATE, new org.apache.thrift.meta_data.FieldMetaData("pubDate", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.DATE, new org.apache.thrift.meta_data.FieldMetaData("date", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.IMAGE_URL, new org.apache.thrift.meta_data.FieldMetaData("imageUrl", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(NewsItem.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(NewsFeedItem.class, metaDataMap);
   }
 
-  public NewsItem() {
+  public NewsFeedItem() {
   }
 
-  public NewsItem(
-    long newsItemId,
+  public NewsFeedItem(
+    int itemId,
     String title,
-    String link,
-    String feed,
-    long pubDate)
+    long date)
   {
     this();
-    this.newsItemId = newsItemId;
-    setNewsItemIdIsSet(true);
+    this.itemId = itemId;
+    setItemIdIsSet(true);
     this.title = title;
-    this.link = link;
-    this.feed = feed;
-    this.pubDate = pubDate;
-    setPubDateIsSet(true);
+    this.date = date;
+    setDateIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public NewsItem(NewsItem other) {
+  public NewsFeedItem(NewsFeedItem other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.newsItemId = other.newsItemId;
+    this.itemId = other.itemId;
     if (other.isSetTitle()) {
       this.title = other.title;
     }
-    if (other.isSetLink()) {
-      this.link = other.link;
-    }
-    if (other.isSetFeed()) {
-      this.feed = other.feed;
-    }
-    this.pubDate = other.pubDate;
+    this.date = other.date;
     if (other.isSetImageUrl()) {
       this.imageUrl = other.imageUrl;
     }
   }
 
-  public NewsItem deepCopy() {
-    return new NewsItem(this);
+  public NewsFeedItem deepCopy() {
+    return new NewsFeedItem(this);
   }
 
   @Override
   public void clear() {
-    setNewsItemIdIsSet(false);
-    this.newsItemId = 0;
+    setItemIdIsSet(false);
+    this.itemId = 0;
     this.title = null;
-    this.link = null;
-    this.feed = null;
-    setPubDateIsSet(false);
-    this.pubDate = 0;
+    setDateIsSet(false);
+    this.date = 0;
     this.imageUrl = null;
   }
 
-  public long getNewsItemId() {
-    return this.newsItemId;
+  public int getItemId() {
+    return this.itemId;
   }
 
-  public NewsItem setNewsItemId(long newsItemId) {
-    this.newsItemId = newsItemId;
-    setNewsItemIdIsSet(true);
+  public NewsFeedItem setItemId(int itemId) {
+    this.itemId = itemId;
+    setItemIdIsSet(true);
     return this;
   }
 
-  public void unsetNewsItemId() {
-    __isset_bit_vector.clear(__NEWSITEMID_ISSET_ID);
+  public void unsetItemId() {
+    __isset_bit_vector.clear(__ITEMID_ISSET_ID);
   }
 
-  /** Returns true if field newsItemId is set (has been assigned a value) and false otherwise */
-  public boolean isSetNewsItemId() {
-    return __isset_bit_vector.get(__NEWSITEMID_ISSET_ID);
+  /** Returns true if field itemId is set (has been assigned a value) and false otherwise */
+  public boolean isSetItemId() {
+    return __isset_bit_vector.get(__ITEMID_ISSET_ID);
   }
 
-  public void setNewsItemIdIsSet(boolean value) {
-    __isset_bit_vector.set(__NEWSITEMID_ISSET_ID, value);
+  public void setItemIdIsSet(boolean value) {
+    __isset_bit_vector.set(__ITEMID_ISSET_ID, value);
   }
 
   public String getTitle() {
     return this.title;
   }
 
-  public NewsItem setTitle(String title) {
+  public NewsFeedItem setTitle(String title) {
     this.title = title;
     return this;
   }
@@ -240,82 +214,34 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     }
   }
 
-  public String getLink() {
-    return this.link;
+  public long getDate() {
+    return this.date;
   }
 
-  public NewsItem setLink(String link) {
-    this.link = link;
+  public NewsFeedItem setDate(long date) {
+    this.date = date;
+    setDateIsSet(true);
     return this;
   }
 
-  public void unsetLink() {
-    this.link = null;
+  public void unsetDate() {
+    __isset_bit_vector.clear(__DATE_ISSET_ID);
   }
 
-  /** Returns true if field link is set (has been assigned a value) and false otherwise */
-  public boolean isSetLink() {
-    return this.link != null;
+  /** Returns true if field date is set (has been assigned a value) and false otherwise */
+  public boolean isSetDate() {
+    return __isset_bit_vector.get(__DATE_ISSET_ID);
   }
 
-  public void setLinkIsSet(boolean value) {
-    if (!value) {
-      this.link = null;
-    }
-  }
-
-  public String getFeed() {
-    return this.feed;
-  }
-
-  public NewsItem setFeed(String feed) {
-    this.feed = feed;
-    return this;
-  }
-
-  public void unsetFeed() {
-    this.feed = null;
-  }
-
-  /** Returns true if field feed is set (has been assigned a value) and false otherwise */
-  public boolean isSetFeed() {
-    return this.feed != null;
-  }
-
-  public void setFeedIsSet(boolean value) {
-    if (!value) {
-      this.feed = null;
-    }
-  }
-
-  public long getPubDate() {
-    return this.pubDate;
-  }
-
-  public NewsItem setPubDate(long pubDate) {
-    this.pubDate = pubDate;
-    setPubDateIsSet(true);
-    return this;
-  }
-
-  public void unsetPubDate() {
-    __isset_bit_vector.clear(__PUBDATE_ISSET_ID);
-  }
-
-  /** Returns true if field pubDate is set (has been assigned a value) and false otherwise */
-  public boolean isSetPubDate() {
-    return __isset_bit_vector.get(__PUBDATE_ISSET_ID);
-  }
-
-  public void setPubDateIsSet(boolean value) {
-    __isset_bit_vector.set(__PUBDATE_ISSET_ID, value);
+  public void setDateIsSet(boolean value) {
+    __isset_bit_vector.set(__DATE_ISSET_ID, value);
   }
 
   public String getImageUrl() {
     return this.imageUrl;
   }
 
-  public NewsItem setImageUrl(String imageUrl) {
+  public NewsFeedItem setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
     return this;
   }
@@ -337,11 +263,11 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case NEWS_ITEM_ID:
+    case ITEM_ID:
       if (value == null) {
-        unsetNewsItemId();
+        unsetItemId();
       } else {
-        setNewsItemId((Long)value);
+        setItemId((Integer)value);
       }
       break;
 
@@ -353,27 +279,11 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
       }
       break;
 
-    case LINK:
+    case DATE:
       if (value == null) {
-        unsetLink();
+        unsetDate();
       } else {
-        setLink((String)value);
-      }
-      break;
-
-    case FEED:
-      if (value == null) {
-        unsetFeed();
-      } else {
-        setFeed((String)value);
-      }
-      break;
-
-    case PUB_DATE:
-      if (value == null) {
-        unsetPubDate();
-      } else {
-        setPubDate((Long)value);
+        setDate((Long)value);
       }
       break;
 
@@ -390,20 +300,14 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case NEWS_ITEM_ID:
-      return Long.valueOf(getNewsItemId());
+    case ITEM_ID:
+      return Integer.valueOf(getItemId());
 
     case TITLE:
       return getTitle();
 
-    case LINK:
-      return getLink();
-
-    case FEED:
-      return getFeed();
-
-    case PUB_DATE:
-      return Long.valueOf(getPubDate());
+    case DATE:
+      return Long.valueOf(getDate());
 
     case IMAGE_URL:
       return getImageUrl();
@@ -419,16 +323,12 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     }
 
     switch (field) {
-    case NEWS_ITEM_ID:
-      return isSetNewsItemId();
+    case ITEM_ID:
+      return isSetItemId();
     case TITLE:
       return isSetTitle();
-    case LINK:
-      return isSetLink();
-    case FEED:
-      return isSetFeed();
-    case PUB_DATE:
-      return isSetPubDate();
+    case DATE:
+      return isSetDate();
     case IMAGE_URL:
       return isSetImageUrl();
     }
@@ -439,21 +339,21 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof NewsItem)
-      return this.equals((NewsItem)that);
+    if (that instanceof NewsFeedItem)
+      return this.equals((NewsFeedItem)that);
     return false;
   }
 
-  public boolean equals(NewsItem that) {
+  public boolean equals(NewsFeedItem that) {
     if (that == null)
       return false;
 
-    boolean this_present_newsItemId = true;
-    boolean that_present_newsItemId = true;
-    if (this_present_newsItemId || that_present_newsItemId) {
-      if (!(this_present_newsItemId && that_present_newsItemId))
+    boolean this_present_itemId = true;
+    boolean that_present_itemId = true;
+    if (this_present_itemId || that_present_itemId) {
+      if (!(this_present_itemId && that_present_itemId))
         return false;
-      if (this.newsItemId != that.newsItemId)
+      if (this.itemId != that.itemId)
         return false;
     }
 
@@ -466,30 +366,12 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
         return false;
     }
 
-    boolean this_present_link = true && this.isSetLink();
-    boolean that_present_link = true && that.isSetLink();
-    if (this_present_link || that_present_link) {
-      if (!(this_present_link && that_present_link))
+    boolean this_present_date = true;
+    boolean that_present_date = true;
+    if (this_present_date || that_present_date) {
+      if (!(this_present_date && that_present_date))
         return false;
-      if (!this.link.equals(that.link))
-        return false;
-    }
-
-    boolean this_present_feed = true && this.isSetFeed();
-    boolean that_present_feed = true && that.isSetFeed();
-    if (this_present_feed || that_present_feed) {
-      if (!(this_present_feed && that_present_feed))
-        return false;
-      if (!this.feed.equals(that.feed))
-        return false;
-    }
-
-    boolean this_present_pubDate = true;
-    boolean that_present_pubDate = true;
-    if (this_present_pubDate || that_present_pubDate) {
-      if (!(this_present_pubDate && that_present_pubDate))
-        return false;
-      if (this.pubDate != that.pubDate)
+      if (this.date != that.date)
         return false;
     }
 
@@ -509,30 +391,20 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_newsItemId = true;
-    builder.append(present_newsItemId);
-    if (present_newsItemId)
-      builder.append(newsItemId);
+    boolean present_itemId = true;
+    builder.append(present_itemId);
+    if (present_itemId)
+      builder.append(itemId);
 
     boolean present_title = true && (isSetTitle());
     builder.append(present_title);
     if (present_title)
       builder.append(title);
 
-    boolean present_link = true && (isSetLink());
-    builder.append(present_link);
-    if (present_link)
-      builder.append(link);
-
-    boolean present_feed = true && (isSetFeed());
-    builder.append(present_feed);
-    if (present_feed)
-      builder.append(feed);
-
-    boolean present_pubDate = true;
-    builder.append(present_pubDate);
-    if (present_pubDate)
-      builder.append(pubDate);
+    boolean present_date = true;
+    builder.append(present_date);
+    if (present_date)
+      builder.append(date);
 
     boolean present_imageUrl = true && (isSetImageUrl());
     builder.append(present_imageUrl);
@@ -542,20 +414,20 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     return builder.toHashCode();
   }
 
-  public int compareTo(NewsItem other) {
+  public int compareTo(NewsFeedItem other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    NewsItem typedOther = (NewsItem)other;
+    NewsFeedItem typedOther = (NewsFeedItem)other;
 
-    lastComparison = Boolean.valueOf(isSetNewsItemId()).compareTo(typedOther.isSetNewsItemId());
+    lastComparison = Boolean.valueOf(isSetItemId()).compareTo(typedOther.isSetItemId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetNewsItemId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.newsItemId, typedOther.newsItemId);
+    if (isSetItemId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.itemId, typedOther.itemId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -570,32 +442,12 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetLink()).compareTo(typedOther.isSetLink());
+    lastComparison = Boolean.valueOf(isSetDate()).compareTo(typedOther.isSetDate());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetLink()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.link, typedOther.link);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetFeed()).compareTo(typedOther.isSetFeed());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetFeed()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.feed, typedOther.feed);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetPubDate()).compareTo(typedOther.isSetPubDate());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetPubDate()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.pubDate, typedOther.pubDate);
+    if (isSetDate()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.date, typedOther.date);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -627,10 +479,10 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
         break;
       }
       switch (field.id) {
-        case 1: // NEWS_ITEM_ID
-          if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.newsItemId = iprot.readI64();
-            setNewsItemIdIsSet(true);
+        case 1: // ITEM_ID
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.itemId = iprot.readI32();
+            setItemIdIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -642,29 +494,15 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // LINK
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.link = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 4: // FEED
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.feed = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 5: // PUB_DATE
+        case 3: // DATE
           if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.pubDate = iprot.readI64();
-            setPubDateIsSet(true);
+            this.date = iprot.readI64();
+            setDateIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 6: // IMAGE_URL
+        case 4: // IMAGE_URL
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.imageUrl = iprot.readString();
           } else { 
@@ -679,11 +517,11 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetNewsItemId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'newsItemId' was not found in serialized data! Struct: " + toString());
+    if (!isSetItemId()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'itemId' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetPubDate()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'pubDate' was not found in serialized data! Struct: " + toString());
+    if (!isSetDate()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'date' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -692,26 +530,16 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(NEWS_ITEM_ID_FIELD_DESC);
-    oprot.writeI64(this.newsItemId);
+    oprot.writeFieldBegin(ITEM_ID_FIELD_DESC);
+    oprot.writeI32(this.itemId);
     oprot.writeFieldEnd();
     if (this.title != null) {
       oprot.writeFieldBegin(TITLE_FIELD_DESC);
       oprot.writeString(this.title);
       oprot.writeFieldEnd();
     }
-    if (this.link != null) {
-      oprot.writeFieldBegin(LINK_FIELD_DESC);
-      oprot.writeString(this.link);
-      oprot.writeFieldEnd();
-    }
-    if (this.feed != null) {
-      oprot.writeFieldBegin(FEED_FIELD_DESC);
-      oprot.writeString(this.feed);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldBegin(PUB_DATE_FIELD_DESC);
-    oprot.writeI64(this.pubDate);
+    oprot.writeFieldBegin(DATE_FIELD_DESC);
+    oprot.writeI64(this.date);
     oprot.writeFieldEnd();
     if (this.imageUrl != null) {
       if (isSetImageUrl()) {
@@ -726,11 +554,11 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("NewsItem(");
+    StringBuilder sb = new StringBuilder("NewsFeedItem(");
     boolean first = true;
 
-    sb.append("newsItemId:");
-    sb.append(this.newsItemId);
+    sb.append("itemId:");
+    sb.append(this.itemId);
     first = false;
     if (!first) sb.append(", ");
     sb.append("title:");
@@ -741,24 +569,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("link:");
-    if (this.link == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.link);
-    }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("feed:");
-    if (this.feed == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.feed);
-    }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("pubDate:");
-    sb.append(this.pubDate);
+    sb.append("date:");
+    sb.append(this.date);
     first = false;
     if (isSetImageUrl()) {
       if (!first) sb.append(", ");
@@ -776,17 +588,11 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'newsItemId' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'itemId' because it's a primitive and you chose the non-beans generator.
     if (title == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'title' was not present! Struct: " + toString());
     }
-    if (link == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'link' was not present! Struct: " + toString());
-    }
-    if (feed == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'feed' was not present! Struct: " + toString());
-    }
-    // alas, we cannot check 'pubDate' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'date' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

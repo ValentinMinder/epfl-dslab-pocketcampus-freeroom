@@ -16,13 +16,14 @@ chdir(dirname(__FILE__));
 
 // ARGUMENTS: SET THE PLUGIN NAME HERE (set to "sdk" to compile common thrift definition files)
 
-$plugin_name = "Moodle";
+$plugin_name = "news";
 
 // LOGIC: DONT TOUCH THE CODE BELOW
 
 $thrift_bin = "binaries/thrift-linux-0.7.0";
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-	$thrift_bin = "binaries/thrift-win-0.7.0.exe";
+	$cwd = getcwd();
+	$thrift_bin = "$cwd/binaries/thrift-win-0.7.0.exe";
 } elseif (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
 	$thrift_bin = "binaries/thrift-mac-0.7.0";
 }

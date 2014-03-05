@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.news.server.parse;
+package org.pocketcampus.plugin.news.server.old;
 
 import java.io.BufferedReader;
 import java.io.IOException;
