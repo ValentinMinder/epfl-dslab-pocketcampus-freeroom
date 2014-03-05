@@ -17,7 +17,7 @@ public class CachingProxyTests {
 	@Test
 	public void voidReturn() {
 		DoNothingImpl useless = new DoNothingImpl();
-		DoNothing proxy = CachingProxy.create(useless, Duration.standardDays(1));
+		DoNothing proxy = CachingProxy.create(useless, Duration.standardDays(1), false);
 
 		proxy.doNothing(1);
 	}
@@ -25,7 +25,7 @@ public class CachingProxyTests {
 	@Test
 	public void noParameters() {
 		DoNothingImpl useless = new DoNothingImpl();
-		DoNothing proxy = CachingProxy.create(useless, Duration.standardDays(1));
+		DoNothing proxy = CachingProxy.create(useless, Duration.standardDays(1), false);
 
 		assertEquals(42, proxy.return42());
 	}
@@ -33,7 +33,7 @@ public class CachingProxyTests {
 	@Test
 	public void returnValueIsCorrect() {
 		CalculatorImpl calc = new CalculatorImpl();
-		Calculator proxy = CachingProxy.create(calc, Duration.standardDays(1));
+		Calculator proxy = CachingProxy.create(calc, Duration.standardDays(1), false);
 
 		assertEquals(3, proxy.add(1, 2));
 	}
@@ -41,7 +41,7 @@ public class CachingProxyTests {
 	@Test
 	public void cachedReturnValueIsCorrect() {
 		CalculatorImpl calc = new CalculatorImpl();
-		Calculator proxy = CachingProxy.create(calc, Duration.standardDays(1));
+		Calculator proxy = CachingProxy.create(calc, Duration.standardDays(1), false);
 
 		proxy.add(1, 2);
 
@@ -51,7 +51,7 @@ public class CachingProxyTests {
 	@Test
 	public void cacheWorks() {
 		CalculatorImpl calc = new CalculatorImpl();
-		Calculator proxy = CachingProxy.create(calc, Duration.standardDays(1));
+		Calculator proxy = CachingProxy.create(calc, Duration.standardDays(1), false);
 
 		proxy.add(1, 2);
 		proxy.add(1, 2);
@@ -62,11 +62,37 @@ public class CachingProxyTests {
 	@Test
 	public void cacheIsInvalidatedAfterDuration() {
 		CalculatorImpl calc = new CalculatorImpl();
-		Calculator proxy = CachingProxy.create(calc, Duration.standardDays(1));
+		Calculator proxy = CachingProxy.create(calc, Duration.standardDays(1), false);
 
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 11, 18, 00, 00, 00).getMillis());
 		proxy.add(1, 2);
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 11, 19, 00, 00, 00).getMillis());
+		proxy.add(1, 2);
+
+		assertEquals(2, calc.getHitCount());
+	}
+	
+	@Test
+	public void cacheIsNotInvalidatedOnDifferentDayWhenNotRequested(){
+		CalculatorImpl calc = new CalculatorImpl();
+		Calculator proxy = CachingProxy.create(calc, Duration.standardHours(1), false);
+
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 11, 18, 23, 30, 00).getMillis());
+		proxy.add(1, 2);
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 11, 19, 00, 10, 00).getMillis());
+		proxy.add(1, 2);
+
+		assertEquals(1, calc.getHitCount());
+	}
+	
+	@Test
+	public void cacheIsInvalidatedOnDifferentDayWhenRequested(){
+		CalculatorImpl calc = new CalculatorImpl();
+		Calculator proxy = CachingProxy.create(calc, Duration.standardHours(1), true);
+
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 11, 18, 23, 30, 00).getMillis());
+		proxy.add(1, 2);
+		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 11, 19, 00, 10, 00).getMillis());
 		proxy.add(1, 2);
 
 		assertEquals(2, calc.getHitCount());
@@ -79,7 +105,7 @@ public class CachingProxyTests {
 	@Ignore
 	public void cacheDoesNotRunOutOfMemory() {
 		CalculatorImpl calc = new CalculatorImpl();
-		Calculator proxy = CachingProxy.create(calc, Duration.standardDays(1));
+		Calculator proxy = CachingProxy.create(calc, Duration.standardDays(1), false);
 
 		for (int a = 0; a < Integer.MAX_VALUE; a++) {
 			proxy.add(a, 0);
