@@ -117,9 +117,8 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
     self.tableView.allowsMultipleSelection = NO;
     
-    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0.0)];
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 1.0)];
     [self.searchBar sizeToFit];
-    //self.searchBar.delegate = self;
     self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchNoun", @"PocketCampus", nil);
     self.searchBar.searchBarStyle = kSearchBarDefaultStyle;
@@ -317,7 +316,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     return filteredSections;
 }
 
-#pragma mark - UISearchBarDisplayDelegate
+#pragma mark - UISearchDisplayDelegate
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
     [self.typingTimer invalidate];

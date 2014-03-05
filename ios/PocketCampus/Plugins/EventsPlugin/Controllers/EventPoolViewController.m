@@ -26,21 +26,15 @@
  */
 
 
-
-
-
-
 //  Created by Loïc Gardiol on 01.03.13.
 
 
 
 #import "EventPoolViewController.h"
 
-#import "PCUtils.h"
-
 #import "PCCenterMessageCell.h"
 
-#import "ZBarSDK.h"
+#import "PCScanningViewController.h"
 
 #import "EventItemCell.h"
 
@@ -48,11 +42,7 @@
 
 #import "PCTableViewSectionHeader.h"
 
-#import "PCValues.h"
-
 #import "EventItemViewController.h"
-
-#import "PCTableViewAdditions.h"
 
 #import "EventItem+Additions.h"
 
@@ -60,17 +50,14 @@
 
 #import "EventsTagsViewController.h"
 
-#import "UIActionSheet+Additions.h"
-
 #import "MainController.h"
 
 #import "PCURLSchemeHandler.h"
 
 #import "EventsShareFavoriteItemsViewController.h"
 
-#import "UIImage+Additions.h"
 
-@interface EventPoolViewController ()<UIActionSheetDelegate, EventsServiceDelegate, ZBarReaderDelegate>
+@interface EventPoolViewController ()<UIActionSheetDelegate, EventsServiceDelegate>
 
 @property (nonatomic) int64_t poolId;
 @property (nonatomic, strong) EventPool* eventPool;
@@ -429,17 +416,62 @@ static const NSInteger kOneYearPeriodIndex = 3;
 
 - (void)cameraButtonPressed {
     [self trackAction:@"ShowCodeScanner"];
-    ZBarReaderViewController *reader = [ZBarReaderViewController new];
+    /*ZBarReaderViewController *reader = [ZBarReaderViewController new];
     reader.readerDelegate = self;
     reader.supportedOrientationsMask = ZBarOrientationMask(UIInterfaceOrientationPortrait);
     
     ZBarImageScanner *scanner = reader.scanner;
     
-    [scanner setSymbology: ZBAR_I25 config: ZBAR_CFG_ENABLE to: 0];
+    [scanner setSymbology: ZBAR_I25 config: ZBAR_CFG_ENABLE to: 0];*/
     
+    PCScanningViewController* scanningViewController = [PCScanningViewController new];
     
-    [self presentViewController:reader animated:YES completion:NULL];
+    scanningViewController.resultBlock = ^(NSString *result) {
+        if (!result) {
+            [self showQRCodeError];
+            return;
+        }
+        NSURL* url = [NSURL URLWithString:result];
+        if (!url) {
+            [self showQRCodeError];
+            return;
+        }
+        PCURLSchemeHandler* handler = [[MainController publicController] urlSchemeHandlerSharedInstance];
+        NSDictionary* params = [handler parametersForPocketCampusURL:url];
+        UIViewController* viewController = [handler viewControllerForPocketCampusURL:url];
+        if (!viewController && !params[kEventsURLParameterUserTicket] && !params[kEventsURLParameterExchangeToken]) { //those parameter do not provide a view controller
+            [self showQRCodeError];
+            return;
+        }
+        if ([viewController isKindOfClass:[EventPoolViewController class]]) {
+            if ([(EventPoolViewController*)viewController poolId] == self.poolId) {
+                [self refresh];
+            }
+        } else {
+            [self.navigationController pushViewController:viewController animated:NO];
+        }
+        [self dismissViewControllerAnimated:YES completion:NULL];
+        
+    };
+    scanningViewController.cancelBlock = ^() {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    scanningViewController.errorBlock = ^(NSError *error) {
+        [self showQRCodeError];
+    };
     
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:scanningViewController];
+    navController.navigationBar.barStyle = UIBarStyleBlack;
+    navController.navigationBar.translucent = YES;
+    navController.toolbarHidden = NO;
+    navController.toolbar.barStyle = UIBarStyleBlack;
+    navController.toolbar.tintColor = [UIColor whiteColor];
+    navController.toolbar.translucent = YES;
+    [self presentViewController:navController animated:YES completion:NULL];
+}
+
+- (void)showQRCodeError {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"QRCodeErrorMessage", @"EventsPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 //resulting actions
@@ -637,105 +669,6 @@ static const NSInteger kOneYearPeriodIndex = 3;
     }
     self.sectionsNames = tmpSectionsNames;
     self.itemsForSection = tmpItemsForSection;
-}
-
-
-#pragma mark - ZBar and Image picker delegate
-
-- (void)imagePickerController:(UIImagePickerController*)reader didFinishPickingMediaWithInfo:(NSDictionary*)info
-{
-    id<NSFastEnumeration> results = info[ZBarReaderControllerResults];
-    ZBarSymbol *symbol = nil;
-    for(symbol in results)
-        //just grab the first barcode
-        break;
-    
-    if (!symbol.data) {
-        [self showQRCodeError];
-        return;
-    }
-    
-    NSString* urlString = symbol.data;
-    
-    NSURL* url = [NSURL URLWithString:urlString];
-    
-    if (!url) {
-        [self showQRCodeError];
-        return;
-    }
-    
-    PCURLSchemeHandler* handler = [[MainController publicController] urlSchemeHandlerSharedInstance];
-    
-    NSDictionary* params = [handler parametersForPocketCampusURL:url];
-    
-    UIViewController* viewController = [handler viewControllerForPocketCampusURL:url];
-    
-    if (!viewController && !params[kEventsURLParameterUserTicket] && !params[kEventsURLParameterExchangeToken]) { //those parameter do not provide a view controller
-        [self showQRCodeError];
-        return;
-    }
-    
-    if ([viewController isKindOfClass:[EventPoolViewController class]]) {
-        if ([(EventPoolViewController*)viewController poolId] == self.poolId) {
-            [self refresh];
-        }
-    } else {
-        [self.navigationController pushViewController:viewController animated:NO];
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:NULL];
-    
-    /*NSDictionary* parameters = [PCUtils urlStringParameters:urlString];
-    
-    if (!parameters) {
-        [self showQRCodeError];
-        return;
-    }
-    
-    BOOL found = NO;
-    
-    NSString* userToken = parameters[@"userToken"];
-    if (userToken) {
-        found = YES;
-        [self.eventsService addUserTicket:userToken];
-        [self refresh];
-    }
-    
-    NSString* exchangeToken = parameters[kEventsURLParameterExchangeToken];
-    if (exchangeToken) {
-        found = YES;
-        if ([[self.eventsService allUserTickets] count] == 0) {
-            [self showNoUserTokenError];
-        } else {
-            ExchangeRequest* req = [[ExchangeRequest alloc] initWithExchangeToken:exchangeToken userToken:nil userTickets:[self.eventsService allUserTickets]];
-            [self.eventsService exchangeContactsForRequest:req delegate:self];
-        }
-    }
-    
-    NSString* eventItemIdToMarkFavorite = parameters[kEventsURLParameterMarkFavoriteEventItemId];
-    if (eventItemIdToMarkFavorite) {
-        found = YES;
-        int64_t itemId = [eventItemIdToMarkFavorite longLongValue];
-        [self.eventsService addFavoriteEventItemId:itemId];
-        [self fillCollectionsFromReplyAndSelection];
-        [self.tableView reloadData];
-        EventItemViewController* viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:itemId];
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    
-    if (found) {
-        [self dismissViewControllerAnimated:YES completion:NULL];
-    } else {
-        [self showQRCodeError];
-    }*/
-}
-
-- (void)showQRCodeError {
-    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"QRCodeErrorMessage", @"EventsPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-}
-
-- (void)showNoUserTokenError {
-    [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"UserNotRegistered", @"EventsPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 #pragma mark - EventsServiceDelegate

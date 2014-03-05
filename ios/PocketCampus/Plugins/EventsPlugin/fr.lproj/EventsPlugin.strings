@@ -2,6 +2,7 @@
 "PluginName" = "Événements";
 "LoadingEventPool" = "Chargement des éléments...";
 "Favorites" = "Favoris";
+"ScanAQRCode" = "Scanner un QR code";
 "QRCodeErrorMessage" = "Ce QR code n'est pas supporté ou une erreur est survenue lors du scan. Essayez à nouveau.";
 "UserNotRegistered" = "Veuillez en premier scanner votre QR code privé.";
 "ExchangeContactErrorMessage" = "Une erreur est survenue lors de l'échange des contacts. Essayez à nouveau.";

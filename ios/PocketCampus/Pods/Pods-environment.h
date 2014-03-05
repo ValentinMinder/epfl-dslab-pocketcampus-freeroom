@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 2
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 0
 
+// CDZQRScanningViewController
+#define COCOAPODS_POD_AVAILABLE_CDZQRScanningViewController
+#define COCOAPODS_VERSION_MAJOR_CDZQRScanningViewController 1
+#define COCOAPODS_VERSION_MINOR_CDZQRScanningViewController 0
+#define COCOAPODS_VERSION_PATCH_CDZQRScanningViewController 6
+
 // GoogleAnalytics-iOS-SDK
 #define COCOAPODS_POD_AVAILABLE_GoogleAnalytics_iOS_SDK
 #define COCOAPODS_VERSION_MAJOR_GoogleAnalytics_iOS_SDK 3
@@ -71,10 +77,4 @@
 #define COCOAPODS_VERSION_MAJOR_TUSafariActivity 1
 #define COCOAPODS_VERSION_MINOR_TUSafariActivity 0
 #define COCOAPODS_VERSION_PATCH_TUSafariActivity 0
-
-// ZBarSDK
-#define COCOAPODS_POD_AVAILABLE_ZBarSDK
-#define COCOAPODS_VERSION_MAJOR_ZBarSDK 1
-#define COCOAPODS_VERSION_MINOR_ZBarSDK 3
-#define COCOAPODS_VERSION_PATCH_ZBarSDK 1
 

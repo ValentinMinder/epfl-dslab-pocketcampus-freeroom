@@ -26,7 +26,6 @@
  */
 
 
-
 #import "EventsService.h"
 
 #import "EventsUtils.h"

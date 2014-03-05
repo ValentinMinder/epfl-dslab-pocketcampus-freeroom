@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-CDZQRScanningViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-GoogleAnalytics-iOS-SDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -29,11 +34,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-ZBarSDK.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,37 +42,37 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1AEDEAE9AF4348F58B14CCDC</key>
+		<key>15A61175AB1D41A8882C6A0F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>25514F6E10D34855B6649938</key>
+		<key>443477BF86FD4A72A6B48A3F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>83D54AABB97A451DAD379493</key>
+		<key>6D83A9860B054EBFB4D1E214</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9931D08F8CFB44159EE5D26C</key>
+		<key>707927021EB44096AD7D807A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D5990CD5E57A4DCA9AFAD76A</key>
+		<key>8972E530BD6D4E758396DD6D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DE565F3642D64669BE61E50B</key>
+		<key>A354399F9F8048BE8EBDFA95</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F8F1DA5969F34FB2B1244283</key>
+		<key>E3AFCEB6FBFD4632820B6F57</key>
 		<dict>
 			<key>primary</key>
 			<true/>
