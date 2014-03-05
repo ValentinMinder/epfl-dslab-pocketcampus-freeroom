@@ -1,18 +1,26 @@
 package org.pocketcampus.plugin.freeroom.android;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 public class FreeRoomResultView extends PluginView implements IFreeRoomView {
 
@@ -23,6 +31,9 @@ public class FreeRoomResultView extends PluginView implements IFreeRoomView {
 	private LinearLayout subLayout;
 	
 	private Button resetButton;
+	
+	private ListView mList;
+	private ArrayList<String> mListValues;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -70,6 +81,29 @@ public class FreeRoomResultView extends PluginView implements IFreeRoomView {
 			}
 		});
 		
+		mList = new ListView(this);
+		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT);
+		mList.setLayoutParams(p);
+
+		mListValues = new ArrayList<String>();
+		mList.setAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_dropdown_item_1line,
+				android.R.id.text1, mListValues));
+		
+		mListValues.add("Test list view !");
+		
+		mList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				System.out.println("clicked!");
+			}
+			
+		});
+		mLayout.addView(mList);
+		
 		
 	}
 	
@@ -83,6 +117,16 @@ public class FreeRoomResultView extends PluginView implements IFreeRoomView {
 	@Override
 	public void freeRoomServersDown() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resultsUpdated() {
+		Set<FRRoom> res = mModel.getFreeRoomResults();
+		for (FRRoom frRoom : res) {
+			mListValues.add(frRoom.getBuilding() + " " + frRoom.getNumber());
+		}
+		
 		
 	}
 

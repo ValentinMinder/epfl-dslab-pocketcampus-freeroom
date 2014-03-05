@@ -1,5 +1,9 @@
 package org.pocketcampus.plugin.freeroom.android.iface;
 
+import java.util.Set;
+
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+
 /**
  * IFreeRoomModel
  * 
@@ -10,4 +14,6 @@ package org.pocketcampus.plugin.freeroom.android.iface;
  *
  */
 public interface IFreeRoomModel {
+
+	Set<FRRoom> getFreeRoomResults();
 }

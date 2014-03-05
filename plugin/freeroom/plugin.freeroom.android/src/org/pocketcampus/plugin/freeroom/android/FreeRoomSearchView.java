@@ -13,6 +13,7 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.Converter;
 import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -91,8 +92,8 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 					mController.search(view, Converter.convert(intday, startHour, endHour));
 					
 					//TODO action
-//					Intent i = new Intent(FreeRoomSearchView.this, FreeRoomResultView.class);
-//					FreeRoomSearchView.this.startActivity(i);
+					Intent i = new Intent(FreeRoomSearchView.this, FreeRoomResultView.class);
+					FreeRoomSearchView.this.startActivity(i);
 				}
 			}
 		});
@@ -186,6 +187,12 @@ public class FreeRoomSearchView extends PluginView implements IFreeRoomView {
 
 	@Override
 	public void freeRoomServersDown() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resultsUpdated() {
 		// TODO Auto-generated method stub
 		
 	}

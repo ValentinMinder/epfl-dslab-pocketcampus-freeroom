@@ -135,4 +135,10 @@ public class FreeRoomMainView extends PluginView implements IFreeRoomView {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void resultsUpdated() {
+		// TODO Auto-generated method stub
+		
+	}
 }

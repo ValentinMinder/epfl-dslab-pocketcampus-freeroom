@@ -1,12 +1,16 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 
+import java.util.Set;
+
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Context;
+import android.util.Log;
 
 /**
  * FreeRoomModel - The Model that stores the data of this plugin.
@@ -25,6 +29,13 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Reference to the Views that need to be notified when the stored data changes.
 	 */
 	IFreeRoomView mListeners = (IFreeRoomView) getListeners();
+	
+	/**List of <code>FRRoom</code>'s obtained from the freeroom query**/
+	private Set<FRRoom> mFreeRoomResult;
+//	/**List of suggestions for the search view*/
+//	private List<String> mAutoCompleteSuggestions;
+	/**Used to specify the displayed <code>FRRoom</code> in the results view*/
+	private FRRoom mSelectedFRRoom;
 	
 	/**
 	 * Constructor with reference to the context.
@@ -53,5 +64,57 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public IFreeRoomView getListenersToNotify() {
 		return mListeners;
 	}
+	
+	/**
+	 * Getter for the results of the request
+	 * @return Set of FRRoom
+	 */
+	@Override
+	public Set<FRRoom> getFreeRoomResults() {
+		return mFreeRoomResult;
+	}
+	
+	/**
+	 * Setter for the results of a freeroom request
+	 * @param results the result for the specific freeroom search
+	 */
+	public void setResults(Set<FRRoom> results){
+		mFreeRoomResult = results;
+		Log.v("Freeroom","result set via the model");
+		mListeners.resultsUpdated();
+		
+	}
+
+	/**
+	 * Gets the currently selected <code>FRRoom</code>
+	 */
+	public FRRoom getSelectedFRRoom() {
+		return mSelectedFRRoom;
+	}
+	
+	/**
+	 * Sets which <code>FRRoom</code> is currently displayed.
+	 */
+	public void selectFRRoom(FRRoom choosen_one){
+		mSelectedFRRoom = choosen_one;
+	}
+
+
+//	/**
+//	 * Gets the suggestions for the autocomplete
+//	 */
+//	@Override
+//	public List<String> getAutocompleteSuggestions() {
+//		return mAutoCompleteSuggestions;
+//	}
+//	
+//	/**
+//	 * Sets the suggestions to the autocomplete and notifies the listeners.
+//	 * @param suggestions
+//	 */
+//	public void setAutocompleteSuggestions(List<String> suggestions){
+//		mAutoCompleteSuggestions = suggestions;
+//		mListeners.autoCompletedUpdated();
+//	}
 	
 }

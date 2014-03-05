@@ -27,6 +27,9 @@ public class GetFreeRoomRequest extends Request<FreeRoomController, Iface, FreeR
 		@Override
 		protected void onResult(FreeRoomController controller, FreeRoomReply result) {
 			
+			System.out.println("Server replied... adding to model");
+			((FreeRoomModel) controller.getModel()).setResults(result.getRooms());
+			
 			for (FRRoom room : result.getRooms()) {
 				System.out.println("Free Room:" + room.getBuilding() + room.getNumber());
 			}
