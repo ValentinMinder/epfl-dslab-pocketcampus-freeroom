@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using PocketCampus.Common.Services;
+using PocketCampus.Common;
 
 namespace PocketCampus.Moodle.Services
 {
@@ -20,15 +20,15 @@ namespace PocketCampus.Moodle.Services
         private const string ActionValue = "download_file";
         private const string FilePathKey = "file_path";
 
-        private readonly IServerAccess _serverAccess;
+        private readonly IServerSettings _serverSettings;
 
 
         /// <summary>
         /// Creates a new MoodleDownloader.
         /// </summary>
-        public MoodleDownloader( IServerAccess serverAccess )
+        public MoodleDownloader( IServerSettings serverSettings )
         {
-            _serverAccess = serverAccess;
+            _serverSettings = serverSettings;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace PocketCampus.Moodle.Services
         public async Task<byte[]> DownloadAsync( string url )
         {
             var client = new HttpClient(); // not the PocketCampus HTTP client, the .NET one
-            client.DefaultRequestHeaders.Add( SessionHeaderName, _serverAccess.ServerSession );
+            client.DefaultRequestHeaders.Add( SessionHeaderName, _serverSettings.Session );
 
             var postParams = new Dictionary<string, string>
             {
@@ -45,7 +45,7 @@ namespace PocketCampus.Moodle.Services
                 { FilePathKey, url }
             };
             string downloadUrl = string.Format( "{0}://pocketcampus.epfl.ch:{1}/v3r1/raw-moodle",
-                                                _serverAccess.CurrentConfiguration.Protocol, _serverAccess.CurrentConfiguration.Port );
+                                                _serverSettings.Configuration.Protocol, _serverSettings.Configuration.Port );
 
             var resp = await client.PostAsync( downloadUrl, new FormUrlEncodedContent( postParams ) );
             return await resp.Content.ReadAsByteArrayAsync();

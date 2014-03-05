@@ -30,7 +30,6 @@ namespace PocketCampus.Main
     /// </summary>
     public partial class App : Application
     {
-        private IMainSettings _mainSettings;
         private IPluginLoader _pluginLoader;
 
         /// <summary>
@@ -75,7 +74,6 @@ namespace PocketCampus.Main
             // Basic building blocks
             Container.Bind<IHttpClient, HttpClient>();
             Container.Bind<IApplicationSettings, ApplicationSettings>();
-            _mainSettings = Container.BindOnce<IMainSettings, MainSettings>();
 
             // Single-purpose services with no dependencies
             Container.Bind<NavigationLogger, GoogleAnalyticsNavigationLogger>();
@@ -186,11 +184,14 @@ namespace PocketCampus.Main
                 InitializeApplication();
             }
 
+            // TODO find a way to avoid that
+            var settings = (IMainSettings) Container.Get( typeof( IMainSettings ), null );
+
             // Displays the first-run popup if needed
-            if ( _mainSettings.IsFirstRun )
+            if ( settings.IsFirstRun )
             {
                 MessageBoxEx.ShowDialog( AppResources.FirstRunCaption, AppResources.FirstRunMessage );
-                _mainSettings.IsFirstRun = false;
+                settings.IsFirstRun = false;
             }
 
             RootFrame.Navigated -= RootFrame_Navigated;

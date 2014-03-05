@@ -49,6 +49,7 @@
     <Compile Include="HttpResponse.cs" />
     <Compile Include="IApplicationSettings.cs" />
     <Compile Include="IAuthenticationToken.cs" />
+    <Compile Include="IServerSettings.cs" />
     <Compile Include="ServerConfiguration.cs" />
     <Compile Include="Services\IBrowserService.cs" />
     <Compile Include="Services\IDeviceIdentifier.cs" />

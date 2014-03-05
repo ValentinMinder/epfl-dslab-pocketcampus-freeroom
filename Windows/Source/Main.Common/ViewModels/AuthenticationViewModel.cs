@@ -136,7 +136,7 @@ namespace PocketCampus.Main.ViewModels
                         throw new Exception( "An error occurred while getting a session." );
                     }
 
-                    _settings.ServerSession = _serverAccess.ServerSession = sessionResponse.Session;
+                    _settings.Session = sessionResponse.Session;
 
                     _settings.IsAuthenticated = SaveCredentials;
                     _settings.UserName = UserName;

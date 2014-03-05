@@ -4,22 +4,19 @@
 
 using System.Collections.Generic;
 using PocketCampus.Common;
+
 namespace PocketCampus.Main
 {
     /// <summary>
     /// Contains various application-level settings.
     /// </summary>
-    public interface IMainSettings
+    public interface IMainSettings : IServerSettings
     {
         /// <summary>
         /// Gets or sets a value indicating whether this is the app's first run.
         /// </summary>
         bool IsFirstRun { get; set; }
 
-        /// <summary>
-        /// Gets or sets the server configuration used to connect.
-        /// </summary>
-        ServerConfiguration ServerConfiguration { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the user is authenticated.
@@ -35,11 +32,6 @@ namespace PocketCampus.Main
         /// Gets or sets the GASPAR password, if the user is authenticated.
         /// </summary>
         string Password { get; set; }
-
-        /// <summary>
-        /// Gets or sets the session for the server. (separate from the per-plugin sessions)
-        /// </summary>
-        string ServerSession { get; set; }
 
         /// <summary>
         /// Gets or sets the saved sessions.

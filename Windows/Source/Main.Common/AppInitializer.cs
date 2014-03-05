@@ -15,10 +15,11 @@ namespace PocketCampus.Main
         {
             DataViewModelOptions.NetworkExceptionType = typeof( ThriftTransportException );
 
+            Container.BindOnce<IMainSettings, MainSettings>();
+            Container.Bind<IServerAccess, ServerAccess>();
+            Container.Bind<IAuthenticationService, AuthenticationService>();
             Container.Bind<ITequilaAuthenticator, TequilaAuthenticator>();
             Container.Bind<ISecureRequestHandler, SecureRequestHandler>();
-            Container.Bind<IAuthenticationService, AuthenticationService>();
-            Container.BindOnce<IServerAccess, ServerAccess>();
         }
 
         public static void InitializePlugins( IPluginLoader pluginLoader, INavigationService navigationService )

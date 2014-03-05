@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Services;
 using PocketCampus.Map;
@@ -127,7 +126,7 @@ namespace PocketCampus.Food.ViewModels
         /// Creates a new MainViewModel.
         /// </summary>
         public MainViewModel( INavigationService navigationService, IFoodService menuService,
-                              IPluginSettings settings, IServerAccess access )
+                              IPluginSettings settings, IServerSettings serverSettings )
         {
             _navigationService = navigationService;
             _menuService = menuService;
@@ -135,7 +134,7 @@ namespace PocketCampus.Food.ViewModels
             _mealDate = DateTime.Now;
             _mealTime = _mealDate.Hour <= LunchLimit ? MealTime.Lunch : MealTime.Dinner;
 
-            AreRatingsEnabled = access.CurrentConfiguration.AreFoodRatingsEnabled != 0;
+            AreRatingsEnabled = serverSettings.Configuration.AreFoodRatingsEnabled != 0;
             Settings = settings;
         }
 

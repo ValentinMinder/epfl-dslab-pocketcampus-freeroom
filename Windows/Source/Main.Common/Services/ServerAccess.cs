@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
+using PocketCampus.Mvvm;
 using ThriftSharp;
 
 namespace PocketCampus.Main.Services
@@ -39,51 +40,21 @@ namespace PocketCampus.Main.Services
 
 
         private readonly IHttpClient _client;
+        private readonly IServerSettings _settings;
         private readonly IDictionary<string, string> _headers;
-
-        /// <summary>
-        /// Gets or sets the currently used server configuration, loaded from the settings by default.
-        /// </summary>
-        public ServerConfiguration CurrentConfiguration { get; set; }
-
-        /// <summary>
-        /// Gets or sets the session ID sent with each server request.
-        /// </summary>
-        public string ServerSession
-        {
-            get { return _headers.ContainsKey( ServerAuthenticationHeader ) ? _headers[ServerAuthenticationHeader] : null; }
-            set
-            {
-                if ( _headers.ContainsKey( ServerAuthenticationHeader ) )
-                {
-                    if ( value == null )
-                    {
-                        _headers.Remove( ServerAuthenticationHeader );
-                    }
-                    else
-                    {
-                        _headers[ServerAuthenticationHeader] = value;
-                    }
-
-                }
-                else if ( value != null )
-                {
-                    _headers.Add( ServerAuthenticationHeader, value );
-                }
-            }
-        }
 
 
         /// <summary>
         /// Creates a new ServerAccess.
         /// </summary>
-        public ServerAccess( IHttpClient client, IMainSettings settings )
+        public ServerAccess( IHttpClient client, IServerSettings settings )
         {
             _client = client;
+            _settings = settings;
             _headers = new Dictionary<string, string>();
 
-            CurrentConfiguration = settings.ServerConfiguration;
-            ServerSession = settings.ServerSession;
+            UpdateSessionHeader();
+            _settings.ListenToProperty( x => x.Session, UpdateSessionHeader );
         }
 
 
@@ -103,9 +74,31 @@ namespace PocketCampus.Main.Services
         /// </summary>
         public ThriftCommunication CreateCommunication( string pluginName )
         {
-            string format = string.Format( ThriftServerUrlFormat, CurrentConfiguration.Protocol, CurrentConfiguration.Port );
+            string format = string.Format( ThriftServerUrlFormat, _settings.Configuration.Protocol, _settings.Configuration.Port );
             string url = string.Format( ThriftServiceUrlFormat, format, pluginName );
             return ThriftCommunication.Binary().OverHttp( url, ThriftConnectionTimeout, _headers );
+        }
+
+        /// <summary>
+        /// Updates the HTTP headers sent with each request to add/remove/change the session.
+        /// </summary>
+        private void UpdateSessionHeader()
+        {
+            if ( _headers.ContainsKey( ServerAuthenticationHeader ) )
+            {
+                if ( _settings.Session == null )
+                {
+                    _headers.Remove( ServerAuthenticationHeader );
+                }
+                else
+                {
+                    _headers[ServerAuthenticationHeader] = _settings.Session;
+                }
+            }
+            else if ( _settings.Session != null )
+            {
+                _headers.Add( ServerAuthenticationHeader, _settings.Session );
+            }
         }
     }
 }

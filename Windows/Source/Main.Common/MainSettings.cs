@@ -22,15 +22,6 @@ namespace PocketCampus.Main
         }
 
         /// <summary>
-        /// Gets or sets the server configuration used to connect.
-        /// </summary>
-        public ServerConfiguration ServerConfiguration
-        {
-            get { return Get<ServerConfiguration>(); }
-            set { Set( value ); }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the user is authenticated.
         /// </summary>
         public bool IsAuthenticated
@@ -58,20 +49,30 @@ namespace PocketCampus.Main
         }
 
         /// <summary>
+        /// Gets or sets the saved sessions.
+        /// </summary>
+        public Dictionary<string, string> Sessions
+        {
+            get { return Get<Dictionary<string, string>>(); }
+            set { Set( value ); }
+        }
+
+
+        /// <summary>
         /// Gets or sets the session for the server. (separate from the per-plugin sessions)
         /// </summary>
-        public string ServerSession
+        public string Session
         {
             get { return Get<string>(); }
             set { Set( value ); }
         }
 
         /// <summary>
-        /// Gets or sets the saved sessions.
+        /// Gets or sets the server configuration used to connect.
         /// </summary>
-        public Dictionary<string, string> Sessions
+        public ServerConfiguration Configuration
         {
-            get { return Get<Dictionary<string, string>>(); }
+            get { return Get<ServerConfiguration>(); }
             set { Set( value ); }
         }
 
@@ -90,12 +91,12 @@ namespace PocketCampus.Main
             return new SettingsDefaultValues<MainSettings>
             {
                 { x => x.IsFirstRun, () => true },
-                { x => x.ServerConfiguration, () => new ServerConfiguration( "https", 4433, "Camipro", "Directory", "Events", "Food", "Map", 
-                                                                             "Moodle", "News", "Satellite", "Transport" ) },
+                { x => x.Configuration, () => new ServerConfiguration( "https", 4433, "Camipro", "Directory", "Events", "Food", "Map", 
+                                                                                            "Moodle", "News", "Satellite", "Transport" ) },
                 { x => x.IsAuthenticated, () => false },
                 { x => x.UserName, () => null },
                 { x => x.Password, () => null },
-                { x => x.ServerSession, () => null },
+                { x => x.Session, () => null },
                 { x => x.Sessions, () => new Dictionary<string, string>() }
             };
         }

@@ -103,7 +103,6 @@ namespace PocketCampus.Main.ViewModels
             if ( Plugins == null )
             {
                 Plugins = _pluginLoader.GetPlugins();
-                _serverAccess.CurrentConfiguration = _settings.ServerConfiguration;
 
                 if ( _request.PluginName == null )
                 {
@@ -111,7 +110,7 @@ namespace PocketCampus.Main.ViewModels
                     try
                     {
                         config = await _serverAccess.LoadConfigurationAsync();
-                        _settings.ServerConfiguration = _serverAccess.CurrentConfiguration = config;
+                        _settings.Configuration = config;
                     }
                     catch
                     {
@@ -140,7 +139,7 @@ namespace PocketCampus.Main.ViewModels
         [Conditional( "RELEASE" )]
         private void FilterPlugins()
         {
-            Plugins = Plugins.Where( p => _settings.ServerConfiguration.EnabledPlugins.Contains( p.Id ) ).ToArray();
+            Plugins = Plugins.Where( p => _settings.Configuration.EnabledPlugins.Contains( p.Id ) ).ToArray();
         }
 
         /// <summary>
