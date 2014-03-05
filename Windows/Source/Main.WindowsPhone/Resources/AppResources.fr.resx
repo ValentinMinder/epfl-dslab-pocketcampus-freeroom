@@ -160,14 +160,14 @@ Notre politique de confidentialité est simple : vos données et votre position 
   <data name="AboutPageTitle" xml:space="preserve">
     <value>À propos</value>
   </data>
-  <data name="AuthenticationStatus_Error" xml:space="preserve">
+  <data name="AuthenticationAttemptStatus_Error" xml:space="preserve">
     <value>Une erreur est survenue lors de la connexion à Tequila. Veuillez réessayer.</value>
   </data>
-  <data name="AuthenticationStatus_NotAuthenticated" xml:space="preserve">
+  <data name="AuthenticationAttemptStatus_NotAuthenticated" xml:space="preserve">
     <value />
     <comment>Must be empty</comment>
   </data>
-  <data name="AuthenticationStatus_WrongCredentials" xml:space="preserve">
+  <data name="AuthenticationAttemptStatus_WrongCredentials" xml:space="preserve">
     <value>Vos identifiants ont été refusés par Tequila. Veuillez réessayer.</value>
   </data>
   <data name="Authenticating" xml:space="preserve">

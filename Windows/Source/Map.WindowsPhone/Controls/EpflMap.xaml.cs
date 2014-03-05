@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System.ComponentModel;
 using System.Device.Location;
 using System.Linq;
 using System.Reflection;
@@ -15,6 +14,7 @@ using Microsoft.Phone.Maps.Toolkit;
 using PocketCampus.Common;
 using PocketCampus.Map.Models;
 using PocketCampus.Map.ViewModels;
+using PocketCampus.Mvvm;
 
 // MEGA-HACK: Accessing MapItemsControl map children as members fails. They're always null.
 // So, instead we find them amongst all map children. It's ugly, but I haven't found a better way.
@@ -43,14 +43,9 @@ namespace PocketCampus.Map.Controls
         private static void OnPropertiesChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
         {
             var map = (EpflMap) obj;
-            if ( args.OldValue != null )
-            {
-                ( (MapProperties) args.OldValue ).PropertyChanged -= map.Properties_PropertyChanged;
-            }
-            if ( args.NewValue != null )
-            {
-                ( (MapProperties) args.NewValue ).PropertyChanged += map.Properties_PropertyChanged;
-            }
+            var props = (MapProperties) args.NewValue;
+            props.ListenToProperty( x => x.UserPosition, map.UserPositionChanged );
+            props.ListenToProperty( x => x.BuildingsLevel, map.BuildingsLevelChanged );
         }
         #endregion
 
@@ -134,7 +129,7 @@ namespace PocketCampus.Map.Controls
         }
 
         /// <summary>
-        /// Occurs when the pinned locations change.
+        /// Called when the pinned locations change.
         /// </summary>
         private void OnPinnedLocationsChanged()
         {
@@ -162,21 +157,25 @@ namespace PocketCampus.Map.Controls
         }
 
         /// <summary>
-        /// Occurs when the map properties change.
+        /// Called when the user's position changes.
         /// </summary>
-        private void Properties_PropertyChanged( object sender, PropertyChangedEventArgs e )
+        private void UserPositionChanged()
         {
-            if ( e.PropertyName == "UserPosition" && Properties.UserPosition != null )
+            if ( Properties.UserPosition != null )
             {
                 Properties.Center = Properties.UserPosition;
             }
-            else if ( e.PropertyName == "BuildingsLevel" )
-            {
-                var source = (EpflBuildingsTileSource) LayoutRoot.TileSources[0];
-                source.Level = Properties.BuildingsLevel;
-                LayoutRoot.TileSources.Remove( source );
-                LayoutRoot.TileSources.Add( source );
-            }
+        }
+
+        /// <summary>
+        /// Called when the buildings level is changed.
+        /// </summary>
+        private void BuildingsLevelChanged()
+        {
+            var source = (EpflBuildingsTileSource) LayoutRoot.TileSources[0];
+            source.Level = Properties.BuildingsLevel;
+            LayoutRoot.TileSources.Remove( source );
+            LayoutRoot.TileSources.Add( source );
         }
     }
 }

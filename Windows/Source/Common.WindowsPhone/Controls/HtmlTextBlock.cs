@@ -4,12 +4,15 @@
 
 using System;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 using HtmlAgilityPack;
+using Windows.System;
 
-namespace PocketCampus.News.Controls
+namespace PocketCampus.Common.Controls
 {
     /// <summary>
     /// A TextBlock that displays HTML.
@@ -36,6 +39,7 @@ namespace PocketCampus.News.Controls
         {
             var block = (HtmlTextBlock) obj;
             string html = (string) args.NewValue;
+            html = HttpUtility.HtmlDecode( html );
             var root = HtmlNode.CreateNode( "<div>" + html + "</div>" );
 
             CleanNodes( root );
@@ -111,12 +115,28 @@ namespace PocketCampus.News.Controls
                     return new LineBreak();
 
                 case "a":
-                    return new Hyperlink
+                    string text = node.InnerText;
+                    string url = node.GetAttributeValue( "href", "" );
+                    if ( string.IsNullOrWhiteSpace( text ) )
                     {
-                        Inlines = { new Run { Text = node.InnerText } },
-                        NavigateUri = new Uri( node.GetAttributeValue( "href", "" ), UriKind.Absolute ),
+                        text = url;
+                    }
+
+                    var link = new Hyperlink
+                    {
+                        Inlines = 
+                        {
+                            new Run 
+                            {
+                                Text = text, 
+                                Foreground = new SolidColorBrush( Colors.Blue )
+                            } 
+                        },
+                        NavigateUri = new Uri( url, UriKind.Absolute ),
                         TargetName = "42" // can be anything, it just needs to be set
                     };
+                    link.Click += async ( _, __ ) => await Launcher.LaunchUriAsync( link.NavigateUri );
+                    return link;
 
                 case "strong":
                 case "b":
@@ -140,7 +160,7 @@ namespace PocketCampus.News.Controls
                     foreach ( var child in node.ChildNodes )
                     {
                         var listElem = new Span();
-                        listElem.Inlines.Add( new Run { Text = "●" } );
+                        listElem.Inlines.Add( new Run { Text = "● " } );
                         listElem.Inlines.Add( ToInline( child ) );
                         unorderedList.Inlines.Add( listElem );
                         unorderedList.Inlines.Add( new LineBreak() );
@@ -160,10 +180,12 @@ namespace PocketCampus.News.Controls
                     return orderedList;
 
                 case "div":
+                case "p":
                     var container = new Span();
                     foreach ( var child in node.ChildNodes )
                     {
                         container.Inlines.Add( ToInline( child ) );
+                        container.Inlines.Add( new Run { Text = " " } );
                     }
                     return container;
             }

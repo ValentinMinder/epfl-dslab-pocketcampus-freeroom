@@ -42,12 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyReader.cs" />
+    <Compile Include="EmailSendingStatus.cs" />
     <Compile Include="EnumEx.cs" />
     <Compile Include="GeoLocationStatus.cs" />
     <Compile Include="GeoPosition.cs" />
     <Compile Include="HttpResponse.cs" />
     <Compile Include="IApplicationSettings.cs" />
     <Compile Include="IAuthenticationToken.cs" />
+    <Compile Include="IServerSettings.cs" />
     <Compile Include="ServerConfiguration.cs" />
     <Compile Include="Services\IBrowserService.cs" />
     <Compile Include="Services\IDeviceIdentifier.cs" />
@@ -70,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThriftSharp">
-      <HintPath>..\..\packages\ThriftSharp.1.0.7\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
+      <HintPath>..\..\packages\ThriftSharp.1.0.8\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

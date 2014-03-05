@@ -18,14 +18,14 @@ namespace PocketCampus.Main.ViewModels
     /// The main ViewModel.
     /// </summary>
     [LogId( "/dashboard" )]
-    public sealed class MainViewModel : DataViewModel<string>
+    public sealed class MainViewModel : DataViewModel<ViewPluginRequest>
     {
         private readonly INavigationService _navigationService;
         private readonly IServerAccess _serverAccess;
         private readonly IPluginLoader _pluginLoader;
         private readonly IMainSettings _settings;
         private readonly ITileCreator _tileCreator;
-        private readonly string _requestedPlugin;
+        private readonly ViewPluginRequest _request;
 
         private IPlugin[] _plugins;
 
@@ -83,7 +83,7 @@ namespace PocketCampus.Main.ViewModels
         /// </summary>
         public MainViewModel( INavigationService navigationService, IServerAccess serverAccess,
                               IPluginLoader pluginLoader, IMainSettings settings, ITileCreator tileCreator,
-                              string requestedPlugin )
+                              ViewPluginRequest request )
         {
             _navigationService = navigationService;
             _pluginLoader = pluginLoader;
@@ -91,7 +91,7 @@ namespace PocketCampus.Main.ViewModels
             _settings = settings;
             _tileCreator = tileCreator;
 
-            _requestedPlugin = requestedPlugin;
+            _request = request;
         }
 
 
@@ -102,31 +102,34 @@ namespace PocketCampus.Main.ViewModels
         {
             if ( Plugins == null )
             {
-                ServerConfiguration config;
-                try
-                {
-                    config = await _serverAccess.LoadConfigurationAsync();
-                    _settings.ServerConfiguration = config;
-                }
-                catch
-                {
-                    // something went wrong during the fetch, use the saved config
-                }
-
-                _serverAccess.CurrentConfiguration = _settings.ServerConfiguration;
-
                 Plugins = _pluginLoader.GetPlugins();
-                FilterPlugins();
 
-                if ( _requestedPlugin != "" )
+                if ( _request.PluginName == null )
                 {
-                    var plugin = Plugins.FirstOrDefault( p => p.Id == _requestedPlugin );
+                    ServerConfiguration config;
+                    try
+                    {
+                        config = await _serverAccess.LoadConfigurationAsync();
+                        _settings.Configuration = config;
+                    }
+                    catch
+                    {
+                        // something went wrong during the fetch, use the saved config
+                    }
+                }
+                else
+                {
+                    var plugin = Plugins.FirstOrDefault( p => p.Id == _request.PluginName );
                     if ( plugin != null )
                     {
                         _navigationService.PopBackStack();
                         OpenPlugin( plugin );
                     }
                 }
+
+                // Filter the plugins anyway, but let the user go to a plugin 
+                // from an outside source even if it's filtered out
+                FilterPlugins();
             }
         }
 
@@ -136,7 +139,7 @@ namespace PocketCampus.Main.ViewModels
         [Conditional( "RELEASE" )]
         private void FilterPlugins()
         {
-            Plugins = Plugins.Where( p => _settings.ServerConfiguration.EnabledPlugins.Contains( p.Id ) ).ToArray();
+            Plugins = Plugins.Where( p => _settings.Configuration.EnabledPlugins.Contains( p.Id ) ).ToArray();
         }
 
         /// <summary>

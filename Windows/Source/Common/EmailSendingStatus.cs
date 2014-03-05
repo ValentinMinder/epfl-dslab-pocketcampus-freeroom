@@ -2,10 +2,10 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-namespace PocketCampus.Camipro.ViewModels
+namespace PocketCampus.Common
 {
     /// <summary>
-    /// Display-friendly version of MailRequestResult and ResponseStatus.
+    /// The possible statuses of an e-mail sending request..
     /// </summary>
     public enum EmailSendingStatus
     {

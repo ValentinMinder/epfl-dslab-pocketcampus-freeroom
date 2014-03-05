@@ -83,12 +83,17 @@ namespace PocketCampus.Mvvm
         /// </summary>
         public static object Get( Type type, object argument )
         {
+            TypeInfo toCreate = type.GetTypeInfo();
+
             if ( _staticImpls.ContainsKey( type ) )
             {
                 return _staticImpls[type];
             }
-
-            TypeInfo toCreate = type.GetTypeInfo();
+            var derivedType = _staticImpls.FirstOrDefault( pair => toCreate.IsAssignableFrom( pair.Key.GetTypeInfo() ) ).Key;
+            if ( derivedType != null )
+            {
+                return _staticImpls[derivedType];
+            }
 
             if ( toCreate.IsInterface || toCreate.IsAbstract )
             {

@@ -1,0 +1,57 @@
+﻿<comControls:BasePage x:Class="PocketCampus.Events.Views.CodeScannerView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                      shell:SystemTray.IsVisible="False">
+    <comControls:BasePage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </comControls:BasePage.Resources>
+    
+    <!-- Root grid -->
+    <Grid x:Name="LayoutRoot">
+        <!-- "Initializing camera" text (covered by the camera preview when it's initialized) -->
+        <TextBlock Text="{Binding Resources.InitializingCamera, Source={StaticResource Strings}}"
+                   TextWrapping="Wrap"
+                   TextAlignment="Center"
+                   Style="{StaticResource PhoneTextTitle2Style}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
+
+        <!-- Help text -->
+        <Border VerticalAlignment="Top"
+                Background="#88000000">
+            <TextBlock Text="{Binding Resources.ScanQRCode, Source={StaticResource Strings}}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource AppTextTitle2Style}"/>
+        </Border>
+
+        <!-- Camera preview -->
+        <Rectangle Height="{Binding ActualHeight, ElementName=LayoutRoot}" 
+                   Width="{Binding ActualWidth, ElementName=LayoutRoot}">
+            <Rectangle.Fill>
+                <VideoBrush x:Name="PreviewVideo">
+                    <VideoBrush.RelativeTransform>
+                        <CompositeTransform x:Name="PreviewTransform" 
+                                            CenterX="0.5" 
+                                            CenterY="0.5" />
+                    </VideoBrush.RelativeTransform>
+                </VideoBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        
+        <!-- "Not a PocketCampus code" message -->
+        <Border x:Name="WrongCodeMessage"
+                Visibility="Collapsed"
+                VerticalAlignment="Bottom"
+                Background="#88000000">
+            <TextBlock Text="{Binding Resources.WrongQRCode, Source={StaticResource Strings}}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource AppTextTitle2Style}"/>
+        </Border>
+    </Grid>
+</comControls:BasePage>

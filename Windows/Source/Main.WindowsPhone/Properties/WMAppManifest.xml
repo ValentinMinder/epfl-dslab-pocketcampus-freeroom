@@ -12,6 +12,7 @@
       <Capability Name="ID_CAP_MAP" />
       <Capability Name="ID_CAP_LOCATION" />
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
+      <Capability Name="ID_CAP_ISV_CAMERA" />
     </Capabilities>
     <Tasks>
       <DefaultTask Name="_default" NavigationPage="Views/Redirect.xaml" />
@@ -23,16 +24,25 @@
           <Count>0</Count>
           <IconImageURI IsRelative="true" IsResource="false">Assets\Tiles\IconicTileMedium.png</IconImageURI>
           <Title>PocketCampus EPFL</Title>
-          <Message></Message>
-          <BackgroundColor></BackgroundColor>
+          <Message>
+          </Message>
+          <BackgroundColor>
+          </BackgroundColor>
           <HasLarge>false</HasLarge>
-          <LargeContent1></LargeContent1>
-          <LargeContent2></LargeContent2>
-          <LargeContent3></LargeContent3>
-          <DeviceLockImageURI IsRelative="true" IsResource="false"></DeviceLockImageURI>
+          <LargeContent1>
+          </LargeContent1>
+          <LargeContent2>
+          </LargeContent2>
+          <LargeContent3>
+          </LargeContent3>
+          <DeviceLockImageURI IsRelative="true" IsResource="false">
+          </DeviceLockImageURI>
         </TemplateIconic>
       </PrimaryToken>
     </Tokens>
+    <Extensions>
+      <Protocol Name="pocketcampus" NavUriFragment="encodedLaunchUri=%s" TaskID="_default" />
+    </Extensions>
     <ScreenResolutions>
       <ScreenResolution Name="ID_RESOLUTION_WVGA" />
       <ScreenResolution Name="ID_RESOLUTION_WXGA" />

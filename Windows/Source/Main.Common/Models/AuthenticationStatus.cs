@@ -1,0 +1,33 @@
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
+
+using ThriftSharp;
+
+namespace PocketCampus.Main.Models
+{
+    /// <summary>
+    /// Status for authentication requests.
+    /// </summary>
+    [ThriftEnum( "AuthStatusCode" )]
+    public enum AuthenticationStatus
+    {
+        /// <summary>
+        /// The request completed successfully.
+        /// </summary>
+        [ThriftEnumMember( "OK", 200 )]
+        Success,
+
+        /// <summary>
+        /// A network error occurred while executing the request.
+        /// </summary>
+        [ThriftEnumMember( "NETWORK_ERROR", 404 )]
+        NetworkError,
+
+        /// <summary>
+        /// The provided credentials are invalid or expired.
+        /// </summary>
+        [ThriftEnumMember( "INVALID_SESSION", 407 )]
+        AuthenticationError
+    }
+}

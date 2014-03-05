@@ -13,11 +13,6 @@ namespace PocketCampus.Common.Services
     public interface IServerAccess
     {
         /// <summary>
-        /// Gets or sets the currently used server configuration.
-        /// </summary>
-        ServerConfiguration CurrentConfiguration { get; set; }
-
-        /// <summary>
         /// Asynchronously loads the server configuration.
         /// </summary>
         Task<ServerConfiguration> LoadConfigurationAsync();

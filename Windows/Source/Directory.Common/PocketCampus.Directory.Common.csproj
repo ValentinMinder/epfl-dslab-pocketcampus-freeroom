@@ -35,7 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Models\DirectoryException.cs" />
+    <Compile Include="Models\SearchRequest.cs" />
+    <Compile Include="Models\SearchResponse.cs" />
+    <Compile Include="Models\SearchStatus.cs" />
     <Compile Include="Services\DirectoryService.cs" />
     <Compile Include="Services\IContactsService.cs" />
     <Compile Include="Services\IDirectoryService.cs" />
@@ -46,6 +48,7 @@
     <Compile Include="ViewModels\Design\DesignPersonViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PersonViewModel.cs" />
+    <Compile Include="ViewPersonRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">
@@ -63,7 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThriftSharp">
-      <HintPath>..\..\packages\ThriftSharp.1.0.7\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
+      <HintPath>..\..\packages\ThriftSharp.1.0.8\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

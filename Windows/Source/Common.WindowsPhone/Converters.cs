@@ -64,6 +64,28 @@ namespace PocketCampus.Common
     }
 
     /// <summary>
+    /// Converts an e-mail sending status to a visibility, for a "request e-mail" button: if it hasn't been requested, it's visible.
+    /// </summary>
+    public sealed class EmailNotRequestedToVisibilityConverter : ValueConverter<EmailSendingStatus, Visibility>
+    {
+        public override Visibility Convert( EmailSendingStatus value )
+        {
+            return value == EmailSendingStatus.NoneRequested ? Visibility.Visible : Visibility.Collapsed;
+        }
+    }
+
+    /// <summary>
+    /// Converts an e-mail sending status to a boolean, for the "request e-mail" button: true if it has been requested, false otherwise.
+    /// </summary>
+    public sealed class EmailRequestedToBooleanConverter : ValueConverter<EmailSendingStatus, bool>
+    {
+        public override bool Convert( EmailSendingStatus value )
+        {
+            return value != EmailSendingStatus.NoneRequested;
+        }
+    }
+
+    /// <summary>
     /// Converts doubles to strings and vice-versa.
     /// </summary>
     /// <remarks>
@@ -130,9 +152,12 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class StringToVisibilityConverter : ValueConverter<string, Visibility>
     {
+        public bool IsReversed { get; set; }
+
         public override Visibility Convert( string value )
         {
-            return string.IsNullOrWhiteSpace( value ) ? Visibility.Collapsed : Visibility.Visible;
+            bool isEmpty = string.IsNullOrWhiteSpace( value );
+            return ( IsReversed ? !isEmpty : isEmpty ) ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 

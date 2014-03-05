@@ -18,14 +18,9 @@ namespace PocketCampus.Directory.Services
         {
         }
 
-        public Task<Person[]> SearchPeopleAsync( string query )
+        public Task<SearchResponse> SearchAsync( SearchRequest request )
         {
-            return CallAsync<string, Person[]>( x => x.SearchPeopleAsync, query );
-        }
-
-        public Task<string[]> SearchPartialMatchesAsync( string query )
-        {
-            return CallAsync<string, string[]>( x => x.SearchPartialMatchesAsync, query );
+            return CallAsync<SearchRequest, SearchResponse>( x => x.SearchAsync, request );
         }
     }
 }

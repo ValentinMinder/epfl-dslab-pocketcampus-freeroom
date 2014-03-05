@@ -18,7 +18,7 @@ namespace PocketCampus.Camipro.Models
         /// <summary>
         /// The request completed successfully.
         /// </summary>
-        Ok = 200,
+        Success = 200,
 
         /// <summary>
         /// A network error occurred while executing the request.

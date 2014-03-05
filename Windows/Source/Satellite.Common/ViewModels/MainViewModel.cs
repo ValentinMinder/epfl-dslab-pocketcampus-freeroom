@@ -50,7 +50,7 @@ namespace PocketCampus.Satellite.ViewModels
             if ( force )
             {
                 var beersResponse = await _beerService.GetBeersAsync();
-                if ( beersResponse.Status != BeerMenuStatus.Ok )
+                if ( beersResponse.Status != BeerMenuStatus.Success )
                 {
                     throw new Exception( "An error occurred on the Satellite server-side." );
                 }

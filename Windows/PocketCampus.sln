@@ -51,6 +51,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Directory.Wind
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Mvvm.Tests", "Source\Mvvm.Tests\PocketCampus.Mvvm.Tests.csproj", "{5C3BB509-8CBD-4C2D-A415-E38268604042}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Events.Common", "Source\Events.Common\PocketCampus.Events.Common.csproj", "{FA7A34C6-DD2B-48C1-827B-2B56BD634996}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Events.WindowsPhone", "Source\Events.WindowsPhone\PocketCampus.Events.WindowsPhone.csproj", "{248C6CF6-C940-42E4-AC38-C31F3726DD44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -341,6 +345,26 @@ Global
 		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Release|ARM.ActiveCfg = Release|Any CPU
 		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Release|x86.ActiveCfg = Release|Any CPU
+		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Release|ARM.ActiveCfg = Release|Any CPU
+		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Release|x86.ActiveCfg = Release|Any CPU
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Debug|ARM.ActiveCfg = Debug|ARM
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Debug|ARM.Build.0 = Debug|ARM
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Debug|x86.ActiveCfg = Debug|x86
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Debug|x86.Build.0 = Debug|x86
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Release|ARM.ActiveCfg = Release|ARM
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Release|ARM.Build.0 = Release|ARM
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Release|x86.ActiveCfg = Release|x86
+		{248C6CF6-C940-42E4-AC38-C31F3726DD44}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

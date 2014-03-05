@@ -1,0 +1,221 @@
+﻿<comControls:BasePage x:Class="PocketCampus.Events.Views.EventItemView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      mc:Ignorable="d">
+    <!-- Design-time DataContext -->
+    <d:DesignProperties.DataContext>
+        <design:DesignEventItemViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events.Common" />
+    </d:DesignProperties.DataContext>
+
+    <!-- Page resources -->
+    <comControls:BasePage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Simple button template with only a content -->
+            <ControlTemplate x:Key="SimpleButtonTemplate">
+                <ContentPresenter />
+            </ControlTemplate>
+
+            <!-- Template for child pools -->
+            <DataTemplate x:Key="ItemPoolTemplate">
+                <Button Template="{StaticResource SimpleButtonTemplate}"
+                        Command="{Binding DataContext.ViewPoolCommand, ElementName=LayoutRoot}"
+                        CommandParameter="{Binding}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        
+                        <Image Source="{Binding PictureUrl}"
+                               Width="100"
+                               Height="100"
+                               Stretch="None" />
+
+                        <StackPanel Grid.Column="1"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Name}"
+                                       Style="{StaticResource PhoneTextTitle2Style}" />
+
+                            <TextBlock Text="{Binding Location}"
+                                       Style="{StaticResource PhoneTextSubtleStyle}" />
+                        </StackPanel>
+                    </Grid>
+                </Button>
+            </DataTemplate>
+        </ResourceDictionary>
+    </comControls:BasePage.Resources>
+
+    <!-- Main grid -->
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
+                       Style="{StaticResource AppTextHeaderStyle}" />
+        </Border>
+
+        <!-- Name, description and image thumbnail -->
+        <Grid Grid.Row="1"
+              Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Name -->
+            <TextBlock Text="{Binding Item.Name}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                       FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                       Visibility="{Binding Item.HideName, Converter={StaticResource BoolToOppositeVisibility}}" />
+
+            <!-- Short details -->
+            <TextBlock Grid.Row="1"
+                       Text="{Binding Item.ShortDetails}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                       FontSize="{StaticResource PhoneFontSizeMedium}"
+                       Visibility="{Binding Item.ShortDetails, Converter={StaticResource StringToVisibility}}"/>
+
+            <!-- Thumbnail -->
+            <Image Grid.Column="1"
+                   Grid.RowSpan="2"
+                   Source="{Binding Item.PictureThumbnailUrl}"
+                   Width="100"
+                   VerticalAlignment="Top"
+                   Visibility="{Binding Item.HidePictureThumbnail, Converter={StaticResource BoolToOppositeVisibility}}" />
+        </Grid>
+
+        <!-- Information -->
+        <Grid Grid.Row="2"
+              Margin="0,10,0,5"
+              Visibility="{Binding Item.HideInformation, Converter={StaticResource BoolToOppositeVisibility}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Date -->
+            <Grid Visibility="{Binding Item.StartDate, Converter={StaticResource NonNullToVisibility}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding Resources.EventTime, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextSubtleStyle}"
+                           Margin="12,0,6,0" />
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Item, Converter={StaticResource EventItemToDate}}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           Margin="0,0,12,0" />
+            </Grid>
+
+            <!-- Location -->
+            <Grid Grid.Row="1"
+                  Visibility="{Binding Item.Location, Converter={StaticResource StringToVisibility}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding Resources.EventLocation, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextSubtleStyle}"
+                           Margin="12,0,0,0" />
+                <HyperlinkButton Grid.Column="1"
+                                 Content="{Binding Item.Location}"
+                                 Command="{Binding OpenLinkCommand}"
+                                 CommandParameter="{Binding Item.LocationUrl}"
+                                 FontSize="{StaticResource PhoneFontSizeNormal}"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
+                                 Margin="-6,5,12,0" />
+            </Grid>
+
+            <!-- Speaker -->
+            <Grid Grid.Row="2"
+                  Visibility="{Binding Item.SpeakerName, Converter={StaticResource StringToVisibility}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding Resources.EventSpeaker, Source={StaticResource Strings}}"
+                           Style="{StaticResource PhoneTextSubtleStyle}"
+                           Margin="12,0,6,0" />
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Item.SpeakerName}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           Margin="0,0,12,0" />
+            </Grid>
+
+            <!-- "Mark as favorite" button -->
+            <Grid Grid.Column="1"
+                  Grid.RowSpan="3"
+                  Margin="5,5,5,0"
+                  Visibility="{Binding Item.ParentPool.DisableFavorites, Converter={StaticResource BoolToOppositeVisibility}}">
+                <ToggleButton IsChecked="{Binding IsFavorite, Mode=TwoWay}"
+                              Template="{StaticResource SimpleButtonTemplate}">
+                    <Image Source="/Assets/EmptyStar.png" />
+                </ToggleButton>
+
+                <Image Source="/Assets/Star.png"
+                       Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}"
+                       IsHitTestVisible="False" />
+            </Grid>
+        </Grid>
+
+        <ScrollViewer Grid.Row="4">
+            <StackPanel>
+                <!-- Large image -->
+                <Image Grid.Row="3"
+                       Source="{Binding Item.PictureUrl}"
+                       Visibility="{Binding Item.PictureUrl, Converter={StaticResource StringToVisibility}}" />
+
+                <!-- Details, in HTML -->
+                <comControls:HtmlTextBlock Html="{Binding Item.Details}" />
+
+                <!-- "More details" button -->
+                <HyperlinkButton Content="{Binding Resources.MoreEventDetailsButton, Source={StaticResource Strings}}"
+                                 Command="{Binding OpenLinkCommand}"
+                                 CommandParameter="{Binding Item.DetailsUrl}"
+                                 HorizontalAlignment="Left"
+                                 Visibility="{Binding Item.DetailsUrl, Converter={StaticResource StringToVisibility}}" />
+
+                <!-- Child pools -->
+                <ItemsControl Grid.Row="5"
+                              ItemsSource="{Binding Pools}"
+                              ItemTemplate="{StaticResource ItemPoolTemplate}" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Loading & error -->
+        <comControls:LoadingAndError Grid.Row="1"
+                                     Grid.RowSpan="4" />
+    </Grid>
+</comControls:BasePage>

@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Net;
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
@@ -35,8 +36,20 @@ namespace PocketCampus.Main.Views
             }
 
             string id;
-            NavigationContext.QueryString.TryGetValue( TileCreator.PluginArgumentKey, out id );
-            App.NavigationService.NavigateTo<MainViewModel, string>( id ?? "" );
+            if ( NavigationContext.QueryString.TryGetValue( TileCreator.PluginKey, out id ) )
+            {
+                App.NavigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest( id ) );
+                return;
+            }
+
+            string redirect;
+            if ( NavigationContext.QueryString.TryGetValue( PocketCampusUriMapper.RedirectRequestKey, out redirect ) )
+            {
+                App.UriMapper.NavigateToCustomUri( HttpUtility.UrlDecode( redirect ) );
+                return;
+            }
+
+            App.NavigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest() );
         }
     }
 }

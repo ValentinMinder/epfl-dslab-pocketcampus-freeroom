@@ -14,22 +14,12 @@ namespace PocketCampus.Main.Services
     {
         private const string EventCategory = "UserAction";
 
-        private readonly Tracker _tracker;
-
-        /// <summary>
-        /// Creates a new GoogleAnalyticsNavigationLogger.
-        /// </summary>
-        public GoogleAnalyticsNavigationLogger()
-        {
-            _tracker = EasyTracker.GetTracker();
-        }
-
         /// <summary>
         /// Logs a navigation with the specified ID.
         /// </summary>
         protected override void LogNavigation( string id )
         {
-            _tracker.SendView( id );
+            EasyTracker.GetTracker().SendView( id );
         }
 
         /// <summary>
@@ -37,7 +27,7 @@ namespace PocketCampus.Main.Services
         /// </summary>
         protected override void LogEvent( string viewModelId, string eventId, string label )
         {
-            _tracker.SendEvent( EventCategory, viewModelId + "-" + eventId, label, 0 );
+            EasyTracker.GetTracker().SendEvent( EventCategory, viewModelId + "-" + eventId, label, 0 );
         }
     }
 }

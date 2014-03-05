@@ -150,10 +150,10 @@
                    Style="{StaticResource PhoneTextSmallStyle}" />
 
         <!-- Meal type filters -->
-        <ScrollViewer Grid.Row="5">
-            <ItemsControl ItemsSource="{Binding DisplayedMealTypes}"
-                          ItemTemplate="{StaticResource MealTypeTemplate}"
-                          ItemsPanel="{StaticResource WrapItemsPanel}" />
-        </ScrollViewer>
+        <ItemsControl Grid.Row="5"
+                      ItemsSource="{Binding DisplayedMealTypes}"
+                      ItemTemplate="{StaticResource MealTypeTemplate}"
+                      ItemsPanel="{StaticResource WrapItemsPanel}"
+                      Style="{StaticResource ScrollingItemsControlStyle}" />
     </Grid>
 </comControls:BasePage>

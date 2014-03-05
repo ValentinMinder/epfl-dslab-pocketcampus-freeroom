@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Collections.Generic;
 using PocketCampus.Common;
 using PocketCampus.Mvvm;
 using PocketCampus.Satellite.Services;
@@ -45,5 +46,10 @@ namespace PocketCampus.Satellite
         {
             navigationService.NavigateTo<MainViewModel>();
         }
+
+        /// <summary>
+        /// This plugin does not handle external navigation.
+        /// </summary>
+        public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService ) { }
     }
 }

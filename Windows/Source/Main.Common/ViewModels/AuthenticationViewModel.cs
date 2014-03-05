@@ -2,8 +2,11 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
+using PocketCampus.Main.Models;
+using PocketCampus.Main.Services;
 using PocketCampus.Mvvm;
 using PocketCampus.Mvvm.Logging;
 
@@ -15,15 +18,17 @@ namespace PocketCampus.Main.ViewModels
     [LogId( "/dashboard/authenticate" )]
     public sealed class AuthenticationViewModel : ViewModel<AuthenticationMode>
     {
-        private readonly INavigationService _navigationService;
+        private readonly IAuthenticationService _authenticationService;
         private readonly ITequilaAuthenticator _authenticator;
+        private readonly IServerAccess _serverAccess;
+        private readonly INavigationService _navigationService;
         private readonly IMainSettings _settings;
 
         private string _userName;
         private string _password;
         private bool _saveCredentials;
         private bool _isAuthenticating;
-        private AuthenticationStatus _status;
+        private AuthenticationAttemptStatus _status;
 
         /// <summary>
         /// Gets or sets the user name (GASPAR identifier or SCIPER number).
@@ -67,9 +72,9 @@ namespace PocketCampus.Main.ViewModels
         }
 
         /// <summary>
-        /// Gets the authentication status.
+        /// Gets the authentication attempt status.
         /// </summary>
-        public AuthenticationStatus Status
+        public AuthenticationAttemptStatus Status
         {
             get { return _status; }
             private set { SetProperty( ref _status, value ); }
@@ -91,11 +96,15 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Creates a new AuthenticationViewModel.
         /// </summary>
-        public AuthenticationViewModel( INavigationService navigationService, ITequilaAuthenticator authenticator, IMainSettings settings,
+        public AuthenticationViewModel( IAuthenticationService authenticationService, ITequilaAuthenticator authenticator,
+                                        IServerAccess serverAccess, INavigationService navigationService,
+                                        IMainSettings settings,
                                         AuthenticationMode authMode )
         {
-            _navigationService = navigationService;
+            _authenticationService = authenticationService;
             _authenticator = authenticator;
+            _serverAccess = serverAccess;
+            _navigationService = navigationService;
             _settings = settings;
 
             SaveCredentials = true;
@@ -113,8 +122,22 @@ namespace PocketCampus.Main.ViewModels
 
             try
             {
-                if ( await _authenticator.AuthenticateAsync( UserName, Password ) )
+                var tokenResponse = await _authenticationService.GetTokenAsync();
+                if ( tokenResponse.Status != AuthenticationStatus.Success )
                 {
+                    throw new Exception( "An error occurred while getting a token." );
+                }
+
+                if ( await _authenticator.AuthenticateAsync( UserName, Password, tokenResponse.Token ) )
+                {
+                    var sessionResponse = await _authenticationService.GetSessionAsync( tokenResponse.Token );
+                    if ( sessionResponse.Status != AuthenticationStatus.Success )
+                    {
+                        throw new Exception( "An error occurred while getting a session." );
+                    }
+
+                    _settings.Session = sessionResponse.Session;
+
                     _settings.IsAuthenticated = SaveCredentials;
                     _settings.UserName = UserName;
                     _settings.Password = Password;
@@ -122,12 +145,12 @@ namespace PocketCampus.Main.ViewModels
                 }
                 else
                 {
-                    Status = AuthenticationStatus.WrongCredentials;
+                    Status = AuthenticationAttemptStatus.WrongCredentials;
                 }
             }
             catch
             {
-                Status = AuthenticationStatus.Error;
+                Status = AuthenticationAttemptStatus.Error;
             }
 
             if ( authOk )

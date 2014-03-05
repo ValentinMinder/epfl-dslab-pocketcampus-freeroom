@@ -17,7 +17,7 @@ namespace PocketCampus.Main.ViewModels.Design
 
         public bool IsAuthenticating { get { return false; } }
 
-        public AuthenticationStatus Status { get { return AuthenticationStatus.WrongCredentials; } }
+        public AuthenticationAttemptStatus Status { get { return AuthenticationAttemptStatus.WrongCredentials; } }
 #endif
     }
 }

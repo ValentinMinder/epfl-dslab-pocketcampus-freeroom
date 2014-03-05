@@ -120,6 +120,10 @@
   <data name="AddAsContactButton" xml:space="preserve">
     <value>Ajouter contact</value>
   </data>
+  <data name="LoadingMoreResults" xml:space="preserve">
+    <value>Chargement de plus de résultats...</value>
+    <comment>In system tray; must be short.</comment>
+  </data>
   <data name="NoSearchResults" xml:space="preserve">
     <value>Aucun résultat trouvé. Vérifiez l'orthographe, ou essayez une recherche moins restrictive.</value>
   </data>

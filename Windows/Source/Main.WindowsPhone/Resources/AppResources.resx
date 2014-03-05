@@ -160,14 +160,14 @@ Our privacy policy is simple: Your data and location are not stored or transmitt
   <data name="AboutPageTitle" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="AuthenticationStatus_Error" xml:space="preserve">
+  <data name="AuthenticationAttemptStatus_Error" xml:space="preserve">
     <value>An error occurred while connecting to Tequila. Please try again later.</value>
   </data>
-  <data name="AuthenticationStatus_NotAuthenticated" xml:space="preserve">
+  <data name="AuthenticationAttemptStatus_NotAuthenticated" xml:space="preserve">
     <value />
     <comment>Must be empty</comment>
   </data>
-  <data name="AuthenticationStatus_WrongCredentials" xml:space="preserve">
+  <data name="AuthenticationAttemptStatus_WrongCredentials" xml:space="preserve">
     <value>Your credentials are invalid. Please verify them.</value>
   </data>
   <data name="Authenticating" xml:space="preserve">

@@ -3,8 +3,8 @@
 // File author: Solal Pirelli
 
 using System;
-using Microsoft.Phone.Tasks;
 using PocketCampus.Common.Services;
+using Windows.System;
 
 namespace PocketCampus.Main.Services
 {
@@ -16,9 +16,13 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Navigates to the specified URL.
         /// </summary>
-        public void NavigateTo( string url )
+        public async void NavigateTo( string url )
         {
-            new WebBrowserTask { Uri = new Uri( url, UriKind.Absolute ) }.Show();
+            // If it's a PocketCampus URL, take action instead of quitting the app and opening a new instance of it
+            if ( !App.UriMapper.NavigateToCustomUri( url ) )
+            {
+                await Launcher.LaunchUriAsync( new Uri( url, UriKind.Absolute ) );
+            }
         }
     }
 }

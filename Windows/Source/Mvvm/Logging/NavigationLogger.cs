@@ -76,7 +76,7 @@ namespace PocketCampus.Mvvm.Logging
                 else
                 {
                     var command = (CommandBase) prop.GetValue( obj );
-                    Func<object, string> getLabel = _ => "";
+                    Func<object, string> getLabel = _ => null;
 
                     var parameterAttr = prop.GetCustomAttribute<LogParameterAttribute>();
                     if ( parameterAttr != null )

@@ -26,8 +26,8 @@
         <!-- Converters -->
         <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                             Strings="{StaticResource Strings}" />
+        <com:EmailNotRequestedToVisibilityConverter x:Key="NoEmailRequestToVisibility" />
         <my:DoubleToBrushConverter x:Key="MoneyToBrush" />
-        <my:EmailNotRequestedToVisibilityConverter x:Key="NoEmailRequestToVisibility" />
 
         <!-- Transaction item template -->
         <DataTemplate x:Key="TransactionTemplate">
@@ -144,11 +144,11 @@
                     </StackPanel>
 
                     <!-- Transactions-->
-                    <ScrollViewer Grid.Row="4"
-                                  Margin="0,30,0,0">
-                        <ItemsControl ItemsSource="{Binding AccountInfo.Transactions}"
-                                      ItemTemplate="{StaticResource TransactionTemplate}" />
-                    </ScrollViewer>
+                    <ItemsControl Grid.Row="4"
+                                  ItemsSource="{Binding AccountInfo.Transactions}"
+                                  ItemTemplate="{StaticResource TransactionTemplate}"
+                                  Style="{StaticResource ScrollingItemsControlStyle}"
+                                  Margin="0,30,0,0" />
                 </Grid>
             </phone:PivotItem>
 

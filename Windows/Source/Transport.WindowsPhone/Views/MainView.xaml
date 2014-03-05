@@ -264,7 +264,8 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="{Binding Resources.DeparturePickerLabel, Source={StaticResource Strings}}"
-                       Style="{StaticResource AppTextSecondaryHeaderStyle}" />
+                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                       FontSize="{Binding FontSize, ElementName=StationsPicker}" />
 
             <!-- HACK: See code-behind for SelectedItem -->
             <tool:ListPicker x:Name="StationsPicker"
@@ -273,7 +274,8 @@
                              ItemTemplate="{StaticResource StationTemplate}"
                              FullModeHeader="{Binding Resources.StationsHeader, Source={StaticResource Strings}}"
                              FullModeItemTemplate="{StaticResource StationLargeTemplate}"
-                             Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}" />
+                             Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
+                             Loaded="StationsPicker_Loaded" />
         </Grid>
 
         <!-- "Tap for more info" text -->

@@ -2,7 +2,9 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Collections.Generic;
 using PocketCampus.Mvvm;
+
 namespace PocketCampus.Common
 {
     /// <summary>
@@ -32,5 +34,10 @@ namespace PocketCampus.Common
         /// Navigates to the plugin's main ViewModel.
         /// </summary>
         void NavigateTo( INavigationService navigationService );
+
+        /// <summary>
+        /// Navigates to the plugin from an external source, with a destination and parameters.
+        /// </summary>
+        void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService );
     }
 }

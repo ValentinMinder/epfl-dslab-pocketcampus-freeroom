@@ -53,6 +53,14 @@ namespace PocketCampus.Mvvm
         private bool _hasNetworkError;
 
         /// <summary>
+        /// Gets the currently used cancellation token.
+        /// </summary>
+        protected CancellationToken CurrentCancellationToken
+        {
+            get { return _cancellationSource.Token; }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the ViewModel is loading.
         /// </summary>
         public bool IsLoading

@@ -2,9 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System.Windows;
 using System.Windows.Media;
-using PocketCampus.Camipro.ViewModels;
 using PocketCampus.Common;
 
 namespace PocketCampus.Camipro
@@ -23,17 +21,6 @@ namespace PocketCampus.Camipro
             return value == 0.0 ? ZeroBrush
                  : value > 0.0 ? PositiveBrush
                  : NegativeBrush;
-        }
-    }
-
-    /// <summary>
-    /// Converts an e-mail sending status to a visibility, for the "request e-mail" button: if it hasn't been requested, it's visible.
-    /// </summary>
-    public sealed class EmailNotRequestedToVisibilityConverter : ValueConverter<EmailSendingStatus, Visibility>
-    {
-        public override Visibility Convert( EmailSendingStatus value )
-        {
-            return value == EmailSendingStatus.NoneRequested ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

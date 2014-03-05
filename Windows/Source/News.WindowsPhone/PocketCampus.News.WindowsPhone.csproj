@@ -86,7 +86,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controls\HtmlTextBlock.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Resources\PluginResources.fr.Designer.cs">
@@ -156,10 +155,6 @@
     <Reference Include="BindableApplicationBar, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\BindableApplicationBar.1.1.0.0\lib\wp8\BindableApplicationBar.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack-PCL, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\HtmlAgilityPack-PCL.1.4.6\lib\HtmlAgilityPack-PCL.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Camipro.Models;
 using PocketCampus.Camipro.Services;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Mvvm;
 using PocketCampus.Mvvm.Logging;
@@ -83,7 +84,7 @@ namespace PocketCampus.Camipro.ViewModels
             try
             {
                 var result = await _camiproService.RequestEBankingEMailAsync( _lastRequest );
-                if ( result.Status != ResponseStatus.Ok )
+                if ( result.Status != ResponseStatus.Success )
                 {
                     throw new Exception( "Server error while requesting an e-banking e-mail." );
                 }

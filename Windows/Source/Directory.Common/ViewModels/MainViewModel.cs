@@ -4,6 +4,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using PocketCampus.Directory.Models;
 using PocketCampus.Directory.Services;
@@ -16,19 +18,32 @@ namespace PocketCampus.Directory.ViewModels
     /// The main ViewModel.
     /// </summary>
     [LogId( "/directory" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    public sealed class MainViewModel : DataViewModel<ViewPersonRequest>
     {
         private readonly IDirectoryService _directoryService;
         private readonly INavigationService _navigationService;
 
-        private Person[] _searchResults;
+        private bool _isLoadingMoreResults;
+        private ObservableCollection<Person> _searchResults;
         private bool _anySearchResults;
 
+        private sbyte[] _currentPaginationToken;
+        private string _currentQuery;
+
+
+        /// <summary>
+        /// Gets a value indicating whether more results are being loaded.
+        /// </summary>
+        public bool IsLoadingMoreResults
+        {
+            get { return _isLoadingMoreResults; }
+            private set { SetProperty( ref _isLoadingMoreResults, value ); }
+        }
 
         /// <summary>
         /// Gets the search results.
         /// </summary>
-        public Person[] SearchResults
+        public ObservableCollection<Person> SearchResults
         {
             get { return _searchResults; }
             private set { SetProperty( ref _searchResults, value ); }
@@ -46,7 +61,7 @@ namespace PocketCampus.Directory.ViewModels
         /// <summary>
         /// Gets the auto-complete provider for people names.
         /// </summary>
-        public Func<string, Task<IEnumerable<object>>> SearchAutoCompleteProvider
+        public Func<string, Task<IEnumerable<string>>> SearchAutoCompleteProvider
         {
             get { return ProvideSearchSuggestionsAsync; }
         }
@@ -57,7 +72,13 @@ namespace PocketCampus.Directory.ViewModels
         [LogId( "Search" )]
         public AsyncCommand<string> SearchCommand
         {
-            get { return GetAsyncCommand<string>( ExecuteSearchCommand ); }
+            get { return GetAsyncCommand<string>( SearchAsync ); }
+        }
+
+        [LogId( "SearchForMore" )]
+        public AsyncCommand SearchForMoreCommand
+        {
+            get { return GetAsyncCommand( SearchForMoreAsync, () => _currentPaginationToken != null ); }
         }
 
         /// <summary>
@@ -73,38 +94,105 @@ namespace PocketCampus.Directory.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IDirectoryService directoryService, INavigationService navigationService )
+        public MainViewModel( IDirectoryService directoryService, INavigationService navigationService,
+                              ViewPersonRequest request )
         {
             _directoryService = directoryService;
             _navigationService = navigationService;
             _anySearchResults = true;
+
+            if ( request.Name != null )
+            {
+                SearchCommand.ExecuteAsync( request.Name );
+            }
+            if ( request.Person != null )
+            {
+                ViewPersonCommand.Execute( request.Person );
+            }
         }
 
 
         /// <summary>
         /// Asynchronously provides search suggestions for the specified query.
         /// </summary>
-        private async Task<IEnumerable<object>> ProvideSearchSuggestionsAsync( string query )
+        private async Task<IEnumerable<string>> ProvideSearchSuggestionsAsync( string query )
         {
-            // return await to benefit from implicit conversions
-            return await _directoryService.SearchPartialMatchesAsync( query );
+            // no pagination token, it's just search suggestions
+            var response = await _directoryService.SearchAsync( new SearchRequest { Query = query } );
+
+            if ( response.Status == SearchStatus.Success )
+            {
+                return response.Results
+                               .Select( p => p.FirstName )
+                               .Concat( response.Results.Select( p => p.LastName ) )
+                               .Distinct()
+                               .OrderBy( s => s );
+            }
+            return new string[0];
         }
 
         /// <summary>
         /// Asynchronously searches for people with the specified query.
         /// </summary>
-        private Task ExecuteSearchCommand( string query )
+        private Task SearchAsync( string query )
         {
             return TryExecuteAsync( async token =>
             {
-                var results = await _directoryService.SearchPeopleAsync( query );
+                var response = await _directoryService.SearchAsync( new SearchRequest { Query = query } );
+
+                if ( response.Status != SearchStatus.Success )
+                {
+                    throw new Exception( "An error occurred while searching." );
+                }
 
                 if ( !token.IsCancellationRequested )
                 {
-                    SearchResults = results;
-                    AnySearchResults = SearchResults.Length > 0;
+                    _currentQuery = query;
+                    _currentPaginationToken = response.PaginationToken;
+                    SearchResults = new ObservableCollection<Person>( response.Results );
+                    AnySearchResults = SearchResults.Count > 0;
+
+                    if ( SearchResults.Count == 1 )
+                    {
+                        ViewPersonCommand.Execute( SearchResults[0] );
+                    }
                 }
             } );
+        }
+
+        /// <summary>
+        /// Asynchronously adds more results.
+        /// </summary>
+        private async Task SearchForMoreAsync()
+        {
+            var token = CurrentCancellationToken;
+            IsLoadingMoreResults = true;
+
+            try
+            {
+                var request = new SearchRequest
+                {
+                    Query = _currentQuery,
+                    PaginationToken = _currentPaginationToken
+                };
+                var response = await _directoryService.SearchAsync( request );
+
+                if ( response.Status == SearchStatus.Success && !token.IsCancellationRequested )
+                {
+                    _currentPaginationToken = response.PaginationToken;
+
+                    foreach ( var result in response.Results )
+                    {
+                        SearchResults.Add( result );
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore all exceptions since we're paginating; there are results displayed.
+            }
+
+            IsLoadingMoreResults = false;
         }
     }
 }

@@ -15,16 +15,9 @@ namespace PocketCampus.Directory.Services
     public interface IDirectoryService
     {
         /// <summary>
-        /// Asynchronously searches for all people whose name or SCIPER number matches the specified query.
+        /// Asynchronously searches for all people whose name or SCIPER number matches the specified request.
         /// </summary>
-        [ThriftMethod( "searchPersons" )]
-        [ThriftThrows( 1, "le", typeof( DirectoryException ) )]
-        Task<Person[]> SearchPeopleAsync( [ThriftParameter( 1, "nameOrSciper" )] string query );
-
-        /// <summary>
-        /// Asynchronously searches for all names of people matching the specified query.
-        /// </summary>
-        [ThriftMethod( "autocomplete" )]
-        Task<string[]> SearchPartialMatchesAsync( [ThriftParameter( 1, "constraint" )] string query );
+        [ThriftMethod( "searchDirectory" )]
+        Task<SearchResponse> SearchAsync( [ThriftParameter( 1, "req" )] SearchRequest request );
     }
 }

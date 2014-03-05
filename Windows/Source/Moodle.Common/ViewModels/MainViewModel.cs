@@ -3,7 +3,6 @@
 // File author: Solal Pirelli
 
 using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -22,17 +21,16 @@ namespace PocketCampus.Moodle.ViewModels
     [LogId( "/moodle" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
-        private readonly IMoodleService _moodleService;
+        private const char UrlParametersPrefix = '?';
+
         private readonly ISecureRequestHandler _requestHandler;
+        private readonly IMoodleService _moodleService;
         private readonly IMoodleDownloader _downloader;
         private readonly IFileStorage _storage;
 
         private Course[] _courses;
         private bool _anyCourses;
         private DownloadState _downloadState;
-
-        // This is not optimal, but it's extremely unlikely that an user would stay enough time here to invalidate the cookie
-        private string _moodleCookie;
 
         /// <summary>
         /// Gets the courses the user is enrolled in.
@@ -73,11 +71,11 @@ namespace PocketCampus.Moodle.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IMoodleService moodleService, ISecureRequestHandler requestHandler,
+        public MainViewModel( ISecureRequestHandler requestHandler, IMoodleService moodleService,
                               IMoodleDownloader downloader, IFileStorage storage )
         {
-            _moodleService = moodleService;
             _requestHandler = requestHandler;
+            _moodleService = moodleService;
             _downloader = downloader;
             _storage = storage;
         }
@@ -98,7 +96,7 @@ namespace PocketCampus.Moodle.ViewModels
 
                 try
                 {
-                    var bytes = await _downloader.DownloadAsync( file.Url, _moodleCookie );
+                    var bytes = await _downloader.DownloadAsync( file.Url );
                     await _storage.StoreFileAsync( file, bytes );
                     DownloadState = DownloadState.None;
                 }
@@ -118,47 +116,33 @@ namespace PocketCampus.Moodle.ViewModels
         /// </summary>
         protected override Task RefreshAsync( CancellationToken token, bool force )
         {
-            return _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, MoodleSession>( _moodleService, async session =>
+            return _requestHandler.ExecuteAsync<MainViewModel>( async () =>
             {
-                _moodleCookie = session.Cookie;
-
                 if ( !force )
                 {
                     return true;
                 }
 
-                var sessionId = new SessionId { Cookie = session.Cookie };
-                var coursesRequest = new MoodleRequest
-                {
-                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                    SessionId = sessionId
-                };
-                var coursesResponse = await _moodleService.GetCoursesAsync( coursesRequest );
+                var coursesResponse = await _moodleService.GetCoursesAsync( "dummy" );
 
                 if ( coursesResponse.Status == ResponseStatus.AuthenticationError )
                 {
                     return false;
                 }
-                if ( coursesResponse.Status != ResponseStatus.Ok )
+                if ( coursesResponse.Status != ResponseStatus.Success )
                 {
                     throw new Exception( "An error occurred on the server while fetching the coursed." );
                 }
 
                 foreach ( var course in coursesResponse.Courses )
                 {
-                    var sectionsRequest = new MoodleRequest
-                    {
-                        Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                        SessionId = sessionId,
-                        CourseId = course.Id
-                    };
-                    var sectionsResponse = await _moodleService.GetCourseSectionsAsync( sectionsRequest );
+                    var sectionsResponse = await _moodleService.GetCourseSectionsAsync( course.Id.ToString() );
 
                     if ( sectionsResponse.Status == ResponseStatus.AuthenticationError )
                     {
                         return false;
                     }
-                    else if ( sectionsResponse.Status != ResponseStatus.Ok )
+                    if ( sectionsResponse.Status != ResponseStatus.Success )
                     {
                         throw new Exception( "An error occurred on the server while fetching a course's sections." );
                     }
@@ -171,8 +155,9 @@ namespace PocketCampus.Moodle.ViewModels
                         {
                             // This is used to know where to store files
                             file.Course = course;
-                            // The file names don't have extensions :/
-                            file.Name = Path.ChangeExtension( file.Name, Path.GetExtension( file.Url ) );
+                            // The file names don't have extensions so we must use the one from their URL
+                            // but also remove the URL parameters because Path.GetExtension obviously doesn't do it
+                            file.Name = Path.ChangeExtension( file.Name, Path.GetExtension( file.Url.Split( UrlParametersPrefix )[0] ) );
                         }
                     }
                 }

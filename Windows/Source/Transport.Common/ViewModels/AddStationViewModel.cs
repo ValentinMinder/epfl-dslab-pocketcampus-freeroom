@@ -25,7 +25,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Gets the auto-complete provider for station names.
         /// </summary>
-        public Func<string, Task<IEnumerable<object>>> AutoCompleteProvider
+        public Func<string, Task<IEnumerable<string>>> AutoCompleteProvider
         {
             get { return ProvideAutoComplete; }
         }
@@ -54,7 +54,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Provides auto-complete for station names.
         /// </summary>
-        private async Task<IEnumerable<object>> ProvideAutoComplete( string query )
+        private async Task<IEnumerable<string>> ProvideAutoComplete( string query )
         {
             var suggestions = await _transportService.GetSuggestionsAsync( query );
             return suggestions.Select( s => s.Name );

@@ -5,10 +5,12 @@
 // Uncomment this line if you are connected to the EPFL network (which, for now, means being at EPFL physically)
 // #define IS_AT_EPFL
 
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
+using PocketCampus.Mvvm;
 using ThriftSharp;
 
 namespace PocketCampus.Main.Services
@@ -19,6 +21,7 @@ namespace PocketCampus.Main.Services
     public sealed class ServerAccess : IServerAccess
     {
         private const int ThriftConnectionTimeout = 30000; // in milliseconds
+        private const string ServerAuthenticationHeader = "X-PC-AUTH-PCSESSID";
 
         // The format of the URL to get the current server configuration
         // The parameter is the app version
@@ -30,7 +33,6 @@ namespace PocketCampus.Main.Services
         private const string ThriftServerUrlFormat = "http://dslabpc36.epfl.ch:9090/v3r1";
 #else
         private const string ThriftServerUrlFormat = "{0}://pocketcampus.epfl.ch:{1}/v3r1";
-        //private const string ThriftServerUrlFormat = "https://pocketcampus.epfl.ch:8888/v3r1";
 #endif
         // The format of a service URL
         // Parameters are the server URL and the service name
@@ -38,17 +40,21 @@ namespace PocketCampus.Main.Services
 
 
         private readonly IHttpClient _client;
-
-
-        public ServerConfiguration CurrentConfiguration { get; set; }
+        private readonly IServerSettings _settings;
+        private readonly IDictionary<string, string> _headers;
 
 
         /// <summary>
-        /// Creates a new ServerConfiguration.
+        /// Creates a new ServerAccess.
         /// </summary>
-        public ServerAccess( IHttpClient client )
+        public ServerAccess( IHttpClient client, IServerSettings settings )
         {
             _client = client;
+            _settings = settings;
+            _headers = new Dictionary<string, string>();
+
+            UpdateSessionHeader();
+            _settings.ListenToProperty( x => x.Session, UpdateSessionHeader );
         }
 
 
@@ -68,9 +74,31 @@ namespace PocketCampus.Main.Services
         /// </summary>
         public ThriftCommunication CreateCommunication( string pluginName )
         {
-            string format = string.Format( ThriftServerUrlFormat, CurrentConfiguration.Protocol, CurrentConfiguration.Port );
+            string format = string.Format( ThriftServerUrlFormat, _settings.Configuration.Protocol, _settings.Configuration.Port );
             string url = string.Format( ThriftServiceUrlFormat, format, pluginName );
-            return ThriftCommunication.Binary().OverHttp( url, ThriftConnectionTimeout );
+            return ThriftCommunication.Binary().OverHttp( url, ThriftConnectionTimeout, _headers );
+        }
+
+        /// <summary>
+        /// Updates the HTTP headers sent with each request to add/remove/change the session.
+        /// </summary>
+        private void UpdateSessionHeader()
+        {
+            if ( _headers.ContainsKey( ServerAuthenticationHeader ) )
+            {
+                if ( _settings.Session == null )
+                {
+                    _headers.Remove( ServerAuthenticationHeader );
+                }
+                else
+                {
+                    _headers[ServerAuthenticationHeader] = _settings.Session;
+                }
+            }
+            else if ( _settings.Session != null )
+            {
+                _headers.Add( ServerAuthenticationHeader, _settings.Session );
+            }
         }
     }
 }

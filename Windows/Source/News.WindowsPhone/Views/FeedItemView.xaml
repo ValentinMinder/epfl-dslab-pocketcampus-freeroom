@@ -8,7 +8,6 @@
                       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
                       xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone"
                       xmlns:my="clr-namespace:PocketCampus.News"
-                      xmlns:myControls="clr-namespace:PocketCampus.News.Controls"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       mc:Ignorable="d">
@@ -61,7 +60,7 @@
                        Margin="0,10" />
 
                 <!-- Content -->
-                <myControls:HtmlTextBlock Html="{Binding ItemContent}" />
+                <comControls:HtmlTextBlock Html="{Binding ItemContent}" />
             </StackPanel>
         </ScrollViewer>
 

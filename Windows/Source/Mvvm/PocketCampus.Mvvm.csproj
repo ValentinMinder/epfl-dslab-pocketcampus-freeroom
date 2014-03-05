@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="CommandBase.cs" />
+    <Compile Include="INotifyPropertyChangedExtensions.cs" />
     <Compile Include="Internals\CommandExecutedEventArgs.cs" />
     <Compile Include="Internals\ObservablePropertyVisitor.cs" />
     <Compile Include="Logging\LogIdAttribute.cs" />
