@@ -48,6 +48,8 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 
 @property (nonatomic, strong) MainController* mainController;
 
+@property (nonatomic, readwrite, strong) CTTelephonyNetworkInfo* telephonyInfo;
+
 @end
 
 @implementation AppDelegate
@@ -59,9 +61,12 @@ static NSString* const kAppDidReceiveRemoteNotificationForPlugin = @"AppDidRecei
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    //Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong
-    //Bug in AFNetworkReachabilityManager ?
+    // Need to start monitoring, otherwise sharedManager.networkReachabilityStatus is wrong
+    // Bug in AFNetworkReachabilityManager ?
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
+    // Need to be initialized so that classes can subscribe to CTRadioAccessTechnologyDidChangeNotification
+    self.telephonyInfo = [CTTelephonyNetworkInfo new];
     
     // Load PocketCampus configuration (will populate [PCConfig defaults])
     [PCConfig loadConfigAsynchronously];

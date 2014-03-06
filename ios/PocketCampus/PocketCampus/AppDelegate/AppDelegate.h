@@ -29,7 +29,7 @@
 //  Created by Loïc Gardiol on 28.02.12.
 
 
-#import <UIKit/UIKit.h>
+@import CoreTelephony;
 
 #import "MainController.h"
 
@@ -40,6 +40,8 @@ extern NSString* const kAppDelegateAppFailedToRegisterForRemoteNotificationsNoti
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (nonatomic, readonly, strong) CTTelephonyNetworkInfo* telephonyInfo;
 
 + (NSString*)nsNotificationNameForPluginLowerIdentifier:(NSString*)pluginLowerIdentifier;
 

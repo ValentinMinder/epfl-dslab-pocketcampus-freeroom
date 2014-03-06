@@ -26,19 +26,15 @@
  */
 
 
-
-
-
-
 //  Created by Loïc Gardiol on 06.03.13.
-
-
 
 #import "PCTableViewAdditions.h"
 
 #import "AFNetworking.h"
 
 #import "UIImage+Additions.h"
+
+#import "AppDelegate.h"
 
 static id kEmptyImageValue;
 
@@ -119,11 +115,18 @@ static id kEmptyImageValue;
         __weak __typeof(self) weakSelf = self;
         self.reachabilityManager = [AFNetworkReachabilityManager managerForDomain:@"google.com"];
         [self.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            [weakSelf adaptMaxNbConcurrentOperationsBasedOnConnection];
             if (status > 0 && weakSelf.failedThumbsIndexPaths.count > 0) { //means internet reachable
                 [weakSelf reloadFailedThumbnailsCells];
             }
         }];
         [self.reachabilityManager startMonitoring];
+        
+        //http://www.objc.io/issue-5/iOS7-hidden-gems-and-workarounds.html
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adaptMaxNbConcurrentOperationsBasedOnConnection) name:CTRadioAccessTechnologyDidChangeNotification object:nil];
+        
+        [self adaptMaxNbConcurrentOperationsBasedOnConnection];
+        
         self.cellImagesManagementInitDone = YES;
     }
     
@@ -134,6 +137,19 @@ static id kEmptyImageValue;
 }
 
 #pragma mark - Notification listening
+
+- (void)adaptMaxNbConcurrentOperationsBasedOnConnection {
+    if (AFNetworkReachabilityManager.sharedManager.networkReachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN) {
+        NSString* currentRadioAccessTechnology = [[(AppDelegate*)[[UIApplication sharedApplication] delegate] telephonyInfo] currentRadioAccessTechnology];
+        if ([currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyGPRS]
+            || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyEdge]) {
+            //max 1 op if no Wifi and (EDGE or GPRS)
+            self.operationQueue.maxConcurrentOperationCount = 1;
+            return;
+        }
+    }
+    self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
+}
 
 - (void)preferredContentSizeChanged:(NSNotification *)notification {
     [NSTimer scheduledTimerWithTimeInterval:0.1 block:^{
