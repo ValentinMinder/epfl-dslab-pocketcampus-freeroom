@@ -32,7 +32,6 @@ import org.pocketcampus.plugin.events.shared.EventsService.Iface;
 import org.pocketcampus.plugin.events.shared.ExchangeRequest;
 import org.pocketcampus.plugin.events.shared.SendEmailRequest;
 
-import com.markupartist.android.widget.ActionBar.Action;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -41,9 +40,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.text.TextUtils;
-import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.View;
 import android.widget.EditText;
 
 /**
@@ -179,138 +175,64 @@ public class EventsController extends PluginController implements IEventsControl
 		void gotText(String s);
 	}
 	
-	public static <T extends Comparable<? super T>> OnMenuItemClickListener buildMenuListenerSingleChoiceDialog(
-			final Context context, final Map<T, String> map, final String title, final T selected, final SingleChoiceHandler<T> handler) {
+	public static <T extends Comparable<? super T>> void showSingleChoiceDialog(Context context, Map<T, String> map, String title, T selected, final SingleChoiceHandler<T> handler) {
 		final List<T> keysList = new LinkedList<T>(map.keySet());
 		Collections.sort(keysList);
-		final int selPos = keysList.indexOf(selected);
-		final List<String> valuesList = extractValues(map, keysList);
-		return new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				AlertDialog dialog = new AlertDialog.Builder(context)
-						.setTitle(title)
-						.setSingleChoiceItems(
-								valuesList.toArray(new String[]{}), selPos, 
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int which) {
-										handler.saveSelection(keysList.get(which));
-										dialog.dismiss();
-									}
-								})
-						.create();
-				dialog.setCanceledOnTouchOutside(true);
-				dialog.show();
-				return true;
-			}
-		};
+		int selPos = keysList.indexOf(selected);
+		List<String> valuesList = extractValues(map, keysList);
+		AlertDialog dialog = new AlertDialog.Builder(context)
+				.setTitle(title)
+				.setSingleChoiceItems(
+						valuesList.toArray(new String[]{}), selPos, 
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								handler.saveSelection(keysList.get(which));
+								dialog.dismiss();
+							}
+						})
+				.create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
 	}
-
-	public static <T extends Comparable<? super T>> Action buildActionMultiChoiceDialog(
-			final Context context, final Map<T, String> map, final int res, final String title, final Set<T> selected, final MultiChoiceHandler<T> handler) {
+	
+	public static <T extends Comparable<? super T>> void showMultiChoiceDialog(Context context, Map<T, String> map, String title, Set<T> selected, final MultiChoiceHandler<T> handler) {
 		final List<T> keysList = new LinkedList<T>(map.keySet());
 		Collections.sort(keysList);
-		final boolean[] selPos = new boolean[keysList.size()];
+		boolean[] selPos = new boolean[keysList.size()];
 		for(int i = 0; i < keysList.size(); i++) {
 			selPos[i] = selected.contains(keysList.get(i));
 		}
-		final List<String> valuesList = extractValues(map, keysList);
-		return new Action() {
-			public void performAction(View view) {
-				AlertDialog dialog = new AlertDialog.Builder(context)
-						.setTitle(title)
-						.setMultiChoiceItems(
-								valuesList.toArray(new String[]{}), selPos, 
-								new OnMultiChoiceClickListener() {
-									public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-										handler.saveSelection(keysList.get(which), isChecked);
-									}
-								})
-						.create();
-				dialog.setCanceledOnTouchOutside(true);
-				dialog.show();
-			}
-			public int getDrawable() {
-				return res;
-			}
-		};
+		List<String> valuesList = extractValues(map, keysList);
+		AlertDialog dialog = new AlertDialog.Builder(context)
+				.setTitle(title)
+				.setMultiChoiceItems(
+						valuesList.toArray(new String[]{}), selPos, 
+						new OnMultiChoiceClickListener() {
+							public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+								handler.saveSelection(keysList.get(which), isChecked);
+							}
+						})
+				.create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
 	}
 
-	public static <T extends Comparable<? super T>> OnMenuItemClickListener buildMenuListenerMultiChoiceDialog(
-			final Context context, final Map<T, String> map, final String title, final Set<T> selected, final MultiChoiceHandler<T> handler) {
-		final List<T> keysList = new LinkedList<T>(map.keySet());
-		Collections.sort(keysList);
-		final boolean[] selPos = new boolean[keysList.size()];
-		for(int i = 0; i < keysList.size(); i++) {
-			selPos[i] = selected.contains(keysList.get(i));
-		}
-		final List<String> valuesList = extractValues(map, keysList);
-		return new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				AlertDialog dialog = new AlertDialog.Builder(context)
-						.setTitle(title)
-						.setMultiChoiceItems(
-								valuesList.toArray(new String[]{}), selPos, 
-								new OnMultiChoiceClickListener() {
-									public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-										handler.saveSelection(keysList.get(which), isChecked);
-									}
-								})
-						.create();
-				dialog.setCanceledOnTouchOutside(true);
-				dialog.show();
-				return true;
-			}
-		};
-	}
-
-	public static Action buildActionTextInputDialog(
-			final Context context, final int res, final String title, final String message, final String buttonText, final TextInputHandler handler) {
-		return new Action() {
-			public void performAction(View view) {
-				final EditText input = new EditText(context);
-				AlertDialog dialog = new AlertDialog.Builder(context)
-						.setTitle(title)
-					    .setMessage(message)
-					    .setView(input)
-						.setPositiveButton(
-								buttonText, 
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int which) {
-										handler.gotText(input.getText().toString());
-									}
-								})
-						.create();
-				dialog.setCanceledOnTouchOutside(true);
-				dialog.show();
-			}
-			public int getDrawable() {
-				return res;
-			}
-		};
-	}
-
-	public static OnMenuItemClickListener buildMenuListenerTextInputDialog(
-			final Context context, final String title, final String message, final String buttonText, final TextInputHandler handler) {
-		return new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				final EditText input = new EditText(context);
-				AlertDialog dialog = new AlertDialog.Builder(context)
-						.setTitle(title)
-					    .setMessage(message)
-					    .setView(input)
-						.setPositiveButton(
-								buttonText, 
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int which) {
-										handler.gotText(input.getText().toString());
-									}
-								})
-						.create();
-				dialog.setCanceledOnTouchOutside(true);
-				dialog.show();
-				return true;
-			}
-		};
+	public static void showInputDialog(Context context, String title, String message, String buttonText, final TextInputHandler handler) {
+		final EditText input = new EditText(context);
+		AlertDialog dialog = new AlertDialog.Builder(context)
+				.setTitle(title)
+			    .setMessage(message)
+			    .setView(input)
+				.setPositiveButton(
+						buttonText, 
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								handler.gotText(input.getText().toString());
+							}
+						})
+				.create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
 	}
 
 	public static <K, V> List<V> extractValues(Map<K, V> map, List<K> keysList) {
