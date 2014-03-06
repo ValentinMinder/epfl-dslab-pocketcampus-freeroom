@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.food.server;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import org.pocketcampus.plugin.food.shared.*;
 
 import org.apache.thrift.TException;
 import org.joda.time.*;
+
+import com.unboundid.ldap.sdk.*;
 
 /**
  * Provides information about the meals, and allows users to rate them.
@@ -69,8 +72,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	
 		String sciper = PocketCampusServer.authGetUserSciper(foodReq);
 		if(sciper != null) {
-			List<String> userClasses = PocketCampusServer.ldapGetUserClassesFromSciper(sciper);
-			response.setUserStatus(getPriceTarget(userClasses));
+			response.setUserStatus(getPriceTarget(sciper));
 		}
 
 		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
@@ -108,16 +110,40 @@ public class FoodServiceImpl implements FoodService.Iface {
 		return new LocalDate(timestamp);
 	}
 
-	private static PriceTarget getPriceTarget(List<String> userClasses) {
-		if(userClasses.contains("Voie Diplôme"))
+	private static PriceTarget getPriceTarget(String sciper) {
+		List<PriceTarget> classes = new LinkedList<PriceTarget>();
+		try {
+			LDAPConnection ldap = new LDAPConnection();
+			ldap.connect("ldap.epfl.ch", 389);
+			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "uniqueIdentifier=" + sciper, (String[]) null);
+			for (SearchResultEntry e : searchResult.getSearchEntries()) {
+				//System.out.println(e.toLDIFString());
+				String os = e.getAttributeValue("organizationalStatus");
+				if("Etudiant".equals(os)) {
+					String uc = e.getAttributeValue("userClass");
+					if("Doctorant".equals(uc)) {
+						classes.add(PriceTarget.PHD_STUDENT);
+					} else {
+						classes.add(PriceTarget.STUDENT);
+					}
+				} else if("Personnel".equals(os)) {
+					classes.add(PriceTarget.STAFF);
+				} else {
+					classes.add(PriceTarget.VISITOR);
+				}
+			}
+		} catch (LDAPException e) {
+			e.printStackTrace();
+		}
+		if(classes.contains(PriceTarget.STUDENT))
 			return PriceTarget.STUDENT;
-		if(userClasses.contains("Doctorant"))
+		if(classes.contains(PriceTarget.PHD_STUDENT))
 			return PriceTarget.PHD_STUDENT;
-		if(userClasses.size() > 0)
+		if(classes.contains(PriceTarget.STAFF))
 			return PriceTarget.STAFF;
 		return PriceTarget.VISITOR;
 	}
-
+	
 	// OLD STUFF - DO NOT TOUCH
 
 	private org.pocketcampus.plugin.food.server.old.OldFoodService _oldService;
