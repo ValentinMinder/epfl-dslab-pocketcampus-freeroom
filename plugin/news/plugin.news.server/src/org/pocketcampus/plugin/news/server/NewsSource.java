@@ -4,9 +4,17 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
+/**
+ * News source.
+ * 
+ * @author Solal Pirelli <solal@pocketcampus.org>
+ */
 public interface NewsSource {
+	/** Gets all feeds in the specified language. */
 	Feed[] getFeeds(String language);
 
+	
+	/** News feed */
 	public static class Feed {
 		public final String name;
 		public final boolean isMain;
@@ -19,6 +27,7 @@ public interface NewsSource {
 		}
 	}
 
+	/** News feed item */
 	public static class FeedItem {
 		public final int id;
 		public final String title;

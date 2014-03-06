@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,12 +18,23 @@ import org.joda.time.format.DateTimeFormatter;
 import org.pocketcampus.platform.sdk.server.HttpClient;
 import org.pocketcampus.platform.sdk.server.XElement;
 
+/**
+ * Implementation of NewsSource using the EPFL RSS feeds.
+ * 
+ * @author Solal Pirelli <solal@pocketcampus.org>
+ */
 public final class NewsSourceImpl implements NewsSource {
-	private static final String FEED_FORMAT = "http://actu.epfl.ch/feeds/rss/%s/%s/";
+	// Format of feed URLs; parameters are the feed ID and the language.
+	private static final String FEED_URL_FORMAT = "http://actu.epfl.ch/feeds/rss/%s/%s/";
+	// ID of the "main" feed, which contains the important news from other feeds
 	private static final String MAIN_FEED_ID = "mediacom";
+	// All feed IDs
 	private static final String[] FEED_IDS = { "mediacom", "enac", "sb", "ic", "cdh", "sti", "sv", "cdm" };
+	// Charset used by RSS feeds
 	private static final Charset RSS_CHARSET = Charset.forName("UTF-8");
-	private static final DateTimeFormatter RSS_DATE_FORMAT = DateTimeFormat.forPattern("E, d M y H:m:s Z");
+	// Date format used by RSS feeds
+	private static final DateTimeFormatter RSS_DATE_FORMAT = DateTimeFormat.forPattern("E, d MMM y HH:mm:ss Z").withLocale(Locale.ENGLISH);
+	// RSS feed element names
 	private static final String RSS_FEED_ELEMENT = "channel";
 	private static final String RSS_FEED_NAME_ELEMENT = "title";
 	private static final String RSS_FEED_ITEM_ELEMENT = "item";
@@ -30,7 +42,9 @@ public final class NewsSourceImpl implements NewsSource {
 	private static final String RSS_FEED_ITEM_LINK_ELEMENT = "link";
 	private static final String RSS_FEED_ITEM_CONTENT_ELEMENT = "description";
 	private static final String RSS_FEED_ITEM_DATE_ELEMENT = "pubDate";
+	// Pattern that matches images in EPFL news articles
 	private static final Pattern IMAGE_PATTERN = Pattern.compile("http://actu.epfl.ch/image/\\d+/(\\d+x\\d+).jpg");
+	// Token for the size of EPFL news images, so that clients can pick their desired size
 	private static final String IMAGE_SIZE_TOKEN = "{x}x{y}";
 
 	private final HttpClient _client;
@@ -39,20 +53,21 @@ public final class NewsSourceImpl implements NewsSource {
 		_client = client;
 	}
 
+	/** Gets all feeds for the specified language. */
 	@Override
 	public Feed[] getFeeds(String language) {
 		List<Feed> feeds = new ArrayList<Feed>();
 		for (String feedId : FEED_IDS) {
-			String url = String.format(FEED_FORMAT, feedId, language);
+			String url = String.format(FEED_URL_FORMAT, feedId, language);
 
-			String rss = null;
+			XElement rootElem;
 			try {
-				rss = _client.getString(url, RSS_CHARSET);
+				String rss = _client.getString(url, RSS_CHARSET);
+				rootElem = XElement.parse(rss);
 			} catch (Exception e) {
 				return null;
 			}
 
-			XElement rootElem = XElement.parse(rss);
 			XElement channelElem = rootElem.child(RSS_FEED_ELEMENT);
 
 			String feedName = channelElem.elementText(RSS_FEED_NAME_ELEMENT);
@@ -86,17 +101,19 @@ public final class NewsSourceImpl implements NewsSource {
 			}
 		});
 
-		return (Feed[]) feeds.toArray();
+		return feeds.toArray(new Feed[feeds.size()]);
 	}
 
+	/** Gets the picture URL of the specified item, given its content. */
 	private static String getPictureUrl(String itemContent) {
 		Matcher matcher = IMAGE_PATTERN.matcher(itemContent);
-		if (matcher.matches()) {
+		if (matcher.find()) {
 			return matcher.group(0).replace(matcher.group(1), IMAGE_SIZE_TOKEN);
 		}
 		return null;
 	}
 
+	/** Sanitizes an item's content, removing potentially unwanted tags. */
 	private static String sanitize(String itemContent) {
 		// TODO: what?
 		return itemContent;

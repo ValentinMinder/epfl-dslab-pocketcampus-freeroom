@@ -5,10 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.TException;
+import org.joda.time.Duration;
+import org.pocketcampus.platform.sdk.server.CachingProxy;
 import org.pocketcampus.platform.sdk.server.HttpClientImpl;
 import org.pocketcampus.plugin.news.shared.*;
 
+/**
+ * News service.
+ * 
+ * @author Solal Pirelli <solal@pocketcampus.org>
+ */
 public final class NewsServiceImpl implements NewsService.Iface {
+	private static final Duration CACHE_DURATION = Duration.standardHours(1);
+
 	private final NewsSource _source;
 
 	public NewsServiceImpl(NewsSource source) {
@@ -16,7 +25,7 @@ public final class NewsServiceImpl implements NewsService.Iface {
 	}
 
 	public NewsServiceImpl() {
-		this(new NewsSourceImpl(new HttpClientImpl()));
+		this(CachingProxy.create(new NewsSourceImpl(new HttpClientImpl()), CACHE_DURATION, false));
 	}
 
 	@Override
@@ -53,15 +62,15 @@ public final class NewsServiceImpl implements NewsService.Iface {
 		}
 
 		for (NewsSource.Feed feed : feeds) {
-			
+
 			NewsSource.FeedItem item = feed.items.get(request.getItemId());
 			if (item != null) {
 				NewsFeedItemContent returnedContent = new NewsFeedItemContent(feed.name, item.title, item.link, item.content);
-				
+
 				if (item.imageUrl != null) {
 					returnedContent.setImageUrl(item.imageUrl);
 				}
-				
+
 				return new NewsFeedItemContentResponse(NewsStatusCode.OK).setContent(returnedContent);
 			}
 		}
