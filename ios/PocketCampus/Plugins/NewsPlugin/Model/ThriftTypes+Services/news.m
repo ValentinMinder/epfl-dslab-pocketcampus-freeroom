@@ -673,7 +673,7 @@
   [outProtocol writeStructEnd];
 }
 
-- (NSString *) description {
+- (NSString *) descriptionObject {
   NSMutableString * ms = [NSMutableString stringWithString: @"Feed("];
   [ms appendString: @"feedId:"];
   [ms appendFormat: @"%qi", __feedId];
