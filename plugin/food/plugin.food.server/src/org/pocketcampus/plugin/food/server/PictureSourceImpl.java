@@ -10,7 +10,7 @@ import org.pocketcampus.plugin.food.shared.MealType;
 public final class PictureSourceImpl implements PictureSource {
 	private static final String MEAL_PICS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/meal-pics/";
 	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
-	
+
 	private static final String RESTAURANTS_PHOTOS_FOLDER_URL = "http://pocketcampus.epfl.ch/backend/restaurant-pics/";
 	private static final String RESTAURANTS_PHOTOS_FOLDER_LOCAL_PATH = "/var/www/backend/restaurant-pics/";
 	private static final String RESTAURANTS_PHOTOS_FILE_EXTENSION = ".jpg";
@@ -20,7 +20,7 @@ public final class PictureSourceImpl implements PictureSource {
 			MEAL_TYPE_PICTURE_URLS.put(type, MEAL_PICS_FOLDER_URL + type + ".png");
 		}
 	}
-	
+
 	/** Gets the picture URLs of all meal types. */
 	public Map<MealType, String> getMealTypePictures() {
 		return MEAL_TYPE_PICTURE_URLS;
@@ -35,8 +35,7 @@ public final class PictureSourceImpl implements PictureSource {
 			System.err.println("INFO: did not find expected photo file for restaurant " + restaurantName + " at path '" + filePath + "'");
 			return null;
 		}
-		String urlString = RESTAURANTS_PHOTOS_FOLDER_URL + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION;
-		return urlString;
+		return RESTAURANTS_PHOTOS_FOLDER_URL + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION;
 	}
 
 	/**

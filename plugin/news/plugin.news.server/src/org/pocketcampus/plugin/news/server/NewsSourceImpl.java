@@ -83,7 +83,7 @@ public final class NewsSourceImpl implements NewsSource {
 				String content = itemElement.elementText(RSS_FEED_ITEM_CONTENT_ELEMENT);
 				content = StringEscapeUtils.unescapeHtml(content);
 
-				items.put(id, new FeedItem(id, title, link, date, getPictureUrl(content), sanitize(content)));
+				items.put(id, new FeedItem(id, title, link, date, getPictureUrl(content), content));
 			}
 
 			feeds.add(new Feed(feedName, isMain, items));
@@ -111,11 +111,5 @@ public final class NewsSourceImpl implements NewsSource {
 			return matcher.group(0).replace(matcher.group(1), IMAGE_SIZE_TOKEN);
 		}
 		return null;
-	}
-
-	/** Sanitizes an item's content, removing potentially unwanted tags. */
-	private static String sanitize(String itemContent) {
-		// TODO: what?
-		return itemContent;
 	}
 }

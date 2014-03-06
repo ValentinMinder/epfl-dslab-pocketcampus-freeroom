@@ -14,6 +14,11 @@ import org.pocketcampus.platform.sdk.server.HttpClient;
 import org.pocketcampus.plugin.news.server.NewsSourceImpl;
 import org.pocketcampus.plugin.news.server.NewsSource.*;
 
+/**
+ * Tests for NewsSourceImpl.
+ * 
+ * @author Solal Pirelli <solal@pocketcampus.org>
+ */
 public class NewsSourceTests {
 	@Test
 	public void feedNameIsRead() {

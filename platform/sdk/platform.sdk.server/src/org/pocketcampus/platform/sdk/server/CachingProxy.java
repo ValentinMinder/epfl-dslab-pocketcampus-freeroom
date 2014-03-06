@@ -11,9 +11,7 @@ import org.joda.time.*;
 /**
  * Creates proxies that (softly) cache method results from interfaces for a specified amount of time.
  * 
- * This class assumes that the wrapped classes never return null.
- * 
- * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class CachingProxy {
 	@SuppressWarnings("unchecked")
@@ -29,10 +27,13 @@ public final class CachingProxy {
 						}
 
 						int hash = Arrays.deepHashCode(args);
-						GeneratedValue cached = cache.get(method).get(hash);
-						if (cached != null && validator.isValid(cached.generationDate)) {
-							return cached.value;
+						if (cache.get(method).containsKey(hash)) {
+							GeneratedValue cached = cache.get(method).get(hash);
+							if (validator.isValid(cached.generationDate)) {
+								return cached.value;
+							}
 						}
+
 						Object result = method.invoke(instance, args);
 						cache.get(method).put(hash, new GeneratedValue(DateTime.now(), result));
 						return result;
@@ -90,7 +91,11 @@ public final class CachingProxy {
 			_cleanerThread.start();
 		}
 
-		public V get(Object key) {
+		public boolean containsKey(K key) {
+			return _map.containsKey(key);
+		}
+
+		public V get(K key) {
 			Reference<V> refVal = _map.get(key);
 			return refVal == null ? null : refVal.get();
 		}

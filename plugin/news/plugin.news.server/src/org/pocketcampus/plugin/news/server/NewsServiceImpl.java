@@ -62,7 +62,6 @@ public final class NewsServiceImpl implements NewsService.Iface {
 		}
 
 		for (NewsSource.Feed feed : feeds) {
-
 			NewsSource.FeedItem item = feed.items.get(request.getItemId());
 			if (item != null) {
 				NewsFeedItemContent returnedContent = new NewsFeedItemContent(feed.name, item.title, item.link, item.content);
