@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.food.server;
 import java.util.List;
 import java.util.Map;
 
+import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 import org.pocketcampus.platform.sdk.server.CachingProxy;
 import org.pocketcampus.platform.sdk.server.HttpClientImpl;
 import org.pocketcampus.plugin.food.shared.*;
@@ -65,10 +66,16 @@ public class FoodServiceImpl implements FoodService.Iface {
 			restaurant.setRPictureUrl(_pictureSource.forRestaurant(restaurant.getRName()));
 			restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
 		}
+	
+		String sciper = PocketCampusServer.authGetUserSciper(foodReq);
+		if(sciper != null) {
+			List<String> userClasses = PocketCampusServer.ldapGetUserClassesFromSciper(sciper);
+			response.setUserStatus(getPriceTarget(userClasses));
+		}
 
 		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
 	}
-
+	
 	@Override
 	public VoteResponse vote(VoteRequest voteReq) throws TException {
 		try {
@@ -99,6 +106,16 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 
 		return new LocalDate(timestamp);
+	}
+
+	private static PriceTarget getPriceTarget(List<String> userClasses) {
+		if(userClasses.contains("Voie Diplôme"))
+			return PriceTarget.STUDENT;
+		if(userClasses.contains("Doctorant"))
+			return PriceTarget.PHD_STUDENT;
+		if(userClasses.size() > 0)
+			return PriceTarget.STAFF;
+		return PriceTarget.VISITOR;
 	}
 
 	// OLD STUFF - DO NOT TOUCH

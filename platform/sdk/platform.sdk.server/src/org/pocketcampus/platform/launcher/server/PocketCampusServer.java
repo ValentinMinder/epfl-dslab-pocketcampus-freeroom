@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TServlet;
 import org.pocketcampus.platform.sdk.shared.utils.PcConstants;
+
+import com.unboundid.ldap.sdk.DereferencePolicy;
+import com.unboundid.ldap.sdk.LDAPConnection;
+import com.unboundid.ldap.sdk.LDAPException;
+import com.unboundid.ldap.sdk.SearchResult;
+import com.unboundid.ldap.sdk.SearchResultEntry;
+import com.unboundid.ldap.sdk.SearchScope;
 
 import ch.epfl.tequila.client.model.ClientConfig;
 import ch.epfl.tequila.client.model.TequilaPrincipal;
@@ -241,6 +249,29 @@ public class PocketCampusServer extends ServerBase {
 		} catch (InvocationTargetException e) {
 		}
 		return null;
+	}
+	
+	public static List<String> ldapGetUserClassesFromSciper(String sciper) {
+		List<String> classes = new LinkedList<String>();
+		try {
+			LDAPConnection ldap = new LDAPConnection();
+			ldap.connect("ldap.epfl.ch", 389);
+			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "uniqueIdentifier=" + sciper, (String[]) null);
+			for (SearchResultEntry e : searchResult.getSearchEntries()) {
+				//System.out.println(e.toLDIFString());
+				classes.add(e.getAttributeValue("userClass"));
+				//Voie Diplôme
+				//Doctorant
+				//Assistant-e
+				//Personnel technique/administratif
+				//Corps professoral
+				//Secrétaire ou Administrateur-trice
+				//etc.
+			}
+		} catch (LDAPException e) {
+			e.printStackTrace();
+		}
+		return classes;
 	}
 	
 }
