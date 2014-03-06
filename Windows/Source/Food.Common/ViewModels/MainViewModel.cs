@@ -168,6 +168,14 @@ namespace PocketCampus.Food.ViewModels
                 }
 
                 _fullMenu = resp.Menu;
+
+                foreach ( var restaurant in _fullMenu )
+                {
+                    foreach ( var meal in restaurant.Meals )
+                    {
+                        meal.Restaurant = restaurant;
+                    }
+                }
             }
 
             // using Any() on Settings.DisplayedDishTypes allows dishes with more than one type to be displayed

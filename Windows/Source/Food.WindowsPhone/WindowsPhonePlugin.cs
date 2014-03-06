@@ -45,6 +45,7 @@ namespace PocketCampus.Food
         public void Initialize( IWindowsPhoneNavigationService navigationService )
         {
             navigationService.Bind<MainViewModel>( "/PocketCampus.Food.WindowsPhone;component/Views/MainView.xaml" );
+            navigationService.Bind<RatingViewModel>( "/PocketCampus.Food.WindowsPhone;component/Views/RatingView.xaml" );
             navigationService.Bind<SettingsViewModel>( "/PocketCampus.Food.WindowsPhone;component/Views/SettingsView.xaml" );
         }
     }

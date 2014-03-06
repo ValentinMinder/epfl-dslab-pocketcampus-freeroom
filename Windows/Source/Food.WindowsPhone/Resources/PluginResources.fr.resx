@@ -217,7 +217,7 @@
   <data name="RateMealButton" xml:space="preserve">
     <value>évaluer</value>
   </data>
-  <data name="RatingStatus_AlreadyVoted" xml:space="preserve">
+  <data name="RatingStatus_AlreadyVotedToday" xml:space="preserve">
     <value>Vous avez déjà évalué un plat aujourd'hui.</value>
   </data>
   <data name="RatingStatus_MealFromTheFuture" xml:space="preserve">
