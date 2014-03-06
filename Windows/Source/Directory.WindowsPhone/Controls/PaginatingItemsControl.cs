@@ -72,7 +72,7 @@ namespace PocketCampus.Directory.Controls
             {
                 if ( _scroller.ScrollableHeight - _scroller.VerticalOffset < PreloadingMargin )
                 {
-                    if ( ItemRequestCommand.CanExecute( null ) )
+                    if ( ItemRequestCommand != null && ItemRequestCommand.CanExecute( null ) )
                     {
                         ItemRequestCommand.Execute( null );
                     }

@@ -1,15 +1,13 @@
 package org.pocketcampus.platform.sdk.server;
 
 import java.io.ByteArrayInputStream;
-
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.*;
 
 /**
  * Super-simple XML parsing API on top of the horror that is Java's XML API.
  * 
- * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class XElement {
 	private final Element _element;
@@ -18,40 +16,35 @@ public final class XElement {
 		_element = element;
 	}
 
-	public String attribute(String key) {
-		return _element.getAttribute(key);
+	/** Parses an XElement from XML. */
+	public static XElement parse(String xml) throws Exception {
+		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+				.parse(new ByteArrayInputStream(xml.getBytes()));
+		return new XElement(doc.getDocumentElement());
 	}
 
+	/** Gets the value of the attribute with the specified name. */
+	public String attribute(String name) {
+		return _element.getAttribute(name);
+	}
+
+	/** Gets the inner text of the child element with the specified name. */
 	public String elementText(String elementName) {
 		return _element.getElementsByTagName(elementName).item(0).getTextContent().trim();
 	}
 
-	public XElement child(String childName) {
-		Element element = (Element) _element.getElementsByTagName(childName).item(0);
-		return new XElement(element);
+	/** Gets the child with the specified name. */
+	public XElement child(String name) {
+		return new XElement((Element) _element.getElementsByTagName(name).item(0));
 	}
 
-	public XElement[] children(String childrenName) {
-		NodeList elements = _element.getElementsByTagName(childrenName);
+	/** Gets the children with the specified name. */
+	public XElement[] children(String name) {
+		NodeList elements = _element.getElementsByTagName(name);
 		XElement[] xelems = new XElement[elements.getLength()];
 		for (int n = 0; n < xelems.length; n++) {
 			xelems[n] = new XElement((Element) elements.item(n));
 		}
 		return xelems;
-	}
-
-	/** Parses an XElement from XML. */
-	public static XElement parse(String xml) {
-		try {
-			Element element =
-					DocumentBuilderFactory.newInstance()
-							.newDocumentBuilder()
-							.parse(new ByteArrayInputStream(xml.getBytes()))
-							.getDocumentElement();
-			return new XElement(element);
-		} catch (Exception e) {
-			// Pokémon! Gotta catch'em all!
-			return null;
-		}
 	}
 }

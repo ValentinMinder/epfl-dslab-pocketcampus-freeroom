@@ -126,11 +126,11 @@
                                AutoCompleteProvider="{Binding SearchAutoCompleteProvider}"
                                SearchCommand="{Binding SearchCommand}" />
 
-        <!-- Search results ItemRequestCommand="{Binding SearchForMoreCommand}" -->
+        <!-- Search results -->
         <myControls:PaginatingItemsControl Grid.Row="2"
                                            ItemsSource="{Binding SearchResults}"
                                            ItemTemplate="{StaticResource PersonTemplate}"
-                                           />
+                                           ItemRequestCommand="{Binding SearchForMoreCommand}" />
 
         <!-- "No search results" message -->
         <Border Grid.Row="2"
