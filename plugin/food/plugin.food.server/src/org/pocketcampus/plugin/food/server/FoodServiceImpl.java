@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 import org.pocketcampus.platform.sdk.server.CachingProxy;
 import org.pocketcampus.platform.sdk.server.HttpClientImpl;
 import org.pocketcampus.plugin.food.shared.*;
@@ -70,9 +69,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 			restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
 		}
 	
-		String sciper = PocketCampusServer.authGetUserSciper(foodReq);
-		if(sciper != null) {
-			response.setUserStatus(getPriceTarget(sciper));
+		if(foodReq.isSetUserGaspar()) {
+			response.setUserStatus(getPriceTarget(foodReq.getUserGaspar()));
 		}
 
 		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
@@ -115,7 +113,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		try {
 			LDAPConnection ldap = new LDAPConnection();
 			ldap.connect("ldap.epfl.ch", 389);
-			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "uniqueIdentifier=" + sciper, (String[]) null);
+			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + sciper + ")(uniqueidentifier=" + sciper + "))", (String[]) null);
 			for (SearchResultEntry e : searchResult.getSearchEntries()) {
 				//System.out.println(e.toLDIFString());
 				String os = e.getAttributeValue("organizationalStatus");
