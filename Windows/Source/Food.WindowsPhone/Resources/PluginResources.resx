@@ -212,10 +212,10 @@
     <value>1 vote</value>
   </data>
   <data name="RateButton" xml:space="preserve">
-    <value>rate</value>
+    <value>vote</value>
   </data>
   <data name="RateMealButton" xml:space="preserve">
-    <value>rate</value>
+    <value>vote</value>
   </data>
   <data name="RatingStatus_AlreadyVotedToday" xml:space="preserve">
     <value>You have already rated a meal today.</value>
@@ -234,7 +234,7 @@
     <value>It's too early to rate meals.</value>
   </data>
   <data name="RatingViewTitle" xml:space="preserve">
-    <value>rate</value>
+    <value>rate a meal</value>
   </data>
   <data name="SatisfactionPercentage" xml:space="preserve">
     <value>satisfaction</value>
