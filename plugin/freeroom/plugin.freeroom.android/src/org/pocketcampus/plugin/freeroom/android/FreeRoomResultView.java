@@ -11,6 +11,7 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -20,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoomView {
 
@@ -60,7 +62,8 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 		
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.hideTitle();
+		mLayout.setTitle(getString(R.string.freeroom_title_FRresult));
+		mLayout.hideTitle(); // TODO: remove this without breaking the UI.
 
 		initializeResultView();
 
@@ -69,15 +72,13 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 	private void initializeResultView() {
 		resetButton = new Button(this);	
 		resetButton.setEnabled(false);
-		resetButton.setText(R.string.freeroom_searchbutton); //TODO: change
+		resetButton.setText(R.string.freeroom_resetbutton); 
 		resetButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				System.out.println("reset!");
-//				if (auditSearchButton() == 0) {
-//					//TODO action
-//				}
+				// TODO action reset/ return
 			}
 		});
 		subLayout.addView(resetButton);
@@ -99,7 +100,7 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				String s = mAdapter.getItem(arg2);
-				// String s = mListValues.get(arg2); // TODO delete
+				// String s = mListValues.get(arg2); // TODO check which one to keep
 				System.out.println("selected " + s);
 				mController.getModel();
 				//TODO: display map!
@@ -114,14 +115,17 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 		mAdapter.clear();
 		mListValues.clear();
 		mAdapter.notifyDataSetChanged();
-		System.out.println("updated!"); //TODO delete
 		Set<FRRoom> res = mModel.getFreeRoomResults();
 		for (FRRoom frRoom : res) {
 			mListValues.add(frRoom.getBuilding() + " " + frRoom.getNumber()); 
 		}
 		if (res.isEmpty()) {
-			mListValues.add("no room available (change this)"); //TODO: change!
+			Toast.makeText(
+					getApplicationContext(),
+					getString(R.string.freeroom_no_room_available), Toast.LENGTH_LONG)
+					.show();
 		}
+		Log.v("freeroom_result", "data_updated");
 		mAdapter.notifyDataSetChanged();
 	}
 

@@ -68,7 +68,8 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.hideTitle();
+		mLayout.setTitle(getString(R.string.freeroom_title_FRsearch));
+		mLayout.hideTitle(); // TODO: remove this without breaking the UI.
 
 		initializeSearchView();
 
@@ -87,8 +88,6 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 				if (auditSearchButton() == 0) {
 					mController.searchFreeRoom(view,
 							Converter.convert(intday, startHour, endHour));
-
-					// TODO action
 					Intent i = new Intent(FreeRoomSearchView.this,
 							FreeRoomResultView.class);
 					FreeRoomSearchView.this.startActivity(i);
@@ -104,6 +103,7 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 		listHeader.add(getString(R.string.freeroom_selectendHour));
 
 		List<String> daysList = new ArrayList<String>();
+		//TODO: clean this list, get another way of doing that...
 		daysList.add("Monday");
 		daysList.add("Tuesday");
 		daysList.add("Wednesday");

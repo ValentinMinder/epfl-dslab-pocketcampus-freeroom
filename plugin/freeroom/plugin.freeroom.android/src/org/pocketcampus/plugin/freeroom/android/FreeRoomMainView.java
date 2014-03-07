@@ -6,6 +6,7 @@ import java.util.Calendar;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.Converter;
 
@@ -58,7 +59,8 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.hideTitle();
+		mLayout.setTitle(getString(R.string.freeroom_title_main_title));
+		mLayout.hideTitle(); // TODO: remove this without breaking the UI.
 
 		initializeMainView();
 	}
@@ -90,9 +92,9 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 				android.R.layout.simple_dropdown_item_1line,
 				android.R.id.text1, mListValues));
 		
-		mListValues.add("Find me a free room now !");
-		mListValues.add("Search for a free room");
-		mListValues.add("Check the occupancy");
+		mListValues.add(getString(R.string.freeroom_menu_freeroom_now));
+		mListValues.add(getString(R.string.freeroom_menu_freeroom_search));
+		mListValues.add(getString(R.string.freeroom_menu_check_occupancy));
 				
 		mList.setOnItemClickListener(new OnItemClickListener() {
 

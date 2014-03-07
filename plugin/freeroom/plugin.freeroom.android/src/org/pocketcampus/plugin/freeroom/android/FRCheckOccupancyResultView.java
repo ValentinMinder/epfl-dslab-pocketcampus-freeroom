@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.android;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 
 import android.os.Bundle;
@@ -35,7 +36,8 @@ public class FRCheckOccupancyResultView extends FreeRoomAbstractView implements
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.setTitle("Check the Occupancy - result");
+		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_result));
+		mLayout.hideTitle(); // TODO: remove this without breaking the UI.
 
 		initializeCheckOccupancyResultView();
 	}
