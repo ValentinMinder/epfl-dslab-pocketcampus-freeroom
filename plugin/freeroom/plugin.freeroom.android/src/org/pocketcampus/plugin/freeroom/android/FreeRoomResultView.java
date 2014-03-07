@@ -125,4 +125,9 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 		mAdapter.notifyDataSetChanged();
 	}
 
+	@Override
+	public void autoCompletedUpdated() {
+		// we do nothing here
+	}
+
 }

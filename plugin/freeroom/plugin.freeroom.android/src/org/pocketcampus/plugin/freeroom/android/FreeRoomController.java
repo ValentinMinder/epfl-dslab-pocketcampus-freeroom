@@ -4,7 +4,10 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.req.BuildingAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.android.req.GetFreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
+import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
@@ -57,12 +60,22 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 		new GetFreeRoomRequest(view).start(this, mClient, request);
 	}
 	
+	@Override
+	public void autoCompleteBuilding(IFreeRoomView view, AutoCompleteRequest request) {
+		new BuildingAutoCompleteRequest(view).start(this, mClient, request);
+	}
+	
 	/**
 	 * Sets the result in the model.
 	 */
 	@Override
 	public void setFreeRoomResults(FreeRoomReply rep) {
 		mModel.setFreeRoomResults(rep.getRooms());
+	}
+
+	@Override
+	public void setAutoCompleteResults(AutoCompleteReply result) {
+		mModel.setAutoCompleteResults(result.getListFRRoom());
 	}
 	
 }

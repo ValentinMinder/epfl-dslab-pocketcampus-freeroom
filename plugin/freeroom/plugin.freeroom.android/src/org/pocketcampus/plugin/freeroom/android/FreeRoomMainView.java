@@ -133,4 +133,9 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 	public void freeRoomResultsUpdated() {
 		// we do nothing here
 	}
+
+	@Override
+	public void autoCompletedUpdated() {
+		// we do nothing here		
+	}
 }

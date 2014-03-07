@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 
+import java.util.List;
 import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
@@ -32,8 +33,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	
 	/**List of <code>FRRoom</code>'s obtained from the freeroom query**/
 	private Set<FRRoom> mFreeRoomResult;
-//	/**List of suggestions for the search view*/
-//	private List<String> mAutoCompleteSuggestions;
+	/**List of suggestions for the search view*/
+	private List<FRRoom> mAutoCompleteSuggestions;
 	/**Used to specify the displayed <code>FRRoom</code> in the results view*/
 	private FRRoom mSelectedFRRoom;
 	
@@ -78,6 +79,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Setter for the results of a freeroom request
 	 * @param results the result for the specific freeroom search
 	 */
+	@Override
 	public void setFreeRoomResults(Set<FRRoom> results){
 		mFreeRoomResult = results;
 		Log.v("Freeroom","result set via the model");
@@ -99,22 +101,22 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		mSelectedFRRoom = choosen_one;
 	}
 
+	/**
+	 * Sets the suggestions to the autocomplete and notifies the listeners.
+	 * @param listFRRoom
+	 */
+	@Override
+	public void setAutoCompleteResults(List<FRRoom> listFRRoom) {
+		mAutoCompleteSuggestions = listFRRoom;
+		mListeners.autoCompletedUpdated();
+	}
 
-//	/**
-//	 * Gets the suggestions for the autocomplete
-//	 */
-//	@Override
-//	public List<String> getAutocompleteSuggestions() {
-//		return mAutoCompleteSuggestions;
-//	}
-//	
-//	/**
-//	 * Sets the suggestions to the autocomplete and notifies the listeners.
-//	 * @param suggestions
-//	 */
-//	public void setAutocompleteSuggestions(List<String> suggestions){
-//		mAutoCompleteSuggestions = suggestions;
-//		mListeners.autoCompletedUpdated();
-//	}
-	
+
+	/**
+	 * Gets the suggestions for the autocomplete
+	 */
+	@Override
+	public List<FRRoom> getAutocompleteSuggestions() {
+		return mAutoCompleteSuggestions;
+	}
 }

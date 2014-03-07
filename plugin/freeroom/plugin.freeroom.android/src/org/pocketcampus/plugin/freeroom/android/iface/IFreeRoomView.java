@@ -20,5 +20,7 @@ public interface IFreeRoomView extends IView {
 	void freeRoomServersDown();
 
 	void freeRoomResultsUpdated();
+
+	void autoCompletedUpdated();
 	
 }

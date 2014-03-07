@@ -210,4 +210,9 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 		// we do nothing here
 	}
 
+	@Override
+	public void autoCompletedUpdated() {
+		// we do nothing here
+	}
+
 }
