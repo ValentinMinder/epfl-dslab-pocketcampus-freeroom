@@ -143,10 +143,10 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 				int tmpStartHour = childPosition + 8;
 				int tmpEndHour = childPosition + 9;
 				if (groupPosition == 0) {
-					intday = childPosition;
+					intday = (((childPosition + 1) % 7) + 1); //monday = 0 in UI//monday =2 in calendar
 					listAdapter.updateHeader(groupPosition,
 							getString(R.string.freeroom_selectday) + " ("
-									+ FRDay.findByValue(intday).toString()
+									+ FRDay.findByValue(childPosition).toString()
 									+ ")");
 					searchParams.collapseGroup(0);
 					searchParams.expandGroup(1);

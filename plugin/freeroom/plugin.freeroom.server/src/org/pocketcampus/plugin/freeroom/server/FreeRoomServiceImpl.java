@@ -74,10 +74,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	
 	private Set<FRRoom> getFreeRoom (FRTimeStamp start, FRTimeStamp end) throws TException {
 		Calendar startDate = Calendar.getInstance();
-		startDate.setFirstDayOfWeek(Calendar.MONDAY);
 		startDate.setTimeInMillis((long) start.getTimeMillis());
 		Calendar endDate = Calendar.getInstance();
-		endDate.setFirstDayOfWeek(Calendar.SUNDAY);
 		endDate.setTimeInMillis((long) end.getTimeMillis());
 	
 //		if (startDate.compareTo(endDate) <= 0) {
@@ -86,17 +84,19 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		
 		// depends from the structure of database, need to change probably!
 		// doesn't support overnight searches, only MON-SUN 8am-7pm
-		int day = startDate.get(Calendar.DAY_OF_WEEK) - 1;
+		int day = startDate.get(Calendar.DAY_OF_WEEK);
 		int starthour = startDate.get(Calendar.HOUR_OF_DAY);
 		int endhour = endDate.get(Calendar.HOUR_OF_DAY);
-		//TODO: check the day : seems to be false (tuesday = 3 ?!?)
+		// according to java.Calendar, Monday = 2 !!!
 		System.out.println("Day: " + day + "/ from hour " + starthour + "/ to hour" + endhour);
 		
 		// All this was copied from previous method!
+		// TODO: validate for EVERY hour;
 		if (starthour < 8 || endhour > 19) {
 			throw new TException("unsupported timestamps: outside boundaries");
 		}
 		if (starthour >= endhour) {
+			//TODO: change exception or handling
 			throw new TException("unsupported timestamps: same timestamps");
 		}
 		

@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -8,6 +9,7 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.utils.Converter;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
@@ -106,11 +108,9 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 				Intent i = null;
 				switch (arg2) {
 				case 0:
-					FRTimeStamp ts_s = new FRTimeStamp(System.currentTimeMillis());
-					FRTimeStamp ts_end = new FRTimeStamp(System.currentTimeMillis() + 3600*1000);
-					FRPeriod period = new FRPeriod(ts_s, ts_end, false);
-					FreeRoomRequest req = new FreeRoomRequest(period);
-					mController.searchFreeRoom(FreeRoomMainView.this, req);
+					Calendar calendar = Calendar.getInstance();
+					mController.searchFreeRoom(FreeRoomMainView.this, 
+							Converter.convert(calendar.get(Calendar.DAY_OF_WEEK), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.HOUR_OF_DAY) + 1));
 					i = new Intent(FreeRoomMainView.this, FreeRoomResultView.class);
 					break;
 				case 1:
