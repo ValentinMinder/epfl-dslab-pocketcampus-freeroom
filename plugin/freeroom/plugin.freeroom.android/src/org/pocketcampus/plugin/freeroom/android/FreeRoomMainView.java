@@ -4,15 +4,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
-import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.Converter;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * FreeRoomMainView - Main view that shows FreeRoom courses.
@@ -98,7 +92,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 		
 		mListValues.add("Find me a free room now !");
 		mListValues.add("Search for a free room");
-		mListValues.add("Favorites / History");
+		mListValues.add("Check the occupancy");
 				
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -117,7 +111,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 					i = new Intent(FreeRoomMainView.this, FreeRoomSearchView.class);
 					break;
 				case 2:
-					break;
+					i = new Intent(FreeRoomMainView.this, FRCheckOccupancySearchView.class);
 				default:
 					break;
 				}
