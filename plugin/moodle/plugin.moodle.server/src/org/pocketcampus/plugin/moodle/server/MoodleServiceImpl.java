@@ -477,8 +477,8 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 			String modicon;
 			String modname;
 			String modplural;
-			int availablefrom;
-			int availableuntil;
+			long availablefrom;
+			long availableuntil;
 			int indent;
 			String description;
 			List<ModuleContent> contents;
@@ -531,6 +531,10 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 				LinkedList<MoodleResource> mrl = new LinkedList<MoodleResource>();
 				for(ModuleNode mn : sn.modules) {
 					if(mn.visible != 1)
+						continue;
+					if(mn.availablefrom != 0 && mn.availablefrom * 1000 > System.currentTimeMillis())
+						continue;
+					if(mn.availableuntil != 0 && mn.availableuntil * 1000 < System.currentTimeMillis())
 						continue;
 					if(!"resource".equals(mn.modname))
 						continue;
