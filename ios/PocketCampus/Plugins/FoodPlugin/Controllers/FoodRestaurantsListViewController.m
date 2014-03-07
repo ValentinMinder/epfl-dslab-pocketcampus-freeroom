@@ -81,10 +81,6 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
         self.gaiScreenName = @"/food";
         self.foodService = [FoodService sharedInstanceToRetain];
         self.foodResponse = [self.foodService getFoodFromCacheForRequest:[self createFoodRequest]];
-        if (self.foodResponse) {
-            self.foodService.pictureUrlForMealType = self.foodResponse.mealTypePictureUrls; //see doc of self.foodService.pictureUrlForMealType
-            self.foodService.userPriceTarget = self.foodResponse.userStatus; //see doc of self.foodService.userPriceTarget
-        }
     }
     return self;
 }
@@ -122,7 +118,6 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     req.deviceLanguage = [PCUtils userLanguageCode];
     req.mealTime = MealTime_LUNCH;
     req.mealDate = -1; //now
-    req.deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     req.userGaspar = [AuthenticationService savedUsername];
     return req;
 }
@@ -181,8 +176,6 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     switch (response.statusCode) {
         case FoodStatusCode_OK:
             self.foodResponse = response;
-            self.foodService.pictureUrlForMealType = response.mealTypePictureUrls; //see doc of self.foodService.pictureUrlForMealType
-            self.foodService.userPriceTarget = response.userStatus; //see doc of self.foodService.userPriceTarget
             [self fillCollectionsAndReloadTableView];
             [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             if (self.restaurantViewController) {

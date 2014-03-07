@@ -109,8 +109,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
-//#warning TO REMOVE
-        //self.pastMode = YES;
+        self.gaiScreenName = @"/events/pool";
         self.poolId = 0;
         self.eventsService = [EventsService sharedInstanceToRetain];
         self.selectedPeriod = [self.eventsService lastSelectedPoolPeriod];
@@ -184,12 +183,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
-        [[PCGAITracker sharedTracker] trackScreenWithName:@"/events"];
-    } else {
-#warning TODO
-        [[PCGAITracker sharedTracker] trackScreenWithName:[NSString stringWithFormat:@"/v3r1/%lld/subevents", self.poolId]];
-    }
+    [self trackScreen];
     if (!self.poolReply || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || self.eventPool.sendStarredItems) { //if sendStarredItems then list can change anytime and should be refreshed
         [self refresh];
     }
@@ -415,14 +409,8 @@ static const NSInteger kOneYearPeriodIndex = 3;
 }
 
 - (void)cameraButtonPressed {
+    
     [self trackAction:@"ShowCodeScanner"];
-    /*ZBarReaderViewController *reader = [ZBarReaderViewController new];
-    reader.readerDelegate = self;
-    reader.supportedOrientationsMask = ZBarOrientationMask(UIInterfaceOrientationPortrait);
-    
-    ZBarImageScanner *scanner = reader.scanner;
-    
-    [scanner setSymbology: ZBAR_I25 config: ZBAR_CFG_ENABLE to: 0];*/
     
     PCScanningViewController* scanningViewController = [PCScanningViewController new];
     
@@ -459,6 +447,9 @@ static const NSInteger kOneYearPeriodIndex = 3;
             }
         }
         [self dismissViewControllerAnimated:YES completion:NULL];
+        
+        NSString* contentInfo = [NSString stringWithFormat:@"%@?%@", url.lastPathComponent, url.query];
+        [self trackAction:@"QRCodeScanned" contentInfo:contentInfo];
         
     };
     scanningViewController.cancelBlock = ^() {
@@ -754,9 +745,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
         [self.navigationController pushViewController:eventItemViewController animated:YES];
     }
     
-    if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
-        [self trackAction:@"ShowEvent" contentInfo:eventItem.eventTitle];
-    }
+    [self trackAction:@"ShowEventItem" contentInfo:[NSString stringWithFormat:@"%ld-%@", eventItem.eventId, eventItem.eventTitle]];
 }
 
 

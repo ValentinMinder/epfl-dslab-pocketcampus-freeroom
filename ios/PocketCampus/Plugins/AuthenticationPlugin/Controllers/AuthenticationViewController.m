@@ -70,7 +70,7 @@
         self.presentationMode = PresentationModeNavStack; //default
         self.modalPresentationStyle = UIModalPresentationFormSheet; //prevents full-screen on iPad
         self.authenticationService = [AuthenticationService sharedInstanceToRetain];
-        self.isLoggedIn = [AuthenticationService isLoggedIn];
+        self.isLoggedIn = [AuthenticationService areCredentialsSaved];
     }
     return self;
 }
@@ -545,7 +545,7 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    self.isLoggedIn = [AuthenticationService isLoggedIn];
+    self.isLoggedIn = [AuthenticationService areCredentialsSaved];
     if (self.isLoggedIn) {
         [self showDoneButton];
         return 1; //only logout button
