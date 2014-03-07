@@ -1,17 +1,25 @@
 package org.pocketcampus.plugin.freeroom.android;
 
+import java.util.List;
+import java.util.Map;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.req.BuildingAutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.android.req.CheckOccupancyRequest;
 import org.pocketcampus.plugin.freeroom.android.req.GetFreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
+import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
+import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 
 
 /**
@@ -65,6 +73,11 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 		new BuildingAutoCompleteRequest(view).start(this, mClient, request);
 	}
 	
+	@Override
+	public void checkOccupancy(IFreeRoomView view, OccupancyRequest request) {
+		new CheckOccupancyRequest(view).start(this, mClient, request);
+	}
+	
 	/**
 	 * Sets the result in the model.
 	 */
@@ -76,6 +89,14 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 	@Override
 	public void setAutoCompleteResults(AutoCompleteReply result) {
 		mModel.setAutoCompleteResults(result.getListFRRoom());
+	}
+	
+	@Override
+	public void setCheckOccupancyResults(OccupancyReply result) {
+		List<FRRoom> list = result.getListFRRoom();
+		Map<FRRoom, Occupancy> map = result.getOccupancyOfRooms();
+		//TODO: update the model, but first define how to use and store the data...
+		mModel.setOccupancyResults(list, map); 
 	}
 	
 }

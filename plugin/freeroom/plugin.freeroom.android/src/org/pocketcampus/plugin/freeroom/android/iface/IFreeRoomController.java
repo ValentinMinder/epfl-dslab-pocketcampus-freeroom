@@ -4,6 +4,8 @@ import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
+import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 
 /**
  * IFreeRoomController
@@ -23,4 +25,8 @@ public interface IFreeRoomController {
 	void autoCompleteBuilding(IFreeRoomView view, AutoCompleteRequest request);
 
 	void setAutoCompleteResults(AutoCompleteReply result);
+	
+	void checkOccupancy(IFreeRoomView view, OccupancyRequest request);
+
+	void setCheckOccupancyResults(OccupancyReply result);
 }

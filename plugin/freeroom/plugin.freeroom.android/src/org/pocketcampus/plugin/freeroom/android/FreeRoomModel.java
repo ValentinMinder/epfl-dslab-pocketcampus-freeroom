@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.freeroom.android;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
@@ -9,6 +10,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
 import android.content.Context;
 import android.util.Log;
@@ -33,10 +35,15 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	
 	/**List of <code>FRRoom</code>'s obtained from the freeroom query**/
 	private Set<FRRoom> mFreeRoomResult;
-	/**List of suggestions for the search view*/
+	/**List of suggestions for the check occupancy search view*/
 	private List<FRRoom> mAutoCompleteSuggestions;
+	// TODO: not used NOW
 	/**Used to specify the displayed <code>FRRoom</code> in the results view*/
 	private FRRoom mSelectedFRRoom;
+	/**Ordered list of <code>FRRoom</code>'s displayed in the check occupancy*/
+	private List<FRRoom> mListCheckedOccupancyRoom;
+	/**Map of <code>FRRoom</code>'s to their respective occupancy*/
+	private Map<FRRoom, Occupancy> mMapOccupancy;
 	
 	/**
 	 * Constructor with reference to the context.
@@ -119,4 +126,32 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public List<FRRoom> getAutocompleteSuggestions() {
 		return mAutoCompleteSuggestions;
 	}
+
+	/**
+	 * Sets the occupancy result for all the rooms and notifies the listeners.
+	 * @param listFRRoom
+	 */
+	public void setOccupancyResults(List<FRRoom> list,
+			Map<FRRoom, Occupancy> map) {
+		mListCheckedOccupancyRoom = list;
+		mMapOccupancy = map;
+		mListeners.occupancyResultUpdated();
+	}
+	
+	/**
+	 * Gets the list of room checked against occupancy.
+	 * @return
+	 */
+	public List<FRRoom> getListCheckedOccupancyRoom() {
+		return mListCheckedOccupancyRoom;
+	}
+	
+	/**
+	 * Gets the map that represent occupancy for all the rooms.
+	 * @return
+	 */
+	public Map<FRRoom, Occupancy> getMapOccupancy() {
+		return mMapOccupancy;
+	}
+	
 }

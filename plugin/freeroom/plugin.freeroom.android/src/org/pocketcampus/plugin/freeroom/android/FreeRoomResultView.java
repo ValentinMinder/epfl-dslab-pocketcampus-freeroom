@@ -130,4 +130,9 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 		// we do nothing here
 	}
 
+	@Override
+	public void occupancyResultUpdated() {
+		// we do nothing here
+	}
+
 }
