@@ -34,6 +34,7 @@
 #import "FoodController.h"
 #import "FoodRestaurantsListViewController.h"
 #import "FoodSplashDetailViewController.h"
+#import "FoodService.h"
 
 static FoodController* instance __weak = nil;
 
@@ -42,6 +43,8 @@ static FoodController* instance __weak = nil;
 @end
 
 @implementation FoodController
+
+#pragma mark - Init
 
 - (id)init
 {
@@ -72,6 +75,8 @@ static FoodController* instance __weak = nil;
     }
 }
 
+#pragma mark - PluginController
+
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
         if (instance) {
@@ -85,16 +90,25 @@ static FoodController* instance __weak = nil;
     }
 }
 
++ (void)initObservers {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            [[FoodService sharedInstanceToRetain] setUserPriceTarget:kFoodDefaultUnknownUserPriceTarget];
+            [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"food"];
+            [[MainController publicController] requestLeavePlugin:@"Food"];
+        }];
+    });
+}
+
+#pragma mark - PluginControllerProtocol
+
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"FoodPlugin", @"");
 }
 
 + (NSString*)identifierName {
     return @"Food";
-}
-
-- (NSString*)localizedStringForKey:(NSString*)key {
-    return NSLocalizedStringFromTable(key, [[self class] identifierName], @"");
 }
 
 #pragma mark - UISplitViewControllerDelegate

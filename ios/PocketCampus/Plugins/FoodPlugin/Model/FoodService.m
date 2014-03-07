@@ -37,6 +37,8 @@
 
 NSString* const kFoodFavoritesRestaurantsUpdatedNotification = @"kFavoritesRestaurantsUpdatedNotification";
 
+NSInteger kFoodDefaultUnknownUserPriceTarget = PriceTarget_ALL;
+
 static NSTimeInterval kFoodRequestCacheValidity = 10800.0; //3 hours;
 
 static NSString* const kFavoriteRestaurantIds = @"favoriteRestaurantIds";
@@ -136,9 +138,15 @@ static FoodService* instance __weak = nil;
 - (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
+    __weak __typeof(self) weakSelf = self;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         FoodResponse* response = (__bridge id)result;
-        return (response.statusCode == FoodStatusCode_OK);
+        if (response.statusCode == FoodStatusCode_OK) {
+            weakSelf.userPriceTarget = response.userStatus;
+            weakSelf.pictureUrlForMealType = response.mealTypePictureUrls;
+            return YES;
+        }
+        return NO;
     };
     operation.cacheValidityInterval = kFoodRequestCacheValidity;
     operation.skipCache = YES; //use getFoodFromCacheForRequest:
@@ -171,7 +179,12 @@ static FoodService* instance __weak = nil;
     operation.delegateDidFailSelector = @selector(getFoodFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
-    return [operation cachedResponseObjectEvenIfStale:NO];
+    FoodResponse* response = [operation cachedResponseObjectEvenIfStale:NO];
+    if (response) {
+        self.pictureUrlForMealType = response.mealTypePictureUrls;
+        self.userPriceTarget = response.userStatus;
+    }
+    return response;
 }
 
 #pragma mark - Dealloc

@@ -35,6 +35,8 @@
 
 extern NSString* const kFoodFavoritesRestaurantsUpdatedNotification;
 
+extern NSInteger kFoodDefaultUnknownUserPriceTarget;
+
 @interface FoodService : Service<ServiceProtocol>
 
 - (void)addFavoriteRestaurant:(EpflRestaurant*)restaurant;
@@ -56,14 +58,12 @@ extern NSString* const kFoodFavoritesRestaurantsUpdatedNotification;
 - (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate;
 
 /*
- * Any instance getting a FoodResponse (after calling getFoodForRequest:) is responsible for setting this property that
- * acts as a central point to get access to the URLs for other instances that don't have a pointer to the food response.
+ * Set after any successfull getFoodForRequest:delegate: (nil before that)
  */
 @property (nonatomic, strong) NSDictionary* pictureUrlForMealType;
 
 /*
- * Any instance getting a FoodResponse (after calling getFoodForRequest:) is responsible for setting this property that
- * acts as a central point to get access to userPriceTarget for other instances that don't have a pointer to the food response.
+ * Set after any successfull getFoodForRequest:delegate:
  * Default: PriceTarget_ALL
  */
 @property (nonatomic) NSInteger userPriceTarget; //PriceTarget enum value

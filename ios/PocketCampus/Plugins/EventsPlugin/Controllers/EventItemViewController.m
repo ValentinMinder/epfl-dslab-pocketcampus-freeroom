@@ -67,7 +67,7 @@
 {
     self = [super initWithNibName:@"EventItemView" bundle:nil];
     if (self) {
-        self.gaiScreenName = @"/events/event";
+        self.gaiScreenName = @"/events/item";
         self.eventId = 0;
         self.eventsService = [EventsService sharedInstanceToRetain];
     }
@@ -117,7 +117,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-#warning TODO
     [self trackScreen];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
@@ -393,6 +392,8 @@
     }
     
     [self.navigationController pushViewController:viewController animated:YES];
+    
+    [self trackAction:@"ShowEventPool" contentInfo:[NSString stringWithFormat:@"%ld-%@", eventPool.poolId, eventPool.poolTitle]];
 }
 
 

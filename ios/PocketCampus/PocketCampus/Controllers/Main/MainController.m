@@ -248,6 +248,8 @@ static MainController<MainControllerPublic>* instance = nil;
         return NO;
     }
     
+    [[PCGAITracker sharedTracker] trackAction:@"OpenPocketCampusURL" inScreenWithName:@"/" contentInfo:[url absoluteString]];
+    
     return YES;
 }
 
