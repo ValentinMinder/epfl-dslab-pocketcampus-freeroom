@@ -82,7 +82,7 @@ static AuthenticationService* instance __weak = nil;
 
 #pragma mark -
 
-+ (BOOL)isLoggedIn {
++ (BOOL)areCredentialsSaved {
     return ([self savedPasswordForUsername:[self savedUsername]] != nil);
 }
 

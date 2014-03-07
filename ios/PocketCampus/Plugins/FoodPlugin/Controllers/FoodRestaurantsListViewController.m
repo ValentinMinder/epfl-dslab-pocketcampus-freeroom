@@ -118,6 +118,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 300.0; //5 min.
     req.deviceLanguage = [PCUtils userLanguageCode];
     req.mealTime = MealTime_LUNCH;
     req.mealDate = -1; //now
+    req.userGaspar = [AuthenticationService savedUsername];
     return req;
 }
 

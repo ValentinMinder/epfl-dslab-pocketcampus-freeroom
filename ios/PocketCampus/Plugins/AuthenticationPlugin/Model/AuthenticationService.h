@@ -65,7 +65,7 @@ extern NSString* const kAuthenticationLogoutNotification;
 @interface AuthenticationService : Service<ServiceProtocol>
 
 
-+ (BOOL)isLoggedIn;
++ (BOOL)areCredentialsSaved;
 + (NSString*)savedUsername;
 + (BOOL)saveUsername:(NSString*)username;
 + (NSString*)savedPasswordForUsername:(NSString*)username;
