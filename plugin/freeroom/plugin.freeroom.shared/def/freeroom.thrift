@@ -41,7 +41,55 @@ struct FreeRoomRequest {
 	1: required FRPeriod period;
 }
 
+enum OccupationType {
+	UNSPECIFIED; FREE; USED; RESERVED; ISA; OTHERS;
+}
+
+// defines if the room is reserved or not, occupation type can give details of the occupation
+struct ActualOccupation {
+	1: required FRPeriod period;
+	2: required bool available;
+	3: required OccupationType occupationType;
+	// 4: required i32 probableOccupation; // if we want to do CFF-style
+}
+
+// the occupancy of a room: periods are usually each hour
+// but could be less or more depending of the actual occupancy
+// please order the list server-side in natural clock order
+// and provide period that are contiguous!
+struct Occupancy {
+	1: required list<ActualOccupation> occupancy;
+}
+
+// check the occupancy request
+struct OccupancyRequest {
+	1: required list<FRRoom> listFRRoom;
+	2: required FRPeriod period;
+}
+
+// check the occupancy reply
+struct OccupancyReply {
+	// returned to the client as given from the client (or ordered as the client requested, to be implemented)
+	// simulating an ordered map!
+	1: required list<FRRoom> listFRRoom;
+	2: required map <FRRoom, Occupancy> occupancyOfRooms;
+}
+
+struct AutoCompleteRequest {
+	1: required string constraint;
+}
+
+struct AutoCompleteReply {
+	1: required list<FRRoom> listFRRoom;
+}
+
 service FreeRoomService {
 	// generic free room service
 	FreeRoomReply getFreeRoomFromTime(1: FreeRoomRequest request);
+	
+	// generic check the occupancy service
+	OccupancyReply checkTheOccupancy(1: OccupancyRequest request);
+	
+	// autocomplete for searching for a room
+	AutoCompleteReply autoCompleteRoom(1: AutoCompleteRequest request);
 }
