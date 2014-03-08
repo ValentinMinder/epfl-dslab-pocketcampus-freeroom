@@ -2,9 +2,8 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using Windows.System;
 
 namespace PocketCampus.Main.Services
 {
@@ -16,13 +15,9 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Navigates to the specified URL.
         /// </summary>
-        public async void NavigateTo( string url )
+        public void NavigateTo( string url )
         {
-            // If it's a PocketCampus URL, take action instead of quitting the app and opening a new instance of it
-            if ( !App.UriMapper.NavigateToCustomUri( url ) )
-            {
-                await Launcher.LaunchUriAsync( new Uri( url, UriKind.Absolute ) );
-            }
+            LauncherEx.Launch( url );
         }
     }
 }

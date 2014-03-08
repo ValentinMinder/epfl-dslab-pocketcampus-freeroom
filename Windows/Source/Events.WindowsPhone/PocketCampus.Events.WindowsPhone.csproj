@@ -100,8 +100,8 @@
     </Compile>
     <Compile Include="Services\CodeScanner.cs" />
     <Compile Include="Services\EmailPrompt.cs" />
-    <Compile Include="Views\CodeScannerView.xaml.cs">
-      <DependentUpon>CodeScannerView.xaml</DependentUpon>
+    <Compile Include="Controls\CodeScannerPopup.xaml.cs">
+      <DependentUpon>CodeScannerPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TagFilterView.xaml.cs">
       <DependentUpon>TagFilterView.xaml</DependentUpon>
@@ -163,7 +163,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\CodeScannerView.xaml">
+    <Page Include="Controls\CodeScannerPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

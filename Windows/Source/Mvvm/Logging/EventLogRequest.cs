@@ -19,14 +19,20 @@ namespace PocketCampus.Mvvm.Logging
         /// </summary>
         public string Label { get; private set; }
 
+        /// <summary>
+        /// Gets the ID of the screen on which the event should be logged, or null for the current screen.
+        /// </summary>
+        public string ScreenId { get; private set; }
+
 
         /// <summary>
         /// Creates a new EventLogRequest.
         /// </summary>
-        public EventLogRequest( string eventId, string label )
+        public EventLogRequest( string eventId, string label, string screenId = null )
         {
             EventId = eventId;
             Label = label;
+            ScreenId = screenId;
         }
     }
 }

@@ -59,7 +59,7 @@ namespace PocketCampus.Main.Services
             var viewModelType = viewModel.GetType();
             _logger.LogNavigation( viewModel, true );
             _backStack.Push( viewModel );
-            _rootFrame.Navigate( _views[viewModelType] );
+            _rootFrame.Navigate( MakeUnique( _views[viewModelType] ) );
         }
 
         /// <summary>
@@ -151,6 +151,17 @@ namespace PocketCampus.Main.Services
             {
                 disposable.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Makes a unique URI out of the specified URI.
+        /// </summary>
+        /// <remarks>
+        /// This allows same-page navigations.
+        /// </remarks>
+        private static Uri MakeUnique( Uri uri )
+        {
+            return new Uri( uri.ToString() + "?unique_id=" + Guid.NewGuid().ToString(), UriKind.RelativeOrAbsolute );
         }
 
         #region INavigationService implementation

@@ -24,7 +24,7 @@ namespace PocketCampus.Mvvm.Logging
         protected NavigationLogger()
         {
             Messenger.Register<CommandLoggingRequest>( req => EnableCommandLogging( req.Object ) );
-            Messenger.Register<EventLogRequest>( req => LogEvent( _currentViewModelId, req.EventId, req.Label ) );
+            Messenger.Register<EventLogRequest>( req => LogEvent( req.ScreenId ?? _currentViewModelId, req.EventId, req.Label ) );
         }
 
         /// <summary>

@@ -147,5 +147,16 @@ namespace PocketCampus.Events.Models
         /// Not in the Thrift interface.
         /// </remarks>
         public EventPool ParentPool { get; set; }
+
+        /// <summary>
+        /// The item's log ID.
+        /// </summary>
+        /// <remarks>
+        /// Not in the Thrift interface.
+        /// </remarks>
+        public string LogId
+        {
+            get { return Id + "-" + Name; }
+        }
     }
 }

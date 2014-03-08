@@ -19,7 +19,7 @@ namespace PocketCampus.Events.ViewModels
     /// <summary>
     /// ViewModel for pool details.
     /// </summary>
-    [LogId( "/events" )]
+    [LogId( "/events/pool" )]
     public sealed class EventPoolViewModel : DataViewModel<ViewPoolRequest>
     {
         private readonly INavigationService _navigationService;
@@ -74,7 +74,8 @@ namespace PocketCampus.Events.ViewModels
         /// <summary>
         /// Gets the command executed to view a child item.
         /// </summary>
-        [LogId( "ShowEvent" )]
+        [LogId( "ShowEventItem" )]
+        [LogParameter( "$Param.LogId" )]
         public Command<EventItem> ViewItemCommand
         {
             get { return GetCommand<EventItem>( item => _navigationService.NavigateTo<EventItemViewModel, long>( item.Id ) ); }
@@ -158,6 +159,7 @@ namespace PocketCampus.Events.ViewModels
                 {
                     _settings.FavoriteItemIds.Add( _request.FavoriteItemId.Value );
                     _navigationService.NavigateTo<EventItemViewModel, long>( _request.FavoriteItemId.Value );
+                    _navigationService.PopBackStack();
                 }
 
                 if ( !_settings.ExcludedCategoriesByPool.ContainsKey( _request.PoolId ) )
