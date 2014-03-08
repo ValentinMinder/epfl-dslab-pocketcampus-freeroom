@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `roomslist` (
 
 CREATE TABLE IF NOT EXISTS `roomsoccupancy` (
   `rid` int(11) NOT NULL DEFAULT '-1',
-  `timestampStart` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `timestampEnd` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `timestampStart` bigint(20) NOT NULL,
+  `timestampEnd` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
