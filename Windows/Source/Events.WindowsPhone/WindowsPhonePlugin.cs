@@ -54,7 +54,6 @@ namespace PocketCampus.Events.WindowsPhone
 
             Container.Bind<IEmailPrompt, EmailPrompt>();
             Container.Bind<ICodeScanner, CodeScanner>();
-            Container.Bind<IPluginSettings, PluginSettings>();
         }
     }
 }

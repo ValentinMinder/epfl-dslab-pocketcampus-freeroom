@@ -43,6 +43,7 @@ namespace PocketCampus.Events
         public void Initialize( INavigationService navigationService )
         {
             Container.Bind<IEventsService, EventsService>();
+            Container.BindOnce<IPluginSettings, PluginSettings>();
         }
 
         /// <summary>

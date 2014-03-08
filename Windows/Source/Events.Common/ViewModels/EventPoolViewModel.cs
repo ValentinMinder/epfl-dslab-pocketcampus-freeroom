@@ -141,6 +141,10 @@ namespace PocketCampus.Events.ViewModels
             _codeScanner = codeScanner;
             _request = request;
 
+            Action forceRefresh = async () => await TryRefreshAsync( true );
+            _settings.ListenToProperty( x => x.SearchPeriod, forceRefresh );
+            _settings.ListenToProperty( x => x.SearchInPast, forceRefresh );
+
             if ( _request.UserTicket != null )
             {
                 _settings.UserTickets.Add( _request.UserTicket );
@@ -197,11 +201,6 @@ namespace PocketCampus.Events.ViewModels
                 foreach ( var item in Pool.Items )
                 {
                     item.ParentPool = Pool;
-                }
-
-                if ( Pool.Id == EventPool.RootId )
-                {
-                    Pool.AlwaysRefresh = true;
                 }
             }
 

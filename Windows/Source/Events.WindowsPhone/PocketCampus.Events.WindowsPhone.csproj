@@ -86,7 +86,6 @@
   <ItemGroup>
     <Compile Include="Converters.cs" />
     <Compile Include="LocalizedStrings.cs" />
-    <Compile Include="PluginSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\PluginResources.fr.Designer.cs">
       <DependentUpon>PluginResources.fr.resx</DependentUpon>
