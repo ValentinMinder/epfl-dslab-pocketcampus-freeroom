@@ -2,9 +2,8 @@ package org.pocketcampus.plugin.freeroom.android.utils;
 
 import java.util.Calendar;
 
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 public class Converter {
 	public static final long ONE_HOUR_IN_MS = 60 * 60 * 1000;
@@ -37,10 +36,8 @@ public class Converter {
 		
 		long t_start = calendar.getTimeInMillis();
 		long t_end = t_start + (endHour - startHour) * ONE_HOUR_IN_MS;
-
-		FRTimeStamp ts_start = new FRTimeStamp(t_start);
-		FRTimeStamp ts_end = new FRTimeStamp(t_end);		
-		FRPeriod period = new FRPeriod(ts_start, ts_end, false);
+		
+		FRPeriod period = new FRPeriod(t_start, t_end, false);
 		
 		FreeRoomRequest req = new FreeRoomRequest(period);
 		

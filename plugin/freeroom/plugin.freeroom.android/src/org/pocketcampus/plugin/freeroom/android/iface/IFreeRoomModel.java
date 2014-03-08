@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
 /**
  * IFreeRoomModel
@@ -23,5 +24,9 @@ public interface IFreeRoomModel {
 	void setAutoCompleteResults(List<FRRoom> listFRRoom);
 
 	List<FRRoom> getAutocompleteSuggestions();
+
+	void setOccupancyResults(List<Occupancy> list);
+
+	List<Occupancy> getListCheckedOccupancyRoom();
 
 }

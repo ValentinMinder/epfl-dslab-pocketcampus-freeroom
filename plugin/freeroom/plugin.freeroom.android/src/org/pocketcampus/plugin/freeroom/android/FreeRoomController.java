@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.List;
-import java.util.Map;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -12,7 +11,6 @@ import org.pocketcampus.plugin.freeroom.android.req.CheckOccupancyRequest;
 import org.pocketcampus.plugin.freeroom.android.req.GetFreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
-import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
@@ -93,10 +91,8 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 	
 	@Override
 	public void setCheckOccupancyResults(OccupancyReply result) {
-		List<FRRoom> list = result.getListFRRoom();
-		Map<FRRoom, Occupancy> map = result.getOccupancyOfRooms();
-		//TODO: update the model, but first define how to use and store the data...
-		mModel.setOccupancyResults(list, map); 
+		List<Occupancy> list = result.getOccupancyOfRooms();
+		mModel.setOccupancyResults(list); 
 	}
 	
 }

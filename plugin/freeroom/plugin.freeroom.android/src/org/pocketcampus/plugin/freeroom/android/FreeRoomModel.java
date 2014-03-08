@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.freeroom.android;
 
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
@@ -40,10 +39,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	// TODO: not used NOW
 	/**Used to specify the displayed <code>FRRoom</code> in the results view*/
 	private FRRoom mSelectedFRRoom;
-	/**Ordered list of <code>FRRoom</code>'s displayed in the check occupancy*/
-	private List<FRRoom> mListCheckedOccupancyRoom;
-	/**Map of <code>FRRoom</code>'s to their respective occupancy*/
-	private Map<FRRoom, Occupancy> mMapOccupancy;
+	/**Ordered list of <code>Occupancy</code>'s displayed in the check occupancy*/
+	private List<Occupancy> mListCheckedOccupancyRoom;
 	
 	/**
 	 * Constructor with reference to the context.
@@ -129,12 +126,12 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Sets the occupancy result for all the rooms and notifies the listeners.
-	 * @param listFRRoom
+	 * @param list
 	 */
-	public void setOccupancyResults(List<FRRoom> list,
-			Map<FRRoom, Occupancy> map) {
+	@Override
+	public void setOccupancyResults(List<Occupancy> list) {
+		// TODO: update the model, but first define how to use and store the data...
 		mListCheckedOccupancyRoom = list;
-		mMapOccupancy = map;
 		mListeners.occupancyResultUpdated();
 	}
 	
@@ -142,16 +139,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Gets the list of room checked against occupancy.
 	 * @return
 	 */
-	public List<FRRoom> getListCheckedOccupancyRoom() {
+	@Override
+	public List<Occupancy> getListCheckedOccupancyRoom() {
 		return mListCheckedOccupancyRoom;
 	}
-	
-	/**
-	 * Gets the map that represent occupancy for all the rooms.
-	 * @return
-	 */
-	public Map<FRRoom, Occupancy> getMapOccupancy() {
-		return mMapOccupancy;
-	}
-	
 }
