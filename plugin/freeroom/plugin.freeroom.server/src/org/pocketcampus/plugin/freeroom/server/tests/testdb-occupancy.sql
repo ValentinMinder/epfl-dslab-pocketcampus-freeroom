@@ -1,7 +1,7 @@
 INSERT INTO  `pocketcampustest`.`roomsoccupancy` (
 `rid` ,
-`day_number` ,
-`startHour`
+`timestampStart` ,
+`timestampEnd`
 )
 VALUES (
 '1',  '1',  '8'

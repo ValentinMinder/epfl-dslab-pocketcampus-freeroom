@@ -28,7 +28,6 @@ import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
-import org.pocketcampus.plugin.freeroom.shared.FRTimeStamp;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
@@ -92,7 +91,7 @@ public class TestFindFreeRooms {
 	@AfterClass
 	public static void tearDownAfterClass() {
 		// TODO: tests should remove their databases and tables, comment it if you want to see them in SQL
-		removeDBTest();
+	//	removeDBTest();
 	}
 	
 	@Before
@@ -195,10 +194,8 @@ public class TestFindFreeRooms {
 	@Test
 	public void testBasicRequest() {
 		//FILL DATABSE BEFORE
-		FRTimeStamp timeStampStart = new FRTimeStamp();
-		timeStampStart.setTimeMillis(System.currentTimeMillis());
-		FRTimeStamp timeStampEnd = new FRTimeStamp();
-		timeStampEnd.setTimeMillis(System.currentTimeMillis() + 3600*1000);
+		long timeStampStart = System.currentTimeMillis();
+		long timeStampEnd = System.currentTimeMillis() + 3600*1000;
 		FRPeriod period = new FRPeriod();
 		period.setRecurrent(false);
 		period.setTimeStampStart(timeStampStart);

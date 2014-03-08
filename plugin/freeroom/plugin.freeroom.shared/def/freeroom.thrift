@@ -16,19 +16,15 @@ struct FRRoom{
 	4: optional i32 capacity;
 }
 
-// represent a timestamp as defined in UNIX standard, the number of milliseconds form JAN 1 1970
-struct FRTimeStamp {
-	2: required i64 timeMillis;
-}
 
 struct FRPeriod {
-	1: required FRTimeStamp timeStampStart;
-	2: required FRTimeStamp timeStampEnd;
+	1: required i64 timeStampStart;
+	2: required i64 timeStampEnd;
 	
 	10: required bool recurrent;
-	11: optional FRTimeStamp firstOccurancy;
+	11: optional i64 firstOccurancy;
 	12: optional i32 step;
-	13: optional FRTimeStamp lastOccurancy;
+	13: optional i64 lastOccurancy;
 }
 
 // standard response for a free room
@@ -58,7 +54,8 @@ struct ActualOccupation {
 // please order the list server-side in natural clock order
 // and provide period that are contiguous!
 struct Occupancy {
-	1: required list<ActualOccupation> occupancy;
+	1: required FRRoom room;
+	2: required list<ActualOccupation> occupancy;
 }
 
 // check the occupancy request
@@ -69,10 +66,7 @@ struct OccupancyRequest {
 
 // check the occupancy reply
 struct OccupancyReply {
-	// returned to the client as given from the client (or ordered as the client requested, to be implemented)
-	// simulating an ordered map!
-	1: required list<FRRoom> listFRRoom;
-	2: required map <FRRoom, Occupancy> occupancyOfRooms;
+	1: required list<Occupancy> occupancyOfRooms;
 }
 
 struct AutoCompleteRequest {

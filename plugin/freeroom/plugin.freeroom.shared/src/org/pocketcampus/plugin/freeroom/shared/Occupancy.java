@@ -24,13 +24,16 @@ import org.slf4j.LoggerFactory;
 public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Occupancy");
 
-  private static final org.apache.thrift.protocol.TField OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancy", org.apache.thrift.protocol.TType.LIST, (short)1);
+  private static final org.apache.thrift.protocol.TField ROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("room", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+  private static final org.apache.thrift.protocol.TField OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancy", org.apache.thrift.protocol.TType.LIST, (short)2);
 
+  private FRRoom room; // required
   private List<ActualOccupation> occupancy; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    OCCUPANCY((short)1, "occupancy");
+    ROOM((short)1, "room"),
+    OCCUPANCY((short)2, "occupancy");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -45,7 +48,9 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // OCCUPANCY
+        case 1: // ROOM
+          return ROOM;
+        case 2: // OCCUPANCY
           return OCCUPANCY;
         default:
           return null;
@@ -91,6 +96,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.ROOM, new org.apache.thrift.meta_data.FieldMetaData("room", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class)));
     tmpMap.put(_Fields.OCCUPANCY, new org.apache.thrift.meta_data.FieldMetaData("occupancy", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ActualOccupation.class))));
@@ -102,9 +109,11 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
   }
 
   public Occupancy(
+    FRRoom room,
     List<ActualOccupation> occupancy)
   {
     this();
+    this.room = room;
     this.occupancy = occupancy;
   }
 
@@ -112,6 +121,9 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
    * Performs a deep copy on <i>other</i>.
    */
   public Occupancy(Occupancy other) {
+    if (other.isSetRoom()) {
+      this.room = new FRRoom(other.room);
+    }
     if (other.isSetOccupancy()) {
       List<ActualOccupation> __this__occupancy = new ArrayList<ActualOccupation>();
       for (ActualOccupation other_element : other.occupancy) {
@@ -127,7 +139,32 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
 
   @Override
   public void clear() {
+    this.room = null;
     this.occupancy = null;
+  }
+
+  public FRRoom getRoom() {
+    return this.room;
+  }
+
+  public Occupancy setRoom(FRRoom room) {
+    this.room = room;
+    return this;
+  }
+
+  public void unsetRoom() {
+    this.room = null;
+  }
+
+  /** Returns true if field room is set (has been assigned a value) and false otherwise */
+  public boolean isSetRoom() {
+    return this.room != null;
+  }
+
+  public void setRoomIsSet(boolean value) {
+    if (!value) {
+      this.room = null;
+    }
   }
 
   public int getOccupancySize() {
@@ -171,6 +208,14 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case ROOM:
+      if (value == null) {
+        unsetRoom();
+      } else {
+        setRoom((FRRoom)value);
+      }
+      break;
+
     case OCCUPANCY:
       if (value == null) {
         unsetOccupancy();
@@ -184,6 +229,9 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case ROOM:
+      return getRoom();
+
     case OCCUPANCY:
       return getOccupancy();
 
@@ -198,6 +246,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     }
 
     switch (field) {
+    case ROOM:
+      return isSetRoom();
     case OCCUPANCY:
       return isSetOccupancy();
     }
@@ -217,6 +267,15 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     if (that == null)
       return false;
 
+    boolean this_present_room = true && this.isSetRoom();
+    boolean that_present_room = true && that.isSetRoom();
+    if (this_present_room || that_present_room) {
+      if (!(this_present_room && that_present_room))
+        return false;
+      if (!this.room.equals(that.room))
+        return false;
+    }
+
     boolean this_present_occupancy = true && this.isSetOccupancy();
     boolean that_present_occupancy = true && that.isSetOccupancy();
     if (this_present_occupancy || that_present_occupancy) {
@@ -232,6 +291,11 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
   @Override
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_room = true && (isSetRoom());
+    builder.append(present_room);
+    if (present_room)
+      builder.append(room);
 
     boolean present_occupancy = true && (isSetOccupancy());
     builder.append(present_occupancy);
@@ -249,6 +313,16 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     int lastComparison = 0;
     Occupancy typedOther = (Occupancy)other;
 
+    lastComparison = Boolean.valueOf(isSetRoom()).compareTo(typedOther.isSetRoom());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetRoom()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.room, typedOther.room);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetOccupancy()).compareTo(typedOther.isSetOccupancy());
     if (lastComparison != 0) {
       return lastComparison;
@@ -276,7 +350,15 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
         break;
       }
       switch (field.id) {
-        case 1: // OCCUPANCY
+        case 1: // ROOM
+          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+            this.room = new FRRoom();
+            this.room.read(iprot);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 2: // OCCUPANCY
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
               org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
@@ -309,6 +391,11 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.room != null) {
+      oprot.writeFieldBegin(ROOM_FIELD_DESC);
+      this.room.write(oprot);
+      oprot.writeFieldEnd();
+    }
     if (this.occupancy != null) {
       oprot.writeFieldBegin(OCCUPANCY_FIELD_DESC);
       {
@@ -330,6 +417,14 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     StringBuilder sb = new StringBuilder("Occupancy(");
     boolean first = true;
 
+    sb.append("room:");
+    if (this.room == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.room);
+    }
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("occupancy:");
     if (this.occupancy == null) {
       sb.append("null");
@@ -343,6 +438,9 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (room == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'room' was not present! Struct: " + toString());
+    }
     if (occupancy == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'occupancy' was not present! Struct: " + toString());
     }

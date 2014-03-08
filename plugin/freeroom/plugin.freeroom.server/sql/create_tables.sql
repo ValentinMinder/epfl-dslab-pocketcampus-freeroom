@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `roomslist` (
 
 CREATE TABLE IF NOT EXISTS `roomsoccupancy` (
   `rid` int(11) NOT NULL DEFAULT '-1',
-  `day_number` int(11) NOT NULL DEFAULT '-1',
-  `startHour` int(11) NOT NULL DEFAULT '-1'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;;
+  `timestampStart` bigint(20) NOT NULL,
+  `timestampEnd` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
