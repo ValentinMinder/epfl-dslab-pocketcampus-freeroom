@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.freeroom.server.tests;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -10,18 +12,29 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import junit.framework.Assert;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.thrift.TException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
+import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.android.utils.Converter;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
+import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
+import org.pocketcampus.plugin.freeroom.shared.OccupationType;
 
 public class TestTimestamp {
 	final static String DB_USERNAME = "root";
@@ -29,40 +42,11 @@ public class TestTimestamp {
 	final static String DBMS_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
 	final static String DB_URL = "jdbc:mysql://localhost/pocketcampustest?allowMultiQueries=true";
 
+	final static long ONE_HOUR_MS = 3600 * 1000;
+	// we allow a margin for error
+	final static long MARGIN_ERROR_MS = 60 * 1000;
 	private Connection conn = null;
 
-	// @Test
-	// public void test() {
-	// try {
-	// conn = DriverManager.getConnection(DBMS_URL, DB_USERNAME,
-	// DB_PASSWORD);
-	// conn.setCatalog("pocketcampustest");
-	// long now = System.currentTimeMillis();
-	// ArrayList<FRRoom> rooms = new ArrayList<>();
-	// rooms.add(new FRRoom("CO", "1"));
-	// OccupancyRequest req = new OccupancyRequest(rooms, new FRPeriod(
-	// now, now + 3600 * 1000 * 4, false));
-	// OccupancyReply occReply = (new FreeRoomServiceImpl(
-	// new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD)))
-	// .checkTheOccupancy(req);
-	// System.out.println(occReply.getOccupancyOfRoomsSize());
-	// for (Occupancy occ : occReply.getOccupancyOfRooms()) {
-	// for (ActualOccupation aocc : occ.getOccupancy()) {
-	// System.out.println(aocc);
-	// }
-	// }
-	//
-	// } catch (SQLException e) {
-	// Assert.fail("There was an SQL Exception \n " + e);
-	// } catch (TException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (ServerException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	//
-	// }
 
 	public static void createDBTest() {
 		Connection conn = null;
@@ -121,7 +105,7 @@ public class TestTimestamp {
 	public static void tearDownAfterClass() {
 		// TODO: tests should remove their databases and tables, comment it if
 		// you want to see them in SQL
-		 removeDBTest();
+		removeDBTest();
 	}
 
 	@Before
@@ -147,12 +131,12 @@ public class TestTimestamp {
 	public static void populate() {
 		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection(DB_URL, DB_USERNAME,
-					DB_PASSWORD);
+			conn = DriverManager
+					.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-//			return;
+			// return;
 		}
 		ArrayList<FRRoom> rooms = new ArrayList<>();
 		rooms.add(new FRRoom("CO", "1"));
@@ -240,9 +224,184 @@ public class TestTimestamp {
 
 		}
 	}
+
+	@Test
+	public void testOccupancyMonday8_12CO1() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			ArrayList<FRRoom> roomsList = new ArrayList<>();
+			FRPeriod period = new FRPeriod();
+			OccupancyRequest request = null;
+			OccupancyReply reply = null;
+
+			// test1
+			roomsList.add(new FRRoom("CO", "1"));
+			period = Converter.convert(Calendar.MONDAY, 8, 12).getPeriod();
+			request = new OccupancyRequest(roomsList, period);
+			reply = server.checkTheOccupancy(request);
+
+			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
+
+			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
+			FRRoom room = mOcc.getRoom();
+			assertTrue(room.getBuilding()
+					.equals(roomsList.get(0).getBuilding()));
+			assertTrue(room.getNumber().equals(roomsList.get(0).getNumber()));
+
+			List<ActualOccupation> mAccOcc = mOcc.getOccupancy();
+			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 2);
+
+			ActualOccupation firstOcc = mAccOcc.get(0);
+			long durationFirstOcc = firstOcc.getPeriod().getTimeStampEnd()
+					- firstOcc.getPeriod().getTimeStampStart();
+			assertTrue("First occupancy has wrong start, end, duration = "
+					+ durationFirstOcc,
+					Math.abs(durationFirstOcc - ONE_HOUR_MS) < MARGIN_ERROR_MS);
+			assertTrue("First occupancy is not free", firstOcc.getOccupationType() != OccupationType.FREE);
+			
+			ActualOccupation nextOcc = mAccOcc.get(1);
+			long durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
+					- nextOcc.getPeriod().getTimeStampStart();
+			assertTrue("Next occupancy has wrong start, end, duration = "
+					+ durationNextOcc,
+					Math.abs(durationNextOcc - ONE_HOUR_MS*3) < MARGIN_ERROR_MS);
+			assertTrue("First occupancy is free", nextOcc.getOccupationType() == OccupationType.FREE);
+
+			
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	@Test
-	public void testOccupancy() {
-		
+	public void testOccupancyMonday8_19CM1() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			ArrayList<FRRoom> roomsList = new ArrayList<>();
+			FRPeriod period = new FRPeriod();
+			OccupancyRequest request = null;
+			OccupancyReply reply = null;
+
+			// test1
+			roomsList.add(new FRRoom("CM", "1"));
+			period = Converter.convert(Calendar.MONDAY, 8, 19).getPeriod();
+			request = new OccupancyRequest(roomsList, period);
+			reply = server.checkTheOccupancy(request);
+
+			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
+
+			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
+			FRRoom room = mOcc.getRoom();
+			assertTrue(room.getBuilding()
+					.equals(roomsList.get(0).getBuilding()));
+			assertTrue(room.getNumber().equals(roomsList.get(0).getNumber()));
+
+			List<ActualOccupation> mAccOcc = mOcc.getOccupancy();
+			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 4);
+
+			ActualOccupation firstOcc = mAccOcc.get(0);
+			long durationFirstOcc = firstOcc.getPeriod().getTimeStampEnd()
+					- firstOcc.getPeriod().getTimeStampStart();
+			assertTrue("First occupancy has wrong start, end, duration = "
+					+ durationFirstOcc,
+					Math.abs(durationFirstOcc - ONE_HOUR_MS) < MARGIN_ERROR_MS);
+			assertTrue("First occupancy is not free", firstOcc.getOccupationType() != OccupationType.FREE);
+			
+			ActualOccupation nextOcc = mAccOcc.get(1);
+			long durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
+					- nextOcc.getPeriod().getTimeStampStart();
+			assertTrue("Next occupancy has wrong start, end, duration = "
+					+ durationNextOcc,
+					Math.abs(durationNextOcc - ONE_HOUR_MS) < MARGIN_ERROR_MS);
+			assertTrue("First occupancy is free", nextOcc.getOccupationType() == OccupationType.FREE);
+
+			nextOcc = mAccOcc.get(2);
+			durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
+					- nextOcc.getPeriod().getTimeStampStart();
+			assertTrue("Next occupancy has wrong start, end, duration = "
+					+ durationNextOcc,
+					Math.abs(durationNextOcc - ONE_HOUR_MS*2) < MARGIN_ERROR_MS);
+			assertTrue("First occupancy is free", nextOcc.getOccupationType() != OccupationType.FREE);
+
+			nextOcc = mAccOcc.get(3);
+			durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
+					- nextOcc.getPeriod().getTimeStampStart();
+			assertTrue("Next occupancy has wrong start, end, duration = "
+					+ durationNextOcc,
+					Math.abs(durationNextOcc - ONE_HOUR_MS*7) < MARGIN_ERROR_MS);
+			assertTrue("First occupancy is free", nextOcc.getOccupationType() == OccupationType.FREE);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testOccupancyTuesday8_19CM2CO3CO1() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			ArrayList<FRRoom> roomsList = new ArrayList<>();
+			FRPeriod period = new FRPeriod();
+			OccupancyRequest request = null;
+			OccupancyReply reply = null;
+
+			// test1
+			roomsList.add(new FRRoom("CM", "2"));
+			roomsList.add(new FRRoom("CO", "3"));
+			roomsList.add(new FRRoom("C0", "1"));
+			period = Converter.convert(Calendar.TUESDAY, 8, 19).getPeriod();
+			request = new OccupancyRequest(roomsList, period);
+			reply = server.checkTheOccupancy(request);
+
+			assertTrue(reply.getOccupancyOfRoomsSize() == 3);
+
+			//first room is CM2
+			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
+			FRRoom room = mOcc.getRoom();
+			assertTrue(room.getBuilding()
+					.equals(roomsList.get(0).getBuilding()));
+			assertTrue(room.getNumber().equals(roomsList.get(0).getNumber()));
+			
+			List<ActualOccupation> mAccOcc = mOcc.getOccupancy();
+			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 3);
+			
+			//second room is CO3
+			mOcc = reply.getOccupancyOfRooms().get(1);
+			room = mOcc.getRoom();
+			assertTrue(room.getBuilding()
+					.equals(roomsList.get(1).getBuilding()));
+			assertTrue(room.getNumber().equals(roomsList.get(1).getNumber()));
+			
+			mAccOcc = mOcc.getOccupancy();
+			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 3);
+			
+			//last room is CO1
+			mOcc = reply.getOccupancyOfRooms().get(2);
+			room = mOcc.getRoom();
+			assertTrue(room.getBuilding()
+					.equals(roomsList.get(2).getBuilding()));
+			assertTrue(room.getNumber().equals(roomsList.get(2).getNumber()));
+			
+			mAccOcc = mOcc.getOccupancy();
+			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 1);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

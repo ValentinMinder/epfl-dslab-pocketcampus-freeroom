@@ -151,11 +151,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		FRPeriod period = request.getPeriod();
 		long timestampStart = period.getTimeStampStart();
 		long timestampEnd = period.getTimeStampEnd();
+
 		ArrayList<Occupancy> occupancies = new ArrayList<Occupancy>();
 
 		try {
+			Connection connectBDD = connMgr.getConnection();
+
 			for (FRRoom room : rooms) {
-				Connection connectBDD = connMgr.getConnection();
 				PreparedStatement query = connectBDD
 						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd "
 								+ "FROM roomsoccupancy ro, roomslist rl "
@@ -215,6 +217,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					mOccupancy.addToOccupancy(mOcc);
 				}
 				occupancies.add(mOccupancy);
+				query.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
