@@ -29,13 +29,13 @@ import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl.NodeJson.ItemJson;
 import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl.SectionNode.ModuleNode;
+import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl.SectionNode.ModuleNode.ModuleContent;
 import org.pocketcampus.plugin.moodle.shared.TequilaToken;
 import org.pocketcampus.platform.launcher.server.PocketCampusServer;
 import org.pocketcampus.platform.launcher.server.RawPlugin;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
 import org.pocketcampus.platform.sdk.shared.utils.PostDataBuilder;
 import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
-import org.pocketcampus.platform.sdk.shared.utils.URLBuilder;
 import org.pocketcampus.plugin.moodle.shared.Constants;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
 import org.pocketcampus.plugin.moodle.shared.EventsListReply;
@@ -522,7 +522,7 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 			conn.setDoOutput(true);
 			conn.getOutputStream().write(pd.toBytes());
 			String result = IOUtils.toString(conn.getInputStream(), "UTF-8");
-			//System.out.println(result);
+//			System.out.println(result);
 			Type listType = new TypeToken<List<SectionNode>>() {}.getType();
 			List<SectionNode> lsn = gson.fromJson(result, listType);
 			for(SectionNode sn : lsn) {
@@ -536,9 +536,10 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 						continue;
 					if(mn.availableuntil != 0 && mn.availableuntil * 1000 < System.currentTimeMillis())
 						continue;
-					if(!"resource".equals(mn.modname))
+					if(!"resource".equals(mn.modname) && !"folder".equals(mn.modname))
 						continue;
-					mrl.add(new MoodleResource(mn.name, mn.contents.get(0).fileurl));
+					for(ModuleContent c : mn.contents)
+						mrl.add(new MoodleResource(mn.name, c.fileurl));
 				}
 				MoodleSection ms = new MoodleSection(mrl, sn.name);
 				msl.add(ms);
