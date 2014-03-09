@@ -212,10 +212,10 @@
     <value>1 vote</value>
   </data>
   <data name="RateButton" xml:space="preserve">
-    <value>évaluer</value>
+    <value>voter</value>
   </data>
   <data name="RateMealButton" xml:space="preserve">
-    <value>évaluer</value>
+    <value>voter</value>
   </data>
   <data name="RatingStatus_AlreadyVotedToday" xml:space="preserve">
     <value>Vous avez déjà évalué un plat aujourd'hui.</value>
@@ -234,7 +234,7 @@
     <value>Il est trop tôt pour évaluer un plat.</value>
   </data>
   <data name="RatingViewTitle" xml:space="preserve">
-    <value>évaluer</value>
+    <value>évaluer un plat</value>
   </data>
   <data name="SatisfactionPercentage" xml:space="preserve">
     <value>de satisfaction</value>

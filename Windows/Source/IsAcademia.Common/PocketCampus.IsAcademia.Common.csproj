@@ -49,12 +49,9 @@
     <Compile Include="Models\ResponseStatus.cs" />
     <Compile Include="Models\ScheduleRequest.cs" />
     <Compile Include="Models\ScheduleResponse.cs" />
-    <Compile Include="Models\SessionResponse.cs" />
-    <Compile Include="Models\Tokens.cs" />
     <Compile Include="Services\IsAcademiaService.cs" />
     <Compile Include="Models\PeriodType.cs" />
     <Compile Include="Services\IIsAcademiaService.cs" />
-    <Compile Include="Models\TokenResponse.cs" />
     <Compile Include="Models\StudyDay.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

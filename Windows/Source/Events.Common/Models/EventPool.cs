@@ -97,5 +97,16 @@ namespace PocketCampus.Events.Models
         /// Not part of the Thrift interface.
         /// </remarks>
         public EventItem[] Items { get; set; }
+
+        /// <summary>
+        /// The pool's log ID.
+        /// </summary>
+        /// <remarks>
+        /// Not in the Thrift interface.
+        /// </remarks>
+        public string LogId
+        {
+            get { return Id + "-" + Name; }
+        }
     }
 }

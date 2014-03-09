@@ -18,7 +18,7 @@ namespace PocketCampus.Events.ViewModels
     /// <summary>
     /// ViewModel for item details.
     /// </summary>
-    [LogId( "/events/event" )]
+    [LogId( "/events/item" )]
     public sealed class EventItemViewModel : DataViewModel<long>
     {
         private readonly INavigationService _navigationService;
@@ -63,7 +63,8 @@ namespace PocketCampus.Events.ViewModels
         /// <summary>
         /// Gets the command executed to view a child pool.
         /// </summary>
-        [LogId( "ViewPool" )]
+        [LogId( "ShowPool" )]
+        [LogParameter( "$Param.LogId" )]
         public Command<EventPool> ViewPoolCommand
         {
             get

@@ -3,13 +3,14 @@
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace PocketCampus.Events
 {
     /// <summary>
     /// Settings for the Events plugin.
     /// </summary>
-    public interface IPluginSettings
+    public interface IPluginSettings : INotifyPropertyChanged
     {
         /// <summary>
         /// Gets or sets the stored user tickets.

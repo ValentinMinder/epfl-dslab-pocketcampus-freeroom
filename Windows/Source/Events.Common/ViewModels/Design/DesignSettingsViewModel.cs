@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using PocketCampus.Common;
 
 // Design data for EventPoolViewModel
@@ -32,6 +33,9 @@ namespace PocketCampus.Events.ViewModels.Design
             public List<long> FavoriteItemIds { get; set; }
             public Dictionary<long, List<int>> ExcludedCategoriesByPool { get; set; }
             public Dictionary<long, List<string>> ExcludedTagsByPool { get; set; }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            public void IgnoreWarning() { PropertyChanged( this, null ); }
         }
 #endif
     }

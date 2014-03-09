@@ -10,7 +10,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using HtmlAgilityPack;
-using Windows.System;
 
 namespace PocketCampus.Common.Controls
 {
@@ -135,7 +134,7 @@ namespace PocketCampus.Common.Controls
                         NavigateUri = new Uri( url, UriKind.Absolute ),
                         TargetName = "42" // can be anything, it just needs to be set
                     };
-                    link.Click += async ( _, __ ) => await Launcher.LaunchUriAsync( link.NavigateUri );
+                    link.Click += ( _, __ ) => LauncherEx.Launch( url );
                     return link;
 
                 case "strong":

@@ -14,12 +14,6 @@ namespace PocketCampus.IsAcademia.Models
     public sealed class ScheduleRequest
     {
         /// <summary>
-        /// The session ID used to identify the user.
-        /// </summary>
-        [ThriftField( 1, true, "sessionId" )]
-        public string SessionId { get; set; }
-
-        /// <summary>
         /// The start of the week.
         /// </summary>
         [ThriftField( 2, false, "weekStart" )]

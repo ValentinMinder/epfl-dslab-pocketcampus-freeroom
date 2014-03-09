@@ -45,7 +45,8 @@ namespace PocketCampus.Main.Views
             string redirect;
             if ( NavigationContext.QueryString.TryGetValue( PocketCampusUriMapper.RedirectRequestKey, out redirect ) )
             {
-                App.UriMapper.NavigateToCustomUri( HttpUtility.UrlDecode( redirect ) );
+                redirect = HttpUtility.UrlDecode( redirect );
+                App.UriMapper.NavigateToCustomUri( redirect );
                 return;
             }
 

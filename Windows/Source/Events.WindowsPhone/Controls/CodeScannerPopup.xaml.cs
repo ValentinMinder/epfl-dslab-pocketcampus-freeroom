@@ -4,63 +4,95 @@
 
 using System;
 using System.Windows;
-using System.Windows.Navigation;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 using Microsoft.Devices;
-using PocketCampus.Common.Controls;
-using Windows.System;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using PocketCampus.Common;
+using PocketCampus.Mvvm;
+using PocketCampus.Mvvm.Logging;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
 
 // Freely inspired from http://geekswithblogs.net/tmurphy/archive/2012/07/23/reading-qr-codes-in-your-windows-phone-app.aspx
 
-namespace PocketCampus.Events.Views
+namespace PocketCampus.Events.Controls
 {
-    public partial class CodeScannerView : BasePage
+    public partial class CodeScannerPopup : ContentControl
     {
         private static readonly TimeSpan ScanInterval = TimeSpan.FromMilliseconds( 200 );
         private const string CustomUrlPrefix = "pocketcampus://";
+        private const string CustomUrlLogPrefix = "pocketcampus://events.plugin.pocketcampus.org/";
 
-        private readonly DispatcherTimer _timer;
+        private DispatcherTimer _timer;
         private PhotoCamera _camera;
+        private PhoneApplicationPage _underPage;
+        private bool _underPageTrayVisible;
+        private bool _underPageAppBarVisible;
+        private bool _isDone;
 
 
         /// <summary>
-        /// Creates a new CodeScannerView.
+        /// Creates a new CodeScannerPopup.
         /// </summary>
-        public CodeScannerView()
+        public CodeScannerPopup()
         {
             InitializeComponent();
 
             _timer = new DispatcherTimer { Interval = ScanInterval };
             _timer.Tick += ( _, __ ) => ScanPreviewBuffer();
+
+            Loaded += This_Loaded;
         }
 
+        public static void Show()
+        {
+            var scanner = new CodeScannerPopup();
+            var popup = new Popup { Child = scanner };
+            popup.IsOpen = true;
+
+            scanner.CloseRequested += ( _, __ ) => popup.IsOpen = false;
+        }
+
+        private event EventHandler<EventArgs> CloseRequested;
 
         /// <summary>
-        /// Called when the user navigates to the page.
+        /// Called when the control is loaded.
         /// </summary>
-        protected override void OnNavigatedTo( NavigationEventArgs e )
+        private void This_Loaded( object sender, EventArgs e )
         {
-            base.OnNavigatedTo( e );
-
-            // this must be done here
+            // camera init must be done here
             _camera = new PhotoCamera( CameraType.Primary );
             _camera.Initialized += Camera_Initialized;
             PreviewVideo.SetSource( _camera );
+
+            _underPage = (PhoneApplicationPage) ( (PhoneApplicationFrame) Application.Current.RootVisual ).Content;
+
+            _underPageTrayVisible = SystemTray.GetIsVisible( _underPage );
+            _underPageAppBarVisible = _underPage.ApplicationBar.IsVisible;
+
+            SystemTray.SetIsVisible( _underPage, false );
+            _underPage.ApplicationBar.IsVisible = false;
         }
 
         /// <summary>
-        /// Called when the user navigates away from the page.
+        /// Closes the control and reverts any changes made to the underlying page.
         /// </summary>
-        protected override void OnNavigatedFrom( NavigationEventArgs e )
+        private void Close()
         {
-            base.OnNavigatedFrom( e );
-
             _timer.Stop();
             _camera.Initialized -= Camera_Initialized;
             _camera.Dispose();
+            _isDone = true;
+
+            SystemTray.SetIsVisible( _underPage, _underPageTrayVisible );
+            _underPage.ApplicationBar.IsVisible = _underPageAppBarVisible;
+
+            // No null check, we know it's always non-null
+            CloseRequested( this, EventArgs.Empty );
         }
 
         /// <summary>
@@ -100,12 +132,20 @@ namespace PocketCampus.Events.Views
         /// <summary>
         /// Processes a positive scan result.
         /// </summary>
-        private async void ProcessResult( Result result )
+        private void ProcessResult( Result result )
         {
+            if ( _isDone )
+            {
+                // this is sometimes called once too many??
+                return;
+            }
+
             string url = result.Text;
             if ( url.StartsWith( CustomUrlPrefix ) )
             {
-                await Launcher.LaunchUriAsync( new Uri( url, UriKind.Absolute ) );
+                Messenger.Send( new EventLogRequest( "QRCodeScanned", url.Replace( CustomUrlLogPrefix, "" ) ) );
+                LauncherEx.Launch( url );
+                Close();
             }
             else
             {

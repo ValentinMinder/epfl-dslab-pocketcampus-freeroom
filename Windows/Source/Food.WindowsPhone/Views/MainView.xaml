@@ -29,6 +29,11 @@
             <!-- Converters -->
             <my:MealPriceConverter x:Key="MealToPrice"
                                    Settings="{Binding Settings}" />
+            
+            <!-- Simple button template with only a content -->
+            <ControlTemplate x:Key="SimpleButtonTemplate">
+                <ContentPresenter />
+            </ControlTemplate>
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealItemTemplate">
@@ -74,7 +79,7 @@
                                        Margin="6,0,0,0" />
                         </StackPanel>
                     </Grid>
-                    
+
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -93,28 +98,28 @@
                                    Text="{Binding Description}"
                                    TextWrapping="Wrap"
                                    Style="{StaticResource PhoneTextSubtleStyle}" />
-                        
-                        <!-- Rating -->
-                        <myControls:RatingDisplay Grid.Row="2"
-                                                  Rating="{Binding Rating}"
-                                                  Foreground="{StaticResource PhoneForegroundBrush}"
-                                                  FontSize="{StaticResource PhoneFontSizeNormal}"
-                                                  VerticalAlignment="Bottom"
-                                                  Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}" />
-                    </Grid>
 
-                    <!-- Context menu -->
-                    <tool:ContextMenuService.ContextMenu>
-                        <!-- Disable the zoom and set Visibility to Collapsed if ratings are disabled, 
-                             to hide the menu completely -->
-                        <tool:ContextMenu IsZoomEnabled="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot}" 
-                                          Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}">
-                            <!-- "Rate" button -->
-                            <tool:MenuItem Header="{Binding Resources.RateMealButton, Source={StaticResource Strings}}"
-                                           Command="{Binding DataContext.RateMealCommand, ElementName=LayoutRoot}"
-                                           CommandParameter="{Binding}" />
-                        </tool:ContextMenu>
-                    </tool:ContextMenuService.ContextMenu>
+                        <!-- Rating & vote button -->
+                        <StackPanel Grid.Row="2"
+                                    Orientation="Horizontal"
+                                    Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}">
+                            <myControls:RatingDisplay Rating="{Binding Rating}"
+                                                      Foreground="{StaticResource PhoneForegroundBrush}"
+                                                      FontSize="{StaticResource PhoneFontSizeNormal}" />
+                            
+                            <TextBlock Text="-"
+                                       Style="{StaticResource PhoneTextSubtleStyle}"
+                                       Margin="-6,0,6,0" />
+                            
+                            <Button Template="{StaticResource SimpleButtonTemplate}"
+                                    Content="{Binding Resources.RateMealButton, Source={StaticResource Strings}}"
+                                    Foreground="{StaticResource AppAccentBrush}"
+                                    FontSize="{StaticResource PhoneFontSizeNormal}"
+                                    Opacity="0.75"
+                                    Command="{Binding DataContext.RateMealCommand, ElementName=LayoutRoot}"
+                                    CommandParameter="{Binding}" />
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </DataTemplate>
 

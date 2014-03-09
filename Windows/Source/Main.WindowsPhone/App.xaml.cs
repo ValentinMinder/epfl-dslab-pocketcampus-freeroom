@@ -60,6 +60,7 @@ namespace PocketCampus.Main
             // Map custom URIs properly
             _pluginLoader = Container.BindOnce<IPluginLoader, PluginLoader>();
             RootFrame.UriMapper = UriMapper = new PocketCampusUriMapper( _pluginLoader.GetPlugins() );
+            LauncherEx.RegisterProtocol( PocketCampusUriMapper.PocketCampusProtocol, UriMapper.NavigateToCustomUri );
 
             InitializeComponent();
             InitializePhoneApplication();

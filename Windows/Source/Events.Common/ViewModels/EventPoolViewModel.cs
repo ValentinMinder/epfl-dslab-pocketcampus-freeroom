@@ -19,7 +19,7 @@ namespace PocketCampus.Events.ViewModels
     /// <summary>
     /// ViewModel for pool details.
     /// </summary>
-    [LogId( "/events" )]
+    [LogId( "/events/pool" )]
     public sealed class EventPoolViewModel : DataViewModel<ViewPoolRequest>
     {
         private readonly INavigationService _navigationService;
@@ -33,6 +33,8 @@ namespace PocketCampus.Events.ViewModels
         private EventItemGroup[] _itemGroups;
         private bool _anyItems;
         private EmailSendingStatus _emailStatus;
+
+        private Tuple<SearchPeriod, bool> _previousSettings;
 
 
         /// <summary>
@@ -74,7 +76,8 @@ namespace PocketCampus.Events.ViewModels
         /// <summary>
         /// Gets the command executed to view a child item.
         /// </summary>
-        [LogId( "ShowEvent" )]
+        [LogId( "ShowEventItem" )]
+        [LogParameter( "$Param.LogId" )]
         public Command<EventItem> ViewItemCommand
         {
             get { return GetCommand<EventItem>( item => _navigationService.NavigateTo<EventItemViewModel, long>( item.Id ) ); }
@@ -140,6 +143,8 @@ namespace PocketCampus.Events.ViewModels
             _codeScanner = codeScanner;
             _request = request;
 
+            _previousSettings = Tuple.Create( (SearchPeriod) 0, false );
+
             if ( _request.UserTicket != null )
             {
                 _settings.UserTickets.Add( _request.UserTicket );
@@ -152,12 +157,16 @@ namespace PocketCampus.Events.ViewModels
         /// </summary>
         protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
-            if ( force || Pool == null || ( Pool != null && Pool.AlwaysRefresh == true ) )
+            if ( force
+              || Pool == null
+              || ( Pool != null && Pool.AlwaysRefresh == true )
+              || ( _previousSettings.Item1 != _settings.SearchPeriod || _previousSettings.Item2 != _settings.SearchInPast ) )
             {
                 if ( _request.FavoriteItemId != null )
                 {
                     _settings.FavoriteItemIds.Add( _request.FavoriteItemId.Value );
                     _navigationService.NavigateTo<EventItemViewModel, long>( _request.FavoriteItemId.Value );
+                    _navigationService.PopBackStack();
                 }
 
                 if ( !_settings.ExcludedCategoriesByPool.ContainsKey( _request.PoolId ) )
@@ -188,6 +197,8 @@ namespace PocketCampus.Events.ViewModels
                 _settings.EventTags = response.EventTags;
                 _settings.EventCategories = response.EventCategories;
 
+                _previousSettings = Tuple.Create( _settings.SearchPeriod, _settings.SearchInPast );
+
                 Pool = response.Pool;
                 Pool.Items = response.ChildrenItems == null ? new EventItem[0] : response.ChildrenItems.Values.ToArray();
                 AnyItems = Pool.Items.Any();
@@ -195,11 +206,6 @@ namespace PocketCampus.Events.ViewModels
                 foreach ( var item in Pool.Items )
                 {
                     item.ParentPool = Pool;
-                }
-
-                if ( Pool.Id == EventPool.RootId )
-                {
-                    Pool.AlwaysRefresh = true;
                 }
             }
 
@@ -209,7 +215,7 @@ namespace PocketCampus.Events.ViewModels
                          where item.TagIds == null
                             || !item.TagIds.Any( _settings.ExcludedTagsByPool[_request.PoolId].Contains )
                          orderby item.TimeOverride ascending,
-                                 item.StartDate descending,
+                                 item.StartDate ascending,
                                  item.EndDate ascending,
                                  item.Name ascending
                          group item by item.CategoryId into itemGroup

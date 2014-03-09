@@ -8,6 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Windows.Navigation;
 using PocketCampus.Common;
+using PocketCampus.Mvvm;
+using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.Main
 {
@@ -18,9 +20,14 @@ namespace PocketCampus.Main
     {
         // The key to the redirect parameter for Redirect.xaml.
         public const string RedirectRequestKey = "redirect";
+        public const string PocketCampusProtocol = "pocketcampus";
+
+        // Logging stuff
+        private const string CustomUriEventId = "OpenPocketCampusURL";
+        private const string CustomUriScreenId = "/";
 
         // Constants for the parsing of PocketCampus URIs.
-        private const string PocketCampusProtocol = "pocketcampus://";
+        private const string PocketCampusPrefix = "pocketcampus://";
         private const string ProtocolPrefix = "/Protocol?encodedLaunchUri=";
         private const char PluginActionDelimiter = '/';
         private const string PluginSuffix = ".plugin.pocketcampus.org";
@@ -51,6 +58,9 @@ namespace PocketCampus.Main
             {
                 string newUri = decodedUri.Replace( ProtocolPrefix, "" );
                 newUri = HttpUtility.UrlEncode( newUri );
+
+                Messenger.Send( new EventLogRequest( CustomUriEventId, newUri, CustomUriScreenId ) );
+
                 string newTarget = string.Format( "/PocketCampus.Main.WindowsPhone;component/Views/Redirect.xaml?{0}={1}", RedirectRequestKey, newUri );
                 return new Uri( newTarget, UriKind.Relative );
             }
@@ -58,19 +68,21 @@ namespace PocketCampus.Main
         }
 
         /// <summary>
+        /// Gets the mappable part of a custom URI if it is one, or null otherwise.
+        /// </summary>
+        public bool IsCustomUri( string uri )
+        {
+            return uri.StartsWith( PocketCampusPrefix );
+        }
+
+        /// <summary>
         /// Navigates to the specified PocketCampus URI, or returns false if the URI is not a PocketCampus one.
         /// </summary>
-        public bool NavigateToCustomUri( string uri )
+        public void NavigateToCustomUri( string uri )
         {
             var pluginAndParams = ParseQuery( uri );
-            if ( pluginAndParams == null )
-            {
-                return false;
-            }
-
             _plugins.First( p => p.Id.Equals( pluginAndParams.Item1, StringComparison.OrdinalIgnoreCase ) )
                     .NavigateTo( pluginAndParams.Item2, pluginAndParams.Item3, App.NavigationService );
-            return true;
         }
 
         /// <summary>
@@ -83,26 +95,22 @@ namespace PocketCampus.Main
             // ...and the original URI is URL-encoded too
             query = HttpUtility.UrlDecode( query );
 
-            if ( query.StartsWith( PocketCampusProtocol ) )
+            query = query.Replace( PocketCampusPrefix, "" );
+
+            string[] parts = query.Split( PluginActionDelimiter );
+            string pluginName = parts[0].Replace( PluginSuffix, "" );
+
+            parts = parts[1].Split( ActionParametersDelimiter );
+            string actionName = parts[0];
+
+            if ( parts.Length > 0 )
             {
-                query = query.Replace( PocketCampusProtocol, "" );
+                var parameters = parts[1].Split( ParametersSeparator ).Select( s => s.Split( KeyValueDelimiter ) ).ToDictionary( s => s[0], s => s[1] );
 
-                string[] parts = query.Split( PluginActionDelimiter );
-                string pluginName = parts[0].Replace( PluginSuffix, "" );
-
-                parts = parts[1].Split( ActionParametersDelimiter );
-                string actionName = parts[0];
-
-                if ( parts.Length > 0 )
-                {
-                    var parameters = parts[1].Split( ParametersSeparator ).Select( s => s.Split( KeyValueDelimiter ) ).ToDictionary( s => s[0], s => s[1] );
-
-                    return Tuple.Create( pluginName, actionName, parameters );
-                }
-
-                return Tuple.Create( pluginName, actionName, new Dictionary<string, string>() );
+                return Tuple.Create( pluginName, actionName, parameters );
             }
-            return null;
+
+            return Tuple.Create( pluginName, actionName, new Dictionary<string, string>() );
         }
     }
 }
