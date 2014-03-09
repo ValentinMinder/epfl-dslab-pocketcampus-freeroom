@@ -16,6 +16,7 @@ import java.util.Set;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.plugin.freeroom.server.utils.Converter;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
@@ -62,10 +63,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		connMgr = conn;
 	}
 
+	/**
+	 * Search for all rooms available during the time period included in the
+	 * request.
+	 */
 	@Override
 	public FreeRoomReply getFreeRoomFromTime(FreeRoomRequest request)
 			throws TException {
 
+		// The client issue a request, convertMinPrecision's job is to adapt the
+		// period. See its doc for more information.
+		request = Converter.convertMinPrecision(request);
 		FRPeriod period = request.getPeriod();
 		long ts_start = period.getTimeStampStart();
 		long ts_end = period.getTimeStampEnd();
@@ -110,7 +118,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 		if (starthour >= endhour) {
 			// TODO: change exception or handling
-			throw new TException("unsupported timestamps: same timestamps");
+			// throw new TException("unsupported timestamps: same timestamps");
 		}
 
 		HashSet<FRRoom> freerooms = new HashSet<FRRoom>();
@@ -121,8 +129,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							+ "FROM roomslist rl "
 							+ "WHERE rl.rid NOT IN "
 							+ "(SELECT ro.rid FROM roomsoccupancy ro "
-							+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) " +
-								"OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)) )");
+							+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
+							+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)) )");
 
 			// filling the query with values
 			query.setLong(1, end);
@@ -165,9 +173,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd "
 								+ "FROM roomsoccupancy ro, roomslist rl "
 								+ "WHERE rl.building = ? AND rl.room_number = ? "
-								+ "AND ro.rid = rl.rid AND " +
-								"((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) " +
-								"OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)) "
+								+ "AND ro.rid = rl.rid AND "
+								+ "((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
+								+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)) "
 								+ "ORDER BY ro.timestampStart ASC");
 				query.setString(1, room.getBuilding());
 				query.setString(2, room.getNumber());
@@ -175,7 +183,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				query.setLong(4, timestampStart);
 				query.setLong(5, timestampEnd);
 				query.setLong(6, timestampStart);
-
 
 				// filling the query with values
 
@@ -191,9 +198,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					long tsEnd = resultQuery.getLong("timestampEnd");
 
 					if (Math.abs(tsStart - tsPerRoom) > MARGIN_ERROR_TIMESTAMP) {
-						//We got a free period of time !
+						// We got a free period of time !
 						ActualOccupation mOcc = new ActualOccupation();
-						mOcc.setPeriod(new FRPeriod(tsPerRoom, tsStart - 1, false));
+						mOcc.setPeriod(new FRPeriod(tsPerRoom, tsStart - 1,
+								false));
 						mOcc.setAvailable(true);
 						mOcc.setOccupationType(OccupationType.FREE);
 						mOccupancy.addToOccupancy(mOcc);
@@ -210,8 +218,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					tsPerRoom = tsEnd;
 
 				}
-				
-				//There is some free time left after the last result
+
+				// There is some free time left after the last result
 				if (Math.abs(timestampEnd - tsPerRoom) > MARGIN_ERROR_TIMESTAMP) {
 					ActualOccupation mOcc = new ActualOccupation();
 					mOcc.setPeriod(new FRPeriod(tsPerRoom, timestampEnd, false));

@@ -9,8 +9,8 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.android.utils.Converter;
 import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
+import org.pocketcampus.plugin.freeroom.server.utils.Converter;
 import org.pocketcampus.plugin.freeroom.shared.FRDay;
 
 import android.content.Intent;
