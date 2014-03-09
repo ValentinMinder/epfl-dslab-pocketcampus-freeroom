@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -16,7 +15,7 @@ import java.util.Set;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.server.utils.Converter;
+import org.pocketcampus.plugin.freeroom.server.utils.Utils;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
@@ -73,7 +72,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		// The client issue a request, convertMinPrecision's job is to adapt the
 		// period. See its doc for more information.
-		request = Converter.convertMinPrecision(request);
+		request = Utils.convertMinPrecision(request);
 		FRPeriod period = request.getPeriod();
 		long ts_start = period.getTimeStampStart();
 		long ts_end = period.getTimeStampEnd();

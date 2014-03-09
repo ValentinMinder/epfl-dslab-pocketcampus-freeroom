@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -37,7 +38,7 @@ import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.OccupationType;
 
-public class TestTimestamp {
+public class TestFreeRoomSearchAndOccupancy {
 	final static String DB_USERNAME = "root";
 	final static String DB_PASSWORD = "root";
 	final static String DBMS_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
@@ -469,6 +470,63 @@ public class TestTimestamp {
 			reply = server.getFreeRoomFromTime(request);
 			
 			assertTrue(reply.getRoomsSize() == 4);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testFreeRoomMonday9_11() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomRequest request = null;
+			FreeRoomReply reply = null;
+			request = Converter.convert(Calendar.MONDAY, 9, 11);
+			
+			reply = server.getFreeRoomFromTime(request);
+			
+			assertTrue(reply.getRoomsSize() == 5);
+			Set<FRRoom> rooms = reply.getRooms();
+			assertTrue(rooms.contains(new FRRoom("CO", "1")));
+			assertTrue(rooms.contains(new FRRoom("CO", "2")));
+			assertTrue(rooms.contains(new FRRoom("CO", "3")));
+			assertTrue(rooms.contains(new FRRoom("CM", "2")));
+			assertTrue(rooms.contains(new FRRoom("CM", "3")));
+
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testFreeRoomTuesday13_16() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomRequest request = null;
+			FreeRoomReply reply = null;
+			request = Converter.convert(Calendar.TUESDAY, 13, 16);
+			
+			reply = server.getFreeRoomFromTime(request);
+			
+			assertTrue(reply.getRoomsSize() == 4);
+			Set<FRRoom> rooms = reply.getRooms();
+			assertTrue(rooms.contains(new FRRoom("CO", "1")));
+			assertTrue(rooms.contains(new FRRoom("CO", "2")));
+			assertTrue(rooms.contains(new FRRoom("CM", "1")));
+			assertTrue(rooms.contains(new FRRoom("CM", "3")));
+
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block

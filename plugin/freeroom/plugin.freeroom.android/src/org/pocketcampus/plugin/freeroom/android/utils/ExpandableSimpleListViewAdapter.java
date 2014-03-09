@@ -134,9 +134,14 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 	}
 	
 	public void updateHeader(int id, String value) {
+		if (id >= headers.size()) {
+			return;
+		}
+		
 		this.data.put(value, data.remove(headers.get(id)));
 		this.headers.set(id, value);
 	}
+	
 	
 	/**
 	 * Class used to keep a view, 

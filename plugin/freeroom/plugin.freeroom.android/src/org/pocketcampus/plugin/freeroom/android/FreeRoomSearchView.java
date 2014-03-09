@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,6 +21,8 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class FreeRoomSearchView extends FreeRoomAbstractView implements
@@ -68,7 +71,6 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 		mLayout.setTitle(getString(R.string.freeroom_title_FRsearch));
-		mLayout.hideTitle(); // TODO: remove this without breaking the UI.
 
 		initializeSearchView();
 
@@ -85,8 +87,11 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				if (auditSearchButton() == 0) {
-					mController.searchFreeRoom(view,
-							org.pocketcampus.plugin.freeroom.android.utils.Converter.convert(intday, startHour, endHour));
+					mController
+							.searchFreeRoom(
+									view,
+									org.pocketcampus.plugin.freeroom.android.utils.Converter
+											.convert(intday, startHour, endHour));
 					Intent i = new Intent(FreeRoomSearchView.this,
 							FreeRoomResultView.class);
 					FreeRoomSearchView.this.startActivity(i);
@@ -102,21 +107,21 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 		listHeader.add(getString(R.string.freeroom_selectendHour));
 
 		List<String> daysList = new ArrayList<String>();
-		//TODO: clean this list, get another way of doing that...
+		// TODO: clean this list, get another way of doing that...
 		daysList.add("Monday");
 		daysList.add("Tuesday");
 		daysList.add("Wednesday");
 		daysList.add("Thursday");
 		daysList.add("Friday");
 
-		List<String> startHourList = new ArrayList<String>();
+		final List<String> startHourList = new ArrayList<String>();
 		for (int i = 8; i <= 18; ++i) {
 			startHourList.add(i + ":00");
 		}
 
 		// TODO display only possible end hour (i.e if user selects 9 for start
 		// hour, display from 10)
-		List<String> endHourList = new ArrayList<String>();
+		final List<String> endHourList = new ArrayList<String>();
 		for (int i = 9; i <= 19; ++i) {
 			endHourList.add(i + ":00");
 		}
@@ -140,13 +145,22 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 				// TODO adjust values of the list in real time (i.e if user
 				// select 9am as start, don't show 9am for endHour)
 				int tmpStartHour = childPosition + 8;
-				int tmpEndHour = childPosition + 9;
+				int tmpEndHour;
+				if (startHour != -1) {
+					tmpEndHour = startHour + childPosition + 1;
+				} else {
+					tmpEndHour = childPosition + 9;
+				}
+				
 				if (groupPosition == 0) {
-					intday = (((childPosition + 1) % 7) + 1); //monday = 0 in UI//monday =2 in calendar
+					intday = (((childPosition + 1) % 7) + 1); // monday = 0 in
+																// UI//monday =2
+																// in calendar
 					listAdapter.updateHeader(groupPosition,
-							getString(R.string.freeroom_selectday) + " ("
-									+ FRDay.findByValue(childPosition).toString()
-									+ ")");
+							getString(R.string.freeroom_selectday)
+									+ " ("
+									+ FRDay.findByValue(childPosition)
+											.toString() + ")");
 					searchParams.collapseGroup(0);
 					searchParams.expandGroup(1);
 				} else if (groupPosition == 1
@@ -159,6 +173,12 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 					if (endHour == -1) {
 						searchParams.expandGroup(2);
 					}
+
+					// adjusting values of the end hours
+					endHourList.clear();
+					for (int i = startHour + 1; i <= 19; ++i) {
+						endHourList.add(i + ":00");
+					}
 				} else if (groupPosition == 2
 						&& (startHour == -1 || tmpEndHour > startHour)) {
 					endHour = tmpEndHour;
@@ -166,7 +186,14 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 							getString(R.string.freeroom_selectendHour) + " ("
 									+ endHour + ":00)");
 					searchParams.collapseGroup(2);
+
+					// adjusting values of the start hours
+					startHourList.clear();
+					for (int i = 8; i < endHour; ++i) {
+						startHourList.add(i + ":00");
+					}
 				}
+
 				listAdapter.notifyDataSetChanged();
 
 				if (auditSearchButton() == 0) {
