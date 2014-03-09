@@ -98,7 +98,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 			}
 		}
 		
-		mController.refreshCourseSections(this, courseId, true);
+		mController.refreshCourseSections(this, courseId, false);
 
 		//updateDisplay(); // might contain data for a different course
 	}
@@ -268,7 +268,12 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 		}
 		viewFileIntent.setDataAndType(uri, guessedContentType);
 		viewFileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		c.startActivity(viewFileIntent);
+		try {
+			c.startActivity(viewFileIntent);
+		} catch(Exception e) {
+			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
+					R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 
