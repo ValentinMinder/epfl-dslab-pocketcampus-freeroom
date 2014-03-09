@@ -33,6 +33,7 @@ public class Converter {
 		
 		calendar.setTimeInMillis(calendar.getTimeInMillis() + timestampshift);
 		calendar.set(Calendar.HOUR_OF_DAY, startHour);
+		calendar.set(Calendar.MINUTE, 0);
 		
 		long t_start = calendar.getTimeInMillis();
 		long t_end = t_start + (endHour - startHour) * ONE_HOUR_IN_MS;

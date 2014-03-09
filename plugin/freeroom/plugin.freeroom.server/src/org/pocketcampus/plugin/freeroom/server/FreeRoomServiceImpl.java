@@ -120,12 +120,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					.prepareStatement("SELECT rl.building, rl.room_number "
 							+ "FROM roomslist rl "
 							+ "WHERE rl.rid NOT IN "
-							+ "(SELECT ro2.rid FROM roomsoccupancy ro2 "
-							+ "WHERE ro2.timestampStart > ? AND ro2.timestampEnd < ? ");
+							+ "(SELECT ro.rid FROM roomsoccupancy ro "
+							+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) " +
+								"OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)) )");
 
 			// filling the query with values
-			query.setLong(1, start);
-			query.setLong(2, end);
+			query.setLong(1, end);
+			query.setLong(2, start);
+			query.setLong(3, end);
+			query.setLong(4, start);
 
 			ResultSet resultQuery = query.executeQuery();
 			while (resultQuery.next()) {

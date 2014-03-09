@@ -30,6 +30,7 @@ import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
@@ -395,6 +396,79 @@ public class TestTimestamp {
 			
 			mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 1);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testFreeRoomFriday8_19() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomRequest request = null;
+			FreeRoomReply reply = null;
+			request = Converter.convert(Calendar.FRIDAY, 8, 19);
+			
+			reply = server.getFreeRoomFromTime(request);
+			
+			assertTrue(
+					"Every rooms are availables, : " + reply.getRoomsSize(),
+					reply.getRoomsSize() == 6);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testFreeRoomMonday9_10() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomRequest request = null;
+			FreeRoomReply reply = null;
+			request = Converter.convert(Calendar.MONDAY, 9, 10);
+			
+			reply = server.getFreeRoomFromTime(request);
+			
+			for (FRRoom r : reply.getRooms()) {
+				System.out.println(r);
+			}
+			assertTrue(
+					"Every rooms are availables, : " + reply.getRoomsSize(),
+					reply.getRoomsSize() == 6);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testFreeRoomMonday9_12() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomRequest request = null;
+			FreeRoomReply reply = null;
+			request = Converter.convert(Calendar.MONDAY, 9, 12);
+			
+			reply = server.getFreeRoomFromTime(request);
+			
+			assertTrue(reply.getRoomsSize() == 4);
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block
