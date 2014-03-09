@@ -268,6 +268,7 @@
                 break;
             case 1: //OK
                 [[UIApplication sharedApplication] openURL:self.urlClicked];
+                break;
             default:
                 break;
         }

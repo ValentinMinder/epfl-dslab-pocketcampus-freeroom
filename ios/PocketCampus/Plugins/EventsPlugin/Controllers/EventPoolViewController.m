@@ -605,6 +605,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
             case kSixMonthsPeriodIndex:
                 self.selectedPeriod = EventsPeriods_SIX_MONTHS;
                 nbDays = 6 * 31;
+                break;
             case kOneYearPeriodIndex:
                 self.selectedPeriod = EventsPeriods_ONE_YEAR;
                 nbDays = 365;

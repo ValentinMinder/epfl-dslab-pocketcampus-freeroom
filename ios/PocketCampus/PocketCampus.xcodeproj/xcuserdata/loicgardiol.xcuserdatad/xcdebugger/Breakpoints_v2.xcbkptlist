@@ -1234,9 +1234,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "+cellWithMainMenuItem:reuseIdentifier:"
-            landmarkType = "5">
+            endingLineNumber = "33">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -2637,7 +2635,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "84"
             endingLineNumber = "84"
-            landmarkName = "-setEditing:animated:"
+            landmarkName = "-setEyeButtonState:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -3250,8 +3248,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "119"
             endingLineNumber = "119"
-            landmarkName = "-sendStarredItemsByEmailForRequest:didReturn:"
-            landmarkType = "5">
+            landmarkName = "@implementation EventsShareFavoriteItemsViewController"
+            landmarkType = "3">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
