@@ -3,30 +3,17 @@
 // File author: Solal Pirelli
 
 using System.Threading.Tasks;
-using PocketCampus.Common.Services;
 using PocketCampus.IsAcademia.Models;
 using ThriftSharp;
 
 namespace PocketCampus.IsAcademia.Services
 {
     /// <summary>
-    /// The schedule server service.
+    /// The IS-Academia server service.
     /// </summary>
     [ThriftService( "IsAcademiaService" )]
-    public interface IIsAcademiaService : ITwoStepAuthenticator<AuthenticationToken, string>
+    public interface IIsAcademiaService
     {
-        /// <summary>
-        /// First authentication step: asynchronously gets a token.
-        /// </summary>
-        [ThriftMethod( "getIsaTequilaToken" )]
-        new Task<TokenResponse> GetTokenAsync();
-
-        /// <summary>
-        /// Second authentication step: get a session from a token.
-        /// </summary>
-        [ThriftMethod( "getIsaSessionId" )]
-        Task<SessionResponse> GetSessionAsync( [ThriftParameter( 1, "tequilaToken" )] string token );
-
         /// <summary>
         /// Asynchronously gets the schedule for the specified request.
         /// </summary>
