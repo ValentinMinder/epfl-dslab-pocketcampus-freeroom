@@ -393,7 +393,7 @@
     
     [self.navigationController pushViewController:viewController animated:YES];
     
-    [self trackAction:@"ShowEventPool" contentInfo:[NSString stringWithFormat:@"%ld-%@", eventPool.poolId, eventPool.poolTitle]];
+    [self trackAction:@"ShowEventPool" contentInfo:[NSString stringWithFormat:@"%lld-%@", eventPool.poolId, eventPool.poolTitle]];
 }
 
 
