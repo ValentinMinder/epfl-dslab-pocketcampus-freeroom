@@ -10,6 +10,10 @@ import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
+import com.markupartist.android.widget.ActionBar.Action;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -89,6 +93,7 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 		mList.setLayoutParams(p);
 
 		mListValues = new ArrayList<String>();
+		mListValues.add("CO123fake");
 		mAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_dropdown_item_1line,
 				android.R.id.text1, mListValues);
@@ -104,6 +109,10 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 				System.out.println("selected " + s);
 				mController.getModel();
 				//TODO: display map!
+				Uri mUri = Uri.parse("pocketcampus://map.plugin.pocketcampus.org/search");
+				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q", "CO1");
+				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
+				startActivity(i);
 			}
 			
 		});

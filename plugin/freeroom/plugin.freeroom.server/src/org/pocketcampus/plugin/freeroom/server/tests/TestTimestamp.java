@@ -139,7 +139,7 @@ public class TestTimestamp {
 			e1.printStackTrace();
 			// return;
 		}
-		ArrayList<FRRoom> rooms = new ArrayList<>();
+		ArrayList<FRRoom> rooms = new ArrayList<FRRoom>();
 		rooms.add(new FRRoom("CO", "1"));
 		rooms.add(new FRRoom("CO", "2"));
 		rooms.add(new FRRoom("CO", "3"));
@@ -147,13 +147,13 @@ public class TestTimestamp {
 		rooms.add(new FRRoom("CM", "2"));
 		rooms.add(new FRRoom("CM", "3"));
 
-		ArrayList<ArrayList<FreeRoomRequest>> globalAL = new ArrayList<>();
-		ArrayList<FreeRoomRequest> requestco1 = new ArrayList<>();
-		ArrayList<FreeRoomRequest> requestco2 = new ArrayList<>();
-		ArrayList<FreeRoomRequest> requestco3 = new ArrayList<>();
-		ArrayList<FreeRoomRequest> requestcm1 = new ArrayList<>();
-		ArrayList<FreeRoomRequest> requestcm2 = new ArrayList<>();
-		ArrayList<FreeRoomRequest> requestcm3 = new ArrayList<>();
+		ArrayList<ArrayList<FreeRoomRequest>> globalAL = new ArrayList<ArrayList<FreeRoomRequest>>();
+		ArrayList<FreeRoomRequest> requestco1 = new ArrayList<FreeRoomRequest>();
+		ArrayList<FreeRoomRequest> requestco2 = new ArrayList<FreeRoomRequest>();
+		ArrayList<FreeRoomRequest> requestco3 = new ArrayList<FreeRoomRequest>();
+		ArrayList<FreeRoomRequest> requestcm1 = new ArrayList<FreeRoomRequest>();
+		ArrayList<FreeRoomRequest> requestcm2 = new ArrayList<FreeRoomRequest>();
+		ArrayList<FreeRoomRequest> requestcm3 = new ArrayList<FreeRoomRequest>();
 
 		globalAL.add(requestco1);
 		globalAL.add(requestco2);
@@ -231,7 +231,7 @@ public class TestTimestamp {
 		try {
 			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
-			ArrayList<FRRoom> roomsList = new ArrayList<>();
+			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
 			FRPeriod period = new FRPeriod();
 			OccupancyRequest request = null;
 			OccupancyReply reply = null;
@@ -284,7 +284,7 @@ public class TestTimestamp {
 		try {
 			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
-			ArrayList<FRRoom> roomsList = new ArrayList<>();
+			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
 			FRPeriod period = new FRPeriod();
 			OccupancyRequest request = null;
 			OccupancyReply reply = null;
@@ -352,7 +352,7 @@ public class TestTimestamp {
 		try {
 			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
-			ArrayList<FRRoom> roomsList = new ArrayList<>();
+			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
 			FRPeriod period = new FRPeriod();
 			OccupancyRequest request = null;
 			OccupancyReply reply = null;

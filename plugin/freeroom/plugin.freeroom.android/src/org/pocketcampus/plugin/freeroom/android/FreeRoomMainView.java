@@ -8,7 +8,6 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.server.utils.Converter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -106,7 +105,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 				case 0:
 					Calendar calendar = Calendar.getInstance();
 					mController.searchFreeRoom(FreeRoomMainView.this, 
-							Converter.convert(calendar.get(Calendar.DAY_OF_WEEK), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.HOUR_OF_DAY) + 1));
+							org.pocketcampus.plugin.freeroom.android.utils.Converter.convert(calendar.get(Calendar.DAY_OF_WEEK), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.HOUR_OF_DAY) + 1));
 					i = new Intent(FreeRoomMainView.this, FreeRoomResultView.class);
 					break;
 				case 1:
