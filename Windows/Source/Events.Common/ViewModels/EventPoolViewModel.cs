@@ -34,6 +34,8 @@ namespace PocketCampus.Events.ViewModels
         private bool _anyItems;
         private EmailSendingStatus _emailStatus;
 
+        private Tuple<SearchPeriod, bool> _previousSettings;
+
 
         /// <summary>
         /// Gets the pool.
@@ -141,9 +143,7 @@ namespace PocketCampus.Events.ViewModels
             _codeScanner = codeScanner;
             _request = request;
 
-            Action forceRefresh = async () => await TryRefreshAsync( true );
-            _settings.ListenToProperty( x => x.SearchPeriod, forceRefresh );
-            _settings.ListenToProperty( x => x.SearchInPast, forceRefresh );
+            _previousSettings = Tuple.Create( (SearchPeriod) 0, false );
 
             if ( _request.UserTicket != null )
             {
@@ -157,7 +157,10 @@ namespace PocketCampus.Events.ViewModels
         /// </summary>
         protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
-            if ( force || Pool == null || ( Pool != null && Pool.AlwaysRefresh == true ) )
+            if ( force
+              || Pool == null
+              || ( Pool != null && Pool.AlwaysRefresh == true )
+              || ( _previousSettings.Item1 != _settings.SearchPeriod || _previousSettings.Item2 != _settings.SearchInPast ) )
             {
                 if ( _request.FavoriteItemId != null )
                 {
@@ -194,6 +197,8 @@ namespace PocketCampus.Events.ViewModels
                 _settings.EventTags = response.EventTags;
                 _settings.EventCategories = response.EventCategories;
 
+                _previousSettings = Tuple.Create( _settings.SearchPeriod, _settings.SearchInPast );
+
                 Pool = response.Pool;
                 Pool.Items = response.ChildrenItems == null ? new EventItem[0] : response.ChildrenItems.Values.ToArray();
                 AnyItems = Pool.Items.Any();
@@ -210,7 +215,7 @@ namespace PocketCampus.Events.ViewModels
                          where item.TagIds == null
                             || !item.TagIds.Any( _settings.ExcludedTagsByPool[_request.PoolId].Contains )
                          orderby item.TimeOverride ascending,
-                                 item.StartDate descending,
+                                 item.StartDate ascending,
                                  item.EndDate ascending,
                                  item.Name ascending
                          group item by item.CategoryId into itemGroup

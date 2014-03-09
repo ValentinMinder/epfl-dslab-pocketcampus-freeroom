@@ -32,20 +32,16 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        
+
                         <Image Source="{Binding PictureUrl}"
                                Width="100"
                                Height="100"
                                Stretch="None" />
 
-                        <StackPanel Grid.Column="1"
-                                    VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Name}"
-                                       Style="{StaticResource PhoneTextTitle2Style}" />
-
-                            <TextBlock Text="{Binding Location}"
-                                       Style="{StaticResource PhoneTextSubtleStyle}" />
-                        </StackPanel>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   Style="{StaticResource PhoneTextTitle2Style}"
+                                   VerticalAlignment="Center" />
                     </Grid>
                 </Button>
             </DataTemplate>
