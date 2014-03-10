@@ -434,6 +434,9 @@ static const NSInteger kOneYearPeriodIndex = 3;
         if ([viewController isKindOfClass:[EventPoolViewController class]] && [(EventPoolViewController*)viewController poolId] == self.poolId) {
             [self refresh];
         } else {
+            if ([viewController isKindOfClass:[EventItemViewController class]] && params[kEventsURLParameterMarkFavoriteEventItemId]) {
+                [(EventItemViewController*)viewController setShowFavoriteButton:YES];
+            }
             if ([self.splitViewController.viewControllers[0] isKindOfClass:[UINavigationController class]]) {
                 UINavigationController* navController = self.splitViewController.viewControllers[0];
                 if (navController.topViewController == self) {
@@ -602,6 +605,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
             case kSixMonthsPeriodIndex:
                 self.selectedPeriod = EventsPeriods_SIX_MONTHS;
                 nbDays = 6 * 31;
+                break;
             case kOneYearPeriodIndex:
                 self.selectedPeriod = EventsPeriods_ONE_YEAR;
                 nbDays = 365;
@@ -744,8 +748,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     } else {
         [self.navigationController pushViewController:eventItemViewController animated:YES];
     }
-    
-    [self trackAction:@"ShowEventItem" contentInfo:[NSString stringWithFormat:@"%ld-%@", eventItem.eventId, eventItem.eventTitle]];
+    [self trackAction:@"ShowEventItem" contentInfo:[NSString stringWithFormat:@"%lld-%@", eventItem.eventId, eventItem.eventTitle]];
 }
 
 

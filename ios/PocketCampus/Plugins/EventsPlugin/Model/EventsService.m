@@ -52,8 +52,6 @@ static NSString* const kUserTicketsKey = @"userTickets";
 
 static NSString* const kFavoriteEventItemIds = @"favoriteEventItemIds";
 
-//static NSString* kEventItemPictureKeyWithFormat = @"picture-eventItem-%ld";
-
 static NSString* const kPoolPeriodKey = @"poolPeriod";
 
 @implementation EventsService
