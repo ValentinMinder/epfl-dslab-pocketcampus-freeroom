@@ -22,13 +22,18 @@ public final class XElement {
 				.parse(new ByteArrayInputStream(xml.getBytes()));
 		return new XElement(doc.getDocumentElement());
 	}
+	
+	/** Gets the element's content. */
+	public String text() {
+		return _element.getTextContent().trim();
+	}
 
 	/** Gets the value of the attribute with the specified name. */
 	public String attribute(String name) {
-		return _element.getAttribute(name);
+		return _element.getAttribute(name).trim();
 	}
 
-	/** Gets the inner text of the child element with the specified name. */
+	/** Gets the content of the child element with the specified name. */
 	public String elementText(String elementName) {
 		return _element.getElementsByTagName(elementName).item(0).getTextContent().trim();
 	}

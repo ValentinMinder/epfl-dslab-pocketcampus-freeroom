@@ -7,12 +7,9 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-
-import org.apache.http.cookie.Cookie;
 
 import org.pocketcampus.plugin.isacademia.server.*;
 import org.pocketcampus.plugin.isacademia.shared.*;
@@ -25,21 +22,23 @@ import org.joda.time.*;
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public final class ScheduleTests {
+	private static final DateTimeZone ISA_TIME_ZONE = DateTimeZone.forID("Europe/Zurich");
+	
 	// All working week days are there (even Monday which isn't in the file)
 	@Test
 	public void allDaysAreParsed() {
 		List<StudyDay> days = getDays("fr");
 
 		assertEquals(5, days.size());
-		assertEquals(new LocalDate(2013, 10, 14).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(),
+		assertEquals(new LocalDate(2013, 10, 14).toDateTimeAtStartOfDay(ISA_TIME_ZONE).getMillis(),
 				days.get(0).getDay());
-		assertEquals(new LocalDate(2013, 10, 15).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(),
+		assertEquals(new LocalDate(2013, 10, 15).toDateTimeAtStartOfDay(ISA_TIME_ZONE).getMillis(),
 				days.get(1).getDay());
-		assertEquals(new LocalDate(2013, 10, 16).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(),
+		assertEquals(new LocalDate(2013, 10, 16).toDateTimeAtStartOfDay(ISA_TIME_ZONE).getMillis(),
 				days.get(2).getDay());
-		assertEquals(new LocalDate(2013, 10, 17).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(),
+		assertEquals(new LocalDate(2013, 10, 17).toDateTimeAtStartOfDay(ISA_TIME_ZONE).getMillis(),
 				days.get(3).getDay());
-		assertEquals(new LocalDate(2013, 10, 18).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis(),
+		assertEquals(new LocalDate(2013, 10, 18).toDateTimeAtStartOfDay(ISA_TIME_ZONE).getMillis(),
 				days.get(4).getDay());
 	}
 
@@ -50,8 +49,8 @@ public final class ScheduleTests {
 
 		assertEquals("Architecture des ordinateurs I", period.getName());
 		assertEquals(StudyPeriodType.LECTURE, period.getPeriodType());
-		assertEquals(new DateTime(2013, 10, 15, 13, 15, 00, DateTimeZone.UTC), new DateTime(period.getStartTime(), DateTimeZone.UTC));
-		assertEquals(new DateTime(2013, 10, 15, 15, 00, 00, DateTimeZone.UTC), new DateTime(period.getEndTime(), DateTimeZone.UTC));
+		assertEquals(new DateTime(2013, 10, 15, 13, 15, 00, ISA_TIME_ZONE), new DateTime(period.getStartTime(), ISA_TIME_ZONE));
+		assertEquals(new DateTime(2013, 10, 15, 15, 00, 00, ISA_TIME_ZONE), new DateTime(period.getEndTime(), ISA_TIME_ZONE));
 		assertEquals(Arrays.asList("CO 3"), period.getRooms());
 	}
 
@@ -83,8 +82,8 @@ public final class ScheduleTests {
 		private static final String RETURN_VALUE = getFileContents("ExampleSchedule.xml");
 
 		@Override
-		public HttpResult get(String url, Charset charset, List<Cookie> cookies) throws Exception {
-			return new HttpResult(new ArrayList<Cookie>(), url, RETURN_VALUE);
+		public String get(String url, Charset charset) throws Exception {
+			return RETURN_VALUE;
 		}
 
 		@SuppressWarnings("resource")
