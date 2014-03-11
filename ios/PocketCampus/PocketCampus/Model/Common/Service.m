@@ -117,7 +117,7 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
         }
     }
     if (nbOps > 0 && delegate) {
-        CLSNSLog(@"-> All operations canceled for delegate %@ (%d cancelled)", delegate, nbOps);
+        CLSNSLog(@"-> All operations cancelled for delegate %@ (%d cancelled)", delegate, nbOps);
     }
 }
 
