@@ -333,6 +333,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             [self.centerLoadingIndicator stopAnimating];
             self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
             return; //everything is set
+            break;
         case UserStationsStateErrorNeedTwo:
             self.locationButton.enabled = NO;
             self.fromLabel.text = nil;

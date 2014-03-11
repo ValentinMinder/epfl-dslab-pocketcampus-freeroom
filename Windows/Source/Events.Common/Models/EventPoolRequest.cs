@@ -28,7 +28,7 @@ namespace PocketCampus.Events.Models
         /// The favorite events.
         /// </summary>
         /// <remarks>
-        /// The server ignores the one not in the pool.
+        /// The server ignores the ones not in the pool.
         /// </remarks>
         [ThriftField( 4, false, "starredEventItems" )]
         public long[] FavoriteEventIds { get; set; }

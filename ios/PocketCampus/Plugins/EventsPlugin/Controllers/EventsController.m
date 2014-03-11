@@ -221,6 +221,7 @@ static EventsController* instance __weak = nil;
         int64_t itemId = [eventItemIdToMarkFavorite longLongValue];
         [self.eventsService addFavoriteEventItemId:itemId];
         viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:itemId];
+        [(EventItemViewController*)viewController setShowFavoriteButton:YES];
     }
     
     return viewController;
