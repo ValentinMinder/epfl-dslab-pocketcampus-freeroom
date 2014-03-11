@@ -67,7 +67,6 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 		mLayout.setTitle(getString(R.string.freeroom_title_FRresult));
-		mLayout.hideTitle(); // TODO: remove this without breaking the UI.
 
 		initializeResultView();
 

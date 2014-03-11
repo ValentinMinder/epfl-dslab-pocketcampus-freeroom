@@ -59,7 +59,6 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 		mLayout.setTitle(getString(R.string.freeroom_title_main_title));
-		mLayout.hideTitle(); // TODO: remove this without breaking the UI.
 
 		initializeMainView();
 	}
@@ -94,7 +93,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 		mListValues.add(getString(R.string.freeroom_menu_freeroom_now));
 		mListValues.add(getString(R.string.freeroom_menu_freeroom_search));
 		mListValues.add(getString(R.string.freeroom_menu_check_occupancy));
-				
+		
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -113,6 +112,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 					break;
 				case 2:
 					i = new Intent(FreeRoomMainView.this, FRCheckOccupancySearchView.class);
+					break;
 				default:
 					break;
 				}
@@ -121,7 +121,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 			}
 			
 		});
-		mLayout.addView(mList);
+		mLayout.addFillerView(mList);
 	}
 
 	@Override

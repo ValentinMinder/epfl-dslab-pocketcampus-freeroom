@@ -53,8 +53,7 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.setTitle(getString(R.string.freeroom_title_FRsearch));
-		mLayout.hideTitle(); // TODO: remove this without breaking the UI.
+		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_search));
 
 		initializeCheckOccupancySearchView();
 	}
