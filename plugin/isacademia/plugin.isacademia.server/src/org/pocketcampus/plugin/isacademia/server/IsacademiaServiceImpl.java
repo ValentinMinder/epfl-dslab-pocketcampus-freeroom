@@ -25,13 +25,13 @@ public final class IsAcademiaServiceImpl implements IsAcademiaService.Iface {
 
 	@Override
 	public ScheduleResponse getSchedule(ScheduleRequest req) throws TException {
-		String gaspar = PocketCampusServer.authGetUserGaspar(req);
+		String sciper = PocketCampusServer.authGetUserSciper(req);
 
 		LocalDate date = req.isSetWeekStart() ? new LocalDate(req.getWeekStart()) : getCurrentWeekStart();
 		String lang = req.isSetLanguage() ? req.getLanguage() : "fr";
 
 		try {
-			return _schedule.get(date, lang, gaspar);
+			return _schedule.get(date, lang, sciper);
 		} catch (Exception e) {
 			throw new TException(e);
 		}
