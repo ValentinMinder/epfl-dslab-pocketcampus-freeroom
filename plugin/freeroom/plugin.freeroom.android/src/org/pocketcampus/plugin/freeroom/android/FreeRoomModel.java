@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,14 +35,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	IFreeRoomView mListeners = (IFreeRoomView) getListeners();
 	
 	/**List of <code>FRRoom</code>'s obtained from the freeroom query**/
-	private Set<FRRoom> mFreeRoomResult;
+	private Set<FRRoom> mFreeRoomResult = new HashSet<FRRoom>();
 	/**List of suggestions for the check occupancy search view*/
-	private List<FRRoom> mAutoCompleteSuggestions;
+	private List<FRRoom> mAutoCompleteSuggestions = new ArrayList<FRRoom>();
 	// TODO: not used NOW
 	/**Used to specify the displayed <code>FRRoom</code> in the results view*/
 	private FRRoom mSelectedFRRoom;
 	/**Ordered list of <code>Occupancy</code>'s displayed in the check occupancy*/
-	private List<Occupancy> mListCheckedOccupancyRoom;
+	private List<Occupancy> mListCheckedOccupancyRoom = new ArrayList<Occupancy>();
 	
 	/**
 	 * Constructor with reference to the context.
