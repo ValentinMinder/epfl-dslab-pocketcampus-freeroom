@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.freeroom.server;
 
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +19,7 @@ import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
@@ -28,6 +27,9 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.OccupationType;
+
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+
 
 /**
  * FreeRoomServiceImpl
@@ -187,6 +189,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 				ResultSet resultQuery = query.executeQuery();
 				Occupancy mOccupancy = new Occupancy();
+				System.out.println("room:" + room);
 				mOccupancy.setRoom(room);
 
 				// timestamp used to generate the occupations accross the
@@ -239,8 +242,59 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
 			throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		// TODO this method wont work with full "door code" like PH D2 398
+		// TODO dont work with UID at the moment
+		
+		List<FRRoom> rooms = new ArrayList<FRRoom>();
+		String txt = request.getConstraint();
+		String itxt = request.getConstraint();
+		// avoid all whitespaces for requests
+		txt = txt.trim();
+		txt = txt.replaceAll("\\s", "");
+		try {
+			Connection connectBDD = connMgr.getConnection();
+			PreparedStatement query = connectBDD.prepareStatement("SELECT * "
+					+ "FROM roomslist rl "
+					+ "WHERE CONCAT(rl.building, rl.room_number) LIKE (?) "
+					// TODO: verify the order for CO 1 and CO 123 ...
+					+ "ORDER BY CONCAT(rl.building, rl.room_number) ASC");
+			query.setString(1, txt + "%");
 
+			// filling the query with values
+
+			ResultSet resultQuery = query.executeQuery();
+			while (resultQuery.next()) {
+				String building = resultQuery.getString("building");
+				int number = resultQuery.getInt("room_number");
+				FRRoom frRoom = new FRRoom(building, number + "");
+				String type = resultQuery.getString("type");
+				if (type != null) {
+					try {
+						FRRoomType t = FRRoomType.valueOf(type);
+						frRoom.setType(t);
+					} catch (IllegalArgumentException e) {
+						System.err.println("Type not known " + type);
+						e.printStackTrace();
+					}
+				}
+				int cap = resultQuery.getInt("capacity");
+				if (cap > 0) {
+					frRoom.setCapacity(cap);
+				}
+				rooms.add(frRoom);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// TODO: delete the debug syso
+		System.out.println("for itinial constraint :" + itxt
+				+ ": transformed to :" + txt + ":");
+		for (FRRoom room : rooms) {
+			System.out.println(room);
+		}
+		AutoCompleteReply reply = new AutoCompleteReply(rooms);
+		return reply;
+	}
 }
