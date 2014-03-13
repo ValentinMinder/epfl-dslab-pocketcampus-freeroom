@@ -3,41 +3,90 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using PocketCampus.IsAcademia.ViewModels;
+using PocketCampus.IsAcademia.Models;
+
+//  _    _   ______   _____    ______  
+// | |  | | |  ____| |  __ \  |  ____| 
+// | |__| | | |__  | | |__) | | |__    
+// |  __  | |  __| | |  _  /  |  __|   
+// | |  | | | |____| | | \ \  | |____  
+// |_|  |_| |______| |_|  \_\ |______| 
+//  ____    ______ 
+// |  _ \  |  ____|
+// | |_) | | |__   
+// |  _ <| |  __|  
+// | |_) | | |____ 
+// |____/  |______|
+//  _____    _____               _____    ____    _   _    _____ 
+// |  __ \  |  __ \      /\     / ____|  / __ \  | \ | |  / ____|
+// | |  | | | |__) |    /  \   | |  __| | |  | | |  \| | | (___  
+// | |  | | |  _  /    / /\ \  | | |_ | | |  | | | . ` |  \___ \ 
+// | |__| | | | \ \   / ____ \ | |__| | | |__| | | |\  |  ____) |
+// |_____/  |_|  \_\ /_/    \_\ \_____|  \____/  |_| \_| /_____/ 
+//
+
+// (please don't look at this)
+// (I'll refactor this soon, promise)
 
 namespace PocketCampus.IsAcademia.Controls
 {
     /// <summary>
-    /// Displays periods in a day.
+    /// Displays one or multiple days.
     /// </summary>
     public sealed class DayDisplay : UserControl
     {
-        // The start and end hours of class. (the end hour is the last hour in which a period can begin, not end)
-        private const int StartHour = 8, EndHour = 18;
+        private const int MinimumHoursInDay = 10;
+        private const int HoursInDay = 24;
+        private const string HourFormat = @"00\:\0\0";
+        private const int MinutesInHour = 60;
+
+        private const int CollisionCheckingInterval = 15; // in minutes
+        private const double HoursGridWidth = 50;
 
         #region Day DependencyProperty
         /// <summary>
-        /// The day to display.
+        /// The day to display, if any.
         /// </summary>
-        public DayInfo Day
+        public StudyDay Day
         {
-            get { return (DayInfo) GetValue( DayProperty ); }
+            get { return (StudyDay) GetValue( DayProperty ); }
             set { SetValue( DayProperty, value ); }
         }
 
-        /// <summary>
-        /// The day to display.
-        /// </summary>
         public static readonly DependencyProperty DayProperty =
-            DependencyProperty.Register( "Day", typeof( DayInfo ), typeof( DayDisplay ), new PropertyMetadata( OnDayPropertyChanged ) );
+            DependencyProperty.Register( "Day", typeof( StudyDay ), typeof( DayDisplay ),
+                new PropertyMetadata( ( o, _ ) => ( (DayDisplay) o ).Refresh() ) );
+        #endregion
 
-        private static void OnDayPropertyChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
+        #region Days DependencyProperty
+        /// <summary>
+        /// All of the days in the week.
+        /// </summary>
+        public StudyDay[] Days
         {
-            ( (DayDisplay) obj ).Refresh();
+            get { return (StudyDay[]) GetValue( DaysProperty ); }
+            set { SetValue( DaysProperty, value ); }
         }
+
+        public static readonly DependencyProperty DaysProperty =
+            DependencyProperty.Register( "Days", typeof( StudyDay[] ), typeof( DayDisplay ),
+                new PropertyMetadata( ( o, _ ) => ( (DayDisplay) o ).Refresh() ) );
+        #endregion
+
+        #region HourIncrement DependencyProperty
+        public int HourIncrement
+        {
+            get { return (int) GetValue( HourIncrementProperty ); }
+            set { SetValue( HourIncrementProperty, value ); }
+        }
+
+        public static readonly DependencyProperty HourIncrementProperty =
+            DependencyProperty.Register( "HourIncrement", typeof( int ), typeof( DayDisplay ),
+                new PropertyMetadata( 1, ( o, _ ) => ( (DayDisplay) o ).Refresh() ) );
         #endregion
 
         #region PeriodTemplate DependencyProperty
@@ -50,9 +99,6 @@ namespace PocketCampus.IsAcademia.Controls
             set { SetValue( PeriodTemplateProperty, value ); }
         }
 
-        /// <summary>
-        /// The template used for periods.
-        /// </summary>
         public static readonly DependencyProperty PeriodTemplateProperty =
             DependencyProperty.Register( "PeriodTemplate", typeof( DataTemplate ), typeof( DayDisplay ), new PropertyMetadata( null ) );
         #endregion
@@ -67,9 +113,6 @@ namespace PocketCampus.IsAcademia.Controls
             set { SetValue( ContainerStyleProperty, value ); }
         }
 
-        /// <summary>
-        /// The style applied to period containers.
-        /// </summary>
         public static readonly DependencyProperty ContainerStyleProperty =
             DependencyProperty.Register( "ContainerStyle", typeof( Style ), typeof( DayDisplay ), new PropertyMetadata( null ) );
         #endregion
@@ -84,23 +127,19 @@ namespace PocketCampus.IsAcademia.Controls
             set { SetValue( EmptyContainerStyleProperty, value ); }
         }
 
-        /// <summary>
-        /// The style applied to empty period containers.
-        /// </summary>
         public static readonly DependencyProperty EmptyContainerStyleProperty =
             DependencyProperty.Register( "EmptyContainerStyle", typeof( Style ), typeof( DayDisplay ), new PropertyMetadata( null ) );
         #endregion
 
-        // The grid in which content is displayed
-        private Grid _innerGrid;
+        private int _minHour;
+        private int _maxHour;
 
-
-        /// <summary>
-        /// Creates a new DayDisplay.
-        /// </summary>
         public DayDisplay()
         {
-            Content = _innerGrid = new Grid();
+            VerticalContentAlignment = VerticalAlignment.Stretch;
+            HorizontalContentAlignment = HorizontalAlignment.Stretch;
+
+            Loaded += ( _, __ ) => Refresh();
         }
 
 
@@ -109,147 +148,188 @@ namespace PocketCampus.IsAcademia.Controls
         /// </summary>
         private void Refresh()
         {
-            if ( Day == null )
+            if ( Days == null || ActualWidth == 0 )
             {
                 return;
             }
 
-            AddRows();
-            AddColumns();
-            _innerGrid.Children.Clear();
-            AddPeriods();
-            AddPlaceholders();
+            var minMax = GetMinAndMaxHours( Days );
+            _minHour = minMax.Item1;
+            _maxHour = minMax.Item2;
+
+            var content = new Grid();
+            content.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength( HoursGridWidth ) } );
+            var hoursGrid = CreateHoursGrid();
+            content.Children.Add( hoursGrid );
+
+
+            if ( Day == null )
+            {
+                for ( int n = 0; n < Days.Length; n++ )
+                {
+                    content.ColumnDefinitions.Add( new ColumnDefinition() );
+                    var canvas = new Canvas();
+                    canvas.Width = ( ActualWidth - HoursGridWidth ) / Days.Length;
+                    canvas.Height = ActualHeight;
+                    AddPlaceholdersToCanvas( canvas );
+                    AddPeriodsToCanvas( canvas, Days[n] );
+                    Grid.SetColumn( canvas, n + 1 );
+                    content.Children.Add( canvas );
+                }
+            }
+            else
+            {
+                content.ColumnDefinitions.Add( new ColumnDefinition() );
+                var canvas = new Canvas();
+                canvas.Width = ActualWidth - HoursGridWidth;
+                canvas.Height = ActualHeight;
+                AddPlaceholdersToCanvas( canvas );
+                AddPeriodsToCanvas( canvas, Day );
+                Grid.SetColumn( canvas, 1 );
+                content.Children.Add( canvas );
+            }
+
+            Content = content;
         }
 
         /// <summary>
-        /// Add rows for each hour.
+        /// Creates a vertical grid with hours.
         /// </summary>
-        private void AddRows()
+        private Grid CreateHoursGrid()
         {
-            _innerGrid.RowDefinitions.Clear();
+            var grid = new Grid();
 
-            for ( int n = StartHour; n <= EndHour; n++ )
+            for ( int n = _minHour; n < _maxHour; n++ )
             {
-                _innerGrid.RowDefinitions.Add( new RowDefinition() );
+                grid.RowDefinitions.Add( new RowDefinition() );
+            }
+
+            for ( int hour = _minHour; hour < _maxHour; hour += HourIncrement )
+            {
+                var block = new TextBlock
+                {
+                    Text = hour.ToString( HourFormat ),
+                    Style = (Style) Application.Current.Resources["PhoneTextSmallStyle"],
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Margin = new Thickness( 1, -5, 1, 0 )
+                };
+                Grid.SetRow( block, hour - _minHour );
+                grid.Children.Add( block );
+            }
+
+            return grid;
+        }
+
+        private void AddPlaceholdersToCanvas( Canvas canvas )
+        {
+            int length = _maxHour - _minHour;
+            double elementHeight = canvas.Height / length;
+
+            for ( int row = 0; row < length; row++ )
+            {
+                var border = new Border
+                {
+                    Height = elementHeight,
+                    Width = canvas.Width,
+                    Style = EmptyContainerStyle
+                };
+                Canvas.SetTop( border, elementHeight * row );
+                canvas.Children.Add( border );
             }
         }
 
-        /// <summary>
-        /// Adds columns depending on the number of overlapping periods (usually there are none).
-        /// </summary>
-        private void AddColumns()
+        private void AddPeriodsToCanvas( Canvas canvas, StudyDay day )
         {
-            _innerGrid.ColumnDefinitions.Clear();
+            int columnCount = day.Periods.Select( p => day.Periods.Count( p2 => DoPeriodsIntersect( p, p2 ) ) )
+                 .Aggregate( 1, LeastCommonMultiple );
 
-            int count = Day.Periods.Select( p => Day.Periods.Count( p2 => p.ContainedHours.Intersect( p2.ContainedHours ).Any() ) )
-                                   .Aggregate( 1, LeastCommonMultiple );
-            for ( int n = 0; n < count; n++ )
-            {
-                _innerGrid.ColumnDefinitions.Add( new ColumnDefinition() );
-            }
-        }
+            var dividers = GetWidthDividers( day );
+            double heightPerMinute = canvas.Height / ( ( _maxHour - _minHour ) * MinutesInHour );
+            double widthPerColumn = canvas.Width / columnCount;
+            var startDate = day.Day.AddHours( _minHour );
 
-        /// <summary>
-        /// Adds periods.
-        /// </summary>
-        private void AddPeriods()
-        {
-            foreach ( var period in Day.Periods )
+            int[,] usedSpaces = new int[columnCount, ( _maxHour - _minHour ) * MinutesInHour / CollisionCheckingInterval];
+
+
+            foreach ( var period in day.Periods )
             {
+                int elemWidth = columnCount / dividers[period];
+
+                int startColumn = 0;
+                while ( true )
+                {
+                    int max = 0;
+                    for ( int col = 0; col < elemWidth; col++ )
+                    {
+                        for ( var date = period.Start; date < period.End; date = date.AddMinutes( CollisionCheckingInterval ) )
+                        {
+                            max = Math.Max( max, usedSpaces[col + startColumn, (int) ( date - startDate ).TotalMinutes / CollisionCheckingInterval] );
+                        }
+                    }
+
+                    if ( max == 0 )
+                    {
+                        // yay!
+                        break;
+                    }
+
+                    startColumn += elemWidth;
+                    if ( startColumn >= columnCount )
+                    {
+                        System.Diagnostics.Debug.WriteLine( "Error while building periods for day {0}", day.Day.ToShortTimeString() );
+                        return; // give up, but don't crash!
+                    }
+                }
+
+                for ( int col = 0; col < elemWidth; col++ )
+                {
+                    for ( var date = period.Start; date < period.End; date = date.AddMinutes( CollisionCheckingInterval ) )
+                    {
+                        usedSpaces[col + startColumn, (int) ( date - startDate ).TotalMinutes / CollisionCheckingInterval]++;
+                    }
+                }
+
                 var control = new ContentControl
                 {
                     ContentTemplate = PeriodTemplate,
                     Content = period,
-                    Style = ContainerStyle
+                    Style = ContainerStyle,
+                    Height = ( period.End - period.Start ).TotalMinutes * heightPerMinute,
+                    Width = elemWidth * widthPerColumn
                 };
 
-                int row = period.StartHour - StartHour;
-                int rowSpan = period.Length;
+                Canvas.SetTop( control, ( period.Start - startDate ).TotalMinutes * heightPerMinute );
+                Canvas.SetLeft( control, widthPerColumn * startColumn );
 
-                int columnSpan = _innerGrid.ColumnDefinitions.Count
-                               / Day.Periods.Count( p => period.ContainedHours.Intersect( p.ContainedHours ).Any() );
-                int column = _innerGrid.Children
-                                       .Cast<FrameworkElement>()
-                                       .Count( c => Enumerable.Range( Grid.GetRow( c ), Grid.GetRowSpan( c ) )
-                                                              .Intersect( Enumerable.Range( row, rowSpan ) )
-                                                              .Any() )
-                                       * columnSpan;
-
-                Grid.SetRow( control, row );
-                Grid.SetRowSpan( control, rowSpan );
-
-                Grid.SetColumn( control, column );
-                Grid.SetColumnSpan( control, columnSpan );
-
-                _innerGrid.Children.Add( control );
+                canvas.Children.Add( control );
             }
         }
 
-        /// <summary>
-        /// Adds placeholders in the rows and columns that do not contain a period.
-        /// </summary>
-        private void AddPlaceholders()
+        private Dictionary<Period, int> GetWidthDividers( StudyDay day )
         {
-            bool[,] emptySpaces = GetEmptySpaces();
+            int[] collisionsPerInterval = new int[HoursInDay * MinutesInHour / CollisionCheckingInterval];
 
-            for ( int y = 0; y < _innerGrid.RowDefinitions.Count; y++ )
+            foreach ( var period in day.Periods )
             {
-                Border border = null;
-                int colSpan = 0;
-                for ( int x = 0; x < _innerGrid.ColumnDefinitions.Count; x++ )
+                for ( var date = period.Start; date < period.End; date = date.AddMinutes( CollisionCheckingInterval ) )
                 {
-                    if ( emptySpaces[x, y] )
-                    {
-                        if ( border == null )
-                        {
-                            border = new Border { Style = EmptyContainerStyle };
-                            Grid.SetColumn( border, x );
-                            Grid.SetRow( border, y );
-                        }
-                        colSpan++;
-                    }
-                    else if ( border != null )
-                    {
-                        Grid.SetColumnSpan( border, colSpan );
-                        _innerGrid.Children.Add( border );
-                        border = null;
-                        colSpan = 0;
-                    }
-                }
-                if ( border != null )
-                {
-                    Grid.SetColumnSpan( border, colSpan );
-                    _innerGrid.Children.Add( border );
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets an array indicating which spaces in the grid are empty.
-        /// </summary>
-        private bool[,] GetEmptySpaces()
-        {
-            bool[,] spaces = new bool[_innerGrid.ColumnDefinitions.Count, _innerGrid.RowDefinitions.Count];
-            for ( int x = 0; x < spaces.GetLength( 0 ); x++ )
-            {
-                for ( int y = 0; y < spaces.GetLength( 1 ); y++ )
-                {
-                    spaces[x, y] = true;
+                    collisionsPerInterval[(int) ( date - day.Day ).TotalMinutes / CollisionCheckingInterval]++;
                 }
             }
 
-            foreach ( FrameworkElement elem in _innerGrid.Children )
+            var dividers = new Dictionary<Period, int>();
+            foreach ( var period in day.Periods )
             {
-                for ( int x = 0; x < Grid.GetColumnSpan( elem ); x++ )
+                int max = 0;
+                for ( var date = period.Start; date < period.End; date = date.AddMinutes( CollisionCheckingInterval ) )
                 {
-                    for ( int y = 0; y < Grid.GetRowSpan( elem ); y++ )
-                    {
-                        spaces[Grid.GetColumn( elem ) + x, Grid.GetRow( elem ) + y] = false;
-                    }
+                    max = Math.Max( max, collisionsPerInterval[(int) ( date - day.Day ).TotalMinutes / CollisionCheckingInterval] );
                 }
+                dividers.Add( period, max );
             }
 
-            return spaces;
+            return dividers;
         }
 
         /// <summary>
@@ -266,6 +346,28 @@ namespace PocketCampus.IsAcademia.Controls
                 }
             }
             return num2;
+        }
+
+        private static bool DoPeriodsIntersect( Period p1, Period p2 )
+        {
+            return ( p1.Start == p2.Start && p1.End == p2.End )
+                || ( p1.Start <= p2.Start && p1.End > p2.Start )
+                || ( p1.Start >= p2.Start && p1.Start < p2.End );
+        }
+
+        private static Tuple<int, int> GetMinAndMaxHours( StudyDay[] days )
+        {
+            int min = days.Min( d => d.Periods.Min( p => p.Start.Hour ) );
+            int max = days.Max( d => d.Periods.Max( p => p.End.Hour ) );
+            if ( min + MinimumHoursInDay > HoursInDay )
+            {
+                min = max - MinimumHoursInDay;
+            }
+            else
+            {
+                max = Math.Max( max, min + MinimumHoursInDay );
+            }
+            return Tuple.Create( min, max );
         }
     }
 }

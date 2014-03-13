@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using PocketCampus.Common;
 using PocketCampus.Common.Controls;
-using PocketCampus.IsAcademia.ViewModels;
+using PocketCampus.IsAcademia.Models;
 using PocketCampus.Mvvm;
 using PocketCampus.Mvvm.Logging;
 
@@ -22,10 +22,10 @@ namespace PocketCampus.IsAcademia.Views
 
         private void Period_Tap( object sender, GestureEventArgs e )
         {
-            var period = (PeriodInfo) ( (FrameworkElement) sender ).DataContext;
+            var period = (Period) ( (FrameworkElement) sender ).DataContext;
             var converter = (EnumToLocalizedStringConverter) Resources["EnumToString"];
             string typeString = (string) converter.Convert( period.PeriodType, null, null, null );
-            string text = typeString + Environment.NewLine + period.Rooms;
+            string text = typeString + Environment.NewLine + string.Join( ", ", period.Rooms );
 
             MessageBox.Show( text, period.CourseName, MessageBoxButton.OK );
             Messenger.Send( new EventLogRequest( "ViewPeriodProperties", period.CourseName ) );

@@ -21,29 +21,21 @@ namespace PocketCampus.IsAcademia.ViewModels
     [LogId( "/schedule" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
+        private const int MinimumDaysInWeek = 5;
+
         private readonly IIsAcademiaService _isaService;
         private readonly ISecureRequestHandler _requestHandler;
 
-        private DayInfo[] _days;
-        private DayInfo _currentDay;
+        private StudyDay[] _days;
         private DateTime _weekDate;
 
         /// <summary>
         /// Gets the available days.
         /// </summary>
-        public DayInfo[] Days
+        public StudyDay[] Days
         {
             get { return _days; }
             private set { SetProperty( ref _days, value ); }
-        }
-
-        /// <summary>
-        /// Gets the current day.
-        /// </summary>
-        public DayInfo CurrentDay
-        {
-            get { return _currentDay; }
-            private set { SetProperty( ref _currentDay, value ); }
         }
 
         /// <summary>
@@ -105,8 +97,31 @@ namespace PocketCampus.IsAcademia.ViewModels
 
                 if ( !token.IsCancellationRequested )
                 {
-                    Days = response.Days.Select( d => new DayInfo( d ) ).ToArray();
-                    CurrentDay = Days.FirstOrDefault( d => d.Date == DateTime.Now.Date );
+                    foreach ( var d in response.Days )
+                    {
+                        d.Day = d.Day.AddHours( -1 );
+                        foreach ( var p in d.Periods )
+                        {
+                            p.Start = p.Start.AddHours( -1 );
+                            p.End = p.End.AddHours( -1 );
+                        }
+                    }
+                    // Now for the fun part!
+                    // The days group their periods by UTC date
+                    // but since we're in local date, some "days" may hold periods outside of their UTC date
+                    // so we have to disassemble them and re-assemble new days
+                    var days = response.Days
+                                       .SelectMany( d => d.Periods )
+                                       .GroupBy( p => p.Start.Date )
+                                       .Select( g => new StudyDay { Day = g.Key, Periods = g.ToArray() } )
+                                       .ToArray();
+                    var missingDays = Enumerable.Range( 0, MinimumDaysInWeek )
+                                                .Select( n => WeekDate.AddDays( n ) )
+                                                .Where( d => days.All( d2 => d.Date != d2.Day.Date ) )
+                                                .Select( d => new StudyDay { Day = d.Date, Periods = new Period[0] } );
+                    Days = days.Concat( missingDays )
+                               .OrderBy( d => d.Day )
+                               .ToArray();
                 }
 
                 return true;
