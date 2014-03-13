@@ -1,13 +1,14 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
 import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
@@ -20,13 +21,18 @@ import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 		IFreeRoomView {
@@ -34,7 +40,8 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
 
-	private StandardTitledLayout mLayout;
+	private StandardTitledDoubleLayout mLayout;
+	private LinearLayout subLayout;
 
 	private ArrayList<FRRoom> roomsToCheck;
 
@@ -45,6 +52,10 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 	private InputBarElement mInputBar;
 	/** Adapter for the <code>mListView</code> */
 	private ArrayAdapter<String> mAdapter;
+	
+	private DatePicker dp;
+	private TimePicker tp_s;
+	private TimePicker tp_e;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -73,10 +84,28 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 		 */
 		final IFreeRoomView view = this;
 		// Setup the layout
-		mLayout = new StandardTitledLayout(this);
+		mLayout = new StandardTitledDoubleLayout(this);
 
 		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_search));
-
+		subLayout = new LinearLayout(this);
+		subLayout.setOrientation(LinearLayout.HORIZONTAL);
+		mLayout.addFirstLayoutFillerView(subLayout);
+		
+		dp = new DatePicker(this);
+		TextView tv = new TextView(this);
+		tv.setText("from");
+		tv.setGravity(Gravity.CENTER_VERTICAL);
+		tp_s = new TimePicker(this);
+		TextView tv2 = new TextView(this);
+		tv2.setText("to");
+		tv2.setGravity(Gravity.CENTER);
+		tp_e = new TimePicker(this);
+		subLayout.addView(dp);
+		subLayout.addView(tv);
+		subLayout.addView(tp_s);
+		subLayout.addView(tv2);
+		subLayout.addView(tp_e);
+		
 		mInputBar = new InputBarElement(
 				this,
 				null,
@@ -131,7 +160,7 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 			}
 		});
 
-		mLayout.addFillerView(mInputBar);
+		mLayout.addSecondLayoutFillerView(mInputBar);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
@@ -152,16 +181,34 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 				Log.v("fr_check_search", "checking against selected " + room);
 				// TODO: add to list selected for mutli-query, and start the
 				// search elsewhere
-				// TODO: search for a specific time!
-				FRPeriod period = new FRPeriod(
-						System.currentTimeMillis() - 36 * 3600 * 1000, System
-								.currentTimeMillis() - 34 * 3600 * 1000, false);
+				
+				// getting the time from the pickers;
+				int day = dp.getDayOfMonth();
+				int month = dp.getMonth();
+				int year = dp.getYear();
+				int h_s = tp_s.getCurrentHour();
+				int m_s = tp_s.getCurrentMinute();
+				int h_e = tp_e.getCurrentHour();
+				int m_e = tp_e.getCurrentMinute();
+				System.out.println(year+"/"+month+"/"+day+"/"+h_s+"/"+m_s);
+				Calendar start = Calendar.getInstance();
+				System.out.println(start.getTimeInMillis());
+				start.set(year, month, day, h_s, m_s, 0);
+				Calendar end = Calendar.getInstance();
+				end.set(year, month, day, h_e, m_e, 0);
+				System.out.println(start.getTimeInMillis());
+				
+				// constructs the request and sending to the controller
+				FRPeriod period = new FRPeriod(start.getTimeInMillis(), 
+						end.getTimeInMillis(), false);
 				List<FRRoom> listFRRoom = new ArrayList<FRRoom>();
 				listFRRoom.add(room);
 				OccupancyRequest request = new OccupancyRequest(listFRRoom,
 						period);
 				mController.checkOccupancy(FRCheckOccupancySearchView.this,
 						request);
+				
+				// starting the result UI
 				Intent i = new Intent(FRCheckOccupancySearchView.this,
 						FRCheckOccupancyResultView.class);
 				FRCheckOccupancySearchView.this.startActivity(i);
@@ -177,6 +224,7 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 
 	@Override
 	public void autoCompletedUpdated() {
+		mAdapter.notifyDataSetInvalidated();
 		listFR = mModel.getAutocompleteSuggestions();
 		ArrayList<String> listS = new ArrayList<String>(listFR.size());
 		mAdapter = new ArrayAdapter<String>(getApplicationContext(),
