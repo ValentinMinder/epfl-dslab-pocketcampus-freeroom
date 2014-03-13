@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -97,6 +98,7 @@ namespace PocketCampus.IsAcademia.ViewModels
 
                 if ( !token.IsCancellationRequested )
                 {
+#warning Remove this once the server is fixed.
                     foreach ( var d in response.Days )
                     {
                         d.Day = d.Day.AddHours( -1 );
@@ -106,12 +108,13 @@ namespace PocketCampus.IsAcademia.ViewModels
                             p.End = p.End.AddHours( -1 );
                         }
                     }
+
                     // Now for the fun part!
                     // The days group their periods by UTC date
                     // but since we're in local date, some "days" may hold periods outside of their UTC date
                     // so we have to disassemble them and re-assemble new days
                     var days = response.Days
-                                       .SelectMany( d => d.Periods )
+                                       .SelectMany( d => ForceSameStartAndEndDays( d.Periods ) )
                                        .GroupBy( p => p.Start.Date )
                                        .Select( g => new StudyDay { Day = g.Key, Periods = g.ToArray() } )
                                        .ToArray();
@@ -142,6 +145,28 @@ namespace PocketCampus.IsAcademia.ViewModels
         private static int GetDayIndex( DayOfWeek dow )
         {
             return dow == DayOfWeek.Sunday ? 6 : (int) dow - 1;
+        }
+
+        /// <summary>
+        /// Ensures that all periods in the specified sequence begin and end on the same day, splitting them in two if needed.
+        /// </summary>
+        private static IEnumerable<Period> ForceSameStartAndEndDays( IEnumerable<Period> periods )
+        {
+            foreach ( var period in periods )
+            {
+                if ( period.Start.Date == period.End.Date )
+                {
+                    yield return period;
+                }
+                else
+                {
+                    var earlyPeriod = period.Clone();
+                    var latePeriod = period.Clone();
+                    latePeriod.Start = earlyPeriod.End = period.End.Date;
+                    yield return earlyPeriod;
+                    yield return latePeriod;
+                }
+            }
         }
     }
 }

@@ -48,18 +48,25 @@
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
         </Style>
 
-        <!-- Empty period container style -->
-        <Style x:Key="PeriodEmptyContainerStyle" TargetType="Border">
+        <!-- Empty period container portrait style -->
+        <Style x:Key="PeriodEmptyContainerPortraitStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource EmptyPeriodBackgroundBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource EmptyPeriodBorderBrush}" />
-            <Setter Property="BorderThickness" Value="5,0.5,0,0.5" />
+            <Setter Property="BorderThickness" Value="8,0.5,0,0.5" />
         </Style>
+
+        <!-- Empty period container landscape style -->
+        <Style x:Key="PeriodEmptyContainerLandscapeStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource EmptyPeriodBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource EmptyPeriodBorderBrush}" />
+            <Setter Property="BorderThickness" Value="4,0.5,0,0.5" />
+        </Style>
+
 
         <!-- Basic period template -->
         <DataTemplate x:Key="BasicPeriodTemplate">
             <Grid Tap="Period_Tap"
-                  Background="{StaticResource PhoneBackgroundBrush}"
-                  Margin="0,0,1,0">
+                  Background="{StaticResource PhoneBackgroundBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4" />
                     <ColumnDefinition />
@@ -71,13 +78,13 @@
                 <!-- Color background -->
                 <Rectangle Grid.Column="1"
                            Fill="{Binding PeriodType, Converter={StaticResource PeriodTypeToBrush}}"
-                           Opacity="0.5" />
+                           Opacity="0.7" />
 
                 <!-- Course name -->
                 <TextBlock Grid.Column="1"
                            Text="{Binding CourseName}"
                            Style="{StaticResource PhoneTextNormalStyle}"
-                           Margin="4,0,0,0"
+                           Margin="2,0"
                            TextWrapping="Wrap"
                            TextTrimming="WordEllipsis" />
             </Grid>
@@ -85,8 +92,7 @@
 
         <!-- Full period template -->
         <DataTemplate x:Key="FullPeriodTemplate">
-            <Grid Margin="0,0,1,0"
-                  Background="{StaticResource PhoneBackgroundBrush}">
+            <Grid Background="{StaticResource PhoneBackgroundBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition />
@@ -106,7 +112,7 @@
                            Grid.ColumnSpan="2"
                            Grid.RowSpan="3"
                            Fill="{Binding PeriodType, Converter={StaticResource PeriodTypeToBrush}}"
-                           Opacity="0.5" />
+                           Opacity="0.7" />
 
                 <!-- Course name -->
                 <Viewbox Grid.Column="1"
@@ -154,7 +160,7 @@
                            Text="{Binding Day, StringFormat='dddd'}"
                            Style="{StaticResource PhoneTextLargeStyle}"
                            Foreground="{StaticResource PhoneSubtleBrush}"
-                           Margin="0,6"/>
+                           Margin="50,0,12,4" />
 
                 <!-- Day schedule -->
                 <!-- It must have a height, otherwise the * rows work as Auto rows. -->
@@ -166,7 +172,7 @@
                                        Days="{Binding DataContext.Days, ElementName=LayoutRoot}"
                                        PeriodTemplate="{StaticResource FullPeriodTemplate}"
                                        ContainerStyle="{StaticResource PeriodContainerStyle}"
-                                       EmptyContainerStyle="{StaticResource PeriodEmptyContainerStyle}" />
+                                       EmptyContainerStyle="{StaticResource PeriodEmptyContainerPortraitStyle}" />
             </Grid>
         </DataTemplate>
 
@@ -177,7 +183,7 @@
                                    Days="{Binding DataContext.Days, ElementName=LayoutRoot}"
                                    PeriodTemplate="{StaticResource BasicPeriodTemplate}"
                                    ContainerStyle="{StaticResource PeriodContainerStyle}"
-                                   EmptyContainerStyle="{StaticResource PeriodEmptyContainerStyle}"
+                                   EmptyContainerStyle="{StaticResource PeriodEmptyContainerLandscapeStyle}"
                                    VerticalAlignment="Stretch" />
         </DataTemplate>
     </comControls:BasePage.Resources>
@@ -213,12 +219,14 @@
                                Height="55" />
 
         <!-- Portrait schedule -->
-        <ItemsControl Grid.ColumnSpan="2"
-                      Grid.Row="2"
-                      x:Name="PortraitDays"
-                      ItemsSource="{Binding Days}"
-                      ItemTemplate="{StaticResource PortraitDayTemplate}"
-                      Style="{StaticResource ScrollingItemsControlStyle}" />
+        <!-- HACK: It must not use virtualization because of the datacontext issues... 
+                   Maybe there's a solution? -->
+        <ScrollViewer x:Name="PortraitDays"
+                      Grid.ColumnSpan="2"
+                      Grid.Row="2">
+            <ItemsControl ItemsSource="{Binding Days}"
+                          ItemTemplate="{StaticResource PortraitDayTemplate}" />
+        </ScrollViewer>
 
         <!-- Landscape schedule -->
         <myControls:DayDisplay x:Name="LandscapeDays"
@@ -226,9 +234,10 @@
                                Grid.Row="2"
                                Day="{x:Null}"
                                Days="{Binding Days}"
+                               HourIncrement="2"
                                PeriodTemplate="{StaticResource BasicPeriodTemplate}"
                                ContainerStyle="{StaticResource PeriodContainerStyle}"
-                               EmptyContainerStyle="{StaticResource PeriodEmptyContainerStyle}" 
+                               EmptyContainerStyle="{StaticResource PeriodEmptyContainerLandscapeStyle}" 
                                Visibility="Collapsed"
                                Margin="5" />
 

@@ -214,7 +214,6 @@ namespace PocketCampus.IsAcademia.ViewModels.Design
             }
         }
 
-        public StudyDay CurrentDay { get { return Days[0]; } }
         public DateTime WeekDate { get { return new DateTime( 2013, 5, 6 ); } }
 #endif
     }

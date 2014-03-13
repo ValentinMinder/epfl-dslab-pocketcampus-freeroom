@@ -44,5 +44,15 @@ namespace PocketCampus.IsAcademia.Models
         /// </summary>
         [ThriftField( 5, true, "rooms" )]
         public string[] Rooms { get; set; }
+
+
+        /// <summary>
+        /// Creates a shallow clone of the period.
+        /// </summary>
+        /// <returns></returns>
+        public Period Clone()
+        {
+            return (Period) this.MemberwiseClone();
+        }
     }
 }
