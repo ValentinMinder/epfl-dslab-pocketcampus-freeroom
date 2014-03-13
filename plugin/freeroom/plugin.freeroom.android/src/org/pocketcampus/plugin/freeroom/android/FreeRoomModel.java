@@ -76,7 +76,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Getter for the results of the request
 	 * @return Set of FRRoom
 	 */
-	@Override
 	public Set<FRRoom> getFreeRoomResults() {
 		return mFreeRoomResult;
 	}
@@ -85,7 +84,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Setter for the results of a freeroom request
 	 * @param results the result for the specific freeroom search
 	 */
-	@Override
 	public void setFreeRoomResults(Set<FRRoom> results){
 		mFreeRoomResult = results;
 		Log.v("Freeroom","result set via the model");
@@ -111,7 +109,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Sets the suggestions to the autocomplete and notifies the listeners.
 	 * @param listFRRoom
 	 */
-	@Override
 	public void setAutoCompleteResults(List<FRRoom> listFRRoom) {
 		mAutoCompleteSuggestions = listFRRoom;
 		mListeners.autoCompletedUpdated();
@@ -121,7 +118,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Gets the suggestions for the autocomplete
 	 */
-	@Override
 	public List<FRRoom> getAutocompleteSuggestions() {
 		return mAutoCompleteSuggestions;
 	}
@@ -130,7 +126,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Sets the occupancy result for all the rooms and notifies the listeners.
 	 * @param list
 	 */
-	@Override
 	public void setOccupancyResults(List<Occupancy> list) {
 		// TODO: update the model, but first define how to use and store the data...
 		mListCheckedOccupancyRoom = list;
@@ -141,7 +136,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Gets the list of room checked against occupancy.
 	 * @return
 	 */
-	@Override
 	public List<Occupancy> getListCheckedOccupancyRoom() {
 		return mListCheckedOccupancyRoom;
 	}

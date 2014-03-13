@@ -61,17 +61,14 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 		return mModel;
 	}
 	
-	@Override
 	public void searchFreeRoom(IFreeRoomView view, FreeRoomRequest request) {
 		new GetFreeRoomRequest(view).start(this, mClient, request);
 	}
 	
-	@Override
 	public void autoCompleteBuilding(IFreeRoomView view, AutoCompleteRequest request) {
 		new BuildingAutoCompleteRequest(view).start(this, mClient, request);
 	}
 	
-	@Override
 	public void checkOccupancy(IFreeRoomView view, OccupancyRequest request) {
 		new CheckOccupancyRequest(view).start(this, mClient, request);
 	}
@@ -79,17 +76,14 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 	/**
 	 * Sets the result in the model.
 	 */
-	@Override
 	public void setFreeRoomResults(FreeRoomReply rep) {
 		mModel.setFreeRoomResults(rep.getRooms());
 	}
 
-	@Override
 	public void setAutoCompleteResults(AutoCompleteReply result) {
 		mModel.setAutoCompleteResults(result.getListFRRoom());
 	}
 	
-	@Override
 	public void setCheckOccupancyResults(OccupancyReply result) {
 		List<Occupancy> list = result.getOccupancyOfRooms();
 		mModel.setOccupancyResults(list); 
