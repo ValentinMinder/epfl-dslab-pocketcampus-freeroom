@@ -49,7 +49,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ...");
 		try {
-			connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
+			connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL") + "test",
 					PC_SRV_CONFIG.getString("DB_USERNAME"),
 					PC_SRV_CONFIG.getString("DB_PASSWORD"));
 
@@ -163,6 +163,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		FRPeriod period = request.getPeriod();
 		long timestampStart = period.getTimeStampStart();
 		long timestampEnd = period.getTimeStampEnd();
+		
+		System.out.println((timestampStart - timestampEnd)/(3600*1000));
 
 		ArrayList<Occupancy> occupancies = new ArrayList<Occupancy>();
 
@@ -176,7 +178,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 								+ "WHERE rl.building = ? AND rl.room_number = ? "
 								+ "AND ro.rid = rl.rid AND "
 								+ "((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
-								+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)) "
+								+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)" +
+								"OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
 								+ "ORDER BY ro.timestampStart ASC");
 				query.setString(1, room.getBuilding());
 				query.setString(2, room.getNumber());
@@ -184,6 +187,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				query.setLong(4, timestampStart);
 				query.setLong(5, timestampEnd);
 				query.setLong(6, timestampStart);
+				query.setLong(7, timestampStart);
+				query.setLong(8, timestampEnd);
 
 				// filling the query with values
 
@@ -199,7 +204,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					long tsStart = resultQuery.getLong("timestampStart");
 					long tsEnd = resultQuery.getLong("timestampEnd");
 
-					if (Math.abs(tsStart - tsPerRoom) > MARGIN_ERROR_TIMESTAMP) {
+					if (tsStart - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
 						// We got a free period of time !
 						ActualOccupation mOcc = new ActualOccupation();
 						mOcc.setPeriod(new FRPeriod(tsPerRoom, tsStart - 1,
@@ -207,7 +212,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						mOcc.setAvailable(true);
 						mOcc.setOccupationType(OccupationType.FREE);
 						mOccupancy.addToOccupancy(mOcc);
-					}
+					} 
 
 					ActualOccupation mAccOcc = new ActualOccupation();
 					// TODO reminder that recurrent is set to false for now, but
@@ -222,7 +227,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				}
 
 				// There is some free time left after the last result
-				if (Math.abs(timestampEnd - tsPerRoom) > MARGIN_ERROR_TIMESTAMP) {
+				if (timestampEnd - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
 					ActualOccupation mOcc = new ActualOccupation();
 					mOcc.setPeriod(new FRPeriod(tsPerRoom, timestampEnd, false));
 					mOcc.setAvailable(true);

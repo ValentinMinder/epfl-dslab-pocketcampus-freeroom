@@ -62,7 +62,7 @@ public class Converter {
 			int startHour, int startMin, int endHour, int endMin) {
 		FRPeriod period = convert(day, startHour, endHour).getPeriod();
 		period.setTimeStampStart(period.getTimeStampStart() + startMin*ONE_MIN_IN_MS);
-		period.setTimeStampEnd(period.getTimeStampEnd() - endMin*ONE_MIN_IN_MS);
+		period.setTimeStampEnd(period.getTimeStampEnd() + endMin*ONE_MIN_IN_MS);
 
 		return new FreeRoomRequest(period);
 
