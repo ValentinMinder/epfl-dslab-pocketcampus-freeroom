@@ -198,20 +198,24 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 				end.set(year, month, day, h_e, m_e, 0);
 				System.out.println(start.getTimeInMillis());
 				
-				// constructs the request and sending to the controller
+				// constructs the request
 				FRPeriod period = new FRPeriod(start.getTimeInMillis(), 
 						end.getTimeInMillis(), false);
 				List<FRRoom> listFRRoom = new ArrayList<FRRoom>();
 				listFRRoom.add(room);
 				OccupancyRequest request = new OccupancyRequest(listFRRoom,
 						period);
-				mController.checkOccupancy(FRCheckOccupancySearchView.this,
-						request);
 				
-				// starting the result UI
+				// starting the result UI before sending the request
 				Intent i = new Intent(FRCheckOccupancySearchView.this,
 						FRCheckOccupancyResultView.class);
 				FRCheckOccupancySearchView.this.startActivity(i);
+				
+				// finally sending the request to the controller
+				mController.checkOccupancy(FRCheckOccupancySearchView.this,
+						request);
+				
+				
 			}
 		});
 

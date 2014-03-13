@@ -12,6 +12,7 @@ import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
 import org.pocketcampus.plugin.freeroom.shared.FRDay;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -88,14 +89,18 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				if (auditSearchButton() == 0) {
-					mController
-							.searchFreeRoom(
-									view,
-									org.pocketcampus.plugin.freeroom.android.utils.Converter
-											.convert(intday, startHour, endHour));
+					
+					// constructs the request
+					FreeRoomRequest req = org.pocketcampus.plugin.freeroom.android.utils.Converter
+							.convert(intday, startHour, endHour);
+					
+					// starting the result UI before sending the request!
 					Intent i = new Intent(FreeRoomSearchView.this,
 							FreeRoomResultView.class);
 					FreeRoomSearchView.this.startActivity(i);
+					
+					// finally sending the request to the controller
+					mController.searchFreeRoom(view,req);
 				}
 			}
 		});

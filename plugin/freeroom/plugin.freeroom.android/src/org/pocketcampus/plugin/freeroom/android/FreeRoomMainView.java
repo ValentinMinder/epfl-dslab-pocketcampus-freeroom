@@ -8,6 +8,7 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -101,12 +102,17 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				Intent i = null;
+				boolean flag = true;
 				switch (arg2) {
 				case 0:
 					Calendar calendar = Calendar.getInstance();
-					mController.searchFreeRoom(FreeRoomMainView.this, 
-							org.pocketcampus.plugin.freeroom.android.utils.Converter.convert(calendar.get(Calendar.DAY_OF_WEEK), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.HOUR_OF_DAY) + 1));
+					FreeRoomRequest req = org.pocketcampus.plugin.freeroom.android.utils.Converter.convert(calendar.get(Calendar.DAY_OF_WEEK), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.HOUR_OF_DAY) + 1);
+					// construct and launch the UI.
 					i = new Intent(FreeRoomMainView.this, FreeRoomResultView.class);
+					FreeRoomMainView.this.startActivity(i);
+					// send the request to the controller
+					mController.searchFreeRoom(FreeRoomMainView.this, req);
+					flag = false;
 					break;
 				case 1:
 					i = new Intent(FreeRoomMainView.this, FreeRoomSearchView.class);
@@ -117,8 +123,9 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 				default:
 					break;
 				}
-				
-				FreeRoomMainView.this.startActivity(i);
+				if (flag) {
+					FreeRoomMainView.this.startActivity(i);
+				}
 			}
 			
 		});
