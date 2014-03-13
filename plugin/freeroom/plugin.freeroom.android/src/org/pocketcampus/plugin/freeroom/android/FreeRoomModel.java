@@ -10,6 +10,7 @@ import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
@@ -122,13 +123,17 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return mAutoCompleteSuggestions;
 	}
 
+	private List<ActualOccupation> a = new ArrayList<ActualOccupation>();
 	/**
 	 * Sets the occupancy result for all the rooms and notifies the listeners.
 	 * @param list
 	 */
 	public void setOccupancyResults(List<Occupancy> list) {
-		// TODO: update the model, but first define how to use and store the data...
-		mListCheckedOccupancyRoom = list;
+		Log.v("fr.model-set", list.size() + "/"+ list.get(0).getOccupancySize());
+		a = new ArrayList<ActualOccupation>(list.get(0).getOccupancy());
+		mListCheckedOccupancyRoom = new ArrayList<Occupancy>(list);
+		Log.v("fr.model-set","listeners should be called");
+		// TODO: it seems NOT working from time to time! WHY???
 		mListeners.occupancyResultUpdated();
 	}
 	
@@ -137,6 +142,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @return
 	 */
 	public List<Occupancy> getListCheckedOccupancyRoom() {
+		Log.v("fr.model-get", mListCheckedOccupancyRoom.size() + "/"+ mListCheckedOccupancyRoom.get(0).getOccupancySize());
 		return mListCheckedOccupancyRoom;
+	}
+	
+	public List<ActualOccupation> getListActualOccupationForONERoom() {
+		Log.v("fr.model-getONE", mListCheckedOccupancyRoom.size() + "/"
+	+ mListCheckedOccupancyRoom.get(0).getOccupancySize() +"/"
+	+ a.size());
+		return a;
 	}
 }

@@ -19,6 +19,8 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 
+import android.util.Log;
+
 
 /**
  * FreeRoomController - Main logic for the FreeRoom Plugin.
@@ -86,6 +88,7 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 	
 	public void setCheckOccupancyResults(OccupancyReply result) {
 		List<Occupancy> list = result.getOccupancyOfRooms();
+		Log.v("fr.controller","size in controller = " + list.get(0).getOccupancySize());
 		mModel.setOccupancyResults(list); 
 	}
 	

@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.freeroom.android;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -74,22 +74,26 @@ public class FRCheckOccupancyResultView extends FreeRoomAbstractView implements
 
 	@Override
 	public void occupancyResultUpdated() {
+		Log.v("fr.checkresult", "listerner called - start updating");
 		List<Occupancy> list = mModel.getListCheckedOccupancyRoom();
 		List<ActualOccupation> listA = new ArrayList<ActualOccupation>();
+		
 		Occupancy firstRoom = null;
 		if (!list.isEmpty()) {
 			firstRoom = list.get(0);
-			listA = firstRoom.getOccupancy();
+			Log.v("fr.check-updating", firstRoom.getOccupancySize() + "");
+			listA.addAll(firstRoom.getOccupancy());
+		}
+		
+		if (listA.isEmpty()) {
+			System.out.println("empty! getting from way 2");
+			listA = new ArrayList<ActualOccupation>(mModel.getListActualOccupationForONERoom());
 		}
 
 		// TODO: only support one room! treat others room.. do expandable view
 		// for each room
 		ArrayList<String> listS = new ArrayList<String>();
-		mAdapter = new ArrayAdapter<String>(getApplicationContext(),
-				android.R.layout.simple_dropdown_item_1line,
-				android.R.id.text1, listS);
 
-		mListView.setAdapter(mAdapter);
 		SimpleDateFormat day_month = new SimpleDateFormat("MMM dd");
 		SimpleDateFormat hour_min = new SimpleDateFormat("HH:mm");
 		
@@ -135,6 +139,10 @@ public class FRCheckOccupancyResultView extends FreeRoomAbstractView implements
 					+ actual.getOccupationType();
 			listS.add(p);
 		}
-		mAdapter.notifyDataSetChanged();
+		mAdapter = new ArrayAdapter<String>(getApplicationContext(),
+				android.R.layout.simple_dropdown_item_1line,
+				android.R.id.text1, listS);
+
+		mListView.setAdapter(mAdapter);
 	}
 }
