@@ -25,6 +25,7 @@
     <string name="freeroom_selectstartHour">Start</string>
     <string name="freeroom_selectendHour">End</string>
     <string name="freeroom_no_room_available">No room available!</string>
+    <string name="freeroom_check_occupancy_search_onthe">on the</string>
     <string name="freeroom_check_occupancy_search_from">from</string>
     <string name="freeroom_check_occupancy_search_to">to</string>
     <string name="freeroom_check_occupancy_search_inputbarhint">Type in for searching a specific room (door code or UID)</string>

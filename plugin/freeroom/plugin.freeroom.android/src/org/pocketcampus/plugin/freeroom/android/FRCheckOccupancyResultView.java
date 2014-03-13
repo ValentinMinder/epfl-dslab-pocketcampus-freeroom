@@ -1,7 +1,9 @@
 package org.pocketcampus.plugin.freeroom.android;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -74,8 +76,9 @@ public class FRCheckOccupancyResultView extends FreeRoomAbstractView implements
 	public void occupancyResultUpdated() {
 		List<Occupancy> list = mModel.getListCheckedOccupancyRoom();
 		List<ActualOccupation> listA = new ArrayList<ActualOccupation>();
+		Occupancy firstRoom = null;
 		if (!list.isEmpty()) {
-			Occupancy firstRoom = list.get(0);
+			firstRoom = list.get(0);
 			listA = firstRoom.getOccupancy();
 		}
 
@@ -87,23 +90,46 @@ public class FRCheckOccupancyResultView extends FreeRoomAbstractView implements
 				android.R.id.text1, listS);
 
 		mListView.setAdapter(mAdapter);
-		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat day_month = new SimpleDateFormat("MMM dd");
+		SimpleDateFormat hour_min = new SimpleDateFormat("HH:mm");
+		
+		//TODO: put that in an appropriate title, not in the list!!!
+		String review = "No results to display, sorry!";
+		if (firstRoom != null) {
+			review = "Results for room " + firstRoom.getRoom();
+			if (!listA.isEmpty()) {
+				Date s = new Date(listA.get(0).getPeriod().getTimeStampStart());
+				Date e = new Date(listA.get(listA.size() - 1).getPeriod().getTimeStampEnd());
+				String p = "";
+				p += getString(R.string.freeroom_check_occupancy_search_onthe)
+						+ " ";
+				p += day_month.format(s);
+				p += " " + getString(R.string.freeroom_check_occupancy_search_from)
+						+ " ";
+				p += hour_min.format(s);
+				p += " " + getString(R.string.freeroom_check_occupancy_search_to)
+						+ " ";
+				p += hour_min.format(e);
+				review += "\n" + p;
+			}
+			listS.add(review);
+		}
+		
 		for (ActualOccupation actual : listA) {
+			Date d = new Date(actual.getPeriod().getTimeStampStart());
+			Date e = new Date(actual.getPeriod().getTimeStampEnd());
+			
 			String p = "";
-			cal.setTimeInMillis(actual.getPeriod().getTimeStampStart());
-			p += cal.get(Calendar.DAY_OF_MONTH);
-			p += "/" + cal.get(Calendar.MONTH);
+			p += getString(R.string.freeroom_check_occupancy_search_onthe)
+					+ " ";
+			p += day_month.format(d);
 			p += " " + getString(R.string.freeroom_check_occupancy_search_from)
 					+ " ";
-			p += cal.get(Calendar.HOUR_OF_DAY);
-			p += ":";
-			p += cal.get(Calendar.MINUTE);
+			p += hour_min.format(d);
 			p += " " + getString(R.string.freeroom_check_occupancy_search_to)
 					+ " ";
-			cal.setTimeInMillis(actual.getPeriod().getTimeStampEnd());
-			p += cal.get(Calendar.HOUR_OF_DAY);
-			p += ":";
-			p += cal.get(Calendar.MINUTE);
+			p += hour_min.format(e);
+			
 			p += " : ";
 			p += actual.isAvailable() ? "FREE" : "OCCUPIED by "
 					+ actual.getOccupationType();
