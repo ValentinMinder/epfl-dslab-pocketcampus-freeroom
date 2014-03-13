@@ -15,6 +15,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRDay;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -244,6 +245,7 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
+		Log.v("fr-freeroom-search", "listener to occupancyResultUpdated called" );
 	}
 
 }

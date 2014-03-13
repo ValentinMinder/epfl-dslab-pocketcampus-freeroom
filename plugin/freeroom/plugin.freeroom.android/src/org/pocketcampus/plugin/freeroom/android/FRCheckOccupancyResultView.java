@@ -74,7 +74,7 @@ public class FRCheckOccupancyResultView extends FreeRoomAbstractView implements
 
 	@Override
 	public void occupancyResultUpdated() {
-		Log.v("fr.checkresult", "listerner called - start updating");
+		Log.v("fr.checkresult", "listerner called - start updating!!");
 		List<Occupancy> list = mModel.getListCheckedOccupancyRoom();
 		List<ActualOccupation> listA = new ArrayList<ActualOccupation>();
 		

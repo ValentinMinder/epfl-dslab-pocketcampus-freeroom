@@ -134,6 +134,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		mListCheckedOccupancyRoom = new ArrayList<Occupancy>(list);
 		Log.v("fr.model-set","listeners should be called");
 		// TODO: it seems NOT working from time to time! WHY???
+		// TOFIX : dont call ALL the needed listeners !!! WHY?!?
 		mListeners.occupancyResultUpdated();
 	}
 	

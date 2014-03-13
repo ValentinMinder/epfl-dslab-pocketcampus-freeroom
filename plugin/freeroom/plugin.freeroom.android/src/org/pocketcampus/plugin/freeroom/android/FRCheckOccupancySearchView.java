@@ -252,5 +252,6 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
+		Log.v("fr-check-search", "listener to occupancyResultUpdated called" );
 	}
 }

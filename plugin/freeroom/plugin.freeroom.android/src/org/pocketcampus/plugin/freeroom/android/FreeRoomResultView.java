@@ -145,6 +145,7 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
+		Log.v("fr-freeroom-result", "listener to occupancyResultUpdated called" );
 	}
 
 }
