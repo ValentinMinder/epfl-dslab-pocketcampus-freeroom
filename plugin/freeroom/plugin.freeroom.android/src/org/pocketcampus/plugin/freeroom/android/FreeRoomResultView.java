@@ -73,18 +73,18 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 	}
 	
 	private void initializeResultView() {
-		resetButton = new Button(this);	
-		resetButton.setEnabled(false);
-		resetButton.setText(R.string.freeroom_resetbutton); 
-		resetButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				System.out.println("reset!");
-				// TODO action reset/ return
-			}
-		});
-		subLayout.addView(resetButton);
+//		resetButton = new Button(this);	
+//		resetButton.setEnabled(false);
+//		resetButton.setText(R.string.freeroom_resetbutton); 
+//		resetButton.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				System.out.println("reset!");
+//				// TODO action reset/ return
+//			}
+//		});
+//		subLayout.addView(resetButton);
 		
 		mList = new ListView(this);
 		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT,
@@ -92,12 +92,13 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 		mList.setLayoutParams(p);
 
 		mListValues = new ArrayList<String>();
-		mListValues.add("CO123fake");
 		mAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_dropdown_item_1line,
 				android.R.id.text1, mListValues);
 		mList.setAdapter(mAdapter);
-				
+		mListValues.add("CO 1");
+		mListValues.add("CO 123");
+		
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -109,7 +110,7 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements IFreeRoo
 				mController.getModel();
 				//TODO: display map!
 				Uri mUri = Uri.parse("pocketcampus://map.plugin.pocketcampus.org/search");
-				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q", "CO1");
+				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q", s);
 				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
 				startActivity(i);
 			}
