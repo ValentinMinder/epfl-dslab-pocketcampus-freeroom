@@ -218,7 +218,8 @@ namespace PocketCampus.Events.ViewModels
                                  item.StartDate ascending,
                                  item.EndDate ascending,
                                  item.Name ascending
-                         group item by item.CategoryId into itemGroup
+                         // Beautiful hack to force favorites into a "Favorites" category
+                         group item by ( _settings.FavoriteItemIds.Contains( item.Id ) ? EventItem.FavoriteCategoryId : item.CategoryId ) into itemGroup
                          orderby itemGroup.Key ascending
                          let categName = itemGroup.Key.HasValue
                                       && _settings.EventCategories.ContainsKey( itemGroup.Key.Value )
