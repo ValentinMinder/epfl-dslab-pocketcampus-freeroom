@@ -9,6 +9,17 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 
 import android.util.Log;
 
+/**
+ * GetFreeRoomRequest class sends an HttpRequest using Thrift to the
+ * PocketCampus server in order to get the Free Rooms for a given period of
+ * time.
+ * <p>
+ * 
+ * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
+
 public class GetFreeRoomRequest extends Request<FreeRoomController, Iface, FreeRoomRequest, FreeRoomReply> {
 
 		private IFreeRoomView caller;

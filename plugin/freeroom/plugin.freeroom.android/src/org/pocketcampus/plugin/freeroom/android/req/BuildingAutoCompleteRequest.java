@@ -9,27 +9,43 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 
 import android.util.Log;
 
-public class BuildingAutoCompleteRequest extends Request<FreeRoomController, Iface, AutoCompleteRequest, AutoCompleteReply> {
+/**
+ * BuildingAutoCompleteRequest class sends an HttpRequest using Thrift to the
+ * PocketCampus server in order to get auto-complete suggestions on the room
+ * name given.
+ * <p>
+ * 
+ * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
+
+public class BuildingAutoCompleteRequest
+		extends
+		Request<FreeRoomController, Iface, AutoCompleteRequest, AutoCompleteReply> {
 
 	private IFreeRoomView caller;
-	
+
 	public BuildingAutoCompleteRequest(IFreeRoomView caller) {
 		this.caller = caller;
 	}
-	
+
 	@Override
-	protected AutoCompleteReply runInBackground(Iface client, AutoCompleteRequest param) throws Exception {
+	protected AutoCompleteReply runInBackground(Iface client,
+			AutoCompleteRequest param) throws Exception {
 		return client.autoCompleteRoom(param);
 	}
 
 	@Override
-	protected void onResult(FreeRoomController controller, AutoCompleteReply result) {
+	protected void onResult(FreeRoomController controller,
+			AutoCompleteReply result) {
 		int status = result.getStatus();
-		if(status == 200) {
+		if (status == 200) {
 			Log.v(this.getClass().toString(), "server replied successfully");
 			controller.setAutoCompleteResults(result);
 		} else {
-			controller.handleReplyError(caller, status, result.getStatusComment(), this.getClass().toString());
+			controller.handleReplyError(caller, status,
+					result.getStatusComment(), this.getClass().toString());
 		}
 	}
 

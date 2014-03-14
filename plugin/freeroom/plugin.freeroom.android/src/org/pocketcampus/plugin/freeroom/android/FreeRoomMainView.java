@@ -21,16 +21,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /**
- * FreeRoomMainView - Main view that shows FreeRoom courses.
+ * MainView is the entry of the plugin, displaying the possible menus/features
+ * available.
+ * <p>
  * 
- * This is the main view in the FreeRoom Plugin. It checks if the user is logged
- * in, if not it pings the Authentication Plugin. When it gets back a valid
- * SessionId it fetches the user's FreeRoom data.
- * 
- * @author Amer <amer.chamseddine@epfl.ch>
+ * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomView {
+public class FreeRoomMainView extends FreeRoomAbstractView implements
+		IFreeRoomView {
 
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
@@ -91,11 +91,11 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 		mList.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_dropdown_item_1line,
 				android.R.id.text1, mListValues));
-		
+
 		mListValues.add(getString(R.string.freeroom_menu_freeroom_now));
 		mListValues.add(getString(R.string.freeroom_menu_freeroom_search));
 		mListValues.add(getString(R.string.freeroom_menu_check_occupancy));
-		
+
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -106,19 +106,25 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 				switch (arg2) {
 				case 0:
 					Calendar calendar = Calendar.getInstance();
-					FreeRoomRequest req = org.pocketcampus.plugin.freeroom.android.utils.Converter.convert(calendar.get(Calendar.DAY_OF_WEEK), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.HOUR_OF_DAY) + 1);
+					FreeRoomRequest req = org.pocketcampus.plugin.freeroom.android.utils.Converter
+							.convert(calendar.get(Calendar.DAY_OF_WEEK),
+									calendar.get(Calendar.HOUR_OF_DAY),
+									calendar.get(Calendar.HOUR_OF_DAY) + 1);
 					// construct and launch the UI.
-					i = new Intent(FreeRoomMainView.this, FreeRoomResultView.class);
+					i = new Intent(FreeRoomMainView.this,
+							FreeRoomResultView.class);
 					FreeRoomMainView.this.startActivity(i);
 					// send the request to the controller
 					mController.searchFreeRoom(FreeRoomMainView.this, req);
 					flag = false;
 					break;
 				case 1:
-					i = new Intent(FreeRoomMainView.this, FreeRoomSearchView.class);
+					i = new Intent(FreeRoomMainView.this,
+							FreeRoomSearchView.class);
 					break;
 				case 2:
-					i = new Intent(FreeRoomMainView.this, FRCheckOccupancySearchView.class);
+					i = new Intent(FreeRoomMainView.this,
+							FRCheckOccupancySearchView.class);
 					break;
 				default:
 					break;
@@ -127,7 +133,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 					FreeRoomMainView.this.startActivity(i);
 				}
 			}
-			
+
 		});
 		mLayout.addFillerView(mList);
 	}
@@ -139,12 +145,12 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements IFreeRoomV
 
 	@Override
 	public void autoCompletedUpdated() {
-		// we do nothing here		
+		// we do nothing here
 	}
 
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
-		Log.v("fr-main", "listener to occupancyResultUpdated called" );
+		Log.v("fr-main", "listener to occupancyResultUpdated called");
 	}
 }

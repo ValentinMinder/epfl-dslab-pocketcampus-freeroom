@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 /**
  * Simple adapter to use with ExpandableListView, all elements are String.
- * @author Julien <julien.weber@epfl.ch>
- *
+ * 
+ * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ * 
  */
 public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 	private Context context;
@@ -57,14 +59,16 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 
 		ViewHolder vholder = null;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(R.layout.sdk_separated_list_separation_header, null);
+			convertView = LayoutInflater.from(context).inflate(
+					R.layout.sdk_separated_list_separation_header, null);
 			vholder = new ViewHolder();
-			vholder.setTextView((TextView) convertView.findViewById(R.id.sdk_separated_list_header_title));
+			vholder.setTextView((TextView) convertView
+					.findViewById(R.id.sdk_separated_list_header_title));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		String text = (String) this.getChild(groupPosition, childPosition);
 
 		TextView tv = vholder.getTextView();
@@ -105,22 +109,24 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 		if (groupPosition >= headers.size()) {
 			return null;
 		}
-		
+
 		ViewHolder vholder = null;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(R.layout.sdk_separated_list_separation_header, null);
+			convertView = LayoutInflater.from(context).inflate(
+					R.layout.sdk_separated_list_separation_header, null);
 			vholder = new ViewHolder();
-			vholder.setTextView((TextView) convertView.findViewById(R.id.sdk_separated_list_header_title));
+			vholder.setTextView((TextView) convertView
+					.findViewById(R.id.sdk_separated_list_header_title));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		String text = (String) headers.get(groupPosition);
 		TextView tv = vholder.getTextView();
 		tv.setText(text);
 		return convertView;
-		
+
 	}
 
 	@Override
@@ -132,31 +138,30 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
-	
+
 	public void updateHeader(int id, String value) {
 		if (id >= headers.size()) {
 			return;
 		}
-		
+
 		this.data.put(value, data.remove(headers.get(id)));
 		this.headers.set(id, value);
 	}
-	
-	
+
 	/**
-	 * Class used to keep a view, 
-	 * it saves ressources by avoiding multiple inflate and findViewById operations.
-	 *
+	 * Class used to keep a view, it saves ressources by avoiding multiple
+	 * inflate and findViewById operations.
+	 * 
 	 */
 	private class ViewHolder {
-		 private TextView tv = null;
-		 
-		 public void setTextView(TextView tv) {
-			 this.tv = tv;
-		 }
-		 
-		 public TextView getTextView() {
-			 return this.tv;
-		 }
+		private TextView tv = null;
+
+		public void setTextView(TextView tv) {
+			this.tv = tv;
+		}
+
+		public TextView getTextView() {
+			return this.tv;
+		}
 	}
 }

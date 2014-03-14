@@ -3,23 +3,29 @@ package org.pocketcampus.plugin.freeroom.android;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.plugin.freeroom.R;
-import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.iface.IAbstractFreeRoomView;
 
 import android.widget.Toast;
 
 /**
- * FreeRoomAbstractView - An abstract view that handles shared methods among all freeroom views.
+ * FreeRoomAbstractView - An abstract view that handles shared methods among all
+ * FreeRoom views.
+ * <p>
+ * This view is NOT intended to be instanciated or even used. It's only there to
+ * group together all commons method among all the views, like network error
+ * message.
+ * <p>
+ * Be careful to declare there ONLY methods that the views don't need, otherwise
+ * no one will warn you if your methods in the view are not declared.
+ * <p>
  * 
- * This view is NOT intended to be instanciated or even used. It's only there to 
- * group together all commons method among all the views, like network error message.
- * 
- * Be careful to declare there ONLY methods that the views don't need, otherwise no one will
- * warn you if your methods in the view are not declared.
- * 
- * @author FreeRoomSemesterProjectTeam Julien Weber <Julien.Weber@epfl.ch> & Valentin Minder <Valentin.Minder@epfl.ch>
+ * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public abstract class FreeRoomAbstractView extends PluginView implements IFreeRoomView {
+
+public abstract class FreeRoomAbstractView extends PluginView implements
+		IAbstractFreeRoomView {
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -42,35 +48,31 @@ public abstract class FreeRoomAbstractView extends PluginView implements IFreeRo
 	public void freeRoomServersDown() {
 		Toast.makeText(
 				getApplicationContext(),
-				getResources().getString(
-						R.string.freeroom_error_freeroom_down),
+				getResources().getString(R.string.freeroom_error_freeroom_down),
 				Toast.LENGTH_SHORT).show();
 	}
-	
+
 	@Override
 	public void freeRoomServerBadRequest() {
-		Toast.makeText(
-				getApplicationContext(),
-				getResources().getString(
-						R.string.freeroom_error_bad_request),
+		Toast.makeText(getApplicationContext(),
+				getResources().getString(R.string.freeroom_error_bad_request),
 				Toast.LENGTH_SHORT).show();
 	}
-	
+
 	@Override
 	public void freeRoomServersInternalError() {
 		Toast.makeText(
 				getApplicationContext(),
-				getResources().getString(
-						R.string.freeroom_error_internal_error),
+				getResources()
+						.getString(R.string.freeroom_error_internal_error),
 				Toast.LENGTH_SHORT).show();
 	}
-	
+
 	@Override
 	public void freeRoomServersUnknownError() {
 		Toast.makeText(
 				getApplicationContext(),
-				getResources().getString(
-						R.string.freeroom_error_unknown_error),
+				getResources().getString(R.string.freeroom_error_unknown_error),
 				Toast.LENGTH_SHORT).show();
 	}
 }

@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,10 +22,16 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
+/**
+ * View displaying the SearchQuery of the FreeRoom feature.
+ * <p>
+ * 
+ * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
 public class FreeRoomSearchView extends FreeRoomAbstractView implements
 		IFreeRoomView {
 
@@ -89,18 +94,18 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				if (auditSearchButton() == 0) {
-					
+
 					// constructs the request
 					FreeRoomRequest req = org.pocketcampus.plugin.freeroom.android.utils.Converter
 							.convert(intday, startHour, endHour);
-					
+
 					// starting the result UI before sending the request!
 					Intent i = new Intent(FreeRoomSearchView.this,
 							FreeRoomResultView.class);
 					FreeRoomSearchView.this.startActivity(i);
-					
+
 					// finally sending the request to the controller
-					mController.searchFreeRoom(view,req);
+					mController.searchFreeRoom(view, req);
 				}
 			}
 		});
@@ -157,7 +162,7 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 				} else {
 					tmpEndHour = childPosition + 9;
 				}
-				
+
 				if (groupPosition == 0) {
 					intday = (((childPosition + 1) % 7) + 1); // monday = 0 in
 																// UI//monday =2
@@ -250,7 +255,7 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
-		Log.v("fr-freeroom-search", "listener to occupancyResultUpdated called" );
+		Log.v("fr-freeroom-search", "listener to occupancyResultUpdated called");
 	}
 
 }
