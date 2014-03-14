@@ -15,6 +15,12 @@ namespace PocketCampus.Events.Models
     public sealed class EventItem
     {
         /// <summary>
+        /// The ID of the "Favorites" category.
+        /// </summary>
+        public static readonly int? FavoriteCategoryId = -2;
+
+
+        /// <summary>
         /// The item's ID.
         /// </summary>
         [ThriftField( 1, true, "eventId" )]
