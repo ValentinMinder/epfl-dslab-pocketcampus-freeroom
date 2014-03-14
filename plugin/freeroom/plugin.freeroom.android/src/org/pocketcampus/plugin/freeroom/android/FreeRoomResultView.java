@@ -75,10 +75,7 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements
 		mLayout.setTitle(getString(R.string.freeroom_title_FRresult));
 
 		initializeResultView();
-		
-		
-		// launch the actual search AFTER launching completely the UI
-		mController.searchFreeRoom(this);
+
 	}
 
 	private void initializeResultView() {
@@ -145,7 +142,7 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements
 					getString(R.string.freeroom_no_room_available),
 					Toast.LENGTH_LONG).show();
 		}
-		Log.v(this.getClass().toString(), "data_updated in FreeRoomResultView");
+		Log.v("freeroom_result", "data_updated");
 		mAdapter.notifyDataSetChanged();
 	}
 

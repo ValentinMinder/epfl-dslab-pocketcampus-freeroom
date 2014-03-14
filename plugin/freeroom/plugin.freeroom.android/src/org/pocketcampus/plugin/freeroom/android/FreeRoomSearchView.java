@@ -105,7 +105,7 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 					FreeRoomSearchView.this.startActivity(i);
 
 					// finally sending the request to the controller
-					mController.prepareSearchFreeRoom(req);
+					mController.searchFreeRoom(view, req);
 				}
 			}
 		});
