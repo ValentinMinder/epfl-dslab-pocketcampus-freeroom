@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -21,29 +22,21 @@ namespace PocketCampus.IsAcademia.ViewModels
     [LogId( "/schedule" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
+        private const int MinimumDaysInWeek = 5;
+
         private readonly IIsAcademiaService _isaService;
         private readonly ISecureRequestHandler _requestHandler;
 
-        private DayInfo[] _days;
-        private DayInfo _currentDay;
+        private StudyDay[] _days;
         private DateTime _weekDate;
 
         /// <summary>
         /// Gets the available days.
         /// </summary>
-        public DayInfo[] Days
+        public StudyDay[] Days
         {
             get { return _days; }
             private set { SetProperty( ref _days, value ); }
-        }
-
-        /// <summary>
-        /// Gets the current day.
-        /// </summary>
-        public DayInfo CurrentDay
-        {
-            get { return _currentDay; }
-            private set { SetProperty( ref _currentDay, value ); }
         }
 
         /// <summary>
@@ -105,8 +98,22 @@ namespace PocketCampus.IsAcademia.ViewModels
 
                 if ( !token.IsCancellationRequested )
                 {
-                    Days = response.Days.Select( d => new DayInfo( d ) ).ToArray();
-                    CurrentDay = Days.FirstOrDefault( d => d.Date == DateTime.Now.Date );
+                    // Now for the fun part!
+                    // The days group their periods by UTC date
+                    // but since we're in local date, some "days" may hold periods outside of their UTC date
+                    // so we have to disassemble them and re-assemble new days
+                    var days = response.Days
+                                       .SelectMany( d => ForceSameStartAndEndDays( d.Periods ) )
+                                       .GroupBy( p => p.Start.Date )
+                                       .Select( g => new StudyDay { Day = g.Key, Periods = g.ToArray() } )
+                                       .ToArray();
+                    var missingDays = Enumerable.Range( 0, MinimumDaysInWeek )
+                                                .Select( n => WeekDate.AddDays( n ) )
+                                                .Where( d => days.All( d2 => d.Date != d2.Day.Date ) )
+                                                .Select( d => new StudyDay { Day = d.Date, Periods = new Period[0] } );
+                    Days = days.Concat( missingDays )
+                               .OrderBy( d => d.Day )
+                               .ToArray();
                 }
 
                 return true;
@@ -127,6 +134,28 @@ namespace PocketCampus.IsAcademia.ViewModels
         private static int GetDayIndex( DayOfWeek dow )
         {
             return dow == DayOfWeek.Sunday ? 6 : (int) dow - 1;
+        }
+
+        /// <summary>
+        /// Ensures that all periods in the specified sequence begin and end on the same day, splitting them in two if needed.
+        /// </summary>
+        private static IEnumerable<Period> ForceSameStartAndEndDays( IEnumerable<Period> periods )
+        {
+            foreach ( var period in periods )
+            {
+                if ( period.Start.Date == period.End.Date )
+                {
+                    yield return period;
+                }
+                else
+                {
+                    var earlyPeriod = period.Clone();
+                    var latePeriod = period.Clone();
+                    latePeriod.Start = earlyPeriod.End = period.End.Date;
+                    yield return earlyPeriod;
+                    yield return latePeriod;
+                }
+            }
         }
     }
 }

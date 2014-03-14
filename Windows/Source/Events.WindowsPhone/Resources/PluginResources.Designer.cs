@@ -351,6 +351,15 @@ namespace PocketCampus.Events.Resources {
         /// <summary>
         ///   Looks up a localized string similar to settings.
         /// </summary>
+        public static string SettingsButton {
+            get {
+                return ResourceManager.GetString("SettingsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to settings.
+        /// </summary>
         public static string SettingsViewTitle {
             get {
                 return ResourceManager.GetString("SettingsViewTitle", resourceCulture);

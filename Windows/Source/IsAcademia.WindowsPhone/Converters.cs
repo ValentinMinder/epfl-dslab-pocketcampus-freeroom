@@ -27,4 +27,17 @@ namespace PocketCampus.IsAcademia
             return Values[value];
         }
     }
+
+    /// <summary>
+    /// Joins strings using the provided separator.
+    /// </summary>
+    public sealed class StringsJoinConverter : ValueConverter<string[], string>
+    {
+        public string Separator { get; set; }
+
+        public override string Convert( string[] value )
+        {
+            return string.Join( Separator, value );
+        }
+    }
 }

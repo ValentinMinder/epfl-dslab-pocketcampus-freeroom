@@ -37,7 +37,7 @@ namespace PocketCampus.Events.Views
                     var button = new ApplicationBarIconButton
                     {
                         IconUri = new Uri( "/Assets/Settings.png", UriKind.Relative ),
-                        Text = PluginResources.FilterCategoriesButton
+                        Text = PluginResources.SettingsButton
                     };
                     button.Click += ( _, __ ) => vm.ViewSettingsCommand.Execute();
                     buttons.Add( button );

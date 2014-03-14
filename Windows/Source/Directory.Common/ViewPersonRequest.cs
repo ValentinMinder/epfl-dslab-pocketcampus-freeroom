@@ -2,8 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using PocketCampus.Directory.Models;
-
 namespace PocketCampus.Directory
 {
     /// <summary>
@@ -17,12 +15,6 @@ namespace PocketCampus.Directory
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the person, if any.
-        /// </summary>
-        public Person Person { get; private set; }
-
-
-        /// <summary>
         /// Creates an empty ViewPersonRequest.
         /// </summary>
         public ViewPersonRequest() { }
@@ -33,14 +25,6 @@ namespace PocketCampus.Directory
         public ViewPersonRequest( string name )
         {
             Name = name;
-        }
-
-        /// <summary>
-        /// Creates a ViewPersonRequest with the specified person.
-        /// </summary>
-        public ViewPersonRequest( Person person )
-        {
-            Person = person;
         }
     }
 }

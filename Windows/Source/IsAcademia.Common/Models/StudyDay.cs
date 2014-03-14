@@ -20,6 +20,7 @@ namespace PocketCampus.IsAcademia.Models
         [ThriftConverter( typeof( ThriftJavaDateConverter ) )]
         public DateTime Day { get; set; }
 
+
         /// <summary>
         /// The day's periods.
         /// </summary>

@@ -92,7 +92,11 @@ namespace PocketCampus.Directory.Models
 
             foreach ( var pair in pairs )
             {
-                var prop = typeInfo.DeclaredProperties.FirstOrDefault( p => p.GetCustomAttribute<ThriftFieldAttribute>().Name == pair.Key );
+                var prop = typeInfo.DeclaredProperties.FirstOrDefault( p =>
+                {
+                    var attr = p.GetCustomAttribute<ThriftFieldAttribute>();
+                    return attr != null && attr.Name == pair.Key;
+                } );
                 // thankfully there are only strings in this class, apart from units
                 if ( prop != null && prop.PropertyType == typeof( string ) )
                 {

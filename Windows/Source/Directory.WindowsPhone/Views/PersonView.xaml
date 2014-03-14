@@ -105,23 +105,27 @@
         <!-- Units -->
         <TextBlock Grid.Row="2"
                    Text="{Binding Resources.PersonUnits, Source={StaticResource Strings}}"
-                   Style="{StaticResource TextLabelStyle}" />
+                   Style="{StaticResource TextLabelStyle}"
+                   Visibility="{Binding Person.Units, Converter={StaticResource NonNullToVisibility}}" />
         <ItemsControl Grid.Column="1"
                       Grid.Row="2"
                       ItemsSource="{Binding Person.Units}"
                       ItemTemplate="{StaticResource UnitTemplate}"
                       ItemsPanel="{StaticResource WrapItemsPanel}"
+                      Visibility="{Binding Person.Units, Converter={StaticResource NonNullToVisibility}}" 
                       Margin="0,3,0,0" />
 
 
         <!-- Website -->
         <TextBlock Grid.Row="3"
                    Text="{Binding Resources.PersonWebsite, Source={StaticResource Strings}}"
-                   Style="{StaticResource TextLabelStyle}" />
+                   Style="{StaticResource TextLabelStyle}"
+                   Visibility="{Binding Person.Website, Converter={StaticResource NonNullToVisibility}}" />
         <Viewbox Grid.Column="1"
                  Grid.Row="3"
                  StretchDirection="DownOnly"
-                 HorizontalAlignment="Left">
+                 HorizontalAlignment="Left"
+                 Visibility="{Binding Person.Website, Converter={StaticResource NonNullToVisibility}}">
             <HyperlinkButton Content="{Binding Person.Website}"
                              Command="{Binding OpenWebsiteCommand}"
                              FontSize="{StaticResource PhoneFontSizeNormal}" />

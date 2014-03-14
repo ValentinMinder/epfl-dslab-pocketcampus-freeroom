@@ -70,7 +70,7 @@ namespace PocketCampus.IsAcademia.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exercises.
+        ///   Looks up a localized string similar to exercises.
         /// </summary>
         public static string PeriodType_Exercises {
             get {
@@ -79,7 +79,7 @@ namespace PocketCampus.IsAcademia.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lab.
+        ///   Looks up a localized string similar to lab.
         /// </summary>
         public static string PeriodType_Lab {
             get {
@@ -88,7 +88,7 @@ namespace PocketCampus.IsAcademia.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Class.
+        ///   Looks up a localized string similar to class.
         /// </summary>
         public static string PeriodType_Lecture {
             get {
@@ -97,7 +97,7 @@ namespace PocketCampus.IsAcademia.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Project.
+        ///   Looks up a localized string similar to project.
         /// </summary>
         public static string PeriodType_Project {
             get {

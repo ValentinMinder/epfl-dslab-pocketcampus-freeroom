@@ -36,9 +36,9 @@ public final class ScheduleImpl implements Schedule {
 	private static final String DEFAULT_LANGUAGE = "en";
 
 	// The format of dates in IS-Academia's XML.
-	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy");
+	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy").withZone(ISA_TIME_ZONE);
 	// The format of times in IS-Academia's XML.
-	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm");
+	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm").withZone(ISA_TIME_ZONE);
 
 	// The various element and attribute names in IS-Academia's XML.
 	private static final String STUDY_PERIOD_TAG = "study-period";
