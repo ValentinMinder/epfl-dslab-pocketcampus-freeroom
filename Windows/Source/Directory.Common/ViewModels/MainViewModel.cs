@@ -105,10 +105,6 @@ namespace PocketCampus.Directory.ViewModels
             {
                 SearchCommand.ExecuteAsync( request.Name );
             }
-            if ( request.Person != null )
-            {
-                ViewPersonCommand.Execute( request.Person );
-            }
         }
 
 
