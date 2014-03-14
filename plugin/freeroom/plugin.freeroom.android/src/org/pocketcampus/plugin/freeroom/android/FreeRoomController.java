@@ -63,16 +63,38 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 		return mModel;
 	}
 	
-	public void searchFreeRoom(IFreeRoomView view, FreeRoomRequest request) {
-		new GetFreeRoomRequest(view).start(this, mClient, request);
+	private FreeRoomRequest freeRoomRequest = null;
+	
+	public void prepareSearchFreeRoom(FreeRoomRequest request) {
+		this.freeRoomRequest = request;
+	}
+	
+	public void searchFreeRoom(IFreeRoomView view) {
+		if (freeRoomRequest != null) {
+			new GetFreeRoomRequest(view).start(this, mClient, this.freeRoomRequest);
+			freeRoomRequest = null;
+		} else {
+			Log.e(this.getClass().toString(), "request not defined in controller!");
+		}
 	}
 	
 	public void autoCompleteBuilding(IFreeRoomView view, AutoCompleteRequest request) {
 		new BuildingAutoCompleteRequest(view).start(this, mClient, request);
 	}
 	
-	public void checkOccupancy(IFreeRoomView view, OccupancyRequest request) {
-		new CheckOccupancyRequest(view).start(this, mClient, request);
+	private OccupancyRequest occupancyRequest;
+	
+	public void prepareCheckOccupancy(OccupancyRequest request) {
+		occupancyRequest = request;
+	}
+	
+	public void checkOccupancy(IFreeRoomView view) {
+		if (occupancyRequest != null) {
+			new CheckOccupancyRequest(view).start(this, mClient, occupancyRequest);
+			occupancyRequest = null;
+		} else {
+			Log.e(this.getClass().toString(), "request not defined in controller!");
+		}
 	}
 	
 	/**
@@ -96,13 +118,13 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 		Log.e(callingClass, "the server response was not successful. Message: " + statusComment);
 		if (status == 400) {
 			Log.e(callingClass, "server complains about a bad request from the client");
-			caller.freeRoomServerBadRequest();
+			//caller.freeRoomServerBadRequest();
 		} else if (status == 500) {
 			Log.e(callingClass, "server had an internal error");
-			caller.freeRoomServersInternalError();
+			//caller.freeRoomServersInternalError();
 		} else {
 			Log.e(callingClass, "server sent another UNKNOWN status" + status);
-			caller.freeRoomServersUnknownError();
+			//caller.freeRoomServersUnknownError();
 //			caller.freeRoomServersDown();
 		}
 	}

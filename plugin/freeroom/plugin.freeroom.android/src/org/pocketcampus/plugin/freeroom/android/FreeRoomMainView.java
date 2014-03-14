@@ -115,7 +115,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 							FreeRoomResultView.class);
 					FreeRoomMainView.this.startActivity(i);
 					// send the request to the controller
-					mController.searchFreeRoom(FreeRoomMainView.this, req);
+					mController.prepareSearchFreeRoom(req);
 					flag = false;
 					break;
 				case 1:

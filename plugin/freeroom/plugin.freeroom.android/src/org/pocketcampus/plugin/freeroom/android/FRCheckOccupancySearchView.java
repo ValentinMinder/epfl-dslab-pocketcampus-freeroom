@@ -221,8 +221,7 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 				FRCheckOccupancySearchView.this.startActivity(i);
 
 				// finally sending the request to the controller
-				mController.checkOccupancy(FRCheckOccupancySearchView.this,
-						request);
+				mController.prepareCheckOccupancy(request);
 
 			}
 		});
