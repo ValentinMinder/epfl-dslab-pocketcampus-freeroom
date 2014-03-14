@@ -216,6 +216,9 @@
   <data name="SendFavoriteEmailButton" xml:space="preserve">
     <value>e-mail avec les favoris...</value>
   </data>
+  <data name="SettingsButton" xml:space="preserve">
+    <value>paramètres</value>
+  </data>
   <data name="SettingsViewTitle" xml:space="preserve">
     <value>paramètres</value>
   </data>
