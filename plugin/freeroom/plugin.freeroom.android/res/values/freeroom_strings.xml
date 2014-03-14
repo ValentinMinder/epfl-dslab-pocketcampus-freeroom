@@ -7,7 +7,10 @@
     <string name="freeroom_string_logout">Logout</string>
     <string name="freeroom_string_events">Events</string>
     <string name="freeroom_error_freeroom_down">PocketCampus tried to connect to FreeRoom servers, but they seem down.</string>
-    <string name="freeroom_connection_error_happened">We cannot fetch FreeRoom data right now, because you are not connected to the Internet.</string>
+    <string name="freeroom_error_bad_request">PocketCampus tried to connect to FreeRoom servers, but the request sent by your client could not be handled by the server (400 BAD REQUEST).</string>
+    <string name="freeroom_error_internal_error">PocketCampus tried to connect to FreeRoom servers, but the server had an internal error (500 INTERNAL ERROR).</string>
+    <string name="freeroom_error_unknown_error">PocketCampus tried to connect to FreeRoom servers, but the server replied unsuccessfully with an unknown error code.</string>
+    <string name="freeroom_connection_error_happened">We cannot fetch FreeRoom data right now, because of a network error. Either you are not connected to the Internet, or the pocketcampus server is unreachable or down.</string>
     <string name="freeroom_file_downloaded">File successfully downloaded.</string>
     <string name="freeroom_file_downloading">Downloading file... Please wait.</string>
     <string name="freeroom_no_app_to_handle_filetype">Could not find any application to open this file.</string>

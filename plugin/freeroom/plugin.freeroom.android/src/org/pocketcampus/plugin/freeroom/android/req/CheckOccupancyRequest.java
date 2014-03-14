@@ -24,12 +24,13 @@ public class CheckOccupancyRequest extends Request<FreeRoomController, Iface, Oc
 
 	@Override
 	protected void onResult(FreeRoomController controller, OccupancyReply result) {
-//		if(result.getStatus() == 200) {
-			Log.v("freeroom", "server replied: try to add the result to the model");
+		int status = result.getStatus();
+		if(status == 200) {
+			Log.v(this.getClass().toString(), "server replied successfully");
 			controller.setCheckOccupancyResults(result);
-//		} else {
-//			caller.freeRoomServersDown();
-//		}
+		} else {
+			controller.handleReplyError(caller, status, result.getStatusComment(), this.getClass().toString());
+		}
 	}
 
 	@Override

@@ -27,9 +27,18 @@ struct FRPeriod {
 	13: optional i64 lastOccurancy;
 }
 
+// NOTE ABOUT REPLY STATUS
+// it's compliant with standard HTTP status code
+// currently used:
+// 200 - OK - when the result is correctly given
+// 400 - BAD REQUEST - when the server couldn't answer due to malformed query from the client
+// 500 - INTERNAL ERROR - when the server couldn't answer due to internal implementation error
+
 // standard response for a free room
 struct FreeRoomReply {
-	1: required set<FRRoom> rooms;
+	1: required i32 status;
+	2: required string statusComment;
+	3: optional set<FRRoom> rooms;
 }
 
 // standard request for a free room
@@ -66,7 +75,9 @@ struct OccupancyRequest {
 
 // check the occupancy reply
 struct OccupancyReply {
-	1: required list<Occupancy> occupancyOfRooms;
+	1: required i32 status;
+	2: required string statusComment;
+	3: optional list<Occupancy> occupancyOfRooms;
 }
 
 struct AutoCompleteRequest {
@@ -74,7 +85,9 @@ struct AutoCompleteRequest {
 }
 
 struct AutoCompleteReply {
-	1: required list<FRRoom> listFRRoom;
+	1: required i32 status;
+	2: required string statusComment;
+	3: optional list<FRRoom> listFRRoom;
 }
 
 service FreeRoomService {

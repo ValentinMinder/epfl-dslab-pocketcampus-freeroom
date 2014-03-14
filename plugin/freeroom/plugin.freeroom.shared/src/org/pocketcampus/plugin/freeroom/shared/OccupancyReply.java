@@ -24,13 +24,19 @@ import org.slf4j.LoggerFactory;
 public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, OccupancyReply._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("OccupancyReply");
 
-  private static final org.apache.thrift.protocol.TField OCCUPANCY_OF_ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancyOfRooms", org.apache.thrift.protocol.TType.LIST, (short)1);
+  private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField OCCUPANCY_OF_ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancyOfRooms", org.apache.thrift.protocol.TType.LIST, (short)3);
 
+  private int status; // required
+  private String statusComment; // required
   private List<Occupancy> occupancyOfRooms; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    OCCUPANCY_OF_ROOMS((short)1, "occupancyOfRooms");
+    STATUS((short)1, "status"),
+    STATUS_COMMENT((short)2, "statusComment"),
+    OCCUPANCY_OF_ROOMS((short)3, "occupancyOfRooms");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -45,7 +51,11 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // OCCUPANCY_OF_ROOMS
+        case 1: // STATUS
+          return STATUS;
+        case 2: // STATUS_COMMENT
+          return STATUS_COMMENT;
+        case 3: // OCCUPANCY_OF_ROOMS
           return OCCUPANCY_OF_ROOMS;
         default:
           return null;
@@ -87,11 +97,17 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
   }
 
   // isset id assignments
+  private static final int __STATUS_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.OCCUPANCY_OF_ROOMS, new org.apache.thrift.meta_data.FieldMetaData("occupancyOfRooms", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.STATUS, new org.apache.thrift.meta_data.FieldMetaData("status", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.STATUS_COMMENT, new org.apache.thrift.meta_data.FieldMetaData("statusComment", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.OCCUPANCY_OF_ROOMS, new org.apache.thrift.meta_data.FieldMetaData("occupancyOfRooms", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Occupancy.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -102,16 +118,25 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
   }
 
   public OccupancyReply(
-    List<Occupancy> occupancyOfRooms)
+    int status,
+    String statusComment)
   {
     this();
-    this.occupancyOfRooms = occupancyOfRooms;
+    this.status = status;
+    setStatusIsSet(true);
+    this.statusComment = statusComment;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public OccupancyReply(OccupancyReply other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    this.status = other.status;
+    if (other.isSetStatusComment()) {
+      this.statusComment = other.statusComment;
+    }
     if (other.isSetOccupancyOfRooms()) {
       List<Occupancy> __this__occupancyOfRooms = new ArrayList<Occupancy>();
       for (Occupancy other_element : other.occupancyOfRooms) {
@@ -127,7 +152,57 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
 
   @Override
   public void clear() {
+    setStatusIsSet(false);
+    this.status = 0;
+    this.statusComment = null;
     this.occupancyOfRooms = null;
+  }
+
+  public int getStatus() {
+    return this.status;
+  }
+
+  public OccupancyReply setStatus(int status) {
+    this.status = status;
+    setStatusIsSet(true);
+    return this;
+  }
+
+  public void unsetStatus() {
+    __isset_bit_vector.clear(__STATUS_ISSET_ID);
+  }
+
+  /** Returns true if field status is set (has been assigned a value) and false otherwise */
+  public boolean isSetStatus() {
+    return __isset_bit_vector.get(__STATUS_ISSET_ID);
+  }
+
+  public void setStatusIsSet(boolean value) {
+    __isset_bit_vector.set(__STATUS_ISSET_ID, value);
+  }
+
+  public String getStatusComment() {
+    return this.statusComment;
+  }
+
+  public OccupancyReply setStatusComment(String statusComment) {
+    this.statusComment = statusComment;
+    return this;
+  }
+
+  public void unsetStatusComment() {
+    this.statusComment = null;
+  }
+
+  /** Returns true if field statusComment is set (has been assigned a value) and false otherwise */
+  public boolean isSetStatusComment() {
+    return this.statusComment != null;
+  }
+
+  public void setStatusCommentIsSet(boolean value) {
+    if (!value) {
+      this.statusComment = null;
+    }
   }
 
   public int getOccupancyOfRoomsSize() {
@@ -171,6 +246,22 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case STATUS:
+      if (value == null) {
+        unsetStatus();
+      } else {
+        setStatus((Integer)value);
+      }
+      break;
+
+    case STATUS_COMMENT:
+      if (value == null) {
+        unsetStatusComment();
+      } else {
+        setStatusComment((String)value);
+      }
+      break;
+
     case OCCUPANCY_OF_ROOMS:
       if (value == null) {
         unsetOccupancyOfRooms();
@@ -184,6 +275,12 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case STATUS:
+      return Integer.valueOf(getStatus());
+
+    case STATUS_COMMENT:
+      return getStatusComment();
+
     case OCCUPANCY_OF_ROOMS:
       return getOccupancyOfRooms();
 
@@ -198,6 +295,10 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     }
 
     switch (field) {
+    case STATUS:
+      return isSetStatus();
+    case STATUS_COMMENT:
+      return isSetStatusComment();
     case OCCUPANCY_OF_ROOMS:
       return isSetOccupancyOfRooms();
     }
@@ -217,6 +318,24 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     if (that == null)
       return false;
 
+    boolean this_present_status = true;
+    boolean that_present_status = true;
+    if (this_present_status || that_present_status) {
+      if (!(this_present_status && that_present_status))
+        return false;
+      if (this.status != that.status)
+        return false;
+    }
+
+    boolean this_present_statusComment = true && this.isSetStatusComment();
+    boolean that_present_statusComment = true && that.isSetStatusComment();
+    if (this_present_statusComment || that_present_statusComment) {
+      if (!(this_present_statusComment && that_present_statusComment))
+        return false;
+      if (!this.statusComment.equals(that.statusComment))
+        return false;
+    }
+
     boolean this_present_occupancyOfRooms = true && this.isSetOccupancyOfRooms();
     boolean that_present_occupancyOfRooms = true && that.isSetOccupancyOfRooms();
     if (this_present_occupancyOfRooms || that_present_occupancyOfRooms) {
@@ -232,6 +351,16 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
   @Override
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_status = true;
+    builder.append(present_status);
+    if (present_status)
+      builder.append(status);
+
+    boolean present_statusComment = true && (isSetStatusComment());
+    builder.append(present_statusComment);
+    if (present_statusComment)
+      builder.append(statusComment);
 
     boolean present_occupancyOfRooms = true && (isSetOccupancyOfRooms());
     builder.append(present_occupancyOfRooms);
@@ -249,6 +378,26 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     int lastComparison = 0;
     OccupancyReply typedOther = (OccupancyReply)other;
 
+    lastComparison = Boolean.valueOf(isSetStatus()).compareTo(typedOther.isSetStatus());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetStatus()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.status, typedOther.status);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetStatusComment()).compareTo(typedOther.isSetStatusComment());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetStatusComment()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.statusComment, typedOther.statusComment);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetOccupancyOfRooms()).compareTo(typedOther.isSetOccupancyOfRooms());
     if (lastComparison != 0) {
       return lastComparison;
@@ -276,7 +425,22 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
         break;
       }
       switch (field.id) {
-        case 1: // OCCUPANCY_OF_ROOMS
+        case 1: // STATUS
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.status = iprot.readI32();
+            setStatusIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 2: // STATUS_COMMENT
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.statusComment = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 3: // OCCUPANCY_OF_ROOMS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
               org.apache.thrift.protocol.TList _list12 = iprot.readListBegin();
@@ -302,6 +466,9 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
+    if (!isSetStatus()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'status' was not found in serialized data! Struct: " + toString());
+    }
     validate();
   }
 
@@ -309,17 +476,27 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.occupancyOfRooms != null) {
-      oprot.writeFieldBegin(OCCUPANCY_OF_ROOMS_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.occupancyOfRooms.size()));
-        for (Occupancy _iter15 : this.occupancyOfRooms)
-        {
-          _iter15.write(oprot);
-        }
-        oprot.writeListEnd();
-      }
+    oprot.writeFieldBegin(STATUS_FIELD_DESC);
+    oprot.writeI32(this.status);
+    oprot.writeFieldEnd();
+    if (this.statusComment != null) {
+      oprot.writeFieldBegin(STATUS_COMMENT_FIELD_DESC);
+      oprot.writeString(this.statusComment);
       oprot.writeFieldEnd();
+    }
+    if (this.occupancyOfRooms != null) {
+      if (isSetOccupancyOfRooms()) {
+        oprot.writeFieldBegin(OCCUPANCY_OF_ROOMS_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.occupancyOfRooms.size()));
+          for (Occupancy _iter15 : this.occupancyOfRooms)
+          {
+            _iter15.write(oprot);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -330,21 +507,36 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     StringBuilder sb = new StringBuilder("OccupancyReply(");
     boolean first = true;
 
-    sb.append("occupancyOfRooms:");
-    if (this.occupancyOfRooms == null) {
+    sb.append("status:");
+    sb.append(this.status);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("statusComment:");
+    if (this.statusComment == null) {
       sb.append("null");
     } else {
-      sb.append(this.occupancyOfRooms);
+      sb.append(this.statusComment);
     }
     first = false;
+    if (isSetOccupancyOfRooms()) {
+      if (!first) sb.append(", ");
+      sb.append("occupancyOfRooms:");
+      if (this.occupancyOfRooms == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.occupancyOfRooms);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (occupancyOfRooms == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'occupancyOfRooms' was not present! Struct: " + toString());
+    // alas, we cannot check 'status' because it's a primitive and you chose the non-beans generator.
+    if (statusComment == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'statusComment' was not present! Struct: " + toString());
     }
   }
 
@@ -358,6 +550,8 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

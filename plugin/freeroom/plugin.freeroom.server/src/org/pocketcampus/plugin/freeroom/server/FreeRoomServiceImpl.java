@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.freeroom.server;
 
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +11,8 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import java.net.HttpURLConnection;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
@@ -27,8 +31,6 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.OccupationType;
-
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 
 /**
@@ -72,6 +74,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomReply getFreeRoomFromTime(FreeRoomRequest request)
 			throws TException {
 
+		FreeRoomReply reply = new FreeRoomReply(HttpURLConnection.HTTP_CREATED, 
+				"" +HttpURLConnection.HTTP_CREATED);
+		
 		// The client issue a request, convertMinPrecision's job is to adapt the
 		// period. See its doc for more information.
 		request = Utils.convertMinPrecision(request);
@@ -81,15 +86,23 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		boolean recurrent = period.isRecurrent();
 
 		if (!recurrent) {
-			FreeRoomReply rep = new FreeRoomReply();
-			rep.setRooms(getFreeRoom(ts_start, ts_end));
-			// rep.setRooms(new HashSet<FRRoom>());
-			rep.setRoomsIsSet(true);
-			return rep;
+			Set<FRRoom> rooms = getFreeRoom(ts_start, ts_end);
+			if (rooms != null) {
+				reply = new FreeRoomReply(HttpURLConnection.HTTP_OK,
+						"" +HttpURLConnection.HTTP_OK);
+				reply.setRooms(rooms);
+				reply.setRoomsIsSet(true);
+			} else {
+				// TODO: how to differenciate server error or bad request ?
+				reply = new FreeRoomReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
+					"could be 400 or 500");
+			}
+			return reply;
 		} else {
 			// TODO: support recurrent request
-			throw new TException("reccurent request not implemented yet");
-			// return null;
+			reply = new FreeRoomReply(HttpURLConnection.HTTP_INTERNAL_ERROR, 
+					"reccurent request not supported yet");
+			return reply;
 		}
 	}
 
@@ -150,6 +163,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
 
 		return freerooms;
@@ -159,6 +173,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public OccupancyReply checkTheOccupancy(OccupancyRequest request)
 			throws TException {
 
+		OccupancyReply reply = new OccupancyReply(HttpURLConnection.HTTP_CREATED, 
+				"" +HttpURLConnection.HTTP_CREATED);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		List<FRRoom> rooms = request.getListFRRoom();
 		FRPeriod period = request.getPeriod();
 		long timestampStart = period.getTimeStampStart();
@@ -237,11 +259,18 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				occupancies.add(mOccupancy);
 				query.close();
 			}
+			
+			reply = new OccupancyReply(HttpURLConnection.HTTP_OK,
+					"" +HttpURLConnection.HTTP_OK);
+			reply.setOccupancyOfRooms(occupancies);
 		} catch (SQLException e) {
+			reply = new OccupancyReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
+					"" + HttpURLConnection.HTTP_INTERNAL_ERROR);
 			e.printStackTrace();
 		}
 
-		return new OccupancyReply(occupancies);
+		
+		return reply;
 	}
 
 	@Override
@@ -250,10 +279,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		// TODO this method wont work with full "door code" like PH D2 398
 		// TODO dont work with UID at the moment
 		
+		AutoCompleteReply reply = new AutoCompleteReply(HttpURLConnection.HTTP_CREATED, 
+				"" +HttpURLConnection.HTTP_CREATED);
+		
 		List<FRRoom> rooms = new ArrayList<FRRoom>();
 		String txt = request.getConstraint();
-		String itxt = request.getConstraint();
 		// avoid all whitespaces for requests
+		// TODO: be resistent to empty queries! 
 		txt = txt.trim();
 		txt = txt.replaceAll("\\s", "");
 		try {
@@ -289,17 +321,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				rooms.add(frRoom);
 
 			}
+			reply = new AutoCompleteReply(HttpURLConnection.HTTP_OK,
+					"" +HttpURLConnection.HTTP_OK);
+			reply.setListFRRoom(rooms);
 
 		} catch (SQLException e) {
+			reply = new AutoCompleteReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
+					"" + HttpURLConnection.HTTP_INTERNAL_ERROR);
 			e.printStackTrace();
 		}
-		// TODO: delete the debug syso
-		System.out.println("for itinial constraint :" + itxt
-				+ ": transformed to :" + txt + ":");
-		for (FRRoom room : rooms) {
-			System.out.println(room);
-		}
-		AutoCompleteReply reply = new AutoCompleteReply(rooms);
 		return reply;
 	}
 }

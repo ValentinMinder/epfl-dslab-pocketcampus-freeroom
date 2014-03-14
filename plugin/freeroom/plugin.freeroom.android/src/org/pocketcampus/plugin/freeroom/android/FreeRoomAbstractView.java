@@ -32,15 +32,45 @@ public abstract class FreeRoomAbstractView extends PluginView implements IFreeRo
 				getApplicationContext(),
 				getResources().getString(
 						R.string.freeroom_connection_error_happened),
-				Toast.LENGTH_SHORT).show();
+				Toast.LENGTH_LONG).show();
 	}
 
+	/**
+	 * NOT USED... replaced by the three other down there.
+	 */
 	@Override
 	public void freeRoomServersDown() {
 		Toast.makeText(
 				getApplicationContext(),
 				getResources().getString(
 						R.string.freeroom_error_freeroom_down),
+				Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void freeRoomServerBadRequest() {
+		Toast.makeText(
+				getApplicationContext(),
+				getResources().getString(
+						R.string.freeroom_error_bad_request),
+				Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void freeRoomServersInternalError() {
+		Toast.makeText(
+				getApplicationContext(),
+				getResources().getString(
+						R.string.freeroom_error_internal_error),
+				Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void freeRoomServersUnknownError() {
+		Toast.makeText(
+				getApplicationContext(),
+				getResources().getString(
+						R.string.freeroom_error_unknown_error),
 				Toast.LENGTH_SHORT).show();
 	}
 }

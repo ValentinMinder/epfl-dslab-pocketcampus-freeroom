@@ -91,5 +91,20 @@ public class FreeRoomController extends PluginController implements IFreeRoomCon
 		Log.v("fr.controller","size in controller = " + list.get(0).getOccupancySize());
 		mModel.setOccupancyResults(list); 
 	}
+
+	public void handleReplyError(IFreeRoomView caller, int status, String statusComment, String callingClass) {
+		Log.e(callingClass, "the server response was not successful. Message: " + statusComment);
+		if (status == 400) {
+			Log.e(callingClass, "server complains about a bad request from the client");
+			caller.freeRoomServerBadRequest();
+		} else if (status == 500) {
+			Log.e(callingClass, "server had an internal error");
+			caller.freeRoomServersInternalError();
+		} else {
+			Log.e(callingClass, "server sent another UNKNOWN status" + status);
+			caller.freeRoomServersUnknownError();
+//			caller.freeRoomServersDown();
+		}
+	}
 	
 }
