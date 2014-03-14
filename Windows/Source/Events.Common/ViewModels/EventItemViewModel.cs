@@ -132,7 +132,8 @@ namespace PocketCampus.Events.ViewModels
                 _settings.EventCategories = response.EventCategories;
                 _settings.EventTags = response.EventTags;
 
-                Pools = response.ChildrenPools == null ? new EventPool[0] : response.ChildrenPools.Values.ToArray();
+                var pools = response.ChildrenPools == null ? Enumerable.Empty<EventPool>() : response.ChildrenPools.Values;
+                Pools = pools.OrderBy( p => p.Id ).ToArray();
                 Item = response.Item;
                 IsFavorite = _settings.FavoriteItemIds.Contains( Item.Id );
             }
