@@ -98,17 +98,6 @@ namespace PocketCampus.IsAcademia.ViewModels
 
                 if ( !token.IsCancellationRequested )
                 {
-#warning Remove this once the server is fixed.
-                    foreach ( var d in response.Days )
-                    {
-                        d.Day = d.Day.AddHours( -1 );
-                        foreach ( var p in d.Periods )
-                        {
-                            p.Start = p.Start.AddHours( -1 );
-                            p.End = p.End.AddHours( -1 );
-                        }
-                    }
-
                     // Now for the fun part!
                     // The days group their periods by UTC date
                     // but since we're in local date, some "days" may hold periods outside of their UTC date
