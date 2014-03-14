@@ -60,6 +60,9 @@ public class FRCheckOccupancyResultView extends FreeRoomAbstractView implements
 		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_result));
 
 		initializeCheckOccupancyResultView();
+		
+		// launch the actual search AFTER launching completely the UI
+		mController.checkOccupancy(this);
 	}
 
 	private void initializeCheckOccupancyResultView() {
