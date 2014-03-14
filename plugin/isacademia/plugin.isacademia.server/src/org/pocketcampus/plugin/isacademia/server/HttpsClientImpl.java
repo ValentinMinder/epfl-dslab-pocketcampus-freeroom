@@ -1,9 +1,7 @@
 package org.pocketcampus.plugin.isacademia.server;
 
 import java.security.*;
-import java.util.Scanner;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
@@ -17,6 +15,7 @@ import org.apache.http.conn.scheme.*;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.SingleClientConnManager;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
 /**
  * Implementation of HttpsClient.
@@ -44,20 +43,7 @@ public class HttpsClientImpl implements HttpsClient {
 
 		HttpGet get = new HttpGet(url);
 		HttpResponse response = client.execute(get);
-		return read(response.getEntity().getContent(), charset);
-	}
-
-	private static String read(InputStream stream, Charset charset) {
-		Scanner scanner = null;
-		try {
-			scanner = new Scanner(stream, charset.name());
-			scanner.useDelimiter("\\A"); // \A = "beginning of input boundary"
-			return scanner.hasNext() ? scanner.next() : "";
-		} finally {
-			if (scanner != null) {
-				scanner.close();
-			}
-		}
+		return EntityUtils.toString(response.getEntity(), charset.toString());
 	}
 
 	private static class InsecureSocketFactory extends SSLSocketFactory {
