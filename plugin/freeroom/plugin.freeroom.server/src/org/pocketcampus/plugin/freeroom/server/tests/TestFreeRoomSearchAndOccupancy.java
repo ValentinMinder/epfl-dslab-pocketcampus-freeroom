@@ -38,6 +38,14 @@ import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.OccupationType;
 
+/**
+ * TESTS - Check Occupancy feature.
+ * 
+ * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
+
 public class TestFreeRoomSearchAndOccupancy {
 	final static String DB_USERNAME = "root";
 	final static String DB_PASSWORD = "root";
@@ -48,7 +56,6 @@ public class TestFreeRoomSearchAndOccupancy {
 	// we allow a margin for error
 	final static long MARGIN_ERROR_MS = 60 * 1000;
 	private Connection conn = null;
-
 
 	public static void createDBTest() {
 		Connection conn = null;
@@ -260,17 +267,19 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue("First occupancy has wrong start, end, duration = "
 					+ durationFirstOcc,
 					Math.abs(durationFirstOcc - ONE_HOUR_MS) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is not free", firstOcc.getOccupationType() != OccupationType.FREE);
-			
+			assertTrue("First occupancy is not free",
+					firstOcc.getOccupationType() != OccupationType.FREE);
+
 			ActualOccupation nextOcc = mAccOcc.get(1);
 			long durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
 					- nextOcc.getPeriod().getTimeStampStart();
-			assertTrue("Next occupancy has wrong start, end, duration = "
-					+ durationNextOcc,
-					Math.abs(durationNextOcc - ONE_HOUR_MS*3) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is free", nextOcc.getOccupationType() == OccupationType.FREE);
+			assertTrue(
+					"Next occupancy has wrong start, end, duration = "
+							+ durationNextOcc,
+					Math.abs(durationNextOcc - ONE_HOUR_MS * 3) < MARGIN_ERROR_MS);
+			assertTrue("First occupancy is free",
+					nextOcc.getOccupationType() == OccupationType.FREE);
 
-			
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -279,7 +288,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testOccupancyMonday8_19CM1() {
 		try {
@@ -313,31 +322,37 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue("First occupancy has wrong start, end, duration = "
 					+ durationFirstOcc,
 					Math.abs(durationFirstOcc - ONE_HOUR_MS) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is not free", firstOcc.getOccupationType() != OccupationType.FREE);
-			
+			assertTrue("First occupancy is not free",
+					firstOcc.getOccupationType() != OccupationType.FREE);
+
 			ActualOccupation nextOcc = mAccOcc.get(1);
 			long durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
 					- nextOcc.getPeriod().getTimeStampStart();
 			assertTrue("Next occupancy has wrong start, end, duration = "
 					+ durationNextOcc,
 					Math.abs(durationNextOcc - ONE_HOUR_MS) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is free", nextOcc.getOccupationType() == OccupationType.FREE);
+			assertTrue("First occupancy is free",
+					nextOcc.getOccupationType() == OccupationType.FREE);
 
 			nextOcc = mAccOcc.get(2);
 			durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
 					- nextOcc.getPeriod().getTimeStampStart();
-			assertTrue("Next occupancy has wrong start, end, duration = "
-					+ durationNextOcc,
-					Math.abs(durationNextOcc - ONE_HOUR_MS*2) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is free", nextOcc.getOccupationType() != OccupationType.FREE);
+			assertTrue(
+					"Next occupancy has wrong start, end, duration = "
+							+ durationNextOcc,
+					Math.abs(durationNextOcc - ONE_HOUR_MS * 2) < MARGIN_ERROR_MS);
+			assertTrue("First occupancy is free",
+					nextOcc.getOccupationType() != OccupationType.FREE);
 
 			nextOcc = mAccOcc.get(3);
 			durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
 					- nextOcc.getPeriod().getTimeStampStart();
-			assertTrue("Next occupancy has wrong start, end, duration = "
-					+ durationNextOcc,
-					Math.abs(durationNextOcc - ONE_HOUR_MS*7) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is free", nextOcc.getOccupationType() == OccupationType.FREE);
+			assertTrue(
+					"Next occupancy has wrong start, end, duration = "
+							+ durationNextOcc,
+					Math.abs(durationNextOcc - ONE_HOUR_MS * 7) < MARGIN_ERROR_MS);
+			assertTrue("First occupancy is free",
+					nextOcc.getOccupationType() == OccupationType.FREE);
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block
@@ -347,7 +362,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testOccupancyTuesday8_19CM2CO3CO1() {
 		try {
@@ -368,33 +383,33 @@ public class TestFreeRoomSearchAndOccupancy {
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 3);
 
-			//first room is CM2
+			// first room is CM2
 			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
 			FRRoom room = mOcc.getRoom();
 			assertTrue(room.getBuilding()
 					.equals(roomsList.get(0).getBuilding()));
 			assertTrue(room.getNumber().equals(roomsList.get(0).getNumber()));
-			
+
 			List<ActualOccupation> mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 3);
-			
-			//second room is CO3
+
+			// second room is CO3
 			mOcc = reply.getOccupancyOfRooms().get(1);
 			room = mOcc.getRoom();
 			assertTrue(room.getBuilding()
 					.equals(roomsList.get(1).getBuilding()));
 			assertTrue(room.getNumber().equals(roomsList.get(1).getNumber()));
-			
+
 			mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 3);
-			
-			//last room is CO1
+
+			// last room is CO1
 			mOcc = reply.getOccupancyOfRooms().get(2);
 			room = mOcc.getRoom();
 			assertTrue(room.getBuilding()
 					.equals(roomsList.get(2).getBuilding()));
 			assertTrue(room.getNumber().equals(roomsList.get(2).getNumber()));
-			
+
 			mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 1);
 
@@ -406,7 +421,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testFreeRoomFriday8_19() {
 		try {
@@ -415,11 +430,10 @@ public class TestFreeRoomSearchAndOccupancy {
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
 			request = Converter.convert(Calendar.FRIDAY, 8, 19);
-			
+
 			reply = server.getFreeRoomFromTime(request);
-			
-			assertTrue(
-					"Every rooms are availables, : " + reply.getRoomsSize(),
+
+			assertTrue("Every rooms are availables, : " + reply.getRoomsSize(),
 					reply.getRoomsSize() == 6);
 
 		} catch (ServerException e) {
@@ -430,7 +444,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testFreeRoomMonday9_10() {
 		try {
@@ -439,14 +453,13 @@ public class TestFreeRoomSearchAndOccupancy {
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
 			request = Converter.convert(Calendar.MONDAY, 9, 10);
-			
+
 			reply = server.getFreeRoomFromTime(request);
-			
+
 			for (FRRoom r : reply.getRooms()) {
 				System.out.println(r);
 			}
-			assertTrue(
-					"Every rooms are availables, : " + reply.getRoomsSize(),
+			assertTrue("Every rooms are availables, : " + reply.getRoomsSize(),
 					reply.getRoomsSize() == 6);
 
 		} catch (ServerException e) {
@@ -457,7 +470,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testFreeRoomMonday9_12() {
 		try {
@@ -466,9 +479,9 @@ public class TestFreeRoomSearchAndOccupancy {
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
 			request = Converter.convert(Calendar.MONDAY, 9, 12);
-			
+
 			reply = server.getFreeRoomFromTime(request);
-			
+
 			assertTrue(reply.getRoomsSize() == 4);
 
 		} catch (ServerException e) {
@@ -479,7 +492,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testFreeRoomMonday9_11() {
 		try {
@@ -488,9 +501,9 @@ public class TestFreeRoomSearchAndOccupancy {
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
 			request = Converter.convert(Calendar.MONDAY, 9, 11);
-			
+
 			reply = server.getFreeRoomFromTime(request);
-			
+
 			assertTrue(reply.getRoomsSize() == 5);
 			Set<FRRoom> rooms = reply.getRooms();
 			assertTrue(rooms.contains(new FRRoom("CO", "1")));
@@ -498,7 +511,6 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue(rooms.contains(new FRRoom("CO", "3")));
 			assertTrue(rooms.contains(new FRRoom("CM", "2")));
 			assertTrue(rooms.contains(new FRRoom("CM", "3")));
-
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block
@@ -508,7 +520,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testFreeRoomTuesday13_16() {
 		try {
@@ -517,16 +529,15 @@ public class TestFreeRoomSearchAndOccupancy {
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
 			request = Converter.convert(Calendar.TUESDAY, 13, 16);
-			
+
 			reply = server.getFreeRoomFromTime(request);
-			
+
 			assertTrue(reply.getRoomsSize() == 4);
 			Set<FRRoom> rooms = reply.getRooms();
 			assertTrue(rooms.contains(new FRRoom("CO", "1")));
 			assertTrue(rooms.contains(new FRRoom("CO", "2")));
 			assertTrue(rooms.contains(new FRRoom("CM", "1")));
 			assertTrue(rooms.contains(new FRRoom("CM", "3")));
-
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block

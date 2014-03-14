@@ -3,6 +3,14 @@ package org.pocketcampus.plugin.freeroom.server.utils;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
+/**
+ * This is an utility class doing useful conversions, and defining a few
+ * constants.
+ * 
+ * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
 public class Utils {
 	public static final long ONE_MIN_IN_MS = 60 * 1000;
 	public static final long ONE_HOUR_IN_MS = 60 * 60 * 1000;
@@ -11,10 +19,11 @@ public class Utils {
 
 	/**
 	 * Adjust the period given in the request. It adds one minutes to the lower
-	 * bound, substract one min from the upper bound. It is used to allow a 
+	 * bound, substract one min from the upper bound. It is used to allow a
 	 * margin for error with the timestamps
 	 * 
-	 * @param req The intial request issued by the client
+	 * @param req
+	 *            The intial request issued by the client
 	 * @return The new request with correct timestamps.
 	 */
 	public static FreeRoomRequest convertMinPrecision(FreeRoomRequest req) {

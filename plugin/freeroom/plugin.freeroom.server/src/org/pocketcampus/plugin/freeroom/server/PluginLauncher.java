@@ -4,9 +4,15 @@ import java.util.ArrayList;
 
 import org.pocketcampus.platform.launcher.server.Processor;
 import org.pocketcampus.platform.launcher.server.ServerBase;
-import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
 
+/**
+ * PluginLauncher launches the actual PocketCampus server.
+ * 
+ * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
 
 public class PluginLauncher {
 	
