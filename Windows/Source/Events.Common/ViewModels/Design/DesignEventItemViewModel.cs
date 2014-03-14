@@ -27,6 +27,7 @@ namespace PocketCampus.Events.ViewModels.Design
                     Name = @"Finite-temperature properties of Ba(Zr,Ti)O3 relaxors from first principles",
                     SpeakerName = @"Laurent Bellaiche, University of Arkansas, USA",
                     Location = "MXF1",
+                    LocationUrl = "this/is/not/really/a/link",
                     StartDate = new DateTime( 2014, 3, 24, 13, 15, 0 ),
                     EndDate = new DateTime( 2014, 3, 24, 0, 0, 0 ),
                     IsFullDay = false,

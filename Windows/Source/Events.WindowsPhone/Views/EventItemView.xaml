@@ -145,6 +145,13 @@
                         <TextBlock Text="{Binding Resources.EventLocation, Source={StaticResource Strings}}"
                                    Style="{StaticResource PhoneTextSubtleStyle}"
                                    Margin="12,0,0,0" />
+                        
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Item.Location}"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Margin="6,0,0,0"
+                                   Visibility="{Binding Item.LocationUrl, Converter={StaticResource EmptyStringToVisibility}}" />
+
                         <HyperlinkButton Grid.Column="1"
                                          Content="{Binding Item.Location}"
                                          Command="{Binding OpenLinkCommand}"
@@ -152,7 +159,8 @@
                                          FontSize="{StaticResource PhoneFontSizeNormal}"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Center"
-                                         Margin="-6,5,12,0" />
+                                         Margin="-6,5,12,0"
+                                         Visibility="{Binding Item.LocationUrl, Converter={StaticResource StringToVisibility}}"  />
                     </Grid>
 
                     <!-- Speaker -->
