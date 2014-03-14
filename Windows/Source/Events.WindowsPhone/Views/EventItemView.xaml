@@ -100,97 +100,97 @@
                    Visibility="{Binding Item.HidePictureThumbnail, Converter={StaticResource BoolToOppositeVisibility}}" />
         </Grid>
 
-        <!-- Information -->
-        <Grid Grid.Row="2"
-              Margin="0,10,0,5"
-              Visibility="{Binding Item.HideInformation, Converter={StaticResource BoolToOppositeVisibility}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
 
-            <!-- Date -->
-            <Grid Visibility="{Binding Item.StartDate, Converter={StaticResource NonNullToVisibility}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Text="{Binding Resources.EventTime, Source={StaticResource Strings}}"
-                           Style="{StaticResource PhoneTextSubtleStyle}"
-                           Margin="12,0,6,0" />
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Item, Converter={StaticResource EventItemToDate}}"
-                           TextWrapping="Wrap"
-                           Style="{StaticResource PhoneTextNormalStyle}"
-                           Margin="0,0,12,0" />
-            </Grid>
-
-            <!-- Location -->
-            <Grid Grid.Row="1"
-                  Visibility="{Binding Item.Location, Converter={StaticResource StringToVisibility}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Text="{Binding Resources.EventLocation, Source={StaticResource Strings}}"
-                           Style="{StaticResource PhoneTextSubtleStyle}"
-                           Margin="12,0,0,0" />
-                <HyperlinkButton Grid.Column="1"
-                                 Content="{Binding Item.Location}"
-                                 Command="{Binding OpenLinkCommand}"
-                                 CommandParameter="{Binding Item.LocationUrl}"
-                                 FontSize="{StaticResource PhoneFontSizeNormal}"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Center"
-                                 Margin="-6,5,12,0" />
-            </Grid>
-
-            <!-- Speaker -->
-            <Grid Grid.Row="2"
-                  Visibility="{Binding Item.SpeakerName, Converter={StaticResource StringToVisibility}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Text="{Binding Resources.EventSpeaker, Source={StaticResource Strings}}"
-                           Style="{StaticResource PhoneTextSubtleStyle}"
-                           Margin="12,0,6,0" />
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Item.SpeakerName}"
-                           TextWrapping="Wrap"
-                           Style="{StaticResource PhoneTextNormalStyle}"
-                           Margin="0,0,12,0" />
-            </Grid>
-
-            <!-- "Mark as favorite" button -->
-            <Grid Grid.Column="1"
-                  Grid.RowSpan="3"
-                  Margin="5,5,5,0"
-                  Visibility="{Binding Item.ParentPool.DisableFavorites, Converter={StaticResource BoolToOppositeVisibility}}">
-                <ToggleButton IsChecked="{Binding IsFavorite, Mode=TwoWay}"
-                              Template="{StaticResource SimpleButtonTemplate}">
-                    <Image Source="/Assets/EmptyStar.png" />
-                </ToggleButton>
-
-                <Image Source="/Assets/Star.png"
-                       Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}"
-                       IsHitTestVisible="False" />
-            </Grid>
-        </Grid>
-
-        <ScrollViewer Grid.Row="4">
+        <!-- Everything needs to scroll, sometimes some values are extremely long -->
+        <ScrollViewer Grid.Row="2">
             <StackPanel>
+                <!-- Information -->
+                <Grid Margin="0,10,0,5"
+                      Visibility="{Binding Item.HideInformation, Converter={StaticResource BoolToOppositeVisibility}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Date -->
+                    <Grid Visibility="{Binding Item.StartDate, Converter={StaticResource NonNullToVisibility}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding Resources.EventTime, Source={StaticResource Strings}}"
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Margin="12,0,6,0" />
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Item, Converter={StaticResource EventItemToDate}}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Margin="0,0,12,0" />
+                    </Grid>
+
+                    <!-- Location -->
+                    <Grid Grid.Row="1"
+                          Visibility="{Binding Item.Location, Converter={StaticResource StringToVisibility}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding Resources.EventLocation, Source={StaticResource Strings}}"
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Margin="12,0,0,0" />
+                        <HyperlinkButton Grid.Column="1"
+                                         Content="{Binding Item.Location}"
+                                         Command="{Binding OpenLinkCommand}"
+                                         CommandParameter="{Binding Item.LocationUrl}"
+                                         FontSize="{StaticResource PhoneFontSizeNormal}"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Center"
+                                         Margin="-6,5,12,0" />
+                    </Grid>
+
+                    <!-- Speaker -->
+                    <Grid Grid.Row="2"
+                          Visibility="{Binding Item.SpeakerName, Converter={StaticResource StringToVisibility}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding Resources.EventSpeaker, Source={StaticResource Strings}}"
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Margin="12,0,6,0" />
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Item.SpeakerName}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Margin="0,0,12,0" />
+                    </Grid>
+
+                    <!-- "Mark as favorite" button -->
+                    <Grid Grid.Column="1"
+                          Grid.RowSpan="3"
+                          Margin="5,5,5,0"
+                          Visibility="{Binding Item.ParentPool.DisableFavorites, Converter={StaticResource BoolToOppositeVisibility}}">
+                        <ToggleButton IsChecked="{Binding IsFavorite, Mode=TwoWay}"
+                                      Template="{StaticResource SimpleButtonTemplate}">
+                            <Image Source="/Assets/EmptyStar.png" />
+                        </ToggleButton>
+
+                        <Image Source="/Assets/Star.png"
+                               Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}"
+                               IsHitTestVisible="False" />
+                    </Grid>
+                </Grid>
+
                 <!-- Large image -->
-                <Image Grid.Row="3"
-                       Source="{Binding Item.PictureUrl}"
+                <Image Source="{Binding Item.PictureUrl}"
                        Visibility="{Binding Item.PictureUrl, Converter={StaticResource StringToVisibility}}" />
 
                 <!-- Details, in HTML -->
