@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -29,6 +30,7 @@ namespace PocketCampus.Events.Controls
 
         private DispatcherTimer _timer;
         private PhotoCamera _camera;
+        private PhoneApplicationFrame _frame;
         private PhoneApplicationPage _underPage;
         private bool _underPageTrayVisible;
         private bool _underPageAppBarVisible;
@@ -69,13 +71,25 @@ namespace PocketCampus.Events.Controls
             _camera.Initialized += Camera_Initialized;
             PreviewVideo.SetSource( _camera );
 
-            _underPage = (PhoneApplicationPage) ( (PhoneApplicationFrame) Application.Current.RootVisual ).Content;
+            _frame = (PhoneApplicationFrame) Application.Current.RootVisual;
+            _frame.BackKeyPress += Frame_BackKeyPress;
+
+            _underPage = (PhoneApplicationPage) _frame.Content;
 
             _underPageTrayVisible = SystemTray.GetIsVisible( _underPage );
             _underPageAppBarVisible = _underPage.ApplicationBar.IsVisible;
 
             SystemTray.SetIsVisible( _underPage, false );
             _underPage.ApplicationBar.IsVisible = false;
+        }
+
+        /// <summary>
+        /// Handles back key presses.
+        /// </summary>
+        private void Frame_BackKeyPress( object sender, CancelEventArgs e )
+        {
+            e.Cancel = true;
+            Close();
         }
 
         /// <summary>
@@ -87,6 +101,8 @@ namespace PocketCampus.Events.Controls
             _camera.Initialized -= Camera_Initialized;
             _camera.Dispose();
             _isDone = true;
+
+            _frame.BackKeyPress -= Frame_BackKeyPress;
 
             SystemTray.SetIsVisible( _underPage, _underPageTrayVisible );
             _underPage.ApplicationBar.IsVisible = _underPageAppBarVisible;
