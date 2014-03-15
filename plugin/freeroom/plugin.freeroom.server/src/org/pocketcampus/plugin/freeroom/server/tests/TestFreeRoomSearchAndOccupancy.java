@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -547,4 +548,99 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
+
+	@Test
+	public void testStartAfterEnd() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomRequest request = null;
+			FreeRoomReply reply = null;
+			request = Converter.convert(Calendar.TUESDAY, 13, 16);
+			FreeRoomRequest request2 = Converter.convert(Calendar.TUESDAY, 12,
+					14);
+
+			request.setPeriod(new FRPeriod(request.getPeriod()
+					.getTimeStampStart(), request2.getPeriod()
+					.getTimeStampStart(), false));
+			
+			reply = server.getFreeRoomFromTime(request);
+			assertTrue("Code is " + reply.getStatus(), reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testDayOutsideRange() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomRequest request = null;
+			FreeRoomReply reply = null;
+			request = Converter.convert(Calendar.SATURDAY, 13, 16);
+
+			
+			reply = server.getFreeRoomFromTime(request);
+			assertTrue("Code is " + reply.getStatus(), reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testStartHourOutsideRange() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomRequest request = null;
+			FreeRoomReply reply = null;
+			request = Converter.convert(Calendar.MONDAY, 7, 16);
+
+			
+			reply = server.getFreeRoomFromTime(request);
+			assertTrue("Code is " + reply.getStatus(), reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testEndHourOutsideRange() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomRequest request = null;
+			FreeRoomReply reply = null;
+			request = Converter.convert(Calendar.MONDAY, 9, 20);
+
+			
+			reply = server.getFreeRoomFromTime(request);
+			assertTrue("Code is " + reply.getStatus(), reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 }
