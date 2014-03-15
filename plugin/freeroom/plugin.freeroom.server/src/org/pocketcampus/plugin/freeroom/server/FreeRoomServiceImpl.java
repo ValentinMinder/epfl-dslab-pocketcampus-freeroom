@@ -72,26 +72,27 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomReply getFreeRoomFromTime(FreeRoomRequest request)
 			throws TException {
 
-		FreeRoomReply reply = new FreeRoomReply(HttpURLConnection.HTTP_CREATED,
-				"" + HttpURLConnection.HTTP_CREATED);
+		//reduce the total duration to avoid having possibly exact same timestamp 
+		FRPeriod period = Utils.convertMinPrecision(request).getPeriod();
 
-		// The client issue a request, convertMinPrecision's job is to adapt the
-		// period. See its doc for more information.
-		request = Utils.convertMinPrecision(request);
-		FRPeriod period = request.getPeriod();
-		long ts_start = period.getTimeStampStart();
-		long ts_end = period.getTimeStampEnd();
+		long tsStart = period.getTimeStampStart();
+		long tsEnd = period.getTimeStampEnd();
+
+		FreeRoomReply reply = checkFreeRoomFromTimePeriod(tsStart, tsEnd);
+
+		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+			// if something is wrong in the request
+			return reply;
+		}
+
 		boolean recurrent = period.isRecurrent();
 
 		if (!recurrent) {
-			Set<FRRoom> rooms = getFreeRoom(ts_start, ts_end);
+			Set<FRRoom> rooms = getFreeRoom(tsStart, tsEnd);
 			if (rooms != null) {
-				reply = new FreeRoomReply(HttpURLConnection.HTTP_OK, ""
-						+ HttpURLConnection.HTTP_OK);
 				reply.setRooms(rooms);
 				reply.setRoomsIsSet(true);
 			} else {
-				// TODO: how to differenciate server error or bad request ?
 				reply = new FreeRoomReply(
 						HttpURLConnection.HTTP_INTERNAL_ERROR,
 						"could be 400 or 500");
@@ -105,34 +106,56 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 	}
 
+	/**
+	 * Check if the given period is correct, ie is between Monday and Friday,
+	 * between 8am and 7pm, and that the start timestamp is before the end
+	 * timestamp
+	 * 
+	 * @param tsStart
+	 *            start timestamp of the period
+	 * @param tsEnd
+	 *            end timestamp of the period
+	 * @return A new FreeRoomReply with status code HttpURLConnection.HTTP_OK is
+	 *         everything is fine,HttpURLConnection.HTTP_BAD_REQUEST with an
+	 *         error message if some conditions does not hold.
+	 */
+	private FreeRoomReply checkFreeRoomFromTimePeriod(long tsStart, long tsEnd) {
+		FreeRoomReply mReply = new FreeRoomReply(HttpURLConnection.HTTP_OK, "");
+
+		// Check if the request is valid
+		// First, the end date should be after the start, not equal or before.
+		if (tsEnd - tsStart <= 0) {
+			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Bad timestamps, the end should be after the start");
+		}
+
+		if (tsEnd - tsStart <= MARGIN_ERROR_TIMESTAMP * 5) {
+			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Bad timestamps, there should a total duration of at least 5min");
+		}
+		// Second the queries should be between MO-FR 8-19h
+		Calendar mDate = Calendar.getInstance();
+		mDate.setTimeInMillis(tsStart);
+
+		int startDay = mDate.get(Calendar.DAY_OF_WEEK);
+		int startHour = mDate.get(Calendar.HOUR_OF_DAY);
+		mDate.setTimeInMillis(tsEnd);
+		int endHour = mDate.get(Calendar.HOUR_OF_DAY);
+
+		if (startDay < 2 || startDay > 6) {
+			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Day should be between Monday and Friday");
+		}
+
+		if (startHour < 8 || endHour > 19) {
+			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Hours should be between 8am and 7pm");
+		}
+
+		return mReply;
+	}
+
 	private Set<FRRoom> getFreeRoom(long start, long end) throws TException {
-		Calendar startDate = Calendar.getInstance();
-		startDate.setTimeInMillis(start);
-		Calendar endDate = Calendar.getInstance();
-		endDate.setTimeInMillis(end);
-
-		// if (startDate.compareTo(endDate) <= 0) {
-		// throw new TException("Start date must be before end date");
-		// }
-
-		// depends from the structure of database, need to change probably!
-		// doesn't support overnight searches, only MON-SUN 8am-7pm
-		int day = startDate.get(Calendar.DAY_OF_WEEK);
-		int starthour = startDate.get(Calendar.HOUR_OF_DAY);
-		int endhour = endDate.get(Calendar.HOUR_OF_DAY);
-		// according to java.Calendar, Monday = 2 !!!
-		System.out.println("Day: " + day + "/ from hour " + starthour
-				+ "/ to hour" + endhour);
-
-		// All this was copied from previous method!
-		// TODO: validate for EVERY hour;
-		if (starthour < 8 || endhour > 19) {
-			throw new TException("unsupported timestamps: outside boundaries");
-		}
-		if (starthour >= endhour) {
-			// TODO: change exception or handling
-			// throw new TException("unsupported timestamps: same timestamps");
-		}
 
 		HashSet<FRRoom> freerooms = new HashSet<FRRoom>();
 		try {
@@ -143,13 +166,16 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							+ "WHERE rl.rid NOT IN "
 							+ "(SELECT ro.rid FROM roomsoccupancy ro "
 							+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
-							+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)) )");
+							+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)" 
+							+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) )");
 
 			// filling the query with values
 			query.setLong(1, end);
 			query.setLong(2, start);
 			query.setLong(3, end);
 			query.setLong(4, start);
+			query.setLong(5, start);
+			query.setLong(6, end);
 
 			ResultSet resultQuery = query.executeQuery();
 			while (resultQuery.next()) {
