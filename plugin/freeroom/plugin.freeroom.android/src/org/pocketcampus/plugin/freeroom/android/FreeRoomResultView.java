@@ -2,6 +2,8 @@ package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -105,8 +107,16 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements
 				android.R.layout.simple_dropdown_item_1line,
 				android.R.id.text1, mListValues);
 		mList.setAdapter(mAdapter);
-		mListValues.add("CO 1");
-		mListValues.add("CO 123");
+		if (mModel.isFavoriteRoom("CO1")) {
+			mListValues.add("CO1 \u2713");
+		} else {
+			mListValues.add("CO1");
+		}
+		if (mModel.isFavoriteRoom("CO123")) {
+			mListValues.add("CO123 \u2713");
+		} else {
+			mListValues.add("CO123");
+		}
 
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -128,6 +138,33 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements
 			}
 
 		});
+
+		mList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				String room = mAdapter.getItem(arg2);
+				String regexpMatch = "([A-Z0-9\\s]+)*";
+				Pattern mPattern = Pattern.compile(regexpMatch);
+				Matcher matcher = mPattern.matcher(room);
+				
+				if (matcher.find()) {
+					room = matcher.group(0).replaceAll("\\s", "");
+					if (mModel.isFavoriteRoom(room)) {
+						mModel.removeFavoriteRoom(room);
+						mListValues.set(arg2, room);
+					} else {
+						mModel.setFavoriteRoom(room);
+						mListValues.set(arg2, room + "\u2713");
+					}
+					mAdapter.notifyDataSetChanged();
+				}
+				
+				
+				return true;
+			}
+		});
 		subLayout.addView(mList);
 	}
 
@@ -138,7 +175,11 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements
 		mAdapter.notifyDataSetChanged();
 		Set<FRRoom> res = mModel.getFreeRoomResults();
 		for (FRRoom frRoom : res) {
-			mListValues.add(frRoom.getBuilding() + " " + frRoom.getNumber());
+			String roomDisplay = frRoom.getBuilding() + frRoom.getNumber();
+			if (mModel.isFavoriteRoom(roomDisplay)) {
+				roomDisplay += " \u2713";
+			}
+			mListValues.add(roomDisplay);
 		}
 		if (res.isEmpty()) {
 			Toast.makeText(getApplicationContext(),
