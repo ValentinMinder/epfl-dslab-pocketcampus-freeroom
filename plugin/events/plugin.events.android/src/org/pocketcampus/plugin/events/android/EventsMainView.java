@@ -1,5 +1,9 @@
 package org.pocketcampus.plugin.events.android;
 
+import static org.pocketcampus.android.platform.sdk.utils.SetUtils.*;
+import static org.pocketcampus.android.platform.sdk.utils.MapUtils.*;
+import static org.pocketcampus.android.platform.sdk.utils.DialogUtils.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;

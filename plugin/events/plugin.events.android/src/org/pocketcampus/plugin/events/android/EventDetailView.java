@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.events.android;
 
+import static org.pocketcampus.android.platform.sdk.utils.SetUtils.*;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
