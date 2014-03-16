@@ -640,7 +640,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     NSMutableDictionary* tmpTagsInPresentItems = [NSMutableDictionary dictionary];
     for (EventItem* item in [self.poolReply.childrenItems allValues]) {
         for (NSString* tagKey in item.eventTags) {
-            if (!tmpTagsInPresentItems[tagKey]) {
+            if (!tmpTagsInPresentItems[tagKey] && self.poolReply.tags[tagKey]) {
                 tmpTagsInPresentItems[tagKey] = self.poolReply.tags[tagKey];
             }
         }

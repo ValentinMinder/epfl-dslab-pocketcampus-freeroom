@@ -53,5 +53,16 @@
                        TextWrapping="Wrap"
                        Style="{StaticResource AppTextTitle2Style}"/>
         </Border>
+
+        <!-- Error message -->
+        <Border x:Name="ErrorMessage"
+                Visibility="Collapsed"
+                VerticalAlignment="Top"
+                Background="#88000000">
+            <TextBlock Text="{Binding Resources.CameraError, Source={StaticResource Strings}}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource AppTextTitle2Style}"/>
+        </Border>
+
     </Grid>
 </ContentControl>

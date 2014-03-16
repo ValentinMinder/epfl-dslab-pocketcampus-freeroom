@@ -52,7 +52,7 @@
 #define COCOAPODS_POD_AVAILABLE_CDZQRScanningViewController
 #define COCOAPODS_VERSION_MAJOR_CDZQRScanningViewController 1
 #define COCOAPODS_VERSION_MINOR_CDZQRScanningViewController 0
-#define COCOAPODS_VERSION_PATCH_CDZQRScanningViewController 6
+#define COCOAPODS_VERSION_PATCH_CDZQRScanningViewController 7
 
 // GoogleAnalytics-iOS-SDK
 #define COCOAPODS_POD_AVAILABLE_GoogleAnalytics_iOS_SDK

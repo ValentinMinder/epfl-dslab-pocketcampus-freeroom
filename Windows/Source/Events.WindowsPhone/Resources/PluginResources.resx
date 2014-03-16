@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CameraError" xml:space="preserve">
+    <value>An error occured while initializing the camera. Please try again later.</value>
+  </data>
   <data name="CategoryFilterViewTitle" xml:space="preserve">
-    <value>filter categories</value>
+    <value>categories</value>
   </data>
   <data name="DifferentDateFormat" xml:space="preserve">
     <value>{0}, {1} - {2}, {3}</value>
@@ -216,6 +219,9 @@
   <data name="SendFavoriteEmailButton" xml:space="preserve">
     <value>send e-mail with favorites...</value>
   </data>
+  <data name="SettingsButton" xml:space="preserve">
+    <value>settings</value>
+  </data>
   <data name="SettingsViewTitle" xml:space="preserve">
     <value>settings</value>
   </data>
@@ -228,7 +234,7 @@
     <comment>0: date, 1: time</comment>
   </data>
   <data name="TagFilterViewTitle" xml:space="preserve">
-    <value>filter tags</value>
+    <value>tags</value>
   </data>
   <data name="WrongQRCode" xml:space="preserve">
     <value>This code isn't for PocketCampus</value>

@@ -90,7 +90,7 @@ static id instance __strong = nil;
         CLSNSLog(@"!! ERROR: cannot track nil screeName or of length 0.");
         return;
     }
-    CLSLog(@"Tracked screen: '%@'", screenName);
+    CLSLog(@"Track screen: '%@'", screenName);
     [self.gaiTracker set:kGAIScreenName value:screenName];
     [self.gaiTracker send:[[GAIDictionaryBuilder createAppView] build]];
 }

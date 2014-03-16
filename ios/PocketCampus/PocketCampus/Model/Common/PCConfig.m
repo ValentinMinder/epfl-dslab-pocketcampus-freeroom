@@ -160,14 +160,14 @@ static BOOL loaded = NO;
     }
     NSURLSessionConfiguration* config = [NSURLSessionConfiguration defaultSessionConfiguration];
     config.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
-    config.timeoutIntervalForRequest = kConfigRequestTimeoutIntervalSeconds;
     
     AFHTTPSessionManager* manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     NSMutableSet* acceptableContentTypes = [NSMutableSet setWithSet:manager.responseSerializer.acceptableContentTypes];
     [acceptableContentTypes addObject:@"text/html"];
     manager.responseSerializer.acceptableContentTypes = acceptableContentTypes;
-    [manager GET:kGetConfigURLString
+    
+    NSURLSessionTask* task = [manager GET:kGetConfigURLString
       parameters:@{kGetConfigPlatformParameterName:@"ios", kGetConfigAppVersionParameterName:[PCUtils appVersion]}
          success:^(NSURLSessionDataTask *task, NSDictionary* jsonServerConfig) {
              [[self _defaults] registerDefaults:jsonServerConfig];
@@ -183,7 +183,14 @@ static BOOL loaded = NO;
              CLSNSLog(@"   !! Error when loading config from server. Continuing with local config.");
              completion();
          }];
+    
+    [NSTimer scheduledTimerWithTimeInterval:kConfigRequestTimeoutIntervalSeconds block:^{
+        if (task.state == NSURLSessionTaskStateRunning) {
+            [task cancel];
+        }
+    } repeats:NO];
 }
+
 + (void)registerDevDefaultsFromAppSupportIfExists {
     NSString* pathAppSupportConfig = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
 	pathAppSupportConfig = [pathAppSupportConfig stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];

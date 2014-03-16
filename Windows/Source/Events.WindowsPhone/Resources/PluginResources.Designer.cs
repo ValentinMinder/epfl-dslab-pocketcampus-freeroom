@@ -61,7 +61,16 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to filter categories.
+        ///   Looks up a localized string similar to An error occured while initializing the camera. Please try again later..
+        /// </summary>
+        public static string CameraError {
+            get {
+                return ResourceManager.GetString("CameraError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to categories.
         /// </summary>
         public static string CategoryFilterViewTitle {
             get {
@@ -351,6 +360,15 @@ namespace PocketCampus.Events.Resources {
         /// <summary>
         ///   Looks up a localized string similar to settings.
         /// </summary>
+        public static string SettingsButton {
+            get {
+                return ResourceManager.GetString("SettingsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to settings.
+        /// </summary>
         public static string SettingsViewTitle {
             get {
                 return ResourceManager.GetString("SettingsViewTitle", resourceCulture);
@@ -376,7 +394,7 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to filter tags.
+        ///   Looks up a localized string similar to tags.
         /// </summary>
         public static string TagFilterViewTitle {
             get {

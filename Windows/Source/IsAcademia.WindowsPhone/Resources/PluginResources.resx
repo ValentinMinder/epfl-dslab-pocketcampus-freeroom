@@ -121,16 +121,16 @@
     <value>Schedule</value>
   </data>
   <data name="PeriodType_Lecture" xml:space="preserve">
-    <value>Class</value>
+    <value>class</value>
   </data>
   <data name="PeriodType_Exercises" xml:space="preserve">
-    <value>Exercises</value>
+    <value>exercises</value>
   </data>
   <data name="PeriodType_Lab" xml:space="preserve">
-    <value>Lab</value>
+    <value>lab</value>
   </data>
   <data name="PeriodType_Project" xml:space="preserve">
-    <value>Project</value>
+    <value>project</value>
   </data>
   <data name="PluginName" xml:space="preserve">
     <value>IS-Academia</value>
