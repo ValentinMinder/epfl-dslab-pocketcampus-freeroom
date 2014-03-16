@@ -80,27 +80,35 @@
                        Style="{StaticResource AppTextTitle2Style}" />
         </Border>
 
-        <!-- Name & picture background -->
-        <Rectangle Grid.ColumnSpan="2"
-                   Grid.Row="1"
-                   Fill="{StaticResource AppSecondaryHeaderBackgroundBrush}" />
+        <!-- Name & picture -->
+        <Border Grid.ColumnSpan="2"
+                Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-        <!-- Name -->
-        <TextBlock Grid.Row="1"
-                   Text="{Binding Person.FullName}"
-                   Style="{StaticResource PhoneTextTitle1Style}"
-                   Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
-                   FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                   VerticalAlignment="Center"
-                   TextWrapping="Wrap" />
+                <!-- Name -->
+                <TextBlock Grid.Row="1"
+                           Text="{Binding Person.FullName}"
+                           Style="{StaticResource PhoneTextTitle1Style}"
+                           Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
+                           FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap" />
 
-        <!-- Picture -->
-        <Image Grid.Column="1"
-               Grid.Row="1"
-               Source="{Binding Person.PictureUrl}"
-               MaxWidth="150"
-               MaxHeight="200"
-               Margin="5" />
+                <!-- Picture -->
+                <Image Grid.Column="1"
+                       Grid.Row="1"
+                       Source="{Binding Person.PictureUrl}"
+                       HorizontalAlignment="Right"
+                       MaxWidth="150"
+                       MaxHeight="200"
+                       Margin="5" />
+            </Grid>
+        </Border>
 
         <!-- Units -->
         <TextBlock Grid.Row="2"

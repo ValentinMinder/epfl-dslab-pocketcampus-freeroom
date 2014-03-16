@@ -20,19 +20,25 @@ namespace PocketCampus.Events
         public string UserTicket { get; private set; }
 
         /// <summary>
-        /// Gets the ID of the item that should be marked as favorite, if any.
+        /// Gets the ID of the item that should be displayed, if any.
         /// </summary>
-        public long? FavoriteItemId { get; private set; }
+        public long? ItemId { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the item should be marked as favorite.
+        /// </summary>
+        public bool MarkItemAsFavorite { get; private set; }
 
 
         /// <summary>
         /// Creates a new ViewPoolRequest.
         /// </summary>
-        public ViewPoolRequest( long poolId, string userTicket = null, long? favoriteItemId = null )
+        public ViewPoolRequest( long poolId, string userTicket = null, long? itemId = null, bool markItemAsFavorite = false )
         {
             PoolId = poolId;
             UserTicket = userTicket;
-            FavoriteItemId = favoriteItemId;
+            ItemId = itemId;
+            MarkItemAsFavorite = markItemAsFavorite;
         }
     }
 }

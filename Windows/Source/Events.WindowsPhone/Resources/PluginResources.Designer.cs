@@ -61,7 +61,7 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to filter categories.
+        ///   Looks up a localized string similar to categories.
         /// </summary>
         public static string CategoryFilterViewTitle {
             get {
@@ -385,7 +385,7 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to filter tags.
+        ///   Looks up a localized string similar to tags.
         /// </summary>
         public static string TagFilterViewTitle {
             get {

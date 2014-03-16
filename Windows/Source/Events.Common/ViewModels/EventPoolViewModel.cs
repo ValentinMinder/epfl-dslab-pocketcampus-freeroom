@@ -162,10 +162,14 @@ namespace PocketCampus.Events.ViewModels
               || ( Pool != null && Pool.AlwaysRefresh == true )
               || ( _previousSettings.Item1 != _settings.SearchPeriod || _previousSettings.Item2 != _settings.SearchInPast ) )
             {
-                if ( _request.FavoriteItemId != null )
+                if ( _request.ItemId != null )
                 {
-                    _settings.FavoriteItemIds.Add( _request.FavoriteItemId.Value );
-                    _navigationService.NavigateTo<EventItemViewModel, long>( _request.FavoriteItemId.Value );
+                    if ( _request.MarkItemAsFavorite )
+                    {
+                        _settings.FavoriteItemIds.Add( _request.ItemId.Value );
+                    }
+
+                    _navigationService.NavigateTo<EventItemViewModel, long>( _request.ItemId.Value );
                     _navigationService.PopBackStack();
                 }
 

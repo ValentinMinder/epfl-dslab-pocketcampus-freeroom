@@ -6,6 +6,7 @@
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                      xmlns:tool="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
                       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
                       xmlns:my="clr-namespace:PocketCampus.IsAcademia"
                       xmlns:myControls="clr-namespace:PocketCampus.IsAcademia.Controls"
@@ -28,8 +29,6 @@
 
         <!-- Converters -->
         <my:PeriodTypeToBrushConverter x:Key="PeriodTypeToBrush" />
-        <my:StringsJoinConverter x:Key="JoinStrings"
-                                 Separator=", " />
         <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                             Strings="{StaticResource Strings}" />
 
@@ -38,8 +37,8 @@
         <SolidColorBrush x:Key="EmptyPeriodBorderBrush" Color="#59707070" />
 
         <!-- Horizontal items panel -->
-        <ItemsPanelTemplate x:Key="HorizontalItemsPanel">
-            <comControls:LinePanel Orientation="Horizontal" />
+        <ItemsPanelTemplate x:Key="WrappingItemsPanel">
+            <tool:WrapPanel Orientation="Horizontal" />
         </ItemsPanelTemplate>
 
         <!-- Period container style -->
@@ -61,6 +60,15 @@
             <Setter Property="BorderBrush" Value="{StaticResource EmptyPeriodBorderBrush}" />
             <Setter Property="BorderThickness" Value="4,0.5,0,0.5" />
         </Style>
+        
+        <!-- Room template -->
+        <DataTemplate x:Key="PeriodRoomTemplate">
+            <HyperlinkButton Content="{Binding}"
+                             Command="{Binding DataContext.ViewRoomOnMapCommand, ElementName=LayoutRoot}"
+                             CommandParameter="{Binding}"
+                             Foreground="{StaticResource PhoneSubtleBrush}"
+                             FontSize="{StaticResource PhoneFontSizeNormal}" />
+        </DataTemplate>
 
 
         <!-- Basic period template -->
@@ -124,13 +132,13 @@
                 </Viewbox>
 
                 <!-- Rooms -->
-                <TextBlock Grid.Column="1"
-                           Grid.Row="1"
-                           Text="{Binding Rooms, Converter={StaticResource JoinStrings}}"
-                           Style="{StaticResource PhoneTextSubtleStyle}"
-                           Margin="9,0"
-                           TextTrimming="WordEllipsis"
-                           VerticalAlignment="Top" />
+                <ItemsControl Grid.Column="1"
+                              Grid.Row="1"
+                              ItemsSource="{Binding Rooms}"
+                              ItemTemplate="{StaticResource PeriodRoomTemplate}"
+                              ItemsPanel="{StaticResource WrappingItemsPanel}"
+                              Margin="-2,0,10,0"
+                              VerticalAlignment="Top" />
 
                 <!-- Period type -->
                 <TextBlock Grid.Column="2"
@@ -166,7 +174,7 @@
                 <!-- It must have a height, otherwise the * rows work as Auto rows. -->
                 <myControls:DayDisplay Grid.Column="1"
                                        Grid.Row="1"
-                                       Height="750"
+                                       Height="800"
                                        HorizontalAlignment="Stretch"
                                        Day="{Binding}"
                                        Days="{Binding DataContext.Days, ElementName=LayoutRoot}"

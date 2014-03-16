@@ -94,8 +94,8 @@
 
         <!-- Buildings level selector -->
         <myControls:NumericUpDown Grid.Row="3"
-                                  Minimum="0"
-                                  Maximum="8"
+                                  Minimum="-4"
+                                  Maximum="9"
                                   Value="{Binding Properties.BuildingsLevel, Mode=TwoWay}"
                                   Width="50"
                                   HorizontalAlignment="Left"

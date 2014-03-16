@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.IsAcademia.Models;
 using PocketCampus.IsAcademia.Services;
+using PocketCampus.Map;
 using PocketCampus.Mvvm;
 using PocketCampus.Mvvm.Logging;
 
@@ -19,7 +20,7 @@ namespace PocketCampus.IsAcademia.ViewModels
     /// <summary>
     /// The main (and only) ViewModel.
     /// </summary>
-    [LogId( "/schedule" )]
+    [LogId( "/isacademia" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private const int MinimumDaysInWeek = 5;
@@ -46,6 +47,15 @@ namespace PocketCampus.IsAcademia.ViewModels
         {
             get { return _weekDate; }
             set { SetProperty( ref _weekDate, value ); OnWeekDateChanged(); }
+        }
+
+        /// <summary>
+        /// Gets the command executed to view a room.
+        /// </summary>
+        [LogId( "ViewRoomOnMap" )]
+        public Command<string> ViewRoomOnMapCommand
+        {
+            get { return GetCommand<string>( room => Messenger.Send( new MapSearchRequest( room ) ) ); }
         }
 
 

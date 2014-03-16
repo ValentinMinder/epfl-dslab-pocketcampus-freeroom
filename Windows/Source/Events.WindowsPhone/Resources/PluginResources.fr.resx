@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CategoryFilterViewTitle" xml:space="preserve">
-    <value>filtrer les catégories</value>
+    <value>catégories</value>
   </data>
   <data name="DifferentDateFormat" xml:space="preserve">
     <value>{0}, {1} - {2}, {3}</value>
@@ -231,7 +231,7 @@
     <comment>0: date, 1: time</comment>
   </data>
   <data name="TagFilterViewTitle" xml:space="preserve">
-    <value>filtrer les tags</value>
+    <value>tags</value>
   </data>
   <data name="WrongQRCode" xml:space="preserve">
     <value>Ce code n'est pas pour PocketCampus</value>

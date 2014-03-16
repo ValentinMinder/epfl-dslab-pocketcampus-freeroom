@@ -22,6 +22,7 @@ namespace PocketCampus.Directory.ViewModels
     {
         private readonly IDirectoryService _directoryService;
         private readonly INavigationService _navigationService;
+        private readonly ViewPersonRequest _request;
 
         private bool _isLoadingMoreResults;
         private ObservableCollection<Person> _searchResults;
@@ -100,13 +101,23 @@ namespace PocketCampus.Directory.ViewModels
             _directoryService = directoryService;
             _navigationService = navigationService;
             _anySearchResults = true;
-
-            if ( request.Name != null )
-            {
-                SearchCommand.ExecuteAsync( request.Name );
-            }
+            _request = request;
         }
 
+
+        public override async Task OnNavigatedToAsync()
+        {
+            if ( _request.Name != null )
+            {
+                await SearchAsync( _request.Name );
+                if ( _searchResults.Count == 1 )
+                {
+                    _navigationService.PopBackStack();
+                }
+            }
+
+            await base.OnNavigatedToAsync();
+        }
 
         /// <summary>
         /// Asynchronously provides search suggestions for the specified query.
@@ -185,7 +196,7 @@ namespace PocketCampus.Directory.ViewModels
             }
             catch
             {
-                // Ignore all exceptions since we're paginating; there are results displayed.
+                _currentPaginationToken = null;
             }
 
             IsLoadingMoreResults = false;

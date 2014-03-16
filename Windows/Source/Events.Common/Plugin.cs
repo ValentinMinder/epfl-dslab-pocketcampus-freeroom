@@ -20,6 +20,8 @@ namespace PocketCampus.Events
         private const string PoolIdParameter = "eventPoolId";
         private const string UserTicketParameter = "userTicket";
         private const string MarkAsFavoriteParameter = "markFavorite";
+        private const string ViewItemQuery = "showEventItem";
+        private const string EventIdParameter = "eventItemId";
 
         /// <summary>
         /// Gets the plugin's ID.
@@ -59,25 +61,32 @@ namespace PocketCampus.Events
         /// </summary>
         public void NavigateTo( string destination, IDictionary<string, string> parameters, INavigationService navigationService )
         {
-            if ( destination == ViewPoolQuery )
+            switch ( destination )
             {
-                long id = long.Parse( parameters[PoolIdParameter] );
+                case ViewPoolQuery:
+                    long poolId = long.Parse( parameters[PoolIdParameter] );
 
-                string ticket = null;
-                parameters.TryGetValue( UserTicketParameter, out ticket );
+                    string ticket = null;
+                    parameters.TryGetValue( UserTicketParameter, out ticket );
 
-                long? favoriteId = null;
-                string favoriteIdString = null;
-                if ( parameters.TryGetValue( MarkAsFavoriteParameter, out favoriteIdString ) )
-                {
-                    favoriteId = long.Parse( favoriteIdString );
-                    // Ignore the pool ID; just go to the event from the root. This makes for more natural navigation.
-                    navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( EventPool.RootId, userTicket: ticket, favoriteItemId: favoriteId ) );
-                }
-                else
-                {
-                    navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( id, userTicket: ticket ) );
-                }
+                    long? favoriteId = null;
+                    string favoriteIdString = null;
+                    if ( parameters.TryGetValue( MarkAsFavoriteParameter, out favoriteIdString ) )
+                    {
+                        favoriteId = long.Parse( favoriteIdString );
+                        // Ignore the pool ID; just go to the event from the root. This makes for more natural navigation.
+                        navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( EventPool.RootId, userTicket: ticket, itemId: favoriteId, markItemAsFavorite: true ) );
+                    }
+                    else
+                    {
+                        navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( poolId, userTicket: ticket ) );
+                    }
+                    break;
+
+                case ViewItemQuery:
+                    long itemId = long.Parse( parameters[EventIdParameter] );
+                    navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( EventPool.RootId, itemId: itemId ) );
+                    break;
             }
         }
     }
