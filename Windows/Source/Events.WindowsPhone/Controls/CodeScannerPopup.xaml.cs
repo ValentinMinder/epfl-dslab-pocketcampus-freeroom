@@ -28,8 +28,8 @@ namespace PocketCampus.Events.Controls
         private const string CustomUrlPrefix = "pocketcampus://";
         private const string CustomUrlLogPrefix = "pocketcampus://events.plugin.pocketcampus.org/";
 
-        private DispatcherTimer _timer;
         private PhotoCamera _camera;
+        private DispatcherTimer _timer;
         private PhoneApplicationFrame _frame;
         private PhoneApplicationPage _underPage;
         private bool _underPageTrayVisible;
@@ -66,21 +66,28 @@ namespace PocketCampus.Events.Controls
         /// </summary>
         private void This_Loaded( object sender, EventArgs e )
         {
-            // camera init must be done here
-            _camera = new PhotoCamera( CameraType.Primary );
-            _camera.Initialized += Camera_Initialized;
-            PreviewVideo.SetSource( _camera );
+            try
+            {
+                // camera init must be done here
+                _camera = new PhotoCamera( CameraType.Primary );
+                _camera.Initialized += Camera_Initialized;
+                PreviewVideo.SetSource( _camera );
 
-            _frame = (PhoneApplicationFrame) Application.Current.RootVisual;
-            _frame.BackKeyPress += Frame_BackKeyPress;
+                _frame = (PhoneApplicationFrame) Application.Current.RootVisual;
+                _frame.BackKeyPress += Frame_BackKeyPress;
 
-            _underPage = (PhoneApplicationPage) _frame.Content;
+                _underPage = (PhoneApplicationPage) _frame.Content;
 
-            _underPageTrayVisible = SystemTray.GetIsVisible( _underPage );
-            _underPageAppBarVisible = _underPage.ApplicationBar.IsVisible;
+                _underPageTrayVisible = SystemTray.GetIsVisible( _underPage );
+                _underPageAppBarVisible = _underPage.ApplicationBar.IsVisible;
 
-            SystemTray.SetIsVisible( _underPage, false );
-            _underPage.ApplicationBar.IsVisible = false;
+                SystemTray.SetIsVisible( _underPage, false );
+                _underPage.ApplicationBar.IsVisible = false;
+            }
+            catch
+            {
+                ErrorMessage.Visibility = Visibility.Visible;
+            }
         }
 
         /// <summary>

@@ -61,6 +61,15 @@ namespace PocketCampus.Events.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occured while initializing the camera. Please try again later..
+        /// </summary>
+        public static string CameraError {
+            get {
+                return ResourceManager.GetString("CameraError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to categories.
         /// </summary>
         public static string CategoryFilterViewTitle {
