@@ -366,7 +366,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected);
 		int day = mCalendar.get(Calendar.DAY_OF_WEEK);
 		
-		//day should also be between Monday-Friday
+		// day should also be between Monday-Friday
 		if (day < 2 || day > 6) {
 			error++;
 		}

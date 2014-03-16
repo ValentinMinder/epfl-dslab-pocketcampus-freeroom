@@ -14,6 +14,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 /**
@@ -31,6 +32,11 @@ import android.util.Log;
 public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
+	 * Keys to persistent storage
+	 */
+	private final String FAVORITES_ROOMS_KEY = "FAVORITES_ROOMS_KEY";
+	/**
+	 * 
 	 * Reference to the Views that need to be notified when the stored data
 	 * changes.
 	 */
@@ -48,6 +54,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private List<Occupancy> mListCheckedOccupancyRoom = new ArrayList<Occupancy>();
 
+	private Context context;
+
 	/**
 	 * Constructor with reference to the context.
 	 * 
@@ -58,7 +66,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            is the Application Context.
 	 */
 	public FreeRoomModel(Context context) {
-
+		this.context = context;
 	}
 
 	/**
@@ -164,5 +172,27 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 						+ mListCheckedOccupancyRoom.get(0).getOccupancySize()
 						+ "/" + a.size());
 		return a;
+	}
+
+	public void setFavoriteRoom(String roomname) {
+		SharedPreferences preferences = context.getSharedPreferences(
+				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putBoolean(roomname, true);
+		editor.commit();
+	}
+	
+	public void removeFavoriteRoom(String roomname) {
+		SharedPreferences preferences = context.getSharedPreferences(
+				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.remove(roomname);
+		editor.commit();
+	}
+	
+	public boolean isFavoriteRoom(String roomname) {
+		SharedPreferences preferences = context.getSharedPreferences(
+				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
+		return preferences.getBoolean(roomname, false);
 	}
 }
