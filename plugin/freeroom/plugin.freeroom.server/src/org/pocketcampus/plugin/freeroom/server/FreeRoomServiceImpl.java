@@ -79,7 +79,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
 
-		FreeRoomReply reply = checkFreeRoomFromTimePeriod(tsStart, tsEnd);
+		FreeRoomReply reply = checkFreeRoomPeriod(tsStart, tsEnd);
 
 		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
 			// if something is wrong in the request
@@ -120,7 +120,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *         everything is fine,HttpURLConnection.HTTP_BAD_REQUEST with an
 	 *         error message if some conditions does not hold.
 	 */
-	private FreeRoomReply checkFreeRoomFromTimePeriod(long tsStart, long tsEnd) {
+	private FreeRoomReply checkFreeRoomPeriod(long tsStart, long tsEnd) {
 		FreeRoomReply mReply = new FreeRoomReply(HttpURLConnection.HTTP_OK, "");
 
 		// Check if the request is valid
@@ -200,6 +200,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public OccupancyReply checkTheOccupancy(OccupancyRequest request)
 			throws TException {
 
+
 		OccupancyReply reply = new OccupancyReply(
 				HttpURLConnection.HTTP_CREATED, ""
 						+ HttpURLConnection.HTTP_CREATED);
@@ -214,7 +215,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long timestampStart = period.getTimeStampStart();
 		long timestampEnd = period.getTimeStampEnd();
 
-		System.out.println((timestampStart - timestampEnd) / (3600 * 1000));
+		FreeRoomReply replyCheck = checkFreeRoomPeriod(timestampStart, timestampEnd);
+
+		if (replyCheck.getStatus() != HttpURLConnection.HTTP_OK) {
+			// if something is wrong in the request
+			return new OccupancyReply(replyCheck.getStatus(), replyCheck.getStatusComment());
+		}
+		
 
 		ArrayList<Occupancy> occupancies = new ArrayList<Occupancy>();
 

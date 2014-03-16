@@ -35,6 +35,7 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 /**
  * View displaying the SearchQuery of the CheckOccupancy feature.
@@ -288,6 +289,14 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int pos,
 					long id) {
+				if (auditSubmit() != 0) {
+					Toast.makeText(
+							getApplicationContext(),
+							"Please review the time, should be between Mo-Fr 8am-7pm.\n"
+									+ "The end should also be after the start.",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
 				FRRoom room = listFR.get(pos);
 				Log.v("fr_check_search", "checking against selected " + room);
 				// TODO: add to list selected for mutli-query, and start the
@@ -298,11 +307,11 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 				System.out.println(start.getTimeInMillis());
 				start.set(yearSelected, monthSelected, dayOfMonthSelected,
 						startHourSelected, startMinSelected, 0);
+
 				Calendar end = Calendar.getInstance();
 				end.clear();
 				end.set(yearSelected, monthSelected, dayOfMonthSelected,
 						endHourSelected, endMinSelected, 0);
-				System.out.println(start.getTimeInMillis());
 
 				// constructs the request
 				FRPeriod period = new FRPeriod(start.getTimeInMillis(), end
@@ -323,6 +332,46 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 			}
 		});
 
+	}
+
+	/**
+	 * This method check if the client is allowed to submit a request to the
+	 * server.
+	 * 
+	 * @return 0 if there is no error and the client can send the request,
+	 *         something else otherwise.
+	 */
+	private int auditSubmit() {
+		int error = 0;
+		if (yearSelected == -1 || monthSelected == -1
+				|| dayOfMonthSelected == -1) {
+			error++;
+		}
+
+		if (startHourSelected == -1 || endHourSelected == -1
+				|| startMinSelected == -1 || endMinSelected == -1) {
+			error++;
+		}
+
+		if (startHourSelected == endHourSelected) {
+			if (endMinSelected <= startMinSelected) {
+				error++;
+			}
+		} else if (startHourSelected > endHourSelected) {
+			error++;
+		}
+		
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.clear();
+		mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected);
+		int day = mCalendar.get(Calendar.DAY_OF_WEEK);
+		
+		//day should also be between Monday-Friday
+		if (day < 2 || day > 6) {
+			error++;
+		}
+
+		return error;
 	}
 
 	@Override
