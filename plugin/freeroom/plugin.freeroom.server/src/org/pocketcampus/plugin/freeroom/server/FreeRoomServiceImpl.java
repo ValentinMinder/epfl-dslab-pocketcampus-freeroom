@@ -244,13 +244,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 				ResultSet resultQuery = query.executeQuery();
 				Occupancy mOccupancy = new Occupancy();
-				System.out.println("room:" + room);
 				mOccupancy.setRoom(room);
 
 				// timestamp used to generate the occupations accross the
 				// FRPeriod
 				long tsPerRoom = timestampStart;
 				while (resultQuery.next()) {
+					System.out.println("result");
 					long tsStart = Math.max(tsPerRoom, resultQuery.getLong("timestampStart"));
 					long tsEnd = Math.min(timestampEnd, resultQuery.getLong("timestampEnd"));
 

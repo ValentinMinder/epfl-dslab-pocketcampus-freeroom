@@ -115,7 +115,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	public static void tearDownAfterClass() {
 		// TODO: tests should remove their databases and tables, comment it if
 		// you want to see them in SQL
-		removeDBTest();
+		//removeDBTest();
 	}
 
 	@Before

@@ -34,7 +34,7 @@ public class Converter {
 		if (now_hour >= startHour && day == today_day) {
 			timestampshift = ONE_WEEK_IN_MS;
 		} else if (day != today_day) {
-			if (today_day > day) {
+			if (today_day < day) {
 				timestampshift = (day - today_day) * ONE_DAY_IN_MS;
 			} else {
 				int daysToCompleteWeek = 7 - today_day;

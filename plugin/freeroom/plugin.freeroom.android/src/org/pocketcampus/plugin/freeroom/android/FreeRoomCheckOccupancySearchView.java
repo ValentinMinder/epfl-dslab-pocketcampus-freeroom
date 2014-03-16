@@ -74,7 +74,6 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 	private int yearSelected = -1;
 	private int monthSelected = -1;
 	private int dayOfMonthSelected = -1;
-	private int daySelected = -1;
 	private int startHourSelected = -1;
 	private int startMinSelected = -1;
 	private int endHourSelected = -1;
@@ -131,9 +130,6 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 					@Override
 					public void onDateSet(DatePicker view, int nYear,
 							int nMonthOfYear, int nDayOfMonth) {
-						Calendar mCal = Calendar.getInstance();
-						mCal.set(nYear, nMonthOfYear, nDayOfMonth);
-						daySelected = mCal.get(Calendar.DAY_OF_WEEK);
 						yearSelected = nYear;
 						monthSelected = nMonthOfYear;
 						dayOfMonthSelected = nDayOfMonth;
@@ -298,10 +294,12 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 				// search elsewhere
 
 				Calendar start = Calendar.getInstance();
+				start.clear();
 				System.out.println(start.getTimeInMillis());
 				start.set(yearSelected, monthSelected, dayOfMonthSelected,
 						startHourSelected, startMinSelected, 0);
 				Calendar end = Calendar.getInstance();
+				end.clear();
 				end.set(yearSelected, monthSelected, dayOfMonthSelected,
 						endHourSelected, endMinSelected, 0);
 				System.out.println(start.getTimeInMillis());
