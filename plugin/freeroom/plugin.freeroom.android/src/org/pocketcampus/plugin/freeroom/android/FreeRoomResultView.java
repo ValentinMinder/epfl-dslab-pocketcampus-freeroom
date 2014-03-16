@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.Header;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
@@ -22,12 +20,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -106,77 +104,6 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements
 		// });
 		// subLayout.addView(resetButton);
 
-		// not commented starting here
-		// mList = new ListView(this);
-		// LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT,
-		// LayoutParams.FILL_PARENT);
-		// mList.setLayoutParams(p);
-		//
-		// mListValues = new ArrayList<String>();
-		// mAdapter = new ArrayAdapter<String>(this,
-		// android.R.layout.simple_dropdown_item_1line,
-		// android.R.id.text1, mListValues);
-		// mList.setAdapter(mAdapter);
-		//
-		// if (mModel.isFavoriteRoom("CO1")) {
-		// mListValues.add("CO1 \u2713");
-		// } else {
-		// mListValues.add("CO1");
-		// }
-		// if (mModel.isFavoriteRoom("CO123")) {
-		// mListValues.add("CO123 \u2713");
-		// } else {
-		// mListValues.add("CO123");
-		// }
-		//
-		// mList.setOnItemClickListener(new OnItemClickListener() {
-		//
-		// @Override
-		// public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-		// long arg3) {
-		// String s = mAdapter.getItem(arg2);
-		// // String s = mListValues.get(arg2); // TODO check which one to
-		// // keep
-		// System.out.println("selected " + s);
-		// mController.getModel();
-		// // TODO: display map!
-		// Uri mUri = Uri
-		// .parse("pocketcampus://map.plugin.pocketcampus.org/search");
-		// Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q",
-		// s);
-		// Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
-		// startActivity(i);
-		// }
-		//
-		// });
-		//
-		// mList.setOnItemLongClickListener(new
-		// AdapterView.OnItemLongClickListener() {
-		//
-		// @Override
-		// public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-		// int arg2, long arg3) {
-		// String room = mAdapter.getItem(arg2);
-		// String regexpMatch = "([A-Z0-9\\s]+)*";
-		// Pattern mPattern = Pattern.compile(regexpMatch);
-		// Matcher matcher = mPattern.matcher(room);
-		//
-		// if (matcher.find()) {
-		// room = matcher.group(0).replaceAll("\\s", "");
-		// if (mModel.isFavoriteRoom(room)) {
-		// mModel.removeFavoriteRoom(room);
-		// mListValues.set(arg2, room);
-		// } else {
-		// mModel.setFavoriteRoom(room);
-		// mListValues.set(arg2, room + "\u2713");
-		// }
-		// mAdapter.notifyDataSetChanged();
-		// }
-		//
-		// return true;
-		// }
-		// });
-		// subLayout.addView(mList);
 
 		mExpList = new ExpandableListView(this);
 		buildings = new ArrayList<String>();
@@ -187,6 +114,43 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements
 		mExpList.setAdapter(adapter);
 
 		// adding the listeners
+		mExpList.setOnChildClickListener(new OnChildClickListener() {
+			
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				
+				String room = (String) adapter.getChild(groupPosition, childPosition);
+				String regexpMatch = "([A-Z0-9\\s]+)*";
+				Pattern mPattern = Pattern.compile(regexpMatch);
+				Matcher matcher = mPattern.matcher(room);
+
+				if (matcher.matches()) {
+					room = matcher.group(0).replaceAll("\\s", "");
+				}
+
+				System.out.println("selected " + room);
+
+				Uri mUri = Uri
+						.parse("pocketcampus://map.plugin.pocketcampus.org/search");
+				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q",
+						room);
+				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
+				startActivity(i);
+				
+				return true;
+			}
+		});
+		mExpList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				
+			}
+
+		});
+		
 		mExpList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
 			@Override
@@ -194,11 +158,11 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements
 					int arg2, long arg3) {
 				int group = ExpandableListView.getPackedPositionGroup(arg3);
 				int child = ExpandableListView.getPackedPositionChild(arg3);
-				
+
 				if (group == -1 || child == -1) {
 					return false;
 				}
-				
+
 				String room = (String) adapter.getChild(group, child);
 				String regexpMatch = "([A-Z0-9\\s]+)*";
 				Pattern mPattern = Pattern.compile(regexpMatch);
@@ -211,7 +175,8 @@ public class FreeRoomResultView extends FreeRoomAbstractView implements
 						sortedRooms.get(buildings.get(group)).set(child, room);
 					} else {
 						mModel.setFavoriteRoom(room);
-						sortedRooms.get(buildings.get(group)).set(child, room + "\u2713");
+						sortedRooms.get(buildings.get(group)).set(child,
+								room + "\u2713");
 					}
 					adapter.notifyDataSetChanged();
 				}

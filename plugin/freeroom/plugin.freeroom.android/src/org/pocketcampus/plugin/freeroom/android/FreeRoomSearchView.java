@@ -43,6 +43,7 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 
 	private ExpandableListView searchParams;
 	private Button searchButton;
+	private Button resetButton;
 
 	private int startHour = -1;
 	private int endHour = -1;
@@ -84,10 +85,19 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 	}
 
 	private void initializeSearchView() {
+		startHour = -1;
+		endHour = -1;
+		intday = -1;
+		
 		// Creating and initializing button
 		searchButton = new Button(this);
 		searchButton.setEnabled(false);
 		searchButton.setText(R.string.freeroom_searchbutton);
+		
+		resetButton = new Button(this);
+		resetButton.setEnabled(true);
+		resetButton.setText(R.string.freeroom_resetbutton);
+		
 		final IFreeRoomView view = this;
 		searchButton.setOnClickListener(new OnClickListener() {
 
@@ -107,6 +117,17 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 					// finally sending the request to the controller
 					mController.prepareSearchFreeRoom(req);
 				}
+			}
+		});
+		
+		resetButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				subLayout.removeAllViews();
+				listHeader.clear();
+				listData.clear();
+				initializeSearchView();
 			}
 		});
 
@@ -226,6 +247,7 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 		// Finally adding the different component to the activity
 		subLayout.addView(searchParams);
 		subLayout.addView(searchButton);
+		subLayout.addView(resetButton);
 
 	}
 
