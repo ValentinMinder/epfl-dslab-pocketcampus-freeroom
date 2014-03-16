@@ -18,20 +18,22 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 /**
@@ -42,8 +44,8 @@ import android.widget.TimePicker;
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView implements
-		IFreeRoomView {
+public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
+		implements IFreeRoomView {
 
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
@@ -61,9 +63,22 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView imple
 	/** Adapter for the <code>mListView</code> */
 	private ArrayAdapter<String> mAdapter;
 
-	private DatePicker dp;
-	private TimePicker tp_s;
-	private TimePicker tp_e;
+	private DatePickerDialog mDatePickerDialog;
+	private TimePickerDialog mTimePickerStartDialog;
+	private TimePickerDialog mTimePickerEndDialog;
+
+	private Button showDatePicker;
+	private Button showStartTimePicker;
+	private Button showEndTimePicker;
+
+	private int yearSelected = -1;
+	private int monthSelected = -1;
+	private int dayOfMonthSelected = -1;
+	private int daySelected = -1;
+	private int startHourSelected = -1;
+	private int startMinSelected = -1;
+	private int endHourSelected = -1;
+	private int endMinSelected = -1;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -96,23 +111,115 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView imple
 
 		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_search));
 		subLayout = new LinearLayout(this);
-		subLayout.setOrientation(LinearLayout.HORIZONTAL);
+		subLayout.setOrientation(LinearLayout.VERTICAL);
 		mLayout.addFirstLayoutFillerView(subLayout);
 
-		dp = new DatePicker(this);
-		TextView tv = new TextView(this);
-		tv.setText("from");
-		tv.setGravity(Gravity.CENTER_VERTICAL);
-		tp_s = new TimePicker(this);
-		TextView tv2 = new TextView(this);
-		tv2.setText("to");
-		tv2.setGravity(Gravity.CENTER);
-		tp_e = new TimePicker(this);
-		subLayout.addView(dp);
-		subLayout.addView(tv);
-		subLayout.addView(tp_s);
-		subLayout.addView(tv2);
-		subLayout.addView(tp_e);
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.setTimeInMillis(System.currentTimeMillis());
+		yearSelected = mCalendar.get(Calendar.YEAR);
+		monthSelected = mCalendar.get(Calendar.MONTH);
+		dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
+		startHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
+		startMinSelected = mCalendar.get(Calendar.MINUTE);
+		endHourSelected = startHourSelected + 1;
+		endMinSelected = 0;
+
+		// First allow the user to select a date
+		mDatePickerDialog = new DatePickerDialog(this,
+				new DatePickerDialog.OnDateSetListener() {
+
+					@Override
+					public void onDateSet(DatePicker view, int nYear,
+							int nMonthOfYear, int nDayOfMonth) {
+						Calendar mCal = Calendar.getInstance();
+						mCal.set(nYear, nMonthOfYear, nDayOfMonth);
+						daySelected = mCal.get(Calendar.DAY_OF_WEEK);
+						yearSelected = nYear;
+						monthSelected = nMonthOfYear;
+						dayOfMonthSelected = nDayOfMonth;
+
+					}
+				}, yearSelected, monthSelected, dayOfMonthSelected);
+
+		showDatePicker = new Button(this);
+		showDatePicker
+				.setText(getString(R.string.freeroom_check_occupancy_search_onthe));
+		showDatePicker.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mDatePickerDialog.show();
+
+			}
+		});
+
+		// Then the starting time of the period
+		mTimePickerStartDialog = new TimePickerDialog(this,
+				new OnTimeSetListener() {
+
+					@Override
+					public void onTimeSet(TimePicker view, int nHourOfDay,
+							int nMinute) {
+						startHourSelected = nHourOfDay;
+						startMinSelected = nMinute;
+
+					}
+				}, startHourSelected, startMinSelected, true);
+
+		showStartTimePicker = new Button(this);
+		showStartTimePicker
+				.setText(getString(R.string.freeroom_check_occupancy_search_from));
+		showStartTimePicker.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mTimePickerStartDialog.show();
+
+			}
+		});
+
+		// Then the ending time of the period
+		mTimePickerEndDialog = new TimePickerDialog(this,
+				new OnTimeSetListener() {
+
+					@Override
+					public void onTimeSet(TimePicker view, int nHourOfDay,
+							int nMinute) {
+						endHourSelected = nHourOfDay;
+						endMinSelected = nMinute;
+
+					}
+				}, endHourSelected, endMinSelected, true);
+
+		showEndTimePicker = new Button(this);
+		showEndTimePicker
+				.setText(getString(R.string.freeroom_check_occupancy_search_to));
+		showEndTimePicker.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mTimePickerEndDialog.show();
+
+			}
+		});
+
+		subLayout.addView(showDatePicker);
+		subLayout.addView(showStartTimePicker);
+		subLayout.addView(showEndTimePicker);
+		// mDatePicker = new DatePicker(this);
+		// TextView tv = new TextView(this);
+		// tv.setText("from");
+		// tv.setGravity(Gravity.CENTER_VERTICAL);
+		// mTimePickerStart = new TimePicker(this);
+		// TextView tv2 = new TextView(this);
+		// tv2.setText("to");
+		// tv2.setGravity(Gravity.CENTER);
+		// mTimePickerEnd = new TimePicker(this);
+		// subLayout.addView(mDatePicker);
+		// subLayout.addView(tv);
+		// subLayout.addView(mTimePickerStart);
+		// subLayout.addView(tv2);
+		// subLayout.addView(mTimePickerEnd);
 
 		mInputBar = new InputBarElement(
 				this,
@@ -190,21 +297,13 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView imple
 				// TODO: add to list selected for mutli-query, and start the
 				// search elsewhere
 
-				// getting the time from the pickers;
-				int day = dp.getDayOfMonth();
-				int month = dp.getMonth();
-				int year = dp.getYear();
-				int h_s = tp_s.getCurrentHour();
-				int m_s = tp_s.getCurrentMinute();
-				int h_e = tp_e.getCurrentHour();
-				int m_e = tp_e.getCurrentMinute();
-				System.out.println(year + "/" + month + "/" + day + "/" + h_s
-						+ "/" + m_s);
 				Calendar start = Calendar.getInstance();
 				System.out.println(start.getTimeInMillis());
-				start.set(year, month, day, h_s, m_s, 0);
+				start.set(yearSelected, monthSelected, dayOfMonthSelected,
+						startHourSelected, startMinSelected, 0);
 				Calendar end = Calendar.getInstance();
-				end.set(year, month, day, h_e, m_e, 0);
+				end.set(yearSelected, monthSelected, dayOfMonthSelected,
+						endHourSelected, endMinSelected, 0);
 				System.out.println(start.getTimeInMillis());
 
 				// constructs the request
@@ -241,19 +340,19 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView imple
 		mAdapter = new ArrayAdapter<String>(getApplicationContext(),
 				R.layout.sdk_list_entry, R.id.sdk_list_entry_text, listS);
 		for (FRRoom room : listFR) {
-			String p = "";
-			p += room.getBuilding() + " ";
-			p += room.getNumber() + " ";
-			int c = room.getCapacity();
+			String result = "";
+			result += room.getBuilding() + " ";
+			result += room.getNumber() + " ";
+			int capacity = room.getCapacity();
 			FRRoomType t = room.getType();
-			if (c > 0 && t != null) {
-				p += "(";
-				p += "Type: " + t + ";";
-				p += "Capacity: " + c + " places";
-				p += ")";
+			if (capacity > 0 && t != null) {
+				result += "(";
+				result += "Type: " + t + ";";
+				result += "Capacity: " + capacity + " places";
+				result += ")";
 			}
-			p += "";
-			listS.add(p);
+			result += "";
+			listS.add(result);
 		}
 		mAdapter.notifyDataSetChanged();
 		mListView.setAdapter(mAdapter);

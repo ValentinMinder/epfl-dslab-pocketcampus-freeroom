@@ -16,7 +16,9 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * View displaying the Results of the CheckOccupancy feature.
@@ -26,14 +28,16 @@ import android.widget.ListView;
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView implements
-		IFreeRoomView {
+public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
+		implements IFreeRoomView {
 
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
 
 	private StandardTitledLayout mLayout;
+	private LinearLayout subLayout;
 
+	private TextView mTitle;
 	private ListView mListView;
 	private ArrayAdapter<String> mAdapter;
 
@@ -60,7 +64,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView imple
 		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_result));
 
 		initializeCheckOccupancyResultView();
-		
+
 		// launch the actual search AFTER launching completely the UI
 		mController.checkOccupancy(this);
 	}
@@ -69,8 +73,15 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView imple
 		/*
 		 * TODO maybe have a greater idea how to display the result!
 		 */
+		subLayout = new LinearLayout(this);
+		subLayout.setOrientation(LinearLayout.VERTICAL);
+
 		mListView = new ListView(this);
-		mLayout.addFillerView(mListView);
+		mTitle = new TextView(this);
+
+		subLayout.addView(mTitle);
+		subLayout.addView(mListView);
+		mLayout.addFillerView(subLayout);
 	}
 
 	@Override
@@ -112,47 +123,38 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView imple
 		// TODO: put that in an appropriate title, not in the list!!!
 		String review = "No results to display, sorry!";
 		if (firstRoom != null) {
-			review = "Results for room " + firstRoom.getRoom();
+			review = "Results for room " + firstRoom.getRoom().getBuilding()
+					+ firstRoom.getRoom().getNumber();
 			if (!listA.isEmpty()) {
-				Date s = new Date(listA.get(0).getPeriod().getTimeStampStart());
-				Date e = new Date(listA.get(listA.size() - 1).getPeriod()
+				Date startDate = new Date(listA.get(0).getPeriod()
+						.getTimeStampStart());
+				Date endDate = new Date(listA.get(listA.size() - 1).getPeriod()
 						.getTimeStampEnd());
-				String p = "";
-				p += getString(R.string.freeroom_check_occupancy_search_onthe)
-						+ " ";
-				p += day_month.format(s);
-				p += " "
-						+ getString(R.string.freeroom_check_occupancy_search_from)
-						+ " ";
-				p += hour_min.format(s);
-				p += " "
-						+ getString(R.string.freeroom_check_occupancy_search_to)
-						+ " ";
-				p += hour_min.format(e);
-				review += "\n" + p;
+				String title = "";
+				title += "The ";
+				title += day_month.format(startDate);
+				title += " from ";
+				title += hour_min.format(startDate);
+				title += " to ";
+				title += hour_min.format(endDate);
+				review += "\n" + title;
 			}
-			listS.add(review);
+			mTitle.setText(review);
 		}
 
 		for (ActualOccupation actual : listA) {
-			Date d = new Date(actual.getPeriod().getTimeStampStart());
-			Date e = new Date(actual.getPeriod().getTimeStampEnd());
+			Date startDate = new Date(actual.getPeriod().getTimeStampStart());
+			Date endDate = new Date(actual.getPeriod().getTimeStampEnd());
 
-			String p = "";
-			p += getString(R.string.freeroom_check_occupancy_search_onthe)
-					+ " ";
-			p += day_month.format(d);
-			p += " " + getString(R.string.freeroom_check_occupancy_search_from)
-					+ " ";
-			p += hour_min.format(d);
-			p += " " + getString(R.string.freeroom_check_occupancy_search_to)
-					+ " ";
-			p += hour_min.format(e);
+			String displayOcc = "";
+			displayOcc += hour_min.format(startDate);
+			displayOcc += " to ";
+			displayOcc += hour_min.format(endDate);
 
-			p += " : ";
-			p += actual.isAvailable() ? "FREE" : "OCCUPIED by "
+			displayOcc += " : ";
+			displayOcc += actual.isAvailable() ? "FREE" : "OCCUPIED by "
 					+ actual.getOccupationType();
-			listS.add(p);
+			listS.add(displayOcc);
 		}
 		mAdapter = new ArrayAdapter<String>(getApplicationContext(),
 				android.R.layout.simple_dropdown_item_1line,
