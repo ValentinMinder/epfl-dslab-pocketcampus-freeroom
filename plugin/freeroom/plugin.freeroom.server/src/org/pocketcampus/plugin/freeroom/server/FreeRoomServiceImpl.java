@@ -169,7 +169,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							+ "(SELECT ro.rid FROM roomsoccupancy ro "
 							+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
 							+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
-							+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) )");
+							+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)))");
 
 			// filling the query with values
 			query.setLong(1, end);
