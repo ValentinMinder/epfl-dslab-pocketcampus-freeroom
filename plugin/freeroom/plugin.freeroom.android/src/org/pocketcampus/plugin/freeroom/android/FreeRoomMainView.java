@@ -124,7 +124,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 					break;
 				case 2:
 					i = new Intent(FreeRoomMainView.this,
-							FRCheckOccupancySearchView.class);
+							FreeRoomCheckOccupancySearchView.class);
 					break;
 				default:
 					break;

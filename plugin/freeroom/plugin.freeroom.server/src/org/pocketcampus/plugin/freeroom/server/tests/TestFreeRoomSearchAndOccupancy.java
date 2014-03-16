@@ -115,7 +115,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	public static void tearDownAfterClass() {
 		// TODO: tests should remove their databases and tables, comment it if
 		// you want to see them in SQL
-		removeDBTest();
+		//removeDBTest();
 	}
 
 	@Before
@@ -563,9 +563,10 @@ public class TestFreeRoomSearchAndOccupancy {
 			request.setPeriod(new FRPeriod(request.getPeriod()
 					.getTimeStampStart(), request2.getPeriod()
 					.getTimeStampStart(), false));
-			
+
 			reply = server.getFreeRoomFromTime(request);
-			assertTrue("Code is " + reply.getStatus(), reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
+			assertTrue("Code is " + reply.getStatus(),
+					reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block
@@ -575,7 +576,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testDayOutsideRange() {
 		try {
@@ -585,9 +586,9 @@ public class TestFreeRoomSearchAndOccupancy {
 			FreeRoomReply reply = null;
 			request = Converter.convert(Calendar.SATURDAY, 13, 16);
 
-			
 			reply = server.getFreeRoomFromTime(request);
-			assertTrue("Code is " + reply.getStatus(), reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
+			assertTrue("Code is " + reply.getStatus(),
+					reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block
@@ -597,7 +598,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testStartHourOutsideRange() {
 		try {
@@ -607,9 +608,118 @@ public class TestFreeRoomSearchAndOccupancy {
 			FreeRoomReply reply = null;
 			request = Converter.convert(Calendar.MONDAY, 7, 16);
 
-			
 			reply = server.getFreeRoomFromTime(request);
-			assertTrue("Code is " + reply.getStatus(), reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
+			assertTrue("Code is " + reply.getStatus(),
+					reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testEndHourOutsideRange() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomRequest request = null;
+			FreeRoomReply reply = null;
+			request = Converter.convert(Calendar.MONDAY, 9, 20);
+
+			FRPeriod period = request.getPeriod();
+			Calendar mCalendar = Calendar.getInstance();
+			mCalendar.setTimeInMillis(period.getTimeStampEnd());
+			assertTrue(mCalendar.get(Calendar.HOUR_OF_DAY) == 20);
+			reply = server.getFreeRoomFromTime(request);
+
+			assertTrue(
+					"Code is " + reply.getStatus() + " message = "
+							+ reply.getStatusComment(),
+					reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testRequestIsNotModifiedMonday11h30_13CM1() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
+			FRPeriod period = new FRPeriod();
+			OccupancyRequest request = null;
+			OccupancyReply reply = null;
+
+			roomsList.add(new FRRoom("CM", "1"));
+			period = Converter.convertWithMinPrecision(Calendar.MONDAY, 11, 30,
+					13, 00).getPeriod();
+			long queryFirstTS = period.getTimeStampStart();
+			long queryLastTS = period.getTimeStampEnd();
+
+			request = new OccupancyRequest(roomsList, period);
+			reply = server.checkTheOccupancy(request);
+
+			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
+
+			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
+			List<ActualOccupation> actOcc = mOcc.getOccupancy();
+			long firstTS = actOcc.get(0).getPeriod().getTimeStampStart();
+			long lastTS = actOcc.get(actOcc.size() - 1).getPeriod()
+					.getTimeStampEnd();
+
+			assertTrue(Math.abs(firstTS - queryFirstTS) < MARGIN_ERROR_MS * 5);
+			assertTrue(Math.abs(lastTS - queryLastTS) < MARGIN_ERROR_MS * 5);
+
+		} catch (ServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testRequestIsNotModifiedTueday10_12h30CM2() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
+			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
+			FRPeriod period = new FRPeriod();
+			OccupancyRequest request = null;
+			OccupancyReply reply = null;
+
+			roomsList.add(new FRRoom("CM", "2"));
+			period = Converter.convertWithMinPrecision(Calendar.TUESDAY, 10,
+					00, 12, 30).getPeriod();
+			long queryFirstTS = period.getTimeStampStart();
+			long queryLastTS = period.getTimeStampEnd();
+
+			request = new OccupancyRequest(roomsList, period);
+			reply = server.checkTheOccupancy(request);
+
+			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
+
+			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
+			List<ActualOccupation> actOcc = mOcc.getOccupancy();
+			long firstTS = actOcc.get(0).getPeriod().getTimeStampStart();
+			long lastTS = actOcc.get(actOcc.size() - 1).getPeriod()
+					.getTimeStampEnd();
+
+			assertTrue(Math.abs(firstTS - queryFirstTS) < MARGIN_ERROR_MS * 5);
+			assertTrue("diff = " + (Math.abs(lastTS - queryLastTS))
+					/ (3600 * 1000),
+					Math.abs(lastTS - queryLastTS) < MARGIN_ERROR_MS * 5);
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block
@@ -621,17 +731,36 @@ public class TestFreeRoomSearchAndOccupancy {
 	}
 	
 	@Test
-	public void testEndHourOutsideRange() {
+	public void testRequestIsNotModifiedTueday10h14_12h30CM1() {
 		try {
 			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
-			FreeRoomRequest request = null;
-			FreeRoomReply reply = null;
-			request = Converter.convert(Calendar.MONDAY, 9, 20);
+			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
+			FRPeriod period = new FRPeriod();
+			OccupancyRequest request = null;
+			OccupancyReply reply = null;
 
-			
-			reply = server.getFreeRoomFromTime(request);
-			assertTrue("Code is " + reply.getStatus(), reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
+			roomsList.add(new FRRoom("CM", "2"));
+			period = Converter.convertWithMinPrecision(Calendar.TUESDAY, 10,
+					14, 12, 30).getPeriod();
+			long queryFirstTS = period.getTimeStampStart();
+			long queryLastTS = period.getTimeStampEnd();
+
+			request = new OccupancyRequest(roomsList, period);
+			reply = server.checkTheOccupancy(request);
+
+			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
+
+			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
+			List<ActualOccupation> actOcc = mOcc.getOccupancy();
+			long firstTS = actOcc.get(0).getPeriod().getTimeStampStart();
+			long lastTS = actOcc.get(actOcc.size() - 1).getPeriod()
+					.getTimeStampEnd();
+
+			assertTrue(Math.abs(firstTS - queryFirstTS) < MARGIN_ERROR_MS * 5);
+			assertTrue("diff = " + (Math.abs(lastTS - queryLastTS))
+					/ (3600 * 1000),
+					Math.abs(lastTS - queryLastTS) < MARGIN_ERROR_MS * 5);
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block
@@ -641,6 +770,5 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 }

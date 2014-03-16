@@ -76,11 +76,11 @@
 		    android:screenOrientation="nosensor"
 		    xmlns:android="http://schemas.android.com/apk/res/android" />
 		
-		<activity android:name="org.pocketcampus.plugin.freeroom.android.FRCheckOccupancySearchView"
+		<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomCheckOccupancySearchView"
 		    android:screenOrientation="nosensor"
 		    xmlns:android="http://schemas.android.com/apk/res/android" />
 		
-		<activity android:name="org.pocketcampus.plugin.freeroom.android.FRCheckOccupancyResultView"
+		<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomCheckOccupancyResultView"
 		    android:screenOrientation="nosensor"
 		    xmlns:android="http://schemas.android.com/apk/res/android" />
 		    

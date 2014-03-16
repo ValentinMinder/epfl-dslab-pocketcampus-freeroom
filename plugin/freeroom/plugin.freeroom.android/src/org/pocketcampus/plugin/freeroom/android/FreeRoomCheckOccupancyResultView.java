@@ -26,7 +26,7 @@ import android.widget.ListView;
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public class FRCheckOccupancyResultView extends FreeRoomAbstractView implements
+public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView implements
 		IFreeRoomView {
 
 	private FreeRoomController mController;

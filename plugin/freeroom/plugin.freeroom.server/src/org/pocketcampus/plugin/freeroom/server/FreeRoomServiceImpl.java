@@ -72,7 +72,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomReply getFreeRoomFromTime(FreeRoomRequest request)
 			throws TException {
 
-		//reduce the total duration to avoid having possibly exact same timestamp 
+		// reduce the total duration to avoid having possibly exact same
+		// timestamp
 		FRPeriod period = Utils.convertMinPrecision(request).getPeriod();
 
 		long tsStart = period.getTimeStampStart();
@@ -147,9 +148,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"Day should be between Monday and Friday");
 		}
 
-		if (startHour < 8 || endHour > 19) {
+		int endMinutes = mDate.get(Calendar.MINUTE);
+		if (startHour < 8 || endHour > 19 || (endHour == 19 &&  endMinutes > 5)) {
 			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Hours should be between 8am and 7pm");
+					"Hours should be between 8am and 7pm, given " + startHour + ":" + endHour);
 		}
 
 		return mReply;
@@ -166,7 +168,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							+ "WHERE rl.rid NOT IN "
 							+ "(SELECT ro.rid FROM roomsoccupancy ro "
 							+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
-							+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)" 
+							+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
 							+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) )");
 
 			// filling the query with values
@@ -249,8 +251,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// FRPeriod
 				long tsPerRoom = timestampStart;
 				while (resultQuery.next()) {
-					long tsStart = resultQuery.getLong("timestampStart");
-					long tsEnd = resultQuery.getLong("timestampEnd");
+					long tsStart = Math.max(tsPerRoom, resultQuery.getLong("timestampStart"));
+					long tsEnd = Math.min(timestampEnd, resultQuery.getLong("timestampEnd"));
 
 					if (tsStart - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
 						// We got a free period of time !
@@ -262,14 +264,16 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						mOccupancy.addToOccupancy(mOcc);
 					}
 
-					ActualOccupation mAccOcc = new ActualOccupation();
-					// TODO reminder that recurrent is set to false for now, but
-					// it can evolve in the future
-					mAccOcc.setPeriod(new FRPeriod(tsStart, tsEnd, false));
-					mAccOcc.setAvailable(false);
-					// TODO reminder default value ISA
-					mAccOcc.setOccupationType(OccupationType.ISA);
-					mOccupancy.addToOccupancy(mAccOcc);
+						ActualOccupation mAccOcc = new ActualOccupation();
+						// TODO reminder that recurrent is set to false for now,
+						// but
+						// it can evolve in the future
+						mAccOcc.setPeriod(new FRPeriod(tsStart, tsEnd, false));
+						mAccOcc.setAvailable(false);
+						// TODO reminder default value ISA
+						mAccOcc.setOccupationType(OccupationType.ISA);
+						mOccupancy.addToOccupancy(mAccOcc);
+					
 					tsPerRoom = tsEnd;
 
 				}

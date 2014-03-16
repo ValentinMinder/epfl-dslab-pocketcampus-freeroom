@@ -42,7 +42,7 @@ import android.widget.TimePicker;
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
+public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView implements
 		IFreeRoomView {
 
 	private FreeRoomController mController;
@@ -216,9 +216,9 @@ public class FRCheckOccupancySearchView extends FreeRoomAbstractView implements
 						period);
 
 				// starting the result UI before sending the request
-				Intent i = new Intent(FRCheckOccupancySearchView.this,
-						FRCheckOccupancyResultView.class);
-				FRCheckOccupancySearchView.this.startActivity(i);
+				Intent i = new Intent(FreeRoomCheckOccupancySearchView.this,
+						FreeRoomCheckOccupancyResultView.class);
+				FreeRoomCheckOccupancySearchView.this.startActivity(i);
 
 				// finally sending the request to the controller
 				mController.prepareCheckOccupancy(request);
