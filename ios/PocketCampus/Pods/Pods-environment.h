@@ -78,3 +78,9 @@
 #define COCOAPODS_VERSION_MINOR_TUSafariActivity 0
 #define COCOAPODS_VERSION_PATCH_TUSafariActivity 0
 
+// TapkuLibrary
+#define COCOAPODS_POD_AVAILABLE_TapkuLibrary
+#define COCOAPODS_VERSION_MAJOR_TapkuLibrary 0
+#define COCOAPODS_VERSION_MINOR_TapkuLibrary 3
+#define COCOAPODS_VERSION_PATCH_TapkuLibrary 3
+

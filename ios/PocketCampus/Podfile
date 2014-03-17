@@ -5,3 +5,4 @@ pod 'CDZQRScanningViewController'
 pod 'SSKeychain', '~> 1.2'
 pod 'TUSafariActivity'
 pod 'NSTimer-Blocks'
+pod 'TapkuLibrary', :head

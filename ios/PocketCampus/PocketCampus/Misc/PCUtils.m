@@ -78,6 +78,13 @@
     return [NSLocale preferredLanguages][0];
 }
 
++ (BOOL)userLocaleIs24Hour {
+    NSString* formatStringForHours = [NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]];
+    NSRange containsA = [formatStringForHours rangeOfString:@"a"];
+    BOOL hasAMPM = containsA.location != NSNotFound;
+    return !hasAMPM;
+}
+
 + (NSString*)lastUpdateNowString {
     static NSDateFormatter* dateFormatter = nil;
     static dispatch_once_t onceToken;

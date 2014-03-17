@@ -22,6 +22,7 @@ PODS:
   - GoogleAnalytics-iOS-SDK (3.0.3)
   - NSTimer-Blocks (0.0.1)
   - SSKeychain (1.2.1)
+  - TapkuLibrary (HEAD based on 0.3.3)
   - TUSafariActivity (1.0.0)
 
 DEPENDENCIES:
@@ -30,6 +31,7 @@ DEPENDENCIES:
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - NSTimer-Blocks
   - SSKeychain (~> 1.2)
+  - TapkuLibrary (HEAD)
   - TUSafariActivity
 
 SPEC CHECKSUMS:
@@ -38,6 +40,7 @@ SPEC CHECKSUMS:
   GoogleAnalytics-iOS-SDK: 7b0e55cfe5e70d60478a7b105f15ac71e8bc373e
   NSTimer-Blocks: 99f52d61c29429d7e8ef0c82e596f317addb9421
   SSKeychain: d18926838c2e7cd342e2a49e9f869858e49f035a
+  TapkuLibrary: ba2ece1a466fafbab6394e93c527bb1ddb9f39f5
   TUSafariActivity: bd9da588f5f9136ba445d89f8f86b6dccf4d46ba
 
 COCOAPODS: 0.29.0

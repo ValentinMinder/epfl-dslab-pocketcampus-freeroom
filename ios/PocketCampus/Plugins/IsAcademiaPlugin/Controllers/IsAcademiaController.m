@@ -27,14 +27,11 @@
 
 
 
-
-
-
-
-
 #import "IsAcademiaController.h"
 
 #import "IsAcademiaService.h"
+
+#import "IsAcademiaDayScheduleViewController.h"
 
 static IsAcademiaController* instance __weak = nil;
 
@@ -56,29 +53,10 @@ static IsAcademiaController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
-            /*
-             * TODO: init mainNavigationController OR mainSplitViewController.
-             * On iPad, mainSplitViewController will be used if not nil, otherwise, mainNavigationController will be used
-             *
-             * Example: a plugin only providing a navigation controller
-             *
-             * MapViewController* mapViewController = [[MapViewController alloc] init];
-             * PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:mapViewController];
-             * navController.pluginIdentifier = [[self class] identifierName];
-             * self.mainNavigationController = navController;
-             *
-             * Example: a plugin using a split view controller (=> iPad optimized)
-             *
-             * UINavigationController* masterNavigationController = ...
-             * UIViewController* detailViewController = ...
-             *
-             * PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:masterNavigationController detailViewController:detailViewController];
-             * splitViewController.delegate = self;
-             *
-             * self.mainSplitViewController = splitViewController;
-             * self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
-             *
-             */
+            IsAcademiaDayScheduleViewController* dayScheduleViewController = [IsAcademiaDayScheduleViewController new];
+            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:dayScheduleViewController];
+            navController.pluginIdentifier = [[self class] identifierName];
+            self.mainNavigationController = navController;
             instance = self;
         }
         return self;

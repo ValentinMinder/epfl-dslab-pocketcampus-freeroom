@@ -230,6 +230,7 @@
 		3296570B14FF9DDB00C44C12 /* PocketCampus.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3296570914FF9DDB00C44C12 /* PocketCampus.strings */; };
 		32969ABB15FBA9150051EF9A /* Compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969AB915FBA9150051EF9A /* Compass.png */; };
 		32969ABC15FBA9150051EF9A /* Compass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969ABA15FBA9150051EF9A /* Compass@2x.png */; };
+		3297421518D799A900E23C76 /* IsAcademiaDayScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3297421418D799A900E23C76 /* IsAcademiaDayScheduleViewController.m */; };
 		3297E017155571F80054F790 /* NewsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E016155571F80054F790 /* NewsLarge.png */; };
 		3297E01B15557FE10054F790 /* NewsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3297E01A15557FE10054F790 /* NewsUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3297E02415558BE40054F790 /* BackgroundNewsThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E02215558BE40054F790 /* BackgroundNewsThumbnail.png */; };
@@ -726,6 +727,8 @@
 		3296570C14FF9DE300C44C12 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = en; path = en.lproj/PocketCampus.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		32969AB915FBA9150051EF9A /* Compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Compass.png; sourceTree = "<group>"; };
 		32969ABA15FBA9150051EF9A /* Compass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Compass@2x.png"; sourceTree = "<group>"; };
+		3297421318D799A900E23C76 /* IsAcademiaDayScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaDayScheduleViewController.h; sourceTree = "<group>"; };
+		3297421418D799A900E23C76 /* IsAcademiaDayScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsAcademiaDayScheduleViewController.m; sourceTree = "<group>"; };
 		3297E016155571F80054F790 /* NewsLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NewsLarge.png; sourceTree = "<group>"; };
 		3297E01915557FE10054F790 /* NewsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsUtils.h; sourceTree = "<group>"; };
 		3297E01A15557FE10054F790 /* NewsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsUtils.m; sourceTree = "<group>"; };
@@ -2270,6 +2273,8 @@
 			children = (
 				6A644C4C92C6A59039C35391 /* IsAcademiaController.h */,
 				104F4598B47B32142EF41F88 /* IsAcademiaController.m */,
+				3297421318D799A900E23C76 /* IsAcademiaDayScheduleViewController.h */,
+				3297421418D799A900E23C76 /* IsAcademiaDayScheduleViewController.m */,
 			);
 			name = Controllers;
 			path = Plugins/IsAcademiaPlugin/Controllers;
@@ -2806,6 +2811,7 @@
 				435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */,
 				E9D24E52ACF3440B795D0F3A /* PushNotifService.m in Sources */,
 				3D60403F97790317C691C8A4 /* pushnotif.m in Sources */,
+				3297421518D799A900E23C76 /* IsAcademiaDayScheduleViewController.m in Sources */,
 				3200A93F1666B709003D163E /* MapController.m in Sources */,
 				32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */,
 				32EE9628166E25BD005B0F65 /* MoodleCourseSectionsViewController.m in Sources */,
