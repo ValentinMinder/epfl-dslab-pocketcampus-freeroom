@@ -34,6 +34,8 @@ public final class ScheduleImpl implements Schedule {
 
 	// The default language for localized text.
 	private static final String DEFAULT_LANGUAGE = "en";
+	// The language for room names (names in other languages may have problems)
+	private static final String ROOM_NAME_LANGUAGE = "fr";
 
 	// The format of dates in IS-Academia's XML.
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy").withZone(ISA_TIME_ZONE);
@@ -105,7 +107,7 @@ public final class ScheduleImpl implements Schedule {
 
 			List<String> rooms = new ArrayList<String>();
 			for (XElement roomElem : periodElem.children(ROOM_ELEMENT)) {
-				rooms.add(getLocalizedText(roomElem, language));
+				rooms.add(removeExtraSpaces(getLocalizedText(roomElem, ROOM_NAME_LANGUAGE)));
 			}
 			period.setRooms(rooms);
 
@@ -153,5 +155,24 @@ public final class ScheduleImpl implements Schedule {
 		}
 
 		return result == null ? defaultResult : result;
+	}
+
+	/** Removes consecutive spaces in the specified string. */
+	private static String removeExtraSpaces(String text) {
+		StringBuilder builder = new StringBuilder();
+		boolean wasSpace = false;
+		for (char c : text.toCharArray()) {
+			if (Character.isSpaceChar(c)) {
+				wasSpace = true;
+			} else {
+				if (wasSpace) {
+					builder.append(' ');
+					wasSpace = false;
+				}
+				builder.append(c);
+			}
+		}
+
+		return builder.toString();
 	}
 }
