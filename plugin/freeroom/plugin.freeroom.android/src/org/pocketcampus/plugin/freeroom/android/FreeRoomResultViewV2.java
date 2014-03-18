@@ -115,7 +115,7 @@ public class FreeRoomResultViewV2 extends FreeRoomAbstractView implements
 		sortedRooms.put("CM", roomsCM);
 
 		final ExpandableListViewFavoriteAdapter adapter = new ExpandableListViewFavoriteAdapter(
-				this, buildings, sortedRooms);
+				this, buildings, sortedRooms, mModel);
 		mExpList.setAdapter(adapter);
 
 		// adding the listeners

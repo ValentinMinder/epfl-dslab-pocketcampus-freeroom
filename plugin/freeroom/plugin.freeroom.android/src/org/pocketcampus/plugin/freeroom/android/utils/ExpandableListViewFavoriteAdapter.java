@@ -3,7 +3,9 @@ package org.pocketcampus.plugin.freeroom.android.utils;
 import java.util.List;
 import java.util.Map;
 
+import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.R;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -26,12 +28,14 @@ public class ExpandableListViewFavoriteAdapter extends
 	private Context context;
 	private List<String> headers;
 	private Map<String, List<String>> data;
+	private FreeRoomModel model;
 
 	public ExpandableListViewFavoriteAdapter(Context c, List<String> header,
-			Map<String, List<String>> data) {
+			Map<String, List<String>> data, FreeRoomModel model) {
 		this.context = c;
 		this.headers = header;
 		this.data = data;
+		this.model = model;
 	}
 
 	@Override
@@ -78,9 +82,31 @@ public class ExpandableListViewFavoriteAdapter extends
 
 		TextView tv = vholder.getTextView();
 		tv.setText(text);
-		ImageView star = vholder.getImageView();
+		final ImageView star = vholder.getImageView();
 
-		star.setImageResource(android.R.drawable.star_big_off);
+		final String roomName = text.replaceAll("\\s", "");
+		final boolean isFav = model.isFavoriteRoom(text);
+
+		if (isFav) {
+			star.setImageResource(android.R.drawable.star_big_on);
+		} else {
+			star.setImageResource(android.R.drawable.star_big_off);
+
+		}
+		
+		star.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (isFav) {
+					star.setImageResource(android.R.drawable.star_big_off);
+					model.removeFavoriteRoom(roomName);
+				} else {
+					star.setImageResource(android.R.drawable.star_big_on);
+					model.setFavoriteRoom(roomName);
+				}
+			}
+		});
 		vholder.setStarCheck(false);
 		return convertView;
 	}
@@ -177,20 +203,6 @@ public class ExpandableListViewFavoriteAdapter extends
 
 		public void setImageView(ImageView iv) {
 			this.star = iv;
-			if (this.star != null) {
-				star.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						if (isStarChecked()) {
-							star.setImageResource(android.R.drawable.star_big_off);
-						} else {
-							star.setImageResource(android.R.drawable.star_big_on);
-						}
-						starChecked = !starChecked;
-					}
-				});
-			}
 		}
 
 		public ImageView getImageView() {
