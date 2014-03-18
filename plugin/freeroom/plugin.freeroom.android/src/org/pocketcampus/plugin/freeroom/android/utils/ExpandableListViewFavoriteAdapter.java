@@ -60,18 +60,18 @@ public class ExpandableListViewFavoriteAdapter extends
 			return null;
 		}
 
-		ViewHolder vholder = null;
+		ViewHolderChild vholder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.freeroom_layout_roomslist, null);
-			vholder = new ViewHolder();
+			vholder = new ViewHolderChild();
 			vholder.setTextView((TextView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_roomname));
 			vholder.setImageView((ImageView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_fav));
 			convertView.setTag(vholder);
 		} else {
-			vholder = (ViewHolder) convertView.getTag();
+			vholder = (ViewHolderChild) convertView.getTag();
 		}
 
 		String text = (String) this.getChild(groupPosition, childPosition);
@@ -80,13 +80,6 @@ public class ExpandableListViewFavoriteAdapter extends
 		tv.setText(text);
 		ImageView star = vholder.getImageView();
 
-		star.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ImageView image = (ImageView) v;
-			}
-		});
 		star.setImageResource(android.R.drawable.star_big_off);
 		vholder.setStarCheck(false);
 		return convertView;
@@ -126,18 +119,16 @@ public class ExpandableListViewFavoriteAdapter extends
 			return null;
 		}
 
-		ViewHolder vholder = null;
+		ViewHolderGroup vholder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.freeroom_layout_roomslist, null);
-			vholder = new ViewHolder();
+			vholder = new ViewHolderGroup();
 			vholder.setTextView((TextView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_roomname));
-			vholder.setImageView((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_fav));
 			convertView.setTag(vholder);
 		} else {
-			vholder = (ViewHolder) convertView.getTag();
+			vholder = (ViewHolderGroup) convertView.getTag();
 		}
 
 		String text = (String) headers.get(groupPosition);
@@ -171,7 +162,7 @@ public class ExpandableListViewFavoriteAdapter extends
 	 * inflate and findViewById operations.
 	 * 
 	 */
-	private class ViewHolder {
+	private class ViewHolderChild {
 		private TextView tv = null;
 		private ImageView star = null;
 		private boolean starChecked = false;
@@ -186,6 +177,20 @@ public class ExpandableListViewFavoriteAdapter extends
 
 		public void setImageView(ImageView iv) {
 			this.star = iv;
+			if (this.star != null) {
+				star.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						if (isStarChecked()) {
+							star.setImageResource(android.R.drawable.star_big_off);
+						} else {
+							star.setImageResource(android.R.drawable.star_big_on);
+						}
+						starChecked = !starChecked;
+					}
+				});
+			}
 		}
 
 		public ImageView getImageView() {
@@ -201,4 +206,23 @@ public class ExpandableListViewFavoriteAdapter extends
 		}
 
 	}
+
+	/**
+	 * Class used to keep a view, it saves ressources by avoiding multiple
+	 * inflate and findViewById operations.
+	 * 
+	 */
+	private class ViewHolderGroup {
+		private TextView tv = null;
+
+		public void setTextView(TextView tv) {
+			this.tv = tv;
+		}
+
+		public TextView getTextView() {
+			return this.tv;
+		}
+
+	}
+
 }
