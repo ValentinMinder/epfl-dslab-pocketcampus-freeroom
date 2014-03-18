@@ -36,7 +36,7 @@ namespace PocketCampus.IsAcademia.Controls
 
         public static readonly DependencyProperty DayProperty =
             DependencyProperty.Register( "Day", typeof( StudyDay ), typeof( DayDisplay ),
-                new PropertyMetadata( ( o, _ ) => ( (Panel) o ).InvalidateArrange() ) );
+                new PropertyMetadata( ( o, _ ) => ( (Panel) o ).InvalidateMeasure() ) );
         #endregion
 
         #region Days DependencyProperty
@@ -51,7 +51,7 @@ namespace PocketCampus.IsAcademia.Controls
 
         public static readonly DependencyProperty DaysProperty =
             DependencyProperty.Register( "Days", typeof( StudyDay[] ), typeof( DayDisplay ),
-                new PropertyMetadata( ( o, _ ) => ( (Panel) o ).InvalidateArrange() ) );
+                new PropertyMetadata( ( o, _ ) => ( (Panel) o ).InvalidateMeasure() ) );
         #endregion
 
         #region HourIncrement DependencyProperty
