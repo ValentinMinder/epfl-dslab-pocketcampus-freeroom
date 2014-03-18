@@ -1,7 +1,9 @@
 package org.pocketcampus.plugin.freeroom.android;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -53,6 +55,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 	private StandardTitledDoubleLayout mLayout;
 	private LinearLayout subLayout;
+	private LinearLayout timePickersLayout;
 
 	private ArrayList<FRRoom> roomsToCheck;
 
@@ -79,6 +82,9 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 	private int startMinSelected = -1;
 	private int endHourSelected = -1;
 	private int endMinSelected = -1;
+
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+	private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -112,6 +118,8 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_search));
 		subLayout = new LinearLayout(this);
 		subLayout.setOrientation(LinearLayout.VERTICAL);
+		timePickersLayout = new LinearLayout(this);
+		timePickersLayout.setOrientation(LinearLayout.HORIZONTAL);
 		mLayout.addFirstLayoutFillerView(subLayout);
 
 		Calendar mCalendar = Calendar.getInstance();
@@ -134,13 +142,22 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 						yearSelected = nYear;
 						monthSelected = nMonthOfYear;
 						dayOfMonthSelected = nDayOfMonth;
+						showDatePicker
+								.setText(getString(R.string.freeroom_check_occupancy_search_onthe)
+										+ " : "
+										+ dateFormat.format(new Date(
+												yearSelected, monthSelected,
+												dayOfMonthSelected)));
 
 					}
 				}, yearSelected, monthSelected, dayOfMonthSelected);
 
 		showDatePicker = new Button(this);
 		showDatePicker
-				.setText(getString(R.string.freeroom_check_occupancy_search_onthe));
+				.setText(getString(R.string.freeroom_check_occupancy_search_onthe)
+						+ " : "
+						+ dateFormat.format(new Date(yearSelected,
+								monthSelected, dayOfMonthSelected)));
 		showDatePicker.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -159,13 +176,25 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 							int nMinute) {
 						startHourSelected = nHourOfDay;
 						startMinSelected = nMinute;
+						showStartTimePicker
+								.setText(getString(R.string.freeroom_check_occupancy_search_from)
+										+ " : "
+										+ timeFormat.format(new Date(
+												yearSelected, monthSelected,
+												dayOfMonthSelected,
+												startHourSelected,
+												startMinSelected)));
 
 					}
 				}, startHourSelected, startMinSelected, true);
 
 		showStartTimePicker = new Button(this);
 		showStartTimePicker
-				.setText(getString(R.string.freeroom_check_occupancy_search_from));
+				.setText(getString(R.string.freeroom_check_occupancy_search_from)
+						+ " : "
+						+ timeFormat.format(new Date(yearSelected,
+								monthSelected, dayOfMonthSelected,
+								startHourSelected, startMinSelected)));
 		showStartTimePicker.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -184,13 +213,26 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 							int nMinute) {
 						endHourSelected = nHourOfDay;
 						endMinSelected = nMinute;
+						showEndTimePicker
+								.setText(getString(R.string.freeroom_check_occupancy_search_to)
+										+ " : "
+										+ timeFormat
+												.format(new Date(yearSelected,
+														monthSelected,
+														dayOfMonthSelected,
+														endHourSelected,
+														endMinSelected)));
 
 					}
 				}, endHourSelected, endMinSelected, true);
 
 		showEndTimePicker = new Button(this);
 		showEndTimePicker
-				.setText(getString(R.string.freeroom_check_occupancy_search_to));
+				.setText(getString(R.string.freeroom_check_occupancy_search_to)
+						+ " : "
+						+ timeFormat.format(new Date(yearSelected,
+								monthSelected, dayOfMonthSelected,
+								endHourSelected, endMinSelected)));
 		showEndTimePicker.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -200,9 +242,10 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 			}
 		});
 
-		subLayout.addView(showDatePicker);
-		subLayout.addView(showStartTimePicker);
-		subLayout.addView(showEndTimePicker);
+		subLayout.addView(timePickersLayout);
+		timePickersLayout.addView(showDatePicker);
+		timePickersLayout.addView(showStartTimePicker);
+		timePickersLayout.addView(showEndTimePicker);
 		// mDatePicker = new DatePicker(this);
 		// TextView tv = new TextView(this);
 		// tv.setText("from");
@@ -360,12 +403,12 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		} else if (startHourSelected > endHourSelected) {
 			error++;
 		}
-		
+
 		Calendar mCalendar = Calendar.getInstance();
 		mCalendar.clear();
 		mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected);
 		int day = mCalendar.get(Calendar.DAY_OF_WEEK);
-		
+
 		// day should also be between Monday-Friday
 		if (day < 2 || day > 6) {
 			error++;
