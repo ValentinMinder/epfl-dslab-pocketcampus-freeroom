@@ -15,6 +15,7 @@
 @interface IsAcademiaDayScheduleViewController ()<IsAcademiaServiceDelegate>
 
 @property (nonatomic, strong) IsAcademiaService* isaService;
+@property (nonatomic, strong) NSMutableDictionary* responseForReferenceDate;
 
 @end
 
@@ -27,6 +28,7 @@
     self = [super init];
     if (self) {
         self.title = NSLocalizedStringFromTable(@"MySchedule", @"IsAcademiaPlugin", nil);
+        self.responseForReferenceDate = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -61,18 +63,38 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-#pragma mark - Refresh & controls
+#pragma mark - Refresh & actions
 
 - (void)refreshPressed {
-#warning TODO
+    
+}
+
+- (void)refreshForDisplayedDay {
+    [self.isaService cancelOperationsForDelegate:self];
+    ScheduleRequest* req = [ScheduleRequest new];
+    req.weekStart = [[self mondayReferenceDateForDate:self.dayView.date] timeIntervalSince1970];
+    req.language = [PCUtils userLanguageCode];
+    [self.isaService getScheduleWithRequest:req delegate:self];
 }
 
 - (void)todayPressed {
-#warning TODO
+    self.dayView.date = [NSDate date];
 }
 
-- (void)startScheduleRequestForDisplayedDay {
-    #warning TODO
+#pragma mark - Date utils
+
+- (NSDate*)mondayReferenceDateForDate:(NSDate*)date {
+    [PCUtils throwExceptionIfObject:date notKindOfClass:[NSDate class]];
+    NSCalendar* gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    gregorianCalendar.locale = [NSLocale currentLocale];
+    NSDateComponents* comps = [gregorianCalendar components:NSYearCalendarUnit | NSWeekCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:date];
+    [comps setWeekday:2]; //Monday
+    [comps setWeek:comps.week];
+    [comps setHour:8]; //8a.m.
+    [comps setMinute:0];
+    [comps setSecond:0];
+    NSDate* monday8am = [gregorianCalendar dateFromComponents:comps];
+    return monday8am;
 }
 
 #pragma mark - IsAcademiaService
@@ -80,13 +102,17 @@
 - (void)getScheduleForRequest:(ScheduleRequest *)request didReturn:(ScheduleResponse *)scheduleResponse {
     switch (scheduleResponse.statusCode) {
         case IsaStatusCode_OK:
-#warning TODO
+        {
+            NSDate* date = [self mondayReferenceDateForDate:[NSDate dateWithTimeIntervalSince1970:request.weekStart]];
+            self.responseForReferenceDate[date] = scheduleResponse;
+            [self.dayView reloadData];
             break;
+        }
         case IsaStatusCode_INVALID_SESSION:
         {
             __weak __typeof(self) weakSelf = self;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
-                [weakSelf startScheduleRequestForDisplayedDay];
+                [weakSelf refreshForDisplayedDay];
             } userCancelled:^{
 #warning TODO
             } failure:^{
@@ -113,9 +139,11 @@
 
 #pragma mark - TKCalendarDayViewDelegate
 
-- (void)calendarDayTimelineView:(TKCalendarDayView *)calendarDay didMoveToDate:(NSDate *)date {
-    
-}
+/*- (void)calendarDayTimelineView:(TKCalendarDayView *)calendarDay didMoveToDate:(NSDate *)date {
+    if (!self.responseForReferenceDate[[self mondayReferenceDateForDate:date]]) {
+        [self refreshForDisplayedDay];
+    }
+}*/
 
 - (void)calendarDayTimelineView:(TKCalendarDayView *)calendarDay eventViewWasSelected:(TKCalendarDayEventView *)eventView {
     
@@ -124,8 +152,24 @@
 #pragma mark - TKCalendarDayViewDataSource
 
 - (NSArray *)calendarDayTimelineView:(TKCalendarDayView *)calendarDay eventsForDate:(NSDate *)date {
-    #warning TODO
-    return @[];
+    StudyDay* studyDay = self.responseForReferenceDate[[self mondayReferenceDateForDate:date]];
+    if (!studyDay) {
+        [self refreshForDisplayedDay];
+        return @[];
+    }
+    
+    NSMutableArray* eventViews = [NSMutableArray arrayWithCapacity:studyDay.periods.count];
+    for (StudyPeriod* period in studyDay.periods) {
+        TKCalendarDayEventView* view = [self.dayView dequeueReusableEventView];
+        if (!view) {
+            view = [TKCalendarDayEventView eventView];
+        }
+        view.startDate = [NSDate dateWithTimeIntervalSince1970:period.startTime];
+        view.endDate = [NSDate dateWithTimeIntervalSince1970:period.endTime];
+        view.titleLabel.text = period.name;
+        [eventViews addObject:view];
+    }
+    return eventViews;
 }
 
 #pragma mark - Dealloc

@@ -37,6 +37,7 @@
 		3212452E16FE174500469113 /* EyeBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3212452C16FE174500469113 /* EyeBarButton@2x.png */; };
 		32125BBF1536F215009B8D37 /* TransportFeetConnection.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBD1536F215009B8D37 /* TransportFeetConnection.png */; };
 		32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBE1536F215009B8D37 /* TransportFeetConnection@2x.png */; };
+		32141FA718D8D16F0084FE44 /* IsAcademiaModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */; };
 		32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */; };
 		3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
 		3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -443,6 +444,8 @@
 		3212452C16FE174500469113 /* EyeBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EyeBarButton@2x.png"; sourceTree = "<group>"; };
 		32125BBD1536F215009B8D37 /* TransportFeetConnection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TransportFeetConnection.png; sourceTree = "<group>"; };
 		32125BBE1536F215009B8D37 /* TransportFeetConnection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TransportFeetConnection@2x.png"; sourceTree = "<group>"; };
+		32141FA518D8D16F0084FE44 /* IsAcademiaModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaModelAdditions.h; sourceTree = "<group>"; };
+		32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsAcademiaModelAdditions.m; sourceTree = "<group>"; };
 		32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CamiproLarge@2x.png"; sourceTree = "<group>"; };
 		3215425515B5B75F0003C8B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		3215425715B5B7670003C8B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
@@ -1035,6 +1038,8 @@
 			children = (
 				B456406791FB5774D640F9DA /* IsAcademiaService.h */,
 				152945DD901E004926831E89 /* IsAcademiaService.m */,
+				32141FA518D8D16F0084FE44 /* IsAcademiaModelAdditions.h */,
+				32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */,
 				E56F45F5BCF0E3F09905A00E /* ThriftTypes+Services */,
 			);
 			name = Model;
@@ -2755,6 +2760,7 @@
 				322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */,
 				3278F6CA184257AF007CB382 /* TransportDepartureSelectionViewController.m in Sources */,
 				324A5998151DFDD200977F33 /* TransportAddStationViewController.m in Sources */,
+				32141FA718D8D16F0084FE44 /* IsAcademiaModelAdditions.m in Sources */,
 				324A59A0151E453300977F33 /* TransportUtils.m in Sources */,
 				32930AB117F898910025F864 /* THTTPClient.m in Sources */,
 				328872C71534D82C00330B54 /* TransportTripsListViewController.m in Sources */,
