@@ -19,7 +19,7 @@ namespace PocketCampus.Events.ViewModels
     /// ViewModel for item details.
     /// </summary>
     [LogId( "/events/item" )]
-    public sealed class EventItemViewModel : DataViewModel<long>
+    public sealed class EventItemViewModel : DataViewModel<ViewEventItemRequest>
     {
         private readonly INavigationService _navigationService;
         private readonly IBrowserService _browserService;
@@ -51,6 +51,11 @@ namespace PocketCampus.Events.ViewModels
         }
 
         /// <summary>
+        /// Gets a value indicating whether the item can be set as a favorite.
+        /// </summary>
+        public bool CanBeFavorite { get; private set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the item is a favorite of the user.
         /// </summary>
         public bool IsFavorite
@@ -58,7 +63,6 @@ namespace PocketCampus.Events.ViewModels
             get { return _isFavorite; }
             set { SetProperty( ref _isFavorite, value ); }
         }
-
 
         /// <summary>
         /// Gets the command executed to view a child pool.
@@ -73,7 +77,7 @@ namespace PocketCampus.Events.ViewModels
                 {
                     if ( pool.OverrideTargetUrl == null )
                     {
-                        _navigationService.NavigateTo<EventPoolViewModel, ViewPoolRequest>( new ViewPoolRequest( pool.Id ) );
+                        _navigationService.NavigateTo<EventPoolViewModel, long>( pool.Id );
                     }
                     else
                     {
@@ -98,13 +102,14 @@ namespace PocketCampus.Events.ViewModels
         /// </summary>
         public EventItemViewModel( INavigationService navigationService, IBrowserService browserService,
                                    IEventsService eventsService, IPluginSettings settings,
-                                   long itemId )
+                                   ViewEventItemRequest request )
         {
             _navigationService = navigationService;
             _browserService = browserService;
             _eventsService = eventsService;
             _settings = settings;
-            _itemId = itemId;
+            _itemId = request.ItemId;
+            CanBeFavorite = request.CanBeFavorite;
         }
 
 

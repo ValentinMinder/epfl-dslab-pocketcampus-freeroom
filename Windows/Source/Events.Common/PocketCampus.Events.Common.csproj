@@ -53,6 +53,7 @@
     <Compile Include="Services\ICodeScanner.cs" />
     <Compile Include="Services\IEventsService.cs" />
     <Compile Include="Services\IEmailPrompt.cs" />
+    <Compile Include="ViewEventItemRequest.cs" />
     <Compile Include="ViewModels\Design\DesignCategoryFilterViewModel.cs" />
     <Compile Include="ViewModels\Design\DesignEventItemViewModel.cs" />
     <Compile Include="ViewModels\Design\DesignEventPoolViewModel.cs" />
@@ -63,7 +64,6 @@
     <Compile Include="ViewModels\CategoryFilterViewModel.cs" />
     <Compile Include="ViewModels\EventItemViewModel.cs" />
     <Compile Include="ViewModels\EventPoolViewModel.cs" />
-    <Compile Include="ViewPoolRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">

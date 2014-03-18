@@ -20,14 +20,14 @@ namespace PocketCampus.Events.ViewModels
     /// ViewModel for pool details.
     /// </summary>
     [LogId( "/events/pool" )]
-    public sealed class EventPoolViewModel : DataViewModel<ViewPoolRequest>
+    public sealed class EventPoolViewModel : DataViewModel<long>
     {
         private readonly INavigationService _navigationService;
         private readonly IEventsService _eventsService;
         private readonly IPluginSettings _settings;
         private readonly IEmailPrompt _emailPrompt;
         private readonly ICodeScanner _codeScanner;
-        private readonly ViewPoolRequest _request;
+        private readonly long _poolId;
 
         private EventPool _pool;
         private EventItemGroup[] _itemGroups;
@@ -80,7 +80,13 @@ namespace PocketCampus.Events.ViewModels
         [LogParameter( "$Param.LogId" )]
         public Command<EventItem> ViewItemCommand
         {
-            get { return GetCommand<EventItem>( item => _navigationService.NavigateTo<EventItemViewModel, long>( item.Id ) ); }
+            get
+            {
+                return GetCommand<EventItem>( item =>
+                    _navigationService.NavigateTo<EventItemViewModel, ViewEventItemRequest>(
+                        new ViewEventItemRequest( item.Id, Pool.DisableFavorites != true ) )
+                );
+            }
         }
 
         /// <summary>
@@ -134,21 +140,16 @@ namespace PocketCampus.Events.ViewModels
         /// </summary>
         public EventPoolViewModel( INavigationService navigationService, IEventsService eventsService,
                                    IPluginSettings settings, IEmailPrompt emailPrompt, ICodeScanner codeScanner,
-                                   ViewPoolRequest request )
+                                   long poolId )
         {
             _navigationService = navigationService;
             _eventsService = eventsService;
             _settings = settings;
             _emailPrompt = emailPrompt;
             _codeScanner = codeScanner;
-            _request = request;
+            _poolId = poolId;
 
             _previousSettings = Tuple.Create( (SearchPeriod) 0, false );
-
-            if ( _request.UserTicket != null )
-            {
-                _settings.UserTickets.Add( _request.UserTicket );
-            }
         }
 
 
@@ -162,29 +163,18 @@ namespace PocketCampus.Events.ViewModels
               || ( Pool != null && Pool.AlwaysRefresh == true )
               || ( _previousSettings.Item1 != _settings.SearchPeriod || _previousSettings.Item2 != _settings.SearchInPast ) )
             {
-                if ( _request.ItemId != null )
+                if ( !_settings.ExcludedCategoriesByPool.ContainsKey( _poolId ) )
                 {
-                    if ( _request.MarkItemAsFavorite )
-                    {
-                        _settings.FavoriteItemIds.Add( _request.ItemId.Value );
-                    }
-
-                    _navigationService.NavigateTo<EventItemViewModel, long>( _request.ItemId.Value );
-                    _navigationService.PopBackStack();
+                    _settings.ExcludedCategoriesByPool.Add( _poolId, new List<int>() );
                 }
-
-                if ( !_settings.ExcludedCategoriesByPool.ContainsKey( _request.PoolId ) )
+                if ( !_settings.ExcludedTagsByPool.ContainsKey( _poolId ) )
                 {
-                    _settings.ExcludedCategoriesByPool.Add( _request.PoolId, new List<int>() );
-                }
-                if ( !_settings.ExcludedTagsByPool.ContainsKey( _request.PoolId ) )
-                {
-                    _settings.ExcludedTagsByPool.Add( _request.PoolId, new List<string>() );
+                    _settings.ExcludedTagsByPool.Add( _poolId, new List<string>() );
                 }
 
                 var request = new EventPoolRequest
                 {
-                    PoolId = _request.PoolId,
+                    PoolId = _poolId,
                     DayCount = (int) _settings.SearchPeriod,
                     IsInPast = _settings.SearchInPast,
                     UserTickets = _settings.UserTickets.ToArray(),
@@ -206,18 +196,13 @@ namespace PocketCampus.Events.ViewModels
                 Pool = response.Pool;
                 Pool.Items = response.ChildrenItems == null ? new EventItem[0] : response.ChildrenItems.Values.ToArray();
                 AnyItems = Pool.Items.Any();
-
-                foreach ( var item in Pool.Items )
-                {
-                    item.ParentPool = Pool;
-                }
             }
 
             var groups = from item in Pool.Items
                          where item.CategoryId == null
-                            || !_settings.ExcludedCategoriesByPool[_request.PoolId].Contains( item.CategoryId.Value )
+                            || !_settings.ExcludedCategoriesByPool[_poolId].Contains( item.CategoryId.Value )
                          where item.TagIds == null
-                            || !item.TagIds.Any( _settings.ExcludedTagsByPool[_request.PoolId].Contains )
+                            || !item.TagIds.Any( _settings.ExcludedTagsByPool[_poolId].Contains )
                          orderby item.TimeOverride ascending,
                                  item.StartDate ascending,
                                  item.EndDate ascending,

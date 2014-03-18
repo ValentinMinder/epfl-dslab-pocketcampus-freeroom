@@ -184,7 +184,7 @@
                     <Grid Grid.Column="1"
                           Grid.RowSpan="3"
                           Margin="5,5,5,0"
-                          Visibility="{Binding Item.ParentPool.DisableFavorites, Converter={StaticResource BoolToOppositeVisibility}}">
+                          Visibility="{Binding CanBeFavorite, Converter={StaticResource BoolToVisibility}}">
                         <ToggleButton IsChecked="{Binding IsFavorite, Mode=TwoWay}"
                                       Template="{StaticResource SimpleButtonTemplate}">
                             <Image Source="/Assets/EmptyStar.png" />
