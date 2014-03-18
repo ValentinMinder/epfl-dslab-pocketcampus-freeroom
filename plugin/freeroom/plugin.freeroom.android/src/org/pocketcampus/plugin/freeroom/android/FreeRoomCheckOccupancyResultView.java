@@ -40,6 +40,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 	private TextView mTitle;
 	private ListView mListView;
 	private ArrayAdapter<String> mAdapter;
+	
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {

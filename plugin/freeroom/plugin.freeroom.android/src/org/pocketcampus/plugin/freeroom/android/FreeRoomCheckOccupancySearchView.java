@@ -246,20 +246,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		timePickersLayout.addView(showDatePicker);
 		timePickersLayout.addView(showStartTimePicker);
 		timePickersLayout.addView(showEndTimePicker);
-		// mDatePicker = new DatePicker(this);
-		// TextView tv = new TextView(this);
-		// tv.setText("from");
-		// tv.setGravity(Gravity.CENTER_VERTICAL);
-		// mTimePickerStart = new TimePicker(this);
-		// TextView tv2 = new TextView(this);
-		// tv2.setText("to");
-		// tv2.setGravity(Gravity.CENTER);
-		// mTimePickerEnd = new TimePicker(this);
-		// subLayout.addView(mDatePicker);
-		// subLayout.addView(tv);
-		// subLayout.addView(mTimePickerStart);
-		// subLayout.addView(tv2);
-		// subLayout.addView(mTimePickerEnd);
+
 
 		mInputBar = new InputBarElement(
 				this,

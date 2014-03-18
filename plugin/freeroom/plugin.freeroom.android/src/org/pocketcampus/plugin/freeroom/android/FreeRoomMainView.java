@@ -95,6 +95,8 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 		mListValues.add(getString(R.string.freeroom_menu_freeroom_now));
 		mListValues.add(getString(R.string.freeroom_menu_freeroom_search));
 		mListValues.add(getString(R.string.freeroom_menu_check_occupancy));
+		//temporary to test new activity
+		mListValues.add("Result view tests");
 
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -125,6 +127,10 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 				case 2:
 					i = new Intent(FreeRoomMainView.this,
 							FreeRoomCheckOccupancySearchView.class);
+					break;
+				//temporary, to test activty
+				case 3:
+					i = new Intent(FreeRoomMainView.this, FreeRoomResultViewV2.class);
 					break;
 				default:
 					break;

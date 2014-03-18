@@ -83,6 +83,10 @@
 		<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomCheckOccupancyResultView"
 		    android:screenOrientation="nosensor"
 		    xmlns:android="http://schemas.android.com/apk/res/android" />
+		
+			<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomResultViewV2"
+		    android:screenOrientation="nosensor"
+		    xmlns:android="http://schemas.android.com/apk/res/android" />
 		    
 						    
 		<service android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomController"
