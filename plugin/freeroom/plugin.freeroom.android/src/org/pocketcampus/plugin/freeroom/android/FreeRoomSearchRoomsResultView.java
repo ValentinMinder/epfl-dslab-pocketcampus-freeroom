@@ -12,6 +12,7 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.utils.ExpandableListViewFavoriteAdapter;
 import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
@@ -53,9 +54,6 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implemen
 	private ExpandableListView mExpList;
 	private TreeMap<String, List<String>> sortedRooms;
 	private ArrayList<String> buildings;
-
-	private ArrayList<String> mListValues;
-	private ArrayAdapter<String> mAdapter;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -104,23 +102,24 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implemen
 		// });
 		// subLayout.addView(resetButton);
 
-
 		mExpList = new ExpandableListView(this);
 		buildings = new ArrayList<String>();
 		sortedRooms = new TreeMap<String, List<String>>();
 
-		final ExpandableSimpleListViewAdapter adapter = new ExpandableSimpleListViewAdapter(
-				this, buildings, sortedRooms);
+
+		final ExpandableListViewFavoriteAdapter adapter = new ExpandableListViewFavoriteAdapter(
+				this, buildings, sortedRooms, mModel);
 		mExpList.setAdapter(adapter);
 
 		// adding the listeners
 		mExpList.setOnChildClickListener(new OnChildClickListener() {
-			
+
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
-				
-				String room = (String) adapter.getChild(groupPosition, childPosition);
+
+				String room = (String) adapter.getChild(groupPosition,
+						childPosition);
 				String regexpMatch = "([A-Z0-9\\s]+)*";
 				Pattern mPattern = Pattern.compile(regexpMatch);
 				Matcher matcher = mPattern.matcher(room);
@@ -137,44 +136,11 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implemen
 						room);
 				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
 				startActivity(i);
-				
-				return true;
-			}
-		});
-		
-		mExpList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				int group = ExpandableListView.getPackedPositionGroup(arg3);
-				int child = ExpandableListView.getPackedPositionChild(arg3);
-
-				if (group == -1 || child == -1) {
-					return false;
-				}
-
-				String room = (String) adapter.getChild(group, child);
-				String regexpMatch = "([A-Z0-9\\s]+)*";
-				Pattern mPattern = Pattern.compile(regexpMatch);
-				Matcher matcher = mPattern.matcher(room);
-
-				if (matcher.find()) {
-					room = matcher.group(0).replaceAll("\\s", "");
-					if (mModel.isFavoriteRoom(room)) {
-						mModel.removeFavoriteRoom(room);
-						sortedRooms.get(buildings.get(group)).set(child, room);
-					} else {
-						mModel.setFavoriteRoom(room);
-						sortedRooms.get(buildings.get(group)).set(child,
-								room + "\u2713");
-					}
-					adapter.notifyDataSetChanged();
-				}
 
 				return true;
 			}
 		});
+
 		subLayout.addView(mExpList);
 	}
 
@@ -185,34 +151,41 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implemen
 		// mAdapter.notifyDataSetChanged();
 		Set<FRRoom> res = mModel.getFreeRoomResults();
 		buildings.clear();
+		buildings.add(getString(R.string.freeroom_result_occupancy_favorites));
+		ArrayList<String> roomsFavorites = new ArrayList<String>();
+		
 		sortedRooms.clear();
+		sortedRooms.put(buildings.get(0), roomsFavorites);
 		// keep a structure organized as building -> list of rooms in the
 		// building
 		for (FRRoom frRoom : res) {
 			String roomDisplay = frRoom.getBuilding() + frRoom.getNumber();
-
+			boolean isFavorite = mModel.isFavoriteRoom(roomDisplay);
+			
+			if (isFavorite) {
+				roomsFavorites.add(roomDisplay);
+			}
+			
 			List<String> roomsNumbers = sortedRooms.get(frRoom.getBuilding());
 			if (roomsNumbers == null) {
 				buildings.add(frRoom.getBuilding());
 				roomsNumbers = new ArrayList<String>();
 				sortedRooms.put(frRoom.getBuilding(), roomsNumbers);
 			}
+			roomsNumbers.add(roomDisplay);
 
-			if (mModel.isFavoriteRoom(roomDisplay)) {
-				// indicate a favorite room
-				roomsNumbers.add(roomDisplay + " \u2713");
-			} else {
-				roomsNumbers.add(roomDisplay);
-			}
-			//
-
-			// mListValues.add(roomDisplay);
 		}
 
 		if (res.isEmpty()) {
 			Toast.makeText(getApplicationContext(),
 					getString(R.string.freeroom_no_room_available),
 					Toast.LENGTH_LONG).show();
+		}
+		
+		if (roomsFavorites.isEmpty()) {
+			sortedRooms.remove(buildings.get(0));
+		} else {
+			mExpList.expandGroup(0);
 		}
 		Log.v(this.getClass().toString(), "data_updated in FreeRoomResultView");
 		// mAdapter.notifyDataSetChanged();

@@ -111,7 +111,7 @@ public class FreeRoomSearchRoomsView extends FreeRoomAbstractView implements
 
 					// starting the result UI before sending the request!
 					Intent i = new Intent(FreeRoomSearchRoomsView.this,
-							FreeRoomSearchRoomsResultViewV2.class);
+							FreeRoomSearchRoomsResultView.class);
 					FreeRoomSearchRoomsView.this.startActivity(i);
 
 					// finally sending the request to the controller
