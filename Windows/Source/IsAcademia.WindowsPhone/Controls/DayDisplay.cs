@@ -21,6 +21,8 @@ namespace PocketCampus.IsAcademia.Controls
         private const int MinimumHoursInDay = 10;
         private const string HourFormat = @"00\:\0\0";
         private const double HoursGridWidth = 50;
+        private const int EmptyScheduleStart = 8;
+        private const int EmptyScheduleEnd = 19;
 
         #region Day DependencyProperty
         /// <summary>
@@ -253,8 +255,8 @@ namespace PocketCampus.IsAcademia.Controls
         /// </summary>
         private static Tuple<int, int> GetHourBoundaries( StudyDay[] days )
         {
-            int min = days.Min( d => d.Periods.Any() ? d.Periods.Min( p => p.Start.Hour ) : int.MaxValue );
-            int max = days.Max( d => d.Periods.Any() ? d.Periods.Max( p => HourCeiling( p.End.TimeOfDay ) ) : int.MinValue );
+            int min = days.Min( d => d.Periods.Any() ? d.Periods.Min( p => p.Start.Hour ) : EmptyScheduleStart );
+            int max = days.Max( d => d.Periods.Any() ? d.Periods.Max( p => HourCeiling( p.End.TimeOfDay ) ) : EmptyScheduleEnd );
             if ( min + MinimumHoursInDay > HoursInDay )
             {
                 min = max - MinimumHoursInDay;
