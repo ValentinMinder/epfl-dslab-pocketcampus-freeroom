@@ -39,6 +39,8 @@
 
 #import "isacademia.h"
 
+#import "IsAcademiaModelAdditions.h"
+
 @protocol IsAcademiaServiceDelegate;
 
 @interface IsAcademiaService : Service <ServiceProtocol>

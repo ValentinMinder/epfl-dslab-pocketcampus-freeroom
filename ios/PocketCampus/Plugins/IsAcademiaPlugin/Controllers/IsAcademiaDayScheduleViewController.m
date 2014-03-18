@@ -29,6 +29,7 @@
     if (self) {
         self.title = NSLocalizedStringFromTable(@"MySchedule", @"IsAcademiaPlugin", nil);
         self.responseForReferenceDate = [NSMutableDictionary dictionary];
+        self.isaService = [IsAcademiaService sharedInstanceToRetain];
     }
     return self;
 }
@@ -43,6 +44,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshPressed)];
     UIBarButtonItem* todayItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(todayPressed)];
     self.toolbarItems = @[todayItem];
+    [self refreshForDisplayedDay];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -72,7 +74,8 @@
 - (void)refreshForDisplayedDay {
     [self.isaService cancelOperationsForDelegate:self];
     ScheduleRequest* req = [ScheduleRequest new];
-    req.weekStart = [[self mondayReferenceDateForDate:self.dayView.date] timeIntervalSince1970];
+    NSDate* monday8am = [self mondayReferenceDateForDate:self.dayView.date];
+    req.weekStart = [monday8am timeIntervalSince1970];
     req.language = [PCUtils userLanguageCode];
     [self.isaService getScheduleWithRequest:req delegate:self];
 }
@@ -88,6 +91,7 @@
     NSCalendar* gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     gregorianCalendar.locale = [NSLocale currentLocale];
     NSDateComponents* comps = [gregorianCalendar components:NSYearCalendarUnit | NSWeekCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:date];
+    [comps setYear:comps.year];
     [comps setWeekday:2]; //Monday
     [comps setWeek:comps.week];
     [comps setHour:8]; //8a.m.
@@ -103,6 +107,21 @@
     switch (scheduleResponse.statusCode) {
         case IsaStatusCode_OK:
         {
+#warning REMOVE
+            
+            for (StudyDay* day in scheduleResponse.days) {
+                StudyPeriod* period = [StudyPeriod new];
+                period.name = @"Test course";
+                NSDate* startDate = [[NSDate dateWithTimeIntervalSince1970:day.day] dateByAddingTimeInterval:21600];
+                period.startTime = [startDate timeIntervalSince1970];
+                NSDate* endDate = [[NSDate dateWithTimeIntervalSince1970:day.day] dateByAddingTimeInterval:18000];
+                period.endTime = [endDate timeIntervalSince1970];
+                day.periods = @[period];
+            }
+            
+#warning END OF REMOVE
+            
+            
             NSDate* date = [self mondayReferenceDateForDate:[NSDate dateWithTimeIntervalSince1970:request.weekStart]];
             self.responseForReferenceDate[date] = scheduleResponse;
             [self.dayView reloadData];
@@ -121,8 +140,10 @@
             break;
         }
         case IsaStatusCode_NETWORK_ERROR:
-#warning TODO
+        {
+            [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"IsAcademiaServerUnreachableTryLater", @"IsAcademiaPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             break;
+        }
         default:
             [self getScheduleFailedForRequest:request];
             break;
@@ -130,20 +151,20 @@
 }
 
 - (void)getScheduleFailedForRequest:(ScheduleRequest *)request {
-#warning TODO
+    [PCUtils showServerErrorAlert];
 }
 
 - (void)serviceConnectionToServerFailed {
-#warning TODO
+    [PCUtils showConnectionToServerTimedOutAlert];
 }
 
 #pragma mark - TKCalendarDayViewDelegate
 
-/*- (void)calendarDayTimelineView:(TKCalendarDayView *)calendarDay didMoveToDate:(NSDate *)date {
+- (void)calendarDayTimelineView:(TKCalendarDayView *)calendarDay didMoveToDate:(NSDate *)date {
     if (!self.responseForReferenceDate[[self mondayReferenceDateForDate:date]]) {
         [self refreshForDisplayedDay];
     }
-}*/
+}
 
 - (void)calendarDayTimelineView:(TKCalendarDayView *)calendarDay eventViewWasSelected:(TKCalendarDayEventView *)eventView {
     
@@ -152,9 +173,9 @@
 #pragma mark - TKCalendarDayViewDataSource
 
 - (NSArray *)calendarDayTimelineView:(TKCalendarDayView *)calendarDay eventsForDate:(NSDate *)date {
-    StudyDay* studyDay = self.responseForReferenceDate[[self mondayReferenceDateForDate:date]];
+    ScheduleResponse* scheduleResponse = self.responseForReferenceDate[[self mondayReferenceDateForDate:date]];
+    StudyDay* studyDay = [scheduleResponse studyDayForDate:date];
     if (!studyDay) {
-        [self refreshForDisplayedDay];
         return @[];
     }
     

@@ -74,6 +74,16 @@ static IsAcademiaController* instance __weak = nil;
     }
 }
 
++ (void)initObservers {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"isacademia"];
+            [[MainController publicController] requestLeavePlugin:@"IsAcademia"];
+        }];
+    });
+}
+
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"IsAcademiaPlugin", nil);
 }
