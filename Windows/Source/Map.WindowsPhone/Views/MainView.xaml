@@ -54,9 +54,7 @@
 
         <!-- Search box -->
         <comControls:SearchBox Grid.Row="1"
-                               AutoCompleteProvider="{Binding SearchProvider.AutoCompleteProvider}"
                                SearchCommand="{Binding SearchProvider.SearchCommand}" />
-
 
         <!-- "No search results" text -->
         <TextBlock Grid.Row="2"

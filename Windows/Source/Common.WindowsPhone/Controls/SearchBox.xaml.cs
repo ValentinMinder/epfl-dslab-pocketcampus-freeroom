@@ -116,6 +116,11 @@ namespace PocketCampus.Common.Controls
 
         private async void Box_Populating( object sender, PopulatingEventArgs e )
         {
+            if ( AutoCompleteProvider == null )
+            {
+                return;
+            }
+
             e.Cancel = true;
             try
             {
