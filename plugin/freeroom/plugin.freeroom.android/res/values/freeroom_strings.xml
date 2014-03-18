@@ -28,9 +28,15 @@
     <string name="freeroom_selectstartHour">Start</string>
     <string name="freeroom_selectendHour">End</string>
     <string name="freeroom_no_room_available">No room available!</string>
-    <string name="freeroom_check_occupancy_search_onthe">Date</string>
-    <string name="freeroom_check_occupancy_search_from">Start</string>
-    <string name="freeroom_check_occupancy_search_to">End</string>
+    <string name="freeroom_check_occupancy_search_onthe">TODO DELETE IN R.STRING</string>
+    <string name="freeroom_check_occupancy_search_from">TODO DELETE IN R.STRING</string>
+    <string name="freeroom_check_occupancy_search_to">TODO DELETE IN R.STRING</string>
+    <string name="freeroom_check_occupancy_search_date">Date</string>
+    <string name="freeroom_check_occupancy_search_start">Start</string>
+    <string name="freeroom_check_occupancy_search_end">End</string>
+    <string name="freeroom_check_occupancy_result_onthe">Results on the</string>
+    <string name="freeroom_check_occupancy_result_from">from</string>
+    <string name="freeroom_check_occupancy_result_to">to</string>
     <string name="freeroom_check_occupancy_search_inputbarhint">Type in for searching a specific room</string>
     <string name="freeroom_result_occupancy_favorites">Favorites</string>
 </resources>

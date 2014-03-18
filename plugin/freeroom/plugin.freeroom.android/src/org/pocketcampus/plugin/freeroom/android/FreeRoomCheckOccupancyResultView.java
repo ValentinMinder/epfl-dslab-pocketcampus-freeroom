@@ -4,18 +4,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,9 +44,12 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 	private LinearLayout subLayout;
 
 	private TextView mTitle;
-	private ListView mListView;
-	private ArrayAdapter<String> mAdapter;
-	
+
+	private ExpandableListView mExpList;
+	private TreeMap<String, List<String>> mActualOccupancyTreeMap;
+	private ArrayList<String> mFRRoomList;
+
+	private ExpandableSimpleListViewAdapter mAdapter;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -71,17 +80,23 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 	}
 
 	private void initializeCheckOccupancyResultView() {
-		/*
-		 * TODO maybe have a greater idea how to display the result!
-		 */
 		subLayout = new LinearLayout(this);
 		subLayout.setOrientation(LinearLayout.VERTICAL);
 
-		mListView = new ListView(this);
 		mTitle = new TextView(this);
 
 		subLayout.addView(mTitle);
-		subLayout.addView(mListView);
+
+		mExpList = new ExpandableListView(this);
+		mFRRoomList = new ArrayList<String>();
+		mActualOccupancyTreeMap = new TreeMap<String, List<String>>();
+
+		mAdapter = new ExpandableSimpleListViewAdapter(this, mFRRoomList,
+				mActualOccupancyTreeMap);
+		mExpList.setAdapter(mAdapter);
+
+		subLayout.addView(mExpList);
+
 		mLayout.addFillerView(subLayout);
 	}
 
@@ -97,70 +112,105 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 
 	@Override
 	public void occupancyResultUpdated() {
-		Log.v("fr.checkresult", "listerner called - start updating!!");
-		List<Occupancy> list = mModel.getListCheckedOccupancyRoom();
-		List<ActualOccupation> listA = new ArrayList<ActualOccupation>();
-
-		Occupancy firstRoom = null;
-		if (!list.isEmpty()) {
-			firstRoom = list.get(0);
-			Log.v("fr.check-updating", firstRoom.getOccupancySize() + "");
-			listA.addAll(firstRoom.getOccupancy());
-		}
-
-		if (listA.isEmpty()) {
-			System.out.println("empty! getting from way 2");
-			listA = new ArrayList<ActualOccupation>(
-					mModel.getListActualOccupationForONERoom());
-		}
-
-		// TODO: only support one room! treat others room.. do expandable view
-		// for each room
-		ArrayList<String> listS = new ArrayList<String>();
-
 		SimpleDateFormat day_month = new SimpleDateFormat("MMM dd");
 		SimpleDateFormat hour_min = new SimpleDateFormat("HH:mm");
 
-		// TODO: put that in an appropriate title, not in the list!!!
-		String review = "No results to display, sorry!";
-		if (firstRoom != null) {
-			review = "Results for room " + firstRoom.getRoom().getBuilding()
-					+ firstRoom.getRoom().getNumber();
-			if (!listA.isEmpty()) {
-				Date startDate = new Date(listA.get(0).getPeriod()
-						.getTimeStampStart());
-				Date endDate = new Date(listA.get(listA.size() - 1).getPeriod()
+		mFRRoomList.clear();
+		mActualOccupancyTreeMap.clear();
+		Log.v("fr.checkresult", "listerner called - start updating!!");
+		List<Occupancy> list = mModel.getListCheckedOccupancyRoom();
+
+		String mFullPeriodAsString = "";
+		String mListRoom = "Checking result for rooms: ";
+		boolean atLeastOneRoom = false;
+
+		for (Occupancy occupation : list) {
+			atLeastOneRoom = true;
+			FRRoom mFRRoom = occupation.getRoom();
+			List<ActualOccupation> mListActualOccupation = occupation
+					.getOccupancy();
+			String mRoomAsString = mFRRoom.getBuilding() + mFRRoom.getNumber();
+			mFRRoomList.add(mRoomAsString);
+
+			mListRoom += mRoomAsString + ", ";
+
+			ArrayList<String> mListActualOccupationAsString = new ArrayList<String>(
+					mListActualOccupation.size());
+
+			if (mFullPeriodAsString.equals("")
+					&& !mListActualOccupation.isEmpty()) {
+				Date startDate = new Date(mListActualOccupation.get(0)
+						.getPeriod().getTimeStampStart());
+				Date endDate = new Date(mListActualOccupation
+						.get(mListActualOccupation.size() - 1).getPeriod()
 						.getTimeStampEnd());
-				String title = "";
-				title += "The ";
-				title += day_month.format(startDate);
-				title += " from ";
-				title += hour_min.format(startDate);
-				title += " to ";
-				title += hour_min.format(endDate);
-				review += "\n" + title;
+
+				mFullPeriodAsString += " "
+						+ getString(R.string.freeroom_check_occupancy_result_onthe)
+						+ " ";
+				mFullPeriodAsString += day_month.format(startDate);
+				mFullPeriodAsString += " "
+						+ getString(R.string.freeroom_check_occupancy_result_from)
+						+ " ";
+				mFullPeriodAsString += hour_min.format(startDate);
+				mFullPeriodAsString += " "
+						+ getString(R.string.freeroom_check_occupancy_result_to)
+						+ " ";
+				mFullPeriodAsString += hour_min.format(endDate);
 			}
-			mTitle.setText(review);
+
+			for (ActualOccupation mActualOccupation : mListActualOccupation) {
+				String mActualOccupationAsString = "";
+
+				Date startDate = new Date(mActualOccupation.getPeriod()
+						.getTimeStampStart());
+				Date endDate = new Date(mActualOccupation.getPeriod()
+						.getTimeStampEnd());
+
+				mActualOccupationAsString += hour_min.format(startDate);
+				mActualOccupationAsString += " "
+						+ getString(R.string.freeroom_check_occupancy_result_to)
+						+ " ";
+				mActualOccupationAsString += hour_min.format(endDate);
+
+				mActualOccupationAsString += " : ";
+				if (mActualOccupation.isAvailable()) {
+					mActualOccupationAsString += "FREE";
+				} else {
+					mActualOccupationAsString += "OCCUPIED by "
+							+ mActualOccupation.getOccupationType();
+				}
+
+				mListActualOccupationAsString.add(mActualOccupationAsString);
+			}
+			mActualOccupancyTreeMap.put(mRoomAsString,
+					mListActualOccupationAsString);
 		}
 
-		for (ActualOccupation actual : listA) {
-			Date startDate = new Date(actual.getPeriod().getTimeStampStart());
-			Date endDate = new Date(actual.getPeriod().getTimeStampEnd());
-
-			String displayOcc = "";
-			displayOcc += hour_min.format(startDate);
-			displayOcc += " to ";
-			displayOcc += hour_min.format(endDate);
-
-			displayOcc += " : ";
-			displayOcc += actual.isAvailable() ? "FREE" : "OCCUPIED by "
-					+ actual.getOccupationType();
-			listS.add(displayOcc);
+		String review = "No results to display, sorry!";
+		if (atLeastOneRoom) {
+			review = mListRoom.substring(0, mListRoom.length() - 2);
+			// -2:avoiding the last ", "
+			review += "\n";
+			review += mFullPeriodAsString;
 		}
-		mAdapter = new ArrayAdapter<String>(getApplicationContext(),
-				android.R.layout.simple_dropdown_item_1line,
-				android.R.id.text1, listS);
+		mTitle.setText(review);
+		
+		for (int i = 0 ; i < mFRRoomList.size(); i++) {
+			
+		}
+		
 
-		mListView.setAdapter(mAdapter);
+		// if there is only one room, we expand the first group
+		if (mFRRoomList.size() == 1) {
+			mExpList.expandGroup(0);
+		}
+				
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
