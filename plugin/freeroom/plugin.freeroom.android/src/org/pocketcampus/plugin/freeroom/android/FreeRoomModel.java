@@ -178,7 +178,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putBoolean(roomname, true);
+		String roomCorrected = roomname.replaceAll("\\s", "");
+		editor.putBoolean(roomCorrected, true);
 		editor.commit();
 	}
 	
@@ -186,13 +187,15 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.remove(roomname);
+		String roomCorrected = roomname.replaceAll("\\s", "");
+		editor.remove(roomCorrected);
 		editor.commit();
 	}
 	
 	public boolean isFavoriteRoom(String roomname) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
-		return preferences.getBoolean(roomname, false);
+		String roomCorrected = roomname.replaceAll("\\s", "");
+		return preferences.getBoolean(roomCorrected, false);
 	}
 }

@@ -105,6 +105,7 @@ public class ExpandableListViewFavoriteAdapter extends
 					star.setImageResource(android.R.drawable.star_big_on);
 					model.setFavoriteRoom(roomName);
 				}
+				notifyDataSetChanged();
 			}
 		});
 		vholder.setStarCheck(false);

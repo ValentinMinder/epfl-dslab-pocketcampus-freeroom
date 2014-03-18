@@ -68,11 +68,11 @@
 		    android:screenOrientation="nosensor"
 			xmlns:android="http://schemas.android.com/apk/res/android" />
 		
-		<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomSearchView"
+		<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsView"
 		    android:screenOrientation="nosensor"
 		    xmlns:android="http://schemas.android.com/apk/res/android" />
 		
-		<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomResultView"
+		<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsResultView"
 		    android:screenOrientation="nosensor"
 		    xmlns:android="http://schemas.android.com/apk/res/android" />
 		
@@ -84,7 +84,7 @@
 		    android:screenOrientation="nosensor"
 		    xmlns:android="http://schemas.android.com/apk/res/android" />
 		
-			<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomResultViewV2"
+			<activity android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsResultViewV2"
 		    android:screenOrientation="nosensor"
 		    xmlns:android="http://schemas.android.com/apk/res/android" />
 		    

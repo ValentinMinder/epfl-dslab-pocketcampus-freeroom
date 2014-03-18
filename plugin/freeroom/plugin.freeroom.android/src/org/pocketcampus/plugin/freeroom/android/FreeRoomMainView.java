@@ -114,7 +114,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 									calendar.get(Calendar.HOUR_OF_DAY) + 1);
 					// construct and launch the UI.
 					i = new Intent(FreeRoomMainView.this,
-							FreeRoomResultView.class);
+							FreeRoomSearchRoomsResultView.class);
 					FreeRoomMainView.this.startActivity(i);
 					// send the request to the controller
 					mController.prepareSearchFreeRoom(req);
@@ -122,7 +122,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 					break;
 				case 1:
 					i = new Intent(FreeRoomMainView.this,
-							FreeRoomSearchView.class);
+							FreeRoomSearchRoomsView.class);
 					break;
 				case 2:
 					i = new Intent(FreeRoomMainView.this,
@@ -130,7 +130,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 					break;
 				//temporary, to test activty
 				case 3:
-					i = new Intent(FreeRoomMainView.this, FreeRoomResultViewV2.class);
+					i = new Intent(FreeRoomMainView.this, FreeRoomSearchRoomsResultViewV2.class);
 					break;
 				default:
 					break;
