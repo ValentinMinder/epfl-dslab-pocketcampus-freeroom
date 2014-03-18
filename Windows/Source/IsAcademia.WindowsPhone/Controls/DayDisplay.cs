@@ -301,66 +301,26 @@ namespace PocketCampus.IsAcademia.Controls
                 _positions = new Dictionary<Period, int>();
                 _widthMultipliers = new Dictionary<Period, double>();
 
-                ColumnCount = day.Periods
-                                 .Select( p => day.Periods.Count( p2 => DoPeriodsIntersect( p, p2 ) ) )
-                                 .Aggregate( 1, LeastCommonMultiple );
-
-                int[] collisions = new int[HoursInDay * MinutesInHour / CollisionCheckingInterval];
-                bool[,] used = new bool[ColumnCount, HoursInDay * MinutesInHour / CollisionCheckingInterval];
+                int[] periodsPerInterval = new int[HoursInDay * MinutesInHour / CollisionCheckingInterval];
 
                 foreach ( var period in day.Periods )
                 {
-                    for ( var date = period.Start; date < period.End; date = date.AddMinutes( CollisionCheckingInterval ) )
-                    {
-                        collisions[(int) ( date - day.Day ).TotalMinutes / CollisionCheckingInterval]++;
-                    }
+                    IterateOverIntervals( period, periodsPerInterval, n => periodsPerInterval[n]++ );
                 }
 
+                ColumnCount = periodsPerInterval.Max();
+                int[] remainingPeriods = (int[]) periodsPerInterval.Clone();
+
                 foreach ( var period in day.Periods )
                 {
-                    int totalCollisionCount = 1;
-                    for ( var date = period.Start; date < period.End; date = date.AddMinutes( CollisionCheckingInterval ) )
-                    {
-                        totalCollisionCount = Math.Max( totalCollisionCount, collisions[(int) date.TimeOfDay.TotalMinutes / CollisionCheckingInterval] );
-                    }
+                    int collisions = 1;
+                    int column = 0;
 
-                    int width = ColumnCount / totalCollisionCount;
+                    IterateOverIntervals( period, periodsPerInterval, n => collisions = Math.Max( collisions, periodsPerInterval[n] ) );
+                    IterateOverIntervals( period, remainingPeriods, n => { remainingPeriods[n]--; column = Math.Max( column, remainingPeriods[n] ); } );
 
-                    // this is not pretty at all
-                    // it finds a column X such that if we put period at the X coordinate (its size and Y coord are known) 
-                    // there are no collisions with already-placed elements
-                    int startColumn = -width;
-                    bool hasCollisions;
-                    do
-                    {
-                        startColumn += width;
-                        hasCollisions = false;
-
-                        for ( int col = 0; col < width; col++ )
-                        {
-                            for ( var date = period.Start; date < period.End; date = date.AddMinutes( CollisionCheckingInterval ) )
-                            {
-                                if ( used[col + startColumn, (int) date.TimeOfDay.TotalMinutes / CollisionCheckingInterval] )
-                                {
-                                    hasCollisions = true;
-                                    goto endloop;
-                                }
-                            }
-                        }
-                    endloop:
-                        ;
-                    } while ( hasCollisions );
-
-                    for ( int col = 0; col < width; col++ )
-                    {
-                        for ( var date = period.Start; date < period.End; date = date.AddMinutes( CollisionCheckingInterval ) )
-                        {
-                            used[col + startColumn, (int) date.TimeOfDay.TotalMinutes / CollisionCheckingInterval] = true;
-                        }
-                    }
-
-                    _positions.Add( period, startColumn );
-                    _widthMultipliers.Add( period, 1.0 / (double) totalCollisionCount );
+                    _positions.Add( period, column );
+                    _widthMultipliers.Add( period, 1.0 / collisions );
                 }
             }
 
@@ -381,31 +341,15 @@ namespace PocketCampus.IsAcademia.Controls
                 return _widthMultipliers[period];
             }
 
-
             /// <summary>
-            /// Indicates whether the two specified periods intersect.
+            /// Iterates over the specified intervals for the specified period, executing the specified action that takes an index.
             /// </summary>
-            private static bool DoPeriodsIntersect( Period p1, Period p2 )
+            private static void IterateOverIntervals( Period period, int[] intervals, Action<int> action )
             {
-                return ( p1.Start == p2.Start && p1.End == p2.End )
-                    || ( p1.Start <= p2.Start && p1.End > p2.Start )
-                    || ( p1.Start >= p2.Start && p1.Start < p2.End );
-            }
-
-            /// <summary>
-            /// Finds the least common multiple of the two specified integers.
-            /// </summary>
-            private static int LeastCommonMultiple( int a, int b )
-            {
-                int num1 = Math.Max( a, b ), num2 = Math.Min( a, b );
-                for ( int i = 1; i <= num2; i++ )
+                for ( var date = period.Start; date < period.End; date = date.AddMinutes( CollisionCheckingInterval ) )
                 {
-                    if ( ( num1 * i ) % num2 == 0 )
-                    {
-                        return i * num1;
-                    }
+                    action( (int) date.TimeOfDay.TotalMinutes / CollisionCheckingInterval );
                 }
-                return num2;
             }
         }
     }
