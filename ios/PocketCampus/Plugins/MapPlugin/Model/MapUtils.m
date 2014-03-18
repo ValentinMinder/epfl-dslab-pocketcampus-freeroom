@@ -181,7 +181,7 @@ double WGStoCHy(double lat, double lng) {
              
     }
     
-    return mapView.annotations[0]; //otherwise select first one
+    return [mapView.annotations firstObject]; //otherwise select first one
 }
 
 + (NSInteger)levelToSelectForRoomName:(NSString*)roomName {
