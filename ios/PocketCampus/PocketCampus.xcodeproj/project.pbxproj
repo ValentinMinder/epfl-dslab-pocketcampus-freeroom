@@ -76,6 +76,7 @@
 		322C07571722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322C07531722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png */; };
 		322C4ACD16E1FD8300DE418E /* EventItem+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E3F316E1FA1100AF365C /* EventItem+Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 322FB01717EC938E00D1A466 /* PCGAITracker.m */; };
+		32308C0D18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32308C0C18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.m */; };
 		32342A8017F43347009C05FA /* DirectoryEmptyPicture.png in Resources */ = {isa = PBXBuildFile; fileRef = 32342A7E17F43347009C05FA /* DirectoryEmptyPicture.png */; };
 		32342A8117F43347009C05FA /* DirectoryEmptyPicture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32342A7F17F43347009C05FA /* DirectoryEmptyPicture@2x.png */; };
 		323676C316BDB42D0004D5AD /* AppLogoCellImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C216BDB42D0004D5AD /* AppLogoCellImage@2x.png */; };
@@ -499,6 +500,8 @@
 		322C07531722A7E6004FDC83 /* GenericGreyButtonHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GenericGreyButtonHighlight@2x.png"; sourceTree = "<group>"; };
 		322FB01617EC938E00D1A466 /* PCGAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCGAITracker.h; sourceTree = "<group>"; };
 		322FB01717EC938E00D1A466 /* PCGAITracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCGAITracker.m; sourceTree = "<group>"; };
+		32308C0B18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaStudyPeriodCalendarDayEventView.h; sourceTree = "<group>"; };
+		32308C0C18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsAcademiaStudyPeriodCalendarDayEventView.m; sourceTree = "<group>"; };
 		32342A7E17F43347009C05FA /* DirectoryEmptyPicture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DirectoryEmptyPicture.png; sourceTree = "<group>"; };
 		32342A7F17F43347009C05FA /* DirectoryEmptyPicture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DirectoryEmptyPicture@2x.png"; sourceTree = "<group>"; };
 		323676C216BDB42D0004D5AD /* AppLogoCellImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppLogoCellImage@2x.png"; sourceTree = "<group>"; };
@@ -2356,6 +2359,8 @@
 			isa = PBXGroup;
 			children = (
 				EC2E448E9388F61889098AD7 /* Images */,
+				32308C0B18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.h */,
+				32308C0C18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.m */,
 			);
 			name = Views;
 			path = Plugins/IsAcademiaPlugin/Views;
@@ -2793,6 +2798,7 @@
 				32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */,
 				3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */,
 				32D57299157F7D780051230F /* EPFLLayersOverlay.m in Sources */,
+				32308C0D18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.m in Sources */,
 				320A05B215B02C240057B15C /* PCGlobalSettingsViewController.m in Sources */,
 				3241F1DE15B4AB9C00C7DF3A /* PCEditableTableViewCell.m in Sources */,
 				32A54B7D15B5A8E100A7C882 /* AuthenticationViewController.m in Sources */,

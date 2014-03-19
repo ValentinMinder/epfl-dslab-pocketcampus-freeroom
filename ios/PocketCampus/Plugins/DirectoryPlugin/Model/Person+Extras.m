@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 25.09.13.
-
-
 
 #import "Person+Extras.h"
 

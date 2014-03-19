@@ -25,8 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
 #import "IsAcademiaController.h"
 
 #import "IsAcademiaService.h"

@@ -25,48 +25,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Copyright (c) 2014 EPFL. All rights reserved.
+//  Created by Loïc Gardiol on 19.03.14.
 
-#import "IsAcademiaModelAdditions.h"
+#import "TKCalendarDayEventView.h"
 
-#import "NSDate+Addtions.h"
+@class StudyPeriod;
 
-@implementation ScheduleResponse (Additions)
+@interface IsAcademiaStudyPeriodCalendarDayEventView : TKCalendarDayEventView
 
-- (StudyDay*)studyDayForDate:(NSDate*)date {
-    for (StudyDay* studyDay in self.days) {
-        if ([date isSameDayAsDate:[NSDate dateWithTimeIntervalSince1970:studyDay.day/1000]]) {
-            return studyDay;
-        }
-    }
-    return nil;
-}
++ (IsAcademiaStudyPeriodCalendarDayEventView*)studyPeriodEventView;
 
-@end
-
-@implementation StudyPeriod (Additions)
-
-- (NSString*)startTimeString {
-    static NSDateFormatter* formatter = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        formatter = [NSDateFormatter new];
-        formatter.dateStyle = NSDateFormatterNoStyle;
-        formatter.timeStyle = NSDateFormatterShortStyle;
-    });
-    return [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.startTime/1000]];
-}
-
-- (NSString*)roomsString {
-    NSString* ret __block = @"";
-    [self.rooms enumerateObjectsUsingBlock:^(NSString* unit, NSUInteger index, BOOL *stop) {
-        if (index < self.rooms.count - 1) {
-            ret = [ret stringByAppendingFormat:@"%@, ", unit];
-        } else {
-            ret = [ret stringByAppendingString:unit];
-        }
-    }];
-    return ret;
-}
+@property (nonatomic, strong) StudyPeriod* studyPeriod;
 
 @end

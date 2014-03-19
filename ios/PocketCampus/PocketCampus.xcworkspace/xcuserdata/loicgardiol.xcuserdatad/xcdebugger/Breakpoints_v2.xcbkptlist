@@ -4687,22 +4687,21 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
-            continueAfterRunningActions = "Yes"
+            continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "416869913.165596"
+            timestampString = "416962652.894434"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
             landmarkName = "-calendarDayTimelineView:eventsForDate:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
-                  <ActionContent
-                     consoleCommand = "po self.responseForReferenceDate">
+                  <ActionContent>
                   </ActionContent>
                </BreakpointActionProxy>
             </Actions>
@@ -4715,11 +4714,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "416869913.165596"
+            timestampString = "416958890.610671"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
             landmarkName = "-getScheduleForRequest:didReturn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4731,11 +4730,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "416869913.165596"
+            timestampString = "416962652.894434"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "189"
+            endingLineNumber = "189"
             landmarkName = "-calendarDayTimelineView:didMoveToDate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4743,15 +4742,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "416869913.165596"
+            timestampString = "416962652.894434"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "-calendarDayTimelineView:eventsForDate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4759,15 +4758,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "416867870.901601"
+            timestampString = "416958890.610671"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "-refreshForDisplayedDay"
             landmarkType = "5">
             <Actions>
@@ -4784,16 +4783,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "416869913.165596"
+            filePath = "Plugins/IsAcademiaPlugin/Model/IsAcademiaModelAdditions.m"
+            timestampString = "416952411.126104"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "-getScheduleForRequest:didReturn:"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "-studyDayForDate:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
