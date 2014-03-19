@@ -13,17 +13,20 @@ import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ArrayAdapter;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View;
+import android.view.View.OnCreateContextMenuListener;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -84,6 +87,9 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 		subLayout.setOrientation(LinearLayout.VERTICAL);
 
 		mTitle = new TextView(this);
+		mTitle.setBackgroundColor(Color.LTGRAY);
+		String review = getString(R.string.freeroom_please_wait);
+		mTitle.setText(review);
 
 		subLayout.addView(mTitle);
 
@@ -94,6 +100,46 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 		mAdapter = new ExpandableSimpleListViewAdapter(this, mFRRoomList,
 				mActualOccupancyTreeMap);
 		mExpList.setAdapter(mAdapter);
+		mExpList.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
+			
+			@Override
+			public void onCreateContextMenu(ContextMenu menu, View v,
+					ContextMenuInfo menuInfo) {
+				mExpList.getChildAt(0).setBackgroundColor(Color.YELLOW);
+				
+			}
+		});
+		mExpList.setOnGroupExpandListener(new OnGroupExpandListener() {
+			
+			@Override
+			public void onGroupExpand(int groupPosition) {
+				View v = mExpList.getChildAt(groupPosition);
+				if (v != null) {
+					v.setBackgroundColor(Color.CYAN);
+				}
+				
+			}
+		});
+		mExpList.setOnGroupClickListener(new OnGroupClickListener() {
+			
+			@Override
+			public boolean onGroupClick(ExpandableListView parent, View v,
+					int groupPosition, long id) {
+				v.setBackgroundColor(Color.DKGRAY);
+				return false;
+			}
+		});
+		mExpList.setOnChildClickListener(new OnChildClickListener() {
+
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+
+				v.setBackgroundColor(Color.BLUE);
+
+				return false;
+			}
+		});
 
 		subLayout.addView(mExpList);
 
@@ -112,16 +158,19 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 
 	@Override
 	public void occupancyResultUpdated() {
-		SimpleDateFormat day_month = new SimpleDateFormat("MMM dd");
+		SimpleDateFormat day_month = new SimpleDateFormat("EEEE MMMM dd");
 		SimpleDateFormat hour_min = new SimpleDateFormat("HH:mm");
 
+		mExpList.postInvalidate();
 		mFRRoomList.clear();
 		mActualOccupancyTreeMap.clear();
-		Log.v("fr.checkresult", "listerner called - start updating!!");
+		mTitle.setBackgroundColor(Color.RED);
+
 		List<Occupancy> list = mModel.getListCheckedOccupancyRoom();
 
 		String mFullPeriodAsString = "";
-		String mListRoom = "Checking result for rooms: ";
+		String mListRoom = getString(R.string.freeroom_check_occupancy_result_checking_rooms)
+				+ " ";
 		boolean atLeastOneRoom = false;
 
 		for (Occupancy occupation : list) {
@@ -145,8 +194,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 						.get(mListActualOccupation.size() - 1).getPeriod()
 						.getTimeStampEnd());
 
-				mFullPeriodAsString += " "
-						+ getString(R.string.freeroom_check_occupancy_result_onthe)
+				mFullPeriodAsString += getString(R.string.freeroom_check_occupancy_result_onthe)
 						+ " ";
 				mFullPeriodAsString += day_month.format(startDate);
 				mFullPeriodAsString += " "
@@ -173,12 +221,18 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 						+ " ";
 				mActualOccupationAsString += hour_min.format(endDate);
 
-				mActualOccupationAsString += " : ";
+				mActualOccupationAsString += " :";
 				if (mActualOccupation.isAvailable()) {
-					mActualOccupationAsString += "FREE";
+					mActualOccupationAsString += " "
+							+ getString(R.string.freeroom_check_occupancy_result_free);
+					mActualOccupationAsString += " "
+							+ mActualOccupation.getOccupationType().toString();
 				} else {
-					mActualOccupationAsString += "OCCUPIED by "
-							+ mActualOccupation.getOccupationType();
+					mActualOccupationAsString += " "
+							+ getString(R.string.freeroom_check_occupancy_result_occupied)
+							+ " "
+							+ getString(R.string.freeroom_check_occupancy_result_by)
+							+ " " + mActualOccupation.getOccupationType();
 				}
 
 				mListActualOccupationAsString.add(mActualOccupationAsString);
@@ -187,30 +241,37 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 					mListActualOccupationAsString);
 		}
 
-		String review = "No results to display, sorry!";
+		String review = getString(R.string.freeroom_no_results_sorry);
 		if (atLeastOneRoom) {
 			review = mListRoom.substring(0, mListRoom.length() - 2);
 			// -2:avoiding the last ", "
 			review += "\n";
 			review += mFullPeriodAsString;
+			mTitle.setBackgroundColor(Color.LTGRAY);
 		}
 		mTitle.setText(review);
-		
-		for (int i = 0 ; i < mFRRoomList.size(); i++) {
-			
-		}
-		
 
 		// if there is only one room, we expand the first group
 		if (mFRRoomList.size() == 1) {
 			mExpList.expandGroup(0);
+			mExpList.getExpandableListAdapter().getGroupView(0, false, null, null);
+			View v = mExpList.getExpandableListAdapter().getChildView(0, 0, false, null, null);
+			
+			if (v != null) {
+				System.out.println("jajaj");
+				// here it's not null but changing the color has no effect
+				v.setBackgroundColor(Color.GREEN);
+				v.refreshDrawableState();
+				v.requestLayout();
+				//v.getParent().requestLayout();
+			}
 		}
-				
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// this 
+		// mExpList.setBackgroundColor(Color.BLUE);
+	}
+	
+	public void changeThatColor () {
+		// we acnnot access elements while the list is not constructed sucessfully
+		mExpList.getChildAt(0).setBackgroundColor(Color.RED);
 	}
 }

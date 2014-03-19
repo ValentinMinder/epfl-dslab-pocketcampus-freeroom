@@ -117,8 +117,6 @@ public class FreeRoomController extends PluginController implements
 
 	public void setCheckOccupancyResults(OccupancyReply result) {
 		List<Occupancy> list = result.getOccupancyOfRooms();
-		Log.v("fr.controller", "size in controller = "
-				+ list.get(0).getOccupancySize());
 		mModel.setOccupancyResults(list);
 	}
 

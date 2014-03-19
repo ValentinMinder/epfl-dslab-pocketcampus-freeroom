@@ -143,7 +143,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 						monthSelected = nMonthOfYear;
 						dayOfMonthSelected = nDayOfMonth;
 						showDatePicker
-								.setText(getString(R.string.freeroom_check_occupancy_search_onthe)
+								.setText(getString(R.string.freeroom_check_occupancy_search_date)
 										+ " : "
 										+ dateFormat.format(new Date(
 												yearSelected, monthSelected,
@@ -154,7 +154,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 		showDatePicker = new Button(this);
 		showDatePicker
-				.setText(getString(R.string.freeroom_check_occupancy_search_onthe)
+				.setText(getString(R.string.freeroom_check_occupancy_search_date)
 						+ " : "
 						+ dateFormat.format(new Date(yearSelected,
 								monthSelected, dayOfMonthSelected)));
@@ -177,7 +177,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 						startHourSelected = nHourOfDay;
 						startMinSelected = nMinute;
 						showStartTimePicker
-								.setText(getString(R.string.freeroom_check_occupancy_search_from)
+								.setText(getString(R.string.freeroom_check_occupancy_search_start)
 										+ " : "
 										+ timeFormat.format(new Date(
 												yearSelected, monthSelected,
@@ -190,7 +190,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 		showStartTimePicker = new Button(this);
 		showStartTimePicker
-				.setText(getString(R.string.freeroom_check_occupancy_search_from)
+				.setText(getString(R.string.freeroom_check_occupancy_search_start)
 						+ " : "
 						+ timeFormat.format(new Date(yearSelected,
 								monthSelected, dayOfMonthSelected,
@@ -214,7 +214,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 						endHourSelected = nHourOfDay;
 						endMinSelected = nMinute;
 						showEndTimePicker
-								.setText(getString(R.string.freeroom_check_occupancy_search_to)
+								.setText(getString(R.string.freeroom_check_occupancy_search_end)
 										+ " : "
 										+ timeFormat
 												.format(new Date(yearSelected,
@@ -228,7 +228,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 		showEndTimePicker = new Button(this);
 		showEndTimePicker
-				.setText(getString(R.string.freeroom_check_occupancy_search_to)
+				.setText(getString(R.string.freeroom_check_occupancy_search_end)
 						+ " : "
 						+ timeFormat.format(new Date(yearSelected,
 								monthSelected, dayOfMonthSelected,
@@ -439,6 +439,5 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
-		Log.v("fr-check-search", "listener to occupancyResultUpdated called");
 	}
 }

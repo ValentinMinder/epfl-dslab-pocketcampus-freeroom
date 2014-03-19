@@ -277,7 +277,6 @@ public class FreeRoomSearchRoomsView extends FreeRoomAbstractView implements
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
-		Log.v("fr-freeroom-search", "listener to occupancyResultUpdated called");
 	}
 
 }

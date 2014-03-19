@@ -11,6 +11,7 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -88,9 +89,10 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 		mList.setLayoutParams(p);
 
 		mListValues = new ArrayList<String>();
-		mList.setAdapter(new ArrayAdapter<String>(this,
+		ArrayAdapter aa = new ArrayAdapter<String>(this,
 				android.R.layout.simple_dropdown_item_1line,
-				android.R.id.text1, mListValues));
+				android.R.id.text1, mListValues);
+		mList.setAdapter(aa);
 
 		mListValues.add(getString(R.string.freeroom_menu_freeroom_now));
 		mListValues.add(getString(R.string.freeroom_menu_freeroom_search));
@@ -103,6 +105,11 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 					long arg3) {
 				Intent i = null;
 				boolean flag = true;
+				// highlighting the selected value (for a short time)
+				View v = mList.getChildAt(arg2);
+				if (v != null) {
+					v.setBackgroundColor(Color.YELLOW);
+				}
 				switch (arg2) {
 				case 0:
 					Calendar calendar = Calendar.getInstance();
@@ -132,6 +139,9 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 				if (flag) {
 					FreeRoomMainView.this.startActivity(i);
 				}
+				if (v != null) {
+					v.setBackgroundColor(Color.WHITE);
+				}
 			}
 
 		});
@@ -151,6 +161,5 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
-		Log.v("fr-main", "listener to occupancyResultUpdated called");
 	}
 }

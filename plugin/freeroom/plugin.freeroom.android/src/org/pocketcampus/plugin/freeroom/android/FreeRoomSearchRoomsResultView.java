@@ -199,7 +199,6 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implemen
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
-		Log.v("fr-freeroom-result", "listener to occupancyResultUpdated called");
 	}
 
 }
