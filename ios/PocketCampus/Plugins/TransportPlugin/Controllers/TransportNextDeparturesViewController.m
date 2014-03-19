@@ -372,9 +372,11 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             locationArrowImageName = @"LocationArrow2Active";
             self.locationButton.enabled = YES;
             NSString* stationName = self.departureStation.shortName;
-            fromLabelString = [NSString stringWithFormat:@"%@ %@", fromString, stationName];
-            fromLabelAttrString = [[NSMutableAttributedString alloc] initWithString:fromLabelString];
-            [fromLabelAttrString addAttribute:NSForegroundColorAttributeName value:[PCValues pocketCampusRed] range:[fromLabelString rangeOfString:stationName]];
+            if (stationName) {
+                fromLabelString = [NSString stringWithFormat:@"%@ %@", fromString, stationName];
+                fromLabelAttrString = [[NSMutableAttributedString alloc] initWithString:fromLabelString];
+                [fromLabelAttrString addAttribute:NSForegroundColorAttributeName value:[PCValues pocketCampusRed] range:[fromLabelString rangeOfString:stationName]];
+            }
             break;
         }
         case LocationStateManualSelection:
@@ -382,9 +384,11 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             [self.centerLoadingIndicator stopAnimating];
             self.locationButton.enabled = YES;
             NSString* stationName = self.departureStation.shortName;
-            fromLabelString = [NSString stringWithFormat:@"%@ %@", fromString, stationName];
-            fromLabelAttrString = [[NSMutableAttributedString alloc] initWithString:fromLabelString];
-            [fromLabelAttrString addAttribute:NSForegroundColorAttributeName value:[PCValues pocketCampusRed] range:[fromLabelString rangeOfString:stationName]];
+            if (stationName) {
+                fromLabelString = [NSString stringWithFormat:@"%@ %@", fromString, stationName];
+                fromLabelAttrString = [[NSMutableAttributedString alloc] initWithString:fromLabelString];
+                [fromLabelAttrString addAttribute:NSForegroundColorAttributeName value:[PCValues pocketCampusRed] range:[fromLabelString rangeOfString:stationName]];
+            }
             break;
         }
         case LocationStateErrorUserDenied:

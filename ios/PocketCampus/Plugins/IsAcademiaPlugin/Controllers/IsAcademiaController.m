@@ -97,7 +97,7 @@ static IsAcademiaController* instance __weak = nil;
 }
 
 + (NSString*)localizedName {
-    return NSLocalizedStringFromTable(@"PluginName", @"IsAcademiaPlugin", @"");
+    return NSLocalizedStringFromTable(@"PluginName", @"IsAcademiaPlugin", nil);
 }
 
 + (NSString*)identifierName {

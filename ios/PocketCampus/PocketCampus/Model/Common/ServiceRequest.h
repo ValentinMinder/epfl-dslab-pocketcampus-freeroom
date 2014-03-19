@@ -93,7 +93,7 @@ typedef enum {
  * Gives possibly to keep in cache conditionally.
  * returnedValue is a pointer to the value returned by the server, of the type
  * self.returnType. Block should return YES if reply should be cached, NO otherwise.
- * WARNING: can only be use in combination with keepInCache.
+ * IMPORTANT: can only be use in combination with keepInCache = YES.
  * Default: nil
  */
 @property (nonatomic, copy) BOOL (^keepInCacheBlock)(void* returnedValue);

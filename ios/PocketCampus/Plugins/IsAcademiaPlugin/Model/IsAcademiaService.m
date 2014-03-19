@@ -26,12 +26,6 @@
  */
 
 
-
-
-
-
-
-
 #import "IsAcademiaService.h"
 
 @implementation IsAcademiaService
@@ -66,18 +60,15 @@ static IsAcademiaService* instance __weak = nil;
 
 #pragma mark - Service methods
 
-- (void)getScheduleTokenWithDelegate:(id<IsAcademiaServiceDelegate>)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getScheduleToken);
-    operation.delegateDidReturnSelector = @selector(getScheduleTokenDidReturn:);
-    operation.delegateDidFailSelector = @selector(getScheduleTokenFailed);
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
 - (void)getScheduleWithRequest:(ScheduleRequest*)request delegate:(id<IsAcademiaServiceDelegate>)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[ScheduleRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.cacheValidityInterval = 1140.0;
+    operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* returnedValue) {
+        ScheduleResponse* response = (__bridge id)returnedValue;
+        return (response.statusCode == IsaStatusCode_OK);
+    };
     operation.serviceClientSelector = @selector(getSchedule:);
     operation.delegateDidReturnSelector = @selector(getScheduleForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getScheduleFailedForRequest:);
