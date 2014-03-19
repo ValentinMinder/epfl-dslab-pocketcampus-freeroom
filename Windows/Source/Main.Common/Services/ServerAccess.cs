@@ -3,7 +3,7 @@
 // File author: Solal Pirelli
 
 // Uncomment this line if you are connected to the EPFL network (which, for now, means being at EPFL physically)
-#define IS_AT_EPFL
+// #define IS_AT_EPFL
 
 using System.Collections.Generic;
 using System.Reflection;

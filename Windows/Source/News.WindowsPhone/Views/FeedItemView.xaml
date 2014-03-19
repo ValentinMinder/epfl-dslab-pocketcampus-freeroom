@@ -59,11 +59,6 @@
                                TextWrapping="Wrap" />
                 </Border>
 
-                <!-- Publish date -->
-                <!--<TextBlock Text="{Binding Item.Date, StringFormat='f'}"
-                           Style="{StaticResource PhoneTextSubtleStyle}"
-                           Margin="12,6" />-->
-
                 <!-- Image -->
                 <Image Source="{Binding ItemContent.ImageUrl, Converter={StaticResource ImageDisplay}}"
                        Stretch="None"

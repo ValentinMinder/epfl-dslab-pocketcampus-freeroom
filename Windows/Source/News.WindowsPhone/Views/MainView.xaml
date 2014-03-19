@@ -24,8 +24,8 @@
 
         <!-- Converters -->
         <my:ImageDisplayConverter x:Key="ImageDisplay"
-                                  Width="200"
-                                  Height="150" />
+                                  Width="162"
+                                  Height="91" />
 
         <!-- Simple button template without any border or background -->
         <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
@@ -39,10 +39,10 @@
             <Button Template="{StaticResource SimpleButtonTemplate}"
                     Command="{Binding DataContext.ViewFeedItemCommand, ElementName=LayoutRoot}"
                     CommandParameter="{Binding}"
-                    Margin="0,0,0,20">
+                    Margin="0,0,0,30">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="172" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
@@ -51,15 +51,17 @@
                                  IsIndeterminate="True" />
 
                     <!-- Image -->
-                    <Image Source="{Binding ImageUrl, Converter={StaticResource ImageDisplay}}" />
+                    <Image Source="{Binding ImageUrl, Converter={StaticResource ImageDisplay}}"
+                           VerticalAlignment="Top" />
 
                     <StackPanel Grid.Column="1">
                         <!-- Title -->
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Title}"
-                                   TextWrapping="Wrap" 
+                                   TextWrapping="Wrap"
                                    Style="{StaticResource PhoneTextNormalStyle}"
-                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}" />
+                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                   Margin="12,-4,12,0" />
 
                         <!-- Date -->
                         <TextBlock Grid.Column="1"
