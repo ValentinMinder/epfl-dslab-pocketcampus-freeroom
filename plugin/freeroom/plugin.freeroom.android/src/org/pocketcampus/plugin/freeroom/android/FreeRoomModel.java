@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.android;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
@@ -16,7 +17,6 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.util.Log;
 
 /**
  * FreeRoomModel - The Model that stores the data of this plugin.
@@ -225,6 +225,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				.getOccupancy();
 		boolean atLeastOneFree = false;
 		boolean atLeastOneOccupied = false;
+		// TODO: optimization!
+		// Stores the information once when the results are updated
+		// and avoid multiple going through the whole list!
 		for (ActualOccupation mActualOccupation : mListActualOccupations) {
 			boolean isAvailable = mActualOccupation.isAvailable();
 			if (isAvailable) {
@@ -274,5 +277,13 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
 		String roomCorrected = roomname.replaceAll("\\s", "");
 		return preferences.getBoolean(roomCorrected, false);
+	}
+
+	public Map<String, Boolean> getFavorites() {
+		// TODO doesn't work
+		SharedPreferences preferences = context.getSharedPreferences(
+				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
+		Map<String, Boolean> map = (Map<String, Boolean>) preferences.getAll();
+		return map;
 	}
 }
