@@ -6,15 +6,17 @@ using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using PocketCampus.Common;
-using PocketCampus.News.Models;
 
 namespace PocketCampus.News
 {
     /// <summary>
     /// Converts feed item images to ImageSources.
     /// </summary>
-    public sealed class OnlineImageDisplayConverter : ValueConverter<OnlineImage, ImageSource>
+    public sealed class ImageDisplayConverter : ValueConverter<string, ImageSource>
     {
+        private const string WidthPlaceholder = "{x}";
+        private const string HeightPlaceholder = "{y}";
+
         /// <summary>
         /// The width used for images.
         /// </summary>
@@ -25,13 +27,15 @@ namespace PocketCampus.News
         /// </summary>
         public int Height { get; set; }
 
-        public override ImageSource Convert( OnlineImage value )
+        public override ImageSource Convert( string value )
         {
             if ( value == null )
             {
                 return null;
             }
-            return new BitmapImage( new Uri( value.GetUrl( Width, Height ), UriKind.Absolute ) );
+
+            string url = value.Replace( WidthPlaceholder, Width.ToString() ).Replace( HeightPlaceholder, Height.ToString() );
+            return new BitmapImage( new Uri( url, UriKind.Absolute ) );
         }
     }
 }

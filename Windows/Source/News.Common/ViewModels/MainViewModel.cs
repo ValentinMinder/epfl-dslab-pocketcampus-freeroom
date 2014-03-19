@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -59,11 +60,21 @@ namespace PocketCampus.News.ViewModels
         {
             if ( force )
             {
-                var feeds = await _feedsService.GetFeedsAsync( CultureInfo.CurrentUICulture.TwoLetterISOLanguageName );
+                var request = new FeedsRequest
+                {
+                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                    IncludeGeneralFeed = true
+                };
+                var response = await _feedsService.GetFeedsAsync( request );
+
+                if ( response.Status != ResponseStatus.Success )
+                {
+                    throw new Exception( "A server error occurred while fetching news feeds." );
+                }
 
                 if ( !token.IsCancellationRequested )
                 {
-                    Feeds = feeds;
+                    Feeds = response.Feeds;
                 }
             }
         }

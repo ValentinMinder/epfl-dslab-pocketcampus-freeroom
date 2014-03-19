@@ -22,9 +22,9 @@
         <my:LocalizedStrings x:Key="Strings" />
 
         <!-- Converters -->
-        <my:OnlineImageDisplayConverter x:Key="ImageDisplay"
-                                        Width="460"
-                                        Height="300" />
+        <my:ImageDisplayConverter x:Key="ImageDisplay"
+                                  Width="480"
+                                  Height="300" />
     </comControls:BasePage.Resources>
 
     <!-- Main grid -->
@@ -36,31 +36,44 @@
 
         <!-- Page header -->
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
-            <TextBlock Text="{Binding Resources.FeedItemViewTitle, Source={StaticResource Strings}}"
-                       Style="{StaticResource AppTextTitle2Style}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Resources.FeedItemViewTitle, Source={StaticResource Strings}}"
+                           Style="{StaticResource AppTextTitle2Style}" />
+                
+                <TextBlock Text="-"
+                           Style="{StaticResource AppTextTitle2Style}"
+                           Opacity="0.7"
+                           Margin="-6,6" />
+                
+                <TextBlock Text="{Binding ItemContent.FeedName}"
+                           Style="{StaticResource AppTextTitle2Style}" />
+            </StackPanel>
         </Border>
 
         <ScrollViewer Grid.Row="1">
             <StackPanel>
                 <!-- Title -->
                 <Border Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
-                    <TextBlock Text="{Binding Item.Title}"
+                    <TextBlock Text="{Binding ItemContent.Title}"
                                Style="{StaticResource AppTextSecondaryHeaderStyle}"
                                TextWrapping="Wrap" />
                 </Border>
 
                 <!-- Publish date -->
-                <TextBlock Text="{Binding Item.Date, StringFormat='f'}"
+                <!--<TextBlock Text="{Binding Item.Date, StringFormat='f'}"
                            Style="{StaticResource PhoneTextSubtleStyle}"
-                           Margin="12,6"/>
+                           Margin="12,6" />-->
 
                 <!-- Image -->
-                <Image Source="{Binding Item.Image, Converter={StaticResource ImageDisplay}}"
+                <Image Source="{Binding ItemContent.ImageUrl, Converter={StaticResource ImageDisplay}}"
                        Stretch="None"
-                       Margin="0,10" />
+                       Margin="0,0,0,10" />
 
                 <!-- Content -->
-                <comControls:HtmlTextBlock Html="{Binding ItemContent}" />
+                <comControls:HtmlTextBlock Html="{Binding ItemContent.Content}" />
+                
+                <!-- End margin -->
+                <Rectangle Height="95" />
             </StackPanel>
         </ScrollViewer>
 
@@ -71,6 +84,11 @@
     <!-- App bar -->
     <bar:Bindable.ApplicationBar>
         <bar:BindableApplicationBar Mode="Minimized">
+            <!-- "Refresh" button -->
+            <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"
+                                              Text="{Binding Resources.RefreshButton, Source={StaticResource Strings}}"
+                                              IconUri="/Assets/Refresh.png" />
+            <!-- "Open in browser" button -->
             <bar:BindableApplicationBarButton Command="{Binding OpenInBrowserCommand}"
                                               Text="{Binding Resources.OpenInBrowserButton, Source={StaticResource Strings}}"
                                               IconUri="/Assets/OpenExternal.png" />

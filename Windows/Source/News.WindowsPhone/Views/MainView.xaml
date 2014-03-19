@@ -23,9 +23,9 @@
         <my:LocalizedStrings x:Key="Strings" />
 
         <!-- Converters -->
-        <my:OnlineImageDisplayConverter x:Key="ImageDisplay"
-                                        Width="200"
-                                        Height="150" />
+        <my:ImageDisplayConverter x:Key="ImageDisplay"
+                                  Width="200"
+                                  Height="150" />
 
         <!-- Simple button template without any border or background -->
         <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
@@ -35,9 +35,6 @@
         </ControlTemplate>
 
         <!-- FeedItem template -->
-        <!-- BUG: When loading the page, it seems the DataContext passed to these items is the Feed
-                  itself, which causes a ton of binding errors... in the end it works, but there's
-                  something fishy going on here -->
         <DataTemplate x:Key="FeedItemTemplate">
             <Button Template="{StaticResource SimpleButtonTemplate}"
                     Command="{Binding DataContext.ViewFeedItemCommand, ElementName=LayoutRoot}"
@@ -54,15 +51,15 @@
                                  IsIndeterminate="True" />
 
                     <!-- Image -->
-                    <Image Source="{Binding Image, Converter={StaticResource ImageDisplay}}" />
+                    <Image Source="{Binding ImageUrl, Converter={StaticResource ImageDisplay}}" />
 
                     <StackPanel Grid.Column="1">
                         <!-- Title -->
                         <TextBlock Grid.Column="1"
-                               Text="{Binding Title}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               FontFamily="{StaticResource PhoneFontFamilySemiBold}"
-                               TextWrapping="Wrap" />
+                                   Text="{Binding Title}"
+                                   TextWrapping="Wrap" 
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}" />
 
                         <!-- Date -->
                         <TextBlock Grid.Column="1"
