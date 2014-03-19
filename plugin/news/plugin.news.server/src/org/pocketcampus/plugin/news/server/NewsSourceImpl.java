@@ -4,10 +4,13 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +18,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
 import org.pocketcampus.platform.sdk.server.HttpClient;
 import org.pocketcampus.platform.sdk.server.XElement;
 
@@ -30,13 +34,18 @@ public final class NewsSourceImpl implements NewsSource {
 	private static final String MAIN_FEED_ID = "mediacom";
 	// All feed IDs
 	private static final String[] FEED_IDS = { "mediacom", "enac", "sb", "ic", "cdh", "sti", "sv", "cdm" };
+	// The feed names, per language
+	private static final Map<String, Map<String, String>> FEED_NAMES = new HashMap<String, Map<String, String>>();
+	// All supported languages
+	private static final Set<String> AVAILABLE_LANGUAGES = new HashSet<String>();
+	// The default language
+	private static final String DEFAULT_LANGUAGE = "en";
 	// Charset used by RSS feeds
 	private static final Charset RSS_CHARSET = Charset.forName("UTF-8");
 	// Date format used by RSS feeds
 	private static final DateTimeFormatter RSS_DATE_FORMAT = DateTimeFormat.forPattern("E, d MMM y HH:mm:ss Z").withLocale(Locale.ENGLISH);
 	// RSS feed element names
 	private static final String RSS_FEED_ELEMENT = "channel";
-	private static final String RSS_FEED_NAME_ELEMENT = "title";
 	private static final String RSS_FEED_ITEM_ELEMENT = "item";
 	private static final String RSS_FEED_ITEM_TITLE_ELEMENT = "title";
 	private static final String RSS_FEED_ITEM_LINK_ELEMENT = "link";
@@ -47,6 +56,31 @@ public final class NewsSourceImpl implements NewsSource {
 	// Token for the size of EPFL news images, so that clients can pick their desired size
 	private static final String IMAGE_SIZE_TOKEN = "{x}x{y}";
 
+	static {
+		AVAILABLE_LANGUAGES.add("fr");
+		AVAILABLE_LANGUAGES.add("en");
+
+		// Unfortunately, the feeds don't provide a good name (it's always "EPFL News")
+		FEED_NAMES.put("fr", new HashMap<String, String>());
+		FEED_NAMES.get("fr").put("mediacom", "Général");
+		FEED_NAMES.get("fr").put("enac", "Architecture");
+		FEED_NAMES.get("fr").put("sb", "Sciences de Base");
+		FEED_NAMES.get("fr").put("ic", "Informatique & Communication");
+		FEED_NAMES.get("fr").put("cdh", "Collège des Humanités");
+		FEED_NAMES.get("fr").put("sti", "Sciences de l'Ingénieur");
+		FEED_NAMES.get("fr").put("sv", "Sciences de la Vie");
+		FEED_NAMES.get("fr").put("cdm", "Management de la Technologie");
+		FEED_NAMES.put("en", new HashMap<String, String>());
+		FEED_NAMES.get("en").put("mediacom", "General");
+		FEED_NAMES.get("en").put("enac", "Architecture");
+		FEED_NAMES.get("en").put("sb", "Basic Sciences");
+		FEED_NAMES.get("en").put("ic", "Computer & Communication Sciences");
+		FEED_NAMES.get("en").put("cdh", "Humanities College");
+		FEED_NAMES.get("en").put("sti", "Engineering");
+		FEED_NAMES.get("en").put("sv", "Life Sciences");
+		FEED_NAMES.get("en").put("cdm", "Management of Technology");
+	}
+
 	private final HttpClient _client;
 
 	public NewsSourceImpl(HttpClient client) {
@@ -56,6 +90,10 @@ public final class NewsSourceImpl implements NewsSource {
 	/** Gets all feeds for the specified language. */
 	@Override
 	public Feed[] getFeeds(String language) {
+		if (!AVAILABLE_LANGUAGES.contains(language)) {
+			language = DEFAULT_LANGUAGE;
+		}
+
 		List<Feed> feeds = new ArrayList<Feed>();
 		for (String feedId : FEED_IDS) {
 			String url = String.format(FEED_URL_FORMAT, feedId, language);
@@ -70,7 +108,7 @@ public final class NewsSourceImpl implements NewsSource {
 
 			XElement channelElem = rootElem.child(RSS_FEED_ELEMENT);
 
-			String feedName = channelElem.elementText(RSS_FEED_NAME_ELEMENT);
+			String feedName = FEED_NAMES.get(language).get(feedId);
 			boolean isMain = feedId.equals(MAIN_FEED_ID);
 
 			Map<Integer, FeedItem> items = new LinkedHashMap<Integer, FeedItem>(); // LinkedHashMap keeps insertion order
@@ -93,7 +131,7 @@ public final class NewsSourceImpl implements NewsSource {
 		Collections.sort(feeds, new Comparator<Feed>() {
 			@Override
 			public int compare(Feed feed1, Feed feed2) {
-				int result = Boolean.compare(feed1.isMain, feed2.isMain);
+				int result = Boolean.compare(feed2.isMain, feed1.isMain); // yes, the order is right
 				if (result == 0) {
 					return feed1.name.compareTo(feed2.name);
 				}

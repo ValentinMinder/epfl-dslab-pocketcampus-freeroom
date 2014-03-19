@@ -44,7 +44,11 @@ public final class NewsServiceImpl implements NewsService.Iface {
 
 			List<NewsFeedItem> returnedItems = new ArrayList<NewsFeedItem>();
 			for (NewsSource.FeedItem item : feed.items.values()) {
-				returnedItems.add(new NewsFeedItem(item.id, item.title, item.publishDate.getMillis()));
+				NewsFeedItem returnedItem = new NewsFeedItem(item.id, item.title, item.publishDate.getMillis());
+				if (item.imageUrl != null) {
+					returnedItem.setImageUrl(item.imageUrl);
+				}
+				returnedItems.add(returnedItem);
 			}
 
 			returnedFeeds.add(new NewsFeed(feed.name, returnedItems));
@@ -77,6 +81,7 @@ public final class NewsServiceImpl implements NewsService.Iface {
 		return new NewsFeedItemContentResponse(NewsStatusCode.INVALID_ID);
 	}
 
+	
 	// OLD STUFF - DO NOT TOUCH
 	private org.pocketcampus.plugin.news.server.old.NewsServiceImpl _oldService = new org.pocketcampus.plugin.news.server.old.NewsServiceImpl();
 
