@@ -141,17 +141,18 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 		String text = (String) headers.get(groupPosition);
 		TextView tv = vholder.getTextView();
 		tv.setText(text);
-		// we set no color there
-		// otherwise it's always refreshed
-//		if (mModel != null) {
-//			ExpandableListView v = ((ExpandableListView) parent);
-//			if(v.isGroupExpanded(groupPosition)) {
-//				convertView.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
-//			} else {
-//				convertView.setBackgroundColor(mModel.getColorOfCheckOccupancyRoom(
-//						groupPosition));
-//			}
-//		}
+		// The color is set only when it's not expanded as a summary of the content
+		// Occupied, Free or Free/Occupied
+		// Otherwise it's defaut color
+		if (mModel != null) {
+			ExpandableListView v = ((ExpandableListView) parent);
+			if(v.isGroupExpanded(groupPosition)) {
+				convertView.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
+			} else {
+				convertView.setBackgroundColor(mModel.getColorOfCheckOccupancyRoom(
+						groupPosition));
+			}
+		}
 		return convertView;
 
 	}

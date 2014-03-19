@@ -104,13 +104,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 
 			@Override
 			public void onGroupCollapse(int groupPosition) {
-				View v = mExpList.getChildAt(groupPosition);
-				if (v != null) {
-					 //set color as summary of occupancy
-					// TODO: check it works with mutiple rooms
-					 v.setBackgroundColor(mModel
-								.getColorOfCheckOccupancyRoom(groupPosition));
-				}
+				// nothing to do for now
 
 			}
 		});
@@ -118,14 +112,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 
 			@Override
 			public void onGroupExpand(int groupPosition) {
-				View v = mExpList.getChildAt(groupPosition);
-				if (v != null) {
-					 //set default color
-					// TODO: check it works with mutiple rooms
-					 v.setBackgroundColor(mModel
-								.COLOR_CHECK_OCCUPANCY_DEFAULT);
-				}
-
+				// nothing to do for now
 			}
 		});
 		mExpList.setOnGroupClickListener(new OnGroupClickListener() {
@@ -133,15 +120,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) {
-				// set a color for the group only if not expanded (as a summary
-				// of the content)
-				// THIS: doesn't work
-				if (parent.isGroupExpanded(groupPosition)) {
-					v.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
-				} else {
-					v.setBackgroundColor(mModel
-							.getColorOfCheckOccupancyRoom(groupPosition));
-				}
+				// nothing to do for now
 				return false;
 			}
 		});
