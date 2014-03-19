@@ -295,7 +295,6 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 				} else {
 					mInputBar.setButtonText("");
-					System.out.println("text" + text);
 					AutoCompleteRequest request = new AutoCompleteRequest(text);
 					mController.autoCompleteBuilding(view, request);
 				}
@@ -328,13 +327,11 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 					return;
 				}
 				FRRoom room = listFR.get(pos);
-				Log.v("fr_check_search", "checking against selected " + room);
 				// TODO: add to list selected for mutli-query, and start the
 				// search elsewhere
 
 				Calendar start = Calendar.getInstance();
 				start.clear();
-				System.out.println(start.getTimeInMillis());
 				start.set(yearSelected, monthSelected, dayOfMonthSelected,
 						startHourSelected, startMinSelected, 0);
 

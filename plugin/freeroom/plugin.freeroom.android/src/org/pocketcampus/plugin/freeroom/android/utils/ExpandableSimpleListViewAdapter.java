@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.pocketcampus.plugin.freeroom.R;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 /**
@@ -23,12 +25,22 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 	private Context context;
 	private List<String> headers;
 	private Map<String, List<String>> data;
+	// hold the caller view for colors updates.
+	private FreeRoomModel mModel;
 
 	public ExpandableSimpleListViewAdapter(Context c, List<String> header,
 			Map<String, List<String>> data) {
 		this.context = c;
 		this.headers = header;
 		this.data = data;
+	}
+
+	public ExpandableSimpleListViewAdapter(Context c, List<String> header,
+			Map<String, List<String>> data, FreeRoomModel model) {
+		this.context = c;
+		this.headers = header;
+		this.data = data;
+		this.mModel = model;
 	}
 
 	@Override
@@ -73,6 +85,10 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 
 		TextView tv = vholder.getTextView();
 		tv.setText(text);
+		if (mModel != null) {
+			convertView.setBackgroundColor(mModel.getColorOfCheckOccupancyRoom(
+					groupPosition, childPosition));
+		}
 		return convertView;
 	}
 
@@ -125,6 +141,17 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 		String text = (String) headers.get(groupPosition);
 		TextView tv = vholder.getTextView();
 		tv.setText(text);
+		// we set no color there
+		// otherwise it's always refreshed
+//		if (mModel != null) {
+//			ExpandableListView v = ((ExpandableListView) parent);
+//			if(v.isGroupExpanded(groupPosition)) {
+//				convertView.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
+//			} else {
+//				convertView.setBackgroundColor(mModel.getColorOfCheckOccupancyRoom(
+//						groupPosition));
+//			}
+//		}
 		return convertView;
 
 	}
@@ -136,6 +163,9 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
+		if (mModel != null) {
+			return mModel.isCheckOccupancyLineClickable(groupPosition, childPosition);
+		}
 		return true;
 	}
 

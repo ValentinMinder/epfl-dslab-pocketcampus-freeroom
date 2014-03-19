@@ -15,6 +15,7 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 
 /**
@@ -35,6 +36,12 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Keys to persistent storage
 	 */
 	private final String FAVORITES_ROOMS_KEY = "FAVORITES_ROOMS_KEY";
+
+	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
+	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.GREEN;
+	public final int COLOR_CHECK_OCCUPANCY_OCCUPIED = Color.RED;
+	public final int COLOR_CHECK_OCCUPANCY_ATLEASTONCE = Color.YELLOW;
+
 	/**
 	 * 
 	 * Reference to the Views that need to be notified when the stored data
@@ -134,7 +141,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public List<FRRoom> getAutocompleteSuggestions() {
 		return mAutoCompleteSuggestions;
 	}
-	
+
 	/**
 	 * Sets the occupancy result for all the rooms and notifies the listeners.
 	 * 
@@ -154,6 +161,96 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return mListCheckedOccupancyRoom;
 	}
 
+	private Occupancy getOccupancy(int mGroupPosition) {
+		if (mListCheckedOccupancyRoom != null
+				&& mGroupPosition < mListCheckedOccupancyRoom.size()) {
+			return mListCheckedOccupancyRoom.get(mGroupPosition);
+		}
+		// default
+		return null;
+	}
+
+	private ActualOccupation getActualOccupation(int mGroupPosition,
+			int mChildPosition) {
+
+		Occupancy mOccupancy = getOccupancy(mGroupPosition);
+		if (mOccupancy != null) {
+			List<ActualOccupation> mActualOccupationList = mOccupancy
+					.getOccupancy();
+			if (mChildPosition < mActualOccupationList.size()) {
+				ActualOccupation mActualOccupation = mActualOccupationList
+						.get(mChildPosition);
+				return mActualOccupation;
+			}
+		}
+
+		// default
+		return null;
+	}
+
+	public int getColorOfCheckOccupancyRoom(int mGroupPosition,
+			int mChildPosition) {
+		ActualOccupation mActualOccupation = getActualOccupation(
+				mGroupPosition, mChildPosition);
+		if (mActualOccupation != null) {
+			if (mActualOccupation.isAvailable()) {
+				return COLOR_CHECK_OCCUPANCY_FREE;
+			} else {
+				return COLOR_CHECK_OCCUPANCY_OCCUPIED;
+			}
+		}
+		// default
+		return COLOR_CHECK_OCCUPANCY_DEFAULT;
+	}
+
+	public boolean isCheckOccupancyLineClickable(int mGroupPosition,
+			int mChildPosition) {
+		ActualOccupation mActualOccupation = getActualOccupation(
+				mGroupPosition, mChildPosition);
+		if (mActualOccupation != null) {
+			if (mActualOccupation.isAvailable()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		// default
+		return false;
+	}
+
+	public int getColorOfCheckOccupancyRoom(int mGroupPosition) {
+		Occupancy mOccupancy = getOccupancy(mGroupPosition);
+		List<ActualOccupation> mListActualOccupations = mOccupancy
+				.getOccupancy();
+		boolean atLeastOneFree = false;
+		boolean atLeastOneOccupied = false;
+		for (ActualOccupation mActualOccupation : mListActualOccupations) {
+			boolean isAvailable = mActualOccupation.isAvailable();
+			if (isAvailable) {
+				atLeastOneFree = true;
+			} else {
+				atLeastOneOccupied = true;
+			}
+		}
+
+		if (atLeastOneFree) {
+			if (atLeastOneOccupied) {
+				return COLOR_CHECK_OCCUPANCY_ATLEASTONCE;
+			} else {
+				return COLOR_CHECK_OCCUPANCY_FREE;
+			}
+		} else {
+			if (atLeastOneOccupied) {
+				return COLOR_CHECK_OCCUPANCY_OCCUPIED;
+			} else {
+				// default
+				return COLOR_CHECK_OCCUPANCY_DEFAULT;
+			}
+		}
+
+	}
+
 	public void setFavoriteRoom(String roomname) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
@@ -162,7 +259,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		editor.putBoolean(roomCorrected, true);
 		editor.commit();
 	}
-	
+
 	public void removeFavoriteRoom(String roomname) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
@@ -171,7 +268,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		editor.remove(roomCorrected);
 		editor.commit();
 	}
-	
+
 	public boolean isFavoriteRoom(String roomname) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
