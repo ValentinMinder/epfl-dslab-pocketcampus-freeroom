@@ -197,10 +197,12 @@
 }
 
 - (void)getScheduleFailedForRequest:(ScheduleRequest *)request {
+    [self.progressHUD hide:NO];
     [PCUtils showServerErrorAlert];
 }
 
 - (void)serviceConnectionToServerFailed {
+    [self.progressHUD hide:NO];
     [PCUtils showConnectionToServerTimedOutAlert];
 }
 
