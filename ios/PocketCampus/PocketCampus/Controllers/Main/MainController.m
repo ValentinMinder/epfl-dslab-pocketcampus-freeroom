@@ -454,10 +454,14 @@ static MainController<MainControllerPublic>* instance = nil;
 
             NSDictionary* infos = menuItemsInfo[item.identifier];
             if (infos) {
+                //user has customized order AND/OR visiblity for this item
                 if (infos[kPluginsMainMenuItemsInfoOrderNumberKey]) {
                     NSUInteger index = [infos[kPluginsMainMenuItemsInfoOrderNumberKey] unsignedIntValue];
                     [menuItems removeObject:item];
                     [menuItems insertObject:item atIndex:index];
+                } else {
+                    [menuItems removeObject:item];
+                    [menuItems insertObject:item atIndex:0];
                 }
                 if (infos[kPluginsMainMenuItemsInfoHiddenKey]) {
                     item.hidden = [infos[kPluginsMainMenuItemsInfoHiddenKey] boolValue];
@@ -466,6 +470,7 @@ static MainController<MainControllerPublic>* instance = nil;
                     item.hidden = [hiddenByDefault boolValue];
                 }
             } else {
+                //user did NOT customize order/visibility for this item
                 NSNumber* hiddenByDefault = self.plistDicForPluginIdentifier[item.identifier][@"hiddenByDefault"];
                 item.hidden = [hiddenByDefault boolValue];
             }
