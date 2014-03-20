@@ -78,6 +78,7 @@
     UIBarButtonItem* todayItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(todayPressed)];
     self.toolbarItems = @[todayItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferredContentSizeChanged) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     
     self.progressHUD = [[MBProgressHUD alloc] initWithView:self.dayView];
     self.progressHUD.userInteractionEnabled = NO;
@@ -116,6 +117,10 @@
 #pragma mark - Notifications
 
 - (void)preferredContentSizeChanged {
+    [self.dayView reloadData];
+}
+
+- (void)appDidBecomeActive {
     [self.dayView reloadData];
 }
 
