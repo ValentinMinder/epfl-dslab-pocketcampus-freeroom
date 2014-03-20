@@ -24,8 +24,8 @@ public class NewsSourceTests {
 	public void feedNameIsRead() {
 		Feed feed = getFeeds()[0];
 
-		assertEquals("The feed name should be read correctly.",
-				"Actualité EPFL", feed.name);
+		assertEquals("The first feed should be Mediacom, a.k.a. General.",
+				"Général", feed.name);
 	}
 
 	@Test
