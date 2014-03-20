@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.freeroom.android;
 
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -12,6 +14,7 @@ import org.pocketcampus.plugin.freeroom.android.req.CheckOccupancyRequest;
 import org.pocketcampus.plugin.freeroom.android.req.GetFreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
@@ -116,9 +119,33 @@ public class FreeRoomController extends PluginController implements
 	}
 
 	public void setCheckOccupancyResults(OccupancyReply result) {
-		// TODO: check the uniqueness of rooms replied!!!
 		List<Occupancy> list = result.getOccupancyOfRooms();
-		mModel.setOccupancyResults(list);
+		
+		// this check the uniqueness of the rooms in the reply
+		LinkedHashSet<FRRoom> mLinkedHashSet = null;
+		boolean allUniqueFlag = true;
+		if (list != null) {
+			mLinkedHashSet = new LinkedHashSet<FRRoom>(
+						list.size());
+			Iterator<Occupancy> iter = list.iterator();
+			while (iter.hasNext() && allUniqueFlag) {
+				FRRoom mFrRoom = iter.next().getRoom();
+				if (mLinkedHashSet.contains(mFrRoom)) {
+					allUniqueFlag = false;
+				} else {
+					mLinkedHashSet.add(mFrRoom);
+				}
+			}
+		} else {
+			allUniqueFlag = false;
+		}
+
+		if (allUniqueFlag) {
+			mModel.setOccupancyResultsListOccupancy(list);
+			mModel.setOccupancyResultsLinkedHashSetFRRoom(mLinkedHashSet);
+		} else {
+			Log.e(this.getClass().toString(), "Warning: the response from the server contains duplicates!");
+		}
 	}
 
 	public void handleReplyError(IFreeRoomView caller, int status,
@@ -128,8 +155,10 @@ public class FreeRoomController extends PluginController implements
 		if (status == 400) {
 			Log.e(callingClass,
 					"server complains about a bad request from the client");
-			Toast.makeText(getApplicationContext(), statusComment,
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(
+					getApplicationContext(),
+					"server complains about a bad request from the client"
+							+ statusComment, Toast.LENGTH_LONG).show();
 		} else if (status == 500) {
 			Log.e(callingClass, "server had an internal error");
 		} else {

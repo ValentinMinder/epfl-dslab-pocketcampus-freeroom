@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,6 +61,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Ordered list of <code>Occupancy</code>'s displayed in the check occupancy
 	 */
 	private List<Occupancy> mListCheckedOccupancyRoom = new ArrayList<Occupancy>();
+	
+	private LinkedHashSet<FRRoom> mLinkedHashSetCheckedRoom = new LinkedHashSet<FRRoom>();
+
 
 	private Context context;
 
@@ -147,8 +151,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * 
 	 * @param list
 	 */
-	public void setOccupancyResults(List<Occupancy> list) {
-		mListCheckedOccupancyRoom = new ArrayList<Occupancy>(list);
+	public void setOccupancyResultsListOccupancy(List<Occupancy> list) {
+		mListCheckedOccupancyRoom = list;
 		mListeners.occupancyResultUpdated();
 	}
 
@@ -159,6 +163,10 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public List<Occupancy> getListCheckedOccupancyRoom() {
 		return mListCheckedOccupancyRoom;
+	}
+	
+	public void setOccupancyResultsLinkedHashSetFRRoom(LinkedHashSet<FRRoom> mLinkedHashSet) {
+		mLinkedHashSetCheckedRoom  = mLinkedHashSet;
 	}
 
 	private Occupancy getOccupancy(int mGroupPosition) {
@@ -221,21 +229,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	public int getColorOfCheckOccupancyRoom(int mGroupPosition) {
 		Occupancy mOccupancy = getOccupancy(mGroupPosition);
-		List<ActualOccupation> mListActualOccupations = mOccupancy
-				.getOccupancy();
-		boolean atLeastOneFree = false;
-		boolean atLeastOneOccupied = false;
-		// TODO: optimization!
-		// Stores the information once when the results are updated
-		// and avoid multiple going through the whole list!
-		for (ActualOccupation mActualOccupation : mListActualOccupations) {
-			boolean isAvailable = mActualOccupation.isAvailable();
-			if (isAvailable) {
-				atLeastOneFree = true;
-			} else {
-				atLeastOneOccupied = true;
-			}
-		}
+		
+		boolean atLeastOneFree = mOccupancy.isIsAtLeastFreeOnce();
+		boolean atLeastOneOccupied = mOccupancy.isIsAtLeastOccupiedOnce();
 
 		if (atLeastOneFree) {
 			if (atLeastOneOccupied) {
@@ -286,4 +282,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		Map<String, Boolean> map = (Map<String, Boolean>) preferences.getAll();
 		return map;
 	}
+
+	
 }

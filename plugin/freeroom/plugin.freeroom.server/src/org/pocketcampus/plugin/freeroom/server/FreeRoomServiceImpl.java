@@ -208,12 +208,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		List<FRRoom> rooms = request.getListFRRoom();
 		
 		// we check there are no duplicate in the list!
-		// TODO: after testing on client-side, remove comments
-		System.out.println("rooms size: " + rooms.size());
-//		HashSet<FRRoom> roomsAsSet = new HashSet<FRRoom>(rooms);
-//		if (roomsAsSet.size() != rooms.size()) {
-//			return new OccupancyReply(HttpURLConnection.HTTP_BAD_REQUEST, "Server don't accept duplicate rooms!");
-//		}
+		HashSet<FRRoom> roomsAsSet = new HashSet<FRRoom>(rooms);
+		if (roomsAsSet.size() != rooms.size()) {
+			return new OccupancyReply(HttpURLConnection.HTTP_BAD_REQUEST, "Server don't accept duplicate rooms!");
+		}
 		
 		FRPeriod period = request.getPeriod();
 		long timestampStart = period.getTimeStampStart();
@@ -233,7 +231,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			Connection connectBDD = connMgr.getConnection();
 
 			for (FRRoom room : rooms) {
-				System.out.println("cheking room: " + room.getBuilding()+room.getNumber());
 				PreparedStatement query = connectBDD
 						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd "
 								+ "FROM roomsoccupancy ro, roomslist rl "
@@ -257,6 +254,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				ResultSet resultQuery = query.executeQuery();
 				Occupancy mOccupancy = new Occupancy();
 				mOccupancy.setRoom(room);
+				
+				boolean isAtLeastOccupiedOnce = false;
+				boolean isAtLeastFreeOnce = false;
 
 				// timestamp used to generate the occupations accross the
 				// FRPeriod
@@ -273,6 +273,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						mOcc.setAvailable(true);
 						mOcc.setOccupationType(OccupationType.FREE);
 						mOccupancy.addToOccupancy(mOcc);
+						isAtLeastFreeOnce = true;
 					}
 
 						ActualOccupation mAccOcc = new ActualOccupation();
@@ -284,6 +285,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						// TODO reminder default value ISA
 						mAccOcc.setOccupationType(OccupationType.ISA);
 						mOccupancy.addToOccupancy(mAccOcc);
+						isAtLeastOccupiedOnce = true;
 					
 					tsPerRoom = tsEnd;
 
@@ -296,7 +298,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					mOcc.setAvailable(true);
 					mOcc.setOccupationType(OccupationType.FREE);
 					mOccupancy.addToOccupancy(mOcc);
+					isAtLeastFreeOnce = true;
 				}
+				
+				mOccupancy.setIsAtLeastFreeOnce(isAtLeastFreeOnce);
+				mOccupancy.setIsAtLeastOccupiedOnce(isAtLeastOccupiedOnce);
+				
 				occupancies.add(mOccupancy);
 				query.close();
 			}

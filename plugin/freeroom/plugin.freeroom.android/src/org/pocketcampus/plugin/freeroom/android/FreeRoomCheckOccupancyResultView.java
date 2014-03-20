@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.android;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
@@ -49,9 +50,9 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 	private TextView mTitle;
 
 	private ExpandableListView mExpList;
-	private TreeMap<String, List<String>> mActualOccupancyTreeMap;
+	private HashMap<String, List<String>> mActualOccupancyHashMap;
 	private ArrayList<String> mFRRoomList;
-	
+
 	private HashSet<String> mFRRoomSet;
 
 	private ExpandableSimpleListViewAdapter mAdapter;
@@ -99,10 +100,10 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 		// TODO: use LinkedHashSet instead of two structures!!!!!
 		mFRRoomList = new ArrayList<String>();
 		mFRRoomSet = new HashSet<String>();
-		mActualOccupancyTreeMap = new TreeMap<String, List<String>>();
+		mActualOccupancyHashMap = new HashMap<String, List<String>>();
 
 		mAdapter = new ExpandableSimpleListViewAdapter(this, mFRRoomList,
-				mActualOccupancyTreeMap, mModel);
+				mActualOccupancyHashMap, mModel);
 		mExpList.setAdapter(mAdapter);
 
 		mExpList.setOnGroupCollapseListener(new OnGroupCollapseListener() {
@@ -138,9 +139,9 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 
 				// reservation??
 				// indicate that i'm going to work there!
-				
-				Log.v(this.getClass().toString(), "item clicked, group:" + groupPosition
-						+ "/child:" + childPosition);
+
+				Log.v(this.getClass().toString(), "item clicked, group:"
+						+ groupPosition + "/child:" + childPosition);
 				return false;
 			}
 		});
@@ -167,7 +168,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 
 		mExpList.postInvalidate();
 		mFRRoomList.clear();
-		mActualOccupancyTreeMap.clear();
+		mActualOccupancyHashMap.clear();
 		mTitle.setBackgroundColor(Color.RED);
 
 		List<Occupancy> list = mModel.getListCheckedOccupancyRoom();
@@ -208,7 +209,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 						+ getString(R.string.freeroom_check_occupancy_result_to)
 						+ " ";
 				mFullPeriodAsString += hour_min.format(endDate);
-				
+
 				Log.v("check-res", mFullPeriodAsString);
 			}
 
@@ -240,10 +241,10 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 				Log.v("check-res", mActualOccupationAsString);
 				mListActualOccupationAsString.add(mActualOccupationAsString);
 			}
-			if (! mFRRoomSet.contains(mRoomAsString)){
+			if (!mFRRoomSet.contains(mRoomAsString)) {
 				mFRRoomSet.add(mRoomAsString);
 				mFRRoomList.add(mRoomAsString);
-				mActualOccupancyTreeMap.put(mRoomAsString,
+				mActualOccupancyHashMap.put(mRoomAsString,
 						mListActualOccupationAsString);
 			}
 		}

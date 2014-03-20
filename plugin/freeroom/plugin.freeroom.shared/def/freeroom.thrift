@@ -65,6 +65,8 @@ struct ActualOccupation {
 struct Occupancy {
 	1: required FRRoom room;
 	2: required list<ActualOccupation> occupancy;
+	3: required bool isAtLeastOccupiedOnce;
+	4: required bool isAtLeastFreeOnce;
 }
 
 // check the occupancy request

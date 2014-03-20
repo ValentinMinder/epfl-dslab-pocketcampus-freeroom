@@ -3,8 +3,10 @@ package org.pocketcampus.plugin.freeroom.android;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -27,6 +29,7 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -38,6 +41,7 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -59,7 +63,6 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 	private LinearLayout mSubLayoutUpperData;
 	private LinearLayout mSubSubTimePickersLayout;
 
-	
 	private ArrayList<FRRoom> mSelectedRoomsToQueryArrayList;
 	/**
 	 * This must contain exactly the same as
@@ -126,6 +129,8 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 	}
 
 	private void initializeCheckOccupancySearchView() {
+		init();
+
 		// Setup the layout
 		mLayout = new StandardTitledDoubleLayout(this);
 
@@ -258,7 +263,6 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 			@Override
 			public void onClick(View v) {
-				// TODO reset
 				reset();
 			}
 		});
@@ -274,19 +278,22 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		mAutoCompleteSuggestionInputBarElement
 				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 
-		// mInputBar.setOnEditorActionListener(new OnEditorActionListener() {
-		// @Override
-		// public boolean onEditorAction(TextView v, int actionId, KeyEvent
-		// event) {
-		// if(actionId == EditorInfo.IME_ACTION_SEARCH){
-		// String query = mInputBar.getInputText();
-		// System.out.println("qurey " + query); //TODO
-		// // search(query);
-		// }
-		//
-		// return true;
-		// }
-		// });
+		mAutoCompleteSuggestionInputBarElement
+				.setOnEditorActionListener(new OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+							String query = mAutoCompleteSuggestionInputBarElement
+									.getInputText();
+							Log.v(this.getClass().toString(),
+									"we do nothing here... with query: "
+											+ query);
+						}
+
+						return true;
+					}
+				});
 		mAutoCompleteSuggestionInputBarElement
 				.setOnButtonClickListener(new OnClickListener() {
 					@Override
@@ -299,7 +306,6 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 					}
 				});
 
-		mAutoCompleteSuggestionArrayListString = new ArrayList<String>(10);
 		mAdapter = new ArrayAdapter<String>(getApplicationContext(),
 				R.layout.sdk_list_entry, R.id.sdk_list_entry_text,
 				mAutoCompleteSuggestionArrayListString);
@@ -320,7 +326,6 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 						} else {
 							mAutoCompleteSuggestionInputBarElement
 									.setButtonText("");
-							System.out.println(text);
 							AutoCompleteRequest request = new AutoCompleteRequest(
 									text);
 							mController.autoCompleteBuilding(view, request);
@@ -347,36 +352,48 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 								.get(pos);
 						addRoomToCheck(room);
 						searchButton.setEnabled(auditSubmit() == 0);
-						// refresh the autocomplete without the new added room
-						// TODO: almost impossible
-						// how to know right pos if some elements are not displayed???
+						// refresh the autocomplete, such that selected rooms
+						// are not displayed
 						autoCompletedUpdated();
-						// TODO: remove the text in the input bar
+
+						// WE DONT REMOVE the text in the input bar
+						// INTENTIONNALLY: user may want to select multiple
+						// rooms in the same building
 					}
 				});
 	}
 
 	private void addRoomToCheck(FRRoom room) {
-		
-		// TODO: for tests only, remove the "true" part!
-		if (true || ! mSelectedRoomsToQueryHashSet.contains(room)) {
-			String roomSummary = ", ";
-			if (mSelectedRoomsToQueryArrayList.isEmpty()) {
-				mSummarySelectedRoomsTextView
-						.setText(getString(R.string.freeroom_check_occupancy_search_text_selected_rooms));
-				roomSummary = " ";
-			}
-			roomSummary += room.getBuilding() + room.getNumber();
-
+		// we only add if it already contains the room
+		if (!mSelectedRoomsToQueryHashSet.contains(room)) {
 			mSelectedRoomsToQueryArrayList.add(room);
 			mSelectedRoomsToQueryHashSet.add(room);
-
-			mSummarySelectedRoomsTextView.setText(mSummarySelectedRoomsTextView
-					.getText() + roomSummary);
+			mSummarySelectedRoomsTextView.setText(getSummaryTextFromCollection(mSelectedRoomsToQueryArrayList));
 
 		} else {
-			Log.v("check-o", "room cannot be added: already added");
+			Log.e(this.getClass().toString(), "room cannot be added: already added");
 		}
+	}
+	
+	private String getSummaryTextFromCollection(Collection<FRRoom> collec){
+		Iterator<FRRoom> iter = collec.iterator();
+		StringBuffer buffer = new StringBuffer(collec.size() * 5);
+		FRRoom room = null;
+		buffer.append(getString(R.string.freeroom_check_occupancy_search_text_selected_rooms) + " ");
+		boolean empty = true;
+		while (iter.hasNext()) {
+			empty = false;
+			room = iter.next();
+			buffer.append(room.getBuilding() + room.getNumber() + ", ");
+		}
+		buffer.setLength(buffer.length()-2);
+		String result = "";
+		if (empty) {
+			result = getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms);
+		} else {
+			result = buffer.toString();
+		}
+		return result;
 	}
 
 	private void resetTimes() {
@@ -426,19 +443,31 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		mTimePickerEndDialog.updateTime(endHourSelected, endMinSelected);
 	}
 
+	private void init() {
+		mSelectedRoomsToQueryArrayList = new ArrayList<FRRoom>(10);
+		mSelectedRoomsToQueryHashSet = new HashSet<FRRoom>(10);
+		mAutoCompleteSuggestionArrayListFRRoom = new ArrayList<FRRoom>(10);
+		mAutoCompleteSuggestionArrayListString = new ArrayList<String>(10);
+	}
+
 	private void reset() {
 		searchButton.setEnabled(false);
 
 		// reset the list of selected rooms
-		mSelectedRoomsToQueryArrayList = new ArrayList<FRRoom>(10);
-		mSelectedRoomsToQueryHashSet = new HashSet<FRRoom>(10);
+		mSelectedRoomsToQueryArrayList.clear();
+		mSelectedRoomsToQueryHashSet.clear();
 		mSummarySelectedRoomsTextView
 				.setText(getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms));
+
+		mAutoCompleteSuggestionArrayListFRRoom.clear();
+		mAutoCompleteSuggestionArrayListString.clear();
 
 		resetTimes();
 
 		// show the buttons
 		updatePickersButtons();
+
+		// TODO: set the inputbar text empty and display favorites!
 	}
 
 	private void updatePickersButtons() {
@@ -577,27 +606,33 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 	@Override
 	public void autoCompletedUpdated() {
-		// TODO: find a way to not display rooms that are already selected...
-		
 		mAdapter.notifyDataSetInvalidated();
-		mAutoCompleteSuggestionArrayListFRRoom = mModel
-				.getAutocompleteSuggestions();
+		mAutoCompleteSuggestionArrayListFRRoom.clear();
 		mAutoCompleteSuggestionArrayListString.clear();
-		for (FRRoom room : mAutoCompleteSuggestionArrayListFRRoom) {
-			String result = "";
-			result += room.getBuilding() + " ";
-			result += room.getNumber() + " ";
-			int capacity = room.getCapacity();
-			FRRoomType t = room.getType();
-			if (capacity > 0 && t != null) {
-				result += "(";
-				result += "Type: " + t + ";";
-				result += "Capacity: " + capacity + " places";
-				result += ")";
+
+		Iterator<FRRoom> iter = mModel.getAutocompleteSuggestions().iterator();
+		while (iter.hasNext()) {
+			FRRoom room = iter.next();
+
+			// rooms that are already selected are not displayed...
+			if (!mSelectedRoomsToQueryHashSet.contains(room)) {
+				String result = "";
+				result += room.getBuilding() + " ";
+				result += room.getNumber() + " ";
+				int capacity = room.getCapacity();
+				FRRoomType t = room.getType();
+				if (capacity > 0 && t != null) {
+					result += "(";
+					result += "Type: " + t + ";";
+					result += "Capacity: " + capacity + " places";
+					result += ")";
+				}
+				result += "";
+				mAutoCompleteSuggestionArrayListFRRoom.add(room);
+				mAutoCompleteSuggestionArrayListString.add(result);
 			}
-			result += "";
-			mAutoCompleteSuggestionArrayListString.add(result);
 		}
+
 		mAdapter.notifyDataSetChanged();
 		mAutoCompleteSuggestionListView.setAdapter(mAdapter);
 		mAutoCompleteSuggestionListView.invalidate();
