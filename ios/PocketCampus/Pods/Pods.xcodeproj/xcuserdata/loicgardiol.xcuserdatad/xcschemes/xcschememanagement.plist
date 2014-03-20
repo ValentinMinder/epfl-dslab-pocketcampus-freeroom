@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-MBProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-NSTimer-Blocks.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -46,6 +51,52 @@
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict/>
+	<dict>
+		<key>0E6F3FBCEF0E400D97539CC3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2EDBA7175D8A4B0CA2703EB4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>46EBA80C0ABA423AB24698A5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>74B3BC66D8B14B139E2C0AD3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9AB217BD9CE94D09A14AE752</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A30BBA7F880F40828EFCFD60</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BCD0B438546744DD84732EBB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D5364B2EE9774D5FB66A0D6C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DB0BEA4F092A4916AA4D5AA6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
 </dict>
 </plist>

@@ -37,12 +37,14 @@
 
 #import "MapController.h"
 
+#import "MBProgressHUD.h"
+
 @interface IsAcademiaDayScheduleViewController ()<IsAcademiaServiceDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) IsAcademiaService* isaService;
 @property (nonatomic, strong) NSMutableDictionary* responseForReferenceDate;
 
-@property (nonatomic, strong) UIActionSheet* roomsActionSheet;
+@property (nonatomic, strong) UIActionSheet* detailsActionSheet;
 
 @end
 
@@ -106,6 +108,9 @@
 }
 
 - (void)refreshForDisplayedDay {
+    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.dayView animated:YES];
+    hud.opacity = 0.6;
+    hud.userInteractionEnabled = NO; //so that day view is still touchable
     [self.isaService cancelOperationsForDelegate:self];
     ScheduleRequest* req = [ScheduleRequest new];
     NSDate* monday8am = [self mondayReferenceDateForDate:self.dayView.date];
@@ -138,6 +143,7 @@
 #pragma mark - IsAcademiaService
 
 - (void)getScheduleForRequest:(ScheduleRequest *)request didReturn:(ScheduleResponse *)scheduleResponse {
+    [MBProgressHUD hideAllHUDsForView:self.dayView animated:YES];
     switch (scheduleResponse.statusCode) {
         case IsaStatusCode_OK:
         {
@@ -152,9 +158,9 @@
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
                 [weakSelf refreshForDisplayedDay];
             } userCancelled:^{
-#warning TODO
+                //nothing to do
             } failure:^{
-                [self getScheduleFailedForRequest:request];
+                [weakSelf getScheduleFailedForRequest:request];
             }];
             break;
         }
@@ -180,13 +186,13 @@
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (actionSheet == self.roomsActionSheet) {
+    if (actionSheet == self.detailsActionSheet) {
         if (buttonIndex != actionSheet.cancelButtonIndex) {
             NSString* room = [actionSheet buttonTitleAtIndex:buttonIndex];
             UIViewController* viewController = [MapController viewControllerWithInitialSearchQuery:room];
             [self.navigationController pushViewController:viewController animated:YES];
         }
-        self.roomsActionSheet = nil;
+        self.detailsActionSheet = nil;
     }
 }
 
@@ -200,22 +206,22 @@
 
 - (void)calendarDayTimelineView:(TKCalendarDayView *)calendarDay eventViewWasSelected:(TKCalendarDayEventView *)eventView {
     IsAcademiaStudyPeriodCalendarDayEventView* view = (IsAcademiaStudyPeriodCalendarDayEventView*)eventView;
-    NSArray* rooms = view.studyPeriod.rooms;
-    if (rooms.count == 0) {
+    if (![view isKindOfClass:[IsAcademiaStudyPeriodCalendarDayEventView class]]) {
         return;
-    } else if (rooms.count == 1) {
-        NSString* room = [rooms lastObject];
-        UIViewController* viewController = [MapController viewControllerWithInitialSearchQuery:room];
-        [self.navigationController pushViewController:viewController animated:YES];
-    } else {
-        self.roomsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"ShowOnMap", @"IsAcademiaPlugin", nil) delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-        for (NSString* room in rooms) {
-            [self.roomsActionSheet addButtonWithTitle:room];
-        }
-        [self.roomsActionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
-        self.roomsActionSheet.cancelButtonIndex = self.roomsActionSheet.numberOfButtons-1;
-        [self.roomsActionSheet showFromToolbar:self.navigationController.toolbar];
     }
+    StudyPeriod* period = view.studyPeriod;
+    if (!period) {
+        return;
+    }
+    NSArray* rooms = view.studyPeriod.rooms;
+    NSString* sheetString = [NSString stringWithFormat:NSLocalizedStringFromTable(rooms.count > 0 ? @"CourseDetailsAndRoomsActionSheetWithFormat" : @"CourseDetailsActionSheetWithFormat", @"IsAcademiaPlugin", nil), period.periodTypeString, period.name, period.startAndEndTimeString];
+    self.detailsActionSheet = [[UIActionSheet alloc] initWithTitle:sheetString delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+    for (NSString* room in rooms) {
+        [self.detailsActionSheet addButtonWithTitle:room];
+    }
+    [self.detailsActionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
+    self.detailsActionSheet.cancelButtonIndex = self.detailsActionSheet.numberOfButtons-1;
+    [self.detailsActionSheet showFromToolbar:self.navigationController.toolbar];
 }
 
 #pragma mark - TKCalendarDayViewDataSource
@@ -236,7 +242,7 @@
         //#warning REMOVE
         //period.name = @"dsfjhaiusdz fuaszdfipu atsodiuftaouzsdt f uzastdfo";
         //period.endTime = period.startTime + 2700*1000;
-        //period.rooms = @[[period.rooms firstObject], @"INM 200", @"INJ 238"];
+        //period.rooms = @[];
         view.studyPeriod = period;
         [eventViews addObject:view];
     }

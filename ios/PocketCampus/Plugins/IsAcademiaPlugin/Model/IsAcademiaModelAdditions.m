@@ -46,15 +46,18 @@
 
 @implementation StudyPeriod (Additions)
 
+#pragma mark - Public
+
 - (NSString*)startTimeString {
-    static NSDateFormatter* formatter = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        formatter = [NSDateFormatter new];
-        formatter.dateStyle = NSDateFormatterNoStyle;
-        formatter.timeStyle = NSDateFormatterShortStyle;
-    });
-    return [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.startTime/1000]];
+    return [self.class timeStringForTimeInterval:self.startTime/1000];
+}
+
+- (NSString*)endTimeString {
+    return [self.class timeStringForTimeInterval:self.endTime/1000];
+}
+
+- (NSString*)startAndEndTimeString {
+    return [NSString stringWithFormat:@"%@ - %@", self.startTimeString, self.endTimeString];
 }
 
 - (NSString*)roomsString {
@@ -67,6 +70,36 @@
         }
     }];
     return ret;
+}
+
+- (NSString*)periodTypeString {
+    switch (self.periodType) {
+        case StudyPeriodType_LECTURE:
+            return NSLocalizedStringFromTable(@"Lecture", @"IsAcademiaPlugin", nil);
+        case StudyPeriodType_EXERCISES:
+            return NSLocalizedStringFromTable(@"Exercises", @"IsAcademiaPlugin", nil);
+        case StudyPeriodType_LAB:
+            return NSLocalizedStringFromTable(@"Lab", @"IsAcademiaPlugin", nil);
+        case StudyPeriodType_PROJECT:
+            return NSLocalizedStringFromTable(@"Project", @"IsAcademiaPlugin", nil);
+        default:
+            return @"";
+    }
+}
+
+#pragma mark - Private
+
++ (NSString*)timeStringForTimeInterval:(NSTimeInterval)timestamp {
+    static NSDateFormatter* formatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [NSDateFormatter new];
+        formatter.locale = [NSLocale currentLocale];
+        formatter.timeZone = [NSTimeZone systemTimeZone];
+        formatter.dateStyle = NSDateFormatterNoStyle;
+        formatter.timeStyle = NSDateFormatterShortStyle;
+    });
+    return [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timestamp]];
 }
 
 @end

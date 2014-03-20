@@ -1,4 +1,10 @@
 
 "PluginName" = "IS-Academia";
 "MySchedule" = "Mon horaire";
-"ShowOnMap" = "Afficher sur le plan";
+"CourseDetailsActionSheetWithFormat" = "%@\n\n%@\n%@"; //<periodType> \n\n <name>\n<timeString>
+"CourseDetailsAndRoomsActionSheetWithFormat" = "%@\n\n%@\n%@\n\n Salles:\n(touchez pour voir sur le plan)"; //<periodType> \n\n <name>\n<timeString>
+"Lecture" = "Cours";
+"Exercises" = "Session d'exercices";
+"Lab" = "Labo";
+"Project" = "Projet";
+"IsAcademiaServerUnreachableTryLater" = "IS-Academia semble inaccessible.\nMerci de réessayer plus tard.";

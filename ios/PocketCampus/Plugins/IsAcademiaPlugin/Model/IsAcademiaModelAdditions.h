@@ -39,6 +39,12 @@
 
 @property (nonatomic, readonly) NSString* startTimeString;
 
+@property (nonatomic, readonly) NSString* endTimeString;
+
+@property (nonatomic, readonly) NSString* startAndEndTimeString;
+
 @property (nonatomic, readonly) NSString* roomsString;
+
+@property (nonatomic, readonly) NSString* periodTypeString;
 
 @end
