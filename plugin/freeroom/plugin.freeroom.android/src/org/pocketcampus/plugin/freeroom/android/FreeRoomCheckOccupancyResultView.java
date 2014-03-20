@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.android;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -50,6 +51,8 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 	private ExpandableListView mExpList;
 	private TreeMap<String, List<String>> mActualOccupancyTreeMap;
 	private ArrayList<String> mFRRoomList;
+	
+	private HashSet<String> mFRRoomSet;
 
 	private ExpandableSimpleListViewAdapter mAdapter;
 
@@ -93,7 +96,9 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 		subLayout.addView(mTitle);
 
 		mExpList = new ExpandableListView(this);
+		// TODO: use LinkedHashSet instead of two structures!!!!!
 		mFRRoomList = new ArrayList<String>();
+		mFRRoomSet = new HashSet<String>();
 		mActualOccupancyTreeMap = new TreeMap<String, List<String>>();
 
 		mAdapter = new ExpandableSimpleListViewAdapter(this, mFRRoomList,
@@ -178,7 +183,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 			List<ActualOccupation> mListActualOccupation = occupation
 					.getOccupancy();
 			String mRoomAsString = mFRRoom.getBuilding() + mFRRoom.getNumber();
-
+			Log.v("check-res", mRoomAsString);
 			mListRoom += mRoomAsString + ", ";
 
 			ArrayList<String> mListActualOccupationAsString = new ArrayList<String>(
@@ -203,6 +208,8 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 						+ getString(R.string.freeroom_check_occupancy_result_to)
 						+ " ";
 				mFullPeriodAsString += hour_min.format(endDate);
+				
+				Log.v("check-res", mFullPeriodAsString);
 			}
 
 			for (ActualOccupation mActualOccupation : mListActualOccupation) {
@@ -230,13 +237,15 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 							+ getString(R.string.freeroom_check_occupancy_result_by)
 							+ " " + mActualOccupation.getOccupationType();
 				}
-
+				Log.v("check-res", mActualOccupationAsString);
 				mListActualOccupationAsString.add(mActualOccupationAsString);
 			}
-
-			mFRRoomList.add(mRoomAsString);
-			mActualOccupancyTreeMap.put(mRoomAsString,
-					mListActualOccupationAsString);
+			if (! mFRRoomSet.contains(mRoomAsString)){
+				mFRRoomSet.add(mRoomAsString);
+				mFRRoomList.add(mRoomAsString);
+				mActualOccupancyTreeMap.put(mRoomAsString,
+						mListActualOccupationAsString);
+			}
 		}
 
 		String review = getString(R.string.freeroom_no_results_sorry);

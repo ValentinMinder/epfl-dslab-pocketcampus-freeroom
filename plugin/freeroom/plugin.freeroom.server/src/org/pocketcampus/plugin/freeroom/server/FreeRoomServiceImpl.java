@@ -204,13 +204,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		OccupancyReply reply = new OccupancyReply(
 				HttpURLConnection.HTTP_CREATED, ""
 						+ HttpURLConnection.HTTP_CREATED);
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
 		List<FRRoom> rooms = request.getListFRRoom();
+		
+		// we check there are no duplicate in the list!
+		// TODO: after testing on client-side, remove comments
+		System.out.println("rooms size: " + rooms.size());
+//		HashSet<FRRoom> roomsAsSet = new HashSet<FRRoom>(rooms);
+//		if (roomsAsSet.size() != rooms.size()) {
+//			return new OccupancyReply(HttpURLConnection.HTTP_BAD_REQUEST, "Server don't accept duplicate rooms!");
+//		}
+		
 		FRPeriod period = request.getPeriod();
 		long timestampStart = period.getTimeStampStart();
 		long timestampEnd = period.getTimeStampEnd();
@@ -229,6 +233,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			Connection connectBDD = connMgr.getConnection();
 
 			for (FRRoom room : rooms) {
+				System.out.println("cheking room: " + room.getBuilding()+room.getNumber());
 				PreparedStatement query = connectBDD
 						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd "
 								+ "FROM roomsoccupancy ro, roomslist rl "
@@ -257,7 +262,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// FRPeriod
 				long tsPerRoom = timestampStart;
 				while (resultQuery.next()) {
-					System.out.println("result");
 					long tsStart = Math.max(tsPerRoom, resultQuery.getLong("timestampStart"));
 					long tsEnd = Math.min(timestampEnd, resultQuery.getLong("timestampEnd"));
 

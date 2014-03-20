@@ -116,6 +116,7 @@ public class FreeRoomController extends PluginController implements
 	}
 
 	public void setCheckOccupancyResults(OccupancyReply result) {
+		// TODO: check the uniqueness of rooms replied!!!
 		List<Occupancy> list = result.getOccupancyOfRooms();
 		mModel.setOccupancyResults(list);
 	}
