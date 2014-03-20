@@ -8,3 +8,5 @@
 "Lab" = "Labo";
 "Project" = "Projet";
 "IsAcademiaServerUnreachableTryLater" = "IS-Academia semble inaccessible.\nMerci de réessayer plus tard.";
+"NoCourseOnThatDay" = "Aucun cours ce jour-là";
+"NoCourseToday" = "Aucun cours aujourd'hui";

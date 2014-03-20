@@ -45,6 +45,7 @@ NSString* const PCGAITrackerActionReorder = @"Reorder";
 NSString* const PCGAITrackerActionCopy = @"Copy";
 NSString* const PCGAITrackerActionHelp = @"Help";
 NSString* const PCGAITrackerActionSearch = @"Search";
+NSString* const PCGAITrackerActionRefresh = @"Refresh";
 
 static NSString* const kAccessibilityEnabledKey = @"AccessibilityEnabled";
 

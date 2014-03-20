@@ -44,6 +44,9 @@
 @property (nonatomic, strong) IsAcademiaService* isaService;
 @property (nonatomic, strong) NSMutableDictionary* responseForReferenceDate;
 
+@property (nonatomic, strong) MBProgressHUD* progressHUD;
+@property (nonatomic, strong) MBProgressHUD* noCourseHUD;
+
 @property (nonatomic, strong) UIActionSheet* detailsActionSheet;
 
 @end
@@ -56,6 +59,7 @@
 {
     self = [super init];
     if (self) {
+        self.gaiScreenName = @"/isacademia";
         self.title = NSLocalizedStringFromTable(@"MySchedule", @"IsAcademiaPlugin", nil);
         self.responseForReferenceDate = [NSMutableDictionary dictionary];
         self.isaService = [IsAcademiaService sharedInstanceToRetain];
@@ -67,6 +71,7 @@
 
 - (void)viewDidLoad
 {
+#warning date label is wrong format (US)
     [super viewDidLoad];
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
     self.dayView.is24hClock = [PCUtils userLocaleIs24Hour];
@@ -74,11 +79,25 @@
     UIBarButtonItem* todayItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(todayPressed)];
     self.toolbarItems = @[todayItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferredContentSizeChanged) name:UIContentSizeCategoryDidChangeNotification object:nil];
-    [self refreshForDisplayedDay];
+    
+    self.progressHUD = [[MBProgressHUD alloc] initWithView:self.dayView];
+    self.progressHUD.userInteractionEnabled = NO;
+    [self.dayView addSubview:self.progressHUD];
+    self.progressHUD.opacity = 0.6;
+    self.progressHUD.userInteractionEnabled = NO; //so that day view is still touchable
+    
+    self.noCourseHUD = [[MBProgressHUD alloc] initWithView:self.dayView];
+    self.noCourseHUD.userInteractionEnabled = NO;
+    [self.dayView addSubview:self.noCourseHUD];
+    self.noCourseHUD.opacity = 0.5;
+    self.noCourseHUD.mode = MBProgressHUDModeText;
+    
+    [self calendarDayTimelineView:self.dayView didMoveToDate:self.dayView.date]; //force refresh
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self trackScreen];
     self.navigationController.navigationBar.hairlineDividerImageView.hidden = YES;
     [self.navigationController setToolbarHidden:NO];
 }
@@ -104,13 +123,13 @@
 #pragma mark - Refresh & actions
 
 - (void)refreshPressed {
+    [self trackAction:PCGAITrackerActionRefresh];
     [self refreshForDisplayedDay];
 }
 
 - (void)refreshForDisplayedDay {
-    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.dayView animated:YES];
-    hud.opacity = 0.6;
-    hud.userInteractionEnabled = NO; //so that day view is still touchable
+    [self.noCourseHUD hide:NO];
+    [self.progressHUD show:NO];
     [self.isaService cancelOperationsForDelegate:self];
     ScheduleRequest* req = [ScheduleRequest new];
     NSDate* monday8am = [self mondayReferenceDateForDate:self.dayView.date];
@@ -121,6 +140,7 @@
 
 - (void)todayPressed {
     self.dayView.date = [NSDate date];
+    [self calendarDayTimelineView:self.dayView didMoveToDate:self.dayView.date]; //force refresh
 }
 
 #pragma mark - Date utils
@@ -143,13 +163,14 @@
 #pragma mark - IsAcademiaService
 
 - (void)getScheduleForRequest:(ScheduleRequest *)request didReturn:(ScheduleResponse *)scheduleResponse {
-    [MBProgressHUD hideAllHUDsForView:self.dayView animated:YES];
+    [self.progressHUD hide:YES];
     switch (scheduleResponse.statusCode) {
         case IsaStatusCode_OK:
         {
             NSDate* date = request.weekStart ? [self mondayReferenceDateForDate:[NSDate dateWithTimeIntervalSince1970:request.weekStart/1000]] : [self mondayReferenceDateForDate:[NSDate date]];
             self.responseForReferenceDate[date] = scheduleResponse;
             [self.dayView reloadData];
+            [self calendarDayTimelineView:self.dayView didMoveToDate:self.dayView.date];
             break;
         }
         case IsaStatusCode_INVALID_SESSION:
@@ -191,6 +212,7 @@
             NSString* room = [actionSheet buttonTitleAtIndex:buttonIndex];
             UIViewController* viewController = [MapController viewControllerWithInitialSearchQuery:room];
             [self.navigationController pushViewController:viewController animated:YES];
+            [self trackAction:@"ViewRoomOnMap"];
         }
         self.detailsActionSheet = nil;
     }
@@ -199,7 +221,16 @@
 #pragma mark - TKCalendarDayViewDelegate
 
 - (void)calendarDayTimelineView:(TKCalendarDayView *)calendarDay didMoveToDate:(NSDate *)date {
-    if (!self.responseForReferenceDate[[self mondayReferenceDateForDate:date]]) {
+    ScheduleResponse* scheduleResponse = self.responseForReferenceDate[[self mondayReferenceDateForDate:date]];
+    if (scheduleResponse) {
+        StudyDay* studyDay = [scheduleResponse studyDayForDate:date];
+        if (studyDay.periods.count == 0) {
+            self.noCourseHUD.labelText = [date isToday] ? NSLocalizedStringFromTable(@"NoCourseToday", @"IsAcademiaPlugin", nil) : NSLocalizedStringFromTable(@"NoCourseOnThatDay", @"IsAcademiaPlugin", nil);
+            [self.noCourseHUD show:YES];
+        } else {
+            [self.noCourseHUD hide:NO];
+        }
+    } else {
         [self refreshForDisplayedDay];
     }
 }
@@ -222,6 +253,7 @@
     [self.detailsActionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
     self.detailsActionSheet.cancelButtonIndex = self.detailsActionSheet.numberOfButtons-1;
     [self.detailsActionSheet showFromToolbar:self.navigationController.toolbar];
+    [self trackAction:@"ViewPeriodProperties"];
 }
 
 #pragma mark - TKCalendarDayViewDataSource
@@ -232,7 +264,6 @@
     if (!studyDay) {
         return @[];
     }
-    
     NSMutableArray* eventViews = [NSMutableArray arrayWithCapacity:studyDay.periods.count];
     for (StudyPeriod* period in studyDay.periods) {
         IsAcademiaStudyPeriodCalendarDayEventView* view = (IsAcademiaStudyPeriodCalendarDayEventView*)[self.dayView dequeueReusableEventView];
