@@ -149,9 +149,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		int endMinutes = mDate.get(Calendar.MINUTE);
-		if (startHour < 8 || endHour > 19 || (endHour == 19 &&  endMinutes > 5)) {
+		if (startHour < 8 || endHour > 19 || (endHour == 19 && endMinutes > 5)) {
 			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Hours should be between 8am and 7pm, given " + startHour + ":" + endHour);
+					"Hours should be between 8am and 7pm, given " + startHour
+							+ ":" + endHour);
 		}
 
 		return mReply;
@@ -200,30 +201,31 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public OccupancyReply checkTheOccupancy(OccupancyRequest request)
 			throws TException {
 
-
 		OccupancyReply reply = new OccupancyReply(
 				HttpURLConnection.HTTP_CREATED, ""
 						+ HttpURLConnection.HTTP_CREATED);
-		
+
 		List<FRRoom> rooms = request.getListFRRoom();
-		
+
 		// we check there are no duplicate in the list!
 		HashSet<FRRoom> roomsAsSet = new HashSet<FRRoom>(rooms);
 		if (roomsAsSet.size() != rooms.size()) {
-			return new OccupancyReply(HttpURLConnection.HTTP_BAD_REQUEST, "Server don't accept duplicate rooms!");
+			return new OccupancyReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Server don't accept duplicate rooms!");
 		}
-		
+
 		FRPeriod period = request.getPeriod();
 		long timestampStart = period.getTimeStampStart();
 		long timestampEnd = period.getTimeStampEnd();
 
-		FreeRoomReply replyCheck = checkFreeRoomPeriod(timestampStart, timestampEnd);
+		FreeRoomReply replyCheck = checkFreeRoomPeriod(timestampStart,
+				timestampEnd);
 
 		if (replyCheck.getStatus() != HttpURLConnection.HTTP_OK) {
 			// if something is wrong in the request
-			return new OccupancyReply(replyCheck.getStatus(), replyCheck.getStatusComment());
+			return new OccupancyReply(replyCheck.getStatus(),
+					replyCheck.getStatusComment());
 		}
-		
 
 		ArrayList<Occupancy> occupancies = new ArrayList<Occupancy>();
 
@@ -254,7 +256,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				ResultSet resultQuery = query.executeQuery();
 				Occupancy mOccupancy = new Occupancy();
 				mOccupancy.setRoom(room);
-				
+
 				boolean isAtLeastOccupiedOnce = false;
 				boolean isAtLeastFreeOnce = false;
 
@@ -262,8 +264,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// FRPeriod
 				long tsPerRoom = timestampStart;
 				while (resultQuery.next()) {
-					long tsStart = Math.max(tsPerRoom, resultQuery.getLong("timestampStart"));
-					long tsEnd = Math.min(timestampEnd, resultQuery.getLong("timestampEnd"));
+					long tsStart = Math.max(tsPerRoom,
+							resultQuery.getLong("timestampStart"));
+					long tsEnd = Math.min(timestampEnd,
+							resultQuery.getLong("timestampEnd"));
 
 					if (tsStart - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
 						// We got a free period of time !
@@ -276,17 +280,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						isAtLeastFreeOnce = true;
 					}
 
-						ActualOccupation mAccOcc = new ActualOccupation();
-						// TODO reminder that recurrent is set to false for now,
-						// but
-						// it can evolve in the future
-						mAccOcc.setPeriod(new FRPeriod(tsStart, tsEnd, false));
-						mAccOcc.setAvailable(false);
-						// TODO reminder default value ISA
-						mAccOcc.setOccupationType(OccupationType.ISA);
-						mOccupancy.addToOccupancy(mAccOcc);
-						isAtLeastOccupiedOnce = true;
-					
+					ActualOccupation mAccOcc = new ActualOccupation();
+					// TODO reminder that recurrent is set to false for now,
+					// but
+					// it can evolve in the future
+					mAccOcc.setPeriod(new FRPeriod(tsStart, tsEnd, false));
+					mAccOcc.setAvailable(false);
+					// TODO reminder default value ISA
+					mAccOcc.setOccupationType(OccupationType.ISA);
+					mOccupancy.addToOccupancy(mAccOcc);
+					isAtLeastOccupiedOnce = true;
+
 					tsPerRoom = tsEnd;
 
 				}
@@ -300,10 +304,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					mOccupancy.addToOccupancy(mOcc);
 					isAtLeastFreeOnce = true;
 				}
-				
+
 				mOccupancy.setIsAtLeastFreeOnce(isAtLeastFreeOnce);
 				mOccupancy.setIsAtLeastOccupiedOnce(isAtLeastOccupiedOnce);
-				
+
 				occupancies.add(mOccupancy);
 				query.close();
 			}
@@ -331,6 +335,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						+ HttpURLConnection.HTTP_CREATED);
 
 		List<FRRoom> rooms = new ArrayList<FRRoom>();
+		Set<FRRoom> forbiddenRooms = request.getForbiddenRooms();
+		String forbidRoomsSQL = "";
+		if (forbiddenRooms != null) {
+			for (int i = forbiddenRooms.size(); i > 0; --i) {
+				if (i <= 1) {
+					forbidRoomsSQL += "?";
+				} else {
+					forbidRoomsSQL += "?,";
+				}
+			}
+		}
 		String txt = request.getConstraint();
 		// avoid all whitespaces for requests
 		// TODO: be resistent to empty queries!
@@ -338,12 +353,36 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		txt = txt.replaceAll("\\s", "");
 		try {
 			Connection connectBDD = connMgr.getConnection();
-			PreparedStatement query = connectBDD.prepareStatement("SELECT * "
-					+ "FROM roomslist rl "
-					+ "WHERE CONCAT(rl.building, rl.room_number) LIKE (?) "
-					// TODO: verify the order for CO 1 and CO 123 ...
-					+ "ORDER BY CONCAT(rl.building, rl.room_number) ASC");
+			String requestSQL = "";
+			if (forbiddenRooms == null) {
+				requestSQL = "SELECT * "
+						+ "FROM roomslist rl "
+						+ "WHERE CONCAT(rl.building, rl.room_number) LIKE (?) " +
+						"ORDER BY CONCAT(rl.building, rl.room_number) ASC" ;
+			} else {
+				requestSQL = "SELECT * "
+						+ "FROM roomslist rl "
+						+ "WHERE CONCAT(rl.building, rl.room_number) LIKE (?) " +
+						"AND CONCAT(rl.building, rl.room_number) NOT IN ("
+						+ forbidRoomsSQL
+						+ ") "
+						// TODO: verify the order for CO 1 and CO 123 ...
+						+ "ORDER BY CONCAT(rl.building, rl.room_number) ASC";
+			}
+			
+			PreparedStatement query = connectBDD
+					.prepareStatement(requestSQL);
 			query.setString(1, txt + "%");
+			
+			if (forbiddenRooms != null) {
+				int i = 2;
+				for (FRRoom room : forbiddenRooms) {
+					query.setString(i, room.getBuilding() + room.getNumber());
+					++i;
+				}
+			}
+			
+
 
 			// filling the query with values
 
