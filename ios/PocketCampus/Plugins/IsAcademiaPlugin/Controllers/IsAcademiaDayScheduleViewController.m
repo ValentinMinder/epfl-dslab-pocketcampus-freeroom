@@ -71,7 +71,6 @@
 
 - (void)viewDidLoad
 {
-#warning date label is wrong format (US)
     [super viewDidLoad];
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
     self.dayView.is24hClock = [PCUtils userLocaleIs24Hour];
@@ -263,7 +262,7 @@
 - (NSArray *)calendarDayTimelineView:(TKCalendarDayView *)calendarDay eventsForDate:(NSDate *)date {
     ScheduleResponse* scheduleResponse = self.responseForReferenceDate[[self mondayReferenceDateForDate:date]];
     StudyDay* studyDay = [scheduleResponse studyDayForDate:date];
-    if (!studyDay) {
+    if (!studyDay.periods.count) {
         return @[];
     }
     NSMutableArray* eventViews = [NSMutableArray arrayWithCapacity:studyDay.periods.count];

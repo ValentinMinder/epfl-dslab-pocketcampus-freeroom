@@ -388,7 +388,7 @@
 	return x / w;
 }
 - (void) _updateDateLabel{
-	self.formatter.dateFormat = @"EEEE MMMM d, yyyy";
+	self.formatter.dateStyle = NSDateFormatterFullStyle;
 	self.formatter.timeZone = self.calendar.timeZone;
 	self.monthYearLabel.text = [self.formatter stringFromDate:self.currentDay];
 }
