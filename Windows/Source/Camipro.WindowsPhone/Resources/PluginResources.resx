@@ -125,10 +125,10 @@
     <value>Current balance: </value>
   </data>
   <data name="EbankingAccountName" xml:space="preserve">
-    <value>Paid to: </value>
+    <value>Paid to</value>
   </data>
   <data name="EbankingAccountNumber" xml:space="preserve">
-    <value>Account number: </value>
+    <value>Account number</value>
   </data>
   <data name="EbankingHeader" xml:space="preserve">
     <value>e-banking</value>
@@ -138,13 +138,14 @@
     <comment>Make sure you translate this correctly</comment>
   </data>
   <data name="EbankingReferenceNumber" xml:space="preserve">
-    <value>Reference : </value>
+    <value>Reference</value>
   </data>
   <data name="EbankingWarning" xml:space="preserve">
-    <value>The amount cannot be greater than 300 CHF.
-This information can only be used for an online payment.
-Processing delay is 2 to 3 business days.</value>
-    <comment>Make sure you translate this correctly</comment>
+    <value>The amount cannot be greater than 300 CHF
+This info can only be used for online payments
+Processing delay is 3 business days</value>
+    <comment>Make sure you translate this correctly
+Also, try to keep each line short</comment>
   </data>
   <data name="EmailSendingStatus_Error" xml:space="preserve">
     <value>An error occurred while sending the e-mail. Please try again later.</value>

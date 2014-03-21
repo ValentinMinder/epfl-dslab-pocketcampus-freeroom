@@ -63,7 +63,7 @@ namespace PocketCampus.Camipro.ViewModels.Design
                         },
                         new Transaction
                         {
-                            Amount = 120.00,
+                            Amount = -7.00,
                             Operation = "Vente",
                             Place = "Compass Hodler 1",
                             Date = new DateTime(2013, 5, 13, 11, 32, 14)
