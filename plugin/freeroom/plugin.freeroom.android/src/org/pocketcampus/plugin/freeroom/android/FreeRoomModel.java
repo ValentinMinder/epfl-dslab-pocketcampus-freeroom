@@ -283,5 +283,25 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return map;
 	}
 
+	/**
+	 * Returns the building part in mDoorCode.
+	 * 
+	 * Door codes should be like PH D2 398
+	 * with PH the building
+	 * D2 the zone
+	 * 398 the number (including floor)
+	 * 
+	 * It works ONLY if spaces are correctly set!
+	 * @param mDoorCode
+	 * @return
+	 */
+	public String getBuilding(String mDoorCode) {
+		mDoorCode = mDoorCode.trim();
+		int firstSpace = mDoorCode.indexOf(" ");
+		if (firstSpace > 0) {
+			mDoorCode = mDoorCode.substring(0, firstSpace);
+		}
+		return mDoorCode;
+	}
 	
 }

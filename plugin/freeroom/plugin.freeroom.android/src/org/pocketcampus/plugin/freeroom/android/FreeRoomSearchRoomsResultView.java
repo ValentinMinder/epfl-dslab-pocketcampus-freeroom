@@ -159,20 +159,21 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implemen
 		// keep a structure organized as building -> list of rooms in the
 		// building
 		for (FRRoom frRoom : res) {
-			String roomDisplay = frRoom.getBuilding() + frRoom.getNumber();
-			boolean isFavorite = mModel.isFavoriteRoom(roomDisplay);
+			String mDoorCode = frRoom.getDoorCode();
+			boolean isFavorite = mModel.isFavoriteRoom(mDoorCode);
 			
 			if (isFavorite) {
-				roomsFavorites.add(roomDisplay);
+				roomsFavorites.add(mDoorCode);
 			}
+			String building = mModel.getBuilding(mDoorCode);
 			
-			List<String> roomsNumbers = sortedRooms.get(frRoom.getBuilding());
+			List<String> roomsNumbers = sortedRooms.get(building);
 			if (roomsNumbers == null) {
-				buildings.add(frRoom.getBuilding());
+				buildings.add(building);
 				roomsNumbers = new ArrayList<String>();
-				sortedRooms.put(frRoom.getBuilding(), roomsNumbers);
+				sortedRooms.put(building, roomsNumbers);
 			}
-			roomsNumbers.add(roomDisplay);
+			roomsNumbers.add(mDoorCode);
 
 		}
 

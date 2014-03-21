@@ -393,7 +393,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		while (iter.hasNext()) {
 			empty = false;
 			room = iter.next();
-			buffer.append(room.getBuilding() + room.getNumber() + ", ");
+			buffer.append(room.getDoorCode() + ", ");
 		}
 		buffer.setLength(buffer.length() - 2);
 		String result = "";
@@ -680,8 +680,15 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		// constructs the request
 		FRPeriod period = new FRPeriod(start.getTimeInMillis(),
 				end.getTimeInMillis(), false);
-		OccupancyRequest request = new OccupancyRequest(
-				mSelectedRoomsToQueryArrayList, period);
+		
+		// mSelectedRoomsToQueryArrayList
+		List<String> mUIDList = new ArrayList<String>(mSelectedRoomsToQueryArrayList.size());
+		Iterator<FRRoom> iter = mSelectedRoomsToQueryArrayList.iterator();
+		while (iter.hasNext()) {
+			FRRoom room = iter.next();
+			mUIDList.add(room.getUid());
+		}
+		OccupancyRequest request = new OccupancyRequest(mUIDList, period);
 
 		// starting the result UI before sending the request
 		Intent i = new Intent(FreeRoomCheckOccupancySearchView.this,
@@ -781,8 +788,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 			// rooms that are already selected are not displayed...
 			if (!mSelectedRoomsToQueryHashSet.contains(room)) {
 				String result = "";
-				result += room.getBuilding() + " ";
-				result += room.getNumber() + " ";
+				result += room.getDoorCode();
 				int capacity = room.getCapacity();
 				FRRoomType t = room.getType();
 				if (capacity > 0 && t != null) {

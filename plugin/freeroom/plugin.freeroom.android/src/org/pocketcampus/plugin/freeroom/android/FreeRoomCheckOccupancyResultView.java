@@ -183,8 +183,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 			FRRoom mFRRoom = occupation.getRoom();
 			List<ActualOccupation> mListActualOccupation = occupation
 					.getOccupancy();
-			String mRoomAsString = mFRRoom.getBuilding() + mFRRoom.getNumber();
-			Log.v("check-res", mRoomAsString);
+			String mRoomAsString = mFRRoom.getDoorCode();
 			mListRoom += mRoomAsString + ", ";
 
 			ArrayList<String> mListActualOccupationAsString = new ArrayList<String>(
