@@ -32,37 +32,16 @@
         <my:DownloadStateToBooleanConverter x:Key="DownloadStateToBool" />
         <my:CourseSectionsToGroupsConverter x:Key="SectionsToGroups" />
 
-        <!-- Simple button template without border or background -->
-        <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
-            <Grid x:Name="Container"
-                  Background="Transparent">
-                <ContentPresenter Margin="{TemplateBinding Padding}" />
-
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal" />
-                        <VisualState x:Name="Pressed">
-                            <Storyboard>
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Container"
-                                                               Storyboard.TargetProperty="Background">
-                                    <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{StaticResource PhoneAccentBrush}" />
-                                    <DiscreteObjectKeyFrame KeyTime="00:00:00.3" Value="Transparent" />
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-            </Grid>
-        </ControlTemplate>
-
         <!-- File template -->
         <DataTemplate x:Key="FileTemplate">
             <!-- BUG: Binding with ElementName fails (namescopes, perhaps?),
                       using code-behind for the command instead -->
-            <Button Template="{StaticResource SimpleButtonTemplate}"
-                    CommandParameter="{Binding}"
+            <Button CommandParameter="{Binding}"
                     Tap="FileButton_Tap"
-                    Padding="10">
+                    BorderThickness="0"
+                    HorizontalContentAlignment="Left"
+                    Margin="0"
+                    Padding="17,4,0,8">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -77,9 +56,9 @@
                     <!-- Name -->
                     <TextBlock Grid.Column="1"
                                Text="{Binding Name, Converter={StaticResource RemoveExtension}}"
+                               TextWrapping="Wrap"
                                Style="{StaticResource PhoneTextTitle3Style}"
-                               VerticalAlignment="Center"
-                               TextTrimming="WordEllipsis" />
+                               VerticalAlignment="Center" />
                 </Grid>
             </Button>
         </DataTemplate>
@@ -88,8 +67,9 @@
         <DataTemplate x:Key="CoursePivotHeaderTemplate">
             <Border Height="56">
                 <TextBlock Text="{Binding Name}"
-                           FontSize="{StaticResource PhoneFontSizeLarge}"
+                           Style="{StaticResource AppTextTitle2Style}"
                            MaxHeight="400"
+                           Margin="2,0"
                            VerticalAlignment="Bottom" />
             </Border>
         </DataTemplate>
@@ -99,7 +79,7 @@
             <TextBlock Text="{Binding Name}"
                        Style="{StaticResource PhoneTextLargeStyle}"
                        Foreground="{StaticResource PhoneSubtleBrush}"
-                       Margin="0" />
+                       Margin="12,0" />
         </DataTemplate>
 
         <!-- Section names in the LongListSelector jump list -->
@@ -115,21 +95,19 @@
             <Setter Property="ItemTemplate" Value="{StaticResource SectionJumpListItemTemplate}" />
         </Style>
 
+        <!-- Footer template for margin after groups -->
+        <DataTemplate x:Name="SpacerFooterTemplate">
+            <Rectangle Height="30" />
+        </DataTemplate>
+
         <!-- Course template -->
         <DataTemplate x:Key="CourseTemplate">
             <phone:LongListSelector ItemsSource="{Binding Sections, Converter={StaticResource SectionsToGroups}}"
                                     ItemTemplate="{StaticResource FileTemplate}"
                                     IsGroupingEnabled="True"
                                     GroupHeaderTemplate="{StaticResource SectionHeaderTemplate}"
-                                    JumpListStyle="{StaticResource CourseJumpListStyle}"
-                                    Margin="0,-15,0,0">
-                <!-- HACK: Margin after groups, provided by a footer -->
-                <phone:LongListSelector.GroupFooterTemplate>
-                    <DataTemplate>
-                        <Rectangle Height="30" />
-                    </DataTemplate>
-                </phone:LongListSelector.GroupFooterTemplate>
-            </phone:LongListSelector>
+                                    GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
+                                    JumpListStyle="{StaticResource CourseJumpListStyle}" />
         </DataTemplate>
     </comControls:BasePage.Resources>
 
@@ -172,7 +150,7 @@
 
     <!-- App bar -->
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar>
+        <bar:BindableApplicationBar Mode="Minimized">
             <!-- "Refresh" button -->
             <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"
                                               Text="{Binding Resources.RefreshButton, Source={StaticResource Strings}}"
