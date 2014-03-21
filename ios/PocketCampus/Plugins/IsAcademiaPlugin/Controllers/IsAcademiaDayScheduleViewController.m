@@ -39,15 +39,19 @@
 
 #import "MBProgressHUD.h"
 
+static const NSTimeInterval kRefreshInterval = 300.0; //5min
+
 @interface IsAcademiaDayScheduleViewController ()<IsAcademiaServiceDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) IsAcademiaService* isaService;
 @property (nonatomic, strong) NSMutableDictionary* responseForReferenceDate;
 
 @property (nonatomic, strong) MBProgressHUD* progressHUD;
-@property (nonatomic, strong) MBProgressHUD* noCourseHUD;
+@property (nonatomic, strong) MBProgressHUD* messageHUD;
 
 @property (nonatomic, strong) UIActionSheet* detailsActionSheet;
+
+@property (nonatomic, strong) NSDate* lastRefreshDate;
 
 @end
 
@@ -86,11 +90,11 @@
     self.progressHUD.opacity = 0.6;
     self.progressHUD.userInteractionEnabled = NO; //so that day view is still touchable
     
-    self.noCourseHUD = [[MBProgressHUD alloc] initWithView:self.dayView];
-    self.noCourseHUD.userInteractionEnabled = NO;
-    [self.dayView addSubview:self.noCourseHUD];
-    self.noCourseHUD.opacity = 0.5;
-    self.noCourseHUD.mode = MBProgressHUDModeText;
+    self.messageHUD = [[MBProgressHUD alloc] initWithView:self.dayView];
+    self.messageHUD.userInteractionEnabled = NO;
+    [self.dayView addSubview:self.messageHUD];
+    self.messageHUD.opacity = 0.5;
+    self.messageHUD.mode = MBProgressHUDModeText;
     
     [self calendarDayTimelineView:self.dayView didMoveToDate:self.dayView.date]; //force refresh
 }
@@ -122,9 +126,17 @@
 
 - (void)appDidBecomeActive {
     [self.dayView reloadData];
+    [self refreshAndGoToTodayIfNeeded];
 }
 
 #pragma mark - Refresh & actions
+
+- (void)refreshAndGoToTodayIfNeeded {
+    if (!self.lastRefreshDate || abs([self.lastRefreshDate timeIntervalSinceNow]) > kRefreshInterval) {
+        self.dayView.date = [NSDate date];
+        [self refreshForDisplayedDay];
+    }
+}
 
 - (void)refreshPressed {
     [self trackAction:PCGAITrackerActionRefresh];
@@ -132,7 +144,8 @@
 }
 
 - (void)refreshForDisplayedDay {
-    [self.noCourseHUD hide:NO];
+    self.lastRefreshDate = [NSDate date];
+    [self.messageHUD hide:NO];
     [self.progressHUD show:NO];
     [self.isaService cancelOperationsForDelegate:self];
     ScheduleRequest* req = [ScheduleRequest new];
@@ -202,12 +215,16 @@
 
 - (void)getScheduleFailedForRequest:(ScheduleRequest *)request {
     [self.progressHUD hide:NO];
-    [PCUtils showServerErrorAlert];
+    self.messageHUD.labelText = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
+    self.messageHUD.detailsLabelText = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil);
+    [self.messageHUD show:NO];
 }
 
 - (void)serviceConnectionToServerFailed {
     [self.progressHUD hide:NO];
-    [PCUtils showConnectionToServerTimedOutAlert];
+    self.messageHUD.labelText = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
+    self.messageHUD.detailsLabelText = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil);
+    [self.messageHUD show:NO];
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -231,10 +248,11 @@
     if (scheduleResponse) {
         StudyDay* studyDay = [scheduleResponse studyDayForDate:date];
         if (studyDay.periods.count == 0) {
-            self.noCourseHUD.labelText = [date isToday] ? NSLocalizedStringFromTable(@"NoCourseToday", @"IsAcademiaPlugin", nil) : NSLocalizedStringFromTable(@"NoCourseOnThatDay", @"IsAcademiaPlugin", nil);
-            [self.noCourseHUD show:YES];
+            self.messageHUD.labelText = [date isToday] ? NSLocalizedStringFromTable(@"NoCourseToday", @"IsAcademiaPlugin", nil) : NSLocalizedStringFromTable(@"NoCourseOnThatDay", @"IsAcademiaPlugin", nil);
+            self.messageHUD.detailsLabelText = nil;
+            [self.messageHUD show:YES];
         } else {
-            [self.noCourseHUD hide:NO];
+            [self.messageHUD hide:NO];
         }
     } else {
         [self refreshForDisplayedDay];

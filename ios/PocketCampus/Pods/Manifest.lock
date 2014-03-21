@@ -23,7 +23,7 @@ PODS:
   - MBProgressHUD (0.8)
   - NSTimer-Blocks (0.0.1)
   - SSKeychain (1.2.1)
-  - TapkuLibrary (HEAD based on 0.3.3)
+  - TapkuLibrary (0.3.4)
   - TUSafariActivity (1.0.0)
 
 DEPENDENCIES:
@@ -33,8 +33,12 @@ DEPENDENCIES:
   - MBProgressHUD
   - NSTimer-Blocks
   - SSKeychain (~> 1.2)
-  - TapkuLibrary (HEAD)
+  - TapkuLibrary (from `git@github.com:loicgardiol/tapkulibrary.git`)
   - TUSafariActivity
+
+EXTERNAL SOURCES:
+  TapkuLibrary:
+    :git: git@github.com:loicgardiol/tapkulibrary.git
 
 SPEC CHECKSUMS:
   AFNetworking: 0121f4b69be3fa58d1ab317866e036e12ac9651d
@@ -43,7 +47,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
   NSTimer-Blocks: 99f52d61c29429d7e8ef0c82e596f317addb9421
   SSKeychain: d18926838c2e7cd342e2a49e9f869858e49f035a
-  TapkuLibrary: ba2ece1a466fafbab6394e93c527bb1ddb9f39f5
+  TapkuLibrary: 4ed05848ca4926c39f1da29d41695c1c516dcb1d
   TUSafariActivity: bd9da588f5f9136ba445d89f8f86b6dccf4d46ba
 
 COCOAPODS: 0.29.0

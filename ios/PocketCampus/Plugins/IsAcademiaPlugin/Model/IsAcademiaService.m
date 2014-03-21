@@ -64,6 +64,7 @@ static IsAcademiaService* instance __weak = nil;
     [PCUtils throwExceptionIfObject:request notKindOfClass:[ScheduleRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.cacheValidityInterval = 1800.0; //30 min
+    operation.returnEvenStaleCacheIfNoInternetConnection = YES;
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* returnedValue) {
         ScheduleResponse* response = (__bridge id)returnedValue;
