@@ -39,8 +39,6 @@
 
 #import "MBProgressHUD.h"
 
-static const NSTimeInterval kRefreshInterval = 300.0; //5min
-
 @interface IsAcademiaDayScheduleViewController ()<IsAcademiaServiceDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) IsAcademiaService* isaService;
@@ -132,7 +130,7 @@ static const NSTimeInterval kRefreshInterval = 300.0; //5min
 #pragma mark - Refresh & actions
 
 - (void)refreshAndGoToTodayIfNeeded {
-    if (!self.lastRefreshDate || abs([self.lastRefreshDate timeIntervalSinceNow]) > kRefreshInterval) {
+    if (!self.lastRefreshDate || ![self.lastRefreshDate isToday]) {
         self.dayView.date = [NSDate date];
         [self refreshForDisplayedDay];
     }
@@ -156,6 +154,7 @@ static const NSTimeInterval kRefreshInterval = 300.0; //5min
 }
 
 - (void)todayPressed {
+    [self trackAction:@"Today"];
     self.dayView.date = [NSDate date];
     [self calendarDayTimelineView:self.dayView didMoveToDate:self.dayView.date]; //force refresh
 }
