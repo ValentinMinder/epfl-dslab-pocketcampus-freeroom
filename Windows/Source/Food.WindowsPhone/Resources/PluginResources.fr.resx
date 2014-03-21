@@ -187,7 +187,7 @@
     <value>actualiser</value>
   </data>
   <data name="HalfPrice" xml:space="preserve">
-    <value>1/2 :</value>
+    <value>1/2</value>
     <comment>Must be VERY short</comment>
   </data>
   <data name="MainViewTitle" xml:space="preserve">

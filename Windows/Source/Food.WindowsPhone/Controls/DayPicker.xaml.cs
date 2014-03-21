@@ -31,6 +31,17 @@ namespace PocketCampus.Food.Controls
             DependencyProperty.Register( "Value", typeof( DateTime ), typeof( DayPicker ), new PropertyMetadata( DateTime.Now ) );
         #endregion
 
+        #region TextStyle DependencyProperty
+        public Style TextStyle
+        {
+            get { return (Style) GetValue( TextStyleProperty ); }
+            set { SetValue( TextStyleProperty, value ); }
+        }
+
+        public static readonly DependencyProperty TextStyleProperty =
+            DependencyProperty.Register( "TextStyle", typeof( Style ), typeof( DayPicker ), new PropertyMetadata( null ) );
+        #endregion
+
         /// <summary>
         /// Gets the command executed to select the previous day.
         /// </summary>
