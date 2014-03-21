@@ -2,7 +2,9 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+#if !DEBUG
 using GoogleAnalytics;
+#endif
 using PocketCampus.Mvvm.Logging;
 
 namespace PocketCampus.Main.Services
@@ -19,7 +21,9 @@ namespace PocketCampus.Main.Services
         /// </summary>
         protected override void LogNavigation( string id )
         {
+#if !DEBUG
             EasyTracker.GetTracker().SendView( id );
+#endif
         }
 
         /// <summary>
@@ -27,7 +31,9 @@ namespace PocketCampus.Main.Services
         /// </summary>
         protected override void LogEvent( string viewModelId, string eventId, string label )
         {
+#if !DEBUG
             EasyTracker.GetTracker().SendEvent( EventCategory, viewModelId + "-" + eventId, label, 0 );
+#endif
         }
     }
 }
