@@ -153,7 +153,7 @@ namespace PocketCampus.IsAcademia.Controls
                 AddPeriodsToCanvas( canvas, size, displayedDays[n] );
                 Children.Add( canvas );
                 canvas.Measure( size );
-                _arrangeSizes.Add( canvas, new Rect( HoursGridWidth + canvasWidth * n, 0, canvasWidth, availableSize.Height ) );
+                _arrangeSizes.Add( canvas, new Rect( Math.Floor( HoursGridWidth + canvasWidth * n ), 0, canvasWidth, availableSize.Height ) );
             }
 
             return availableSize;

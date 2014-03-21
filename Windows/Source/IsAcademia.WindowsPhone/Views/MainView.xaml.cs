@@ -4,12 +4,14 @@
 
 using System;
 using System.Windows;
-using System.Windows.Input;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 using PocketCampus.Common;
 using PocketCampus.Common.Controls;
 using PocketCampus.IsAcademia.Models;
 using PocketCampus.Mvvm;
 using PocketCampus.Mvvm.Logging;
+using SysWinInput = System.Windows.Input;
 
 namespace PocketCampus.IsAcademia.Views
 {
@@ -20,7 +22,7 @@ namespace PocketCampus.IsAcademia.Views
             InitializeComponent();
         }
 
-        private void Period_Tap( object sender, GestureEventArgs e )
+        private void Period_Tap( object sender, SysWinInput.GestureEventArgs e )
         {
             var period = (Period) ( (FrameworkElement) sender ).DataContext;
             var converter = (EnumToLocalizedStringConverter) Resources["EnumToString"];
@@ -29,6 +31,15 @@ namespace PocketCampus.IsAcademia.Views
 
             MessageBox.Show( text, period.CourseName, MessageBoxButton.OK );
             Messenger.Send( new EventLogRequest( "ViewPeriodProperties", period.CourseName ) );
+        }
+
+        // Hide the application bar (it can't be minimized) and system tray in landscape mode
+        // (can't be done from visual states for some reason)
+        private void Page_OrientationChanged( object sender, OrientationChangedEventArgs e )
+        {
+            bool isPortrait = Orientation.HasFlag( PageOrientation.Portrait );
+            ApplicationBar.IsVisible = isPortrait;
+            SystemTray.SetIsVisible( this, isPortrait );
         }
     }
 }
