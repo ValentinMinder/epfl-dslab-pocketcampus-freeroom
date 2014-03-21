@@ -25,12 +25,15 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FreeRoomRequest");
 
   private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+  private static final org.apache.thrift.protocol.TField FORBIDDEN_ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("forbiddenRooms", org.apache.thrift.protocol.TType.SET, (short)2);
 
   private FRPeriod period; // required
+  private Set<FRRoom> forbiddenRooms; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    PERIOD((short)1, "period");
+    PERIOD((short)1, "period"),
+    FORBIDDEN_ROOMS((short)2, "forbiddenRooms");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -47,6 +50,8 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
       switch(fieldId) {
         case 1: // PERIOD
           return PERIOD;
+        case 2: // FORBIDDEN_ROOMS
+          return FORBIDDEN_ROOMS;
         default:
           return null;
       }
@@ -93,6 +98,9 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.PERIOD, new org.apache.thrift.meta_data.FieldMetaData("period", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
+    tmpMap.put(_Fields.FORBIDDEN_ROOMS, new org.apache.thrift.meta_data.FieldMetaData("forbiddenRooms", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.SetMetaData(org.apache.thrift.protocol.TType.SET, 
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FreeRoomRequest.class, metaDataMap);
   }
@@ -114,6 +122,13 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
     if (other.isSetPeriod()) {
       this.period = new FRPeriod(other.period);
     }
+    if (other.isSetForbiddenRooms()) {
+      Set<FRRoom> __this__forbiddenRooms = new HashSet<FRRoom>();
+      for (FRRoom other_element : other.forbiddenRooms) {
+        __this__forbiddenRooms.add(new FRRoom(other_element));
+      }
+      this.forbiddenRooms = __this__forbiddenRooms;
+    }
   }
 
   public FreeRoomRequest deepCopy() {
@@ -123,6 +138,7 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
   @Override
   public void clear() {
     this.period = null;
+    this.forbiddenRooms = null;
   }
 
   public FRPeriod getPeriod() {
@@ -149,6 +165,45 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
     }
   }
 
+  public int getForbiddenRoomsSize() {
+    return (this.forbiddenRooms == null) ? 0 : this.forbiddenRooms.size();
+  }
+
+  public java.util.Iterator<FRRoom> getForbiddenRoomsIterator() {
+    return (this.forbiddenRooms == null) ? null : this.forbiddenRooms.iterator();
+  }
+
+  public void addToForbiddenRooms(FRRoom elem) {
+    if (this.forbiddenRooms == null) {
+      this.forbiddenRooms = new HashSet<FRRoom>();
+    }
+    this.forbiddenRooms.add(elem);
+  }
+
+  public Set<FRRoom> getForbiddenRooms() {
+    return this.forbiddenRooms;
+  }
+
+  public FreeRoomRequest setForbiddenRooms(Set<FRRoom> forbiddenRooms) {
+    this.forbiddenRooms = forbiddenRooms;
+    return this;
+  }
+
+  public void unsetForbiddenRooms() {
+    this.forbiddenRooms = null;
+  }
+
+  /** Returns true if field forbiddenRooms is set (has been assigned a value) and false otherwise */
+  public boolean isSetForbiddenRooms() {
+    return this.forbiddenRooms != null;
+  }
+
+  public void setForbiddenRoomsIsSet(boolean value) {
+    if (!value) {
+      this.forbiddenRooms = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case PERIOD:
@@ -159,6 +214,14 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
       }
       break;
 
+    case FORBIDDEN_ROOMS:
+      if (value == null) {
+        unsetForbiddenRooms();
+      } else {
+        setForbiddenRooms((Set<FRRoom>)value);
+      }
+      break;
+
     }
   }
 
@@ -166,6 +229,9 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
     switch (field) {
     case PERIOD:
       return getPeriod();
+
+    case FORBIDDEN_ROOMS:
+      return getForbiddenRooms();
 
     }
     throw new IllegalStateException();
@@ -180,6 +246,8 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
     switch (field) {
     case PERIOD:
       return isSetPeriod();
+    case FORBIDDEN_ROOMS:
+      return isSetForbiddenRooms();
     }
     throw new IllegalStateException();
   }
@@ -206,6 +274,15 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
         return false;
     }
 
+    boolean this_present_forbiddenRooms = true && this.isSetForbiddenRooms();
+    boolean that_present_forbiddenRooms = true && that.isSetForbiddenRooms();
+    if (this_present_forbiddenRooms || that_present_forbiddenRooms) {
+      if (!(this_present_forbiddenRooms && that_present_forbiddenRooms))
+        return false;
+      if (!this.forbiddenRooms.equals(that.forbiddenRooms))
+        return false;
+    }
+
     return true;
   }
 
@@ -217,6 +294,11 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
     builder.append(present_period);
     if (present_period)
       builder.append(period);
+
+    boolean present_forbiddenRooms = true && (isSetForbiddenRooms());
+    builder.append(present_forbiddenRooms);
+    if (present_forbiddenRooms)
+      builder.append(forbiddenRooms);
 
     return builder.toHashCode();
   }
@@ -235,6 +317,16 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
     }
     if (isSetPeriod()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.period, typedOther.period);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetForbiddenRooms()).compareTo(typedOther.isSetForbiddenRooms());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetForbiddenRooms()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.forbiddenRooms, typedOther.forbiddenRooms);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -264,6 +356,24 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 2: // FORBIDDEN_ROOMS
+          if (field.type == org.apache.thrift.protocol.TType.SET) {
+            {
+              org.apache.thrift.protocol.TSet _set4 = iprot.readSetBegin();
+              this.forbiddenRooms = new HashSet<FRRoom>(2*_set4.size);
+              for (int _i5 = 0; _i5 < _set4.size; ++_i5)
+              {
+                FRRoom _elem6; // required
+                _elem6 = new FRRoom();
+                _elem6.read(iprot);
+                this.forbiddenRooms.add(_elem6);
+              }
+              iprot.readSetEnd();
+            }
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -284,6 +394,20 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
       this.period.write(oprot);
       oprot.writeFieldEnd();
     }
+    if (this.forbiddenRooms != null) {
+      if (isSetForbiddenRooms()) {
+        oprot.writeFieldBegin(FORBIDDEN_ROOMS_FIELD_DESC);
+        {
+          oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRUCT, this.forbiddenRooms.size()));
+          for (FRRoom _iter7 : this.forbiddenRooms)
+          {
+            _iter7.write(oprot);
+          }
+          oprot.writeSetEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -300,6 +424,16 @@ public class FreeRoomRequest implements org.apache.thrift.TBase<FreeRoomRequest,
       sb.append(this.period);
     }
     first = false;
+    if (isSetForbiddenRooms()) {
+      if (!first) sb.append(", ");
+      sb.append("forbiddenRooms:");
+      if (this.forbiddenRooms == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.forbiddenRooms);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }

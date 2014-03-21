@@ -10,8 +10,8 @@ enum FRRoomType{
 }
 
 struct FRRoom{
-	1: required string building;
-	2: required string number;
+	1: required string doorCode;
+	2: required string uid;
 	3: optional FRRoomType type;
 	4: optional i32 capacity;
 }
@@ -44,6 +44,7 @@ struct FreeRoomReply {
 // standard request for a free room
 struct FreeRoomRequest {
 	1: required FRPeriod period;
+	2: optional set<FRRoom> forbiddenRooms;
 }
 
 enum OccupationType {
@@ -71,7 +72,7 @@ struct Occupancy {
 
 // check the occupancy request
 struct OccupancyRequest {
-	1: required list<FRRoom> listFRRoom;
+	1: required list<string> uids;
 	2: required FRPeriod period;
 }
 

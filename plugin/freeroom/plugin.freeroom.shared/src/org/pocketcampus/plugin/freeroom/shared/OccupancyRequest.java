@@ -24,15 +24,15 @@ import org.slf4j.LoggerFactory;
 public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyRequest, OccupancyRequest._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("OccupancyRequest");
 
-  private static final org.apache.thrift.protocol.TField LIST_FRROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("listFRRoom", org.apache.thrift.protocol.TType.LIST, (short)1);
+  private static final org.apache.thrift.protocol.TField UIDS_FIELD_DESC = new org.apache.thrift.protocol.TField("uids", org.apache.thrift.protocol.TType.LIST, (short)1);
   private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)2);
 
-  private List<FRRoom> listFRRoom; // required
+  private List<String> uids; // required
   private FRPeriod period; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    LIST_FRROOM((short)1, "listFRRoom"),
+    UIDS((short)1, "uids"),
     PERIOD((short)2, "period");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -48,8 +48,8 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // LIST_FRROOM
-          return LIST_FRROOM;
+        case 1: // UIDS
+          return UIDS;
         case 2: // PERIOD
           return PERIOD;
         default:
@@ -96,9 +96,9 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.LIST_FRROOM, new org.apache.thrift.meta_data.FieldMetaData("listFRRoom", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.UIDS, new org.apache.thrift.meta_data.FieldMetaData("uids", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class))));
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.PERIOD, new org.apache.thrift.meta_data.FieldMetaData("period", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRPeriod.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -109,11 +109,11 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
   }
 
   public OccupancyRequest(
-    List<FRRoom> listFRRoom,
+    List<String> uids,
     FRPeriod period)
   {
     this();
-    this.listFRRoom = listFRRoom;
+    this.uids = uids;
     this.period = period;
   }
 
@@ -121,12 +121,12 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
    * Performs a deep copy on <i>other</i>.
    */
   public OccupancyRequest(OccupancyRequest other) {
-    if (other.isSetListFRRoom()) {
-      List<FRRoom> __this__listFRRoom = new ArrayList<FRRoom>();
-      for (FRRoom other_element : other.listFRRoom) {
-        __this__listFRRoom.add(new FRRoom(other_element));
+    if (other.isSetUids()) {
+      List<String> __this__uids = new ArrayList<String>();
+      for (String other_element : other.uids) {
+        __this__uids.add(other_element);
       }
-      this.listFRRoom = __this__listFRRoom;
+      this.uids = __this__uids;
     }
     if (other.isSetPeriod()) {
       this.period = new FRPeriod(other.period);
@@ -139,46 +139,46 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
 
   @Override
   public void clear() {
-    this.listFRRoom = null;
+    this.uids = null;
     this.period = null;
   }
 
-  public int getListFRRoomSize() {
-    return (this.listFRRoom == null) ? 0 : this.listFRRoom.size();
+  public int getUidsSize() {
+    return (this.uids == null) ? 0 : this.uids.size();
   }
 
-  public java.util.Iterator<FRRoom> getListFRRoomIterator() {
-    return (this.listFRRoom == null) ? null : this.listFRRoom.iterator();
+  public java.util.Iterator<String> getUidsIterator() {
+    return (this.uids == null) ? null : this.uids.iterator();
   }
 
-  public void addToListFRRoom(FRRoom elem) {
-    if (this.listFRRoom == null) {
-      this.listFRRoom = new ArrayList<FRRoom>();
+  public void addToUids(String elem) {
+    if (this.uids == null) {
+      this.uids = new ArrayList<String>();
     }
-    this.listFRRoom.add(elem);
+    this.uids.add(elem);
   }
 
-  public List<FRRoom> getListFRRoom() {
-    return this.listFRRoom;
+  public List<String> getUids() {
+    return this.uids;
   }
 
-  public OccupancyRequest setListFRRoom(List<FRRoom> listFRRoom) {
-    this.listFRRoom = listFRRoom;
+  public OccupancyRequest setUids(List<String> uids) {
+    this.uids = uids;
     return this;
   }
 
-  public void unsetListFRRoom() {
-    this.listFRRoom = null;
+  public void unsetUids() {
+    this.uids = null;
   }
 
-  /** Returns true if field listFRRoom is set (has been assigned a value) and false otherwise */
-  public boolean isSetListFRRoom() {
-    return this.listFRRoom != null;
+  /** Returns true if field uids is set (has been assigned a value) and false otherwise */
+  public boolean isSetUids() {
+    return this.uids != null;
   }
 
-  public void setListFRRoomIsSet(boolean value) {
+  public void setUidsIsSet(boolean value) {
     if (!value) {
-      this.listFRRoom = null;
+      this.uids = null;
     }
   }
 
@@ -208,11 +208,11 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case LIST_FRROOM:
+    case UIDS:
       if (value == null) {
-        unsetListFRRoom();
+        unsetUids();
       } else {
-        setListFRRoom((List<FRRoom>)value);
+        setUids((List<String>)value);
       }
       break;
 
@@ -229,8 +229,8 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case LIST_FRROOM:
-      return getListFRRoom();
+    case UIDS:
+      return getUids();
 
     case PERIOD:
       return getPeriod();
@@ -246,8 +246,8 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
     }
 
     switch (field) {
-    case LIST_FRROOM:
-      return isSetListFRRoom();
+    case UIDS:
+      return isSetUids();
     case PERIOD:
       return isSetPeriod();
     }
@@ -267,12 +267,12 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
     if (that == null)
       return false;
 
-    boolean this_present_listFRRoom = true && this.isSetListFRRoom();
-    boolean that_present_listFRRoom = true && that.isSetListFRRoom();
-    if (this_present_listFRRoom || that_present_listFRRoom) {
-      if (!(this_present_listFRRoom && that_present_listFRRoom))
+    boolean this_present_uids = true && this.isSetUids();
+    boolean that_present_uids = true && that.isSetUids();
+    if (this_present_uids || that_present_uids) {
+      if (!(this_present_uids && that_present_uids))
         return false;
-      if (!this.listFRRoom.equals(that.listFRRoom))
+      if (!this.uids.equals(that.uids))
         return false;
     }
 
@@ -292,10 +292,10 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_listFRRoom = true && (isSetListFRRoom());
-    builder.append(present_listFRRoom);
-    if (present_listFRRoom)
-      builder.append(listFRRoom);
+    boolean present_uids = true && (isSetUids());
+    builder.append(present_uids);
+    if (present_uids)
+      builder.append(uids);
 
     boolean present_period = true && (isSetPeriod());
     builder.append(present_period);
@@ -313,12 +313,12 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
     int lastComparison = 0;
     OccupancyRequest typedOther = (OccupancyRequest)other;
 
-    lastComparison = Boolean.valueOf(isSetListFRRoom()).compareTo(typedOther.isSetListFRRoom());
+    lastComparison = Boolean.valueOf(isSetUids()).compareTo(typedOther.isSetUids());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetListFRRoom()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.listFRRoom, typedOther.listFRRoom);
+    if (isSetUids()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.uids, typedOther.uids);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -350,17 +350,16 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
         break;
       }
       switch (field.id) {
-        case 1: // LIST_FRROOM
+        case 1: // UIDS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-              this.listFRRoom = new ArrayList<FRRoom>(_list8.size);
-              for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+              org.apache.thrift.protocol.TList _list12 = iprot.readListBegin();
+              this.uids = new ArrayList<String>(_list12.size);
+              for (int _i13 = 0; _i13 < _list12.size; ++_i13)
               {
-                FRRoom _elem10; // required
-                _elem10 = new FRRoom();
-                _elem10.read(iprot);
-                this.listFRRoom.add(_elem10);
+                String _elem14; // required
+                _elem14 = iprot.readString();
+                this.uids.add(_elem14);
               }
               iprot.readListEnd();
             }
@@ -391,13 +390,13 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.listFRRoom != null) {
-      oprot.writeFieldBegin(LIST_FRROOM_FIELD_DESC);
+    if (this.uids != null) {
+      oprot.writeFieldBegin(UIDS_FIELD_DESC);
       {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.listFRRoom.size()));
-        for (FRRoom _iter11 : this.listFRRoom)
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.uids.size()));
+        for (String _iter15 : this.uids)
         {
-          _iter11.write(oprot);
+          oprot.writeString(_iter15);
         }
         oprot.writeListEnd();
       }
@@ -417,11 +416,11 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
     StringBuilder sb = new StringBuilder("OccupancyRequest(");
     boolean first = true;
 
-    sb.append("listFRRoom:");
-    if (this.listFRRoom == null) {
+    sb.append("uids:");
+    if (this.uids == null) {
       sb.append("null");
     } else {
-      sb.append(this.listFRRoom);
+      sb.append(this.uids);
     }
     first = false;
     if (!first) sb.append(", ");
@@ -438,8 +437,8 @@ public class OccupancyRequest implements org.apache.thrift.TBase<OccupancyReques
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (listFRRoom == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'listFRRoom' was not present! Struct: " + toString());
+    if (uids == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'uids' was not present! Struct: " + toString());
     }
     if (period == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'period' was not present! Struct: " + toString());

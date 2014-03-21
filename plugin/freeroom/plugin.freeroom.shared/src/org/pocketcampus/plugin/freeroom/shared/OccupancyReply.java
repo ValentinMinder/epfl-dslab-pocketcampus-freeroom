@@ -443,14 +443,14 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
         case 3: // OCCUPANCY_OF_ROOMS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list12 = iprot.readListBegin();
-              this.occupancyOfRooms = new ArrayList<Occupancy>(_list12.size);
-              for (int _i13 = 0; _i13 < _list12.size; ++_i13)
+              org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
+              this.occupancyOfRooms = new ArrayList<Occupancy>(_list16.size);
+              for (int _i17 = 0; _i17 < _list16.size; ++_i17)
               {
-                Occupancy _elem14; // required
-                _elem14 = new Occupancy();
-                _elem14.read(iprot);
-                this.occupancyOfRooms.add(_elem14);
+                Occupancy _elem18; // required
+                _elem18 = new Occupancy();
+                _elem18.read(iprot);
+                this.occupancyOfRooms.add(_elem18);
               }
               iprot.readListEnd();
             }
@@ -489,9 +489,9 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
         oprot.writeFieldBegin(OCCUPANCY_OF_ROOMS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.occupancyOfRooms.size()));
-          for (Occupancy _iter15 : this.occupancyOfRooms)
+          for (Occupancy _iter19 : this.occupancyOfRooms)
           {
-            _iter15.write(oprot);
+            _iter19.write(oprot);
           }
           oprot.writeListEnd();
         }

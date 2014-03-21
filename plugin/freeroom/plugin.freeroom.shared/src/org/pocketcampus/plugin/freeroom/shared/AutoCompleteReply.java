@@ -443,14 +443,14 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
         case 3: // LIST_FRROOM
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list20 = iprot.readListBegin();
-              this.listFRRoom = new ArrayList<FRRoom>(_list20.size);
-              for (int _i21 = 0; _i21 < _list20.size; ++_i21)
+              org.apache.thrift.protocol.TList _list24 = iprot.readListBegin();
+              this.listFRRoom = new ArrayList<FRRoom>(_list24.size);
+              for (int _i25 = 0; _i25 < _list24.size; ++_i25)
               {
-                FRRoom _elem22; // required
-                _elem22 = new FRRoom();
-                _elem22.read(iprot);
-                this.listFRRoom.add(_elem22);
+                FRRoom _elem26; // required
+                _elem26 = new FRRoom();
+                _elem26.read(iprot);
+                this.listFRRoom.add(_elem26);
               }
               iprot.readListEnd();
             }
@@ -489,9 +489,9 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
         oprot.writeFieldBegin(LIST_FRROOM_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.listFRRoom.size()));
-          for (FRRoom _iter23 : this.listFRRoom)
+          for (FRRoom _iter27 : this.listFRRoom)
           {
-            _iter23.write(oprot);
+            _iter27.write(oprot);
           }
           oprot.writeListEnd();
         }

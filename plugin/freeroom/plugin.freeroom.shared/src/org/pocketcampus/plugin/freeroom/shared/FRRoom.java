@@ -24,20 +24,20 @@ import org.slf4j.LoggerFactory;
 public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRRoom");
 
-  private static final org.apache.thrift.protocol.TField BUILDING_FIELD_DESC = new org.apache.thrift.protocol.TField("building", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("number", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField DOOR_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("doorCode", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField UID_FIELD_DESC = new org.apache.thrift.protocol.TField("uid", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("type", org.apache.thrift.protocol.TType.I32, (short)3);
   private static final org.apache.thrift.protocol.TField CAPACITY_FIELD_DESC = new org.apache.thrift.protocol.TField("capacity", org.apache.thrift.protocol.TType.I32, (short)4);
 
-  private String building; // required
-  private String number; // required
+  private String doorCode; // required
+  private String uid; // required
   private FRRoomType type; // required
   private int capacity; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    BUILDING((short)1, "building"),
-    NUMBER((short)2, "number"),
+    DOOR_CODE((short)1, "doorCode"),
+    UID((short)2, "uid"),
     /**
      * 
      * @see FRRoomType
@@ -58,10 +58,10 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // BUILDING
-          return BUILDING;
-        case 2: // NUMBER
-          return NUMBER;
+        case 1: // DOOR_CODE
+          return DOOR_CODE;
+        case 2: // UID
+          return UID;
         case 3: // TYPE
           return TYPE;
         case 4: // CAPACITY
@@ -112,9 +112,9 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.BUILDING, new org.apache.thrift.meta_data.FieldMetaData("building", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.DOOR_CODE, new org.apache.thrift.meta_data.FieldMetaData("doorCode", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.NUMBER, new org.apache.thrift.meta_data.FieldMetaData("number", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.UID, new org.apache.thrift.meta_data.FieldMetaData("uid", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.TYPE, new org.apache.thrift.meta_data.FieldMetaData("type", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRRoomType.class)));
@@ -128,12 +128,12 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
   }
 
   public FRRoom(
-    String building,
-    String number)
+    String doorCode,
+    String uid)
   {
     this();
-    this.building = building;
-    this.number = number;
+    this.doorCode = doorCode;
+    this.uid = uid;
   }
 
   /**
@@ -142,11 +142,11 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
   public FRRoom(FRRoom other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    if (other.isSetBuilding()) {
-      this.building = other.building;
+    if (other.isSetDoorCode()) {
+      this.doorCode = other.doorCode;
     }
-    if (other.isSetNumber()) {
-      this.number = other.number;
+    if (other.isSetUid()) {
+      this.uid = other.uid;
     }
     if (other.isSetType()) {
       this.type = other.type;
@@ -160,58 +160,58 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
 
   @Override
   public void clear() {
-    this.building = null;
-    this.number = null;
+    this.doorCode = null;
+    this.uid = null;
     this.type = null;
     setCapacityIsSet(false);
     this.capacity = 0;
   }
 
-  public String getBuilding() {
-    return this.building;
+  public String getDoorCode() {
+    return this.doorCode;
   }
 
-  public FRRoom setBuilding(String building) {
-    this.building = building;
+  public FRRoom setDoorCode(String doorCode) {
+    this.doorCode = doorCode;
     return this;
   }
 
-  public void unsetBuilding() {
-    this.building = null;
+  public void unsetDoorCode() {
+    this.doorCode = null;
   }
 
-  /** Returns true if field building is set (has been assigned a value) and false otherwise */
-  public boolean isSetBuilding() {
-    return this.building != null;
+  /** Returns true if field doorCode is set (has been assigned a value) and false otherwise */
+  public boolean isSetDoorCode() {
+    return this.doorCode != null;
   }
 
-  public void setBuildingIsSet(boolean value) {
+  public void setDoorCodeIsSet(boolean value) {
     if (!value) {
-      this.building = null;
+      this.doorCode = null;
     }
   }
 
-  public String getNumber() {
-    return this.number;
+  public String getUid() {
+    return this.uid;
   }
 
-  public FRRoom setNumber(String number) {
-    this.number = number;
+  public FRRoom setUid(String uid) {
+    this.uid = uid;
     return this;
   }
 
-  public void unsetNumber() {
-    this.number = null;
+  public void unsetUid() {
+    this.uid = null;
   }
 
-  /** Returns true if field number is set (has been assigned a value) and false otherwise */
-  public boolean isSetNumber() {
-    return this.number != null;
+  /** Returns true if field uid is set (has been assigned a value) and false otherwise */
+  public boolean isSetUid() {
+    return this.uid != null;
   }
 
-  public void setNumberIsSet(boolean value) {
+  public void setUidIsSet(boolean value) {
     if (!value) {
-      this.number = null;
+      this.uid = null;
     }
   }
 
@@ -272,19 +272,19 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case BUILDING:
+    case DOOR_CODE:
       if (value == null) {
-        unsetBuilding();
+        unsetDoorCode();
       } else {
-        setBuilding((String)value);
+        setDoorCode((String)value);
       }
       break;
 
-    case NUMBER:
+    case UID:
       if (value == null) {
-        unsetNumber();
+        unsetUid();
       } else {
-        setNumber((String)value);
+        setUid((String)value);
       }
       break;
 
@@ -309,11 +309,11 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case BUILDING:
-      return getBuilding();
+    case DOOR_CODE:
+      return getDoorCode();
 
-    case NUMBER:
-      return getNumber();
+    case UID:
+      return getUid();
 
     case TYPE:
       return getType();
@@ -332,10 +332,10 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     }
 
     switch (field) {
-    case BUILDING:
-      return isSetBuilding();
-    case NUMBER:
-      return isSetNumber();
+    case DOOR_CODE:
+      return isSetDoorCode();
+    case UID:
+      return isSetUid();
     case TYPE:
       return isSetType();
     case CAPACITY:
@@ -357,21 +357,21 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     if (that == null)
       return false;
 
-    boolean this_present_building = true && this.isSetBuilding();
-    boolean that_present_building = true && that.isSetBuilding();
-    if (this_present_building || that_present_building) {
-      if (!(this_present_building && that_present_building))
+    boolean this_present_doorCode = true && this.isSetDoorCode();
+    boolean that_present_doorCode = true && that.isSetDoorCode();
+    if (this_present_doorCode || that_present_doorCode) {
+      if (!(this_present_doorCode && that_present_doorCode))
         return false;
-      if (!this.building.equals(that.building))
+      if (!this.doorCode.equals(that.doorCode))
         return false;
     }
 
-    boolean this_present_number = true && this.isSetNumber();
-    boolean that_present_number = true && that.isSetNumber();
-    if (this_present_number || that_present_number) {
-      if (!(this_present_number && that_present_number))
+    boolean this_present_uid = true && this.isSetUid();
+    boolean that_present_uid = true && that.isSetUid();
+    if (this_present_uid || that_present_uid) {
+      if (!(this_present_uid && that_present_uid))
         return false;
-      if (!this.number.equals(that.number))
+      if (!this.uid.equals(that.uid))
         return false;
     }
 
@@ -400,15 +400,15 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_building = true && (isSetBuilding());
-    builder.append(present_building);
-    if (present_building)
-      builder.append(building);
+    boolean present_doorCode = true && (isSetDoorCode());
+    builder.append(present_doorCode);
+    if (present_doorCode)
+      builder.append(doorCode);
 
-    boolean present_number = true && (isSetNumber());
-    builder.append(present_number);
-    if (present_number)
-      builder.append(number);
+    boolean present_uid = true && (isSetUid());
+    builder.append(present_uid);
+    if (present_uid)
+      builder.append(uid);
 
     boolean present_type = true && (isSetType());
     builder.append(present_type);
@@ -431,22 +431,22 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     int lastComparison = 0;
     FRRoom typedOther = (FRRoom)other;
 
-    lastComparison = Boolean.valueOf(isSetBuilding()).compareTo(typedOther.isSetBuilding());
+    lastComparison = Boolean.valueOf(isSetDoorCode()).compareTo(typedOther.isSetDoorCode());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetBuilding()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.building, typedOther.building);
+    if (isSetDoorCode()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.doorCode, typedOther.doorCode);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetNumber()).compareTo(typedOther.isSetNumber());
+    lastComparison = Boolean.valueOf(isSetUid()).compareTo(typedOther.isSetUid());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetNumber()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.number, typedOther.number);
+    if (isSetUid()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.uid, typedOther.uid);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -488,16 +488,16 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         break;
       }
       switch (field.id) {
-        case 1: // BUILDING
+        case 1: // DOOR_CODE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.building = iprot.readString();
+            this.doorCode = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // NUMBER
+        case 2: // UID
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.number = iprot.readString();
+            this.uid = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -532,14 +532,14 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.building != null) {
-      oprot.writeFieldBegin(BUILDING_FIELD_DESC);
-      oprot.writeString(this.building);
+    if (this.doorCode != null) {
+      oprot.writeFieldBegin(DOOR_CODE_FIELD_DESC);
+      oprot.writeString(this.doorCode);
       oprot.writeFieldEnd();
     }
-    if (this.number != null) {
-      oprot.writeFieldBegin(NUMBER_FIELD_DESC);
-      oprot.writeString(this.number);
+    if (this.uid != null) {
+      oprot.writeFieldBegin(UID_FIELD_DESC);
+      oprot.writeString(this.uid);
       oprot.writeFieldEnd();
     }
     if (this.type != null) {
@@ -563,19 +563,19 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     StringBuilder sb = new StringBuilder("FRRoom(");
     boolean first = true;
 
-    sb.append("building:");
-    if (this.building == null) {
+    sb.append("doorCode:");
+    if (this.doorCode == null) {
       sb.append("null");
     } else {
-      sb.append(this.building);
+      sb.append(this.doorCode);
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("number:");
-    if (this.number == null) {
+    sb.append("uid:");
+    if (this.uid == null) {
       sb.append("null");
     } else {
-      sb.append(this.number);
+      sb.append(this.uid);
     }
     first = false;
     if (isSetType()) {
@@ -600,11 +600,11 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (building == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'building' was not present! Struct: " + toString());
+    if (doorCode == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'doorCode' was not present! Struct: " + toString());
     }
-    if (number == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'number' was not present! Struct: " + toString());
+    if (uid == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'uid' was not present! Struct: " + toString());
     }
   }
 
