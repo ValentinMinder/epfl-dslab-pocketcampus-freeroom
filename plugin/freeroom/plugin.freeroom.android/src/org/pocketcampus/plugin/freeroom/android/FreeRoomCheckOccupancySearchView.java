@@ -130,6 +130,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 	private void initializeCheckOccupancySearchView() {
 		init();
+		resetTimes();
 
 		// Setup the layout
 		mLayout = new StandardTitledDoubleLayout(this);
@@ -396,6 +397,12 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		return result;
 	}
 
+	
+	/**
+	 * Reset the year, month, day, hour_start, minute_start, hour_end, minute_end
+	 * to their initial values.
+	 * DONT forget to update the date/time pickers afterwards.
+	 */
 	private void resetTimes() {
 
 		// reset the time to the present time
@@ -430,9 +437,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 			startHourSelected = hour;
 			startMinSelected = min;
 			endHourSelected = hour + 1;
-		}
-
-		updateDateTimePickers();
+		}		
 	}
 
 	private void updateDateTimePickers() {
@@ -463,6 +468,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		mAutoCompleteSuggestionArrayListString.clear();
 
 		resetTimes();
+		updateDateTimePickers();
 
 		// show the buttons
 		updatePickersButtons();
