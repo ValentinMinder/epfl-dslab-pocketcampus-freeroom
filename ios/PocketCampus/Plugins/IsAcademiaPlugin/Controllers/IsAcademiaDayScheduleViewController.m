@@ -204,7 +204,9 @@ static const NSTimeInterval kRefreshInterval = 300.0; //5min
         }
         case IsaStatusCode_NETWORK_ERROR:
         {
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"IsAcademiaServerUnreachableTryLater", @"IsAcademiaPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            self.messageHUD.labelText = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
+            self.messageHUD.detailsLabelText = NSLocalizedStringFromTable(@"IsAcademiaServerUnreachableTryLater", @"IsAcademiaPlugin", nil);
+            [self.messageHUD show:NO];
             break;
         }
         default:
