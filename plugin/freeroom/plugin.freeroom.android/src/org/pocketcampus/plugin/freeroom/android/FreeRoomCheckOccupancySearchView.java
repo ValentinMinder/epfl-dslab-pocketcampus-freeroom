@@ -104,6 +104,11 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 	private int endHourSelected = -1;
 	private int endMinSelected = -1;
 
+	// TODO: defines that const elsewhere
+	private final int firstHourCheckable = 8;
+	private final int lastHourCheckable = 19;
+	private final int minMinutesIntervalToCheck = 5;
+
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 	private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
@@ -369,25 +374,28 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		if (!mSelectedRoomsToQueryHashSet.contains(room)) {
 			mSelectedRoomsToQueryArrayList.add(room);
 			mSelectedRoomsToQueryHashSet.add(room);
-			mSummarySelectedRoomsTextView.setText(getSummaryTextFromCollection(mSelectedRoomsToQueryArrayList));
+			mSummarySelectedRoomsTextView
+					.setText(getSummaryTextFromCollection(mSelectedRoomsToQueryArrayList));
 
 		} else {
-			Log.e(this.getClass().toString(), "room cannot be added: already added");
+			Log.e(this.getClass().toString(),
+					"room cannot be added: already added");
 		}
 	}
-	
-	private String getSummaryTextFromCollection(Collection<FRRoom> collec){
+
+	private String getSummaryTextFromCollection(Collection<FRRoom> collec) {
 		Iterator<FRRoom> iter = collec.iterator();
 		StringBuffer buffer = new StringBuffer(collec.size() * 5);
 		FRRoom room = null;
-		buffer.append(getString(R.string.freeroom_check_occupancy_search_text_selected_rooms) + " ");
+		buffer.append(getString(R.string.freeroom_check_occupancy_search_text_selected_rooms)
+				+ " ");
 		boolean empty = true;
 		while (iter.hasNext()) {
 			empty = false;
 			room = iter.next();
 			buffer.append(room.getBuilding() + room.getNumber() + ", ");
 		}
-		buffer.setLength(buffer.length()-2);
+		buffer.setLength(buffer.length() - 2);
 		String result = "";
 		if (empty) {
 			result = getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms);
@@ -397,47 +405,197 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		return result;
 	}
 
-	
+	int testCounter = -1;
+
 	/**
-	 * Reset the year, month, day, hour_start, minute_start, hour_end, minute_end
-	 * to their initial values.
-	 * DONT forget to update the date/time pickers afterwards.
+	 * Reset the year, month, day, hour_start, minute_start, hour_end,
+	 * minute_end to their initial values. DONT forget to update the date/time
+	 * pickers afterwards.
 	 */
 	private void resetTimes() {
-
 		// reset the time to the present time
 		Calendar mCalendar = Calendar.getInstance();
-		mCalendar.setTimeInMillis(System.currentTimeMillis());
+
+		boolean testActivated = false;
+		if (testActivated) {
+			switch (testCounter) {
+			case 0:
+				// thursday, early morning
+				mCalendar.set(2014, 02, 20, 01, 00);
+				break;
+			case 1:
+				// thursday, during day, usual
+				mCalendar.set(2014, 02, 20, 17, 59);
+				break;
+			case 2:
+				// thursday, late afternoon
+				mCalendar.set(2014, 02, 20, 18, 23);
+				break;
+			case 3:
+				// thursday, after delay
+				mCalendar.set(2014, 02, 20, 18, 56);
+				break;
+			case 4:
+				// thursday, after delay
+				mCalendar.set(2014, 02, 20, 19, 00);
+				break;
+			case 5:
+				// friday, late afternoon
+				mCalendar.set(2014, 02, 21, 18, 23);
+				break;
+			case 6:
+				// friday, after delay
+				// TODO: dont work
+				mCalendar.set(2014, 02, 21, 18, 56);
+				break;
+			case 7:
+				// friday, after delay
+				// TODO: dont work
+				mCalendar.set(2014, 02, 21, 19, 00);
+				break;
+			case 8:
+				// saturday, early morning
+				mCalendar.set(2014, 02, 22, 00, 00);
+				break;
+			case 9:
+				// saturday, early morning
+				mCalendar.set(2014, 02, 22, 00, 21);
+				break;
+			case 10:
+				// saturday, during day, usual
+				// TODO: dont work
+				mCalendar.set(2014, 02, 22, 17, 59);
+				break;
+			case 11:
+				// saturday, late afternoon
+				// TODO: dont work
+				mCalendar.set(2014, 02, 22, 18, 00);
+				break;
+			case 12:
+				// saturday, after delay
+				// TODO: dont work
+				mCalendar.set(2014, 02, 22, 18, 55);
+				break;
+			case 13:
+				// saturday, after delay
+				// TODO: dont work
+				mCalendar.set(2014, 02, 22, 19, 00);
+				break;
+			case 14:
+				// saturday, early morning
+				mCalendar.set(2014, 02, 23, 00, 00);
+				break;
+			case 15:
+				// saturday, during day, usual
+				// TODO: dont work
+				mCalendar.set(2014, 02, 23, 17, 59);
+				break;
+			case 16:
+				// saturday, late afternoon
+				// TODO: dont work
+				mCalendar.set(2014, 02, 23, 18, 00);
+				break;
+			case 17:
+				// saturday, after delay
+				// TODO: dont work
+				mCalendar.set(2014, 02, 23, 18, 55);
+				break;
+			case 18:
+				// saturday, after delay
+				// TODO: dont work
+				mCalendar.set(2014, 02, 23, 19, 00);
+				break;
+			default:
+				mCalendar.setTimeInMillis(System.currentTimeMillis());
+				break;
+			}
+			System.out.println("Test Counter:" + testCounter);
+			testCounter++;
+		}
+
+		// values for test only (weekends, nights, ...)
+		int temp_now_day_week = mCalendar.get(Calendar.DAY_OF_WEEK);
+		int temp_now_hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+		int temp_now_min = mCalendar.get(Calendar.MINUTE);
+
+		// starting Friday 18h55, and during all the weekend, we shift to Mon
+		// between 0am and 1am. It will be reshifted to Mon 8h-9h after.
+		int hourShift = 0;
+		if (temp_now_day_week == Calendar.SUNDAY) {
+			hourShift = 24 - temp_now_hour + 1;
+		}
+		if (temp_now_day_week == Calendar.SATURDAY) {
+			hourShift = 24 - temp_now_hour + 1;
+			hourShift += 24;
+		}
+		if ((temp_now_day_week == Calendar.FRIDAY)
+				&& checkHourMinIsEveningAndShifted(temp_now_hour, temp_now_min)) {
+			hourShift = 24 - temp_now_hour + 1;
+			hourShift += 2 * 24;
+		}
+		mCalendar.setTimeInMillis(mCalendar.getTimeInMillis() + hourShift
+				* 3600 * 1000);
+
+		// actualize with the enventually shifted Calendar
+		temp_now_hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+		temp_now_min = mCalendar.get(Calendar.MINUTE);
+
 		yearSelected = mCalendar.get(Calendar.YEAR);
 		monthSelected = mCalendar.get(Calendar.MONTH);
 		dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
+
+		// default set: next hour to next+1 hour, all minutes to 0
+		// Works perfectly Mon-Fri 8h-18h.
+		// weekend are handled before to be on next Monday.
 		startHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY) + 1;
 		startMinSelected = 0;
 		endHourSelected = startHourSelected + 1;
 		endMinSelected = 0;
 
-		// this handle autocomplete for special cases during the night
-		// or during evening (18h-18h55)
-		// special cases during weekend are not handled
-		// so: won't work Fri 18h-Sun 24h
-		int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
-		int min = mCalendar.get(Calendar.HOUR_OF_DAY);
-		if (hour < 8) {
-			startHourSelected = 8;
-			endHourSelected = 9;
-		} else if ((hour >= 19) || (hour == 18 && min >= 55)) {
-			mCalendar
-					.setTimeInMillis(System.currentTimeMillis() + 24 * 3600 * 1000);
+		// during the evening (starting 18h55), we shift to the next morning
+		// during the night (before 8h), we shift to the first hour of morning
+		// (8h-9h).
+		// during late afternoon (18h-18h55), we default set from now to 19h00.
+		if (temp_now_hour < firstHourCheckable) {
+			startHourSelected = firstHourCheckable;
+			endHourSelected = firstHourCheckable + 1;
+		} else if (checkHourMinIsEveningAndShifted(temp_now_hour, temp_now_min)) {
 			yearSelected = mCalendar.get(Calendar.YEAR);
 			monthSelected = mCalendar.get(Calendar.MONTH);
 			dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
-			startHourSelected = 8;
-			endHourSelected = 9;
-		} else if (hour == 18) {
-			startHourSelected = hour;
-			startMinSelected = min;
-			endHourSelected = hour + 1;
-		}		
+			System.out.println(yearSelected + "" + monthSelected + ""
+					+ dayOfMonthSelected);
+			mCalendar
+					.setTimeInMillis(mCalendar.getTimeInMillis() + 24 * 3600 * 1000);
+			System.out.println(yearSelected + "" + monthSelected + ""
+					+ dayOfMonthSelected);
+			yearSelected = mCalendar.get(Calendar.YEAR);
+			monthSelected = mCalendar.get(Calendar.MONTH);
+			dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
+			startHourSelected = firstHourCheckable;
+			endHourSelected = firstHourCheckable + 1;
+		} else if (temp_now_hour == lastHourCheckable - 1) {
+			startHourSelected = temp_now_hour;
+			startMinSelected = temp_now_min;
+			endHourSelected = temp_now_hour + 1;
+		}
+	}
+
+	/**
+	 * Checks if the given hour and minutes is evening. Request in evening are
+	 * shifted to next morning.
+	 * 
+	 * Should return true if time is greater or equal to 19h00, up to 24h00.
+	 * Moreover, it returns true a few minutes before 19h00, because we need at
+	 * least a few minutes to check
+	 * 
+	 * @param hour
+	 * @param min
+	 * @return
+	 */
+	private boolean checkHourMinIsEveningAndShifted(int hour, int min) {
+		return (hour >= lastHourCheckable)
+				|| (hour == (lastHourCheckable - 1) && min >= (60 - minMinutesIntervalToCheck));
 	}
 
 	private void updateDateTimePickers() {
