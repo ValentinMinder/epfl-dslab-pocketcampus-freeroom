@@ -238,7 +238,7 @@ namespace PocketCampus.Common.Controls
                     return container;
             }
 
-            return new Run { Text = node.InnerText.Trim() };
+            return new Run { Text = node.InnerText };
         }
     }
 }

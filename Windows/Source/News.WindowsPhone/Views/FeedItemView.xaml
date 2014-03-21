@@ -38,15 +38,17 @@
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Resources.FeedItemViewTitle, Source={StaticResource Strings}}"
-                           Style="{StaticResource AppTextTitle2Style}" />
-                
-                <TextBlock Text="-"
                            Style="{StaticResource AppTextTitle2Style}"
-                           Opacity="0.7"
-                           Margin="-6,6" />
+                           Margin="12,6,0,6" />
+                
+                <TextBlock Text=" - "
+                           Style="{StaticResource AppTextTitle2Style}"
+                           VerticalAlignment="Center"
+                           Margin="0" />
                 
                 <TextBlock Text="{Binding ItemContent.FeedName}"
-                           Style="{StaticResource AppTextTitle2Style}" />
+                           Style="{StaticResource AppTextTitle2Style}"
+                           Margin="0,6,12,6" />
             </StackPanel>
         </Border>
 
@@ -55,8 +57,9 @@
                 <!-- Title -->
                 <Border Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
                     <TextBlock Text="{Binding ItemContent.Title}"
+                               TextWrapping="Wrap"
                                Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                               TextWrapping="Wrap" />
+                               Margin="24,4,24,10" />
                 </Border>
 
                 <!-- Image -->
@@ -65,10 +68,8 @@
                        Margin="0,0,0,10" />
 
                 <!-- Content -->
-                <comControls:HtmlTextBlock Html="{Binding ItemContent.Content}" />
-                
-                <!-- End margin -->
-                <Rectangle Height="95" />
+                <comControls:HtmlTextBlock Html="{Binding ItemContent.Content}"
+                                           Margin="12,4,12,95" />
             </StackPanel>
         </ScrollViewer>
 
