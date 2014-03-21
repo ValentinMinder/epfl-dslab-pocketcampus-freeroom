@@ -59,7 +59,7 @@
                     Margin="0,20">
             <TextBlock Text="{Binding Resources.AboutDevelopersHeader, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextTitle3Style}" />
-            
+
             <TextBlock Text="{Binding Resources.AboutOrganizationName, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextTitle2Style}" />
 
@@ -81,13 +81,13 @@
                              FontSize="{StaticResource PhoneFontSizeMediumLarge}"
                              Foreground="{StaticResource PhoneSubtleBrush}" />
         </StackPanel>
-        
+
         <!-- Contact email -->
         <StackPanel Grid.Row="4"
                     Margin="0,20">
             <TextBlock Text="{Binding Resources.AboutContactHeader, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextTitle3Style}" />
-            
+
             <HyperlinkButton Command="{Binding SendEmailCommand}"
                              CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}"
                              Content="{Binding Resources.AboutContact, Source={StaticResource Strings}}"
@@ -104,7 +104,7 @@
                 <!-- "Rate us on the Store" menu item -->
                 <bar:BindableApplicationBarMenuItem Command="{Binding RateAppCommand}"
                                                     Text="{Binding Resources.AboutRateAppButton, Source={StaticResource Strings}}" />
-                
+
                 <!-- "Privacy policy" menu item -->
                 <!-- HACK: See code-behind -->
                 <bar:BindableApplicationBarMenuItem Text="{Binding Resources.AboutPrivacyPolicy, Source={StaticResource Strings}}" />
