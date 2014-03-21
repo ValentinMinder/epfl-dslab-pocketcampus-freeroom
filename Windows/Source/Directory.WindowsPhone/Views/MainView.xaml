@@ -32,9 +32,9 @@
         <DataTemplate x:Key="PersonTemplate">
             <Button Command="{Binding DataContext.ViewPersonCommand, ElementName=LayoutRoot}"
                     CommandParameter="{Binding}"
-                    Template="{StaticResource SimpleButtonTemplate}"
-                    Background="Transparent">
-                <Grid Margin="5,10">
+                    Template="{StaticResource SimpleButtonTemplate}">
+                <Grid Margin="12,18,12,30"
+                      Height="100">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
@@ -42,55 +42,59 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <!-- Default picture (hidden by the actual picture if there is one) -->
                     <Image Grid.RowSpan="3"
                            Source="/Assets/DefaultImage.png"
-                           Width="75"
                            Height="100" />
 
                     <!-- Picture (may not be there) -->
                     <Image Grid.RowSpan="3"
                            Source="{Binding PictureUrl}"
-                           Width="75"
                            Height="100" />
 
                     <!-- Name -->
                     <Viewbox Grid.Column="1"
                              HorizontalAlignment="Left"
                              StretchDirection="DownOnly"
-                             Margin="12,-6,12,6">
+                             Margin="12,-10,12,4">
                         <TextBlock Text="{Binding FullName}"
                                    Style="{StaticResource PhoneTextTitle2Style}"
                                    Margin="0" />
                     </Viewbox>
-
-                    <!-- Office -->
-                    <TextBlock Grid.Column="1"
-                               Grid.Row="1"
-                               Text="{Binding Office}"
-                               Style="{StaticResource PhoneTextTitle3Style}"
-                               Foreground="{StaticResource PhoneSubtleBrush}"
-                               FontFamily="{StaticResource PhoneFontFamilySemiBold}" />
-
+    
                     <!-- Units -->
                     <ItemsControl Grid.Column="1"
-                                  Grid.Row="2"
-                                  ItemsSource="{Binding Units}">
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding Units}"
+                                  >
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <tool:WrapPanel Orientation="Horizontal" />
+                                <!-- This is an overview, we don't care about overflows -->
+                                <StackPanel Orientation="Horizontal" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding}"
-                                           Style="{StaticResource PhoneTextSubtleStyle}" />
+                                           Style="{StaticResource PhoneTextTitle3Style}"
+                                           Foreground="{StaticResource PhoneSubtleBrush}"
+                                           FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                           Margin="12,0,6,0" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+
+                    <!-- Office -->
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="2"
+                               Text="{Binding Office}"
+                               Style="{StaticResource PhoneTextTitle3Style}"
+                               Foreground="{StaticResource PhoneSubtleBrush}"
+                               Margin="12,6,12,0" />
+
                 </Grid>
             </Button>
         </DataTemplate>
@@ -117,14 +121,13 @@
                        Style="{StaticResource AppTextTitle2Style}" />
         </Border>
 
-        <!-- Search box background -->
-        <Rectangle Grid.Row="1"
-                   Fill="{StaticResource AppSecondaryHeaderBackgroundBrush}" />
-
         <!-- Search box -->
-        <comControls:SearchBox Grid.Row="1"
-                               AutoCompleteProvider="{Binding SearchAutoCompleteProvider}"
-                               SearchCommand="{Binding SearchCommand}" />
+        <Border Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <comControls:SearchBox AutoCompleteProvider="{Binding SearchAutoCompleteProvider}"
+                                   SearchCommand="{Binding SearchCommand}" />
+        </Border>
+
 
         <!-- Search results -->
         <myControls:PaginatingItemsControl Grid.Row="2"
