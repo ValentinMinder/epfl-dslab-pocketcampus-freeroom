@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
@@ -11,13 +10,12 @@ using System.Threading;
 namespace PocketCampus.Mvvm
 {
     /// <summary>
-    /// Base class to implement INotifyPropertyChanged easily.
+    /// Base class for observable objects.
     /// </summary>
     [DataContract]
     public abstract class ObservableObject : INotifyPropertyChanged
     {
-        // Used to send PropertyChanged messages
-        // otherwise they may result in invalid cross-thread access.
+        // Used to send PropertyChanged messages on the right thread
         private readonly SynchronizationContext _context;
 
 
@@ -39,14 +37,13 @@ namespace PocketCampus.Mvvm
             var evt = this.PropertyChanged;
             if ( evt != null )
             {
-                Action action = () => evt( this, new PropertyChangedEventArgs( propertyName ) );
                 if ( _context == null )
                 {
-                    action();
+                    evt( this, new PropertyChangedEventArgs( propertyName ) );
                 }
                 else
                 {
-                    _context.Send( _ => action(), null );
+                    _context.Send( _ => evt( this, new PropertyChangedEventArgs( propertyName ) ), null );
                 }
             }
         }

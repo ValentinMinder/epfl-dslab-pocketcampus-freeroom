@@ -14,7 +14,7 @@ namespace PocketCampus.Mvvm
     /// </summary>
     public static class Messenger
     {
-        private static readonly HashSet<Recipient> _recipients = new HashSet<Recipient>();
+        private static readonly List<Recipient> _recipients = new List<Recipient>();
 
         /// <summary>
         /// Registers the specified handler for the specified message type.
@@ -29,7 +29,7 @@ namespace PocketCampus.Mvvm
         /// </summary>
         public static void Send( object message )
         {
-            _recipients.RemoveWhere( r => !r.TryReceive( message ) );
+            _recipients.RemoveAll( r => !r.TryReceive( message ) );
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace PocketCampus.Mvvm
         {
             private const string ClosureMethodToken = "<";
 
-            // if the action is a closure we need a strong reference to the target
-#pragma warning disable 0414
+            // If the action is a closure, a strong reference to the target is needed
+#pragma warning disable 0414 // Field is assigned but never used
             private object _targetStrongRef;
 #pragma warning restore 0414
             private bool _hasNoTarget;

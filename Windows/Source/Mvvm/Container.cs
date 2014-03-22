@@ -101,7 +101,7 @@ namespace PocketCampus.Mvvm
         /// Clears the container.
         /// </summary>
         /// <remarks>
-        /// Used in unit tests.
+        /// For use in unit tests.
         /// </remarks>
         internal static void Clear()
         {

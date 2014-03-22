@@ -40,7 +40,7 @@ namespace PocketCampus.Main.Services
 
 
         /// <summary>
-        /// Creates a new FrameNavigationService.
+        /// Creates a new WindowsPhoneNavigationService.
         /// </summary>
         public WindowsPhoneNavigationService( NavigationLogger logger )
         {
@@ -175,32 +175,27 @@ namespace PocketCampus.Main.Services
 
         #region INavigationService implementation
         /// <summary>
-        /// If no dialog is present on screen, navigates to a ViewModel of the specified type.
-        /// Otherwise, does so after (and if) the current dialog is exited successfully.
+        /// Navigates to a ViewModel of the specified type.
         /// </summary>
         public void NavigateTo<T>()
             where T : IViewModel<NoParameter>
         {
-            var vmType = typeof( T );
-            var vm = Container.Get( vmType, null );
+            var vm = Container.Get( typeof( T ), null );
             NavigateToPrivate( vm );
         }
 
         /// <summary>
-        /// If no dialog is present on screen, navigates to a ViewModel of the specified type.
-        /// Otherwise, does so after (and if) the current dialog is exited successfully.
+        /// Navigates to a ViewModel of the specified type.
         /// </summary>
         public void NavigateTo<TViewModel, TArg>( TArg arg )
             where TViewModel : IViewModel<TArg>
         {
-            var vmType = typeof( TViewModel );
-            var vm = Container.Get( vmType, arg );
+            var vm = Container.Get( typeof( TViewModel ), arg );
             NavigateToPrivate( vm );
         }
 
         /// <summary>
-        /// If no dialog was present, goes back to the previous ViewModel.
-        /// Otherwise, goes forward. (this allows dialogs to be used as normal VMs)
+        /// Goes back to the previous ViewModel.
         /// </summary>
         public void NavigateBack()
         {
@@ -215,8 +210,7 @@ namespace PocketCampus.Main.Services
         }
 
         /// <summary>
-        /// Pops the back-stack used by this navigation service.
-        /// Used to ignore the current ViewModel when going back.
+        /// Pops the ViewModel back-stack, removing the current one so that going backwards will not go to it.
         /// </summary>
         public void PopBackStack()
         {

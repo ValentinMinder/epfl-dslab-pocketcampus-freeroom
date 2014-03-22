@@ -32,9 +32,6 @@ namespace PocketCampus.Mvvm
         /// <summary>
         /// Asynchronously executes the command.
         /// </summary>
-        /// <remarks>
-        /// For use in unit tests.
-        /// </remarks>
         public Task ExecuteAsync()
         {
             return _execute();
@@ -96,9 +93,6 @@ namespace PocketCampus.Mvvm
         /// Asynchronously executes the command.
         /// </summary>
         /// <param name="parameter">Data used by the command. If the command does not require data to be passed, this object can be set to a default value.</param>
-        /// <remarks>
-        /// For use in unit tests, mostly.
-        /// </remarks>
         public Task ExecuteAsync( T parameter )
         {
             OnExecuted( parameter );
@@ -128,7 +122,6 @@ namespace PocketCampus.Mvvm
                 return CanExecute( (T) parameter );
             }
 
-            // can occur with wrong bindings
             return false;
         }
 
@@ -140,7 +133,6 @@ namespace PocketCampus.Mvvm
         {
             if ( parameter is T )
             {
-                // the opposite can occur with wrong bindings
                 await ExecuteAsync( (T) parameter );
             }
         }

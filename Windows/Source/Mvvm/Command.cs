@@ -121,7 +121,6 @@ namespace PocketCampus.Mvvm
                 return CanExecute( (T) parameter );
             }
 
-            // can occur with wrong bindings
             return false;
         }
 
@@ -133,7 +132,6 @@ namespace PocketCampus.Mvvm
         {
             if ( parameter is T )
             {
-                // the opposite can occur with wrong bindings
                 Execute( (T) parameter );
             }
         }
