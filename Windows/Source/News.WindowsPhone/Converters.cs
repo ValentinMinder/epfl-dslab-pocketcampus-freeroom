@@ -34,7 +34,10 @@ namespace PocketCampus.News
                 return null;
             }
 
-            string url = value.Replace( WidthPlaceholder, Width.ToString() ).Replace( HeightPlaceholder, Height.ToString() );
+            double scaledWidth = PhoneHelper.GetScreenScaleFactor() * Width;
+            double scaledHeight = PhoneHelper.GetScreenScaleFactor() * Height;
+
+            string url = value.Replace( WidthPlaceholder, scaledWidth.ToString() ).Replace( HeightPlaceholder, scaledHeight.ToString() );
             return new BitmapImage( new Uri( url, UriKind.Absolute ) );
         }
     }

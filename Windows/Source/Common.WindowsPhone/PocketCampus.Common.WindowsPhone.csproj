@@ -92,6 +92,7 @@
       <DependentUpon>SearchBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="LauncherEx.cs" />
+    <Compile Include="PhoneHelper.cs" />
     <Compile Include="Resources\CommonResources.fr.Designer.cs">
       <DependentUpon>CommonResources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
