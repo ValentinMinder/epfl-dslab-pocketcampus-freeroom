@@ -58,7 +58,7 @@ namespace PocketCampus.Main
             RootFrame = new OrientationChangingFrame();
 
             // Map custom URIs properly
-            _pluginLoader = Container.BindOnce<IPluginLoader, PluginLoader>();
+            _pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
             RootFrame.UriMapper = UriMapper = new PocketCampusUriMapper( _pluginLoader.GetPlugins() );
             LauncherEx.RegisterProtocol( PocketCampusUriMapper.PocketCampusProtocol, UriMapper.NavigateToCustomUri );
 
@@ -86,14 +86,15 @@ namespace PocketCampus.Main
             Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
             Container.Bind<IRatingService, RatingService>();
 
-            // Common services
-            AppInitializer.BindImplementations();
-
-            App.NavigationService = Container.BindOnce<INavigationService, FrameNavigationService>();
+            // ViewModels from Main
+            App.NavigationService = Container.Bind<INavigationService, FrameNavigationService>();
             App.NavigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
             App.NavigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
             App.NavigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
             App.NavigationService.Bind<AboutViewModel>( "/Views/AboutView.xaml" );
+
+            // Common services
+            AppInitializer.BindImplementations();
 
             // Common part of plugin initialization
             AppInitializer.InitializePlugins( _pluginLoader, App.NavigationService );

@@ -15,7 +15,7 @@ namespace PocketCampus.Main
         {
             DataViewModelOptions.NetworkExceptionType = typeof( ThriftTransportException );
 
-            Container.BindOnce<IMainSettings, MainSettings>();
+            Container.Bind<IMainSettings, MainSettings>();
             Container.Bind<IServerAccess, ServerAccess>();
             Container.Bind<IAuthenticationService, AuthenticationService>();
             Container.Bind<ITequilaAuthenticator, TequilaAuthenticator>();

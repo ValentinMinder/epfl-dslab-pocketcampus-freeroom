@@ -49,7 +49,7 @@ namespace PocketCampus.Transport
             navigationService.Bind<AddStationViewModel>( "/PocketCampus.Transport.WindowsPhone;component/Views/AddStationView.xaml" );
             navigationService.Bind<SettingsViewModel>( "/PocketCampus.Transport.WindowsPhone;component/Views/SettingsView.xaml" );
 
-            Container.BindOnce<IPluginSettings, PluginSettings>();
+            Container.Bind<IPluginSettings, PluginSettings>();
         }
     }
 }

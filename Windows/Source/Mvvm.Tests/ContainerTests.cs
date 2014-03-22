@@ -84,45 +84,6 @@ namespace PocketCampus.Mvvm.Tests
         }
 
         [TestMethod]
-        [ExpectedException( typeof( InvalidOperationException ), "Bind() should not allow overrides from BindOnce()." )]
-        public void BindDoesNotAllowOverridesFromBindOnce()
-        {
-            Container.BindOnce<IDependency, Dependency>();
-            Container.Bind<IDependency, Dependency>();
-        }
-
-
-        [TestMethod]
-        [ExpectedException( typeof( ArgumentException ), "BindOnce() should not allow binding a type to itself." )]
-        public void BindOnceDoesNotAllowBindingToOneself()
-        {
-            Container.BindOnce<object, object>();
-        }
-
-        [TestMethod]
-        [ExpectedException( typeof( ArgumentException ), "BindOnce() should not allow abstract implementations." )]
-        public void BindOnceDoesNotAllowAbstractImplementations()
-        {
-            Container.BindOnce<IDependency, AbstractDependency>();
-        }
-
-        [TestMethod]
-        [ExpectedException( typeof( InvalidOperationException ), "BindOnce() should not allow overrides." )]
-        public void BindOnceDoesNotAllowOverrides()
-        {
-            Container.BindOnce<IDependency, Dependency>();
-            Container.BindOnce<IDependency, Dependency>();
-        }
-
-        [TestMethod]
-        [ExpectedException( typeof( InvalidOperationException ), "BindOnce() should not allow overrides from Bind()." )]
-        public void BindOnceDoesNotAllowOverridesFromBindOnce()
-        {
-            Container.Bind<IDependency, Dependency>();
-            Container.BindOnce<IDependency, Dependency>();
-        }
-
-        [TestMethod]
         public void GetWorksWithNoDependencies()
         {
             Container.Get( typeof( NotDependent ), null );
@@ -135,24 +96,6 @@ namespace PocketCampus.Mvvm.Tests
             Container.Bind<IDependency, Dependency>();
             var obj = (DependentOnOneDependency) Container.Get( typeof( DependentOnOneDependency ), null );
             Assert.IsInstanceOfType( obj.Dependency, typeof( IDependency ), "Get() should resolve dependencies bound with Bind() correctly." );
-        }
-
-        [TestMethod]
-        public void GetResolvesBoundOnceDependency()
-        {
-            var dep = Container.BindOnce<IDependency, Dependency>();
-            var obj = (DependentOnOneDependency) Container.Get( typeof( DependentOnOneDependency ), null );
-            Assert.AreEqual( dep, obj.Dependency, "Get() should resolve dependencies bound with BindOnce() correctly." );
-        }
-
-        [TestMethod]
-        public void GetResolvesDependenciesWithBothBindTypes()
-        {
-            var dep = Container.BindOnce<IDependency, Dependency>();
-            Container.Bind<IOtherDependency, OtherDependency>();
-            var obj = (DependentOnBothDependencies) Container.Get( typeof( DependentOnBothDependencies ), null );
-            Assert.AreEqual( dep, obj.Dependency, "Get() should resolve dependencies bound with BindOnce() correctly." );
-            Assert.IsInstanceOfType( obj.OtherDependency, typeof( IOtherDependency ), "Get() should resolve dependencies bound with Bind() correctly." );
         }
 
         [TestMethod]

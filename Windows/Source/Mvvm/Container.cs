@@ -14,42 +14,13 @@ namespace PocketCampus.Mvvm
     /// </summary>
     public static class Container
     {
-        private static readonly Dictionary<Type, Type> _impls = new Dictionary<Type, Type>();
-        private static readonly Dictionary<Type, object> _staticImpls = new Dictionary<Type, object>();
+        private static readonly Dictionary<Type, object> _impls = new Dictionary<Type, object>();
 
         /// <summary>
         /// Binds a type to a concrete implementation.
         /// </summary>
-        public static void Bind<TAbstract, TImpl>()
-            where TImpl : TAbstract
-        {
-            Type key = typeof( TAbstract ), value = typeof( TImpl );
-            var implInfo = typeof( TImpl ).GetTypeInfo();
-
-            if ( typeof( TAbstract ) == typeof( TImpl ) )
-            {
-                throw new ArgumentException( "Cannot bind a type to itself.", "TImpl" );
-            }
-            if ( implInfo.IsInterface || implInfo.IsAbstract )
-            {
-                throw new ArgumentException( "The implementation type must be concrete." );
-            }
-            if ( _staticImpls.ContainsKey( key ) )
-            {
-                throw new InvalidOperationException( "Cannot override an implementation. (the existing one was a singleton)" );
-            }
-            if ( _impls.ContainsKey( key ) )
-            {
-                throw new InvalidOperationException( "Cannot override an implementation." );
-            }
-
-            _impls.Add( key, value );
-        }
-
-        /// <summary>
-        /// Binds a type to a singleton instance of a concrete type.
-        /// </summary>
-        public static TImpl BindOnce<TAbstract, TImpl>()
+        /// <returns>The instance of the implementation.</returns>
+        public static TImpl Bind<TAbstract, TImpl>()
             where TImpl : TAbstract
         {
             Type key = typeof( TAbstract );
@@ -65,15 +36,11 @@ namespace PocketCampus.Mvvm
             }
             if ( _impls.ContainsKey( key ) )
             {
-                throw new InvalidOperationException( "Cannot override an implementation. (the existing one was not a singleton)" );
-            }
-            if ( _staticImpls.ContainsKey( key ) )
-            {
                 throw new InvalidOperationException( "Cannot override an implementation." );
             }
 
             var implementation = Get( typeof( TImpl ), null );
-            _staticImpls.Add( key, implementation );
+            _impls.Add( key, implementation );
             return (TImpl) implementation;
         }
 
@@ -83,44 +50,37 @@ namespace PocketCampus.Mvvm
         /// </summary>
         public static object Get( Type type, object argument )
         {
-            TypeInfo toCreate = type.GetTypeInfo();
+            TypeInfo typeInfo = type.GetTypeInfo();
 
-            if ( _staticImpls.ContainsKey( type ) )
+            var existingImpl = _impls.FirstOrDefault( pair => typeInfo.IsAssignableFrom( pair.Key.GetTypeInfo() ) ).Value;
+            if ( existingImpl != null )
             {
-                return _staticImpls[type];
-            }
-            var derivedType = _staticImpls.FirstOrDefault( pair => toCreate.IsAssignableFrom( pair.Key.GetTypeInfo() ) ).Key;
-            if ( derivedType != null )
-            {
-                return _staticImpls[derivedType];
+                return existingImpl;
             }
 
-            if ( toCreate.IsInterface || toCreate.IsAbstract )
+            if ( typeInfo.IsInterface || typeInfo.IsAbstract )
             {
-                if ( _impls.ContainsKey( type ) )
-                {
-                    toCreate = _impls[type].GetTypeInfo();
-                }
-                else if ( argument == null )
-                {
-                    throw new ArgumentException( "Missing implementation: " + type.Name );
-                }
+                throw new ArgumentException( "Missing implementation: " + typeInfo.Name );
             }
 
-            var ctor = toCreate.DeclaredConstructors.First( ci => !ci.IsStatic );
+            var ctor = typeInfo.DeclaredConstructors.SingleOrDefault( ci => !ci.IsStatic );
+            if ( ctor == null )
+            {
+                throw new ArgumentException( "Could not find an unique constructor for type {0}", typeInfo.Name );
+            }
+
             var argType = argument == null ? null : argument.GetType();
             bool argUsed = false;
 
             var ctorArgs =
                 ctor.GetParameters()
-                    .Select( pi => pi.ParameterType )
-                    .Select( typ =>
+                    .Select( param =>
                              {
-                                 if ( argument != null && typ.GetTypeInfo().IsAssignableFrom( argType.GetTypeInfo() ) )
+                                 if ( argument != null && param.ParameterType.GetTypeInfo().IsAssignableFrom( argType.GetTypeInfo() ) )
                                  {
-                                     if ( _staticImpls.ContainsKey( typ ) || _impls.ContainsKey( typ ) )
+                                     if ( _impls.ContainsKey( param.ParameterType ) )
                                      {
-                                         throw new ArgumentException( "Ambiguous match for constructor argument of type {0} between a dependency and the argument.", typ.FullName );
+                                         throw new ArgumentException( "Ambiguous match for constructor argument of type {0} between a dependency and the argument.", param.ParameterType.FullName );
                                      }
 
                                      if ( argUsed )
@@ -131,7 +91,7 @@ namespace PocketCampus.Mvvm
                                      argUsed = true;
                                      return argument;
                                  }
-                                 return Get( typ, null );
+                                 return Get( param.ParameterType, null );
                              } )
                     .ToArray();
             return ctor.Invoke( ctorArgs );
@@ -146,7 +106,6 @@ namespace PocketCampus.Mvvm
         internal static void Clear()
         {
             _impls.Clear();
-            _staticImpls.Clear();
         }
     }
 }

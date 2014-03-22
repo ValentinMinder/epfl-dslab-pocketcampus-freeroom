@@ -48,7 +48,7 @@ namespace PocketCampus.Map
             navigationService.Bind<MainViewModel>( "/PocketCampus.Map.WindowsPhone;component/Views/MainView.xaml" );
             navigationService.Bind<SettingsViewModel>( "/PocketCampus.Map.WindowsPhone;component/Views/SettingsView.xaml" );
 
-            Container.BindOnce<IPluginSettings, PluginSettings>();
+            Container.Bind<IPluginSettings, PluginSettings>();
         }
     }
 }
