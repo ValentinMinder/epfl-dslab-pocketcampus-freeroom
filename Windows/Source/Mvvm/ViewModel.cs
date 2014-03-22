@@ -12,11 +12,8 @@ using System.Windows.Input;
 namespace PocketCampus.Mvvm
 {
     /// <summary>
-    /// Concrete implementation of IViewModel, also implementing ObservableObject.
+    /// Concrete implementation of IViewModel, inheriting from ObservableObject.
     /// </summary>
-    /// <remarks>
-    /// IViewModel needs to be an interface to benefit from covariance.
-    /// </remarks>
     public abstract class ViewModel<TArg> : ObservableObject, IViewModel<TArg>
     {
         private Dictionary<string, ICommand> _cache = new Dictionary<string, ICommand>();

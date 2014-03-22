@@ -25,10 +25,18 @@ namespace PocketCampus.Mvvm
         public static void ListenToProperty<TNotifier, TProp>( this TNotifier item, Expression<Func<TNotifier, TProp>> propertyExpr, Action listener )
             where TNotifier : INotifyPropertyChanged
         {
-            string name = ExpressionHelper.GetPropertyName( propertyExpr );
+            ListenToProperty( item, ExpressionHelper.GetPropertyName( propertyExpr ), listener );
+        }
+
+        /// <summary>
+        /// Adds a listener to changes on the property with the specified name of the item.
+        /// </summary>
+        internal static void ListenToProperty<TNotifier>( this TNotifier item, string propertyName, Action listener )
+            where TNotifier : INotifyPropertyChanged
+        {
             item.PropertyChanged += ( _, e ) =>
             {
-                if ( e.PropertyName == name )
+                if ( e.PropertyName == propertyName )
                 {
                     listener();
                 }

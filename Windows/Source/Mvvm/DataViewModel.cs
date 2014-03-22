@@ -12,32 +12,6 @@ using PocketCampus.Mvvm.Logging;
 namespace PocketCampus.Mvvm
 {
     /// <summary>
-    /// Options for DataViewModel.
-    /// </summary>
-    public static class DataViewModelOptions
-    {
-        private static Type _networkExceptionType = typeof( WebException );
-
-        /// <summary>
-        /// Gets or sets the type of exceptions that are considered network exceptions; that is, 
-        /// which exceptions will set HasNetworkError to true in DataViewModel.TryExecuteAsync.
-        /// WebException by default.
-        /// </summary>
-        public static Type NetworkExceptionType
-        {
-            get { return _networkExceptionType; }
-            set
-            {
-                if ( !typeof( Exception ).GetTypeInfo().IsAssignableFrom( value.GetTypeInfo() ) )
-                {
-                    throw new ArgumentException( "NetworkExceptionType must be an exception type." );
-                }
-                _networkExceptionType = value;
-            }
-        }
-    }
-
-    /// <summary>
     /// ViewModel that loads data.
     /// </summary>
     public abstract class DataViewModel<TArg> : ViewModel<TArg>, IDisposable
@@ -219,4 +193,31 @@ namespace PocketCampus.Mvvm
         }
         #endregion
     }
+
+    /// <summary>
+    /// Options for DataViewModel.
+    /// </summary>
+    public static class DataViewModelOptions
+    {
+        private static Type _networkExceptionType = typeof( WebException );
+
+        /// <summary>
+        /// Gets or sets the type of exceptions that are considered network exceptions; that is, 
+        /// which exceptions will set HasNetworkError to true in DataViewModel.TryExecuteAsync.
+        /// WebException by default.
+        /// </summary>
+        public static Type NetworkExceptionType
+        {
+            get { return _networkExceptionType; }
+            set
+            {
+                if ( !typeof( Exception ).GetTypeInfo().IsAssignableFrom( value.GetTypeInfo() ) )
+                {
+                    throw new ArgumentException( "NetworkExceptionType must be an exception type." );
+                }
+                _networkExceptionType = value;
+            }
+        }
+    }
+
 }

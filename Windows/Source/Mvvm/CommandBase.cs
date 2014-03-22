@@ -35,15 +35,9 @@ namespace PocketCampus.Mvvm
                 return;
             }
 
-            foreach ( var obsProps in ObservablePropertyVisitor.GetObservablePropertyAccesses( canExecute ) )
+            foreach ( var obsProp in ObservablePropertyVisitor.GetObservablePropertyAccesses( canExecute ) )
             {
-                obsProps.Item1.PropertyChanged += ( s, e ) =>
-                {
-                    if ( e.PropertyName == obsProps.Item2 )
-                    {
-                        OnCanExecuteChanged();
-                    }
-                };
+                obsProp.Item1.ListenToProperty( obsProp.Item2, OnCanExecuteChanged );
             }
         }
 

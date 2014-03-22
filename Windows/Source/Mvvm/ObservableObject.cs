@@ -18,7 +18,7 @@ namespace PocketCampus.Mvvm
     {
         // Used to send PropertyChanged messages
         // otherwise they may result in invalid cross-thread access.
-        private SynchronizationContext _context;
+        private readonly SynchronizationContext _context;
 
 
         /// <summary>
