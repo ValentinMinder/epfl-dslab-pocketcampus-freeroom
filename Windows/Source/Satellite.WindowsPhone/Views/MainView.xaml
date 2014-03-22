@@ -31,52 +31,58 @@
         <!-- Beer template -->
         <DataTemplate x:Key="BeerListItemTemplate">
             <Grid Background="Transparent"
-                  Margin="0,10,0,20"
+                  Margin="0,0,0,20"
                   Tap="Beer_Tap">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!-- Beer name -->
-                <TextBlock Grid.ColumnSpan="2"
-                           Text="{Binding Name}"
-                           Style="{StaticResource PhoneTextNormalStyle}"
-                           FontSize="{StaticResource PhoneFontSizeMediumLarge}"
-                           TextTrimming="WordEllipsis" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                <!-- Brewery name & country -->
-                <StackPanel Grid.Row="1"
-                            Orientation="Horizontal">
+                    <!-- Beer name -->
+                    <TextBlock Text="{Binding Name}"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                               TextTrimming="WordEllipsis"/>
+
+                    <!-- Price -->
+                    <TextBlock Grid.Column="2"
+                               Text="{Binding Price, StringFormat='{}{0:0.00} CHF'}"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               VerticalAlignment="Bottom"
+                               Margin="0" />
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Brewery name -->
                     <TextBlock Text="{Binding BreweryName}"
                                Style="{StaticResource PhoneTextSubtleStyle}"
                                Margin="12,0,6,0" />
 
-                    <TextBlock Text="{Binding CountryName, StringFormat='({0})'}"
+                    <!-- Brewery country -->
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding CountryName, StringFormat='({0})'}"
                                TextTrimming="WordEllipsis"
                                Style="{StaticResource PhoneTextSubtleStyle}"
+                               Margin="0,0,24,0" />
+
+                    <!-- Alcohol rate -->
+                    <TextBlock Grid.Column="2"
+                               Text="{Binding AlcoholRate, StringFormat='{}{0}°'}"
+                               Style="{StaticResource PhoneTextSubtleStyle}"
                                Margin="0" />
-                </StackPanel>
-
-                <!-- Alcohol rate -->
-                <TextBlock Grid.Column="1"
-                           Text="{Binding AlcoholRate, StringFormat='{}{0}°'}"
-                           Style="{StaticResource PhoneTextSubtleStyle}"
-                           Margin="0"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Bottom" />
-
-                <!-- Price -->
-                <TextBlock Grid.Column="1"
-                           Grid.Row="1"
-                           Text="{Binding Price, StringFormat='{}{0:0.00} CHF'}"
-                           TextAlignment="Right"
-                           Style="{StaticResource PhoneTextNormalStyle}"
-                           Margin="0" />
+                </Grid>
             </Grid>
         </DataTemplate>
 
