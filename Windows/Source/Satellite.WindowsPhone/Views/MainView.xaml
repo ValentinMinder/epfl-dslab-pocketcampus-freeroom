@@ -141,7 +141,7 @@
 
     <!-- Application bar -->
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar>
+        <bar:BindableApplicationBar Mode="Minimized">
             <bar:BindableApplicationBar.Buttons>
                 <!-- "Refresh" button -->
                 <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"
