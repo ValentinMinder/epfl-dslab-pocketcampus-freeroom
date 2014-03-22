@@ -17,12 +17,12 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayou
 import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.android.utils.Converter;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -407,7 +407,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 	 * pickers afterwards.
 	 */
 	private void resetTimes() {
-		FRPeriod mFrPeriod = Converter.getNextValidPeriod();
+		FRPeriod mFrPeriod = FRTimes.getNextValidPeriod();
 
 		Calendar mCalendar = Calendar.getInstance();
 		mCalendar.setTimeInMillis(mFrPeriod.getTimeStampStart());
@@ -489,7 +489,13 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 								endHourSelected, endMinSelected)));
 	}
 
-	private void prepareSearchQuery() {
+	/**
+	 * Construct the <code>FRPeriod</code> object asscociated with the current
+	 * selected times.
+	 * 
+	 * @return
+	 */
+	private FRPeriod prepareFRFrPeriod() {
 		Calendar start = Calendar.getInstance();
 		start.clear();
 		start.set(yearSelected, monthSelected, dayOfMonthSelected,
@@ -501,8 +507,15 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 				endHourSelected, endMinSelected, 0);
 
 		// constructs the request
-		FRPeriod period = new FRPeriod(start.getTimeInMillis(),
-				end.getTimeInMillis(), false);
+		return new FRPeriod(start.getTimeInMillis(), end.getTimeInMillis(),
+				false);
+	}
+
+	/**
+	 * Prepare the actual query to send and set it in the controller
+	 */
+	private void prepareSearchQuery() {
+		FRPeriod period = prepareFRFrPeriod();
 
 		// mSelectedRoomsToQueryArrayList
 		List<String> mUIDList = new ArrayList<String>(
@@ -523,57 +536,37 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		mController.prepareCheckOccupancy(request);
 	}
 
+	/**
+	 * Check that the times set are valid, according to the shared definition.
+	 * 
+	 * @return 0 if times are valids, positive integer otherwise
+	 */
 	private int auditTimes() {
-		int error = 0;
+		// NOT EVEN SET, we don't bother checking
 		if (yearSelected == -1 || monthSelected == -1
 				|| dayOfMonthSelected == -1) {
-			error++;
+			return 1;
 		}
-
 		if (startHourSelected == -1 || endHourSelected == -1
 				|| startMinSelected == -1 || endMinSelected == -1) {
-			error++;
+			return 1;
 		}
 
-		if (startHourSelected == endHourSelected) {
-			// there must be at least 5 minutes
-			if (endMinSelected <= startMinSelected + 5) {
-				error++;
-			}
-		} else if (startHourSelected > endHourSelected) {
-			error++;
-		} else if (startHourSelected + 1 == endHourSelected) {
-			// there must be at least 5 minutes
-			if (endMinSelected + 60 - startMinSelected < 5) {
-				error++;
-			}
+		// IF SET, we use the shared method checking the prepared period
+
+		String errors = FRTimes.validCalendarsString(prepareFRFrPeriod());
+		if (errors.equals("")) {
+			return 0;
 		}
 
-		if (startHourSelected <= 7) {
-			error++;
-		}
-		if (endHourSelected > 19
-				|| (endHourSelected == 19 && endMinSelected != 0)) {
-			error++;
-		}
-
-		Calendar mCalendar = Calendar.getInstance();
-		mCalendar.clear();
-		mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected);
-		int day = mCalendar.get(Calendar.DAY_OF_WEEK);
-
-		// day should also be between Monday-Friday
-		if (day < 2 || day > 6) {
-			error++;
-		}
-		if (error != 0) {
-			Toast.makeText(
-					getApplicationContext(),
-					"Please review the time, should be between Mo-Fr 8am-7pm.\n"
-							+ "The end should also be after the start, and at least 5 minutes.",
-					Toast.LENGTH_LONG).show();
-		}
-		return error;
+		Toast.makeText(
+				getApplicationContext(),
+				"Please review the time, should be between Mo-Fr 8am-7pm.\n"
+						+ "The end should also be after the start, and at least 5 minutes.",
+				Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(),
+				"Errors remaining: \n" + errors, Toast.LENGTH_LONG).show();
+		return 1;
 	}
 
 	/**

@@ -27,7 +27,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.android.utils.Converter;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -38,6 +37,7 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.OccupationType;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
  * TESTS - Check Occupancy feature.
@@ -172,25 +172,25 @@ public class TestFreeRoomSearchAndOccupancy {
 		globalAL.add(requestcm3);
 
 		// CO1 occupancies
-		requestco1.add(Converter.convert(Calendar.MONDAY, 8, 9));
-		requestco1.add(Converter.convert(Calendar.THURSDAY, 12, 13));
+		requestco1.add(FRTimes.convert(Calendar.MONDAY, 8, 9));
+		requestco1.add(FRTimes.convert(Calendar.THURSDAY, 12, 13));
 		// CO2
-		requestco2.add(Converter.convert(Calendar.MONDAY, 11, 12));
-		requestco2.add(Converter.convert(Calendar.WEDNESDAY, 8, 12));
+		requestco2.add(FRTimes.convert(Calendar.MONDAY, 11, 12));
+		requestco2.add(FRTimes.convert(Calendar.WEDNESDAY, 8, 12));
 		// CO3
-		requestco3.add(Converter.convert(Calendar.MONDAY, 15, 16));
-		requestco3.add(Converter.convert(Calendar.TUESDAY, 15, 16));
-		requestco3.add(Converter.convert(Calendar.THURSDAY, 10, 11));
+		requestco3.add(FRTimes.convert(Calendar.MONDAY, 15, 16));
+		requestco3.add(FRTimes.convert(Calendar.TUESDAY, 15, 16));
+		requestco3.add(FRTimes.convert(Calendar.THURSDAY, 10, 11));
 		// CM1
-		requestcm1.add(Converter.convert(Calendar.MONDAY, 8, 9));
-		requestcm1.add(Converter.convert(Calendar.MONDAY, 10, 12));
-		requestcm1.add(Converter.convert(Calendar.WEDNESDAY, 8, 9));
+		requestcm1.add(FRTimes.convert(Calendar.MONDAY, 8, 9));
+		requestcm1.add(FRTimes.convert(Calendar.MONDAY, 10, 12));
+		requestcm1.add(FRTimes.convert(Calendar.WEDNESDAY, 8, 9));
 		// CM2
-		requestcm2.add(Converter.convert(Calendar.MONDAY, 15, 16));
-		requestcm2.add(Converter.convert(Calendar.TUESDAY, 12, 14));
+		requestcm2.add(FRTimes.convert(Calendar.MONDAY, 15, 16));
+		requestcm2.add(FRTimes.convert(Calendar.TUESDAY, 12, 14));
 		// CM3
-		requestcm3.add(Converter.convert(Calendar.MONDAY, 15, 16));
-		requestcm3.add(Converter.convert(Calendar.WEDNESDAY, 10, 11));
+		requestcm3.add(FRTimes.convert(Calendar.MONDAY, 15, 16));
+		requestcm3.add(FRTimes.convert(Calendar.WEDNESDAY, 10, 11));
 
 		// insert the rooms
 		for (FRRoom r : rooms) {
@@ -247,7 +247,7 @@ public class TestFreeRoomSearchAndOccupancy {
 
 			// test1
 			roomsList.add(new FRRoom("CO", "1"));
-			period = Converter.convert(Calendar.MONDAY, 8, 12).getPeriod();
+			period = FRTimes.convert(Calendar.MONDAY, 8, 12).getPeriod();
 			request = new OccupancyRequest(roomsList, period);
 			reply = server.checkTheOccupancy(request);
 
@@ -302,7 +302,7 @@ public class TestFreeRoomSearchAndOccupancy {
 
 			// test1
 			roomsList.add(new FRRoom("CM", "1"));
-			period = Converter.convert(Calendar.MONDAY, 8, 19).getPeriod();
+			period = FRTimes.convert(Calendar.MONDAY, 8, 19).getPeriod();
 			request = new OccupancyRequest(roomsList, period);
 			reply = server.checkTheOccupancy(request);
 
@@ -378,7 +378,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			roomsList.add(new FRRoom("CM", "2"));
 			roomsList.add(new FRRoom("CO", "3"));
 			roomsList.add(new FRRoom("C0", "1"));
-			period = Converter.convert(Calendar.TUESDAY, 8, 19).getPeriod();
+			period = FRTimes.convert(Calendar.TUESDAY, 8, 19).getPeriod();
 			request = new OccupancyRequest(roomsList, period);
 			reply = server.checkTheOccupancy(request);
 
@@ -430,7 +430,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
-			request = Converter.convert(Calendar.FRIDAY, 8, 19);
+			request = FRTimes.convert(Calendar.FRIDAY, 8, 19);
 
 			reply = server.getFreeRoomFromTime(request);
 
@@ -453,7 +453,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
-			request = Converter.convert(Calendar.MONDAY, 9, 10);
+			request = FRTimes.convert(Calendar.MONDAY, 9, 10);
 
 			reply = server.getFreeRoomFromTime(request);
 
@@ -479,7 +479,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
-			request = Converter.convert(Calendar.MONDAY, 9, 12);
+			request = FRTimes.convert(Calendar.MONDAY, 9, 12);
 
 			reply = server.getFreeRoomFromTime(request);
 
@@ -501,7 +501,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
-			request = Converter.convert(Calendar.MONDAY, 9, 11);
+			request = FRTimes.convert(Calendar.MONDAY, 9, 11);
 
 			reply = server.getFreeRoomFromTime(request);
 
@@ -529,7 +529,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
-			request = Converter.convert(Calendar.TUESDAY, 13, 16);
+			request = FRTimes.convert(Calendar.TUESDAY, 13, 16);
 
 			reply = server.getFreeRoomFromTime(request);
 
@@ -556,8 +556,8 @@ public class TestFreeRoomSearchAndOccupancy {
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
-			request = Converter.convert(Calendar.TUESDAY, 13, 16);
-			FreeRoomRequest request2 = Converter.convert(Calendar.TUESDAY, 12,
+			request = FRTimes.convert(Calendar.TUESDAY, 13, 16);
+			FreeRoomRequest request2 = FRTimes.convert(Calendar.TUESDAY, 12,
 					14);
 
 			request.setPeriod(new FRPeriod(request.getPeriod()
@@ -584,7 +584,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
-			request = Converter.convert(Calendar.SATURDAY, 13, 16);
+			request = FRTimes.convert(Calendar.SATURDAY, 13, 16);
 
 			reply = server.getFreeRoomFromTime(request);
 			assertTrue("Code is " + reply.getStatus(),
@@ -606,7 +606,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
-			request = Converter.convert(Calendar.MONDAY, 7, 16);
+			request = FRTimes.convert(Calendar.MONDAY, 7, 16);
 
 			reply = server.getFreeRoomFromTime(request);
 			assertTrue("Code is " + reply.getStatus(),
@@ -628,7 +628,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
-			request = Converter.convert(Calendar.MONDAY, 9, 20);
+			request = FRTimes.convert(Calendar.MONDAY, 9, 20);
 
 			FRPeriod period = request.getPeriod();
 			Calendar mCalendar = Calendar.getInstance();
@@ -661,7 +661,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			OccupancyReply reply = null;
 
 			roomsList.add(new FRRoom("CM", "1"));
-			period = Converter.convertWithMinPrecision(Calendar.MONDAY, 11, 30,
+			period = FRTimes.convertWithMinPrecision(Calendar.MONDAY, 11, 30,
 					13, 00).getPeriod();
 			long queryFirstTS = period.getTimeStampStart();
 			long queryLastTS = period.getTimeStampEnd();
@@ -700,7 +700,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			OccupancyReply reply = null;
 
 			roomsList.add(new FRRoom("CM", "2"));
-			period = Converter.convertWithMinPrecision(Calendar.TUESDAY, 10,
+			period = FRTimes.convertWithMinPrecision(Calendar.TUESDAY, 10,
 					00, 12, 30).getPeriod();
 			long queryFirstTS = period.getTimeStampStart();
 			long queryLastTS = period.getTimeStampEnd();
@@ -741,7 +741,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			OccupancyReply reply = null;
 
 			roomsList.add(new FRRoom("CM", "2"));
-			period = Converter.convertWithMinPrecision(Calendar.TUESDAY, 10,
+			period = FRTimes.convertWithMinPrecision(Calendar.TUESDAY, 10,
 					14, 12, 30).getPeriod();
 			long queryFirstTS = period.getTimeStampStart();
 			long queryLastTS = period.getTimeStampEnd();

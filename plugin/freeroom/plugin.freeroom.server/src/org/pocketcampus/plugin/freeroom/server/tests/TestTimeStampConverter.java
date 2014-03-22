@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import java.util.Calendar;
 
 import org.junit.Test;
-import org.pocketcampus.plugin.freeroom.android.utils.Converter;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 public class TestTimeStampConverter {
 
@@ -19,7 +19,7 @@ public class TestTimeStampConverter {
 	 */
 	@Test
 	public void testMonday819() {
-		FreeRoomRequest request = Converter.convert(Calendar.MONDAY, 8, 19);
+		FreeRoomRequest request = FRTimes.convert(Calendar.MONDAY, 8, 19);
 		FRPeriod period = request.getPeriod();
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
@@ -44,7 +44,7 @@ public class TestTimeStampConverter {
 
 	@Test
 	public void testMonday88() {
-		FreeRoomRequest request = Converter.convert(Calendar.MONDAY, 8, 8);
+		FreeRoomRequest request = FRTimes.convert(Calendar.MONDAY, 8, 8);
 		FRPeriod period = request.getPeriod();
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
@@ -63,7 +63,7 @@ public class TestTimeStampConverter {
 
 	@Test
 	public void testTuesday89() {
-		FreeRoomRequest request = Converter.convert(Calendar.TUESDAY, 8, 9);
+		FreeRoomRequest request = FRTimes.convert(Calendar.TUESDAY, 8, 9);
 		FRPeriod period = request.getPeriod();
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
@@ -88,7 +88,7 @@ public class TestTimeStampConverter {
 
 	@Test
 	public void testWednesday89() {
-		FreeRoomRequest request = Converter.convert(Calendar.WEDNESDAY, 8, 9);
+		FreeRoomRequest request = FRTimes.convert(Calendar.WEDNESDAY, 8, 9);
 		FRPeriod period = request.getPeriod();
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
@@ -113,7 +113,7 @@ public class TestTimeStampConverter {
 
 	@Test
 	public void testThursday89() {
-		FreeRoomRequest request = Converter.convert(Calendar.THURSDAY, 8, 9);
+		FreeRoomRequest request = FRTimes.convert(Calendar.THURSDAY, 8, 9);
 		FRPeriod period = request.getPeriod();
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
@@ -138,7 +138,7 @@ public class TestTimeStampConverter {
 
 	@Test
 	public void testFriday89() {
-		FreeRoomRequest request = Converter.convert(Calendar.FRIDAY, 8, 9);
+		FreeRoomRequest request = FRTimes.convert(Calendar.FRIDAY, 8, 9);
 		FRPeriod period = request.getPeriod();
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
@@ -163,7 +163,7 @@ public class TestTimeStampConverter {
 
 	@Test
 	public void testSaturday89() {
-		FreeRoomRequest request = Converter.convert(Calendar.SATURDAY, 8, 9);
+		FreeRoomRequest request = FRTimes.convert(Calendar.SATURDAY, 8, 9);
 		FRPeriod period = request.getPeriod();
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
@@ -188,7 +188,7 @@ public class TestTimeStampConverter {
 	
 	@Test
 	public void testSunday89() {
-		FreeRoomRequest request = Converter.convert(Calendar.SUNDAY, 8, 9);
+		FreeRoomRequest request = FRTimes.convert(Calendar.SUNDAY, 8, 9);
 		FRPeriod period = request.getPeriod();
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
