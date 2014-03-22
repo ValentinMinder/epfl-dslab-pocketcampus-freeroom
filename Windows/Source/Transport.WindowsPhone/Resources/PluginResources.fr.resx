@@ -160,7 +160,7 @@
     <value>paramètres</value>
   </data>
   <data name="SortByPosition" xml:space="preserve">
-    <value>Trier les arrêts en fonction de leur distance à ma position</value>
+    <value>Trier les arrêts selon ma position</value>
   </data>
   <data name="StationsHeader" xml:space="preserve">
     <value>arrêts</value>
@@ -178,7 +178,7 @@
     <value>Localisation</value>
   </data>
   <data name="UseGeolocationMessage" xml:space="preserve">
-    <value>Voulez-vous sélectionner l'arrêt le plus proche de vous comme départ des trajets ?
+    <value>Voulez-vous trier les arrêts selon votre position ?
 Pour ce faire, l'application doit accéder à votre position.</value>
   </data>
 </root>

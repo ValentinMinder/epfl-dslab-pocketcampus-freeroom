@@ -53,9 +53,10 @@
         </Border>
 
 
-                <!-- Sort stops by position -->
+        <!-- Sort stops by position -->
         <CheckBox Grid.Row="2"
                   Content="{Binding Resources.SortByPosition, Source={StaticResource Strings}}"
-                  IsChecked="{Binding SortByPosition}" />
+                  IsChecked="{Binding SortByPosition}"
+                  Margin="12,32" />
     </Grid>
 </comControls:BasePage>

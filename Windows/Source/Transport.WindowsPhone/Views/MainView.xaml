@@ -32,14 +32,14 @@
 
             <!-- Connection template -->
             <DataTemplate x:Key="ConnectionTemplate">
-                <Grid Margin="5,0,5,7">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="215" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="222" />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition  />
                     </Grid.RowDefinitions>
 
                     <!-- Arrival -->
@@ -51,8 +51,8 @@
                     <!-- Line name -->
                     <TextBlock Grid.Column="1"
                                Text="{Binding Line.Name}"
-                               Style="{StaticResource PhoneTextNormalStyle}"/>
-
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               Margin="0" />
 
                     <!-- Departure and arrival time -->
                     <StackPanel Grid.Row="1"
@@ -61,15 +61,14 @@
                                    Style="{StaticResource PhoneTextSmallStyle}"
                                    Margin="0" />
 
-                        <TextBlock Text="→"
+                        <TextBlock Text=" → "
                                    Style="{StaticResource PhoneTextSmallStyle}"
-                                   Margin="6,0" />
+                                   Margin="0" />
 
                         <TextBlock Text="{Binding ArrivalTime, StringFormat='HH:mm'}"
                                    Style="{StaticResource PhoneTextSmallStyle}"
                                    Margin="0" />
                     </StackPanel>
-
 
                     <!-- Departure position (if any) -->
                     <StackPanel Grid.Column="1"
@@ -78,11 +77,9 @@
                                 Visibility="{Binding DeparturePosition, Converter={StaticResource NonNullToVisibility}}">
                         <TextBlock Text="{Binding Resources.DeparturePosition, Source={StaticResource Strings}}"
                                    Style="{StaticResource PhoneTextSmallStyle}"
-                                   VerticalAlignment="Center"
-                                   Margin="12,0,6,0" />
+                                   Margin="0,0,6,0" />
                         <TextBlock Text="{Binding DeparturePosition}"
                                    Style="{StaticResource PhoneTextSmallStyle}"
-                                   VerticalAlignment="Center"
                                    Margin="0" />
                     </StackPanel>
                 </Grid>
@@ -90,8 +87,8 @@
 
             <!-- Basic trip template -->
             <DataTemplate x:Key="TripBasicTemplate">
-                <Grid Margin="5,10"
-                      Width="140">
+                <Grid Width="130"
+                      Margin="21,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
@@ -103,13 +100,14 @@
 
                     <!-- Departure time -->
                     <TextBlock Text="{Binding DepartureTime, Converter={StaticResource DateToString}}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
+                               Style="{StaticResource PhoneTextTitle3Style}"
+                               FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                               Margin="0,0,12,0" />
 
                     <!-- First line name -->
                     <TextBlock Grid.Column="1"
                                Text="{Binding Connections[0].Line.Name}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
+                               Style="{StaticResource PhoneTextTitle3Style}"
                                FontSize="{StaticResource PhoneFontSizeMediumLarge}"
                                Foreground="{StaticResource PhoneSubtleBrush}"
                                Margin="0" />
@@ -122,7 +120,7 @@
                         <TextBlock Text="{Binding Resources.DeparturePosition, Source={StaticResource Strings}}"
                                    Style="{StaticResource PhoneTextSmallStyle}"
                                    VerticalAlignment="Center"
-                                   Margin="12,0,6,0" />
+                                   Margin="0,0,6,0" />
                         <TextBlock Text="{Binding Connections[0].DeparturePosition}"
                                    Style="{StaticResource PhoneTextSmallStyle}"
                                    VerticalAlignment="Center"
@@ -133,57 +131,65 @@
 
             <!-- Full trip template -->
             <DataTemplate x:Key="TripFullTemplate">
-                <Grid Margin="-6,6,-6,18"
-                      HorizontalAlignment="Left">
+                <Grid Margin="0,0,0,24">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="105" />
+                        <ColumnDefinition Width="110" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+                    
+                    <!-- Times -->
+                    <Grid VerticalAlignment="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
 
-                    <!-- Departure time -->
-                    <TextBlock Text="{Binding Resources.TripDeparture, Source={StaticResource Strings}}"
-                               Style="{StaticResource PhoneTextSmallStyle}" />
-                    <TextBlock Grid.Row="1"
-                               Text="{Binding DepartureTime, Converter={StaticResource DateToString}}"
-                               Style="{StaticResource PhoneTextLargeStyle}"
-                               Foreground="{StaticResource AppAccentBrush}" />
+                        <!-- Departure time -->
+                        <TextBlock Text="{Binding Resources.TripDeparture, Source={StaticResource Strings}}"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Margin="0" />
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding DepartureTime, Converter={StaticResource DateToString}}"
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   Foreground="{StaticResource AppAccentBrush}"
+                                   VerticalAlignment="Top"
+                                   Margin="0" />
 
-                    <!-- Arrival time -->
-                    <TextBlock Grid.Row="2"
-                               Text="{Binding Resources.TripArrival, Source={StaticResource Strings}}"
-                               Style="{StaticResource PhoneTextSmallStyle}" />
-                    <TextBlock Grid.Row="3"
-                               Text="{Binding ArrivalTime, Converter={StaticResource DateToString}}"
-                               Style="{StaticResource PhoneTextLargeStyle}" />
+                        <!-- Arrival time -->
+                        <TextBlock Grid.Row="2"
+                                   Text="{Binding Resources.TripArrival, Source={StaticResource Strings}}"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Margin="0" />
+                        <TextBlock Grid.Row="3"
+                                   Text="{Binding ArrivalTime, Converter={StaticResource DateToString}}"
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   VerticalAlignment="Top"
+                                   Margin="0" />
+                    </Grid>
 
                     <!-- Connections -->
                     <ItemsControl Grid.Column="1"
-                                  Grid.RowSpan="4"
                                   ItemsSource="{Binding Connections}"
                                   ItemTemplate="{StaticResource ConnectionTemplate}" />
                 </Grid>
             </DataTemplate>
 
-            <!-- Items panel that wraps its items if the overflow -->
+            <!-- Horizontal items panel -->
             <ItemsPanelTemplate x:Key="HorizontalItemsPanel">
-                <tool:WrapPanel />
+                <StackPanel Orientation="Horizontal" />
             </ItemsPanelTemplate>
 
             <!-- Template for trips to a station -->
             <DataTemplate x:Key="StationTripsTemplate">
-                <myControls:BiStateExpander Margin="0,0,0,30">
+                <myControls:BiStateExpander Margin="24,0,24,40">
                     <myControls:BiStateExpander.Header>
                         <!-- Header: station name -->
                         <Grid Background="Transparent">
                             <TextBlock Text="{Binding Station.Name}"
                                        Style="{StaticResource PhoneTextTitle2Style}"
-                                       FontFamily="{StaticResource PhoneFontFamilyNormal}" />
+                                       Margin="0" />
 
                             <!-- Context menu -->
                             <tool:ContextMenuService.ContextMenu>
@@ -204,23 +210,16 @@
                                       ItemsSource="{Binding Trips, Converter={StaticResource Take3Converter}}"
                                       ItemTemplate="{StaticResource TripBasicTemplate}"
                                       ItemsPanel="{StaticResource HorizontalItemsPanel}"
-                                      Margin="20,-5,0,0" />
+                                      Margin="-21,0,0,0" />
                     </myControls:BiStateExpander.CollapsedContent>
 
                     <myControls:BiStateExpander.ExpandedContent>
                         <!-- Expanded content: full trips information -->
                         <ItemsControl Grid.Row="1"
                                       ItemsSource="{Binding Trips}"
-                                      ItemTemplate="{StaticResource TripFullTemplate}"
-                                      Margin="20,-5,0,0" />
+                                      ItemTemplate="{StaticResource TripFullTemplate}" />
                     </myControls:BiStateExpander.ExpandedContent>
                 </myControls:BiStateExpander>
-            </DataTemplate>
-
-            <!-- Station template for the picker -->
-            <DataTemplate x:Key="StationTemplate">
-                <TextBlock Text="{Binding Name}"
-                           Margin="0,2,0,0" />
             </DataTemplate>
 
             <!-- Station template for the full-screen picker -->
@@ -255,7 +254,7 @@
                        Style="{StaticResource AppTextTitle2Style}" />
         </Border>
 
-        <!-- Stations -->
+        <!-- Station picker -->
         <Grid Grid.Row="1"
               Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
             <Grid.ColumnDefinitions>
@@ -265,16 +264,18 @@
 
             <TextBlock Text="{Binding Resources.DeparturePickerLabel, Source={StaticResource Strings}}"
                        Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                       FontSize="{Binding FontSize, ElementName=StationsPicker}" />
+                       FontSize="{Binding FontSize, ElementName=StationsPicker}"
+                       Margin="24,0,0,0" />
 
             <!-- HACK: See code-behind for SelectedItem -->
             <tool:ListPicker x:Name="StationsPicker"
                              Grid.Column="1"
                              ItemsSource="{Binding Settings.Stations}"
-                             ItemTemplate="{StaticResource StationTemplate}"
+                             DisplayMemberPath="Name"
                              FullModeHeader="{Binding Resources.StationsHeader, Source={StaticResource Strings}}"
                              FullModeItemTemplate="{StaticResource StationLargeTemplate}"
                              Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
+                             Margin="12,6,24,6"
                              Loaded="StationsPicker_Loaded" />
         </Grid>
 
@@ -282,7 +283,7 @@
         <TextBlock Grid.Row="2"
                    Text="{Binding Resources.TapToRevealInformation, Source={StaticResource Strings}}"
                    Style="{StaticResource PhoneTextSmallStyle}"
-                   Margin="12,6,12,12"/>
+                   Margin="24,0,24,12" />
 
         <!-- Trips -->
         <ItemsControl Grid.Row="3"
@@ -292,12 +293,12 @@
 
         <!-- Loading & error -->
         <comControls:LoadingAndError Grid.RowSpan="2"
-                                     Grid.Row="2" />
+                                     Grid.Row="2" />        
     </Grid>
 
     <!-- App bar -->
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar>
+        <bar:BindableApplicationBar Mode="Minimized">
             <!-- "Refresh" button -->
             <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"
                                               Text="{Binding Resources.RefreshButton, Source={StaticResource Strings}}"
