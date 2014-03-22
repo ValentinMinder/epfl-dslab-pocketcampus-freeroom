@@ -11,7 +11,7 @@ import org.pocketcampus.android.platform.sdk.core.IView;
  * The methods that are called by the "HttpRequest" classes when some usual
  * behavior occurs are in <code>IAbstractFreeRoomView</code>
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  */
 public interface IFreeRoomView extends IView {

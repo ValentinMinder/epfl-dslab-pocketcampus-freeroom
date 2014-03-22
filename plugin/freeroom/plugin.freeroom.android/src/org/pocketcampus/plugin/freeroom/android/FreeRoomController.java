@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.req.BuildingAutoCompleteRequest;
@@ -32,7 +31,8 @@ import android.widget.Toast;
  * This class issues requests to the FreeRoom PocketCampus server to get the
  * FreeRoom data of the logged in user.
  * 
- * @author Amer <amer.chamseddine@epfl.ch>
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class FreeRoomController extends PluginController implements
@@ -120,13 +120,12 @@ public class FreeRoomController extends PluginController implements
 
 	public void setCheckOccupancyResults(OccupancyReply result) {
 		List<Occupancy> list = result.getOccupancyOfRooms();
-		
+
 		// this check the uniqueness of the rooms in the reply
 		LinkedHashSet<FRRoom> mLinkedHashSet = null;
 		boolean allUniqueFlag = true;
 		if (list != null) {
-			mLinkedHashSet = new LinkedHashSet<FRRoom>(
-						list.size());
+			mLinkedHashSet = new LinkedHashSet<FRRoom>(list.size());
 			Iterator<Occupancy> iter = list.iterator();
 			while (iter.hasNext() && allUniqueFlag) {
 				FRRoom mFrRoom = iter.next().getRoom();
@@ -144,7 +143,8 @@ public class FreeRoomController extends PluginController implements
 			mModel.setOccupancyResultsListOccupancy(list);
 			mModel.setOccupancyResultsLinkedHashSetFRRoom(mLinkedHashSet);
 		} else {
-			Log.e(this.getClass().toString(), "Warning: the response from the server contains duplicates!");
+			Log.e(this.getClass().toString(),
+					"Warning: the response from the server contains duplicates!");
 		}
 	}
 

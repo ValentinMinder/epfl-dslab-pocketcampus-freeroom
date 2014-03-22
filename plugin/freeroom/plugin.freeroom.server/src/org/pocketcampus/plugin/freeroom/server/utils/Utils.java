@@ -7,11 +7,13 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
  * This is an utility class doing useful conversions, and defining a few
  * constants.
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class Utils {
+	
+	// TODO: move in FRTimes in shared!!!
 	public static final long m30s_IN_MS = 30 * 1000;
 
 	/**

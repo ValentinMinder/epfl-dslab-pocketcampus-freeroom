@@ -9,7 +9,7 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
 /**
  * PluginLauncher launches the actual PocketCampus server.
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */

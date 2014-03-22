@@ -36,7 +36,7 @@ import org.pocketcampus.plugin.freeroom.shared.OccupationType;
  * 
  * It responds to different types of request from the clients.
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
@@ -122,7 +122,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	private FreeRoomReply checkFreeRoomPeriod(long tsStart, long tsEnd) {
 		FreeRoomReply mReply = new FreeRoomReply(HttpURLConnection.HTTP_OK, "");
-
+		
 		// Check if the request is valid
 		// First, the end date should be after the start, not equal or before.
 		if (tsEnd - tsStart <= 0) {

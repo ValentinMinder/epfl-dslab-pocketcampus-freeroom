@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.TreeMap;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -34,7 +33,7 @@ import android.widget.TextView;
  * View displaying the Results of the CheckOccupancy feature.
  * <p>
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */

@@ -34,7 +34,7 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 /**
  * TESTS - FreeRoom feature.
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */

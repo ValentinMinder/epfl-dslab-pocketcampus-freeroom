@@ -50,7 +50,7 @@ import android.widget.Toast;
  * View displaying the SearchQuery of the CheckOccupancy feature.
  * <p>
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */

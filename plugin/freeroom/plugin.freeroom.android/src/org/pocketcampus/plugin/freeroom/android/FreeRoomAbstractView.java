@@ -19,7 +19,7 @@ import android.widget.Toast;
  * no one will warn you if your methods in the view are not declared.
  * <p>
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */

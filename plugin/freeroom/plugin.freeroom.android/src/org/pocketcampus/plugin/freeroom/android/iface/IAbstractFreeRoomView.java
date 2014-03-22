@@ -12,7 +12,7 @@ import org.pocketcampus.android.platform.sdk.core.IView;
  * The method that are called by the Model when some data is updated are in
  * <code>IFreeRoomView</code>.
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  */
 public interface IAbstractFreeRoomView extends IView {

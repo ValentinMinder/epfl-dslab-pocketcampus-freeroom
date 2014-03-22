@@ -12,10 +12,10 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
 import org.pocketcampus.plugin.freeroom.shared.FRDay;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,7 +28,7 @@ import android.widget.Toast;
  * View displaying the SearchQuery of the FreeRoom feature.
  * <p>
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
@@ -88,16 +88,16 @@ public class FreeRoomSearchRoomsView extends FreeRoomAbstractView implements
 		startHour = -1;
 		endHour = -1;
 		intday = -1;
-		
+
 		// Creating and initializing button
 		searchButton = new Button(this);
 		searchButton.setEnabled(false);
 		searchButton.setText(R.string.freeroom_searchbutton);
-		
+
 		resetButton = new Button(this);
 		resetButton.setEnabled(true);
 		resetButton.setText(R.string.freeroom_resetbutton);
-		
+
 		final IFreeRoomView view = this;
 		searchButton.setOnClickListener(new OnClickListener() {
 
@@ -106,8 +106,8 @@ public class FreeRoomSearchRoomsView extends FreeRoomAbstractView implements
 				if (auditSearchButton() == 0) {
 
 					// constructs the request
-					FreeRoomRequest req = org.pocketcampus.plugin.freeroom.android.utils.Converter
-							.convert(intday, startHour, endHour);
+					FreeRoomRequest req = FRTimes.convert(intday, startHour,
+							endHour);
 
 					// starting the result UI before sending the request!
 					Intent i = new Intent(FreeRoomSearchRoomsView.this,
@@ -119,9 +119,9 @@ public class FreeRoomSearchRoomsView extends FreeRoomAbstractView implements
 				}
 			}
 		});
-		
+
 		resetButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				subLayout.removeAllViews();

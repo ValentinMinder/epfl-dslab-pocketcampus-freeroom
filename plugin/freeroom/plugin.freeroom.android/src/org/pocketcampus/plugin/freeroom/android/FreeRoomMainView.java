@@ -9,11 +9,11 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -113,10 +113,10 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 				switch (arg2) {
 				case 0:
 					Calendar calendar = Calendar.getInstance();
-					FreeRoomRequest req = org.pocketcampus.plugin.freeroom.android.utils.Converter
-							.convert(calendar.get(Calendar.DAY_OF_WEEK),
-									calendar.get(Calendar.HOUR_OF_DAY),
-									calendar.get(Calendar.HOUR_OF_DAY) + 1);
+					FreeRoomRequest req = FRTimes.convert(
+							calendar.get(Calendar.DAY_OF_WEEK),
+							calendar.get(Calendar.HOUR_OF_DAY),
+							calendar.get(Calendar.HOUR_OF_DAY) + 1);
 					// construct and launch the UI.
 					i = new Intent(FreeRoomMainView.this,
 							FreeRoomSearchRoomsResultView.class);

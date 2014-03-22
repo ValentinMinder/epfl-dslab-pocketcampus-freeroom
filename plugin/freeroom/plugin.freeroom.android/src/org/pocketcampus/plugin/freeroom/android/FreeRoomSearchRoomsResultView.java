@@ -13,7 +13,6 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.ExpandableListViewFavoriteAdapter;
-import org.pocketcampus.plugin.freeroom.android.utils.ExpandableSimpleListViewAdapter;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Intent;
@@ -21,9 +20,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -35,12 +31,12 @@ import android.widget.Toast;
  * View displaying the Results of the FreeRoom feature.
  * <p>
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implements
-		IFreeRoomView {
+public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
+		implements IFreeRoomView {
 
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
@@ -106,7 +102,6 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implemen
 		buildings = new ArrayList<String>();
 		sortedRooms = new TreeMap<String, List<String>>();
 
-
 		final ExpandableListViewFavoriteAdapter adapter = new ExpandableListViewFavoriteAdapter(
 				this, buildings, sortedRooms, mModel);
 		mExpList.setAdapter(adapter);
@@ -153,7 +148,7 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implemen
 		buildings.clear();
 		buildings.add(getString(R.string.freeroom_result_occupancy_favorites));
 		ArrayList<String> roomsFavorites = new ArrayList<String>();
-		
+
 		sortedRooms.clear();
 		sortedRooms.put(buildings.get(0), roomsFavorites);
 		// keep a structure organized as building -> list of rooms in the
@@ -161,12 +156,12 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implemen
 		for (FRRoom frRoom : res) {
 			String mDoorCode = frRoom.getDoorCode();
 			boolean isFavorite = mModel.isFavoriteRoom(mDoorCode);
-			
+
 			if (isFavorite) {
 				roomsFavorites.add(mDoorCode);
 			}
 			String building = mModel.getBuilding(mDoorCode);
-			
+
 			List<String> roomsNumbers = sortedRooms.get(building);
 			if (roomsNumbers == null) {
 				buildings.add(building);
@@ -182,7 +177,7 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView implemen
 					getString(R.string.freeroom_no_room_available),
 					Toast.LENGTH_LONG).show();
 		}
-		
+
 		if (roomsFavorites.isEmpty()) {
 			sortedRooms.remove(buildings.get(0));
 		} else {

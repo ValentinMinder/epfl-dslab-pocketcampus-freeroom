@@ -27,7 +27,7 @@ import android.graphics.Color;
  * (none at the moment!) Other data are temporary.
  * <p>
  * 
- * @author FreeFroom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
@@ -61,9 +61,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Ordered list of <code>Occupancy</code>'s displayed in the check occupancy
 	 */
 	private List<Occupancy> mListCheckedOccupancyRoom = new ArrayList<Occupancy>();
-	
-	private LinkedHashSet<FRRoom> mLinkedHashSetCheckedRoom = new LinkedHashSet<FRRoom>();
 
+	private LinkedHashSet<FRRoom> mLinkedHashSetCheckedRoom = new LinkedHashSet<FRRoom>();
 
 	private Context context;
 
@@ -164,9 +163,10 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public List<Occupancy> getListCheckedOccupancyRoom() {
 		return mListCheckedOccupancyRoom;
 	}
-	
-	public void setOccupancyResultsLinkedHashSetFRRoom(LinkedHashSet<FRRoom> mLinkedHashSet) {
-		mLinkedHashSetCheckedRoom  = mLinkedHashSet;
+
+	public void setOccupancyResultsLinkedHashSetFRRoom(
+			LinkedHashSet<FRRoom> mLinkedHashSet) {
+		mLinkedHashSetCheckedRoom = mLinkedHashSet;
 	}
 
 	private Occupancy getOccupancy(int mGroupPosition) {
@@ -229,7 +229,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	public int getColorOfCheckOccupancyRoom(int mGroupPosition) {
 		Occupancy mOccupancy = getOccupancy(mGroupPosition);
-		
+
 		boolean atLeastOneFree = mOccupancy.isIsAtLeastFreeOnce();
 		boolean atLeastOneOccupied = mOccupancy.isIsAtLeastOccupiedOnce();
 
@@ -286,12 +286,11 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Returns the building part in mDoorCode.
 	 * 
-	 * Door codes should be like PH D2 398
-	 * with PH the building
-	 * D2 the zone
-	 * 398 the number (including floor)
+	 * Door codes should be like PH D2 398 with PH the building D2 the zone 398
+	 * the number (including floor)
 	 * 
 	 * It works ONLY if spaces are correctly set!
+	 * 
 	 * @param mDoorCode
 	 * @return
 	 */
@@ -303,5 +302,5 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		}
 		return mDoorCode;
 	}
-	
+
 }
