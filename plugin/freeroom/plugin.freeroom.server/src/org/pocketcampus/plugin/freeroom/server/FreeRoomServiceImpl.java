@@ -30,6 +30,7 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.OccupationType;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
  * The actual implementation of the server side of the FreeRoom Plugin.
@@ -79,12 +80,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
 
-		FreeRoomReply reply = checkFreeRoomPeriod(tsStart, tsEnd);
-
-		if (reply.getStatus() != HttpURLConnection.HTTP_OK) {
+		if (!FRTimes.validCalendars(period)) {
 			// if something is wrong in the request
-			return reply;
+			// for security reasons, we don't tell the client was exactly was wrong
+			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Bad timestamps! Your client sent a bad request, sorry");
 		}
+
+		FreeRoomReply reply = new FreeRoomReply(HttpURLConnection.HTTP_OK, "");
 
 		boolean recurrent = period.isRecurrent();
 
@@ -105,57 +108,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					"reccurent request not supported yet");
 			return reply;
 		}
-	}
-
-	/**
-	 * Check if the given period is correct, ie is between Monday and Friday,
-	 * between 8am and 7pm, and that the start timestamp is before the end
-	 * timestamp
-	 * 
-	 * @param tsStart
-	 *            start timestamp of the period
-	 * @param tsEnd
-	 *            end timestamp of the period
-	 * @return A new FreeRoomReply with status code HttpURLConnection.HTTP_OK is
-	 *         everything is fine,HttpURLConnection.HTTP_BAD_REQUEST with an
-	 *         error message if some conditions does not hold.
-	 */
-	private FreeRoomReply checkFreeRoomPeriod(long tsStart, long tsEnd) {
-		FreeRoomReply mReply = new FreeRoomReply(HttpURLConnection.HTTP_OK, "");
-		
-		// Check if the request is valid
-		// First, the end date should be after the start, not equal or before.
-		if (tsEnd - tsStart <= 0) {
-			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Bad timestamps, the end should be after the start");
-		}
-
-		if (tsEnd - tsStart <= MARGIN_ERROR_TIMESTAMP * 5) {
-			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Bad timestamps, there should a total duration of at least 5min");
-		}
-		// Second the queries should be between MO-FR 8-19h
-		Calendar mDate = Calendar.getInstance();
-		mDate.setTimeInMillis(tsStart);
-
-		int startDay = mDate.get(Calendar.DAY_OF_WEEK);
-		int startHour = mDate.get(Calendar.HOUR_OF_DAY);
-		mDate.setTimeInMillis(tsEnd);
-		int endHour = mDate.get(Calendar.HOUR_OF_DAY);
-
-		if (startDay < 2 || startDay > 6) {
-			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Day should be between Monday and Friday");
-		}
-
-		int endMinutes = mDate.get(Calendar.MINUTE);
-		if (startHour < 8 || endHour > 19 || (endHour == 19 && endMinutes > 5)) {
-			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Hours should be between 8am and 7pm, given " + startHour
-							+ ":" + endHour);
-		}
-
-		return mReply;
 	}
 
 	private Set<FRRoom> getFreeRoom(long start, long end) throws TException {
@@ -218,13 +170,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long timestampStart = period.getTimeStampStart();
 		long timestampEnd = period.getTimeStampEnd();
 
-		FreeRoomReply replyCheck = checkFreeRoomPeriod(timestampStart,
-				timestampEnd);
-
-		if (replyCheck.getStatus() != HttpURLConnection.HTTP_OK) {
+		if (! FRTimes.validCalendars(period)) {
 			// if something is wrong in the request
-			return new OccupancyReply(replyCheck.getStatus(),
-					replyCheck.getStatusComment());
+			return new OccupancyReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Bad timestamps! Your client sent a bad request, sorry");
 		}
 
 		ArrayList<Occupancy> occupancies = new ArrayList<Occupancy>();
