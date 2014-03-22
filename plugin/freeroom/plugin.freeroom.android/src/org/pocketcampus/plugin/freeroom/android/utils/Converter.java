@@ -111,15 +111,9 @@ public class Converter {
 		// reset the time to the present time
 		Calendar mCalendar = Calendar.getInstance();
 
-		int yearSelected = mCalendar.get(Calendar.YEAR);
-		int monthSelected = mCalendar.get(Calendar.MONTH);
-		int dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
-		int startHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
-		int startMinSelected = mCalendar.get(Calendar.MINUTE);
-		int endHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
-		int endMinSelected = mCalendar.get(Calendar.MINUTE);
-
-		boolean testActivated = false;
+		// It WORKS perfectelly! TODO: move this to a test stating that it works
+		// perfectly
+		boolean testActivated = true;
 		if (testActivated) {
 			switch (testCounter) {
 			case 0:
@@ -148,12 +142,10 @@ public class Converter {
 				break;
 			case 6:
 				// friday, after delay
-				// TODO: dont work
 				mCalendar.set(2014, 02, 21, 18, 56);
 				break;
 			case 7:
 				// friday, after delay
-				// TODO: dont work
 				mCalendar.set(2014, 02, 21, 19, 00);
 				break;
 			case 8:
@@ -166,22 +158,18 @@ public class Converter {
 				break;
 			case 10:
 				// saturday, during day, usual
-				// TODO: dont work
 				mCalendar.set(2014, 02, 22, 17, 59);
 				break;
 			case 11:
 				// saturday, late afternoon
-				// TODO: dont work
 				mCalendar.set(2014, 02, 22, 18, 00);
 				break;
 			case 12:
 				// saturday, after delay
-				// TODO: dont work
 				mCalendar.set(2014, 02, 22, 18, 55);
 				break;
 			case 13:
 				// saturday, after delay
-				// TODO: dont work
 				mCalendar.set(2014, 02, 22, 19, 00);
 				break;
 			case 14:
@@ -190,22 +178,18 @@ public class Converter {
 				break;
 			case 15:
 				// saturday, during day, usual
-				// TODO: dont work
 				mCalendar.set(2014, 02, 23, 17, 59);
 				break;
 			case 16:
 				// saturday, late afternoon
-				// TODO: dont work
 				mCalendar.set(2014, 02, 23, 18, 00);
 				break;
 			case 17:
 				// saturday, after delay
-				// TODO: dont work
 				mCalendar.set(2014, 02, 23, 18, 55);
 				break;
 			case 18:
 				// saturday, after delay
-				// TODO: dont work
 				mCalendar.set(2014, 02, 23, 19, 00);
 				break;
 			default:
@@ -215,6 +199,14 @@ public class Converter {
 			System.out.println("Test Counter:" + testCounter);
 			testCounter++;
 		}
+
+		int yearSelected = mCalendar.get(Calendar.YEAR);
+		int monthSelected = mCalendar.get(Calendar.MONTH);
+		int dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
+		int startHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
+		int startMinSelected = mCalendar.get(Calendar.MINUTE);
+		int endHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
+		int endMinSelected = mCalendar.get(Calendar.MINUTE);
 
 		// values for test only (weekends, nights, ...)
 		int temp_now_day_week = mCalendar.get(Calendar.DAY_OF_WEEK);
@@ -236,8 +228,9 @@ public class Converter {
 			hourShift = 24 - temp_now_hour + 1;
 			hourShift += 2 * 24;
 		}
-		mCalendar.setTimeInMillis(mCalendar.getTimeInMillis() + hourShift
-				* 3600 * 1000);
+		long newTimeInMS = mCalendar.getTimeInMillis() + hourShift
+				* ONE_HOUR_IN_MS;
+		mCalendar.setTimeInMillis(newTimeInMS);
 
 		// actualize with the enventually shifted Calendar
 		temp_now_hour = mCalendar.get(Calendar.HOUR_OF_DAY);
@@ -283,9 +276,14 @@ public class Converter {
 			endHourSelected = temp_now_hour + 1;
 		}
 
-		FRPeriod mFrPeriod = new FRPeriod(System.currentTimeMillis(),
-				System.currentTimeMillis() + ONE_HOUR_IN_MS, false);
+		mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected,
+				startHourSelected, startMinSelected);
+		long startMS = mCalendar.getTimeInMillis();
+		mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected,
+				endHourSelected, endMinSelected);
+		long endMS = mCalendar.getTimeInMillis();
 
+		FRPeriod mFrPeriod = new FRPeriod(startMS, endMS, false);
 		return mFrPeriod;
 	}
 
