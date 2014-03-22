@@ -10,30 +10,17 @@ namespace PocketCampus.Mvvm
     public interface INavigationService
     {
         /// <summary>
-        /// If no dialog is present on screen, navigates to a ViewModel of the specified type.
-        /// Otherwise, does so after (and if) the current dialog is exited successfully.
+        /// Navigates to a ViewModel of the specified type.
         /// </summary>
         void NavigateTo<T>() where T : IViewModel<NoParameter>;
 
         /// <summary>
-        /// If no dialog is present on screen, navigates to a ViewModel of the specified type.
-        /// Otherwise, does so after (and if) the current dialog is exited successfully.
+        /// Navigates to a ViewModel of the specified type, with the specified argument.
         /// </summary>
         void NavigateTo<TViewModel, TArg>( TArg arg ) where TViewModel : IViewModel<TArg>;
 
         /// <summary>
-        /// Navigates to the specified dialog.
-        /// </summary>
-        void NavigateToDialog<T>() where T : IViewModel<NoParameter>;
-
-        /// <summary>
-        /// Navigates to the specified dialog.
-        /// </summary>
-        void NavigateToDialog<TViewModel, TArg>( TArg arg ) where TViewModel : IViewModel<TArg>;
-
-        /// <summary>
-        /// If no dialog was present, goes back to the previous ViewModel.
-        /// Otherwise, goes forward. (this allows dialogs to be used as normal VMs)
+        /// Goes back to the previous ViewModel.
         /// </summary>
         void NavigateBack();
 

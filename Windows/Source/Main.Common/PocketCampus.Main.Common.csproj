@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppInitializer.cs" />
-    <Compile Include="AuthenticationMode.cs" />
+    <Compile Include="AuthenticationRequest.cs" />
     <Compile Include="IMainSettings.cs" />
     <Compile Include="MainSettings.cs" />
     <Compile Include="Models\AuthenticationSessionResponse.cs" />

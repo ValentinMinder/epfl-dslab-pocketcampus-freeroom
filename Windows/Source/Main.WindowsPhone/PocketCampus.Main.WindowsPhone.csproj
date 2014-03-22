@@ -109,7 +109,7 @@
     <Compile Include="Services\PhoneService.cs" />
     <Compile Include="Services\PluginLoader.cs" />
     <Compile Include="Controls\OrientationChangingFrame.cs" />
-    <Compile Include="Services\FrameNavigationService.cs" />
+    <Compile Include="Services\WindowsPhoneNavigationService.cs" />
     <Compile Include="Services\HttpClient.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

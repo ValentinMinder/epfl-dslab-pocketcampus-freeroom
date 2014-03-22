@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
@@ -14,11 +15,13 @@ using PocketCampus.Mvvm.Logging;
 namespace PocketCampus.Main.Services
 {
     /// <summary>
-    /// An INavigationService that uses a PhoneApplicationFrame to navigate.
+    /// Implementation of IWindowsPhoneNavigationService.
     /// </summary>
-    public sealed class FrameNavigationService : IWindowsPhoneNavigationService
+    public sealed class WindowsPhoneNavigationService : IWindowsPhoneNavigationService
     {
-        private const string ListPickerPageToken = "ListPickerPage.xaml";
+        private const char UriParametersPrefix = '?';
+        private const char UriParametersDelimiter = '&';
+        private const string UniqueParameter = "mvvm_unique_id";
 
         private readonly NavigationLogger _logger;
         private readonly Dictionary<Type, Uri> _views;
@@ -26,10 +29,8 @@ namespace PocketCampus.Main.Services
         //       and having a non-generic IViewModel that shouldn't be implemented is a terrible idea
         //       so we use dynamic to call OnNavigatedTo/From
         private readonly Stack<dynamic> _backStack;
+        private readonly Stack<bool> _ignored;
 
-        private bool _isInDialog;
-        private bool _ignoreNext;
-        private object _afterDialog;
         private bool _removeCurrentFromBackstack;
 
         private PhoneApplicationFrame _rootFrame
@@ -41,11 +42,12 @@ namespace PocketCampus.Main.Services
         /// <summary>
         /// Creates a new FrameNavigationService.
         /// </summary>
-        public FrameNavigationService( NavigationLogger logger )
+        public WindowsPhoneNavigationService( NavigationLogger logger )
         {
             _logger = logger;
             _views = new Dictionary<Type, Uri>();
             _backStack = new Stack<dynamic>();
+            _ignored = new Stack<bool>();
 
             _rootFrame.Navigated += Frame_Navigated;
         }
@@ -63,44 +65,20 @@ namespace PocketCampus.Main.Services
         }
 
         /// <summary>
-        /// Navigates to the specified ViewModel, as a dialog.
-        /// </summary>
-        private void NavigateToDialogPrivate( object viewModel )
-        {
-            if ( _isInDialog )
-            {
-                throw new InvalidOperationException( "Cannot navigate to a dialog while one is in progress." );
-            }
-
-            _isInDialog = true;
-            NavigateToPrivate( viewModel );
-        }
-
-        /// <summary>
         /// Occurs when the frame has navigated, either because the user requested it or because the program did.
         /// </summary>
         private void Frame_Navigated( object sender, NavigationEventArgs e )
         {
-            if ( _ignoreNext )
-            {
-                _ignoreNext = false;
-                return;
-            }
-
-            // HACK: The ListPicker uses a page when it has >5 elements (not a popup), which has to be ignored
-            if ( e.Uri.ToString().Contains( ListPickerPageToken ) )
-            {
-                _ignoreNext = true;
-                return;
-            }
-
             var page = (PhoneApplicationPage) _rootFrame.Content;
 
             // need to check IsNavigationInitiator to avoid doing stuff when the user
             // long-presses the Back button to multitask
             if ( e.NavigationMode == NavigationMode.Back && e.IsNavigationInitiator )
             {
-                _isInDialog = false;
+                if ( _ignored.Pop() )
+                {
+                    return;
+                }
 
                 if ( _backStack.Count > 0 )
                 {
@@ -118,6 +96,14 @@ namespace PocketCampus.Main.Services
             }
             else if ( e.NavigationMode == NavigationMode.Forward || e.NavigationMode == NavigationMode.New )
             {
+                // Ignore pages we don't know about
+                if ( !_views.Any( p => UriEquals( p.Value, e.Uri ) ) )
+                {
+                    _ignored.Push( true );
+                    return;
+                }
+                _ignored.Push( false );
+
                 if ( _removeCurrentFromBackstack )
                 {
                     _rootFrame.RemoveBackEntry();
@@ -161,7 +147,30 @@ namespace PocketCampus.Main.Services
         /// </remarks>
         private static Uri MakeUnique( Uri uri )
         {
-            return new Uri( uri.ToString() + "?unique_id=" + Guid.NewGuid().ToString(), UriKind.RelativeOrAbsolute );
+            string uniqueParameterValue = Guid.NewGuid().ToString();
+            char separator = uri.ToString().Contains( UriParametersPrefix ) ? UriParametersDelimiter
+                                                                                   : UriParametersPrefix;
+            return new Uri( uri.ToString() + separator + UniqueParameter + uniqueParameterValue, UriKind.RelativeOrAbsolute );
+        }
+
+        /// <summary>
+        /// Indicates whether the two specified URIs are considered to be equal.
+        /// </summary>
+        private static bool UriEquals( Uri uri1, Uri uri2 )
+        {
+            return GetUriPath( uri1.ToString() ) == GetUriPath( uri2.ToString() );
+        }
+
+        /// <summary>
+        /// Gets the path section of the specified URI.
+        /// </summary>
+        private static string GetUriPath( string uri )
+        {
+            if ( uri.Contains( UriParametersPrefix ) )
+            {
+                return uri.ToString().Substring( 0, uri.ToString().IndexOf( UriParametersPrefix ) );
+            }
+            return uri;
         }
 
         #region INavigationService implementation
@@ -174,15 +183,7 @@ namespace PocketCampus.Main.Services
         {
             var vmType = typeof( T );
             var vm = Container.Get( vmType, null );
-
-            if ( _isInDialog )
-            {
-                _afterDialog = vm;
-            }
-            else
-            {
-                NavigateToPrivate( vm );
-            }
+            NavigateToPrivate( vm );
         }
 
         /// <summary>
@@ -194,39 +195,7 @@ namespace PocketCampus.Main.Services
         {
             var vmType = typeof( TViewModel );
             var vm = Container.Get( vmType, arg );
-
-            if ( _isInDialog )
-            {
-                _afterDialog = vm;
-            }
-            else
-            {
-                NavigateToPrivate( vm );
-            }
-        }
-
-        /// <summary>
-        /// Navigates to the specified dialog.
-        /// </summary>
-        public void NavigateToDialog<T>()
-            where T : IViewModel<NoParameter>
-        {
-            var vmType = typeof( T );
-            var vm = Container.Get( vmType, null );
-
-            NavigateToDialogPrivate( vm );
-        }
-
-        /// <summary>
-        /// Navigates to the specified dialog.
-        /// </summary>
-        public void NavigateToDialog<TViewModel, TArg>( TArg arg )
-            where TViewModel : IViewModel<TArg>
-        {
-            var vmType = typeof( TViewModel );
-            var vm = Container.Get( vmType, arg );
-
-            NavigateToDialogPrivate( vm );
+            NavigateToPrivate( vm );
         }
 
         /// <summary>
@@ -235,23 +204,13 @@ namespace PocketCampus.Main.Services
         /// </summary>
         public void NavigateBack()
         {
-            if ( _isInDialog )
+            if ( _backStack.Count > 0 )
             {
-                _isInDialog = false;
-                _removeCurrentFromBackstack = true;
-                NavigateToPrivate( _afterDialog );
-                _afterDialog = null;
+                _rootFrame.GoBack();
             }
             else
             {
-                if ( _backStack.Count > 0 )
-                {
-                    _rootFrame.GoBack();
-                }
-                else
-                {
-                    Application.Current.Terminate();
-                }
+                Application.Current.Terminate();
             }
         }
 
@@ -265,12 +224,12 @@ namespace PocketCampus.Main.Services
         }
         #endregion
 
-        #region IWindowsPhoneNavigationService
+        #region IWindowsPhoneNavigationService implementation
         /// <summary>
         /// Adds a ViewModel to View URI link.
         /// </summary>
         /// <typeparam name="TViewModel">The ViewModel's type.</typeparam>
-        /// <param name="viewUri">The View URI. Needs to be relative to the app root (e.g. /MyApp;Component/[...]).</param>
+        /// <param name="viewUri">The View URI. Needs to be relative to the app root (e.g. /MyApp;Component/Views/MyView.xaml).</param>
         public void Bind<TViewModel>( string viewUri )
         {
             _views.Add( typeof( TViewModel ), new Uri( viewUri, UriKind.Relative ) );

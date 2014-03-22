@@ -87,7 +87,7 @@ namespace PocketCampus.Main
             Container.Bind<IRatingService, RatingService>();
 
             // ViewModels from Main
-            App.NavigationService = Container.Bind<INavigationService, FrameNavigationService>();
+            App.NavigationService = Container.Bind<INavigationService, WindowsPhoneNavigationService>();
             App.NavigationService.Bind<MainViewModel>( "/Views/MainView.xaml" );
             App.NavigationService.Bind<AuthenticationViewModel>( "/Views/AuthenticationView.xaml" );
             App.NavigationService.Bind<SettingsViewModel>( "/Views/SettingsView.xaml" );
