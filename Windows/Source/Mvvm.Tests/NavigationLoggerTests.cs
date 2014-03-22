@@ -130,7 +130,7 @@ namespace PocketCampus.Mvvm.Tests
 
             vm.Command1.Execute();
 
-            CollectionAssert.AreEqual( new[] { Tuple.Create( "1", "C1", "" ) }, logger.CommandNavigations );
+            CollectionAssert.AreEqual( new[] { Tuple.Create( "1", "C1", (string) null ) }, logger.CommandNavigations );
         }
 
         [TestMethod]
@@ -144,7 +144,9 @@ namespace PocketCampus.Mvvm.Tests
             vm.Command1.Execute();
             vm.Command2.Execute();
 
-            CollectionAssert.AreEqual( new[] { Tuple.Create( "1", "C1", "" ), Tuple.Create( "1", "C2", "" ) }, logger.CommandNavigations );
+            CollectionAssert.AreEqual( new[] { Tuple.Create( "1", "C1", (string) null ), 
+                                               Tuple.Create( "1", "C2", (string) null ) },
+                                       logger.CommandNavigations );
         }
 
         [TestMethod]
@@ -159,7 +161,7 @@ namespace PocketCampus.Mvvm.Tests
 
             vm2.Command3.Execute();
 
-            CollectionAssert.AreEqual( new[] { Tuple.Create( "2", "C3", "" ) }, logger.CommandNavigations );
+            CollectionAssert.AreEqual( new[] { Tuple.Create( "2", "C3", (string) null ) }, logger.CommandNavigations );
         }
 
         [TestMethod]
@@ -175,7 +177,7 @@ namespace PocketCampus.Mvvm.Tests
 
             vm1.Command1.Execute();
 
-            CollectionAssert.AreEqual( new[] { Tuple.Create( "1", "C1", "" ) }, logger.CommandNavigations );
+            CollectionAssert.AreEqual( new[] { Tuple.Create( "1", "C1", (string) null ) }, logger.CommandNavigations );
         }
 
         [TestMethod]
@@ -191,7 +193,7 @@ namespace PocketCampus.Mvvm.Tests
 
             vm2.Command3.Execute();
 
-            CollectionAssert.AreEqual( new[] { Tuple.Create( "1", "C3", "" ) }, logger.CommandNavigations );
+            CollectionAssert.AreEqual( new[] { Tuple.Create( "1", "C3", (string) null ) }, logger.CommandNavigations );
         }
 
         [TestMethod]
