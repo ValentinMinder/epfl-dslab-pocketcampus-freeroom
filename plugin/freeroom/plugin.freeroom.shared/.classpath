@@ -68,5 +68,7 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/osmdroid-android-3.0.3.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/unboundid-ldapsdk-se.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/universal-image-loader-1.8.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
