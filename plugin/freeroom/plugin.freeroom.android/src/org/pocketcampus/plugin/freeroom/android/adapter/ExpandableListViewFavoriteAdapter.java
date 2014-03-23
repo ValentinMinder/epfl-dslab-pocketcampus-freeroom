@@ -3,9 +3,9 @@ package org.pocketcampus.plugin.freeroom.android.adapter;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,7 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Simple adapter to use with ExpandableListView, all elements are String.
+ * Simple adapter to use with ExpandableListView, Headers are Strings, Childs
+ * are FRRooms.
  * 
  * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
  *         Valentin MINDER <valentin.minder@epfl.ch>
@@ -25,30 +26,54 @@ import android.widget.TextView;
  */
 public class ExpandableListViewFavoriteAdapter extends
 		BaseExpandableListAdapter {
+
 	private Context context;
 	private List<String> headers;
-	private Map<String, List<String>> data;
+	private Map<String, List<FRRoom>> data;
 	private FreeRoomModel model;
 
 	public ExpandableListViewFavoriteAdapter(Context c, List<String> header,
-			Map<String, List<String>> data, FreeRoomModel model) {
+			Map<String, List<FRRoom>> data, FreeRoomModel model) {
 		this.context = c;
 		this.headers = header;
 		this.data = data;
 		this.model = model;
 	}
 
+	/**
+	 * Return the corresponding child's doorCode, this method is intented for
+	 * the display, thus should not return the door UID, if you want the object
+	 * FRRoom, use getChildObject instead
+	 */
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
+		FRRoom child = this.getChildObject(groupPosition, childPosition);
+		if (child != null) {
+			return child.getDoorCode();
+		}
+		return null;
+	}
+
+	/**
+	 * This method returns the child's object. It is not suitable for display,
+	 * use getChild(int, int) instead.
+	 * 
+	 * @param groupPosition
+	 *            The group id
+	 * @param childPosition
+	 *            The child id
+	 * @return The child object FRRoom associated.
+	 */
+	public FRRoom getChildObject(int groupPosition, int childPosition) {
 		if (groupPosition >= headers.size()) {
 			return null;
 		}
-		List<String> groupList = data.get(headers.get(groupPosition));
+		List<FRRoom> groupList = data.get(headers.get(groupPosition));
 
-		if (childPosition >= groupList.size()) {
+		if (childPosition >= groupList.size() || groupList == null) {
 			return null;
 		}
-		return data.get(headers.get(groupPosition)).get(childPosition);
+		return groupList.get(childPosition);
 	}
 
 	@Override
@@ -71,8 +96,6 @@ public class ExpandableListViewFavoriteAdapter extends
 			vholder = new ViewHolderChild();
 			vholder.setTextView((TextView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_roomname));
-			vholder.setImageViewMap((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_map));
 			vholder.setImageViewStar((ImageView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_fav));
 			convertView.setTag(vholder);
@@ -80,18 +103,17 @@ public class ExpandableListViewFavoriteAdapter extends
 			vholder = (ViewHolderChild) convertView.getTag();
 		}
 
-		String text = (String) this.getChild(groupPosition, childPosition);
+		final FRRoom room = this.getChildObject(groupPosition, childPosition);
 
 		TextView tv = vholder.getTextView();
-		tv.setText(text);
+		tv.setText(room.getDoorCode());
 		ImageView map = vholder.getImageViewMap();
 		map.setImageResource(android.R.drawable.btn_plus);
 		final ImageView star = vholder.getImageViewStar();
 
-		final String roomName = text.replaceAll("\\s", "");
-		final boolean isFav = model.isFavoriteRoom(text);
+		final String isFav = model.isFavoriteRoom(room.getUid());
 
-		if (isFav) {
+		if (isFav != null) {
 			star.setImageResource(android.R.drawable.star_big_on);
 		} else {
 			star.setImageResource(android.R.drawable.star_big_off);
@@ -102,12 +124,12 @@ public class ExpandableListViewFavoriteAdapter extends
 
 			@Override
 			public void onClick(View v) {
-				if (isFav) {
+				if (isFav != null) {
 					star.setImageResource(android.R.drawable.star_big_off);
-					model.removeFavoriteRoom(roomName);
+					model.removeFavoriteRoom(room.getUid());
 				} else {
 					star.setImageResource(android.R.drawable.star_big_on);
-					model.setFavoriteRoom(roomName);
+					model.setFavoriteRoom(room.getUid(), room.getDoorCode());
 				}
 				notifyDataSetChanged();
 			}

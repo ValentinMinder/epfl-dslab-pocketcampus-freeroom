@@ -11,8 +11,8 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
+import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.android.utils.ExpandableListViewFavoriteAdapter;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Intent;
@@ -48,7 +48,7 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 
 	private ListView mList;
 	private ExpandableListView mExpList;
-	private TreeMap<String, List<String>> sortedRooms;
+	private TreeMap<String, List<FRRoom>> sortedRooms;
 	private ArrayList<String> buildings;
 
 	@Override
@@ -100,7 +100,7 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 
 		mExpList = new ExpandableListView(this);
 		buildings = new ArrayList<String>();
-		sortedRooms = new TreeMap<String, List<String>>();
+		sortedRooms = new TreeMap<String, List<FRRoom>>();
 
 		final ExpandableListViewFavoriteAdapter adapter = new ExpandableListViewFavoriteAdapter(
 				this, buildings, sortedRooms, mModel);
@@ -147,28 +147,29 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 		Set<FRRoom> res = mModel.getFreeRoomResults();
 		buildings.clear();
 		buildings.add(getString(R.string.freeroom_result_occupancy_favorites));
-		ArrayList<String> roomsFavorites = new ArrayList<String>();
+		ArrayList<FRRoom> roomsFavorites = new ArrayList<FRRoom>();
 
 		sortedRooms.clear();
 		sortedRooms.put(buildings.get(0), roomsFavorites);
 		// keep a structure organized as building -> list of rooms in the
 		// building
 		for (FRRoom frRoom : res) {
-			String mDoorCode = frRoom.getDoorCode();
-			boolean isFavorite = mModel.isFavoriteRoom(mDoorCode);
+			String mUid = frRoom.getUid();
+			String isFavorite = mModel.isFavoriteRoom(mUid);
 
-			if (isFavorite) {
-				roomsFavorites.add(mDoorCode);
+			if (isFavorite != null) {
+				roomsFavorites.add(frRoom);
 			}
-			String building = mModel.getBuilding(mDoorCode);
 
-			List<String> roomsNumbers = sortedRooms.get(building);
+			String building = mModel.getBuilding(frRoom.getDoorCode());
+
+			List<FRRoom> roomsNumbers = sortedRooms.get(building);
 			if (roomsNumbers == null) {
 				buildings.add(building);
-				roomsNumbers = new ArrayList<String>();
+				roomsNumbers = new ArrayList<FRRoom>();
 				sortedRooms.put(building, roomsNumbers);
 			}
-			roomsNumbers.add(mDoorCode);
+			roomsNumbers.add(frRoom);
 
 		}
 

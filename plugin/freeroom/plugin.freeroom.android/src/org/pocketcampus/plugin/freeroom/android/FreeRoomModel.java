@@ -250,7 +250,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	}
 
-	public void setFavoriteRoom(String doorCode, String uid) {
+	public void setFavoriteRoom(String uid, String doorCode) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
