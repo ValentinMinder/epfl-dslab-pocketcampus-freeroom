@@ -147,13 +147,13 @@ public class TestFindFreeRooms {
 			ResultSet resultQuery = stmt.getResultSet();
 			ArrayList<FRRoom> freerooms = new ArrayList<FRRoom>();
 			while (resultQuery.next()) {
-				String building = resultQuery.getString("building");
-				int room_number = resultQuery.getInt("room_number");
+				String doorCode = resultQuery.getString("doorCode");
+				String uid = resultQuery.getString("uid");
 				String type = resultQuery.getString("type");
 				int capacity = resultQuery.getInt("capacity");
 				FRRoom r = new FRRoom();
-				r.setBuilding(building);
-				r.setNumber(room_number + "");
+				r.setUid(uid);
+				r.setDoorCode(doorCode);
 				r.setType(FRRoomType.valueOf(type));
 				r.setCapacity(capacity);
 				freerooms.add(r);
@@ -228,7 +228,7 @@ public class TestFindFreeRooms {
 			Set<FRRoom> rooms = rep.getRooms();
 			ArrayList<FRRoom> arr = new ArrayList<FRRoom>(rooms);
 			for (FRRoom r : arr) {
-				System.out.println(r.getBuilding() + "" + r.getNumber());
+				System.out.println(r.getDoorCode());
 			}
 		} catch (TException e) {
 			// TODO Auto-generated catch block

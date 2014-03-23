@@ -37,6 +37,7 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.OccupationType;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRStruct;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
@@ -149,12 +150,12 @@ public class TestFreeRoomSearchAndOccupancy {
 			// return;
 		}
 		ArrayList<FRRoom> rooms = new ArrayList<FRRoom>();
-		rooms.add(new FRRoom("CO", "1"));
-		rooms.add(new FRRoom("CO", "2"));
-		rooms.add(new FRRoom("CO", "3"));
-		rooms.add(new FRRoom("CM", "1"));
-		rooms.add(new FRRoom("CM", "2"));
-		rooms.add(new FRRoom("CM", "3"));
+		rooms.add(new FRRoom("001", "CO 1"));
+		rooms.add(new FRRoom("002", "CO 2"));
+		rooms.add(new FRRoom("003", "CO 3"));
+		rooms.add(new FRRoom("011", "CM 1"));
+		rooms.add(new FRRoom("012", "CM 2"));
+		rooms.add(new FRRoom("013", "CM 3"));
 
 		ArrayList<ArrayList<FreeRoomRequest>> globalAL = new ArrayList<ArrayList<FreeRoomRequest>>();
 		ArrayList<FreeRoomRequest> requestco1 = new ArrayList<FreeRoomRequest>();
@@ -194,14 +195,14 @@ public class TestFreeRoomSearchAndOccupancy {
 
 		// insert the rooms
 		for (FRRoom r : rooms) {
-			String req = "INSERT INTO roomslist(building, room_number, type, capacity) VALUES(?, ?, ?, ?)";
+			String req = "INSERT INTO roomslist(uid, doorCode, type, capacity) VALUES(?, ?, ?, ?)";
 			PreparedStatement query;
 			try {
 				query = conn.prepareStatement(req);
 
 				// filling the query with values
-				query.setString(1, r.getBuilding());
-				query.setInt(2, Integer.parseInt(r.getNumber()));
+				query.setString(1, r.getUid());
+				query.setInt(2, Integer.parseInt(r.getDoorCode()));
 				query.setString(3, "AUDITORIUM");
 				query.setInt(4, 100);
 
@@ -246,18 +247,18 @@ public class TestFreeRoomSearchAndOccupancy {
 			OccupancyReply reply = null;
 
 			// test1
-			roomsList.add(new FRRoom("CO", "1"));
+			roomsList.add(new FRRoom("001", "C0 1"));
 			period = FRTimes.convert(Calendar.MONDAY, 8, 12).getPeriod();
-			request = new OccupancyRequest(roomsList, period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
 
 			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
 			FRRoom room = mOcc.getRoom();
-			assertTrue(room.getBuilding()
-					.equals(roomsList.get(0).getBuilding()));
-			assertTrue(room.getNumber().equals(roomsList.get(0).getNumber()));
+			assertTrue(room.getUid()
+					.equals(roomsList.get(0).getUid()));
+			assertTrue(room.getDoorCode().equals(roomsList.get(0).getDoorCode()));
 
 			List<ActualOccupation> mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 2);
@@ -301,18 +302,18 @@ public class TestFreeRoomSearchAndOccupancy {
 			OccupancyReply reply = null;
 
 			// test1
-			roomsList.add(new FRRoom("CM", "1"));
+			roomsList.add(new FRRoom("011", "CM 1"));
 			period = FRTimes.convert(Calendar.MONDAY, 8, 19).getPeriod();
-			request = new OccupancyRequest(roomsList, period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
 
 			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
 			FRRoom room = mOcc.getRoom();
-			assertTrue(room.getBuilding()
-					.equals(roomsList.get(0).getBuilding()));
-			assertTrue(room.getNumber().equals(roomsList.get(0).getNumber()));
+			assertTrue(room.getUid()
+					.equals(roomsList.get(0).getUid()));
+			assertTrue(room.getDoorCode().equals(roomsList.get(0).getDoorCode()));
 
 			List<ActualOccupation> mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 4);
@@ -375,11 +376,11 @@ public class TestFreeRoomSearchAndOccupancy {
 			OccupancyReply reply = null;
 
 			// test1
-			roomsList.add(new FRRoom("CM", "2"));
-			roomsList.add(new FRRoom("CO", "3"));
-			roomsList.add(new FRRoom("C0", "1"));
+			roomsList.add(new FRRoom("012", "CM 2"));
+			roomsList.add(new FRRoom("003", "CO 3"));
+			roomsList.add(new FRRoom("001", "CO 1"));
 			period = FRTimes.convert(Calendar.TUESDAY, 8, 19).getPeriod();
-			request = new OccupancyRequest(roomsList, period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 3);
@@ -387,9 +388,9 @@ public class TestFreeRoomSearchAndOccupancy {
 			// first room is CM2
 			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
 			FRRoom room = mOcc.getRoom();
-			assertTrue(room.getBuilding()
-					.equals(roomsList.get(0).getBuilding()));
-			assertTrue(room.getNumber().equals(roomsList.get(0).getNumber()));
+			assertTrue(room.getUid()
+					.equals(roomsList.get(0).getUid()));
+			assertTrue(room.getDoorCode().equals(roomsList.get(0).getDoorCode()));
 
 			List<ActualOccupation> mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 3);
@@ -397,9 +398,9 @@ public class TestFreeRoomSearchAndOccupancy {
 			// second room is CO3
 			mOcc = reply.getOccupancyOfRooms().get(1);
 			room = mOcc.getRoom();
-			assertTrue(room.getBuilding()
-					.equals(roomsList.get(1).getBuilding()));
-			assertTrue(room.getNumber().equals(roomsList.get(1).getNumber()));
+			assertTrue(room.getUid()
+					.equals(roomsList.get(1).getUid()));
+			assertTrue(room.getDoorCode().equals(roomsList.get(1).getDoorCode()));
 
 			mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 3);
@@ -407,9 +408,9 @@ public class TestFreeRoomSearchAndOccupancy {
 			// last room is CO1
 			mOcc = reply.getOccupancyOfRooms().get(2);
 			room = mOcc.getRoom();
-			assertTrue(room.getBuilding()
-					.equals(roomsList.get(2).getBuilding()));
-			assertTrue(room.getNumber().equals(roomsList.get(2).getNumber()));
+			assertTrue(room.getUid()
+					.equals(roomsList.get(2).getUid()));
+			assertTrue(room.getDoorCode().equals(roomsList.get(2).getDoorCode()));
 
 			mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 1);
@@ -666,7 +667,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			long queryFirstTS = period.getTimeStampStart();
 			long queryLastTS = period.getTimeStampEnd();
 
-			request = new OccupancyRequest(roomsList, period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
@@ -705,7 +706,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			long queryFirstTS = period.getTimeStampStart();
 			long queryLastTS = period.getTimeStampEnd();
 
-			request = new OccupancyRequest(roomsList, period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
@@ -746,7 +747,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			long queryFirstTS = period.getTimeStampStart();
 			long queryLastTS = period.getTimeStampEnd();
 
-			request = new OccupancyRequest(roomsList, period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
