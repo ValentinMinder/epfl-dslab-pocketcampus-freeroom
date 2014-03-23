@@ -4,7 +4,7 @@
 
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 using ThriftSharp;
 
 namespace PocketCampus.Main

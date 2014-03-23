@@ -4,10 +4,10 @@
 
 using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.Map.Resources;
 using PocketCampus.Map.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Map
 {

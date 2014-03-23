@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using PocketCampus.Common;
 using PocketCampus.Map.Services;
 using PocketCampus.Map.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Map
 {

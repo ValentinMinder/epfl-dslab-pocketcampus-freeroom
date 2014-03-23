@@ -4,9 +4,9 @@
 
 using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.IsAcademia.Resources;
 using PocketCampus.IsAcademia.ViewModels;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.IsAcademia
 {

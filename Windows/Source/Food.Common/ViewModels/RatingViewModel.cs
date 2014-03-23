@@ -6,8 +6,8 @@ using System;
 using PocketCampus.Common.Services;
 using PocketCampus.Food.Models;
 using PocketCampus.Food.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Food.ViewModels
 {

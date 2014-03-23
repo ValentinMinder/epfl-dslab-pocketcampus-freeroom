@@ -4,9 +4,9 @@
 
 using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.News.Resources;
 using PocketCampus.News.ViewModels;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.News
 {

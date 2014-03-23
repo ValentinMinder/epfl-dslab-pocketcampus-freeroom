@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Phone.Controls;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Common.Controls
 {

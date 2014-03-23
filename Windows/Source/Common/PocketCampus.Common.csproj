@@ -35,12 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mvvm\PocketCampus.Mvvm.csproj">
-      <Project>{53c14bdb-427e-492e-8bdc-b329d8737d17}</Project>
-      <Name>PocketCampus.Mvvm</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="EmailSendingStatus.cs" />
     <Compile Include="EnumEx.cs" />
@@ -71,6 +65,9 @@
     <Compile Include="TequilaAuthenticationException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ThinMvvm">
+      <HintPath>..\..\packages\ThinMvvm.0.9.0\lib\portable-net45+wp8+win8\ThinMvvm.dll</HintPath>
+    </Reference>
     <Reference Include="ThriftSharp">
       <HintPath>..\..\packages\ThriftSharp.1.0.8\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
     </Reference>

@@ -3,7 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
-using PocketCampus.Common.Services;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Common
 {

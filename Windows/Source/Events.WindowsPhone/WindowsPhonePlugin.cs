@@ -4,11 +4,11 @@
 
 using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.Events.Resources;
 using PocketCampus.Events.Services;
 using PocketCampus.Events.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Events.WindowsPhone
 {

@@ -9,8 +9,8 @@ using Microsoft.Phone.Shell;
 using PocketCampus.Common;
 using PocketCampus.Common.Controls;
 using PocketCampus.IsAcademia.Models;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 using SysWinInput = System.Windows.Input;
 
 namespace PocketCampus.IsAcademia.Views

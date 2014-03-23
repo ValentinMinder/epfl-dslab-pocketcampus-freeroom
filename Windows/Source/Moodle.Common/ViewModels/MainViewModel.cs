@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Moodle.ViewModels
 {

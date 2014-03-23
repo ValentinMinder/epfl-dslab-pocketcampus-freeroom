@@ -7,7 +7,7 @@ using PocketCampus.Common;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Services;
 using PocketCampus.Events.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Events
 {

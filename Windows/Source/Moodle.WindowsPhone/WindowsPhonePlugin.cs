@@ -4,11 +4,11 @@
 
 using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Resources;
 using PocketCampus.Moodle.Services;
 using PocketCampus.Moodle.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Moodle
 {

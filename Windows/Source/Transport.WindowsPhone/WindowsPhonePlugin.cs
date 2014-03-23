@@ -4,10 +4,10 @@
 
 using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
-using PocketCampus.Mvvm;
 using PocketCampus.Transport.Resources;
 using PocketCampus.Transport.ViewModels;
+using ThinMvvm;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Transport
 {

@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 // Design data for the MainViewModel
 

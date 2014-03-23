@@ -4,11 +4,11 @@
 
 using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.Directory.Resources;
 using PocketCampus.Directory.Services;
 using PocketCampus.Directory.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Directory
 {

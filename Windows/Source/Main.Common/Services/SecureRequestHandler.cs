@@ -11,7 +11,7 @@ using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Models;
 using PocketCampus.Main.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Main.Services
 {

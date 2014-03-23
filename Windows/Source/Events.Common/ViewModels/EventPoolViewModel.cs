@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 using PocketCampus.Common;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {

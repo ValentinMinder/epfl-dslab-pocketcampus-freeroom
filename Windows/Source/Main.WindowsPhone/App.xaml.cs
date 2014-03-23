@@ -14,8 +14,9 @@ using PocketCampus.Main.Controls;
 using PocketCampus.Main.Resources;
 using PocketCampus.Main.Services;
 using PocketCampus.Main.ViewModels;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Main
 {

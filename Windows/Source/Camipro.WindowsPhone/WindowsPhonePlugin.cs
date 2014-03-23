@@ -6,7 +6,7 @@ using System;
 using PocketCampus.Camipro.Resources;
 using PocketCampus.Camipro.ViewModels;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Camipro
 {

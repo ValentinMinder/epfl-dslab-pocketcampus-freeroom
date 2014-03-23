@@ -10,8 +10,8 @@ using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Map.Models;
 using PocketCampus.Map.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Map.ViewModels
 {

@@ -4,9 +4,9 @@
 
 using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.Food.Resources;
 using PocketCampus.Food.ViewModels;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Food
 {

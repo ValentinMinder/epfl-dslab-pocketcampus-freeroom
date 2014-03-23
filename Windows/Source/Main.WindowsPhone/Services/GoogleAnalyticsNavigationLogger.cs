@@ -5,7 +5,7 @@
 #if !DEBUG
 using GoogleAnalytics;
 #endif
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Main.Services
 {

@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 using ThriftSharp;
 
 namespace PocketCampus.Main.Services

@@ -8,8 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Windows.Navigation;
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Main
 {

@@ -4,9 +4,9 @@
 
 using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.Satellite.Resources;
 using PocketCampus.Satellite.ViewModels;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Satellite
 {

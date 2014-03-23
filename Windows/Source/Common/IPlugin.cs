@@ -3,7 +3,7 @@
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Common
 {
