@@ -85,6 +85,12 @@
     return !hasAMPM;
 }
 
++ (BOOL)systemIsOutsideEPFLTimeZone {
+    NSTimeZone* epflTimeZone = [NSTimeZone timeZoneWithName:@"Europe/Zurich"];
+    NSTimeZone* systemTimeZone = [NSTimeZone systemTimeZone];
+    return (epflTimeZone.secondsFromGMT != systemTimeZone.secondsFromGMT);
+}
+
 + (NSString*)lastUpdateNowString {
     static NSDateFormatter* dateFormatter = nil;
     static dispatch_once_t onceToken;

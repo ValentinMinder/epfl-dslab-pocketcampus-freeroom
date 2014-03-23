@@ -169,10 +169,17 @@
     [comps setYear:comps.year];
     [comps setWeekday:2]; //Monday
     [comps setWeek:comps.week];
-    [comps setHour:8]; //8a.m.
+    [comps setHour:0]; //8a.m.
     [comps setMinute:0];
     [comps setSecond:0];
     NSDate* monday8am = [gregorianCalendar dateFromComponents:comps];
+    if ([date compare:monday8am] == NSOrderedAscending) {
+        //means monday8am is after date, meaning coming Monday was computed,
+        //instead of previous one. => need to decrement 1 week
+        NSDateComponents* minusOneWeekComps = [NSDateComponents new];
+        [minusOneWeekComps setWeek:-1];
+        monday8am = [gregorianCalendar dateByAddingComponents:minusOneWeekComps toDate:monday8am options:0];
+    }
     return monday8am;
 }
 
@@ -290,18 +297,30 @@
         return @[];
     }
     NSMutableArray* eventViews = [NSMutableArray arrayWithCapacity:studyDay.periods.count];
-    for (StudyPeriod* period in studyDay.periods) {
-        IsAcademiaStudyPeriodCalendarDayEventView* view = (IsAcademiaStudyPeriodCalendarDayEventView*)[self.dayView dequeueReusableEventView];
-        if (!view) {
-            view = [IsAcademiaStudyPeriodCalendarDayEventView studyPeriodEventView];
-        }
-        //#warning REMOVE
-        //period.name = @"dsfjhaiusdz fuaszdfipu atsodiuftaouzsdt f uzastdfo";
-        //period.endTime = period.startTime + 2700*1000;
-        //period.rooms = @[];
-        view.studyPeriod = period;
-        [eventViews addObject:view];
+    BOOL systemIsOutsideEPFLTimeZone = [PCUtils systemIsOutsideEPFLTimeZone];
+    int studyDayIndex = 0;
+    if (systemIsOutsideEPFLTimeZone) {
+        studyDayIndex = (int)[scheduleResponse.days indexOfObject:studyDay];
     }
+    [scheduleResponse.days enumerateObjectsUsingBlock:^(StudyDay* _studyDay, NSUInteger indexU, BOOL *stop) {
+        int index = (NSInteger)indexU;
+        BOOL includeDay = (_studyDay == studyDay) || (systemIsOutsideEPFLTimeZone && (abs(index-studyDayIndex) <= 1) ); //if outside time zone, also include 1 day before and 1 day after
+        if (includeDay) {
+            for (StudyPeriod* period in _studyDay.periods) {
+                IsAcademiaStudyPeriodCalendarDayEventView* view = (IsAcademiaStudyPeriodCalendarDayEventView*)[self.dayView dequeueReusableEventView];
+                if (!view) {
+                    view = [IsAcademiaStudyPeriodCalendarDayEventView studyPeriodEventView];
+                }
+                //#warning REMOVE
+                //period.name = @"dsfjhaiusdz fuaszdfipu atsodiuftaouzsdt f uzastdfo";
+                //period.endTime = period.startTime + 2700*1000;
+                //period.rooms = @[];
+                view.studyPeriod = period;
+                [eventViews addObject:view];
+            }
+        }
+    }];
+    
     return eventViews;
 }
 

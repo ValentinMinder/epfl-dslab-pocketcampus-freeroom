@@ -132,4 +132,8 @@
     return color;
 }
 
+- (NSString*)debugDescription {
+    return [[super debugDescription] stringByAppendingString:[self.studyPeriod debugDescription]];
+}
+
 @end

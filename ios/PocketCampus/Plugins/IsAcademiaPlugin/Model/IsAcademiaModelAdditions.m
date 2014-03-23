@@ -34,8 +34,16 @@
 @implementation ScheduleResponse (Additions)
 
 - (StudyDay*)studyDayForDate:(NSDate*)date {
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* dateComps = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+    calendar.timeZone = [NSTimeZone timeZoneWithName:@"Europe/Zurich"];
     for (StudyDay* studyDay in self.days) {
-        if ([date isSameDayAsDate:[NSDate dateWithTimeIntervalSince1970:studyDay.day/1000]]) {
+        NSDateComponents* studyDayComps = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate dateWithTimeIntervalSince1970:studyDay.day/1000]];
+        
+        if (dateComps.year == studyDayComps.year
+            && dateComps.month == studyDayComps.month
+            && dateComps.day == studyDayComps.day) {
+            
             return studyDay;
         }
     }
@@ -49,15 +57,27 @@
 #pragma mark - Public
 
 - (NSString*)startTimeString {
-    return [self.class timeStringForTimeInterval:self.startTime/1000];
+    NSString* string = [self.class timeStringForTimeInterval:self.startTime/1000];
+    if ([PCUtils systemIsOutsideEPFLTimeZone]) {
+        string = [string stringByAppendingFormat:@" (%@ EPFL time)", [self.class timeStringForTimeInterval:self.startTime/1000 EPFLTimeZone:YES]];
+    }
+    return string;
 }
 
 - (NSString*)endTimeString {
-    return [self.class timeStringForTimeInterval:self.endTime/1000];
+    NSString* string = [self.class timeStringForTimeInterval:self.endTime/1000];
+    if ([PCUtils systemIsOutsideEPFLTimeZone]) {
+        string = [string stringByAppendingFormat:@" (%@ EPFL time)", [self.class timeStringForTimeInterval:self.endTime/1000 EPFLTimeZone:YES]];
+    }
+    return string;
 }
 
 - (NSString*)startAndEndTimeString {
-    return [NSString stringWithFormat:@"%@ - %@", self.startTimeString, self.endTimeString];
+    NSString* string = [NSString stringWithFormat:@"%@ - %@", [self.class timeStringForTimeInterval:self.startTime/1000], [self.class timeStringForTimeInterval:self.endTime/1000]];
+    if ([PCUtils systemIsOutsideEPFLTimeZone]) {
+        string = [string stringByAppendingFormat:@" (%@ - %@ EPFL time)", [self.class timeStringForTimeInterval:self.startTime/1000 EPFLTimeZone:YES], [self.class timeStringForTimeInterval:self.endTime/1000 EPFLTimeZone:YES]];
+    }
+    return string;
 }
 
 - (NSString*)roomsString {
@@ -90,15 +110,20 @@
 #pragma mark - Private
 
 + (NSString*)timeStringForTimeInterval:(NSTimeInterval)timestamp {
+    return [self timeStringForTimeInterval:timestamp EPFLTimeZone:NO];
+}
+
++ (NSString*)timeStringForTimeInterval:(NSTimeInterval)timestamp EPFLTimeZone:(BOOL)epflZimeZone {
     static NSDateFormatter* formatter = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         formatter = [NSDateFormatter new];
         formatter.locale = [NSLocale currentLocale];
-        formatter.timeZone = [NSTimeZone systemTimeZone];
+        formatter.timeZone = [NSTimeZone timeZoneWithName:@"Europe/Zurich"];
         formatter.dateStyle = NSDateFormatterNoStyle;
         formatter.timeStyle = NSDateFormatterShortStyle;
     });
+    formatter.timeZone = epflZimeZone ? [NSTimeZone timeZoneWithName:@"Europe/Zurich"] : [NSTimeZone systemTimeZone];
     return [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timestamp]];
 }
 
