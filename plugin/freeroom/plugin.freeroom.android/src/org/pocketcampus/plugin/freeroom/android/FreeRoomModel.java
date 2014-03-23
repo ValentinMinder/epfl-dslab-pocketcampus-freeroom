@@ -250,37 +250,33 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	}
 
-	public void setFavoriteRoom(String roomname) {
+	public void setFavoriteRoom(String doorCode, String uid) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
-		String roomCorrected = roomname.replaceAll("\\s", "");
-		editor.putBoolean(roomCorrected, true);
+		editor.putString(uid, doorCode);
 		editor.commit();
 	}
 
-	public void removeFavoriteRoom(String roomname) {
+	public void removeFavoriteRoom(String uid) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
-		String roomCorrected = roomname.replaceAll("\\s", "");
-		editor.remove(roomCorrected);
+		editor.remove(uid);
 		editor.commit();
 	}
 
-	public boolean isFavoriteRoom(String roomname) {
+	public String isFavoriteRoom(String uid) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
-		String roomCorrected = roomname.replaceAll("\\s", "");
-		return preferences.getBoolean(roomCorrected, false);
+		return preferences.getString(uid, null);
 	}
 
-	public Map<String, Boolean> getFavorites() {
+	public Map<String, String> getFavorites() {
 		// TODO doesn't work
 		SharedPreferences preferences = context.getSharedPreferences(
 				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
-		Map<String, Boolean> map = (Map<String, Boolean>) preferences.getAll();
-		return map;
+		return (Map<String, String>) preferences.getAll();
 	}
 
 	/**
