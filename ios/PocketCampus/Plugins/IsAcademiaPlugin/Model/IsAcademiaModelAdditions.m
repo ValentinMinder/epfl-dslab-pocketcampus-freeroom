@@ -59,7 +59,7 @@
 - (NSString*)startTimeString {
     NSString* string = [self.class timeStringForTimeInterval:self.startTime/1000];
     if ([PCUtils systemIsOutsideEPFLTimeZone]) {
-        string = [string stringByAppendingFormat:@" (%@ EPFL time)", [self.class timeStringForTimeInterval:self.startTime/1000 EPFLTimeZone:YES]];
+        string = [string stringByAppendingFormat:@" (%@ swiss time)", [self.class timeStringForTimeInterval:self.startTime/1000 EPFLTimeZone:YES]];
     }
     return string;
 }
@@ -67,7 +67,7 @@
 - (NSString*)endTimeString {
     NSString* string = [self.class timeStringForTimeInterval:self.endTime/1000];
     if ([PCUtils systemIsOutsideEPFLTimeZone]) {
-        string = [string stringByAppendingFormat:@" (%@ EPFL time)", [self.class timeStringForTimeInterval:self.endTime/1000 EPFLTimeZone:YES]];
+        string = [string stringByAppendingFormat:@" (%@ swiss time)", [self.class timeStringForTimeInterval:self.endTime/1000 EPFLTimeZone:YES]];
     }
     return string;
 }
@@ -75,7 +75,7 @@
 - (NSString*)startAndEndTimeString {
     NSString* string = [NSString stringWithFormat:@"%@ - %@", [self.class timeStringForTimeInterval:self.startTime/1000], [self.class timeStringForTimeInterval:self.endTime/1000]];
     if ([PCUtils systemIsOutsideEPFLTimeZone]) {
-        string = [string stringByAppendingFormat:@" (%@ - %@ EPFL time)", [self.class timeStringForTimeInterval:self.startTime/1000 EPFLTimeZone:YES], [self.class timeStringForTimeInterval:self.endTime/1000 EPFLTimeZone:YES]];
+        string = [string stringByAppendingFormat:@" (%@ - %@ swiss time)", [self.class timeStringForTimeInterval:self.startTime/1000 EPFLTimeZone:YES], [self.class timeStringForTimeInterval:self.endTime/1000 EPFLTimeZone:YES]];
     }
     return string;
 }
