@@ -37,6 +37,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Keys to persistent storage
 	 */
 	private final String FAVORITES_ROOMS_KEY = "FAVORITES_ROOMS_KEY";
+	private final String FORBIDDEN_ROOMS_KEY = "FORBIDDEN_ROOMS_KEY";
 
 	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
 	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.GREEN;
@@ -250,33 +251,100 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	}
 
-	public void setFavoriteRoom(String uid, String doorCode) {
+	// TODO: change name to addRoomFavorites
+	public boolean setFavoriteRoom(String uid, String doorCode) {
+		return addRoom(uid, doorCode, FAVORITES_ROOMS_KEY);
+	}
+
+	// TODO: change name to removeRoomFavorites
+	public boolean removeFavoriteRoom(String uid) {
+		return removeRoom(uid, FAVORITES_ROOMS_KEY);
+	}
+
+	public boolean containRoomFavorites(String uid) {
+		return containsRoom(uid, FAVORITES_ROOMS_KEY);
+	}
+	
+	// TODO: change this! use the one just up.
+	// TODO: change name to getRoomFavorites
+	public String isFavoriteRoom(String uid) {
+		return getRoom(uid, FAVORITES_ROOMS_KEY);
+	}
+
+	// TODO: change name to getAllRoomMapFavorites
+	public Map<String, String> getFavorites() {
+		return getAllRoomAsMap(FAVORITES_ROOMS_KEY);
+	}
+
+	// TODO: change name to getAllRoomSetUIDFavorites
+	public Set<String> getFavoritesSetUID() {
+		Map<String, String> map = getFavorites();
+		return map.keySet();
+	}
+
+	public boolean addRoomForbidden(String uid, String doorCode) {
+		return addRoom(uid, doorCode, FORBIDDEN_ROOMS_KEY);
+	}
+
+	public boolean removeRoomForbidden(String uid) {
+		return removeRoom(uid, FORBIDDEN_ROOMS_KEY);
+	}
+
+	public boolean containRoomForbidden(String uid) {
+		return containsRoom(uid, FORBIDDEN_ROOMS_KEY);
+	}
+
+	public String getRoomForbidden(String uid) {
+		return getRoom(uid, FORBIDDEN_ROOMS_KEY);
+	}
+
+	public Map<String, String> getAllRoomMapForbidden() {
+		return getAllRoomAsMap(FORBIDDEN_ROOMS_KEY);
+	}
+
+	public Set<String> getAllRoomSetUIDForbidden() {
+		Map<String, String> map = getAllRoomMapForbidden();
+		return map.keySet();
+	}
+
+	public boolean addRoom(String uid, String doorCode, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(
-				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
+				key, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(uid, doorCode);
-		editor.commit();
+		return editor.commit();
 	}
 
-	public void removeFavoriteRoom(String uid) {
+	public boolean removeRoom(String uid, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(
-				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
+				key, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.remove(uid);
-		editor.commit();
+		return editor.commit();
+	}
+	
+	public boolean containsRoom(String uid, String key) {
+		SharedPreferences preferences = context.getSharedPreferences(
+				key, Context.MODE_PRIVATE);
+		return preferences.contains(uid);
 	}
 
-	public String isFavoriteRoom(String uid) {
+	public String getRoom(String uid, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(
-				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
+				key, Context.MODE_PRIVATE);
 		return preferences.getString(uid, null);
 	}
 
-	public Map<String, String> getFavorites() {
-		// TODO doesn't work
+	public Map<String, String> getAllRoomAsMap(String key) {
 		SharedPreferences preferences = context.getSharedPreferences(
-				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
+				key, Context.MODE_PRIVATE);
+		// TODO: check this.
 		return (Map<String, String>) preferences.getAll();
+	}
+	
+	public Set<String> getAllRoomAsSetUID(String key) {
+		Map<String, String> map = getAllRoomAsMap(key);
+		return map.keySet();
 	}
 
 	/**
