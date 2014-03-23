@@ -86,7 +86,7 @@ struct OccupancyReply {
 //forbiddenRooms represents the rooms that shouldn't be replied 
 struct AutoCompleteRequest {
 	1: required string constraint;
-	2: optional set<FRRoom> forbiddenRooms;
+	2: optional set<string> forbiddenRoomsUID;
 }
 
 struct AutoCompleteReply {

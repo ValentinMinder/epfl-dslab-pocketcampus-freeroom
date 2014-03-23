@@ -25,15 +25,15 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("AutoCompleteRequest");
 
   private static final org.apache.thrift.protocol.TField CONSTRAINT_FIELD_DESC = new org.apache.thrift.protocol.TField("constraint", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField FORBIDDEN_ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("forbiddenRooms", org.apache.thrift.protocol.TType.SET, (short)2);
+  private static final org.apache.thrift.protocol.TField FORBIDDEN_ROOMS_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("forbiddenRoomsUID", org.apache.thrift.protocol.TType.SET, (short)2);
 
   private String constraint; // required
-  private Set<FRRoom> forbiddenRooms; // required
+  private Set<String> forbiddenRoomsUID; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     CONSTRAINT((short)1, "constraint"),
-    FORBIDDEN_ROOMS((short)2, "forbiddenRooms");
+    FORBIDDEN_ROOMS_UID((short)2, "forbiddenRoomsUID");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -50,8 +50,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       switch(fieldId) {
         case 1: // CONSTRAINT
           return CONSTRAINT;
-        case 2: // FORBIDDEN_ROOMS
-          return FORBIDDEN_ROOMS;
+        case 2: // FORBIDDEN_ROOMS_UID
+          return FORBIDDEN_ROOMS_UID;
         default:
           return null;
       }
@@ -98,9 +98,9 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.CONSTRAINT, new org.apache.thrift.meta_data.FieldMetaData("constraint", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.FORBIDDEN_ROOMS, new org.apache.thrift.meta_data.FieldMetaData("forbiddenRooms", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.FORBIDDEN_ROOMS_UID, new org.apache.thrift.meta_data.FieldMetaData("forbiddenRoomsUID", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.SetMetaData(org.apache.thrift.protocol.TType.SET, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FRRoom.class))));
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(AutoCompleteRequest.class, metaDataMap);
   }
@@ -122,12 +122,12 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     if (other.isSetConstraint()) {
       this.constraint = other.constraint;
     }
-    if (other.isSetForbiddenRooms()) {
-      Set<FRRoom> __this__forbiddenRooms = new HashSet<FRRoom>();
-      for (FRRoom other_element : other.forbiddenRooms) {
-        __this__forbiddenRooms.add(new FRRoom(other_element));
+    if (other.isSetForbiddenRoomsUID()) {
+      Set<String> __this__forbiddenRoomsUID = new HashSet<String>();
+      for (String other_element : other.forbiddenRoomsUID) {
+        __this__forbiddenRoomsUID.add(other_element);
       }
-      this.forbiddenRooms = __this__forbiddenRooms;
+      this.forbiddenRoomsUID = __this__forbiddenRoomsUID;
     }
   }
 
@@ -138,7 +138,7 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
   @Override
   public void clear() {
     this.constraint = null;
-    this.forbiddenRooms = null;
+    this.forbiddenRoomsUID = null;
   }
 
   public String getConstraint() {
@@ -165,42 +165,42 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     }
   }
 
-  public int getForbiddenRoomsSize() {
-    return (this.forbiddenRooms == null) ? 0 : this.forbiddenRooms.size();
+  public int getForbiddenRoomsUIDSize() {
+    return (this.forbiddenRoomsUID == null) ? 0 : this.forbiddenRoomsUID.size();
   }
 
-  public java.util.Iterator<FRRoom> getForbiddenRoomsIterator() {
-    return (this.forbiddenRooms == null) ? null : this.forbiddenRooms.iterator();
+  public java.util.Iterator<String> getForbiddenRoomsUIDIterator() {
+    return (this.forbiddenRoomsUID == null) ? null : this.forbiddenRoomsUID.iterator();
   }
 
-  public void addToForbiddenRooms(FRRoom elem) {
-    if (this.forbiddenRooms == null) {
-      this.forbiddenRooms = new HashSet<FRRoom>();
+  public void addToForbiddenRoomsUID(String elem) {
+    if (this.forbiddenRoomsUID == null) {
+      this.forbiddenRoomsUID = new HashSet<String>();
     }
-    this.forbiddenRooms.add(elem);
+    this.forbiddenRoomsUID.add(elem);
   }
 
-  public Set<FRRoom> getForbiddenRooms() {
-    return this.forbiddenRooms;
+  public Set<String> getForbiddenRoomsUID() {
+    return this.forbiddenRoomsUID;
   }
 
-  public AutoCompleteRequest setForbiddenRooms(Set<FRRoom> forbiddenRooms) {
-    this.forbiddenRooms = forbiddenRooms;
+  public AutoCompleteRequest setForbiddenRoomsUID(Set<String> forbiddenRoomsUID) {
+    this.forbiddenRoomsUID = forbiddenRoomsUID;
     return this;
   }
 
-  public void unsetForbiddenRooms() {
-    this.forbiddenRooms = null;
+  public void unsetForbiddenRoomsUID() {
+    this.forbiddenRoomsUID = null;
   }
 
-  /** Returns true if field forbiddenRooms is set (has been assigned a value) and false otherwise */
-  public boolean isSetForbiddenRooms() {
-    return this.forbiddenRooms != null;
+  /** Returns true if field forbiddenRoomsUID is set (has been assigned a value) and false otherwise */
+  public boolean isSetForbiddenRoomsUID() {
+    return this.forbiddenRoomsUID != null;
   }
 
-  public void setForbiddenRoomsIsSet(boolean value) {
+  public void setForbiddenRoomsUIDIsSet(boolean value) {
     if (!value) {
-      this.forbiddenRooms = null;
+      this.forbiddenRoomsUID = null;
     }
   }
 
@@ -214,11 +214,11 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       }
       break;
 
-    case FORBIDDEN_ROOMS:
+    case FORBIDDEN_ROOMS_UID:
       if (value == null) {
-        unsetForbiddenRooms();
+        unsetForbiddenRoomsUID();
       } else {
-        setForbiddenRooms((Set<FRRoom>)value);
+        setForbiddenRoomsUID((Set<String>)value);
       }
       break;
 
@@ -230,8 +230,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     case CONSTRAINT:
       return getConstraint();
 
-    case FORBIDDEN_ROOMS:
-      return getForbiddenRooms();
+    case FORBIDDEN_ROOMS_UID:
+      return getForbiddenRoomsUID();
 
     }
     throw new IllegalStateException();
@@ -246,8 +246,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     switch (field) {
     case CONSTRAINT:
       return isSetConstraint();
-    case FORBIDDEN_ROOMS:
-      return isSetForbiddenRooms();
+    case FORBIDDEN_ROOMS_UID:
+      return isSetForbiddenRoomsUID();
     }
     throw new IllegalStateException();
   }
@@ -274,12 +274,12 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
         return false;
     }
 
-    boolean this_present_forbiddenRooms = true && this.isSetForbiddenRooms();
-    boolean that_present_forbiddenRooms = true && that.isSetForbiddenRooms();
-    if (this_present_forbiddenRooms || that_present_forbiddenRooms) {
-      if (!(this_present_forbiddenRooms && that_present_forbiddenRooms))
+    boolean this_present_forbiddenRoomsUID = true && this.isSetForbiddenRoomsUID();
+    boolean that_present_forbiddenRoomsUID = true && that.isSetForbiddenRoomsUID();
+    if (this_present_forbiddenRoomsUID || that_present_forbiddenRoomsUID) {
+      if (!(this_present_forbiddenRoomsUID && that_present_forbiddenRoomsUID))
         return false;
-      if (!this.forbiddenRooms.equals(that.forbiddenRooms))
+      if (!this.forbiddenRoomsUID.equals(that.forbiddenRoomsUID))
         return false;
     }
 
@@ -295,10 +295,10 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     if (present_constraint)
       builder.append(constraint);
 
-    boolean present_forbiddenRooms = true && (isSetForbiddenRooms());
-    builder.append(present_forbiddenRooms);
-    if (present_forbiddenRooms)
-      builder.append(forbiddenRooms);
+    boolean present_forbiddenRoomsUID = true && (isSetForbiddenRoomsUID());
+    builder.append(present_forbiddenRoomsUID);
+    if (present_forbiddenRoomsUID)
+      builder.append(forbiddenRoomsUID);
 
     return builder.toHashCode();
   }
@@ -321,12 +321,12 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetForbiddenRooms()).compareTo(typedOther.isSetForbiddenRooms());
+    lastComparison = Boolean.valueOf(isSetForbiddenRoomsUID()).compareTo(typedOther.isSetForbiddenRoomsUID());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetForbiddenRooms()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.forbiddenRooms, typedOther.forbiddenRooms);
+    if (isSetForbiddenRoomsUID()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.forbiddenRoomsUID, typedOther.forbiddenRoomsUID);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -355,17 +355,16 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // FORBIDDEN_ROOMS
+        case 2: // FORBIDDEN_ROOMS_UID
           if (field.type == org.apache.thrift.protocol.TType.SET) {
             {
               org.apache.thrift.protocol.TSet _set20 = iprot.readSetBegin();
-              this.forbiddenRooms = new HashSet<FRRoom>(2*_set20.size);
+              this.forbiddenRoomsUID = new HashSet<String>(2*_set20.size);
               for (int _i21 = 0; _i21 < _set20.size; ++_i21)
               {
-                FRRoom _elem22; // required
-                _elem22 = new FRRoom();
-                _elem22.read(iprot);
-                this.forbiddenRooms.add(_elem22);
+                String _elem22; // required
+                _elem22 = iprot.readString();
+                this.forbiddenRoomsUID.add(_elem22);
               }
               iprot.readSetEnd();
             }
@@ -393,14 +392,14 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       oprot.writeString(this.constraint);
       oprot.writeFieldEnd();
     }
-    if (this.forbiddenRooms != null) {
-      if (isSetForbiddenRooms()) {
-        oprot.writeFieldBegin(FORBIDDEN_ROOMS_FIELD_DESC);
+    if (this.forbiddenRoomsUID != null) {
+      if (isSetForbiddenRoomsUID()) {
+        oprot.writeFieldBegin(FORBIDDEN_ROOMS_UID_FIELD_DESC);
         {
-          oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRUCT, this.forbiddenRooms.size()));
-          for (FRRoom _iter23 : this.forbiddenRooms)
+          oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRING, this.forbiddenRoomsUID.size()));
+          for (String _iter23 : this.forbiddenRoomsUID)
           {
-            _iter23.write(oprot);
+            oprot.writeString(_iter23);
           }
           oprot.writeSetEnd();
         }
@@ -423,13 +422,13 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       sb.append(this.constraint);
     }
     first = false;
-    if (isSetForbiddenRooms()) {
+    if (isSetForbiddenRoomsUID()) {
       if (!first) sb.append(", ");
-      sb.append("forbiddenRooms:");
-      if (this.forbiddenRooms == null) {
+      sb.append("forbiddenRoomsUID:");
+      if (this.forbiddenRoomsUID == null) {
         sb.append("null");
       } else {
-        sb.append(this.forbiddenRooms);
+        sb.append(this.forbiddenRoomsUID);
       }
       first = false;
     }

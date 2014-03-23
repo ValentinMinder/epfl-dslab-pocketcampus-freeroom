@@ -82,7 +82,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		if (!FRTimes.validCalendars(period)) {
 			// if something is wrong in the request
-			// for security reasons, we don't tell the client was exactly was wrong
+			// for security reasons, we don't tell the client was exactly was
+			// wrong
 			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
 					"Bad timestamps! Your client sent a bad request, sorry");
 		}
@@ -116,10 +117,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		try {
 			Connection connectBDD = connMgr.getConnection();
 			PreparedStatement query = connectBDD
-					.prepareStatement("SELECT rl.building, rl.room_number "
-							+ "FROM roomslist rl "
-							+ "WHERE rl.rid NOT IN "
-							+ "(SELECT ro.rid FROM roomsoccupancy ro "
+					.prepareStatement("SELECT rl.doorCode, rl.uid "
+							+ "FROM fr-roomslist rl "
+							+ "WHERE rl.uid NOT IN "
+							+ "(SELECT ro.uid FROM fr-roomsoccupancy ro "
 							+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
 							+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
 							+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)))");
@@ -134,11 +135,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			ResultSet resultQuery = query.executeQuery();
 			while (resultQuery.next()) {
-				String building = resultQuery.getString("building");
-				int room_number = resultQuery.getInt("room_number");
-				FRRoom r = new FRRoom();
-				r.setBuilding(building);
-				r.setNumber(room_number + "");
+				String uid = resultQuery.getString("uid");
+				String doorCode = resultQuery.getString("doorCode");
+				FRRoom r = new FRRoom(doorCode, uid);
 				freerooms.add(r);
 			}
 		} catch (SQLException e) {
@@ -157,20 +156,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				HttpURLConnection.HTTP_CREATED, ""
 						+ HttpURLConnection.HTTP_CREATED);
 
-		List<FRRoom> rooms = request.getListFRRoom();
-
-		// we check there are no duplicate in the list!
-		HashSet<FRRoom> roomsAsSet = new HashSet<FRRoom>(rooms);
-		if (roomsAsSet.size() != rooms.size()) {
-			return new OccupancyReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Server don't accept duplicate rooms!");
-		}
+		List<String> uidsList = request.getUids();
 
 		FRPeriod period = request.getPeriod();
 		long timestampStart = period.getTimeStampStart();
 		long timestampEnd = period.getTimeStampEnd();
 
-		if (! FRTimes.validCalendars(period)) {
+		if (!FRTimes.validCalendars(period)) {
 			// if something is wrong in the request
 			return new OccupancyReply(HttpURLConnection.HTTP_BAD_REQUEST,
 					"Bad timestamps! Your client sent a bad request, sorry");
@@ -181,38 +173,43 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		try {
 			Connection connectBDD = connMgr.getConnection();
 
-			for (FRRoom room : rooms) {
+			for (String mUid : uidsList) {
 				PreparedStatement query = connectBDD
-						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd "
-								+ "FROM roomsoccupancy ro, roomslist rl "
-								+ "WHERE rl.building = ? AND rl.room_number = ? "
-								+ "AND ro.rid = rl.rid AND "
+						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd, " +
+								"rl.doorCode "
+								+ "FROM fr-roomsoccupancy ro, fr-roomslist rl "
+								+ "WHERE rl.uid = ? "
+								+ "AND ro.uid = rl.uid AND "
 								+ "((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
 								+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
 								+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
 								+ "ORDER BY ro.timestampStart ASC");
-				query.setString(1, room.getBuilding());
-				query.setString(2, room.getNumber());
-				query.setLong(3, timestampEnd);
-				query.setLong(4, timestampStart);
-				query.setLong(5, timestampEnd);
+				query.setString(1, mUid);
+				query.setLong(2, timestampEnd);
+				query.setLong(3, timestampStart);
+				query.setLong(4, timestampEnd);
+				query.setLong(5, timestampStart);
 				query.setLong(6, timestampStart);
-				query.setLong(7, timestampStart);
-				query.setLong(8, timestampEnd);
+				query.setLong(7, timestampEnd);
 
 				// filling the query with values
 
 				ResultSet resultQuery = query.executeQuery();
 				Occupancy mOccupancy = new Occupancy();
-				mOccupancy.setRoom(room);
 
 				boolean isAtLeastOccupiedOnce = false;
 				boolean isAtLeastFreeOnce = false;
-
+				FRRoom room = null;
 				// timestamp used to generate the occupations accross the
 				// FRPeriod
 				long tsPerRoom = timestampStart;
 				while (resultQuery.next()) {
+					if (room == null) {
+						room = new FRRoom(resultQuery.getString("doorCode"),
+								mUid);
+						mOccupancy.setRoom(room);
+					}
+
 					long tsStart = Math.max(tsPerRoom,
 							resultQuery.getLong("timestampStart"));
 					long tsEnd = Math.min(timestampEnd,
@@ -284,7 +281,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						+ HttpURLConnection.HTTP_CREATED);
 
 		List<FRRoom> rooms = new ArrayList<FRRoom>();
-		Set<FRRoom> forbiddenRooms = request.getForbiddenRooms();
+		Set<String> forbiddenRooms = request.getForbiddenRoomsUID();
+		
 		String forbidRoomsSQL = "";
 		if (forbiddenRooms != null) {
 			for (int i = forbiddenRooms.size(); i > 0; --i) {
@@ -304,34 +302,28 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			Connection connectBDD = connMgr.getConnection();
 			String requestSQL = "";
 			if (forbiddenRooms == null) {
-				requestSQL = "SELECT * "
-						+ "FROM roomslist rl "
-						+ "WHERE CONCAT(rl.building, rl.room_number) LIKE (?) " +
-						"ORDER BY CONCAT(rl.building, rl.room_number) ASC" ;
+				requestSQL = "SELECT * " + "FROM fr-roomslist rl "
+						+ "WHERE rl.uid LIKE (?) "
+						+ "ORDER BY rl.doorCode ASC";
 			} else {
-				requestSQL = "SELECT * "
-						+ "FROM roomslist rl "
-						+ "WHERE CONCAT(rl.building, rl.room_number) LIKE (?) " +
-						"AND CONCAT(rl.building, rl.room_number) NOT IN ("
-						+ forbidRoomsSQL
-						+ ") "
+				requestSQL = "SELECT * " + "FROM fr-roomslist rl "
+						+ "WHERE rl.uid LIKE (?) "
+						+ "AND rl.uid NOT IN ("
+						+ forbidRoomsSQL + ") "
 						// TODO: verify the order for CO 1 and CO 123 ...
-						+ "ORDER BY CONCAT(rl.building, rl.room_number) ASC";
+						+ "ORDER BY rl.doorCode ASC";
 			}
-			
-			PreparedStatement query = connectBDD
-					.prepareStatement(requestSQL);
+
+			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
 			query.setString(1, txt + "%");
-			
+
 			if (forbiddenRooms != null) {
 				int i = 2;
-				for (FRRoom room : forbiddenRooms) {
-					query.setString(i, room.getBuilding() + room.getNumber());
+				for (String roomUID : forbiddenRooms) {
+					query.setString(i, roomUID);
 					++i;
 				}
 			}
-			
-
 
 			// filling the query with values
 
