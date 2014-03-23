@@ -118,9 +118,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			Connection connectBDD = connMgr.getConnection();
 			PreparedStatement query = connectBDD
 					.prepareStatement("SELECT rl.doorCode, rl.uid "
-							+ "FROM fr-roomslist rl "
+							+ "FROM `fr-roomslist` rl "
 							+ "WHERE rl.uid NOT IN "
-							+ "(SELECT ro.uid FROM fr-roomsoccupancy ro "
+							+ "(SELECT ro.uid FROM `fr-roomsoccupancy` ro "
 							+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
 							+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
 							+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)))");
@@ -174,10 +174,40 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			Connection connectBDD = connMgr.getConnection();
 
 			for (String mUid : uidsList) {
+				Occupancy mOccupancy = new Occupancy();
+
+				PreparedStatement roomQuery = connectBDD
+						.prepareStatement("SELECT "
+								+ "rl.doorCode, rl.capacity, rl.type "
+								+ "FROM `fr-roomslist` rl "
+								+ "WHERE rl.uid = ? ");
+				roomQuery.setString(1, mUid);
+				ResultSet resultRoom = roomQuery.executeQuery();
+
+				FRRoom room = null;
+				if (resultRoom.next()) {
+					room = new FRRoom();
+					room.setUid(mUid);
+					room.setDoorCode(resultRoom.getString("doorCode"));
+					room.setCapacity(resultRoom.getInt("capacity"));
+					room.setType(FRRoomType.valueOf(resultRoom
+							.getString("type")));
+					if (resultRoom.next()) {
+						return new OccupancyReply(
+								HttpURLConnection.HTTP_INTERNAL_ERROR,
+								"Mutltiple rooms with same UID! Error!");
+					}
+					mOccupancy.setRoom(room);
+				} else {
+					return new OccupancyReply(
+							HttpURLConnection.HTTP_BAD_REQUEST,
+							"Unknown room UID, sorry");
+				}
+
 				PreparedStatement query = connectBDD
 						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd, "
 								+ "rl.doorCode "
-								+ "FROM fr-roomsoccupancy ro, fr-roomslist rl "
+								+ "FROM `fr-roomsoccupancy` ro, `fr-roomslist` rl "
 								+ "WHERE rl.uid = ? "
 								+ "AND ro.uid = rl.uid AND "
 								+ "((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
@@ -195,20 +225,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// filling the query with values
 
 				ResultSet resultQuery = query.executeQuery();
-				Occupancy mOccupancy = new Occupancy();
 
 				boolean isAtLeastOccupiedOnce = false;
 				boolean isAtLeastFreeOnce = false;
-				FRRoom room = null;
+
 				// timestamp used to generate the occupations accross the
 				// FRPeriod
 				long tsPerRoom = timestampStart;
 				while (resultQuery.next()) {
-					if (room == null) {
-						room = new FRRoom(resultQuery.getString("doorCode"),
-								mUid);
-						mOccupancy.setRoom(room);
-					}
 
 					long tsStart = Math.max(tsPerRoom,
 							resultQuery.getLong("timestampStart"));
@@ -270,12 +294,19 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
+	/**
+	 * Returns all the rooms that satisfies the hint given in the request.
+	 * 
+	 * The hint may be the start of the door code or the uid.
+	 * 
+	 * TODO: verifies that it works with PH D2 398, PHD2 398, PH D2398 and
+	 * PHD2398
+	 * 
+	 * TODO: limit the number of result given
+	 */
 	@Override
 	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
 			throws TException {
-		// TODO this method wont work with full "door code" like PH D2 398
-		// TODO dont work with UID at the moment
-
 		AutoCompleteReply reply = new AutoCompleteReply(
 				HttpURLConnection.HTTP_CREATED, ""
 						+ HttpURLConnection.HTTP_CREATED);
@@ -296,24 +327,27 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		String txt = request.getConstraint();
 		// avoid all whitespaces for requests
 		// TODO: be resistent to empty queries!
+		// put a minimum number of letters for the hint
+		// this is only for tests purposes, to deliver all the rooms
 		txt = txt.trim();
 		txt = txt.replaceAll("\\s", "");
 		try {
 			Connection connectBDD = connMgr.getConnection();
 			String requestSQL = "";
 			if (forbiddenRooms == null) {
-				requestSQL = "SELECT * " + "FROM fr-roomslist rl "
-						+ "WHERE rl.uid LIKE (?) " + "ORDER BY rl.doorCode ASC";
+				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
+						+ "ORDER BY rl.doorCode ASC";
 			} else {
-				requestSQL = "SELECT * " + "FROM fr-roomslist rl "
-						+ "WHERE rl.uid LIKE (?) " + "AND rl.uid NOT IN ("
-						+ forbidRoomsSQL + ") "
-						// TODO: verify the order for CO 1 and CO 123 ...
+				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
+						+ "AND rl.uid NOT IN (" + forbidRoomsSQL + ") "
 						+ "ORDER BY rl.doorCode ASC";
 			}
 
 			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
 			query.setString(1, txt + "%");
+			query.setString(2, txt + "%");
 
 			if (forbiddenRooms != null) {
 				int i = 2;
