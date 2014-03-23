@@ -175,8 +175,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			for (String mUid : uidsList) {
 				PreparedStatement query = connectBDD
-						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd, " +
-								"rl.doorCode "
+						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd, "
+								+ "rl.doorCode "
 								+ "FROM fr-roomsoccupancy ro, fr-roomslist rl "
 								+ "WHERE rl.uid = ? "
 								+ "AND ro.uid = rl.uid AND "
@@ -282,7 +282,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		List<FRRoom> rooms = new ArrayList<FRRoom>();
 		Set<String> forbiddenRooms = request.getForbiddenRoomsUID();
-		
+
 		String forbidRoomsSQL = "";
 		if (forbiddenRooms != null) {
 			for (int i = forbiddenRooms.size(); i > 0; --i) {
@@ -303,12 +303,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			String requestSQL = "";
 			if (forbiddenRooms == null) {
 				requestSQL = "SELECT * " + "FROM fr-roomslist rl "
-						+ "WHERE rl.uid LIKE (?) "
-						+ "ORDER BY rl.doorCode ASC";
+						+ "WHERE rl.uid LIKE (?) " + "ORDER BY rl.doorCode ASC";
 			} else {
 				requestSQL = "SELECT * " + "FROM fr-roomslist rl "
-						+ "WHERE rl.uid LIKE (?) "
-						+ "AND rl.uid NOT IN ("
+						+ "WHERE rl.uid LIKE (?) " + "AND rl.uid NOT IN ("
 						+ forbidRoomsSQL + ") "
 						// TODO: verify the order for CO 1 and CO 123 ...
 						+ "ORDER BY rl.doorCode ASC";
@@ -329,9 +327,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			ResultSet resultQuery = query.executeQuery();
 			while (resultQuery.next()) {
-				String building = resultQuery.getString("building");
-				int number = resultQuery.getInt("room_number");
-				FRRoom frRoom = new FRRoom(building, number + "");
+				FRRoom frRoom = new FRRoom(resultQuery.getString("doorCode"),
+						resultQuery.getString("uid"));
 				String type = resultQuery.getString("type");
 				if (type != null) {
 					try {
