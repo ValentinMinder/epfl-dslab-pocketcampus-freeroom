@@ -324,7 +324,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 									.setButtonText(null);
 							mAutoCompleteSuggestionListView.invalidate();
 							// TODO: add the favorites to the listview!!!
-							mModel.getFavorites();
+							mModel.getAllRoomMapFavorites();
 						} else {
 							mAutoCompleteSuggestionInputBarElement
 									.setButtonText("");

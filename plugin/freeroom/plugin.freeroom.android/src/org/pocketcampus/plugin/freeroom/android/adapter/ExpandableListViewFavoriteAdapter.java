@@ -111,7 +111,7 @@ public class ExpandableListViewFavoriteAdapter extends
 		map.setImageResource(android.R.drawable.btn_plus);
 		final ImageView star = vholder.getImageViewStar();
 
-		final String isFav = model.isFavoriteRoom(room.getUid());
+		final String isFav = model.getRoomFavorites(room.getUid());
 
 		if (isFav != null) {
 			star.setImageResource(android.R.drawable.star_big_on);
@@ -126,10 +126,10 @@ public class ExpandableListViewFavoriteAdapter extends
 			public void onClick(View v) {
 				if (isFav != null) {
 					star.setImageResource(android.R.drawable.star_big_off);
-					model.removeFavoriteRoom(room.getUid());
+					model.removeRoomFavorites(room.getUid());
 				} else {
 					star.setImageResource(android.R.drawable.star_big_on);
-					model.setFavoriteRoom(room.getUid(), room.getDoorCode());
+					model.addRoomFavorites(room.getUid(), room.getDoorCode());
 				}
 				notifyDataSetChanged();
 			}

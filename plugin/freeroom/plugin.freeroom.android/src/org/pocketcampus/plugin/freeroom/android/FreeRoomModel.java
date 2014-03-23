@@ -1,14 +1,18 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
@@ -53,6 +57,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/** List of <code>FRRoom</code>'s obtained from the freeroom query **/
 	private Set<FRRoom> mFreeRoomResult = new HashSet<FRRoom>();
+	private TreeMap<String, List<FRRoom>> sortedRooms = new TreeMap<String, List<FRRoom>>();
+	private ArrayList<String> buildings = new ArrayList<String>();
 	/** List of suggestions for the check occupancy search view */
 	private List<FRRoom> mAutoCompleteSuggestions = new ArrayList<FRRoom>();
 	// TODO: not used NOW
@@ -103,6 +109,58 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public Set<FRRoom> getFreeRoomResults() {
 		return mFreeRoomResult;
 	}
+	
+	private void updateFreeRoomTreeMap() {
+		Iterator<FRRoom> iter = mFreeRoomResult.iterator();
+		sortedRooms.clear();
+		buildings.clear();
+		// TODO: ""getString(R.string.freeroom_result_occupancy_favorites)""
+		buildings.add("Favorites");
+		ArrayList<FRRoom> roomsFavorites = new ArrayList<FRRoom>();
+		
+		while (iter.hasNext()) {
+			FRRoom frRoom = iter.next();
+			if (containRoomFavorites(frRoom.getUid())) {
+				roomsFavorites.add(frRoom);
+			}
+
+			String building = getBuilding(frRoom.getDoorCode());
+
+			List<FRRoom> roomsNumbers = sortedRooms.get(building);
+			if (roomsNumbers == null) {
+				buildings.add(building);
+				roomsNumbers = new ArrayList<FRRoom>();
+				sortedRooms.put(building, roomsNumbers);
+			}
+			roomsNumbers.add(frRoom);
+		}
+
+		// we leave an empty favorites list!
+		if (roomsFavorites.isEmpty()) {
+			sortedRooms.remove(buildings.get(0));
+			buildings.remove(0);
+		}
+	}
+
+	public TreeMap<String, List<FRRoom>> getFreeRoomResultsFilteredByBuildings() {
+		return sortedRooms;
+	}
+
+	public List<String> getFreeRoomResultsBuildings() {
+		return buildings;
+	}
+
+	public FRRoom getFreeRoomResult(int group, int child) {
+		if (group < 0 || group >= buildings.size()) {
+			return null;
+		}
+		String building = buildings.get(group);
+		List<FRRoom> list = sortedRooms.get(building);
+		if (list != null && child >= 0 && child < list.size()) {
+			return list.get(child);
+		}
+		return null;
+	}
 
 	/**
 	 * Setter for the results of a freeroom request
@@ -112,6 +170,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public void setFreeRoomResults(Set<FRRoom> results) {
 		mFreeRoomResult = results;
+		updateFreeRoomTreeMap();
 		mListeners.freeRoomResultsUpdated();
 	}
 
@@ -251,34 +310,40 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	}
 
-	// TODO: change name to addRoomFavorites
-	public boolean setFavoriteRoom(String uid, String doorCode) {
+	public boolean addRoomFavorites(String uid, String doorCode) {
 		return addRoom(uid, doorCode, FAVORITES_ROOMS_KEY);
 	}
 
-	// TODO: change name to removeRoomFavorites
-	public boolean removeFavoriteRoom(String uid) {
-		return removeRoom(uid, FAVORITES_ROOMS_KEY);
+	public boolean removeRoomFavorites(String uid) {
+		return removeRoomByUID(uid, FAVORITES_ROOMS_KEY);
 	}
 
+	/**
+	 * Checks if the uid is present in the map.
+	 * @param uid
+	 * @return
+	 */
 	public boolean containRoomFavorites(String uid) {
-		return containsRoom(uid, FAVORITES_ROOMS_KEY);
-	}
-	
-	// TODO: change this! use the one just up.
-	// TODO: change name to getRoomFavorites
-	public String isFavoriteRoom(String uid) {
-		return getRoom(uid, FAVORITES_ROOMS_KEY);
+		return containsRoomByUID(uid, FAVORITES_ROOMS_KEY);
 	}
 
-	// TODO: change name to getAllRoomMapFavorites
-	public Map<String, String> getFavorites() {
+	/**
+	 * Return the door code of the room represented by the uid.
+	 * 
+	 * Return null if the favorite is not in the map.
+	 * @param uid
+	 * @return
+	 */
+	public String getRoomFavorites(String uid) {
+		return getRoomByUID(uid, FAVORITES_ROOMS_KEY);
+	}
+
+	public Map<String, String> getAllRoomMapFavorites() {
 		return getAllRoomAsMap(FAVORITES_ROOMS_KEY);
 	}
 
-	// TODO: change name to getAllRoomSetUIDFavorites
-	public Set<String> getFavoritesSetUID() {
-		Map<String, String> map = getFavorites();
+	public Set<String> getAllRoomSetUIDFavorites() {
+		Map<String, String> map = getAllRoomMapFavorites();
 		return map.keySet();
 	}
 
@@ -287,15 +352,15 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	public boolean removeRoomForbidden(String uid) {
-		return removeRoom(uid, FORBIDDEN_ROOMS_KEY);
+		return removeRoomByUID(uid, FORBIDDEN_ROOMS_KEY);
 	}
 
 	public boolean containRoomForbidden(String uid) {
-		return containsRoom(uid, FORBIDDEN_ROOMS_KEY);
+		return containsRoomByUID(uid, FORBIDDEN_ROOMS_KEY);
 	}
 
 	public String getRoomForbidden(String uid) {
-		return getRoom(uid, FORBIDDEN_ROOMS_KEY);
+		return getRoomByUID(uid, FORBIDDEN_ROOMS_KEY);
 	}
 
 	public Map<String, String> getAllRoomMapForbidden() {
@@ -315,7 +380,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return editor.commit();
 	}
 
-	public boolean removeRoom(String uid, String key) {
+	public boolean removeRoomByUID(String uid, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				key, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
@@ -323,13 +388,17 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return editor.commit();
 	}
 	
-	public boolean containsRoom(String uid, String key) {
+	public boolean containsRoomByUID(String uid, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				key, Context.MODE_PRIVATE);
 		return preferences.contains(uid);
 	}
+	
+	public boolean containsRoomByDoorCode(String doorCode, String key) {
+		return getAllRoomAsCollectionDoorCode(key).contains(doorCode);
+	}
 
-	public String getRoom(String uid, String key) {
+	public String getRoomByUID(String uid, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				key, Context.MODE_PRIVATE);
 		return preferences.getString(uid, null);
@@ -345,6 +414,11 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public Set<String> getAllRoomAsSetUID(String key) {
 		Map<String, String> map = getAllRoomAsMap(key);
 		return map.keySet();
+	}
+	
+	public Collection<String> getAllRoomAsCollectionDoorCode(String key) {
+		Map<String, String> map = getAllRoomAsMap(key);
+		return map.values();
 	}
 
 	/**

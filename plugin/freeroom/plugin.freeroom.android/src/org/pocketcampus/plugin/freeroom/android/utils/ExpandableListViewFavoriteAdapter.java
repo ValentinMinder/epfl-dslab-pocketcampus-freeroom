@@ -3,9 +3,9 @@ package org.pocketcampus.plugin.freeroom.android.utils;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -84,14 +84,18 @@ public class ExpandableListViewFavoriteAdapter extends
 		tv.setText(text);
 		final ImageView star = vholder.getImageView();
 
-		final String roomName = text.replaceAll("\\s", "");
-		final boolean isFav = model.isFavoriteRoom(text);
+		final FRRoom mFRRoom = model.getFreeRoomResult(groupPosition, childPosition);
+		if (mFRRoom == null) {
+			return null; //TODO: do that something else
+		}
+		final String roomName = mFRRoom.getDoorCode();
+		final String uid = mFRRoom.getUid();
+		final boolean isFav = model.containRoomFavorites(uid);
 
 		if (isFav) {
 			star.setImageResource(android.R.drawable.star_big_on);
 		} else {
 			star.setImageResource(android.R.drawable.star_big_off);
-
 		}
 		
 		star.setOnClickListener(new OnClickListener() {
@@ -100,10 +104,10 @@ public class ExpandableListViewFavoriteAdapter extends
 			public void onClick(View v) {
 				if (isFav) {
 					star.setImageResource(android.R.drawable.star_big_off);
-					model.removeFavoriteRoom(roomName);
+					model.removeRoomFavorites(uid);
 				} else {
 					star.setImageResource(android.R.drawable.star_big_on);
-					model.setFavoriteRoom(roomName);
+					model.addRoomFavorites(uid, roomName);
 				}
 				notifyDataSetChanged();
 			}

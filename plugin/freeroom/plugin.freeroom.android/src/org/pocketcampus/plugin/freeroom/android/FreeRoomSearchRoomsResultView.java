@@ -145,45 +145,23 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 		// mListValues.clear();
 		// mAdapter.notifyDataSetChanged();
 		Set<FRRoom> res = mModel.getFreeRoomResults();
+		TreeMap<String, List<FRRoom>> map = mModel.getFreeRoomResultsFilteredByBuildings();
+		List<String> listBuildings = mModel.getFreeRoomResultsBuildings();
+
 		buildings.clear();
-		buildings.add(getString(R.string.freeroom_result_occupancy_favorites));
-		ArrayList<FRRoom> roomsFavorites = new ArrayList<FRRoom>();
+		buildings.addAll(listBuildings);
 
 		sortedRooms.clear();
-		sortedRooms.put(buildings.get(0), roomsFavorites);
-		// keep a structure organized as building -> list of rooms in the
-		// building
-		for (FRRoom frRoom : res) {
-			String mUid = frRoom.getUid();
-			String isFavorite = mModel.isFavoriteRoom(mUid);
-
-			if (isFavorite != null) {
-				roomsFavorites.add(frRoom);
-			}
-
-			String building = mModel.getBuilding(frRoom.getDoorCode());
-
-			List<FRRoom> roomsNumbers = sortedRooms.get(building);
-			if (roomsNumbers == null) {
-				buildings.add(building);
-				roomsNumbers = new ArrayList<FRRoom>();
-				sortedRooms.put(building, roomsNumbers);
-			}
-			roomsNumbers.add(frRoom);
-
-		}
+		sortedRooms.putAll(map);
 
 		if (res.isEmpty()) {
 			Toast.makeText(getApplicationContext(),
 					getString(R.string.freeroom_no_room_available),
 					Toast.LENGTH_LONG).show();
-		}
-
-		if (roomsFavorites.isEmpty()) {
-			sortedRooms.remove(buildings.get(0));
 		} else {
 			mExpList.expandGroup(0);
 		}
+
 		Log.v(this.getClass().toString(), "data_updated in FreeRoomResultView");
 		// mAdapter.notifyDataSetChanged();
 	}
