@@ -195,7 +195,7 @@ public class TestFreeRoomSearchAndOccupancy {
 
 		// insert the rooms
 		for (FRRoom r : rooms) {
-			String req = "INSERT INTO roomslist(uid, doorCode, type, capacity) VALUES(?, ?, ?, ?)";
+			String req = "INSERT INTO fr-roomslist(uid, doorCode, type, capacity) VALUES(?, ?, ?, ?)";
 			PreparedStatement query;
 			try {
 				query = conn.prepareStatement(req);
@@ -216,7 +216,7 @@ public class TestFreeRoomSearchAndOccupancy {
 		for (ArrayList<FreeRoomRequest> r : globalAL) {
 			i++;
 			for (FreeRoomRequest frreq : r) {
-				String req = "INSERT INTO roomsoccupancy (rid, timestampStart, timestampEnd) VALUES(?, ?, ?)";
+				String req = "INSERT INTO fr-roomsoccupancy (rid, timestampStart, timestampEnd) VALUES(?, ?, ?)";
 				PreparedStatement query;
 				try {
 					query = conn.prepareStatement(req);

@@ -134,7 +134,7 @@ public class TestFRTimes {
 	 * This doesn't test that it's the one that is supposed to be given.
 	 */
 	@Test
-	public void testGetNextValidPeriod() {
+	public void testGetNextValidPeriodGiveValidPeriod() {
 
 		Calendar mCalendar = Calendar.getInstance();
 		assertTrue(FRTimes
@@ -242,6 +242,11 @@ public class TestFRTimes {
 					.currentTimeMillis() + now)));
 		}
 
+	}
+	
+	@Test
+	public void testGetNextValidPeriodIsNeededValidPeriod() {
+		// TODO: write this test for many cases!
 	}
 
 }

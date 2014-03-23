@@ -1,15 +1,14 @@
-INSERT INTO  `pocketcampustest`.`roomslist` (
-`rid` ,
-`building` ,
-`room_number` ,
+INSERT INTO  `pocketcampustest`.`fr-roomslist` (
+`uid` ,
+`doorCode` ,
 `type` ,
 `capacity`
 )
 VALUES 
-(NULL,  'CO',  '1',  'AUDITORIUM',  '326'),
-(NULL,  'CO',  '2',  'AUDITORIUM',  '216'),
-(NULL,  'CO',  '121',  'EXERCISES',  '30'),
-(NULL,  'CM',  '5',  'AUDITORIUM',  '88'),
-(NULL,  'CM',  '1112',  'COMPUTER_ROOM',  '35'),
-(NULL,  'BC',  '07',  'CONFERENCE', DEFAULT)
+('001',  'CO 1',  'AUDITORIUM',  '326'),
+('002',  'CO 2',  'AUDITORIUM',  '216'),
+('003',  'CO 121',  'EXERCISES',  '30'),
+('004',  'CM 5',  'AUDITORIUM',  '88'),
+('005',  'CM 1112',  'COMPUTER_ROOM',  '35'),
+('006',  'BC 07',  'CONFERENCE', DEFAULT)
 ;

@@ -100,7 +100,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			} else {
 				reply = new FreeRoomReply(
 						HttpURLConnection.HTTP_INTERNAL_ERROR,
-						"could be 400 or 500");
+						"Internal server error, sorry.");
 			}
 			return reply;
 		} else {

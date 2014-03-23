@@ -103,7 +103,7 @@ public class TestFindFreeRooms {
 	public static void tearDownAfterClass() {
 		// TODO: tests should remove their databases and tables, comment it if
 		// you want to see them in SQL
-		// removeDBTest();
+		 removeDBTest();
 	}
 
 	@Before
@@ -141,7 +141,7 @@ public class TestFindFreeRooms {
 			pstmt.close();
 
 			PreparedStatement stmt = conn
-					.prepareStatement("SELECT * FROM `pocketcampustest`.`roomslist`");
+					.prepareStatement("SELECT * FROM `pocketcampustest`.`fr-roomslist`");
 			stmt.execute();
 
 			ResultSet resultQuery = stmt.getResultSet();
@@ -183,20 +183,20 @@ public class TestFindFreeRooms {
 			pstmt.close();
 
 			PreparedStatement stmt = conn
-					.prepareStatement("SELECT * FROM `pocketcampustest`.`roomsoccupancy`");
+					.prepareStatement("SELECT * FROM `pocketcampustest`.`fr-roomsoccupancy`");
 			stmt.execute();
 
 			ResultSet resultQuery = stmt.getResultSet();
-			ArrayList<int[]> freerooms = new ArrayList<int[]>();
+			ArrayList<long[]> freerooms = new ArrayList<long[]>();
 			while (resultQuery.next()) {
-				int[] r = new int[3];
-				r[0] = resultQuery.getInt("rid");
-				r[1] = resultQuery.getInt("day_number");
-				r[2] = resultQuery.getInt("startHour");
+				long[] r = new long[3];
+				r[0] = resultQuery.getLong("uid");
+				r[1] = resultQuery.getLong("timeStampStart");
+				r[2] = resultQuery.getLong("timeStampEnd");
 				freerooms.add(r);
 			}
 			Assert.assertEquals(6, freerooms.size());
-			for (int[] occ : freerooms) {
+			for (long[] occ : freerooms) {
 				System.out.println(Arrays.toString(occ));
 			}
 		} catch (SQLException e) {
@@ -211,8 +211,8 @@ public class TestFindFreeRooms {
 	@Test
 	public void testBasicRequest() {
 		// FILL DATABSE BEFORE
-		long timeStampStart = System.currentTimeMillis();
-		long timeStampEnd = System.currentTimeMillis() + 3600 * 1000;
+		long timeStampStart = Long.parseLong("1395662400000"); // MON 2014/03/24 13h
+		long timeStampEnd = Long.parseLong("1395666000000"); // MON 2014/03/24 14h
 		FRPeriod period = new FRPeriod();
 		period.setRecurrent(false);
 		period.setTimeStampStart(timeStampStart);
