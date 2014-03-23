@@ -104,16 +104,20 @@ public class ExpandableListViewFavoriteAdapter extends
 		}
 
 		final FRRoom room = this.getChildObject(groupPosition, childPosition);
+		// after all, this may be useless...
+		final FRRoom mFRRoom = model.getFreeRoomResult(groupPosition, childPosition);
 
 		TextView tv = vholder.getTextView();
 		tv.setText(room.getDoorCode());
-		ImageView map = vholder.getImageViewMap();
-		map.setImageResource(android.R.drawable.btn_plus);
+		// TODO: Julien: this is commented because it cause the app to crash!
+//		ImageView map = vholder.getImageViewMap();
+//		map.setImageResource(android.R.drawable.btn_plus);
 		final ImageView star = vholder.getImageViewStar();
 
-		final String isFav = model.getRoomFavorites(room.getUid());
+		final String uid = room.getUid();
+		final boolean isFav = model.containRoomFavorites(uid);
 
-		if (isFav != null) {
+		if (isFav) {
 			star.setImageResource(android.R.drawable.star_big_on);
 		} else {
 			star.setImageResource(android.R.drawable.star_big_off);
@@ -124,7 +128,7 @@ public class ExpandableListViewFavoriteAdapter extends
 
 			@Override
 			public void onClick(View v) {
-				if (isFav != null) {
+				if (isFav) {
 					star.setImageResource(android.R.drawable.star_big_off);
 					model.removeRoomFavorites(room.getUid());
 				} else {
@@ -143,8 +147,11 @@ public class ExpandableListViewFavoriteAdapter extends
 		if (groupPosition >= data.size()) {
 			return 0;
 		}
-
-		return data.get(headers.get(groupPosition)).size();
+		List<FRRoom> list = data.get(headers.get(groupPosition));
+		if (list != null) {
+			return list.size();
+		}
+		return 0;
 	}
 
 	@Override
