@@ -33,14 +33,20 @@
 
 @implementation IsAcademiaStudyPeriodCalendarDayEventView
 
+#pragma mark - Init
+
 - (instancetype)init {
     self = [super initWithFrame:CGRectMake(0, 0, 100, 100)];
     self.clipsToBounds = NO;
     self.layer.masksToBounds = NO;
     self.titleLabel.clipsToBounds = NO;
     self.titleLabel.layer.masksToBounds = NO;
+    self.titleLabel.isAccessibilityElement = NO;
+    self.locationLabel.isAccessibilityElement = NO;
     return self;
 }
+
+#pragma mark - Public
 
 + (IsAcademiaStudyPeriodCalendarDayEventView*)studyPeriodEventView {
     return [self new];
@@ -87,6 +93,21 @@
     }
 }
 
+#pragma mark - Accessiblity
+
+- (BOOL)isAccessibilityElement {
+    return YES;
+}
+
+- (NSString*)accessibilityLabel {
+    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodViewAccessiblityLabelWithFormat", @"IsAcademiaPlugin", nil), self.studyPeriod.startTimeString, self.studyPeriod.roomsString, self.studyPeriod.name];
+}
+
+- (NSString*)accessibilityHint {
+    return NSLocalizedStringFromTable(@"PeriodViewAccessiblityHint", @"IsAcademiaPlugin", nil);
+}
+
+#pragma mark - Private
 
 - (UIColor*)darkColor {
     UIColor* color = nil;

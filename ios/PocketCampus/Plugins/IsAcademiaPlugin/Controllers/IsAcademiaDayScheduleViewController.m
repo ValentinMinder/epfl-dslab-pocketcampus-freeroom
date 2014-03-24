@@ -303,7 +303,7 @@
         studyDayIndex = (int)[scheduleResponse.days indexOfObject:studyDay];
     }
     [scheduleResponse.days enumerateObjectsUsingBlock:^(StudyDay* _studyDay, NSUInteger indexU, BOOL *stop) {
-        int index = (NSInteger)indexU;
+        int index = (int)indexU;
         BOOL includeDay = (_studyDay == studyDay) || (systemIsOutsideEPFLTimeZone && (abs(index-studyDayIndex) <= 1) ); //if outside time zone, also include 1 day before and 1 day after
         if (includeDay) {
             for (StudyPeriod* period in _studyDay.periods) {
