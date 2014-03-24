@@ -97,6 +97,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 		mListValues.add(getString(R.string.freeroom_menu_freeroom_now));
 		mListValues.add(getString(R.string.freeroom_menu_freeroom_search));
 		mListValues.add(getString(R.string.freeroom_menu_check_occupancy));
+		mListValues.add(getString(R.string.freeroom_menu_manage_favorites));
 
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -132,6 +133,9 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 				case 2:
 					i = new Intent(FreeRoomMainView.this,
 							FreeRoomCheckOccupancySearchView.class);
+					break;
+				case 3:
+					i = new Intent(FreeRoomMainView.this, FreeRoomManageFavoritesView.class);
 					break;
 				default:
 					break;

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -109,38 +110,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public Set<FRRoom> getFreeRoomResults() {
 		return mFreeRoomResult;
 	}
-	
-	private void updateFreeRoomTreeMap() {
-		Iterator<FRRoom> iter = mFreeRoomResult.iterator();
-		sortedRooms.clear();
-		buildings.clear();
-		// TODO: ""getString(R.string.freeroom_result_occupancy_favorites)""
-		buildings.add("Favorites");
-		ArrayList<FRRoom> roomsFavorites = new ArrayList<FRRoom>();
-		
-		while (iter.hasNext()) {
-			FRRoom frRoom = iter.next();
-			if (containRoomFavorites(frRoom.getUid())) {
-				roomsFavorites.add(frRoom);
-			}
-
-			String building = getBuilding(frRoom.getDoorCode());
-
-			List<FRRoom> roomsNumbers = sortedRooms.get(building);
-			if (roomsNumbers == null) {
-				buildings.add(building);
-				roomsNumbers = new ArrayList<FRRoom>();
-				sortedRooms.put(building, roomsNumbers);
-			}
-			roomsNumbers.add(frRoom);
-		}
-
-		// we leave an empty favorites list!
-		if (roomsFavorites.isEmpty()) {
-			sortedRooms.remove(buildings.get(0));
-			buildings.remove(0);
-		}
-	}
 
 	public TreeMap<String, List<FRRoom>> getFreeRoomResultsFilteredByBuildings() {
 		return sortedRooms;
@@ -170,7 +139,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public void setFreeRoomResults(Set<FRRoom> results) {
 		mFreeRoomResult = results;
-		updateFreeRoomTreeMap();
+		sortedRooms = sortFRRoomsByBuildingsAndFavorites(mFreeRoomResult, true);
 		mListeners.freeRoomResultsUpdated();
 	}
 
@@ -320,6 +289,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * Checks if the uid is present in the map.
+	 * 
 	 * @param uid
 	 * @return
 	 */
@@ -331,6 +301,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * Return the door code of the room represented by the uid.
 	 * 
 	 * Return null if the favorite is not in the map.
+	 * 
 	 * @param uid
 	 * @return
 	 */
@@ -373,49 +344,48 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	public boolean addRoom(String uid, String doorCode, String key) {
-		SharedPreferences preferences = context.getSharedPreferences(
-				key, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(key,
+				Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(uid, doorCode);
 		return editor.commit();
 	}
 
 	public boolean removeRoomByUID(String uid, String key) {
-		SharedPreferences preferences = context.getSharedPreferences(
-				key, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(key,
+				Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.remove(uid);
 		return editor.commit();
 	}
-	
+
 	public boolean containsRoomByUID(String uid, String key) {
-		SharedPreferences preferences = context.getSharedPreferences(
-				key, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(key,
+				Context.MODE_PRIVATE);
 		return preferences.contains(uid);
 	}
-	
+
 	public boolean containsRoomByDoorCode(String doorCode, String key) {
 		return getAllRoomAsCollectionDoorCode(key).contains(doorCode);
 	}
 
 	public String getRoomByUID(String uid, String key) {
-		SharedPreferences preferences = context.getSharedPreferences(
-				key, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(key,
+				Context.MODE_PRIVATE);
 		return preferences.getString(uid, null);
 	}
 
 	public Map<String, String> getAllRoomAsMap(String key) {
-		SharedPreferences preferences = context.getSharedPreferences(
-				key, Context.MODE_PRIVATE);
-		// TODO: check this.
+		SharedPreferences preferences = context.getSharedPreferences(key,
+				Context.MODE_PRIVATE);
 		return (Map<String, String>) preferences.getAll();
 	}
-	
+
 	public Set<String> getAllRoomAsSetUID(String key) {
 		Map<String, String> map = getAllRoomAsMap(key);
 		return map.keySet();
 	}
-	
+
 	public Collection<String> getAllRoomAsCollectionDoorCode(String key) {
 		Map<String, String> map = getAllRoomAsMap(key);
 		return map.values();
@@ -441,4 +411,47 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return mDoorCode;
 	}
 
+	/**
+	 * Sort a given set of rooms by its buildings, the returning map maps
+	 * building's name to the list of rooms in this buildings. This also add's a
+	 * category named Favorites that contains all the favorites if boolean
+	 * wantFavoritesList is true
+	 **/
+	public TreeMap<String, List<FRRoom>> sortFRRoomsByBuildingsAndFavorites(
+			Set<FRRoom> rooms, boolean wantFavoritesList) {
+		Iterator<FRRoom> iter = rooms.iterator();
+		TreeMap<String, List<FRRoom>> sortedResult = new TreeMap<String, List<FRRoom>>();
+		ArrayList<String> buildingsList = new ArrayList<String>();
+
+		ArrayList<FRRoom> roomsFavorites = null;
+		if (wantFavoritesList) {
+			buildingsList.add(context.getString(R.string.freeroom_result_occupancy_favorites));
+			roomsFavorites = new ArrayList<FRRoom>();
+		}
+
+		while (iter.hasNext()) {
+			FRRoom frRoom = iter.next();
+			
+			if (wantFavoritesList && containRoomFavorites(frRoom.getUid())) {
+				roomsFavorites.add(frRoom);
+			}
+
+			String building = getBuilding(frRoom.getDoorCode());
+
+			List<FRRoom> roomsNumbers = sortedResult.get(building);
+			if (roomsNumbers == null) {
+				buildingsList.add(building);
+				roomsNumbers = new ArrayList<FRRoom>();
+				sortedResult.put(building, roomsNumbers);
+			}
+			roomsNumbers.add(frRoom);
+		}
+
+		// we leave an empty favorites list!
+		if (wantFavoritesList && roomsFavorites.isEmpty()) {
+			sortedResult.remove(buildingsList.get(0));
+			buildingsList.remove(0);
+		}
+		return sortedResult;
+	}
 }

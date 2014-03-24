@@ -41,6 +41,29 @@ public class ExpandableListViewFavoriteAdapter extends
 		return null;
 	}
 
+	/**
+	 * This method returns the child's object. It is not suitable for display,
+	 * use getChild(int, int) instead.
+	 * 
+	 * @param groupPosition
+	 *            The group id
+	 * @param childPosition
+	 *            The child id
+	 * @return The child object FRRoom associated.
+	 */
+	@Override
+	public FRRoom getChildObject(int groupPosition, int childPosition) {
+		if (groupPosition >= headers.size()) {
+			return null;
+		}
+		List<FRRoom> groupList = data.get(headers.get(groupPosition));
+
+		if (childPosition >= groupList.size() || groupList == null) {
+			return null;
+		}
+		return groupList.get(childPosition);
+	}
+
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 
@@ -63,9 +86,6 @@ public class ExpandableListViewFavoriteAdapter extends
 		}
 
 		final FRRoom room = this.getChildObject(groupPosition, childPosition);
-		// after all, this may be useless...
-		final FRRoom mFRRoom = mModel.getFreeRoomResult(groupPosition,
-				childPosition);
 
 		TextView tv = vholder.getTextView();
 		tv.setText(room.getDoorCode());
@@ -189,12 +209,6 @@ public class ExpandableListViewFavoriteAdapter extends
 			return this.tv;
 		}
 
-	}
-
-	@Override
-	public FRRoom getChildObject(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
