@@ -100,7 +100,7 @@
 }
 
 - (NSString*)accessibilityLabel {
-    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodViewAccessiblityLabelWithFormat", @"IsAcademiaPlugin", nil), self.studyPeriod.startTimeString, self.studyPeriod.roomsString, self.studyPeriod.name];
+    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodViewAccessiblityLabelWithFormat", @"IsAcademiaPlugin", nil), self.studyPeriod.startTimeString, self.studyPeriod.name, self.studyPeriod.roomsString];
 }
 
 - (NSString*)accessibilityHint {

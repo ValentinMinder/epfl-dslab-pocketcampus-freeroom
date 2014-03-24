@@ -133,7 +133,8 @@
 - (void) _setupView{
 	
 	self.nowLineView = [[TKNowView alloc] init];
-	
+	self.nowLineView.userInteractionEnabled = NO;
+    
 	NSDateComponents *info = [[NSDate date] dateComponentsWithTimeZone:self.calendar.timeZone];
 	info.hour = info.minute = info.second = 0;
 	

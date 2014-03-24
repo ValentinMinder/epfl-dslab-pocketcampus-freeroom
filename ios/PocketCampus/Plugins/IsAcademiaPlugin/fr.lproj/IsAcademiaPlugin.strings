@@ -12,5 +12,5 @@
 "NoCourseToday" = "Aucun cours aujourd'hui";
 
 //Accessibility
-"PeriodViewAccessiblityLabelWithFormat" = "%@, salle %@: %@"; //<start time>, <room>, <name>
+≈
 "PeriodViewAccessiblityHint" = "Affiche plus d'informations sur cet événement.";
