@@ -132,16 +132,16 @@
 - (void)refreshAndGoToTodayIfNeeded {
     if (!self.lastRefreshDate || ![self.lastRefreshDate isToday]) {
         self.dayView.date = [NSDate date];
-        [self refreshForDisplayedDay];
+        [self refreshForDisplayedDaySkipCache:NO];
     }
 }
 
 - (void)refreshPressed {
     [self trackAction:PCGAITrackerActionRefresh];
-    [self refreshForDisplayedDay];
+    [self refreshForDisplayedDaySkipCache:YES];
 }
 
-- (void)refreshForDisplayedDay {
+- (void)refreshForDisplayedDaySkipCache:(BOOL)skipCache {
     self.lastRefreshDate = [NSDate date];
     [self.messageHUD hide:NO];
     [self.progressHUD show:NO];
@@ -150,7 +150,7 @@
     NSDate* monday8am = [self mondayReferenceDateForDate:self.dayView.date];
     req.weekStart = [monday8am timeIntervalSince1970]*1000;
     req.language = [PCUtils userLanguageCode];
-    [self.isaService getScheduleWithRequest:req delegate:self];
+    [self.isaService getScheduleWithRequest:req skipCache:skipCache delegate:self];
 }
 
 - (void)todayPressed {
@@ -200,7 +200,7 @@
         {
             __weak __typeof(self) weakSelf = self;
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
-                [weakSelf refreshForDisplayedDay];
+                [weakSelf refreshForDisplayedDaySkipCache:YES];
             } userCancelled:^{
                 //nothing to do
             } failure:^{
@@ -254,6 +254,8 @@
 - (void)calendarDayTimelineView:(TKCalendarDayView *)calendarDay didMoveToDate:(NSDate *)date {
     ScheduleResponse* scheduleResponse = self.responseForReferenceDate[[self mondayReferenceDateForDate:date]];
     if (scheduleResponse) {
+        [self.isaService cancelOperationsForDelegate:self];
+        [self.progressHUD hide:NO];
         StudyDay* studyDay = [scheduleResponse studyDayForDate:date];
         if (studyDay.periods.count == 0) {
             self.messageHUD.labelText = [date isToday] ? NSLocalizedStringFromTable(@"NoCourseToday", @"IsAcademiaPlugin", nil) : NSLocalizedStringFromTable(@"NoCourseOnThatDay", @"IsAcademiaPlugin", nil);
@@ -263,7 +265,7 @@
             [self.messageHUD hide:NO];
         }
     } else {
-        [self refreshForDisplayedDay];
+        [self refreshForDisplayedDaySkipCache:NO];
     }
 }
 

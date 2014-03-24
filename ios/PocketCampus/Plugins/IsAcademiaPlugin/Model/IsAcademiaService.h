@@ -49,7 +49,7 @@
 - (ScheduleResponse *) getSchedule: (ScheduleRequest *) req;  // throws TException
  */
 
-- (void)getScheduleWithRequest:(ScheduleRequest*)request delegate:(id<IsAcademiaServiceDelegate>)delegate;
+- (void)getScheduleWithRequest:(ScheduleRequest*)request skipCache:(BOOL)skipCache delegate:(id<IsAcademiaServiceDelegate>)delegate;
 
 @end
 
