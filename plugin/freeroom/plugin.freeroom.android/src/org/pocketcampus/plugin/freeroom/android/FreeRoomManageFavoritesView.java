@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -16,6 +15,9 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,9 +35,11 @@ public class FreeRoomManageFavoritesView extends FreeRoomAbstractView implements
 
 	private ExpandableListView mExpList;
 	private ExpandableListViewFavoriteAdapter mAdapter;
-	
+
 	private ArrayList<String> buildings;
 	private Map<String, List<FRRoom>> rooms;
+
+	private Button resetAllFavorites;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -55,51 +59,79 @@ public class FreeRoomManageFavoritesView extends FreeRoomAbstractView implements
 		// Setup the layout
 		mLayout = new StandardTitledLayout(this);
 		subLayout = new LinearLayout(this);
-		subLayout.setOrientation(LinearLayout.HORIZONTAL);
+		subLayout.setOrientation(LinearLayout.VERTICAL);
 		mLayout.addFillerView(subLayout);
-		
+
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 		mLayout.setTitle(getString(R.string.freeroom_title_manage_favorites));
-		
+
 		initializeFavoritesView();
 	}
 
+	private void resetView() {
+		subLayout.removeAllViews();
+
+		if (rooms != null) {
+			rooms.clear();
+		}
+
+		if (buildings != null) {
+			buildings.clear();
+		}
+	}
+
 	private void initializeFavoritesView() {
+		resetView();
+		resetAllFavorites = new Button(this);
+		resetAllFavorites.setText(getString(R.string.freeroom_resetbutton));
+		resetAllFavorites.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (mModel.removeAllRoomsFavorites()) {
+					initializeFavoritesView();
+				}
+			}
+		});
+		subLayout.addView(resetAllFavorites);
+
 		mExpList = new ExpandableListView(this);
-		
+
 		Map<String, String> allFavorites = mModel.getAllRoomMapFavorites();
 		HashSet<FRRoom> favoritesAsFRRoom = new HashSet<FRRoom>();
-		
+
 		for (Entry<String, String> e : allFavorites.entrySet()) {
-			//Favorites beeing stored as uid -> doorCode
+			// Favorites beeing stored as uid -> doorCode
 			favoritesAsFRRoom.add(new FRRoom(e.getValue(), e.getKey()));
 		}
-		
-		rooms = mModel.sortFRRoomsByBuildingsAndFavorites(favoritesAsFRRoom, false);
+
+		rooms = mModel.sortFRRoomsByBuildingsAndFavorites(favoritesAsFRRoom,
+				false);
 		buildings = new ArrayList<String>(rooms.keySet());
-		
-		mAdapter = new ExpandableListViewFavoriteAdapter(this, buildings, rooms, mModel);
+
+		mAdapter = new ExpandableListViewFavoriteAdapter(this, buildings,
+				rooms, mModel);
 		mExpList.setAdapter(mAdapter);
-		
+
 		subLayout.addView(mExpList);
 	}
-	
+
 	@Override
 	public void freeRoomResultsUpdated() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void autoCompletedUpdated() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void occupancyResultUpdated() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -287,6 +287,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return removeRoomByUID(uid, FAVORITES_ROOMS_KEY);
 	}
 
+	public boolean removeAllRoomsFavorites() {
+		SharedPreferences preferences = context.getSharedPreferences(
+				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.clear();
+		return editor.commit();
+	}
+
 	/**
 	 * Checks if the uid is present in the map.
 	 * 
@@ -425,13 +433,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 		ArrayList<FRRoom> roomsFavorites = null;
 		if (wantFavoritesList) {
-			buildingsList.add(context.getString(R.string.freeroom_result_occupancy_favorites));
+			buildingsList.add(context
+					.getString(R.string.freeroom_result_occupancy_favorites));
 			roomsFavorites = new ArrayList<FRRoom>();
 		}
 
 		while (iter.hasNext()) {
 			FRRoom frRoom = iter.next();
-			
+
 			if (wantFavoritesList && containRoomFavorites(frRoom.getUid())) {
 				roomsFavorites.add(frRoom);
 			}
