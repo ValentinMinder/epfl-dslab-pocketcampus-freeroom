@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -21,44 +22,17 @@ import android.widget.TextView;
  *         Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
-	private Context context;
-	private List<String> headers;
-	private Map<String, List<String>> data;
-	// hold the caller view for colors updates.
-	private FreeRoomModel mModel;
-
-	public ExpandableSimpleListViewAdapter(Context c, List<String> header,
-			Map<String, List<String>> data) {
-		this.context = c;
-		this.headers = header;
-		this.data = data;
-	}
+public class ExpandableSimpleListViewAdapter extends
+		ExpandableAbstractListViewAdapter<String> {
 
 	public ExpandableSimpleListViewAdapter(Context c, List<String> header,
 			Map<String, List<String>> data, FreeRoomModel model) {
-		this.context = c;
-		this.headers = header;
-		this.data = data;
-		this.mModel = model;
+		super(c, header, data, model);
 	}
 
-	@Override
-	public Object getChild(int groupPosition, int childPosition) {
-		if (groupPosition >= headers.size()) {
-			return null;
-		}
-		List<String> groupList = data.get(headers.get(groupPosition));
-
-		if (childPosition >= groupList.size()) {
-			return null;
-		}
-		return data.get(headers.get(groupPosition)).get(childPosition);
-	}
-
-	@Override
-	public long getChildId(int groupPosition, int childPosition) {
-		return childPosition;
+	public ExpandableSimpleListViewAdapter(Context c, List<String> header,
+			Map<String, List<String>> data) {
+		super(c, header, data);
 	}
 
 	@Override
@@ -93,33 +67,6 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public int getChildrenCount(int groupPosition) {
-		if (groupPosition >= data.size()) {
-			return 0;
-		}
-
-		return data.get(headers.get(groupPosition)).size();
-	}
-
-	@Override
-	public Object getGroup(int groupPosition) {
-		if (groupPosition >= data.size()) {
-			return null;
-		}
-		return data.get(headers.get(groupPosition));
-	}
-
-	@Override
-	public int getGroupCount() {
-		return data.size();
-	}
-
-	@Override
-	public long getGroupId(int groupPosition) {
-		return groupPosition;
-	}
-
-	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
 		if (groupPosition >= headers.size()) {
@@ -141,42 +88,22 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 		String text = (String) headers.get(groupPosition);
 		TextView tv = vholder.getTextView();
 		tv.setText(text);
-		// The color is set only when it's not expanded as a summary of the content
+		// The color is set only when it's not expanded as a summary of the
+		// content
 		// Occupied, Free or Free/Occupied
 		// Otherwise it's defaut color
 		if (mModel != null) {
 			ExpandableListView v = ((ExpandableListView) parent);
-			if(v.isGroupExpanded(groupPosition)) {
-				convertView.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
+			if (v.isGroupExpanded(groupPosition)) {
+				convertView
+						.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
 			} else {
-				convertView.setBackgroundColor(mModel.getColorOfCheckOccupancyRoom(
-						groupPosition));
+				convertView.setBackgroundColor(mModel
+						.getColorOfCheckOccupancyRoom(groupPosition));
 			}
 		}
 		return convertView;
 
-	}
-
-	@Override
-	public boolean hasStableIds() {
-		return false;
-	}
-
-	@Override
-	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		if (mModel != null) {
-			return mModel.isCheckOccupancyLineClickable(groupPosition, childPosition);
-		}
-		return true;
-	}
-
-	public void updateHeader(int id, String value) {
-		if (id >= headers.size()) {
-			return;
-		}
-
-		this.data.put(value, data.remove(headers.get(id)));
-		this.headers.set(id, value);
 	}
 
 	/**
@@ -194,5 +121,23 @@ public class ExpandableSimpleListViewAdapter extends BaseExpandableListAdapter {
 		public TextView getTextView() {
 			return this.tv;
 		}
+	}
+
+	@Override
+	public Object getChild(int groupPosition, int childPosition) {
+		if (groupPosition >= headers.size()) {
+			return null;
+		}
+		List<String> groupList = data.get(headers.get(groupPosition));
+
+		if (childPosition >= groupList.size()) {
+			return null;
+		}
+		return data.get(headers.get(groupPosition)).get(childPosition);
+	}
+
+	@Override
+	public String getChildObject(int groupPosition, int childPosition) {
+		return (String) getChild(groupPosition, childPosition);
 	}
 }

@@ -25,26 +25,13 @@ import android.widget.TextView;
  * 
  */
 public class ExpandableListViewFavoriteAdapter extends
-		BaseExpandableListAdapter {
-
-	private Context context;
-	private List<String> headers;
-	private Map<String, List<FRRoom>> data;
-	private FreeRoomModel model;
+		ExpandableAbstractListViewAdapter<FRRoom> {
 
 	public ExpandableListViewFavoriteAdapter(Context c, List<String> header,
 			Map<String, List<FRRoom>> data, FreeRoomModel model) {
-		this.context = c;
-		this.headers = header;
-		this.data = data;
-		this.model = model;
+		super(c, header, data, model);
 	}
 
-	/**
-	 * Return the corresponding child's doorCode, this method is intented for
-	 * the display, thus should not return the door UID, if you want the object
-	 * FRRoom, use getChildObject instead
-	 */
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		FRRoom child = this.getChildObject(groupPosition, childPosition);
@@ -54,34 +41,6 @@ public class ExpandableListViewFavoriteAdapter extends
 		return null;
 	}
 
-	/**
-	 * This method returns the child's object. It is not suitable for display,
-	 * use getChild(int, int) instead.
-	 * 
-	 * @param groupPosition
-	 *            The group id
-	 * @param childPosition
-	 *            The child id
-	 * @return The child object FRRoom associated.
-	 */
-	public FRRoom getChildObject(int groupPosition, int childPosition) {
-		if (groupPosition >= headers.size()) {
-			return null;
-		}
-		List<FRRoom> groupList = data.get(headers.get(groupPosition));
-
-		if (childPosition >= groupList.size() || groupList == null) {
-			return null;
-		}
-		return groupList.get(childPosition);
-	}
-
-	@Override
-	public long getChildId(int groupPosition, int childPosition) {
-		return childPosition;
-	}
-
-	@Override
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 
@@ -105,17 +64,18 @@ public class ExpandableListViewFavoriteAdapter extends
 
 		final FRRoom room = this.getChildObject(groupPosition, childPosition);
 		// after all, this may be useless...
-		final FRRoom mFRRoom = model.getFreeRoomResult(groupPosition, childPosition);
+		final FRRoom mFRRoom = mModel.getFreeRoomResult(groupPosition,
+				childPosition);
 
 		TextView tv = vholder.getTextView();
 		tv.setText(room.getDoorCode());
 		// TODO: Julien: this is commented because it cause the app to crash!
-//		ImageView map = vholder.getImageViewMap();
-//		map.setImageResource(android.R.drawable.btn_plus);
+		// ImageView map = vholder.getImageViewMap();
+		// map.setImageResource(android.R.drawable.btn_plus);
 		final ImageView star = vholder.getImageViewStar();
 
 		final String uid = room.getUid();
-		final boolean isFav = model.containRoomFavorites(uid);
+		final boolean isFav = mModel.containRoomFavorites(uid);
 
 		if (isFav) {
 			star.setImageResource(android.R.drawable.star_big_on);
@@ -130,46 +90,16 @@ public class ExpandableListViewFavoriteAdapter extends
 			public void onClick(View v) {
 				if (isFav) {
 					star.setImageResource(android.R.drawable.star_big_off);
-					model.removeRoomFavorites(room.getUid());
+					mModel.removeRoomFavorites(room.getUid());
 				} else {
 					star.setImageResource(android.R.drawable.star_big_on);
-					model.addRoomFavorites(room.getUid(), room.getDoorCode());
+					mModel.addRoomFavorites(room.getUid(), room.getDoorCode());
 				}
 				notifyDataSetChanged();
 			}
 		});
 		vholder.setStarCheck(false);
 		return convertView;
-	}
-
-	@Override
-	public int getChildrenCount(int groupPosition) {
-		if (groupPosition >= data.size()) {
-			return 0;
-		}
-		List<FRRoom> list = data.get(headers.get(groupPosition));
-		if (list != null) {
-			return list.size();
-		}
-		return 0;
-	}
-
-	@Override
-	public Object getGroup(int groupPosition) {
-		if (groupPosition >= data.size()) {
-			return null;
-		}
-		return data.get(headers.get(groupPosition));
-	}
-
-	@Override
-	public int getGroupCount() {
-		return data.size();
-	}
-
-	@Override
-	public long getGroupId(int groupPosition) {
-		return groupPosition;
 	}
 
 	@Override
@@ -196,25 +126,6 @@ public class ExpandableListViewFavoriteAdapter extends
 		tv.setText(text);
 		return convertView;
 
-	}
-
-	@Override
-	public boolean hasStableIds() {
-		return false;
-	}
-
-	@Override
-	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		return true;
-	}
-
-	public void updateHeader(int id, String value) {
-		if (id >= headers.size()) {
-			return;
-		}
-
-		this.data.put(value, data.remove(headers.get(id)));
-		this.headers.set(id, value);
 	}
 
 	/**
@@ -278,6 +189,12 @@ public class ExpandableListViewFavoriteAdapter extends
 			return this.tv;
 		}
 
+	}
+
+	@Override
+	public FRRoom getChildObject(int groupPosition, int childPosition) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

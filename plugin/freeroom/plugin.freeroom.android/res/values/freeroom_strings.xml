@@ -22,6 +22,7 @@
     <string name="freeroom_menu_freeroom_now">Find me a free room now !</string>
     <string name="freeroom_menu_freeroom_search">Search for a free room</string>
     <string name="freeroom_menu_check_occupancy">Check the occupancy</string>
+    <string name="freeroom_menu_manage_favorites">Manage favorites</string>
     <string name="freeroom_searchbutton">Search !</string>
     <string name="freeroom_resetbutton">Reset !</string>
     <string name="freeroom_selectday">Day</string>
