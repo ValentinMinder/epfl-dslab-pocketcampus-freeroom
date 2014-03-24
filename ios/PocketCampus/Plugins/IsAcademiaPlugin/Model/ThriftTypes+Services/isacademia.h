@@ -22,7 +22,8 @@ enum StudyPeriodType {
 enum IsaStatusCode {
   IsaStatusCode_OK = 200,
   IsaStatusCode_NETWORK_ERROR = 404,
-  IsaStatusCode_INVALID_SESSION = 407
+  IsaStatusCode_INVALID_SESSION = 407,
+  IsaStatusCode_ISA_ERROR = 418
 };
 
 typedef int64_t timestamp;

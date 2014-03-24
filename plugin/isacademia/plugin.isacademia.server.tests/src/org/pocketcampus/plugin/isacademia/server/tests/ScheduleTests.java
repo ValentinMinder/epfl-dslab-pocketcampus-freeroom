@@ -23,7 +23,7 @@ import org.joda.time.*;
  */
 public final class ScheduleTests {
 	private static final DateTimeZone ISA_TIME_ZONE = DateTimeZone.forID("Europe/Zurich");
-	
+
 	// All working week days are there (even Monday which isn't in the file)
 	@Test
 	public void allDaysAreParsed() {
@@ -70,38 +70,55 @@ public final class ScheduleTests {
 		assertEquals("State and human rights", period.getName());
 	}
 
+	// ISA Error returns the right error code
+	@Test
+	public void isaErrorIsUnderstood() {
+		try {
+			ScheduleResponse response = new ScheduleImpl(new TestHttpsClient("<error message=\"Connection error to ISA (no cookie)\"/>"))
+					.get(new LocalDate(2013, 10, 14), "fr", "");
+
+			assertEquals(IsaStatusCode.ISA_ERROR, response.getStatusCode());
+		} catch (Exception e) {
+			fail();
+		}
+	}
+
 	private static List<StudyDay> getDays(String lang) {
 		try {
-			return new ScheduleImpl(new TestHttpsClient()).get(new LocalDate(2013, 10, 14), lang, "").getDays();
+			return new ScheduleImpl(new TestHttpsClient(getFileContents("ExampleSchedule.xml"))).get(new LocalDate(2013, 10, 14), lang, "").getDays();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
+	@SuppressWarnings("resource")
+	private static String getFileContents(String name) {
+		Scanner s = null;
+
+		try {
+			InputStream stream = new ScheduleTests().getClass().getResourceAsStream(name);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+
+			// smart trick from http://stackoverflow.com/a/5445161
+			s = new Scanner(reader).useDelimiter("\\A");
+			return s.hasNext() ? s.next() : "";
+		} finally {
+			if (s != null) {
+				s.close();
+			}
+		}
+	}
+
 	private static final class TestHttpsClient implements HttpsClient {
-		private static final String RETURN_VALUE = getFileContents("ExampleSchedule.xml");
+		private final String _returnValue;
+
+		public TestHttpsClient(String returnValue) {
+			_returnValue = returnValue;
+		}
 
 		@Override
 		public String get(String url, Charset charset) throws Exception {
-			return RETURN_VALUE;
-		}
-
-		@SuppressWarnings("resource")
-		private static String getFileContents(String name) {
-			Scanner s = null;
-
-			try {
-				InputStream stream = new ScheduleTests().getClass().getResourceAsStream(name);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-
-				// smart trick from http://stackoverflow.com/a/5445161
-				s = new Scanner(reader).useDelimiter("\\A");
-				return s.hasNext() ? s.next() : "";
-			} finally {
-				if (s != null) {
-					s.close();
-				}
-			}
+			return _returnValue;
 		}
 	}
 }

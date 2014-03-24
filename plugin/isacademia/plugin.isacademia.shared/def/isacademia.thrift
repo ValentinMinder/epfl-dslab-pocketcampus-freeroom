@@ -36,7 +36,9 @@ enum IsaStatusCode {
   // A network error occurred
   NETWORK_ERROR = 404,
   // The provided session is invalid
-  INVALID_SESSION = 407
+  INVALID_SESSION = 407,
+  // An error occured within IS-Academia
+  ISA_ERROR = 418
 }
 
 struct ScheduleResponse {
