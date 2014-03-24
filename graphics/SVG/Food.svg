@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg5239"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   width="100"
+   height="100"
+   sodipodi:docname="Food.svg"
+   inkscape:export-filename="X:\Pics\Food.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <metadata
+     id="metadata5245">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs5243" />
+  <sodipodi:namedview
+     pagecolor="#000000"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10000"
+     guidetolerance="10"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1680"
+     inkscape:window-height="987"
+     id="namedview5241"
+     showgrid="true"
+     inkscape:zoom="8.0000001"
+     inkscape:cx="48.623137"
+     inkscape:cy="42.613981"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer4"
+     fit-margin-top="0"
+     fit-margin-left="17"
+     fit-margin-right="18"
+     fit-margin-bottom="0"
+     inkscape:showpageshadow="false" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="SVG"
+     transform="translate(-162,-100)">
+    <path
+       id="rect8095"
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       d="m 179,100 0,36 c 0,3 6,7 10,7 0,18 0,36 0,54 0,3 0,3 2,3 l 8,0 c 2,0 2,0 2,-3 0,-18 0,-36 0,-54 4,0 10,-4 10,-7 0,-4 0,-36 0,-36 l -8,0 0,31 -4,0 0,-31 -8,0 0,31 -4,0 0,-31 z m 45,12 c 0,16 0,41 0,41 l 8,0 0,44 c 0,3 0,3 2,3 l 8,0 c 2,0 2,0 2,-3 0,-29 0,-81 0,-85 0,-8 -2,-12 -10,-12 -8,0 -10,4 -10,12 z"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cscsssscscccccccccccccssssccc" />
+  </g>
+</svg>
