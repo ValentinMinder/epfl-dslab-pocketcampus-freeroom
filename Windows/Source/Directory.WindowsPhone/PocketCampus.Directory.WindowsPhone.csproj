@@ -123,8 +123,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\DefaultImage.png" />
     <Content Include="Assets\AddContact.png" />
+    <Content Include="Assets\DefaultImage.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BindableApplicationBar">

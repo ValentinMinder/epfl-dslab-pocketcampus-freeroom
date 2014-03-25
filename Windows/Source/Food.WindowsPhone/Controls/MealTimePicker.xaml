@@ -30,20 +30,14 @@
         <!-- "Lunch" button -->
         <Button Command="{Binding SetLunchCommand}"
                 Template="{StaticResource SimpleButton}">
-            <Image Source="/Assets/Lunch.png"
-                   Width="32"
-                   Height="32"
-                   Margin="2" />
+            <ContentControl Template="{StaticResource LunchIcon}" />
         </Button>
 
         <!-- "Dinner" button -->
         <Button Grid.Column="1"
                 Command="{Binding SetDinnerCommand}"
                 Template="{StaticResource SimpleButton}">
-            <Image Source="/Assets/Dinner.png"
-                   Width="32"
-                   Height="32"
-                   Margin="2" />
+            <ContentControl Template="{StaticResource DinnerIcon}" />
         </Button>
 
         <!-- Visual states to move the 'selected' underlay -->

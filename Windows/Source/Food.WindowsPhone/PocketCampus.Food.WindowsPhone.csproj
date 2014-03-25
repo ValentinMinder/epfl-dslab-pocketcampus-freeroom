@@ -124,12 +124,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Dinner.png" />
     <Content Include="Assets\MealType_Fish.png" />
     <Content Include="Assets\MealType_GreenFork.png" />
     <Content Include="Assets\MealType_Indian.png" />
     <Content Include="Assets\MealType_Lebanese.png" />
-    <Content Include="Assets\Lunch.png" />
     <Content Include="Assets\MealType_Meat.png" />
     <Content Include="Assets\MealType_Pasta.png" />
     <Content Include="Assets\MealType_Pizza.png" />

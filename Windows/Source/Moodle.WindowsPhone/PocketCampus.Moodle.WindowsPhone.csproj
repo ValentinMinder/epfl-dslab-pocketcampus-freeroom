@@ -166,16 +166,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Extension_bmp.png" />
-    <Content Include="Assets\Extension_docx.png" />
-    <Content Include="Assets\Extension_gif.png" />
-    <Content Include="Assets\Extension_jpg.png" />
-    <Content Include="Assets\Extension_pdf.png" />
-    <Content Include="Assets\Extension_png.png" />
-    <Content Include="Assets\Extension_pptx.png" />
-    <Content Include="Assets\Extension_xlsx.png" />
-    <Content Include="Assets\Extension_zip.png" />
-    <Content Include="Assets\Folder.png" />
     <Content Include="Assets\Refresh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

@@ -27,7 +27,7 @@
         <!-- Converters -->
         <com:EnumToLocalizedStringConverter x:Key="EnumToString"
                                             Strings="{StaticResource Strings}" />
-        <my:FileNameToImageConverter x:Key="FileToImage" />
+        <my:FileNameToIconTemplateConverter x:Key="FileToIconTemplate" />
         <my:RemoveExtensionConverter x:Key="RemoveExtension" />
         <my:DownloadStateToBooleanConverter x:Key="DownloadStateToBool" />
         <my:CourseSectionsToGroupsConverter x:Key="SectionsToGroups" />
@@ -49,9 +49,10 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Icon -->
-                    <Image Source="{Binding Name, Converter={StaticResource FileToImage}}"
-                           Width="48"
-                           Height="48" />
+                    <ContentControl Template="{Binding Name, Converter={StaticResource FileToIconTemplate}}"
+                                    Width="38"
+                                    Height="46"
+                                    Margin="0,4,0,0" />
 
                     <!-- Name -->
                     <TextBlock Grid.Column="1"

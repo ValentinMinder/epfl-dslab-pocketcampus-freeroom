@@ -123,8 +123,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Previous.png" />
-    <Content Include="Assets\Next.png" />
     <Content Include="Assets\Refresh.png" />
   </ItemGroup>
   <ItemGroup>

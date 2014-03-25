@@ -145,11 +145,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Camera.png" />
-    <Content Include="Assets\EmptyStar.png" />
     <Content Include="Assets\Filter.png" />
     <Content Include="Assets\Settings.png" />
-    <Content Include="Assets\Star.png" />
     <Content Include="Assets\Tags.png" />
+    <Content Include="Assets\EmptyStar.png" />
+    <Content Include="Assets\Star.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Assets\Icons.xaml">
