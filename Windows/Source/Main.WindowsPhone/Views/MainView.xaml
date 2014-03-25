@@ -48,15 +48,17 @@
                         </Grid.RowDefinitions>
                         
                         <!-- Icon -->
-                        <Image Source="{Binding Icon}" />
+                        <ContentControl Template="{Binding Converter={StaticResource PluginToIconTemplate}}"
+                                        Margin="20,10" />
                         
                         <!-- Text-->
                         <TextBlock Grid.Row="1"
                                    Text="{Binding Name}"
                                    Style="{StaticResource PhoneTextNormalStyle}"
+                                   FontSize="{StaticResource PhoneFontSizeNormal}"
                                    FontFamily="{StaticResource PhoneFontFamilySemiBold}"
                                    Foreground="{StaticResource AppHeaderForegroundBrush}"
-                                   Margin="4,0" />
+                                   Margin="10,0,0,6" />
                     </Grid>
 
                     <!-- Context menu -->

@@ -124,12 +124,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Previous.png" />
-    <Content Include="Assets\IsAcademiaIcon.png" />
     <Content Include="Assets\Next.png" />
     <Content Include="Assets\Refresh.png" />
-    <Content Include="Assets\IsAcademiaSmallIcon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\WeekPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

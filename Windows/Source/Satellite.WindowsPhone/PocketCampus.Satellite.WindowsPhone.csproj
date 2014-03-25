@@ -106,9 +106,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\SatelliteIcon.png" />
     <Content Include="Assets\Refresh.png" />
-    <Content Include="Assets\SatelliteSmallIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\PluginResources.fr.resx">
@@ -121,6 +119,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

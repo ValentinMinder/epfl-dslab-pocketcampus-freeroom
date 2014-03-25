@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using PocketCampus.Common;
 using PocketCampus.Food.Resources;
 using PocketCampus.Food.ViewModels;
@@ -24,19 +23,11 @@ namespace PocketCampus.Food
         }
 
         /// <summary>
-        /// Gets the plugin's icon.
+        /// Gets the key of the plugin's icon in the application resources.
         /// </summary>
-        public Uri Icon
+        public string IconKey
         {
-            get { return new Uri( "/Assets/FoodIcon.png", UriKind.Relative ); }
-        }
-
-        /// <summary>
-        /// Gets the plugin's small icon.
-        /// </summary>
-        public Uri SmallIcon
-        {
-            get { return new Uri( "/Assets/FoodSmallIcon.png", UriKind.Relative ); }
+            get { return "FoodIcon"; }
         }
 
         /// <summary>

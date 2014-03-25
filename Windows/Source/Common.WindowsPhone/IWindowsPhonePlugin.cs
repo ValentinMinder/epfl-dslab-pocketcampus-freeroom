@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Common
@@ -18,14 +17,9 @@ namespace PocketCampus.Common
         string Name { get; }
 
         /// <summary>
-        /// Gets the plugin's icon (as an Uri).
+        /// Gets the key of the plugin's icon in the application resources.
         /// </summary>
-        Uri Icon { get; }
-
-        /// <summary>
-        /// Gets the plugin's small icon (as an Uri).
-        /// </summary>
-        Uri SmallIcon { get; }
+        string IconKey { get; }
 
         /// <summary>
         /// Initializes the Windows Phone specific part of the plugin.

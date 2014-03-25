@@ -129,9 +129,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\CamiproIcon.png" />
     <Content Include="Assets\Refresh.png" />
-    <Content Include="Assets\CamiproSmallIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BindableApplicationBar, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -149,6 +147,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

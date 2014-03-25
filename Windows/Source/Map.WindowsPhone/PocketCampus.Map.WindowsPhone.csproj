@@ -162,6 +162,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\EpflMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -182,9 +186,7 @@
   <ItemGroup>
     <Content Include="Assets\CenterMap.png" />
     <Content Include="Assets\CenterOnCampus.png" />
-    <Content Include="Assets\MapsSmallIcon.png" />
     <EmbeddedResource Include="MapTokens.txt" />
-    <Content Include="Assets\MapsIcon.png" />
     <Content Include="Assets\Settings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

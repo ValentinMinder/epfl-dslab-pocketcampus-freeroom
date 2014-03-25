@@ -124,8 +124,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\DefaultImage.png" />
-    <Content Include="Assets\DirectoryIcon.png" />
-    <Content Include="Assets\DirectorySmallIcon.png" />
     <Content Include="Assets\AddContact.png" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +156,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

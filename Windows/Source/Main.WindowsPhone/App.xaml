@@ -10,6 +10,17 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/PocketCampus.Common.WindowsPhone;component/Resources.xaml" />
+
+                <ResourceDictionary Source="/PocketCampus.Camipro.WindowsPhone;component/Assets/Icons.xaml" />
+                <ResourceDictionary Source="/PocketCampus.Directory.WindowsPhone;component/Assets/Icons.xaml" />
+                <ResourceDictionary Source="/PocketCampus.Food.WindowsPhone;component/Assets/Icons.xaml" />
+                <ResourceDictionary Source="/PocketCampus.Events.WindowsPhone;component/Assets/Icons.xaml" />
+                <ResourceDictionary Source="/PocketCampus.IsAcademia.WindowsPhone;component/Assets/Icons.xaml" />
+                <ResourceDictionary Source="/PocketCampus.Map.WindowsPhone;component/Assets/Icons.xaml" />
+                <ResourceDictionary Source="/PocketCampus.Moodle.WindowsPhone;component/Assets/Icons.xaml" />
+                <ResourceDictionary Source="/PocketCampus.News.WindowsPhone;component/Assets/Icons.xaml" />
+                <ResourceDictionary Source="/PocketCampus.Satellite.WindowsPhone;component/Assets/Icons.xaml" />
+                <ResourceDictionary Source="/PocketCampus.Transport.WindowsPhone;component/Assets/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </mvvm:BaseApp.Resources>

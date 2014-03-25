@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using PocketCampus.Common;
 using PocketCampus.Transport.Resources;
 using PocketCampus.Transport.ViewModels;
@@ -25,19 +24,11 @@ namespace PocketCampus.Transport
         }
 
         /// <summary>
-        /// Gets the plugin's icon.
+        /// Gets the key of the plugin's icon in the application resources.
         /// </summary>
-        public Uri Icon
+        public string IconKey
         {
-            get { return new Uri( "/Assets/TransportIcon.png", UriKind.Relative ); }
-        }
-
-        /// <summary>
-        /// Gets the plugin's small icon.
-        /// </summary>
-        public Uri SmallIcon
-        {
-            get { return new Uri( "/Assets/TransportSmallIcon.png", UriKind.Relative ); }
+            get { return "TransportIcon"; }
         }
 
         /// <summary>

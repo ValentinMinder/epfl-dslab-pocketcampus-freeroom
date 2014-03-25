@@ -146,14 +146,16 @@
   <ItemGroup>
     <Content Include="Assets\Camera.png" />
     <Content Include="Assets\EmptyStar.png" />
-    <Content Include="Assets\EventsIcon.png" />
-    <Content Include="Assets\EventsSmallIcon.png" />
     <Content Include="Assets\Filter.png" />
     <Content Include="Assets\Settings.png" />
     <Content Include="Assets\Star.png" />
     <Content Include="Assets\Tags.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

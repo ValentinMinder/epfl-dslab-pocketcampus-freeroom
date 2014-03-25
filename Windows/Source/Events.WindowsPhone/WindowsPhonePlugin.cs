@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using PocketCampus.Common;
 using PocketCampus.Events.Resources;
 using PocketCampus.Events.Services;
@@ -26,19 +25,11 @@ namespace PocketCampus.Events.WindowsPhone
         }
 
         /// <summary>
-        /// Gets the plugin's icon (as an Uri).
+        /// Gets the key of the plugin's icon in the application resources.
         /// </summary>
-        public Uri Icon
+        public string IconKey
         {
-            get { return new Uri( "/Assets/EventsIcon.png", UriKind.Relative ); }
-        }
-
-        /// <summary>
-        /// Gets the plugin's small icon (as an Uri).
-        /// </summary>
-        public Uri SmallIcon
-        {
-            get { return new Uri( "/Assets/EventsSmallIcon.png", UriKind.Relative ); }
+            get { return "EventsIcon"; }
         }
 
         /// <summary>

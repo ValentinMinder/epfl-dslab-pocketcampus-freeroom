@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using PocketCampus.Common;
 using PocketCampus.Satellite.Resources;
 using PocketCampus.Satellite.ViewModels;
@@ -24,19 +23,11 @@ namespace PocketCampus.Satellite
         }
 
         /// <summary>
-        /// Gets the plugin's icon.
+        /// Gets the key of the plugin's icon in the application resources.
         /// </summary>
-        public Uri Icon
+        public string IconKey
         {
-            get { return new Uri( "/Assets/SatelliteIcon.png", UriKind.Relative ); }
-        }
-
-        /// <summary>
-        /// Gets the plugin's small icon.
-        /// </summary>
-        public Uri SmallIcon
-        {
-            get { return new Uri( "/Assets/SatelliteSmallIcon.png", UriKind.Relative ); }
+            get { return "SatelliteIcon"; }
         }
 
         /// <summary>

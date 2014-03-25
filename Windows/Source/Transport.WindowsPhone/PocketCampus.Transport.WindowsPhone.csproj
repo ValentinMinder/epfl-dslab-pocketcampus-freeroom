@@ -115,6 +115,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\BiStateExpander.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -164,10 +168,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Add.png" />
-    <Content Include="Assets\TransportIcon.png" />
     <Content Include="Assets\Refresh.png" />
     <Content Include="Assets\Settings.png" />
-    <Content Include="Assets\TransportSmallIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BindableApplicationBar, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
