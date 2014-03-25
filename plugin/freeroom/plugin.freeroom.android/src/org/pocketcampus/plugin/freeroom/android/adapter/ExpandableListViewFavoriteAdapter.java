@@ -8,11 +8,12 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -78,6 +79,8 @@ public class ExpandableListViewFavoriteAdapter extends
 			vholder = new ViewHolderChild();
 			vholder.setTextView((TextView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_roomname));
+			vholder.setImageViewMap((ImageView) convertView
+					.findViewById(R.id.freeroom_layout_roomslist_map));
 			vholder.setImageViewStar((ImageView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_fav));
 			convertView.setTag(vholder);
@@ -93,7 +96,24 @@ public class ExpandableListViewFavoriteAdapter extends
 		// ImageView map = vholder.getImageViewMap();
 		// map.setImageResource(android.R.drawable.btn_plus);
 		final ImageView star = vholder.getImageViewStar();
-
+		ImageView map = vholder.getImageViewMap();
+		
+		map.setImageResource(android.R.drawable.btn_minus);
+		
+		map.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Uri mUri = Uri
+						.parse("pocketcampus://map.plugin.pocketcampus.org/search");
+				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q",
+						room.getDoorCode());
+				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
+				context.startActivity(i);
+				
+			}
+		});
+		
 		final String uid = room.getUid();
 		final boolean isFav = mModel.containRoomFavorites(uid);
 
@@ -174,6 +194,14 @@ public class ExpandableListViewFavoriteAdapter extends
 		public ImageView getImageViewStar() {
 			return this.star;
 		}
+		
+		public void setImageViewMap(ImageView iv) {
+			this.map = iv;
+		}
+
+		public ImageView getImageViewMap() {
+			return this.map;
+		}
 
 		public boolean isStarChecked() {
 			return starChecked;
@@ -181,14 +209,6 @@ public class ExpandableListViewFavoriteAdapter extends
 
 		public void setStarCheck(boolean check) {
 			starChecked = check;
-		}
-
-		public void setImageViewMap(ImageView iv) {
-			this.map = iv;
-		}
-
-		public ImageView getImageViewMap() {
-			return this.map;
 		}
 
 	}

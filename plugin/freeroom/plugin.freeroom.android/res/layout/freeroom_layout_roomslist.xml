@@ -21,6 +21,13 @@ and an ImageView added
         android:textColor="@android:color/black" />
 
     <ImageView
+        android:id="@+id/freeroom_layout_roomslist_map"
+        android:layout_width="25dip"
+        android:layout_height="25dip"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/freeroom_layout_roomslist_roomname" />
+
+    <ImageView
         android:id="@+id/freeroom_layout_roomslist_fav"
         android:layout_width="25dip"
         android:layout_height="25dip"

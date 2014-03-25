@@ -125,12 +125,12 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 
 				System.out.println("selected " + room);
 
-				Uri mUri = Uri
-						.parse("pocketcampus://map.plugin.pocketcampus.org/search");
-				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q",
-						room);
-				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
-				startActivity(i);
+//				Uri mUri = Uri
+//						.parse("pocketcampus://map.plugin.pocketcampus.org/search");
+//				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q",
+//						room);
+//				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
+//				startActivity(i);
 
 				return true;
 			}

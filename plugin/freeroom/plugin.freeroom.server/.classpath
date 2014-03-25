@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.freeroom.android"/>
+	<classpathentry kind="lib" path="/home/julien/pocketcampus/plugin/freeroom/plugin.freeroom.server/lib/android.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

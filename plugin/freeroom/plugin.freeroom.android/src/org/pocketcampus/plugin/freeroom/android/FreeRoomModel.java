@@ -386,6 +386,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public Map<String, String> getAllRoomAsMap(String key) {
 		SharedPreferences preferences = context.getSharedPreferences(key,
 				Context.MODE_PRIVATE);
+		addRoomFavorites("1", "CM1");
 		return (Map<String, String>) preferences.getAll();
 	}
 
