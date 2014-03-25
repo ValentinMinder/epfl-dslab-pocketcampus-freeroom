@@ -9,22 +9,20 @@
     <d:DesignProperties.DataContext>
         <design:DesignTagFilterViewModel xmlns:design="clr-namespace:PocketCampus.Events.ViewModels.Design;assembly=PocketCampus.Events.Common" />
     </d:DesignProperties.DataContext>
-    
+
     <!-- Page resources -->
     <comControls:BasePage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <!-- Template for tag filters -->
             <DataTemplate x:Key="TagFilterTemplate">
                 <CheckBox IsChecked="{Binding Include, Mode=TwoWay}"
-                          Margin="12,0">
-                    <CheckBox.Content>
-                        <TextBlock Text="{Binding DisplayName}"
-                                   TextWrapping="Wrap" />
-                    </CheckBox.Content>
+                          Margin="12,5">
+                    <TextBlock Text="{Binding DisplayName}"
+                               TextWrapping="Wrap" />
                 </CheckBox>
             </DataTemplate>
         </ResourceDictionary>
@@ -37,20 +35,20 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <!-- Page header -->
         <Border Background="{StaticResource AppHeaderBackgroundBrush}">
             <TextBlock Text="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
                        Style="{StaticResource AppTextHeaderStyle}" />
         </Border>
-        
+
         <!-- Page title -->
         <Border Grid.Row="1"
                 Background="{StaticResource AppHeaderBackgroundBrush}">
             <TextBlock Text="{Binding Resources.TagFilterViewTitle, Source={StaticResource Strings}}"
                        Style="{StaticResource AppTextTitleStyle}" />
         </Border>
-        
+
         <!-- Filters -->
         <ItemsControl Grid.Row="2"
                       ItemsSource="{Binding Tags}"

@@ -29,11 +29,6 @@
             <!-- Converters -->
             <my:MealPriceConverter x:Key="MealToPrice"
                                    Settings="{Binding Settings}" />
-            
-            <!-- Simple button template with only a content -->
-            <ControlTemplate x:Key="SimpleButtonTemplate">
-                <ContentPresenter />
-            </ControlTemplate>
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealItemTemplate">
@@ -63,7 +58,7 @@
                                    TextWrapping="Wrap"
                                    TextAlignment="Center"
                                    Style="{StaticResource PhoneTextNormalStyle}"
-                                   Margin="0,4,0,0" />
+                                   Margin="0" />
 
                         <!-- Half-portion price -->
                         <StackPanel Grid.Row="2"
@@ -77,7 +72,7 @@
                             <TextBlock Text="{Binding HalfPortionPrice, Converter={StaticResource PriceToString}}"
                                        Style="{StaticResource PhoneTextSubtleStyle}"
                                        TextAlignment="Center"
-                                       Margin="0,-6,0,0" />
+                                       Margin="0,-4,0,0" />
                         </StackPanel>
                     </Grid>
 
@@ -100,7 +95,7 @@
                                    Text="{Binding Description}"
                                    TextWrapping="Wrap"
                                    Style="{StaticResource PhoneTextSubtleStyle}"
-                                   Margin="10,4,0,4" />
+                                   Margin="10,6" />
 
                         <!-- Rating & vote button -->
                         <StackPanel Grid.Row="2"
@@ -113,15 +108,16 @@
                             
                             <TextBlock Text="-"
                                        Style="{StaticResource PhoneTextSubtleStyle}"
-                                       Margin="-6,0,6,0" />
+                                       Margin="-6,0,0,0" />
                             
-                            <Button Template="{StaticResource SimpleButtonTemplate}"
+                            <Button Style="{StaticResource SimpleButtonStyle}"
                                     Content="{Binding Resources.RateMealButton, Source={StaticResource Strings}}"
                                     Foreground="{StaticResource AppAccentBrush}"
                                     FontSize="{StaticResource PhoneFontSizeNormal}"
                                     Opacity="0.75"
                                     Command="{Binding DataContext.RateMealCommand, ElementName=LayoutRoot}"
-                                    CommandParameter="{Binding}" />
+                                    CommandParameter="{Binding}"
+                                    Padding="6,0" />
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -146,7 +142,7 @@
                     <!-- Rating -->
                     <myControls:RatingDisplay Grid.Row="1"
                                               Rating="{Binding Restaurant.Rating}"
-                                              Margin="-12,-6,0,0"
+                                              Margin="-12,-4,0,0"
                                               Foreground="{StaticResource PhoneSubtleBrush}" 
                                               FontSize="{StaticResource PhoneFontSizeSmall}"
                                               Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}" />

@@ -139,10 +139,7 @@
                 Margin="0,65,0,0"
                 Visibility="{Binding AnyCourses, Converter={StaticResource BoolToOppositeVisibility}}">
             <TextBlock Text="{Binding Resources.NoCourses, Source={StaticResource Strings}}"
-                       Style="{StaticResource PhoneTextTitle2Style}"
-                       TextWrapping="Wrap"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center" />
+                       Style="{StaticResource AppTextCenterStyle}" />
         </Border>
 
         <!-- Loading & error -->

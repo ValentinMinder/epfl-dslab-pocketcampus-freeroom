@@ -55,7 +55,7 @@
                    Text="{Binding Meal.Name}"
                    TextWrapping="Wrap"
                    Style="{StaticResource PhoneTextTitle2Style}"
-                   Margin="24,4,24,2" />
+                   Margin="24,10,24,0" />
 
         <!-- Restaurant name -->
         <TextBlock Grid.Row="4"
@@ -68,17 +68,13 @@
         <!-- Rating -->
         <myControls:RatingPicker Grid.Row="5"
                                  Value="{Binding Rating, Mode=TwoWay}"
-                                 Margin="12,-8,12,0" />
+                                 Margin="12,0" />
 
         <!-- Status -->
         <TextBlock Grid.Row="6"
                    Text="{Binding Status, Converter={StaticResource EnumToString}}"
-                   VerticalAlignment="Center"
-                   TextAlignment="Center"
-                   TextWrapping="Wrap"
-                   Style="{StaticResource PhoneTextLargeStyle}"
-                   Foreground="{StaticResource AppAccentBrush}"
-                   Margin="24,0,24,-16" />
+                   Style="{StaticResource AppTextCenterStyle}"
+                   Foreground="{StaticResource AppAccentBrush}" />
 
         <!-- Loading and error -->
         <comControls:LoadingAndError Grid.Row="6" />

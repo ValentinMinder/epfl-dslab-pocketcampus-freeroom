@@ -17,14 +17,9 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Simple button template with only a content -->
-            <ControlTemplate x:Key="SimpleButtonTemplate">
-                <ContentPresenter />
-            </ControlTemplate>
-
             <!-- Template for child pools -->
             <DataTemplate x:Key="ItemPoolTemplate">
-                <Button Template="{StaticResource SimpleButtonTemplate}"
+                <Button Style="{StaticResource SimpleButtonStyle}"
                         Command="{Binding DataContext.ViewPoolCommand, ElementName=LayoutRoot}"
                         CommandParameter="{Binding}">
                     <Grid>
@@ -70,31 +65,34 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
 
-            <!-- Name -->
-            <TextBlock Text="{Binding Item.Name}"
-                       TextWrapping="Wrap"
-                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                       FontSize="{StaticResource PhoneFontSizeMediumLarge}"
-                       Margin="24,6,6,0"
-                       Visibility="{Binding Item.HideName, Converter={StaticResource BoolToOppositeVisibility}}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <!-- Short details -->
-            <TextBlock Grid.Row="1"
-                       Text="{Binding Item.ShortDetails}"
-                       TextWrapping="Wrap"
-                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                       FontSize="{StaticResource PhoneFontSizeMedium}"
-                       Margin="24,0,6,0"
-                       Visibility="{Binding Item.ShortDetails, Converter={StaticResource StringToVisibility}}"/>
+                <!-- Name -->
+                <TextBlock Text="{Binding Item.Name}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                           FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                           Margin="24,6,6,0"
+                           Visibility="{Binding Item.HideName, Converter={StaticResource BoolToOppositeVisibility}}" />
+
+                <!-- Short details -->
+                <TextBlock Grid.Row="1"
+                           Text="{Binding Item.ShortDetails}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                           FontSize="{StaticResource PhoneFontSizeMedium}"
+                           Margin="24,0,6,0"
+                           Visibility="{Binding Item.ShortDetails, Converter={StaticResource StringToVisibility}}"/>
+            </Grid>
 
             <!-- Thumbnail -->
             <Image Grid.Column="1"
-                   Grid.RowSpan="2" Source="{Binding Item.PictureThumbnailUrl}"
+                   Source="{Binding Item.PictureThumbnailUrl}"
                    VerticalAlignment="Top"
                    Width="100"
                    Visibility="{Binding Item.HidePictureThumbnail, Converter={StaticResource BoolToOppositeVisibility}}"/>
@@ -191,7 +189,8 @@
                           Margin="5,10"
                           Visibility="{Binding CanBeFavorite, Converter={StaticResource BoolToVisibility}}">
                         <ToggleButton IsChecked="{Binding IsFavorite, Mode=TwoWay}"
-                                      Template="{StaticResource SimpleButtonTemplate}">
+                                      BorderThickness="0"
+                                      Background="Transparent">
                             <Image Source="/Assets/EmptyStar.png" />
                         </ToggleButton>
 
@@ -201,9 +200,9 @@
                     </Grid>
                 </Grid>
 
-                <!-- Large image-->
+                <!-- Large image -->
                 <Image Source="{Binding Item.PictureUrl}"
-                       Margin="24,2,24,0"
+                       Margin="24,0"
                        Visibility="{Binding Item.PictureUrl, Converter={StaticResource StringToVisibility}}"  />
 
                 <!-- Details, in HTML -->

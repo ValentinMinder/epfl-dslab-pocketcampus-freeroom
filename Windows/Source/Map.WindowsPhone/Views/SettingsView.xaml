@@ -46,6 +46,6 @@
         <CheckBox Grid.Row="2"
                   Content="{Binding Resources.UseGeolocation, Source={StaticResource Strings}}"
                   IsChecked="{Binding Settings.UseGeolocation, Mode=TwoWay}"
-                  Margin="12,32"/>
+                  Margin="12,10" />
     </Grid>
 </comControls:BasePage>

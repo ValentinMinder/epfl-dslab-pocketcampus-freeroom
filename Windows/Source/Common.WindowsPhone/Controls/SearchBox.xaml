@@ -24,11 +24,10 @@
 
         <Button Grid.Column="1"
                 Command="{Binding EndSearchCommand}"
+                Style="{StaticResource SimpleButtonStyle}"
                 Background="{StaticResource PhoneTextBoxBrush}"
-                Width="80"
-                BorderThickness="0"
-                Margin="-24,0,0,0"
-                Padding="0">
+                Margin="-12,12,12,12"
+                Padding="12,0">
             <TextBlock Text="{Binding SearchCommandSymbol}"
                        FontFamily="Segoe UI Symbol"
                        Style="{StaticResource AppTextSecondaryHeaderStyle}"

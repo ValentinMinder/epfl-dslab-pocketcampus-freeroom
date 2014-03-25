@@ -49,7 +49,7 @@
                 <ToggleButton IsChecked="{Binding Item2, Mode=TwoWay}"
                               Template="{StaticResource SimpleToggleButtonTemplate}">
                     <Grid Width="135"
-                          Margin="10,5,0,10">
+                          Margin="10,0,0,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -65,20 +65,9 @@
                                    Text="{Binding Item1, Converter={StaticResource EnumToString}}"
                                    HorizontalAlignment="Center"
                                    Style="{StaticResource PhoneTextNormalStyle}"
-                                   Margin="0,-16,0,0" />
+                                   Margin="0,-6,0,0" />
                     </Grid>
                 </ToggleButton>
-            </DataTemplate>
-
-            <!-- Restaurant template -->
-            <DataTemplate x:Key="RestaurantTemplate">
-                <CheckBox Grid.Column="1"
-                          Content="{Binding Item1, Converter={StaticResource EnumToString}}"
-                          IsChecked="{Binding Item2, Mode=TwoWay}"
-                          VerticalContentAlignment="Top"
-                          Margin="2,0,0,0"
-                          Padding="0,0,-100,0"
-                          Width="220" />
             </DataTemplate>
         </ResourceDictionary>
     </comControls:BasePage.Resources>
@@ -131,7 +120,7 @@
         <!-- Maximum budget picker -->
         <StackPanel Grid.Row="3"
                     Orientation="Horizontal"
-                    Margin="10,-2,10,0">
+                    Margin="10,0">
             <TextBlock Text="{Binding Resources.MaximumBudget, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextLargeStyle}"
                        FontSize="{Binding FontSize, ElementName=MaximumBudgetBox}"
@@ -151,7 +140,7 @@
         <TextBlock Grid.Row="4"
                    Text="{Binding Resources.MealTypeFilterExplanation, Source={StaticResource Strings}}"
                    Style="{StaticResource PhoneTextSmallStyle}"
-                   Margin="24,13,24,0" />
+                   Margin="24,12,24,0" />
 
         <!-- Meal type filters -->
         <ItemsControl Grid.Row="5"

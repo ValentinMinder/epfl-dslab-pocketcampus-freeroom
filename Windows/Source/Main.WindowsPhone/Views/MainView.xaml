@@ -28,20 +28,16 @@
                 <tool:WrapPanel Orientation="Horizontal" />
             </ItemsPanelTemplate>
 
-            <!-- Simple button template -->
-            <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
-                <ContentPresenter />
-            </ControlTemplate>
-
             <!-- Plugin template -->
             <DataTemplate x:Key="PluginTemplate">
-                <Button Template="{StaticResource SimpleButtonTemplate}"
+                <Button Style="{StaticResource SimpleButtonStyle}"
                         Command="{Binding DataContext.OpenPluginCommand, ElementName=LayoutRoot}"
                         CommandParameter="{Binding}"
+                        Background="{StaticResource AppTileBrush}"
                         Margin="12,0,0,12"
                         Width="136"
                         Height="136">
-                    <Grid Background="{StaticResource AppTileBrush}">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition Height="Auto" />

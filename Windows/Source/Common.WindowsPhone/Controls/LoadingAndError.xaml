@@ -23,10 +23,7 @@
             </Grid.RowDefinitions>
             <!-- Text -->
             <TextBlock Text="{Binding Resources.Loading, Source={StaticResource Strings}}"
-                       Style="{StaticResource PhoneTextLargeStyle}"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center"
-                       HorizontalAlignment="Center"
+                       Style="{StaticResource AppTextCenterStyle}"
                        VerticalAlignment="Bottom" />
 
             <!-- Progress bar -->
@@ -40,11 +37,7 @@
                 Background="{StaticResource PhoneBackgroundBrush}">
             <!-- Text -->
             <TextBlock Text="{Binding Resources.Error, Source={StaticResource Strings}}"
-                       Style="{StaticResource PhoneTextLargeStyle}"
-                       TextAlignment="Center"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       TextWrapping="Wrap" />
+                       Style="{StaticResource AppTextCenterStyle}" />
         </Border>
 
         <!-- Network error message -->
@@ -52,11 +45,7 @@
                 Background="{StaticResource PhoneBackgroundBrush}">
             <!-- Text -->
             <TextBlock Text="{Binding Resources.NetworkError, Source={StaticResource Strings}}"
-                       Style="{StaticResource PhoneTextLargeStyle}"
-                       TextAlignment="Center"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       TextWrapping="Wrap" />
+                       Style="{StaticResource AppTextCenterStyle}" />
         </Border>
     </Grid>
 </UserControl>
