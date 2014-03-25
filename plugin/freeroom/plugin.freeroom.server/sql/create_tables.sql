@@ -1,8 +1,21 @@
 CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	`uid` char(255) NOT NULL,
 	`doorCode` char(255) NOT NULL,
+	`doorCodeWithoutSpace` char(255) NOT NULL,
 	`capacity` int(11),
-	`type` char(255),
+	`site_label` char(255),
+	`surface` double,
+	`building_name` char(255),
+	`zone` char(255),
+	`unitlabel` char(255),
+	`site_id` int(11),
+	`floor` int(11),
+	`unitname` char(255),
+	`site_name` char(255),
+	`unitid` int(11),
+	`building_label` char(255),
+	`cf` char(255),
+	`adminuse` char(255),
 	PRIMARY KEY (`uid`)
 ) CHARSET=latin1;
 
