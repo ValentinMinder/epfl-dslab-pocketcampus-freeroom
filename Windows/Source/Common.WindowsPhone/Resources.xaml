@@ -9,7 +9,7 @@
                     xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone">
     <!-- Colors -->
     <Color x:Key="AppAccentColor">#A80507</Color>
-    <Color x:Key="AppTileColor">#E50612</Color>
+    <Color x:Key="AppTileColor">#E5060A</Color>
     <Color x:Key="AppHeaderBackgroundColor">#E5060A</Color>
     <!-- This color cannot be white (#FFFFFFFF), see http://msdn.microsoft.com/en-us/library/microsoft.phone.shell.systemtray.foregroundcolor.aspx -->
     <Color x:Key="AppHeaderForegroundColor">#FEFFFFFF</Color>
