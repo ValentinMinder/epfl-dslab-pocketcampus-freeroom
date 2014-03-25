@@ -64,8 +64,9 @@
 
                 <!-- Image -->
                 <Image Source="{Binding ItemContent.ImageUrl, Converter={StaticResource ImageDisplay}}"
-                       Stretch="None"
-                       Margin="0,0,0,10" />
+                       Width="480"
+                       MaxHeight="300"
+                       Stretch="Uniform" />
 
                 <!-- Content -->
                 <comControls:HtmlTextBlock Html="{Binding ItemContent.Content}"
