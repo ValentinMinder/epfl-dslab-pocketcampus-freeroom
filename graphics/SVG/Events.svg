@@ -7,17 +7,10 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   id="svg4435"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
    width="100"
    height="100"
-   sodipodi:docname="Events.svg"
-   inkscape:export-filename="X:\Pics\Events.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   id="svg4435">
   <metadata
      id="metadata4441">
     <rdf:RDF>
@@ -26,46 +19,17 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
      id="defs4439" />
-  <sodipodi:namedview
-     pagecolor="#000000"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10000"
-     guidetolerance="10"
-     inkscape:pageopacity="1"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     id="namedview4437"
-     showgrid="true"
-     inkscape:zoom="2"
-     inkscape:cx="-99.95464"
-     inkscape:cy="43.395995"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer3"
-     fit-margin-top="0"
-     fit-margin-left="4"
-     fit-margin-right="4"
-     fit-margin-bottom="0"
-     inkscape:showpageshadow="false" />
   <g
-     inkscape:groupmode="layer"
-     id="layer3"
-     inkscape:label="SVG">
+     id="layer3">
     <path
-       style="fill:#ffffff;fill-opacity:1;stroke:none"
        d="m 68,0 0,12 -36,0 0,-12 -8,0 0,12 c 0,0 -15,0 -17,0 -3,0 -3,0 -3,3 0,3 0,9 0,9 l 92,0 0,-9 c 0,-3 0,-3 -3,-3 -4,0 -17,0 -17,0 L 76,0 z M 4,97 c 0,3 0,3 3,3 5,0 77,0 86,0 3,0 3,0 3,-3 0,-23 0,-69 0,-69 L 4,28 c 0,23 0,48 0,69 z m 8,-61 16,0 0,16 -16,0 z m 36,0 0,16 -16,0 0,-16 z m 4,0 16,0 0,16 -16,0 z m 20,0 16,0 0,16 -16,0 z m -60,20 16,0 0,16 -16,0 z m 20,0 16,0 0,16 -16,0 z m 20,0 16,0 0,16 -16,0 z m 20,0 16,0 0,16 -16,0 z m -60,20 16,0 0,16 -16,0 z m 20,0 16,0 0,16 -16,0 z m 20,0 16,0 0,16 -16,0 z m 20,0 16,0 0,16 -16,0 z"
        id="rect4456"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" />
+       style="fill:#ffffff;fill-opacity:1;stroke:none" />
   </g>
 </svg>
