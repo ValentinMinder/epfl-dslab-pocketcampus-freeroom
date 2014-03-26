@@ -7,7 +7,9 @@ enum StudyPeriodType {
 	LECTURE,
 	EXERCISES,
 	LAB,
-	PROJECT
+	PROJECT,
+  ORAL_EXAM,
+  WRITTEN_EXAM
 }
 
 struct StudyPeriod {
