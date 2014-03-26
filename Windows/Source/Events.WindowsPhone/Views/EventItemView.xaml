@@ -148,6 +148,7 @@
                         
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Item.Location}"
+                                   TextWrapping="Wrap"
                                    Style="{StaticResource PhoneTextNormalStyle}"
                                    Margin="6,0,0,0"
                                    Visibility="{Binding Item.LocationUrl, Converter={StaticResource EmptyStringToVisibility}}" />
@@ -156,11 +157,11 @@
                                          Content="{Binding Item.Location}"
                                          Command="{Binding OpenLinkCommand}"
                                          CommandParameter="{Binding Item.LocationUrl}"
+                                         Style="{StaticResource HyperlinkButtonWrappedStyle}"
                                          FontSize="{StaticResource PhoneFontSizeNormal}"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Center"
-                                         Margin="-6,5,12,0"
-                                         Visibility="{Binding Item.LocationUrl, Converter={StaticResource StringToVisibility}}"  />
+                                         HorizontalContentAlignment="Left"
+                                         Margin="-6,5,0,0"
+                                         Visibility="{Binding Item.LocationUrl, Converter={StaticResource StringToVisibility}}" />
                     </Grid>
 
                     <!-- Speaker -->
@@ -206,7 +207,7 @@
                        Visibility="{Binding Item.PictureUrl, Converter={StaticResource StringToVisibility}}"  />
 
                 <!-- Details, in HTML -->
-                <comControls:HtmlTextBlock Html="{Binding Item.Details}"
+                <comControls:HtmlTextBlock Html="{Binding Item.Details, StringFormat='&lt;div&gt;&lt;div&gt;{0}&lt;/div&gt;&lt;/div&gt;'}"
                                            Margin="12,44,12,0" />
 
                 <!-- "More details" button -->

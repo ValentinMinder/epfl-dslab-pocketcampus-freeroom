@@ -44,7 +44,7 @@ namespace PocketCampus.Common.Controls
             CleanNodes( root );
 
             var panel = new StackPanel();
-            foreach ( var box in root.ChildNodes.Select( ToBox ) )
+            foreach ( var box in root.ChildNodes.SelectMany( node => node.ChildNodes ).Select( ToBox ) )
             {
                 panel.Children.Add( box );
             }
@@ -97,7 +97,7 @@ namespace PocketCampus.Common.Controls
             {
                 Blocks = { new Paragraph { Inlines = { ToInline( node ) } } },
                 IsReadOnly = true,
-                Margin = new Thickness( 0, 0, 0, 10 )
+                Margin = new Thickness( 0, 5, 0, 5 )
             };
         }
 
@@ -238,7 +238,7 @@ namespace PocketCampus.Common.Controls
                     return container;
             }
 
-            return new Run { Text = node.InnerText };
+            return new Run { Text = node.PreviousSibling == null ? node.InnerText.TrimStart() : node.InnerText };
         }
     }
 }
