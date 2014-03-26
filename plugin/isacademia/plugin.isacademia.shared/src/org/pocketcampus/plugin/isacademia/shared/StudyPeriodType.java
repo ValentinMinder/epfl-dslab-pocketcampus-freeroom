@@ -14,7 +14,9 @@ public enum StudyPeriodType implements org.apache.thrift.TEnum {
   LECTURE(0),
   EXERCISES(1),
   LAB(2),
-  PROJECT(3);
+  PROJECT(3),
+  ORAL_EXAM(4),
+  WRITTEN_EXAM(5);
 
   private final int value;
 
@@ -43,6 +45,10 @@ public enum StudyPeriodType implements org.apache.thrift.TEnum {
         return LAB;
       case 3:
         return PROJECT;
+      case 4:
+        return ORAL_EXAM;
+      case 5:
+        return WRITTEN_EXAM;
       default:
         return null;
     }

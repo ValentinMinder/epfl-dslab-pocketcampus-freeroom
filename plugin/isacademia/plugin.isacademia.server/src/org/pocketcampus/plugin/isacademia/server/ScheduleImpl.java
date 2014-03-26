@@ -43,6 +43,8 @@ public final class ScheduleImpl implements Schedule {
 	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm").withZone(ISA_TIME_ZONE);
 
 	// The various element and attribute names in IS-Academia's XML.
+	private static final String STATUS_ATTRIBUTE = "status";
+	private static final String STATUS_OK_VALUE = "Terminé";
 	private static final String STUDY_PERIOD_TAG = "study-period";
 	private static final String DATE_ELEMENT = "date";
 	private static final String START_TIME_ELEMENT = "startTime";
@@ -88,6 +90,10 @@ public final class ScheduleImpl implements Schedule {
 			rootElem = XElement.parse(xml);
 		} catch (Exception e) {
 			return new ScheduleResponse(IsaStatusCode.NETWORK_ERROR);
+		}
+
+		if (!STATUS_OK_VALUE.equals(rootElem.attribute(STATUS_ATTRIBUTE))) {
+			return new ScheduleResponse(IsaStatusCode.ISA_ERROR);
 		}
 
 		List<StudyPeriod> periods = new ArrayList<StudyPeriod>();
