@@ -12,7 +12,7 @@ namespace PocketCampus.Main.Services
     /// <summary>
     /// Logs navigations with Google Analytics.
     /// </summary>
-    public sealed class GoogleAnalyticsNavigationLogger : NavigationLogger
+    public sealed class GoogleAnalyticsLogger : Logger
     {
         private const string EventCategory = "UserAction";
 

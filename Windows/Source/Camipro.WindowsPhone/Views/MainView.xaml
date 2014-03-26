@@ -33,7 +33,7 @@
         <DataTemplate x:Key="TransactionTemplate">
             <!-- Double-grid system to ensure the transaction description takes as much space as possible
                  instead of being cut off by the dates -->
-            <Grid Margin="0,6"
+            <Grid Margin="0,12"
                   Height="60">
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -49,15 +49,13 @@
                     <!-- Description -->
                     <TextBlock Text="{Binding Place}"
                                TextTrimming="WordEllipsis"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               VerticalAlignment="Bottom" />
+                               Style="{StaticResource PhoneTextNormalStyle}" />
 
                     <!-- Amount -->
                     <TextBlock Grid.Column="1"
                                Text="{Binding Amount, StringFormat='{}{0:0.00} CHF'}"
                                Style="{StaticResource PhoneTextNormalStyle}"
-                               Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}" 
-                               VerticalAlignment="Bottom" />
+                               Foreground="{Binding Amount, Converter={StaticResource MoneyToBrush}}"  />
                 </Grid>
 
                 <Grid Grid.Row="1"

@@ -45,7 +45,7 @@
                         
                         <!-- Icon -->
                         <ContentControl Template="{Binding Converter={StaticResource PluginToIconTemplate}}"
-                                        Margin="20,10" />
+                                        Margin="20,10,20,5" />
                         
                         <!-- Text-->
                         <TextBlock Grid.Row="1"

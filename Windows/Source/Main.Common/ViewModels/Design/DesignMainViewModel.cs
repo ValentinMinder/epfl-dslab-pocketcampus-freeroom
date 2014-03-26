@@ -49,7 +49,7 @@ namespace PocketCampus.Main.ViewModels.Design
             public DesignPlugin( string name )
             {
                 Id = Name = name;
-                IconKey = name + "Key";
+                IconKey = name + "Icon";
             }
 
             public void Initialize( INavigationService navigationService ) { }

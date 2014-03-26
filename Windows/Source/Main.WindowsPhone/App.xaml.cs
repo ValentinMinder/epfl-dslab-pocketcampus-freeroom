@@ -86,7 +86,7 @@ namespace PocketCampus.Main
             var pluginLoader = Container.Bind<IPluginLoader, PluginLoader>();
 
             // Single-purpose services with no dependencies
-            Container.Bind<NavigationLogger, GoogleAnalyticsNavigationLogger>();
+            Container.Bind<Logger, GoogleAnalyticsLogger>();
             Container.Bind<IBrowserService, BrowserService>();
             Container.Bind<IEmailService, EmailService>();
             Container.Bind<IPhoneService, PhoneService>();
