@@ -158,11 +158,6 @@
                     </tool:ContextMenuService.ContextMenu>
                 </Grid>
             </DataTemplate>
-            
-            <!-- HACK: Empty footer with a certain height to add margin -->
-            <DataTemplate x:Key="MarginFooterTemplate">
-                <Rectangle Height="20" />
-            </DataTemplate>
 
             <!-- Restaurant menu item template (for the LongListSelector's jump list) -->
             <DataTemplate x:Key="RestaurantJumpListItemTemplate">
@@ -210,7 +205,7 @@
                 Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
             <myControls:DayPicker Value="{Binding MealDate, Mode=TwoWay}"
                                   TextStyle="{StaticResource AppTextSecondaryHeaderStyle}"
-                                  Margin="10,0" />
+                                  Margin="10,0" Height="55" />
         </Border>
 
         <!-- Meal list -->
@@ -219,7 +214,7 @@
                                 ItemTemplate="{StaticResource MealItemTemplate}"
                                 IsGroupingEnabled="True"
                                 GroupHeaderTemplate="{StaticResource RestaurantHeaderTemplate}"
-                                GroupFooterTemplate="{StaticResource MarginFooterTemplate}"
+                                GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
                                 JumpListStyle="{StaticResource JumpListStyle}" />
 
         <!-- "No filter results" text -->

@@ -17,10 +17,12 @@
         <!-- "Previous" button -->
         <Button Command="{Binding PreviousCommand}"
                 BorderThickness="0"
-                Padding="12,0">
+                Margin="0,-6"
+                Padding="12,6">
             <TextBlock Text="◀"
                        TextOptions.DisplayColorEmoji="False"
-                       Style="{Binding TextStyle}" />
+                       Style="{Binding TextStyle}"
+                       Margin="0" />
         </Button>
 
         <!-- Current day -->
@@ -33,10 +35,12 @@
         <Button Grid.Column="2"
                 Command="{Binding NextCommand}"
                 BorderThickness="0"
-                Padding="12,0">
+                Margin="0,-6"
+                Padding="12,6">
             <TextBlock Text="▶"
                        TextOptions.DisplayColorEmoji="False"
-                       Style="{Binding TextStyle}" />
+                       Style="{Binding TextStyle}"
+                       Margin="0" />
         </Button>
     </Grid>
 </comControls:ObservableControl>

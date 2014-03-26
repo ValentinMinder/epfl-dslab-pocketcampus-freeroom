@@ -87,6 +87,7 @@
 
     <Style x:Key="SimpleButtonStyle" TargetType="Button">
         <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -165,6 +166,11 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Spacer template for group footers -->
+    <DataTemplate x:Key="SpacerFooterTemplate">
+        <Rectangle Height="30" />
+    </DataTemplate>
 
     <!-- Converters -->
     <com:GeoLocationStatusToErrorBooleanConverter x:Key="LocationStatusToError" />

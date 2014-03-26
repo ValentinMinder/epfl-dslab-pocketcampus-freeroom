@@ -99,12 +99,6 @@
                 </Border>
             </DataTemplate>
 
-            <!-- Item group footer template (just a margin) -->
-            <DataTemplate x:Key="EventItemGroupFooterTemplate">
-                <Rectangle Height="60" 
-                           Width="0" />
-            </DataTemplate>
-
             <!-- Item group item template (for the LongListSelector's jump list) -->
             <DataTemplate x:Key="EventItemGroupJumpListItemTemplate">
                 <TextBlock Text="{Binding CategoryName}"
@@ -148,7 +142,7 @@
                                 ItemTemplate="{StaticResource EventItemTemplate}"
                                 IsGroupingEnabled="True"
                                 GroupHeaderTemplate="{StaticResource EventItemGroupHeaderTemplate}"
-                                GroupFooterTemplate="{StaticResource EventItemGroupFooterTemplate}"
+                                GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
                                 JumpListStyle="{StaticResource EventItemGroupJumpListStyle}"
                                 Margin="0,0,-13,0" />
         

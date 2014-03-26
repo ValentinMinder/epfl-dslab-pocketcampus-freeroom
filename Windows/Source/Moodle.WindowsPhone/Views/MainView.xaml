@@ -96,11 +96,6 @@
             <Setter Property="ItemTemplate" Value="{StaticResource SectionJumpListItemTemplate}" />
         </Style>
 
-        <!-- Footer template for margin after groups -->
-        <DataTemplate x:Name="SpacerFooterTemplate">
-            <Rectangle Height="30" />
-        </DataTemplate>
-
         <!-- Course template -->
         <DataTemplate x:Key="CourseTemplate">
             <phone:LongListSelector ItemsSource="{Binding Sections, Converter={StaticResource SectionsToGroups}}"

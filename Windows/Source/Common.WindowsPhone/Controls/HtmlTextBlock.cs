@@ -97,7 +97,7 @@ namespace PocketCampus.Common.Controls
             {
                 Blocks = { new Paragraph { Inlines = { ToInline( node ) } } },
                 IsReadOnly = true,
-                Margin = new Thickness( 0, 5, 0, 5 )
+                Margin = new Thickness( 0, 5, 0, 0 )
             };
         }
 
@@ -190,7 +190,7 @@ namespace PocketCampus.Common.Controls
                 case "h1":
                     return new Run
                     {
-                        Text = node.InnerText,
+                        Text = node.InnerText + Environment.NewLine,
                         FontWeight = FontWeights.Bold,
                         FontSize = 32
                     };
@@ -198,7 +198,7 @@ namespace PocketCampus.Common.Controls
                 case "h2":
                     return new Run
                     {
-                        Text = node.InnerText,
+                        Text = node.InnerText + Environment.NewLine,
                         FontWeight = FontWeights.SemiBold,
                         FontSize = 24
                     };
@@ -206,7 +206,7 @@ namespace PocketCampus.Common.Controls
                 case "h3":
                     return new Run
                     {
-                        Text = node.InnerText,
+                        Text = node.InnerText + Environment.NewLine,
                         FontWeight = FontWeights.SemiBold,
                         FontSize = 19
                     };
@@ -214,7 +214,7 @@ namespace PocketCampus.Common.Controls
                 case "h4":
                     return new Run
                     {
-                        Text = node.InnerText,
+                        Text = node.InnerText + Environment.NewLine,
                         FontWeight = FontWeights.Medium,
                         FontSize = 17
                     };
@@ -222,7 +222,7 @@ namespace PocketCampus.Common.Controls
                 case "h5":
                     return new Run
                     {
-                        Text = node.InnerText,
+                        Text = node.InnerText + Environment.NewLine,
                         FontWeight = FontWeights.Medium,
                         FontSize = 16
                     };
@@ -235,6 +235,8 @@ namespace PocketCampus.Common.Controls
                     {
                         container.Inlines.Add( ToInline( child ) );
                     }
+                    container.Inlines.Add( new LineBreak() );
+                    container.Inlines.Add( new LineBreak() );
                     return container;
             }
 

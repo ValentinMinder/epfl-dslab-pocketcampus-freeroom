@@ -35,7 +35,8 @@
         </Grid.RowDefinitions>
 
         <!-- Page header -->
-        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}"
+                Visibility="{Binding ItemContent, Converter={StaticResource NonNullToVisibility}}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Resources.FeedItemViewTitle, Source={StaticResource Strings}}"
                            Style="{StaticResource AppTextTitle2Style}"
