@@ -7,7 +7,10 @@
 "Exercises" = "Exercise session";
 "Lab" = "Lab";
 "Project" = "Project";
+"OralExam" = "Oral exam";
+"WrittenExam" = "Written exam";
 "IsAcademiaServerUnreachableTryLater" = "IS-Academia seems to be down.\nPlease try again later.";
+"IsAcademiaServerProblemTryLater" = "IS-Academia seems to have a problem right now.\nPlease try again later.";
 "NoCourseOnThatDay" = "No course on that day";
 "NoCourseToday" = "No course today";
 

@@ -7,7 +7,10 @@
 "Exercises" = "Session d'exercices";
 "Lab" = "Labo";
 "Project" = "Projet";
+"OralExam" = "Examen oral";
+"WrittenExam" = "Examen écrit";
 "IsAcademiaServerUnreachableTryLater" = "IS-Academia semble inaccessible.\nMerci de réessayer plus tard.";
+"IsAcademiaServerProblemTryLater" = "IS-Academia semble avoir un problème actuellement.\nMerci de réessayer plus tard.";
 "NoCourseOnThatDay" = "Aucun cours ce jour-là";
 "NoCourseToday" = "Aucun cours aujourd'hui";
 

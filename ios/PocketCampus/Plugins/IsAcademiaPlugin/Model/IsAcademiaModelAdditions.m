@@ -102,6 +102,10 @@
             return NSLocalizedStringFromTable(@"Lab", @"IsAcademiaPlugin", nil);
         case StudyPeriodType_PROJECT:
             return NSLocalizedStringFromTable(@"Project", @"IsAcademiaPlugin", nil);
+        case StudyPeriodType_ORAL_EXAM:
+            return NSLocalizedStringFromTable(@"OralExam", @"IsAcademiaPlugin", nil);
+        case StudyPeriodType_WRITTEN_EXAM:
+            return NSLocalizedStringFromTable(@"WrittenExam", @"IsAcademiaPlugin", nil);
         default:
             return @"";
     }

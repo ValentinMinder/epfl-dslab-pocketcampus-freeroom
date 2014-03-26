@@ -215,6 +215,13 @@
             [self.messageHUD show:NO];
             break;
         }
+        case IsaStatusCode_ISA_ERROR:
+        {
+            self.messageHUD.labelText = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
+            self.messageHUD.detailsLabelText = NSLocalizedStringFromTable(@"IsAcademiaServerProblemTryLater", @"IsAcademiaPlugin", nil);
+            [self.messageHUD show:NO];
+            break;
+        }
         default:
             [self getScheduleFailedForRequest:request];
             break;
@@ -317,6 +324,7 @@
                 //period.name = @"dsfjhaiusdz fuaszdfipu atsodiuftaouzsdt f uzastdfo";
                 //period.endTime = period.startTime + 2700*1000;
                 //period.rooms = @[];
+                //period.periodType = StudyPeriodType_WRITTEN_EXAM;
                 view.studyPeriod = period;
                 [eventViews addObject:view];
             }

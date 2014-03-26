@@ -4723,11 +4723,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "417384158.91046"
+            timestampString = "417530417.481488"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "328"
-            endingLineNumber = "328"
+            startingLineNumber = "336"
+            endingLineNumber = "336"
             landmarkName = "@implementation IsAcademiaDayScheduleViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -4739,11 +4739,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "417384158.91046"
+            timestampString = "417530376.828559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "298"
-            endingLineNumber = "298"
+            startingLineNumber = "305"
+            endingLineNumber = "305"
             landmarkName = "-calendarDayTimelineView:eventsForDate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4771,11 +4771,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "417384158.91046"
+            timestampString = "417530376.828559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
             landmarkName = "-calendarDayTimelineView:eventsForDate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4787,11 +4787,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "417384158.91046"
+            timestampString = "417530376.828559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "307"
-            endingLineNumber = "307"
+            startingLineNumber = "314"
+            endingLineNumber = "314"
             landmarkName = "-calendarDayTimelineView:eventsForDate:"
             landmarkType = "5">
             <Locations>
@@ -4833,11 +4833,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "417384158.91046"
+            timestampString = "417530417.481488"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "326"
-            endingLineNumber = "326"
+            startingLineNumber = "334"
+            endingLineNumber = "334"
             landmarkName = "-calendarDayTimelineView:eventsForDate:"
             landmarkType = "5">
          </BreakpointContent>

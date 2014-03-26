@@ -124,6 +124,12 @@
         case StudyPeriodType_PROJECT:
             color = [UIColor colorWithWhite:0.3 alpha:1.0];
             break;
+        case StudyPeriodType_ORAL_EXAM:
+            color = [UIColor colorWithRed:0.349020 green:0.090196 blue:0.458824 alpha:1.0];
+            break;
+        case StudyPeriodType_WRITTEN_EXAM:
+            color = [UIColor colorWithRed:0.349020 green:0.090196 blue:0.458824 alpha:1.0];
+            break;
         default:
             color = [UIColor colorWithWhite:0.3 alpha:1.0];
             break;
@@ -145,6 +151,12 @@
             break;
         case StudyPeriodType_PROJECT:
             color = [UIColor colorWithWhite:0.6 alpha:alpha];
+            break;
+        case StudyPeriodType_ORAL_EXAM:
+            color = [UIColor colorWithRed:0.552941 green:0.086275 blue:0.729412 alpha:alpha];
+            break;
+        case StudyPeriodType_WRITTEN_EXAM:
+            color = [UIColor colorWithRed:0.552941 green:0.086275 blue:0.729412 alpha:alpha];
             break;
         default:
             color = [UIColor colorWithWhite:0.6 alpha:alpha];

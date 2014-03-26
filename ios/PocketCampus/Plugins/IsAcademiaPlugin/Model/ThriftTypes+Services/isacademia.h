@@ -16,7 +16,9 @@ enum StudyPeriodType {
   StudyPeriodType_LECTURE = 0,
   StudyPeriodType_EXERCISES = 1,
   StudyPeriodType_LAB = 2,
-  StudyPeriodType_PROJECT = 3
+  StudyPeriodType_PROJECT = 3,
+  StudyPeriodType_ORAL_EXAM = 4,
+  StudyPeriodType_WRITTEN_EXAM = 5
 };
 
 enum IsaStatusCode {
