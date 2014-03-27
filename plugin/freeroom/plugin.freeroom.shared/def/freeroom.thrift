@@ -14,6 +14,7 @@ struct FRRoom{
 	2: required string uid;
 	3: optional FRRoomType type;
 	4: optional i32 capacity;
+	31: optional string EWAid;
 }
 
 

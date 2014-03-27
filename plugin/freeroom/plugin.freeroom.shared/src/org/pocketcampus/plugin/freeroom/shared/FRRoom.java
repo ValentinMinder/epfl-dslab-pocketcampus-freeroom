@@ -28,11 +28,13 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
   private static final org.apache.thrift.protocol.TField UID_FIELD_DESC = new org.apache.thrift.protocol.TField("uid", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("type", org.apache.thrift.protocol.TType.I32, (short)3);
   private static final org.apache.thrift.protocol.TField CAPACITY_FIELD_DESC = new org.apache.thrift.protocol.TField("capacity", org.apache.thrift.protocol.TType.I32, (short)4);
+  private static final org.apache.thrift.protocol.TField EWAID_FIELD_DESC = new org.apache.thrift.protocol.TField("EWAid", org.apache.thrift.protocol.TType.STRING, (short)31);
 
   private String doorCode; // required
   private String uid; // required
   private FRRoomType type; // required
   private int capacity; // required
+  private String EWAid; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -43,7 +45,8 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
      * @see FRRoomType
      */
     TYPE((short)3, "type"),
-    CAPACITY((short)4, "capacity");
+    CAPACITY((short)4, "capacity"),
+    EWAID((short)31, "EWAid");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -66,6 +69,8 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
           return TYPE;
         case 4: // CAPACITY
           return CAPACITY;
+        case 31: // EWAID
+          return EWAID;
         default:
           return null;
       }
@@ -120,6 +125,8 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRRoomType.class)));
     tmpMap.put(_Fields.CAPACITY, new org.apache.thrift.meta_data.FieldMetaData("capacity", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.EWAID, new org.apache.thrift.meta_data.FieldMetaData("EWAid", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRRoom.class, metaDataMap);
   }
@@ -152,6 +159,9 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       this.type = other.type;
     }
     this.capacity = other.capacity;
+    if (other.isSetEWAid()) {
+      this.EWAid = other.EWAid;
+    }
   }
 
   public FRRoom deepCopy() {
@@ -165,6 +175,7 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     this.type = null;
     setCapacityIsSet(false);
     this.capacity = 0;
+    this.EWAid = null;
   }
 
   public String getDoorCode() {
@@ -270,6 +281,30 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     __isset_bit_vector.set(__CAPACITY_ISSET_ID, value);
   }
 
+  public String getEWAid() {
+    return this.EWAid;
+  }
+
+  public FRRoom setEWAid(String EWAid) {
+    this.EWAid = EWAid;
+    return this;
+  }
+
+  public void unsetEWAid() {
+    this.EWAid = null;
+  }
+
+  /** Returns true if field EWAid is set (has been assigned a value) and false otherwise */
+  public boolean isSetEWAid() {
+    return this.EWAid != null;
+  }
+
+  public void setEWAidIsSet(boolean value) {
+    if (!value) {
+      this.EWAid = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case DOOR_CODE:
@@ -304,6 +339,14 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       }
       break;
 
+    case EWAID:
+      if (value == null) {
+        unsetEWAid();
+      } else {
+        setEWAid((String)value);
+      }
+      break;
+
     }
   }
 
@@ -320,6 +363,9 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
 
     case CAPACITY:
       return Integer.valueOf(getCapacity());
+
+    case EWAID:
+      return getEWAid();
 
     }
     throw new IllegalStateException();
@@ -340,6 +386,8 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       return isSetType();
     case CAPACITY:
       return isSetCapacity();
+    case EWAID:
+      return isSetEWAid();
     }
     throw new IllegalStateException();
   }
@@ -393,6 +441,15 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         return false;
     }
 
+    boolean this_present_EWAid = true && this.isSetEWAid();
+    boolean that_present_EWAid = true && that.isSetEWAid();
+    if (this_present_EWAid || that_present_EWAid) {
+      if (!(this_present_EWAid && that_present_EWAid))
+        return false;
+      if (!this.EWAid.equals(that.EWAid))
+        return false;
+    }
+
     return true;
   }
 
@@ -419,6 +476,11 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     builder.append(present_capacity);
     if (present_capacity)
       builder.append(capacity);
+
+    boolean present_EWAid = true && (isSetEWAid());
+    builder.append(present_EWAid);
+    if (present_EWAid)
+      builder.append(EWAid);
 
     return builder.toHashCode();
   }
@@ -471,6 +533,16 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetEWAid()).compareTo(typedOther.isSetEWAid());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetEWAid()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.EWAid, typedOther.EWAid);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -517,6 +589,13 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 31: // EWAID
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.EWAid = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -553,6 +632,13 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       oprot.writeFieldBegin(CAPACITY_FIELD_DESC);
       oprot.writeI32(this.capacity);
       oprot.writeFieldEnd();
+    }
+    if (this.EWAid != null) {
+      if (isSetEWAid()) {
+        oprot.writeFieldBegin(EWAID_FIELD_DESC);
+        oprot.writeString(this.EWAid);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -592,6 +678,16 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       if (!first) sb.append(", ");
       sb.append("capacity:");
       sb.append(this.capacity);
+      first = false;
+    }
+    if (isSetEWAid()) {
+      if (!first) sb.append(", ");
+      sb.append("EWAid:");
+      if (this.EWAid == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.EWAid);
+      }
       first = false;
     }
     sb.append(")");
