@@ -39,6 +39,8 @@
 
 #import "isacademia.h"
 
+#import "IsAcademiaModelAdditions.h"
+
 @protocol IsAcademiaServiceDelegate;
 
 @interface IsAcademiaService : Service <ServiceProtocol>
@@ -47,7 +49,7 @@
 - (ScheduleResponse *) getSchedule: (ScheduleRequest *) req;  // throws TException
  */
 
-- (void)getScheduleWithRequest:(ScheduleRequest*)request delegate:(id<IsAcademiaServiceDelegate>)delegate;
+- (void)getScheduleWithRequest:(ScheduleRequest*)request skipCache:(BOOL)skipCache delegate:(id<IsAcademiaServiceDelegate>)delegate;
 
 @end
 

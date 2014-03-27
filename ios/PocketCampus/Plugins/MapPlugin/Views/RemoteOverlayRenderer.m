@@ -95,9 +95,18 @@
 
         RemoteOverlayRenderer* weakSelf __weak = self;
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, UIImage* responseImage) {
+            if (weakSelf.willBeDeallocated) {
+                return;
+            }
             if (responseImage) {
                 @synchronized (weakSelf) {
                     [weakSelf.tilesCache setObject:responseImage forKey:[weakSelf keyWithMapRect:mapRect andZoomScale:zoomScale]];
+                    if (weakSelf.willBeDeallocated) {
+                        return;
+                    }
+                }
+                if (weakSelf.willBeDeallocated) {
+                    return;
                 }
                 [weakSelf setNeedsDisplayInMapRect:mapRect zoomScale:zoomScale];
             }

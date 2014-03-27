@@ -78,6 +78,19 @@
     return [NSLocale preferredLanguages][0];
 }
 
++ (BOOL)userLocaleIs24Hour {
+    NSString* formatStringForHours = [NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]];
+    NSRange containsA = [formatStringForHours rangeOfString:@"a"];
+    BOOL hasAMPM = containsA.location != NSNotFound;
+    return !hasAMPM;
+}
+
++ (BOOL)systemIsOutsideEPFLTimeZone {
+    NSTimeZone* epflTimeZone = [NSTimeZone timeZoneWithName:@"Europe/Zurich"];
+    NSTimeZone* systemTimeZone = [NSTimeZone systemTimeZone];
+    return (epflTimeZone.secondsFromGMT != systemTimeZone.secondsFromGMT);
+}
+
 + (NSString*)lastUpdateNowString {
     static NSDateFormatter* dateFormatter = nil;
     static dispatch_once_t onceToken;

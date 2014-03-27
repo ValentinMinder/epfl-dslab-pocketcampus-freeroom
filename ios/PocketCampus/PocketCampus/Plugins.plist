@@ -50,6 +50,16 @@
 		</dict>
 		<dict>
 			<key>identifierName</key>
+			<string>IsAcademia</string>
+			<key>enabled</key>
+			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
+			<key>supportedIdioms</key>
+			<string>phone</string>
+		</dict>
+		<dict>
+			<key>identifierName</key>
 			<string>News</string>
 			<key>enabled</key>
 			<true/>
@@ -97,16 +107,6 @@
 			<false/>
 			<key>supportedIdioms</key>
 			<string>phone+pad</string>
-		</dict>
-		<dict>
-			<key>identifierName</key>
-			<string>IsAcademia</string>
-			<key>enabled</key>
-			<true/>
-			<key>hiddenByDefault</key>
-			<false/>
-			<key>supportedIdioms</key>
-			<string></string>
 		</dict>
 		<dict>
 			<key>identifierName</key>

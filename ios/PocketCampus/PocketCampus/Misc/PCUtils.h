@@ -43,6 +43,8 @@
 + (NSString*)uniqueDeviceIdentifier;
 + (NSString*)appVersion;
 + (NSString*)userLanguageCode;
++ (BOOL)userLocaleIs24Hour;
++ (BOOL)systemIsOutsideEPFLTimeZone;
 + (NSString*)lastUpdateNowString;
 + (UIEdgeInsets)edgeInsetsForViewController:(UIViewController*)viewController;
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration;

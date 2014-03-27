@@ -46,6 +46,7 @@ extern NSString* const PCGAITrackerActionReorder;
 extern NSString* const PCGAITrackerActionCopy;
 extern NSString* const PCGAITrackerActionHelp;
 extern NSString* const PCGAITrackerActionSearch;
+extern NSString* const PCGAITrackerActionRefresh;
 
 @interface PCGAITracker : NSObject
 

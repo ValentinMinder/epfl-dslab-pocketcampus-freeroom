@@ -60,6 +60,12 @@
 #define COCOAPODS_VERSION_MINOR_GoogleAnalytics_iOS_SDK 0
 #define COCOAPODS_VERSION_PATCH_GoogleAnalytics_iOS_SDK 3
 
+// MBProgressHUD
+#define COCOAPODS_POD_AVAILABLE_MBProgressHUD
+#define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
+#define COCOAPODS_VERSION_MINOR_MBProgressHUD 8
+#define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
+
 // NSTimer-Blocks
 #define COCOAPODS_POD_AVAILABLE_NSTimer_Blocks
 #define COCOAPODS_VERSION_MAJOR_NSTimer_Blocks 0
@@ -77,4 +83,10 @@
 #define COCOAPODS_VERSION_MAJOR_TUSafariActivity 1
 #define COCOAPODS_VERSION_MINOR_TUSafariActivity 0
 #define COCOAPODS_VERSION_PATCH_TUSafariActivity 0
+
+// TapkuLibrary
+#define COCOAPODS_POD_AVAILABLE_TapkuLibrary
+#define COCOAPODS_VERSION_MAJOR_TapkuLibrary 0
+#define COCOAPODS_VERSION_MINOR_TapkuLibrary 3
+#define COCOAPODS_VERSION_PATCH_TapkuLibrary 4
 

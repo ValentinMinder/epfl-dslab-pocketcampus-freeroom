@@ -49,6 +49,8 @@
 
 static NSString* kCellTextLabelTextStyle;
 
+static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
+
 @interface NewsListViewController ()<NewsServiceDelegate>
 
 @property (nonatomic, strong) NewsService* newsService;
@@ -57,8 +59,6 @@ static NSString* kCellTextLabelTextStyle;
 @property (nonatomic, strong) NewsItem* selectedItem;
 
 @end
-
-static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 @implementation NewsListViewController
 

@@ -60,10 +60,12 @@ static IsAcademiaService* instance __weak = nil;
 
 #pragma mark - Service methods
 
-- (void)getScheduleWithRequest:(ScheduleRequest*)request delegate:(id<IsAcademiaServiceDelegate>)delegate {
+- (void)getScheduleWithRequest:(ScheduleRequest*)request skipCache:(BOOL)skipCache delegate:(id<IsAcademiaServiceDelegate>)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[ScheduleRequest class]];
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.cacheValidityInterval = 1140.0;
+    operation.skipCache = skipCache;
+    operation.cacheValidityInterval = 1800.0; //30 min
+    operation.returnEvenStaleCacheIfNoInternetConnection = YES;
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* returnedValue) {
         ScheduleResponse* response = (__bridge id)returnedValue;

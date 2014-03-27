@@ -201,6 +201,9 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 - (void)refreshIfNeeded {
     if (self.lastRefreshTimestamp && abs([self.lastRefreshTimestamp timeIntervalSinceNow]) < kSchedulesValidy) {
         if (!(self.locationState == LocationStateErrorUserDenied && [PCUtils hasAppAccessToLocation])) {
+            //last refresh date is recent enough that we don't need to refresh
+            //AND
+            //it is NO the case that locationState is in user denied while app atually has access to location, in which case one should refresh
             return;
         }
     }
