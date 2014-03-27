@@ -12,9 +12,23 @@ enum FRRoomType{
 struct FRRoom{
 	1: required string doorCode;
 	2: required string uid;
-	3: optional FRRoomType type;
+	3: optional string doorCodeWithoutSpace
 	4: optional i32 capacity;
+	5: optional string site_label;
+	6: optional double surface;
+	7: optional string building_name;
+	8: optional string zone;
+	9: optional string unitlabel;
+	10: optional i32 site_id;
+	11: optional i32 floor;
+	12: optional string unitname;
+	13: optional string site_name
+	14: optional i32 unitid;
+	15: optional string building_label;
+	16: optional string cf;
+	17: optional string adminuse;
 	31: optional string EWAid;
+	32: optional FRRoomType type;
 }
 
 

@@ -26,27 +26,69 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
 
   private static final org.apache.thrift.protocol.TField DOOR_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("doorCode", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField UID_FIELD_DESC = new org.apache.thrift.protocol.TField("uid", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("type", org.apache.thrift.protocol.TType.I32, (short)3);
+  private static final org.apache.thrift.protocol.TField DOOR_CODE_WITHOUT_SPACE_FIELD_DESC = new org.apache.thrift.protocol.TField("doorCodeWithoutSpace", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField CAPACITY_FIELD_DESC = new org.apache.thrift.protocol.TField("capacity", org.apache.thrift.protocol.TType.I32, (short)4);
+  private static final org.apache.thrift.protocol.TField SITE_LABEL_FIELD_DESC = new org.apache.thrift.protocol.TField("site_label", org.apache.thrift.protocol.TType.STRING, (short)5);
+  private static final org.apache.thrift.protocol.TField SURFACE_FIELD_DESC = new org.apache.thrift.protocol.TField("surface", org.apache.thrift.protocol.TType.DOUBLE, (short)6);
+  private static final org.apache.thrift.protocol.TField BUILDING_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("building_name", org.apache.thrift.protocol.TType.STRING, (short)7);
+  private static final org.apache.thrift.protocol.TField ZONE_FIELD_DESC = new org.apache.thrift.protocol.TField("zone", org.apache.thrift.protocol.TType.STRING, (short)8);
+  private static final org.apache.thrift.protocol.TField UNITLABEL_FIELD_DESC = new org.apache.thrift.protocol.TField("unitlabel", org.apache.thrift.protocol.TType.STRING, (short)9);
+  private static final org.apache.thrift.protocol.TField SITE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("site_id", org.apache.thrift.protocol.TType.I32, (short)10);
+  private static final org.apache.thrift.protocol.TField FLOOR_FIELD_DESC = new org.apache.thrift.protocol.TField("floor", org.apache.thrift.protocol.TType.I32, (short)11);
+  private static final org.apache.thrift.protocol.TField UNITNAME_FIELD_DESC = new org.apache.thrift.protocol.TField("unitname", org.apache.thrift.protocol.TType.STRING, (short)12);
+  private static final org.apache.thrift.protocol.TField SITE_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("site_name", org.apache.thrift.protocol.TType.STRING, (short)13);
+  private static final org.apache.thrift.protocol.TField UNITID_FIELD_DESC = new org.apache.thrift.protocol.TField("unitid", org.apache.thrift.protocol.TType.I32, (short)14);
+  private static final org.apache.thrift.protocol.TField BUILDING_LABEL_FIELD_DESC = new org.apache.thrift.protocol.TField("building_label", org.apache.thrift.protocol.TType.STRING, (short)15);
+  private static final org.apache.thrift.protocol.TField CF_FIELD_DESC = new org.apache.thrift.protocol.TField("cf", org.apache.thrift.protocol.TType.STRING, (short)16);
+  private static final org.apache.thrift.protocol.TField ADMINUSE_FIELD_DESC = new org.apache.thrift.protocol.TField("adminuse", org.apache.thrift.protocol.TType.STRING, (short)17);
   private static final org.apache.thrift.protocol.TField EWAID_FIELD_DESC = new org.apache.thrift.protocol.TField("EWAid", org.apache.thrift.protocol.TType.STRING, (short)31);
+  private static final org.apache.thrift.protocol.TField TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("type", org.apache.thrift.protocol.TType.I32, (short)32);
 
   private String doorCode; // required
   private String uid; // required
-  private FRRoomType type; // required
+  private String doorCodeWithoutSpace; // required
   private int capacity; // required
+  private String site_label; // required
+  private double surface; // required
+  private String building_name; // required
+  private String zone; // required
+  private String unitlabel; // required
+  private int site_id; // required
+  private int floor; // required
+  private String unitname; // required
+  private String site_name; // required
+  private int unitid; // required
+  private String building_label; // required
+  private String cf; // required
+  private String adminuse; // required
   private String EWAid; // required
+  private FRRoomType type; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     DOOR_CODE((short)1, "doorCode"),
     UID((short)2, "uid"),
+    DOOR_CODE_WITHOUT_SPACE((short)3, "doorCodeWithoutSpace"),
+    CAPACITY((short)4, "capacity"),
+    SITE_LABEL((short)5, "site_label"),
+    SURFACE((short)6, "surface"),
+    BUILDING_NAME((short)7, "building_name"),
+    ZONE((short)8, "zone"),
+    UNITLABEL((short)9, "unitlabel"),
+    SITE_ID((short)10, "site_id"),
+    FLOOR((short)11, "floor"),
+    UNITNAME((short)12, "unitname"),
+    SITE_NAME((short)13, "site_name"),
+    UNITID((short)14, "unitid"),
+    BUILDING_LABEL((short)15, "building_label"),
+    CF((short)16, "cf"),
+    ADMINUSE((short)17, "adminuse"),
+    EWAID((short)31, "EWAid"),
     /**
      * 
      * @see FRRoomType
      */
-    TYPE((short)3, "type"),
-    CAPACITY((short)4, "capacity"),
-    EWAID((short)31, "EWAid");
+    TYPE((short)32, "type");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -65,12 +107,40 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
           return DOOR_CODE;
         case 2: // UID
           return UID;
-        case 3: // TYPE
-          return TYPE;
+        case 3: // DOOR_CODE_WITHOUT_SPACE
+          return DOOR_CODE_WITHOUT_SPACE;
         case 4: // CAPACITY
           return CAPACITY;
+        case 5: // SITE_LABEL
+          return SITE_LABEL;
+        case 6: // SURFACE
+          return SURFACE;
+        case 7: // BUILDING_NAME
+          return BUILDING_NAME;
+        case 8: // ZONE
+          return ZONE;
+        case 9: // UNITLABEL
+          return UNITLABEL;
+        case 10: // SITE_ID
+          return SITE_ID;
+        case 11: // FLOOR
+          return FLOOR;
+        case 12: // UNITNAME
+          return UNITNAME;
+        case 13: // SITE_NAME
+          return SITE_NAME;
+        case 14: // UNITID
+          return UNITID;
+        case 15: // BUILDING_LABEL
+          return BUILDING_LABEL;
+        case 16: // CF
+          return CF;
+        case 17: // ADMINUSE
+          return ADMINUSE;
         case 31: // EWAID
           return EWAID;
+        case 32: // TYPE
+          return TYPE;
         default:
           return null;
       }
@@ -112,7 +182,11 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
 
   // isset id assignments
   private static final int __CAPACITY_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __SURFACE_ISSET_ID = 1;
+  private static final int __SITE_ID_ISSET_ID = 2;
+  private static final int __FLOOR_ISSET_ID = 3;
+  private static final int __UNITID_ISSET_ID = 4;
+  private BitSet __isset_bit_vector = new BitSet(5);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -121,12 +195,40 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.UID, new org.apache.thrift.meta_data.FieldMetaData("uid", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.TYPE, new org.apache.thrift.meta_data.FieldMetaData("type", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRRoomType.class)));
+    tmpMap.put(_Fields.DOOR_CODE_WITHOUT_SPACE, new org.apache.thrift.meta_data.FieldMetaData("doorCodeWithoutSpace", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.CAPACITY, new org.apache.thrift.meta_data.FieldMetaData("capacity", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.SITE_LABEL, new org.apache.thrift.meta_data.FieldMetaData("site_label", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.SURFACE, new org.apache.thrift.meta_data.FieldMetaData("surface", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.BUILDING_NAME, new org.apache.thrift.meta_data.FieldMetaData("building_name", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.ZONE, new org.apache.thrift.meta_data.FieldMetaData("zone", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.UNITLABEL, new org.apache.thrift.meta_data.FieldMetaData("unitlabel", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.SITE_ID, new org.apache.thrift.meta_data.FieldMetaData("site_id", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.FLOOR, new org.apache.thrift.meta_data.FieldMetaData("floor", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.UNITNAME, new org.apache.thrift.meta_data.FieldMetaData("unitname", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.SITE_NAME, new org.apache.thrift.meta_data.FieldMetaData("site_name", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.UNITID, new org.apache.thrift.meta_data.FieldMetaData("unitid", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.BUILDING_LABEL, new org.apache.thrift.meta_data.FieldMetaData("building_label", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.CF, new org.apache.thrift.meta_data.FieldMetaData("cf", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.ADMINUSE, new org.apache.thrift.meta_data.FieldMetaData("adminuse", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.EWAID, new org.apache.thrift.meta_data.FieldMetaData("EWAid", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.TYPE, new org.apache.thrift.meta_data.FieldMetaData("type", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRRoomType.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRRoom.class, metaDataMap);
   }
@@ -155,12 +257,46 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     if (other.isSetUid()) {
       this.uid = other.uid;
     }
-    if (other.isSetType()) {
-      this.type = other.type;
+    if (other.isSetDoorCodeWithoutSpace()) {
+      this.doorCodeWithoutSpace = other.doorCodeWithoutSpace;
     }
     this.capacity = other.capacity;
+    if (other.isSetSite_label()) {
+      this.site_label = other.site_label;
+    }
+    this.surface = other.surface;
+    if (other.isSetBuilding_name()) {
+      this.building_name = other.building_name;
+    }
+    if (other.isSetZone()) {
+      this.zone = other.zone;
+    }
+    if (other.isSetUnitlabel()) {
+      this.unitlabel = other.unitlabel;
+    }
+    this.site_id = other.site_id;
+    this.floor = other.floor;
+    if (other.isSetUnitname()) {
+      this.unitname = other.unitname;
+    }
+    if (other.isSetSite_name()) {
+      this.site_name = other.site_name;
+    }
+    this.unitid = other.unitid;
+    if (other.isSetBuilding_label()) {
+      this.building_label = other.building_label;
+    }
+    if (other.isSetCf()) {
+      this.cf = other.cf;
+    }
+    if (other.isSetAdminuse()) {
+      this.adminuse = other.adminuse;
+    }
     if (other.isSetEWAid()) {
       this.EWAid = other.EWAid;
+    }
+    if (other.isSetType()) {
+      this.type = other.type;
     }
   }
 
@@ -172,10 +308,28 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
   public void clear() {
     this.doorCode = null;
     this.uid = null;
-    this.type = null;
+    this.doorCodeWithoutSpace = null;
     setCapacityIsSet(false);
     this.capacity = 0;
+    this.site_label = null;
+    setSurfaceIsSet(false);
+    this.surface = 0.0;
+    this.building_name = null;
+    this.zone = null;
+    this.unitlabel = null;
+    setSite_idIsSet(false);
+    this.site_id = 0;
+    setFloorIsSet(false);
+    this.floor = 0;
+    this.unitname = null;
+    this.site_name = null;
+    setUnitidIsSet(false);
+    this.unitid = 0;
+    this.building_label = null;
+    this.cf = null;
+    this.adminuse = null;
     this.EWAid = null;
+    this.type = null;
   }
 
   public String getDoorCode() {
@@ -226,6 +380,385 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     }
   }
 
+  public String getDoorCodeWithoutSpace() {
+    return this.doorCodeWithoutSpace;
+  }
+
+  public FRRoom setDoorCodeWithoutSpace(String doorCodeWithoutSpace) {
+    this.doorCodeWithoutSpace = doorCodeWithoutSpace;
+    return this;
+  }
+
+  public void unsetDoorCodeWithoutSpace() {
+    this.doorCodeWithoutSpace = null;
+  }
+
+  /** Returns true if field doorCodeWithoutSpace is set (has been assigned a value) and false otherwise */
+  public boolean isSetDoorCodeWithoutSpace() {
+    return this.doorCodeWithoutSpace != null;
+  }
+
+  public void setDoorCodeWithoutSpaceIsSet(boolean value) {
+    if (!value) {
+      this.doorCodeWithoutSpace = null;
+    }
+  }
+
+  public int getCapacity() {
+    return this.capacity;
+  }
+
+  public FRRoom setCapacity(int capacity) {
+    this.capacity = capacity;
+    setCapacityIsSet(true);
+    return this;
+  }
+
+  public void unsetCapacity() {
+    __isset_bit_vector.clear(__CAPACITY_ISSET_ID);
+  }
+
+  /** Returns true if field capacity is set (has been assigned a value) and false otherwise */
+  public boolean isSetCapacity() {
+    return __isset_bit_vector.get(__CAPACITY_ISSET_ID);
+  }
+
+  public void setCapacityIsSet(boolean value) {
+    __isset_bit_vector.set(__CAPACITY_ISSET_ID, value);
+  }
+
+  public String getSite_label() {
+    return this.site_label;
+  }
+
+  public FRRoom setSite_label(String site_label) {
+    this.site_label = site_label;
+    return this;
+  }
+
+  public void unsetSite_label() {
+    this.site_label = null;
+  }
+
+  /** Returns true if field site_label is set (has been assigned a value) and false otherwise */
+  public boolean isSetSite_label() {
+    return this.site_label != null;
+  }
+
+  public void setSite_labelIsSet(boolean value) {
+    if (!value) {
+      this.site_label = null;
+    }
+  }
+
+  public double getSurface() {
+    return this.surface;
+  }
+
+  public FRRoom setSurface(double surface) {
+    this.surface = surface;
+    setSurfaceIsSet(true);
+    return this;
+  }
+
+  public void unsetSurface() {
+    __isset_bit_vector.clear(__SURFACE_ISSET_ID);
+  }
+
+  /** Returns true if field surface is set (has been assigned a value) and false otherwise */
+  public boolean isSetSurface() {
+    return __isset_bit_vector.get(__SURFACE_ISSET_ID);
+  }
+
+  public void setSurfaceIsSet(boolean value) {
+    __isset_bit_vector.set(__SURFACE_ISSET_ID, value);
+  }
+
+  public String getBuilding_name() {
+    return this.building_name;
+  }
+
+  public FRRoom setBuilding_name(String building_name) {
+    this.building_name = building_name;
+    return this;
+  }
+
+  public void unsetBuilding_name() {
+    this.building_name = null;
+  }
+
+  /** Returns true if field building_name is set (has been assigned a value) and false otherwise */
+  public boolean isSetBuilding_name() {
+    return this.building_name != null;
+  }
+
+  public void setBuilding_nameIsSet(boolean value) {
+    if (!value) {
+      this.building_name = null;
+    }
+  }
+
+  public String getZone() {
+    return this.zone;
+  }
+
+  public FRRoom setZone(String zone) {
+    this.zone = zone;
+    return this;
+  }
+
+  public void unsetZone() {
+    this.zone = null;
+  }
+
+  /** Returns true if field zone is set (has been assigned a value) and false otherwise */
+  public boolean isSetZone() {
+    return this.zone != null;
+  }
+
+  public void setZoneIsSet(boolean value) {
+    if (!value) {
+      this.zone = null;
+    }
+  }
+
+  public String getUnitlabel() {
+    return this.unitlabel;
+  }
+
+  public FRRoom setUnitlabel(String unitlabel) {
+    this.unitlabel = unitlabel;
+    return this;
+  }
+
+  public void unsetUnitlabel() {
+    this.unitlabel = null;
+  }
+
+  /** Returns true if field unitlabel is set (has been assigned a value) and false otherwise */
+  public boolean isSetUnitlabel() {
+    return this.unitlabel != null;
+  }
+
+  public void setUnitlabelIsSet(boolean value) {
+    if (!value) {
+      this.unitlabel = null;
+    }
+  }
+
+  public int getSite_id() {
+    return this.site_id;
+  }
+
+  public FRRoom setSite_id(int site_id) {
+    this.site_id = site_id;
+    setSite_idIsSet(true);
+    return this;
+  }
+
+  public void unsetSite_id() {
+    __isset_bit_vector.clear(__SITE_ID_ISSET_ID);
+  }
+
+  /** Returns true if field site_id is set (has been assigned a value) and false otherwise */
+  public boolean isSetSite_id() {
+    return __isset_bit_vector.get(__SITE_ID_ISSET_ID);
+  }
+
+  public void setSite_idIsSet(boolean value) {
+    __isset_bit_vector.set(__SITE_ID_ISSET_ID, value);
+  }
+
+  public int getFloor() {
+    return this.floor;
+  }
+
+  public FRRoom setFloor(int floor) {
+    this.floor = floor;
+    setFloorIsSet(true);
+    return this;
+  }
+
+  public void unsetFloor() {
+    __isset_bit_vector.clear(__FLOOR_ISSET_ID);
+  }
+
+  /** Returns true if field floor is set (has been assigned a value) and false otherwise */
+  public boolean isSetFloor() {
+    return __isset_bit_vector.get(__FLOOR_ISSET_ID);
+  }
+
+  public void setFloorIsSet(boolean value) {
+    __isset_bit_vector.set(__FLOOR_ISSET_ID, value);
+  }
+
+  public String getUnitname() {
+    return this.unitname;
+  }
+
+  public FRRoom setUnitname(String unitname) {
+    this.unitname = unitname;
+    return this;
+  }
+
+  public void unsetUnitname() {
+    this.unitname = null;
+  }
+
+  /** Returns true if field unitname is set (has been assigned a value) and false otherwise */
+  public boolean isSetUnitname() {
+    return this.unitname != null;
+  }
+
+  public void setUnitnameIsSet(boolean value) {
+    if (!value) {
+      this.unitname = null;
+    }
+  }
+
+  public String getSite_name() {
+    return this.site_name;
+  }
+
+  public FRRoom setSite_name(String site_name) {
+    this.site_name = site_name;
+    return this;
+  }
+
+  public void unsetSite_name() {
+    this.site_name = null;
+  }
+
+  /** Returns true if field site_name is set (has been assigned a value) and false otherwise */
+  public boolean isSetSite_name() {
+    return this.site_name != null;
+  }
+
+  public void setSite_nameIsSet(boolean value) {
+    if (!value) {
+      this.site_name = null;
+    }
+  }
+
+  public int getUnitid() {
+    return this.unitid;
+  }
+
+  public FRRoom setUnitid(int unitid) {
+    this.unitid = unitid;
+    setUnitidIsSet(true);
+    return this;
+  }
+
+  public void unsetUnitid() {
+    __isset_bit_vector.clear(__UNITID_ISSET_ID);
+  }
+
+  /** Returns true if field unitid is set (has been assigned a value) and false otherwise */
+  public boolean isSetUnitid() {
+    return __isset_bit_vector.get(__UNITID_ISSET_ID);
+  }
+
+  public void setUnitidIsSet(boolean value) {
+    __isset_bit_vector.set(__UNITID_ISSET_ID, value);
+  }
+
+  public String getBuilding_label() {
+    return this.building_label;
+  }
+
+  public FRRoom setBuilding_label(String building_label) {
+    this.building_label = building_label;
+    return this;
+  }
+
+  public void unsetBuilding_label() {
+    this.building_label = null;
+  }
+
+  /** Returns true if field building_label is set (has been assigned a value) and false otherwise */
+  public boolean isSetBuilding_label() {
+    return this.building_label != null;
+  }
+
+  public void setBuilding_labelIsSet(boolean value) {
+    if (!value) {
+      this.building_label = null;
+    }
+  }
+
+  public String getCf() {
+    return this.cf;
+  }
+
+  public FRRoom setCf(String cf) {
+    this.cf = cf;
+    return this;
+  }
+
+  public void unsetCf() {
+    this.cf = null;
+  }
+
+  /** Returns true if field cf is set (has been assigned a value) and false otherwise */
+  public boolean isSetCf() {
+    return this.cf != null;
+  }
+
+  public void setCfIsSet(boolean value) {
+    if (!value) {
+      this.cf = null;
+    }
+  }
+
+  public String getAdminuse() {
+    return this.adminuse;
+  }
+
+  public FRRoom setAdminuse(String adminuse) {
+    this.adminuse = adminuse;
+    return this;
+  }
+
+  public void unsetAdminuse() {
+    this.adminuse = null;
+  }
+
+  /** Returns true if field adminuse is set (has been assigned a value) and false otherwise */
+  public boolean isSetAdminuse() {
+    return this.adminuse != null;
+  }
+
+  public void setAdminuseIsSet(boolean value) {
+    if (!value) {
+      this.adminuse = null;
+    }
+  }
+
+  public String getEWAid() {
+    return this.EWAid;
+  }
+
+  public FRRoom setEWAid(String EWAid) {
+    this.EWAid = EWAid;
+    return this;
+  }
+
+  public void unsetEWAid() {
+    this.EWAid = null;
+  }
+
+  /** Returns true if field EWAid is set (has been assigned a value) and false otherwise */
+  public boolean isSetEWAid() {
+    return this.EWAid != null;
+  }
+
+  public void setEWAidIsSet(boolean value) {
+    if (!value) {
+      this.EWAid = null;
+    }
+  }
+
   /**
    * 
    * @see FRRoomType
@@ -258,53 +791,6 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     }
   }
 
-  public int getCapacity() {
-    return this.capacity;
-  }
-
-  public FRRoom setCapacity(int capacity) {
-    this.capacity = capacity;
-    setCapacityIsSet(true);
-    return this;
-  }
-
-  public void unsetCapacity() {
-    __isset_bit_vector.clear(__CAPACITY_ISSET_ID);
-  }
-
-  /** Returns true if field capacity is set (has been assigned a value) and false otherwise */
-  public boolean isSetCapacity() {
-    return __isset_bit_vector.get(__CAPACITY_ISSET_ID);
-  }
-
-  public void setCapacityIsSet(boolean value) {
-    __isset_bit_vector.set(__CAPACITY_ISSET_ID, value);
-  }
-
-  public String getEWAid() {
-    return this.EWAid;
-  }
-
-  public FRRoom setEWAid(String EWAid) {
-    this.EWAid = EWAid;
-    return this;
-  }
-
-  public void unsetEWAid() {
-    this.EWAid = null;
-  }
-
-  /** Returns true if field EWAid is set (has been assigned a value) and false otherwise */
-  public boolean isSetEWAid() {
-    return this.EWAid != null;
-  }
-
-  public void setEWAidIsSet(boolean value) {
-    if (!value) {
-      this.EWAid = null;
-    }
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case DOOR_CODE:
@@ -323,11 +809,11 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       }
       break;
 
-    case TYPE:
+    case DOOR_CODE_WITHOUT_SPACE:
       if (value == null) {
-        unsetType();
+        unsetDoorCodeWithoutSpace();
       } else {
-        setType((FRRoomType)value);
+        setDoorCodeWithoutSpace((String)value);
       }
       break;
 
@@ -339,11 +825,123 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       }
       break;
 
+    case SITE_LABEL:
+      if (value == null) {
+        unsetSite_label();
+      } else {
+        setSite_label((String)value);
+      }
+      break;
+
+    case SURFACE:
+      if (value == null) {
+        unsetSurface();
+      } else {
+        setSurface((Double)value);
+      }
+      break;
+
+    case BUILDING_NAME:
+      if (value == null) {
+        unsetBuilding_name();
+      } else {
+        setBuilding_name((String)value);
+      }
+      break;
+
+    case ZONE:
+      if (value == null) {
+        unsetZone();
+      } else {
+        setZone((String)value);
+      }
+      break;
+
+    case UNITLABEL:
+      if (value == null) {
+        unsetUnitlabel();
+      } else {
+        setUnitlabel((String)value);
+      }
+      break;
+
+    case SITE_ID:
+      if (value == null) {
+        unsetSite_id();
+      } else {
+        setSite_id((Integer)value);
+      }
+      break;
+
+    case FLOOR:
+      if (value == null) {
+        unsetFloor();
+      } else {
+        setFloor((Integer)value);
+      }
+      break;
+
+    case UNITNAME:
+      if (value == null) {
+        unsetUnitname();
+      } else {
+        setUnitname((String)value);
+      }
+      break;
+
+    case SITE_NAME:
+      if (value == null) {
+        unsetSite_name();
+      } else {
+        setSite_name((String)value);
+      }
+      break;
+
+    case UNITID:
+      if (value == null) {
+        unsetUnitid();
+      } else {
+        setUnitid((Integer)value);
+      }
+      break;
+
+    case BUILDING_LABEL:
+      if (value == null) {
+        unsetBuilding_label();
+      } else {
+        setBuilding_label((String)value);
+      }
+      break;
+
+    case CF:
+      if (value == null) {
+        unsetCf();
+      } else {
+        setCf((String)value);
+      }
+      break;
+
+    case ADMINUSE:
+      if (value == null) {
+        unsetAdminuse();
+      } else {
+        setAdminuse((String)value);
+      }
+      break;
+
     case EWAID:
       if (value == null) {
         unsetEWAid();
       } else {
         setEWAid((String)value);
+      }
+      break;
+
+    case TYPE:
+      if (value == null) {
+        unsetType();
+      } else {
+        setType((FRRoomType)value);
       }
       break;
 
@@ -358,14 +956,56 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     case UID:
       return getUid();
 
-    case TYPE:
-      return getType();
+    case DOOR_CODE_WITHOUT_SPACE:
+      return getDoorCodeWithoutSpace();
 
     case CAPACITY:
       return Integer.valueOf(getCapacity());
 
+    case SITE_LABEL:
+      return getSite_label();
+
+    case SURFACE:
+      return Double.valueOf(getSurface());
+
+    case BUILDING_NAME:
+      return getBuilding_name();
+
+    case ZONE:
+      return getZone();
+
+    case UNITLABEL:
+      return getUnitlabel();
+
+    case SITE_ID:
+      return Integer.valueOf(getSite_id());
+
+    case FLOOR:
+      return Integer.valueOf(getFloor());
+
+    case UNITNAME:
+      return getUnitname();
+
+    case SITE_NAME:
+      return getSite_name();
+
+    case UNITID:
+      return Integer.valueOf(getUnitid());
+
+    case BUILDING_LABEL:
+      return getBuilding_label();
+
+    case CF:
+      return getCf();
+
+    case ADMINUSE:
+      return getAdminuse();
+
     case EWAID:
       return getEWAid();
+
+    case TYPE:
+      return getType();
 
     }
     throw new IllegalStateException();
@@ -382,12 +1022,40 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       return isSetDoorCode();
     case UID:
       return isSetUid();
-    case TYPE:
-      return isSetType();
+    case DOOR_CODE_WITHOUT_SPACE:
+      return isSetDoorCodeWithoutSpace();
     case CAPACITY:
       return isSetCapacity();
+    case SITE_LABEL:
+      return isSetSite_label();
+    case SURFACE:
+      return isSetSurface();
+    case BUILDING_NAME:
+      return isSetBuilding_name();
+    case ZONE:
+      return isSetZone();
+    case UNITLABEL:
+      return isSetUnitlabel();
+    case SITE_ID:
+      return isSetSite_id();
+    case FLOOR:
+      return isSetFloor();
+    case UNITNAME:
+      return isSetUnitname();
+    case SITE_NAME:
+      return isSetSite_name();
+    case UNITID:
+      return isSetUnitid();
+    case BUILDING_LABEL:
+      return isSetBuilding_label();
+    case CF:
+      return isSetCf();
+    case ADMINUSE:
+      return isSetAdminuse();
     case EWAID:
       return isSetEWAid();
+    case TYPE:
+      return isSetType();
     }
     throw new IllegalStateException();
   }
@@ -423,12 +1091,12 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         return false;
     }
 
-    boolean this_present_type = true && this.isSetType();
-    boolean that_present_type = true && that.isSetType();
-    if (this_present_type || that_present_type) {
-      if (!(this_present_type && that_present_type))
+    boolean this_present_doorCodeWithoutSpace = true && this.isSetDoorCodeWithoutSpace();
+    boolean that_present_doorCodeWithoutSpace = true && that.isSetDoorCodeWithoutSpace();
+    if (this_present_doorCodeWithoutSpace || that_present_doorCodeWithoutSpace) {
+      if (!(this_present_doorCodeWithoutSpace && that_present_doorCodeWithoutSpace))
         return false;
-      if (!this.type.equals(that.type))
+      if (!this.doorCodeWithoutSpace.equals(that.doorCodeWithoutSpace))
         return false;
     }
 
@@ -441,12 +1109,138 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         return false;
     }
 
+    boolean this_present_site_label = true && this.isSetSite_label();
+    boolean that_present_site_label = true && that.isSetSite_label();
+    if (this_present_site_label || that_present_site_label) {
+      if (!(this_present_site_label && that_present_site_label))
+        return false;
+      if (!this.site_label.equals(that.site_label))
+        return false;
+    }
+
+    boolean this_present_surface = true && this.isSetSurface();
+    boolean that_present_surface = true && that.isSetSurface();
+    if (this_present_surface || that_present_surface) {
+      if (!(this_present_surface && that_present_surface))
+        return false;
+      if (this.surface != that.surface)
+        return false;
+    }
+
+    boolean this_present_building_name = true && this.isSetBuilding_name();
+    boolean that_present_building_name = true && that.isSetBuilding_name();
+    if (this_present_building_name || that_present_building_name) {
+      if (!(this_present_building_name && that_present_building_name))
+        return false;
+      if (!this.building_name.equals(that.building_name))
+        return false;
+    }
+
+    boolean this_present_zone = true && this.isSetZone();
+    boolean that_present_zone = true && that.isSetZone();
+    if (this_present_zone || that_present_zone) {
+      if (!(this_present_zone && that_present_zone))
+        return false;
+      if (!this.zone.equals(that.zone))
+        return false;
+    }
+
+    boolean this_present_unitlabel = true && this.isSetUnitlabel();
+    boolean that_present_unitlabel = true && that.isSetUnitlabel();
+    if (this_present_unitlabel || that_present_unitlabel) {
+      if (!(this_present_unitlabel && that_present_unitlabel))
+        return false;
+      if (!this.unitlabel.equals(that.unitlabel))
+        return false;
+    }
+
+    boolean this_present_site_id = true && this.isSetSite_id();
+    boolean that_present_site_id = true && that.isSetSite_id();
+    if (this_present_site_id || that_present_site_id) {
+      if (!(this_present_site_id && that_present_site_id))
+        return false;
+      if (this.site_id != that.site_id)
+        return false;
+    }
+
+    boolean this_present_floor = true && this.isSetFloor();
+    boolean that_present_floor = true && that.isSetFloor();
+    if (this_present_floor || that_present_floor) {
+      if (!(this_present_floor && that_present_floor))
+        return false;
+      if (this.floor != that.floor)
+        return false;
+    }
+
+    boolean this_present_unitname = true && this.isSetUnitname();
+    boolean that_present_unitname = true && that.isSetUnitname();
+    if (this_present_unitname || that_present_unitname) {
+      if (!(this_present_unitname && that_present_unitname))
+        return false;
+      if (!this.unitname.equals(that.unitname))
+        return false;
+    }
+
+    boolean this_present_site_name = true && this.isSetSite_name();
+    boolean that_present_site_name = true && that.isSetSite_name();
+    if (this_present_site_name || that_present_site_name) {
+      if (!(this_present_site_name && that_present_site_name))
+        return false;
+      if (!this.site_name.equals(that.site_name))
+        return false;
+    }
+
+    boolean this_present_unitid = true && this.isSetUnitid();
+    boolean that_present_unitid = true && that.isSetUnitid();
+    if (this_present_unitid || that_present_unitid) {
+      if (!(this_present_unitid && that_present_unitid))
+        return false;
+      if (this.unitid != that.unitid)
+        return false;
+    }
+
+    boolean this_present_building_label = true && this.isSetBuilding_label();
+    boolean that_present_building_label = true && that.isSetBuilding_label();
+    if (this_present_building_label || that_present_building_label) {
+      if (!(this_present_building_label && that_present_building_label))
+        return false;
+      if (!this.building_label.equals(that.building_label))
+        return false;
+    }
+
+    boolean this_present_cf = true && this.isSetCf();
+    boolean that_present_cf = true && that.isSetCf();
+    if (this_present_cf || that_present_cf) {
+      if (!(this_present_cf && that_present_cf))
+        return false;
+      if (!this.cf.equals(that.cf))
+        return false;
+    }
+
+    boolean this_present_adminuse = true && this.isSetAdminuse();
+    boolean that_present_adminuse = true && that.isSetAdminuse();
+    if (this_present_adminuse || that_present_adminuse) {
+      if (!(this_present_adminuse && that_present_adminuse))
+        return false;
+      if (!this.adminuse.equals(that.adminuse))
+        return false;
+    }
+
     boolean this_present_EWAid = true && this.isSetEWAid();
     boolean that_present_EWAid = true && that.isSetEWAid();
     if (this_present_EWAid || that_present_EWAid) {
       if (!(this_present_EWAid && that_present_EWAid))
         return false;
       if (!this.EWAid.equals(that.EWAid))
+        return false;
+    }
+
+    boolean this_present_type = true && this.isSetType();
+    boolean that_present_type = true && that.isSetType();
+    if (this_present_type || that_present_type) {
+      if (!(this_present_type && that_present_type))
+        return false;
+      if (!this.type.equals(that.type))
         return false;
     }
 
@@ -467,20 +1261,90 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     if (present_uid)
       builder.append(uid);
 
-    boolean present_type = true && (isSetType());
-    builder.append(present_type);
-    if (present_type)
-      builder.append(type.getValue());
+    boolean present_doorCodeWithoutSpace = true && (isSetDoorCodeWithoutSpace());
+    builder.append(present_doorCodeWithoutSpace);
+    if (present_doorCodeWithoutSpace)
+      builder.append(doorCodeWithoutSpace);
 
     boolean present_capacity = true && (isSetCapacity());
     builder.append(present_capacity);
     if (present_capacity)
       builder.append(capacity);
 
+    boolean present_site_label = true && (isSetSite_label());
+    builder.append(present_site_label);
+    if (present_site_label)
+      builder.append(site_label);
+
+    boolean present_surface = true && (isSetSurface());
+    builder.append(present_surface);
+    if (present_surface)
+      builder.append(surface);
+
+    boolean present_building_name = true && (isSetBuilding_name());
+    builder.append(present_building_name);
+    if (present_building_name)
+      builder.append(building_name);
+
+    boolean present_zone = true && (isSetZone());
+    builder.append(present_zone);
+    if (present_zone)
+      builder.append(zone);
+
+    boolean present_unitlabel = true && (isSetUnitlabel());
+    builder.append(present_unitlabel);
+    if (present_unitlabel)
+      builder.append(unitlabel);
+
+    boolean present_site_id = true && (isSetSite_id());
+    builder.append(present_site_id);
+    if (present_site_id)
+      builder.append(site_id);
+
+    boolean present_floor = true && (isSetFloor());
+    builder.append(present_floor);
+    if (present_floor)
+      builder.append(floor);
+
+    boolean present_unitname = true && (isSetUnitname());
+    builder.append(present_unitname);
+    if (present_unitname)
+      builder.append(unitname);
+
+    boolean present_site_name = true && (isSetSite_name());
+    builder.append(present_site_name);
+    if (present_site_name)
+      builder.append(site_name);
+
+    boolean present_unitid = true && (isSetUnitid());
+    builder.append(present_unitid);
+    if (present_unitid)
+      builder.append(unitid);
+
+    boolean present_building_label = true && (isSetBuilding_label());
+    builder.append(present_building_label);
+    if (present_building_label)
+      builder.append(building_label);
+
+    boolean present_cf = true && (isSetCf());
+    builder.append(present_cf);
+    if (present_cf)
+      builder.append(cf);
+
+    boolean present_adminuse = true && (isSetAdminuse());
+    builder.append(present_adminuse);
+    if (present_adminuse)
+      builder.append(adminuse);
+
     boolean present_EWAid = true && (isSetEWAid());
     builder.append(present_EWAid);
     if (present_EWAid)
       builder.append(EWAid);
+
+    boolean present_type = true && (isSetType());
+    builder.append(present_type);
+    if (present_type)
+      builder.append(type.getValue());
 
     return builder.toHashCode();
   }
@@ -513,12 +1377,12 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetType()).compareTo(typedOther.isSetType());
+    lastComparison = Boolean.valueOf(isSetDoorCodeWithoutSpace()).compareTo(typedOther.isSetDoorCodeWithoutSpace());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetType()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.type, typedOther.type);
+    if (isSetDoorCodeWithoutSpace()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.doorCodeWithoutSpace, typedOther.doorCodeWithoutSpace);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -533,12 +1397,152 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetSite_label()).compareTo(typedOther.isSetSite_label());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSite_label()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.site_label, typedOther.site_label);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSurface()).compareTo(typedOther.isSetSurface());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSurface()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.surface, typedOther.surface);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetBuilding_name()).compareTo(typedOther.isSetBuilding_name());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetBuilding_name()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.building_name, typedOther.building_name);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetZone()).compareTo(typedOther.isSetZone());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetZone()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.zone, typedOther.zone);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetUnitlabel()).compareTo(typedOther.isSetUnitlabel());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetUnitlabel()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.unitlabel, typedOther.unitlabel);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSite_id()).compareTo(typedOther.isSetSite_id());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSite_id()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.site_id, typedOther.site_id);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetFloor()).compareTo(typedOther.isSetFloor());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetFloor()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.floor, typedOther.floor);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetUnitname()).compareTo(typedOther.isSetUnitname());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetUnitname()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.unitname, typedOther.unitname);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSite_name()).compareTo(typedOther.isSetSite_name());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSite_name()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.site_name, typedOther.site_name);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetUnitid()).compareTo(typedOther.isSetUnitid());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetUnitid()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.unitid, typedOther.unitid);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetBuilding_label()).compareTo(typedOther.isSetBuilding_label());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetBuilding_label()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.building_label, typedOther.building_label);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetCf()).compareTo(typedOther.isSetCf());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetCf()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.cf, typedOther.cf);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetAdminuse()).compareTo(typedOther.isSetAdminuse());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAdminuse()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.adminuse, typedOther.adminuse);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetEWAid()).compareTo(typedOther.isSetEWAid());
     if (lastComparison != 0) {
       return lastComparison;
     }
     if (isSetEWAid()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.EWAid, typedOther.EWAid);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetType()).compareTo(typedOther.isSetType());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetType()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.type, typedOther.type);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -574,9 +1578,9 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // TYPE
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.type = FRRoomType.findByValue(iprot.readI32());
+        case 3: // DOOR_CODE_WITHOUT_SPACE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.doorCodeWithoutSpace = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -589,9 +1593,111 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 5: // SITE_LABEL
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.site_label = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 6: // SURFACE
+          if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
+            this.surface = iprot.readDouble();
+            setSurfaceIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 7: // BUILDING_NAME
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.building_name = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 8: // ZONE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.zone = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 9: // UNITLABEL
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.unitlabel = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 10: // SITE_ID
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.site_id = iprot.readI32();
+            setSite_idIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 11: // FLOOR
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.floor = iprot.readI32();
+            setFloorIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 12: // UNITNAME
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.unitname = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 13: // SITE_NAME
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.site_name = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 14: // UNITID
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.unitid = iprot.readI32();
+            setUnitidIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 15: // BUILDING_LABEL
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.building_label = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 16: // CF
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.cf = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 17: // ADMINUSE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.adminuse = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         case 31: // EWAID
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.EWAid = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 32: // TYPE
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.type = FRRoomType.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -621,10 +1727,10 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       oprot.writeString(this.uid);
       oprot.writeFieldEnd();
     }
-    if (this.type != null) {
-      if (isSetType()) {
-        oprot.writeFieldBegin(TYPE_FIELD_DESC);
-        oprot.writeI32(this.type.getValue());
+    if (this.doorCodeWithoutSpace != null) {
+      if (isSetDoorCodeWithoutSpace()) {
+        oprot.writeFieldBegin(DOOR_CODE_WITHOUT_SPACE_FIELD_DESC);
+        oprot.writeString(this.doorCodeWithoutSpace);
         oprot.writeFieldEnd();
       }
     }
@@ -633,10 +1739,100 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       oprot.writeI32(this.capacity);
       oprot.writeFieldEnd();
     }
+    if (this.site_label != null) {
+      if (isSetSite_label()) {
+        oprot.writeFieldBegin(SITE_LABEL_FIELD_DESC);
+        oprot.writeString(this.site_label);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (isSetSurface()) {
+      oprot.writeFieldBegin(SURFACE_FIELD_DESC);
+      oprot.writeDouble(this.surface);
+      oprot.writeFieldEnd();
+    }
+    if (this.building_name != null) {
+      if (isSetBuilding_name()) {
+        oprot.writeFieldBegin(BUILDING_NAME_FIELD_DESC);
+        oprot.writeString(this.building_name);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.zone != null) {
+      if (isSetZone()) {
+        oprot.writeFieldBegin(ZONE_FIELD_DESC);
+        oprot.writeString(this.zone);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.unitlabel != null) {
+      if (isSetUnitlabel()) {
+        oprot.writeFieldBegin(UNITLABEL_FIELD_DESC);
+        oprot.writeString(this.unitlabel);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (isSetSite_id()) {
+      oprot.writeFieldBegin(SITE_ID_FIELD_DESC);
+      oprot.writeI32(this.site_id);
+      oprot.writeFieldEnd();
+    }
+    if (isSetFloor()) {
+      oprot.writeFieldBegin(FLOOR_FIELD_DESC);
+      oprot.writeI32(this.floor);
+      oprot.writeFieldEnd();
+    }
+    if (this.unitname != null) {
+      if (isSetUnitname()) {
+        oprot.writeFieldBegin(UNITNAME_FIELD_DESC);
+        oprot.writeString(this.unitname);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.site_name != null) {
+      if (isSetSite_name()) {
+        oprot.writeFieldBegin(SITE_NAME_FIELD_DESC);
+        oprot.writeString(this.site_name);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (isSetUnitid()) {
+      oprot.writeFieldBegin(UNITID_FIELD_DESC);
+      oprot.writeI32(this.unitid);
+      oprot.writeFieldEnd();
+    }
+    if (this.building_label != null) {
+      if (isSetBuilding_label()) {
+        oprot.writeFieldBegin(BUILDING_LABEL_FIELD_DESC);
+        oprot.writeString(this.building_label);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.cf != null) {
+      if (isSetCf()) {
+        oprot.writeFieldBegin(CF_FIELD_DESC);
+        oprot.writeString(this.cf);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.adminuse != null) {
+      if (isSetAdminuse()) {
+        oprot.writeFieldBegin(ADMINUSE_FIELD_DESC);
+        oprot.writeString(this.adminuse);
+        oprot.writeFieldEnd();
+      }
+    }
     if (this.EWAid != null) {
       if (isSetEWAid()) {
         oprot.writeFieldBegin(EWAID_FIELD_DESC);
         oprot.writeString(this.EWAid);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.type != null) {
+      if (isSetType()) {
+        oprot.writeFieldBegin(TYPE_FIELD_DESC);
+        oprot.writeI32(this.type.getValue());
         oprot.writeFieldEnd();
       }
     }
@@ -664,13 +1860,13 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       sb.append(this.uid);
     }
     first = false;
-    if (isSetType()) {
+    if (isSetDoorCodeWithoutSpace()) {
       if (!first) sb.append(", ");
-      sb.append("type:");
-      if (this.type == null) {
+      sb.append("doorCodeWithoutSpace:");
+      if (this.doorCodeWithoutSpace == null) {
         sb.append("null");
       } else {
-        sb.append(this.type);
+        sb.append(this.doorCodeWithoutSpace);
       }
       first = false;
     }
@@ -680,6 +1876,120 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       sb.append(this.capacity);
       first = false;
     }
+    if (isSetSite_label()) {
+      if (!first) sb.append(", ");
+      sb.append("site_label:");
+      if (this.site_label == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.site_label);
+      }
+      first = false;
+    }
+    if (isSetSurface()) {
+      if (!first) sb.append(", ");
+      sb.append("surface:");
+      sb.append(this.surface);
+      first = false;
+    }
+    if (isSetBuilding_name()) {
+      if (!first) sb.append(", ");
+      sb.append("building_name:");
+      if (this.building_name == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.building_name);
+      }
+      first = false;
+    }
+    if (isSetZone()) {
+      if (!first) sb.append(", ");
+      sb.append("zone:");
+      if (this.zone == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.zone);
+      }
+      first = false;
+    }
+    if (isSetUnitlabel()) {
+      if (!first) sb.append(", ");
+      sb.append("unitlabel:");
+      if (this.unitlabel == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.unitlabel);
+      }
+      first = false;
+    }
+    if (isSetSite_id()) {
+      if (!first) sb.append(", ");
+      sb.append("site_id:");
+      sb.append(this.site_id);
+      first = false;
+    }
+    if (isSetFloor()) {
+      if (!first) sb.append(", ");
+      sb.append("floor:");
+      sb.append(this.floor);
+      first = false;
+    }
+    if (isSetUnitname()) {
+      if (!first) sb.append(", ");
+      sb.append("unitname:");
+      if (this.unitname == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.unitname);
+      }
+      first = false;
+    }
+    if (isSetSite_name()) {
+      if (!first) sb.append(", ");
+      sb.append("site_name:");
+      if (this.site_name == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.site_name);
+      }
+      first = false;
+    }
+    if (isSetUnitid()) {
+      if (!first) sb.append(", ");
+      sb.append("unitid:");
+      sb.append(this.unitid);
+      first = false;
+    }
+    if (isSetBuilding_label()) {
+      if (!first) sb.append(", ");
+      sb.append("building_label:");
+      if (this.building_label == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.building_label);
+      }
+      first = false;
+    }
+    if (isSetCf()) {
+      if (!first) sb.append(", ");
+      sb.append("cf:");
+      if (this.cf == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.cf);
+      }
+      first = false;
+    }
+    if (isSetAdminuse()) {
+      if (!first) sb.append(", ");
+      sb.append("adminuse:");
+      if (this.adminuse == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.adminuse);
+      }
+      first = false;
+    }
     if (isSetEWAid()) {
       if (!first) sb.append(", ");
       sb.append("EWAid:");
@@ -687,6 +1997,16 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         sb.append("null");
       } else {
         sb.append(this.EWAid);
+      }
+      first = false;
+    }
+    if (isSetType()) {
+      if (!first) sb.append(", ");
+      sb.append("type:");
+      if (this.type == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.type);
       }
       first = false;
     }
