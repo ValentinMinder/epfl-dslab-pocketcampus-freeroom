@@ -76,7 +76,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			e.printStackTrace();
 		}
 		// update ewa : should be done periodically...
-		boolean updateEWA = false;
+		boolean updateEWA = true;
 		if (updateEWA) {
 			if (updateEWAOccupancy()) {
 				System.out.println("EWA data succesfully updated!");

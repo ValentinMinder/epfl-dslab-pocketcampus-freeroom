@@ -353,7 +353,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return map.keySet();
 	}
 
-	public boolean addRoom(String uid, String doorCode, String key) {
+	private boolean addRoom(String uid, String doorCode, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(key,
 				Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
@@ -361,7 +361,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return editor.commit();
 	}
 
-	public boolean removeRoomByUID(String uid, String key) {
+	private boolean removeRoomByUID(String uid, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(key,
 				Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
@@ -369,37 +369,26 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return editor.commit();
 	}
 
-	public boolean containsRoomByUID(String uid, String key) {
+	private boolean containsRoomByUID(String uid, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(key,
 				Context.MODE_PRIVATE);
 		return preferences.contains(uid);
 	}
 
-	public boolean containsRoomByDoorCode(String doorCode, String key) {
-		return getAllRoomAsCollectionDoorCode(key).contains(doorCode);
+	private boolean containsRoomByDoorCode(String doorCode, String key) {
+		return getAllRoomAsMap(key).containsValue(doorCode);
 	}
 
-	public String getRoomByUID(String uid, String key) {
+	private String getRoomByUID(String uid, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(key,
 				Context.MODE_PRIVATE);
 		return preferences.getString(uid, null);
 	}
 
-	public Map<String, String> getAllRoomAsMap(String key) {
+	private Map<String, String> getAllRoomAsMap(String key) {
 		SharedPreferences preferences = context.getSharedPreferences(key,
 				Context.MODE_PRIVATE);
-		addRoomFavorites("1", "CM1");
 		return (Map<String, String>) preferences.getAll();
-	}
-
-	public Set<String> getAllRoomAsSetUID(String key) {
-		Map<String, String> map = getAllRoomAsMap(key);
-		return map.keySet();
-	}
-
-	public Collection<String> getAllRoomAsCollectionDoorCode(String key) {
-		Map<String, String> map = getAllRoomAsMap(key);
-		return map.values();
 	}
 
 	/**
