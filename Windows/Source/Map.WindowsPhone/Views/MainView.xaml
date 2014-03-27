@@ -52,8 +52,7 @@
             <StackPanel>
                 <!-- Search box -->
                 <comControls:SearchBox Grid.Row="1"
-                                       SearchCommand="{Binding SearchProvider.SearchCommand}"
-                                       Margin="12,0" />
+                                       SearchCommand="{Binding SearchProvider.SearchCommand}" />
 
                 <!-- "No search results" text -->
                 <TextBlock Grid.Row="2"

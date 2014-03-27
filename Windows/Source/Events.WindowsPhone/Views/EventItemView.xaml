@@ -145,7 +145,7 @@
                         <TextBlock Text="{Binding Resources.EventLocation, Source={StaticResource Strings}}"
                                    Style="{StaticResource PhoneTextSubtleStyle}"
                                    Margin="12,0,0,0" />
-                        
+
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Item.Location}"
                                    TextWrapping="Wrap"
@@ -189,15 +189,22 @@
                           VerticalAlignment="Top"
                           Margin="5,10"
                           Visibility="{Binding CanBeFavorite, Converter={StaticResource BoolToVisibility}}">
-                        <ToggleButton IsChecked="{Binding IsFavorite, Mode=TwoWay}"
-                                      BorderThickness="0"
-                                      Background="Transparent">
-                            <Image Source="/Assets/EmptyStar.png" />
+                        <ToggleButton IsChecked="{Binding IsFavorite, Mode=TwoWay}">
+                            <ToggleButton.Template>
+                                <ControlTemplate>
+                                    <Grid Background="Transparent">
+                                        <ContentPresenter />
+                                    </Grid>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                            
+                            <Grid>
+                                <Image Source="/Assets/EmptyStar.png" />
+                                <Image Source="/Assets/Star.png"
+                                       Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}"
+                                       IsHitTestVisible="False" />
+                            </Grid>
                         </ToggleButton>
-
-                        <Image Source="/Assets/Star.png"
-                               Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}"
-                               IsHitTestVisible="False" />
                     </Grid>
                 </Grid>
 
@@ -224,7 +231,7 @@
                 <ItemsControl ItemsSource="{Binding Pools}"
                               ItemTemplate="{StaticResource ItemPoolTemplate}"
                               Margin="24,0" />
-                
+
                 <!-- Bottom margin -->
                 <Rectangle Height="95" />
             </StackPanel>
