@@ -140,6 +140,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public void setFreeRoomResults(Set<FRRoom> results) {
 		mFreeRoomResult = results;
 		sortedRooms = sortFRRoomsByBuildingsAndFavorites(mFreeRoomResult, true);
+		buildings.clear();
+		buildings.addAll(sortedRooms.keySet());
 		mListeners.freeRoomResultsUpdated();
 	}
 
