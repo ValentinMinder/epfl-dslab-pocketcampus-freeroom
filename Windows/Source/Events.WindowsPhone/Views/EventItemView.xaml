@@ -199,10 +199,9 @@
                             </ToggleButton.Template>
                             
                             <Grid>
-                                <Image Source="/Assets/EmptyStar.png" />
-                                <Image Source="/Assets/Star.png"
-                                       Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}"
-                                       IsHitTestVisible="False" />
+                                <ContentControl Template="{StaticResource EmptyStarIcon}" />
+                                <ContentControl Template="{StaticResource StarIcon}"
+                                                Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}" />
                             </Grid>
                         </ToggleButton>
                     </Grid>
