@@ -17,11 +17,7 @@
           Height="800">
         <!-- "Initializing camera" text (covered by the camera preview when it's initialized) -->
         <TextBlock Text="{Binding Resources.InitializingCamera, Source={StaticResource Strings}}"
-                   TextWrapping="Wrap"
-                   TextAlignment="Center"
-                   Style="{StaticResource PhoneTextTitle2Style}"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center" />
+                   Style="{StaticResource AppTextCenterStyle}" />
 
         <!-- Help text -->
         <Border VerticalAlignment="Top"

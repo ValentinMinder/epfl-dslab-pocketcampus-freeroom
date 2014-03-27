@@ -12,8 +12,8 @@ using PocketCampus.Common.Services;
 using PocketCampus.IsAcademia.Models;
 using PocketCampus.IsAcademia.Services;
 using PocketCampus.Map;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.IsAcademia.ViewModels
 {

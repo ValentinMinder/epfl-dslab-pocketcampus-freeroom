@@ -4,8 +4,8 @@
 
 using System.Linq;
 using PocketCampus.Events.Models;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {

@@ -2,27 +2,29 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using System.IO;
 using System.Linq;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows;
+using System.Windows.Controls;
 using PocketCampus.Common;
 using PocketCampus.Moodle.Models;
-using PocketCampus.Moodle.ViewModels;
 
 namespace PocketCampus.Moodle
 {
     /// <summary>
-    /// Converts a file name to an image representing its extension.
+    /// Converts a file name to an icon template representing its extension.
     /// </summary>
-    public sealed class FileNameToImageConverter : ValueConverter<string, ImageSource>
+    public sealed class FileNameToIconTemplateConverter : ValueConverter<string, ControlTemplate>
     {
-        public override ImageSource Convert( string value )
+        public override ControlTemplate Convert( string value )
         {
             string ext = Path.GetExtension( value ).Substring( 1 ).ToLower();
-            string uri = string.Format( "/Assets/Extension_{0}.png", ext );
-            return new BitmapImage( new Uri( uri, UriKind.Relative ) );
+            string key = "FileIcon_" + ext;
+            if ( Application.Current.Resources.Contains( key ) )
+            {
+                return (ControlTemplate) Application.Current.Resources[key];
+            }
+            return null;
         }
     }
 

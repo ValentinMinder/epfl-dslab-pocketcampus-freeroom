@@ -8,8 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Windows.Navigation;
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Main
 {
@@ -82,7 +82,7 @@ namespace PocketCampus.Main
         {
             var pluginAndParams = ParseQuery( uri );
             _plugins.First( p => p.Id.Equals( pluginAndParams.Item1, StringComparison.OrdinalIgnoreCase ) )
-                    .NavigateTo( pluginAndParams.Item2, pluginAndParams.Item3, App.NavigationService );
+                    .NavigateTo( pluginAndParams.Item2, pluginAndParams.Item3, App.Current.NavigationService );
         }
 
         /// <summary>

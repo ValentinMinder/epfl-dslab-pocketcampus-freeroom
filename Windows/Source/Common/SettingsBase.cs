@@ -8,7 +8,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Common
 {

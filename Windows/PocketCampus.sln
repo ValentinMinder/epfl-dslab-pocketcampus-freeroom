@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Main.WindowsPhone", "Source\Main.WindowsPhone\PocketCampus.Main.WindowsPhone.csproj", "{AF9FF1D1-FDAC-42A1-841C-65DB481066FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Mvvm", "Source\Mvvm\PocketCampus.Mvvm.csproj", "{53C14BDB-427E-492E-8BDC-B329D8737D17}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Camipro.Common", "Source\Camipro.Common\PocketCampus.Camipro.Common.csproj", "{2AB0060F-5611-4AEB-9210-D8496CFC421D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Common.WindowsPhone", "Source\Common.WindowsPhone\PocketCampus.Common.WindowsPhone.csproj", "{DA337688-F11F-48A8-A1E6-AF0798C0651F}"
@@ -49,8 +47,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Directory.Comm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Directory.WindowsPhone", "Source\Directory.WindowsPhone\PocketCampus.Directory.WindowsPhone.csproj", "{E6A845B2-EEDD-4D20-9895-3BB187C15E81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Mvvm.Tests", "Source\Mvvm.Tests\PocketCampus.Mvvm.Tests.csproj", "{5C3BB509-8CBD-4C2D-A415-E38268604042}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Events.Common", "Source\Events.Common\PocketCampus.Events.Common.csproj", "{FA7A34C6-DD2B-48C1-827B-2B56BD634996}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketCampus.Events.WindowsPhone", "Source\Events.WindowsPhone\PocketCampus.Events.WindowsPhone.csproj", "{248C6CF6-C940-42E4-AC38-C31F3726DD44}"
@@ -83,18 +79,6 @@ Global
 		{AF9FF1D1-FDAC-42A1-841C-65DB481066FB}.Release|x86.ActiveCfg = Release|x86
 		{AF9FF1D1-FDAC-42A1-841C-65DB481066FB}.Release|x86.Build.0 = Release|x86
 		{AF9FF1D1-FDAC-42A1-841C-65DB481066FB}.Release|x86.Deploy.0 = Release|x86
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Debug|ARM.Build.0 = Debug|Any CPU
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Debug|x86.ActiveCfg = Debug|x86
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Debug|x86.Build.0 = Debug|x86
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Release|ARM.ActiveCfg = Release|Any CPU
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Release|ARM.Build.0 = Release|Any CPU
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Release|x86.ActiveCfg = Release|x86
-		{53C14BDB-427E-492E-8BDC-B329D8737D17}.Release|x86.Build.0 = Release|x86
 		{2AB0060F-5611-4AEB-9210-D8496CFC421D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2AB0060F-5611-4AEB-9210-D8496CFC421D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AB0060F-5611-4AEB-9210-D8496CFC421D}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -337,14 +321,6 @@ Global
 		{E6A845B2-EEDD-4D20-9895-3BB187C15E81}.Release|ARM.Build.0 = Release|ARM
 		{E6A845B2-EEDD-4D20-9895-3BB187C15E81}.Release|x86.ActiveCfg = Release|x86
 		{E6A845B2-EEDD-4D20-9895-3BB187C15E81}.Release|x86.Build.0 = Release|x86
-		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Release|ARM.ActiveCfg = Release|Any CPU
-		{5C3BB509-8CBD-4C2D-A415-E38268604042}.Release|x86.ActiveCfg = Release|Any CPU
 		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA7A34C6-DD2B-48C1-827B-2B56BD634996}.Debug|ARM.ActiveCfg = Debug|Any CPU

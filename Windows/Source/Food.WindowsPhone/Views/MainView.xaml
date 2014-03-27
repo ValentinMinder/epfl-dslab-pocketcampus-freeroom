@@ -29,17 +29,13 @@
             <!-- Converters -->
             <my:MealPriceConverter x:Key="MealToPrice"
                                    Settings="{Binding Settings}" />
-            
-            <!-- Simple button template with only a content -->
-            <ControlTemplate x:Key="SimpleButtonTemplate">
-                <ContentPresenter />
-            </ControlTemplate>
 
             <!-- Meal template -->
             <DataTemplate x:Key="MealItemTemplate">
-                <Grid Margin="0,0,0,20">
+                <Grid Margin="24,10,24,30"
+                      Width="432">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="100" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     
@@ -66,17 +62,17 @@
 
                         <!-- Half-portion price -->
                         <StackPanel Grid.Row="2"
-                                    Orientation="Horizontal"
-                                    HorizontalAlignment="Center"
+                                    Margin="0,10,0,0"
                                     Visibility="{Binding HalfPortionPrice, Converter={StaticResource NonNullToVisibility}}">
                             <TextBlock Text="{Binding Resources.HalfPrice, Source={StaticResource Strings}}"
-                                       Style="{StaticResource PhoneTextNormalStyle}"
-                                       Foreground="{StaticResource PhoneSubtleBrush}"
+                                       Style="{StaticResource PhoneTextSubtleStyle}"
+                                       TextAlignment="Center"
                                        Margin="0" />
 
                             <TextBlock Text="{Binding HalfPortionPrice, Converter={StaticResource PriceToString}}"
-                                       Style="{StaticResource PhoneTextNormalStyle}"
-                                       Margin="6,0,0,0" />
+                                       Style="{StaticResource PhoneTextSubtleStyle}"
+                                       TextAlignment="Center"
+                                       Margin="0,-4,0,0" />
                         </StackPanel>
                     </Grid>
 
@@ -91,33 +87,38 @@
                         <TextBlock Text="{Binding Name}"
                                    TextWrapping="Wrap"
                                    Style="{StaticResource PhoneTextLargeStyle}"
-                                   FontSize="{StaticResource PhoneFontSizeMediumLarge}"/>
+                                   FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                   Margin="6,0" />
 
                         <!-- Description -->
                         <TextBlock Grid.Row="1"
                                    Text="{Binding Description}"
                                    TextWrapping="Wrap"
-                                   Style="{StaticResource PhoneTextSubtleStyle}" />
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Margin="6"
+                                   Visibility="{Binding Description, Converter={StaticResource StringToVisibility}}"/>
 
                         <!-- Rating & vote button -->
                         <StackPanel Grid.Row="2"
                                     Orientation="Horizontal"
+                                    Margin="-8,0,0,0"
                                     Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}">
                             <myControls:RatingDisplay Rating="{Binding Rating}"
                                                       Foreground="{StaticResource PhoneForegroundBrush}"
-                                                      FontSize="{StaticResource PhoneFontSizeNormal}" />
+                                                      FontSize="{StaticResource PhoneFontSizeSmall}" />
                             
                             <TextBlock Text="-"
-                                       Style="{StaticResource PhoneTextSubtleStyle}"
-                                       Margin="-6,0,6,0" />
+                                       Style="{StaticResource PhoneTextSmallStyle}"
+                                       Margin="-6,0,0,0" />
                             
-                            <Button Template="{StaticResource SimpleButtonTemplate}"
+                            <Button Style="{StaticResource SimpleButtonStyle}"
                                     Content="{Binding Resources.RateMealButton, Source={StaticResource Strings}}"
                                     Foreground="{StaticResource AppAccentBrush}"
-                                    FontSize="{StaticResource PhoneFontSizeNormal}"
+                                    FontSize="{StaticResource PhoneFontSizeSmall}"
                                     Opacity="0.75"
                                     Command="{Binding DataContext.RateMealCommand, ElementName=LayoutRoot}"
-                                    CommandParameter="{Binding}" />
+                                    CommandParameter="{Binding}"
+                                    Padding="6,0" />
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -126,7 +127,7 @@
             <!-- Restaurant header template -->
             <DataTemplate x:Key="RestaurantHeaderTemplate">
                 <Grid Background="Transparent"
-                      Margin="0,0,0,10">
+                      Margin="24,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -142,7 +143,7 @@
                     <!-- Rating -->
                     <myControls:RatingDisplay Grid.Row="1"
                                               Rating="{Binding Restaurant.Rating}"
-                                              Margin="-12,0,0,0"
+                                              Margin="-12,-4,0,0"
                                               Foreground="{StaticResource PhoneSubtleBrush}" 
                                               FontSize="{StaticResource PhoneFontSizeSmall}"
                                               Visibility="{Binding DataContext.AreRatingsEnabled, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibility}}" />
@@ -157,11 +158,6 @@
                         </tool:ContextMenu>
                     </tool:ContextMenuService.ContextMenu>
                 </Grid>
-            </DataTemplate>
-            
-            <!-- HACK: Empty footer with a certain height to add margin -->
-            <DataTemplate x:Key="MarginFooterTemplate">
-                <Rectangle Height="20" />
             </DataTemplate>
 
             <!-- Restaurant menu item template (for the LongListSelector's jump list) -->
@@ -202,12 +198,16 @@
             <!-- Meal time selector -->
             <myControls:MealTimePicker Grid.Column="1"
                                        Value="{Binding MealTime, Mode=TwoWay}"
-                                       Margin="5" />
+                                       Margin="16,5" />
         </Grid>
 
         <!-- Meal date selector -->
-        <myControls:DayPicker Grid.Row="1"
-                              Value="{Binding MealDate, Mode=TwoWay}" />
+        <Border Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <myControls:DayPicker Value="{Binding MealDate, Mode=TwoWay}"
+                                  TextStyle="{StaticResource AppTextSecondaryHeaderStyle}"
+                                  Margin="10,0" Height="55" />
+        </Border>
 
         <!-- Meal list -->
         <phone:LongListSelector Grid.Row="2"
@@ -215,9 +215,8 @@
                                 ItemTemplate="{StaticResource MealItemTemplate}"
                                 IsGroupingEnabled="True"
                                 GroupHeaderTemplate="{StaticResource RestaurantHeaderTemplate}"
-                                GroupFooterTemplate="{StaticResource MarginFooterTemplate}"
-                                JumpListStyle="{StaticResource JumpListStyle}"
-                                Margin="12,0" />
+                                GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
+                                JumpListStyle="{StaticResource JumpListStyle}" />
 
         <!-- "No filter results" text -->
         <TextBlock Grid.Row="2"
@@ -239,7 +238,7 @@
 
     <!-- App bar -->
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar>
+        <bar:BindableApplicationBar Mode="Minimized">
             <!-- "Refresh" button -->
             <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"
                                               Text="{Binding Resources.RefreshButton, Source={StaticResource Strings}}"

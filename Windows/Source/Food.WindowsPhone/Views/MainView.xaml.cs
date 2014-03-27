@@ -5,8 +5,8 @@
 using System.Windows;
 using System.Windows.Input;
 using PocketCampus.Common.Controls;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Food.Views
 {

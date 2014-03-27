@@ -6,8 +6,8 @@ using PocketCampus.Common.Services;
 using PocketCampus.Directory.Models;
 using PocketCampus.Directory.Services;
 using PocketCampus.Map;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Directory.ViewModels
 {

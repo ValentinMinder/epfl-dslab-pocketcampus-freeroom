@@ -9,19 +9,19 @@ namespace PocketCampus.News.Models
     /// <summary>
     /// EPFL news feed.
     /// </summary>
-    [ThriftStruct( "Feed" )]
+    [ThriftStruct( "NewsFeed" )]
     public sealed class Feed
     {
         /// <summary>
         /// The feed's name.
         /// </summary>
-        [ThriftField( 2, true, "title" )]
+        [ThriftField( 1, true, "name" )]
         public string Name { get; set; }
 
         /// <summary>
         /// The feed's items.
         /// </summary>
-        [ThriftField( 5, true, "items" )]
+        [ThriftField( 2, true, "items" )]
         public FeedItem[] Items { get; set; }
     }
 }

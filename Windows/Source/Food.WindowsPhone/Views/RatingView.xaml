@@ -54,25 +54,26 @@
         <TextBlock Grid.Row="3"
                    Text="{Binding Meal.Name}"
                    TextWrapping="Wrap"
-                   Style="{StaticResource PhoneTextTitle2Style}" />
+                   Style="{StaticResource PhoneTextTitle2Style}"
+                   Margin="24,10,24,0" />
 
         <!-- Restaurant name -->
         <TextBlock Grid.Row="4"
                    Text="{Binding Meal.Restaurant.Name}"
                    TextWrapping="Wrap"
-                   Style="{StaticResource PhoneTextTitle3Style}" />
+                   Style="{StaticResource PhoneTextTitle3Style}"
+                   Foreground="{StaticResource PhoneSubtleBrush}"
+                   Margin="24,0" />
 
         <!-- Rating -->
         <myControls:RatingPicker Grid.Row="5"
-                                 Value="{Binding Rating, Mode=TwoWay}" />
+                                 Value="{Binding Rating, Mode=TwoWay}"
+                                 Margin="12,0" />
 
         <!-- Status -->
         <TextBlock Grid.Row="6"
                    Text="{Binding Status, Converter={StaticResource EnumToString}}"
-                   VerticalAlignment="Center"
-                   TextAlignment="Center"
-                   TextWrapping="Wrap"
-                   Style="{StaticResource PhoneTextLargeStyle}"
+                   Style="{StaticResource AppTextCenterStyle}"
                    Foreground="{StaticResource AppAccentBrush}" />
 
         <!-- Loading and error -->
@@ -81,6 +82,7 @@
         <!-- "Rate" button -->
         <Button Grid.Row="7"
                 Command="{Binding RateCommand}"
-                Content="{Binding Resources.RateButton, Source={StaticResource Strings}}" />
+                Content="{Binding Resources.RateButton, Source={StaticResource Strings}}"
+                Margin="12,0,12,20" />
     </Grid>
 </comControls:BasePage>

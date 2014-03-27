@@ -2,11 +2,9 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 // Design data for the MainViewModel
 
@@ -25,34 +23,33 @@ namespace PocketCampus.Main.ViewModels.Design
             {
                 return new[]
                 {
-                    new DesignPlugin( "A plugin", false ),
-                    new DesignPlugin( "Another", false ),
-                    new DesignPlugin( "Kittens!", true ),
-                    new DesignPlugin( "Meow?", false ),
+                    new DesignPlugin( "Camipro" ),
+                    new DesignPlugin( "Directory" ),
+                    new DesignPlugin( "Events"  ),
+                    new DesignPlugin( "Food" ),
+                    new DesignPlugin( "IsAcademia" ),
+                    new DesignPlugin( "Map" ),
+                    new DesignPlugin( "Moodle" ),
+                    new DesignPlugin( "News" ),
+                    new DesignPlugin( "Satellite" ),
+                    new DesignPlugin( "Transport" )
                 };
             }
-        }
-
-        public ICommand OpenPluginCommand
-        {
-            get { return new Command<IPlugin>( this, _ => { }, p => p == null || !( (IPlugin) p ).RequiresAuthentication ); }
         }
 
 
         // This also "implements" IWindowsPhonePlugin for the WP designer
         private sealed class DesignPlugin : IPlugin
         {
-            public string Id { get; private set; }
-            public string Name { get; private set; }
-            public bool RequiresAuthentication { get; private set; }
-            public Uri Icon { get; private set; }
-            public Uri SmallIcon { get; private set; }
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public bool RequiresAuthentication { get; set; }
+            public string IconKey { get; set; }
 
-            public DesignPlugin( string name, bool requiresAuth )
+            public DesignPlugin( string name )
             {
                 Id = Name = name;
-                RequiresAuthentication = requiresAuth;
-                Icon = SmallIcon = new Uri( "http://lorempixel.com/500/500/cats/", UriKind.Absolute );
+                IconKey = name + "Icon";
             }
 
             public void Initialize( INavigationService navigationService ) { }

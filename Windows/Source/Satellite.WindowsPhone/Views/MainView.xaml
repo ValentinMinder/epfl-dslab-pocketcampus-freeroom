@@ -31,51 +31,57 @@
         <!-- Beer template -->
         <DataTemplate x:Key="BeerListItemTemplate">
             <Grid Background="Transparent"
-                  Margin="0,6"
+                  Margin="0,5,0,15"
                   Tap="Beer_Tap">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!-- Beer name -->
-                <TextBlock Text="{Binding Name}"
-                           Style="{StaticResource PhoneTextLargeStyle}"
-                           TextTrimming="WordEllipsis" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                <!-- Brewery name & country -->
+                    <!-- Beer name -->
+                    <TextBlock Text="{Binding Name}"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                               TextTrimming="WordEllipsis"/>
+
+                    <!-- Price -->
+                    <TextBlock Grid.Column="2"
+                               Text="{Binding Price, StringFormat='{}{0:0.00} CHF'}"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               VerticalAlignment="Bottom"
+                               Margin="0" />
+                </Grid>
+
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
+                    <!-- Brewery name -->
                     <TextBlock Text="{Binding BreweryName}"
-                               Style="{StaticResource PhoneTextSubtleStyle}" />
+                               Style="{StaticResource PhoneTextSubtleStyle}"
+                               Margin="12,0,6,0" />
+
+                    <!-- Brewery country -->
                     <TextBlock Grid.Column="1"
                                Text="{Binding CountryName, StringFormat='({0})'}"
                                TextTrimming="WordEllipsis"
                                Style="{StaticResource PhoneTextSubtleStyle}"
-                               Margin="-5,0,0,0"/>
-                </Grid>
-
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                               Margin="0,0,24,0" />
 
                     <!-- Alcohol rate -->
-                    <TextBlock Text="{Binding AlcoholRate, StringFormat='{}{0}°'}"
-                               Style="{StaticResource PhoneTextSmallStyle}" />
-
-                    <!-- Price -->
-                    <TextBlock Grid.Column="1"
-                               Text="{Binding Price, StringFormat='{}{0:0.00} CHF'}"
-                               TextAlignment="Right"
-                               Style="{StaticResource PhoneTextSmallStyle}"
-                               Foreground="{StaticResource PhoneAccentBrush}" />
+                    <TextBlock Grid.Column="2"
+                               Text="{Binding AlcoholRate, StringFormat='{}{0}°'}"
+                               Style="{StaticResource PhoneTextSubtleStyle}"
+                               Margin="0" />
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -98,7 +104,7 @@
             <TextBlock Text="{Binding Type}"
                        Style="{StaticResource PhoneTextTitle2Style}"
                        Foreground="{StaticResource PhoneSubtleBrush}"
-                       Margin="0,12,0,0" />
+                       Margin="12,0" />
         </DataTemplate>
 
         <!-- Beer menu part-->
@@ -107,17 +113,11 @@
                                     ItemTemplate="{StaticResource BeerListItemTemplate}"
                                     IsGroupingEnabled="True"
                                     GroupHeaderTemplate="{StaticResource BeerGroupListHeaderTemplate}"
-                                    JumpListStyle="{StaticResource BeerGroupJumpListStyle}"
-                                    Margin="0,-15,0,0">
-                <phone:LongListSelector.GroupFooterTemplate>
-                    <DataTemplate>
-                        <!-- HACK: Margin at the bottom of groups with an empty rectangle-->
-                        <Rectangle Height="30" />
-                    </DataTemplate>
-                </phone:LongListSelector.GroupFooterTemplate>
-            </phone:LongListSelector>
+                                    GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
+                                    JumpListStyle="{StaticResource BeerGroupJumpListStyle}" />
         </DataTemplate>
 
+        <!-- Header template for menu parts -->
         <DataTemplate x:Key="BeerMenuPartHeaderTemplate">
             <TextBlock Text="{Binding Container, Converter={StaticResource EnumToString}}" />
         </DataTemplate>
@@ -142,7 +142,7 @@
 
     <!-- Application bar -->
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar>
+        <bar:BindableApplicationBar Mode="Minimized">
             <bar:BindableApplicationBar.Buttons>
                 <!-- "Refresh" button -->
                 <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"

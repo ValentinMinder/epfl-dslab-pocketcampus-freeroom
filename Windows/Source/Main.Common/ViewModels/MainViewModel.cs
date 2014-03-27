@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Main.ViewModels
 {
@@ -153,8 +153,8 @@ namespace PocketCampus.Main.ViewModels
             }
             else if ( !_settings.IsAuthenticated )
             {
-                _navigationService.NavigateToDialog<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Dialog );
-                plugin.NavigateTo( _navigationService );
+                var authRequest = new AuthenticationRequest( true, () => plugin.NavigateTo( _navigationService ) );
+                _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
             }
         }
     }

@@ -9,7 +9,7 @@
                     xmlns:comControls="clr-namespace:PocketCampus.Common.Controls;assembly=PocketCampus.Common.WindowsPhone">
     <!-- Colors -->
     <Color x:Key="AppAccentColor">#A80507</Color>
-    <Color x:Key="AppTileColor">#D6060D</Color>
+    <Color x:Key="AppTileColor">#E5060A</Color>
     <Color x:Key="AppHeaderBackgroundColor">#E5060A</Color>
     <!-- This color cannot be white (#FFFFFFFF), see http://msdn.microsoft.com/en-us/library/microsoft.phone.shell.systemtray.foregroundcolor.aspx -->
     <Color x:Key="AppHeaderForegroundColor">#FEFFFFFF</Color>
@@ -84,6 +84,93 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="SimpleButtonStyle" TargetType="Button">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="ButtonBackground"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch" />
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" 
+                                                                       Storyboard.TargetName="ButtonBackground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AppAccentBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Style for hyperlink buttons to wrap their content-->
+    <Style x:Key="HyperlinkButtonWrappedStyle" TargetType="HyperlinkButton">
+        <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="HyperlinkButton">
+                    <Border Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         To="0.5"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         Storyboard.TargetName="TextElement" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
+                                                                       Storyboard.TargetName="TextElement">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource PhoneDisabledBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border Background="{TemplateBinding Background}"
+                                Margin="{StaticResource PhoneHorizontalMargin}"
+                                Padding="{TemplateBinding Padding}">
+                            <TextBlock x:Name="TextElement"
+                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                       Text="{TemplateBinding Content}"
+                                       TextDecorations="Underline"
+                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Spacer template for group footers -->
+    <DataTemplate x:Key="SpacerFooterTemplate">
+        <Rectangle Height="30" />
+    </DataTemplate>
 
     <!-- Converters -->
     <com:GeoLocationStatusToErrorBooleanConverter x:Key="LocationStatusToError" />

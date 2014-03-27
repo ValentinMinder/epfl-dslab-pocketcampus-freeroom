@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using PocketCampus.Food.Models;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 // Design data for RatingViewModel
 

@@ -34,7 +34,8 @@
             <TextBlock x:Name="WeekText"
                        Text="{Binding DisplayDate}"
                        TextAlignment="Center"
-                       Style="{Binding TextStyle}" />
+                       Style="{Binding TextStyle}"
+                       Margin="0" />
         </Viewbox>
 
 

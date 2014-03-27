@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using PocketCampus.Common;
 using PocketCampus.Food.Services;
 using PocketCampus.Food.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Food
 {

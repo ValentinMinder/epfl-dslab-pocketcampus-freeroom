@@ -9,8 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using PocketCampus.Directory.Models;
 using PocketCampus.Directory.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Directory.ViewModels
 {

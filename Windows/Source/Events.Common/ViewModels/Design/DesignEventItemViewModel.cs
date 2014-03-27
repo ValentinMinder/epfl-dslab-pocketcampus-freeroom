@@ -16,6 +16,7 @@ namespace PocketCampus.Events.ViewModels.Design
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
 
+        public bool CanBeFavorite { get { return true; } }
         public bool IsFavorite { get { return false; } }
 
         public EventItem Item

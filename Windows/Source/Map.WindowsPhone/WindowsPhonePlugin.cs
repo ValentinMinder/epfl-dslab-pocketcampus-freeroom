@@ -2,12 +2,11 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using PocketCampus.Common;
-using PocketCampus.Common.Services;
 using PocketCampus.Map.Resources;
 using PocketCampus.Map.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
+using ThinMvvm.WindowsPhone;
 
 namespace PocketCampus.Map
 {
@@ -25,19 +24,11 @@ namespace PocketCampus.Map
         }
 
         /// <summary>
-        /// Gets the plugin's icon.
+        /// Gets the key of the plugin's icon in the application resources.
         /// </summary>
-        public Uri Icon
+        public string IconKey
         {
-            get { return new Uri( "/Assets/MapsIcon.png", UriKind.Relative ); }
-        }
-
-        /// <summary>
-        /// Gets the plugin's small icon.
-        /// </summary>
-        public Uri SmallIcon
-        {
-            get { return new Uri( "/Assets/MapsSmallIcon.png", UriKind.Relative ); }
+            get { return "MapIcon"; }
         }
 
         /// <summary>
@@ -48,7 +39,7 @@ namespace PocketCampus.Map
             navigationService.Bind<MainViewModel>( "/PocketCampus.Map.WindowsPhone;component/Views/MainView.xaml" );
             navigationService.Bind<SettingsViewModel>( "/PocketCampus.Map.WindowsPhone;component/Views/SettingsView.xaml" );
 
-            Container.BindOnce<IPluginSettings, PluginSettings>();
+            Container.Bind<IPluginSettings, PluginSettings>();
         }
     }
 }

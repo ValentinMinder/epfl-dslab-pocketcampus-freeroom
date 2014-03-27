@@ -2,8 +2,8 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Map.ViewModels
 {

@@ -11,7 +11,7 @@ using PocketCampus.Common.Controls;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Resources;
 using PocketCampus.Events.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Events.Views
 {

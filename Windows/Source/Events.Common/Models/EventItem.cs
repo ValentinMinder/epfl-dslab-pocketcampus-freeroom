@@ -145,15 +145,6 @@ namespace PocketCampus.Events.Models
         [ThriftField( 31, false, "parentPool" )]
         public long? ParentPoolId { get; set; }
 
-
-        /// <summary>
-        /// The item's parent pool.
-        /// </summary>
-        /// <remarks>
-        /// Not in the Thrift interface.
-        /// </remarks>
-        public EventPool ParentPool { get; set; }
-
         /// <summary>
         /// The item's log ID.
         /// </summary>

@@ -13,26 +13,19 @@ namespace PocketCampus.News.Services
 {
     public sealed class NewsService : ThriftServiceImplementation<INewsService>, INewsService
     {
-        private const string FeedNamePrefix = "EPFL ";
-
         public NewsService( IServerAccess access )
             : base( access.CreateCommunication( "news" ) )
         {
         }
 
-        public async Task<Feed[]> GetFeedsAsync( string language )
+        public Task<FeedsResponse> GetFeedsAsync( FeedsRequest request )
         {
-            var feeds = await CallAsync<string, Feed[]>( x => x.GetFeedsAsync, language );
-            foreach ( var feed in feeds )
-            {
-                feed.Name = feed.Name.Replace( FeedNamePrefix, "" );
-            }
-            return feeds;
+            return CallAsync<FeedsRequest, FeedsResponse>( x => x.GetFeedsAsync, request );
         }
 
-        public Task<string> GetFeedItemContentAsync( long id )
+        public Task<FeedItemContentResponse> GetFeedItemContentAsync( FeedItemContentRequest request )
         {
-            return CallAsync<long, string>( x => x.GetFeedItemContentAsync, id );
+            return CallAsync<FeedItemContentRequest, FeedItemContentResponse>( x => x.GetFeedItemContentAsync, request );
         }
     }
 }

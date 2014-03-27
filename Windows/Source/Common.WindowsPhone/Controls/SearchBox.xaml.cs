@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Phone.Controls;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Common.Controls
 {
@@ -116,6 +116,11 @@ namespace PocketCampus.Common.Controls
 
         private async void Box_Populating( object sender, PopulatingEventArgs e )
         {
+            if ( AutoCompleteProvider == null )
+            {
+                return;
+            }
+
             e.Cancel = true;
             try
             {

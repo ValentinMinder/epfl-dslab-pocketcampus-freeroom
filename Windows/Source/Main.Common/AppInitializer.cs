@@ -4,7 +4,7 @@
 
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 using ThriftSharp;
 
 namespace PocketCampus.Main
@@ -15,7 +15,7 @@ namespace PocketCampus.Main
         {
             DataViewModelOptions.NetworkExceptionType = typeof( ThriftTransportException );
 
-            Container.BindOnce<IMainSettings, MainSettings>();
+            Container.Bind<IMainSettings, MainSettings>();
             Container.Bind<IServerAccess, ServerAccess>();
             Container.Bind<IAuthenticationService, AuthenticationService>();
             Container.Bind<ITequilaAuthenticator, TequilaAuthenticator>();

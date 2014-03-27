@@ -4,8 +4,8 @@
 
 using PocketCampus.Common;
 using PocketCampus.Food.Models;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Food.ViewModels
 {

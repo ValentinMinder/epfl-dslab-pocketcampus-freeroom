@@ -13,15 +13,6 @@ namespace PocketCampus.Main
     public sealed class MainSettings : SettingsBase, IMainSettings
     {
         /// <summary>
-        /// Gets or sets a value indicating whether this is the app's first run.
-        /// </summary>
-        public bool IsFirstRun
-        {
-            get { return Get<bool>(); }
-            set { Set( value ); }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the user is authenticated.
         /// </summary>
         public bool IsAuthenticated
@@ -90,7 +81,6 @@ namespace PocketCampus.Main
         {
             return new SettingsDefaultValues<MainSettings>
             {
-                { x => x.IsFirstRun, () => true },
                 { x => x.Configuration, () => new ServerConfiguration( "https", 4433, "Camipro", "Directory", "Events", "Food", "IsAcademia", 
                                                                                       "Map", "Moodle", "News", "Satellite", "Transport" ) },
                 { x => x.IsAuthenticated, () => false },

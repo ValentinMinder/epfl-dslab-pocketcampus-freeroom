@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using PocketCampus.Map.Models;
 using PocketCampus.Map.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Map.ViewModels
 {
@@ -18,6 +18,8 @@ namespace PocketCampus.Map.ViewModels
     /// </summary>
     public sealed class SearchProvider : DataViewModel<NoParameter>
     {
+        private const string IgnoredNamePrefix = "Auditoire ";
+
         private readonly IMapService _mapService;
 
         private MapItem[] _searchResults;
@@ -39,14 +41,6 @@ namespace PocketCampus.Map.ViewModels
         {
             get { return _anySearchResults; }
             private set { SetProperty( ref _anySearchResults, value ); }
-        }
-
-        /// <summary>
-        /// Gets the provider for the search autocomplete.
-        /// </summary>
-        public Func<string, Task<IEnumerable<string>>> AutoCompleteProvider
-        {
-            get { return ProvideSearchSuggestionsAsync; }
         }
 
         /// <summary>
@@ -89,15 +83,6 @@ namespace PocketCampus.Map.ViewModels
         }
 
         /// <summary>
-        /// Provides search suggestions.
-        /// </summary>
-        private async Task<IEnumerable<string>> ProvideSearchSuggestionsAsync( string query )
-        {
-            var results = await _mapService.SearchAsync( query );
-            return results.Select( i => i.Name );
-        }
-
-        /// <summary>
         /// Searches for rooms, buildings and stuff.
         /// </summary>
         private Task Search( string query )
@@ -109,7 +94,7 @@ namespace PocketCampus.Map.ViewModels
                 AnySearchResults = true;
 
                 var results = await _mapService.SearchAsync( query );
-                var uniqueResult = results.FirstOrDefault( i => i.Name.Equals( query, StringComparison.CurrentCultureIgnoreCase ) );
+                var uniqueResult = results.FirstOrDefault( r => AreNamesEqual( r.Name, query ) );
 
                 if ( !token.IsCancellationRequested )
                 {
@@ -117,6 +102,25 @@ namespace PocketCampus.Map.ViewModels
                     AnySearchResults = SearchResults.Length > 0;
                 }
             } );
+        }
+
+        /// <summary>
+        /// Indicates whether the two specified names are considered to be equal.
+        /// </summary>
+        private static bool AreNamesEqual( string name1, string name2 )
+        {
+            return Enumerable.SequenceEqual( NormalizeName( name1 ), NormalizeName( name2 ) );
+        }
+
+        /// <summary>
+        /// Normalizes the specified name.
+        /// </summary>
+        private static IEnumerable<char> NormalizeName( string name )
+        {
+            return name.ToUpperInvariant()
+                       .Replace( IgnoredNamePrefix, "" )
+                       .ToCharArray()
+                       .Where( c => !char.IsWhiteSpace( c ) );
         }
     }
 }

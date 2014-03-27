@@ -20,8 +20,8 @@
                            TextOptions.DisplayColorEmoji="False"
                            Style="{StaticResource PhoneTextTitle1Style}"
                            Foreground="{StaticResource PhoneSubtleBrush}"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center" />
+                           VerticalAlignment="Center"
+                           Margin="10" />
 
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="CheckedStates">
@@ -60,18 +60,21 @@
         <!-- "Bad" button -->
         <RadioButton IsChecked="{Binding IsBad, Mode=TwoWay}"
                      Content="😒"
-                     Template="{StaticResource TextRadioButtonTemplate}" />
+                     Template="{StaticResource TextRadioButtonTemplate}"
+                     HorizontalAlignment="Left" />
 
         <!-- "Neutral" button -->
         <RadioButton Grid.Column="1"
                      IsChecked="{Binding IsNeutral, Mode=TwoWay}"
                      Content="😑"
-                     Template="{StaticResource TextRadioButtonTemplate}" />
+                     Template="{StaticResource TextRadioButtonTemplate}"
+                     HorizontalAlignment="Center" />
 
         <!-- "Good" button -->
         <RadioButton Grid.Column="2"
                      IsChecked="{Binding IsGood, Mode=TwoWay}"
                      Content="😃"
-                     Template="{StaticResource TextRadioButtonTemplate}" />
+                     Template="{StaticResource TextRadioButtonTemplate}"
+                     HorizontalAlignment="Right" />
     </Grid>
 </comControls:ObservableControl>

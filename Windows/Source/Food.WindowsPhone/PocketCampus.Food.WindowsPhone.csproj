@@ -124,25 +124,25 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Dinner.png" />
     <Content Include="Assets\MealType_Fish.png" />
     <Content Include="Assets\MealType_GreenFork.png" />
     <Content Include="Assets\MealType_Indian.png" />
     <Content Include="Assets\MealType_Lebanese.png" />
-    <Content Include="Assets\FoodIcon.png" />
-    <Content Include="Assets\Lunch.png" />
     <Content Include="Assets\MealType_Meat.png" />
     <Content Include="Assets\MealType_Pasta.png" />
     <Content Include="Assets\MealType_Pizza.png" />
     <Content Include="Assets\MealType_Poultry.png" />
     <Content Include="Assets\Refresh.png" />
-    <Content Include="Assets\FoodSmallIcon.png" />
     <Content Include="Assets\Settings.png" />
     <Content Include="Assets\MealType_Thai.png" />
     <Content Include="Assets\MealType_Unknown.png" />
     <Content Include="Assets\MealType_Vegetarian.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DayPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -199,6 +199,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="ThinMvvm, Version=0.9.1.14986, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.0.9.1\lib\portable-net45+wp8+win8\ThinMvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinMvvm.WindowsPhone, Version=0.9.1.14987, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.WindowsPhone.0.9.1\lib\wp8\ThinMvvm.WindowsPhone.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -219,10 +227,6 @@
     <ProjectReference Include="..\Map.Common\PocketCampus.Map.Common.csproj">
       <Project>{986B1475-023C-41A1-903C-7A48FFC55ADF}</Project>
       <Name>PocketCampus.Map.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mvvm\PocketCampus.Mvvm.csproj">
-      <Project>{53C14BDB-427E-492E-8BDC-B329D8737D17}</Project>
-      <Name>PocketCampus.Mvvm</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

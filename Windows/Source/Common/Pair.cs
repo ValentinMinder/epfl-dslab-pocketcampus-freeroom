@@ -4,7 +4,7 @@
 
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Common
 {

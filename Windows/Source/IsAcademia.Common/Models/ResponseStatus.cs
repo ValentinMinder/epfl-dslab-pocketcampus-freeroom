@@ -28,6 +28,12 @@ namespace PocketCampus.IsAcademia.Models
         /// The provided credentials are invalid or expired.
         /// </summary>
         [ThriftEnumMember( "INVALID_SESSION", 407 )]
-        AuthenticationError
+        AuthenticationError,
+
+        /// <summary>
+        /// An error was thrown by IS-Academia while executing the request.
+        /// </summary>
+        [ThriftEnumMember( "ISA_ERROR", 418 )]
+        IsAcademiaError
     }
 }

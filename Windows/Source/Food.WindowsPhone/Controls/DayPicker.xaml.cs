@@ -7,8 +7,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 using PocketCampus.Common.Controls;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Food.Controls
 {
@@ -29,6 +29,17 @@ namespace PocketCampus.Food.Controls
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register( "Value", typeof( DateTime ), typeof( DayPicker ), new PropertyMetadata( DateTime.Now ) );
+        #endregion
+
+        #region TextStyle DependencyProperty
+        public Style TextStyle
+        {
+            get { return (Style) GetValue( TextStyleProperty ); }
+            set { SetValue( TextStyleProperty, value ); }
+        }
+
+        public static readonly DependencyProperty TextStyleProperty =
+            DependencyProperty.Register( "TextStyle", typeof( Style ), typeof( DayPicker ), new PropertyMetadata( null ) );
         #endregion
 
         /// <summary>

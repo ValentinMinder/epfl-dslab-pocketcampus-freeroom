@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using PocketCampus.Camipro.Services;
 using PocketCampus.Camipro.ViewModels;
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Camipro
 {

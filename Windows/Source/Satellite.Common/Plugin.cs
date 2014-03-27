@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 using PocketCampus.Satellite.Services;
 using PocketCampus.Satellite.ViewModels;
 

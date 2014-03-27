@@ -5,8 +5,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Main.ViewModels
 {
@@ -30,7 +30,7 @@ namespace PocketCampus.Main.ViewModels
         [LogId( "LogIn" )]
         public Command LogInCommand
         {
-            get { return GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Standalone ) ); }
+            get { return GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( new AuthenticationRequest( false ) ) ); }
         }
 
         /// <summary>

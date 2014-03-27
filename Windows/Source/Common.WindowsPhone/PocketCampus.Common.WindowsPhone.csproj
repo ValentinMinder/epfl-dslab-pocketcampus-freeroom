@@ -92,12 +92,12 @@
       <DependentUpon>SearchBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="LauncherEx.cs" />
+    <Compile Include="PhoneHelper.cs" />
     <Compile Include="Resources\CommonResources.fr.Designer.cs">
       <DependentUpon>CommonResources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Services\IWindowsPhoneNavigationService.cs" />
     <Compile Include="IWindowsPhonePlugin.cs" />
     <Compile Include="Controls\LoadingAndError.xaml.cs">
       <DependentUpon>LoadingAndError.xaml</DependentUpon>
@@ -114,15 +114,12 @@
       <DependentUpon>CommonResources.resx</DependentUpon>
     </Compile>
     <Compile Include="TextBoxEx.cs" />
+    <Compile Include="ValueConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mvvm\PocketCampus.Mvvm.csproj">
-      <Project>{53C14BDB-427E-492E-8BDC-B329D8737D17}</Project>
-      <Name>PocketCampus.Mvvm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +143,14 @@
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinMvvm, Version=0.9.1.14986, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.0.9.1\lib\portable-net45+wp8+win8\ThinMvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinMvvm.WindowsPhone, Version=0.9.1.14987, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.WindowsPhone.0.9.1\lib\wp8\ThinMvvm.WindowsPhone.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

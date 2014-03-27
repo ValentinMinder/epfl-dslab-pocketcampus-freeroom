@@ -160,7 +160,7 @@
     <value>settings</value>
   </data>
   <data name="SortByPosition" xml:space="preserve">
-    <value>Sort stations by distance to my position</value>
+    <value>Sort stations by their distance to me</value>
   </data>
   <data name="StationsHeader" xml:space="preserve">
     <value>stations</value>
@@ -178,7 +178,7 @@
     <value>Geolocation</value>
   </data>
   <data name="UseGeolocationMessage" xml:space="preserve">
-    <value>Do you want to select the station closest to you as departure?
+    <value>Do you want to sort the stations by their distance to you?
 To do so, the app must access your position.</value>
   </data>
 </root>
