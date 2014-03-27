@@ -23,7 +23,6 @@ import microsoft.exchange.webservices.data.TimeWindow;
 import microsoft.exchange.webservices.data.WebCredentials;
 
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 public class ExchangeEntry {
 	private String gasparUserName = null;
@@ -51,6 +50,27 @@ public class ExchangeEntry {
 		// test something here...
 	}
 
+	/**
+	 * Default constructor. Use this to specify the password in the text file or
+	 * property file.
+	 */
+	public ExchangeEntry() {
+		// TODO: get the pass from the server properties.
+		this.gasparUserName = "gaspar";
+		this.gasparPassword = "mdp";
+		this.domain = ExchangeEntry.defaultDomain;
+		setUp();
+	}
+
+	/**
+	 * Constructor with specified gaspar and password ID. Default domain is
+	 * used.
+	 * 
+	 * @param gaspar
+	 *            epfl ID.
+	 * @param password
+	 *            gaspar password.
+	 */
 	public ExchangeEntry(String gaspar, String password) {
 		this.gasparUserName = gaspar;
 		this.gasparPassword = password;
@@ -58,6 +78,16 @@ public class ExchangeEntry {
 		setUp();
 	}
 
+	/**
+	 * Constructor with specified gaspar ID, password and domain.
+	 * 
+	 * @param gaspar
+	 *            epfl ID.
+	 * @param password
+	 *            gaspar password.
+	 * @param domain
+	 *            domain (intranet for students and staff).
+	 */
 	public ExchangeEntry(String gaspar, String password, String domain) {
 		gasparUserName = gaspar;
 		gasparPassword = password;
@@ -65,6 +95,11 @@ public class ExchangeEntry {
 		setUp();
 	}
 
+	/**
+	 * Initiates the service and the connection.
+	 * 
+	 * @return true is connection is established.
+	 */
 	private boolean setUp() {
 		service = new ExchangeService();
 
@@ -80,6 +115,14 @@ public class ExchangeEntry {
 		return (service.getServerInfo() != null);
 	}
 
+	/**
+	 * Retrieves all the EmailAddress (Name + email) that satifies a given
+	 * string constraint.
+	 * 
+	 * @param nameToResolve
+	 *            a string constraint (don't accept regex).
+	 * @return a list of EmailAddress containing all the results.
+	 */
 	public List<EmailAddress> getUsers(String nameToResolve) {
 		ResolveNameSearchLocation searchScope = ResolveNameSearchLocation.ContactsThenDirectory;
 		NameResolutionCollection nrc;
@@ -100,27 +143,16 @@ public class ExchangeEntry {
 		}
 	}
 
-	public List<FRPeriod> getAvailability(FRRoom mFRRoom, FRPeriod mFrPeriod) {
-		// TODO: to delete, use the EWA property in the database, not this!
-		String email = mFRRoom.getDoorCode();
-		email.replaceAll("\\s", "");
-		email += "@intranet.epfl.ch";
-		return getAvailabilityFromEWAUID(email, mFrPeriod);
-		// TODO: uncomment this
-		// return getAvailabilityFromRoomUID(mFRRoom.getUid(), mFrPeriod);
-	}
-
-	public List<FRPeriod> getAvailabilityFromRoomUID(String uid,
-			FRPeriod mFrPeriod) {
-		// TODO: use the EWA property in the database, not this!
-		String email = ""; // TODO: method to query the database, to get the ewa
-							// id from the ui
-		return getAvailabilityFromEWAUID(email, mFrPeriod);
-	}
-
+	/**
+	 * Retrieves the list of occupancy for a given email and a given time window.
+	 * 
+	 * @param email the smtp adress of the contact (must be unique and valide).
+	 * @param mFrPeriod the time window to check.
+	 * @return a list of non-available time window.
+	 */
 	public List<FRPeriod> getAvailabilityFromEWAUID(String email,
 			FRPeriod mFrPeriod) {
-		List<AttendeeInfo> attendees = new ArrayList<AttendeeInfo>();
+		List<AttendeeInfo> attendees = new ArrayList<AttendeeInfo>(1);
 		attendees.add(new AttendeeInfo(email));
 		Date start = new Date(mFrPeriod.getTimeStampStart());
 		Date end = new Date(mFrPeriod.getTimeStampEnd());
@@ -134,8 +166,8 @@ public class ExchangeEntry {
 			List<FRPeriod> list = new ArrayList<FRPeriod>();
 			for (AttendeeAvailability attendeeAvailability : results
 					.getAttendeesAvailability()) {
-				System.out.println("Availability for "
-						+ attendees.get(attendeeIndex).getSmtpAddress());
+				AttendeeInfo attendee = attendees.get(attendeeIndex);
+				attendee.getSmtpAddress();
 				if (attendeeAvailability.getErrorCode() == ServiceError.NoError) {
 					for (CalendarEvent calendarEvent : attendeeAvailability
 							.getCalendarEvents()) {

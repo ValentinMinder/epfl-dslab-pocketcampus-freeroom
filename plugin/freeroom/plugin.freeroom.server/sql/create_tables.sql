@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	`building_label` char(255),
 	`cf` char(255),
 	`adminuse` char(255),
+	`EWAid` char(255) DEFAULT NULL,
 	PRIMARY KEY (`uid`)
 ) CHARSET=latin1;
 
