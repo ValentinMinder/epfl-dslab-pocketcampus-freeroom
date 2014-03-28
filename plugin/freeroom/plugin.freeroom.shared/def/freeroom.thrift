@@ -83,7 +83,7 @@ struct ActualOccupation {
 	1: required FRPeriod period;
 	2: required bool available;
 	3: required OccupationType occupationType;
-	// 4: required i32 probableOccupation; // if we want to do CFF-style
+	4: optional i32 probableOccupation; // if we want to do CFF-style
 }
 
 // the occupancy of a room: periods are usually each hour

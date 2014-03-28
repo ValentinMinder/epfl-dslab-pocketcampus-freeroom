@@ -27,10 +27,12 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
   private static final org.apache.thrift.protocol.TField PERIOD_FIELD_DESC = new org.apache.thrift.protocol.TField("period", org.apache.thrift.protocol.TType.STRUCT, (short)1);
   private static final org.apache.thrift.protocol.TField AVAILABLE_FIELD_DESC = new org.apache.thrift.protocol.TField("available", org.apache.thrift.protocol.TType.BOOL, (short)2);
   private static final org.apache.thrift.protocol.TField OCCUPATION_TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("occupationType", org.apache.thrift.protocol.TType.I32, (short)3);
+  private static final org.apache.thrift.protocol.TField PROBABLE_OCCUPATION_FIELD_DESC = new org.apache.thrift.protocol.TField("probableOccupation", org.apache.thrift.protocol.TType.I32, (short)4);
 
   private FRPeriod period; // required
   private boolean available; // required
   private OccupationType occupationType; // required
+  private int probableOccupation; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -40,7 +42,8 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
      * 
      * @see OccupationType
      */
-    OCCUPATION_TYPE((short)3, "occupationType");
+    OCCUPATION_TYPE((short)3, "occupationType"),
+    PROBABLE_OCCUPATION((short)4, "probableOccupation");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -61,6 +64,8 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
           return AVAILABLE;
         case 3: // OCCUPATION_TYPE
           return OCCUPATION_TYPE;
+        case 4: // PROBABLE_OCCUPATION
+          return PROBABLE_OCCUPATION;
         default:
           return null;
       }
@@ -102,7 +107,8 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
 
   // isset id assignments
   private static final int __AVAILABLE_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __PROBABLEOCCUPATION_ISSET_ID = 1;
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -113,6 +119,8 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.OCCUPATION_TYPE, new org.apache.thrift.meta_data.FieldMetaData("occupationType", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, OccupationType.class)));
+    tmpMap.put(_Fields.PROBABLE_OCCUPATION, new org.apache.thrift.meta_data.FieldMetaData("probableOccupation", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ActualOccupation.class, metaDataMap);
   }
@@ -145,6 +153,7 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
     if (other.isSetOccupationType()) {
       this.occupationType = other.occupationType;
     }
+    this.probableOccupation = other.probableOccupation;
   }
 
   public ActualOccupation deepCopy() {
@@ -157,6 +166,8 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
     setAvailableIsSet(false);
     this.available = false;
     this.occupationType = null;
+    setProbableOccupationIsSet(false);
+    this.probableOccupation = 0;
   }
 
   public FRPeriod getPeriod() {
@@ -238,6 +249,29 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
     }
   }
 
+  public int getProbableOccupation() {
+    return this.probableOccupation;
+  }
+
+  public ActualOccupation setProbableOccupation(int probableOccupation) {
+    this.probableOccupation = probableOccupation;
+    setProbableOccupationIsSet(true);
+    return this;
+  }
+
+  public void unsetProbableOccupation() {
+    __isset_bit_vector.clear(__PROBABLEOCCUPATION_ISSET_ID);
+  }
+
+  /** Returns true if field probableOccupation is set (has been assigned a value) and false otherwise */
+  public boolean isSetProbableOccupation() {
+    return __isset_bit_vector.get(__PROBABLEOCCUPATION_ISSET_ID);
+  }
+
+  public void setProbableOccupationIsSet(boolean value) {
+    __isset_bit_vector.set(__PROBABLEOCCUPATION_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case PERIOD:
@@ -264,6 +298,14 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
       }
       break;
 
+    case PROBABLE_OCCUPATION:
+      if (value == null) {
+        unsetProbableOccupation();
+      } else {
+        setProbableOccupation((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -277,6 +319,9 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
 
     case OCCUPATION_TYPE:
       return getOccupationType();
+
+    case PROBABLE_OCCUPATION:
+      return Integer.valueOf(getProbableOccupation());
 
     }
     throw new IllegalStateException();
@@ -295,6 +340,8 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
       return isSetAvailable();
     case OCCUPATION_TYPE:
       return isSetOccupationType();
+    case PROBABLE_OCCUPATION:
+      return isSetProbableOccupation();
     }
     throw new IllegalStateException();
   }
@@ -339,6 +386,15 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
         return false;
     }
 
+    boolean this_present_probableOccupation = true && this.isSetProbableOccupation();
+    boolean that_present_probableOccupation = true && that.isSetProbableOccupation();
+    if (this_present_probableOccupation || that_present_probableOccupation) {
+      if (!(this_present_probableOccupation && that_present_probableOccupation))
+        return false;
+      if (this.probableOccupation != that.probableOccupation)
+        return false;
+    }
+
     return true;
   }
 
@@ -360,6 +416,11 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
     builder.append(present_occupationType);
     if (present_occupationType)
       builder.append(occupationType.getValue());
+
+    boolean present_probableOccupation = true && (isSetProbableOccupation());
+    builder.append(present_probableOccupation);
+    if (present_probableOccupation)
+      builder.append(probableOccupation);
 
     return builder.toHashCode();
   }
@@ -398,6 +459,16 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
     }
     if (isSetOccupationType()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.occupationType, typedOther.occupationType);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetProbableOccupation()).compareTo(typedOther.isSetProbableOccupation());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetProbableOccupation()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.probableOccupation, typedOther.probableOccupation);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -442,6 +513,14 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 4: // PROBABLE_OCCUPATION
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.probableOccupation = iprot.readI32();
+            setProbableOccupationIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -473,6 +552,11 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
       oprot.writeI32(this.occupationType.getValue());
       oprot.writeFieldEnd();
     }
+    if (isSetProbableOccupation()) {
+      oprot.writeFieldBegin(PROBABLE_OCCUPATION_FIELD_DESC);
+      oprot.writeI32(this.probableOccupation);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -501,6 +585,12 @@ public class ActualOccupation implements org.apache.thrift.TBase<ActualOccupatio
       sb.append(this.occupationType);
     }
     first = false;
+    if (isSetProbableOccupation()) {
+      if (!first) sb.append(", ");
+      sb.append("probableOccupation:");
+      sb.append(this.probableOccupation);
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
