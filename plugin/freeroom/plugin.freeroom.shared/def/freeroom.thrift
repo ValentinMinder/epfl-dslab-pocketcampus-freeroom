@@ -9,6 +9,11 @@ enum FRRoomType{
 	AUDITORIUM; EXERCISES; COMPUTER_ROOM; CONFERENCE;
 }
 
+struct FRCourse {
+	1: required string courseID;
+	2: required string courseName;
+}
+
 struct FRRoom{
 	1: required string doorCode;
 	2: required string uid;
@@ -40,6 +45,13 @@ struct FRPeriod {
 	11: optional i64 firstOccurancy;
 	12: optional i32 step;
 	13: optional i64 lastOccurancy;
+}
+
+struct WorkingOccupancy {
+	1: required FRPeriod period;
+	2: required FRRoom room;
+	3: optional FRCourse course;
+	40: optional string message;
 }
 
 // NOTE ABOUT REPLY STATUS
@@ -110,6 +122,27 @@ struct AutoCompleteReply {
 	3: optional list<FRRoom> listFRRoom;
 }
 
+struct ImWorkingRequest {
+	1: required WorkingOccupancy work;
+}
+
+struct ImWorkingReply {
+	1: required i32 status;
+	2: required string statusComment;
+}
+
+struct WhoIsWorkingRequest {
+	1: required FRPeriod period;
+	2: optional FRCourse course;
+	3: optional string constraint;
+}
+
+struct WhoIsWorkingReply {
+	1: required i32 status;
+	2: required string statusComment;
+	3: optional list<WorkingOccupancy> theyAreWorking;
+}
+
 service FreeRoomService {
 	// generic free room service
 	FreeRoomReply getFreeRoomFromTime(1: FreeRoomRequest request);
@@ -119,4 +152,10 @@ service FreeRoomService {
 	
 	// autocomplete for searching for a room
 	AutoCompleteReply autoCompleteRoom(1: AutoCompleteRequest request);
+	
+	// indicate that i'm going to work there
+	ImWorkingReply indicateImWorking(1: ImWorkingRequest request);
+	
+	// who is working at this time, this subject?
+	WhoIsWorkingReply whoIsWorking(1: WhoIsWorkingRequest request);
 }
