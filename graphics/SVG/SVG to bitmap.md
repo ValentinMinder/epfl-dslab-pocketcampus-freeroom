@@ -1,7 +1,6 @@
 ## Transforming SVGs into bitmap images (e.g. PNGs)
 
 1. Download Inkscape: http://www.inkscape.org/download/
-
 2. Open the SVG file you want to transform
 3. Hit `Ctrl+A` to select everything
 4. Hit `Ctrl+Shift+M` to bring up the "Transform" panel, and select the "Scale" tab
