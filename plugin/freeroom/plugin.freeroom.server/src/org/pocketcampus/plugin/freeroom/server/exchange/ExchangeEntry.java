@@ -168,12 +168,19 @@ public class ExchangeEntry {
 					.getAttendeesAvailability()) {
 				AttendeeInfo attendee = attendees.get(attendeeIndex);
 				attendee.getSmtpAddress();
+				System.out.println(attendee.getSmtpAddress());
 				if (attendeeAvailability.getErrorCode() == ServiceError.NoError) {
 					for (CalendarEvent calendarEvent : attendeeAvailability
 							.getCalendarEvents()) {
 						FRPeriod mFrPeriod2 = new FRPeriod(calendarEvent
 								.getStartTime().getTime(), calendarEvent
 								.getEndTime().getTime(), false);
+						System.out.println(calendarEvent
+								.getStartTime() + "/" + calendarEvent
+								.getEndTime());
+						System.out.println(calendarEvent
+								.getStartTime().getTime() + "/" + calendarEvent
+								.getEndTime().getTime());
 						list.add(mFrPeriod2);
 					}
 				}

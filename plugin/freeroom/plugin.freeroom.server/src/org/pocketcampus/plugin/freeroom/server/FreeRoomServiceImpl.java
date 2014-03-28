@@ -830,7 +830,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 
 	/**
