@@ -10,7 +10,9 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.req.BuildingAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.android.req.CheckOccupancyRequest;
+import org.pocketcampus.plugin.freeroom.android.req.CheckWhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.android.req.GetFreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.android.req.SubmitImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
@@ -18,11 +20,17 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
+import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 /**
@@ -166,6 +174,86 @@ public class FreeRoomController extends PluginController implements
 			// caller.freeRoomServersUnknownError();
 			// caller.freeRoomServersDown();
 		}
+	}
+
+	private ImWorkingRequest imWorkingRequest;
+
+	public void prepareImWorking(ImWorkingRequest request) {
+		imWorkingRequest = request;
+	}
+
+	public void ImWorking(IFreeRoomView view) {
+		if (imWorkingRequest != null) {
+			new SubmitImWorkingRequest(view).start(this, mClient,
+					imWorkingRequest);
+			mModel.addImWorkingRequest(imWorkingRequest);
+			imWorkingRequest = null;
+		} else {
+			Log.e(this.getClass().toString(),
+					"request not defined in controller!");
+		}
+	}
+
+	public void validateImWorking(ImWorkingReply result) {
+		// we do nothing here... we could display a confirmation
+		// the user MUST be blocked to send others "ImWorking" indication for
+		// the same period!
+		Toast.makeText(getApplicationContext(), "succcessfully submitted",
+				Toast.LENGTH_LONG).show();
+	}
+
+	public void cannotValidateImWorking() {
+		// TODO if failure, we should re-enable the buttons, for the user to
+		// submit something else!
+	}
+
+	/**
+	 * Stores the prepared request for future sending to the server.
+	 */
+	private WhoIsWorkingRequest whoIsWorkingRequest = null;
+
+	/**
+	 * Stores a <code>WhoIsWorkingRequest</code> for future use.
+	 * 
+	 * This is should be used before changing activity, and you can call the
+	 * corresponding method (same name without "prepare").
+	 * 
+	 * @param request
+	 *            the <code>WhoIsWorkingRequest</code> to store.
+	 */
+	public void prepareCheckWhoIsWorking(WhoIsWorkingRequest request) {
+		this.whoIsWorkingRequest = request;
+	}
+
+	/**
+	 * Sends the ALREADY prepared <code>WhoIsWorkingRequest</code> to the
+	 * server.
+	 * 
+	 * @param view
+	 *            the holder <code>IFreeRoomView</code> calling.
+	 */
+	public void checkWhoIsWorking(IFreeRoomView view) {
+		if (whoIsWorkingRequest != null) {
+			new CheckWhoIsWorkingRequest(view).start(this, mClient,
+					whoIsWorkingRequest);
+			whoIsWorkingRequest = null;
+		} else {
+			Log.e(this.getClass().toString(),
+					"request not defined in controller!");
+		}
+	}
+
+	/**
+	 * Sets the <code>WhoIsWorkingReply</code> results received from the server
+	 * in the model.
+	 * 
+	 * @param result
+	 *            the <code>WhoIsWorkingReply</code> from the server.
+	 */
+	public void setWhoIsWorkingReply(WhoIsWorkingReply result) {
+		List<WorkingOccupancy> listWorkingOccupancies = result
+				.getTheyAreWorking();
+		mModel.setListWorkingOccupancies(listWorkingOccupancies);
 	}
 
 }

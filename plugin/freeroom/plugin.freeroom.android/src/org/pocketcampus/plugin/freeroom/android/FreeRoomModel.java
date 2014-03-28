@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -17,8 +15,11 @@ import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -71,6 +72,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private List<Occupancy> mListCheckedOccupancyRoom = new ArrayList<Occupancy>();
 
 	private LinkedHashSet<FRRoom> mLinkedHashSetCheckedRoom = new LinkedHashSet<FRRoom>();
+
+	private Set<ImWorkingRequest> allImWorkingRequests = new HashSet<ImWorkingRequest>();
+
+	/**
+	 * Storing the <code>WorkingOccupancy</code> of people who indicate their
+	 * are going to work there.
+	 */
+	private List<WorkingOccupancy> listWorkingOccupancies = new ArrayList<WorkingOccupancy>();
 
 	private Context context;
 
@@ -281,6 +290,125 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	}
 
+	// ********** START OF "I'M WORKING THERE" PART **********
+
+	/**
+	 * Add a <code>ImWorkingRequest</code> to the collection of
+	 * <code>ImWorkingRequest</code> stored.
+	 * 
+	 * @param imWorkingRequest
+	 *            the <code>ImWorkingRequest</code> to add.
+	 */
+	public void addImWorkingRequest(ImWorkingRequest imWorkingRequest) {
+		allImWorkingRequests.add(imWorkingRequest);
+	}
+
+	/**
+	 * Removes a <code>ImWorkingRequest</code> to the collection of
+	 * <code>ImWorkingRequest</code> stored.
+	 * 
+	 * @param imWorkingRequest
+	 *            the <code>ImWorkingRequest</code> to remove.
+	 */
+	public void removeImWorkingRequest(ImWorkingRequest imWorkingRequest) {
+		allImWorkingRequests.remove(imWorkingRequest);
+	}
+
+	/**
+	 * Return all the <code>ImWorkingRequest</code> stored.
+	 * 
+	 * @return the <code>ImWorkingRequest</code> stored.
+	 */
+	public Set<ImWorkingRequest> getAllImWorkingRequest() {
+		return allImWorkingRequests;
+	}
+
+	/**
+	 * Resets all the <code>ImWorkingRequest</code> stored.
+	 * 
+	 * @return false if an error occurred, namely
+	 *         <code>UnsupportedOperationException</code>.
+	 */
+	public boolean resetAllImWorkingRequest() {
+		try {
+			allImWorkingRequests.clear();
+			return true;
+		} catch (UnsupportedOperationException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * Removes from the set of the working request all the request that end
+	 * timestamp is after now.
+	 * 
+	 * @return
+	 */
+	public boolean resetAllPASTImWorkingRequest() {
+		boolean flag = false;
+		for (ImWorkingRequest imWorkingRequest : allImWorkingRequests) {
+			if (imWorkingRequest.getWork().getPeriod().getTimeStampEnd() < System
+					.currentTimeMillis()) {
+				boolean result = allImWorkingRequests.remove(imWorkingRequest);
+				flag = flag || result;
+			}
+		}
+		return flag;
+	}
+
+	/**
+	 * DOES NOTHING: TO BE DEFINED!
+	 * 
+	 * @param period
+	 * @param b
+	 */
+	private void setImWorkingAvailable(FRPeriod period, boolean b) {
+		// TODO well... how to store that, and prevent the use to commit
+		// multiple times for the same period
+	}
+
+	/**
+	 * DOES NOTHING: TO BE DEFINED!
+	 * 
+	 * Check if the user can submit a <code>ImWorkingRequest</code> given a
+	 * <code>FRPeriod</code>, if the user didn't submit another request for the
+	 * same time.
+	 * 
+	 * @param period
+	 * @return always true for now... which is bad.
+	 */
+	public boolean getIsImWorkingAvailable(FRPeriod period) {
+		// TODO code something!
+		return true;
+	}
+
+	// ********** END OF "I'M WORKING THERE" PART **********
+	// ********** START OF "WHO'S WORKING THERE" PART **********
+
+	/**
+	 * Stores a list of <code>WorkingOccupancy</code> to represent what others
+	 * are doing.
+	 * 
+	 * @param listWorkingOccupancies
+	 */
+	public void setListWorkingOccupancies(
+			List<WorkingOccupancy> listWorkingOccupancies) {
+		this.listWorkingOccupancies = listWorkingOccupancies;
+	}
+
+	/**
+	 * Retrieves the stored <code>List</code> of <code>WorkingOccupancy</code>.
+	 * 
+	 * @return
+	 */
+	public List<WorkingOccupancy> getListWorkingOccupancies() {
+		return listWorkingOccupancies;
+	}
+
+	// ********** END OF "WHO'S WORKING THERE" PART **********
+	// ********** START OF "FAVORITES" PART **********
+
 	public boolean addRoomFavorites(String uid, String doorCode) {
 		return addRoom(uid, doorCode, FAVORITES_ROOMS_KEY);
 	}
@@ -445,4 +573,11 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		}
 		return sortedResult;
 	}
+	// ********** END OF "FAVORITES" PART **********
+	/*
+	 * methods are ordered by functionality in model !! PLEASE insert your new
+	 * method in an existing category or create a new one with two separators
+	 * like this one!
+	 */
+	// ********** END OF FILE **********
 }
