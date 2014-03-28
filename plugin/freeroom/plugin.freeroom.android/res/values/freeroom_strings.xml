@@ -49,5 +49,6 @@
     <string name="freeroom_tab_home">Home</string>
     <string name="freeroom_tab_freeroomsearch">Quick search</string>
     <string name="freeroom_tab_occupancysearch">Adv. search</string>
+    <string name="freeroom_no_favorites_freeroom">No favorites rooms are free right now</string>
 
 </resources>

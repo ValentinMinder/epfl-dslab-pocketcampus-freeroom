@@ -113,10 +113,8 @@ public class FreeRoomTabLayout extends StandardTitledLayout {
 
 			@Override
 			public void onClick(View v) {
-				if (context.getClass().toString()
+				if (!context.getClass().toString()
 						.equals(freeRoomSearchView.toString())) {
-					callerView.initializeView();
-				} else {
 					Intent i = new Intent(context, freeRoomSearchView);
 					context.startActivity(i);
 				}

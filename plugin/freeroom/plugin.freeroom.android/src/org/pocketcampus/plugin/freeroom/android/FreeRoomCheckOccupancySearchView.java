@@ -473,9 +473,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 	private void updateShowDatePicker() {
 		showDatePicker
-				.setText(getString(R.string.freeroom_check_occupancy_search_date)
-						+ " : "
-						+ dateFormat.format(new Date(yearSelected,
+				.setText(dateFormat.format(new Date(yearSelected,
 								monthSelected, dayOfMonthSelected)));
 	}
 

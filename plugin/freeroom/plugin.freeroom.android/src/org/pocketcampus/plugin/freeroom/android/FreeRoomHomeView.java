@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.layout.FreeRoomTabLayout;
@@ -20,6 +21,7 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 import android.os.Bundle;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * HomeView is the entry of the plugin, it displays user favorites that are free
@@ -40,6 +42,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private ExpandableListView mExpView;
 	private ExpandableListViewFavoriteAdapter mAdapter;
+	
+	private TextView noRooms;
 
 	private ArrayList<String> buildings;
 	private Map<String, List<FRRoom>> rooms;
@@ -61,7 +65,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// Setup the layout
 		mLayout = new FreeRoomTabLayout(this, this);
+		subLayout = new LinearLayout(this);
+		subLayout.setOrientation(LinearLayout.VERTICAL);
 		
+		mLayout.addFillerView(subLayout);
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 		// mLayout.setTitle(getString(R.string.freeroom_title_main_title));
@@ -80,6 +87,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
+		if (subLayout != null) {
+			clearData();
+			subLayout.removeAllViews();
+			initializeView();
+		}
+		
 		/*
 		 * if(mModel != null && mModel.getFreeRoomCookie() == null) { // Resumed
 		 * and lot logged in? go back finish(); }
@@ -90,11 +104,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// create the UI elements
 		mExpView = new ExpandableListView(this);
 		
-		subLayout = new LinearLayout(this);
-		subLayout.setOrientation(LinearLayout.VERTICAL);
-		subLayout.addView(mExpView);
-		
-		mLayout.addFillerView(subLayout);
+
 		// create the request for the server
 		List<String> uidsFavorites = new ArrayList<String>(
 				mModel.getAllRoomSetUIDFavorites());
@@ -103,8 +113,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				calendar.get(Calendar.DAY_OF_WEEK),
 				calendar.get(Calendar.HOUR_OF_DAY),
 				calendar.get(Calendar.HOUR_OF_DAY) + 1);
-		OccupancyRequest mOccRequest = new OccupancyRequest(uidsFavorites,
-				req.getPeriod());
+		OccupancyRequest mOccRequest = new OccupancyRequest(uidsFavorites, FRTimes.getNextValidPeriod());
 
 		// and send the request
 		mController.prepareCheckOccupancy(mOccRequest);
@@ -149,8 +158,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		rooms = mModel.sortFRRoomsByBuildingsAndFavorites(roomsFreeFromModel,
 				false);
 		buildings = new ArrayList<String>(rooms.keySet());
+		
+		if (buildings.size() == 0) {
+			//there is not free room, display a nice message to the user
+			noRooms = new TextView(this);
+			noRooms.setText(getString(R.string.freeroom_no_favorites_freeroom));
+			subLayout.addView(noRooms);
+		}
 
 		// and finally create the adapter and display!
+		subLayout.addView(mExpView);
 		mAdapter = new ExpandableListViewFavoriteAdapter(this, buildings,
 				rooms, mModel);
 		mExpView.setAdapter(mAdapter);
