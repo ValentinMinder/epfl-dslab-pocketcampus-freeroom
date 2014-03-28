@@ -62,6 +62,7 @@ namespace PocketCampus.Main.ViewModels
             Settings.IsAuthenticated = false;
             Settings.UserName = null;
             Settings.Password = null;
+            Settings.Session = null;
             Settings.Sessions = new Dictionary<string, string>();
             await _authenticator.LogOffAsync();
         }
