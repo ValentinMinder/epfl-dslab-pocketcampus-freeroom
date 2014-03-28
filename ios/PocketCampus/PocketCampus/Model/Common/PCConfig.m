@@ -224,8 +224,8 @@ static BOOL loaded = NO;
 + (NSString*)pathForPersistedServerConfig {
     NSString* appSupport = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
 	NSString* pcAppSupport = [appSupport stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    [PCObjectArchiver createComponentsForPath:pcAppSupport];
     NSString* configFilePath = [pcAppSupport stringByAppendingPathComponent:kPersistedServerConfigFilename];
+    [PCObjectArchiver createComponentsForPath:configFilePath];
     return configFilePath;
 }
 
