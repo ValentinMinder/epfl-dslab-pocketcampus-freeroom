@@ -323,11 +323,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return getAllRoomAsMap(FAVORITES_ROOMS_KEY);
 	}
 
-	public Set<String> getAllRoomSetUIDFavorites() {
-		Map<String, String> map = getAllRoomMapFavorites();
-		return map.keySet();
-	}
-
 	public boolean addRoomForbidden(String uid, String doorCode) {
 		return addRoom(uid, doorCode, FORBIDDEN_ROOMS_KEY);
 	}
@@ -346,11 +341,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	public Map<String, String> getAllRoomMapForbidden() {
 		return getAllRoomAsMap(FORBIDDEN_ROOMS_KEY);
-	}
-
-	public Set<String> getAllRoomSetUIDForbidden() {
-		Map<String, String> map = getAllRoomMapForbidden();
-		return map.keySet();
 	}
 
 	private boolean addRoom(String uid, String doorCode, String key) {
