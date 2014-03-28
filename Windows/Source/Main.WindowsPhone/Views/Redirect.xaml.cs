@@ -3,7 +3,6 @@
 // File author: Solal Pirelli
 
 using System.Net;
-using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using PocketCampus.Main.Services;
@@ -31,14 +30,14 @@ namespace PocketCampus.Main.Views
 
             if ( e.NavigationMode == NavigationMode.Back )
             {
-                Application.Current.Terminate();
+                App.Current.Terminate();
                 return;
             }
 
             string id;
             if ( NavigationContext.QueryString.TryGetValue( TileCreator.PluginKey, out id ) )
             {
-                App.NavigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest( id ) );
+                App.Current.NavigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest( id ) );
                 return;
             }
 
@@ -46,11 +45,11 @@ namespace PocketCampus.Main.Views
             if ( NavigationContext.QueryString.TryGetValue( PocketCampusUriMapper.RedirectRequestKey, out redirect ) )
             {
                 redirect = HttpUtility.UrlDecode( redirect );
-                App.UriMapper.NavigateToCustomUri( redirect );
+                App.Current.UriMapper.NavigateToCustomUri( redirect );
                 return;
             }
 
-            App.NavigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest() );
+            App.Current.NavigationService.NavigateTo<MainViewModel, ViewPluginRequest>( new ViewPluginRequest() );
         }
     }
 }

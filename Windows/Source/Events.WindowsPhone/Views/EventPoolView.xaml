@@ -21,18 +21,14 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Simple button template with only content -->
-            <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
-                <ContentPresenter />
-            </ControlTemplate>
-
             <!-- Template for child events -->
             <DataTemplate x:Key="EventItemTemplate">
-                <Button Template="{StaticResource SimpleButtonTemplate}"
+                <Button Style="{StaticResource SimpleButtonStyle}"
                         Command="{Binding DataContext.ViewItemCommand, ElementName=LayoutRoot}"
-                        CommandParameter="{Binding}">
-                    <Grid Margin="10,10,0,30"
-                          Height="100">
+                        CommandParameter="{Binding}"
+                        Padding="24,10"
+                        Margin="0,10">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
@@ -41,7 +37,6 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition />
                         </Grid.RowDefinitions>
                         
                         <!-- Thumbnail picture "background", displayed if there's no picture -->
@@ -104,12 +99,6 @@
                 </Border>
             </DataTemplate>
 
-            <!-- Item group footer template (just a margin) -->
-            <DataTemplate x:Key="EventItemGroupFooterTemplate">
-                <Rectangle Height="60" 
-                           Width="0" />
-            </DataTemplate>
-
             <!-- Item group item template (for the LongListSelector's jump list) -->
             <DataTemplate x:Key="EventItemGroupJumpListItemTemplate">
                 <TextBlock Text="{Binding CategoryName}"
@@ -153,18 +142,14 @@
                                 ItemTemplate="{StaticResource EventItemTemplate}"
                                 IsGroupingEnabled="True"
                                 GroupHeaderTemplate="{StaticResource EventItemGroupHeaderTemplate}"
-                                GroupFooterTemplate="{StaticResource EventItemGroupFooterTemplate}"
+                                GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
                                 JumpListStyle="{StaticResource EventItemGroupJumpListStyle}"
                                 Margin="0,0,-13,0" />
         
         <!-- "No items" text -->
         <TextBlock Grid.Row="1"
                    Text="{Binding Pool.NoEventsFallbackText}"
-                   TextWrapping="Wrap"
-                   TextAlignment="Center"
-                   Style="{StaticResource PhoneTextLargeStyle}"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
+                   Style="{StaticResource AppTextCenterStyle}"
                    Visibility="{Binding AnyItems, Converter={StaticResource BoolToOppositeVisibility}}" />
 
         <!-- Loading & error -->

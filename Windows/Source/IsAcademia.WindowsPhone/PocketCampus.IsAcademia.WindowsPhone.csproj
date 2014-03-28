@@ -117,23 +117,19 @@
       <Project>{F780F0DD-8A14-4E72-9525-A11D792CBFAB}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mvvm\PocketCampus.Mvvm.csproj">
-      <Project>{53C14BDB-427E-492E-8BDC-B329D8737D17}</Project>
-      <Name>PocketCampus.Mvvm</Name>
-    </ProjectReference>
     <ProjectReference Include="..\IsAcademia.Common\PocketCampus.IsAcademia.Common.csproj">
       <Project>{6B1E34FE-AB5D-49E8-923C-2CE10472BBCB}</Project>
       <Name>PocketCampus.IsAcademia.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Previous.png" />
-    <Content Include="Assets\IsAcademiaIcon.png" />
-    <Content Include="Assets\Next.png" />
     <Content Include="Assets\Refresh.png" />
-    <Content Include="Assets\IsAcademiaSmallIcon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\WeekPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -163,6 +159,14 @@
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinMvvm, Version=0.9.1.14986, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.0.9.1\lib\portable-net45+wp8+win8\ThinMvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinMvvm.WindowsPhone, Version=0.9.1.14987, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ThinMvvm.WindowsPhone.0.9.1\lib\wp8\ThinMvvm.WindowsPhone.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

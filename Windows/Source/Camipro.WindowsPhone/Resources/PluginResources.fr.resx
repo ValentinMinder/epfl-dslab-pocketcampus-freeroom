@@ -125,10 +125,10 @@
     <value>Solde actuel : </value>
   </data>
   <data name="EbankingAccountName" xml:space="preserve">
-    <value>Versement pour : </value>
+    <value>Versement pour</value>
   </data>
   <data name="EbankingAccountNumber" xml:space="preserve">
-    <value>Compte : </value>
+    <value>Compte</value>
   </data>
   <data name="EbankingHeader" xml:space="preserve">
     <value>e-banking</value>
@@ -138,13 +138,14 @@
     <comment>Make sure you translate this correctly</comment>
   </data>
   <data name="EbankingReferenceNumber" xml:space="preserve">
-    <value>Référence : </value>
+    <value>Référence</value>
   </data>
   <data name="EbankingWarning" xml:space="preserve">
-    <value>Le montant ne doit pas dépasser 300 CHF.
-Ces informations sont utilisables pour un paiement en ligne uniquement.
-Le délai de traitement est de 2 à 3 jours ouvrables.</value>
-    <comment>Make sure you translate this correctly</comment>
+    <value>Le montant ne doit pas dépasser 300 CHF
+Ces infos sont pour des paiements en ligne
+Le délai de traitement est de 3 jours ouvrables</value>
+    <comment>Make sure you translate this correctly
+Also, try to keep each line short</comment>
   </data>
   <data name="EmailSendingStatus_Error" xml:space="preserve">
     <value>Une erreur est survenue lors de l'envoi de l'e-mail. Veuillez réessayer plus tard.</value>

@@ -7,8 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 using PocketCampus.Transport.Models;
 using PocketCampus.Transport.Services;
 

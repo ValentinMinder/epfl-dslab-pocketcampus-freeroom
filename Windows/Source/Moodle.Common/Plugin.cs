@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using PocketCampus.Common;
 using PocketCampus.Moodle.Services;
 using PocketCampus.Moodle.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Moodle
 {

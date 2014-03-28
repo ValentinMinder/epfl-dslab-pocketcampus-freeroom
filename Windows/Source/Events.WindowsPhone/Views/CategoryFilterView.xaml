@@ -19,11 +19,10 @@
             
             <!-- Template for category filters -->
             <DataTemplate x:Key="CategoryFilterTemplate">
-                <CheckBox IsChecked="{Binding Include, Mode=TwoWay}">
-                    <CheckBox.Content>
-                        <TextBlock Text="{Binding DisplayName}"
-                                   TextWrapping="Wrap" />
-                    </CheckBox.Content>
+                <CheckBox IsChecked="{Binding Include, Mode=TwoWay}"
+                          Margin="12,5">
+                    <TextBlock Text="{Binding DisplayName}"
+                               TextWrapping="Wrap" />
                 </CheckBox>
             </DataTemplate>
         </ResourceDictionary>

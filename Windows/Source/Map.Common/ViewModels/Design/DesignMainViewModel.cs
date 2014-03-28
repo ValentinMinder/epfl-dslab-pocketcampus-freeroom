@@ -20,6 +20,11 @@ namespace PocketCampus.Map.ViewModels.Design
             get { return new MapProperties { BuildingsLevel = 1, ZoomLevel = 16 }; }
         }
 
+        public SearchProvider SearchProvider
+        {
+            get { return new SearchProvider( null ); }
+        }
+
         public string SearchQuery
         {
             get { return "CO 1"; }

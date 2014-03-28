@@ -44,7 +44,7 @@ namespace PocketCampus.Common.Controls
             CleanNodes( root );
 
             var panel = new StackPanel();
-            foreach ( var box in root.ChildNodes.Select( ToBox ) )
+            foreach ( var box in root.ChildNodes.SelectMany( node => node.ChildNodes ).Select( ToBox ) )
             {
                 panel.Children.Add( box );
             }
@@ -96,9 +96,8 @@ namespace PocketCampus.Common.Controls
             return new RichTextBox
             {
                 Blocks = { new Paragraph { Inlines = { ToInline( node ) } } },
-                TextAlignment = TextAlignment.Justify,
                 IsReadOnly = true,
-                Margin = new Thickness( 0, 10, 0, 0 )
+                Margin = new Thickness( 0, 5, 0, 0 )
             };
         }
 
@@ -127,7 +126,7 @@ namespace PocketCampus.Common.Controls
                         {
                             new Run 
                             {
-                                Text = text, 
+                                Text = text,
                                 Foreground = new SolidColorBrush( Colors.Blue )
                             } 
                         },
@@ -135,7 +134,16 @@ namespace PocketCampus.Common.Controls
                         TargetName = "42" // can be anything, it just needs to be set
                     };
                     link.Click += ( _, __ ) => LauncherEx.Launch( url );
-                    return link;
+
+                    return new Span
+                    {
+                        Inlines =
+                        {
+                            new Run { Text = " " },
+                            link,
+                            new Run { Text = " " },
+                        }
+                    };
 
                 case "strong":
                 case "b":
@@ -146,6 +154,7 @@ namespace PocketCampus.Common.Controls
                     }
                     return bold;
 
+                case "em":
                 case "i":
                     var italic = new Italic();
                     foreach ( var child in node.ChildNodes )
@@ -171,25 +180,67 @@ namespace PocketCampus.Common.Controls
                     for ( int n = 0; n < node.ChildNodes.Count; n++ )
                     {
                         var listElem = new Span();
-                        listElem.Inlines.Add( new Run { Text = n.ToString() } );
+                        listElem.Inlines.Add( new Run { Text = n.ToString() + " " } );
                         listElem.Inlines.Add( ToInline( node.ChildNodes[n] ) );
                         orderedList.Inlines.Add( listElem );
                         orderedList.Inlines.Add( new LineBreak() );
                     }
                     return orderedList;
 
+                case "h1":
+                    return new Run
+                    {
+                        Text = node.InnerText + Environment.NewLine,
+                        FontWeight = FontWeights.Bold,
+                        FontSize = 32
+                    };
+
+                case "h2":
+                    return new Run
+                    {
+                        Text = node.InnerText + Environment.NewLine,
+                        FontWeight = FontWeights.SemiBold,
+                        FontSize = 24
+                    };
+
+                case "h3":
+                    return new Run
+                    {
+                        Text = node.InnerText + Environment.NewLine,
+                        FontWeight = FontWeights.SemiBold,
+                        FontSize = 19
+                    };
+
+                case "h4":
+                    return new Run
+                    {
+                        Text = node.InnerText + Environment.NewLine,
+                        FontWeight = FontWeights.Medium,
+                        FontSize = 17
+                    };
+
+                case "h5":
+                    return new Run
+                    {
+                        Text = node.InnerText + Environment.NewLine,
+                        FontWeight = FontWeights.Medium,
+                        FontSize = 16
+                    };
+
                 case "div":
                 case "p":
+                case "blockquote":
                     var container = new Span();
                     foreach ( var child in node.ChildNodes )
                     {
                         container.Inlines.Add( ToInline( child ) );
-                        container.Inlines.Add( new Run { Text = " " } );
                     }
+                    container.Inlines.Add( new LineBreak() );
+                    container.Inlines.Add( new LineBreak() );
                     return container;
             }
 
-            return new Run { Text = node.InnerText.Trim() };
+            return new Run { Text = node.PreviousSibling == null ? node.InnerText.TrimStart() : node.InnerText };
         }
     }
 }

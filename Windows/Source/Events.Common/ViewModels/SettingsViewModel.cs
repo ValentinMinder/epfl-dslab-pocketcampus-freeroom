@@ -3,8 +3,8 @@
 // File author: Solal Pirelli
 
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {

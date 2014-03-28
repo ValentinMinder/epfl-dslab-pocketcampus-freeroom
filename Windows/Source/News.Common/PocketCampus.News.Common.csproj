@@ -39,28 +39,31 @@
       <Project>{f780f0dd-8a14-4e72-9525-a11d792cbfab}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mvvm\PocketCampus.Mvvm.csproj">
-      <Project>{53c14bdb-427e-492e-8bdc-b329d8737d17}</Project>
-      <Name>PocketCampus.Mvvm</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Feed.cs" />
     <Compile Include="Models\FeedItem.cs" />
+    <Compile Include="Models\FeedItemContent.cs" />
+    <Compile Include="Models\FeedItemContentRequest.cs" />
+    <Compile Include="Models\FeedItemContentResponse.cs" />
+    <Compile Include="Models\FeedsRequest.cs" />
+    <Compile Include="Models\FeedsResponse.cs" />
+    <Compile Include="Models\ResponseStatus.cs" />
     <Compile Include="Services\NewsService.cs" />
     <Compile Include="Services\INewsService.cs" />
-    <Compile Include="Models\OnlineImage.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringToOnlineImageConverter.cs" />
     <Compile Include="ViewModels\Design\DesignFeedItemViewModel.cs" />
     <Compile Include="ViewModels\Design\DesignMainViewModel.cs" />
     <Compile Include="ViewModels\FeedItemViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ThinMvvm">
+      <HintPath>..\..\packages\ThinMvvm.0.9.1\lib\portable-net45+wp8+win8\ThinMvvm.dll</HintPath>
+    </Reference>
     <Reference Include="ThriftSharp">
-      <HintPath>..\..\packages\ThriftSharp.1.0.8\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
+      <HintPath>..\..\packages\ThriftSharp.1.0.9\lib\portable-net4+sl5+wp8+win8\ThriftSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

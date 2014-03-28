@@ -4,7 +4,7 @@
 
 using System;
 using System.Threading.Tasks;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Common.Services
 {

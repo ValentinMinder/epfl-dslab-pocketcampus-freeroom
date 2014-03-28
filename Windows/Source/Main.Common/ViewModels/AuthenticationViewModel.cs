@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Models;
 using PocketCampus.Main.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Main.ViewModels
 {
@@ -16,13 +16,14 @@ namespace PocketCampus.Main.ViewModels
     /// The ViewModel that authenticates the user.
     /// </summary>
     [LogId( "/dashboard/authenticate" )]
-    public sealed class AuthenticationViewModel : ViewModel<AuthenticationMode>
+    public sealed class AuthenticationViewModel : ViewModel<AuthenticationRequest>
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly ITequilaAuthenticator _authenticator;
         private readonly IServerAccess _serverAccess;
         private readonly INavigationService _navigationService;
         private readonly IMainSettings _settings;
+        private readonly AuthenticationRequest _request;
 
         private string _userName;
         private string _password;
@@ -99,16 +100,17 @@ namespace PocketCampus.Main.ViewModels
         public AuthenticationViewModel( IAuthenticationService authenticationService, ITequilaAuthenticator authenticator,
                                         IServerAccess serverAccess, INavigationService navigationService,
                                         IMainSettings settings,
-                                        AuthenticationMode authMode )
+                                        AuthenticationRequest request )
         {
             _authenticationService = authenticationService;
             _authenticator = authenticator;
             _serverAccess = serverAccess;
             _navigationService = navigationService;
             _settings = settings;
+            _request = request;
 
             SaveCredentials = true;
-            CanSaveCredentials = authMode == AuthenticationMode.Dialog;
+            CanSaveCredentials = _request.CanSaveCredentials;
         }
 
 
@@ -155,7 +157,15 @@ namespace PocketCampus.Main.ViewModels
 
             if ( authOk )
             {
-                _navigationService.NavigateBack();
+                if ( _request.SuccessAction == null )
+                {
+                    _navigationService.NavigateBack();
+                }
+                else
+                {
+                    _request.SuccessAction();
+                    _navigationService.PopBackStack();
+                }
             }
 
             IsAuthenticating = false;

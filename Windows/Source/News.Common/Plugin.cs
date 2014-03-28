@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 using PocketCampus.Common;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 using PocketCampus.News.Services;
 using PocketCampus.News.ViewModels;
 

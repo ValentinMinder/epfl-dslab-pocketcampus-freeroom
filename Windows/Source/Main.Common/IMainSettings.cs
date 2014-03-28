@@ -13,12 +13,6 @@ namespace PocketCampus.Main
     public interface IMainSettings : IServerSettings
     {
         /// <summary>
-        /// Gets or sets a value indicating whether this is the app's first run.
-        /// </summary>
-        bool IsFirstRun { get; set; }
-
-
-        /// <summary>
         /// Gets or sets a value indicating whether the user is authenticated.
         /// </summary>
         bool IsAuthenticated { get; set; }

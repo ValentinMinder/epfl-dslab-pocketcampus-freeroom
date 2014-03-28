@@ -23,29 +23,20 @@
         <my:LocalizedStrings x:Key="Strings" />
 
         <!-- Converters -->
-        <my:OnlineImageDisplayConverter x:Key="ImageDisplay"
-                                        Width="200"
-                                        Height="150" />
-
-        <!-- Simple button template without any border or background -->
-        <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="Button">
-            <Grid Background="Transparent">
-                <ContentPresenter />
-            </Grid>
-        </ControlTemplate>
+        <my:ImageDisplayConverter x:Key="ImageDisplay"
+                                  Width="180"
+                                  Height="100" />
 
         <!-- FeedItem template -->
-        <!-- BUG: When loading the page, it seems the DataContext passed to these items is the Feed
-                  itself, which causes a ton of binding errors... in the end it works, but there's
-                  something fishy going on here -->
         <DataTemplate x:Key="FeedItemTemplate">
-            <Button Template="{StaticResource SimpleButtonTemplate}"
+            <Button Style="{StaticResource SimpleButtonStyle}"
                     Command="{Binding DataContext.ViewFeedItemCommand, ElementName=LayoutRoot}"
                     CommandParameter="{Binding}"
+                    Padding="12,10"
                     Margin="0,0,0,20">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="172" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
@@ -54,21 +45,24 @@
                                  IsIndeterminate="True" />
 
                     <!-- Image -->
-                    <Image Source="{Binding Image, Converter={StaticResource ImageDisplay}}" />
+                    <Image Source="{Binding ImageUrl, Converter={StaticResource ImageDisplay}}"
+                           Width="180"
+                           Height="100"
+                           VerticalAlignment="Top" />
 
                     <StackPanel Grid.Column="1">
                         <!-- Title -->
                         <TextBlock Grid.Column="1"
-                               Text="{Binding Title}"
-                               Style="{StaticResource PhoneTextNormalStyle}"
-                               FontFamily="{StaticResource PhoneFontFamilySemiBold}"
-                               TextWrapping="Wrap" />
+                                   Text="{Binding Title}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Margin="12,0,0,0" />
 
                         <!-- Date -->
                         <TextBlock Grid.Column="1"
-                                   Grid.Row="1"
                                    Text="{Binding Date, StringFormat='D'}"
-                                   Style="{StaticResource PhoneTextSmallStyle}" />
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Margin="12,6,0,0"/>
                     </StackPanel>
                 </Grid>
             </Button>
@@ -86,7 +80,8 @@
             <Border Height="96">
                 <TextBlock Text="{Binding Name}"
                            TextWrapping="Wrap"
-                           FontSize="{StaticResource PhoneFontSizeLarge}"
+                           Style="{StaticResource AppTextTitle2Style}"
+                           Margin="2,0"
                            VerticalAlignment="Bottom"
                            MaxWidth="400" />
             </Border>
@@ -113,7 +108,7 @@
 
     <!-- App bar -->
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar>
+        <bar:BindableApplicationBar Mode="Minimized">
             <!-- "Refresh" button -->
             <bar:BindableApplicationBarButton Command="{Binding RefreshCommand}"
                                               Text="{Binding Resources.RefreshButton, Source={StaticResource Strings}}"

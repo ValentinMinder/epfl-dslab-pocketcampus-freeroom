@@ -2,10 +2,13 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
+using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
-using PocketCampus.Mvvm;
-using PocketCampus.Mvvm.Logging;
+using ThinMvvm;
+using ThinMvvm.Logging;
 using PocketCampus.News.Models;
 using PocketCampus.News.Services;
 
@@ -19,18 +22,14 @@ namespace PocketCampus.News.ViewModels
     {
         private readonly INewsService _newsService;
         private readonly IBrowserService _browserService;
+        private readonly int _itemId;
 
-        private string _itemContent;
-
-        /// <summary>
-        /// Gets the feed item that is being displayed.
-        /// </summary>
-        public FeedItem Item { get; private set; }
+        private FeedItemContent _itemContent;
 
         /// <summary>
-        /// Gets the feed item's content as HTML.
+        /// Gets the feed item's content.
         /// </summary>
-        public string ItemContent
+        public FeedItemContent ItemContent
         {
             get { return _itemContent; }
             private set { SetProperty( ref _itemContent, value ); }
@@ -42,7 +41,7 @@ namespace PocketCampus.News.ViewModels
         [LogId( "ViewInBrowser" )]
         public Command OpenInBrowserCommand
         {
-            get { return GetCommand( () => _browserService.NavigateTo( Item.Url ) ); }
+            get { return GetCommand( () => _browserService.NavigateTo( ItemContent.Url ) ); }
         }
 
 
@@ -54,16 +53,28 @@ namespace PocketCampus.News.ViewModels
         {
             _newsService = newsService;
             _browserService = browserService;
-            Item = item;
+            _itemId = item.Id;
         }
 
-
         /// <summary>
-        /// Called when the user navigates to the ViewModel.
+        /// Refreshes the data.
         /// </summary>
-        public override Task OnNavigatedToAsync()
+        protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
-            return TryExecuteAsync( async _ => ItemContent = await _newsService.GetFeedItemContentAsync( Item.Id ) );
+            var request = new FeedItemContentRequest
+            {
+                Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                ItemId = _itemId
+            };
+
+            var response = await _newsService.GetFeedItemContentAsync( request );
+
+            if ( response.Status != ResponseStatus.Success )
+            {
+                throw new Exception( "A server error occurred while fetching a news item's content." );
+            }
+
+            ItemContent = response.Content;
         }
     }
 }

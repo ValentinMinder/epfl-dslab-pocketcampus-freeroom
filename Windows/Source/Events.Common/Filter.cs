@@ -2,7 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Events
 {

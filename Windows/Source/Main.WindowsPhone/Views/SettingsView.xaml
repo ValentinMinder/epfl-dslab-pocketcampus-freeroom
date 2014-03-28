@@ -51,13 +51,13 @@
                    Text="{Binding Resources.YouAreNotAuthenticated, Source={StaticResource Strings}}"
                    Style="{StaticResource PhoneTextNormalStyle}"
                    Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToOppositeVisibility}}"
-                   Margin="12,20" />
+                   Margin="24,20" />
 
         <!-- "You are connected as" -->
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2"
                     Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToVisibility}}"
-                    Margin="12,20">
+                    Margin="24,20">
             <TextBlock Text="{Binding Resources.YouAreAuthenticatedAs, Source={StaticResource Strings}}"
                        Style="{StaticResource PhoneTextNormalStyle}"
                        Margin="0" />
@@ -73,7 +73,8 @@
                 Content="{Binding Resources.LogIn, Source={StaticResource Strings}}"
                 Command="{Binding LogInCommand}"
                 Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToOppositeVisibility}}"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
+                Margin="12,0"
                 MinWidth="300" />
 
         <!-- "Log off" button -->
@@ -81,7 +82,8 @@
                 Content="{Binding Resources.LogOff, Source={StaticResource Strings}}"
                 Command="{Binding LogOffCommand}"
                 Visibility="{Binding Settings.IsAuthenticated, Converter={StaticResource BoolToVisibility}}"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
+                Margin="12,0"
                 MinWidth="300" />
     </Grid>
 </comControls:BasePage>

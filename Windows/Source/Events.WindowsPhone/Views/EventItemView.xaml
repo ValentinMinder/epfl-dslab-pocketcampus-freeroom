@@ -17,14 +17,9 @@
                 <ResourceDictionary Source="../Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Simple button template with only a content -->
-            <ControlTemplate x:Key="SimpleButtonTemplate">
-                <ContentPresenter />
-            </ControlTemplate>
-
             <!-- Template for child pools -->
             <DataTemplate x:Key="ItemPoolTemplate">
-                <Button Template="{StaticResource SimpleButtonTemplate}"
+                <Button Style="{StaticResource SimpleButtonStyle}"
                         Command="{Binding DataContext.ViewPoolCommand, ElementName=LayoutRoot}"
                         CommandParameter="{Binding}">
                     <Grid>
@@ -70,33 +65,37 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
 
-            <!-- Name -->
-            <TextBlock Text="{Binding Item.Name}"
-                       TextWrapping="Wrap"
-                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                       FontSize="{StaticResource PhoneFontSizeMediumLarge}"
-                       Visibility="{Binding Item.HideName, Converter={StaticResource BoolToOppositeVisibility}}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <!-- Short details -->
-            <TextBlock Grid.Row="1"
-                       Text="{Binding Item.ShortDetails}"
-                       TextWrapping="Wrap"
-                       Style="{StaticResource AppTextSecondaryHeaderStyle}"
-                       FontSize="{StaticResource PhoneFontSizeMedium}"
-                       Visibility="{Binding Item.ShortDetails, Converter={StaticResource StringToVisibility}}"/>
+                <!-- Name -->
+                <TextBlock Text="{Binding Item.Name}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                           FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                           Margin="24,6,12,0"
+                           Visibility="{Binding Item.HideName, Converter={StaticResource BoolToOppositeVisibility}}" />
+
+                <!-- Short details -->
+                <TextBlock Grid.Row="1"
+                           Text="{Binding Item.ShortDetails}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource AppTextSecondaryHeaderStyle}"
+                           FontSize="{StaticResource PhoneFontSizeMedium}"
+                           Margin="24,12,6,0"
+                           Visibility="{Binding Item.ShortDetails, Converter={StaticResource StringToVisibility}}"/>
+            </Grid>
 
             <!-- Thumbnail -->
             <Image Grid.Column="1"
-                   Grid.RowSpan="2"
                    Source="{Binding Item.PictureThumbnailUrl}"
-                   Width="100"
                    VerticalAlignment="Top"
-                   Visibility="{Binding Item.HidePictureThumbnail, Converter={StaticResource BoolToOppositeVisibility}}" />
+                   Width="100"
+                   Visibility="{Binding Item.HidePictureThumbnail, Converter={StaticResource BoolToOppositeVisibility}}"/>
         </Grid>
 
 
@@ -104,7 +103,7 @@
         <ScrollViewer Grid.Row="2">
             <StackPanel>
                 <!-- Information -->
-                <Grid Margin="0,5"
+                <Grid Margin="12,0"
                       Visibility="{Binding Item.HideInformation, Converter={StaticResource BoolToOppositeVisibility}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -117,7 +116,8 @@
                     </Grid.RowDefinitions>
 
                     <!-- Date -->
-                    <Grid Visibility="{Binding Item.StartDate, Converter={StaticResource NonNullToVisibility}}">
+                    <Grid Visibility="{Binding Item.StartDate, Converter={StaticResource NonNullToVisibility}}"
+                          Margin="0,24,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
@@ -135,6 +135,7 @@
 
                     <!-- Location -->
                     <Grid Grid.Row="1"
+                          Margin="0,11,0,0"
                           Visibility="{Binding Item.Location, Converter={StaticResource StringToVisibility}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -144,9 +145,10 @@
                         <TextBlock Text="{Binding Resources.EventLocation, Source={StaticResource Strings}}"
                                    Style="{StaticResource PhoneTextSubtleStyle}"
                                    Margin="12,0,0,0" />
-                        
+
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Item.Location}"
+                                   TextWrapping="Wrap"
                                    Style="{StaticResource PhoneTextNormalStyle}"
                                    Margin="6,0,0,0"
                                    Visibility="{Binding Item.LocationUrl, Converter={StaticResource EmptyStringToVisibility}}" />
@@ -155,15 +157,16 @@
                                          Content="{Binding Item.Location}"
                                          Command="{Binding OpenLinkCommand}"
                                          CommandParameter="{Binding Item.LocationUrl}"
+                                         Style="{StaticResource HyperlinkButtonWrappedStyle}"
                                          FontSize="{StaticResource PhoneFontSizeNormal}"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Center"
-                                         Margin="-6,5,12,0"
-                                         Visibility="{Binding Item.LocationUrl, Converter={StaticResource StringToVisibility}}"  />
+                                         HorizontalContentAlignment="Left"
+                                         Margin="-6,5,0,0"
+                                         Visibility="{Binding Item.LocationUrl, Converter={StaticResource StringToVisibility}}" />
                     </Grid>
 
                     <!-- Speaker -->
                     <Grid Grid.Row="2"
+                          Margin="0,9,0,0"
                           Visibility="{Binding Item.SpeakerName, Converter={StaticResource StringToVisibility}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -183,37 +186,51 @@
                     <!-- "Mark as favorite" button -->
                     <Grid Grid.Column="1"
                           Grid.RowSpan="3"
-                          Margin="5,5,5,0"
-                          Visibility="{Binding Item.ParentPool.DisableFavorites, Converter={StaticResource BoolToOppositeVisibility}}">
-                        <ToggleButton IsChecked="{Binding IsFavorite, Mode=TwoWay}"
-                                      Template="{StaticResource SimpleButtonTemplate}">
-                            <Image Source="/Assets/EmptyStar.png" />
+                          VerticalAlignment="Top"
+                          Margin="5,10"
+                          Visibility="{Binding CanBeFavorite, Converter={StaticResource BoolToVisibility}}">
+                        <ToggleButton IsChecked="{Binding IsFavorite, Mode=TwoWay}">
+                            <ToggleButton.Template>
+                                <ControlTemplate>
+                                    <Grid Background="Transparent">
+                                        <ContentPresenter />
+                                    </Grid>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                            
+                            <Grid>
+                                <ContentControl Template="{StaticResource EmptyStarIcon}" />
+                                <ContentControl Template="{StaticResource StarIcon}"
+                                                Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}" />
+                            </Grid>
                         </ToggleButton>
-
-                        <Image Source="/Assets/Star.png"
-                               Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}"
-                               IsHitTestVisible="False" />
                     </Grid>
                 </Grid>
 
                 <!-- Large image -->
                 <Image Source="{Binding Item.PictureUrl}"
-                       Visibility="{Binding Item.PictureUrl, Converter={StaticResource StringToVisibility}}" />
+                       Margin="24,0"
+                       Visibility="{Binding Item.PictureUrl, Converter={StaticResource StringToVisibility}}"  />
 
                 <!-- Details, in HTML -->
-                <comControls:HtmlTextBlock Html="{Binding Item.Details}" />
+                <comControls:HtmlTextBlock Html="{Binding Item.Details, StringFormat='&lt;div&gt;&lt;div&gt;{0}&lt;/div&gt;&lt;/div&gt;'}"
+                                           Margin="12,24,12,0"
+                                           Visibility="{Binding Item.Details, Converter={StaticResource StringToVisibility}}" />
 
                 <!-- "More details" button -->
                 <HyperlinkButton Content="{Binding Resources.MoreEventDetailsButton, Source={StaticResource Strings}}"
                                  Command="{Binding OpenLinkCommand}"
                                  CommandParameter="{Binding Item.DetailsUrl}"
+                                 Foreground="{StaticResource PhoneSubtleBrush}"
                                  HorizontalAlignment="Left"
+                                 Margin="12,0"
                                  Visibility="{Binding Item.DetailsUrl, Converter={StaticResource StringToVisibility}}" />
 
                 <!-- Child pools -->
                 <ItemsControl ItemsSource="{Binding Pools}"
-                              ItemTemplate="{StaticResource ItemPoolTemplate}" />
-                
+                              ItemTemplate="{StaticResource ItemPoolTemplate}"
+                              Margin="24,0" />
+
                 <!-- Bottom margin -->
                 <Rectangle Height="95" />
             </StackPanel>

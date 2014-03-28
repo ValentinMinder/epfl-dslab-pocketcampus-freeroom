@@ -11,7 +11,7 @@ using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Models;
 using PocketCampus.Main.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.Main.Services
 {
@@ -81,9 +81,9 @@ namespace PocketCampus.Main.Services
             {
                 // Authenticate, and then go to this plugin if it succeeds
                 // but go back to whatever was the previous plugin rather than to this one if it doesn't
+                var authRequest = new AuthenticationRequest( true, () => _navigationService.NavigateTo<TViewModel>() );
                 _navigationService.PopBackStack();
-                _navigationService.NavigateToDialog<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Dialog );
-                _navigationService.NavigateTo<TViewModel>();
+                _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
                 return;
             }
 
@@ -142,9 +142,9 @@ namespace PocketCampus.Main.Services
                 {
                     // Authenticate, and then go to this plugin if it succeeds
                     // but go back to whatever was the previous plugin rather than to this one if it doesn't
+                    var authRequest = new AuthenticationRequest( true, () => _navigationService.NavigateTo<TViewModel>() );
                     _navigationService.PopBackStack();
-                    _navigationService.NavigateToDialog<AuthenticationViewModel, AuthenticationMode>( AuthenticationMode.Dialog );
-                    _navigationService.NavigateTo<TViewModel>();
+                    _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
                     return;
                 }
             }

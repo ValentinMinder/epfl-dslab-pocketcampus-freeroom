@@ -79,7 +79,7 @@ namespace PocketCampus.Directory.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No result was found. Please check your spelling..
+        ///   Looks up a localized string similar to No result found. Please check your spelling..
         /// </summary>
         public static string NoSearchResults {
             get {
@@ -97,20 +97,11 @@ namespace PocketCampus.Directory.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to E-mail address.
+        ///   Looks up a localized string similar to E-mail.
         /// </summary>
         public static string PersonEmail {
             get {
                 return ResourceManager.GetString("PersonEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GASPAR identifier.
-        /// </summary>
-        public static string PersonGaspar {
-            get {
-                return ResourceManager.GetString("PersonGaspar", resourceCulture);
             }
         }
         
@@ -138,15 +129,6 @@ namespace PocketCampus.Directory.Resources {
         public static string PersonPrivatePhone {
             get {
                 return ResourceManager.GetString("PersonPrivatePhone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SCIPER number.
-        /// </summary>
-        public static string PersonSciper {
-            get {
-                return ResourceManager.GetString("PersonSciper", resourceCulture);
             }
         }
         

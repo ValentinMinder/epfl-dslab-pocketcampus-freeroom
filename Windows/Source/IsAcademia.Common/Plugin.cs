@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using PocketCampus.Common;
 using PocketCampus.IsAcademia.Services;
 using PocketCampus.IsAcademia.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 namespace PocketCampus.IsAcademia
 {

@@ -14,7 +14,7 @@ using Microsoft.Phone.Maps.Toolkit;
 using PocketCampus.Common;
 using PocketCampus.Map.Models;
 using PocketCampus.Map.ViewModels;
-using PocketCampus.Mvvm;
+using ThinMvvm;
 
 // MEGA-HACK: Accessing MapItemsControl map children as members fails. They're always null.
 // So, instead we find them amongst all map children. It's ugly, but I haven't found a better way.
