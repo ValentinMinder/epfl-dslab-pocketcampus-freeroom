@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `fr-roomslist` (
   `cf` char(255) DEFAULT NULL,
   `adminuse` char(255) DEFAULT NULL,
   `EWAid` char(255) DEFAULT NULL,
+  `type` char(255) DEFAULT NULL,
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
