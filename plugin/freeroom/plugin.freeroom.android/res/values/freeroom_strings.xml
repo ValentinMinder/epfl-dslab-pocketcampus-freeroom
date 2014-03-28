@@ -46,5 +46,8 @@
     <string name="freeroom_check_occupancy_result_checking_rooms">Checking result for rooms:</string>
     <string name="freeroom_check_occupancy_search_inputbarhint">Type in for searching a specific room</string>
     <string name="freeroom_result_occupancy_favorites">Favorites</string>
+    <string name="freeroom_tab_home">Home</string>
+    <string name="freeroom_tab_freeroomsearch">Search free rooms</string>
+    <string name="freeroom_tab_occupancysearch">Check occupancy</string>
 
 </resources>
