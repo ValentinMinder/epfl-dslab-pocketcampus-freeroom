@@ -8,6 +8,7 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.layout.FreeRoomTabLayout;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
@@ -36,7 +37,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
 
-	private StandardTitledLayout mLayout;
+	private FreeRoomTabLayout mLayout;
 
 	private ListView mList;
 	private ArrayList<String> mListValues;
@@ -57,13 +58,14 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 		mModel = (FreeRoomModel) controller.getModel();
 
 		// Setup the layout
-		mLayout = new StandardTitledLayout(this);
+		mLayout = new FreeRoomTabLayout(this, this);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.setTitle(getString(R.string.freeroom_title_main_title));
+//		mLayout.setTitle(getString(R.string.freeroom_title_main_title));
+		mLayout.hideTitle();
 
-		initializeMainView();
+		initializeView();
 	}
 
 	/**
@@ -82,7 +84,7 @@ public class FreeRoomMainView extends FreeRoomAbstractView implements
 		 */
 	}
 
-	private void initializeMainView() {
+	public void initializeView() {
 		mList = new ListView(this);
 		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT,
 				LayoutParams.FILL_PARENT);

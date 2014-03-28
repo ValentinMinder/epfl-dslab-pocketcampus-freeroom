@@ -64,9 +64,9 @@ public class FreeRoomManageFavoritesView extends FreeRoomAbstractView implements
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.setTitle(getString(R.string.freeroom_title_manage_favorites));
-
-		initializeFavoritesView();
+//		mLayout.setTitle(getString(R.string.freeroom_title_manage_favorites));
+		mLayout.hideTitle();
+		initializeView();
 	}
 
 	private void resetView() {
@@ -81,7 +81,7 @@ public class FreeRoomManageFavoritesView extends FreeRoomAbstractView implements
 		}
 	}
 
-	private void initializeFavoritesView() {
+	public void initializeView() {
 		resetView();
 		resetAllFavorites = new Button(this);
 		resetAllFavorites.setText(getString(R.string.freeroom_resetbutton));
@@ -90,7 +90,7 @@ public class FreeRoomManageFavoritesView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				if (mModel.removeAllRoomsFavorites()) {
-					initializeFavoritesView();
+					initializeView();
 				}
 			}
 		});

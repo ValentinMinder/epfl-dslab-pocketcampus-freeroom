@@ -37,10 +37,14 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.OccupationType;
+import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
@@ -854,5 +858,19 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
+			throws TException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public WhoIsWorkingReply whoIsWorking(WhoIsWorkingRequest request)
+			throws TException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

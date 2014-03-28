@@ -13,6 +13,7 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.layout.FreeRoomTabLayout;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Intent;
@@ -41,7 +42,7 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
 
-	private StandardTitledLayout mLayout;
+	private FreeRoomTabLayout mLayout;
 	private LinearLayout subLayout;
 
 	private Button resetButton;
@@ -67,7 +68,7 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 		mModel = (FreeRoomModel) controller.getModel();
 
 		// Setup the layout
-		mLayout = new StandardTitledLayout(this);
+		mLayout = new FreeRoomTabLayout(this, this);
 
 		subLayout = new LinearLayout(this);
 		subLayout.setOrientation(LinearLayout.VERTICAL);
@@ -76,15 +77,16 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.setTitle(getString(R.string.freeroom_title_FRresult));
-
-		initializeResultView();
+//		mLayout.setTitle(getString(R.string.freeroom_title_FRresult));
+		mLayout.hideTitle();
+		
+		initializeView();
 
 		// launch the actual search AFTER launching completely the UI
 		mController.searchFreeRoom(this);
 	}
 
-	private void initializeResultView() {
+	public void initializeView() {
 		// resetButton = new Button(this);
 		// resetButton.setEnabled(false);
 		// resetButton.setText(R.string.freeroom_resetbutton);

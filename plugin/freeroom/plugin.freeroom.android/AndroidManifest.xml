@@ -13,7 +13,8 @@
         android:theme="@style/PocketCampusTheme" >
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomMainView"
+            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView"
+            android:launchMode="singleTask"
             android:icon="@drawable/building2x177"
             android:label="@string/freeroom_plugin_title"
             android:screenOrientation="nosensor" >
@@ -56,6 +57,7 @@
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsView"
+            android:launchMode="singleTask"
             android:screenOrientation="nosensor" />
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -64,14 +66,11 @@
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomCheckOccupancySearchView"
+            android:launchMode="singleTask"
             android:screenOrientation="nosensor" />
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomCheckOccupancyResultView"
-            android:screenOrientation="nosensor" />
-        <activity
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsResultView"
             android:screenOrientation="nosensor" />
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"

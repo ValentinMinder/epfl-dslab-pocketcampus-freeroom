@@ -13,6 +13,7 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableSimpleListViewAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.layout.FreeRoomTabLayout;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
@@ -43,7 +44,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
 
-	private StandardTitledLayout mLayout;
+	private FreeRoomTabLayout mLayout;
 	private LinearLayout subLayout;
 
 	private TextView mTitle;
@@ -72,19 +73,19 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 		mModel = (FreeRoomModel) controller.getModel();
 
 		// Setup the layout
-		mLayout = new StandardTitledLayout(this);
+		mLayout = new FreeRoomTabLayout(this, this);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_result));
-
-		initializeCheckOccupancyResultView();
+//		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_result));
+		mLayout.hideTitle();
+		initializeView();
 
 		// launch the actual search AFTER launching completely the UI
 		mController.checkOccupancy(this);
 	}
 
-	private void initializeCheckOccupancyResultView() {
+	public void initializeView() {
 		subLayout = new LinearLayout(this);
 		subLayout.setOrientation(LinearLayout.VERTICAL);
 
