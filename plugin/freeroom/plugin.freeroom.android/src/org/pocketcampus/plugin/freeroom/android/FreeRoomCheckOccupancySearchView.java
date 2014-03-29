@@ -17,6 +17,7 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayou
 import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.layout.FreeRoomTabLayout;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
@@ -60,7 +61,8 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
 
-	private StandardTitledDoubleLayout mLayout;
+	private FreeRoomTabLayout mLayout;
+	private LinearLayout mGlobalSubLayout;
 	private LinearLayout mSubLayoutUpperData;
 	private LinearLayout mSubSubTimePickersLayout;
 
@@ -123,25 +125,29 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		mController = (FreeRoomController) controller;
 		mModel = (FreeRoomModel) controller.getModel();
 
-		mSelectedRoomsToQueryArrayList = new ArrayList<FRRoom>(10);
-
-		initializeCheckOccupancySearchView();
+		mSelectedRoomsToQueryArrayList = new ArrayList<FRRoom>(10);	
+		
+		initializeView();
 		createSuggestionsList();
 	}
 
-	private void initializeCheckOccupancySearchView() {
+	public void initializeView() {
 		init();
 		resetTimes();
 
 		// Setup the layout
-		mLayout = new StandardTitledDoubleLayout(this);
+		mLayout = new FreeRoomTabLayout(this, this);
+		mGlobalSubLayout = new LinearLayout(this);
+		mGlobalSubLayout.setOrientation(LinearLayout.VERTICAL);
+		
+//		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_search));
+		mLayout.hideTitle();
 
-		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_search));
 		mSubLayoutUpperData = new LinearLayout(this);
 		mSubLayoutUpperData.setOrientation(LinearLayout.VERTICAL);
 		mSubSubTimePickersLayout = new LinearLayout(this);
 		mSubSubTimePickersLayout.setOrientation(LinearLayout.HORIZONTAL);
-		mLayout.addFirstLayoutFillerView(mSubLayoutUpperData);
+		mGlobalSubLayout.addView(mSubLayoutUpperData);
 
 		UIConstructPickers();
 
@@ -161,7 +167,9 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 		UIConstructInputBar();
 
-		mLayout.addSecondLayoutFillerView(mAutoCompleteSuggestionInputBarElement);
+		mGlobalSubLayout.addView(mAutoCompleteSuggestionInputBarElement);
+		
+		mLayout.addFillerView(mGlobalSubLayout);
 
 		// The ActionBar is added automatically when you call setContentView
 
@@ -465,9 +473,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 	private void updateShowDatePicker() {
 		showDatePicker
-				.setText(getString(R.string.freeroom_check_occupancy_search_date)
-						+ " : "
-						+ dateFormat.format(new Date(yearSelected,
+				.setText(dateFormat.format(new Date(yearSelected,
 								monthSelected, dayOfMonthSelected)));
 	}
 

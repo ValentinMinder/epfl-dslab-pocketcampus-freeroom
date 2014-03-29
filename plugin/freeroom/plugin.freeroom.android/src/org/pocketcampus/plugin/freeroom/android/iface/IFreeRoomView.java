@@ -21,5 +21,7 @@ public interface IFreeRoomView extends IView {
 	void autoCompletedUpdated();
 
 	void occupancyResultUpdated();
+	
+	void initializeView();
 
 }

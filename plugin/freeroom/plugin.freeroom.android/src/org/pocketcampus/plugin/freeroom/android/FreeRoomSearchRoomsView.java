@@ -9,6 +9,7 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.layout.FreeRoomTabLayout;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableSimpleListViewAdapter;
 import org.pocketcampus.plugin.freeroom.shared.FRDay;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
@@ -38,7 +39,7 @@ public class FreeRoomSearchRoomsView extends FreeRoomAbstractView implements
 	private FreeRoomController mController;
 	private FreeRoomModel mModel;
 
-	private StandardTitledLayout mLayout;
+	private FreeRoomTabLayout mLayout;
 	private LinearLayout subLayout;
 
 	private ExpandableListView searchParams;
@@ -70,7 +71,7 @@ public class FreeRoomSearchRoomsView extends FreeRoomAbstractView implements
 		mModel = (FreeRoomModel) controller.getModel();
 
 		// Setup the layout
-		mLayout = new StandardTitledLayout(this);
+		mLayout = new FreeRoomTabLayout(this, this);
 		subLayout = new LinearLayout(this);
 		subLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -78,13 +79,14 @@ public class FreeRoomSearchRoomsView extends FreeRoomAbstractView implements
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		mLayout.setTitle(getString(R.string.freeroom_title_FRsearch));
-
-		initializeSearchView();
+//		mLayout.setTitle(getString(R.string.freeroom_title_FRsearch));
+		mLayout.hideTitle();
+		
+		initializeView();
 
 	}
 
-	private void initializeSearchView() {
+	public void initializeView() {
 		startHour = -1;
 		endHour = -1;
 		intday = -1;
@@ -127,7 +129,7 @@ public class FreeRoomSearchRoomsView extends FreeRoomAbstractView implements
 				subLayout.removeAllViews();
 				listHeader.clear();
 				listData.clear();
-				initializeSearchView();
+				initializeView();
 			}
 		});
 
