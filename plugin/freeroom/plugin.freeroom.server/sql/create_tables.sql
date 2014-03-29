@@ -29,3 +29,28 @@ CREATE TABLE IF NOT EXISTS `fr-roomsoccupancy` (
 	PRIMARY KEY (`oid`, `uid`),
 	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE
 ) CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `fr-usersoccupancy` (
+	`timestampStart` bigint(20) NOT NULL,
+	`timestampEnd` bigint(20) NOT NULL,
+	`count` int(11) DEFAULT 0,
+	`uid` char(255) NOT NULL,
+	PRIMARY KEY (`timestampStart`, `uid`),
+	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE
+) CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `fr-usersworking` (
+	`oid` int(11) NOT NULL AUTO_INCREMENT,
+	`userID` int(6) NOT NULL,
+	`timestampStart` bigint(20) NOT NULL,
+	`timestampEnd` bigint(20) NOT NULL,
+	`course_id` char(255),
+	`course_name` char(255),
+	`message` char(255),
+	`uid` char(255) NOT NULL,
+	PRIMARY KEY (`oid`, `uid`),
+	UNIQUE KEY `oid` (`oid`),
+	KEY `uid` (`uid`),
+	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE
+) CHARSET=latin1;
+

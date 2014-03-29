@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -31,16 +32,21 @@ import org.pocketcampus.plugin.freeroom.server.utils.Utils;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRCourse;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.OccupationType;
+import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
+import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
@@ -54,6 +60,7 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
  */
 
 public class FreeRoomServiceImpl implements FreeRoomService.Iface {
+	// ********** START OF "INITIALIZATION" PART **********
 	private final String URL_ROOMS_LIST = "https://pocketcampus.epfl.ch/proxy/"
 			+ "archibus.php/rwsrooms/searchRooms"
 			+ "?961264a174e15211109e1deb779b17d0=1&app=freeroom&"
@@ -76,7 +83,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			e.printStackTrace();
 		}
 		// update ewa : should be done periodically...
-		boolean updateEWA = true;
+		boolean updateEWA = false;
 		if (updateEWA) {
 			if (updateEWAOccupancy()) {
 				System.out.println("EWA data succesfully updated!");
@@ -92,6 +99,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		System.out.println("Starting TEST FreeRoom plugin server ...");
 		connMgr = conn;
 	}
+
+	// ********** END OF "INITIALIZATION" PART **********
+	// ********** START OF "PUBLIC SERVER SERVICES" PART **********
 
 	/**
 	 * Search for all rooms available during the time period included in the
@@ -420,6 +430,404 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
+	/**
+	 * Register that a user will be in a room for a given time.
+	 */
+	@Override
+	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
+			throws TException {
+		ImWorkingReply reply = new ImWorkingReply(
+				HttpURLConnection.HTTP_INTERNAL_ERROR, "");
+
+		try {
+			Connection connectBDD = connMgr.getConnection();
+			WorkingOccupancy w = request.getWork();
+			List<FRPeriod> mFrPeriods = FRTimes
+					.getFRPeriodByStep(w.getPeriod());
+			int size = mFrPeriods.size();
+			FRRoom mFrRoom = w.getRoom();
+			String roomUID = mFrRoom.getUid();
+
+			// get the previously registered user occupancies
+			List<Integer> listUserOccupancy = getUserOccupancy(mFrPeriods,
+					mFrRoom);
+
+			// construct the query
+			String line = "UPDATE `fr-usersoccupancy`"
+					+ "SET count = (?) "
+					+ "WHERE uid = (?) AND timestampStart = (?) AND timestampEnd = (?); \n";
+			StringBuilder build = new StringBuilder(line.length() * size);
+			for (int i = 0; i < size; i++) {
+				build.append(line);
+			}
+			PreparedStatement query = connectBDD.prepareStatement(build
+					.toString());
+
+			// put the values in the query.
+			for (int i = 0, j = 0; i < size; i++, j = 4 * i) {
+				query.setInt(j + 1, (listUserOccupancy.get(i).intValue() + 1));
+				query.setString(j + 2, roomUID);
+				FRPeriod period = mFrPeriods.get(i);
+				query.setLong(j + 3, period.getTimeStampStart());
+				query.setLong(j + 4, period.getTimeStampEnd());
+			}
+
+			query.execute();
+
+			// checks if advanced mode is needed for this request.
+			boolean updateUsersWorking = w.isSetCourse() || w.isSetMessage();
+			boolean resultAdvanced = true;
+			if (updateUsersWorking) {
+				resultAdvanced = indicateImWorkingAdvanced(request);
+			}
+
+			if (resultAdvanced) {
+				reply = new ImWorkingReply(HttpURLConnection.HTTP_OK,
+						"ImWorking set + advanced if any set");
+			} else {
+				// TODO: no differenciation ?
+				reply = new ImWorkingReply(
+						HttpURLConnection.HTTP_INTERNAL_ERROR,
+						"FAIL: advanced working occupancy failed (but usual one worked)");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return reply;
+	}
+
+	/**
+	 * Sets the advanced imWorkingRequest in the appropriate DB.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	private boolean indicateImWorkingAdvanced(ImWorkingRequest request) {
+		Connection connectBDD;
+		try {
+			connectBDD = connMgr.getConnection();
+			WorkingOccupancy workingOccupancy = request.getWork();
+			String roomUID = workingOccupancy.getRoom().getUid();
+
+			// construct the query
+			String SQL = "INSERT INTO `fr-usersworking` (`userID`, `timestampStart`, `timestampEnd`, `course_id`, `course_name`, `message` ,`uid` ) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement queryUsersWorking = connectBDD
+					.prepareStatement(SQL);
+			// TODO: the user has to send is sciper EPFL ID!
+			queryUsersWorking.setInt(1, 123456);
+			FRPeriod period = workingOccupancy.getPeriod();
+			queryUsersWorking.setLong(2, period.getTimeStampStart());
+			queryUsersWorking.setLong(3, period.getTimeStampEnd());
+
+			// if any, set the course details
+			if (workingOccupancy.isSetCourse()) {
+				queryUsersWorking.setString(4, workingOccupancy.getCourse()
+						.getCourseID());
+				queryUsersWorking.setString(5, workingOccupancy.getCourse()
+						.getCourseName());
+			} else {
+				queryUsersWorking.setString(4, null);
+				queryUsersWorking.setString(5, null);
+			}
+
+			// if any, set the personalized message.
+			if (workingOccupancy.isSetMessage()) {
+				queryUsersWorking.setString(6, workingOccupancy.getMessage());
+			} else {
+				queryUsersWorking.setString(6, null);
+			}
+
+			// set the roomID and execute the query
+			queryUsersWorking.setString(7, roomUID);
+			queryUsersWorking.execute();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns all the rooms in the DB.
+	 * 
+	 * @return a collection of Rooms.
+	 */
+	private Collection<FRRoom> getAllRoomsInDB() {
+		Connection connectBDD;
+		try {
+			// construct the query
+			connectBDD = connMgr.getConnection();
+			String reqSQL = "SELECT rl.doorCode, rl.uid "
+					+ "FROM `fr-roomslist` rl";
+			PreparedStatement query = connectBDD.prepareStatement(reqSQL);
+
+			// retrieves the result
+			Collection<FRRoom> collection = new ArrayList<FRRoom>(400);
+			ResultSet resultQuery = query.executeQuery();
+			while (resultQuery.next()) {
+				String uid = resultQuery.getString("uid");
+				String doorCode = resultQuery.getString("doorCode");
+				FRRoom r = new FRRoom(doorCode, uid);
+				collection.add(r);
+			}
+			return collection;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Should be called for TESTS, to truncate the table and initiate a new one
+	 * with empty values.
+	 * 
+	 * @return
+	 */
+	public boolean initUserOccupation() {
+		try {
+			// truncate DB
+			Connection connectBDD = connMgr.getConnection();
+			String resSQL = "TRUNCATE `fr-usersoccupancy`";
+			PreparedStatement query = connectBDD.prepareStatement(resSQL);
+			query.execute();
+
+			long start = System.currentTimeMillis() - FRTimes.MAX_TIME_IN_PAST;
+			long end = System.currentTimeMillis() + FRTimes.MAX_TIME_IN_FUTURE
+					+ FRTimes.AUTO_UPDATE_INTERVAL_USER_OCCUPANCY
+					- FRTimes.USER_OCCUPANCY_UPDATE_MARGIN;
+			start -= FRTimes.USER_OCCUPANCY_UPDATE_MARGIN;
+			FRPeriod period = new FRPeriod(start, end, false);
+			return fillDBWithEmptyUserOccupationAllRoomsFixedPeriod(period);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+
+	/**
+	 * Fills an empty user occupation for every step in pre-defined period, for
+	 * every room in DB.
+	 * 
+	 * Should be called periodically, every
+	 * <code>FRTimes.AUTO_UPDATE_INTERVAL_USER_OCCUPANCY</code>
+	 * 
+	 * (like, every day at midnight)
+	 * 
+	 * @return
+	 */
+	private boolean fillDBWithEmpytUserOccupationAllRoomsAutoDefinedPeriod() {
+		// TODO: to avoid conflict, this method should check the last registered
+		// timestamp before inserting new ones (if same timestamp, we have an
+		// error as it's primary key)
+		long start = System.currentTimeMillis() + FRTimes.MAX_TIME_IN_FUTURE
+				+ FRTimes.AUTO_UPDATE_INTERVAL_USER_OCCUPANCY;
+		long end = start + FRTimes.AUTO_UPDATE_INTERVAL_USER_OCCUPANCY
+				- FRTimes.USER_OCCUPANCY_UPDATE_MARGIN;
+		start -= FRTimes.USER_OCCUPANCY_UPDATE_MARGIN;
+		FRPeriod period = new FRPeriod(start, end, false);
+		return fillDBWithEmptyUserOccupationAllRoomsFixedPeriod(period);
+	}
+
+	/**
+	 * Fills an empty user occupation for every step in the period, for every
+	 * room in DB.
+	 * 
+	 * @param period
+	 * @return
+	 */
+	private boolean fillDBWithEmptyUserOccupationAllRoomsFixedPeriod(
+			FRPeriod period) {
+		boolean flag = true;
+		Iterator<FRRoom> iter = getAllRoomsInDB().iterator();
+		boolean result = true;
+		while (iter.hasNext()) {
+			result = fillDBWithEmptyUserOccupationFixedRoomFixedPeriod(period,
+					iter.next());
+			flag = flag && result;
+		}
+		return flag;
+	}
+
+	/**
+	 * Fills an empty user occupation for every step in the period, for the
+	 * given room.
+	 * 
+	 * @param mFrPeriod
+	 * @param mFrRoom
+	 * @return
+	 */
+	private boolean fillDBWithEmptyUserOccupationFixedRoomFixedPeriod(
+			FRPeriod mFrPeriod, FRRoom mFrRoom) {
+		try {
+			Connection connectBDD = connMgr.getConnection();
+			List<FRPeriod> mFrPeriods = FRTimes.getFRPeriodByStep(mFrPeriod);
+			int size = mFrPeriods.size();
+			String roomUID = mFrRoom.getUid();
+			String first = "INSERT INTO `fr-usersoccupancy` "
+					+ "(uid, timestampStart, timestampEnd, count) VALUES ";
+			String line = "((?), (?), (?), (?)), ";
+
+			StringBuilder build = new StringBuilder(first.length()
+					+ line.length() * size);
+			build.append(first);
+			for (int i = 0; i < size - 1; i++) {
+				build.append(line);
+			}
+			build.append("((?), (?), (?), (?))");
+			PreparedStatement query = connectBDD.prepareStatement(build
+					.toString());
+
+			for (int i = 0, j = 0; i < size; i++, j = 4 * i) {
+				query.setString(j + 1, roomUID);
+				FRPeriod period = mFrPeriods.get(i);
+				query.setLong(j + 2, period.getTimeStampStart());
+				query.setLong(j + 3, period.getTimeStampEnd());
+				query.setInt(j + 4, 0);
+			}
+
+			query.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	public List<Integer> getUserOccupancy(FRPeriod mFrPeriod, FRRoom mFrRoom) {
+		List<FRPeriod> mFrPeriods = FRTimes.getFRPeriodByStep(mFrPeriod);
+		return getUserOccupancy(mFrPeriods, mFrRoom);
+	}
+
+	/**
+	 * Return the count occupancy of the given FRperiod, for the given room.
+	 * 
+	 * FRPeriod MUST been "stepped" before using the utility method in
+	 * <code>FRTimes</code>
+	 * 
+	 * @param mFRperiods
+	 * @param mFrRoom
+	 * @return
+	 */
+	private List<Integer> getUserOccupancy(List<FRPeriod> mFRperiods,
+			FRRoom mFrRoom) {
+		int size = mFRperiods.size();
+		if (size < 1) {
+			String error = this.getClass().getSimpleName()
+					+ ": getUserOccupancy must have at least one mFRPeriod";
+			System.err.println(error);
+			return null;
+		}
+
+		try {
+			Connection connectionDB = connMgr.getConnection();
+
+			// preparing the query
+			String firstWord = "SELECT `count` FROM `fr-usersoccupancy` WHERE `uid`=(?) AND ( ";
+			String rowWord = "timestampStart=(?) ";
+			String orWord = "OR ";
+			String lastWord = ") ORDER BY timestampStart";
+			StringBuilder builder = new StringBuilder(firstWord.length()
+					+ lastWord.length() + (rowWord.length() + orWord.length())
+					* size);
+			builder.append(firstWord);
+			for (int i = 0; i < size - 1; i++) {
+				builder.append(rowWord);
+				builder.append(orWord);
+			}
+			builder.append(rowWord);
+			builder.append(lastWord);
+
+			// filling the query with values.
+			PreparedStatement query = connectionDB.prepareStatement(builder
+					.toString());
+			query.setString(1, mFrRoom.getUid());
+			for (int i = 0; i < size; i++) {
+				query.setLong(i + 2, mFRperiods.get(i).getTimeStampStart());
+			}
+
+			// executing the query
+			ResultSet resultQuery = query.executeQuery();
+			List<Integer> listInteger = new ArrayList<Integer>(size);
+			while (resultQuery.next()) {
+				listInteger.add(new Integer(resultQuery.getInt("count")));
+			}
+
+			if (listInteger.size() != size) {
+				String error = "Method not consistant! "
+						+ "Must return exactly the same number of occupancy than FRPeriod given";
+				System.err.println(error);
+				return null;
+			}
+			return listInteger;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Retrieves who is working according to some constraints.
+	 * 
+	 * TODO: take the constraints into account (room, time, message)! For now,
+	 * it returns everything!
+	 */
+	@Override
+	public WhoIsWorkingReply whoIsWorking(WhoIsWorkingRequest request)
+			throws TException {
+
+		WhoIsWorkingReply reply = new WhoIsWorkingReply(
+				HttpURLConnection.HTTP_INTERNAL_ERROR, "");
+		Connection connectionDB;
+		try {
+			connectionDB = connMgr.getConnection();
+			String SQL = "SELECT * FROM `fr-usersworking`";
+			PreparedStatement query = connectionDB.prepareStatement(SQL);
+
+			// executing the query
+			List<WorkingOccupancy> theyAreWorking = new ArrayList<WorkingOccupancy>();
+			ResultSet resultQuery = query.executeQuery();
+			while (resultQuery.next()) {
+				String uid = resultQuery.getString("uid");
+				long timestampStart = resultQuery.getLong("timestampStart");
+				long timestampEnd = resultQuery.getLong("timestampEnd");
+				FRPeriod period = new FRPeriod(timestampStart, timestampEnd,
+						false);
+				// TODO: how to get the door code from the other table ?
+				FRRoom room = new FRRoom("fake door code", uid);
+				WorkingOccupancy workingOccupancy = new WorkingOccupancy(
+						period, room);
+				String courseID = resultQuery.getString("course_id");
+
+				String courseName = resultQuery.getString("course_name");
+				if (courseID != null && courseName != null) {
+					FRCourse course = new FRCourse(courseID, courseName);
+					workingOccupancy.setCourse(course);
+				}
+				String message = resultQuery.getString("message");
+				if (message != null) {
+					workingOccupancy.setMessage(message);
+				}
+
+				theyAreWorking.add(workingOccupancy);
+			}
+			reply = new WhoIsWorkingReply(HttpURLConnection.HTTP_OK, "");
+			reply.setTheyAreWorking(theyAreWorking);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return reply;
+	}
+
+	// ********** END OF "PUBLIC SERVER SERVICES" PART **********
+	// ********** START OF "FETCHING ROOMS DATA FROM ARCHIBUS" PART **********
+
 	public int fetchRoomsIntoDB() {
 		int totalCount = 0;
 		StringBuffer page = new StringBuffer();
@@ -643,7 +1051,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return true;
 	}
 
-	// MICROSOFT EXCHANGE - EWA //
+	// ********** END OF "FETCHING ROOMS DATA FROM ARCHIBUS" PART **********
+	// ********** START OF "FETCHING EXCHANGE" PART **********
 
 	/**
 	 * Reset all the exchange ids to NULL.
@@ -855,4 +1264,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 		return true;
 	}
+	// ********** END OF "FETCHING EXCHANGE" PART **********
+
 }
