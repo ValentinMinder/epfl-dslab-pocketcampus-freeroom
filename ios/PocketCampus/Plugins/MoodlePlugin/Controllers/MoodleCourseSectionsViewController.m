@@ -329,8 +329,15 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         //perform search in background
         typeof(self) weakSelf __weak = self;
         self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:self.filteredSections.count ? 0.2 : 0.0 block:^{ //interval: so that first search is not delayed (would display "No results" otherwise)
-            [self.searchQueue addOperationWithBlock:^{
-                NSArray* filteredSections = [self filteredSectionsFromPattern:searchString];
+            [weakSelf.searchQueue addOperationWithBlock:^{
+                if (!weakSelf) {
+                    return;
+                }
+                __strong __typeof(weakSelf) strongSelf = weakSelf;
+                NSArray* filteredSections = [strongSelf filteredSectionsFromPattern:searchString]; //heavy-computation line
+                if (!weakSelf) {
+                    return;
+                }
                 NSRegularExpression* currentSearchRegex = [NSRegularExpression regularExpressionWithPattern:searchString options:NSRegularExpressionCaseInsensitive error:NULL];
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                     weakSelf.filteredSections = filteredSections;
