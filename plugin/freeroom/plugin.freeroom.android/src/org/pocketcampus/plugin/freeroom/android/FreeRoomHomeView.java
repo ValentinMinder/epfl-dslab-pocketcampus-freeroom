@@ -103,7 +103,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	public void initializeView() {
 		// create the UI elements
 		mExpView = new ExpandableListView(this);
-		
+		subLayout.addView(mExpView);
 
 		// create the request for the server
 		List<String> uidsFavorites = new ArrayList<String>(
@@ -167,7 +167,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		// and finally create the adapter and display!
-		subLayout.addView(mExpView);
 		mAdapter = new ExpandableListViewFavoriteAdapter(this, buildings,
 				rooms, mModel);
 		mExpView.setAdapter(mAdapter);
