@@ -974,7 +974,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			// from now, fields are optional, thus if some are not present,
 			// we still continue to check the other
-
+			String sitename = null;
 			if (room.has("places")) {
 				query.setInt(4, room.getInt("places"));
 			} else {
@@ -1031,6 +1031,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			if (room.has("site_name")) {
 				query.setString(13, room.getString("site_name"));
+				sitename = room.getString("site_name");
 			} else {
 				query.setNull(13, Types.CHAR);
 			}
@@ -1060,7 +1061,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 
 			if (room.has("dincat")) {
-				String type = getFromFileDinCatString(room.getString("dincat"));
+				String type = getFromFileDinCatString(room.getString("dincat"),
+						sitename);
 				query.setString(18, type);
 				query.setString(19, room.getString("dincat"));
 			} else {
@@ -1069,6 +1071,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 
 			query.executeUpdate();
+			System.out.println("fetched"
+					+ getFromFileDinCatString(room.getString("dincat"),
+							sitename));
 		} catch (SQLException | JSONException e) {
 			e.printStackTrace();
 			return false;
@@ -1077,15 +1082,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return true;
 	}
 
-	private String getFromFileDinCatString(String dincat) {
+	private String getFromFileDinCatString(String dincat, String sitename) {
 		if (dincat_text == null) {
 			dincat_text = new HashMap<String, String>();
 			try {
 				Scanner sc = new Scanner(new File(FILE_DINCAT));
 
-				while (sc.hasNext()) {
+				while (sc.hasNextLine()) {
 					String line = sc.nextLine();
-					String[] lineSplitted = line.split(";");
+					String[] lineSplitted = line.split("[;]");
 					if (lineSplitted.length >= 2) {
 						dincat_text.put(lineSplitted[0], lineSplitted[1]);
 					}
@@ -1094,8 +1099,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				e.printStackTrace();
 			}
 		}
-		
-		return dincat_text.get(dincat);
+
+		if (sitename != null) {
+			return dincat_text.get(dincat + "." + sitename);
+		} else {
+			return null;
+		}
 
 	}
 
