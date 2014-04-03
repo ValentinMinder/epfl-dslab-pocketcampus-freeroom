@@ -259,20 +259,16 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 							+ getString(R.string.freeroom_check_occupancy_result_free);
 					if (mActualOccupation.isSetProbableOccupation()) {
 						mActualOccupationAsString += " "
-								+ "(probably occupied by at least "
-								+ mActualOccupation.getProbableOccupation()
-								+ " people";
+								+ mActualOccupation.getProbableOccupation();
 						if (mFRRoom.isSetCapacity()
 								&& mFRRoom.getCapacity() != 0) {
-							mActualOccupationAsString += ", at most "
+							mActualOccupationAsString += "/"
 									+ (mFRRoom.getCapacity() - mActualOccupation
-											.getProbableOccupation())
-									+ " places remaining )";
+											.getProbableOccupation());
 						} else {
 							mActualOccupationAsString += ")";
 						}
 					}
-					mActualOccupationAsString += " Click to work here.";
 				} else {
 					mActualOccupationAsString += " "
 							+ getString(R.string.freeroom_check_occupancy_result_occupied);
