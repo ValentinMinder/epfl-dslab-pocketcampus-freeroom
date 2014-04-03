@@ -74,16 +74,11 @@ struct FreeRoomRequest {
 	2: optional set<FRRoom> forbiddenRooms;
 }
 
-enum OccupationType {
-	UNSPECIFIED; FREE; USED; RESERVED; ISA; OTHERS;
-}
-
 // defines if the room is reserved or not, occupation type can give details of the occupation
 struct ActualOccupation {
 	1: required FRPeriod period;
 	2: required bool available;
-	3: required OccupationType occupationType;
-	4: optional i32 probableOccupation; // if we want to do CFF-style
+	3: optional i32 probableOccupation; // if we want to do CFF-style
 }
 
 // the occupancy of a room: periods are usually each hour

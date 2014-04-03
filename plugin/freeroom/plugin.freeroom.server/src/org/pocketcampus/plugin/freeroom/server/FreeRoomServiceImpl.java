@@ -43,7 +43,6 @@ import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
-import org.pocketcampus.plugin.freeroom.shared.OccupationType;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
@@ -283,7 +282,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 								tsStart - 1, false);
 						mOcc.setPeriod(myPeriod);
 						mOcc.setAvailable(true);
-						mOcc.setOccupationType(OccupationType.FREE);
 						mOcc.setProbableOccupation(getWorstCaseUserOccupancy(
 								myPeriod, room));
 						mOccupancy.addToOccupancy(mOcc);
@@ -297,7 +295,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					mAccOcc.setPeriod(new FRPeriod(tsStart, tsEnd, false));
 					mAccOcc.setAvailable(false);
 					// TODO reminder default value ISA
-					mAccOcc.setOccupationType(OccupationType.ISA);
 					mOccupancy.addToOccupancy(mAccOcc);
 					isAtLeastOccupiedOnce = true;
 
@@ -312,7 +309,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							false);
 					mOcc.setPeriod(myPeriod);
 					mOcc.setAvailable(true);
-					mOcc.setOccupationType(OccupationType.FREE);
 					mOcc.setProbableOccupation(getWorstCaseUserOccupancy(
 							myPeriod, room));
 					mOccupancy.addToOccupancy(mOcc);

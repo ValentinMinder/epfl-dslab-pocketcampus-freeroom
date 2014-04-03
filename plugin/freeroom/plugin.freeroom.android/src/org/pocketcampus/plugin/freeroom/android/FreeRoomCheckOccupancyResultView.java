@@ -151,11 +151,16 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 								.getListCheckedOccupancyRoom();
 						if (groupPosition < list.size()) {
 							Occupancy mOccupancy = list.get(groupPosition);
-							List<ActualOccupation> mActualOccupations = mOccupancy.getOccupancy();
+							List<ActualOccupation> mActualOccupations = mOccupancy
+									.getOccupancy();
 							if (childPosition < mActualOccupations.size()) {
-								ActualOccupation mActualOccupation = mActualOccupations.get(childPosition);
-								WorkingOccupancy work = new WorkingOccupancy(mActualOccupation.getPeriod(), mOccupancy.getRoom());
-								ImWorkingRequest request = new ImWorkingRequest(work);
+								ActualOccupation mActualOccupation = mActualOccupations
+										.get(childPosition);
+								WorkingOccupancy work = new WorkingOccupancy(
+										mActualOccupation.getPeriod(),
+										mOccupancy.getRoom());
+								ImWorkingRequest request = new ImWorkingRequest(
+										work);
 								mController.prepareImWorking(request);
 								mController.ImWorking(view);
 							}
@@ -270,10 +275,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 					mActualOccupationAsString += " Click to work here.";
 				} else {
 					mActualOccupationAsString += " "
-							+ getString(R.string.freeroom_check_occupancy_result_occupied)
-							+ " "
-							+ getString(R.string.freeroom_check_occupancy_result_by)
-							+ " " + mActualOccupation.getOccupationType();
+							+ getString(R.string.freeroom_check_occupancy_result_occupied);
 				}
 				Log.v("check-res", mActualOccupationAsString);
 				mListActualOccupationAsString.add(mActualOccupationAsString);

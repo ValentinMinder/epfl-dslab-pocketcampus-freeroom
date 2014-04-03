@@ -36,7 +36,6 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
-import org.pocketcampus.plugin.freeroom.shared.OccupationType;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRStruct;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
@@ -269,8 +268,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue("First occupancy has wrong start, end, duration = "
 					+ durationFirstOcc,
 					Math.abs(durationFirstOcc - ONE_HOUR_MS) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is not free",
-					firstOcc.getOccupationType() != OccupationType.FREE);
+			assertTrue("First occupancy is not free", !firstOcc.isAvailable());
 
 			ActualOccupation nextOcc = mAccOcc.get(1);
 			long durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
@@ -279,8 +277,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					"Next occupancy has wrong start, end, duration = "
 							+ durationNextOcc,
 					Math.abs(durationNextOcc - ONE_HOUR_MS * 3) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is free",
-					nextOcc.getOccupationType() == OccupationType.FREE);
+			assertTrue("First occupancy is free", nextOcc.isAvailable());
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block
@@ -324,8 +321,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue("First occupancy has wrong start, end, duration = "
 					+ durationFirstOcc,
 					Math.abs(durationFirstOcc - ONE_HOUR_MS) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is not free",
-					firstOcc.getOccupationType() != OccupationType.FREE);
+			assertTrue("First occupancy is not free", !firstOcc.isAvailable());
 
 			ActualOccupation nextOcc = mAccOcc.get(1);
 			long durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
@@ -333,8 +329,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue("Next occupancy has wrong start, end, duration = "
 					+ durationNextOcc,
 					Math.abs(durationNextOcc - ONE_HOUR_MS) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is free",
-					nextOcc.getOccupationType() == OccupationType.FREE);
+			assertTrue("First occupancy is free", nextOcc.isAvailable());
 
 			nextOcc = mAccOcc.get(2);
 			durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
@@ -343,8 +338,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					"Next occupancy has wrong start, end, duration = "
 							+ durationNextOcc,
 					Math.abs(durationNextOcc - ONE_HOUR_MS * 2) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is free",
-					nextOcc.getOccupationType() != OccupationType.FREE);
+			assertTrue("First occupancy is free", !nextOcc.isAvailable());
 
 			nextOcc = mAccOcc.get(3);
 			durationNextOcc = nextOcc.getPeriod().getTimeStampEnd()
@@ -353,8 +347,7 @@ public class TestFreeRoomSearchAndOccupancy {
 					"Next occupancy has wrong start, end, duration = "
 							+ durationNextOcc,
 					Math.abs(durationNextOcc - ONE_HOUR_MS * 7) < MARGIN_ERROR_MS);
-			assertTrue("First occupancy is free",
-					nextOcc.getOccupationType() == OccupationType.FREE);
+			assertTrue("First occupancy is free", nextOcc.isAvailable());
 
 		} catch (ServerException e) {
 			// TODO Auto-generated catch block
