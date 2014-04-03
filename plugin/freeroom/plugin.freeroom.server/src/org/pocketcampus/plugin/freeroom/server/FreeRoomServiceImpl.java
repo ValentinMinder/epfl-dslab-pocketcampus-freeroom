@@ -454,6 +454,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			FRRoom mFrRoom = w.getRoom();
 			String roomUID = mFrRoom.getUid();
 
+			// get the previously registered user occupancies
+			List<Integer> listUserOccupancy = getUserOccupancy(mFrPeriods,
+					mFrRoom);
+
 			// construct the query
 			String line = "UPDATE `fr-usersoccupancy` "
 					+ "SET count = count + 1 "
@@ -716,6 +720,72 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return getUserOccupancy(mFrPeriods, mFrRoom);
 	}
 
+	/**
+	 * Return the count occupancy of the given FRperiod, for the given room.
+	 * 
+	 * FRPeriod MUST been "stepped" before using the utility method in
+	 * <code>FRTimes</code>
+	 * 
+	 * @param mFRperiods
+	 * @param mFrRoom
+	 * @return
+	 */
+	private List<Integer> getUserOccupancy(List<FRPeriod> mFRperiods,
+			FRRoom mFrRoom) {
+		int size = mFRperiods.size();
+		if (size < 1) {
+			String error = this.getClass().getSimpleName()
+					+ ": getUserOccupancy must have at least one mFRPeriod";
+			System.err.println(error);
+			return null;
+		}
+
+		try {
+			Connection connectionDB = connMgr.getConnection();
+
+			// preparing the query
+			String firstWord = "SELECT `count` FROM `fr-usersoccupancy` WHERE `uid`=(?) AND ( ";
+			String rowWord = "timestampStart=(?) ";
+			String orWord = "OR ";
+			String lastWord = ") ORDER BY timestampStart";
+			StringBuilder builder = new StringBuilder(firstWord.length()
+					+ lastWord.length() + (rowWord.length() + orWord.length())
+					* size);
+			builder.append(firstWord);
+			for (int i = 0; i < size - 1; i++) {
+				builder.append(rowWord);
+				builder.append(orWord);
+			}
+			builder.append(rowWord);
+			builder.append(lastWord);
+
+			// filling the query with values.
+			PreparedStatement query = connectionDB.prepareStatement(builder
+					.toString());
+			query.setString(1, mFrRoom.getUid());
+			for (int i = 0; i < size; i++) {
+				query.setLong(i + 2, mFRperiods.get(i).getTimeStampStart());
+			}
+
+			// executing the query
+			ResultSet resultQuery = query.executeQuery();
+			List<Integer> listInteger = new ArrayList<Integer>(size);
+			while (resultQuery.next()) {
+				listInteger.add(new Integer(resultQuery.getInt("count")));
+			}
+
+			if (listInteger.size() != size) {
+				String error = "Method not consistant! "
+						+ "Must return exactly the same number of occupancy than FRPeriod given";
+				System.err.println(error);
+				return null;
+			}
+			return listInteger;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	/**
 	 * Retrieves who is working according to some constraints.
