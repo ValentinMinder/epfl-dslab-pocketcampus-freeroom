@@ -279,10 +279,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					if (tsStart - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
 						// We got a free period of time !
 						ActualOccupation mOcc = new ActualOccupation();
-						mOcc.setPeriod(new FRPeriod(tsPerRoom, tsStart - 1,
-								false));
+						FRPeriod myPeriod = new FRPeriod(tsPerRoom,
+								tsStart - 1, false);
+						mOcc.setPeriod(myPeriod);
 						mOcc.setAvailable(true);
 						mOcc.setOccupationType(OccupationType.FREE);
+						mOcc.setProbableOccupation(getWorstCaseUserOccupancy(
+								myPeriod, room));
 						mOccupancy.addToOccupancy(mOcc);
 						isAtLeastFreeOnce = true;
 					}
@@ -305,9 +308,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// There is some free time left after the last result
 				if (timestampEnd - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
 					ActualOccupation mOcc = new ActualOccupation();
-					mOcc.setPeriod(new FRPeriod(tsPerRoom, timestampEnd, false));
+					FRPeriod myPeriod = new FRPeriod(tsPerRoom, timestampEnd,
+							false);
+					mOcc.setPeriod(myPeriod);
 					mOcc.setAvailable(true);
 					mOcc.setOccupationType(OccupationType.FREE);
+					mOcc.setProbableOccupation(getWorstCaseUserOccupancy(
+							myPeriod, room));
 					mOccupancy.addToOccupancy(mOcc);
 					isAtLeastFreeOnce = true;
 				}
@@ -453,7 +460,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					mFrRoom);
 
 			// construct the query
-			String line = "UPDATE `fr-usersoccupancy`"
+			String line = "UPDATE `fr-usersoccupancy` "
 					+ "SET count = (?) "
 					+ "WHERE uid = (?) AND timestampStart = (?) AND timestampEnd = (?); \n";
 			StringBuilder build = new StringBuilder(line.length() * size);
@@ -472,6 +479,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				query.setLong(j + 4, period.getTimeStampEnd());
 			}
 
+			System.out.println(query.toString());
 			query.execute();
 
 			// checks if advanced mode is needed for this request.
@@ -696,6 +704,18 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return false;
 		}
 		return true;
+	}
+
+	public int getWorstCaseUserOccupancy(FRPeriod mFrPeriod, FRRoom mFrRoom) {
+		List<Integer> listInt = getUserOccupancy(mFrPeriod, mFrRoom);
+		int max = 0;
+		for (Integer integer : listInt) {
+			int myValue = integer.intValue();
+			if (myValue > max) {
+				max = myValue;
+			}
+		}
+		return max;
 	}
 
 	public List<Integer> getUserOccupancy(FRPeriod mFrPeriod, FRRoom mFrRoom) {
