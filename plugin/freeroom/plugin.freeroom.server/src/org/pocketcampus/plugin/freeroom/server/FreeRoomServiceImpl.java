@@ -947,8 +947,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				+ "uid, doorCode, doorCodeWithoutSpace, capacity, "
 				+ "site_label, surface, building_name, zone, unitlabel, "
 				+ "site_id, floor, unitname, site_name, unitid, building_label, "
-				+ "cf, adminuse) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?)";
+				+ "cf, adminuse, dincat) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?)";
 		PreparedStatement query;
 		try {
 			query = conn.prepareStatement(req);
@@ -1050,6 +1050,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				query.setString(17, room.getString("adminuse"));
 			} else {
 				query.setNull(17, Types.CHAR);
+			}
+			
+			if (room.has("dincat")) {
+				query.setString(18, room.getString("dincat"));
+			} else {
+				query.setNull(18, Types.CHAR);
 			}
 
 			query.executeUpdate();
