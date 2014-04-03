@@ -84,7 +84,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
 					PC_SRV_CONFIG.getString("DB_USERNAME"),
 					PC_SRV_CONFIG.getString("DB_PASSWORD"));
-			fetchRoomsIntoDB();
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}
