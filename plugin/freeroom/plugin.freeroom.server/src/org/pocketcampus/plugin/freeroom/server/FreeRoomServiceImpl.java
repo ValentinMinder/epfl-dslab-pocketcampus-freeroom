@@ -3,6 +3,8 @@ package org.pocketcampus.plugin.freeroom.server;
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,9 +18,11 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 import org.apache.thrift.TException;
@@ -67,6 +71,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private final String URL_INDIVIDUAL_ROOM = "http://pocketcampus.epfl.ch/proxy/"
 			+ "archibus.php/rwsrooms/getRoom"
 			+ "?961264a174e15211109e1deb779b17d0=1&app=freeroom&caller=sciper&id=";
+	private final String FILE_DINCAT = "src/org/pocketcampus/plugin/freeroom/server/data/locaux_din.txt";
+	private HashMap<String, String> dincat_text = null;
 
 	private ConnectionManager connMgr;
 	// margin for error is a minute
@@ -78,6 +84,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
 					PC_SRV_CONFIG.getString("DB_USERNAME"),
 					PC_SRV_CONFIG.getString("DB_PASSWORD"));
+			fetchRoomsIntoDB();
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}
@@ -947,8 +954,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				+ "uid, doorCode, doorCodeWithoutSpace, capacity, "
 				+ "site_label, surface, building_name, zone, unitlabel, "
 				+ "site_id, floor, unitname, site_name, unitid, building_label, "
-				+ "cf, adminuse, dincat) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?)";
+				+ "cf, adminuse, type, dincat) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?)";
 		PreparedStatement query;
 		try {
 			query = conn.prepareStatement(req);
@@ -1051,11 +1058,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			} else {
 				query.setNull(17, Types.CHAR);
 			}
-			
+
 			if (room.has("dincat")) {
-				query.setString(18, room.getString("dincat"));
+				String type = getFromFileDinCatString(room.getString("dincat"));
+				query.setString(18, type);
+				query.setString(19, room.getString("dincat"));
 			} else {
 				query.setNull(18, Types.CHAR);
+				query.setNull(19, Types.CHAR);
 			}
 
 			query.executeUpdate();
@@ -1065,6 +1075,28 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		return true;
+	}
+
+	private String getFromFileDinCatString(String dincat) {
+		if (dincat_text == null) {
+			dincat_text = new HashMap<String, String>();
+			try {
+				Scanner sc = new Scanner(new File(FILE_DINCAT));
+
+				while (sc.hasNext()) {
+					String line = sc.nextLine();
+					String[] lineSplitted = line.split(";");
+					if (lineSplitted.length >= 2) {
+						dincat_text.put(lineSplitted[0], lineSplitted[1]);
+					}
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return dincat_text.get(dincat);
+
 	}
 
 	// ********** END OF "FETCHING ROOMS DATA FROM ARCHIBUS" PART **********
