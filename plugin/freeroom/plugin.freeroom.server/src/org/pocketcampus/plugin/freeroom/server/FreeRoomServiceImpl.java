@@ -81,7 +81,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ...");
 		try {
-			connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
+			connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL")
+					+ "?allowMultiQueries=true",
 					PC_SRV_CONFIG.getString("DB_USERNAME"),
 					PC_SRV_CONFIG.getString("DB_PASSWORD"));
 		} catch (ServerException e) {
