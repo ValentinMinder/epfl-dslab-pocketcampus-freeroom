@@ -16,7 +16,9 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.layout.FreeRoomTabLayout;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -77,7 +79,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-//		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_result));
+		// mLayout.setTitle(getString(R.string.freeroom_title_occupancy_result));
 		mLayout.hideTitle();
 		initializeView();
 
@@ -131,6 +133,7 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 			}
 		});
 
+		final IFreeRoomView view = this;
 		mExpList.setOnChildClickListener(new OnChildClickListener() {
 
 			@Override
@@ -140,6 +143,25 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 				// reservation??
 				// indicate that i'm going to work there!
 
+				if (groupPosition < mFRRoomList.size()) {
+					String header = mFRRoomList.get(groupPosition);
+					List<String> lines = mActualOccupancyHashMap.get(header);
+					if (lines != null && childPosition < lines.size()) {
+						List<Occupancy> list = mModel
+								.getListCheckedOccupancyRoom();
+						if (groupPosition < list.size()) {
+							Occupancy mOccupancy = list.get(groupPosition);
+							List<ActualOccupation> mActualOccupations = mOccupancy.getOccupancy();
+							if (childPosition < mActualOccupations.size()) {
+								ActualOccupation mActualOccupation = mActualOccupations.get(childPosition);
+								WorkingOccupancy work = new WorkingOccupancy(mActualOccupation.getPeriod(), mOccupancy.getRoom());
+								ImWorkingRequest request = new ImWorkingRequest(work);
+								mController.prepareImWorking(request);
+								mController.ImWorking(view);
+							}
+						}
+					}
+				}
 				Log.v(this.getClass().toString(), "item clicked, group:"
 						+ groupPosition + "/child:" + childPosition);
 				return false;
@@ -230,6 +252,22 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 				if (mActualOccupation.isAvailable()) {
 					mActualOccupationAsString += " "
 							+ getString(R.string.freeroom_check_occupancy_result_free);
+					if (mActualOccupation.isSetProbableOccupation()) {
+						mActualOccupationAsString += " "
+								+ "(probably occupied by at least "
+								+ mActualOccupation.getProbableOccupation()
+								+ " people";
+						if (mFRRoom.isSetCapacity()
+								&& mFRRoom.getCapacity() != 0) {
+							mActualOccupationAsString += ", at most "
+									+ (mFRRoom.getCapacity() - mActualOccupation
+											.getProbableOccupation())
+									+ " places remaining )";
+						} else {
+							mActualOccupationAsString += ")";
+						}
+					}
+					mActualOccupationAsString += " Click to work here.";
 				} else {
 					mActualOccupationAsString += " "
 							+ getString(R.string.freeroom_check_occupancy_result_occupied)
