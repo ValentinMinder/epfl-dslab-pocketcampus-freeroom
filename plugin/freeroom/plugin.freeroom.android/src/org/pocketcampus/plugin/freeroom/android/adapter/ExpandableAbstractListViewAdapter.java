@@ -25,7 +25,7 @@ public abstract class ExpandableAbstractListViewAdapter<T> extends
 		this.data = data;
 		this.mModel = model;
 	}
-	
+
 	public ExpandableAbstractListViewAdapter(Context c, List<String> header,
 			Map<String, List<T>> data) {
 		this.context = c;
@@ -104,6 +104,10 @@ public abstract class ExpandableAbstractListViewAdapter<T> extends
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
+		if (mModel != null) {
+			return mModel.isCheckOccupancyLineClickable(groupPosition,
+					childPosition);
+		}
 		return true;
 	}
 
