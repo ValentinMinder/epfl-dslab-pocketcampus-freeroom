@@ -144,7 +144,6 @@ public class TestFreeRoomSearchAndOccupancy {
 			conn = DriverManager
 					.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			// return;
 		}
@@ -207,7 +206,6 @@ public class TestFreeRoomSearchAndOccupancy {
 
 				query.executeUpdate();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -227,7 +225,6 @@ public class TestFreeRoomSearchAndOccupancy {
 
 					query.executeUpdate();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -280,11 +277,11 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue("First occupancy is free", nextOcc.isAvailable());
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -350,11 +347,11 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue("First occupancy is free", nextOcc.isAvailable());
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -409,11 +406,11 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 1);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -432,11 +429,11 @@ public class TestFreeRoomSearchAndOccupancy {
 					reply.getRoomsSize() == 6);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -458,11 +455,11 @@ public class TestFreeRoomSearchAndOccupancy {
 					reply.getRoomsSize() == 6);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -480,11 +477,11 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue(reply.getRoomsSize() == 4);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -508,11 +505,11 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue(rooms.contains(new FRRoom("CM", "3")));
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -535,11 +532,11 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue(rooms.contains(new FRRoom("CM", "3")));
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -563,11 +560,11 @@ public class TestFreeRoomSearchAndOccupancy {
 					reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -585,11 +582,11 @@ public class TestFreeRoomSearchAndOccupancy {
 					reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -607,11 +604,11 @@ public class TestFreeRoomSearchAndOccupancy {
 					reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -636,11 +633,11 @@ public class TestFreeRoomSearchAndOccupancy {
 					reply.getStatus() == HttpURLConnection.HTTP_BAD_REQUEST);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -675,11 +672,11 @@ public class TestFreeRoomSearchAndOccupancy {
 			assertTrue(Math.abs(lastTS - queryLastTS) < MARGIN_ERROR_MS * 5);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 
@@ -716,11 +713,11 @@ public class TestFreeRoomSearchAndOccupancy {
 					Math.abs(lastTS - queryLastTS) < MARGIN_ERROR_MS * 5);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
 	
@@ -757,12 +754,11 @@ public class TestFreeRoomSearchAndOccupancy {
 					Math.abs(lastTS - queryLastTS) < MARGIN_ERROR_MS * 5);
 
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
 	}
-
 }

@@ -289,12 +289,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					}
 
 					ActualOccupation mAccOcc = new ActualOccupation();
-					// TODO reminder that recurrent is set to false for now,
-					// but
-					// it can evolve in the future
 					mAccOcc.setPeriod(new FRPeriod(tsStart, tsEnd, false));
 					mAccOcc.setAvailable(false);
-					// TODO reminder default value ISA
 					mOccupancy.addToOccupancy(mAccOcc);
 					isAtLeastOccupiedOnce = true;
 
@@ -548,7 +544,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			queryUsersWorking.execute();
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -834,7 +829,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply = new WhoIsWorkingReply(HttpURLConnection.HTTP_OK, "");
 			reply.setTheyAreWorking(theyAreWorking);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

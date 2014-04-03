@@ -45,9 +45,6 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 	private FreeRoomTabLayout mLayout;
 	private LinearLayout subLayout;
 
-	private Button resetButton;
-
-	private ListView mList;
 	private ExpandableListView mExpList;
 	private TreeMap<String, List<FRRoom>> sortedRooms;
 	private ArrayList<String> buildings;
@@ -77,9 +74,9 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-//		mLayout.setTitle(getString(R.string.freeroom_title_FRresult));
+		// mLayout.setTitle(getString(R.string.freeroom_title_FRresult));
 		mLayout.hideTitle();
-		
+
 		initializeView();
 
 		// launch the actual search AFTER launching completely the UI
@@ -87,19 +84,6 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 	}
 
 	public void initializeView() {
-		// resetButton = new Button(this);
-		// resetButton.setEnabled(false);
-		// resetButton.setText(R.string.freeroom_resetbutton);
-		// resetButton.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// System.out.println("reset!");
-		// // TODO action reset/ return
-		// }
-		// });
-		// subLayout.addView(resetButton);
-
 		mExpList = new ExpandableListView(this);
 		buildings = new ArrayList<String>();
 		sortedRooms = new TreeMap<String, List<FRRoom>>();
@@ -107,47 +91,14 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 		final ExpandableListViewFavoriteAdapter adapter = new ExpandableListViewFavoriteAdapter(
 				this, buildings, sortedRooms, mModel);
 		mExpList.setAdapter(adapter);
-
-		// adding the listeners
-		mExpList.setOnChildClickListener(new OnChildClickListener() {
-
-			@Override
-			public boolean onChildClick(ExpandableListView parent, View v,
-					int groupPosition, int childPosition, long id) {
-
-				String room = (String) adapter.getChild(groupPosition,
-						childPosition);
-				String regexpMatch = "([A-Z0-9\\s]+)*";
-				Pattern mPattern = Pattern.compile(regexpMatch);
-				Matcher matcher = mPattern.matcher(room);
-
-				if (matcher.matches()) {
-					room = matcher.group(0).replaceAll("\\s", "");
-				}
-
-				System.out.println("selected " + room);
-
-//				Uri mUri = Uri
-//						.parse("pocketcampus://map.plugin.pocketcampus.org/search");
-//				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q",
-//						room);
-//				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
-//				startActivity(i);
-
-				return true;
-			}
-		});
-
 		subLayout.addView(mExpList);
 	}
 
 	@Override
 	public void freeRoomResultsUpdated() {
-		// mAdapter.clear();
-		// mListValues.clear();
-		// mAdapter.notifyDataSetChanged();
 		Set<FRRoom> res = mModel.getFreeRoomResults();
-		TreeMap<String, List<FRRoom>> map = mModel.getFreeRoomResultsFilteredByBuildings();
+		TreeMap<String, List<FRRoom>> map = mModel
+				.getFreeRoomResultsFilteredByBuildings();
 		List<String> listBuildings = mModel.getFreeRoomResultsBuildings();
 
 		buildings.clear();
@@ -165,7 +116,6 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 		}
 
 		Log.v(this.getClass().toString(), "data_updated in FreeRoomResultView");
-		// mAdapter.notifyDataSetChanged();
 	}
 
 	@Override

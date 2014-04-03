@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.freeroom.server.tests;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -88,7 +90,6 @@ public class TestFindFreeRooms {
 					.prepareStatement("DROP DATABASE pocketcampustest");
 			stmt.execute();
 			stmt.close();
-			// TODO : check that the database is successfully deleted ?
 		} catch (SQLException e) {
 			Assert.fail("There was an SQL Exception \n " + e);
 		}
@@ -231,12 +232,11 @@ public class TestFindFreeRooms {
 				System.out.println(r.getDoorCode());
 			}
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		} catch (ServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
 		}
-
 	}
 }

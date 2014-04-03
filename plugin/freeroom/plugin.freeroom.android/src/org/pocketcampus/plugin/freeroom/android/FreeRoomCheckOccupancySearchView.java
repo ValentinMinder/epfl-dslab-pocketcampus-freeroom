@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -129,6 +130,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		
 		initializeView();
 		createSuggestionsList();
+		addAllFavsToAutoComplete();
 	}
 
 	public void initializeView() {
@@ -331,8 +333,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 							mAutoCompleteSuggestionInputBarElement
 									.setButtonText(null);
 							mAutoCompleteSuggestionListView.invalidate();
-							// TODO: add the favorites to the listview!!!
-							mModel.getAllRoomMapFavorites();
+							addAllFavsToAutoComplete();
 						} else {
 							mAutoCompleteSuggestionInputBarElement
 									.setButtonText("");
@@ -342,6 +343,26 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 						}
 					}
 				});
+	}
+	
+	private void addAllFavsToAutoComplete() {
+		Map<String, String> map = mModel.getAllRoomMapFavorites();
+		
+		mAutoCompleteSuggestionArrayListFRRoom.clear();
+		mAutoCompleteSuggestionArrayListString.clear();
+
+		Iterator<String> iter = map.keySet().iterator();
+		while (iter.hasNext()) {
+			String uid = iter.next();
+			String doorCode = map.get(uid);
+			FRRoom room = new FRRoom(doorCode, uid);
+			
+			mAutoCompleteSuggestionArrayListFRRoom.add(room);
+			mAutoCompleteSuggestionArrayListString.add(doorCode);
+		}
+
+		mAdapter.notifyDataSetChanged();
+		mAutoCompleteSuggestionListView.setAdapter(mAdapter);
 	}
 
 	/**
@@ -462,7 +483,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		// show the buttons
 		updatePickersButtons();
 
-		// TODO: set the inputbar text empty and display favorites!
+		// we cannot reset the input bar...
 	}
 
 	private void updatePickersButtons() {

@@ -63,9 +63,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private ArrayList<String> buildings = new ArrayList<String>();
 	/** List of suggestions for the check occupancy search view */
 	private List<FRRoom> mAutoCompleteSuggestions = new ArrayList<FRRoom>();
-	// TODO: not used NOW
-	/** Used to specify the displayed <code>FRRoom</code> in the results view */
-	private FRRoom mSelectedFRRoom;
+
 	/**
 	 * Ordered list of <code>Occupancy</code>'s displayed in the check occupancy
 	 */
@@ -152,20 +150,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		buildings.clear();
 		buildings.addAll(sortedRooms.keySet());
 		mListeners.freeRoomResultsUpdated();
-	}
-
-	/**
-	 * Gets the currently selected <code>FRRoom</code>
-	 */
-	public FRRoom getSelectedFRRoom() {
-		return mSelectedFRRoom;
-	}
-
-	/**
-	 * Sets which <code>FRRoom</code> is currently displayed.
-	 */
-	public void selectFRRoom(FRRoom choosen_one) {
-		mSelectedFRRoom = choosen_one;
 	}
 
 	/**

@@ -119,19 +119,16 @@ public class FreeRoomManageFavoritesView extends FreeRoomAbstractView implements
 
 	@Override
 	public void freeRoomResultsUpdated() {
-		// TODO Auto-generated method stub
-
+		// we do nothing here
 	}
 
 	@Override
 	public void autoCompletedUpdated() {
-		// TODO Auto-generated method stub
-
+		// we do nothing here
 	}
 
 	@Override
 	public void occupancyResultUpdated() {
-		// TODO Auto-generated method stub
-
+		// we do nothing here
 	}
 }

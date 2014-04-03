@@ -92,16 +92,14 @@ public class ExpandableListViewFavoriteAdapter extends
 
 		TextView tv = vholder.getTextView();
 		tv.setText(room.getDoorCode());
-		// TODO: Julien: this is commented because it cause the app to crash!
-		// ImageView map = vholder.getImageViewMap();
-		// map.setImageResource(android.R.drawable.btn_plus);
+
 		final ImageView star = vholder.getImageViewStar();
 		ImageView map = vholder.getImageViewMap();
-		
+
 		map.setImageResource(android.R.drawable.btn_minus);
-		
+
 		map.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Uri mUri = Uri
@@ -110,10 +108,10 @@ public class ExpandableListViewFavoriteAdapter extends
 						room.getDoorCode());
 				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
 				context.startActivity(i);
-				
+
 			}
 		});
-		
+
 		final String uid = room.getUid();
 		final boolean isFav = mModel.containRoomFavorites(uid);
 
@@ -194,7 +192,7 @@ public class ExpandableListViewFavoriteAdapter extends
 		public ImageView getImageViewStar() {
 			return this.star;
 		}
-		
+
 		public void setImageViewMap(ImageView iv) {
 			this.map = iv;
 		}

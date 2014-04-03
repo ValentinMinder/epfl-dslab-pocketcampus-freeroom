@@ -205,6 +205,8 @@ public class FreeRoomController extends PluginController implements
 	public void cannotValidateImWorking() {
 		// TODO if failure, we should re-enable the buttons, for the user to
 		// submit something else!
+		Toast.makeText(getApplicationContext(), "an error occured, sorry!",
+				Toast.LENGTH_LONG).show();
 	}
 
 	/**
