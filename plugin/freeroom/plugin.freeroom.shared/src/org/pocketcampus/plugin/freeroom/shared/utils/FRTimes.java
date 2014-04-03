@@ -165,6 +165,10 @@ public class FRTimes {
 	private static long getPreviousTimeStampFromStep(long timeStamp, long step,
 			boolean previous) {
 		long shift = (timeStamp % step);
+		if (shift == 0) {
+			return timeStamp;
+		}
+
 		if (previous) {
 			return timeStamp - shift;
 		} else {
