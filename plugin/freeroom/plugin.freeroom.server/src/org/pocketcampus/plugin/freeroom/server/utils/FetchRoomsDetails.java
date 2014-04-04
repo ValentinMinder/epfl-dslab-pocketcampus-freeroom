@@ -284,9 +284,6 @@ public class FetchRoomsDetails {
 			}
 
 			query.executeUpdate();
-			System.out.println("fetched"
-					+ getFromFileDinCatString(room.getString("dincat"),
-							sitename));
 		} catch (SQLException | JSONException e) {
 			e.printStackTrace();
 			return false;
@@ -308,6 +305,7 @@ public class FetchRoomsDetails {
 						dincat_text.put(lineSplitted[0], lineSplitted[1]);
 					}
 				}
+				sc.close();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
