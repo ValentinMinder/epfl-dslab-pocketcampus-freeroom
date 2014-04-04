@@ -126,11 +126,11 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		mController = (FreeRoomController) controller;
 		mModel = (FreeRoomModel) controller.getModel();
 
-		mSelectedRoomsToQueryArrayList = new ArrayList<FRRoom>(10);
-
+		mSelectedRoomsToQueryArrayList = new ArrayList<FRRoom>(10);	
+		
 		initializeView();
 		createSuggestionsList();
-		reset();
+		addAllFavsToAutoComplete();
 	}
 
 	public void initializeView() {
@@ -141,8 +141,8 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		mLayout = new FreeRoomTabLayout(this, this);
 		mGlobalSubLayout = new LinearLayout(this);
 		mGlobalSubLayout.setOrientation(LinearLayout.VERTICAL);
-
-		// mLayout.setTitle(getString(R.string.freeroom_title_occupancy_search));
+		
+//		mLayout.setTitle(getString(R.string.freeroom_title_occupancy_search));
 		mLayout.hideTitle();
 
 		mSubLayoutUpperData = new LinearLayout(this);
@@ -170,11 +170,12 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		UIConstructInputBar();
 
 		mGlobalSubLayout.addView(mAutoCompleteSuggestionInputBarElement);
-
+		
 		mLayout.addFillerView(mGlobalSubLayout);
 
 		// The ActionBar is added automatically when you call setContentView
 
+		reset();
 		setContentView(mLayout);
 	}
 
@@ -343,10 +344,10 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 					}
 				});
 	}
-
+	
 	private void addAllFavsToAutoComplete() {
 		Map<String, String> map = mModel.getAllRoomMapFavorites();
-
+		
 		mAutoCompleteSuggestionArrayListFRRoom.clear();
 		mAutoCompleteSuggestionArrayListString.clear();
 
@@ -355,10 +356,9 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 			String uid = iter.next();
 			String doorCode = map.get(uid);
 			FRRoom room = new FRRoom(doorCode, uid);
-			if (!mSelectedRoomsToQueryArrayList.contains(room)) {
-				mAutoCompleteSuggestionArrayListFRRoom.add(room);
-				mAutoCompleteSuggestionArrayListString.add(doorCode);
-			}
+			
+			mAutoCompleteSuggestionArrayListFRRoom.add(room);
+			mAutoCompleteSuggestionArrayListString.add(doorCode);
 		}
 
 		mAdapter.notifyDataSetChanged();
@@ -385,12 +385,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 						searchButton.setEnabled(auditSubmit() == 0);
 						// refresh the autocomplete, such that selected rooms
 						// are not displayed
-						if (mAutoCompleteSuggestionInputBarElement
-								.getInputText().length() == 0) {
-							addAllFavsToAutoComplete();
-						} else {
-							autoCompletedUpdated();
-						}
+						autoCompletedUpdated();
 
 						// WE DONT REMOVE the text in the input bar
 						// INTENTIONNALLY: user may want to select multiple
@@ -489,14 +484,6 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		updatePickersButtons();
 
 		// we cannot reset the input bar...
-		if (mAutoCompleteSuggestionInputBarElement != null) {
-			if ( mAutoCompleteSuggestionInputBarElement.getInputText()
-						.length() == 0) {
-				addAllFavsToAutoComplete();
-			} else {
-				autoCompletedUpdated();
-			}
-		}
 	}
 
 	private void updatePickersButtons() {
@@ -506,8 +493,9 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 	}
 
 	private void updateShowDatePicker() {
-		showDatePicker.setText(dateFormat.format(new Date(yearSelected,
-				monthSelected, dayOfMonthSelected)));
+		showDatePicker
+				.setText(dateFormat.format(new Date(yearSelected,
+								monthSelected, dayOfMonthSelected)));
 	}
 
 	private void updateShowStartTimePicker() {
