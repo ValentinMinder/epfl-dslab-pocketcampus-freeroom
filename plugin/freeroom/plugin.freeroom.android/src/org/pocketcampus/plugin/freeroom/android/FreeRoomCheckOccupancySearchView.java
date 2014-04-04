@@ -276,6 +276,9 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 			@Override
 			public void onClick(View v) {
 				reset();
+				addAllFavsToAutoComplete();
+				// we reset the input bar...
+				mAutoCompleteSuggestionInputBarElement.setInputText("");
 			}
 		});
 	}
@@ -356,9 +359,10 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 			String uid = iter.next();
 			String doorCode = map.get(uid);
 			FRRoom room = new FRRoom(doorCode, uid);
-			
-			mAutoCompleteSuggestionArrayListFRRoom.add(room);
-			mAutoCompleteSuggestionArrayListString.add(doorCode);
+			if (!mSelectedRoomsToQueryArrayList.contains(room)) {
+				mAutoCompleteSuggestionArrayListFRRoom.add(room);
+				mAutoCompleteSuggestionArrayListString.add(doorCode);
+			}
 		}
 
 		mAdapter.notifyDataSetChanged();
@@ -385,7 +389,12 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 						searchButton.setEnabled(auditSubmit() == 0);
 						// refresh the autocomplete, such that selected rooms
 						// are not displayed
-						autoCompletedUpdated();
+						if (mAutoCompleteSuggestionInputBarElement
+								.getInputText().length() == 0) {
+							addAllFavsToAutoComplete();
+						} else {
+							autoCompletedUpdated();
+						}
 
 						// WE DONT REMOVE the text in the input bar
 						// INTENTIONNALLY: user may want to select multiple
@@ -482,8 +491,6 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 
 		// show the buttons
 		updatePickersButtons();
-
-		// we cannot reset the input bar...
 	}
 
 	private void updatePickersButtons() {
