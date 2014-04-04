@@ -13,7 +13,7 @@
         android:theme="@style/PocketCampusTheme" >
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView"
+            android:name="org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView"
             android:launchMode="singleTask"
             android:icon="@drawable/building2x177"
             android:label="@string/freeroom_plugin_title"
@@ -75,6 +75,10 @@
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomManageFavoritesView"
+            android:screenOrientation="nosensor" />
+        <activity
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView"
             android:screenOrientation="nosensor" />
 
         <service
