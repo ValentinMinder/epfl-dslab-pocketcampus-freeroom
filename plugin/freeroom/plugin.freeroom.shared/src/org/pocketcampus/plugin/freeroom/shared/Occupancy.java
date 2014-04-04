@@ -28,18 +28,21 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
   private static final org.apache.thrift.protocol.TField OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancy", org.apache.thrift.protocol.TType.LIST, (short)2);
   private static final org.apache.thrift.protocol.TField IS_AT_LEAST_OCCUPIED_ONCE_FIELD_DESC = new org.apache.thrift.protocol.TField("isAtLeastOccupiedOnce", org.apache.thrift.protocol.TType.BOOL, (short)3);
   private static final org.apache.thrift.protocol.TField IS_AT_LEAST_FREE_ONCE_FIELD_DESC = new org.apache.thrift.protocol.TField("isAtLeastFreeOnce", org.apache.thrift.protocol.TType.BOOL, (short)4);
+  private static final org.apache.thrift.protocol.TField RATIO_WORST_CASE_PROBABLE_OCCUPANCY_FIELD_DESC = new org.apache.thrift.protocol.TField("ratioWorstCaseProbableOccupancy", org.apache.thrift.protocol.TType.DOUBLE, (short)5);
 
   private FRRoom room; // required
   private List<ActualOccupation> occupancy; // required
   private boolean isAtLeastOccupiedOnce; // required
   private boolean isAtLeastFreeOnce; // required
+  private double ratioWorstCaseProbableOccupancy; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     ROOM((short)1, "room"),
     OCCUPANCY((short)2, "occupancy"),
     IS_AT_LEAST_OCCUPIED_ONCE((short)3, "isAtLeastOccupiedOnce"),
-    IS_AT_LEAST_FREE_ONCE((short)4, "isAtLeastFreeOnce");
+    IS_AT_LEAST_FREE_ONCE((short)4, "isAtLeastFreeOnce"),
+    RATIO_WORST_CASE_PROBABLE_OCCUPANCY((short)5, "ratioWorstCaseProbableOccupancy");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -62,6 +65,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
           return IS_AT_LEAST_OCCUPIED_ONCE;
         case 4: // IS_AT_LEAST_FREE_ONCE
           return IS_AT_LEAST_FREE_ONCE;
+        case 5: // RATIO_WORST_CASE_PROBABLE_OCCUPANCY
+          return RATIO_WORST_CASE_PROBABLE_OCCUPANCY;
         default:
           return null;
       }
@@ -104,7 +109,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
   // isset id assignments
   private static final int __ISATLEASTOCCUPIEDONCE_ISSET_ID = 0;
   private static final int __ISATLEASTFREEONCE_ISSET_ID = 1;
-  private BitSet __isset_bit_vector = new BitSet(2);
+  private static final int __RATIOWORSTCASEPROBABLEOCCUPANCY_ISSET_ID = 2;
+  private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -118,6 +124,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.IS_AT_LEAST_FREE_ONCE, new org.apache.thrift.meta_data.FieldMetaData("isAtLeastFreeOnce", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.RATIO_WORST_CASE_PROBABLE_OCCUPANCY, new org.apache.thrift.meta_data.FieldMetaData("ratioWorstCaseProbableOccupancy", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Occupancy.class, metaDataMap);
   }
@@ -158,6 +166,7 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     }
     this.isAtLeastOccupiedOnce = other.isAtLeastOccupiedOnce;
     this.isAtLeastFreeOnce = other.isAtLeastFreeOnce;
+    this.ratioWorstCaseProbableOccupancy = other.ratioWorstCaseProbableOccupancy;
   }
 
   public Occupancy deepCopy() {
@@ -172,6 +181,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     this.isAtLeastOccupiedOnce = false;
     setIsAtLeastFreeOnceIsSet(false);
     this.isAtLeastFreeOnce = false;
+    setRatioWorstCaseProbableOccupancyIsSet(false);
+    this.ratioWorstCaseProbableOccupancy = 0.0;
   }
 
   public FRRoom getRoom() {
@@ -283,6 +294,29 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     __isset_bit_vector.set(__ISATLEASTFREEONCE_ISSET_ID, value);
   }
 
+  public double getRatioWorstCaseProbableOccupancy() {
+    return this.ratioWorstCaseProbableOccupancy;
+  }
+
+  public Occupancy setRatioWorstCaseProbableOccupancy(double ratioWorstCaseProbableOccupancy) {
+    this.ratioWorstCaseProbableOccupancy = ratioWorstCaseProbableOccupancy;
+    setRatioWorstCaseProbableOccupancyIsSet(true);
+    return this;
+  }
+
+  public void unsetRatioWorstCaseProbableOccupancy() {
+    __isset_bit_vector.clear(__RATIOWORSTCASEPROBABLEOCCUPANCY_ISSET_ID);
+  }
+
+  /** Returns true if field ratioWorstCaseProbableOccupancy is set (has been assigned a value) and false otherwise */
+  public boolean isSetRatioWorstCaseProbableOccupancy() {
+    return __isset_bit_vector.get(__RATIOWORSTCASEPROBABLEOCCUPANCY_ISSET_ID);
+  }
+
+  public void setRatioWorstCaseProbableOccupancyIsSet(boolean value) {
+    __isset_bit_vector.set(__RATIOWORSTCASEPROBABLEOCCUPANCY_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case ROOM:
@@ -317,6 +351,14 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
       }
       break;
 
+    case RATIO_WORST_CASE_PROBABLE_OCCUPANCY:
+      if (value == null) {
+        unsetRatioWorstCaseProbableOccupancy();
+      } else {
+        setRatioWorstCaseProbableOccupancy((Double)value);
+      }
+      break;
+
     }
   }
 
@@ -333,6 +375,9 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
 
     case IS_AT_LEAST_FREE_ONCE:
       return Boolean.valueOf(isIsAtLeastFreeOnce());
+
+    case RATIO_WORST_CASE_PROBABLE_OCCUPANCY:
+      return Double.valueOf(getRatioWorstCaseProbableOccupancy());
 
     }
     throw new IllegalStateException();
@@ -353,6 +398,8 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
       return isSetIsAtLeastOccupiedOnce();
     case IS_AT_LEAST_FREE_ONCE:
       return isSetIsAtLeastFreeOnce();
+    case RATIO_WORST_CASE_PROBABLE_OCCUPANCY:
+      return isSetRatioWorstCaseProbableOccupancy();
     }
     throw new IllegalStateException();
   }
@@ -406,6 +453,15 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
         return false;
     }
 
+    boolean this_present_ratioWorstCaseProbableOccupancy = true && this.isSetRatioWorstCaseProbableOccupancy();
+    boolean that_present_ratioWorstCaseProbableOccupancy = true && that.isSetRatioWorstCaseProbableOccupancy();
+    if (this_present_ratioWorstCaseProbableOccupancy || that_present_ratioWorstCaseProbableOccupancy) {
+      if (!(this_present_ratioWorstCaseProbableOccupancy && that_present_ratioWorstCaseProbableOccupancy))
+        return false;
+      if (this.ratioWorstCaseProbableOccupancy != that.ratioWorstCaseProbableOccupancy)
+        return false;
+    }
+
     return true;
   }
 
@@ -432,6 +488,11 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     builder.append(present_isAtLeastFreeOnce);
     if (present_isAtLeastFreeOnce)
       builder.append(isAtLeastFreeOnce);
+
+    boolean present_ratioWorstCaseProbableOccupancy = true && (isSetRatioWorstCaseProbableOccupancy());
+    builder.append(present_ratioWorstCaseProbableOccupancy);
+    if (present_ratioWorstCaseProbableOccupancy)
+      builder.append(ratioWorstCaseProbableOccupancy);
 
     return builder.toHashCode();
   }
@@ -480,6 +541,16 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     }
     if (isSetIsAtLeastFreeOnce()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isAtLeastFreeOnce, typedOther.isAtLeastFreeOnce);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetRatioWorstCaseProbableOccupancy()).compareTo(typedOther.isSetRatioWorstCaseProbableOccupancy());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetRatioWorstCaseProbableOccupancy()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ratioWorstCaseProbableOccupancy, typedOther.ratioWorstCaseProbableOccupancy);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -543,6 +614,14 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 5: // RATIO_WORST_CASE_PROBABLE_OCCUPANCY
+          if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
+            this.ratioWorstCaseProbableOccupancy = iprot.readDouble();
+            setRatioWorstCaseProbableOccupancyIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -587,6 +666,11 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     oprot.writeFieldBegin(IS_AT_LEAST_FREE_ONCE_FIELD_DESC);
     oprot.writeBool(this.isAtLeastFreeOnce);
     oprot.writeFieldEnd();
+    if (isSetRatioWorstCaseProbableOccupancy()) {
+      oprot.writeFieldBegin(RATIO_WORST_CASE_PROBABLE_OCCUPANCY_FIELD_DESC);
+      oprot.writeDouble(this.ratioWorstCaseProbableOccupancy);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -619,6 +703,12 @@ public class Occupancy implements org.apache.thrift.TBase<Occupancy, Occupancy._
     sb.append("isAtLeastFreeOnce:");
     sb.append(this.isAtLeastFreeOnce);
     first = false;
+    if (isSetRatioWorstCaseProbableOccupancy()) {
+      if (!first) sb.append(", ");
+      sb.append("ratioWorstCaseProbableOccupancy:");
+      sb.append(this.ratioWorstCaseProbableOccupancy);
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }

@@ -78,7 +78,9 @@ struct FreeRoomRequest {
 struct ActualOccupation {
 	1: required FRPeriod period;
 	2: required bool available;
+	//TO DELETE
 	3: optional i32 probableOccupation; // if we want to do CFF-style
+	4: optional double ratioOccupation;
 }
 
 // the occupancy of a room: periods are usually each hour
@@ -90,12 +92,26 @@ struct Occupancy {
 	2: required list<ActualOccupation> occupancy;
 	3: required bool isAtLeastOccupiedOnce;
 	4: required bool isAtLeastFreeOnce;
+	5: optional double ratioWorstCaseProbableOccupancy;
 }
 
 // check the occupancy request
 struct OccupancyRequest {
 	1: required list<string> uids;
 	2: required FRPeriod period;
+}
+
+struct FRRequest {
+	1: required FRPeriod period;
+	2: required bool onlyFreeRooms;
+	3: required list<string> uidList;
+}
+
+struct FRReply {
+	1: required i32 status;
+	2: required string statusComment;
+	//map from building to list of occupancies in the building
+	3: optional map<string, list<Occupancy>> occupancyOfRooms;
 }
 
 // check the occupancy reply
@@ -138,12 +154,16 @@ struct WhoIsWorkingReply {
 	3: optional list<WorkingOccupancy> theyAreWorking;
 }
 
+
 service FreeRoomService {
 	// generic free room service
 	FreeRoomReply getFreeRoomFromTime(1: FreeRoomRequest request);
 	
 	// generic check the occupancy service
 	OccupancyReply checkTheOccupancy(1: OccupancyRequest request);
+	
+	// new feature, (merge of the two above)
+	FRReply getOccupancy(1: FRRequest request);
 	
 	// autocomplete for searching for a room
 	AutoCompleteReply autoCompleteRoom(1: AutoCompleteRequest request);

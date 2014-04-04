@@ -21,16 +21,16 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, OccupancyReply._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("OccupancyReply");
+public class FRReply implements org.apache.thrift.TBase<FRReply, FRReply._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("FRReply");
 
   private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField STATUS_COMMENT_FIELD_DESC = new org.apache.thrift.protocol.TField("statusComment", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField OCCUPANCY_OF_ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancyOfRooms", org.apache.thrift.protocol.TType.LIST, (short)3);
+  private static final org.apache.thrift.protocol.TField OCCUPANCY_OF_ROOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("occupancyOfRooms", org.apache.thrift.protocol.TType.MAP, (short)3);
 
   private int status; // required
   private String statusComment; // required
-  private List<Occupancy> occupancyOfRooms; // required
+  private Map<String,List<Occupancy>> occupancyOfRooms; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -108,16 +108,18 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     tmpMap.put(_Fields.STATUS_COMMENT, new org.apache.thrift.meta_data.FieldMetaData("statusComment", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.OCCUPANCY_OF_ROOMS, new org.apache.thrift.meta_data.FieldMetaData("occupancyOfRooms", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Occupancy.class))));
+        new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
+            new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+                new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Occupancy.class)))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(OccupancyReply.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRReply.class, metaDataMap);
   }
 
-  public OccupancyReply() {
+  public FRReply() {
   }
 
-  public OccupancyReply(
+  public FRReply(
     int status,
     String statusComment)
   {
@@ -130,7 +132,7 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public OccupancyReply(OccupancyReply other) {
+  public FRReply(FRReply other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.status = other.status;
@@ -138,16 +140,27 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
       this.statusComment = other.statusComment;
     }
     if (other.isSetOccupancyOfRooms()) {
-      List<Occupancy> __this__occupancyOfRooms = new ArrayList<Occupancy>();
-      for (Occupancy other_element : other.occupancyOfRooms) {
-        __this__occupancyOfRooms.add(new Occupancy(other_element));
+      Map<String,List<Occupancy>> __this__occupancyOfRooms = new HashMap<String,List<Occupancy>>();
+      for (Map.Entry<String, List<Occupancy>> other_element : other.occupancyOfRooms.entrySet()) {
+
+        String other_element_key = other_element.getKey();
+        List<Occupancy> other_element_value = other_element.getValue();
+
+        String __this__occupancyOfRooms_copy_key = other_element_key;
+
+        List<Occupancy> __this__occupancyOfRooms_copy_value = new ArrayList<Occupancy>();
+        for (Occupancy other_element_value_element : other_element_value) {
+          __this__occupancyOfRooms_copy_value.add(new Occupancy(other_element_value_element));
+        }
+
+        __this__occupancyOfRooms.put(__this__occupancyOfRooms_copy_key, __this__occupancyOfRooms_copy_value);
       }
       this.occupancyOfRooms = __this__occupancyOfRooms;
     }
   }
 
-  public OccupancyReply deepCopy() {
-    return new OccupancyReply(this);
+  public FRReply deepCopy() {
+    return new FRReply(this);
   }
 
   @Override
@@ -162,7 +175,7 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     return this.status;
   }
 
-  public OccupancyReply setStatus(int status) {
+  public FRReply setStatus(int status) {
     this.status = status;
     setStatusIsSet(true);
     return this;
@@ -185,7 +198,7 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     return this.statusComment;
   }
 
-  public OccupancyReply setStatusComment(String statusComment) {
+  public FRReply setStatusComment(String statusComment) {
     this.statusComment = statusComment;
     return this;
   }
@@ -209,22 +222,18 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     return (this.occupancyOfRooms == null) ? 0 : this.occupancyOfRooms.size();
   }
 
-  public java.util.Iterator<Occupancy> getOccupancyOfRoomsIterator() {
-    return (this.occupancyOfRooms == null) ? null : this.occupancyOfRooms.iterator();
-  }
-
-  public void addToOccupancyOfRooms(Occupancy elem) {
+  public void putToOccupancyOfRooms(String key, List<Occupancy> val) {
     if (this.occupancyOfRooms == null) {
-      this.occupancyOfRooms = new ArrayList<Occupancy>();
+      this.occupancyOfRooms = new HashMap<String,List<Occupancy>>();
     }
-    this.occupancyOfRooms.add(elem);
+    this.occupancyOfRooms.put(key, val);
   }
 
-  public List<Occupancy> getOccupancyOfRooms() {
+  public Map<String,List<Occupancy>> getOccupancyOfRooms() {
     return this.occupancyOfRooms;
   }
 
-  public OccupancyReply setOccupancyOfRooms(List<Occupancy> occupancyOfRooms) {
+  public FRReply setOccupancyOfRooms(Map<String,List<Occupancy>> occupancyOfRooms) {
     this.occupancyOfRooms = occupancyOfRooms;
     return this;
   }
@@ -266,7 +275,7 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
       if (value == null) {
         unsetOccupancyOfRooms();
       } else {
-        setOccupancyOfRooms((List<Occupancy>)value);
+        setOccupancyOfRooms((Map<String,List<Occupancy>>)value);
       }
       break;
 
@@ -309,12 +318,12 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof OccupancyReply)
-      return this.equals((OccupancyReply)that);
+    if (that instanceof FRReply)
+      return this.equals((FRReply)that);
     return false;
   }
 
-  public boolean equals(OccupancyReply that) {
+  public boolean equals(FRReply that) {
     if (that == null)
       return false;
 
@@ -370,13 +379,13 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
     return builder.toHashCode();
   }
 
-  public int compareTo(OccupancyReply other) {
+  public int compareTo(FRReply other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    OccupancyReply typedOther = (OccupancyReply)other;
+    FRReply typedOther = (FRReply)other;
 
     lastComparison = Boolean.valueOf(isSetStatus()).compareTo(typedOther.isSetStatus());
     if (lastComparison != 0) {
@@ -441,18 +450,30 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
           }
           break;
         case 3: // OCCUPANCY_OF_ROOMS
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
+          if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TList _list29 = iprot.readListBegin();
-              this.occupancyOfRooms = new ArrayList<Occupancy>(_list29.size);
-              for (int _i30 = 0; _i30 < _list29.size; ++_i30)
+              org.apache.thrift.protocol.TMap _map20 = iprot.readMapBegin();
+              this.occupancyOfRooms = new HashMap<String,List<Occupancy>>(2*_map20.size);
+              for (int _i21 = 0; _i21 < _map20.size; ++_i21)
               {
-                Occupancy _elem31; // required
-                _elem31 = new Occupancy();
-                _elem31.read(iprot);
-                this.occupancyOfRooms.add(_elem31);
+                String _key22; // required
+                List<Occupancy> _val23; // required
+                _key22 = iprot.readString();
+                {
+                  org.apache.thrift.protocol.TList _list24 = iprot.readListBegin();
+                  _val23 = new ArrayList<Occupancy>(_list24.size);
+                  for (int _i25 = 0; _i25 < _list24.size; ++_i25)
+                  {
+                    Occupancy _elem26; // required
+                    _elem26 = new Occupancy();
+                    _elem26.read(iprot);
+                    _val23.add(_elem26);
+                  }
+                  iprot.readListEnd();
+                }
+                this.occupancyOfRooms.put(_key22, _val23);
               }
-              iprot.readListEnd();
+              iprot.readMapEnd();
             }
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -488,12 +509,20 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
       if (isSetOccupancyOfRooms()) {
         oprot.writeFieldBegin(OCCUPANCY_OF_ROOMS_FIELD_DESC);
         {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.occupancyOfRooms.size()));
-          for (Occupancy _iter32 : this.occupancyOfRooms)
+          oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.LIST, this.occupancyOfRooms.size()));
+          for (Map.Entry<String, List<Occupancy>> _iter27 : this.occupancyOfRooms.entrySet())
           {
-            _iter32.write(oprot);
+            oprot.writeString(_iter27.getKey());
+            {
+              oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, _iter27.getValue().size()));
+              for (Occupancy _iter28 : _iter27.getValue())
+              {
+                _iter28.write(oprot);
+              }
+              oprot.writeListEnd();
+            }
           }
-          oprot.writeListEnd();
+          oprot.writeMapEnd();
         }
         oprot.writeFieldEnd();
       }
@@ -504,7 +533,7 @@ public class OccupancyReply implements org.apache.thrift.TBase<OccupancyReply, O
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("OccupancyReply(");
+    StringBuilder sb = new StringBuilder("FRReply(");
     boolean first = true;
 
     sb.append("status:");

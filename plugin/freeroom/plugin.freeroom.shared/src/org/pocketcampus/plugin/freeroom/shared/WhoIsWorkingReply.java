@@ -443,14 +443,14 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
         case 3: // THEY_ARE_WORKING
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list28 = iprot.readListBegin();
-              this.theyAreWorking = new ArrayList<WorkingOccupancy>(_list28.size);
-              for (int _i29 = 0; _i29 < _list28.size; ++_i29)
+              org.apache.thrift.protocol.TList _list41 = iprot.readListBegin();
+              this.theyAreWorking = new ArrayList<WorkingOccupancy>(_list41.size);
+              for (int _i42 = 0; _i42 < _list41.size; ++_i42)
               {
-                WorkingOccupancy _elem30; // required
-                _elem30 = new WorkingOccupancy();
-                _elem30.read(iprot);
-                this.theyAreWorking.add(_elem30);
+                WorkingOccupancy _elem43; // required
+                _elem43 = new WorkingOccupancy();
+                _elem43.read(iprot);
+                this.theyAreWorking.add(_elem43);
               }
               iprot.readListEnd();
             }
@@ -489,9 +489,9 @@ public class WhoIsWorkingReply implements org.apache.thrift.TBase<WhoIsWorkingRe
         oprot.writeFieldBegin(THEY_ARE_WORKING_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.theyAreWorking.size()));
-          for (WorkingOccupancy _iter31 : this.theyAreWorking)
+          for (WorkingOccupancy _iter44 : this.theyAreWorking)
           {
-            _iter31.write(oprot);
+            _iter44.write(oprot);
           }
           oprot.writeListEnd();
         }
