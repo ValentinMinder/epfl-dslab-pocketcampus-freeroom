@@ -171,5 +171,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				rooms, mModel);
 		mExpView.setAdapter(mAdapter);
 
+		// expanding all the groups to view immediate information!
+		for (int i = 0; i < mExpView.getCount(); i++) {
+			mExpView.expandGroup(i);
+		}
 	}
 }
