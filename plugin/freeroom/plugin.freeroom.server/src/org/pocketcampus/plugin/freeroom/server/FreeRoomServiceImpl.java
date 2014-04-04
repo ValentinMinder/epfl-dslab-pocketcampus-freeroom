@@ -2,33 +2,19 @@ package org.pocketcampus.plugin.freeroom.server;
 
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 
 import org.apache.thrift.TException;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
@@ -88,6 +74,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true",
 				PC_SRV_CONFIG.getString("DB_USERNAME"),
 				PC_SRV_CONFIG.getString("DB_PASSWORD"));
+		
 		// update ewa : should be done periodically...
 		boolean updateEWA = false;
 		if (updateEWA) {
@@ -842,11 +829,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	// ********** END OF "PUBLIC SERVER SERVICES" PART **********
-	// ********** START OF "FETCHING ROOMS DATA FROM ARCHIBUS" PART **********
-
-
-
-	// ********** END OF "FETCHING ROOMS DATA FROM ARCHIBUS" PART **********
 
 	@Override
 	public FRReply getOccupancy(FRRequest request) throws TException {

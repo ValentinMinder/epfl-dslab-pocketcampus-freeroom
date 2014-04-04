@@ -14,6 +14,13 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
+/**
+ * This class is used to fetch data and insert it into the database from the EWA platform.
+ * 
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
 public class ExchangeServiceImpl {
 	
 	private ConnectionManager connMgr = null;

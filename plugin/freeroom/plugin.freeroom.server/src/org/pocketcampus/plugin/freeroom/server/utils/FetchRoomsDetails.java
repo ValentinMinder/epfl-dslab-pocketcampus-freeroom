@@ -21,6 +21,14 @@ import org.json.JSONObject;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 
+/**
+ * This class allows you to either fetch and insert all the relevant rooms for
+ * the projet in the database or fetching the details about one specific room.
+ * 
+ * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ *         Valentin MINDER <valentin.minder@epfl.ch>
+ * 
+ */
 public class FetchRoomsDetails {
 
 	private final String URL_ROOMS_LIST = "https://pocketcampus.epfl.ch/proxy/"
@@ -44,6 +52,12 @@ public class FetchRoomsDetails {
 
 	}
 
+	/**
+	 * Fetch all relevant rooms (i.e which is in unitname=DAF (Domaine de la
+	 * Formation)) and insert it into the corresponding database
+	 * 
+	 * @return The number of fetched and inserted rooms
+	 */
 	public int fetchRoomsIntoDB() {
 		int totalCount = 0;
 		StringBuffer page = new StringBuffer();
