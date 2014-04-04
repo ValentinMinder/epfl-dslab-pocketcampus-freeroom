@@ -119,7 +119,7 @@ public class ExchangeLoading {
 	}
 
 	/**
-	 * Load the the give EWAid for the room, given by it's door code. All the
+	 * Load the given EWAid for the room, given by it's door code. All the
 	 * spaces are removed to match DB "doorCodeWithoutSpace" field.
 	 * 
 	 * @param name
@@ -135,15 +135,7 @@ public class ExchangeLoading {
 					.println("invalid name: " + name + " with email:" + email);
 			return false;
 		}
-		ConnectionManager connMgr = null;
-		try {
-			connMgr = new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD);
-			FreeRoomServiceImpl s = new FreeRoomServiceImpl(connMgr);
-			return s.setExchangeData(concatName, email);
-		} catch (ServerException e) {
-			e.printStackTrace();
-		}
-
-		return false;
+		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USERNAME, DB_PASSWORD);
+		return exchange.setExchangeData(concatName, email);
 	}
 }

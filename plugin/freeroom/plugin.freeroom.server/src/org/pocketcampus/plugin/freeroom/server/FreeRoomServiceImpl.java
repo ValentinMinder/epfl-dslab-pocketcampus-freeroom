@@ -31,7 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeEntry;
+import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
@@ -77,6 +77,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private HashMap<String, String> dincat_text = null;
 
 	private ConnectionManager connMgr;
+	private ExchangeServiceImpl mExchangeService;
 	// margin for error is a minute
 	private final long MARGIN_ERROR_TIMESTAMP = 60 * 1000;
 
@@ -90,10 +91,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}
+
+		mExchangeService = new ExchangeServiceImpl(
+				PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true",
+				PC_SRV_CONFIG.getString("DB_USERNAME"),
+				PC_SRV_CONFIG.getString("DB_PASSWORD"));
 		// update ewa : should be done periodically...
 		boolean updateEWA = false;
 		if (updateEWA) {
-			if (updateEWAOccupancy()) {
+			if (mExchangeService.updateEWAOccupancy()) {
 				System.out.println("EWA data succesfully updated!");
 			} else {
 				System.err.println("EWA data couldn't be completely loaded!");
@@ -1112,216 +1118,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	// ********** END OF "FETCHING ROOMS DATA FROM ARCHIBUS" PART **********
 	// ********** START OF "FETCHING EXCHANGE" PART **********
 
-	/**
-	 * Reset all the exchange ids to NULL.
-	 * 
-	 * @return
-	 */
-	private boolean resetExchangeData() {
-		Connection conn = null;
-		try {
-			conn = connMgr.getConnection();
-			PreparedStatement query;
-			String b = "UPDATE `fr-roomsoccupancy` SET EWAid = NULL WHERE *";
-			query = conn.prepareStatement(b);
-			query.execute();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Set the exchange ID of the room represented by it's doorCodeWithoutSpace.
-	 * 
-	 * @param concatName
-	 * @param ewaID
-	 * @return
-	 */
-	public boolean setExchangeData(String concatName, String ewaID) {
-		// checks that the room exists, and exist only once!
-		if (getUIDFromDoorCode(concatName) == null) {
-			return false;
-		}
-		Connection conn = null;
-		try {
-			conn = connMgr.getConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			return false;
-		}
-		String req = "UPDATE `fr-roomslist`" + "SET EWAid = (?) "
-				+ "WHERE doorCodeWithoutSpace = (?)";
-		PreparedStatement query;
-		try {
-			query = conn.prepareStatement(req);
-			query.setString(1, ewaID);
-			query.setString(2, concatName);
-			query.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Works with doorcode or doorCodeWithoutSpace!
-	 * 
-	 * MUST be used with great caution! Only the uid is garantueed to be unique,
-	 * this function returns a result when there is only one and exactly one
-	 * match!
-	 * 
-	 * @param doorCode
-	 * @return
-	 */
-	private String getUIDFromDoorCode(String doorCode) {
-		Connection conn = null;
-		try {
-			conn = connMgr.getConnection();
-			PreparedStatement roomQuery = conn.prepareStatement("SELECT "
-					+ "rl.uid " + "FROM `fr-roomslist` rl "
-					+ "WHERE rl.doorCode = ? OR rl.doorCodeWithoutSpace = ?");
-			roomQuery.setString(1, doorCode);
-			roomQuery.setString(2, doorCode);
-			ResultSet result = roomQuery.executeQuery();
-			if (result.next()) {
-				String uid = result.getString("uid");
-				if (result.next()) {
-					System.err.println("Mutiple rooms found for door code:"
-							+ doorCode);
-					return null;
-				}
-				return uid;
-			} else {
-				return null;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
-	 * List all the rooms that have an EWAid set.
-	 * 
-	 * @return
-	 */
-	private List<FRRoom> getEWARooms() {
-		Connection conn = null;
-		try {
-			conn = connMgr.getConnection();
-			PreparedStatement roomQuery = conn.prepareStatement("SELECT "
-					+ "rl.uid, rl.doorCode, rl.EWAid "
-					+ "FROM `fr-roomslist` rl " + "WHERE EWAid IS NOT NULL");
-			List<FRRoom> listEWARooms = new ArrayList<FRRoom>();
-			ResultSet result = roomQuery.executeQuery();
-			while (result.next()) {
-				String uid = result.getString("uid");
-				String doorCode = result.getString("doorCode");
-				String EWAid = result.getString("EWAid");
-				FRRoom room = new FRRoom(doorCode, uid);
-				room.setEWAid(EWAid);
-				listEWARooms.add(room);
-			}
-			return listEWARooms;
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
-	 * Retrieves the occupancies from Exchange for all the rooms that have an
-	 * EWAid set. It calls updateEWAOccupancy with a default time window.
-	 * 
-	 * @return true if successful for all the rooms, false if an error occured.
-	 */
-	public boolean updateEWAOccupancy() {
-		// TODO: for now, we update from now to one week
-		// to be set to same window as permitted by server and clients
-		long timeStampStart = System.currentTimeMillis()
-				- FRTimes.ONE_WEEK_IN_MS;
-		long timeStampEnd = System.currentTimeMillis() + FRTimes.ONE_WEEK_IN_MS;
-		FRPeriod mFrPeriod = new FRPeriod(timeStampStart, timeStampEnd, false);
-		return updateEWAOccupancy(mFrPeriod);
-	}
-
-	/**
-	 * Retrieves the occupancies from Exchange, for all the rooms that have an
-	 * EWAid set. It's done for a given time window given by mFRPeriod.
-	 * 
-	 * @param mFrPeriod
-	 *            the time window to check.
-	 * @return true if successful for all the rooms, false if an error occurred.
-	 */
-	private boolean updateEWAOccupancy(FRPeriod mFrPeriod) {
-		// TODO: it construct an exchange client with default username/login
-		ExchangeEntry ee = new ExchangeEntry();
-
-		List<FRRoom> listRooms = getEWARooms();
-		Iterator<FRRoom> iter = listRooms.iterator();
-		while (iter.hasNext()) {
-			FRRoom room = iter.next();
-			String uid = room.getUid();
-			deleteAllOccupancies(uid);
-			List<FRPeriod> occupied = ee.getAvailabilityFromEWAUID(
-					room.getEWAid(), mFrPeriod);
-			int length = occupied.size();
-			if (length != 0) {
-				Connection conn = null;
-				try {
-					conn = connMgr.getConnection();
-					PreparedStatement query;
-					StringBuilder b = new StringBuilder(
-							"INSERT INTO `fr-roomsoccupancy`("
-									+ "uid, timestampStart, timeStampEnd) "
-									+ "VALUES(?, ?, ?)");
-					for (int i = 1; i < length; i++) {
-						b.append(",(?, ?, ?)");
-					}
-					query = conn.prepareStatement(b.toString());
-
-					for (int i = 0, j = 0; i < length; i++, j = 3 * i) {
-						FRPeriod mPeriod = occupied.get(i);
-						query.setString(j + 1, uid);
-						query.setLong(j + 2, mPeriod.getTimeStampStart());
-						query.setLong(j + 3, mPeriod.getTimeStampEnd());
-					}
-					query.execute();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Deletes all the occupancies for a given room.
-	 * 
-	 * @param uid
-	 *            the uid of the room
-	 * @return true if no error occured
-	 */
-	private boolean deleteAllOccupancies(String uid) {
-		Connection conn = null;
-		try {
-			conn = connMgr.getConnection();
-			PreparedStatement query;
-			String b = "DELETE FROM `fr-roomsoccupancy` WHERE uid = ?";
-			query = conn.prepareStatement(b);
-			query.setString(1, uid);
-			query.execute();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 	// ********** END OF "FETCHING EXCHANGE" PART **********
 
 	@Override
@@ -1329,5 +1125,4 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return null;
 	}
 
-	
 }
