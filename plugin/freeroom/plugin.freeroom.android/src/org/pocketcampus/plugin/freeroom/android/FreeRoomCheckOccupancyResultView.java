@@ -263,10 +263,9 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 						if (mFRRoom.isSetCapacity()
 								&& mFRRoom.getCapacity() != 0) {
 							mActualOccupationAsString += "/"
-									+ (mFRRoom.getCapacity() - mActualOccupation
-											.getProbableOccupation());
+									+ (mFRRoom.getCapacity());
 						} else {
-							mActualOccupationAsString += ")";
+							mActualOccupationAsString += " people";
 						}
 					}
 				} else {
