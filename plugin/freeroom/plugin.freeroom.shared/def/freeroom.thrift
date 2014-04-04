@@ -104,6 +104,7 @@ struct OccupancyRequest {
 struct FRRequest {
 	1: required FRPeriod period;
 	2: required bool onlyFreeRooms;
+	//if null, it means every rooms
 	3: required list<string> uidList;
 }
 

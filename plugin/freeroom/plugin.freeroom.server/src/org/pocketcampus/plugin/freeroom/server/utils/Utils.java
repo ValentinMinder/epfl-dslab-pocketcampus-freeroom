@@ -1,6 +1,15 @@
 package org.pocketcampus.plugin.freeroom.server.utils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 
 /**
@@ -32,5 +41,45 @@ public class Utils {
 
 		return new FreeRoomRequest(period);
 
+	}
+	
+	public static String extractBuilding(String doorCode) {
+		String mDoorCode = doorCode.trim();
+		int firstSpace = mDoorCode.indexOf(" ");
+		if (firstSpace > 0) {
+			mDoorCode = mDoorCode.substring(0, firstSpace);
+		} else {
+			Pattern mBuildingPattern = Pattern.compile("^([A-Za-z]+)[^A-Za-z]$");
+			Matcher mMatcher = mBuildingPattern.matcher(doorCode);
+			
+			if (mMatcher.matches()) {
+				return mMatcher.group(0);
+			} else {
+				return null;
+			}
+		}
+		return null;
+	}
+	
+	public static Map<String, List<FRRoom>> sortRoomsByBuilding(List<FRRoom> rooms) {
+		Iterator<FRRoom> iter = rooms.iterator();
+		HashMap<String, List<FRRoom>> sortedResult = new HashMap<String, List<FRRoom>>();
+		ArrayList<String> buildingsList = new ArrayList<String>();
+
+		while (iter.hasNext()) {
+			FRRoom frRoom = iter.next();
+
+			String building = extractBuilding(frRoom.getDoorCode());
+
+			List<FRRoom> roomsNumbers = sortedResult.get(building);
+			if (roomsNumbers == null) {
+				buildingsList.add(building);
+				roomsNumbers = new ArrayList<FRRoom>();
+				sortedResult.put(building, roomsNumbers);
+			}
+			roomsNumbers.add(frRoom);
+		}
+
+		return sortedResult;
 	}
 }

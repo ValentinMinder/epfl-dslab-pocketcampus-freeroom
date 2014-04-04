@@ -55,7 +55,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private ConnectionManager connMgr;
 	private ExchangeServiceImpl mExchangeService;
-	
+
 	// margin for error is a minute
 	private final long MARGIN_ERROR_TIMESTAMP = 60 * 1000;
 
@@ -74,7 +74,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				PC_SRV_CONFIG.getString("DB_URL") + "?allowMultiQueries=true",
 				PC_SRV_CONFIG.getString("DB_USERNAME"),
 				PC_SRV_CONFIG.getString("DB_PASSWORD"));
-		
+
 		// update ewa : should be done periodically...
 		boolean updateEWA = false;
 		if (updateEWA) {
@@ -95,51 +95,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	// ********** END OF "INITIALIZATION" PART **********
 	// ********** START OF "PUBLIC SERVER SERVICES" PART **********
-
-	/**
-	 * Search for all rooms available during the time period included in the
-	 * request.
-	 */
-	@Override
-	public FreeRoomReply getFreeRoomFromTime(FreeRoomRequest request)
-			throws TException {
-		// reduce the total duration to avoid having possibly exact same
-		// timestamp
-		FRPeriod period = Utils.convertMinPrecision(request).getPeriod();
-
-		long tsStart = period.getTimeStampStart();
-		long tsEnd = period.getTimeStampEnd();
-
-		if (!FRTimes.validCalendars(period)) {
-			// if something is wrong in the request
-			// for security reasons, we don't tell the client was exactly was
-			// wrong
-			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Bad timestamps! Your client sent a bad request, sorry");
-		}
-
-		FreeRoomReply reply = new FreeRoomReply(HttpURLConnection.HTTP_OK, "");
-
-		boolean recurrent = period.isRecurrent();
-
-		if (!recurrent) {
-			Set<FRRoom> rooms = getFreeRoom(tsStart, tsEnd);
-			if (rooms != null) {
-				reply.setRooms(rooms);
-				reply.setRoomsIsSet(true);
-			} else {
-				reply = new FreeRoomReply(
-						HttpURLConnection.HTTP_INTERNAL_ERROR,
-						"Internal server error, sorry.");
-			}
-			return reply;
-		} else {
-			// TODO: support recurrent request
-			reply = new FreeRoomReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
-					"reccurent request not supported yet");
-			return reply;
-		}
-	}
 
 	private Set<FRRoom> getFreeRoom(long start, long end) throws TException {
 
@@ -176,319 +131,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		return freerooms;
-	}
-
-	@Override
-	public OccupancyReply checkTheOccupancy(OccupancyRequest request)
-			throws TException {
-
-		OccupancyReply reply = new OccupancyReply(
-				HttpURLConnection.HTTP_CREATED, ""
-						+ HttpURLConnection.HTTP_CREATED);
-
-		List<String> uidsList = request.getUids();
-
-		FRPeriod period = request.getPeriod();
-		long timestampStart = period.getTimeStampStart();
-		long timestampEnd = period.getTimeStampEnd();
-
-		if (!FRTimes.validCalendars(period)) {
-			// if something is wrong in the request
-			return new OccupancyReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Bad timestamps! Your client sent a bad request, sorry");
-		}
-
-		ArrayList<Occupancy> occupancies = new ArrayList<Occupancy>();
-
-		try {
-			Connection connectBDD = connMgr.getConnection();
-
-			for (String mUid : uidsList) {
-				Occupancy mOccupancy = new Occupancy();
-
-				PreparedStatement roomQuery = connectBDD
-						.prepareStatement("SELECT "
-								+ "rl.doorCode, rl.capacity "
-								+ "FROM `fr-roomslist` rl "
-								+ "WHERE rl.uid = ? ");
-				roomQuery.setString(1, mUid);
-				ResultSet resultRoom = roomQuery.executeQuery();
-
-				FRRoom room = null;
-				if (resultRoom.next()) {
-					room = new FRRoom();
-					room.setUid(mUid);
-					room.setDoorCode(resultRoom.getString("doorCode"));
-					room.setCapacity(resultRoom.getInt("capacity"));
-					// room.setType(FRRoomType.valueOf(resultRoom
-					// .getString("type")));
-					if (resultRoom.next()) {
-						return new OccupancyReply(
-								HttpURLConnection.HTTP_INTERNAL_ERROR,
-								"Mutltiple rooms with same UID! Error!");
-					}
-					mOccupancy.setRoom(room);
-				} else {
-					return new OccupancyReply(
-							HttpURLConnection.HTTP_BAD_REQUEST,
-							"Unknown room UID, sorry");
-				}
-
-				PreparedStatement query = connectBDD
-						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd, "
-								+ "rl.doorCode "
-								+ "FROM `fr-roomsoccupancy` ro, `fr-roomslist` rl "
-								+ "WHERE rl.uid = ? "
-								+ "AND ro.uid = rl.uid AND "
-								+ "((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
-								+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
-								+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
-								+ "ORDER BY ro.timestampStart ASC");
-				query.setString(1, mUid);
-				query.setLong(2, timestampEnd);
-				query.setLong(3, timestampStart);
-				query.setLong(4, timestampEnd);
-				query.setLong(5, timestampStart);
-				query.setLong(6, timestampStart);
-				query.setLong(7, timestampEnd);
-
-				// filling the query with values
-
-				ResultSet resultQuery = query.executeQuery();
-
-				boolean isAtLeastOccupiedOnce = false;
-				boolean isAtLeastFreeOnce = false;
-
-				// timestamp used to generate the occupations accross the
-				// FRPeriod
-				long tsPerRoom = timestampStart;
-				while (resultQuery.next()) {
-
-					long tsStart = Math.max(tsPerRoom,
-							resultQuery.getLong("timestampStart"));
-					long tsEnd = Math.min(timestampEnd,
-							resultQuery.getLong("timestampEnd"));
-
-					if (tsStart - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
-						// We got a free period of time !
-						ActualOccupation mOcc = new ActualOccupation();
-						FRPeriod myPeriod = new FRPeriod(tsPerRoom,
-								tsStart - 1, false);
-						mOcc.setPeriod(myPeriod);
-						mOcc.setAvailable(true);
-						mOcc.setProbableOccupation(getWorstCaseUserOccupancy(
-								myPeriod, room));
-						mOccupancy.addToOccupancy(mOcc);
-						isAtLeastFreeOnce = true;
-					}
-
-					ActualOccupation mAccOcc = new ActualOccupation();
-					mAccOcc.setPeriod(new FRPeriod(tsStart, tsEnd, false));
-					mAccOcc.setAvailable(false);
-					mOccupancy.addToOccupancy(mAccOcc);
-					isAtLeastOccupiedOnce = true;
-
-					tsPerRoom = tsEnd;
-
-				}
-
-				// There is some free time left after the last result
-				if (timestampEnd - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
-					ActualOccupation mOcc = new ActualOccupation();
-					FRPeriod myPeriod = new FRPeriod(tsPerRoom, timestampEnd,
-							false);
-					mOcc.setPeriod(myPeriod);
-					mOcc.setAvailable(true);
-					mOcc.setProbableOccupation(getWorstCaseUserOccupancy(
-							myPeriod, room));
-					mOccupancy.addToOccupancy(mOcc);
-					isAtLeastFreeOnce = true;
-				}
-
-				mOccupancy.setIsAtLeastFreeOnce(isAtLeastFreeOnce);
-				mOccupancy.setIsAtLeastOccupiedOnce(isAtLeastOccupiedOnce);
-
-				occupancies.add(mOccupancy);
-				query.close();
-			}
-
-			reply = new OccupancyReply(HttpURLConnection.HTTP_OK, ""
-					+ HttpURLConnection.HTTP_OK);
-			reply.setOccupancyOfRooms(occupancies);
-		} catch (SQLException e) {
-			reply = new OccupancyReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
-					"" + HttpURLConnection.HTTP_INTERNAL_ERROR);
-			e.printStackTrace();
-		}
-
-		return reply;
-	}
-
-	/**
-	 * Returns all the rooms that satisfies the hint given in the request.
-	 * 
-	 * The hint may be the start of the door code or the uid.
-	 * 
-	 * TODO: verifies that it works with PH D2 398, PHD2 398, PH D2398 and
-	 * PHD2398
-	 * 
-	 * TODO: limit the number of result given
-	 */
-	@Override
-	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
-			throws TException {
-		AutoCompleteReply reply = new AutoCompleteReply(
-				HttpURLConnection.HTTP_CREATED, ""
-						+ HttpURLConnection.HTTP_CREATED);
-
-		List<FRRoom> rooms = new ArrayList<FRRoom>();
-		Set<String> forbiddenRooms = request.getForbiddenRoomsUID();
-
-		String forbidRoomsSQL = "";
-		if (forbiddenRooms != null) {
-			for (int i = forbiddenRooms.size(); i > 0; --i) {
-				if (i <= 1) {
-					forbidRoomsSQL += "?";
-				} else {
-					forbidRoomsSQL += "?,";
-				}
-			}
-		}
-		String txt = request.getConstraint();
-		// avoid all whitespaces for requests
-		// TODO: be resistent to empty queries!
-		// put a minimum number of letters for the hint
-		// this is only for tests purposes, to deliver all the rooms
-		txt = txt.trim();
-		txt = txt.replaceAll("\\s", "");
-		try {
-			Connection connectBDD = connMgr.getConnection();
-			String requestSQL = "";
-			if (forbiddenRooms == null) {
-				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
-						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
-						+ "ORDER BY rl.doorCode ASC";
-			} else {
-				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
-						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
-						+ "AND rl.uid NOT IN (" + forbidRoomsSQL + ") "
-						+ "ORDER BY rl.doorCode ASC";
-			}
-
-			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
-			query.setString(1, txt + "%");
-			query.setString(2, txt + "%");
-
-			if (forbiddenRooms != null) {
-				int i = 2;
-				for (String roomUID : forbiddenRooms) {
-					query.setString(i, roomUID);
-					++i;
-				}
-			}
-
-			// filling the query with values
-
-			ResultSet resultQuery = query.executeQuery();
-			while (resultQuery.next()) {
-				FRRoom frRoom = new FRRoom(resultQuery.getString("doorCode"),
-						resultQuery.getString("uid"));
-				// String type = resultQuery.getString("type");
-				// if (type != null) {
-				// try {
-				// FRRoomType t = FRRoomType.valueOf(type);
-				// frRoom.setType(t);
-				// } catch (IllegalArgumentException e) {
-				// System.err.println("Type not known " + type);
-				// e.printStackTrace();
-				// }
-				// }
-				int cap = resultQuery.getInt("capacity");
-				if (cap > 0) {
-					frRoom.setCapacity(cap);
-				}
-				rooms.add(frRoom);
-
-			}
-			reply = new AutoCompleteReply(HttpURLConnection.HTTP_OK, ""
-					+ HttpURLConnection.HTTP_OK);
-			reply.setListFRRoom(rooms);
-
-		} catch (SQLException e) {
-			reply = new AutoCompleteReply(
-					HttpURLConnection.HTTP_INTERNAL_ERROR, ""
-							+ HttpURLConnection.HTTP_INTERNAL_ERROR);
-			e.printStackTrace();
-		}
-		return reply;
-	}
-
-	/**
-	 * Register that a user will be in a room for a given time.
-	 */
-	@Override
-	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
-			throws TException {
-		ImWorkingReply reply = new ImWorkingReply(
-				HttpURLConnection.HTTP_INTERNAL_ERROR, "");
-
-		try {
-			Connection connectBDD = connMgr.getConnection();
-			WorkingOccupancy w = request.getWork();
-			List<FRPeriod> mFrPeriods = FRTimes
-					.getFRPeriodByStep(w.getPeriod());
-			int size = mFrPeriods.size();
-			FRRoom mFrRoom = w.getRoom();
-			String roomUID = mFrRoom.getUid();
-
-			// get the previously registered user occupancies
-			List<Integer> listUserOccupancy = getUserOccupancy(mFrPeriods,
-					mFrRoom);
-
-			// construct the query
-			String line = "UPDATE `fr-usersoccupancy` "
-					+ "SET count = count + 1 "
-					+ "WHERE uid = (?) AND timestampStart = (?) AND timestampEnd = (?); \n";
-			StringBuilder build = new StringBuilder(line.length() * size);
-			for (int i = 0; i < size; i++) {
-				build.append(line);
-			}
-			PreparedStatement query = connectBDD.prepareStatement(build
-					.toString());
-
-			// put the values in the query.
-			for (int i = 0, j = 0; i < size; i++, j = 3 * i) {
-				query.setString(j + 1, roomUID);
-				FRPeriod period = mFrPeriods.get(i);
-				query.setLong(j + 2, period.getTimeStampStart());
-				query.setLong(j + 3, period.getTimeStampEnd());
-			}
-
-			System.out.println(query.toString());
-			query.execute();
-
-			// checks if advanced mode is needed for this request.
-			boolean updateUsersWorking = w.isSetCourse() || w.isSetMessage();
-			boolean resultAdvanced = true;
-			if (updateUsersWorking) {
-				resultAdvanced = indicateImWorkingAdvanced(request);
-			}
-
-			if (resultAdvanced) {
-				reply = new ImWorkingReply(HttpURLConnection.HTTP_OK,
-						"ImWorking set + advanced if any set");
-			} else {
-				// TODO: no differenciation ?
-				reply = new ImWorkingReply(
-						HttpURLConnection.HTTP_INTERNAL_ERROR,
-						"FAIL: advanced working occupancy failed (but usual one worked)");
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return reply;
 	}
 
 	/**
@@ -774,6 +416,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 	}
 
+	// START OF METHODS TO IMPLEMENTS
+
 	/**
 	 * Retrieves who is working according to some constraints.
 	 * 
@@ -828,11 +472,371 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
-	// ********** END OF "PUBLIC SERVER SERVICES" PART **********
-
 	@Override
 	public FRReply getOccupancy(FRRequest request) throws TException {
 		return null;
+	}
+
+	@Override
+	public OccupancyReply checkTheOccupancy(OccupancyRequest request)
+			throws TException {
+
+		OccupancyReply reply = new OccupancyReply(
+				HttpURLConnection.HTTP_CREATED, ""
+						+ HttpURLConnection.HTTP_CREATED);
+
+		List<String> uidsList = request.getUids();
+
+		FRPeriod period = request.getPeriod();
+		long timestampStart = period.getTimeStampStart();
+		long timestampEnd = period.getTimeStampEnd();
+
+		if (!FRTimes.validCalendars(period)) {
+			// if something is wrong in the request
+			return new OccupancyReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Bad timestamps! Your client sent a bad request, sorry");
+		}
+
+		ArrayList<Occupancy> occupancies = new ArrayList<Occupancy>();
+
+		try {
+			Connection connectBDD = connMgr.getConnection();
+
+			for (String mUid : uidsList) {
+				Occupancy mOccupancy = new Occupancy();
+
+				PreparedStatement roomQuery = connectBDD
+						.prepareStatement("SELECT "
+								+ "rl.doorCode, rl.capacity "
+								+ "FROM `fr-roomslist` rl "
+								+ "WHERE rl.uid = ? ");
+				roomQuery.setString(1, mUid);
+				ResultSet resultRoom = roomQuery.executeQuery();
+
+				FRRoom room = null;
+				if (resultRoom.next()) {
+					room = new FRRoom();
+					room.setUid(mUid);
+					room.setDoorCode(resultRoom.getString("doorCode"));
+					room.setCapacity(resultRoom.getInt("capacity"));
+					// room.setType(FRRoomType.valueOf(resultRoom
+					// .getString("type")));
+					if (resultRoom.next()) {
+						return new OccupancyReply(
+								HttpURLConnection.HTTP_INTERNAL_ERROR,
+								"Mutltiple rooms with same UID! Error!");
+					}
+					mOccupancy.setRoom(room);
+				} else {
+					return new OccupancyReply(
+							HttpURLConnection.HTTP_BAD_REQUEST,
+							"Unknown room UID, sorry");
+				}
+
+				PreparedStatement query = connectBDD
+						.prepareStatement("SELECT ro.timestampStart, ro.timestampEnd, "
+								+ "rl.doorCode "
+								+ "FROM `fr-roomsoccupancy` ro, `fr-roomslist` rl "
+								+ "WHERE rl.uid = ? "
+								+ "AND ro.uid = rl.uid AND "
+								+ "((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
+								+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
+								+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
+								+ "ORDER BY ro.timestampStart ASC");
+				query.setString(1, mUid);
+				query.setLong(2, timestampEnd);
+				query.setLong(3, timestampStart);
+				query.setLong(4, timestampEnd);
+				query.setLong(5, timestampStart);
+				query.setLong(6, timestampStart);
+				query.setLong(7, timestampEnd);
+
+				// filling the query with values
+
+				ResultSet resultQuery = query.executeQuery();
+
+				boolean isAtLeastOccupiedOnce = false;
+				boolean isAtLeastFreeOnce = false;
+
+				// timestamp used to generate the occupations accross the
+				// FRPeriod
+				long tsPerRoom = timestampStart;
+				while (resultQuery.next()) {
+
+					long tsStart = Math.max(tsPerRoom,
+							resultQuery.getLong("timestampStart"));
+					long tsEnd = Math.min(timestampEnd,
+							resultQuery.getLong("timestampEnd"));
+
+					if (tsStart - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
+						// We got a free period of time !
+						ActualOccupation mOcc = new ActualOccupation();
+						FRPeriod myPeriod = new FRPeriod(tsPerRoom,
+								tsStart - 1, false);
+						mOcc.setPeriod(myPeriod);
+						mOcc.setAvailable(true);
+						mOcc.setProbableOccupation(getWorstCaseUserOccupancy(
+								myPeriod, room));
+						mOccupancy.addToOccupancy(mOcc);
+						isAtLeastFreeOnce = true;
+					}
+
+					ActualOccupation mAccOcc = new ActualOccupation();
+					mAccOcc.setPeriod(new FRPeriod(tsStart, tsEnd, false));
+					mAccOcc.setAvailable(false);
+					mOccupancy.addToOccupancy(mAccOcc);
+					isAtLeastOccupiedOnce = true;
+
+					tsPerRoom = tsEnd;
+
+				}
+
+				// There is some free time left after the last result
+				if (timestampEnd - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
+					ActualOccupation mOcc = new ActualOccupation();
+					FRPeriod myPeriod = new FRPeriod(tsPerRoom, timestampEnd,
+							false);
+					mOcc.setPeriod(myPeriod);
+					mOcc.setAvailable(true);
+					mOcc.setProbableOccupation(getWorstCaseUserOccupancy(
+							myPeriod, room));
+					mOccupancy.addToOccupancy(mOcc);
+					isAtLeastFreeOnce = true;
+				}
+
+				mOccupancy.setIsAtLeastFreeOnce(isAtLeastFreeOnce);
+				mOccupancy.setIsAtLeastOccupiedOnce(isAtLeastOccupiedOnce);
+
+				occupancies.add(mOccupancy);
+				query.close();
+			}
+
+			reply = new OccupancyReply(HttpURLConnection.HTTP_OK, ""
+					+ HttpURLConnection.HTTP_OK);
+			reply.setOccupancyOfRooms(occupancies);
+		} catch (SQLException e) {
+			reply = new OccupancyReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
+					"" + HttpURLConnection.HTTP_INTERNAL_ERROR);
+			e.printStackTrace();
+		}
+
+		return reply;
+	}
+
+	/**
+	 * Search for all rooms available during the time period included in the
+	 * request.
+	 */
+	@Override
+	public FreeRoomReply getFreeRoomFromTime(FreeRoomRequest request)
+			throws TException {
+		// reduce the total duration to avoid having possibly exact same
+		// timestamp
+		FRPeriod period = Utils.convertMinPrecision(request).getPeriod();
+
+		long tsStart = period.getTimeStampStart();
+		long tsEnd = period.getTimeStampEnd();
+
+		if (!FRTimes.validCalendars(period)) {
+			// if something is wrong in the request
+			// for security reasons, we don't tell the client was exactly was
+			// wrong
+			return new FreeRoomReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Bad timestamps! Your client sent a bad request, sorry");
+		}
+
+		FreeRoomReply reply = new FreeRoomReply(HttpURLConnection.HTTP_OK, "");
+
+		boolean recurrent = period.isRecurrent();
+
+		if (!recurrent) {
+			Set<FRRoom> rooms = getFreeRoom(tsStart, tsEnd);
+			if (rooms != null) {
+				reply.setRooms(rooms);
+				reply.setRoomsIsSet(true);
+			} else {
+				reply = new FreeRoomReply(
+						HttpURLConnection.HTTP_INTERNAL_ERROR,
+						"Internal server error, sorry.");
+			}
+			return reply;
+		} else {
+			// TODO: support recurrent request
+			reply = new FreeRoomReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
+					"reccurent request not supported yet");
+			return reply;
+		}
+	}
+
+	/**
+	 * Register that a user will be in a room for a given time.
+	 */
+	@Override
+	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
+			throws TException {
+		ImWorkingReply reply = new ImWorkingReply(
+				HttpURLConnection.HTTP_INTERNAL_ERROR, "");
+
+		try {
+			Connection connectBDD = connMgr.getConnection();
+			WorkingOccupancy w = request.getWork();
+			List<FRPeriod> mFrPeriods = FRTimes
+					.getFRPeriodByStep(w.getPeriod());
+			int size = mFrPeriods.size();
+			FRRoom mFrRoom = w.getRoom();
+			String roomUID = mFrRoom.getUid();
+
+			// get the previously registered user occupancies
+			List<Integer> listUserOccupancy = getUserOccupancy(mFrPeriods,
+					mFrRoom);
+
+			// construct the query
+			String line = "UPDATE `fr-usersoccupancy` "
+					+ "SET count = count + 1 "
+					+ "WHERE uid = (?) AND timestampStart = (?) AND timestampEnd = (?); \n";
+			StringBuilder build = new StringBuilder(line.length() * size);
+			for (int i = 0; i < size; i++) {
+				build.append(line);
+			}
+			PreparedStatement query = connectBDD.prepareStatement(build
+					.toString());
+
+			// put the values in the query.
+			for (int i = 0, j = 0; i < size; i++, j = 3 * i) {
+				query.setString(j + 1, roomUID);
+				FRPeriod period = mFrPeriods.get(i);
+				query.setLong(j + 2, period.getTimeStampStart());
+				query.setLong(j + 3, period.getTimeStampEnd());
+			}
+
+			System.out.println(query.toString());
+			query.execute();
+
+			// checks if advanced mode is needed for this request.
+			boolean updateUsersWorking = w.isSetCourse() || w.isSetMessage();
+			boolean resultAdvanced = true;
+			if (updateUsersWorking) {
+				resultAdvanced = indicateImWorkingAdvanced(request);
+			}
+
+			if (resultAdvanced) {
+				reply = new ImWorkingReply(HttpURLConnection.HTTP_OK,
+						"ImWorking set + advanced if any set");
+			} else {
+				// TODO: no differenciation ?
+				reply = new ImWorkingReply(
+						HttpURLConnection.HTTP_INTERNAL_ERROR,
+						"FAIL: advanced working occupancy failed (but usual one worked)");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return reply;
+	}
+
+	/**
+	 * Returns all the rooms that satisfies the hint given in the request.
+	 * 
+	 * The hint may be the start of the door code or the uid.
+	 * 
+	 * TODO: verifies that it works with PH D2 398, PHD2 398, PH D2398 and
+	 * PHD2398
+	 * 
+	 * TODO: limit the number of result given
+	 */
+	@Override
+	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
+			throws TException {
+		AutoCompleteReply reply = new AutoCompleteReply(
+				HttpURLConnection.HTTP_CREATED, ""
+						+ HttpURLConnection.HTTP_CREATED);
+
+		String constraint = request.getConstraint();
+
+		if (constraint.length() < 2) {
+			return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Constraints should be at least 2 characters long.");
+		}
+		
+		List<FRRoom> rooms = new ArrayList<FRRoom>();
+		Set<String> forbiddenRooms = request.getForbiddenRoomsUID();
+
+		String forbidRoomsSQL = "";
+		if (forbiddenRooms != null) {
+			for (int i = forbiddenRooms.size(); i > 0; --i) {
+				if (i <= 1) {
+					forbidRoomsSQL += "?";
+				} else {
+					forbidRoomsSQL += "?,";
+				}
+			}
+		}
+		// avoid all whitespaces for requests
+		constraint = constraint.trim();
+		constraint = constraint.replaceAll("\\s+", "");
+		
+		try {
+			Connection connectBDD = connMgr.getConnection();
+			String requestSQL = "";
+			if (forbiddenRooms == null) {
+				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
+						+ "ORDER BY rl.doorCode ASC";
+			} else {
+				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
+						+ "AND rl.uid NOT IN (" + forbidRoomsSQL + ") "
+						+ "ORDER BY rl.doorCode ASC";
+			}
+
+			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
+			query.setString(1, constraint + "%");
+			query.setString(2, constraint + "%");
+
+			if (forbiddenRooms != null) {
+				int i = 2;
+				for (String roomUID : forbiddenRooms) {
+					query.setString(i, roomUID);
+					++i;
+				}
+			}
+
+			// filling the query with values
+
+			ResultSet resultQuery = query.executeQuery();
+			while (resultQuery.next()) {
+				FRRoom frRoom = new FRRoom(resultQuery.getString("doorCode"),
+						resultQuery.getString("uid"));
+				// String type = resultQuery.getString("type");
+				// if (type != null) {
+				// try {
+				// FRRoomType t = FRRoomType.valueOf(type);
+				// frRoom.setType(t);
+				// } catch (IllegalArgumentException e) {
+				// System.err.println("Type not known " + type);
+				// e.printStackTrace();
+				// }
+				// }
+				int cap = resultQuery.getInt("capacity");
+				if (cap > 0) {
+					frRoom.setCapacity(cap);
+				}
+				rooms.add(frRoom);
+			}
+			
+			reply = new AutoCompleteReply(HttpURLConnection.HTTP_OK, ""
+					+ HttpURLConnection.HTTP_OK);
+			reply.setListRoom(Utils.sortRoomsByBuilding(rooms));
+
+		} catch (SQLException e) {
+			reply = new AutoCompleteReply(
+					HttpURLConnection.HTTP_INTERNAL_ERROR, ""
+							+ HttpURLConnection.HTTP_INTERNAL_ERROR);
+			e.printStackTrace();
+		}
+		return reply;
 	}
 
 }
