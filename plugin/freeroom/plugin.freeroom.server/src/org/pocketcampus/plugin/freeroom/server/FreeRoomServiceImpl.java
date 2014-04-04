@@ -53,6 +53,7 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	// ********** START OF "INITIALIZATION" PART **********
 
+	private final int LIMIT_AUTOCOMPLETE = 50;
 	private ConnectionManager connMgr;
 	private ExchangeServiceImpl mExchangeService;
 
@@ -744,7 +745,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * TODO: verifies that it works with PH D2 398, PHD2 398, PH D2398 and
 	 * PHD2398
 	 * 
-	 * TODO: limit the number of result given
 	 */
 	@Override
 	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
@@ -783,12 +783,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			if (forbiddenRooms == null) {
 				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
-						+ "ORDER BY rl.doorCode ASC";
+						+ "ORDER BY rl.doorCode ASC LIMIT 0, " + LIMIT_AUTOCOMPLETE;
 			} else {
 				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
 						+ "AND rl.uid NOT IN (" + forbidRoomsSQL + ") "
-						+ "ORDER BY rl.doorCode ASC";
+						+ "ORDER BY rl.doorCode ASC LIMIT 0, " + LIMIT_AUTOCOMPLETE;
 			}
 
 			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
