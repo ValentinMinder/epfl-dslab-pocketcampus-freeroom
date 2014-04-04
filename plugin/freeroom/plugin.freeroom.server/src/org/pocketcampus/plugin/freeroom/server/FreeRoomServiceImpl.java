@@ -38,6 +38,8 @@ import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRCourse;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRReply;
+import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
@@ -1322,4 +1324,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 	// ********** END OF "FETCHING EXCHANGE" PART **********
 
+	@Override
+	public FRReply getOccupancy(FRRequest request) throws TException {
+		return null;
+	}
+
+	
 }
