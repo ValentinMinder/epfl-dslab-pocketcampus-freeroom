@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import junit.framework.Assert;
@@ -30,6 +31,8 @@ import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerE
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRReply;
+import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
@@ -52,7 +55,8 @@ public class TestFreeRoomSearchAndOccupancy {
 	final static String DB_PASSWORD = "root";
 	final static String DBMS_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
 	final static String DB_URL = "jdbc:mysql://localhost/pocketcampustest?allowMultiQueries=true";
-
+	final static String DB_NOTTEST_URL = "jdbc:mysql://localhost/pocketcampus?allowMultiQueries=true";
+	
 	final static long ONE_HOUR_MS = 3600 * 1000;
 	// we allow a margin for error
 	final static long MARGIN_ERROR_MS = 60 * 1000;
@@ -107,15 +111,15 @@ public class TestFreeRoomSearchAndOccupancy {
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		createDBTest();
-		populate();
+		//createDBTest();
+		//populate();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() {
 		// TODO: tests should remove their databases and tables, comment it if
 		// you want to see them in SQL
-		//removeDBTest();
+		// removeDBTest();
 	}
 
 	@Before
@@ -193,7 +197,7 @@ public class TestFreeRoomSearchAndOccupancy {
 
 		// insert the rooms
 		for (FRRoom r : rooms) {
-			String req = "INSERT INTO fr-roomslist(uid, doorCode, type, capacity) VALUES(?, ?, ?, ?)";
+			String req = "INSERT INTO `fr-roomslist`(uid, doorCode, type, capacity) VALUES(?, ?, ?, ?)";
 			PreparedStatement query;
 			try {
 				query = conn.prepareStatement(req);
@@ -245,16 +249,17 @@ public class TestFreeRoomSearchAndOccupancy {
 			// test1
 			roomsList.add(new FRRoom("001", "C0 1"));
 			period = FRTimes.convert(Calendar.MONDAY, 8, 12).getPeriod();
-			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList),
+					period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
 
 			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
 			FRRoom room = mOcc.getRoom();
-			assertTrue(room.getUid()
-					.equals(roomsList.get(0).getUid()));
-			assertTrue(room.getDoorCode().equals(roomsList.get(0).getDoorCode()));
+			assertTrue(room.getUid().equals(roomsList.get(0).getUid()));
+			assertTrue(room.getDoorCode()
+					.equals(roomsList.get(0).getDoorCode()));
 
 			List<ActualOccupation> mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 2);
@@ -298,16 +303,17 @@ public class TestFreeRoomSearchAndOccupancy {
 			// test1
 			roomsList.add(new FRRoom("011", "CM 1"));
 			period = FRTimes.convert(Calendar.MONDAY, 8, 19).getPeriod();
-			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList),
+					period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
 
 			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
 			FRRoom room = mOcc.getRoom();
-			assertTrue(room.getUid()
-					.equals(roomsList.get(0).getUid()));
-			assertTrue(room.getDoorCode().equals(roomsList.get(0).getDoorCode()));
+			assertTrue(room.getUid().equals(roomsList.get(0).getUid()));
+			assertTrue(room.getDoorCode()
+					.equals(roomsList.get(0).getDoorCode()));
 
 			List<ActualOccupation> mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 4);
@@ -370,7 +376,8 @@ public class TestFreeRoomSearchAndOccupancy {
 			roomsList.add(new FRRoom("003", "CO 3"));
 			roomsList.add(new FRRoom("001", "CO 1"));
 			period = FRTimes.convert(Calendar.TUESDAY, 8, 19).getPeriod();
-			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList),
+					period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 3);
@@ -378,9 +385,9 @@ public class TestFreeRoomSearchAndOccupancy {
 			// first room is CM2
 			Occupancy mOcc = reply.getOccupancyOfRooms().get(0);
 			FRRoom room = mOcc.getRoom();
-			assertTrue(room.getUid()
-					.equals(roomsList.get(0).getUid()));
-			assertTrue(room.getDoorCode().equals(roomsList.get(0).getDoorCode()));
+			assertTrue(room.getUid().equals(roomsList.get(0).getUid()));
+			assertTrue(room.getDoorCode()
+					.equals(roomsList.get(0).getDoorCode()));
 
 			List<ActualOccupation> mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 3);
@@ -388,9 +395,9 @@ public class TestFreeRoomSearchAndOccupancy {
 			// second room is CO3
 			mOcc = reply.getOccupancyOfRooms().get(1);
 			room = mOcc.getRoom();
-			assertTrue(room.getUid()
-					.equals(roomsList.get(1).getUid()));
-			assertTrue(room.getDoorCode().equals(roomsList.get(1).getDoorCode()));
+			assertTrue(room.getUid().equals(roomsList.get(1).getUid()));
+			assertTrue(room.getDoorCode()
+					.equals(roomsList.get(1).getDoorCode()));
 
 			mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 3);
@@ -398,9 +405,9 @@ public class TestFreeRoomSearchAndOccupancy {
 			// last room is CO1
 			mOcc = reply.getOccupancyOfRooms().get(2);
 			room = mOcc.getRoom();
-			assertTrue(room.getUid()
-					.equals(roomsList.get(2).getUid()));
-			assertTrue(room.getDoorCode().equals(roomsList.get(2).getDoorCode()));
+			assertTrue(room.getUid().equals(roomsList.get(2).getUid()));
+			assertTrue(room.getDoorCode()
+					.equals(roomsList.get(2).getDoorCode()));
 
 			mAccOcc = mOcc.getOccupancy();
 			assertTrue("size = " + mAccOcc.size(), mAccOcc.size() == 1);
@@ -548,8 +555,8 @@ public class TestFreeRoomSearchAndOccupancy {
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
 			request = FRTimes.convert(Calendar.TUESDAY, 13, 16);
-			FreeRoomRequest request2 = FRTimes.convert(Calendar.TUESDAY, 12,
-					14);
+			FreeRoomRequest request2 = FRTimes
+					.convert(Calendar.TUESDAY, 12, 14);
 
 			request.setPeriod(new FRPeriod(request.getPeriod()
 					.getTimeStampStart(), request2.getPeriod()
@@ -657,7 +664,8 @@ public class TestFreeRoomSearchAndOccupancy {
 			long queryFirstTS = period.getTimeStampStart();
 			long queryLastTS = period.getTimeStampEnd();
 
-			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList),
+					period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
@@ -691,12 +699,13 @@ public class TestFreeRoomSearchAndOccupancy {
 			OccupancyReply reply = null;
 
 			roomsList.add(new FRRoom("CM", "2"));
-			period = FRTimes.convertWithMinPrecision(Calendar.TUESDAY, 10,
-					00, 12, 30).getPeriod();
+			period = FRTimes.convertWithMinPrecision(Calendar.TUESDAY, 10, 00,
+					12, 30).getPeriod();
 			long queryFirstTS = period.getTimeStampStart();
 			long queryLastTS = period.getTimeStampEnd();
 
-			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList),
+					period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
@@ -720,7 +729,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			Assert.fail("There was an Exception thrown");
 		}
 	}
-	
+
 	@Test
 	public void testRequestIsNotModifiedTueday10h14_12h30CM1() {
 		try {
@@ -732,12 +741,13 @@ public class TestFreeRoomSearchAndOccupancy {
 			OccupancyReply reply = null;
 
 			roomsList.add(new FRRoom("CM", "2"));
-			period = FRTimes.convertWithMinPrecision(Calendar.TUESDAY, 10,
-					14, 12, 30).getPeriod();
+			period = FRTimes.convertWithMinPrecision(Calendar.TUESDAY, 10, 14,
+					12, 30).getPeriod();
 			long queryFirstTS = period.getTimeStampStart();
 			long queryLastTS = period.getTimeStampEnd();
 
-			request = new OccupancyRequest(FRStruct.getListUID(roomsList), period);
+			request = new OccupancyRequest(FRStruct.getListUID(roomsList),
+					period);
 			reply = server.checkTheOccupancy(request);
 
 			assertTrue(reply.getOccupancyOfRoomsSize() == 1);
@@ -759,6 +769,36 @@ public class TestFreeRoomSearchAndOccupancy {
 		} catch (TException e) {
 			e.printStackTrace();
 			Assert.fail("There was an Exception thrown");
+		}
+	}
+
+	@Test
+	public void testNewAnyRoomRequest() {
+		try {
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_NOTTEST_URL, DB_USERNAME, DB_PASSWORD));
+
+			FRRequest request = new FRRequest(
+					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.THURSDAY, 11,
+							00, 13, 50), true, null);
+			FRReply reply = server.getOccupancy(request);	
+			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
+			
+			Set<String> buildings = result.keySet();
+			System.out.println(buildings.size() + " buildings");
+			for (String currentBuilding : buildings) {
+				List<Occupancy> occOfBuilding = result.get(currentBuilding);
+				
+				for (Occupancy mOcc : occOfBuilding) {
+					System.out.println(mOcc.getRoom().getDoorCode() + " " + mOcc.getRatioWorstCaseProbableOccupancy());
+				}
+			}
+		} catch (ServerException e) {
+			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

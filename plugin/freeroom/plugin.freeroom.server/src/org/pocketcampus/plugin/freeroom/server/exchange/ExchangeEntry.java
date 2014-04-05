@@ -25,9 +25,9 @@ import microsoft.exchange.webservices.data.WebCredentials;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 
 public class ExchangeEntry {
-	private String gasparUserName = null;
-	private String gasparPassword = null;
-	private String emailAddress = "valentin.minder@epfl.ch";
+	private String gasparUserName = "juweber";
+	private String gasparPassword = "Dbvj5S[dkb*4b";
+	private String emailAddress = "julien.weber@epfl.ch";
 	private String domain = "intranet";
 
 	private static String defaultDomain = "intranet";
@@ -56,8 +56,8 @@ public class ExchangeEntry {
 	 */
 	public ExchangeEntry() {
 		// TODO: get the pass from the server properties.
-		this.gasparUserName = "gaspar";
-		this.gasparPassword = "mdp";
+//		this.gasparUserName = "gaspar";
+//		this.gasparPassword = "mdp";
 		this.domain = ExchangeEntry.defaultDomain;
 		setUp();
 	}

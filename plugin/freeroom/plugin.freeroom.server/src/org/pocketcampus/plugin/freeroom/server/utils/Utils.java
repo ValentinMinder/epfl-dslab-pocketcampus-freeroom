@@ -55,10 +55,10 @@ public class Utils {
 			if (mMatcher.matches()) {
 				return mMatcher.group(0);
 			} else {
-				return null;
+				return mDoorCode;
 			}
 		}
-		return null;
+		return mDoorCode;
 	}
 	
 	public static Map<String, List<FRRoom>> sortRoomsByBuilding(List<FRRoom> rooms) {
