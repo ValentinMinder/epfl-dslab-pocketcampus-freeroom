@@ -42,6 +42,8 @@ import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
+import android.location.GpsStatus.NmeaListener;
+
 /**
  * The actual implementation of the server side of the FreeRoom Plugin.
  * 
@@ -477,15 +479,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	@Override
 	public FRReply getOccupancy(FRRequest request) throws TException {
-		/*
-		 * struct FRRequest { 1: required FRPeriod period; 2: required bool
-		 * onlyFreeRooms; //if null, it means every rooms 3: required
-		 * list<string> uidList; }
-		 * 
-		 * struct FRReply { 1: required i32 status; 2: required string
-		 * statusComment; //map from building to list of occupancies in the
-		 * building 3: optional map<string, list<Occupancy>> occupancyOfRooms; }
-		 */
 
 		FRReply reply = new FRReply(HttpURLConnection.HTTP_CREATED,
 				HttpURLConnection.HTTP_CREATED + "");
@@ -509,7 +502,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					period.getTimeStampStart(), period.getTimeStampEnd());
 		} else {
 			// or the user specified a specific list of rooms he wants to check
-			occupancies = getOccupancyOfSpecificRoom(uidList, onlyFreeRoom);
+			occupancies = getOccupancyOfSpecificRoom(uidList, onlyFreeRoom,
+					period.getTimeStampStart(), period.getTimeStampEnd());
 		}
 
 		reply.setOccupancyOfRooms(occupancies);
@@ -527,7 +521,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					+ " AS timestampEnd "
 					+ "FROM `fr-roomslist` rl "
 					+ "LEFT OUTER JOIN `fr-usersoccupancy` uo "
-					+ "ON uo.uid = rl.uid AND uo.timestampStart >= ? AND uo.timestampEnd >= ? "
+					+ "ON uo.uid = rl.uid AND uo.timestampStart >= ? AND uo.timestampEnd <= ? "
 					+ "WHERE rl.uid NOT IN "
 					+ "(SELECT ro.uid FROM `fr-roomsoccupancy` ro "
 					+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
@@ -551,27 +545,27 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				ResultSet resultQuery = query.executeQuery();
 
 				while (resultQuery.next()) {
-					//extract attributes of record
+					// extract attributes of record
 					long start = resultQuery.getLong("timestampStart");
 					long end = resultQuery.getLong("timestampEnd");
 					String uid = resultQuery.getString("uid");
 					String doorCode = resultQuery.getString("doorCode");
 					int count = resultQuery.getInt("count");
 					int capacity = resultQuery.getInt("capacity");
-					
+
 					// here we have selected only free rooms, thus always true
 					boolean available = true;
 					FRPeriod period = new FRPeriod(start, end, false);
 					FRRoom room = new FRRoom(doorCode, uid);
 
-					//create the only actualoccupation for the room
+					// create the only actualoccupation for the room
 					ActualOccupation accOcc = new ActualOccupation(period,
 							available);
 					accOcc.setProbableOccupation(count);
 					accOcc.setRatioOccupation(capacity > 0 ? (double) count
 							/ capacity : 0);
 
-					//create the occupancy for the room
+					// create the occupancy for the room
 					Occupancy currentOccupancy = new Occupancy();
 					currentOccupancy.setRoom(room);
 
@@ -581,16 +575,16 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					// only one actualoccupancy per room in this mode
 					currentOccupancy.setRatioWorstCaseProbableOccupancy(accOcc
 							.getRatioOccupation());
-					
-					//extract building and insert it in the map
+
+					// extract building and insert it in the map
 					String building = Utils.extractBuilding(doorCode);
 					List<Occupancy> occOfBuilding = result.get(building);
-					
+
 					if (occOfBuilding == null) {
 						occOfBuilding = new ArrayList<Occupancy>();
 						result.put(building, occOfBuilding);
 					}
-					
+
 					occOfBuilding.add(currentOccupancy);
 				}
 
@@ -703,7 +697,73 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	private HashMap<String, List<Occupancy>> getOccupancyOfSpecificRoom(
-			List<String> uidList, boolean onlyFreeRooms) {
+			List<String> uidList, boolean onlyFreeRooms, long tsStart,
+			long tsEnd) {
+
+		if (uidList.isEmpty()) {
+			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd);
+		}
+
+		int numberOfRooms = uidList.size();
+		// formatting for the query
+		String roomsListQueryFormat = "";
+		for (int i = 0; i < numberOfRooms - 1; ++i) {
+			roomsListQueryFormat += "?,";
+		}
+		roomsListQueryFormat += "?";
+		// TODO join should also take into account user occupancy that start or
+		// end after the period but have at least one timestamp in the interval
+		String request = "SELECT ro.timestampStart, ro.timestampEnd, "
+				+ "rl.doorCode, rl.uid, uo.count, rl.capacity, "
+				+ "uo.timestampStart AS userStart, uo.timestampEnd AS userEnd "
+				+ "FROM `fr-roomsoccupancy` ro, `fr-roomslist` rl "
+				+ "LEFT OUTER JOIN `fr-usersoccupancy` uo "
+				+ "ON uo.uid = rl.uid "
+				+ "AND ((uo.timestampEnd <= ? AND uo.timestampEnd >= ? ) "
+				+ "OR (uo.timestampStart <= ? AND uo.timestampStart >= ?)"
+				+ "OR (uo.timestampStart <= ? AND uo.timestampEnd >= ?)) "
+				+ "WHERE rl.uid IN (" + roomsListQueryFormat
+				+ ") AND ro.uid = rl.uid AND "
+				+ "((ro.timestampEnd <= ? AND ro.timestampEnd >= ? ) "
+				+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
+				+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
+				+ "ORDER BY rl.uid ASC";
+
+		Connection connectBDD;
+		try {
+			connectBDD = connMgr.getConnection();
+			PreparedStatement query = connectBDD.prepareStatement(request);
+			query.setLong(1, tsEnd);
+			query.setLong(2, tsStart);
+			query.setLong(3, tsEnd);
+			query.setLong(4, tsStart);
+			query.setLong(5, tsStart);
+			query.setLong(6, tsEnd);
+
+			for (int i = 7; i < numberOfRooms + 7; ++i) {
+				query.setString(i, uidList.get(i - 7));
+			}
+
+			query.setLong(numberOfRooms + 7, tsEnd);
+			query.setLong(numberOfRooms + 8, tsStart);
+			query.setLong(numberOfRooms + 9, tsEnd);
+			query.setLong(numberOfRooms + 10, tsStart);
+			query.setLong(numberOfRooms + 11, tsStart);
+			query.setLong(numberOfRooms + 12, tsEnd);
+
+			ResultSet result = query.executeQuery();
+
+			while (result.next()) {
+				System.out.println(result.getString("doorCode") + " from "
+						+ result.getLong("timestampStart") + " to "
+						+ result.getLong("timestampEnd") + " : user from "
+						+ result.getString("userStart") + " to "
+						+ result.getString("userEnd"));
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

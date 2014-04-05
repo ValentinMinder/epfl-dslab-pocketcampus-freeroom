@@ -791,6 +791,46 @@ public class TestFreeRoomSearchAndOccupancy {
 				
 				for (Occupancy mOcc : occOfBuilding) {
 					System.out.println(mOcc.getRoom().getDoorCode() + " " + mOcc.getRatioWorstCaseProbableOccupancy());
+					System.out.println("is not occupied " + !mOcc.isIsAtLeastOccupiedOnce());
+				}
+			}
+		} catch (ServerException e) {
+			e.printStackTrace();
+			Assert.fail("There was an Exception thrown");
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testNewSpecificRoomRequest() {
+		try {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(2014, 4, 9, 10, 20);
+			System.out.println(calendar.getTimeInMillis());
+			calendar.set(2014, 4, 9, 11, 00);
+			System.out.println(calendar.getTimeInMillis());
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_NOTTEST_URL, DB_USERNAME, DB_PASSWORD));
+
+			ArrayList<String> uidList = new ArrayList<>();
+			uidList.add("12205");
+			uidList.add("12206");
+			FRRequest request = new FRRequest(
+					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY, 10,
+							30, 14, 00), true, uidList);
+			FRReply reply = server.getOccupancy(request);	
+			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
+			
+			Set<String> buildings = result.keySet();
+			System.out.println(buildings.size() + " buildings");
+			for (String currentBuilding : buildings) {
+				List<Occupancy> occOfBuilding = result.get(currentBuilding);
+				
+				for (Occupancy mOcc : occOfBuilding) {
+					System.out.println(mOcc.getRoom().getDoorCode() + " " + mOcc.getRatioWorstCaseProbableOccupancy());
+					System.out.println("is not occupied " + !mOcc.isIsAtLeastOccupiedOnce());
 				}
 			}
 		} catch (ServerException e) {

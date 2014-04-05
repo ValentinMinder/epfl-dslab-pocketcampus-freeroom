@@ -55,3 +55,12 @@ CREATE TABLE IF NOT EXISTS `fr-usersworking` (
 	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE
 ) CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS `fr-occupancy` (
+	`uid` char(255) NOT NULL,
+	`timestampStart` bigint(20) NOT NULL,
+	`timestampEnd` bigint(20) NOT NULL,
+	`type` char(255) NOT NULL,
+	`count` int(11) DEFAULT 0,
+	PRIMARY KEY (`uid`, `timestampStart`),
+	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE	
+) CHARSET=latin1;
