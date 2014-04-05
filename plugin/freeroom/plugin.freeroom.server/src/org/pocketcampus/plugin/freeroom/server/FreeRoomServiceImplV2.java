@@ -276,12 +276,110 @@ public class FreeRoomServiceImplV2 implements FreeRoomService.Iface {
 		return null;
 	}
 
+	/**
+	 * Returns all the rooms that satisfies the hint given in the request.
+	 * 
+	 * The hint may be the start of the door code or the uid.
+	 * 
+	 * TODO: verifies that it works with PH D2 398, PHD2 398, PH D2398 and
+	 * PHD2398
+	 * 
+	 */
 	@Override
 	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
 			throws TException {
-		// TODO Auto-generated method stub
-		return null;
+		AutoCompleteReply reply = new AutoCompleteReply(
+				HttpURLConnection.HTTP_CREATED, ""
+						+ HttpURLConnection.HTTP_CREATED);
+
+		String constraint = request.getConstraint();
+
+		if (constraint.length() < 2) {
+			return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Constraints should be at least 2 characters long.");
+		}
+
+		List<FRRoom> rooms = new ArrayList<FRRoom>();
+		Set<String> forbiddenRooms = request.getForbiddenRoomsUID();
+
+		String forbidRoomsSQL = "";
+		if (forbiddenRooms != null) {
+			for (int i = forbiddenRooms.size(); i > 0; --i) {
+				if (i <= 1) {
+					forbidRoomsSQL += "?";
+				} else {
+					forbidRoomsSQL += "?,";
+				}
+			}
+		}
+		// avoid all whitespaces for requests
+		constraint = constraint.trim();
+		constraint = constraint.replaceAll("\\s+", "");
+
+		try {
+			Connection connectBDD = connMgr.getConnection();
+			String requestSQL = "";
+			if (forbiddenRooms == null) {
+				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
+						+ "ORDER BY rl.doorCode ASC LIMIT 0, "
+						+ LIMIT_AUTOCOMPLETE;
+			} else {
+				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
+						+ "AND rl.uid NOT IN (" + forbidRoomsSQL + ") "
+						+ "ORDER BY rl.doorCode ASC LIMIT 0, "
+						+ LIMIT_AUTOCOMPLETE;
+			}
+
+			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
+			query.setString(1, constraint + "%");
+			query.setString(2, constraint + "%");
+
+			if (forbiddenRooms != null) {
+				int i = 2;
+				for (String roomUID : forbiddenRooms) {
+					query.setString(i, roomUID);
+					++i;
+				}
+			}
+
+			// filling the query with values
+
+			ResultSet resultQuery = query.executeQuery();
+			while (resultQuery.next()) {
+				FRRoom frRoom = new FRRoom(resultQuery.getString("doorCode"),
+						resultQuery.getString("uid"));
+				// String type = resultQuery.getString("type");
+				// if (type != null) {
+				// try {
+				// FRRoomType t = FRRoomType.valueOf(type);
+				// frRoom.setType(t);
+				// } catch (IllegalArgumentException e) {
+				// System.err.println("Type not known " + type);
+				// e.printStackTrace();
+				// }
+				// }
+				int cap = resultQuery.getInt("capacity");
+				if (cap > 0) {
+					frRoom.setCapacity(cap);
+				}
+				rooms.add(frRoom);
+			}
+
+			reply = new AutoCompleteReply(HttpURLConnection.HTTP_OK, ""
+					+ HttpURLConnection.HTTP_OK);
+			reply.setListRoom(Utils.sortRoomsByBuilding(rooms));
+
+		} catch (SQLException e) {
+			reply = new AutoCompleteReply(
+					HttpURLConnection.HTTP_INTERNAL_ERROR, ""
+							+ HttpURLConnection.HTTP_INTERNAL_ERROR);
+			e.printStackTrace();
+		}
+		return reply;
 	}
+
 
 	@Override
 	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
