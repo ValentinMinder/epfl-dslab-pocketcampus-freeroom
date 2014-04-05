@@ -28,6 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImplOld;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -239,7 +240,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testOccupancyMonday8_12CO1() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
 			FRPeriod period = new FRPeriod();
@@ -293,7 +294,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testOccupancyMonday8_19CM1() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
 			FRPeriod period = new FRPeriod();
@@ -364,7 +365,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testOccupancyTuesday8_19CM2CO3CO1() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
 			FRPeriod period = new FRPeriod();
@@ -424,7 +425,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testFreeRoomFriday8_19() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
@@ -447,7 +448,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testFreeRoomMonday9_10() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
@@ -473,7 +474,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testFreeRoomMonday9_12() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
@@ -495,7 +496,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testFreeRoomMonday9_11() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
@@ -523,7 +524,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testFreeRoomTuesday13_16() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
@@ -550,7 +551,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testStartAfterEnd() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
@@ -578,7 +579,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testDayOutsideRange() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
@@ -600,7 +601,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testStartHourOutsideRange() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
@@ -622,7 +623,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testEndHourOutsideRange() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			FreeRoomRequest request = null;
 			FreeRoomReply reply = null;
@@ -651,7 +652,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testRequestIsNotModifiedMonday11h30_13CM1() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
 			FRPeriod period = new FRPeriod();
@@ -691,7 +692,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testRequestIsNotModifiedTueday10_12h30CM2() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
 			FRPeriod period = new FRPeriod();
@@ -733,7 +734,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	@Test
 	public void testRequestIsNotModifiedTueday10h14_12h30CM1() {
 		try {
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD));
 			ArrayList<FRRoom> roomsList = new ArrayList<FRRoom>();
 			FRPeriod period = new FRPeriod();
@@ -811,7 +812,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			System.out.println(calendar.getTimeInMillis());
 			calendar.set(2014, 4, 9, 11, 00);
 			System.out.println(calendar.getTimeInMillis());
-			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
 					new ConnectionManager(DB_NOTTEST_URL, DB_USERNAME, DB_PASSWORD));
 
 			ArrayList<String> uidList = new ArrayList<>();

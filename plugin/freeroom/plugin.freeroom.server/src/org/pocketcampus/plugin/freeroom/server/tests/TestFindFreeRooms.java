@@ -26,7 +26,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImplOld;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
@@ -224,7 +224,7 @@ public class TestFindFreeRooms {
 		FreeRoomReply rep = null;
 
 		try {
-			rep = (new FreeRoomServiceImpl(new ConnectionManager(DB_URL,
+			rep = (new FreeRoomServiceImplOld(new ConnectionManager(DB_URL,
 					DB_USERNAME, DB_PASSWORD))).getFreeRoomFromTime(req);
 			Set<FRRoom> rooms = rep.getRooms();
 			ArrayList<FRRoom> arr = new ArrayList<FRRoom>(rooms);

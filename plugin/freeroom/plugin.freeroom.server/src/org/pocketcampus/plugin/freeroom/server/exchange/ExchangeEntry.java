@@ -26,7 +26,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 
 public class ExchangeEntry {
 	private String gasparUserName = "juweber";
-	private String gasparPassword = "Dbvj5S[dkb*4b";
+	private String gasparPassword = "DjbkeVdk[mf*2b";
 	private String emailAddress = "julien.weber@epfl.ch";
 	private String domain = "intranet";
 

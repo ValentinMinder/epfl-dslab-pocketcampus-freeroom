@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImplOld;
 
 public class ExchangeLoading {
 
@@ -135,7 +135,8 @@ public class ExchangeLoading {
 					.println("invalid name: " + name + " with email:" + email);
 			return false;
 		}
-		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USERNAME, DB_PASSWORD);
+		//TODO check if null is fine here
+		ExchangeServiceImpl exchange = new ExchangeServiceImpl(DB_URL, DB_USERNAME, DB_PASSWORD, null);
 		return exchange.setExchangeData(concatName, email);
 	}
 }

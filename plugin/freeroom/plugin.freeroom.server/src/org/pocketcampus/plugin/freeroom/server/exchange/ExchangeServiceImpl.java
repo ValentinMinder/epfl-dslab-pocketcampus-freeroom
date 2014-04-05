@@ -10,6 +10,8 @@ import java.util.List;
 
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl.OCCUPANCY_TYPE;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
@@ -24,10 +26,12 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 public class ExchangeServiceImpl {
 	
 	private ConnectionManager connMgr = null;
+	private FreeRoomServiceImpl server = null;
 	
-	public ExchangeServiceImpl(String db_url, String username, String passwd) {
+	public ExchangeServiceImpl(String db_url, String username, String passwd, FreeRoomServiceImpl server) {
 		try {
 			connMgr = new ConnectionManager(db_url, username, passwd);
+			this.server = server;
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}
@@ -207,12 +211,14 @@ public class ExchangeServiceImpl {
 					query = conn.prepareStatement(b.toString());
 
 					for (int i = 0, j = 0; i < length; i++, j = 3 * i) {
+						//TODO DELETE
 						FRPeriod mPeriod = occupied.get(i);
 						query.setString(j + 1, uid);
 						query.setLong(j + 2, mPeriod.getTimeStampStart());
 						query.setLong(j + 3, mPeriod.getTimeStampEnd());
+						server.insertOccupancy(mPeriod, OCCUPANCY_TYPE.ROOM, room);
 					}
-					query.execute();
+//					query.execute();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 					return false;
