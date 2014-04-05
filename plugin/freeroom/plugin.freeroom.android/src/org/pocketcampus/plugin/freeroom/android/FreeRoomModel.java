@@ -80,6 +80,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private List<WorkingOccupancy> listWorkingOccupancies = new ArrayList<WorkingOccupancy>();
 
 	private Context context;
+	
+	// NEW INTERFACE as of 2104.04.04.
+	private Map<String, List<Occupancy>> occupancyOfRooms;
 
 	/**
 	 * Constructor with reference to the context.
@@ -564,4 +567,15 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * like this one!
 	 */
 	// ********** END OF FILE **********
+
+	// NEW INTERFACE as of 2104.04.04.
+	public void setOccupancyResults(
+			Map<String, List<Occupancy>> occupancyOfRooms) {
+		this.occupancyOfRooms = occupancyOfRooms;
+		// TODO: warn the listeners!
+	}
+
+	public Map<String, List<Occupancy>> getOccupancyResults() {
+		return this.occupancyOfRooms;
+	}
 }

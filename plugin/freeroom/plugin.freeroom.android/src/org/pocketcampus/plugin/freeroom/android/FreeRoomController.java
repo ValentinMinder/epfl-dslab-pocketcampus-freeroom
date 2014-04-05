@@ -15,6 +15,7 @@ import org.pocketcampus.plugin.freeroom.android.req.GetFreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.android.req.SubmitImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRReply;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
@@ -156,6 +157,11 @@ public class FreeRoomController extends PluginController implements
 		}
 	}
 
+	public void handleReplySuccess(IFreeRoomView caller, int status,
+			String statusComment, String callingClass, String requestClass) {
+		Log.v(callingClass, "Server replied successfully to a " + requestClass + "!");
+	}
+
 	public void handleReplyError(IFreeRoomView caller, int status,
 			String statusComment, String callingClass) {
 		Log.e(callingClass, "the server response was not successful. Message: "
@@ -258,4 +264,8 @@ public class FreeRoomController extends PluginController implements
 		mModel.setListWorkingOccupancies(listWorkingOccupancies);
 	}
 
+	// NEW INTERFACE as of 2104.04.04.
+	public void setOccupancyResults(FRReply result) {
+		mModel.setOccupancyResults(result.getOccupancyOfRooms());
+	}
 }

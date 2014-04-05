@@ -299,4 +299,10 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 			mExpList.expandGroup(0);
 		}
 	}
+
+	@Override
+	public void occupancyResultsUpdated() {
+		// TODO Auto-generated method stub
+		
+	}
 }

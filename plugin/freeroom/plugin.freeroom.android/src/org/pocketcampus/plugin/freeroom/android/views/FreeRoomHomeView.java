@@ -176,4 +176,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	public void occupancyResultUpdated() {
 		// we do nothing here
 	}
+
+	// TODO: NEW INTERFACE as of 2014.04.04
+	@Override
+	public void occupancyResultsUpdated() {
+		// TODO Auto-generated method stub
+		
+	}
 }

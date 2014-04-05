@@ -176,4 +176,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			mExpView.expandGroup(i);
 		}
 	}
+
+	@Override
+	public void occupancyResultsUpdated() {
+		// TODO Auto-generated method stub
+		
+	}
 }

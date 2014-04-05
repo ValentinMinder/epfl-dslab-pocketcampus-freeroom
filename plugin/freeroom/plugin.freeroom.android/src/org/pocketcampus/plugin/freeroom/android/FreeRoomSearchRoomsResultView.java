@@ -128,4 +128,10 @@ public class FreeRoomSearchRoomsResultView extends FreeRoomAbstractView
 		// we do nothing here
 	}
 
+	@Override
+	public void occupancyResultsUpdated() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
