@@ -578,4 +578,27 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public Map<String, List<Occupancy>> getOccupancyResults() {
 		return this.occupancyOfRooms;
 	}
+	public int getColor(Occupancy mOccupancy) {
+		if (mOccupancy == null) {
+			return COLOR_CHECK_OCCUPANCY_DEFAULT;
+		}
+
+		boolean atLeastOneFree = mOccupancy.isIsAtLeastFreeOnce();
+		boolean atLeastOneOccupied = mOccupancy.isIsAtLeastOccupiedOnce();
+
+		if (atLeastOneFree) {
+			if (atLeastOneOccupied) {
+				return COLOR_CHECK_OCCUPANCY_ATLEASTONCE;
+			} else {
+				return COLOR_CHECK_OCCUPANCY_FREE;
+			}
+		} else {
+			if (atLeastOneOccupied) {
+				return COLOR_CHECK_OCCUPANCY_OCCUPIED;
+			} else {
+				// default
+				return COLOR_CHECK_OCCUPANCY_DEFAULT;
+			}
+		}
+	}
 }

@@ -16,6 +16,8 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 /**
+ * //TODO: NOT USED as of 2014.04.04, REPLACED BY ExpandableListViewAdapter
+ * <p>
  * Simple adapter to use with ExpandableListView, all elements are String.
  * 
  * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and

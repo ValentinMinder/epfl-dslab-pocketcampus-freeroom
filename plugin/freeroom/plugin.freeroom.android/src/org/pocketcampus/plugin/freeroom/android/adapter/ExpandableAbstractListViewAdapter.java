@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 
+/**
+ * //TODO: NOT USED as of 2014.04.04, REPLACED BY ExpandableListViewAdapter
+ */
 public abstract class ExpandableAbstractListViewAdapter<T> extends
 		BaseExpandableListAdapter {
 	protected Context context;
