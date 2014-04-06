@@ -116,7 +116,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		final ImageView star = vholder.getImageViewStar();
 		ImageView map = vholder.getImageViewMap();
 
-		map.setImageResource(android.R.drawable.btn_minus);
+		map.setImageResource(R.drawable.map_normal_icon);
 
 		map.setOnClickListener(new OnClickListener() {
 
