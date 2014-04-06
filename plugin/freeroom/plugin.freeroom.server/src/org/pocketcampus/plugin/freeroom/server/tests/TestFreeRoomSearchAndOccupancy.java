@@ -780,8 +780,9 @@ public class TestFreeRoomSearchAndOccupancy {
 					new ConnectionManager(DB_NOTTEST_URL, DB_USERNAME, DB_PASSWORD));
 
 			FRRequest request = new FRRequest(
-					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.THURSDAY, 11,
-							00, 13, 50), true, null);
+					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY, 9,
+							00, 15, 00), true, null);
+			
 			FRReply reply = server.getOccupancy(request);	
 			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
 			
@@ -792,7 +793,17 @@ public class TestFreeRoomSearchAndOccupancy {
 				
 				for (Occupancy mOcc : occOfBuilding) {
 					System.out.println(mOcc.getRoom().getDoorCode() + " " + mOcc.getRatioWorstCaseProbableOccupancy());
-					System.out.println("is not occupied " + !mOcc.isIsAtLeastOccupiedOnce());
+					List<ActualOccupation> accOcc = mOcc.getOccupancy();
+					
+					for (ActualOccupation mAccOcc : accOcc ) {
+						Calendar calendarStart = Calendar.getInstance();
+						calendarStart.setTimeInMillis(mAccOcc.getPeriod().getTimeStampStart());
+						
+						Calendar calendarEnd = Calendar.getInstance();
+						calendarEnd.setTimeInMillis(mAccOcc.getPeriod().getTimeStampEnd());
+						
+						System.out.println("From " + calendarStart.toString() + " to " + calendarEnd.toString());
+					}
 				}
 			}
 		} catch (ServerException e) {
