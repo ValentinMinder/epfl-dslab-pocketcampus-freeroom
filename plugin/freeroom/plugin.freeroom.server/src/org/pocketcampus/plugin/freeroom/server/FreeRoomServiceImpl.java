@@ -562,8 +562,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			// TODO if there is only one room need explicit action
 			while (resultQuery.next()) {
 				// extract attributes of record
-				long start = resultQuery.getLong("timestampStart");
-				long end = resultQuery.getLong("timestampEnd");
+				long start = Math.max(tsStart,
+						resultQuery.getLong("timestampStart"));
+				long end = Math.min(tsEnd, resultQuery.getLong("timestampEnd"));
 				String uid = resultQuery.getString("uid");
 				String doorCode = resultQuery.getString("doorCode");
 				int count = resultQuery.getInt("count");
@@ -788,7 +789,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			// of the period (period has been subdivised in STEPS (if one hour,
 			// there might some minutes left))
 
-			long lastEnd = periodStart + ONE_HOUR_MS* nbHours;
+			long lastEnd = periodStart + ONE_HOUR_MS * nbHours;
 			if (timestampEnd - lastEnd > MARGIN_ERROR_TIMESTAMP) {
 				ActualOccupation mAccOcc = new ActualOccupation(new FRPeriod(
 						lastEnd + 1, timestampEnd, false), true);

@@ -833,7 +833,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			uidList.add("12206");
 			FRRequest request = new FRRequest(
 					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY,
-							10, 45, 14, 15), true, uidList);
+							10, 45, 16, 15), true, uidList);
 			FRReply reply = server.getOccupancy(request);
 			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
 
