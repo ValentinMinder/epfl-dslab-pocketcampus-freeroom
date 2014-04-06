@@ -110,57 +110,47 @@ double WGStoCHy(double lat, double lng) {
     return image;
 }
 
-+ (NSArray*)mapItemAnnotationsThatShouldBeDisplayed:(NSArray*)annotations forQuery:(NSString*)query {
-    if (annotations == nil || ![annotations isKindOfClass:[NSArray class]]) {
-        @throw [NSException exceptionWithName:@"bad argument annotations in mapItemAnnotationsThatShouldBeDisplayed:for:Query:" reason:@"annotations is not kind of class NSAarray" userInfo:nil];
-    }
-    
-    if (query == nil || ![query isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad argument query in mapItemAnnotationsThatShouldBeDisplayed:for:Query:" reason:@"query is not kind of class NSString" userInfo:nil];
-    }
++ (NSArray*)mapItemsThatShouldBeDisplayed:(NSArray*)allMapItems forQuery:(NSString*)query {
+    [PCUtils throwExceptionIfObject:allMapItems notKindOfClass:[NSArray class]];
+    [PCUtils throwExceptionIfObject:query notKindOfClass:[NSString class]];
     
     NSString* lowerQuery = [query lowercaseString];
     NSString* lowerQueryWithoutSpace = [lowerQuery stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    NSMutableArray* retAnnotations = [NSMutableArray array];
+    NSMutableArray* mapItemsToDisplay = [NSMutableArray array];
     
     NSError* error = NULL;
     
-    for (id<MKAnnotation> annotation in annotations) {
-        if ([annotation isKindOfClass:[MapItemAnnotation class]]) {
-            MapItemAnnotation* mapItemAnnotation = (MapItemAnnotation*)annotation;
-            if(mapItemAnnotation.title == nil) {
-                continue;
-            }
-            NSString* lowerTitle = [mapItemAnnotation.title lowercaseString];
-            NSString* lowerTitleWithoutSpace = [lowerTitle stringByReplacingOccurrencesOfString:@" " withString:@""];
-            
-            //NSLog(@"lower title : %@, lowerTitleWithoutSpace : %@", lowerTitle, lowerQueryWithoutSpace);
-            
-            NSRange titleRange = NSMakeRange(0, [lowerTitle length]);
-            
-            if ([lowerTitle isEqualToString:lowerQuery] || [lowerTitleWithoutSpace isEqualToString:lowerQueryWithoutSpace]) {
-                [retAnnotations addObject:mapItemAnnotation];
-                return retAnnotations;
-            }
-            
-            { //separation block
-                NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"^Auditoire %@$", lowerQuery] options:NSRegularExpressionCaseInsensitive error:&error];
-                NSRegularExpression* regexWithoutSpace = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"^Auditoire %@$", lowerQueryWithoutSpace] options:NSRegularExpressionCaseInsensitive error:&error];
-                if ([regex numberOfMatchesInString:lowerTitle options:0 range:titleRange] > 0 || [regexWithoutSpace numberOfMatchesInString:lowerTitle options:0 range:titleRange] > 0) {
-                    [retAnnotations addObject:mapItemAnnotation];
-                    return retAnnotations;
-                }
-            }
-            
+    for (MapItem* mapItem in allMapItems) {
+        if (![mapItem isKindOfClass:[MapItem class]]) {
+            continue;
         }
+        NSString* lowerTitle = [mapItem.title lowercaseString];
+        NSString* lowerTitleWithoutSpace = [lowerTitle stringByReplacingOccurrencesOfString:@" " withString:@""];
+        
+        //NSLog(@"lower title : %@, lowerTitleWithoutSpace : %@", lowerTitle, lowerQueryWithoutSpace);
+        
+        NSRange titleRange = NSMakeRange(0, [lowerTitle length]);
+        
+        if ([lowerTitle isEqualToString:lowerQuery] || [lowerTitleWithoutSpace isEqualToString:lowerQueryWithoutSpace]) {
+            [mapItemsToDisplay addObject:mapItem];
+            return mapItemsToDisplay;
+        }
+        
+        { //separation block
+            NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"^Auditoire %@$", lowerQuery] options:NSRegularExpressionCaseInsensitive error:&error];
+            NSRegularExpression* regexWithoutSpace = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"^Auditoire %@$", lowerQueryWithoutSpace] options:NSRegularExpressionCaseInsensitive error:&error];
+            if ([regex numberOfMatchesInString:lowerTitle options:0 range:titleRange] > 0 || [regexWithoutSpace numberOfMatchesInString:lowerTitle options:0 range:titleRange] > 0) {
+                [mapItemsToDisplay addObject:mapItem];
+                return mapItemsToDisplay;
+            }
+        }
+        
     }
     
-    //TODO rest
+    mapItemsToDisplay = [allMapItems mutableCopy];
     
-    retAnnotations = [annotations mutableCopy];
-    
-    return retAnnotations;
+    return mapItemsToDisplay;
 }
 
 + (id<MKAnnotation>)annotationThatShouldBeSelectedOnMapView:(MKMapView*)mapView forQuery:(NSString*)query {

@@ -868,7 +868,9 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     self.mapItemsAllResults = results;
     
-    NSArray* mapItemAnnotations = [MapUtils mapItemAnnotationsThatShouldBeDisplayed:[self mapItemAnnotationsForMapItems:results] forQuery:query];
+    NSArray* mapItemsToDisplay = [MapUtils mapItemsThatShouldBeDisplayed:results forQuery:query];
+    
+    NSArray* mapItemAnnotations = [self mapItemAnnotationsForMapItems:mapItemsToDisplay];
     
     [self setSearchState:SearchStateResults animated:YES];
     

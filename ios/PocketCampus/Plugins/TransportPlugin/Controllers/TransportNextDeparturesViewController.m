@@ -159,7 +159,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     self.stationsListButton.accessibilityLabel = NSLocalizedStringFromTable(@"ManageMyStations", @"TransportPlugin", nil);
     self.stationsListButton.accessibilityHint = NSLocalizedStringFromTable(@"ShowsScreenThatListsMyStationsToManageThem", @"TransportPlugin", nil);
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTransportStationsModified) name:kTransportUserTransportStationsModifiedNotification object:self.transportService];
     [self.transportService addObserver:self forKeyPath:NSStringFromSelector(@selector(userManualDepartureStation)) options:0 context:nil];
 }
@@ -193,6 +193,12 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:NSStringFromSelector(@selector(userManualDepartureStation))] && object == self.transportService) {
         self.lastRefreshTimestamp = nil; //then next call to refreshIsNeeded will pass
+    }
+}
+
+- (void)appDidBecomeActive {
+    if (self.navigationController.topViewController == self) {
+        [self refreshIfNeeded];
     }
 }
 
