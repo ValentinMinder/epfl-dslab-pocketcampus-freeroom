@@ -14,6 +14,8 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
+import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
@@ -57,20 +59,33 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	IFreeRoomView mListeners = (IFreeRoomView) getListeners();
 
-	/** List of <code>FRRoom</code>'s obtained from the freeroom query **/
+	/** 
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * <p>
+	 * List of <code>FRRoom</code>'s obtained from the freeroom query **/
 	private Set<FRRoom> mFreeRoomResult = new HashSet<FRRoom>();
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 */
 	private TreeMap<String, List<FRRoom>> sortedRooms = new TreeMap<String, List<FRRoom>>();
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 */
 	private ArrayList<String> buildings = new ArrayList<String>();
 	/** List of suggestions for the check occupancy search view */
 	private List<FRRoom> mAutoCompleteSuggestions = new ArrayList<FRRoom>();
 
 	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * <p>
 	 * Ordered list of <code>Occupancy</code>'s displayed in the check occupancy
 	 */
 	private List<Occupancy> mListCheckedOccupancyRoom = new ArrayList<Occupancy>();
-
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 */
 	private LinkedHashSet<FRRoom> mLinkedHashSetCheckedRoom = new LinkedHashSet<FRRoom>();
-
+	
 	private Set<ImWorkingRequest> allImWorkingRequests = new HashSet<ImWorkingRequest>();
 
 	/**
@@ -80,9 +95,9 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private List<WorkingOccupancy> listWorkingOccupancies = new ArrayList<WorkingOccupancy>();
 
 	private Context context;
-	
+
 	// NEW INTERFACE as of 2104.04.04.
-	private Map<String, List<Occupancy>> occupancyOfRooms;
+	private OrderMapList<String, List<?>, Occupancy> occupancyByBuilding;
 
 	/**
 	 * Constructor with reference to the context.
@@ -94,6 +109,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 *            is the Application Context.
 	 */
 	public FreeRoomModel(Context context) {
+		occupancyByBuilding = new OrderMapListFew<String, List<?>, Occupancy>(
+				30);
 		this.context = context;
 	}
 
@@ -113,6 +130,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * <p>
 	 * Getter for the results of the request
 	 * 
 	 * @return Set of FRRoom
@@ -121,14 +140,28 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return mFreeRoomResult;
 	}
 
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * @return
+	 */
 	public TreeMap<String, List<FRRoom>> getFreeRoomResultsFilteredByBuildings() {
 		return sortedRooms;
 	}
 
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * @return
+	 */
 	public List<String> getFreeRoomResultsBuildings() {
 		return buildings;
 	}
 
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * @param group
+	 * @param child
+	 * @return
+	 */
 	public FRRoom getFreeRoomResult(int group, int child) {
 		if (group < 0 || group >= buildings.size()) {
 			return null;
@@ -142,6 +175,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * <p>
 	 * Setter for the results of a freeroom request
 	 * 
 	 * @param results
@@ -173,6 +208,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * <p>
 	 * Sets the occupancy result for all the rooms and notifies the listeners.
 	 * 
 	 * @param list
@@ -183,6 +220,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * <p>
 	 * Gets the list of room checked against occupancy.
 	 * 
 	 * @return
@@ -191,11 +230,20 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return mListCheckedOccupancyRoom;
 	}
 
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * @param mLinkedHashSet
+	 */
 	public void setOccupancyResultsLinkedHashSetFRRoom(
 			LinkedHashSet<FRRoom> mLinkedHashSet) {
 		mLinkedHashSetCheckedRoom = mLinkedHashSet;
 	}
 
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * @param mGroupPosition
+	 * @return
+	 */
 	private Occupancy getOccupancy(int mGroupPosition) {
 		if (mListCheckedOccupancyRoom != null
 				&& mGroupPosition < mListCheckedOccupancyRoom.size()) {
@@ -205,6 +253,12 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return null;
 	}
 
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * @param mGroupPosition
+	 * @param mChildPosition
+	 * @return
+	 */
 	private ActualOccupation getActualOccupation(int mGroupPosition,
 			int mChildPosition) {
 
@@ -223,6 +277,12 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return null;
 	}
 
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * @param mGroupPosition
+	 * @param mChildPosition
+	 * @return
+	 */
 	public int getColorOfCheckOccupancyRoom(int mGroupPosition,
 			int mChildPosition) {
 		ActualOccupation mActualOccupation = getActualOccupation(
@@ -238,6 +298,12 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return COLOR_CHECK_OCCUPANCY_DEFAULT;
 	}
 
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * @param mGroupPosition
+	 * @param mChildPosition
+	 * @return
+	 */
 	public boolean isCheckOccupancyLineClickable(int mGroupPosition,
 			int mChildPosition) {
 		ActualOccupation mActualOccupation = getActualOccupation(
@@ -254,6 +320,11 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return false;
 	}
 
+	/**
+	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * @param mGroupPosition
+	 * @return
+	 */
 	public int getColorOfCheckOccupancyRoom(int mGroupPosition) {
 		Occupancy mOccupancy = getOccupancy(mGroupPosition);
 
@@ -497,6 +568,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * TODO: deprecated
+	 * <p>
 	 * Returns the building part in mDoorCode.
 	 * 
 	 * Door codes should be like PH D2 398 with PH the building D2 the zone 398
@@ -560,6 +633,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		}
 		return sortedResult;
 	}
+
 	// ********** END OF "FAVORITES" PART **********
 	/*
 	 * methods are ordered by functionality in model !! PLEASE insert your new
@@ -568,16 +642,74 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	// ********** END OF FILE **********
 
-	// NEW INTERFACE as of 2104.04.04.
+	/**
+	 * TODO: NEW INTERFACE as of 2014.04.04.
+	 * <p>
+	 * Update the occupancy results in the model. The reference to the old data
+	 * is kept, only the old data are trashed but the reference is kept.
+	 * 
+	 * @param occupancyOfRooms
+	 */
 	public void setOccupancyResults(
 			Map<String, List<Occupancy>> occupancyOfRooms) {
-		this.occupancyOfRooms = occupancyOfRooms;
-		// TODO: warn the listeners!
+		occupancyByBuilding.clear();
+		Set<String> keySet = occupancyOfRooms.keySet();
+		List<String> buildings = getOrderedBuildings();
+		for (String building : buildings) {
+			List<Occupancy> list = occupancyOfRooms.get(building);
+			if (list != null) {
+				keySet.remove(building);
+				occupancyByBuilding.put(building, list);
+			}
+		}
+
+		for (String key : keySet) {
+			occupancyByBuilding.put(key, occupancyOfRooms.get(key));
+		}
+		mListeners.occupancyResultsUpdated();
 	}
 
-	public Map<String, List<Occupancy>> getOccupancyResults() {
-		return this.occupancyOfRooms;
+	/**
+	 * TODO: NEW INTERFACE as of 2014.04.04.
+	 * <p>
+	 * Get the occupancy results. Note that the reference never changes, so you
+	 * simply need to update your adapter, never put the date again in it.
+	 * 
+	 * @return
+	 */
+	public OrderMapList<String, List<?>, Occupancy> getOccupancyResults() {
+		return this.occupancyByBuilding;
 	}
+
+	/**
+	 * TODO: NEW INTERFACE as of 2014.04.04.
+	 * <p>
+	 * TODO: this is not kept permanently!
+	 * <p>
+	 * Order of the buildings for displaying to the user.
+	 */
+	private List<String> orderedBuildings = new ArrayList<String>();
+
+	/**
+	 * TODO: NEW INTERFACE as of 2014.04.04.
+	 * <p>
+	 * Get the orderedBuilding list to display
+	 * 
+	 * @return the list of ordered buildings.
+	 */
+	public List<String> getOrderedBuildings() {
+		// TODO: this is not stored so far!
+		return orderedBuildings;
+	}
+
+	/**
+	 * TODO: NEW INTERFACE as of 2014.04.04.
+	 * <p>
+	 * Get the appropriate color according to the occupancy.
+	 * 
+	 * @param mOccupancy
+	 * @return
+	 */
 	public int getColor(Occupancy mOccupancy) {
 		if (mOccupancy == null) {
 			return COLOR_CHECK_OCCUPANCY_DEFAULT;
@@ -599,6 +731,18 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				// default
 				return COLOR_CHECK_OCCUPANCY_DEFAULT;
 			}
+		}
+	}
+
+	/**
+	 * TODO: NEW INTERFACE as of 2014.04.04.
+	 * <p>
+	 * Switch between displaying all the rooms or not.
+	 */
+	public void switchAvailable() {
+		if (occupancyByBuilding instanceof OrderMapListFew<?, ?, ?>) {
+			((OrderMapListFew<?, ?, ?>) occupancyByBuilding)
+					.setAvailableAllSwitch();
 		}
 	}
 }

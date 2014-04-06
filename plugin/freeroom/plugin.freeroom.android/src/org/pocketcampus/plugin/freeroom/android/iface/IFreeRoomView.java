@@ -15,15 +15,21 @@ import org.pocketcampus.android.platform.sdk.core.IView;
  *         Valentin MINDER <valentin.minder@epfl.ch>
  */
 public interface IFreeRoomView extends IView {
-	// TODO: delete after NEW INTERFACE of 2014.04.04 is okay
+	/**
+	 *  TODO: delete after NEW INTERFACE of 2014.04.04 is okay
+	 */
 	void freeRoomResultsUpdated();
 
 	void autoCompletedUpdated();
 
-	// TODO: delete after NEW INTERFACE of 2014.04.04 is okay
+	/**
+	 *  TODO: delete after NEW INTERFACE of 2014.04.04 is okay
+	 */
 	void occupancyResultUpdated();
 
-	// TODO: NEW INTERFACE as of 2014.04.04
+	/**
+	 *  TODO: NEW INTERFACE as of 2014.04.04
+	 */
 	void occupancyResultsUpdated();
 
 	void initializeView();
