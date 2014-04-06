@@ -2,26 +2,17 @@ package org.pocketcampus.plugin.freeroom.android.views;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomAbstractView;
-import org.pocketcampus.plugin.freeroom.android.FreeRoomCheckOccupancySearchView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomManageFavoritesView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsResultView;
-import org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsView;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
-import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
-import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
@@ -32,16 +23,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
- * // TODO: NEW INTERFACE as of 2014.04.04
- * TODO THIS MUST BE THE NEW HOME, WHICH IS CURRENTLY UNDER MAINTENANCE FOR
- * REWRITTING COMPLETELY
+ * // TODO: NEW INTERFACE as of 2014.04.04 TODO THIS MUST BE THE NEW HOME, WHICH
+ * IS CURRENTLY UNDER MAINTENANCE FOR REWRITTING COMPLETELY
  * 
  * MainView is the entry of the plugin, displaying the possible menus/features
  * available.
@@ -63,10 +51,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private ExpandableListViewAdapter mExpList;
 
+	/**
+	 * Request currently displayed.
+	 */
+	private OccupancyRequest request;
+
 	private Action search = new Action() {
 		public void performAction(View view) {
 			// TODO: this is the future search
-			Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "search",
+					Toast.LENGTH_SHORT).show();
 		}
 
 		public int getDrawable() {
@@ -77,7 +71,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private Action editFavorites = new Action() {
 		public void performAction(View view) {
 			// TODO: new favorites edition
-			Toast.makeText(getApplicationContext(), "favorites", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "favorites",
+					Toast.LENGTH_SHORT).show();
 			Intent i = new Intent(FreeRoomHomeView.this,
 					FreeRoomManageFavoritesView.class);
 			FreeRoomHomeView.this.startActivity(i);
@@ -87,7 +82,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			return R.drawable.pencil2x187;
 		}
 	};
-	
+
 	private Action gotBackMenu = new Action() {
 		public void performAction(View view) {
 			Calendar calendar = Calendar.getInstance();
@@ -102,6 +97,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					FreeRoomSearchRoomsResultView.class);
 			FreeRoomHomeView.this.startActivity(i);
 		}
+
 		public int getDrawable() {
 			return R.drawable.wheelchair48;
 		}
@@ -116,7 +112,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			return R.drawable.refresh2x01;
 		}
 	};
-	
+
 	private Action hideUnhideAllResults = new Action() {
 		public void performAction(View view) {
 			hideUnHideAllResults();
@@ -153,7 +149,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mExpView = new ExpandableListView(getApplicationContext());
 		mLayout.addView(mExpView);
 		initializeView();
-		
+
+		init();
 		refresh();
 	}
 
@@ -175,7 +172,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void initializeView() {
-		mExpList = new ExpandableListViewAdapter<Occupancy>(getApplicationContext(), mModel.getOccupancyResults(), mModel);
+		mExpList = new ExpandableListViewAdapter<Occupancy>(
+				getApplicationContext(), mModel.getOccupancyResults(), mModel);
 		mExpView.setAdapter(mExpList);
 		addActionToActionBar(hideUnhideAllResults);
 		addActionToActionBar(refresh);
@@ -185,14 +183,29 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Refreshes the occupancy for the current next valid period.
+	 * Inits the request to the current next valid period.
 	 */
-	private void refresh() {
+	private void init() {
 		ArrayList<String> array = new ArrayList<String>();
 		array.addAll(mModel.getAllRoomMapFavorites().keySet());
-		OccupancyRequest reqe = new OccupancyRequest(array,
-				FRTimes.getNextValidPeriod());
-		mController.prepareCheckOccupancy(reqe);
+		request = new OccupancyRequest(array, FRTimes.getNextValidPeriod());
+	}
+
+	/**
+	 * Set the stored query to a new value.
+	 * 
+	 * @param request
+	 *            the new request
+	 */
+	public void setRequest(OccupancyRequest request) {
+		this.request = request;
+	}
+
+	/**
+	 * Send the set request to the controller.
+	 */
+	private void refresh() {
+		mController.prepareCheckOccupancy(request);
 		mController.checkOccupancy(this);
 	}
 
@@ -211,7 +224,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// we do nothing here
 		occupancyResultsUpdated();
 	}
-	
+
 	private void hideUnHideAllResults() {
 		mModel.switchAvailable();
 		mExpList.notifyDataSetChanged();
