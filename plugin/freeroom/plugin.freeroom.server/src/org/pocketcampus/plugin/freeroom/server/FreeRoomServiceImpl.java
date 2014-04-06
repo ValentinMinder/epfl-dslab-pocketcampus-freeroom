@@ -672,7 +672,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					.prepareStatement(infoRequest);
 
 			for (i = 1; i <= uidList.size(); ++i) {
-				infoQuery.setString(i, uidList.get(i-1));
+				infoQuery.setString(i, uidList.get(i - 1));
 			}
 
 			ResultSet infoRoom = infoQuery.executeQuery();
@@ -681,7 +681,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				String uid = infoRoom.getString("uid");
 				String doorCode = infoRoom.getString("doorCode");
 				int capacity = infoRoom.getInt("capacity");
-				
+
 				actualRoom = new FRRoom(doorCode, uid);
 				actualRoom.setCapacity(capacity);
 				Occupancy currentOccupancy = fillGapsInOccupancy(tsStart,
@@ -784,6 +784,19 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 
 			alreadyFilled.addAll(subDivised);
+			// check if there is no time between the last occupancy and the end
+			// of the period (period has been subdivised in STEPS (if one hour,
+			// there might some minutes left))
+
+			long lastEnd = periodStart + ONE_HOUR_MS* nbHours;
+			if (timestampEnd - lastEnd > MARGIN_ERROR_TIMESTAMP) {
+				ActualOccupation mAccOcc = new ActualOccupation(new FRPeriod(
+						lastEnd + 1, timestampEnd, false), true);
+				mAccOcc.setProbableOccupation(0);
+				mAccOcc.setRatioOccupation(0.0);
+				alreadyFilled.add(mAccOcc);
+			}
+
 			mOccupancy.setOccupancy(alreadyFilled);
 			isAtLeastFreeOnce = true;
 		}
