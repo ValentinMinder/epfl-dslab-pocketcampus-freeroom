@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -28,8 +29,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImplOld;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImplOld;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRReply;
@@ -57,7 +58,7 @@ public class TestFreeRoomSearchAndOccupancy {
 	final static String DBMS_URL = "jdbc:mysql://localhost/?allowMultiQueries=true";
 	final static String DB_URL = "jdbc:mysql://localhost/pocketcampustest?allowMultiQueries=true";
 	final static String DB_NOTTEST_URL = "jdbc:mysql://localhost/pocketcampus?allowMultiQueries=true";
-	
+
 	final static long ONE_HOUR_MS = 3600 * 1000;
 	// we allow a margin for error
 	final static long MARGIN_ERROR_MS = 60 * 1000;
@@ -112,8 +113,8 @@ public class TestFreeRoomSearchAndOccupancy {
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		//createDBTest();
-		//populate();
+		// createDBTest();
+		// populate();
 	}
 
 	@AfterClass
@@ -777,32 +778,37 @@ public class TestFreeRoomSearchAndOccupancy {
 	public void testNewAnyRoomRequest() {
 		try {
 			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
-					new ConnectionManager(DB_NOTTEST_URL, DB_USERNAME, DB_PASSWORD));
+					new ConnectionManager(DB_NOTTEST_URL, DB_USERNAME,
+							DB_PASSWORD));
 
 			FRRequest request = new FRRequest(
-					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY, 9,
-							00, 15, 00), true, null);
-			
-			FRReply reply = server.getOccupancy(request);	
+					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY,
+							9, 00, 15, 00), true, null);
+
+			FRReply reply = server.getOccupancy(request);
 			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
-			
+
 			Set<String> buildings = result.keySet();
 			System.out.println(buildings.size() + " buildings");
 			for (String currentBuilding : buildings) {
 				List<Occupancy> occOfBuilding = result.get(currentBuilding);
-				
+
 				for (Occupancy mOcc : occOfBuilding) {
-					System.out.println(mOcc.getRoom().getDoorCode() + " " + mOcc.getRatioWorstCaseProbableOccupancy());
+					System.out.println(mOcc.getRoom().getDoorCode() + " "
+							+ mOcc.getRatioWorstCaseProbableOccupancy());
 					List<ActualOccupation> accOcc = mOcc.getOccupancy();
-					
-					for (ActualOccupation mAccOcc : accOcc ) {
+
+					for (ActualOccupation mAccOcc : accOcc) {
 						Calendar calendarStart = Calendar.getInstance();
-						calendarStart.setTimeInMillis(mAccOcc.getPeriod().getTimeStampStart());
-						
+						calendarStart.setTimeInMillis(mAccOcc.getPeriod()
+								.getTimeStampStart());
+
 						Calendar calendarEnd = Calendar.getInstance();
-						calendarEnd.setTimeInMillis(mAccOcc.getPeriod().getTimeStampEnd());
-						
-						System.out.println("From " + calendarStart.toString() + " to " + calendarEnd.toString());
+						calendarEnd.setTimeInMillis(mAccOcc.getPeriod()
+								.getTimeStampEnd());
+
+						System.out.println("From " + calendarStart.toString()
+								+ " to " + calendarEnd.toString());
 					}
 				}
 			}
@@ -814,35 +820,51 @@ public class TestFreeRoomSearchAndOccupancy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testNewSpecificRoomRequest() {
 		try {
-			Calendar calendar = Calendar.getInstance();
-			calendar.set(2014, 4, 9, 10, 20);
-			System.out.println(calendar.getTimeInMillis());
-			calendar.set(2014, 4, 9, 11, 00);
-			System.out.println(calendar.getTimeInMillis());
-			FreeRoomServiceImplOld server = new FreeRoomServiceImplOld(
-					new ConnectionManager(DB_NOTTEST_URL, DB_USERNAME, DB_PASSWORD));
+			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
+					new ConnectionManager(DB_NOTTEST_URL, DB_USERNAME,
+							DB_PASSWORD));
 
 			ArrayList<String> uidList = new ArrayList<>();
 			uidList.add("12205");
 			uidList.add("12206");
 			FRRequest request = new FRRequest(
-					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY, 10,
-							30, 14, 00), true, uidList);
-			FRReply reply = server.getOccupancy(request);	
+					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY,
+							10, 30, 14, 00), true, uidList);
+			FRReply reply = server.getOccupancy(request);
 			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
-			
+
 			Set<String> buildings = result.keySet();
 			System.out.println(buildings.size() + " buildings");
+
+			SimpleDateFormat day_month = new SimpleDateFormat(
+					"EEEE MMMM dd / HH:mm");
 			for (String currentBuilding : buildings) {
 				List<Occupancy> occOfBuilding = result.get(currentBuilding);
-				
+
 				for (Occupancy mOcc : occOfBuilding) {
-					System.out.println(mOcc.getRoom().getDoorCode() + " " + mOcc.getRatioWorstCaseProbableOccupancy());
-					System.out.println("is not occupied " + !mOcc.isIsAtLeastOccupiedOnce());
+					System.out.println(mOcc.getRoom().getDoorCode() + " "
+							+ mOcc.getRatioWorstCaseProbableOccupancy());
+					List<ActualOccupation> accOcc = mOcc.getOccupancy();
+
+					for (ActualOccupation mAccOcc : accOcc) {
+						Calendar calendarStart = Calendar.getInstance();
+						calendarStart.setTimeInMillis(mAccOcc.getPeriod()
+								.getTimeStampStart());
+
+						Calendar calendarEnd = Calendar.getInstance();
+						calendarEnd.setTimeInMillis(mAccOcc.getPeriod()
+								.getTimeStampEnd());
+
+						System.out.println("From "
+								+ day_month.format(calendarStart.getTime())
+								+ " to "
+								+ day_month.format(calendarEnd.getTime())
+								+ " available : " + mAccOcc.isAvailable());
+					}
 				}
 			}
 		} catch (ServerException e) {
