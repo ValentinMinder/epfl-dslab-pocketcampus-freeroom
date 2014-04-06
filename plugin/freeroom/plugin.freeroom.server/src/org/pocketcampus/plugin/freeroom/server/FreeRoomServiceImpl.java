@@ -506,7 +506,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private HashMap<String, List<Occupancy>> getOccupancyOfSpecificRoom(
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
 			long tsEnd) {
-
+		// TODO only Free Rooms
 		if (uidList.isEmpty()) {
 			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd);
 		}
@@ -523,11 +523,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		Connection connectBDD;
 		try {
 			connectBDD = connMgr.getConnection();
-
+			// TODO check for left outer join
 			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, "
 					+ "uo.count, uo.timestampStart, uo.timestampEnd, uo.type "
-					+ "FROM `fr-occupancy` uo, `fr-roomslist` rl "
-					+ "WHERE rl.uid = uo.uid " + "AND uo.uid IN("
+					+ "FROM `fr-roomslist` rl, `fr-occupancy` uo "
+					+ "WHERE rl.uid = uo.uid AND rl.uid IN("
 					+ roomsListQueryFormat + ") "
 					+ "AND ((uo.timestampEnd <= ? AND uo.timestampEnd >= ? ) "
 					+ "OR (uo.timestampStart <= ? AND uo.timestampStart >= ?)"
@@ -550,8 +550,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			ResultSet resultQuery = query.executeQuery();
 
 			// similarly as for getOccupancyOfAnyFreeRoom we do it room by room
-			// (query beeing sorted)
-			String currentRoom = null;
+			// (query beeing sorted by room's uid and then by timestampStart)
+			String currentUID = null;
 			String currentDoorCode = null;
 			double worstRatio = 0.0;
 			List<ActualOccupation> actualOcc = null;
@@ -572,26 +572,30 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				double ratio = capacity > 0 ? (double) count / capacity : 0.0;
 				boolean available = false;
 
-				if (OCCUPANCY_TYPE.valueOf(type) == OCCUPANCY_TYPE.USER) {
+				if (type != null
+						&& OCCUPANCY_TYPE.valueOf(type) == OCCUPANCY_TYPE.USER) {
 					available = true;
 				}
 
 				FRPeriod period = new FRPeriod(start, end, false);
 
 				// if this is the first iteration
-				if (currentRoom == null) {
+				if (currentUID == null) {
 					actualRoom = new FRRoom(doorCode, uid);
 					actualRoom.setCapacity(capacity);
-					currentRoom = uid;
+
+					currentUID = uid;
 					currentDoorCode = doorCode;
 					actualOcc = new ArrayList<ActualOccupation>();
 				}
 
+				System.out.println("handling " + currentUID);
 				// we move on to the next room thus re-initialize attributes
 				// for the loop, as well as storing the previous room in the
 				// result hashmap
-				if (!uid.equals(currentRoom)) {
-					uidList.remove(currentRoom);
+				if (!uid.equals(currentUID)) {
+					uidList.remove(currentUID);
+
 					Occupancy currentOccupancy = fillGapsInOccupancy(
 							startPeriod, endPeriod, actualOcc, actualRoom,
 							worstRatio);
@@ -609,11 +613,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					// re-initialize the value, and continue the process for
 					// other rooms
 					currentDoorCode = doorCode;
-					currentRoom = uid;
+					currentUID = uid;
 					startPeriod = start;
-					actualRoom = new FRRoom(currentDoorCode, currentRoom);
+					actualRoom = new FRRoom(currentDoorCode, currentUID);
 					actualRoom.setCapacity(capacity);
 					actualOcc = new ArrayList<ActualOccupation>();
+					worstRatio = 0.0;
 				}
 
 				endPeriod = end;
@@ -628,9 +633,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				actualOcc.add(mActOcc);
 			}
 
+			// TODO check if remove of uidList actually works (also in the big
+			// query above)
 			if (!actualOcc.isEmpty()) {
-				// there was only one room that has been matched in the query
-				uidList.remove(currentRoom);
+				// the last room need to be added to the result hashmap
+				// it is important to remove them once a room has been handled
+				// due to the last part of the method (see below)
+				uidList.remove(currentUID);
 				Occupancy currentOccupancy = fillGapsInOccupancy(startPeriod,
 						endPeriod, actualOcc, actualRoom, worstRatio);
 
@@ -648,17 +657,39 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			// TODO refactor method to add in hashmap if not already present ..
 			// for all the others rooms that hasn't been matched in the query,
 			// we need to add them too
-			for (String uid : uidList) {
-				// TODO get info (doorCode, capacity..) of the rooms not matched
-				// before
-				actualRoom = new FRRoom("BC X", uid);
-				actualRoom.setCapacity(0);
+
+			roomsListQueryFormat = "";
+			for (i = 0; i < uidList.size() - 1; ++i) {
+				roomsListQueryFormat += "?,";
+			}
+
+			roomsListQueryFormat += "?";
+			String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity "
+					+ "FROM `fr-roomslist` rl " + "WHERE rl.uid IN("
+					+ roomsListQueryFormat + ")";
+
+			PreparedStatement infoQuery = connectBDD
+					.prepareStatement(infoRequest);
+
+			for (i = 1; i <= uidList.size(); ++i) {
+				infoQuery.setString(i, uidList.get(i-1));
+			}
+
+			ResultSet infoRoom = infoQuery.executeQuery();
+
+			while (infoRoom.next()) {
+				String uid = infoRoom.getString("uid");
+				String doorCode = infoRoom.getString("doorCode");
+				int capacity = infoRoom.getInt("capacity");
+				
+				actualRoom = new FRRoom(doorCode, uid);
+				actualRoom.setCapacity(capacity);
 				Occupancy currentOccupancy = fillGapsInOccupancy(tsStart,
 						tsEnd, new ArrayList<ActualOccupation>(), actualRoom,
 						0.0);
 
 				// extract building, insert it into the hashmap
-				String building = Utils.extractBuilding(currentDoorCode);
+				String building = Utils.extractBuilding(doorCode);
 				List<Occupancy> occ = result.get(building);
 
 				if (occ == null) {
@@ -667,9 +698,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				}
 				occ.add(currentOccupancy);
 			}
-
-			// TODO case when there is no occupancy, no match in request, have
-			// to do it later
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -705,6 +733,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				mOcc.setPeriod(myPeriod);
 				mOcc.setAvailable(true);
 				mOcc.setProbableOccupation(0);
+				// TODO also cut in step here
 				mOccupancy.addToOccupancy(mOcc);
 				isAtLeastFreeOnce = true;
 			}
@@ -715,7 +744,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				long periodStart = period.getTimeStampStart();
 				long periodEnd = period.getTimeStampEnd();
 
-				long nbHours = (periodEnd - periodStart) % ONE_HOUR_MS;
+				long nbHours = (long) (periodEnd - periodStart) / ONE_HOUR_MS;
 				List<ActualOccupation> subDivised = cutInStepActualOccupation(
 						periodStart, actual.getRatioOccupation(),
 						actual.getProbableOccupation(), nbHours, true);
@@ -768,8 +797,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * Cut the period given (specified with the start and number of steps) in
-	 * steps. All steps have same ratio and count. 
-	 * TODO passes parameters that
+	 * steps. All steps have same ratio and count. TODO passes parameters that
 	 * are rounded to the hour ? actually if start is 10h30 it will go by 11h30,
 	 * 12h30..
 	 */
