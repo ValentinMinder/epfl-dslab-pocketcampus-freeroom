@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -70,8 +71,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		ROOM, USER;
 	};
 
-	// margin for error is a minute
-	private final long MARGIN_ERROR_TIMESTAMP = 60 * 1000;
+	// margin for error is 15 minute
+	private final long MARGIN_ERROR_TIMESTAMP = 60 * 1000 * 15;
 	private final long ONE_HOUR_MS = 3600 * 1000;
 
 	public FreeRoomServiceImpl() {
@@ -121,6 +122,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
 
+		boolean userOccupation = false;
 		// first check if you can fully insert it (no other overlapping
 		// occupancy of rooms)
 		String checkRequest = "SELECT * FROM `fr-occupancy` oc "
@@ -171,6 +173,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				} else if (typeToInsert == OCCUPANCY_TYPE.USER
 						&& type == OCCUPANCY_TYPE.ROOM) {
 					// simply adapt our boundaries
+					userOccupation = true;
 					if (start > tsStart && start < tsEnd) {
 						tsEnd = start - 1;
 					} else if (end < tsEnd && end > start) {
@@ -198,17 +201,71 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 
 			// and now insert it !
-			String insertRequest = "INSERT INTO `fr-occupancy` (uid, timestampStart, timestampEnd, type, count) "
-					+ "VALUES (?, ?, ?, ?, ?)";
 
+			if (!userOccupation) {
+				return insertOccupancyInDB(room.getUid(), tsStart, tsEnd,
+						OCCUPANCY_TYPE.ROOM, 0);
+			} else {
+				// if this is an user occupation we need to insert it step by
+				// step
+				long timeToCompleteHour = ONE_HOUR_MS - (tsStart % ONE_HOUR_MS);
+				long startInsert = tsStart + 1;
+				long endFirstInsert = tsStart + timeToCompleteHour - 1;
+
+				boolean overallInsert = true;
+
+				if (timeToCompleteHour > MARGIN_ERROR_TIMESTAMP) {
+					overallInsert = overallInsert
+							&& insertOccupancyInDB(room.getUid(), startInsert,
+									endFirstInsert, OCCUPANCY_TYPE.USER, 1);
+				}
+
+				// TODO optimization, don't compute i*ONE HOUR ... each time,
+				// maybe better use addtion and keeping previous value each time
+				long nextStart = tsStart + timeToCompleteHour;
+				long timeAtEndInMin = tsEnd % ONE_HOUR_MS;
+				long lastCompleteHour = tsEnd - timeAtEndInMin;
+				long nbSteps = (long) (lastCompleteHour - nextStart)
+						/ ONE_HOUR_MS;
+
+				for (int i = 0; i < nbSteps && overallInsert; ++i) {
+					overallInsert = overallInsert
+							&& insertOccupancyInDB(room.getUid(), nextStart + i
+									* ONE_HOUR_MS, nextStart + (i + 1)
+									* ONE_HOUR_MS - 1, OCCUPANCY_TYPE.USER, 1);
+				}
+
+				if (overallInsert && timeAtEndInMin > MARGIN_ERROR_TIMESTAMP) {
+					return insertOccupancyInDB(room.getUid(), nextStart
+							+ nbSteps * ONE_HOUR_MS, nextStart + nbSteps
+							* ONE_HOUR_MS + timeAtEndInMin,
+							OCCUPANCY_TYPE.USER, 1);
+				}
+
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private boolean insertOccupancyInDB(String uid, long tsStart, long tsEnd,
+			OCCUPANCY_TYPE type, int count) {
+		String insertRequest = "INSERT INTO `fr-occupancy` (uid, timestampStart, timestampEnd, type, count) "
+				+ "VALUES (?, ?, ?, ?, ?)";
+
+		Connection connectBDD;
+		try {
+			connectBDD = connMgr.getConnection();
 			PreparedStatement insertQuery = connectBDD
 					.prepareStatement(insertRequest);
 
-			insertQuery.setString(1, room.getUid());
+			insertQuery.setString(1, uid);
 			insertQuery.setLong(2, tsStart);
 			insertQuery.setLong(3, tsEnd);
-			insertQuery.setString(4, OCCUPANCY_TYPE.ROOM.toString());
-			insertQuery.setInt(5, 0);
+			insertQuery.setString(4, type.toString());
+			insertQuery.setInt(5, count);
 
 			return insertQuery.execute();
 		} catch (SQLException e) {
@@ -274,8 +331,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	@Override
 	public FRReply getOccupancy(FRRequest request) throws TException {
-		FRReply reply = new FRReply(HttpURLConnection.HTTP_CREATED,
-				HttpURLConnection.HTTP_CREATED + "");
+		FRReply reply = new FRReply(HttpURLConnection.HTTP_OK,
+				HttpURLConnection.HTTP_OK + "");
 
 		FRPeriod period = request.getPeriod();
 
@@ -304,10 +361,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
-	// TODO add verification that timestamps received do not go beyong the
-	// desired period and if so simply rescale it
-	// TODO fill gaps (if user occupancy is from 10 to 11 and total period is 10
-	// 12, need to add 11 12
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
 			boolean onlyFreeRooms, long tsStart, long tsEnd) {
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
@@ -559,7 +612,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			long startPeriod = tsStart;
 			long endPeriod = tsEnd;
 
-			// TODO if there is only one room need explicit action
 			while (resultQuery.next()) {
 				// extract attributes of record
 				long start = Math.max(tsStart,
@@ -729,13 +781,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			if (tsStart - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
 				// We got a free period of time !
-				ActualOccupation mOcc = new ActualOccupation();
-				FRPeriod myPeriod = new FRPeriod(tsPerRoom, tsStart - 1, false);
-				mOcc.setPeriod(myPeriod);
-				mOcc.setAvailable(true);
-				mOcc.setProbableOccupation(0);
-				// TODO also cut in step here
-				mOccupancy.addToOccupancy(mOcc);
+				long nbHours = (long) (tsStart - tsPerRoom) / ONE_HOUR_MS;
+				List<ActualOccupation> subDivised = cutInStepActualOccupation(
+						tsPerRoom, 0.0, 0, nbHours, true);
+				addToOccupancy(mOccupancy, subDivised);
 				isAtLeastFreeOnce = true;
 			}
 
@@ -750,11 +799,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						periodStart, actual.getRatioOccupation(),
 						actual.getProbableOccupation(), nbHours, true);
 
-				// add it
-				List<ActualOccupation> alreadyFilled = mOccupancy
-						.getOccupancy();
-				alreadyFilled.addAll(subDivised);
-				mOccupancy.setOccupancy(alreadyFilled);
+				addToOccupancy(mOccupancy, subDivised);
 			} else {
 				// otherwise simply add it because this is a room occupation and
 				// there is no need for subdivision (user cannot specify he's
@@ -772,19 +817,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			long periodStart = tsPerRoom;
 			long periodEnd = timestampEnd;
 
-			// TODO problem is less than an hour
+			// TODO problem if less than an hour
 			long nbHours = (long) ((periodEnd - periodStart) / ONE_HOUR_MS);
 			List<ActualOccupation> subDivised = cutInStepActualOccupation(
 					periodStart, 0.0, 0, nbHours, true);
 
-			// add it
-			List<ActualOccupation> alreadyFilled = mOccupancy.getOccupancy();
-
-			if (alreadyFilled == null) {
-				alreadyFilled = new ArrayList<ActualOccupation>();
-			}
-
-			alreadyFilled.addAll(subDivised);
+			addToOccupancy(mOccupancy, subDivised);
 			// check if there is no time between the last occupancy and the end
 			// of the period (period has been subdivised in STEPS (if one hour,
 			// there might some minutes left))
@@ -795,10 +833,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						lastEnd + 1, timestampEnd, false), true);
 				mAccOcc.setProbableOccupation(0);
 				mAccOcc.setRatioOccupation(0.0);
-				alreadyFilled.add(mAccOcc);
+				mOccupancy.addToOccupancy(mAccOcc);
 			}
 
-			mOccupancy.setOccupancy(alreadyFilled);
 			isAtLeastFreeOnce = true;
 		}
 
@@ -807,6 +844,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
 
 		return mOccupancy;
+	}
+
+	private void addToOccupancy(Occupancy mOccupancy,
+			List<ActualOccupation> accOcc) {
+		List<ActualOccupation> alreadyFilled = mOccupancy.getOccupancy();
+		if (alreadyFilled == null) {
+			alreadyFilled = new ArrayList<ActualOccupation>();
+		}
+
+		alreadyFilled.addAll(accOcc);
+		mOccupancy.setOccupancy(alreadyFilled);
 	}
 
 	/**
