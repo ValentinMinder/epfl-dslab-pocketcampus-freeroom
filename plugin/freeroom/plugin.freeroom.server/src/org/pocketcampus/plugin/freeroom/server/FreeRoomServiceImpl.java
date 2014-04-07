@@ -242,7 +242,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 							OCCUPANCY_TYPE.USER, 1);
 				}
 
-				return false;
+				return overallInsert;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -781,32 +781,36 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			if (tsStart - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
 				// We got a free period of time !
-				long nbHours = (long) (tsStart - tsPerRoom) / ONE_HOUR_MS;
-				List<ActualOccupation> subDivised = cutInStepActualOccupation(
-						tsPerRoom, 0.0, 0, nbHours, true);
-				addToOccupancy(mOccupancy, subDivised);
+				 long nbHours = (long) (tsStart - tsPerRoom) / ONE_HOUR_MS;
+				 List<ActualOccupation> subDivised =
+				 cutInStepActualOccupation(
+				 tsPerRoom, 0.0, 0, nbHours, true);
+				 addToOccupancy(mOccupancy, subDivised);
+
 				isAtLeastFreeOnce = true;
 			}
 
-			if (actual.isAvailable()) {
-				// this is a user occupation, need to subdivise it into steps
-				FRPeriod period = actual.getPeriod();
-				long periodStart = period.getTimeStampStart();
-				long periodEnd = period.getTimeStampEnd();
-
-				long nbHours = (long) (periodEnd - periodStart) / ONE_HOUR_MS;
-				List<ActualOccupation> subDivised = cutInStepActualOccupation(
-						periodStart, actual.getRatioOccupation(),
-						actual.getProbableOccupation(), nbHours, true);
-
-				addToOccupancy(mOccupancy, subDivised);
-			} else {
-				// otherwise simply add it because this is a room occupation and
-				// there is no need for subdivision (user cannot specify he's
-				// working there if there is a room occupancy)
-				mOccupancy.addToOccupancy(actual);
-				isAtLeastOccupiedOnce = true;
-			}
+//			if (actual.isAvailable()) {
+//				// this is a user occupation, need to subdivise it into steps
+//				FRPeriod period = actual.getPeriod();
+//				long periodStart = period.getTimeStampStart();
+//				long periodEnd = period.getTimeStampEnd();
+//
+//				long nbHours = (long) (periodEnd - periodStart) / ONE_HOUR_MS;
+//				List<ActualOccupation> subDivised = cutInStepActualOccupation(
+//						periodStart, actual.getRatioOccupation(),
+//						actual.getProbableOccupation(), nbHours, true);
+//
+//				addToOccupancy(mOccupancy, subDivised);
+//			} else {
+//				// otherwise simply add it because this is a room occupation and
+//				// there is no need for subdivision (user cannot specify he's
+//				// working there if there is a room occupancy)
+//				mOccupancy.addToOccupancy(actual);
+//				isAtLeastOccupiedOnce = true;
+//			}
+			
+			mOccupancy.addToOccupancy(actual);
 
 			tsPerRoom = tsEnd;
 
