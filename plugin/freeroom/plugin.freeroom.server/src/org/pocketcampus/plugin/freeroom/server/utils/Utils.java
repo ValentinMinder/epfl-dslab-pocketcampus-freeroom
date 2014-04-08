@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.freeroom.server.utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +26,8 @@ public class Utils {
 	// TODO: move in FRTimes in shared!!!
 	public static final long m30s_IN_MS = 30 * 1000;
 	public static final long ONE_HOUR_MS = 60 * 60 * 1000;
+	public static final long m30M_MS = 60 * 30 * 1000;
+	public static final long ONE_DAY_MS = ONE_HOUR_MS * 24;
 
 	/**
 	 * Adjust the period given in the request. It adds 30s to the lower
@@ -89,8 +92,12 @@ public class Utils {
 		return timestamp - min;
 	}
 
+	//TODO one half a hour is added mysteriously from the converter probably
 	public static long roundHourAfter(long timestamp) {
 		long minToCompleteHour = ONE_HOUR_MS - (timestamp % ONE_HOUR_MS);
+		if (minToCompleteHour == ONE_HOUR_MS) {
+			return timestamp;
+		}
 		return timestamp + minToCompleteHour;
 	}
 	
@@ -98,6 +105,35 @@ public class Utils {
 		long startHour = Utils.roundHourBefore(tsStart);
 		long endHour = Utils.roundHourAfter(tsEnd);
 
-		return (endHour - startHour) / ONE_HOUR_MS;
+		
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.setTimeInMillis(startHour);
+		int start = mCalendar.get(Calendar.HOUR_OF_DAY);
+		mCalendar.setTimeInMillis(endHour);
+		int end = mCalendar.get(Calendar.HOUR_OF_DAY);
+		
+		return end - start;
+	}
+	
+	public static long roundToNearestHalfHourBefore(long timestamp) {
+		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
+
+		if (timeToCompleteHour < m30M_MS) {
+			return (timestamp + timeToCompleteHour) - m30M_MS;
+		}
+
+		long timeInMin = timestamp % ONE_HOUR_MS;
+		return timestamp - timeInMin;
+	}
+
+	public static long roundToNearestHalfHourAfter(long timestamp) {
+		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
+
+		if (timeToCompleteHour < m30M_MS) {
+			return timestamp + timeToCompleteHour;
+		}
+
+		long timeInMinToHalfHour = m30M_MS - timestamp % m30M_MS;
+		return timestamp + timeInMinToHalfHour;
 	}
 }

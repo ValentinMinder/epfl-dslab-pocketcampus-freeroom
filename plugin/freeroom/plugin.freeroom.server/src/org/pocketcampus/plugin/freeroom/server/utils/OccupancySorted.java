@@ -28,7 +28,7 @@ public class OccupancySorted {
 	private boolean isAtLeastOccupiedOnce;
 	private double worstRatio;
 
-	public OccupancySorted(FRRoom room) {
+	public OccupancySorted(FRRoom room, long tsStart, long tsEnd) {
 		this.mActualOccupations = new ArrayList<ActualOccupation>();
 		this.room = room;
 		isAtLeastFreeOnce = false;
@@ -36,26 +36,28 @@ public class OccupancySorted {
 		worstRatio = 0.0;
 		timestampStart = 0;
 		timestampEnd = 0;
+		timestampStart = tsStart;
+		timestampEnd = tsEnd;
 	}
 
 	public void addActualOccupation(ActualOccupation occ) {
-		mActualOccupations.add(occ);
-		long start = occ.getPeriod().getTimeStampStart();
-		long end = occ.getPeriod().getTimeStampEnd();
+		FRPeriod period = occ.getPeriod();
+		long start = period.getTimeStampStart();
+		long end = period.getTimeStampEnd();
 
-		if (timestampStart == 0) {
-			timestampStart = start;
-			timestampEnd = end;
-		} else {
-			if (start < timestampStart) {
-				timestampStart = start;
-			}
-
-			if (end > timestampEnd) {
-				timestampEnd = end;
-			}
+		if (start < timestampStart) {
+			start = timestampStart;
+		} 
+		
+		if (end > timestampEnd) {
+			end = timestampEnd;
 		}
-
+		
+		if (end - start > Utils.ONE_HOUR_MS) {
+			mActualOccupations.addAll(cutInStepsPeriod(start, end));
+		} else {
+			mActualOccupations.add(occ.setPeriod(new FRPeriod(start, end, false)));
+		}
 	}
 
 	/**
@@ -125,8 +127,8 @@ public class OccupancySorted {
 	 * have a contiguous list of period (with an error of MARGIN_FOR_ERROR)
 	 */
 	private void fillGaps() {
+		ArrayList<ActualOccupation> resultList = new ArrayList<ActualOccupation>();
 		long tsPerRoom = timestampStart;
-		int index = 0;
 		boolean previousIsRoom = false;
 		long lastEnd = 0;
 		for (ActualOccupation actual : mActualOccupations) {
@@ -134,43 +136,43 @@ public class OccupancySorted {
 					.getTimeStampStart());
 			long tsEnd = Math.min(timestampEnd, actual.getPeriod()
 					.getTimeStampEnd());
-			
+
 			if (previousIsRoom && tsStart < lastEnd) {
-				//resize the period of this user occupancy
+				// resize the period of this user occupancy
 				tsStart = lastEnd;
 				FRPeriod newPeriod = new FRPeriod(tsStart, tsEnd, false);
 				actual.setPeriod(newPeriod);
 			}
-			
+
 			if (tsStart - tsPerRoom > MARGIN_FOR_ERROR) {
 				// We got a free period of time !
 				ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(
 						tsPerRoom, tsStart);
-				mActualOccupations.addAll(index + 1, subDivised);
-				index += subDivised.size();
+				resultList.addAll(subDivised);
 				isAtLeastFreeOnce = true;
 				previousIsRoom = false;
 			}
 			
+			resultList.add(actual);
 			tsPerRoom = tsEnd;
-			index++;
-			
+
 			previousIsRoom = !actual.isAvailable();
 			lastEnd = actual.getPeriod().getTimeStampEnd();
-			
+
 			double ratio = actual.getRatioOccupation();
-			
+
 			if (ratio > worstRatio) {
 				worstRatio = ratio;
 			}
 		}
+		mActualOccupations = resultList;
 	}
 
 	private ArrayList<ActualOccupation> cutInStepsPeriod(long start, long end) {
 		ArrayList<ActualOccupation> result = new ArrayList<ActualOccupation>();
 		long hourSharpBefore = Utils.roundHourBefore(start);
 		long numberHours = Utils.determineNumberHour(start, end);
-
+		System.out.println(" hours  = " + numberHours);
 		for (int i = 0; i < numberHours; ++i) {
 			FRPeriod period = new FRPeriod(hourSharpBefore + i
 					* Utils.ONE_HOUR_MS, hourSharpBefore + (i + 1)
@@ -180,7 +182,6 @@ public class OccupancySorted {
 			mAccOcc.setRatioOccupation(0.0);
 			result.add(mAccOcc);
 		}
-
 		return result;
 	}
 
@@ -197,6 +198,10 @@ public class OccupancySorted {
 				isAtLeastOccupiedOnce, isAtLeastFreeOnce);
 		mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
 		return mOccupancy;
+	}
+
+	public int size() {
+		return mActualOccupations.size();
 	}
 
 }

@@ -31,6 +31,7 @@ import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImplOld;
+import org.pocketcampus.plugin.freeroom.server.utils.Utils;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRReply;
@@ -783,11 +784,14 @@ public class TestFreeRoomSearchAndOccupancy {
 
 			FRRequest request = new FRRequest(
 					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY,
-							9, 00, 15, 00), true, null);
-
+							9, 0, 15, 0), true, null);
+			
+			System.out.println(FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY,
+							9, 00, 15, 0).getTimeStampStart() % Utils.ONE_HOUR_MS);
 			FRReply reply = server.getOccupancy(request);
 			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
-
+			SimpleDateFormat day_month = new SimpleDateFormat(
+					"EEEE MMMM dd / HH:mm");
 			Set<String> buildings = result.keySet();
 			System.out.println(buildings.size() + " buildings");
 			for (String currentBuilding : buildings) {
@@ -807,8 +811,11 @@ public class TestFreeRoomSearchAndOccupancy {
 						calendarEnd.setTimeInMillis(mAccOcc.getPeriod()
 								.getTimeStampEnd());
 
-						System.out.println("From " + calendarStart.toString()
-								+ " to " + calendarEnd.toString());
+						System.out.println("From "
+								+ day_month.format(calendarStart.getTime())
+								+ " to "
+								+ day_month.format(calendarEnd.getTime())
+								+ " available : " + mAccOcc.isAvailable());
 					}
 				}
 			}
