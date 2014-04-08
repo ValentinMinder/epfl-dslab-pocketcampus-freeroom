@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.rmi.CORBA.Tie;
+
 import org.apache.thrift.TException;
 import org.bouncycastle.jce.provider.symmetric.Skipjack.MacCFB8;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
@@ -71,9 +73,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		ROOM, USER;
 	};
 
-	// margin for error is 15 minute
+	// margin for error is 14 minute
 	private final long MARGIN_ERROR_TIMESTAMP = 60 * 1000 * 15;
 	private final long ONE_HOUR_MS = 3600 * 1000;
+	private final long m30M_MS = 60 * 30 * 1000;
+	private final long m15M_MS = 60 * 15 * 1000;
 
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
@@ -335,7 +339,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				HttpURLConnection.HTTP_OK + "");
 
 		FRPeriod period = request.getPeriod();
-
+		long tsStart = roundToNearestHalfHourStart(period.getTimeStampStart());
+		long tsEnd = roundToNearestHalfHourEnd(period.getTimeStampEnd());
+		
 		if (!FRTimes.validCalendars(period)) {
 			// if something is wrong in the request
 			return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
@@ -350,17 +356,39 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		if (uidList == null) {
 			// we want to look into all the rooms
 			occupancies = getOccupancyOfAnyFreeRoom(onlyFreeRoom,
-					period.getTimeStampStart(), period.getTimeStampEnd());
+					tsStart, tsEnd);
 		} else {
 			// or the user specified a specific list of rooms he wants to check
 			occupancies = getOccupancyOfSpecificRoom(uidList, onlyFreeRoom,
-					period.getTimeStampStart(), period.getTimeStampEnd());
+					tsStart, tsEnd);
 		}
 
 		reply.setOccupancyOfRooms(occupancies);
 		return reply;
 	}
 
+	private long roundToNearestHalfHourStart(long timestamp) {
+		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
+		
+		if (timeToCompleteHour < m30M_MS) {
+			return (timestamp + timeToCompleteHour) - m30M_MS;
+		}
+		
+		long timeInMin = timestamp % ONE_HOUR_MS;
+		return timestamp - timeInMin;
+	}
+	
+	private long roundToNearestHalfHourEnd(long timestamp) {
+		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
+		
+		if (timeToCompleteHour < m30M_MS) {
+			return timestamp + timeToCompleteHour;
+		}
+		
+		long timeInMinToHalfHour = m30M_MS - timestamp % m30M_MS;
+		return timestamp + timeInMinToHalfHour;
+	}
+	
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
 			boolean onlyFreeRooms, long tsStart, long tsEnd) {
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
@@ -498,7 +526,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						currentRoom = uid;
 					}
 
-					long nbHours = (start - end) % ONE_HOUR_MS;
+					// long nbHours = (start - end) % ONE_HOUR_MS;
 					double ratio = currentCapacity > 0 ? (double) (count / currentCapacity)
 							: 0.0;
 
@@ -508,20 +536,23 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 					// we subdivise each freeroom by step of one hour (uses in
 					// client-side)
-					if (nbHours <= 1) {
-						ActualOccupation accOcc = new ActualOccupation(period,
-								true);
-						accOcc.setProbableOccupation(count);
-						accOcc.setRatioOccupation(ratio);
-						currentOccupancy.addToOccupancy(accOcc);
-					} else {
-						List<ActualOccupation> accOcc = cutInStepActualOccupation(
-								start, ratio, count, nbHours, true);
-						List<ActualOccupation> actual = currentOccupancy
-								.getOccupancy();
-						actual.addAll(accOcc);
-						currentOccupancy.setOccupancy(actual);
-					}
+					// if (nbHours <= 1) {
+					// ActualOccupation accOcc = new ActualOccupation(period,
+					// true);
+					// accOcc.setProbableOccupation(count);
+					// accOcc.setRatioOccupation(ratio);
+					// currentOccupancy.addToOccupancy(accOcc);
+					// } else {
+					// List<ActualOccupation> accOcc =
+					// cutInStepActualOccupation(
+					// start, ratio, count, nbHours, true);
+					List<ActualOccupation> accOcc = cutInStepActualOccupation(
+							start, end, ratio, count, true);
+					List<ActualOccupation> actual = currentOccupancy
+							.getOccupancy();
+					actual.addAll(accOcc);
+					currentOccupancy.setOccupancy(actual);
+					// }
 
 				}
 
@@ -530,9 +561,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// and has to be added in the result hashmap)
 
 				for (FRRoom mRoom : rooms.values()) {
+					// List<ActualOccupation> accOcc =
+					// cutInStepActualOccupation(
+					// tsStart, 0.0, 0, (tsEnd - tsStart) % ONE_HOUR_MS,
+					// true);
 					List<ActualOccupation> accOcc = cutInStepActualOccupation(
-							tsStart, 0.0, 0, (tsEnd - tsStart) % ONE_HOUR_MS,
-							true);
+							tsStart, tsEnd, 0.0, 0, true);
 					String building = Utils
 							.extractBuilding(mRoom.getDoorCode());
 					List<Occupancy> mOccupancies = result.get(building);
@@ -781,35 +815,34 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			if (tsStart - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
 				// We got a free period of time !
-				 long nbHours = (long) (tsStart - tsPerRoom) / ONE_HOUR_MS;
-				 List<ActualOccupation> subDivised =
-				 cutInStepActualOccupation(
-				 tsPerRoom, 0.0, 0, nbHours, true);
-				 addToOccupancy(mOccupancy, subDivised);
+//				long nbHours = (long) (tsStart - tsPerRoom) / ONE_HOUR_MS;
+				List<ActualOccupation> subDivised = cutInStepActualOccupation(
+						tsPerRoom, tsStart, 0.0, 0, true);
+				addToOccupancy(mOccupancy, subDivised);
 
 				isAtLeastFreeOnce = true;
 			}
 
-//			if (actual.isAvailable()) {
-//				// this is a user occupation, need to subdivise it into steps
-//				FRPeriod period = actual.getPeriod();
-//				long periodStart = period.getTimeStampStart();
-//				long periodEnd = period.getTimeStampEnd();
-//
-//				long nbHours = (long) (periodEnd - periodStart) / ONE_HOUR_MS;
-//				List<ActualOccupation> subDivised = cutInStepActualOccupation(
-//						periodStart, actual.getRatioOccupation(),
-//						actual.getProbableOccupation(), nbHours, true);
-//
-//				addToOccupancy(mOccupancy, subDivised);
-//			} else {
-//				// otherwise simply add it because this is a room occupation and
-//				// there is no need for subdivision (user cannot specify he's
-//				// working there if there is a room occupancy)
-//				mOccupancy.addToOccupancy(actual);
-//				isAtLeastOccupiedOnce = true;
-//			}
-			
+			// if (actual.isAvailable()) {
+			// // this is a user occupation, need to subdivise it into steps
+			// FRPeriod period = actual.getPeriod();
+			// long periodStart = period.getTimeStampStart();
+			// long periodEnd = period.getTimeStampEnd();
+			//
+			// long nbHours = (long) (periodEnd - periodStart) / ONE_HOUR_MS;
+			// List<ActualOccupation> subDivised = cutInStepActualOccupation(
+			// periodStart, actual.getRatioOccupation(),
+			// actual.getProbableOccupation(), nbHours, true);
+			//
+			// addToOccupancy(mOccupancy, subDivised);
+			// } else {
+			// // otherwise simply add it because this is a room occupation and
+			// // there is no need for subdivision (user cannot specify he's
+			// // working there if there is a room occupancy)
+			// mOccupancy.addToOccupancy(actual);
+			// isAtLeastOccupiedOnce = true;
+			// }
+
 			mOccupancy.addToOccupancy(actual);
 
 			tsPerRoom = tsEnd;
@@ -824,7 +857,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			// TODO problem if less than an hour
 			long nbHours = (long) ((periodEnd - periodStart) / ONE_HOUR_MS);
 			List<ActualOccupation> subDivised = cutInStepActualOccupation(
-					periodStart, 0.0, 0, nbHours, true);
+					periodStart, periodEnd, 0.0, 0, true);
 
 			addToOccupancy(mOccupancy, subDivised);
 			// check if there is no time between the last occupancy and the end
@@ -868,17 +901,59 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * 12h30..
 	 */
 	private List<ActualOccupation> cutInStepActualOccupation(long tsStart,
-			double ratio, int count, long nbStep, boolean available) {
+			long tsEnd, double ratio, int count, boolean available) {
 		ArrayList<ActualOccupation> cutted = new ArrayList<ActualOccupation>();
 
-		for (int i = 0; i < nbStep; ++i) {
-			ActualOccupation accOcc = new ActualOccupation(new FRPeriod(tsStart
-					+ ONE_HOUR_MS * i, tsStart + ONE_HOUR_MS * (i + 1),
-					available), available);
-			accOcc.setProbableOccupation(count);
-			accOcc.setRatioOccupation(ratio);
-			cutted.add(accOcc);
+		// if this is an user occupation we need to insert it step by
+		// step
+		long timeToCompleteHour = ONE_HOUR_MS - (tsStart % ONE_HOUR_MS);
+		long startInsert = tsStart + 1;
+		long endFirstInsert = tsStart + timeToCompleteHour - 1;
+
+		if (timeToCompleteHour > MARGIN_ERROR_TIMESTAMP && timeToCompleteHour != ONE_HOUR_MS) {
+			ActualOccupation mAccOcc = new ActualOccupation(new FRPeriod(
+					startInsert, endFirstInsert, false), available);
+			mAccOcc.setProbableOccupation(count);
+			mAccOcc.setRatioOccupation(ratio);
+			cutted.add(mAccOcc);
 		}
+		
+		if (timeToCompleteHour == ONE_HOUR_MS) {
+			timeToCompleteHour  = 0;
+		}
+
+		// TODO optimization, don't compute i*ONE HOUR ... each time,
+		// maybe better use addtion and keeping previous value each time
+		long nextStart = tsStart + timeToCompleteHour;
+		long timeAtEndInMin = tsEnd % ONE_HOUR_MS;
+		long nbSteps = (long) (tsEnd - nextStart) / ONE_HOUR_MS;
+
+		for (int i = 0; i < nbSteps; ++i) {
+			ActualOccupation mAccOcc = new ActualOccupation(new FRPeriod(
+					nextStart + i * ONE_HOUR_MS, nextStart + (i + 1)
+							* ONE_HOUR_MS - 1, false), available);
+			mAccOcc.setProbableOccupation(count);
+			mAccOcc.setRatioOccupation(ratio);
+			cutted.add(mAccOcc);
+		}
+
+		if (timeAtEndInMin > MARGIN_ERROR_TIMESTAMP) {
+			ActualOccupation mAccOcc = new ActualOccupation(new FRPeriod(
+					nextStart + nbSteps * ONE_HOUR_MS, nextStart + nbSteps
+							* ONE_HOUR_MS + timeAtEndInMin, false), available);
+			mAccOcc.setProbableOccupation(count);
+			mAccOcc.setRatioOccupation(ratio);
+			cutted.add(mAccOcc);
+		}
+
+		// for (int i = 0; i < nbStep; ++i) {
+		// ActualOccupation accOcc = new ActualOccupation(new FRPeriod(tsStart
+		// + ONE_HOUR_MS * i, tsStart + ONE_HOUR_MS * (i + 1),
+		// available), available);
+		// accOcc.setProbableOccupation(count);
+		// accOcc.setRatioOccupation(ratio);
+		// cutted.add(accOcc);
+		// }
 
 		return cutted;
 	}
