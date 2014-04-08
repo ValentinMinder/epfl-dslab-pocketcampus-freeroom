@@ -75,6 +75,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	// margin for error is 14 minute
 	private final long MARGIN_ERROR_TIMESTAMP = 60 * 1000 * 15;
+	private final long MIN_PERIOD = 5 * 60 * 1000;
 	private final long ONE_HOUR_MS = 3600 * 1000;
 	private final long m30M_MS = 60 * 30 * 1000;
 	private final long m15M_MS = 60 * 15 * 1000;
@@ -341,7 +342,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		FRPeriod period = request.getPeriod();
 		long tsStart = roundToNearestHalfHourStart(period.getTimeStampStart());
 		long tsEnd = roundToNearestHalfHourEnd(period.getTimeStampEnd());
-		
+
 		if (!FRTimes.validCalendars(period)) {
 			// if something is wrong in the request
 			return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
@@ -355,8 +356,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		if (uidList == null) {
 			// we want to look into all the rooms
-			occupancies = getOccupancyOfAnyFreeRoom(onlyFreeRoom,
-					tsStart, tsEnd);
+			occupancies = getOccupancyOfAnyFreeRoom(onlyFreeRoom, tsStart,
+					tsEnd);
 		} else {
 			// or the user specified a specific list of rooms he wants to check
 			occupancies = getOccupancyOfSpecificRoom(uidList, onlyFreeRoom,
@@ -369,26 +370,26 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private long roundToNearestHalfHourStart(long timestamp) {
 		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
-		
+
 		if (timeToCompleteHour < m30M_MS) {
 			return (timestamp + timeToCompleteHour) - m30M_MS;
 		}
-		
+
 		long timeInMin = timestamp % ONE_HOUR_MS;
 		return timestamp - timeInMin;
 	}
-	
+
 	private long roundToNearestHalfHourEnd(long timestamp) {
 		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
-		
+
 		if (timeToCompleteHour < m30M_MS) {
 			return timestamp + timeToCompleteHour;
 		}
-		
+
 		long timeInMinToHalfHour = m30M_MS - timestamp % m30M_MS;
 		return timestamp + timeInMinToHalfHour;
 	}
-	
+
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
 			boolean onlyFreeRooms, long tsStart, long tsEnd) {
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
@@ -683,9 +684,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				if (!uid.equals(currentUID)) {
 					uidList.remove(currentUID);
 
-					Occupancy currentOccupancy = fillGapsInOccupancy(
-							startPeriod, endPeriod, actualOcc, actualRoom,
-							worstRatio);
+					Occupancy currentOccupancy = fillGapsInOccupancy(tsStart,
+							tsEnd, actualOcc, actualRoom, worstRatio);
 
 					// extract building, insert it into the hashmap
 					String building = Utils.extractBuilding(currentDoorCode);
@@ -727,8 +727,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// it is important to remove them once a room has been handled
 				// due to the last part of the method (see below)
 				uidList.remove(currentUID);
-				Occupancy currentOccupancy = fillGapsInOccupancy(startPeriod,
-						endPeriod, actualOcc, actualRoom, worstRatio);
+				Occupancy currentOccupancy = fillGapsInOccupancy(tsStart,
+						tsEnd, actualOcc, actualRoom, worstRatio);
 
 				// extract building, insert it into the hashmap
 				String building = Utils.extractBuilding(currentDoorCode);
@@ -745,45 +745,47 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			// for all the others rooms that hasn't been matched in the query,
 			// we need to add them too
 
-			roomsListQueryFormat = "";
-			for (i = 0; i < uidList.size() - 1; ++i) {
-				roomsListQueryFormat += "?,";
-			}
-
-			roomsListQueryFormat += "?";
-			String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity "
-					+ "FROM `fr-roomslist` rl " + "WHERE rl.uid IN("
-					+ roomsListQueryFormat + ")";
-
-			PreparedStatement infoQuery = connectBDD
-					.prepareStatement(infoRequest);
-
-			for (i = 1; i <= uidList.size(); ++i) {
-				infoQuery.setString(i, uidList.get(i - 1));
-			}
-
-			ResultSet infoRoom = infoQuery.executeQuery();
-
-			while (infoRoom.next()) {
-				String uid = infoRoom.getString("uid");
-				String doorCode = infoRoom.getString("doorCode");
-				int capacity = infoRoom.getInt("capacity");
-
-				actualRoom = new FRRoom(doorCode, uid);
-				actualRoom.setCapacity(capacity);
-				Occupancy currentOccupancy = fillGapsInOccupancy(tsStart,
-						tsEnd, new ArrayList<ActualOccupation>(), actualRoom,
-						0.0);
-
-				// extract building, insert it into the hashmap
-				String building = Utils.extractBuilding(doorCode);
-				List<Occupancy> occ = result.get(building);
-
-				if (occ == null) {
-					occ = new ArrayList<Occupancy>();
-					result.put(building, occ);
+			if (!uidList.isEmpty()) {
+				roomsListQueryFormat = "";
+				for (i = 0; i < uidList.size() - 1; ++i) {
+					roomsListQueryFormat += "?,";
 				}
-				occ.add(currentOccupancy);
+
+				roomsListQueryFormat += "?";
+				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity "
+						+ "FROM `fr-roomslist` rl " + "WHERE rl.uid IN("
+						+ roomsListQueryFormat + ")";
+
+				PreparedStatement infoQuery = connectBDD
+						.prepareStatement(infoRequest);
+
+				for (i = 1; i <= uidList.size(); ++i) {
+					infoQuery.setString(i, uidList.get(i - 1));
+				}
+
+				ResultSet infoRoom = infoQuery.executeQuery();
+
+				while (infoRoom.next()) {
+					String uid = infoRoom.getString("uid");
+					String doorCode = infoRoom.getString("doorCode");
+					int capacity = infoRoom.getInt("capacity");
+
+					actualRoom = new FRRoom(doorCode, uid);
+					actualRoom.setCapacity(capacity);
+					Occupancy currentOccupancy = fillGapsInOccupancy(tsStart,
+							tsEnd, new ArrayList<ActualOccupation>(),
+							actualRoom, 0.0);
+
+					// extract building, insert it into the hashmap
+					String building = Utils.extractBuilding(doorCode);
+					List<Occupancy> occ = result.get(building);
+
+					if (occ == null) {
+						occ = new ArrayList<Occupancy>();
+						result.put(building, occ);
+					}
+					occ.add(currentOccupancy);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -815,7 +817,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			if (tsStart - tsPerRoom > MARGIN_ERROR_TIMESTAMP) {
 				// We got a free period of time !
-//				long nbHours = (long) (tsStart - tsPerRoom) / ONE_HOUR_MS;
+				// long nbHours = (long) (tsStart - tsPerRoom) / ONE_HOUR_MS;
 				List<ActualOccupation> subDivised = cutInStepActualOccupation(
 						tsPerRoom, tsStart, 0.0, 0, true);
 				addToOccupancy(mOccupancy, subDivised);
@@ -843,8 +845,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			// isAtLeastOccupiedOnce = true;
 			// }
 
-			mOccupancy.addToOccupancy(actual);
-
+			long periodStart = actual.getPeriod().getTimeStampStart();
+			long periodEnd = actual.getPeriod().getTimeStampEnd();
+			if (periodEnd - periodStart > MIN_PERIOD) {
+				mOccupancy.addToOccupancy(actual);
+			}
 			tsPerRoom = tsEnd;
 
 		}
@@ -864,7 +869,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			// of the period (period has been subdivised in STEPS (if one hour,
 			// there might some minutes left))
 
-			long lastEnd = periodStart + ONE_HOUR_MS * nbHours;
+			long lastEnd = subDivised.get(subDivised.size() - 1).getPeriod()
+					.getTimeStampEnd();
 			if (timestampEnd - lastEnd > MARGIN_ERROR_TIMESTAMP) {
 				ActualOccupation mAccOcc = new ActualOccupation(new FRPeriod(
 						lastEnd + 1, timestampEnd, false), true);
@@ -910,16 +916,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long startInsert = tsStart + 1;
 		long endFirstInsert = tsStart + timeToCompleteHour - 1;
 
-		if (timeToCompleteHour > MARGIN_ERROR_TIMESTAMP && timeToCompleteHour != ONE_HOUR_MS) {
+		if (timeToCompleteHour > MARGIN_ERROR_TIMESTAMP
+				&& timeToCompleteHour != ONE_HOUR_MS) {
 			ActualOccupation mAccOcc = new ActualOccupation(new FRPeriod(
 					startInsert, endFirstInsert, false), available);
 			mAccOcc.setProbableOccupation(count);
 			mAccOcc.setRatioOccupation(ratio);
 			cutted.add(mAccOcc);
 		}
-		
+
 		if (timeToCompleteHour == ONE_HOUR_MS) {
-			timeToCompleteHour  = 0;
+			timeToCompleteHour = 0;
 		}
 
 		// TODO optimization, don't compute i*ONE HOUR ... each time,
