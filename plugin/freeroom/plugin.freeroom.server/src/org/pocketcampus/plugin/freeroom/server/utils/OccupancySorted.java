@@ -19,6 +19,7 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 public class OccupancySorted {
 
 	private final long MARGIN_FOR_ERROR = 60 * 15 * 1000;
+	private final long MIN_PERIOD = 1 * 60 * 1000;
 
 	private ArrayList<ActualOccupation> mActualOccupations;
 	private FRRoom room;
@@ -47,16 +48,17 @@ public class OccupancySorted {
 
 		if (start < timestampStart) {
 			start = timestampStart;
-		} 
-		
+		}
+
 		if (end > timestampEnd) {
 			end = timestampEnd;
 		}
-		
-		if (end - start > Utils.ONE_HOUR_MS) {
+
+		if (occ.isAvailable() && end - start > Utils.ONE_HOUR_MS) {
 			mActualOccupations.addAll(cutInStepsPeriod(start, end));
 		} else {
-			mActualOccupations.add(occ.setPeriod(new FRPeriod(start, end, false)));
+			mActualOccupations.add(occ
+					.setPeriod(new FRPeriod(start, end, false)));
 		}
 	}
 
@@ -152,18 +154,27 @@ public class OccupancySorted {
 				isAtLeastFreeOnce = true;
 				previousIsRoom = false;
 			}
-			
-			resultList.add(actual);
-			tsPerRoom = tsEnd;
 
-			previousIsRoom = !actual.isAvailable();
-			lastEnd = actual.getPeriod().getTimeStampEnd();
+			long actualStart = actual.getPeriod().getTimeStampStart();
+			long actualEnd = actual.getPeriod().getTimeStampEnd();
 
-			double ratio = actual.getRatioOccupation();
+			if (actualEnd - actualStart >= MIN_PERIOD) {
+				resultList.add(actual);
+				previousIsRoom = !actual.isAvailable();
+				double ratio = actual.getRatioOccupation();
 
-			if (ratio > worstRatio) {
-				worstRatio = ratio;
+				if (ratio > worstRatio) {
+					worstRatio = ratio;
+				}
 			}
+			tsPerRoom = tsEnd;
+			lastEnd = actual.getPeriod().getTimeStampEnd();
+		}
+		
+		if (timestampEnd - lastEnd > MARGIN_FOR_ERROR) {
+			ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(
+					lastEnd, timestampEnd);
+			resultList.addAll(subDivised);
 		}
 		mActualOccupations = resultList;
 	}
@@ -172,7 +183,7 @@ public class OccupancySorted {
 		ArrayList<ActualOccupation> result = new ArrayList<ActualOccupation>();
 		long hourSharpBefore = Utils.roundHourBefore(start);
 		long numberHours = Utils.determineNumberHour(start, end);
-		System.out.println(" hours  = " + numberHours);
+
 		for (int i = 0; i < numberHours; ++i) {
 			FRPeriod period = new FRPeriod(hourSharpBefore + i
 					* Utils.ONE_HOUR_MS, hourSharpBefore + (i + 1)

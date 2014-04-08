@@ -594,7 +594,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				int count = resultQuery.getInt("count");
 				String doorCode = resultQuery.getString("doorCode");
 				OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(resultQuery.getString("type"));
-				boolean available = type == OCCUPANCY_TYPE.USER ? true : false;
+				boolean available = (type == OCCUPANCY_TYPE.USER) ? true : false;
 				int capacity = resultQuery.getInt("capacity");
 				double ratio = capacity > 0 ? (double) count / capacity : 0.0;
 
@@ -603,9 +603,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				mRoom.setCapacity(capacity);
 				
 				// if this is the first iteration
-				if (currentUID == null) {
-					System.out.println("first iteration");
-					
+				if (currentUID == null) {					
 					currentUID = uid;
 					currentDoorCode = mRoom.getDoorCode();
 					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd);
@@ -615,7 +613,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// for the loop, as well as storing the previous room in the
 				// result hashmap
 				if (!uid.equals(currentUID)) {
-					System.out.println("new room ");
 					Occupancy mOccupancy = currentOccupancy.getOccupancy();
 
 					addToHashMapOccupancy(currentDoorCode, mOccupancy, result);
