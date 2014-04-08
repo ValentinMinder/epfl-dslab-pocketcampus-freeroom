@@ -78,7 +78,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private final long MIN_PERIOD = 5 * 60 * 1000;
 	private final long ONE_HOUR_MS = 3600 * 1000;
 	private final long m30M_MS = 60 * 30 * 1000;
-	private final long m15M_MS = 60 * 15 * 1000;
 
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
@@ -110,7 +109,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * This method's job is to ensure the data are stored in a proper way.
-	 * Whenever you need to insert an occupancy you should call this one.
+	 * Whenever you need to insert an occupancy you should call this one. *
 	 * 
 	 * @param period
 	 * @param type
@@ -128,6 +127,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long tsEnd = period.getTimeStampEnd();
 
 		boolean userOccupation = false;
+		// only used for user occupancies, room's occupancies should not be
+		// modified
+		long minStart = tsStart;
+		long maxEnd = tsEnd;
+
 		// first check if you can fully insert it (no other overlapping
 		// occupancy of rooms)
 		String checkRequest = "SELECT * FROM `fr-occupancy` oc "
@@ -168,9 +172,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					// occupancy
 
 					if (start > tsStart && start < tsEnd) {
-						adaptTimeStampOccupancy(uid, start, tsEnd + 1, end);
+						adaptTimeStampOccupancy(uid, start, tsEnd, end,
+								OCCUPANCY_TYPE.USER);
 					} else if (end < tsEnd && end > start) {
-						adaptTimeStampOccupancy(uid, start, start, tsStart - 1);
+						adaptTimeStampOccupancy(uid, start, start, tsStart,
+								OCCUPANCY_TYPE.USER);
 					} else {
 						// simply delete it if it is entirely in the period
 						deleteOccupancy(uid, start);
@@ -180,15 +186,19 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					// simply adapt our boundaries
 					userOccupation = true;
 					if (start > tsStart && start < tsEnd) {
-						tsEnd = start - 1;
-					} else if (end < tsEnd && end > start) {
-						tsStart = end + 1;
+						tsEnd = start;
+						maxEnd = start;
+					} else if (end < tsEnd && end > tsStart) {
+						tsStart = end;
+						minStart = end;
 					} else {
 						// there is a course, no possiblity to insert a user
 						// occupancy here
 						return false;
 					}
 				} else {
+					// TODO check how user occupancies is updated to see if it
+					// is worth keeping this branchment
 					if (start > tsStart && start < tsEnd) {
 						// shouldn't happen
 						System.out
@@ -211,11 +221,52 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				return insertOccupancyInDB(room.getUid(), tsStart, tsEnd,
 						OCCUPANCY_TYPE.ROOM, 0);
 			} else {
+				if (tsEnd - tsStart < m30M_MS) {
+					return false;
+				}
+
+				// TODO delete user occupancy if room occupancy make user
+				// occupancy resize (or adapt again)
+				// adapt the boundaries of the period rounded to the nearest
+				// half hour
+				long roundStartBefore = roundToNearestHalfHourBefore(tsStart);
+
+				if (roundStartBefore >= minStart && roundStartBefore <= maxEnd) {
+					tsStart = roundStartBefore;
+				} else {
+					long roundStartAfter = roundToNearestHalfHourAfter(tsStart);
+					if (roundStartAfter >= minStart
+							&& roundStartAfter <= maxEnd) {
+						tsStart = roundStartAfter;
+					} else {
+						System.out
+								.println("The given period for user occupancy does not fit in the actual database , start = "
+										+ tsStart + " end = " + tsEnd);
+						return false;
+					}
+				}
+
+				long roundEndBefore = roundToNearestHalfHourBefore(tsEnd);
+
+				if (roundEndBefore >= minStart && roundEndBefore <= maxEnd) {
+					tsStart = roundEndBefore;
+				} else {
+					long roundEndAfter = roundToNearestHalfHourAfter(tsEnd);
+					if (roundEndAfter >= minStart && roundEndAfter <= maxEnd) {
+						tsStart = roundEndAfter;
+					} else {
+						System.out
+								.println("The given period for user occupancy does not fit in the actual database , start = "
+										+ tsStart + " end = " + tsEnd);
+						return false;
+					}
+				}
+
 				// if this is an user occupation we need to insert it step by
 				// step
 				long timeToCompleteHour = ONE_HOUR_MS - (tsStart % ONE_HOUR_MS);
-				long startInsert = tsStart + 1;
-				long endFirstInsert = tsStart + timeToCompleteHour - 1;
+				long startInsert = tsStart;
+				long endFirstInsert = tsStart + timeToCompleteHour;
 
 				boolean overallInsert = true;
 
@@ -237,7 +288,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					overallInsert = overallInsert
 							&& insertOccupancyInDB(room.getUid(), nextStart + i
 									* ONE_HOUR_MS, nextStart + (i + 1)
-									* ONE_HOUR_MS - 1, OCCUPANCY_TYPE.USER, 1);
+									* ONE_HOUR_MS, OCCUPANCY_TYPE.USER, 1);
 				}
 
 				if (overallInsert && timeAtEndInMin > MARGIN_ERROR_TIMESTAMP) {
@@ -258,7 +309,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private boolean insertOccupancyInDB(String uid, long tsStart, long tsEnd,
 			OCCUPANCY_TYPE type, int count) {
 		String insertRequest = "INSERT INTO `fr-occupancy` (uid, timestampStart, timestampEnd, type, count) "
-				+ "VALUES (?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?, ?, ?) " +
+				"ON DUPLICATE KEY UPDATE count = count + 1";
 
 		Connection connectBDD;
 		try {
@@ -280,7 +332,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	}
 
 	private void adaptTimeStampOccupancy(String uid, long tsStart,
-			long newStart, long newEnd) {
+			long newStart, long newEnd, OCCUPANCY_TYPE type) {
+		// if we want to adapt a user occupancy, we need to check that the
+		// resized bounds fits the condition to have 30min at least per entry 
+		if (type == OCCUPANCY_TYPE.USER) {
+			//TODO
+		}
 		String request = "UPDATE `fr-occupancy` "
 				+ "SET timestampStart = ? AND timestampEnd = ? "
 				+ "WHERE uid = ? AND timestampStart = ?";
@@ -340,8 +397,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				HttpURLConnection.HTTP_OK + "");
 
 		FRPeriod period = request.getPeriod();
-		long tsStart = roundToNearestHalfHourStart(period.getTimeStampStart());
-		long tsEnd = roundToNearestHalfHourEnd(period.getTimeStampEnd());
+		long tsStart = roundToNearestHalfHourBefore(period.getTimeStampStart());
+		long tsEnd = roundToNearestHalfHourAfter(period.getTimeStampEnd());
 
 		if (!FRTimes.validCalendars(period)) {
 			// if something is wrong in the request
@@ -368,7 +425,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
-	private long roundToNearestHalfHourStart(long timestamp) {
+	private long roundToNearestHalfHourBefore(long timestamp) {
 		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
 
 		if (timeToCompleteHour < m30M_MS) {
@@ -379,7 +436,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return timestamp - timeInMin;
 	}
 
-	private long roundToNearestHalfHourEnd(long timestamp) {
+	private long roundToNearestHalfHourAfter(long timestamp) {
 		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
 
 		if (timeToCompleteHour < m30M_MS) {
@@ -611,7 +668,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		Connection connectBDD;
 		try {
 			connectBDD = connMgr.getConnection();
-			// TODO check for left outer join
 			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, "
 					+ "uo.count, uo.timestampStart, uo.timestampEnd, uo.type "
 					+ "FROM `fr-roomslist` rl, `fr-occupancy` uo "
@@ -1072,7 +1128,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
 			throws TException {
-		// TODO Auto-generated method stub
+		WorkingOccupancy work = request.getWork();
+		FRPeriod period = work.getPeriod();
+		FRRoom room = work.getRoom();
+		insertOccupancy(period, OCCUPANCY_TYPE.USER, room);
 		return null;
 	}
 
