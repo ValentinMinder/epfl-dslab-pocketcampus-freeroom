@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -112,9 +113,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * Whenever you need to insert an occupancy you should call this one. *
 	 * 
 	 * @param period
+	 *            The period of the occupancy
 	 * @param type
+	 *            Type of the occupancy (for instance user or room occupancy)
 	 * @param room
-	 * @return
+	 *            The room, the object has to contains the UID
+	 * @return true if the occupancy has been well inserted, false otherwise.
 	 */
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
 			FRRoom room) {
@@ -127,10 +131,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long tsEnd = period.getTimeStampEnd();
 
 		boolean userOccupation = false;
-		// only used for user occupancies, room's occupancies should not be
-		// modified
-		long minStart = tsStart;
-		long maxEnd = tsEnd;
 
 		// first check if you can fully insert it (no other overlapping
 		// occupancy of rooms)
@@ -165,141 +165,86 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// further there is an overlap
 				if (typeToInsert == OCCUPANCY_TYPE.ROOM
 						&& type == OCCUPANCY_TYPE.ROOM) {
+					System.out
+							.println("Error during insertion of occupancy, overlapping of two rooms occupancy.");
 					return false;
-				} else if (typeToInsert == OCCUPANCY_TYPE.ROOM) {
-					// else, we need to adapt the boundaries of the overlapping
-					// entries, rooms occupancy has the priority over user
-					// occupancy
-
-					if (start > tsStart && start < tsEnd) {
-						adaptTimeStampOccupancy(uid, start, tsEnd, end,
-								OCCUPANCY_TYPE.USER);
-					} else if (end < tsEnd && end > start) {
-						adaptTimeStampOccupancy(uid, start, start, tsStart,
-								OCCUPANCY_TYPE.USER);
-					} else {
-						// simply delete it if it is entirely in the period
-						deleteOccupancy(uid, start);
-					}
-				} else if (typeToInsert == OCCUPANCY_TYPE.USER
-						&& type == OCCUPANCY_TYPE.ROOM) {
-					// simply adapt our boundaries
-					userOccupation = true;
-					if (start > tsStart && start < tsEnd) {
-						tsEnd = start;
-						maxEnd = start;
-					} else if (end < tsEnd && end > tsStart) {
-						tsStart = end;
-						minStart = end;
-					} else {
-						// there is a course, no possiblity to insert a user
-						// occupancy here
-						return false;
-					}
-				} else {
-					// TODO check how user occupancies is updated to see if it
-					// is worth keeping this branchment
-					if (start > tsStart && start < tsEnd) {
-						// shouldn't happen
-						System.out
-								.println("Error while inserting, trying to insert user occupancy that PARTIALLY overlap another useroccupancy");
-						return false;
-					} else if (end < tsEnd && end > start) {
-						// shouldn't happen
-						System.out
-								.println("Error while inserting, trying to insert user occupancy that PARTIALLY overlap another useroccupancy");
-
-						return false;
-					}
-					// otherwise no problem, insertion is step by step
+					// } else if (typeToInsert == OCCUPANCY_TYPE.ROOM) {
+					// // else, we need to adapt the boundaries of the
+					// overlapping
+					// // entries, rooms occupancy has the priority over user
+					// // occupancy
+					//
+					// if (start > tsStart && start < tsEnd) {
+					// adaptTimeStampOccupancy(uid, start, tsEnd, end,
+					// OCCUPANCY_TYPE.USER);
+					// } else if (end < tsEnd && end > start) {
+					// adaptTimeStampOccupancy(uid, start, start, tsStart,
+					// OCCUPANCY_TYPE.USER);
+					// } else {
+					// // simply delete it if it is entirely in the period
+					// deleteOccupancy(uid, start);
+					// }
+					// } else if (typeToInsert == OCCUPANCY_TYPE.USER
+					// && type == OCCUPANCY_TYPE.ROOM) {
+					// // simply adapt our boundaries
+					// userOccupation = true;
+					// if (start > tsStart && start < tsEnd) {
+					// tsEnd = start;
+					// maxEnd = start;
+					// } else if (end < tsEnd && end > tsStart) {
+					// tsStart = end;
+					// minStart = end;
+					// } else {
+					// // there is a course, no possiblity to insert a user
+					// // occupancy here
+					// return false;
+					// }
+					// } else if (typeToInsert == OCCUPANCY_TYPE.USER){
+					// // TODO check how user occupancies is updated to see if
+					// it
+					// // is worth keeping this branchment
+					// if (start > tsStart && start < tsEnd) {
+					// // shouldn't happen
+					// System.out
+					// .println("Error while inserting, trying to insert user occupancy that PARTIALLY overlap another useroccupancy");
+					// return false;
+					// } else if (end < tsEnd && end > start) {
+					// // shouldn't happen
+					// System.out
+					// .println("Error while inserting, trying to insert user occupancy that PARTIALLY overlap another useroccupancy");
+					//
+					// return false;
+					// }
+					// // otherwise no problem, insertion is step by step
+					// }
 				}
 			}
-
 			// and now insert it !
 
 			if (!userOccupation) {
 				return insertOccupancyInDB(room.getUid(), tsStart, tsEnd,
 						OCCUPANCY_TYPE.ROOM, 0);
 			} else {
-				if (tsEnd - tsStart < m30M_MS) {
+				if (tsEnd - tsStart < ONE_HOUR_MS) {
 					return false;
 				}
 
-				// TODO delete user occupancy if room occupancy make user
-				// occupancy resize (or adapt again)
-				// adapt the boundaries of the period rounded to the nearest
-				// half hour
-				long roundStartBefore = roundToNearestHalfHourBefore(tsStart);
+				boolean overallInsertion = true;
 
-				if (roundStartBefore >= minStart && roundStartBefore <= maxEnd) {
-					tsStart = roundStartBefore;
-				} else {
-					long roundStartAfter = roundToNearestHalfHourAfter(tsStart);
-					if (roundStartAfter >= minStart
-							&& roundStartAfter <= maxEnd) {
-						tsStart = roundStartAfter;
-					} else {
-						System.out
-								.println("The given period for user occupancy does not fit in the actual database , start = "
-										+ tsStart + " end = " + tsEnd);
-						return false;
-					}
+				long hourSharpBefore = Utils.roundHourBefore(tsStart);
+				long numberHours = Utils.determineNumberHour(tsStart, tsEnd);
+
+				for (int i = 0; i < numberHours; ++i) {
+					overallInsertion = overallInsertion
+							&& insertOccupancyInDB(room.getUid(),
+									hourSharpBefore + i * ONE_HOUR_MS,
+									hourSharpBefore + (i + 1) * ONE_HOUR_MS,
+									OCCUPANCY_TYPE.USER, 1);
 				}
 
-				long roundEndBefore = roundToNearestHalfHourBefore(tsEnd);
-
-				if (roundEndBefore >= minStart && roundEndBefore <= maxEnd) {
-					tsStart = roundEndBefore;
-				} else {
-					long roundEndAfter = roundToNearestHalfHourAfter(tsEnd);
-					if (roundEndAfter >= minStart && roundEndAfter <= maxEnd) {
-						tsStart = roundEndAfter;
-					} else {
-						System.out
-								.println("The given period for user occupancy does not fit in the actual database , start = "
-										+ tsStart + " end = " + tsEnd);
-						return false;
-					}
-				}
-
-				// if this is an user occupation we need to insert it step by
-				// step
-				long timeToCompleteHour = ONE_HOUR_MS - (tsStart % ONE_HOUR_MS);
-				long startInsert = tsStart;
-				long endFirstInsert = tsStart + timeToCompleteHour;
-
-				boolean overallInsert = true;
-
-				if (timeToCompleteHour > MARGIN_ERROR_TIMESTAMP) {
-					overallInsert = overallInsert
-							&& insertOccupancyInDB(room.getUid(), startInsert,
-									endFirstInsert, OCCUPANCY_TYPE.USER, 1);
-				}
-
-				// TODO optimization, don't compute i*ONE HOUR ... each time,
-				// maybe better use addtion and keeping previous value each time
-				long nextStart = tsStart + timeToCompleteHour;
-				long timeAtEndInMin = tsEnd % ONE_HOUR_MS;
-				long lastCompleteHour = tsEnd - timeAtEndInMin;
-				long nbSteps = (long) (lastCompleteHour - nextStart)
-						/ ONE_HOUR_MS;
-
-				for (int i = 0; i < nbSteps && overallInsert; ++i) {
-					overallInsert = overallInsert
-							&& insertOccupancyInDB(room.getUid(), nextStart + i
-									* ONE_HOUR_MS, nextStart + (i + 1)
-									* ONE_HOUR_MS, OCCUPANCY_TYPE.USER, 1);
-				}
-
-				if (overallInsert && timeAtEndInMin > MARGIN_ERROR_TIMESTAMP) {
-					return insertOccupancyInDB(room.getUid(), nextStart
-							+ nbSteps * ONE_HOUR_MS, nextStart + nbSteps
-							* ONE_HOUR_MS + timeAtEndInMin,
-							OCCUPANCY_TYPE.USER, 1);
-				}
-
-				return overallInsert;
+				return overallInsertion;
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -309,8 +254,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private boolean insertOccupancyInDB(String uid, long tsStart, long tsEnd,
 			OCCUPANCY_TYPE type, int count) {
 		String insertRequest = "INSERT INTO `fr-occupancy` (uid, timestampStart, timestampEnd, type, count) "
-				+ "VALUES (?, ?, ?, ?, ?) " +
-				"ON DUPLICATE KEY UPDATE count = count + 1";
+				+ "VALUES (?, ?, ?, ?, ?) "
+				+ "ON DUPLICATE KEY UPDATE count = count + 1";
 
 		Connection connectBDD;
 		try {
@@ -334,9 +279,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private void adaptTimeStampOccupancy(String uid, long tsStart,
 			long newStart, long newEnd, OCCUPANCY_TYPE type) {
 		// if we want to adapt a user occupancy, we need to check that the
-		// resized bounds fits the condition to have 30min at least per entry 
+		// resized bounds fits the condition to have 30min at least per entry
 		if (type == OCCUPANCY_TYPE.USER) {
-			//TODO
+			// TODO
 		}
 		String request = "UPDATE `fr-occupancy` "
 				+ "SET timestampStart = ? AND timestampEnd = ? "
@@ -1131,8 +1076,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
 		FRRoom room = work.getRoom();
-		insertOccupancy(period, OCCUPANCY_TYPE.USER, room);
-		return null;
+		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER, room);
+		if (success) {
+			return new ImWorkingReply(HttpURLConnection.HTTP_OK, "");
+		} else {
+			return new ImWorkingReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
+					"Cannot insert user occupancy");
+		}
 	}
 
 	@Override

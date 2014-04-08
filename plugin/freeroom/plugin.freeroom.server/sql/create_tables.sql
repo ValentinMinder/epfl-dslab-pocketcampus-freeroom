@@ -61,6 +61,6 @@ CREATE TABLE IF NOT EXISTS `fr-occupancy` (
 	`timestampEnd` bigint(20) NOT NULL,
 	`type` char(255) NOT NULL,
 	`count` int(11) DEFAULT 0,
-	PRIMARY KEY (`uid`, `timestampStart`),
+	PRIMARY KEY (`uid`, `timestampStart`, `type`),
 	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE	
 ) CHARSET=latin1;

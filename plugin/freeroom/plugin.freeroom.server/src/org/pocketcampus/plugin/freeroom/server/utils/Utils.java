@@ -24,6 +24,7 @@ public class Utils {
 	
 	// TODO: move in FRTimes in shared!!!
 	public static final long m30s_IN_MS = 30 * 1000;
+	public static final long ONE_HOUR_MS = 60 * 60 * 1000;
 
 	/**
 	 * Adjust the period given in the request. It adds 30s to the lower
@@ -81,5 +82,22 @@ public class Utils {
 		}
 
 		return sortedResult;
+	}
+	
+	public static long roundHourBefore(long timestamp) {
+		long min = timestamp % ONE_HOUR_MS;
+		return timestamp - min;
+	}
+
+	public static long roundHourAfter(long timestamp) {
+		long minToCompleteHour = ONE_HOUR_MS - (timestamp % ONE_HOUR_MS);
+		return timestamp + minToCompleteHour;
+	}
+	
+	public static long determineNumberHour(long tsStart, long tsEnd) {
+		long startHour = Utils.roundHourBefore(tsStart);
+		long endHour = Utils.roundHourAfter(tsEnd);
+
+		return (endHour - startHour) / ONE_HOUR_MS;
 	}
 }
