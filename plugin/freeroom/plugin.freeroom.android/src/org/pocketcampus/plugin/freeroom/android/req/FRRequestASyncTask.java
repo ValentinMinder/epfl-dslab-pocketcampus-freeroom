@@ -42,6 +42,7 @@ public class FRRequestASyncTask extends
 					result.getClass().getSimpleName());
 			controller.setOccupancyResults(result);
 		} else {
+			caller.anyError();
 			controller.handleReplyError(caller, status,
 					result.getStatusComment(), this.getClass().toString());
 		}
@@ -50,6 +51,7 @@ public class FRRequestASyncTask extends
 	@Override
 	protected void onError(FreeRoomController controller, Exception e) {
 		caller.networkErrorHappened();
+		caller.anyError();
 		e.printStackTrace();
 	}
 }

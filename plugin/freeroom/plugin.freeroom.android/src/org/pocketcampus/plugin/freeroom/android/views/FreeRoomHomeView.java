@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android.views;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +19,7 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
@@ -32,6 +34,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar.Action;
@@ -56,6 +59,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private LinearLayout mLayout;
 
+	private TextView mTextView;
 	private ExpandableListView mExpView;
 
 	private ExpandableListViewAdapter mExpList;
@@ -151,13 +155,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// Setup the layout
 		mLayout = new LinearLayout(getApplicationContext());
-
+		mLayout.setOrientation(LinearLayout.VERTICAL);
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 		// mLayout.setTitle(getString(R.string.freeroom_title_main_title));
 		// mLayout.hideTitle();
 
 		mExpView = new ExpandableListView(getApplicationContext());
+		mTextView = new TextView(getApplicationContext());
+		mLayout.addView(mTextView);
+		setTextSummary(getString(R.string.freeroom_home_init_please_wait));
 		mLayout.addView(mExpView);
 		initializeView();
 
@@ -225,6 +232,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	}
 
+	@Override
+	public void anyError() {
+		setTextSummary(getString(R.string.freeroom_home_error_sorry));
+	}
+
+	private void setTextSummary(String text) {
+		mTextView.setText(text);
+	}
+
 	/**
 	 * Inits the request to the current next valid period.
 	 */
@@ -287,9 +303,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					FRPeriod period = mActualOccupation.getPeriod();
 					Date end = new Date(period.getTimeStampEnd());
 					Date start = new Date(period.getTimeStampStart());
-					Log.v("test",
-							"ActualOccupation! Available :"
-									+ mActualOccupation.isAvailable());
+					Log.v("test", "ActualOccupation! Available :"
+							+ mActualOccupation.isAvailable());
 					Log.v("test",
 							"From: " + start + " / "
 									+ period.getTimeStampStart());
@@ -307,6 +322,29 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void occupancyResultsUpdated() {
+		FRRequest request = mModel.getFRRequest();
+		String s = "";
+		if (request.isOnlyFreeRooms()) {
+			s += "Free rooms ";
+		} else {
+			s += "Rooms ";
+		}
+		FRPeriod period = request.getPeriod();
+		Date endDate = new Date(period.getTimeStampEnd());
+		Date startDate = new Date(period.getTimeStampStart());
+		SimpleDateFormat day_month = new SimpleDateFormat(
+				getString(R.string.freeroom_pattern_day_format));
+		SimpleDateFormat hour_min = new SimpleDateFormat(
+				getString(R.string.freeroom_pattern_hour_format));
+
+		s += getString(R.string.freeroom_check_occupancy_result_onthe) + " ";
+		s += day_month.format(startDate);
+		s += " " + getString(R.string.freeroom_check_occupancy_result_from)
+				+ " ";
+		s += hour_min.format(startDate);
+		s += " " + getString(R.string.freeroom_check_occupancy_result_to) + " ";
+		s += hour_min.format(endDate);
+		setTextSummary(s);
 		mExpList.notifyDataSetChanged();
 	}
 }

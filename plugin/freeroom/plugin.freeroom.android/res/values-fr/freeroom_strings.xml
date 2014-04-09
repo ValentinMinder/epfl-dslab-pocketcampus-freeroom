@@ -15,5 +15,7 @@
     <string name="freeroom_file_downloading">Téléchargement du fichier... Patienter.</string>
     
     <string name="freeroom_no_app_to_handle_filetype">Impossible de trouver une application pour ouvrir ce fichier.</string>
-        
+    
+    <string name="freeroom_pattern_day_format">EEEE d MMMM</string>
+	<string name="freeroom_pattern_hour_format">HH:mm</string>
 </resources>

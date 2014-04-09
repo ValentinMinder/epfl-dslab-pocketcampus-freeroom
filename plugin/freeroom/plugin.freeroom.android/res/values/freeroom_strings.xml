@@ -6,7 +6,6 @@
     <string name="freeroom_events_view_title">Current FreeRoom Events</string>
     <string name="freeroom_string_logout">Logout</string>
     <string name="freeroom_string_events">Events</string>
-    <string name="freeroom_error_freeroom_down">PocketCampus tried to connect to FreeRoom servers, but they seem down.</string>
     <string name="freeroom_error_bad_request">PocketCampus tried to connect to FreeRoom servers, but the request sent by your client could not be handled by the server (400 BAD REQUEST).</string>
     <string name="freeroom_error_internal_error">PocketCampus tried to connect to FreeRoom servers, but the server had an internal error (500 INTERNAL ERROR).</string>
     <string name="freeroom_error_unknown_error">PocketCampus tried to connect to FreeRoom servers, but the server replied unsuccessfully with an unknown error code.</string>
@@ -14,6 +13,8 @@
     <string name="freeroom_file_downloaded">File successfully downloaded.</string>
     <string name="freeroom_file_downloading">Downloading file... Please wait.</string>
     <string name="freeroom_no_app_to_handle_filetype">Could not find any application to open this file.</string>
+    <string name="freeroom_pattern_day_format">EEEE MMMM d</string>
+	<string name="freeroom_pattern_hour_format">h:mm a</string>
     <string name="freeroom_title_main_title">FreeRoom</string>
     <string name="freeroom_title_FRsearch"> FreeRoom: search for a free room</string>
     <string name="freeroom_title_FRresult"> FreeRoom: free room results</string>
@@ -37,7 +38,7 @@
     <string name="freeroom_check_occupancy_search_end">End</string>
     <string name="freeroom_check_occupancy_search_text_no_selected_rooms">No selected rooms : type in first letters in inputbar or select in your favorites</string>
     <string name="freeroom_check_occupancy_search_text_selected_rooms">Selected room(s): </string>
-    <string name="freeroom_check_occupancy_result_onthe">Results on</string>
+    <string name="freeroom_check_occupancy_result_onthe">on</string>
     <string name="freeroom_check_occupancy_result_from">from</string>
     <string name="freeroom_check_occupancy_result_to">to</string>
     <string name="freeroom_check_occupancy_result_occupied">OCCUPIED</string>
@@ -49,5 +50,7 @@
     <string name="freeroom_tab_freeroomsearch">Quick search</string>
     <string name="freeroom_tab_occupancysearch">Adv. search</string>
     <string name="freeroom_no_favorites_freeroom">No favorites rooms are free right now</string>
-
+	<string name="freeroom_home_please_wait">Please wait while results are refreshed</string>
+	<string name="freeroom_home_init_please_wait">Initialization, please wait!</string>
+	<string name="freeroom_home_error_sorry">An error occurred, sorry! ;)</string>
 </resources>

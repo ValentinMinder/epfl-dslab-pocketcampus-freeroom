@@ -17,7 +17,7 @@ import org.pocketcampus.android.platform.sdk.core.IView;
  */
 public interface IAbstractFreeRoomView extends IView {
 
-	void freeRoomServersDown();
+	void anyError();
 
 	void freeRoomServerBadRequest();
 
