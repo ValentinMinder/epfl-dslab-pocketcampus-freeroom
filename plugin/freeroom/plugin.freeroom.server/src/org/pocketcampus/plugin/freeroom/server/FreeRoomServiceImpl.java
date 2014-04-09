@@ -38,6 +38,8 @@ import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
+import android.util.Log;
+
 /**
  * The actual implementation of the server side of the FreeRoom Plugin.
  * 
@@ -63,11 +65,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		ROOM, USER;
 	};
 
-	// margin for error is 14 minute
+	// margin for error is 15 minute
 	private final long MARGIN_ERROR_TIMESTAMP = 60 * 1000 * 15;
-	private final long MIN_PERIOD = 5 * 60 * 1000;
 	private final long ONE_HOUR_MS = 3600 * 1000;
-	private final long m30M_MS = 60 * 30 * 1000;
 
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
@@ -119,7 +119,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
 
-		boolean userOccupation = false;
+		boolean userOccupation = (typeToInsert == OCCUPANCY_TYPE.USER) ? true : false;
 
 		// first check if you can fully insert it (no other overlapping
 		// occupancy of rooms)
@@ -215,14 +215,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						OCCUPANCY_TYPE.ROOM, 0);
 			} else {
 				if (tsEnd - tsStart < ONE_HOUR_MS) {
-					return false;
+					System.out.println("occupancy less than a hour");
+//					return false;
 				}
 
 				boolean overallInsertion = true;
 
 				long hourSharpBefore = Utils.roundHourBefore(tsStart);
 				long numberHours = Utils.determineNumberHour(tsStart, tsEnd);
-
+				
 				for (int i = 0; i < numberHours; ++i) {
 					overallInsertion = overallInsertion
 							&& insertOccupancyInDB(room.getUid(),
@@ -258,7 +259,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setString(4, type.toString());
 			insertQuery.setInt(5, count);
 
-			return insertQuery.execute();
+			insertQuery.execute();
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

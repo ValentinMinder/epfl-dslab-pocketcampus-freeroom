@@ -841,7 +841,7 @@ public class TestFreeRoomSearchAndOccupancy {
 			uidList.add("12206");
 			FRRequest request = new FRRequest(
 					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.THURSDAY,
-							15, 00, 16, 00), false, uidList);
+							8, 00, 16, 00), false, uidList);
 			FRReply reply = server.getOccupancy(request);
 			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
 
@@ -870,7 +870,7 @@ public class TestFreeRoomSearchAndOccupancy {
 								+ day_month.format(calendarStart.getTime())
 								+ " to "
 								+ day_month.format(calendarEnd.getTime())
-								+ " available : " + mAccOcc.isAvailable());
+								+ " available : " + mAccOcc.isAvailable() + " people = " + mAccOcc.getProbableOccupation() + " ratio = " + mAccOcc.getRatioOccupation());
 					}
 				}
 			}

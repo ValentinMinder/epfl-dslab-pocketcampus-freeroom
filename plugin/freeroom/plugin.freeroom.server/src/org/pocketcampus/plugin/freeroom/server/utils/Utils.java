@@ -28,7 +28,7 @@ public class Utils {
 	public static final long ONE_HOUR_MS = 60 * 60 * 1000;
 	public static final long m30M_MS = 60 * 30 * 1000;
 	public static final long ONE_DAY_MS = ONE_HOUR_MS * 24;
-
+	public static final long MARGIN_ERROR = 5 * 60 * 1000;
 	/**
 	 * Adjust the period given in the request. It adds 30s to the lower
 	 * bound, substract 30s from the upper bound. It is used to allow a
@@ -95,7 +95,7 @@ public class Utils {
 	//TODO one half a hour is added mysteriously from the converter probably
 	public static long roundHourAfter(long timestamp) {
 		long minToCompleteHour = ONE_HOUR_MS - (timestamp % ONE_HOUR_MS);
-		if (minToCompleteHour == ONE_HOUR_MS) {
+		if (minToCompleteHour >= ONE_HOUR_MS - MARGIN_ERROR || minToCompleteHour == ONE_HOUR_MS) {
 			return timestamp;
 		}
 		return timestamp + minToCompleteHour;
@@ -111,6 +111,8 @@ public class Utils {
 		int start = mCalendar.get(Calendar.HOUR_OF_DAY);
 		mCalendar.setTimeInMillis(endHour);
 		int end = mCalendar.get(Calendar.HOUR_OF_DAY);
+		
+		System.out.println("start = " + start + " end = " + end);
 		
 		return end - start;
 	}
@@ -130,7 +132,7 @@ public class Utils {
 		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
 		
 		//if the hour is full (like 8:00am) no need to round
-		if (timeToCompleteHour == ONE_HOUR_MS) {
+		if (timeToCompleteHour >= ONE_HOUR_MS - MARGIN_ERROR || timeToCompleteHour == ONE_HOUR_MS) {
 			return timestamp;
 		}
 
