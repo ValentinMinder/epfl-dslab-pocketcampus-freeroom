@@ -458,7 +458,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						FRRoom mRoom = rooms.get(uid);
 						currentUID = uid;
 						currentDoorCode = mRoom.getDoorCode();
-						currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd);
+						currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, true);
 					}
 
 					// we move on to the next room thus re-initialize attributes
@@ -477,7 +477,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						// other rooms
 						FRRoom mRoom = rooms.get(uid);
 						currentDoorCode = mRoom.getDoorCode();
-						currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd);
+						currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, true);
 						currentUID = uid;
 					}
 
@@ -501,7 +501,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// and has to be added in the result hashmap)
 
 				for (FRRoom mRoom : rooms.values()) {
-					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd);
+					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, true);
 					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
 					ActualOccupation accOcc = new ActualOccupation(period, true);
 					accOcc.setProbableOccupation(0);
@@ -606,7 +606,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				if (currentUID == null) {					
 					currentUID = uid;
 					currentDoorCode = mRoom.getDoorCode();
-					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd);
+					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, onlyFreeRooms);
 				}
 
 				// we move on to the next room thus re-initialize attributes
@@ -623,7 +623,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					// re-initialize the value, and continue the process for
 					// other rooms
 					currentDoorCode = mRoom.getDoorCode();
-					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd);
+					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, onlyFreeRooms);
 					currentUID = uid;
 				}
 
@@ -674,7 +674,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					FRRoom mRoom = new FRRoom(doorCode, uid);
 					mRoom.setCapacity(capacity);
 					
-					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd);
+					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, onlyFreeRooms);
 					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
 					ActualOccupation accOcc = new ActualOccupation(period, true);
 					accOcc.setProbableOccupation(0);

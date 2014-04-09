@@ -23,6 +23,7 @@ public class OccupancySorted {
 	private final long MARGIN_FOR_ERROR = 60 * 15 * 1000;
 	private final long MIN_PERIOD = 1 * 60 * 1000;
 
+	private boolean onlyFreeRooms;
 	private ArrayList<ActualOccupation> mActualOccupations;
 	private FRRoom room;
 	private long timestampStart;
@@ -31,7 +32,7 @@ public class OccupancySorted {
 	private boolean isAtLeastOccupiedOnce;
 	private double worstRatio;
 
-	public OccupancySorted(FRRoom room, long tsStart, long tsEnd) {
+	public OccupancySorted(FRRoom room, long tsStart, long tsEnd, boolean onlyFree) {
 		this.mActualOccupations = new ArrayList<ActualOccupation>();
 		this.room = room;
 		isAtLeastFreeOnce = false;
@@ -39,6 +40,7 @@ public class OccupancySorted {
 		worstRatio = 0.0;
 		timestampStart = tsStart;
 		timestampEnd = tsEnd;
+		onlyFreeRooms = onlyFree;
 	}
 
 	public void addActualOccupation(ActualOccupation occ) {
@@ -133,13 +135,7 @@ public class OccupancySorted {
 		long tsPerRoom = timestampStart;
 		boolean previousIsRoom = false;
 		long lastEnd = 0;
-		SimpleDateFormat day_month = new SimpleDateFormat(
-				"EEEE MMMM dd / HH:mm");
-				Calendar c = Calendar.getInstance();
-				c.setTimeInMillis(timestampStart);
-				System.out.println(day_month.format(c.getTime()));
-				c.setTimeInMillis(timestampEnd);
-				System.out.println(day_month.format(c.getTime()));
+		
 		for (ActualOccupation actual : mActualOccupations) {
 			long tsStart = Math.max(tsPerRoom, actual.getPeriod()
 					.getTimeStampStart());
