@@ -174,7 +174,10 @@ public class OccupancySorted {
 				}
 				if (!actual.isAvailable()) {
 					isAtLeastOccupiedOnce = true;
+				} else {
+					isAtLeastFreeOnce = true;
 				}
+				
 			}
 			tsPerRoom = tsEnd;
 			lastEnd = actual.getPeriod().getTimeStampEnd();

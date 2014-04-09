@@ -839,11 +839,9 @@ public class TestFreeRoomSearchAndOccupancy {
 			ArrayList<String> uidList = new ArrayList<>();
 			uidList.add("12205");
 			uidList.add("12206");
-			uidList.add("12207");
-			uidList.add("12208");
 			FRRequest request = new FRRequest(
 					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.THURSDAY,
-							8, 15, 18, 35), true, uidList);
+							15, 00, 16, 00), false, uidList);
 			FRReply reply = server.getOccupancy(request);
 			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
 
