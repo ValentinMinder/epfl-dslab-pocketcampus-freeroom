@@ -176,9 +176,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getApplicationContext(), mModel.getOccupancyResults(), mModel);
 		mExpView.setAdapter(mExpList);
 		addActionToActionBar(hideUnhideAllResults);
-		addActionToActionBar(refresh);
+//		addActionToActionBar(refresh);
 		addActionToActionBar(editFavorites);
-		addActionToActionBar(search);
+//		addActionToActionBar(search);
 		addActionToActionBar(gotBackMenu);
 	}
 
