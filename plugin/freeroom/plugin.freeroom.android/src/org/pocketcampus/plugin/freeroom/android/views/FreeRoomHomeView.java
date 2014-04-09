@@ -192,8 +192,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		ArrayList<String> array = new ArrayList<String>();
 		array.addAll(mModel.getAllRoomMapFavorites().keySet());
 		// TODO: deprecated
-		requestDEPRECATED = new OccupancyRequest(array,
-				FRTimes.getNextValidPeriod());
+//		requestDEPRECATED = new OccupancyRequest(array,
+//				FRTimes.getNextValidPeriod());
 		// new interface
 		mModel.setFRRequest(new FRRequest(FRTimes.getNextValidPeriod(), false,
 				array));
@@ -204,8 +204,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private void refresh() {
 		// TODO: deprecated
-		mController.prepareCheckOccupancy(requestDEPRECATED);
-		mController.checkOccupancy(this);
+//		mController.prepareCheckOccupancy(requestDEPRECATED);
+//		mController.checkOccupancy(this);
 
 		// new interface
 		mController.sendFRRequest(this);
@@ -226,7 +226,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// we do nothing here
 
 		// TODO: deprecated
-		occupancyResultsUpdated();
+//		occupancyResultsUpdated();
 	}
 
 	private void hideUnHideAllResults() {
