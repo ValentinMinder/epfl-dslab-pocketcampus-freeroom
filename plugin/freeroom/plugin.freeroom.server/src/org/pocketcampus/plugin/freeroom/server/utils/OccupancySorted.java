@@ -177,7 +177,7 @@ public class OccupancySorted {
 				} else {
 					isAtLeastFreeOnce = true;
 				}
-				
+
 			}
 			tsPerRoom = tsEnd;
 			lastEnd = actual.getPeriod().getTimeStampEnd();
@@ -191,6 +191,20 @@ public class OccupancySorted {
 		mActualOccupations = resultList;
 	}
 
+	/**
+	 * This method's job is to cut in steps of fixed length a given period. The
+	 * start will the rounded hour of the start's timestamp (e.g if given 10h13
+	 * -> start is 10h00) up to the end hour rounded (e.g 10h43 -> 11h). We
+	 * round the hour due to constraint on the database we decided. See
+	 * create-tables.sql for more information
+	 * 
+	 * @param start
+	 *            The start of the period
+	 * @param end
+	 *            The end of the period
+	 * @return A List of actualoccupations, each of them has a period of at most
+	 *         ONE_HOUR_MS
+	 */
 	private ArrayList<ActualOccupation> cutInStepsPeriod(long start, long end) {
 		ArrayList<ActualOccupation> result = new ArrayList<ActualOccupation>();
 		long hourSharpBefore = Utils.roundHourBefore(start);
@@ -217,8 +231,8 @@ public class OccupancySorted {
 	 *         returns the occupancy only if there is no occupied period in the
 	 *         list of ActualOccupation, otherwise it returns null. If boolean
 	 *         onlyFreeRooms is false, it returns the occupancy adapted and
-	 *         filled during the period given.
-	 *         //TODO maybe to this things in the server (can check the isAtleastoccupied once.)
+	 *         filled during the period given. //TODO maybe to this things in
+	 *         the server (can check the isAtleastoccupied once.)
 	 */
 	public Occupancy getOccupancy() {
 		sortByTimestampStart();

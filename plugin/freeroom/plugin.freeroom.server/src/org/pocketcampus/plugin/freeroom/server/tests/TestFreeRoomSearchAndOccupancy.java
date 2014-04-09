@@ -785,9 +785,10 @@ public class TestFreeRoomSearchAndOccupancy {
 			FRRequest request = new FRRequest(
 					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY,
 							9, 0, 15, 0), true, null);
-			
-			System.out.println(FRTimes.convertWithMinPrecisionFRPeriod(Calendar.WEDNESDAY,
-							9, 00, 15, 0).getTimeStampStart() % Utils.ONE_HOUR_MS);
+
+			System.out.println(FRTimes.convertWithMinPrecisionFRPeriod(
+					Calendar.WEDNESDAY, 9, 00, 15, 0).getTimeStampStart()
+					% Utils.ONE_HOUR_MS);
 			FRReply reply = server.getOccupancy(request);
 			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
 			SimpleDateFormat day_month = new SimpleDateFormat(
@@ -848,7 +849,6 @@ public class TestFreeRoomSearchAndOccupancy {
 			Set<String> buildings = result.keySet();
 			System.out.println(buildings.size() + " buildings");
 
-
 			for (String currentBuilding : buildings) {
 				List<Occupancy> occOfBuilding = result.get(currentBuilding);
 
@@ -870,7 +870,10 @@ public class TestFreeRoomSearchAndOccupancy {
 								+ day_month.format(calendarStart.getTime())
 								+ " to "
 								+ day_month.format(calendarEnd.getTime())
-								+ " available : " + mAccOcc.isAvailable() + " people = " + mAccOcc.getProbableOccupation() + " ratio = " + mAccOcc.getRatioOccupation());
+								+ " available : " + mAccOcc.isAvailable()
+								+ " people = "
+								+ mAccOcc.getProbableOccupation() + " ratio = "
+								+ mAccOcc.getRatioOccupation());
 					}
 				}
 			}

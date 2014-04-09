@@ -1,3 +1,18 @@
+--This table holds all types of occupancy, either a room or user occupancy. 
+-- For practical reasons we assume timestampStart of a user occupancy to be a full hour (e.g 10h00), 
+-- even if it overlaps some other room occupancy, this is why we put the type has a member of the primary key.
+-- The overlaps of room/user occupancy are processed for a request, but not repercuted in the database.
+CREATE TABLE IF NOT EXISTS `fr-occupancy` (
+	`uid` char(255) NOT NULL,
+	`timestampStart` bigint(20) NOT NULL,
+	`timestampEnd` bigint(20) NOT NULL,
+	`type` char(255) NOT NULL,
+	`count` int(11) DEFAULT 0,
+	PRIMARY KEY (`uid`, `timestampStart`, `type`),
+	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE	
+) CHARSET=latin1;
+
+-- Hold the list of rooms and all the details needed about a room.
 CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	`uid` char(255) NOT NULL,
 	`doorCode` char(255) NOT NULL,
@@ -20,47 +35,4 @@ CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	`type` char(255) DEFAULT NULL,
 	`dincat` char(255) DEFAULT NULL,
 	PRIMARY KEY (`uid`)
-) CHARSET=latin1;
-
-CREATE TABLE IF NOT EXISTS `fr-roomsoccupancy` (
-	`oid` int(11) NOT NULL AUTO_INCREMENT,
-	`timestampStart` bigint(20) NOT NULL,
-	`timestampEnd` bigint(20) NOT NULL,
-	`uid` char(255) NOT NULL,
-	PRIMARY KEY (`oid`, `uid`),
-	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE
-) CHARSET=latin1;
-
-CREATE TABLE IF NOT EXISTS `fr-usersoccupancy` (
-	`timestampStart` bigint(20) NOT NULL,
-	`timestampEnd` bigint(20) NOT NULL,
-	`count` int(11) DEFAULT 0,
-	`uid` char(255) NOT NULL,
-	PRIMARY KEY (`timestampStart`, `uid`),
-	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE
-) CHARSET=latin1;
-
-CREATE TABLE IF NOT EXISTS `fr-usersworking` (
-	`oid` int(11) NOT NULL AUTO_INCREMENT,
-	`userID` int(6) NOT NULL,
-	`timestampStart` bigint(20) NOT NULL,
-	`timestampEnd` bigint(20) NOT NULL,
-	`course_id` char(255),
-	`course_name` char(255),
-	`message` char(255),
-	`uid` char(255) NOT NULL,
-	PRIMARY KEY (`oid`, `uid`),
-	UNIQUE KEY `oid` (`oid`),
-	KEY `uid` (`uid`),
-	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE
-) CHARSET=latin1;
-
-CREATE TABLE IF NOT EXISTS `fr-occupancy` (
-	`uid` char(255) NOT NULL,
-	`timestampStart` bigint(20) NOT NULL,
-	`timestampEnd` bigint(20) NOT NULL,
-	`type` char(255) NOT NULL,
-	`count` int(11) DEFAULT 0,
-	PRIMARY KEY (`uid`, `timestampStart`, `type`),
-	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE	
 ) CHARSET=latin1;
