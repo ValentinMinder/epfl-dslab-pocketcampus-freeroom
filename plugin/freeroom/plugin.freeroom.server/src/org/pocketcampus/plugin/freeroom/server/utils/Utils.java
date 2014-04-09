@@ -128,11 +128,18 @@ public class Utils {
 
 	public static long roundToNearestHalfHourAfter(long timestamp) {
 		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
+		
+		//if the hour is full (like 8:00am) no need to round
+		if (timeToCompleteHour == ONE_HOUR_MS) {
+			return timestamp;
+		}
 
+		//if we are beyond 30min for the hour, we take the next one
 		if (timeToCompleteHour < m30M_MS) {
 			return timestamp + timeToCompleteHour;
 		}
 
+		//otherwise we take the next half hour
 		long timeInMinToHalfHour = m30M_MS - timestamp % m30M_MS;
 		return timestamp + timeInMinToHalfHour;
 	}

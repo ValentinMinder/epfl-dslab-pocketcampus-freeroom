@@ -834,21 +834,21 @@ public class TestFreeRoomSearchAndOccupancy {
 			FreeRoomServiceImpl server = new FreeRoomServiceImpl(
 					new ConnectionManager(DB_NOTTEST_URL, DB_USERNAME,
 							DB_PASSWORD));
-
+			SimpleDateFormat day_month = new SimpleDateFormat(
+					"EEEE MMMM dd / HH:mm");
 			ArrayList<String> uidList = new ArrayList<>();
 			uidList.add("12205");
 			uidList.add("12206");
 			FRRequest request = new FRRequest(
 					FRTimes.convertWithMinPrecisionFRPeriod(Calendar.THURSDAY,
-							8, 15, 18, 0), true, uidList);
+							8, 15, 18, 35), true, uidList);
 			FRReply reply = server.getOccupancy(request);
 			Map<String, List<Occupancy>> result = reply.getOccupancyOfRooms();
 
 			Set<String> buildings = result.keySet();
 			System.out.println(buildings.size() + " buildings");
 
-			SimpleDateFormat day_month = new SimpleDateFormat(
-					"EEEE MMMM dd / HH:mm");
+
 			for (String currentBuilding : buildings) {
 				List<Occupancy> occOfBuilding = result.get(currentBuilding);
 

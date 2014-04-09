@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.freeroom.server.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,8 +37,6 @@ public class OccupancySorted {
 		isAtLeastFreeOnce = false;
 		isAtLeastOccupiedOnce = true;
 		worstRatio = 0.0;
-		timestampStart = 0;
-		timestampEnd = 0;
 		timestampStart = tsStart;
 		timestampEnd = tsEnd;
 	}
@@ -133,6 +133,13 @@ public class OccupancySorted {
 		long tsPerRoom = timestampStart;
 		boolean previousIsRoom = false;
 		long lastEnd = 0;
+		SimpleDateFormat day_month = new SimpleDateFormat(
+				"EEEE MMMM dd / HH:mm");
+				Calendar c = Calendar.getInstance();
+				c.setTimeInMillis(timestampStart);
+				System.out.println(day_month.format(c.getTime()));
+				c.setTimeInMillis(timestampEnd);
+				System.out.println(day_month.format(c.getTime()));
 		for (ActualOccupation actual : mActualOccupations) {
 			long tsStart = Math.max(tsPerRoom, actual.getPeriod()
 					.getTimeStampStart());
@@ -185,9 +192,10 @@ public class OccupancySorted {
 		long numberHours = Utils.determineNumberHour(start, end);
 
 		for (int i = 0; i < numberHours; ++i) {
+			long maxEnd = Math.min(hourSharpBefore + (i + 1)
+					* Utils.ONE_HOUR_MS, end);
 			FRPeriod period = new FRPeriod(hourSharpBefore + i
-					* Utils.ONE_HOUR_MS, hourSharpBefore + (i + 1)
-					* Utils.ONE_HOUR_MS, false);
+					* Utils.ONE_HOUR_MS, maxEnd, false);
 			ActualOccupation mAccOcc = new ActualOccupation(period, true);
 			mAccOcc.setProbableOccupation(0);
 			mAccOcc.setRatioOccupation(0.0);
