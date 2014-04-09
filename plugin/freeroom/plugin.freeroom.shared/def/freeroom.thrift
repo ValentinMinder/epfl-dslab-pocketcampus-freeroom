@@ -61,19 +61,6 @@ struct WorkingOccupancy {
 // 400 - BAD REQUEST - when the server couldn't answer due to malformed query from the client
 // 500 - INTERNAL ERROR - when the server couldn't answer due to internal implementation error
 
-// standard response for a free room
-struct FreeRoomReply {
-	1: required i32 status;
-	2: required string statusComment;
-	3: optional set<FRRoom> rooms;
-}
-
-// standard request for a free room
-struct FreeRoomRequest {
-	1: required FRPeriod period;
-	2: optional set<FRRoom> forbiddenRooms;
-}
-
 // defines if the room is reserved or not, occupation type can give details of the occupation
 struct ActualOccupation {
 	1: required FRPeriod period;
@@ -95,12 +82,6 @@ struct Occupancy {
 	5: optional double ratioWorstCaseProbableOccupancy;
 }
 
-// check the occupancy request
-struct OccupancyRequest {
-	1: required list<string> uids;
-	2: required FRPeriod period;
-}
-
 struct FRRequest {
 	1: required FRPeriod period;
 	2: required bool onlyFreeRooms;
@@ -113,13 +94,6 @@ struct FRReply {
 	2: required string statusComment;
 	//map from building to list of occupancies in the building
 	3: optional map<string, list<Occupancy>> occupancyOfRooms;
-}
-
-// check the occupancy reply
-struct OccupancyReply {
-	1: required i32 status;
-	2: required string statusComment;
-	3: optional list<Occupancy> occupancyOfRooms;
 }
 
 //forbiddenRooms represents the rooms that shouldn't be replied 
@@ -157,14 +131,7 @@ struct WhoIsWorkingReply {
 	3: optional list<WorkingOccupancy> theyAreWorking;
 }
 
-
 service FreeRoomService {
-	// generic free room service
-	FreeRoomReply getFreeRoomFromTime(1: FreeRoomRequest request);
-	
-	// generic check the occupancy service
-	OccupancyReply checkTheOccupancy(1: OccupancyRequest request);
-	
 	// new feature, (merge of the two above)
 	FRReply getOccupancy(1: FRRequest request);
 	
