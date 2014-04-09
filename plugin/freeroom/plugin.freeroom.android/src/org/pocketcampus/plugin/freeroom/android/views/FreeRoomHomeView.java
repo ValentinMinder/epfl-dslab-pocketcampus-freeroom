@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.freeroom.android.views;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -14,6 +15,7 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsResultView;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
@@ -25,6 +27,7 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -269,6 +272,37 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void hideUnHideAllResults() {
 		mModel.switchAvailable();
 		mExpList.notifyDataSetChanged();
+		sysoAlloccuResult();
+	}
+
+	private void sysoAlloccuResult() {
+		OrderMapList<String, List<?>, Occupancy> map = mModel
+				.getOccupancyResults();
+		for (String head : map.keySetOrdered()) {
+			List<Occupancy> listOcc = (List<Occupancy>) map.get(head);
+			for (Occupancy mOccupancy : listOcc) {
+				Log.v("test", "room: " + mOccupancy.getRoom().getDoorCode());
+				for (ActualOccupation mActualOccupation : mOccupancy
+						.getOccupancy()) {
+					FRPeriod period = mActualOccupation.getPeriod();
+					Date end = new Date(period.getTimeStampEnd());
+					Date start = new Date(period.getTimeStampStart());
+					Log.v("test",
+							"ActualOccupation! Available :"
+									+ mActualOccupation.isAvailable());
+					Log.v("test",
+							"From: " + start + " / "
+									+ period.getTimeStampStart());
+					Log.v("test",
+							"To: " + end + " / " + period.getTimeStampEnd());
+					Log.v("test",
+							"Pronostics: "
+									+ mActualOccupation.getProbableOccupation()
+									+ " / ratio:"
+									+ mActualOccupation.getRatioOccupation());
+				}
+			}
+		}
 	}
 
 	@Override
