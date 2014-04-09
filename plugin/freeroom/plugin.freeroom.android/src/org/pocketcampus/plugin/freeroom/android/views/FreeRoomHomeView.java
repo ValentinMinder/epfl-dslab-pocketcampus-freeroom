@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.freeroom.android.views;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -13,16 +14,20 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsResultView;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.shared.FRRequest;
+import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
+import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -183,6 +188,38 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		addActionToActionBar(editFavorites);
 		// addActionToActionBar(search);
 		addActionToActionBar(gotBackMenu);
+
+		/**
+		 * If you click on a completely free room, it will indicate that you're
+		 * going to work there.
+		 */
+		final IFreeRoomView view = this;
+		mExpView.setOnChildClickListener(new OnChildClickListener() {
+
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+
+				Occupancy mOccupancy = mExpList.getChildObject(groupPosition,
+						childPosition);
+
+				List<ActualOccupation> list = mOccupancy.getOccupancy();
+				if (list.size() > 0) {
+					long tss = list.get(0).getPeriod().getTimeStampStart();
+					long tse = list.get(list.size() - 1).getPeriod()
+							.getTimeStampEnd();
+					FRPeriod mPeriod = new FRPeriod(tss, tse, false);
+					WorkingOccupancy work = new WorkingOccupancy(mPeriod,
+							mOccupancy.getRoom());
+					ImWorkingRequest request = new ImWorkingRequest(work);
+					mController.prepareImWorking(request);
+					mController.ImWorking(view);
+					return true;
+				}
+				return false;
+			}
+		});
+
 	}
 
 	/**
