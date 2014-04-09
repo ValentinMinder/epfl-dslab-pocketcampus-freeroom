@@ -13,6 +13,7 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsResultView;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
@@ -52,9 +53,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private ExpandableListViewAdapter mExpList;
 
 	/**
+	 * TODO: deprecated.
+	 * <p>
 	 * Request currently displayed.
 	 */
-	private OccupancyRequest request;
+	private OccupancyRequest requestDEPRECATED;
 
 	private Action search = new Action() {
 		public void performAction(View view) {
@@ -176,9 +179,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getApplicationContext(), mModel.getOccupancyResults(), mModel);
 		mExpView.setAdapter(mExpList);
 		addActionToActionBar(hideUnhideAllResults);
-//		addActionToActionBar(refresh);
+		// addActionToActionBar(refresh);
 		addActionToActionBar(editFavorites);
-//		addActionToActionBar(search);
+		// addActionToActionBar(search);
 		addActionToActionBar(gotBackMenu);
 	}
 
@@ -188,25 +191,24 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void init() {
 		ArrayList<String> array = new ArrayList<String>();
 		array.addAll(mModel.getAllRoomMapFavorites().keySet());
-		request = new OccupancyRequest(array, FRTimes.getNextValidPeriod());
-	}
-
-	/**
-	 * Set the stored query to a new value.
-	 * 
-	 * @param request
-	 *            the new request
-	 */
-	public void setRequest(OccupancyRequest request) {
-		this.request = request;
+		// TODO: deprecated
+		requestDEPRECATED = new OccupancyRequest(array,
+				FRTimes.getNextValidPeriod());
+		// new interface
+		mModel.setFRRequest(new FRRequest(FRTimes.getNextValidPeriod(), false,
+				array));
 	}
 
 	/**
 	 * Send the set request to the controller.
 	 */
 	private void refresh() {
-		mController.prepareCheckOccupancy(request);
+		// TODO: deprecated
+		mController.prepareCheckOccupancy(requestDEPRECATED);
 		mController.checkOccupancy(this);
+
+		// new interface
+		mController.sendFRRequest(this);
 	}
 
 	@Override
@@ -222,6 +224,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
+
+		// TODO: deprecated
 		occupancyResultsUpdated();
 	}
 

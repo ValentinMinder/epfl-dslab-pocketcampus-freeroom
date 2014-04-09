@@ -18,6 +18,7 @@ import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
@@ -59,10 +60,11 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	IFreeRoomView mListeners = (IFreeRoomView) getListeners();
 
-	/** 
+	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
 	 * <p>
-	 * List of <code>FRRoom</code>'s obtained from the freeroom query **/
+	 * List of <code>FRRoom</code>'s obtained from the freeroom query
+	 **/
 	private Set<FRRoom> mFreeRoomResult = new HashSet<FRRoom>();
 	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
@@ -85,7 +87,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
 	 */
 	private LinkedHashSet<FRRoom> mLinkedHashSetCheckedRoom = new LinkedHashSet<FRRoom>();
-	
+
 	private Set<ImWorkingRequest> allImWorkingRequests = new HashSet<ImWorkingRequest>();
 
 	/**
@@ -142,6 +144,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * 
 	 * @return
 	 */
 	public TreeMap<String, List<FRRoom>> getFreeRoomResultsFilteredByBuildings() {
@@ -150,6 +153,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * 
 	 * @return
 	 */
 	public List<String> getFreeRoomResultsBuildings() {
@@ -158,6 +162,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * 
 	 * @param group
 	 * @param child
 	 * @return
@@ -232,6 +237,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * 
 	 * @param mLinkedHashSet
 	 */
 	public void setOccupancyResultsLinkedHashSetFRRoom(
@@ -241,6 +247,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * 
 	 * @param mGroupPosition
 	 * @return
 	 */
@@ -255,6 +262,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * 
 	 * @param mGroupPosition
 	 * @param mChildPosition
 	 * @return
@@ -279,6 +287,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * 
 	 * @param mGroupPosition
 	 * @param mChildPosition
 	 * @return
@@ -300,6 +309,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * 
 	 * @param mGroupPosition
 	 * @param mChildPosition
 	 * @return
@@ -322,6 +332,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 
 	/**
 	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
+	 * 
 	 * @param mGroupPosition
 	 * @return
 	 */
@@ -744,5 +755,29 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 			((OrderMapListFew<?, ?, ?>) occupancyByBuilding)
 					.setAvailableAllSwitch();
 		}
+	}
+
+	/**
+	 * Stores the currently displayed request.
+	 */
+	private FRRequest mFRRequest;
+
+	/**
+	 * Get the currently displayed request.
+	 * 
+	 * @return the currently displayed request.
+	 */
+	public FRRequest getFRRequest() {
+		return mFRRequest;
+	}
+
+	/**
+	 * Set the currently displayed request.
+	 * 
+	 * @param request
+	 *            next currently displayed request.
+	 */
+	public void setFRRequest(FRRequest request) {
+		this.mFRRequest = request;
 	}
 }

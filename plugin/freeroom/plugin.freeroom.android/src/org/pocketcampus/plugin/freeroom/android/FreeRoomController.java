@@ -11,6 +11,7 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.req.BuildingAutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.android.req.CheckOccupancyRequest;
 import org.pocketcampus.plugin.freeroom.android.req.CheckWhoIsWorkingRequest;
+import org.pocketcampus.plugin.freeroom.android.req.FRRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.android.req.GetFreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.android.req.SubmitImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
@@ -159,7 +160,8 @@ public class FreeRoomController extends PluginController implements
 
 	public void handleReplySuccess(IFreeRoomView caller, int status,
 			String statusComment, String callingClass, String requestClass) {
-		Log.v(callingClass, "Server replied successfully to a " + requestClass + "!");
+		Log.v(callingClass, "Server replied successfully to a " + requestClass
+				+ "!");
 	}
 
 	public void handleReplyError(IFreeRoomView caller, int status,
@@ -265,7 +267,24 @@ public class FreeRoomController extends PluginController implements
 	}
 
 	// NEW INTERFACE as of 2104.04.04.
+	/**
+	 * Sets the FRReply results received from the server in the model.
+	 * 
+	 * @param result
+	 *            FRReply results received from the server
+	 */
 	public void setOccupancyResults(FRReply result) {
 		mModel.setOccupancyResults(result.getOccupancyOfRooms());
+	}
+
+	/**
+	 * Sends the occupancy request stored in the model to the server.
+	 * 
+	 * @param view
+	 *            the caller view
+	 */
+	public void sendFRRequest(IFreeRoomView view) {
+		new FRRequestASyncTask(view)
+				.start(this, mClient, mModel.getFRRequest());
 	}
 }
