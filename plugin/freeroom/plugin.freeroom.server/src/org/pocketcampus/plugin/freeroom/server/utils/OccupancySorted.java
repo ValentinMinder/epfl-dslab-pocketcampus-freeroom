@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.swing.text.StyledEditorKit.ItalicAction;
+
 import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl.OCCUPANCY_TYPE;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -32,11 +34,12 @@ public class OccupancySorted {
 	private boolean isAtLeastOccupiedOnce;
 	private double worstRatio;
 
-	public OccupancySorted(FRRoom room, long tsStart, long tsEnd, boolean onlyFree) {
+	public OccupancySorted(FRRoom room, long tsStart, long tsEnd,
+			boolean onlyFree) {
 		this.mActualOccupations = new ArrayList<ActualOccupation>();
 		this.room = room;
 		isAtLeastFreeOnce = false;
-		isAtLeastOccupiedOnce = true;
+		isAtLeastOccupiedOnce = false;
 		worstRatio = 0.0;
 		timestampStart = tsStart;
 		timestampEnd = tsEnd;
@@ -135,7 +138,7 @@ public class OccupancySorted {
 		long tsPerRoom = timestampStart;
 		boolean previousIsRoom = false;
 		long lastEnd = 0;
-		
+
 		for (ActualOccupation actual : mActualOccupations) {
 			long tsStart = Math.max(tsPerRoom, actual.getPeriod()
 					.getTimeStampStart());
@@ -169,14 +172,17 @@ public class OccupancySorted {
 				if (ratio > worstRatio) {
 					worstRatio = ratio;
 				}
+				if (!actual.isAvailable()) {
+					isAtLeastOccupiedOnce = true;
+				}
 			}
 			tsPerRoom = tsEnd;
 			lastEnd = actual.getPeriod().getTimeStampEnd();
 		}
-		
+
 		if (timestampEnd - lastEnd > MARGIN_FOR_ERROR) {
-			ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(
-					lastEnd, timestampEnd);
+			ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(lastEnd,
+					timestampEnd);
 			resultList.addAll(subDivised);
 		}
 		mActualOccupations = resultList;
@@ -204,15 +210,25 @@ public class OccupancySorted {
 	 * Create an Occupancy object, set its properties. The resulting object is
 	 * suitable for a reply to the client.
 	 * 
-	 * @return The occupancy filled and adapted.
+	 * @return If boolean onlyFreeRooms (passed to the constructor) is true it
+	 *         returns the occupancy only if there is no occupied period in the
+	 *         list of ActualOccupation, otherwise it returns null. If boolean
+	 *         onlyFreeRooms is false, it returns the occupancy adapted and
+	 *         filled during the period given.
+	 *         //TODO maybe to this things in the server (can check the isAtleastoccupied once.)
 	 */
 	public Occupancy getOccupancy() {
 		sortByTimestampStart();
 		fillGaps();
-		Occupancy mOccupancy = new Occupancy(room, mActualOccupations,
-				isAtLeastOccupiedOnce, isAtLeastFreeOnce);
-		mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
-		return mOccupancy;
+		if (isAtLeastOccupiedOnce && onlyFreeRooms) {
+			return null;
+		} else {
+			Occupancy mOccupancy = new Occupancy(room, mActualOccupations,
+					isAtLeastOccupiedOnce, isAtLeastFreeOnce);
+			mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
+
+			return mOccupancy;
+		}
 	}
 
 	public int size() {

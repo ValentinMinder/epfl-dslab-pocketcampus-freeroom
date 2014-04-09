@@ -521,6 +521,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private void addToHashMapOccupancy(String doorCode, Occupancy mOcc,
 			HashMap<String, List<Occupancy>> result) {
+		if (mOcc == null) {
+			return;
+		}
 		String building = Utils.extractBuilding(doorCode);
 		List<Occupancy> occ = result.get(building);
 
