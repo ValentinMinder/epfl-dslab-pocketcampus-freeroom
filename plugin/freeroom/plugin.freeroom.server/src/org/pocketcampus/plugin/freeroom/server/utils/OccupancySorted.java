@@ -1,15 +1,9 @@
 package org.pocketcampus.plugin.freeroom.server.utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
-import javax.swing.text.StyledEditorKit.ItalicAction;
-
-import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl.OCCUPANCY_TYPE;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
@@ -22,6 +16,7 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
 public class OccupancySorted {
 
+	//TODO put all constants in Utils
 	private final long MARGIN_FOR_ERROR = 60 * 15 * 1000;
 	private final long MIN_PERIOD = 1 * 60 * 1000;
 

@@ -278,7 +278,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public FreeRoomReply getFreeRoomFromTime(FreeRoomRequest request)
 			throws TException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -286,7 +285,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public OccupancyReply checkTheOccupancy(OccupancyRequest request)
 			throws TException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -597,10 +595,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				uidList.remove(currentUID);
 			}
 
-			// TODO refactor method to add in hashmap if not already present ..
 			// for all the others rooms that hasn't been matched in the query,
 			// we need to add them too
-
 			if (!uidList.isEmpty()) {
 				roomsListQueryFormat = "";
 				for (i = 0; i < uidList.size() - 1; ++i) {

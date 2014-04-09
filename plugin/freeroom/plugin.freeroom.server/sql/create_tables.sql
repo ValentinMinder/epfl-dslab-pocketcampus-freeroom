@@ -1,6 +1,6 @@
 --This table holds all types of occupancy, either a room or user occupancy. 
 -- For practical reasons we assume timestampStart of a user occupancy to be a full hour (e.g 10h00), 
--- even if it overlaps some other room occupancy, this is why we put the type has a member of the primary key.
+-- even if it overlaps some other room occupancy, this is why we put the type as a member of the primary key.
 -- The overlaps of room/user occupancy are processed for a request, but not repercuted in the database.
 CREATE TABLE IF NOT EXISTS `fr-occupancy` (
 	`uid` char(255) NOT NULL,
