@@ -80,6 +80,11 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView"
             android:screenOrientation="nosensor" />
+        
+        <activity
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.freeroom.android.views.FreeRoomSearchView"
+            android:screenOrientation="nosensor" />
 
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"
