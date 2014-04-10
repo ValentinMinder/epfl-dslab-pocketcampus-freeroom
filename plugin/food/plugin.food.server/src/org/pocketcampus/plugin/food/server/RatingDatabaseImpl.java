@@ -37,27 +37,43 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	public void insertMenu(List<EpflRestaurant> menu, LocalDate date, MealTime time) throws Exception {
 		Connection connection = _connectionManager.getConnection();
 
-		for (EpflRestaurant restaurant : menu) {
-			PreparedStatement mealStatement = null;
-			try {
-				String mealCommand = "REPLACE INTO meals (Id, Name, RestaurantId, TimeIndependentId, Date, Time) VALUES (?, ?, ?, ?, ?, ?)";
-				mealStatement = connection.prepareStatement(mealCommand);
+		PreparedStatement restaurantStatement = null;
+		try {
+			String restaurantCommand = "REPLACE INTO restaurants (Id, Name) VALUES (?, ?)";
+			restaurantStatement = connection.prepareStatement(restaurantCommand);
 
-				for (EpflMeal meal : restaurant.getRMeals()) {
-					mealStatement.setLong(1, meal.getMId());
-					mealStatement.setString(2, meal.getMName());
-					mealStatement.setLong(3, restaurant.getRId());
-					mealStatement.setLong(4, getTimeIndependentId(meal));
-					mealStatement.setDate(5, new Date(date.toDate().getTime()));
-					mealStatement.setString(6, time.name());
-					mealStatement.addBatch();
-				}
+			for (EpflRestaurant restaurant : menu) {
+				restaurantStatement.setLong(1, restaurant.getRId());
+				restaurantStatement.setString(2, restaurant.getRName());
+				restaurantStatement.addBatch();
+				
+				PreparedStatement mealStatement = null;
+				try {
+					String mealCommand = "REPLACE INTO meals (Id, Name, RestaurantId, TimeIndependentId, Date, Time) VALUES (?, ?, ?, ?, ?, ?)";
+					mealStatement = connection.prepareStatement(mealCommand);
 
-				mealStatement.executeBatch();
-			} finally {
-				if (mealStatement != null) {
-					mealStatement.close();
+					for (EpflMeal meal : restaurant.getRMeals()) {
+						mealStatement.setLong(1, meal.getMId());
+						mealStatement.setString(2, meal.getMName());
+						mealStatement.setLong(3, restaurant.getRId());
+						mealStatement.setLong(4, getTimeIndependentId(meal));
+						mealStatement.setDate(5, new Date(date.toDate().getTime()));
+						mealStatement.setString(6, time.name());
+						mealStatement.addBatch();
+					}
+
+					mealStatement.executeBatch();
+				} finally {
+					if (mealStatement != null) {
+						mealStatement.close();
+					}
 				}
+			}
+			
+			restaurantStatement.executeBatch();
+		} finally {
+			if (restaurantStatement != null) {
+				restaurantStatement.close();
 			}
 		}
 	}
@@ -78,7 +94,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 
 			ResultSet results = getDateTimeStatement.executeQuery();
 			results.next();
-			date = new LocalDate( results.getDate(1));
+			date = new LocalDate(results.getDate(1));
 			time = MealTime.valueOf(results.getString(2));
 			timeIndependentId = results.getLong(3);
 		} finally {
@@ -86,11 +102,11 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 				getDateTimeStatement.close();
 			}
 		}
-		
-		if(date.isAfter(LocalDate.now())){
+
+		if (date.isAfter(LocalDate.now())) {
 			return SubmitStatus.MEAL_IN_FUTURE;
 		}
-		if(Days.daysBetween(date, LocalDate.now()).isGreaterThan(_maxVotingDaysInPast)){
+		if (Days.daysBetween(date, LocalDate.now()).isGreaterThan(_maxVotingDaysInPast)) {
 			return SubmitStatus.MEAL_IN_DISTANT_PAST;
 		}
 
