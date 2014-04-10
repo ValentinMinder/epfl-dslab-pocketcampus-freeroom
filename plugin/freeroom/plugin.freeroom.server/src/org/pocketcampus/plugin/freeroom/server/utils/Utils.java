@@ -111,9 +111,7 @@ public class Utils {
 		int start = mCalendar.get(Calendar.HOUR_OF_DAY);
 		mCalendar.setTimeInMillis(endHour);
 		int end = mCalendar.get(Calendar.HOUR_OF_DAY);
-		
-		System.out.println("start = " + start + " end = " + end);
-		
+				
 		return end - start;
 	}
 	

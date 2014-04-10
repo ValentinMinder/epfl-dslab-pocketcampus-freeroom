@@ -112,6 +112,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
 			FRRoom room) {
+		System.out.println("Inserting occupancy " + type.toString() + " for room " + room.getDoorCode());
 		return insertAndCheckOccupancyRoom(period, room, type);
 	}
 
@@ -330,7 +331,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
 			boolean onlyFreeRooms, long tsStart, long tsEnd) {
-		System.out.println("Requestion any free rooms");
+		System.out.println("Requesting any free rooms " + onlyFreeRooms);
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
 		if (onlyFreeRooms) {
 			Connection connectBDD;
@@ -416,10 +417,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// actualoccupation as they come, (sorted by timestamp)
 				while (occupancyResult.next()) {
 					// extract attributes of record
-					long start = resultQuery.getLong("timestampStart");
-					long end = resultQuery.getLong("timestampEnd");
-					String uid = resultQuery.getString("uid");
-					int count = resultQuery.getInt("count");
+					long start = occupancyResult.getLong("timestampStart");
+					long end = occupancyResult.getLong("timestampEnd");
+					String uid = occupancyResult.getString("uid");
+					int count = occupancyResult.getInt("count");
 
 					FRPeriod period = new FRPeriod(start, end, false);
 
@@ -437,7 +438,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					// for the loop, as well as storing the previous room in the
 					// result hashmap
 					if (!uid.equals(currentUID)) {
-						System.out.println("new room ");
 						Occupancy mOccupancy = currentOccupancy.getOccupancy();
 
 						addToHashMapOccupancy(currentDoorCode, mOccupancy,
@@ -671,6 +671,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return;
 		}
 		String building = Utils.extractBuilding(doorCode);
+		System.out.println("adding room " + mOcc.getRoom().getDoorCode());
 		List<Occupancy> occ = result.get(building);
 
 		if (occ == null) {
@@ -692,15 +693,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
 			throws TException {
+		System.out.println("Requesting autocomplete of " + request.getConstraint());
 		AutoCompleteReply reply = new AutoCompleteReply(
 				HttpURLConnection.HTTP_CREATED, ""
 						+ HttpURLConnection.HTTP_CREATED);
 
 		String constraint = request.getConstraint();
 
+		//TODO to decomment (testing purpose)
 		if (constraint.length() < 2) {
-			return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
-					"Constraints should be at least 2 characters long.");
+//			return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
+//					"Constraints should be at least 2 characters long.");
 		}
 
 		List<FRRoom> rooms = new ArrayList<FRRoom>();
@@ -726,13 +729,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			if (forbiddenRooms == null) {
 				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
-						+ "ORDER BY rl.doorCode ASC LIMIT 0, "
+						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
 			} else {
 				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
 						+ "AND rl.uid NOT IN (" + forbidRoomsSQL + ") "
-						+ "ORDER BY rl.doorCode ASC LIMIT 0, "
+						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
 			}
 
@@ -774,6 +777,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply = new AutoCompleteReply(HttpURLConnection.HTTP_OK, ""
 					+ HttpURLConnection.HTTP_OK);
 			reply.setListRoom(Utils.sortRoomsByBuilding(rooms));
+			//TODO TO DELETE
+			reply.setListFRRoom(rooms);
 
 		} catch (SQLException e) {
 			reply = new AutoCompleteReply(

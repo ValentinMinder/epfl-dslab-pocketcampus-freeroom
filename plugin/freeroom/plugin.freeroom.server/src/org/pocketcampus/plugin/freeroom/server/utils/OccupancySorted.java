@@ -132,7 +132,7 @@ public class OccupancySorted {
 		ArrayList<ActualOccupation> resultList = new ArrayList<ActualOccupation>();
 		long tsPerRoom = timestampStart;
 		boolean previousIsRoom = false;
-		long lastEnd = 0;
+		long lastEnd = tsPerRoom;
 
 		for (ActualOccupation actual : mActualOccupations) {
 			long tsStart = Math.max(tsPerRoom, actual.getPeriod()
@@ -169,7 +169,9 @@ public class OccupancySorted {
 				}
 				if (!actual.isAvailable()) {
 					isAtLeastOccupiedOnce = true;
-				} else {
+				} 
+				
+				if (actual.isAvailable()){
 					isAtLeastFreeOnce = true;
 				}
 
@@ -182,6 +184,7 @@ public class OccupancySorted {
 			ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(lastEnd,
 					timestampEnd);
 			resultList.addAll(subDivised);
+			isAtLeastFreeOnce = true;
 		}
 		mActualOccupations = resultList;
 	}
