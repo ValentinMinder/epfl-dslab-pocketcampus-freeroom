@@ -5,9 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
-import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
-import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
-import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImplOld;
 
 public class ExchangeLoading {
 

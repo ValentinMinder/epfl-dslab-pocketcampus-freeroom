@@ -99,8 +99,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * This method's job is to ensure the data are stored in a proper way.
-	 * Whenever you need to insert an occupancy you should call this one. 
-	 * The start of a user occupancy should be a full hour (e.g 10h00).
+	 * Whenever you need to insert an occupancy you should call this one. The
+	 * start of a user occupancy should be a full hour (e.g 10h00).
 	 * 
 	 * @param period
 	 *            The period of the occupancy
@@ -120,14 +120,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long tsStart = period.getTimeStampStart();
 		long tsEnd = period.getTimeStampEnd();
 
-		boolean userOccupation = (typeToInsert == OCCUPANCY_TYPE.USER) ? true : false;
+		boolean userOccupation = (typeToInsert == OCCUPANCY_TYPE.USER) ? true
+				: false;
 
 		// first check if you can fully insert it (no other overlapping
 		// occupancy of rooms)
 		String checkRequest = "SELECT * FROM `fr-occupancy` oc "
-				+ "WHERE (oc.timestampStart <= ? AND oc.timestampStart >= ?) "
-				+ "OR (oc.timestampEnd >= ? AND oc.timestampEnd <= ?) "
-				+ "OR (oc.timestampStart >= ? AND oc.timestampEnd <= ?)";
+				+ "WHERE ((oc.timestampStart < ? AND oc.timestampStart > ?) "
+				+ "OR (oc.timestampEnd > ? AND oc.timestampEnd < ?) "
+				+ "OR (oc.timestampStart > ? AND oc.timestampEnd < ?)) AND oc.uid = ?";
 
 		Connection connectBDD;
 		try {
@@ -141,7 +142,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			checkQuery.setLong(4, tsEnd);
 			checkQuery.setLong(5, tsStart);
 			checkQuery.setLong(6, tsEnd);
-
+			checkQuery.setString(7, room.getUid());
+			
 			ResultSet checkResult = checkQuery.executeQuery();
 
 			while (checkResult.next()) {
@@ -155,8 +157,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// further there is an overlap
 				if (typeToInsert == OCCUPANCY_TYPE.ROOM
 						&& type == OCCUPANCY_TYPE.ROOM) {
-					System.out
-							.println("Error during insertion of occupancy, overlapping of two rooms occupancy.");
+					System.err
+							.println("Error during insertion of occupancy, overlapping of two rooms occupancy. : ");
+					System.err.println("Want to insert : " + room.getUid() + " have conflict with " + uid);
 					return false;
 					// } else if (typeToInsert == OCCUPANCY_TYPE.ROOM) {
 					// // else, we need to adapt the boundaries of the
@@ -217,14 +220,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			} else {
 				if (tsEnd - tsStart < ONE_HOUR_MS) {
 					System.out.println("occupancy less than a hour");
-//					return false;
+					// return false;
 				}
 
 				boolean overallInsertion = true;
 
 				long hourSharpBefore = Utils.roundHourBefore(tsStart);
 				long numberHours = Utils.determineNumberHour(tsStart, tsEnd);
-				
+
 				for (int i = 0; i < numberHours; ++i) {
 					overallInsertion = overallInsertion
 							&& insertOccupancyInDB(room.getUid(),
@@ -274,14 +277,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		connMgr = conn;
 	}
 
-	//TODO TO BE DELETED
+	// TODO TO BE DELETED
 	@Override
 	public FreeRoomReply getFreeRoomFromTime(FreeRoomRequest request)
 			throws TException {
 		return null;
 	}
 
-	//TODO TO BE DELETED
+	// TODO TO BE DELETED
 	@Override
 	public OccupancyReply checkTheOccupancy(OccupancyRequest request)
 			throws TException {
@@ -293,7 +296,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		FRReply reply = new FRReply(HttpURLConnection.HTTP_OK,
 				HttpURLConnection.HTTP_OK + "");
 
-		//round the given period to half hours to have a nice display on UI.
+		// round the given period to half hours to have a nice display on UI.
 		FRPeriod period = request.getPeriod();
 		long tsStart = Utils.roundToNearestHalfHourBefore(period
 				.getTimeStampStart());
@@ -327,6 +330,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
 			boolean onlyFreeRooms, long tsStart, long tsEnd) {
+		System.out.println("Requestion any free rooms");
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
 		if (onlyFreeRooms) {
 			Connection connectBDD;
@@ -370,6 +374,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					rooms.put(uid, mRoom);
 					roomsFreeSQL += uid;
 				}
+				// TODO call anyspecific list of room with the given list ? be
+				// careful to rooms that has no occupancy won't appear in this
+				// list !
 
 				// and also select user occupancy of these rooms
 				String userOccupancyRequest = "SELECT "
@@ -422,7 +429,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						FRRoom mRoom = rooms.get(uid);
 						currentUID = uid;
 						currentDoorCode = mRoom.getDoorCode();
-						currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, true);
+						currentOccupancy = new OccupancySorted(mRoom, tsStart,
+								tsEnd, true);
 					}
 
 					// we move on to the next room thus re-initialize attributes
@@ -432,7 +440,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						System.out.println("new room ");
 						Occupancy mOccupancy = currentOccupancy.getOccupancy();
 
-						addToHashMapOccupancy(currentDoorCode, mOccupancy, result);
+						addToHashMapOccupancy(currentDoorCode, mOccupancy,
+								result);
 
 						// remove the room from the list
 						rooms.remove(currentUID);
@@ -441,7 +450,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						// other rooms
 						FRRoom mRoom = rooms.get(uid);
 						currentDoorCode = mRoom.getDoorCode();
-						currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, true);
+						currentOccupancy = new OccupancySorted(mRoom, tsStart,
+								tsEnd, true);
 						currentUID = uid;
 					}
 
@@ -465,14 +475,16 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// and has to be added in the result hashmap)
 
 				for (FRRoom mRoom : rooms.values()) {
-					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, true);
+					currentOccupancy = new OccupancySorted(mRoom, tsStart,
+							tsEnd, true);
 					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
 					ActualOccupation accOcc = new ActualOccupation(period, true);
 					accOcc.setProbableOccupation(0);
 					currentOccupancy.addActualOccupation(accOcc);
-					
+
 					Occupancy mOccupancy = currentOccupancy.getOccupancy();
-					addToHashMapOccupancy(mRoom.getDoorCode(), mOccupancy, result);
+					addToHashMapOccupancy(mRoom.getDoorCode(), mOccupancy,
+							result);
 				}
 
 			} catch (SQLException e) {
@@ -482,7 +494,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		return result;
 	}
-	
+
 	private HashMap<String, List<Occupancy>> getOccupancyOfSpecificRoom(
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
 			long tsEnd) {
@@ -491,6 +503,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd);
 		}
 
+		System.out.println("Requesting specific list of rooms " + uidList);
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
 		int numberOfRooms = uidList.size();
 		// formatting for the query
@@ -545,20 +558,23 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				String uid = resultQuery.getString("uid");
 				int count = resultQuery.getInt("count");
 				String doorCode = resultQuery.getString("doorCode");
-				OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(resultQuery.getString("type"));
-				boolean available = (type == OCCUPANCY_TYPE.USER) ? true : false;
+				OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(resultQuery
+						.getString("type"));
+				boolean available = (type == OCCUPANCY_TYPE.USER) ? true
+						: false;
 				int capacity = resultQuery.getInt("capacity");
 				double ratio = capacity > 0 ? (double) count / capacity : 0.0;
 
 				FRPeriod period = new FRPeriod(start, end, false);
 				FRRoom mRoom = new FRRoom(doorCode, uid);
 				mRoom.setCapacity(capacity);
-				
+
 				// if this is the first iteration
-				if (currentUID == null) {					
+				if (currentUID == null) {
 					currentUID = uid;
 					currentDoorCode = mRoom.getDoorCode();
-					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, onlyFreeRooms);
+					currentOccupancy = new OccupancySorted(mRoom, tsStart,
+							tsEnd, onlyFreeRooms);
 				}
 
 				// we move on to the next room thus re-initialize attributes
@@ -575,11 +591,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					// re-initialize the value, and continue the process for
 					// other rooms
 					currentDoorCode = mRoom.getDoorCode();
-					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, onlyFreeRooms);
+					currentOccupancy = new OccupancySorted(mRoom, tsStart,
+							tsEnd, onlyFreeRooms);
 					currentUID = uid;
 				}
 
-				ActualOccupation accOcc = new ActualOccupation(period, available);
+				ActualOccupation accOcc = new ActualOccupation(period,
+						available);
 				accOcc.setProbableOccupation(count);
 				accOcc.setRatioOccupation(ratio);
 				currentOccupancy.addActualOccupation(accOcc);
@@ -623,15 +641,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					int capacity = infoRoom.getInt("capacity");
 					FRRoom mRoom = new FRRoom(doorCode, uid);
 					mRoom.setCapacity(capacity);
-					
-					currentOccupancy = new OccupancySorted(mRoom, tsStart, tsEnd, onlyFreeRooms);
+
+					currentOccupancy = new OccupancySorted(mRoom, tsStart,
+							tsEnd, onlyFreeRooms);
 					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
 					ActualOccupation accOcc = new ActualOccupation(period, true);
 					accOcc.setProbableOccupation(0);
 					currentOccupancy.addActualOccupation(accOcc);
-					
+
 					Occupancy mOccupancy = currentOccupancy.getOccupancy();
-					addToHashMapOccupancy(mRoom.getDoorCode(), mOccupancy, result);
+					addToHashMapOccupancy(mRoom.getDoorCode(), mOccupancy,
+							result);
 				}
 			}
 		} catch (SQLException e) {
@@ -640,7 +660,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return result;
 	}
 
-	/** Add to a given hashmap the given occupancy by extracting the building from the doorCode. **/
+	/**
+	 * Add to a given hashmap the given occupancy by extracting the building
+	 * from the doorCode. The hashmap maps a building to a list of Occupancy for
+	 * room in this building.
+	 **/
 	private void addToHashMapOccupancy(String doorCode, Occupancy mOcc,
 			HashMap<String, List<Occupancy>> result) {
 		if (mOcc == null) {
@@ -763,6 +787,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
 			throws TException {
+		System.out.println("ImWorkingThere request for room " + request.getWork().getRoom().getDoorCode());
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
 		FRRoom room = work.getRoom();
