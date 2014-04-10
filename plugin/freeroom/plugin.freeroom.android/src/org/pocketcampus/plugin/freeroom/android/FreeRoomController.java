@@ -1,8 +1,10 @@
 package org.pocketcampus.plugin.freeroom.android;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -129,6 +131,14 @@ public class FreeRoomController extends PluginController implements
 	}
 
 	public void setCheckOccupancyResults(OccupancyReply result) {
+
+		// ONLY for testing new interface with old data!
+		Map<String, List<Occupancy>> map = new HashMap<String, List<Occupancy>>();
+		System.out.println(result.getOccupancyOfRooms().size()
+				+ " size of rooms av.");
+		map.put("BC", result.getOccupancyOfRooms());
+		mModel.setOccupancyResults(map);
+
 		List<Occupancy> list = result.getOccupancyOfRooms();
 
 		// this check the uniqueness of the rooms in the reply
