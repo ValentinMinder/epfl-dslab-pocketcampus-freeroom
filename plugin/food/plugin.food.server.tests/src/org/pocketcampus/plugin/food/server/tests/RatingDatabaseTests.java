@@ -1,6 +1,9 @@
 package org.pocketcampus.plugin.food.server.tests;
 
 import static org.junit.Assert.*;
+
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import org.junit.*;
 
 import java.util.List;
@@ -24,7 +27,7 @@ public final class RatingDatabaseTests {
 
 	@Before
 	public void beforeTest() {
-		_database = new RatingDatabaseImpl(DB_URL, DB_USERNAME, DB_PASSWORD);
+		_database = new RatingDatabaseImpl(DB_URL, DB_USERNAME, DB_PASSWORD, Days.days(5));
 	}
 
 	@After
@@ -34,41 +37,91 @@ public final class RatingDatabaseTests {
 
 	// Inserting the menu works
 	@Test
-	public void insertMenuWorks() {
-		_database.insertMenu(getTestMenu());
+	public void insertMenu() throws Exception {
+		_database.insertMenu(getTestMenu(0), LocalDate.now(), MealTime.LUNCH);
 	}
 
 	// Duplicate menu insertions work
 	@Test
-	public void insertMenuDuplicateWorks() {
-		_database.insertMenu(getTestMenu());
-		_database.insertMenu(getTestMenu());
+	public void insertDuplicateMenu() throws Exception {
+		LocalDate now = LocalDate.now();
+		_database.insertMenu(getTestMenu(0), now, MealTime.LUNCH);
+		_database.insertMenu(getTestMenu(0), now, MealTime.LUNCH);
 	}
 
 	// Voting works
 	@Test
-	public void voteWorks() {
-		_database.insertMenu(getTestMenu());
-		_database.vote(101, 4.0);
+	public void oneVote() throws Exception {
+		_database.insertMenu(getTestMenu(0), LocalDate.now(), MealTime.LUNCH);
+
+		assertEquals(SubmitStatus.VALID, _database.vote("A", 0, 4.0));
+	}
+	
+	// Vote for meal in the future is refused
+	@Test
+	public void voteForFutureMeal() throws Exception {
+		_database.insertMenu(getTestMenu(0), LocalDate.now().plusDays(1), MealTime.LUNCH);
+
+		assertEquals(SubmitStatus.MEAL_IN_FUTURE, _database.vote("A", 0, 4.0));
+	}	
+	
+	// Vote for meal in distant past is refused
+	@Test
+	public void voteForVeryOldMeal() throws Exception {
+		_database.insertMenu(getTestMenu(0), LocalDate.now().plusDays(-200), MealTime.LUNCH);
+
+		assertEquals(SubmitStatus.MEAL_IN_DISTANT_PAST, _database.vote("A", 0, 4.0));
 	}
 
-	// Voting multiple times works
+	// Different devices each voting once works
 	@Test
-	public void multipleVoteWorks() {
-		_database.insertMenu(getTestMenu());
-		_database.vote(101, 4.0);
-		_database.vote(101, 2.0);
+	public void differentDevicesVoting() throws Exception {
+		_database.insertMenu(getTestMenu(0), LocalDate.now(), MealTime.LUNCH);
+
+		_database.vote("A", 0, 4.0);
+		assertEquals(SubmitStatus.VALID, _database.vote("B", 0, 2.0));
+	}
+
+	// Different devices each voting once works
+	@Test
+	public void sameDeviceVotingForSameDateTimeIsRefused() throws Exception {
+		_database.insertMenu(getTestMenu(0), LocalDate.now(), MealTime.LUNCH);
+
+		_database.vote("A", 0, 4.0);
+		assertEquals(SubmitStatus.ALREADY_VOTED, _database.vote("A", 1, 2.0));
+	}
+
+	// Different devices each voting once works
+	@Test
+	public void sameDeviceVotingForDifferentTime() throws Exception {
+		LocalDate now = LocalDate.now();
+		_database.insertMenu(getTestMenu(0), now, MealTime.LUNCH);
+		_database.insertMenu(getTestMenu(1000), now, MealTime.DINNER);
+
+		_database.vote("A", 0, 4.0);
+		assertEquals(SubmitStatus.VALID, _database.vote("A", 1000, 2.0));
+	}
+
+	// Different devices each voting once works
+	@Test
+	public void sameDeviceVotingForDifferentDate() throws Exception {
+		LocalDate now = LocalDate.now();
+		_database.insertMenu(getTestMenu(0), now, MealTime.LUNCH);
+		_database.insertMenu(getTestMenu(1000), now.minusDays(1), MealTime.LUNCH);
+
+		_database.vote("A", 0, 4.0);
+		assertEquals(SubmitStatus.VALID, _database.vote("A", 1000, 2.0));
 	}
 
 	// Restaurant votes are fetched correctly
 	@Test
-	public void restaurantVotesAreSet() {
-		List<EpflRestaurant> menu = getTestMenu();
+	public void restaurantVotesAreSet() throws Exception {
+		List<EpflRestaurant> menu = getTestMenu(0);
 
-		_database.insertMenu(menu);
-		_database.vote(101, 4.0);
-		_database.vote(101, 2.0);
-		_database.vote(102, 2.0);
+		_database.insertMenu(menu, LocalDate.now(), MealTime.LUNCH);
+		_database.vote("A", 0, 4.0);
+		_database.vote("B", 0, 2.0);
+		_database.vote("C", 1, 2.0);
 		_database.setRatings(menu);
 
 		assertEquals(new EpflRating(8.0 / 3.0, 3), menu.get(0).getRRating());
@@ -76,26 +129,26 @@ public final class RatingDatabaseTests {
 
 	// Meal votes are fetched correctly
 	@Test
-	public void mealVotesAreSet() {
-		List<EpflRestaurant> menu = getTestMenu();
+	public void mealVotesAreSet() throws Exception {
+		List<EpflRestaurant> menu = getTestMenu(0);
 
-		_database.insertMenu(menu);
-		_database.vote(101, 4.0);
-		_database.vote(101, 2.0);
-		_database.vote(102, 2.0);
+		_database.insertMenu(menu, LocalDate.now(), MealTime.LUNCH);
+		_database.vote("A", 0, 4.0);
+		_database.vote("B", 0, 2.0);
+		_database.vote("C", 1, 2.0);
 		_database.setRatings(menu);
 
 		assertEquals(new EpflRating(3.0, 2), menu.get(0).getRMeals().get(0).getMRating());
 	}
 
-	private static List<EpflRestaurant> getTestMenu() {
+	private static List<EpflRestaurant> getTestMenu(long baseId) {
 		return Arrays.asList(new EpflRestaurant[] {
-				new EpflRestaurant(100, "R1", Arrays.asList(new EpflMeal[] {
-						makeMeal(101),
-						makeMeal(102)
+				new EpflRestaurant(baseId, "R1", Arrays.asList(new EpflMeal[] {
+						makeMeal(baseId),
+						makeMeal(baseId + 1)
 				}), new EpflRating(0.0, 0)),
-				new EpflRestaurant(200, "R2", Arrays.asList(new EpflMeal[] {
-						makeMeal(201)
+				new EpflRestaurant(baseId + 1, "R2", Arrays.asList(new EpflMeal[] {
+						makeMeal(baseId + 3)
 				}), new EpflRating(0.0, 0))
 		});
 	}

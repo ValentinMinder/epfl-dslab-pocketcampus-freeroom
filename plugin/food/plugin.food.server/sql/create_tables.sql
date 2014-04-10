@@ -34,16 +34,9 @@ CREATE TABLE IF NOT EXISTS `meals` (
   `Id` bigint(20) NOT NULL,
   `Name` text NOT NULL,
   `RestaurantId` bigint(20) NOT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Table structure for table 'restaurants'
---
-
-CREATE TABLE IF NOT EXISTS `restaurants` (
-  `Id` bigint(20) NOT NULL,
-  `Name` text NOT NULL,
+  `TimeIndependentId` bigint(20) NOT NULL,
+  `Time` enum("LUNCH", "DINNER") NOT NULL,
+  `Date` date NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -52,8 +45,8 @@ CREATE TABLE IF NOT EXISTS `restaurants` (
 --
 
 CREATE TABLE IF NOT EXISTS `mealratings` (
-  `MealId` bigint(20) NOT NULL,
+  `DeviceId` varchar(50) NOT NULL,
+  `MealTimeIndependentId` bigint(20) NOT NULL,
   `Rating` float NOT NULL,
-  `Date` date NOT NULL,
-  PRIMARY KEY (`MealId`, `Rating`, `Date`)
+  PRIMARY KEY (`DeviceId`, `MealTimeIndependentId`, `Rating`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

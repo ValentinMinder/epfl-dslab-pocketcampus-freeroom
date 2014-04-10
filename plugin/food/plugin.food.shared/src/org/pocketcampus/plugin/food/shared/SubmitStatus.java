@@ -14,7 +14,9 @@ public enum SubmitStatus implements org.apache.thrift.TEnum {
   ALREADY_VOTED(0),
   VALID(1),
   TOO_EARLY(2),
-  ERROR(3);
+  ERROR(3),
+  MEAL_IN_DISTANT_PAST(4),
+  MEAL_IN_FUTURE(5);
 
   private final int value;
 
@@ -43,6 +45,10 @@ public enum SubmitStatus implements org.apache.thrift.TEnum {
         return TOO_EARLY;
       case 3:
         return ERROR;
+      case 4:
+        return MEAL_IN_DISTANT_PAST;
+      case 5:
+        return MEAL_IN_FUTURE;
       default:
         return null;
     }
