@@ -76,6 +76,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			// TODO: this is the future search
 			Toast.makeText(getApplicationContext(), "search",
 					Toast.LENGTH_SHORT).show();
+			Intent i = new Intent(FreeRoomHomeView.this,
+					FreeRoomSearchView.class);
+			FreeRoomHomeView.this.startActivity(i);
 		}
 
 		public int getDrawable() {
@@ -186,6 +189,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		 * if(mModel != null && mModel.getFreeRoomCookie() == null) { // Resumed
 		 * and lot logged in? go back finish(); }
 		 */
+
+		if (mController != null) {
+			mController.checkOccupancy(this);
+		}
 	}
 
 	@Override
@@ -196,7 +203,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		addActionToActionBar(hideUnhideAllResults);
 		// addActionToActionBar(refresh);
 		addActionToActionBar(editFavorites);
-		// addActionToActionBar(search);
+		addActionToActionBar(search);
 		addActionToActionBar(gotBackMenu);
 
 		/**
@@ -259,6 +266,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Send the set request to the controller.
 	 */
 	private void refresh() {
+		setTextSummary(getString(R.string.freeroom_home_please_wait));
 		// TODO: deprecated
 //		mController.prepareCheckOccupancy(requestDEPRECATED);
 //		mController.checkOccupancy(this);
