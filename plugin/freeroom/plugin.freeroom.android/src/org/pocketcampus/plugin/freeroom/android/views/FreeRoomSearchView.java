@@ -668,8 +668,8 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 		mModel.setFRRequest(mRequest);
 
 		// TODO deprecated
-		 OccupancyRequest request = new OccupancyRequest(mUIDList, period);
-		 mController.prepareCheckOccupancy(request);
+		// OccupancyRequest request = new OccupancyRequest(mUIDList, period);
+		// mController.prepareCheckOccupancy(request);
 
 		this.finish();
 	}
