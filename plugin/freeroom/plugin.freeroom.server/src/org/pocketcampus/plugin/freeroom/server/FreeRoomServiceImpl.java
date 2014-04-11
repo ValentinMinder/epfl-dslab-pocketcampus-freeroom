@@ -16,6 +16,7 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.freeroom.server.exchange.ExchangeServiceImpl;
+import org.pocketcampus.plugin.freeroom.server.utils.FetchRoomsDetails;
 import org.pocketcampus.plugin.freeroom.server.utils.OccupancySorted;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
@@ -95,6 +96,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 		}
 
+		boolean updateRoomsDetails = false;
+		if (updateRoomsDetails) {
+			FetchRoomsDetails details = new FetchRoomsDetails(
+					PC_SRV_CONFIG.getString("DB_URL")
+							+ "?allowMultiQueries=true",
+					PC_SRV_CONFIG.getString("DB_USERNAME"),
+					PC_SRV_CONFIG.getString("DB_PASSWORD"));
+			System.out.println(details.fetchRoomsIntoDB()
+					+ " rooms inserted/updated");
+		}
+
 	}
 
 	/**
@@ -112,7 +124,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
 			FRRoom room) {
-		System.out.println("Inserting occupancy " + type.toString() + " for room " + room.getDoorCode());
+		System.out.println("Inserting occupancy " + type.toString()
+				+ " for room " + room.getDoorCode());
 		return insertAndCheckOccupancyRoom(period, room, type);
 	}
 
@@ -144,7 +157,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			checkQuery.setLong(5, tsStart);
 			checkQuery.setLong(6, tsEnd);
 			checkQuery.setString(7, room.getUid());
-			
+
 			ResultSet checkResult = checkQuery.executeQuery();
 
 			while (checkResult.next()) {
@@ -160,7 +173,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						&& type == OCCUPANCY_TYPE.ROOM) {
 					System.err
 							.println("Error during insertion of occupancy, overlapping of two rooms occupancy. : ");
-					System.err.println("Want to insert : " + room.getUid() + " have conflict with " + uid);
+					System.err.println("Want to insert : " + room.getUid()
+							+ " have conflict with " + uid);
 					return false;
 					// } else if (typeToInsert == OCCUPANCY_TYPE.ROOM) {
 					// // else, we need to adapt the boundaries of the
@@ -693,17 +707,18 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
 			throws TException {
-		System.out.println("Requesting autocomplete of " + request.getConstraint());
+		System.out.println("Requesting autocomplete of "
+				+ request.getConstraint());
 		AutoCompleteReply reply = new AutoCompleteReply(
 				HttpURLConnection.HTTP_CREATED, ""
 						+ HttpURLConnection.HTTP_CREATED);
 
 		String constraint = request.getConstraint();
 
-		//TODO to decomment (testing purpose)
+		// TODO to decomment (testing purpose)
 		if (constraint.length() < 2) {
-//			return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
-//					"Constraints should be at least 2 characters long.");
+			// return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
+			// "Constraints should be at least 2 characters long.");
 		}
 
 		List<FRRoom> rooms = new ArrayList<FRRoom>();
@@ -777,7 +792,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply = new AutoCompleteReply(HttpURLConnection.HTTP_OK, ""
 					+ HttpURLConnection.HTTP_OK);
 			reply.setListRoom(Utils.sortRoomsByBuilding(rooms));
-			//TODO TO DELETE
+			// TODO TO DELETE
 			reply.setListFRRoom(rooms);
 
 		} catch (SQLException e) {
@@ -792,7 +807,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
 			throws TException {
-		System.out.println("ImWorkingThere request for room " + request.getWork().getRoom().getDoorCode());
+		System.out.println("ImWorkingThere request for room "
+				+ request.getWork().getRoom().getDoorCode());
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
 		FRRoom room = work.getRoom();

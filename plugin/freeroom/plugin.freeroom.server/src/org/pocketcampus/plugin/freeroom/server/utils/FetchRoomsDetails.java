@@ -38,7 +38,12 @@ public class FetchRoomsDetails {
 	private final String URL_INDIVIDUAL_ROOM = "http://pocketcampus.epfl.ch/proxy/"
 			+ "archibus.php/rwsrooms/getRoom"
 			+ "?961264a174e15211109e1deb779b17d0=1&app=freeroom&caller=sciper&id=";
-	private final String FILE_DINCAT = "src/org/pocketcampus/plugin/freeroom/server/data/locaux_din.txt";
+	private final String FILE_DINCAT = "src/org/pocketcampus/plugin/freeroom/server/data/locaux_din2.txt";
+
+	private final String[] deleteNotNeededRooms = {
+			"DELETE FROM `fr-roomslist` WHERE `adminuse` NOT LIKE \"LOCAUX D'ENS%\"",
+			"DELETE FROM `fr-roomslist` WHERE `site_label` <> \"ECUBLENS\"" };
+
 	private HashMap<String, String> dincat_text = null;
 
 	private ConnectionManager connMgr = null;
@@ -76,6 +81,7 @@ public class FetchRoomsDetails {
 			}
 
 			totalCount += fetchAndinsertRoomsDetailsFromJSONtoDB(page);
+			totalCount -= removeNotNeededRooms();
 		} catch (MalformedURLException mue) {
 			mue.printStackTrace();
 		} catch (IOException ioe) {
@@ -83,6 +89,30 @@ public class FetchRoomsDetails {
 		}
 
 		return totalCount;
+	}
+
+	/** Remove the rooms not needed for the scope of this projet **/
+	private int removeNotNeededRooms() {
+		Connection conn = null;
+		try {
+			conn = connMgr.getConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			return 0;
+		}
+		int countGlobal = 0;
+		PreparedStatement query;
+		try {
+			for (String req : deleteNotNeededRooms) {
+				query = conn.prepareStatement(req);
+				countGlobal += query.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return countGlobal;
+		}
+		return countGlobal;
+
 	}
 
 	/**
@@ -168,7 +198,8 @@ public class FetchRoomsDetails {
 				+ "site_label, surface, building_name, zone, unitlabel, "
 				+ "site_id, floor, unitname, site_name, unitid, building_label, "
 				+ "cf, adminuse, type, dincat) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?)";
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) "
+				+ "ON DUPLICATE KEY UPDATE dincat = ? AND type = ?";
 		PreparedStatement query;
 		try {
 			query = conn.prepareStatement(req);
@@ -187,7 +218,6 @@ public class FetchRoomsDetails {
 
 			// from now, fields are optional, thus if some are not present,
 			// we still continue to check the other
-			String sitename = null;
 			if (room.has("places")) {
 				query.setInt(4, room.getInt("places"));
 			} else {
@@ -244,7 +274,6 @@ public class FetchRoomsDetails {
 
 			if (room.has("site_name")) {
 				query.setString(13, room.getString("site_name"));
-				sitename = room.getString("site_name");
 			} else {
 				query.setNull(13, Types.CHAR);
 			}
@@ -274,13 +303,17 @@ public class FetchRoomsDetails {
 			}
 
 			if (room.has("dincat")) {
-				String type = getFromFileDinCatString(room.getString("dincat"),
-						sitename);
+				String type = getFromFileDinCatString(room.getString("dincat"));
 				query.setString(18, type);
 				query.setString(19, room.getString("dincat"));
+				// in case of update
+				query.setString(20, room.getString("dincat"));
+				query.setString(21, type);
 			} else {
 				query.setNull(18, Types.CHAR);
 				query.setNull(19, Types.CHAR);
+				query.setNull(20, Types.CHAR);
+				query.setNull(21, Types.CHAR);
 			}
 
 			query.executeUpdate();
@@ -292,7 +325,8 @@ public class FetchRoomsDetails {
 		return true;
 	}
 
-	private String getFromFileDinCatString(String dincat, String sitename) {
+	// TODO extract english info
+	private String getFromFileDinCatString(String dincat) {
 		if (dincat_text == null) {
 			dincat_text = new HashMap<String, String>();
 			try {
@@ -301,8 +335,12 @@ public class FetchRoomsDetails {
 				while (sc.hasNextLine()) {
 					String line = sc.nextLine();
 					String[] lineSplitted = line.split("[;]");
-					if (lineSplitted.length >= 2) {
-						dincat_text.put(lineSplitted[0], lineSplitted[1]);
+					if (lineSplitted.length >= 4) {
+						dincat_text.put(lineSplitted[1], lineSplitted[3]);
+					} else {
+						System.out
+								.println("Cannot extract dincat plain text for "
+										+ line);
 					}
 				}
 				sc.close();
@@ -311,11 +349,6 @@ public class FetchRoomsDetails {
 			}
 		}
 
-		if (sitename != null) {
-			return dincat_text.get(dincat + "." + sitename);
-		} else {
-			return null;
-		}
-
+		return dincat_text.get(dincat);
 	}
 }
