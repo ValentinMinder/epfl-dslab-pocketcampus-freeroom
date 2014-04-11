@@ -10,6 +10,8 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import android.util.Log;
 
 /**
+ * TODO: to be deleted as 2014.04.04 new interface
+ * <p>
  * GetFreeRoomRequest class sends an HttpRequest using Thrift to the
  * PocketCampus server in order to get the Free Rooms for a given period of
  * time.
@@ -32,7 +34,7 @@ public class GetFreeRoomRequest extends
 	@Override
 	protected FreeRoomReply runInBackground(Iface client, FreeRoomRequest param)
 			throws Exception {
-		return client.getFreeRoomFromTime(param);
+		return null;
 	}
 
 	@Override

@@ -303,6 +303,6 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 	@Override
 	public void occupancyResultsUpdated() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

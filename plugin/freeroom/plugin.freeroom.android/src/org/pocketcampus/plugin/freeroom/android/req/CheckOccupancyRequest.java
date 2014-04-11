@@ -10,6 +10,8 @@ import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import android.util.Log;
 
 /**
+ * TODO: to be deleted as 2014.04.04 new interface
+ * <p>
  * CheckOccupancyRequest class sends an HttpRequest using Thrift to the
  * PocketCampus server in order to get the Occupancy of a set of rooms, for a
  * given period of time.
@@ -32,7 +34,7 @@ public class CheckOccupancyRequest extends
 	@Override
 	protected OccupancyReply runInBackground(Iface client,
 			OccupancyRequest param) throws Exception {
-		return client.checkTheOccupancy(param);
+		return null;
 	}
 
 	@Override
