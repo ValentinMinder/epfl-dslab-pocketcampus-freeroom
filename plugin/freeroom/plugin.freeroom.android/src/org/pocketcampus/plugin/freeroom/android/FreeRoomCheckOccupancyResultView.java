@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.freeroom.android;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -159,8 +161,11 @@ public class FreeRoomCheckOccupancyResultView extends FreeRoomAbstractView
 								WorkingOccupancy work = new WorkingOccupancy(
 										mActualOccupation.getPeriod(),
 										mOccupancy.getRoom());
+								// TODO: insert a proper hash!
+								String hash = new BigInteger(130,
+										new SecureRandom()).toString(32);
 								ImWorkingRequest request = new ImWorkingRequest(
-										work);
+										work, hash);
 								mController.prepareImWorking(request);
 								mController.ImWorking(view);
 							}

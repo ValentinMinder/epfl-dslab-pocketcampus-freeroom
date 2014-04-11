@@ -1,5 +1,8 @@
 package org.pocketcampus.plugin.freeroom.android.views;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
@@ -76,8 +79,8 @@ public class ActualOccupationView extends FreeRoomAbstractView implements
 		mLayout.hideTitle();
 
 		mAdapterOcc = new ActualOccupationArrayAdapter<ActualOccupation>(
-				getApplicationContext(),
-				mModel.getDisplayedOccupancy().getOccupancy(), mModel);
+				getApplicationContext(), mModel.getDisplayedOccupancy()
+						.getOccupancy(), mModel);
 		mAutoCompleteSuggestionListView.setAdapter(mAdapterOcc);
 
 		final IFreeRoomView view = this;
@@ -92,7 +95,11 @@ public class ActualOccupationView extends FreeRoomAbstractView implements
 								.get(arg2).getPeriod();
 						WorkingOccupancy work = new WorkingOccupancy(mFrPeriod,
 								mOccupancy.getRoom());
-						ImWorkingRequest request = new ImWorkingRequest(work);
+						// TODO: insert a proper hash!
+						String hash = new BigInteger(130, new SecureRandom())
+								.toString(32);
+						ImWorkingRequest request = new ImWorkingRequest(work,
+								hash);
 						mController.prepareImWorking(request);
 						mController.ImWorking(view);
 					}

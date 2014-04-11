@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.freeroom.android.views;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -236,7 +238,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					FRPeriod mPeriod = new FRPeriod(tss, tse, false);
 					WorkingOccupancy work = new WorkingOccupancy(mPeriod,
 							mOccupancy.getRoom());
-					ImWorkingRequest request = new ImWorkingRequest(work);
+					// TODO: insert a proper hash!
+					String hash = new BigInteger(130, new SecureRandom())
+							.toString(32);
+					ImWorkingRequest request = new ImWorkingRequest(work, hash);
 					mController.prepareImWorking(request);
 					mController.ImWorking(view);
 					return true;
