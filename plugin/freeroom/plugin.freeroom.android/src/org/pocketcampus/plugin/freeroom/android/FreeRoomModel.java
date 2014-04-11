@@ -196,6 +196,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * TODO: delete
+	 * <p>
 	 * Sets the suggestions to the autocomplete and notifies the listeners.
 	 * 
 	 * @param listFRRoom
@@ -206,6 +208,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	/**
+	 * TODO: delete
+	 * <p>
 	 * Gets the suggestions for the autocomplete
 	 */
 	public List<FRRoom> getAutocompleteSuggestions() {
@@ -779,5 +783,35 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	public void setFRRequest(FRRequest request) {
 		this.mFRRequest = request;
+	}
+
+	List<ActualOccupation> list;
+
+	public void setDisplayedListActualOccupation(List<ActualOccupation> list) {
+		this.list = list;
+	}
+
+	public List<ActualOccupation> getDisplayedListActualOccupation() {
+		return list;
+	}
+
+	/**
+	 * Stores the rooms autocompleted, mapped by buildings.
+	 */
+	private Map<String, List<FRRoom>> listRoom;
+
+	public void setAutoComplete(Map<String, List<FRRoom>> listRoom) {
+		this.listRoom = listRoom;
+	}
+
+	/**
+	 * TODO: use this!
+	 * <p>
+	 * Return the rooms autocompleted, mapped by buildings.
+	 * 
+	 * @return the rooms autocompleted, mapped by buildings.
+	 */
+	public Map<String, List<FRRoom>> getAutoComplete() {
+		return listRoom;
 	}
 }

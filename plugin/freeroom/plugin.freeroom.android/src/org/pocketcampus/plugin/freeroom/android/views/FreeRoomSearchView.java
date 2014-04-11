@@ -746,6 +746,7 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 		mAdapter.notifyDataSetInvalidated();
 		mAutoCompleteSuggestionArrayListFRRoom.clear();
 
+		// TODO: adapt to use the new version of autocomplete mapped by building
 		Iterator<FRRoom> iter = mModel.getAutocompleteSuggestions().iterator();
 		while (iter.hasNext()) {
 			FRRoom room = iter.next();

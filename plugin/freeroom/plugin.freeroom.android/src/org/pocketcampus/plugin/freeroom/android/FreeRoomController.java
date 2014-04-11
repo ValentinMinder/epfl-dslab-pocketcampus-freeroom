@@ -125,6 +125,9 @@ public class FreeRoomController extends PluginController implements
 	}
 
 	public void setAutoCompleteResults(AutoCompleteReply result) {
+		mModel.setAutoComplete(result.getListRoom());
+		// TODO: autocomplete is now mapped by building !
+		// remove this!
 		mModel.setAutoCompleteResults(result.getListFRRoom());
 	}
 
