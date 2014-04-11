@@ -743,12 +743,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			String requestSQL = "";
 			if (forbiddenRooms == null) {
 				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
-						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?)) "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
 			} else {
 				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
-						+ "WHERE (rl.uid LIKE (?) OR rl.doorCode LIKE (?)) "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?)) "
 						+ "AND rl.uid NOT IN (" + forbidRoomsSQL + ") "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
