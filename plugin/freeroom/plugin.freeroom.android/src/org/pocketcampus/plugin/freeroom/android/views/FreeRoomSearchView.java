@@ -418,9 +418,11 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 					public void onClick(View v) {
 						String query = mAutoCompleteSuggestionInputBarElement
 								.getInputText();
-						AutoCompleteRequest request = new AutoCompleteRequest(
-								query);
-						mController.autoCompleteBuilding(view, request);
+						if (query.length() >= 2) {
+							AutoCompleteRequest request = new AutoCompleteRequest(
+									query);
+							mController.autoCompleteBuilding(view, request);
+						}
 					}
 				});
 
@@ -443,9 +445,11 @@ public class FreeRoomSearchView extends FreeRoomAbstractView implements
 						} else {
 							mAutoCompleteSuggestionInputBarElement
 									.setButtonText("");
-							AutoCompleteRequest request = new AutoCompleteRequest(
-									text);
-							mController.autoCompleteBuilding(view, request);
+							if (text.length() >= 2) {
+								AutoCompleteRequest request = new AutoCompleteRequest(
+										text);
+								mController.autoCompleteBuilding(view, request);
+							}
 						}
 					}
 				});
