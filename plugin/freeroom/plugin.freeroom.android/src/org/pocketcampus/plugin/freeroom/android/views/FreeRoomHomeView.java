@@ -191,7 +191,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		 */
 
 		if (mController != null) {
-			mController.checkOccupancy(this);
+			mController.sendFRRequest(this);
+			// mController.checkOccupancy(this);
 		}
 	}
 
@@ -201,7 +202,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getApplicationContext(), mModel.getOccupancyResults(), mModel);
 		mExpView.setAdapter(mExpList);
 		addActionToActionBar(hideUnhideAllResults);
-		// addActionToActionBar(refresh);
+		addActionToActionBar(refresh);
 		addActionToActionBar(editFavorites);
 		addActionToActionBar(search);
 		addActionToActionBar(gotBackMenu);
@@ -240,7 +241,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				return false;
 			}
 		});
-
 	}
 
 	@Override
@@ -259,11 +259,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		ArrayList<String> array = new ArrayList<String>();
 		array.addAll(mModel.getAllRoomMapFavorites().keySet());
 		// TODO: deprecated
-//		requestDEPRECATED = new OccupancyRequest(array,
-//				FRTimes.getNextValidPeriod());
+		// requestDEPRECATED = new OccupancyRequest(array,
+		// FRTimes.getNextValidPeriod());
 		// new interface
-		mModel.setFRRequest(new FRRequest(FRTimes.getNextValidPeriod(), false,
-				array));
+
+		mModel.setFRRequest(new FRRequest(FRTimes.getNextValidPeriod(), mModel
+				.getAllRoomMapFavorites().keySet().isEmpty(), array));
 	}
 
 	/**
@@ -272,8 +273,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void refresh() {
 		setTextSummary(getString(R.string.freeroom_home_please_wait));
 		// TODO: deprecated
-//		mController.prepareCheckOccupancy(requestDEPRECATED);
-//		mController.checkOccupancy(this);
+		// mController.prepareCheckOccupancy(requestDEPRECATED);
+		// mController.checkOccupancy(this);
 
 		// new interface
 		mController.sendFRRequest(this);
@@ -294,7 +295,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// we do nothing here
 
 		// TODO: deprecated
-//		occupancyResultsUpdated();
+		// occupancyResultsUpdated();
 	}
 
 	private void hideUnHideAllResults() {
@@ -356,6 +357,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		s += hour_min.format(startDate);
 		s += " " + getString(R.string.freeroom_check_occupancy_result_to) + " ";
 		s += hour_min.format(endDate);
+		// TODO: remove empty
+		if (mModel.getOccupancyResults().isEmpty()) {
+			s += "Sorry no results";
+		}
 		setTextSummary(s);
 		mExpList.notifyDataSetChanged();
 	}
