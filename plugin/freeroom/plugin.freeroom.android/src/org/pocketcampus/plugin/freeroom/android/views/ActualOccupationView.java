@@ -16,7 +16,6 @@ import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -71,6 +70,7 @@ public class ActualOccupationView extends FreeRoomAbstractView implements
 		mGlobalSubLayout = new LinearLayout(this);
 		mGlobalSubLayout.setOrientation(LinearLayout.VERTICAL);
 
+		mAutoCompleteSuggestionListView = new ListView(this);
 		mGlobalSubLayout.addView(mAutoCompleteSuggestionListView);
 		// mLayout.setTitle(getString(R.string.freeroom_title_occupancy_search));
 		mLayout.hideTitle();

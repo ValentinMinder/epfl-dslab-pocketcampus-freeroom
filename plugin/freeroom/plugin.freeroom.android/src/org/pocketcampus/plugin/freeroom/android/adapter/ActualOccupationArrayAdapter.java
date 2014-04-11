@@ -73,7 +73,6 @@ public class ActualOccupationArrayAdapter<T> extends
 		boolean free = mActualOccupation.isAvailable();
 		// TODO: string
 		s += free ? "free" : "occupied";
-		tv.setText(s);
 
 		if (free) {
 			if (mActualOccupation.isSetProbableOccupation()) {
@@ -83,6 +82,8 @@ public class ActualOccupationArrayAdapter<T> extends
 				s += "(" + mActualOccupation.getRatioOccupation() + " %)";
 			}
 		}
+
+		tv.setText(s);
 
 		int color = free ? mModel.COLOR_CHECK_OCCUPANCY_FREE
 				: mModel.COLOR_CHECK_OCCUPANCY_OCCUPIED;

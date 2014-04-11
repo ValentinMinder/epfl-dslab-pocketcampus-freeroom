@@ -225,9 +225,11 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		Occupancy mOccupancy = getChildObject(groupPosition, childPosition);
-		return mOccupancy.isIsAtLeastFreeOnce()
-				&& !mOccupancy.isIsAtLeastOccupiedOnce();
+		// TODO: let true, but dont submit imworking everytime!
+		return true;
+//		Occupancy mOccupancy = getChildObject(groupPosition, childPosition);
+//		return mOccupancy.isIsAtLeastFreeOnce()
+//				&& !mOccupancy.isIsAtLeastOccupiedOnce();
 	}
 
 	public void updateHeader(int id, String value) {

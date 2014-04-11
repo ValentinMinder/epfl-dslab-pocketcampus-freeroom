@@ -226,6 +226,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				Intent i = new Intent(FreeRoomHomeView.this,
 						ActualOccupationView.class);
 				FreeRoomHomeView.this.startActivity(i);
+
+				// TODO: move that somewhere else!
+				// submit imworking there by a button!
 				if (list.size() > 0) {
 					long tss = list.get(0).getPeriod().getTimeStampStart();
 					long tse = list.get(list.size() - 1).getPeriod()
