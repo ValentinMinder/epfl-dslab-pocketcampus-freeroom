@@ -785,14 +785,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		this.mFRRequest = request;
 	}
 
-	List<ActualOccupation> list;
+	private Occupancy occupancy;
 
-	public void setDisplayedListActualOccupation(List<ActualOccupation> list) {
-		this.list = list;
+	public void setDisplayedOccupancy(Occupancy occupancy) {
+		this.occupancy = occupancy;
 	}
 
-	public List<ActualOccupation> getDisplayedListActualOccupation() {
-		return list;
+	public Occupancy getDisplayedOccupancy() {
+		return occupancy;
 	}
 
 	/**

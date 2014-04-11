@@ -221,6 +221,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						childPosition);
 
 				List<ActualOccupation> list = mOccupancy.getOccupancy();
+				mModel.setDisplayedOccupancy(mOccupancy);
+				Intent i = new Intent(FreeRoomHomeView.this,
+						ActualOccupationView.class);
+				FreeRoomHomeView.this.startActivity(i);
 				if (list.size() > 0) {
 					long tss = list.get(0).getPeriod().getTimeStampStart();
 					long tse = list.get(list.size() - 1).getPeriod()
