@@ -446,13 +446,13 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
         case 3: // UID_LIST
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
-              this.uidList = new ArrayList<String>(_list16.size);
-              for (int _i17 = 0; _i17 < _list16.size; ++_i17)
+              org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+              this.uidList = new ArrayList<String>(_list4.size);
+              for (int _i5 = 0; _i5 < _list4.size; ++_i5)
               {
-                String _elem18; // required
-                _elem18 = iprot.readString();
-                this.uidList.add(_elem18);
+                String _elem6; // required
+                _elem6 = iprot.readString();
+                this.uidList.add(_elem6);
               }
               iprot.readListEnd();
             }
@@ -490,9 +490,9 @@ public class FRRequest implements org.apache.thrift.TBase<FRRequest, FRRequest._
       oprot.writeFieldBegin(UID_LIST_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.uidList.size()));
-        for (String _iter19 : this.uidList)
+        for (String _iter7 : this.uidList)
         {
-          oprot.writeString(_iter19);
+          oprot.writeString(_iter7);
         }
         oprot.writeListEnd();
       }

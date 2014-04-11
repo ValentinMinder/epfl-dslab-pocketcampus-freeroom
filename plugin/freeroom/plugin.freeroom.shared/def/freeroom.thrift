@@ -113,6 +113,8 @@ struct AutoCompleteReply {
 
 struct ImWorkingRequest {
 	1: required WorkingOccupancy work;
+//This hash must be unique across all sessions and time
+	2: required string hash;
 }
 
 struct ImWorkingReply {

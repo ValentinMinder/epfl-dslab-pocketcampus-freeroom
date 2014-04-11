@@ -25,12 +25,15 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ImWorkingRequest");
 
   private static final org.apache.thrift.protocol.TField WORK_FIELD_DESC = new org.apache.thrift.protocol.TField("work", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+  private static final org.apache.thrift.protocol.TField HASH_FIELD_DESC = new org.apache.thrift.protocol.TField("hash", org.apache.thrift.protocol.TType.STRING, (short)2);
 
   private WorkingOccupancy work; // required
+  private String hash; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    WORK((short)1, "work");
+    WORK((short)1, "work"),
+    HASH((short)2, "hash");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -47,6 +50,8 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
       switch(fieldId) {
         case 1: // WORK
           return WORK;
+        case 2: // HASH
+          return HASH;
         default:
           return null;
       }
@@ -93,6 +98,8 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.WORK, new org.apache.thrift.meta_data.FieldMetaData("work", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, WorkingOccupancy.class)));
+    tmpMap.put(_Fields.HASH, new org.apache.thrift.meta_data.FieldMetaData("hash", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ImWorkingRequest.class, metaDataMap);
   }
@@ -101,10 +108,12 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
   }
 
   public ImWorkingRequest(
-    WorkingOccupancy work)
+    WorkingOccupancy work,
+    String hash)
   {
     this();
     this.work = work;
+    this.hash = hash;
   }
 
   /**
@@ -113,6 +122,9 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
   public ImWorkingRequest(ImWorkingRequest other) {
     if (other.isSetWork()) {
       this.work = new WorkingOccupancy(other.work);
+    }
+    if (other.isSetHash()) {
+      this.hash = other.hash;
     }
   }
 
@@ -123,6 +135,7 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
   @Override
   public void clear() {
     this.work = null;
+    this.hash = null;
   }
 
   public WorkingOccupancy getWork() {
@@ -149,6 +162,30 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
     }
   }
 
+  public String getHash() {
+    return this.hash;
+  }
+
+  public ImWorkingRequest setHash(String hash) {
+    this.hash = hash;
+    return this;
+  }
+
+  public void unsetHash() {
+    this.hash = null;
+  }
+
+  /** Returns true if field hash is set (has been assigned a value) and false otherwise */
+  public boolean isSetHash() {
+    return this.hash != null;
+  }
+
+  public void setHashIsSet(boolean value) {
+    if (!value) {
+      this.hash = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case WORK:
@@ -159,6 +196,14 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
       }
       break;
 
+    case HASH:
+      if (value == null) {
+        unsetHash();
+      } else {
+        setHash((String)value);
+      }
+      break;
+
     }
   }
 
@@ -166,6 +211,9 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
     switch (field) {
     case WORK:
       return getWork();
+
+    case HASH:
+      return getHash();
 
     }
     throw new IllegalStateException();
@@ -180,6 +228,8 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
     switch (field) {
     case WORK:
       return isSetWork();
+    case HASH:
+      return isSetHash();
     }
     throw new IllegalStateException();
   }
@@ -206,6 +256,15 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
         return false;
     }
 
+    boolean this_present_hash = true && this.isSetHash();
+    boolean that_present_hash = true && that.isSetHash();
+    if (this_present_hash || that_present_hash) {
+      if (!(this_present_hash && that_present_hash))
+        return false;
+      if (!this.hash.equals(that.hash))
+        return false;
+    }
+
     return true;
   }
 
@@ -217,6 +276,11 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
     builder.append(present_work);
     if (present_work)
       builder.append(work);
+
+    boolean present_hash = true && (isSetHash());
+    builder.append(present_hash);
+    if (present_hash)
+      builder.append(hash);
 
     return builder.toHashCode();
   }
@@ -235,6 +299,16 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
     }
     if (isSetWork()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.work, typedOther.work);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetHash()).compareTo(typedOther.isSetHash());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetHash()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.hash, typedOther.hash);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -264,6 +338,13 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 2: // HASH
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.hash = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -284,6 +365,11 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
       this.work.write(oprot);
       oprot.writeFieldEnd();
     }
+    if (this.hash != null) {
+      oprot.writeFieldBegin(HASH_FIELD_DESC);
+      oprot.writeString(this.hash);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -300,6 +386,14 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
       sb.append(this.work);
     }
     first = false;
+    if (!first) sb.append(", ");
+    sb.append("hash:");
+    if (this.hash == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.hash);
+    }
+    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -308,6 +402,9 @@ public class ImWorkingRequest implements org.apache.thrift.TBase<ImWorkingReques
     // check for required fields
     if (work == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'work' was not present! Struct: " + toString());
+    }
+    if (hash == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'hash' was not present! Struct: " + toString());
     }
   }
 

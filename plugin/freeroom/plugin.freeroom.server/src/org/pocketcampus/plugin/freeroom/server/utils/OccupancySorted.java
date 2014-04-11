@@ -18,7 +18,7 @@ public class OccupancySorted {
 
 	//TODO put all constants in Utils
 	private final long MARGIN_FOR_ERROR = 60 * 15 * 1000;
-	private final long MIN_PERIOD = 1 * 60 * 1000;
+	private final long MIN_PERIOD = 5 * 60 * 1000;
 
 	private boolean onlyFreeRooms;
 	private ArrayList<ActualOccupation> mActualOccupations;
@@ -174,10 +174,10 @@ public class OccupancySorted {
 				if (actual.isAvailable()){
 					isAtLeastFreeOnce = true;
 				}
-
+				tsPerRoom = tsEnd;
+				lastEnd = actual.getPeriod().getTimeStampEnd();
 			}
-			tsPerRoom = tsEnd;
-			lastEnd = actual.getPeriod().getTimeStampEnd();
+
 		}
 
 		if (timestampEnd - lastEnd > MARGIN_FOR_ERROR) {

@@ -544,14 +544,14 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
         case 3: // LIST_FRROOM
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list37 = iprot.readListBegin();
-              this.listFRRoom = new ArrayList<FRRoom>(_list37.size);
-              for (int _i38 = 0; _i38 < _list37.size; ++_i38)
+              org.apache.thrift.protocol.TList _list21 = iprot.readListBegin();
+              this.listFRRoom = new ArrayList<FRRoom>(_list21.size);
+              for (int _i22 = 0; _i22 < _list21.size; ++_i22)
               {
-                FRRoom _elem39; // required
-                _elem39 = new FRRoom();
-                _elem39.read(iprot);
-                this.listFRRoom.add(_elem39);
+                FRRoom _elem23; // required
+                _elem23 = new FRRoom();
+                _elem23.read(iprot);
+                this.listFRRoom.add(_elem23);
               }
               iprot.readListEnd();
             }
@@ -562,26 +562,26 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
         case 4: // LIST_ROOM
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map40 = iprot.readMapBegin();
-              this.listRoom = new HashMap<String,List<FRRoom>>(2*_map40.size);
-              for (int _i41 = 0; _i41 < _map40.size; ++_i41)
+              org.apache.thrift.protocol.TMap _map24 = iprot.readMapBegin();
+              this.listRoom = new HashMap<String,List<FRRoom>>(2*_map24.size);
+              for (int _i25 = 0; _i25 < _map24.size; ++_i25)
               {
-                String _key42; // required
-                List<FRRoom> _val43; // required
-                _key42 = iprot.readString();
+                String _key26; // required
+                List<FRRoom> _val27; // required
+                _key26 = iprot.readString();
                 {
-                  org.apache.thrift.protocol.TList _list44 = iprot.readListBegin();
-                  _val43 = new ArrayList<FRRoom>(_list44.size);
-                  for (int _i45 = 0; _i45 < _list44.size; ++_i45)
+                  org.apache.thrift.protocol.TList _list28 = iprot.readListBegin();
+                  _val27 = new ArrayList<FRRoom>(_list28.size);
+                  for (int _i29 = 0; _i29 < _list28.size; ++_i29)
                   {
-                    FRRoom _elem46; // required
-                    _elem46 = new FRRoom();
-                    _elem46.read(iprot);
-                    _val43.add(_elem46);
+                    FRRoom _elem30; // required
+                    _elem30 = new FRRoom();
+                    _elem30.read(iprot);
+                    _val27.add(_elem30);
                   }
                   iprot.readListEnd();
                 }
-                this.listRoom.put(_key42, _val43);
+                this.listRoom.put(_key26, _val27);
               }
               iprot.readMapEnd();
             }
@@ -620,9 +620,9 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
         oprot.writeFieldBegin(LIST_FRROOM_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.listFRRoom.size()));
-          for (FRRoom _iter47 : this.listFRRoom)
+          for (FRRoom _iter31 : this.listFRRoom)
           {
-            _iter47.write(oprot);
+            _iter31.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -634,14 +634,14 @@ public class AutoCompleteReply implements org.apache.thrift.TBase<AutoCompleteRe
         oprot.writeFieldBegin(LIST_ROOM_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.LIST, this.listRoom.size()));
-          for (Map.Entry<String, List<FRRoom>> _iter48 : this.listRoom.entrySet())
+          for (Map.Entry<String, List<FRRoom>> _iter32 : this.listRoom.entrySet())
           {
-            oprot.writeString(_iter48.getKey());
+            oprot.writeString(_iter32.getKey());
             {
-              oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, _iter48.getValue().size()));
-              for (FRRoom _iter49 : _iter48.getValue())
+              oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, _iter32.getValue().size()));
+              for (FRRoom _iter33 : _iter32.getValue())
               {
-                _iter49.write(oprot);
+                _iter33.write(oprot);
               }
               oprot.writeListEnd();
             }
