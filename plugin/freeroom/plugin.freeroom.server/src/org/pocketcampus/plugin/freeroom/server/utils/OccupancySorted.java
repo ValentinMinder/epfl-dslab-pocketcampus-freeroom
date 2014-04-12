@@ -11,12 +11,14 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 
 /**
  * This class is used to sort, fill and then create an occupancy based on
- * ActualOccupation for a specific room.
+ * ActualOccupation for a specific room. Note that the timestamps given in each
+ * ActualOccupation will have the seconds and milliseconds set to 0 for
+ * practical purpose in the sort and its use (fillGaps()).
  **/
 
 public class OccupancySorted {
 
-	//TODO put all constants in Utils
+	// TODO put all constants in Utils
 	private final long MARGIN_FOR_ERROR = 60 * 15 * 1000;
 	private final long MIN_PERIOD = 5 * 60 * 1000;
 
@@ -43,8 +45,8 @@ public class OccupancySorted {
 
 	public void addActualOccupation(ActualOccupation occ) {
 		FRPeriod period = occ.getPeriod();
-		long start = period.getTimeStampStart();
-		long end = period.getTimeStampEnd();
+		long start = Utils.roundSAndMSToZero(period.getTimeStampStart());
+		long end = Utils.roundSAndMSToZero(period.getTimeStampEnd());
 
 		if (start < timestampStart) {
 			start = timestampStart;
@@ -86,8 +88,8 @@ public class OccupancySorted {
 
 					/**
 					 * This method is used in case of equalities. If both
-					 * timestamp are equal, we want to put the occupancy for the
-					 * room before the user. (For practical reasons in the
+					 * timestamps are equal, we want to put the occupancy for
+					 * the room before the user. (For practical reasons in the
 					 * fillGaps())
 					 * 
 					 * @param thisUser
@@ -128,20 +130,35 @@ public class OccupancySorted {
 	 * occupancy. It also fill the blank time with ActualOccupation in order to
 	 * have a contiguous list of period (with an error of MARGIN_FOR_ERROR)
 	 */
+	// TODO if user from 10 to 11 and course from 10 30 to 11 !
+	// TODO maybe not necessary to distinguish case in case of eq timestamps
 	private void fillGaps() {
 		ArrayList<ActualOccupation> resultList = new ArrayList<ActualOccupation>();
 		long tsPerRoom = timestampStart;
 		boolean previousIsRoom = false;
 		long lastEnd = tsPerRoom;
 
+		// TODO lastEnd, tsPerRoom same thing ?
 		for (ActualOccupation actual : mActualOccupations) {
-			long tsStart = Math.max(tsPerRoom, actual.getPeriod()
-					.getTimeStampStart());
+			long tsStart = Math.max(timestampStart, actual.getPeriod().getTimeStampStart());
+
+			// we want to add a room and the previous added occupation is a user
+			// occupancy and this one end after the room occupancy starts ! it
+			// has to be resized
+			if (actual.isAvailable() && !previousIsRoom && tsPerRoom > tsStart) {
+				ActualOccupation lastOccupation = resultList.remove(resultList.size() - 1);
+				FRPeriod previousPeriod = lastOccupation.getPeriod();
+				FRPeriod newPeriod = new FRPeriod(previousPeriod.getTimeStampStart(), tsStart, false);
+				lastOccupation.setPeriod(newPeriod);
+				resultList.add(lastOccupation);
+			}
+						
 			long tsEnd = Math.min(timestampEnd, actual.getPeriod()
 					.getTimeStampEnd());
 
+			// the previous occupation is a room thus it has priority over user
+			// : we need to resize.
 			if (previousIsRoom && tsStart < lastEnd) {
-				// resize the period of this user occupancy
 				tsStart = lastEnd;
 				FRPeriod newPeriod = new FRPeriod(tsStart, tsEnd, false);
 				actual.setPeriod(newPeriod);
@@ -159,6 +176,8 @@ public class OccupancySorted {
 			long actualStart = actual.getPeriod().getTimeStampStart();
 			long actualEnd = actual.getPeriod().getTimeStampEnd();
 
+			// if the period is big enough (it might not be as we resize without
+			// checking when there are a room-user conflict, see above)
 			if (actualEnd - actualStart >= MIN_PERIOD) {
 				resultList.add(actual);
 				previousIsRoom = !actual.isAvailable();
@@ -167,11 +186,12 @@ public class OccupancySorted {
 				if (ratio > worstRatio) {
 					worstRatio = ratio;
 				}
+
 				if (!actual.isAvailable()) {
 					isAtLeastOccupiedOnce = true;
-				} 
-				
-				if (actual.isAvailable()){
+				}
+
+				if (actual.isAvailable()) {
 					isAtLeastFreeOnce = true;
 				}
 				tsPerRoom = tsEnd;

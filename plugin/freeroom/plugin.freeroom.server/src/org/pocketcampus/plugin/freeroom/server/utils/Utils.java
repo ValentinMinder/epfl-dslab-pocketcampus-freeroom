@@ -143,4 +143,17 @@ public class Utils {
 		long timeInMinToHalfHour = m30M_MS - timestamp % m30M_MS;
 		return timestamp + timeInMinToHalfHour;
 	}
+
+	/**
+	 * Set the seconds and milliseconds to zero in the given timestamp.
+	 * @param timeStamp The timestamp to round
+	 * @return The timestamp rounded.
+	 */
+	public static long roundSAndMSToZero(long timeStamp) {
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.setTimeInMillis(timeStamp);
+		mCalendar.set(Calendar.SECOND, 0);
+		mCalendar.set(Calendar.MILLISECOND, 0);
+		return mCalendar.getTimeInMillis();
+	}
 }

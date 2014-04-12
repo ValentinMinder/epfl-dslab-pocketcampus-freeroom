@@ -131,8 +131,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private boolean insertAndCheckOccupancyRoom(FRPeriod period, FRRoom room,
 			OCCUPANCY_TYPE typeToInsert) {
-		long tsStart = period.getTimeStampStart();
-		long tsEnd = period.getTimeStampEnd();
+		long tsStart = Utils.roundSAndMSToZero(period.getTimeStampStart());
+		long tsEnd = Utils.roundSAndMSToZero(period.getTimeStampEnd());
 
 		boolean userOccupation = (typeToInsert == OCCUPANCY_TYPE.USER) ? true
 				: false;
