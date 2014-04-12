@@ -199,7 +199,7 @@ public class FetchRoomsDetails {
 				+ "site_id, floor, unitname, site_name, unitid, building_label, "
 				+ "cf, adminuse, type, dincat) "
 				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) "
-				+ "ON DUPLICATE KEY UPDATE dincat = ? AND type = ?";
+				+ "ON DUPLICATE KEY UPDATE dincat = (?), type = (?)";
 		PreparedStatement query;
 		try {
 			query = conn.prepareStatement(req);

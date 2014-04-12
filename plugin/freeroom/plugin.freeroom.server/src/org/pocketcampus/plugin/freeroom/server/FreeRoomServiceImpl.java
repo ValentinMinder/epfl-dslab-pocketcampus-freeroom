@@ -292,20 +292,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		connMgr = conn;
 	}
 
-	// TODO TO BE DELETED
-	@Override
-	public FreeRoomReply getFreeRoomFromTime(FreeRoomRequest request)
-			throws TException {
-		return null;
-	}
-
-	// TODO TO BE DELETED
-	@Override
-	public OccupancyReply checkTheOccupancy(OccupancyRequest request)
-			throws TException {
-		return null;
-	}
-
 	@Override
 	public FRReply getOccupancy(FRRequest request) throws TException {
 		FRReply reply = new FRReply(HttpURLConnection.HTTP_OK,
