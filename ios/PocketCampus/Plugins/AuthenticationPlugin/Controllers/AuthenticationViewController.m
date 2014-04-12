@@ -123,6 +123,10 @@
     [self.authenticationService loginToTequilaWithUser:self.username password:self.password delegate:self];
 }
 
+- (void)cancelAuthentication {
+    [self.authenticationService cancelOperationsForDelegate:self];
+}
+
 - (void)focusOnInput {
     if (![self.usernameTextField.text isEqualToString:@""]) {
         [self.passwordTextField becomeFirstResponder];
@@ -147,10 +151,12 @@
     [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
     if (self.presentationMode == PresentationModeModal) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
-            if ([(NSObject*)self.delegate respondsToSelector:@selector(userCancelledAuthentication)]) {
-                [(NSObject*)self.delegate performSelectorOnMainThread:@selector(userCancelledAuthentication) withObject:nil waitUntilDone:YES];
-                [AuthenticationService enqueueLogoutNotification];
-            }
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+                    [self.delegate authenticationFailedWithReason:AuthenticationFailureReasonUserCancelled];
+                }
+            });
+            [AuthenticationService enqueueLogoutNotification];
         }];
     } else {
         [AuthenticationService enqueueLogoutNotification];
@@ -246,7 +252,7 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
 }
 
 - (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason {
-    CLSNSLog(@"-> loginToTequilaFailedloginToTequilaFailedWithReason: %d", reason);
+    CLSNSLog(@"-> loginToTequilaFailedWithReason: %d", reason);
     switch (reason) {
         case AuthenticationTequilaLoginFailureReasonBadCredentials:
         {
@@ -254,7 +260,13 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
             self.errorMessage = NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil);
             if (self.presentationMode == PresentationModeTryHidden) {
                 if (!self.viewControllerForPresentation) {
-                    @throw [NSException exceptionWithName:@"nil viewControllerForPresentation" reason:@"could not present GasparViewController after failing silent authentication." userInfo:nil];
+                    CLSNSLog(@"ERROR: could not present AuthenticationViewController after failing silent authentication, because viewControllerForPresentation is nil. Calling authenticationFailedWithReason: internal error on delegate and returning.");
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+                            [self.delegate authenticationFailedWithReason:AuthenticationFailureReasonInternalError];
+                        }
+                    });
+                    return;
                 }
                 self.presentationMode = PresentationModeModal;
                 self.usernameTextField.enabled = YES;
@@ -290,9 +302,11 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
 }
 
 - (void)authenticateFailedForToken:(NSString *)token tequilaCookie:(NSHTTPCookie *)tequilaCookie {
-    if ([(NSObject*)self.delegate respondsToSelector:@selector(invalidToken)]) {
-        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(invalidToken) withObject:nil waitUntilDone:NO];
-    }
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+            [self.delegate authenticationFailedWithReason:AuthenticationFailureReasonInvalidToken];
+        }
+    });
     [self.loadingIndicator stopAnimating];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }

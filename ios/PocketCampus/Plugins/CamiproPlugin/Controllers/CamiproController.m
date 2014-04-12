@@ -157,13 +157,22 @@ static CamiproController* instance __weak = nil;
     [self.camiproService getSessionIdForServiceWithTequilaKey:self.tequilaToken delegate:self];
 }
 
-- (void)userCancelledAuthentication {
-    [self.camiproService cancelOperationsForDelegate:self];
-    [self cleanAndNotifyUserCancelledToObservers];
-}
-
-- (void)invalidToken {
-    [self.camiproService getTequilaTokenForCamiproDelegate:self]; //restart to get new token
+- (void)authenticationFailedWithReason:(AuthenticationFailureReason)reason {
+    switch (reason) {
+        case AuthenticationFailureReasonUserCancelled:
+            [self.camiproService cancelOperationsForDelegate:self];
+            [self cleanAndNotifyUserCancelledToObservers];
+            break;
+        case AuthenticationFailureReasonInvalidToken:
+            [self.camiproService getTequilaTokenForCamiproDelegate:self]; //restart to get new token
+            break;
+        case AuthenticationFailureReasonInternalError:
+            [self.camiproService getTequilaTokenForCamiproDelegate:self]; //restart to get new token
+            break;
+        default:
+            [self.camiproService getTequilaTokenForCamiproDelegate:self]; //restart to get new token
+            break;
+    }
 }
 
 #pragma mark - Dealloc

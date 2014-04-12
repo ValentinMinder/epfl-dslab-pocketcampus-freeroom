@@ -239,6 +239,17 @@ static AuthenticationService* instance __weak = nil;
     [self.operationQueue addOperation:operation];
 }
 
+#pragma mark - Service overrides
+
+- (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
+    for (NSOperation* operation in self.operationQueue.operations) {
+        if ([operation isKindOfClass:[AFHTTPRequestOperation class]]) {
+            [(AFHTTPRequestOperation*)operation setCompletionBlockWithSuccess:NULL failure:NULL];
+        }
+    }
+    [super cancelOperationsForDelegate:delegate];
+}
+
 #pragma mark - Dealloc
 
 - (void)dealloc

@@ -68,8 +68,6 @@
  * 
  * WARNING: this method cannot be called by multiple instances 
  * at the same time (1 delegate at a time). CRASH might occur if so.
- * This weakness should be corrected in future release by using
- * an observer pattern.
  */
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate;
 
