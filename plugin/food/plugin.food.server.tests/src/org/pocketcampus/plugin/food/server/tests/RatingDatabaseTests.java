@@ -62,8 +62,8 @@ public final class RatingDatabaseTests {
 	public void voteForFutureMeal() throws Exception {
 		_database.insertMenu(getTestMenu(0), LocalDate.now().plusDays(1), MealTime.LUNCH);
 
-		assertEquals(SubmitStatus.MEAL_IN_FUTURE, _database.vote("A", 0, 4.0));
-	}	
+		assertEquals(SubmitStatus.TOO_EARLY, _database.vote("A", 0, 4.0));
+	}
 	
 	// Vote for meal in distant past is refused
 	@Test

@@ -3,10 +3,14 @@ package org.pocketcampus.plugin.food.server;
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.food.shared.*;
@@ -17,6 +21,14 @@ import org.pocketcampus.plugin.food.shared.*;
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class RatingDatabaseImpl implements RatingDatabase {
+	private static final Map<MealTime, LocalTime> VOTING_MIN_HOURS;
+
+	static {
+		VOTING_MIN_HOURS = new HashMap<MealTime, LocalTime>();
+		VOTING_MIN_HOURS.put(MealTime.LUNCH, new LocalTime(11, 00, 00));
+		VOTING_MIN_HOURS.put(MealTime.DINNER, new LocalTime(18, 00, 00));
+	}
+
 	private final ConnectionManager _connectionManager;
 	private final Days _maxVotingDaysInPast;
 
@@ -46,19 +58,20 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 				restaurantStatement.setLong(1, restaurant.getRId());
 				restaurantStatement.setString(2, restaurant.getRName());
 				restaurantStatement.addBatch();
-				
+
 				PreparedStatement mealStatement = null;
 				try {
-					String mealCommand = "REPLACE INTO meals (Id, Name, RestaurantId, TimeIndependentId, Date, Time) VALUES (?, ?, ?, ?, ?, ?)";
+					String mealCommand = "REPLACE INTO meals (Id, Name, Description, RestaurantId, TimeIndependentId, Date, Time) VALUES (?, ?, ?, ?, ?, ?, ?)";
 					mealStatement = connection.prepareStatement(mealCommand);
 
 					for (EpflMeal meal : restaurant.getRMeals()) {
 						mealStatement.setLong(1, meal.getMId());
 						mealStatement.setString(2, meal.getMName());
-						mealStatement.setLong(3, restaurant.getRId());
-						mealStatement.setLong(4, getTimeIndependentId(meal));
-						mealStatement.setDate(5, new Date(date.toDate().getTime()));
-						mealStatement.setString(6, time.name());
+						mealStatement.setString(3, meal.getMDescription());
+						mealStatement.setLong(4, restaurant.getRId());
+						mealStatement.setLong(5, getTimeIndependentId(meal));
+						mealStatement.setDate(6, new Date(date.toDate().getTime()));
+						mealStatement.setString(7, time.name());
 						mealStatement.addBatch();
 					}
 
@@ -69,7 +82,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 					}
 				}
 			}
-			
+
 			restaurantStatement.executeBatch();
 		} finally {
 			if (restaurantStatement != null) {
@@ -84,10 +97,9 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 
 		LocalDate date;
 		MealTime time;
-		long timeIndependentId;
 		PreparedStatement getDateTimeStatement = null;
 		try {
-			String getDateTimeCommand = "SELECT Date, Time, TimeIndependentId FROM meals WHERE Id = ?";
+			String getDateTimeCommand = "SELECT Date, Time FROM meals WHERE Id = ?";
 
 			getDateTimeStatement = connection.prepareStatement(getDateTimeCommand);
 			getDateTimeStatement.setLong(1, mealId);
@@ -96,7 +108,6 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 			results.next();
 			date = new LocalDate(results.getDate(1));
 			time = MealTime.valueOf(results.getString(2));
-			timeIndependentId = results.getLong(3);
 		} finally {
 			if (getDateTimeStatement != null) {
 				getDateTimeStatement.close();
@@ -104,16 +115,19 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 		}
 
 		if (date.isAfter(LocalDate.now())) {
-			return SubmitStatus.MEAL_IN_FUTURE;
+			return SubmitStatus.TOO_EARLY;
 		}
 		if (Days.daysBetween(date, LocalDate.now()).isGreaterThan(_maxVotingDaysInPast)) {
 			return SubmitStatus.MEAL_IN_DISTANT_PAST;
+		}
+		if (date.equals(LocalDate.now()) && LocalTime.now().isBefore(VOTING_MIN_HOURS.get(time))) {
+			return SubmitStatus.TOO_EARLY;
 		}
 
 		PreparedStatement checkStatement = null;
 		try {
 			String checkCommand = "SELECT * " +
-					"FROM mealratings INNER JOIN meals ON meals.TimeIndependentId = mealratings.MealTimeIndependentId " +
+					"FROM mealratings INNER JOIN meals ON meals.Id = mealratings.MealId " +
 					"WHERE Date = ? AND Time = ? AND DeviceId = ?";
 
 			checkStatement = connection.prepareStatement(checkCommand);
@@ -132,11 +146,11 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 
 		PreparedStatement voteStatement = null;
 		try {
-			String command = "INSERT INTO mealratings (DeviceId, MealTimeIndependentId, Rating) VALUES (?, ?, ?)";
+			String command = "INSERT INTO mealratings (DeviceId, MealId, Rating) VALUES (?, ?, ?)";
 
 			voteStatement = connection.prepareStatement(command);
 			voteStatement.setString(1, deviceId);
-			voteStatement.setLong(2, timeIndependentId);
+			voteStatement.setLong(2, mealId);
 			voteStatement.setDouble(3, rating);
 			voteStatement.executeUpdate();
 		} finally {
@@ -156,7 +170,9 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 			for (EpflMeal meal : restaurant.getRMeals()) {
 				PreparedStatement mealQuery = null;
 				try {
-					String query = "SELECT SUM(Rating) / COUNT(*), COUNT(*) FROM mealratings WHERE MealTimeIndependentId = ?";
+					String query = "SELECT AVG(Rating), COUNT(*) " +
+							"FROM mealratings INNER JOIN meals ON mealratings.MealId = meals.Id " +
+							"WHERE meals.TimeIndependentId = ?";
 
 					mealQuery = connection.prepareStatement(query);
 					mealQuery.setLong(1, getTimeIndependentId(meal));
@@ -174,8 +190,8 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 
 			PreparedStatement restaurantQuery = null;
 			try {
-				String query = "SELECT SUM(Rating) / COUNT(*), COUNT(*) " +
-						"FROM mealratings INNER JOIN meals ON mealratings.MealTimeIndependentId = meals.TimeIndependentId " +
+				String query = "SELECT AVG(Rating), COUNT(*) " +
+						"FROM mealratings INNER JOIN meals ON mealratings.MealId = meals.Id " +
 						"WHERE RestaurantId = ?";
 
 				restaurantQuery = connection.prepareStatement(query);
@@ -197,7 +213,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	public void clean() {
 		try {
 			Connection connection = _connectionManager.getConnection();
-			String[] deleteCommands = new String[] { "TRUNCATE TABLE meals", "TRUNCATE TABLE mealratings" };
+			String[] deleteCommands = new String[] { "TRUNCATE TABLE meals", "TRUNCATE TABLE restaurants", "TRUNCATE TABLE mealratings" };
 
 			for (String command : deleteCommands) {
 				PreparedStatement statement = null;
@@ -220,8 +236,12 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 		final int prime = 31;
 		int result = 1;
 		// TODO: Anything else?
-		result = prime * result + meal.getMName().hashCode();
-		result = prime * result + meal.getMDescription().hashCode();
+		result = prime * result + normalize(meal.getMName()).hashCode();
+		result = prime * result + normalize(meal.getMDescription()).hashCode();
 		return result;
+	}
+
+	private static String normalize(String s) {
+		return s.replaceAll("\\W", "");
 	}
 }

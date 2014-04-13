@@ -18,8 +18,7 @@ enum SubmitStatus {
   SubmitStatus_VALID = 1,
   SubmitStatus_TOO_EARLY = 2,
   SubmitStatus_ERROR = 3,
-  SubmitStatus_MEAL_IN_DISTANT_PAST = 4,
-  SubmitStatus_MEAL_IN_FUTURE = 5
+  SubmitStatus_MEAL_IN_DISTANT_PAST = 4
 };
 
 enum PriceTarget {

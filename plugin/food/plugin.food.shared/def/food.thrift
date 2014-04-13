@@ -31,10 +31,9 @@ enum SubmitStatus {
 	ALREADY_VOTED = 0,
 	VALID = 1,
 	TOO_EARLY = 2,
-	// TODO: remove this when we remove the old stuff, error codes shouldn't indicate normal failures
+	// TODO: remove ERROR when we remove the old stuff, error codes shouldn't indicate normal failures
 	ERROR = 3,
-	MEAL_IN_DISTANT_PAST = 4,
-	MEAL_IN_FUTURE = 5
+	MEAL_IN_DISTANT_PAST = 4
 }
 
 enum PriceTarget {

@@ -17,7 +17,6 @@ import com.unboundid.ldap.sdk.*;
  * Provides information about the meals, and allows users to rate them.
  */
 public class FoodServiceImpl implements FoodService.Iface {
-	private static final Hours VOTING_MIN_HOUR = Hours.hours(11);
 	private static final Days PAST_VOTE_MAX_DAYS = Days.days(5);
 	private static final Duration MENU_CACHE_DURATION = Duration.standardHours(1);
 	private static final Duration PICTURES_CACHE_DURATION = Duration.standardDays(1);
@@ -84,10 +83,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 		try {
 			if (voteReq.getRating() < 0 || voteReq.getRating() > 5) {
 				throw new Exception("Invalid rating.");
-			}
-
-			if (DateTime.now().getHourOfDay() < VOTING_MIN_HOUR.getHours()) {
-				return new VoteResponse(SubmitStatus.TOO_EARLY);
 			}
 
 			return new VoteResponse( _ratingDatabase.vote(voteReq.getDeviceId(), voteReq.getMealId(), voteReq.getRating()));

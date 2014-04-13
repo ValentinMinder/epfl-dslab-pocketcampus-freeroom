@@ -2,6 +2,7 @@
 CREATE TABLE IF NOT EXISTS `meals` (
   `Id` bigint(20) NOT NULL,
   `Name` text NOT NULL,
+  `Description` text NOT NULL,
   `RestaurantId` bigint(20) NOT NULL,
   `TimeIndependentId` bigint(20) NOT NULL,
   `Time` enum("LUNCH", "DINNER") NOT NULL,
@@ -20,9 +21,9 @@ CREATE TABLE IF NOT EXISTS `restaurants` (
 -- Meal ratings
 CREATE TABLE IF NOT EXISTS `mealratings` (
   `DeviceId` varchar(50) NOT NULL,
-  `MealTimeIndependentId` bigint(20) NOT NULL,
+  `MealId` bigint(20) NOT NULL,
   `Rating` float NOT NULL,
-  PRIMARY KEY (`DeviceId`, `MealTimeIndependentId`, `Rating`)
+  PRIMARY KEY (`DeviceId`, `MealId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
