@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.food.server;
 import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import java.sql.*;
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -242,6 +243,8 @@ public final class RatingDatabaseImpl implements RatingDatabase {
 	}
 
 	private static String normalize(String s) {
-		return s.replaceAll("\\W", "");
+		s = Normalizer.normalize(s, Normalizer.Form.NFD);
+		s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+", "");
+		return s.replaceAll("\\W", "").toLowerCase();
 	}
 }
