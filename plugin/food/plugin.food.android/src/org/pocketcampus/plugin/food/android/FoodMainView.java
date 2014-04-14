@@ -712,6 +712,9 @@ public class FoodMainView extends PluginView implements IFoodView {
 		case TOO_EARLY:
 			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_tooearly), Toast.LENGTH_SHORT).show();
 			break;
+		case MEAL_IN_DISTANT_PAST:
+			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_toolate), Toast.LENGTH_SHORT).show();
+			break;
 		case VALID:
 			Toast.makeText(getApplicationContext(), getString(R.string.food_toast_thanksforvote), Toast.LENGTH_SHORT).show();
 			mController.refreshFood(this, foodDay, foodTime, false);

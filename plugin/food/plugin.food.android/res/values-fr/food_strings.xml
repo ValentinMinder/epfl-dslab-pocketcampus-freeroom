@@ -33,6 +33,7 @@
 	<string name="food_toast_copied">Copié</string>
 	<string name="food_toast_alreadyvoted">déjà voté</string>
 	<string name="food_toast_tooearly">Trop tôt</string>
+	<string name="food_toast_toolate">Trop tard</string>		
 	<string name="food_toast_thanksforvote">Merci pour votre vote</string>
 							
 	<string name="food_enum_STUDENT">Étudiant</string>
