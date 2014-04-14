@@ -320,8 +320,8 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 
 	@Override
 	public CoursesListReply getCoursesListAPI(String dummy) throws TException {
-		String gaspar = PocketCampusServer.authGetUserGaspar(dummy);
-		if(gaspar == null){
+		String sciper = PocketCampusServer.authGetUserSciper(dummy);
+		if(sciper == null){
 			return new CoursesListReply(407);
 		}
 		Gson gson = new Gson();
@@ -334,8 +334,8 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin {
 					addParam("moodlewsrestformat", "json").
 					addParam("wstoken", PC_SRV_CONFIG.getString("MOODLE_ACCESS_TOKEN")).
 					addParam("wsfunction", "core_user_get_users").
-					addParam("criteria[0][key]", "username").
-					addParam("criteria[0][value]", gaspar);
+					addParam("criteria[0][key]", "idnumber").
+					addParam("criteria[0][value]", sciper);
 			conn.setDoOutput(true);
 			conn.getOutputStream().write(pd.toBytes());
 			String result = IOUtils.toString(conn.getInputStream(), "UTF-8");

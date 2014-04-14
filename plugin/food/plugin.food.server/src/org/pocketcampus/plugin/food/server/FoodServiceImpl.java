@@ -17,20 +17,18 @@ import com.unboundid.ldap.sdk.*;
  * Provides information about the meals, and allows users to rate them.
  */
 public class FoodServiceImpl implements FoodService.Iface {
-	private static final Hours VOTING_MIN = Hours.hours(11);
+	private static final Days PAST_VOTE_MAX_DAYS = Days.days(5);
 	private static final Duration MENU_CACHE_DURATION = Duration.standardHours(1);
 	private static final Duration PICTURES_CACHE_DURATION = Duration.standardDays(1);
 	private static final Duration LOCATIONS_CACHE_DURATION = Duration.standardDays(1);
 
-	private final DeviceDatabase _deviceDatabase;
 	private final RatingDatabase _ratingDatabase;
 	private final Menu _menu;
 	private final PictureSource _pictureSource;
 	private final RestaurantLocator _locator;
 
-	public FoodServiceImpl(DeviceDatabase deviceDatabase, RatingDatabase ratingDatabase, Menu menu,
+	public FoodServiceImpl(RatingDatabase ratingDatabase, Menu menu,
 			PictureSource pictureSource, RestaurantLocator locator) {
-		_deviceDatabase = deviceDatabase;
 		_ratingDatabase = ratingDatabase;
 		_menu = menu;
 		_pictureSource = pictureSource;
@@ -38,7 +36,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	public FoodServiceImpl() {
-		this(new DeviceDatabaseImpl(), new RatingDatabaseImpl(),
+		this(new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS),
 				CachingProxy.create(new MenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, true),
 				CachingProxy.create(new PictureSourceImpl(), PICTURES_CACHE_DURATION, false),
 				CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false));
@@ -61,21 +59,25 @@ public class FoodServiceImpl implements FoodService.Iface {
 		} catch (Exception e) {
 			throw new TException("An exception occurred while getting the menu", e);
 		}
-		_ratingDatabase.insertMenu(response.getMenu());
-		_ratingDatabase.setRatings(response.getMenu());
+		try {
+			_ratingDatabase.insertMenu(response.getMenu(), date, time);
+			_ratingDatabase.setRatings(response.getMenu());
+		} catch (Exception e) {
+			throw new TException("An exception occurred while inserting and fetching the ratings", e);
+		}
 
 		for (EpflRestaurant restaurant : response.getMenu()) {
 			restaurant.setRPictureUrl(_pictureSource.forRestaurant(restaurant.getRName()));
 			restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
 		}
-	
-		if(foodReq.isSetUserGaspar()) {
+
+		if (foodReq.isSetUserGaspar()) {
 			response.setUserStatus(getPriceTarget(foodReq.getUserGaspar()));
 		}
 
 		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
 	}
-	
+
 	@Override
 	public VoteResponse vote(VoteRequest voteReq) throws TException {
 		try {
@@ -83,20 +85,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 				throw new Exception("Invalid rating.");
 			}
 
-			if (_deviceDatabase.hasVotedToday(voteReq.getDeviceId())) {
-				return new VoteResponse(SubmitStatus.ALREADY_VOTED);
-			}
-
-			if (DateTime.now().getHourOfDay() < VOTING_MIN.getHours()) {
-				return new VoteResponse(SubmitStatus.TOO_EARLY);
-			}
-
-			_ratingDatabase.vote(voteReq.getMealId(), voteReq.getRating());
-			_deviceDatabase.vote(voteReq.getDeviceId());
-
-			return new VoteResponse(SubmitStatus.VALID);
-		} catch (Exception _) {
-			return new VoteResponse(SubmitStatus.ERROR);
+			return new VoteResponse( _ratingDatabase.vote(voteReq.getDeviceId(), voteReq.getMealId(), voteReq.getRating()));
+		} catch (Exception e) {
+			throw new TException("An error occurred during a vote", e);
 		}
 	}
 
@@ -108,23 +99,24 @@ public class FoodServiceImpl implements FoodService.Iface {
 		return new LocalDate(timestamp);
 	}
 
+	// TODO extract this to a common LDAP service used everytime we need it, not just in food
 	private static PriceTarget getPriceTarget(String sciper) {
 		List<PriceTarget> classes = new LinkedList<PriceTarget>();
 		try {
 			LDAPConnection ldap = new LDAPConnection();
 			ldap.connect("ldap.epfl.ch", 389);
-			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + sciper + ")(uniqueidentifier=" + sciper + "))", (String[]) null);
+			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + sciper + ")(uniqueidentifier=" + sciper
+					+ "))", (String[]) null);
 			for (SearchResultEntry e : searchResult.getSearchEntries()) {
-				//System.out.println(e.toLDIFString());
 				String os = e.getAttributeValue("organizationalStatus");
-				if("Etudiant".equals(os)) {
+				if ("Etudiant".equals(os)) {
 					String uc = e.getAttributeValue("userClass");
-					if("Doctorant".equals(uc)) {
+					if ("Doctorant".equals(uc)) {
 						classes.add(PriceTarget.PHD_STUDENT);
 					} else {
 						classes.add(PriceTarget.STUDENT);
 					}
-				} else if("Personnel".equals(os)) {
+				} else if ("Personnel".equals(os)) {
 					classes.add(PriceTarget.STAFF);
 				} else {
 					classes.add(PriceTarget.VISITOR);
@@ -133,15 +125,15 @@ public class FoodServiceImpl implements FoodService.Iface {
 		} catch (LDAPException e) {
 			e.printStackTrace();
 		}
-		if(classes.contains(PriceTarget.STUDENT))
+		if (classes.contains(PriceTarget.STUDENT))
 			return PriceTarget.STUDENT;
-		if(classes.contains(PriceTarget.PHD_STUDENT))
+		if (classes.contains(PriceTarget.PHD_STUDENT))
 			return PriceTarget.PHD_STUDENT;
-		if(classes.contains(PriceTarget.STAFF))
+		if (classes.contains(PriceTarget.STAFF))
 			return PriceTarget.STAFF;
 		return PriceTarget.VISITOR;
 	}
-	
+
 	// OLD STUFF - DO NOT TOUCH
 
 	private org.pocketcampus.plugin.food.server.old.OldFoodService _oldService;

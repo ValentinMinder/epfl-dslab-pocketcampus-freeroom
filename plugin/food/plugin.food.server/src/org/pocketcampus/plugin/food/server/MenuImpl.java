@@ -129,7 +129,7 @@ public final class MenuImpl implements Menu {
 			meal.setMPrices(prices);
 
 			meal.setMRating(new EpflRating(0.0, 0));
-			meal.setMId(generateMealId(meal.getMName(), meal.getMDescription(), jmeal.restoName));
+			meal.setMId(generateMealId(meal.getMName(), meal.getMDescription(), jmeal.restoName, date, time));
 
 			fix(meal, jmeal.restoName);
 
@@ -176,12 +176,14 @@ public final class MenuImpl implements Menu {
 	}
 
 	/** Generates a meal ID (a hashcode) for the specified meal. */
-	private static long generateMealId(String name, String description, String restaurantName) {
+	private static long generateMealId(String name, String description, String restaurantName, LocalDate date, MealTime time) {
 		final long prime = 31;
 		long result = 1;
 		result = prime * result + name.hashCode();
 		result = prime * result + description.hashCode();
 		result = prime * result + restaurantName.hashCode();
+		result = prime * result + date.hashCode();
+		result = prime * result + time.hashCode();
 		return result;
 	}
 
