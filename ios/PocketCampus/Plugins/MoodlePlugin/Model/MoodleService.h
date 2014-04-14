@@ -31,6 +31,8 @@
 
 #import "moodle.h"
 
+#import "MoodleModelAdditions.h"
+
 #pragma mark - MoodleResourceObserver definition
 
 typedef enum {

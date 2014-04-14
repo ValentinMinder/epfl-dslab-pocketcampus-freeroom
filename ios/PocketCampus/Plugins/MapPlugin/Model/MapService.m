@@ -114,7 +114,7 @@ static MapService* instance __weak = nil;
 
 - (NSMutableOrderedSet*)recentSearchesInternal {
     if (!_recentSearchesInternal) {
-        _recentSearchesInternal = [(NSOrderedSet*)[PCObjectArchiver objectForKey:kRecentSearchesKey andPluginName:@"map" isCache:YES] mutableCopy]; //archived object are always returned as copy => immutable
+        _recentSearchesInternal = [(NSOrderedSet*)[PCPersistenceManager objectForKey:kRecentSearchesKey pluginName:@"map" isCache:YES] mutableCopy]; //archived object are always returned as copy => immutable
     }
     if (!_recentSearchesInternal) {
         _recentSearchesInternal = [NSMutableOrderedSet orderedSet]; //guarentee non-nil empty ordered set
@@ -138,13 +138,13 @@ static MapService* instance __weak = nil;
     if (self.recentSearches.count > kMaxRecentSearches) {
         [self.recentSearchesInternal removeObjectsInRange:NSMakeRange(kMaxRecentSearches, self.recentSearches.count - kMaxRecentSearches)];
     }
-    [PCObjectArchiver saveObject:self.recentSearchesInternal forKey:kRecentSearchesKey andPluginName:@"map" isCache:YES];
+    [PCPersistenceManager saveObject:self.recentSearchesInternal forKey:kRecentSearchesKey pluginName:@"map" isCache:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:kMapRecentSearchesModifiedNotification object:self];
 }
 
 - (void)clearRecentSearches {
     [self.recentSearchesInternal removeAllObjects];
-    [PCObjectArchiver saveObject:nil forKey:kRecentSearchesKey andPluginName:@"map" isCache:YES]; //deleted cached recent searches
+    [PCPersistenceManager saveObject:nil forKey:kRecentSearchesKey pluginName:@"map" isCache:YES]; //deleted cached recent searches
     [[NSNotificationCenter defaultCenter] postNotificationName:kMapRecentSearchesModifiedNotification object:self];
 }
 

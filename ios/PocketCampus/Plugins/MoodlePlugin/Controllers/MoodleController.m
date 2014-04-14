@@ -31,9 +31,11 @@
 
 #import "MoodleCoursesListViewController.h"
 
-#import "PCObjectArchiver.h"
+#import "PCPersistenceManager.h"
 
 #import "MoodleService.h"
+
+#import "MoodleModelAdditions.h"
 
 @interface MoodleController ()<UISplitViewControllerDelegate>
 
@@ -46,6 +48,14 @@
 static MoodleController* instance __weak = nil;
 
 #pragma mark - Init
+
++ (void)initialize {
+    //initializing default settings
+    NSUserDefaults* defaults = [PCPersistenceManager defaultsForPluginName:@"moodle"];
+    if (![defaults objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
+        [defaults setObject:@YES forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
+    }
+}
 
 - (id)init {
     @synchronized(self) {
@@ -95,7 +105,7 @@ static MoodleController* instance __weak = nil;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
             [[MoodleService sharedInstanceToRetain] deleteAllDownloadedResources]; //removing all downloaded Moodle files
-            [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"moodle"];
+            [PCPersistenceManager deleteCacheForPluginName:@"moodle"];
             [[MainController publicController] requestLeavePlugin:@"Moodle"];
         }];
     });

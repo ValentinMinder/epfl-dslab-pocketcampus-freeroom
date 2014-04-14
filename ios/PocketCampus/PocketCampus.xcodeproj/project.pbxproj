@@ -39,6 +39,7 @@
 		32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBE1536F215009B8D37 /* TransportFeetConnection@2x.png */; };
 		32141FA718D8D16F0084FE44 /* IsAcademiaModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */; };
 		32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */; };
+		32151EEA18FC3212001F6DA9 /* MoodleResourceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32151EE918FC3212001F6DA9 /* MoodleResourceSettingsViewController.m */; };
 		3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
 		3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */; };
@@ -328,7 +329,7 @@
 		32CCB511155567CB00220282 /* News@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB50F155567CB00220282 /* News@2x.png */; };
 		32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
-		32CFECEF151CCB6800D8CBA6 /* PCObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* PCObjectArchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32CFECEF151CCB6800D8CBA6 /* PCPersistenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* PCPersistenceManager.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32D0B24F166A9B9D00F68304 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322715C2070E0091757D /* QuartzCore.framework */; };
 		32D0B256166AA58E00F68304 /* LocationArrowActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B250166AA58D00F68304 /* LocationArrowActive.png */; };
 		32D0B257166AA58E00F68304 /* LocationArrowActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0B251166AA58D00F68304 /* LocationArrowActive@2x.png */; };
@@ -448,6 +449,8 @@
 		32141FA518D8D16F0084FE44 /* IsAcademiaModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaModelAdditions.h; sourceTree = "<group>"; };
 		32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsAcademiaModelAdditions.m; sourceTree = "<group>"; };
 		32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CamiproLarge@2x.png"; sourceTree = "<group>"; };
+		32151EE818FC3212001F6DA9 /* MoodleResourceSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleResourceSettingsViewController.h; sourceTree = "<group>"; };
+		32151EE918FC3212001F6DA9 /* MoodleResourceSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleResourceSettingsViewController.m; sourceTree = "<group>"; };
 		3215425515B5B75F0003C8B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		3215425715B5B7670003C8B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		3216C95616A6098C0050D17D /* DirectoryProfilePictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DirectoryProfilePictureViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -871,8 +874,8 @@
 		32CFECE3151C789A00D8CBA6 /* TransportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TransportController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32CFECE4151C789A00D8CBA6 /* TransportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		32CFECED151CCB6800D8CBA6 /* PCObjectArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PCObjectArchiver.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		32CFECEE151CCB6800D8CBA6 /* PCObjectArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PCObjectArchiver.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		32CFECED151CCB6800D8CBA6 /* PCPersistenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PCPersistenceManager.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		32CFECEE151CCB6800D8CBA6 /* PCPersistenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PCPersistenceManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32D0B250166AA58D00F68304 /* LocationArrowActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowActive.png; sourceTree = "<group>"; };
 		32D0B251166AA58D00F68304 /* LocationArrowActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrowActive@2x.png"; sourceTree = "<group>"; };
 		32D0B252166AA58D00F68304 /* LocationArrowInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrowInactive.png; sourceTree = "<group>"; };
@@ -1377,8 +1380,8 @@
 		324715AB15001381007C230C /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				32CFECED151CCB6800D8CBA6 /* PCObjectArchiver.h */,
-				32CFECEE151CCB6800D8CBA6 /* PCObjectArchiver.m */,
+				32CFECED151CCB6800D8CBA6 /* PCPersistenceManager.h */,
+				32CFECEE151CCB6800D8CBA6 /* PCPersistenceManager.m */,
 				3258D64F16AF1FE20040DAE3 /* PCConfig.h */,
 				3258D65016AF1FE20040DAE3 /* PCConfig.m */,
 				324715AC15001381007C230C /* Service.h */,
@@ -1877,6 +1880,8 @@
 				324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */,
 				32035BB1166E987100E134DD /* MoodleResourceViewController.h */,
 				32035BB2166E987100E134DD /* MoodleResourceViewController.m */,
+				32151EE818FC3212001F6DA9 /* MoodleResourceSettingsViewController.h */,
+				32151EE918FC3212001F6DA9 /* MoodleResourceSettingsViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2760,7 +2765,7 @@
 				32FB2E0A15179014007AE82B /* transport.m in Sources */,
 				32FB2E0B15179014007AE82B /* TransportService.m in Sources */,
 				32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */,
-				32CFECEF151CCB6800D8CBA6 /* PCObjectArchiver.m in Sources */,
+				32CFECEF151CCB6800D8CBA6 /* PCPersistenceManager.m in Sources */,
 				32442FEB151CF87100685D10 /* TransportNextDeparturesViewController.m in Sources */,
 				322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */,
 				3278F6CA184257AF007CB382 /* TransportDepartureSelectionViewController.m in Sources */,
@@ -2789,6 +2794,7 @@
 				32CCB50B15555D9200220282 /* NewsListViewController.m in Sources */,
 				3297E01B15557FE10054F790 /* NewsUtils.m in Sources */,
 				32C450AE18241364000C99A3 /* FoodMealCell.m in Sources */,
+				32151EEA18FC3212001F6DA9 /* MoodleResourceSettingsViewController.m in Sources */,
 				32B5871D156458FA0051C57E /* camipro.m in Sources */,
 				32B58723156459370051C57E /* CamiproController.m in Sources */,
 				32B2B88A1841281F009DA368 /* TransportModelAdditions.m in Sources */,
@@ -3144,8 +3150,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1307D8CC-8C03-4718-AA7B-5E0A8C7557DF";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1307D8CC-8C03-4718-AA7B-5E0A8C7557DF";
+				PROVISIONING_PROFILE = "841BF9D8-9BDF-49D8-87D8-BA2B8EF75F6F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "841BF9D8-9BDF-49D8-87D8-BA2B8EF75F6F";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WRAPPER_EXTENSION = app;

@@ -31,7 +31,7 @@
 
 #import "AFNetworking.h"
 
-#import "PCObjectArchiver.h"
+#import "PCPersistenceManager.h"
 
 #import "SSKeychain.h"
 
@@ -87,11 +87,11 @@ static AuthenticationService* instance __weak = nil;
 }
 
 + (NSString*)savedUsername {
-    return (NSString*)[PCObjectArchiver objectForKey:kSavedUsernameKey andPluginName:@"authentication"];
+    return (NSString*)[PCPersistenceManager objectForKey:kSavedUsernameKey pluginName:@"authentication"];
 }
 
 + (BOOL)saveUsername:(NSString*)username {
-    return [PCObjectArchiver saveObject:username forKey:kSavedUsernameKey andPluginName:@"authentication"];
+    return [PCPersistenceManager saveObject:username forKey:kSavedUsernameKey pluginName:@"authentication"];
 }
 
 + (NSString*)savedPasswordForUsername:(NSString*)username {

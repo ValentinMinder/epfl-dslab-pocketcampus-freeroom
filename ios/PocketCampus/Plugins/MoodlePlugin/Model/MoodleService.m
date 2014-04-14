@@ -29,7 +29,7 @@
 
 #import "MoodleService.h"
 
-#import "PCObjectArchiver.h"
+#import "PCPersistenceManager.h"
 
 #import "AFNetworking.h"
 
@@ -123,7 +123,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 
 - (void)initFavorites {
     if (!self.favoriteMoodleResourcesURLs) { //first try to get it from persistent storage
-        self.favoriteMoodleResourcesURLs = [(NSSet*)[PCObjectArchiver objectForKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"] mutableCopy];
+        self.favoriteMoodleResourcesURLs = [(NSSet*)[PCPersistenceManager objectForKey:kFavoriteMoodleResourcesURLs pluginName:@"moodle"] mutableCopy];
     }
     if (!self.favoriteMoodleResourcesURLs) { //if not present in persistent storage, create set
         self.favoriteMoodleResourcesURLs = [NSMutableSet set];
@@ -134,7 +134,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     if (!self.favoriteMoodleResourcesURLs) {
         return YES;
     }
-    return [PCObjectArchiver saveObject:self.favoriteMoodleResourcesURLs forKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"];
+    return [PCPersistenceManager saveObject:self.favoriteMoodleResourcesURLs forKey:kFavoriteMoodleResourcesURLs pluginName:@"moodle"];
 }
 
 - (void)addFavoriteMoodleResource:(MoodleResource*)moodleResource {

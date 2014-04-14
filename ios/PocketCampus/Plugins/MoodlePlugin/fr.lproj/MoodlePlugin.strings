@@ -19,6 +19,13 @@
 "DeleteFileFromCacheQuestion" = "Supprimer le fichier du stockage local ?\nVous devrez le télécharger à nouveau pour pouvoir le lire.";
 "ImpossibleDeleteFile" = "Désolé, une erreur s'est produite lors de la suppression du fichier.";
 
+//MoodleSettingsViewController
+"KeepDocsPosition" = "Restaurer la lecture";
+"KeepDocsPositionExplanation" = "Quand cette fonction est activée, les documents s'ouvrent directement à l'endroit où vous les avez laissé.";
+"ThisDocument" = "Ce document";
+"KeepResourcePosition" = "Restaurer la lecture";
+"KeepResourcePositionExplanation" = "S'applique à ce document uniquement.";
+
 //Accessibility
 "ShowsDocumentsForThisCourse" = "Affiche les documents de ce cours.";
 "DocumentDescriptionWithFormat" = "%@, fichier '%@', téléchargé: %@";

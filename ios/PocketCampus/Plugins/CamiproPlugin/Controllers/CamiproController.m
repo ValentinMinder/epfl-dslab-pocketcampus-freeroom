@@ -88,7 +88,7 @@ static CamiproController* instance __weak = nil;
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
             CLSNSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotification);
             [[CamiproService sharedInstanceToRetain] deleteCamiproSession]; //removing stored session
-            [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"camipro"];
+            [PCPersistenceManager deleteCacheForPluginName:@"camipro"];
             [[MainController publicController] requestLeavePlugin:@"Camipro"];
         }];
     });
