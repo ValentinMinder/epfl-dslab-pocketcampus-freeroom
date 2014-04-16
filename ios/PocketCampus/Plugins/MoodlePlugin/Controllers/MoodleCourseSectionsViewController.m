@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 04.12.12.
-
 
 #import "MoodleCourseSectionsViewController.h"
 
@@ -49,11 +45,17 @@
 
 #import "MoodleModelAdditions.h"
 
+#import "MoodleSettingsViewController.h"
+
 
 static const NSTimeInterval kRefreshValiditySeconds = 86400; //1 day
 
 static const UISearchBarStyle kSearchBarDefaultStyle = UISearchBarStyleDefault;
 static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
+
+static const NSInteger kSegmentIndexAll = 0;
+static const NSInteger kSegmentIndexCurrentWeek = 1;
+static const NSInteger kSegmentIndexFavorites = 2;
 
 @interface MoodleCourseSectionsViewController ()<UISearchDisplayDelegate>
 
@@ -63,10 +65,13 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 @property (nonatomic, strong) NSOperationQueue* searchQueue;
 @property (nonatomic, strong) NSTimer* typingTimer;
 @property (nonatomic, strong) NSRegularExpression* currentSearchRegex;
+@property (nonatomic, strong) UIPopoverController* settingsPopover;
+@property (nonatomic, strong) UISegmentedControl* segmentedControl;
 
 @property (nonatomic, strong) MoodleService* moodleService;
+@property (nonatomic, strong) SectionsListReply* sectionsListReply;
 @property (nonatomic, strong) NSArray* sections;
-@property (nonatomic, strong) NSArray* filteredSections; //for search
+@property (nonatomic, strong) NSArray* searchFilteredSections; //for search
 @property (nonatomic, strong) NSDictionary* cellForMoodleResource;
 @property (nonatomic) int currentWeek;
 @property (nonatomic, strong) MoodleCourse* course;
@@ -86,10 +91,11 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         self.course = course;
         self.title = self.course.iTitle;
         self.moodleService = [MoodleService sharedInstanceToRetain];
-        self.sections = [self.moodleService getFromCacheCoursesSectionsForCourseId:[NSString stringWithFormat:@"%ld", (NSInteger)self.course.iId]].iSections;
+        self.sectionsListReply = [self.moodleService getFromCacheCoursesSectionsForCourseId:[NSString stringWithFormat:@"%ld", (NSInteger)self.course.iId]];
+        self.sections = self.sectionsListReply.iSections;
         self.searchQueue = [NSOperationQueue new];
         self.searchQueue.maxConcurrentOperationCount = 1;
-        [self fillCellsFromSections];
+        [self fillCellForMoodleResource];
         //[self.moodleService saveSession:[[MoodleSession alloc] initWithMoodleCookie:@"sdfgjskjdfhgjshdfg"]]; //TEST ONLY
     }
     return self;
@@ -99,6 +105,19 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed)];
+    settingsButton.accessibilityLabel = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
+    
+    self.navigationItem.rightBarButtonItem = settingsButton;
+    
+    NSArray* segmentedControlItems = @[NSLocalizedStringFromTable(@"All", @"PocketCampus", nil), NSLocalizedStringFromTable(@"MoodleCurrentWeek", @"MoodlePlugin", nil), NSLocalizedStringFromTable(@"Favorites", @"PocketCampus", nil)];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
+    self.segmentedControl.selectedSegmentIndex = kSegmentIndexAll;
+    [self.segmentedControl addTarget:self action:@selector(segmentedControlValueChanged) forControlEvents:UIControlEventValueChanged];
+    UIBarButtonItem* segmentedControlBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
+    
+    self.toolbarItems = @[segmentedControlBarItem];
     
     PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
     self.tableView = tableViewAdditions;
@@ -111,7 +130,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     tableViewAdditions.contentSizeCategoryDidChangeBlock = ^(PCTableViewAdditions* tableView) {
         //need to do it manually because UISearchDisplayController does not support using a custom table view (PCTableViewAdditions in this case)
         weakSelf.searchDisplayController.searchResultsTableView.rowHeight = tableView.rowHeightBlock(tableView);
-        [weakSelf fillCellsFromSections];
+        [weakSelf fillCellForMoodleResource];
         [weakSelf.searchDisplayController.searchResultsTableView reloadData];
     };
 
@@ -135,16 +154,22 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     
-    [self showToggleButtonIfPossible];
+    //[self showToggleButtonIfPossible];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteMoodleResourcesUpdated:) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+    [self.navigationController setToolbarHidden:NO animated:YES];
     if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -192,7 +217,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     }
 }
 
-- (void)showToggleButtonIfPossible {
+/*- (void)showToggleButtonIfPossible {
     int visibleCount = 0;
     for (int i = 1; i < self.sections.count; i++) {
         MoodleSection* secObj = self.sections[i];
@@ -212,9 +237,9 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"MoodleCurrentWeek", @"MoodlePlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(toggleShowAll:)];
     }
     [self.navigationItem setRightBarButtonItem:anotherButton animated:NO];
-}
+}*/
 
-- (void)toggleShowAll:(id)sender {
+/*- (void)toggleShowAll:(id)sender {
     [self trackAction:@"SwitchBetweenCurrentAndAllWeeks"];
     if (self.currentWeek > 0) {
         self.currentWeek = 0;
@@ -230,20 +255,61 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     if (selectedIndexPath) {
         [self.tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
     }
-}
+}*/
 
 - (void)showMasterViewController {
     [(PluginSplitViewController*)self.splitViewController setMasterViewControllerHidden:NO animated:YES];
 }
 
-- (void)fillCellsFromSections {
-    if (!self.sections) {
+- (void)fillSectionsForSelectedSegment {
+    if (!self.sectionsListReply.iSections) {
+        self.sections = nil;
+        return;
+    }
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case kSegmentIndexAll:
+            self.sections = self.sectionsListReply.iSections;
+            break;
+        case kSegmentIndexCurrentWeek:
+        {
+#warning TODO
+            self.sections = self.sectionsListReply.iSections;
+            break;
+        }
+        case kSegmentIndexFavorites:
+        {
+            NSMutableArray* filteredSections = [NSMutableArray arrayWithCapacity:self.sectionsListReply.iSections.count];
+            for (MoodleSection* section in self.sectionsListReply.iSections) {
+                if (section.iResources.count == 0) {
+                    continue;
+                }
+                NSMutableArray* filteredResources = [NSMutableArray arrayWithCapacity:section.iResources.count];
+                for (MoodleResource* resource in section.iResources) {
+                    if ([self.moodleService isFavoriteMoodleResource:resource]) {
+                        [filteredResources addObject:resource];
+                    }
+                }
+                MoodleSection* sectionCopy = [section copy];
+                sectionCopy.iResources = filteredResources;
+                [filteredSections addObject:sectionCopy];
+            }
+            self.sections = filteredSections;
+            break;
+        }
+        default:
+            self.sections = self.sectionsListReply.iSections;
+            break;
+    }
+}
+
+- (void)fillCellForMoodleResource {
+    if (!self.sectionsListReply.iSections) {
         return;
     }
     
-    NSMutableDictionary* cellsTemp = [NSMutableDictionary dictionaryWithCapacity:self.sections.count*5]; //just estimation for pre-memory allocation
+    NSMutableDictionary* cellsTemp = [NSMutableDictionary dictionaryWithCapacity:self.sectionsListReply.iSections.count*5]; //just estimation for pre-memory allocation
     
-    for (MoodleSection* section in self.sections) {
+    for (MoodleSection* section in self.sectionsListReply.iSections) {
         for (MoodleResource* resource in section.iResources) {
             
             PCTableViewCellAdditions* cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
@@ -307,13 +373,34 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 - (NSArray*)filteredSectionsFromPattern:(NSString*)pattern {
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF.iName contains[cd] %@ OR SELF.filename contains[cd] %@", pattern, pattern];
-    NSMutableArray* filteredSections = [NSMutableArray arrayWithCapacity:self.sections.count];
-    for (MoodleSection* moodleSection in self.sections) {
+    NSMutableArray* filteredSections = [NSMutableArray arrayWithCapacity:self.sectionsListReply.iSections.count];
+    for (MoodleSection* moodleSection in self.sectionsListReply.iSections) {
         MoodleSection* moodleSectionCopy = [moodleSection copy]; //conforms to NSCopying in Additions category
         moodleSectionCopy.iResources = [moodleSection.iResources filteredArrayUsingPredicate:predicate];
         [filteredSections addObject:moodleSectionCopy];
     }
     return filteredSections;
+}
+
+#pragma mark - Button actions
+
+- (void)settingsButtonPressed {
+    [self trackAction:@"Settings"];
+    MoodleSettingsViewController* settingsViewController = [[MoodleSettingsViewController alloc] init];
+    if (self.splitViewController) {
+        if (!self.settingsPopover) {
+            self.settingsPopover = [[UIPopoverController alloc] initWithContentViewController:settingsViewController];
+        }
+        [self.settingsPopover togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    } else {
+        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:settingsViewController];
+        [self presentViewController:navController animated:YES completion:NULL];
+    }
+}
+
+- (void)segmentedControlValueChanged {
+    [self fillSectionsForSelectedSegment];
+    [self.tableView reloadData];
 }
 
 #pragma mark - UISearchDisplayDelegate
@@ -322,13 +409,13 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     [self.typingTimer invalidate];
     [self.searchQueue cancelAllOperations];
     if (searchString.length == 0) {
-        self.filteredSections = nil;
+        self.searchFilteredSections = nil;
         self.currentSearchRegex = nil;
         return YES;
     } else {
         //perform search in background
         typeof(self) weakSelf __weak = self;
-        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:self.filteredSections.count ? 0.2 : 0.0 block:^{ //interval: so that first search is not delayed (would display "No results" otherwise)
+        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:self.searchFilteredSections.count ? 0.2 : 0.0 block:^{ //interval: so that first search is not delayed (would display "No results" otherwise)
             [weakSelf.searchQueue addOperationWithBlock:^{
                 if (!weakSelf) {
                     return;
@@ -340,7 +427,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
                 }
                 NSRegularExpression* currentSearchRegex = [NSRegularExpression regularExpressionWithPattern:searchString options:NSRegularExpressionCaseInsensitive error:NULL];
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    weakSelf.filteredSections = filteredSections;
+                    weakSelf.searchFilteredSections = filteredSections;
                     weakSelf.currentSearchRegex = currentSearchRegex;
                     [weakSelf.searchController.searchResultsTableView reloadData];
                 }];
@@ -354,7 +441,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 - (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
     [self.typingTimer invalidate];
     [self.searchQueue cancelAllOperations];
-    [self fillCellsFromSections];
+    [self fillCellForMoodleResource];
     [self.tableView reloadData];
 }
 
@@ -363,6 +450,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     if ([PCUtils isIdiomPad]) {
         self.searchBar.searchBarStyle = kSearchBarActiveStyle;
     }
+    [self.navigationController setToolbarHidden:YES animated:YES];
     [self.moodleService cancelOperationsForDelegate:self];
     [self.lgRefreshControl endRefreshing];
 }
@@ -371,6 +459,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     if ([PCUtils isIdiomPad]) {
         self.searchBar.searchBarStyle = kSearchBarDefaultStyle;
     }
+    [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 #pragma mark - MoodleServiceDelegate
@@ -378,9 +467,10 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 - (void)getCourseSectionsForCourseId:(NSString *)courseId didReturn:(SectionsListReply *)reply {
     switch (reply.iStatus) {
         case 200:
-            self.sections = reply.iSections;
-            [self showToggleButtonIfPossible];
-            [self fillCellsFromSections];
+            self.sectionsListReply = reply;
+            [self fillCellForMoodleResource];
+            [self fillSectionsForSelectedSegment];
+            //[self showToggleButtonIfPossible];
             [self.tableView reloadData];
             [self.lgRefreshControl endRefreshing];
             [self.lgRefreshControl markRefreshSuccessful];
@@ -438,10 +528,10 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         }
         section = self.sections[indexPath.section];
     } else if (tableView == self.searchController.searchResultsTableView) {
-        if (!self.filteredSections.count) {
+        if (!self.searchFilteredSections.count) {
             return;
         }
-        section = self.filteredSections[indexPath.section];
+        section = self.searchFilteredSections[indexPath.section];
         [self.searchController.searchBar resignFirstResponder];
     }
     
@@ -500,13 +590,13 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
             return 0.0;
         }
     } else if (tableView == self.searchController.searchResultsTableView) {
-        if (!self.filteredSections.count) {
+        if (!self.searchFilteredSections.count) {
             return 0.0;
         }
         if (![self showSection:section inTableView:tableView]) {
             return 0.0;
         }
-        MoodleSection* secObj = self.filteredSections[section];
+        MoodleSection* secObj = self.searchFilteredSections[section];
         if (secObj.iResources.count == 0) {
             return 0.0;
         }
@@ -528,10 +618,10 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         }
     }
     if (tableView == self.searchController.searchResultsTableView) {
-        if (!self.filteredSections.count || ![self showSection:section inTableView:tableView]) {
+        if (!self.searchFilteredSections.count || ![self showSection:section inTableView:tableView]) {
             return nil;
         }
-        moodleSection = self.filteredSections[section];
+        moodleSection = self.searchFilteredSections[section];
         if (moodleSection.iResources.count == 0) {
             return nil;
         }
@@ -558,7 +648,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        MoodleSection* section = tableView == self.tableView ? self.sections[indexPath.section] : self.filteredSections[indexPath.section];
+        MoodleSection* section = tableView == self.tableView ? self.sections[indexPath.section] : self.searchFilteredSections[indexPath.section];
         MoodleResource* resource = section.iResources[indexPath.row];
         [self trackAction:PCGAITrackerActionDelete];
         if ([self.moodleService deleteDownloadedMoodleResource:resource]) {
@@ -587,7 +677,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         //filteredSections is empty
     }
     
-    MoodleSection* section = tableView == self.tableView ? self.sections[indexPath.section] : self.filteredSections[indexPath.section];
+    MoodleSection* section = tableView == self.tableView ? self.sections[indexPath.section] : self.searchFilteredSections[indexPath.section];
     MoodleResource* resource = section.iResources[indexPath.row];
     PCTableViewCellAdditions* cell = self.cellForMoodleResource[resource];
     
@@ -618,13 +708,13 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         return secObj.iResources.count;
     }
     if (tableView == self.searchController.searchResultsTableView) {
-        if (!self.filteredSections) {
+        if (!self.searchFilteredSections) {
             return 0;
         }
         if(![self showSection:section inTableView:tableView]) {
             return 0;
         }
-        MoodleSection* secObj = self.filteredSections[section];
+        MoodleSection* secObj = self.searchFilteredSections[section];
         return secObj.iResources.count;
     }
     return 0;
@@ -641,7 +731,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
         return self.sections.count;
     }
     if (tableView == self.searchController.searchResultsTableView) {
-        return self.filteredSections.count;
+        return self.searchFilteredSections.count;
     }
     return 0;
 }

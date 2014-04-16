@@ -39,7 +39,7 @@
 		32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBE1536F215009B8D37 /* TransportFeetConnection@2x.png */; };
 		32141FA718D8D16F0084FE44 /* IsAcademiaModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */; };
 		32148A3E18101D6C00AF2F8E /* CamiproLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */; };
-		32151EEA18FC3212001F6DA9 /* MoodleResourceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32151EE918FC3212001F6DA9 /* MoodleResourceSettingsViewController.m */; };
+		32151EEA18FC3212001F6DA9 /* MoodleSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */; };
 		3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
 		3216C95816A6098C0050D17D /* DirectoryProfilePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3216C95716A6098C0050D17D /* DirectoryProfilePictureViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */; };
@@ -449,8 +449,8 @@
 		32141FA518D8D16F0084FE44 /* IsAcademiaModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaModelAdditions.h; sourceTree = "<group>"; };
 		32141FA618D8D16F0084FE44 /* IsAcademiaModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsAcademiaModelAdditions.m; sourceTree = "<group>"; };
 		32148A3D18101D6C00AF2F8E /* CamiproLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CamiproLarge@2x.png"; sourceTree = "<group>"; };
-		32151EE818FC3212001F6DA9 /* MoodleResourceSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleResourceSettingsViewController.h; sourceTree = "<group>"; };
-		32151EE918FC3212001F6DA9 /* MoodleResourceSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleResourceSettingsViewController.m; sourceTree = "<group>"; };
+		32151EE818FC3212001F6DA9 /* MoodleSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleSettingsViewController.h; sourceTree = "<group>"; };
+		32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodleSettingsViewController.m; sourceTree = "<group>"; };
 		3215425515B5B75F0003C8B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		3215425715B5B7670003C8B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		3216C95616A6098C0050D17D /* DirectoryProfilePictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DirectoryProfilePictureViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1880,8 +1880,8 @@
 				324CB5811671585B008C7B3D /* MoodleSplashDetailViewController.m */,
 				32035BB1166E987100E134DD /* MoodleResourceViewController.h */,
 				32035BB2166E987100E134DD /* MoodleResourceViewController.m */,
-				32151EE818FC3212001F6DA9 /* MoodleResourceSettingsViewController.h */,
-				32151EE918FC3212001F6DA9 /* MoodleResourceSettingsViewController.m */,
+				32151EE818FC3212001F6DA9 /* MoodleSettingsViewController.h */,
+				32151EE918FC3212001F6DA9 /* MoodleSettingsViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2794,7 +2794,7 @@
 				32CCB50B15555D9200220282 /* NewsListViewController.m in Sources */,
 				3297E01B15557FE10054F790 /* NewsUtils.m in Sources */,
 				32C450AE18241364000C99A3 /* FoodMealCell.m in Sources */,
-				32151EEA18FC3212001F6DA9 /* MoodleResourceSettingsViewController.m in Sources */,
+				32151EEA18FC3212001F6DA9 /* MoodleSettingsViewController.m in Sources */,
 				32B5871D156458FA0051C57E /* camipro.m in Sources */,
 				32B58723156459370051C57E /* CamiproController.m in Sources */,
 				32B2B88A1841281F009DA368 /* TransportModelAdditions.m in Sources */,

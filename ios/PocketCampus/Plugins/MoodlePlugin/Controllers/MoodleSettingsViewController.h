@@ -29,8 +29,8 @@
 
 @class MoodleResource;
 
-@interface MoodleResourceSettingsViewController : UITableViewController
+@interface MoodleSettingsViewController : UITableViewController
 
-- (instancetype)initWithMoodleResource:(MoodleResource*)resource;
+- (instancetype)init;
 
 @end

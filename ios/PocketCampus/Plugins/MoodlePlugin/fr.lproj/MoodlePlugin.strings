@@ -7,7 +7,7 @@
 "MoodleCourses" = "Cours";
 "MoodleWeek" = "Semaine";
 "MoodleAllWeeks" = "Toutes les semaines";
-"MoodleCurrentWeek" = "Semaine courante";
+"MoodleCurrentWeek" = "Cette semaine";
 "Saved" = "téléchargé ";
 "LoadingCourseList" = "Chargement de la liste des cours...";
 "LoadingCourse" = "Chargement du cours...";

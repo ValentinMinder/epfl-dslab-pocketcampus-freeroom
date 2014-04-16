@@ -27,7 +27,7 @@
 
 //  Created by Loïc Gardiol on 14.04.14.
 
-#import "MoodleResourceSettingsViewController.h"
+#import "MoodleSettingsViewController.h"
 
 #import "MoodleModelAdditions.h"
 
@@ -38,7 +38,7 @@ static NSUInteger const kResourceSection = 1;
 
 static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositionGeneralSettingBool";
 
-@interface MoodleResourceSettingsViewController ()
+@interface MoodleSettingsViewController ()
 
 @property (nonatomic, strong) MoodleResource* moodleResource;
 
@@ -47,18 +47,16 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 
 @end
 
-@implementation MoodleResourceSettingsViewController
+@implementation MoodleSettingsViewController
 
 #pragma mark - Init
 
-- (instancetype)initWithMoodleResource:(MoodleResource*)resource;
+- (instancetype)init
 {
-    [PCUtils throwExceptionIfObject:resource notKindOfClass:[MoodleResource class]];
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
-        self.gaiScreenName = @"/moodle/course/document/settings";
-        self.moodleResource = resource;
+        self.gaiScreenName = @"/moodle/course/settings";
     }
     return self;
 }

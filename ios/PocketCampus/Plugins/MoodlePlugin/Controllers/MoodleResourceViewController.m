@@ -41,8 +41,6 @@
 
 #import "NSTimer+Blocks.h"
 
-#import "MoodleResourceSettingsViewController.h"
-
 static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 @interface MoodleResourceViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
@@ -55,7 +53,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 @property (nonatomic, strong) MoodleResource* moodleResource;
 @property (nonatomic, strong) UIActionSheet* deleteActionSheet;
 @property (nonatomic, strong) UIDocumentInteractionController* docController;
-@property (nonatomic, strong) UIPopoverController* settingsPopover;
 @property (nonatomic) CGFloat navbarOriginalAlpha;
 @property (nonatomic, strong) NSTimer* hideNavbarTimer;
 @property (nonatomic) BOOL isShowingActionMenu;
@@ -116,10 +113,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     deleteButton.enabled = NO;
     deleteButton.accessibilityHint = NSLocalizedStringFromTable(@"DeleteDocumentFromLocalStorage", @"MoodlePlugin", nil);
     [rightButtons addObject:deleteButton];
-    
-    UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed)];
-    settingsButton.accessibilityLabel = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
-    [rightButtons addObject:settingsButton];
 
     self.navigationItem.rightBarButtonItems = rightButtons;
 
@@ -297,13 +290,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     return self.navigationItem.rightBarButtonItems[2];
 }
 
-- (UIBarButtonItem*)settingsButton {
-    if (self.navigationItem.rightBarButtonItems.count < 4) {
-        return nil;
-    }
-    return self.navigationItem.rightBarButtonItems[3];
-}
-
 #pragma mark - Buttons actions
                                        
 - (void)actionButtonPressed {
@@ -342,19 +328,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self.deleteActionSheet toggleFromBarButtonItem:[self deleteButton] animated:YES];
 }
 
-- (void)settingsButtonPressed {
-    [self trackAction:@"Settings"];
-    MoodleResourceSettingsViewController* settingsViewController = [[MoodleResourceSettingsViewController alloc] initWithMoodleResource:self.moodleResource];
-    if (self.splitViewController) {
-        if (!self.settingsPopover) {
-            self.settingsPopover = [[UIPopoverController alloc] initWithContentViewController:settingsViewController];
-        }
-        [self.settingsPopover togglePopoverFromBarButtonItem:[self settingsButton] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    } else {
-        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:settingsViewController];
-        [self presentViewController:navController animated:YES completion:NULL];
-    }
-}
+
 
 #pragma mark - Moodle Resource loading
 
