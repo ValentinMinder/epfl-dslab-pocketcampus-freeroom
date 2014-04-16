@@ -500,9 +500,6 @@ static NSString* const kZoomScaleKey = @"ZoomScale";
         return;
     }
     NSDictionary* resourceDic = [MoodleResource defaultsDictionaryForMoodleResource:self.moodleResource];
-    if (![resourceDic[kMoodleSavePositionResourceSettingBoolKey] boolValue]) {
-        return;
-    }
     NSDictionary* state = resourceDic[kScrollViewStateKey];
     if (!state) {
         return;

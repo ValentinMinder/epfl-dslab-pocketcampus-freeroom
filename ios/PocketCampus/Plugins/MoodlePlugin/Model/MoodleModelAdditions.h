@@ -30,7 +30,6 @@
 #import "moodle.h"
 
 extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
-extern NSString* const kMoodleSavePositionResourceSettingBoolKey;
 
 @interface MoodleResource (Additions)<NSCopying>
 

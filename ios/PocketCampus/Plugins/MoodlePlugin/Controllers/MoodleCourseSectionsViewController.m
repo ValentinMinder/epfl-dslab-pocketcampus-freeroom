@@ -67,6 +67,8 @@ static const NSInteger kSegmentIndexFavorites = 2;
 @property (nonatomic, strong) NSRegularExpression* currentSearchRegex;
 @property (nonatomic, strong) UIPopoverController* settingsPopover;
 @property (nonatomic, strong) UISegmentedControl* segmentedControl;
+@property (nonatomic, strong) NSLayoutConstraint* segmentedControlWidthConstraint;
+@property (nonatomic, strong) NSLayoutConstraint* segmentedControlHeightConstraint;
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) SectionsListReply* sectionsListReply;
@@ -93,6 +95,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.sectionsListReply = [self.moodleService getFromCacheCoursesSectionsForCourseId:[NSString stringWithFormat:@"%ld", (NSInteger)self.course.iId]];
         self.sections = self.sectionsListReply.iSections;
+        [self computeCurrentWeek];
         self.searchQueue = [NSOperationQueue new];
         self.searchQueue.maxConcurrentOperationCount = 1;
         [self fillCellForMoodleResource];
@@ -115,9 +118,18 @@ static const NSInteger kSegmentIndexFavorites = 2;
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
     self.segmentedControl.selectedSegmentIndex = kSegmentIndexAll;
     [self.segmentedControl addTarget:self action:@selector(segmentedControlValueChanged) forControlEvents:UIControlEventValueChanged];
+    self.segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
+    self.segmentedControlWidthConstraint = [NSLayoutConstraint widthConstraint:self.tableView.frame.size.width forView:self.segmentedControl];
+    self.segmentedControlHeightConstraint  = [NSLayoutConstraint heightConstraint:40.0 forView:self.segmentedControl];
+    [self.segmentedControl addConstraints:@[self.segmentedControlWidthConstraint, self.segmentedControlHeightConstraint]];
+    [self showCurrentWeekSegmentConditionally];
     UIBarButtonItem* segmentedControlBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
     
-    self.toolbarItems = @[segmentedControlBarItem];
+    [self.segmentedControl addObserver:self forKeyPath:NSStringFromSelector(@selector(frame)) options:0 context:NULL];
+    
+    UIBarButtonItem* flexibleSpaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem* flexibleSpaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    self.toolbarItems = @[flexibleSpaceLeft, segmentedControlBarItem, flexibleSpaceRight];
     
     PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
     self.tableView = tableViewAdditions;
@@ -187,6 +199,30 @@ static const NSInteger kSegmentIndexFavorites = 2;
     }
     PCTableViewCellAdditions* cell = self.cellForMoodleResource[resource];
     cell.favoriteIndicationVisible = [self.moodleService isFavoriteMoodleResource:resource];
+    if (self.splitViewController && self.segmentedControl.selectedSegmentIndex == kSegmentIndexFavorites) {
+        // Only on iPad, because fav list is visible when documents are open. Need to update live.
+        // On iPhone, want to let the opportunity to go back to doc to re-add to fav is wanted (otherwise lose pointer)
+        [self fillSectionsForSelectedSegment];
+        [self.tableView reloadData];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == self.segmentedControl && [keyPath isEqualToString:NSStringFromSelector(@selector(frame))]) {
+        if (!self.segmentedControl.superview) {
+            return;
+        }
+        CGFloat width = self.segmentedControl.superview.frame.size.width-18.0;
+        if (width > 350.0) {
+            width = 350.0;
+        }
+        self.segmentedControlWidthConstraint.constant = width;
+        CGFloat height = self.segmentedControl.superview.frame.size.height-16.0;
+        if (height < 20.0) {
+            height = 20.0;
+        }
+        self.segmentedControlHeightConstraint.constant = height;
+    }
 }
 
 #pragma mark - Refresh
@@ -204,12 +240,12 @@ static const NSInteger kSegmentIndexFavorites = 2;
 #pragma mark - Utils and toggle week button
 
 - (void)computeCurrentWeek {
-    if(!self.sections) {
+    if(!self.sectionsListReply.iSections) {
         return;
     }
     self.currentWeek = -1; //-1 means outside semester time, all weeks will be displayed and toggle button hidden
-    for (NSInteger i = 0; i < self.sections.count; i++) {
-        MoodleSection* section = self.sections[i];
+    for (NSInteger i = 0; i < self.sectionsListReply.iSections.count; i++) {
+        MoodleSection* section = self.sectionsListReply.iSections[i];
         if(section.iResources.count != 0 && section.iCurrent) {
             self.currentWeek = (int)i;
             break;
@@ -217,45 +253,13 @@ static const NSInteger kSegmentIndexFavorites = 2;
     }
 }
 
-/*- (void)showToggleButtonIfPossible {
-    int visibleCount = 0;
-    for (int i = 1; i < self.sections.count; i++) {
-        MoodleSection* secObj = self.sections[i];
-        visibleCount += secObj.iResources.count;
-    }
-    if(visibleCount > 0) {
-        [self computeCurrentWeek];
-        [self showToggleButton];
+- (void)showCurrentWeekSegmentConditionally {
+    if (self.currentWeek > -1) {
+        [self.segmentedControl setWidth:0.0 forSegmentAtIndex:kSegmentIndexCurrentWeek]; // 0.0 means auto => show (see doc)
+    } else {
+        [self.segmentedControl setWidth:0.1 forSegmentAtIndex:kSegmentIndexCurrentWeek]; // will be interepreted as 0 width (0.0 is auto)
     }
 }
-
-- (void)showToggleButton {
-    UIBarButtonItem *anotherButton = nil;
-    if (self.currentWeek > 0) {
-        anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"MoodleAllWeeks", @"MoodlePlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(toggleShowAll:)];
-    } else if (self.currentWeek == 0) {
-        anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"MoodleCurrentWeek", @"MoodlePlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(toggleShowAll:)];
-    }
-    [self.navigationItem setRightBarButtonItem:anotherButton animated:NO];
-}*/
-
-/*- (void)toggleShowAll:(id)sender {
-    [self trackAction:@"SwitchBetweenCurrentAndAllWeeks"];
-    if (self.currentWeek > 0) {
-        self.currentWeek = 0;
-    } else {
-        [self computeCurrentWeek];
-    }
-    [self showToggleButton];
-    NSIndexPath* selectedIndexPath = nil;
-    if (self.selectedResource && self.cellForMoodleResource[self.selectedResource]) { //second condition should always be true if first is true
-        selectedIndexPath = [self.tableView indexPathForCell:self.cellForMoodleResource[self.selectedResource]];;
-    }
-    [self.tableView reloadData];
-    if (selectedIndexPath) {
-        [self.tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-    }
-}*/
 
 - (void)showMasterViewController {
     [(PluginSplitViewController*)self.splitViewController setMasterViewControllerHidden:NO animated:YES];
@@ -272,8 +276,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
             break;
         case kSegmentIndexCurrentWeek:
         {
-#warning TODO
-            self.sections = self.sectionsListReply.iSections;
+            self.sections = self.sectionsListReply.iSections; //filtering managed by showSection:inTableView:
             break;
         }
         case kSegmentIndexFavorites:
@@ -288,6 +291,9 @@ static const NSInteger kSegmentIndexFavorites = 2;
                     if ([self.moodleService isFavoriteMoodleResource:resource]) {
                         [filteredResources addObject:resource];
                     }
+                }
+                if (filteredResources.count == 0) {
+                    continue;
                 }
                 MoodleSection* sectionCopy = [section copy];
                 sectionCopy.iResources = filteredResources;
@@ -399,6 +405,19 @@ static const NSInteger kSegmentIndexFavorites = 2;
 }
 
 - (void)segmentedControlValueChanged {
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case kSegmentIndexAll:
+            [self trackAction:@"ShowAll"];
+            break;
+        case kSegmentIndexCurrentWeek:
+            [self trackAction:@"ShowCurrentWeek"];
+            break;
+        case kSegmentIndexFavorites:
+            [self trackAction:@"ShowFavorites"];
+            break;
+        default:
+            break;
+    }
     [self fillSectionsForSelectedSegment];
     [self.tableView reloadData];
 }
@@ -468,9 +487,10 @@ static const NSInteger kSegmentIndexFavorites = 2;
     switch (reply.iStatus) {
         case 200:
             self.sectionsListReply = reply;
+            [self computeCurrentWeek];
+            [self showCurrentWeekSegmentConditionally];
             [self fillCellForMoodleResource];
             [self fillSectionsForSelectedSegment];
-            //[self showToggleButtonIfPossible];
             [self.tableView reloadData];
             [self.lgRefreshControl endRefreshing];
             [self.lgRefreshControl markRefreshSuccessful];
@@ -664,7 +684,8 @@ static const NSInteger kSegmentIndexFavorites = 2;
     
     if (tableView == self.tableView && self.sections && self.sections.count == 0) {
         if (indexPath.row == 1) {
-            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"MoodleEmptyCourse", @"MoodlePlugin", nil)];
+            NSString* message = self.segmentedControl.selectedSegmentIndex == kSegmentIndexFavorites ? NSLocalizedStringFromTable(@"MoodleNoFavorites", @"MoodlePlugin", nil) : NSLocalizedStringFromTable(@"MoodleEmptyCourse", @"MoodlePlugin", nil);
+            return [[PCCenterMessageCell alloc] initWithMessage:message];
         } else {
             UITableViewCell* cell =[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -739,10 +760,13 @@ static const NSInteger kSegmentIndexFavorites = 2;
 #pragma mark - showSections
 
 - (BOOL)showSection:(NSInteger)section inTableView:(UITableView*)tableView {
-    if (self.currentWeek <= 0 || tableView == self.searchController.searchResultsTableView) {
+    if (tableView == self.searchController.searchResultsTableView) {
         return YES;
     }
-    return (self.currentWeek == section);
+    if (self.segmentedControl.selectedSegmentIndex == kSegmentIndexCurrentWeek) {
+        return (section == self.currentWeek);
+    }
+    return YES;
 }
 
 #pragma mark - Dealloc

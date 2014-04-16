@@ -34,7 +34,6 @@
 #import "MoodleService.h"
 
 static NSUInteger const kGeneralSection = 0;
-static NSUInteger const kResourceSection = 1;
 
 static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositionGeneralSettingBool";
 
@@ -56,7 +55,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
-        self.gaiScreenName = @"/moodle/course/settings";
+        self.gaiScreenName = @"/moodle/settings";
     }
     return self;
 }
@@ -87,17 +86,6 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 
 - (void)setSaveDocsPositionGeneralSetting:(BOOL)saveDocsPositionGeneralSetting {
     [[PCPersistenceManager defaultsForPluginName:@"moodle"] setObject:[NSNumber numberWithBool:saveDocsPositionGeneralSetting] forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
-    //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kResourceSection] withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
-- (BOOL)savePositionResourceSetting {
-    return [[[MoodleResource defaultsDictionaryForMoodleResource:self.moodleResource] objectForKey:kMoodleSavePositionResourceSettingBoolKey] boolValue];
-}
-
-- (void)setSavePositionResourceSetting:(BOOL)savePositionResourceSetting {
-    NSMutableDictionary* resourceDic = [[MoodleResource defaultsDictionaryForMoodleResource:self.moodleResource] mutableCopy];
-    resourceDic[kMoodleSavePositionResourceSettingBoolKey] = [NSNumber numberWithBool:savePositionResourceSetting];
-    [MoodleResource setDefaultsDictionary:resourceDic forMoodleResource:self.moodleResource];
 }
 
 #pragma mark - UITableViewDelegate
@@ -106,8 +94,6 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
     switch (section) {
         case kGeneralSection:
             return NSLocalizedStringFromTable(@"General", @"PocketCampus", nil);
-        case kResourceSection:
-            return nil; // self.saveDocsPositionGeneralSetting ? NSLocalizedStringFromTable(@"ThisDocument", @"MoodlePlugin", nil) : nil;
     }
     return nil;
 }
@@ -116,8 +102,6 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
     switch (section) {
         case kGeneralSection:
             return NSLocalizedStringFromTable(@"KeepDocsPositionExplanation", @"MoodlePlugin", nil);
-        case kResourceSection:
-            return nil; // self.saveDocsPositionGeneralSetting ? NSLocalizedStringFromTable(@"KeepResourcePositionExplanation", @"MoodlePlugin", nil) : nil;
     }
     return nil;
 }
@@ -147,22 +131,6 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
             cell.accessoryView = toggle;
             break;
         }
-        /*case kResourceSection:
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = NSLocalizedStringFromTable(@"KeepResourcePosition", @"MoodlePlugin", nil);
-            UISwitch* toggle = [UISwitch new];
-            __weak __typeof(self) welf = self;
-            __weak __typeof(toggle) woggle = toggle;
-            [toggle addEventHandler:^(id sender, UIEvent *event) {
-                [welf trackAction:@"SavePositionResourceSetting" contentInfo:woggle.isOn ? @"Yes" : @"No"];
-                welf.savePositionResourceSetting = woggle.isOn;
-            } forControlEvent:UIControlEventValueChanged];
-            toggle.on = self.savePositionResourceSetting;
-            cell.accessoryView = toggle;
-            break;
-        }*/
         default:
             break;
     }
@@ -173,8 +141,6 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
     switch (section) {
         case kGeneralSection:
             return 1; //keep docs position in general
-        case kResourceSection:
-            return 0;//self.saveDocsPositionGeneralSetting ? 1 : 0;
     }
     return 0;
 }
