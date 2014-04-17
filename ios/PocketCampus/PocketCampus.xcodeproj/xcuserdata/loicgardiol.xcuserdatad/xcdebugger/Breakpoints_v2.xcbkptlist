@@ -1890,11 +1890,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Model/MoodleService.m"
-            timestampString = "414856763.372745"
+            timestampString = "419450485.798004"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "354"
-            endingLineNumber = "354"
+            startingLineNumber = "371"
+            endingLineNumber = "371"
             landmarkName = "-removeMoodleResourceObserver:forResource:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1906,11 +1906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Model/MoodleService.m"
-            timestampString = "414856763.372745"
+            timestampString = "419450485.798004"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
+            startingLineNumber = "391"
+            endingLineNumber = "391"
             landmarkName = "-resourcesDownloadSessionManager"
             landmarkType = "5">
          </BreakpointContent>
@@ -2861,11 +2861,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "417279452.239384"
+            timestampString = "419450485.798004"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
             landmarkName = "@implementation PCUtils"
             landmarkType = "3">
          </BreakpointContent>

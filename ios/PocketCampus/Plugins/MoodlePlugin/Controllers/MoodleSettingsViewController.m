@@ -33,16 +33,18 @@
 
 #import "MoodleService.h"
 
-static NSUInteger const kGeneralSection = 0;
+static NSUInteger const kReadingSection = 0;
+static NSUInteger const kFilesSection = 1;
 
 static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositionGeneralSettingBool";
 
-@interface MoodleSettingsViewController ()
-
-@property (nonatomic, strong) MoodleResource* moodleResource;
+@interface MoodleSettingsViewController ()<UIActionSheetDelegate>
 
 @property (nonatomic) BOOL saveDocsPositionGeneralSetting;
-@property (nonatomic) BOOL savePositionResourceSetting;
+
+@property (nonatomic, strong) MoodleService* moodleService;
+@property (nonatomic) long long tmpTotalNbResourcesSize; //-2 when should compute, -1 when computing, LLONG_MAX on error
+@property (nonatomic, strong) UIActionSheet* deleteAllDocsActionSheet;
 
 @end
 
@@ -55,7 +57,9 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
+        self.moodleService = [MoodleService sharedInstanceToRetain];
         self.gaiScreenName = @"/moodle/settings";
+        self.tmpTotalNbResourcesSize = -2;
     }
     return self;
 }
@@ -69,6 +73,8 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.tmpTotalNbResourcesSize = -2;
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kFilesSection] withRowAnimation:UITableViewRowAnimationNone];
     [self trackScreen];
 }
 
@@ -92,22 +98,64 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
-        case kGeneralSection:
+        case kReadingSection:
             return NSLocalizedStringFromTable(@"General", @"PocketCampus", nil);
+        case kFilesSection:
+            return nil;
     }
     return nil;
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     switch (section) {
-        case kGeneralSection:
+        case kReadingSection:
             return NSLocalizedStringFromTable(@"KeepDocsPositionExplanation", @"MoodlePlugin", nil);
+        case kFilesSection:
+        {
+            if (self.tmpTotalNbResourcesSize == -2) {
+                self.tmpTotalNbResourcesSize = -1;
+                __weak __typeof(self) welf = self;
+                [self.moodleService totalNbBytesAllDownloadedMoodleResourcesWithCompletion:^(unsigned long long totalNbBytes, BOOL error) {
+                    if (error) {
+                        welf.tmpTotalNbResourcesSize = LLONG_MAX;
+                    } else {
+                        welf.tmpTotalNbResourcesSize = (long long)totalNbBytes;
+                    }
+                    [welf.tableView reloadSections:[NSIndexSet indexSetWithIndex:kFilesSection] withRowAnimation:UITableViewRowAnimationNone];
+                }];
+            }
+            
+            NSString* fileSizeString = nil;
+            if (self.tmpTotalNbResourcesSize == -1) {
+                fileSizeString = [NSString stringWithFormat:@"(%@)", [NSLocalizedStringFromTable(@"Computing", @"MoodlePlugin", nil) lowercaseString]];
+            } else if (self.tmpTotalNbResourcesSize == LLONG_MAX) {
+                fileSizeString = [NSString stringWithFormat:@"(%@)", [NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) lowercaseString]];
+            } else if (self.tmpTotalNbResourcesSize >= 0) {
+                if (self.tmpTotalNbResourcesSize == 0) {
+                    fileSizeString = @"0B";
+                } else {
+                    fileSizeString = [NSByteCountFormatter stringFromByteCount:self.tmpTotalNbResourcesSize countStyle:NSByteCountFormatterCountStyleFile];
+                }
+            }
+            return [NSString stringWithFormat:NSLocalizedStringFromTable(@"DownloadedDocumentsCurrentlyUsingBytesWithFormat", @"MoodlePlugin", nil), fileSizeString];
+            
+        }
     }
     return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    switch (indexPath.section) {
+        case kReadingSection:
+            [tableView deselectRowAtIndexPath:indexPath animated:NO];
+            break;
+        case kFilesSection:
+            self.deleteAllDocsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"AllDocsWillBeDeletedExplanation", @"MoodlePlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:NSLocalizedStringFromTable(@"DeleteAll", @"MoodlePlugin", nil) otherButtonTitles:nil];
+            [self.deleteAllDocsActionSheet showInView:self.tableView];
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -115,7 +163,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = nil;
     switch (indexPath.section) {
-        case kGeneralSection:
+        case kReadingSection:
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -131,6 +179,15 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
             cell.accessoryView = toggle;
             break;
         }
+        case kFilesSection:
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.textColor = [PCValues pocketCampusRed];
+            cell.textLabel.text = NSLocalizedStringFromTable(@"DeleteAllDownloadedDocuments", @"MoodlePlugin", nil);
+            break;
+        }
         default:
             break;
     }
@@ -139,14 +196,37 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case kGeneralSection:
+        case kReadingSection:
             return 1; //keep docs position in general
+        case kFilesSection:
+            return 1; //delete all files
     }
     return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (actionSheet == self.deleteAllDocsActionSheet) {
+        if (buttonIndex == actionSheet.destructiveButtonIndex) {
+            [[MoodleService sharedInstanceToRetain] deleteAllDownloadedMoodleResources];
+            self.tmpTotalNbResourcesSize = -2;
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kFilesSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        self.deleteAllDocsActionSheet = nil;
+        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+    }
+}
+
+#pragma mark - Dealloc
+
+- (void)dealloc
+{
+    [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
 }
 
 @end

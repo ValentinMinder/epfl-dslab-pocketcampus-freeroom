@@ -21,11 +21,14 @@
 "ImpossibleDeleteFile" = "Désolé, une erreur s'est produite lors de la suppression du fichier.";
 
 //MoodleSettingsViewController
+"MoodleSettings" = "Réglages Moodle";
 "KeepDocsPosition" = "Restaurer la lecture";
 "KeepDocsPositionExplanation" = "Quand cette fonction est activée, les documents s'ouvrent directement à l'endroit où vous les avez laissé.";
-"ThisDocument" = "Ce document";
-"KeepResourcePosition" = "Restaurer la lecture";
-"KeepResourcePositionExplanation" = "S'applique à ce document uniquement.";
+"DeleteAllDownloadedDocuments" = "Supprimer tous les doc. téléchargés";
+"DownloadedDocumentsCurrentlyUsingBytesWithFormat" = "Les documents téléchargés utilisent actuellement %@ d'espace disque.";
+"Computing" = "Calcul";
+"AllDocsWillBeDeletedExplanation" = "Tous les documents de tous les cours seront supprimés.\nVous devrez les télécharger à nouveau pour pouvoir les lire.";
+"DeleteAll" = "Tout supprimer";
 
 //Accessibility
 "ShowsDocumentsForThisCourse" = "Affiche les documents de ce cours.";

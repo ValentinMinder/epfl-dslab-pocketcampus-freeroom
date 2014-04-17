@@ -22,12 +22,14 @@
 
 
 //MoodleSettingsViewController
+"MoodleSettings" = "Moodle settings";
 "KeepDocsPosition" = "Restore reading position";
 "KeepDocsPositionExplanation" = "When enabled, documents will automatically be opened where you left them off.";
-"ThisDocument" = "This document";
-"KeepResourcePosition" = "Restore reading position";
-"KeepResourcePositionExplanation" = "Applies to this document only.";
-
+"DeleteAllDownloadedDocuments" = "Delete all downloaded documents";
+"DownloadedDocumentsCurrentlyUsingBytesWithFormat" = "Downloaded documents are currently using %@ of space.";
+"Computing" = "Calculating";
+"AllDocsWillBeDeletedExplanation" = "All documents of all courses will be deleted.\nYou will need to download them again to read them.";
+"DeleteAll" = "Delete all";
 
 
 //Accessibility

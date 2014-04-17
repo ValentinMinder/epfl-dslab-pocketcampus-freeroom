@@ -221,11 +221,8 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     return NO;
 }
 
-- (BOOL)deleteAllDownloadedResources {
-    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString* path = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    path = [path stringByAppendingPathComponent:@"moodle"];
-    path = [path stringByAppendingPathComponent:@"downloads"];
+- (BOOL)deleteAllDownloadedMoodleResources {
+    NSString* path = [self pathForResourcesDownloadFolder];
     NSFileManager* fileManager= [NSFileManager defaultManager];
     NSError* error = nil;
     [fileManager removeItemAtPath:path error:&error];
@@ -241,6 +238,26 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
         return YES;
     }
     return NO;
+}
+
+- (void)totalNbBytesAllDownloadedMoodleResourcesWithCompletion:(void (^)(unsigned long long totalNbBytes, BOOL error))completion {
+    if (!completion) {
+        return;
+    }
+    NSString* path = [self pathForResourcesDownloadFolder];
+    [PCUtils fileOrFolderSizeWithPath:path completion:^(unsigned long long totalNbBytes, BOOL error) {
+        completion(totalNbBytes, error);
+    }];
+}
+
+#pragma mark Private
+
+- (NSString*)pathForResourcesDownloadFolder {
+    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString* path = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    path = [path stringByAppendingPathComponent:@"moodle"];
+    path = [path stringByAppendingPathComponent:@"downloads"];
+    return path;
 }
 
 #pragma mark - Service methods
