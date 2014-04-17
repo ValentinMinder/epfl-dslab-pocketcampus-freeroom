@@ -123,14 +123,63 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @return true if the occupancy has been well inserted, false otherwise.
 	 */
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
+			FRRoom room, String hash) {
+		boolean allowInsert = true;
+		if (type == OCCUPANCY_TYPE.USER) {
+			allowInsert = allowInsert
+					&& checkMultipleSubmissionUserOccupancy(period, room);
+		}
+
+		if (allowInsert) {
+			System.out.println("Inserting occupancy " + type.toString()
+					+ " for room " + room.getDoorCode());
+			return insertAndCheckOccupancyRoom(period, room, type, hash);
+		} else {
+			System.out.println("Client already said he was working in "
+					+ room.getDoorCode());
+			return false;
+		}
+
+	}
+
+	private boolean checkMultipleSubmissionUserOccupancy(FRPeriod period,
 			FRRoom room) {
-		System.out.println("Inserting occupancy " + type.toString()
-				+ " for room " + room.getDoorCode());
-		return insertAndCheckOccupancyRoom(period, room, type);
+		// TODO do this rounding before, so it become common
+		long tsStart = Utils.roundSAndMSToZero(period.getTimeStampStart());
+
+		String checkRequest = "SELECT COUNT(*) AS count "
+				+ "FROM `fr-checkOccupancy` co "
+				+ "WHERE co.uid = ? AND co.timestampStart = ?";
+
+		Connection connectBDD;
+		try {
+			connectBDD = connMgr.getConnection();
+			PreparedStatement checkQuery = connectBDD
+					.prepareStatement(checkRequest);
+
+			checkQuery.setString(1, room.getUid());
+			checkQuery.setLong(2, tsStart);
+
+			ResultSet checkResult = checkQuery.executeQuery();
+			if (checkResult.next()) {
+				int count = checkResult.getInt("count");
+				if (count == 0) {
+					return true;
+				}
+			} else {
+				//TODO check if this case is correct
+				return true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
 	}
 
 	private boolean insertAndCheckOccupancyRoom(FRPeriod period, FRRoom room,
-			OCCUPANCY_TYPE typeToInsert) {
+			OCCUPANCY_TYPE typeToInsert, String hash) {
 		long tsStart = Utils.roundSAndMSToZero(period.getTimeStampStart());
 		long tsEnd = Utils.roundSAndMSToZero(period.getTimeStampEnd());
 
@@ -249,6 +298,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 									hourSharpBefore + i * ONE_HOUR_MS,
 									hourSharpBefore + (i + 1) * ONE_HOUR_MS,
 									OCCUPANCY_TYPE.USER, 1);
+					insertCheckOccupancyInDB(room.getUid(), hourSharpBefore + i
+							* ONE_HOUR_MS, hash);
 				}
 
 				return overallInsertion;
@@ -257,6 +308,25 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+
+	private void insertCheckOccupancyInDB(String uid, long tsStart, String hash) {
+		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, hash) "
+				+ "VALUES (?, ?, ?) ";
+
+		Connection connectBDD;
+		try {
+			connectBDD = connMgr.getConnection();
+			PreparedStatement insertQuery = connectBDD
+					.prepareStatement(insertRequest);
+
+			insertQuery.setString(1, uid);
+			insertQuery.setLong(2, tsStart);
+			insertQuery.setString(3, hash);
+			insertQuery.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -728,12 +798,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			Connection connectBDD = connMgr.getConnection();
 			String requestSQL = "";
 			if (forbiddenRooms == null) {
-				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
+				requestSQL = "SELECT * "
+						+ "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?)) "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
 			} else {
-				requestSQL = "SELECT * " + "FROM `fr-roomslist` rl "
+				requestSQL = "SELECT * "
+						+ "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?)) "
 						+ "AND rl.uid NOT IN (" + forbidRoomsSQL + ") "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
@@ -798,7 +870,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
 		FRRoom room = work.getRoom();
-		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER, room);
+		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER, room,
+				request.getHash());
 		if (success) {
 			return new ImWorkingReply(HttpURLConnection.HTTP_OK, "");
 		} else {
