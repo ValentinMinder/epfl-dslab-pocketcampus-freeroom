@@ -1008,22 +1008,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "419338364.127048"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "434"
-            endingLineNumber = "434"
-            landmarkName = "-actionSheet:didDismissWithButtonIndex:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Plugins/FoodPlugin/Controllers/FoodRestaurantsListViewController.m"
             timestampString = "415900223.42678"
             startingColumnNumber = "9223372036854775807"
@@ -3764,11 +3748,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "419338364.127048"
+            timestampString = "419433708.161452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "375"
-            endingLineNumber = "375"
+            startingLineNumber = "377"
+            endingLineNumber = "377"
             landmarkName = "@implementation MoodleResourceViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -3780,11 +3764,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "419338364.127048"
+            timestampString = "419433708.161452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "383"
-            endingLineNumber = "383"
+            startingLineNumber = "385"
+            endingLineNumber = "385"
             landmarkName = "-downloadOfMoodleResource:didFinish:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4121,23 +4105,6 @@
             endingLineNumber = "116"
             landmarkName = "-authenticateSilentlyToken:delegate:"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            condition = "gestureRecognizer == self.simpleTapGesture"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "419338364.127048"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
-            landmarkName = "@implementation MoodleResourceViewController"
-            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -4506,11 +4473,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "419363043.686676"
+            timestampString = "419434018.452041"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "522"
-            endingLineNumber = "522"
+            startingLineNumber = "530"
+            endingLineNumber = "530"
             landmarkName = "-restoreScrollViewSateIfExists"
             landmarkType = "5">
          </BreakpointContent>
@@ -4522,11 +4489,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "419363043.686676"
+            timestampString = "419434018.452041"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "526"
-            endingLineNumber = "526"
+            startingLineNumber = "534"
+            endingLineNumber = "534"
             landmarkName = "-restoreScrollViewSateIfExists"
             landmarkType = "5">
          </BreakpointContent>
@@ -4570,28 +4537,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "419338364.127048"
+            timestampString = "419434018.452041"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "494"
-            endingLineNumber = "494"
+            startingLineNumber = "502"
+            endingLineNumber = "502"
             landmarkName = "-saveScrollViewState"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Plugins/MoodlePlugin/Controllers/MoodleResourceViewController.m"
-            timestampString = "419338364.127048"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "423"
-            endingLineNumber = "423"
-            landmarkName = "-gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -53,6 +53,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 @property (nonatomic, strong) MoodleResource* moodleResource;
 @property (nonatomic, strong) UIActionSheet* deleteActionSheet;
 @property (nonatomic, strong) UIDocumentInteractionController* docController;
+@property (nonatomic, strong) UITapGestureRecognizer* tapGestureReco;
 @property (nonatomic) CGFloat navbarOriginalAlpha;
 @property (nonatomic, strong) NSTimer* hideNavbarTimer;
 @property (nonatomic) BOOL isShowingActionMenu;
@@ -347,6 +348,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     UITapGestureRecognizer* tapGestureReco = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavbarVisibility)];
     tapGestureReco.delegate = self;
+    self.tapGestureReco = tapGestureReco;
 
     UITapGestureRecognizer* doubleTapGestureReco = [[UITapGestureRecognizer alloc] initWithTarget:nil action:nil];
     doubleTapGestureReco.delegate = self;
@@ -419,7 +421,13 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    [self removeScrollViewContentSizeObserver];
+    [self removeScrollViewContentSizeObserver]; //do not restore scroll view reading position if user satarts manipulating the document
+    if (gestureRecognizer == self.tapGestureReco && [otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        return NO;
+    }
+    if (gestureRecognizer == self.tapGestureReco && [otherGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        return NO;
+    }
     if (gestureRecognizer.view == self.view && [otherGestureRecognizer.view isOrSubviewOfView:self.webView]) {
         return YES;
     }
