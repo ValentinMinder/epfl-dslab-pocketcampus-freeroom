@@ -128,4 +128,21 @@ typedef CGFloat (^RowHeightBlock)(PCTableViewAdditions* tableView);
  */
 - (NSString*)autoInvalidatingReuseIdentifierForIdentifier:(NSString*)identifier;
 
+#pragma mark - Other utils
+
+/*
+ * Saves (in memory) current contentOffset under identifier.
+ * identifier cannot be nil
+ * You can the user restoreContentOffsetForIdentifier: to restore the contentOffset
+ * This method automatically deals with the portrait/landscape problem.
+ */
+- (void)saveContentOffsetForIdentifier:(NSString*)identifier;
+
+/*
+ * See saveContentOffsetForIdentifier:
+ * identifier cannot be nil
+ * Does nothing if not saved state found for identifier
+ */
+- (void)restoreContentOffsetForIdentifier:(NSString*)identifier;
+
 @end

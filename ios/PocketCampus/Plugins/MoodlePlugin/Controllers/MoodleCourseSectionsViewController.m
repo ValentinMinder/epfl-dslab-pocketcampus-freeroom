@@ -69,6 +69,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
 @property (nonatomic, strong) UISegmentedControl* segmentedControl;
 @property (nonatomic, strong) NSLayoutConstraint* segmentedControlWidthConstraint;
 @property (nonatomic, strong) NSLayoutConstraint* segmentedControlHeightConstraint;
+@property (nonatomic) NSInteger prevSelectedSegmentIndex;
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) SectionsListReply* sectionsListReply;
@@ -117,6 +118,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     NSArray* segmentedControlItems = @[NSLocalizedStringFromTable(@"All", @"PocketCampus", nil), NSLocalizedStringFromTable(@"MoodleCurrentWeek", @"MoodlePlugin", nil), NSLocalizedStringFromTable(@"Favorites", @"PocketCampus", nil)];
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
     self.segmentedControl.selectedSegmentIndex = kSegmentIndexAll;
+    self.prevSelectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
     [self.segmentedControl addTarget:self action:@selector(segmentedControlValueChanged) forControlEvents:UIControlEventValueChanged];
     self.segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
     self.segmentedControlWidthConstraint = [NSLayoutConstraint widthConstraint:self.tableView.frame.size.width forView:self.segmentedControl];
@@ -418,8 +420,12 @@ static const NSInteger kSegmentIndexFavorites = 2;
         default:
             break;
     }
+    
+    [(PCTableViewAdditions*)(self.tableView) saveContentOffsetForIdentifier:[NSString stringWithFormat:@"%ld", self.prevSelectedSegmentIndex]];
     [self fillSectionsForSelectedSegment];
     [self.tableView reloadData];
+    [(PCTableViewAdditions*)(self.tableView) restoreContentOffsetForIdentifier:[NSString stringWithFormat:@"%ld", self.segmentedControl.selectedSegmentIndex]];
+    self.prevSelectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
 }
 
 #pragma mark - UISearchDisplayDelegate
