@@ -36,3 +36,12 @@ CREATE TABLE IF NOT EXISTS `fr-occupancy` (
 	PRIMARY KEY (`uid`, `timestampStart`, `type`),
 	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist`(`uid`) ON DELETE CASCADE	
 ) CHARSET=latin1;
+
+-- This table is used to avoid multiple submission by a single client of user occupancies 
+CREATE TABLE IF NOT EXISTS `fr-checkOccupancy` (
+	`uid` char(255) NOT NULL,
+	`timestampStart` bigint(20) NOT NULL,
+	`hash` char(255) NOT NULL,
+	PRIMARY KEY (`uid`, `timestampStart`, `hash`),
+	CONSTRAINT FOREIGN KEY (`uid`) REFERENCES `fr-roomslist` (`uid`) ON DELETE CASCADE
+) CHARSET=latin1;
