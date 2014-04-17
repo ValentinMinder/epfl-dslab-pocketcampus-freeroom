@@ -117,6 +117,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     
     NSArray* segmentedControlItems = @[NSLocalizedStringFromTable(@"All", @"PocketCampus", nil), NSLocalizedStringFromTable(@"MoodleCurrentWeek", @"MoodlePlugin", nil), NSLocalizedStringFromTable(@"Favorites", @"PocketCampus", nil)];
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
+    self.segmentedControl.tintColor = [UIColor colorWithWhite:0.5 alpha:1.0];
     self.segmentedControl.selectedSegmentIndex = kSegmentIndexAll;
     self.prevSelectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
     [self.segmentedControl addTarget:self action:@selector(segmentedControlValueChanged) forControlEvents:UIControlEventValueChanged];
@@ -786,6 +787,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     [self.typingTimer invalidate];
     @try {
         [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self.segmentedControl removeObserver:self forKeyPath:NSStringFromSelector(@selector(frame))];
     }
     @catch (NSException *exception) {}
 }
