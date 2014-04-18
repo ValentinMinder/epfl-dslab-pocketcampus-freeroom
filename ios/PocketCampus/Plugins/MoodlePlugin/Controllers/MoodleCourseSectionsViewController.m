@@ -169,14 +169,15 @@ static const NSInteger kSegmentIndexFavorites = 2;
     self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"moodle" dataName:[NSString stringWithFormat:@"courseSectionsList-%d", self.course.iId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     
-    //[self showToggleButtonIfPossible];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteMoodleResourcesUpdated:) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
-    [self.navigationController setToolbarHidden:NO animated:YES];
+    if (!self.searchController.isActive) {
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    }
     if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
