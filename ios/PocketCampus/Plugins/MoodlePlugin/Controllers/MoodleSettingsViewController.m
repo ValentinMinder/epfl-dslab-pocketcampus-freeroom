@@ -116,6 +116,9 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
                 self.tmpTotalNbResourcesSize = -1;
                 __weak __typeof(self) welf = self;
                 [self.moodleService totalNbBytesAllDownloadedMoodleResourcesWithCompletion:^(unsigned long long totalNbBytes, BOOL error) {
+                    if (!welf) {
+                        return;
+                    }
                     if (error) {
                         welf.tmpTotalNbResourcesSize = LLONG_MAX;
                     } else {
@@ -132,12 +135,16 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
                 fileSizeString = [NSString stringWithFormat:@"(%@)", [NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) lowercaseString]];
             } else if (self.tmpTotalNbResourcesSize >= 0) {
                 if (self.tmpTotalNbResourcesSize == 0) {
-                    fileSizeString = @"0B";
+                    fileSizeString = nil;
                 } else {
                     fileSizeString = [NSByteCountFormatter stringFromByteCount:self.tmpTotalNbResourcesSize countStyle:NSByteCountFormatterCountStyleFile];
                 }
             }
-            return [NSString stringWithFormat:NSLocalizedStringFromTable(@"DownloadedDocumentsCurrentlyUsingBytesWithFormat", @"MoodlePlugin", nil), fileSizeString];
+            if (fileSizeString) {
+                return [NSString stringWithFormat:NSLocalizedStringFromTable(@"DownloadedDocumentsCurrentlyUsingBytesWithFormat", @"MoodlePlugin", nil), fileSizeString];
+            } else {
+                return NSLocalizedStringFromTable(@"NoDownloadedDocuments", @"MoodlePlugin", nil);
+            }
             
         }
     }
@@ -150,6 +157,10 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
             [tableView deselectRowAtIndexPath:indexPath animated:NO];
             break;
         case kFilesSection:
+            if (self.tmpTotalNbResourcesSize <= 0) {
+                [tableView deselectRowAtIndexPath:indexPath animated:NO];
+                return;
+            }
             self.deleteAllDocsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"AllDocsWillBeDeletedExplanation", @"MoodlePlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:NSLocalizedStringFromTable(@"DeleteAll", @"MoodlePlugin", nil) otherButtonTitles:nil];
             [self.deleteAllDocsActionSheet showInView:self.tableView];
             break;
@@ -183,9 +194,15 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textColor = [PCValues pocketCampusRed];
             cell.textLabel.text = NSLocalizedStringFromTable(@"DeleteAllDownloadedDocuments", @"MoodlePlugin", nil);
+            if (self.tmpTotalNbResourcesSize > 0) {
+                cell.textLabel.enabled = YES;
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            } else {
+                cell.textLabel.enabled = NO;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
             break;
         }
         default:
