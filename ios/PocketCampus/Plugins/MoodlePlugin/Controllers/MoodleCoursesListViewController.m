@@ -117,7 +117,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 #pragma mark - Buttons actions
 
 - (void)settingsButtonPressed {
-    [self trackAction:@"Settings"];
+    [self trackAction:@"OpenSettings"];
     MoodleSettingsViewController* settingsViewController = [[MoodleSettingsViewController alloc] init];
     if (self.splitViewController) {
         if (!self.settingsPopover) {

@@ -230,6 +230,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (actionSheet == self.deleteAllDocsActionSheet) {
         if (buttonIndex == actionSheet.destructiveButtonIndex) {
+            [self trackAction:@"DeleteAllDownloadedDocuments"];
             [[MoodleService sharedInstanceToRetain] deleteAllDownloadedMoodleResources];
             self.tmpTotalNbResourcesSize = -2;
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kFilesSection] withRowAnimation:UITableViewRowAnimationAutomatic];

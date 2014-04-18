@@ -394,7 +394,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
 #pragma mark - Button actions
 
 - (void)settingsButtonPressed {
-    [self trackAction:@"Settings"];
+    [self trackAction:@"OpenSettings"];
     MoodleSettingsViewController* settingsViewController = [[MoodleSettingsViewController alloc] init];
     if (self.splitViewController) {
         if (!self.settingsPopover) {
