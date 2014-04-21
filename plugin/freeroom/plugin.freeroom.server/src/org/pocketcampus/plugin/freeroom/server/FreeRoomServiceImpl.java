@@ -135,7 +135,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	}
 
-	//TODO answer properly in case of multiple submission (bad request...)
+	// TODO answer properly in case of multiple submission (bad request...)
 	private boolean checkMultipleSubmissionUserOccupancy(FRPeriod period,
 			FRRoom room) {
 		// TODO do this rounding before, so it become common
@@ -161,7 +161,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					return true;
 				}
 			} else {
-				//TODO check if this case is correct
+				// TODO check if this case is correct
 				return true;
 			}
 
@@ -380,9 +380,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		HashMap<String, List<Occupancy>> occupancies = null;
 
 		if (uidList == null) {
-			// we want to look into all the rooms
-			occupancies = getOccupancyOfAnyFreeRoom(onlyFreeRoom, tsStart,
-					tsEnd);
+			if (onlyFreeRoom) {
+				// we want to look into all the rooms
+				occupancies = getOccupancyOfAnyFreeRoom(onlyFreeRoom, tsStart,
+						tsEnd);
+			} else {
+				return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
+						"The search fo any free room must contains onlyFreeRoom = true");
+			}
 		} else {
 			// or the user specified a specific list of rooms he wants to check
 			occupancies = getOccupancyOfSpecificRoom(uidList, onlyFreeRoom,
@@ -766,8 +771,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		String constraint = request.getConstraint();
 
 		if (constraint.length() < 2) {
-			 return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
-			 "Constraints should be at least 2 characters long.");
+			return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
+					"Constraints should be at least 2 characters long.");
 		}
 
 		List<FRRoom> rooms = new ArrayList<FRRoom>();
@@ -826,7 +831,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				int cap = resultQuery.getInt("capacity");
 				if (cap > 0) {
 					frRoom.setCapacity(cap);
-				}	
+				}
 				String alias = resultQuery.getString("alias");
 				if (alias != null) {
 					frRoom.setDoorCodeAlias(alias);
