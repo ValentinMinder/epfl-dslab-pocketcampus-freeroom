@@ -66,10 +66,6 @@ namespace PocketCampus.Common
     /// <summary>
     /// Converts doubles to strings and vice-versa.
     /// </summary>
-    /// <remarks>
-    /// Needed because WP apparently can't do it; it probably attempts to use the
-    /// current culture even though the keyboard uses a '.' as its decimal separator.
-    /// </remarks>
     public sealed class DoubleToStringConverter : ValueConverter<double, string>
     {
         public override string Convert( double value )
@@ -79,7 +75,15 @@ namespace PocketCampus.Common
 
         public override double ConvertBack( string value )
         {
-            return double.Parse( value, NumberFormatInfo.InvariantInfo );
+            try
+            {
+                return double.Parse( value, NumberFormatInfo.InvariantInfo );
+            }
+            catch
+            {
+                // in case some keyboards use a local separator
+                return double.Parse( value, NumberFormatInfo.CurrentInfo );
+            }
         }
     }
 

@@ -25,9 +25,15 @@ namespace PocketCampus.Food.Models
         AlreadyVoted,
 
         /// <summary>
-        /// It is too early to vote.
+        /// It is too early to vote on the meal.
         /// </summary>
         [ThriftEnumMember( "TOO_EARLY", 3 )]
-        TooEarly
+        TooEarly,
+
+        /// <summary>
+        /// The meal is too old to be voted on.
+        /// </summary>
+        [ThriftEnumMember( "MEAL_IN_DISTANT_PAST", 5 )]
+        MealInDistantPast
     }
 }
