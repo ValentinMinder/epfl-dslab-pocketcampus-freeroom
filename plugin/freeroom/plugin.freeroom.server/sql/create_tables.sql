@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	`typeFR` char(255) DEFAULT NULL,
 	`typeEN` char(255) DEFAULT NULL,
 	`dincat` char(255) DEFAULT NULL,
+	`enabled` boolean DEFAULT TRUE,
 	PRIMARY KEY (`uid`)
 ) CHARSET=latin1;
 
