@@ -118,7 +118,7 @@ namespace PocketCampus.Food.ViewModels
         [LogId( "RateMeal" )]
         public Command<Meal> RateMealCommand
         {
-            get { return GetCommand<Meal>( RateMeal, _ => AreRatingsEnabled ); }
+            get { return GetCommand<Meal>( _navigationService.NavigateTo<RatingViewModel, Meal>, _ => AreRatingsEnabled ); }
         }
 
 
@@ -199,14 +199,6 @@ namespace PocketCampus.Food.ViewModels
                 AnyMeals = _fullMenu.Any();
                 AnyFilterResults = Menu.Any();
             }
-        }
-
-        /// <summary>
-        /// Shows a rating page for the specified meal.
-        /// </summary>
-        private void RateMeal( Meal meal )
-        {
-            _navigationService.NavigateTo<RatingViewModel, RatingInfo>( new RatingInfo( meal, MealTime, MealDate ) );
         }
     }
 }
