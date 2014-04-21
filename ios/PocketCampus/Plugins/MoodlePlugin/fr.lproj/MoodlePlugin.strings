@@ -25,10 +25,10 @@
 "KeepDocsPosition" = "Restaurer la lecture";
 "KeepDocsPositionExplanation" = "Quand cette fonction est activée, les documents s'ouvrent directement à l'endroit où vous les laisser.";
 "DeleteAllDownloadedDocuments" = "Supprimer tous les doc. téléchargés";
-"DownloadedDocumentsCurrentlyUsingBytesWithFormat" = "Les documents téléchargés utilisent actuellement %@ d'espace disque.";
+"DownloadedDocumentsCurrentlyUsingBytesWithFormat" = "Les documents téléchargés utilisent actuellement %@ d'espace de stockage.";
 "Computing" = "Calcul";
 "NoDownloadedDocuments" = "Aucun document téléchargé.";
-"AllDocsWillBeDeletedExplanation" = "Tous les documents de tous les cours seront supprimés.\nVous devrez les télécharger à nouveau pour pouvoir les lire.";
+"AllDocsWillBeDeletedExplanation" = "Les documents de tous les cours seront supprimés.\nVous devrez les télécharger à nouveau pour pouvoir les lire.";
 "DeleteAll" = "Tout supprimer";
 
 //Accessibility

@@ -119,13 +119,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 - (void)settingsButtonPressed {
     [self trackAction:@"OpenSettings"];
     MoodleSettingsViewController* settingsViewController = [[MoodleSettingsViewController alloc] init];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:settingsViewController];
     if (self.splitViewController) {
         if (!self.settingsPopover) {
-            self.settingsPopover = [[UIPopoverController alloc] initWithContentViewController:settingsViewController];
+            self.settingsPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
         }
         [self.settingsPopover togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
     } else {
-        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:settingsViewController];
         [self presentViewController:navController animated:YES completion:NULL];
     }
 }
