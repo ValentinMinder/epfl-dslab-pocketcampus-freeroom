@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	`uid` char(255) NOT NULL,
 	`doorCode` char(255) NOT NULL,
 	`doorCodeWithoutSpace` char(255) NOT NULL,
+	`alias` char(255),
 	`capacity` int(11),
 	`site_label` char(255),
 	`surface` double,

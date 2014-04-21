@@ -17,7 +17,7 @@ struct FRCourse {
 struct FRRoom{
 	1: required string doorCode;
 	2: required string uid;
-	3: optional string doorCodeWithoutSpace
+	3: optional string doorCodeWithoutSpace;
 	4: optional i32 capacity;
 	5: optional string site_label;
 	6: optional double surface;
@@ -34,6 +34,7 @@ struct FRRoom{
 	17: optional string adminuse;
 	31: optional string EWAid;
 	32: optional FRRoomType type;
+	33: optional string doorCodeAlias;
 }
 
 

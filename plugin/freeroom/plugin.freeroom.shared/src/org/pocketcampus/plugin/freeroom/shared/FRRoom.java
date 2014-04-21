@@ -43,6 +43,7 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
   private static final org.apache.thrift.protocol.TField ADMINUSE_FIELD_DESC = new org.apache.thrift.protocol.TField("adminuse", org.apache.thrift.protocol.TType.STRING, (short)17);
   private static final org.apache.thrift.protocol.TField EWAID_FIELD_DESC = new org.apache.thrift.protocol.TField("EWAid", org.apache.thrift.protocol.TType.STRING, (short)31);
   private static final org.apache.thrift.protocol.TField TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("type", org.apache.thrift.protocol.TType.I32, (short)32);
+  private static final org.apache.thrift.protocol.TField DOOR_CODE_ALIAS_FIELD_DESC = new org.apache.thrift.protocol.TField("doorCodeAlias", org.apache.thrift.protocol.TType.STRING, (short)33);
 
   private String doorCode; // required
   private String uid; // required
@@ -63,6 +64,7 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
   private String adminuse; // required
   private String EWAid; // required
   private FRRoomType type; // required
+  private String doorCodeAlias; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -88,7 +90,8 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
      * 
      * @see FRRoomType
      */
-    TYPE((short)32, "type");
+    TYPE((short)32, "type"),
+    DOOR_CODE_ALIAS((short)33, "doorCodeAlias");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -141,6 +144,8 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
           return EWAID;
         case 32: // TYPE
           return TYPE;
+        case 33: // DOOR_CODE_ALIAS
+          return DOOR_CODE_ALIAS;
         default:
           return null;
       }
@@ -229,6 +234,8 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.TYPE, new org.apache.thrift.meta_data.FieldMetaData("type", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRRoomType.class)));
+    tmpMap.put(_Fields.DOOR_CODE_ALIAS, new org.apache.thrift.meta_data.FieldMetaData("doorCodeAlias", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(FRRoom.class, metaDataMap);
   }
@@ -298,6 +305,9 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     if (other.isSetType()) {
       this.type = other.type;
     }
+    if (other.isSetDoorCodeAlias()) {
+      this.doorCodeAlias = other.doorCodeAlias;
+    }
   }
 
   public FRRoom deepCopy() {
@@ -330,6 +340,7 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     this.adminuse = null;
     this.EWAid = null;
     this.type = null;
+    this.doorCodeAlias = null;
   }
 
   public String getDoorCode() {
@@ -791,6 +802,30 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     }
   }
 
+  public String getDoorCodeAlias() {
+    return this.doorCodeAlias;
+  }
+
+  public FRRoom setDoorCodeAlias(String doorCodeAlias) {
+    this.doorCodeAlias = doorCodeAlias;
+    return this;
+  }
+
+  public void unsetDoorCodeAlias() {
+    this.doorCodeAlias = null;
+  }
+
+  /** Returns true if field doorCodeAlias is set (has been assigned a value) and false otherwise */
+  public boolean isSetDoorCodeAlias() {
+    return this.doorCodeAlias != null;
+  }
+
+  public void setDoorCodeAliasIsSet(boolean value) {
+    if (!value) {
+      this.doorCodeAlias = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case DOOR_CODE:
@@ -945,6 +980,14 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       }
       break;
 
+    case DOOR_CODE_ALIAS:
+      if (value == null) {
+        unsetDoorCodeAlias();
+      } else {
+        setDoorCodeAlias((String)value);
+      }
+      break;
+
     }
   }
 
@@ -1007,6 +1050,9 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     case TYPE:
       return getType();
 
+    case DOOR_CODE_ALIAS:
+      return getDoorCodeAlias();
+
     }
     throw new IllegalStateException();
   }
@@ -1056,6 +1102,8 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       return isSetEWAid();
     case TYPE:
       return isSetType();
+    case DOOR_CODE_ALIAS:
+      return isSetDoorCodeAlias();
     }
     throw new IllegalStateException();
   }
@@ -1244,6 +1292,15 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         return false;
     }
 
+    boolean this_present_doorCodeAlias = true && this.isSetDoorCodeAlias();
+    boolean that_present_doorCodeAlias = true && that.isSetDoorCodeAlias();
+    if (this_present_doorCodeAlias || that_present_doorCodeAlias) {
+      if (!(this_present_doorCodeAlias && that_present_doorCodeAlias))
+        return false;
+      if (!this.doorCodeAlias.equals(that.doorCodeAlias))
+        return false;
+    }
+
     return true;
   }
 
@@ -1345,6 +1402,11 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     builder.append(present_type);
     if (present_type)
       builder.append(type.getValue());
+
+    boolean present_doorCodeAlias = true && (isSetDoorCodeAlias());
+    builder.append(present_doorCodeAlias);
+    if (present_doorCodeAlias)
+      builder.append(doorCodeAlias);
 
     return builder.toHashCode();
   }
@@ -1547,6 +1609,16 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetDoorCodeAlias()).compareTo(typedOther.isSetDoorCodeAlias());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetDoorCodeAlias()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.doorCodeAlias, typedOther.doorCodeAlias);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -1702,6 +1774,13 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 33: // DOOR_CODE_ALIAS
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.doorCodeAlias = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -1833,6 +1912,13 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       if (isSetType()) {
         oprot.writeFieldBegin(TYPE_FIELD_DESC);
         oprot.writeI32(this.type.getValue());
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.doorCodeAlias != null) {
+      if (isSetDoorCodeAlias()) {
+        oprot.writeFieldBegin(DOOR_CODE_ALIAS_FIELD_DESC);
+        oprot.writeString(this.doorCodeAlias);
         oprot.writeFieldEnd();
       }
     }
@@ -2007,6 +2093,16 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         sb.append("null");
       } else {
         sb.append(this.type);
+      }
+      first = false;
+    }
+    if (isSetDoorCodeAlias()) {
+      if (!first) sb.append(", ");
+      sb.append("doorCodeAlias:");
+      if (this.doorCodeAlias == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.doorCodeAlias);
       }
       first = false;
     }
