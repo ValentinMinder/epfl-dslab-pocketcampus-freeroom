@@ -765,10 +765,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		String constraint = request.getConstraint();
 
-		// TODO to decomment (testing purpose)
 		if (constraint.length() < 2) {
-			// return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
-			// "Constraints should be at least 2 characters long.");
+			 return new AutoCompleteReply(HttpURLConnection.HTTP_BAD_REQUEST,
+			 "Constraints should be at least 2 characters long.");
 		}
 
 		List<FRRoom> rooms = new ArrayList<FRRoom>();
@@ -785,7 +784,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 		}
 		// avoid all whitespaces for requests
-		constraint = constraint.trim();
 		constraint = constraint.replaceAll("\\s+", "");
 
 		try {
@@ -794,13 +792,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			if (forbiddenRooms == null) {
 				requestSQL = "SELECT * "
 						+ "FROM `fr-roomslist` rl "
-						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?)) "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?)) "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
 			} else {
 				requestSQL = "SELECT * "
 						+ "FROM `fr-roomslist` rl "
-						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?)) "
+						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?)) "
 						+ "AND rl.uid NOT IN (" + forbidRoomsSQL + ") "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
@@ -809,6 +807,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			PreparedStatement query = connectBDD.prepareStatement(requestSQL);
 			query.setString(1, constraint + "%");
 			query.setString(2, constraint + "%");
+			query.setString(3, constraint + "%");
 
 			if (forbiddenRooms != null) {
 				int i = 2;
@@ -824,19 +823,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			while (resultQuery.next()) {
 				FRRoom frRoom = new FRRoom(resultQuery.getString("doorCode"),
 						resultQuery.getString("uid"));
-				// String type = resultQuery.getString("type");
-				// if (type != null) {
-				// try {
-				// FRRoomType t = FRRoomType.valueOf(type);
-				// frRoom.setType(t);
-				// } catch (IllegalArgumentException e) {
-				// System.err.println("Type not known " + type);
-				// e.printStackTrace();
-				// }
-				// }
 				int cap = resultQuery.getInt("capacity");
 				if (cap > 0) {
 					frRoom.setCapacity(cap);
+				}	
+				String alias = resultQuery.getString("alias");
+				if (alias != null) {
+					frRoom.setDoorCodeAlias(alias);
 				}
 				rooms.add(frRoom);
 			}
