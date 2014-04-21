@@ -7,10 +7,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
@@ -51,6 +54,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private final int LIMIT_AUTOCOMPLETE = 50;
 	private ConnectionManager connMgr;
 	private ExchangeServiceImpl mExchangeService;
+	private Logger logger = Logger.getLogger(FreeRoomServiceImpl.class
+			.getName());
+	SimpleDateFormat dateLogFormat = new SimpleDateFormat("MMM dd,yyyy HH:mm");
 
 	// be careful when changing this, it might lead to invalid data already
 	// stored !
@@ -66,6 +72,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	public FreeRoomServiceImpl() {
 		System.out.println("Starting FreeRoom plugin server ... V2");
+		logger.setLevel(Level.INFO);
+
 		try {
 			connMgr = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL")
 					+ "?allowMultiQueries=true",
@@ -102,6 +110,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	}
 
+	private void log(Level level, String message) {
+		logger.log(level, dateLogFormat.format(System.currentTimeMillis())
+				+ " : " + message);
+	}
+
 	/**
 	 * This method's job is to ensure the data are stored in a proper way.
 	 * Whenever you need to insert an occupancy you should call this one. The
@@ -117,6 +130,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
 			FRRoom room, String hash) {
+
 		boolean allowInsert = true;
 		if (type == OCCUPANCY_TYPE.USER) {
 			allowInsert = allowInsert
@@ -124,12 +138,16 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 		if (allowInsert) {
-			System.out.println("Inserting occupancy " + type.toString()
-					+ " for room " + room.getDoorCode());
-			return insertAndCheckOccupancyRoom(period, room, type, hash);
+
+			boolean inserted = insertAndCheckOccupancyRoom(period, room, type,
+					hash);
+			log(Level.INFO, "Inserting occupancy " + type.toString()
+					+ " for room " + room.getDoorCode() + " : " + inserted);
+			return inserted;
 		} else {
-			System.out.println("Client already said he was working in "
-					+ room.getDoorCode());
+			log(Level.INFO,
+					"Client already said he was working in "
+							+ room.getDoorCode());
 			return false;
 		}
 
@@ -166,6 +184,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 
 		} catch (SQLException e) {
+			log(Level.SEVERE,
+					"SQL error when checking multiple submissions of user occupancy start = "
+							+ period.getTimeStampStart() + " end = "
+							+ period.getTimeStampEnd() + " uid = "
+							+ room.getUid());
 			e.printStackTrace();
 			return false;
 		}
@@ -214,9 +237,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// further there is an overlap
 				if (typeToInsert == OCCUPANCY_TYPE.ROOM
 						&& type == OCCUPANCY_TYPE.ROOM) {
-					System.err
-							.println("Error during insertion of occupancy, overlapping of two rooms occupancy. : ");
-					System.err.println("Want to insert : " + room.getUid()
+					log(Level.WARNING,
+							"Error during insertion of occupancy, overlapping of two rooms occupancy. : ");
+					log(Level.WARNING, "Want to insert : " + room.getUid()
 							+ " have conflict with " + uid);
 					return false;
 					// } else if (typeToInsert == OCCUPANCY_TYPE.ROOM) {
@@ -276,10 +299,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				return insertOccupancyInDB(room.getUid(), tsStart, tsEnd,
 						OCCUPANCY_TYPE.ROOM, 0);
 			} else {
-				if (tsEnd - tsStart < ONE_HOUR_MS) {
-					System.out.println("occupancy less than a hour");
-					// return false;
-				}
+				// if (tsEnd - tsStart < ONE_HOUR_MS) {
+				// System.out.println("occupancy less than a hour");
+				// // return false;
+				// }
 
 				boolean overallInsertion = true;
 
@@ -301,6 +324,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			log(Level.SEVERE,
+					"SQL error when checking and inserting occupancies in DB for room = "
+							+ room.getUid() + " start = "
+							+ period.getTimeStampStart() + " end = "
+							+ period.getTimeStampEnd() + " hash = " + hash
+							+ " type = " + typeToInsert.toString());
 			return false;
 		}
 	}
@@ -320,6 +349,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.setString(3, hash);
 			insertQuery.execute();
 		} catch (SQLException e) {
+			log(Level.SEVERE,
+					"SQL error when writing check Occupancy for uid = " + uid
+							+ " hash = " + hash + " start = " + tsStart);
 			e.printStackTrace();
 		}
 	}
@@ -345,6 +377,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			insertQuery.execute();
 			return true;
 		} catch (SQLException e) {
+			log(Level.SEVERE,
+					"SQL error when inserting occupancy in DB, uid = " + uid
+							+ " type = " + type.toString() + " start = "
+							+ tsStart + " end = " + tsEnd);
 			e.printStackTrace();
 			return false;
 		}
@@ -400,7 +436,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
 			boolean onlyFreeRooms, long tsStart, long tsEnd) {
-		System.out.println("Requesting any free rooms " + onlyFreeRooms);
+		log(Level.INFO, "Requesting occupancy of any free rooms");
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
 		if (onlyFreeRooms) {
 			Connection connectBDD;
@@ -558,6 +594,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			} catch (SQLException e) {
 				e.printStackTrace();
+				log(Level.SEVERE,
+						"SQL error for occupancy of any free room, start = "
+								+ tsStart + " end = " + tsEnd);
 			}
 		}
 
@@ -572,7 +611,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd);
 		}
 
-		System.out.println("Requesting specific list of rooms " + uidList);
+		log(Level.INFO, "Requesting occupancy of specific list of rooms "
+				+ uidList);
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
 		int numberOfRooms = uidList.size();
 		// formatting for the query
@@ -724,7 +764,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log(Level.SEVERE,
+					"SQL error of occupancy of specific list of rooms "
+							+ uidList + " start = " + tsStart + " end = "
+							+ tsEnd);
 		}
 		return result;
 	}
@@ -740,7 +783,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return;
 		}
 		String building = Utils.extractBuilding(doorCode);
-		System.out.println("adding room " + mOcc.getRoom().getDoorCode());
 		List<Occupancy> occ = result.get(building);
 
 		if (occ == null) {
@@ -762,8 +804,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
 			throws TException {
-		System.out.println("Requesting autocomplete of "
-				+ request.getConstraint());
+		log(Level.INFO, "Autocomplete of " + request.getConstraint());
 		AutoCompleteReply reply = new AutoCompleteReply(
 				HttpURLConnection.HTTP_CREATED, ""
 						+ HttpURLConnection.HTTP_CREATED);
@@ -850,6 +891,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					HttpURLConnection.HTTP_INTERNAL_ERROR, ""
 							+ HttpURLConnection.HTTP_INTERNAL_ERROR);
 			e.printStackTrace();
+			log(Level.SEVERE,
+					"SQL error for autocomplete request with constraint "
+							+ constraint);
 		}
 		return reply;
 	}
@@ -857,13 +901,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	@Override
 	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
 			throws TException {
-		System.out.println("ImWorkingThere request for room "
-				+ request.getWork().getRoom().getDoorCode());
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
 		FRRoom room = work.getRoom();
 		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER, room,
 				request.getHash());
+		log(Level.INFO, "ImWorkingThere request for room " + room.getDoorCode()
+				+ " : " + success);
+
 		if (success) {
 			return new ImWorkingReply(HttpURLConnection.HTTP_OK, "");
 		} else {
