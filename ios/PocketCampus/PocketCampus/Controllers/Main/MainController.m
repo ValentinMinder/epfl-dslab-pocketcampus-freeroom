@@ -74,6 +74,8 @@
 @property (nonatomic, strong) NSMutableDictionary* pluginsControllers; //key: plugin identifier name, value: PluginController subclass.
 @property (nonatomic) BOOL initDone;
 
+@property (nonatomic, strong) NSMutableSet* validatedPluginNamesCache;
+
 @end
 
 /* Corresponds to supportedIdioms possible values in config file Plugins.plist */
@@ -107,6 +109,7 @@ static MainController<MainControllerPublic>* instance = nil;
         self.window = window;
         //self.pcURLToHandle = [NSURL URLWithString:@"pocketcampus://map.plugin.pocketcampus.org/search?q=BC"];
         self.urlSchemeHander = [[PCURLSchemeHandler alloc] initWithMainController:self];
+        self.validatedPluginNamesCache = [NSMutableSet set];
         instance = self;
         [self globalInit];
     }
@@ -445,7 +448,7 @@ static MainController<MainControllerPublic>* instance = nil;
     
     /* Restoring previous order / hidden of menu items, saved be used */
     
-    NSDictionary* menuItemsInfo = (NSDictionary*)[PCObjectArchiver objectForKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"];
+    NSDictionary* menuItemsInfo = (NSDictionary*)[PCPersistenceManager objectForKey:kPluginsMainMenuItemsInfoKey pluginName:@"pocketcampus"];
     
     NSMutableArray* menuItemsCopy = [menuItems mutableCopy];
     
@@ -565,6 +568,10 @@ static MainController<MainControllerPublic>* instance = nil;
 
 - (void)pcConfigUserDefaultsDidChange {
     [self initAnalytics];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:[PCConfig defaults]];
+    }
+    @catch (NSException *exception) {}
 }
 
 #pragma mark - Called by MainMenuViewController
@@ -603,14 +610,14 @@ static MainController<MainControllerPublic>* instance = nil;
         [self requestLeavePlugin:activePluginIdentifier];
     }
     
-    if (![PCObjectArchiver saveObject:menuItemsInfo forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
+    if (![PCPersistenceManager saveObject:menuItemsInfo forKey:kPluginsMainMenuItemsInfoKey pluginName:@"pocketcampus"]) {
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while saving the main menu state." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
     }
 }
 
 - (void)restoreDefaultMainMenu {
-    if (![PCObjectArchiver saveObject:nil forKey:kPluginsMainMenuItemsInfoKey andPluginName:@"pocketcampus"]) {
+    if (![PCPersistenceManager saveObject:nil forKey:kPluginsMainMenuItemsInfoKey pluginName:@"pocketcampus"]) {
         UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, an error occured while restoring default main menu." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
         return;
@@ -748,12 +755,18 @@ static MainController<MainControllerPublic>* instance = nil;
 }
 
 - (BOOL)existsPluginWithIdentifier:(NSString*)identifier {
-    for (NSString* originalIdentifier in self.pluginsList) {
-        if ([[identifier lowercaseString] isEqualToString:[originalIdentifier lowercaseString]]) {
+    @synchronized (self) {
+        if ([self.validatedPluginNamesCache containsObject:identifier]) {
             return YES;
         }
+        for (NSString* originalIdentifier in self.pluginsList) {
+            if ([[identifier lowercaseString] isEqualToString:[originalIdentifier lowercaseString]]) {
+                [self.validatedPluginNamesCache addObject:identifier];
+                return YES;
+            }
+        }
+        return NO;
     }
-    return NO;
 }
 
 

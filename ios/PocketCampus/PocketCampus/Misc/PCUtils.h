@@ -49,7 +49,6 @@
 + (UIEdgeInsets)edgeInsetsForViewController:(UIViewController*)viewController;
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration;
 + (void)printFrame:(CGRect)frame;
-+ (NSString*)stringFromFileSize:(unsigned long long)size;
 + (BOOL)double:(double)d1 isEqualToDouble:(double)d2 epsilon:(double)epsilon;
 
 + (UILabel*)addCenteredLabelInView:(UIView*)view withMessage:(NSString*)message;
@@ -60,6 +59,13 @@
 + (void)showConnectionToServerTimedOutAlert;
 
 + (NSDictionary*)urlStringParameters:(NSString*)urlString;
+
+/*
+ * Computes in background total size of file or folder.
+ * totalNbBytes is 0 if either path does not exist or size is actually 0
+ * error is YES if there was an error while reading the file
+ */
++ (void)fileOrFolderSizeWithPath:(NSString*)path completion:(void (^)(unsigned long long totalNbBytes, BOOL error))completion;
 
 /*
  * Returns [[Reachability reachabilityForInternetConnection] isReachable], i.e. whether internet is reachable

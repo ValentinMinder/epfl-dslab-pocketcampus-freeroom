@@ -33,7 +33,7 @@
 
 #import "CamiproService.h"
 
-#import "PCObjectArchiver.h"
+#import "PCPersistenceManager.h"
 
 static CamiproService* instance __weak = nil;
 
@@ -83,16 +83,16 @@ static NSString* const kCamiproSession = @"camiproSession";
     if (_camiproSession) {
         return _camiproSession;
     }
-    _camiproSession = (CamiproSession*)[PCObjectArchiver objectForKey:kCamiproSession andPluginName:@"camipro"];
+    _camiproSession = (CamiproSession*)[PCPersistenceManager objectForKey:kCamiproSession pluginName:@"camipro"];
     return _camiproSession;
 }
 
 - (void)setCamiproSession:(CamiproSession *)camiproSession persist:(BOOL)persist {
     _camiproSession = camiproSession;
     if (persist) {
-        [PCObjectArchiver saveObject:camiproSession forKey:kCamiproSession andPluginName:@"camipro"];
+        [PCPersistenceManager saveObject:camiproSession forKey:kCamiproSession pluginName:@"camipro"];
     } else {
-        [PCObjectArchiver saveObject:nil forKey:kCamiproSession andPluginName:@"camipro"];
+        [PCPersistenceManager saveObject:nil forKey:kCamiproSession pluginName:@"camipro"];
     }
 }
 

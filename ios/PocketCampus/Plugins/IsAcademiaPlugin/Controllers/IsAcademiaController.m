@@ -76,7 +76,7 @@ static IsAcademiaController* instance __weak = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"isacademia"];
+            [PCPersistenceManager deleteCacheForPluginName:@"isacademia"];
             [[MainController publicController] requestLeavePlugin:@"IsAcademia"];
         }];
     });

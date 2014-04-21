@@ -4,10 +4,11 @@
 "MoodleDown" = "Désolé, les serveurs de Moodle sont inaccessibles. Réessayez plus tard.";
 "MoodleNoCourse" = "Vous ne semblez être inscrit\nà aucun cours Moodle.";
 "MoodleEmptyCourse" = "Aucun document";
+"MoodleNoFavorites" = "Aucun favoris\nTouchez l'étoile dans la vue document pour en ajouter";
 "MoodleCourses" = "Cours";
 "MoodleWeek" = "Semaine";
 "MoodleAllWeeks" = "Toutes les semaines";
-"MoodleCurrentWeek" = "Semaine courante";
+"MoodleCurrentWeek" = "Cette semaine";
 "Saved" = "téléchargé ";
 "LoadingCourseList" = "Chargement de la liste des cours...";
 "LoadingCourse" = "Chargement du cours...";
@@ -18,6 +19,17 @@
 "DownloadingFile" = "Téléchargement du fichier...";
 "DeleteFileFromCacheQuestion" = "Supprimer le fichier du stockage local ?\nVous devrez le télécharger à nouveau pour pouvoir le lire.";
 "ImpossibleDeleteFile" = "Désolé, une erreur s'est produite lors de la suppression du fichier.";
+
+//MoodleSettingsViewController
+"MoodleSettings" = "Réglages Moodle";
+"KeepDocsPosition" = "Restaurer la lecture";
+"KeepDocsPositionExplanation" = "Quand cette fonction est activée, les documents s'ouvrent directement à l'endroit où vous les laisser.";
+"DeleteAllDownloadedDocuments" = "Supprimer tous les doc. téléchargés";
+"DownloadedDocumentsCurrentlyUsingBytesWithFormat" = "Les documents téléchargés utilisent actuellement %@ d'espace disque.";
+"Computing" = "Calcul";
+"NoDownloadedDocuments" = "Aucun document téléchargé.";
+"AllDocsWillBeDeletedExplanation" = "Tous les documents de tous les cours seront supprimés.\nVous devrez les télécharger à nouveau pour pouvoir les lire.";
+"DeleteAll" = "Tout supprimer";
 
 //Accessibility
 "ShowsDocumentsForThisCourse" = "Affiche les documents de ce cours.";

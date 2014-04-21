@@ -29,7 +29,7 @@
 
 #import "MoodleService.h"
 
-#import "PCObjectArchiver.h"
+#import "PCPersistenceManager.h"
 
 #import "AFNetworking.h"
 
@@ -123,7 +123,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 
 - (void)initFavorites {
     if (!self.favoriteMoodleResourcesURLs) { //first try to get it from persistent storage
-        self.favoriteMoodleResourcesURLs = [(NSSet*)[PCObjectArchiver objectForKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"] mutableCopy];
+        self.favoriteMoodleResourcesURLs = [(NSSet*)[PCPersistenceManager objectForKey:kFavoriteMoodleResourcesURLs pluginName:@"moodle"] mutableCopy];
     }
     if (!self.favoriteMoodleResourcesURLs) { //if not present in persistent storage, create set
         self.favoriteMoodleResourcesURLs = [NSMutableSet set];
@@ -134,7 +134,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     if (!self.favoriteMoodleResourcesURLs) {
         return YES;
     }
-    return [PCObjectArchiver saveObject:self.favoriteMoodleResourcesURLs forKey:kFavoriteMoodleResourcesURLs andPluginName:@"moodle"];
+    return [PCPersistenceManager saveObject:self.favoriteMoodleResourcesURLs forKey:kFavoriteMoodleResourcesURLs pluginName:@"moodle"];
 }
 
 - (void)addFavoriteMoodleResource:(MoodleResource*)moodleResource {
@@ -221,11 +221,8 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     return NO;
 }
 
-- (BOOL)deleteAllDownloadedResources {
-    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString* path = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    path = [path stringByAppendingPathComponent:@"moodle"];
-    path = [path stringByAppendingPathComponent:@"downloads"];
+- (BOOL)deleteAllDownloadedMoodleResources {
+    NSString* path = [self pathForResourcesDownloadFolder];
     NSFileManager* fileManager= [NSFileManager defaultManager];
     NSError* error = nil;
     [fileManager removeItemAtPath:path error:&error];
@@ -241,6 +238,26 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
         return YES;
     }
     return NO;
+}
+
+- (void)totalNbBytesAllDownloadedMoodleResourcesWithCompletion:(void (^)(unsigned long long totalNbBytes, BOOL error))completion {
+    if (!completion) {
+        return;
+    }
+    NSString* path = [self pathForResourcesDownloadFolder];
+    [PCUtils fileOrFolderSizeWithPath:path completion:^(unsigned long long totalNbBytes, BOOL error) {
+        completion(totalNbBytes, error);
+    }];
+}
+
+#pragma mark Private
+
+- (NSString*)pathForResourcesDownloadFolder {
+    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString* path = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    path = [path stringByAppendingPathComponent:@"moodle"];
+    path = [path stringByAppendingPathComponent:@"downloads"];
+    return path;
 }
 
 #pragma mark - Service methods

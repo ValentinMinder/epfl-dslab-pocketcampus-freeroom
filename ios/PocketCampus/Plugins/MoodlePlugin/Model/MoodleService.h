@@ -31,6 +31,10 @@
 
 #import "moodle.h"
 
+#import "MoodleModelAdditions.h"
+
+#import <limits.h>
+
 #pragma mark - MoodleResourceObserver definition
 
 typedef enum {
@@ -92,7 +96,9 @@ extern NSString* const kMoodleFavoriteStatusMoodleResourceUpdatedUserInfoKey;
 - (NSString*)localPathForMoodleResource:(MoodleResource*)moodleResource createIntermediateDirectories:(BOOL)createIntermediateDirectories;
 - (BOOL)isMoodleResourceDownloaded:(MoodleResource*)moodleResource;
 - (BOOL)deleteDownloadedMoodleResource:(MoodleResource*)moodleResource;
-- (BOOL)deleteAllDownloadedResources;
+- (BOOL)deleteAllDownloadedMoodleResources;
+
+- (void)totalNbBytesAllDownloadedMoodleResourcesWithCompletion:(void (^)(unsigned long long totalNbBytes, BOOL error))completion;
 
 #pragma mark - Service methods
 

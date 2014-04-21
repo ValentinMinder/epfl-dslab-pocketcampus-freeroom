@@ -98,7 +98,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
         self.gaiScreenName = @"/directory";
         self.directoryService = [DirectoryService sharedInstanceToRetain];
         self.resultsMode = ResutlsModeNotStarted;
-        self.recentSearches = [(NSOrderedSet*)[PCObjectArchiver objectForKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES] mutableCopy]; //archived object are always returned as copy => immutable
+        self.recentSearches = [(NSOrderedSet*)[PCPersistenceManager objectForKey:kRecentSearchesKey pluginName:@"directory" isCache:YES] mutableCopy]; //archived object are always returned as copy => immutable
         if (!self.recentSearches) {
             self.recentSearches = [NSMutableOrderedSet orderedSet];
         }
@@ -169,7 +169,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [PCObjectArchiver saveObject:self.recentSearches forKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES]; //persist recent searches to disk
+    [PCPersistenceManager saveObject:self.recentSearches forKey:kRecentSearchesKey pluginName:@"directory" isCache:YES]; //persist recent searches to disk
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -245,7 +245,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
     [self trackAction:PCGAITrackerActionClearHistory];
     self.searchBar.text = @"";
     [self.recentSearches removeAllObjects];
-    [PCObjectArchiver saveObject:nil forKey:kRecentSearchesKey andPluginName:@"directory" isCache:YES]; //deleted cached recent searches
+    [PCPersistenceManager saveObject:nil forKey:kRecentSearchesKey pluginName:@"directory" isCache:YES]; //deleted cached recent searches
     [self searchBar:self.searchBar textDidChange:self.searchBar.text]; //reload default state
     [self.navigationItem setRightBarButtonItem:nil animated:YES]; //hide button after clearing
     [self showEmptyDetailViewController];

@@ -26,17 +26,14 @@
  */
 
 
-
-
-
-
 //  Created by Loïc Gardiol on 13.01.13.
-
-
 
 #import "MoodleModelAdditions.h"
 
 #import <objc/runtime.h>
+
+NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositionGeneralSettingBool";
+NSString* const kMoodleSavePositionResourceSettingBoolKey = @"SavePositionResourceSettingBool";
 
 @implementation MoodleResource (Comparison)
 
@@ -88,6 +85,34 @@
     newInstance.iName = self.iName;
     newInstance.iUrl = self.iUrl;
     return newInstance;
+}
+
++ (NSDictionary*)defaultsDictionaryForMoodleResource:(MoodleResource*)resource {
+    NSUserDefaults* moodleDefaults = [PCPersistenceManager defaultsForPluginName:@"moodle"];
+    NSMutableDictionary* resourceDic = [[moodleDefaults objectForKey:[self keyForDefaultsDictionaryForMoodleResource:resource]] mutableCopy];
+    if (!resourceDic) {
+        resourceDic = [NSMutableDictionary dictionary];
+    }
+    
+    //filling with default values
+    if (!resourceDic[kMoodleSavePositionResourceSettingBoolKey]) {
+        resourceDic[kMoodleSavePositionResourceSettingBoolKey] = @YES;
+    }
+    
+    return resourceDic;
+}
+
++ (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleResource:(MoodleResource*)resource {
+    NSUserDefaults* moodleDefaults = [PCPersistenceManager defaultsForPluginName:@"moodle"];
+    [moodleDefaults setObject:defaultsDic forKey:[self keyForDefaultsDictionaryForMoodleResource:resource]];
+}
+
+#pragma mark Private
+
++ (NSString*)keyForDefaultsDictionaryForMoodleResource:(MoodleResource*)resource {
+    [PCUtils throwExceptionIfObject:resource.iUrl notKindOfClass:[NSString class]];
+    static NSString* const kDicPostfix = @"MoodleResourceDictionary";
+    return [kDicPostfix stringByAppendingFormat:@"%u", [resource.iUrl hash]];
 }
 
 @end

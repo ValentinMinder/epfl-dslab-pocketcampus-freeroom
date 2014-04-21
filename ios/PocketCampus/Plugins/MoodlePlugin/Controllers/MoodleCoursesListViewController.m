@@ -43,6 +43,8 @@
 
 #import "PCTableViewCellAdditions.h"
 
+#import "MoodleSettingsViewController.h"
+
 
 static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
@@ -51,6 +53,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic, strong) NSArray* courses;
 @property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) UIPopoverController* settingsPopover;
 
 @end
 
@@ -70,6 +73,12 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed)];
+    settingsButton.accessibilityLabel = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
+    
+    self.navigationItem.rightBarButtonItem = settingsButton;
+    
     PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
     self.tableView = tableViewAdditions;
     tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
@@ -93,7 +102,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
     
 }
 
-#pragma mark - refresh control
+#pragma mark - Refresh control
 
 - (void)refresh {
     [self.moodleService cancelOperationsForDelegate:self]; //cancel before retrying
@@ -103,6 +112,22 @@ static const NSTimeInterval kRefreshValiditySeconds = 259200.0; //3 days
 
 - (void)startGetCoursesListRequest {
     [self.moodleService getCoursesListWithDelegate:self];
+}
+
+#pragma mark - Buttons actions
+
+- (void)settingsButtonPressed {
+    [self trackAction:@"OpenSettings"];
+    MoodleSettingsViewController* settingsViewController = [[MoodleSettingsViewController alloc] init];
+    if (self.splitViewController) {
+        if (!self.settingsPopover) {
+            self.settingsPopover = [[UIPopoverController alloc] initWithContentViewController:settingsViewController];
+        }
+        [self.settingsPopover togglePopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    } else {
+        PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:settingsViewController];
+        [self presentViewController:navController animated:YES completion:NULL];
+    }
 }
 
 #pragma mark - PCMasterSplitDelegate (used on iPad only)

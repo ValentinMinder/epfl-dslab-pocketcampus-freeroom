@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 04.12.12.
-
 
 #import "MoodleResourceViewController.h"
 
@@ -57,9 +53,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 @property (nonatomic, strong) MoodleResource* moodleResource;
 @property (nonatomic, strong) UIActionSheet* deleteActionSheet;
 @property (nonatomic, strong) UIDocumentInteractionController* docController;
+@property (nonatomic, strong) UITapGestureRecognizer* tapGestureReco;
 @property (nonatomic) CGFloat navbarOriginalAlpha;
 @property (nonatomic, strong) NSTimer* hideNavbarTimer;
 @property (nonatomic) BOOL isShowingActionMenu;
+
+@property (nonatomic) CGSize lastKnownContentSize;
 
 @property (nonatomic, weak) UISplitViewController* splitViewControllerPtr; //used to keep a pointer to splitViewController that is not nillified before being able to remove observers on it
 
@@ -76,6 +75,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         self.moodleResource = moodleResource;
         self.title = moodleResource.iName; //enough space to display title if iPad
         self.moodleService = [MoodleService sharedInstanceToRetain];
+        self.lastKnownContentSize = CGSizeZero;
     }
     return self;
 }
@@ -116,7 +116,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [rightButtons addObject:deleteButton];
 
     self.navigationItem.rightBarButtonItems = rightButtons;
-    
+
     if ([self.moodleService isMoodleResourceDownloaded:self.moodleResource]) {
         self.centerMessageLabel.hidden = YES;
         self.progressView.hidden = YES;
@@ -128,8 +128,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         [self actionButton].enabled = NO;
         [self startMoodleResourceDownload];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -137,23 +135,27 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self trackScreen];
     self.webView.scrollView.contentInset = [PCUtils edgeInsetsForViewController:self];
     self.webView.scrollView.scrollIndicatorInsets = [PCUtils edgeInsetsForViewController:self];
+    [self.webView.scrollView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
     
     self.splitViewControllerPtr = self.splitViewController;
     [self.splitViewController addObserver:self forKeyPath:NSStringFromSelector(@selector(isMasterViewControllerHidden)) options:0 context:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kMoodleFavoritesMoodleResourcesUpdatedNotification object:self.moodleService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [self saveScrollViewState];
     [self showNavbar];
     [self.moodleService cancelDownloadOfMoodleResourceForDelegate:self];
-    
     [self removeSplitViewControllerObserver];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self removeScrollViewContentSizeObserver];
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -183,18 +185,37 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     self.navigationItem.rightBarButtonItems = items;
 }
 
+- (void)appWillResignActive {
+    [self saveScrollViewState];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (object == self.splitViewController && [keyPath isEqualToString:NSStringFromSelector(@selector(isMasterViewControllerHidden))]) {
-        if (![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
-            [self showNavbar];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (object == self.splitViewController && [keyPath isEqualToString:NSStringFromSelector(@selector(isMasterViewControllerHidden))]) {
+            if (![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
+                [self showNavbar];
+            }
+            [self rescheduleHideNavbarTimer];
+        } else if (object == self.webView.scrollView && [keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]) {
+            CGSize currentContentSize = self.webView.scrollView.contentSize;
+            if (!CGSizeEqualToSize(currentContentSize, self.lastKnownContentSize) && !CGSizeEqualToSize(currentContentSize, self.webView.frame.size)) {
+                self.lastKnownContentSize = currentContentSize;
+                [self restoreScrollViewSateIfExists];
+            }
         }
-        [self rescheduleHideNavbarTimer];
-    }
+    });
 }
 
 - (void)removeSplitViewControllerObserver {
     @try {
         [self.splitViewControllerPtr removeObserver:self forKeyPath:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
+    }
+    @catch (NSException *exception) {}
+}
+
+- (void)removeScrollViewContentSizeObserver {
+    @try {
+        [self.webView.scrollView removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize))];
     }
     @catch (NSException *exception) {}
 }
@@ -271,26 +292,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 #pragma mark - Buttons actions
-
-- (void)deleteButtonPressed {
-    if (!self.deleteActionSheet) {
-        self.deleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"DeleteFileFromCacheQuestion", @"MoodlePlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"PocketCampus", nil) otherButtonTitles:nil];
-    }
-    if (self.docController) {
-        [self.docController dismissMenuAnimated:NO];
-    }
-    [self.deleteActionSheet toggleFromBarButtonItem:[self deleteButton] animated:YES];
-}
-
-- (void)favoriteButtonPressed {
-    if ([self.moodleService isFavoriteMoodleResource:self.moodleResource]) {
-        [self trackAction:PCGAITrackerActionUnmarkFavorite];
-        [self.moodleService removeFavoriteMoodleResource:self.moodleResource];
-    } else {
-        [self trackAction:PCGAITrackerActionMarkFavorite];
-        [self.moodleService addFavoriteMoodleResource:self.moodleResource];;
-    }
-}
                                        
 - (void)actionButtonPressed {
     if (self.deleteActionSheet.isVisible) {
@@ -307,6 +308,28 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         [self.docController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
     }
 }
+
+- (void)favoriteButtonPressed {
+    if ([self.moodleService isFavoriteMoodleResource:self.moodleResource]) {
+        [self trackAction:PCGAITrackerActionUnmarkFavorite];
+        [self.moodleService removeFavoriteMoodleResource:self.moodleResource];
+    } else {
+        [self trackAction:PCGAITrackerActionMarkFavorite];
+        [self.moodleService addFavoriteMoodleResource:self.moodleResource];;
+    }
+}
+
+- (void)deleteButtonPressed {
+    if (!self.deleteActionSheet) {
+        self.deleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"DeleteFileFromCacheQuestion", @"MoodlePlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"PocketCampus", nil) otherButtonTitles:nil];
+    }
+    if (self.docController) {
+        [self.docController dismissMenuAnimated:NO];
+    }
+    [self.deleteActionSheet toggleFromBarButtonItem:[self deleteButton] animated:YES];
+}
+
+
 
 #pragma mark - Moodle Resource loading
 
@@ -325,6 +348,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     UITapGestureRecognizer* tapGestureReco = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavbarVisibility)];
     tapGestureReco.delegate = self;
+    self.tapGestureReco = tapGestureReco;
 
     UITapGestureRecognizer* doubleTapGestureReco = [[UITapGestureRecognizer alloc] initWithTarget:nil action:nil];
     doubleTapGestureReco.delegate = self;
@@ -342,6 +366,11 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     [self.view addGestureRecognizer:tripleFingerTapReco];
     
     [self rescheduleHideNavbarTimer];
+    
+    __weak __typeof(self) welf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [welf removeScrollViewContentSizeObserver];
+    });
 }
 
 
@@ -392,6 +421,13 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    [self removeScrollViewContentSizeObserver]; //do not restore scroll view reading position if user satarts manipulating the document
+    if (gestureRecognizer == self.tapGestureReco && [otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        return NO;
+    }
+    if (gestureRecognizer == self.tapGestureReco && [otherGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        return NO;
+    }
     if (gestureRecognizer.view == self.view && [otherGestureRecognizer.view isOrSubviewOfView:self.webView]) {
         return YES;
     }
@@ -445,12 +481,74 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     return NO;
 }
 
+#pragma mark - Private utils
+
+static NSString* const kScrollViewStateKey = @"ScrollViewState";
+static NSString* const kFrameKey = @"Frame";
+static NSString* const kContentSizeKey = @"ContentSize";
+static NSString* const kContentOffsetKey = @"ContentOffset";
+static NSString* const kZoomScaleKey = @"ZoomScale";
+
+- (void)saveScrollViewState {
+    if (!self.moodleResource.iUrl) {
+        return;
+    }
+    NSDictionary* state = @{kFrameKey:NSStringFromCGRect(self.webView.scrollView.frame),
+                            kContentSizeKey:NSStringFromCGSize(self.webView.scrollView.contentSize),
+                            kContentOffsetKey:NSStringFromCGPoint(self.webView.scrollView.contentOffset),
+                            kZoomScaleKey:[NSNumber numberWithFloat:self.webView.scrollView.zoomScale]};
+    
+    NSMutableDictionary* resourceDic = [[MoodleResource defaultsDictionaryForMoodleResource:self.moodleResource] mutableCopy];
+    resourceDic[kScrollViewStateKey] = state;
+    [MoodleResource setDefaultsDictionary:resourceDic forMoodleResource:self.moodleResource];
+}
+
+- (void)restoreScrollViewSateIfExists {
+    if (![[PCPersistenceManager defaultsForPluginName:@"moodle"] boolForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
+        return;
+    }
+    NSDictionary* resourceDic = [MoodleResource defaultsDictionaryForMoodleResource:self.moodleResource];
+    NSDictionary* state = resourceDic[kScrollViewStateKey];
+    if (!state) {
+        return;
+    }
+    
+    CGRect orginalFrame = CGRectFromString(state[kFrameKey]);
+    CGSize originalContentSize = CGSizeFromString(state[kContentSizeKey]);
+    CGPoint originalContentOffset = CGPointFromString(state[kContentOffsetKey]);
+    CGFloat originalZoomScale = [state[kZoomScaleKey] floatValue];
+    if (originalContentSize.width == 0.0 || originalContentSize.height == 0.0) {
+        return;
+    }
+    if (originalZoomScale == 0.0) {
+        return;
+    }
+    
+    CGSize currentContentSize = self.webView.scrollView.contentSize;
+    
+    CGFloat newContentOffsetX = originalContentOffset.x * (currentContentSize.width / originalContentSize.width);
+    CGFloat newContentOffsetY = originalContentOffset.y * (currentContentSize.height / originalContentSize.height);
+    
+    CGPoint newOffset = CGPointMake(newContentOffsetX, newContentOffsetY);
+    
+    CGFloat newZoomScale = originalZoomScale * (orginalFrame.size.width / self.webView.scrollView.frame.size.width);
+    
+    self.webView.scrollView.contentOffset = newOffset;
+    self.webView.scrollView.zoomScale = newZoomScale;
+    
+}
+
 #pragma mark - Dealloc
 
 - (void)dealloc
 {
+    @try {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    @catch (NSException *exception) {}
     [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self removeSplitViewControllerObserver];
+    [self removeScrollViewContentSizeObserver];
     [self.hideNavbarTimer invalidate];
     [self.moodleService cancelOperationsForDelegate:self];
     [self.webView stopLoading];

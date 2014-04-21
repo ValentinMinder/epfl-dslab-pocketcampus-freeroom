@@ -45,6 +45,9 @@
 "UnknownError" = "Désolé, une erreur est survenue.";
 "UnknownErrorTryRefresh" = "Désolé, une erreur est survenue.\nEssayez de rafraîchir.";
 "Today" = "Aujourd'hui";
+"All" = "Tous";
+"Favorites" = "Favoris";
+"Attention" = "Attention";
 
 //Accessbility
 

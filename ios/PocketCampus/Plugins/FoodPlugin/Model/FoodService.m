@@ -33,7 +33,7 @@
 
 #import "FoodService.h"
 
-#import "PCObjectArchiver.h"
+#import "PCPersistenceManager.h"
 
 NSString* const kFoodFavoritesRestaurantsUpdatedNotification = @"kFavoritesRestaurantsUpdatedNotification";
 
@@ -86,7 +86,7 @@ static FoodService* instance __weak = nil;
 
 - (void)initFavorites {
     if (!self.favoriteRestaurantIds) { //first try to get it from persistent storage
-        self.favoriteRestaurantIds = [(NSSet*)[PCObjectArchiver objectForKey:kFavoriteRestaurantIds andPluginName:@"food"] mutableCopy];
+        self.favoriteRestaurantIds = [(NSSet*)[PCPersistenceManager objectForKey:kFavoriteRestaurantIds pluginName:@"food"] mutableCopy];
     }
     if (!self.favoriteRestaurantIds) { //if not present in persistent storage, create set
         self.favoriteRestaurantIds = [NSMutableSet set];
@@ -97,7 +97,7 @@ static FoodService* instance __weak = nil;
     if (!self.favoriteRestaurantIds) {
         return YES;
     }
-    return [PCObjectArchiver saveObject:self.favoriteRestaurantIds forKey:kFavoriteRestaurantIds andPluginName:@"food"];
+    return [PCPersistenceManager saveObject:self.favoriteRestaurantIds forKey:kFavoriteRestaurantIds pluginName:@"food"];
 }
 
 - (NSNumber*)nsNumberForRestaurantId:(int64_t)restaurantId {

@@ -124,21 +124,6 @@
     NSLog(@"Frame : %lf, %lf, %lf, %lf", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
-+ (NSString*)stringFromFileSize:(unsigned long long)size {
-    float floatSize = size;
-    if (size<1023)
-        return([NSString stringWithFormat:@"%llu bytes",size]);
-    floatSize = floatSize / 1024;
-    if (floatSize<1023)
-        return([NSString stringWithFormat:@"%1.1f KB",floatSize]);
-    floatSize = floatSize / 1024;
-    if (floatSize<1023)
-        return([NSString stringWithFormat:@"%1.1f MB",floatSize]);
-    floatSize = floatSize / 1024;
-    
-    return [NSString stringWithFormat:@"%1.1f GB",floatSize];
-}
-
 + (BOOL)double:(double)d1 isEqualToDouble:(double)d2 epsilon:(double)epsilon {
     return (fabs(d1-d2) < epsilon);
 }
@@ -196,6 +181,42 @@
         CLSNSLog(@"!! ERROR: wrong URL format");
     }
     return  [queryStringDictionary copy]; //non-mutable copy
+}
+
++ (void)fileOrFolderSizeWithPath:(NSString*)path completion:(void (^)(unsigned long long totalNbBytes, BOOL error))completion {
+    [PCUtils throwExceptionIfObject:path notKindOfClass:[NSString class]];
+    if (!completion) {
+        return;
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSFileManager* fileManager = [NSFileManager new];
+        BOOL isDirectory;
+        BOOL fileExists = [fileManager fileExistsAtPath:path isDirectory:&isDirectory];
+        if (!fileExists) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(0, NO);
+            });
+            return;
+        }
+        unsigned long long totalSize = 0;
+        NSDirectoryEnumerator* dirEnum = [fileManager enumeratorAtPath:path];
+        NSString* file;
+        while ((file = [dirEnum nextObject])) {
+            NSDictionary* attributes = [dirEnum fileAttributes];
+            if (!attributes) {
+                completion(0, YES);
+                return;
+            }
+            if ([attributes[NSFileType] isEqualToString:NSFileTypeDirectory]) {
+                continue;
+            }
+            totalSize += [attributes fileSize];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            completion(totalSize, NO);
+        });
+    });
 }
 
 + (BOOL)hasDeviceInternetConnection {

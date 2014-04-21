@@ -90,7 +90,7 @@ static NSString* const kUserTokenKey = @"userToken";
 
 - (void)initUserTickets {
     if (!self.userTickets) { //first try to get it from persistent storage
-        self.userTickets = [(NSSet*)[PCObjectArchiver objectForKey:kUserTicketsKey andPluginName:@"events"] mutableCopy];
+        self.userTickets = [(NSSet*)[PCPersistenceManager objectForKey:kUserTicketsKey pluginName:@"events"] mutableCopy];
     }
     if (!self.userTickets) { //if not present in persistent storage, create set
         self.userTickets = [NSMutableSet set];
@@ -99,11 +99,11 @@ static NSString* const kUserTokenKey = @"userToken";
     static NSString* const kEventsTransitionToUserTicketsDone = @"EventsTransitionToUserTicketsDone";
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults boolForKey:kEventsTransitionToUserTicketsDone]) {
-        NSString* userToken = (NSString*)[PCObjectArchiver objectForKey:kUserTokenKey andPluginName:@"events"];
+        NSString* userToken = (NSString*)[PCPersistenceManager objectForKey:kUserTokenKey pluginName:@"events"];
         if (userToken) {
             //transition period, get back old tokens
             [self.userTickets addObject:userToken];
-            [PCObjectArchiver saveObject:nil forKey:kUserTokenKey andPluginName:@"events"];
+            [PCPersistenceManager saveObject:nil forKey:kUserTokenKey pluginName:@"events"];
         }
         [defaults setBool:YES forKey:kEventsTransitionToUserTicketsDone];
     }
@@ -132,14 +132,14 @@ static NSString* const kUserTokenKey = @"userToken";
     if (!self.userTickets) {
         return YES;
     }
-    return [PCObjectArchiver saveObject:self.userTickets forKey:kUserTicketsKey andPluginName:@"events"];
+    return [PCPersistenceManager saveObject:self.userTickets forKey:kUserTicketsKey pluginName:@"events"];
 }
 
 #pragma mark - Favorites
 
 - (void)initFavorites {
     if (!self.favoriteEventItemIds) { //first try to get it from persistent storage
-        self.favoriteEventItemIds = [(NSSet*)[PCObjectArchiver objectForKey:kFavoriteEventItemIds andPluginName:@"events"] mutableCopy];
+        self.favoriteEventItemIds = [(NSSet*)[PCPersistenceManager objectForKey:kFavoriteEventItemIds pluginName:@"events"] mutableCopy];
     }
     if (!self.favoriteEventItemIds) { //if not present in persistent storage, create set
         self.favoriteEventItemIds = [NSMutableSet set];
@@ -150,7 +150,7 @@ static NSString* const kUserTokenKey = @"userToken";
     if (!self.favoriteEventItemIds) {
         return YES;
     }
-    return [PCObjectArchiver saveObject:self.favoriteEventItemIds forKey:kFavoriteEventItemIds andPluginName:@"events"];
+    return [PCPersistenceManager saveObject:self.favoriteEventItemIds forKey:kFavoriteEventItemIds pluginName:@"events"];
 }
 
 - (void)addFavoriteEventItemId:(int64_t)itemId {
@@ -199,14 +199,14 @@ static NSString* const kUserTokenKey = @"userToken";
 #pragma mark - Events period to display
 
 - (int32_t)lastSelectedPoolPeriod {
-    NSNumber* period = (NSNumber*)[PCObjectArchiver objectForKey:kPoolPeriodKey andPluginName:@"events"];
+    NSNumber* period = (NSNumber*)[PCPersistenceManager objectForKey:kPoolPeriodKey pluginName:@"events"];
     if (period) {
         return [period intValue];
     }
     return 0;
 }
 - (BOOL)saveSelectedPoolPeriod:(int32_t)period {
-    return [PCObjectArchiver saveObject:[NSNumber numberWithInt:period] forKey:kPoolPeriodKey andPluginName:@"events"];
+    return [PCPersistenceManager saveObject:[NSNumber numberWithInt:period] forKey:kPoolPeriodKey pluginName:@"events"];
 }
 
 #pragma mark - Service methods
