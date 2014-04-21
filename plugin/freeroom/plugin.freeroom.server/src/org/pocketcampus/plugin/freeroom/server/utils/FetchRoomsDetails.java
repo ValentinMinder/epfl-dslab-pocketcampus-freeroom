@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import org.json.JSONArray;
@@ -44,7 +45,8 @@ public class FetchRoomsDetails {
 			"DELETE FROM `fr-roomslist` WHERE `adminuse` NOT LIKE \"LOCAUX D'ENS%\"",
 			"DELETE FROM `fr-roomslist` WHERE `site_label` <> \"ECUBLENS\"" };
 
-	private HashMap<String, String> dincat_text = null;
+	private HashMap<String, String> dincat_textFR = null;
+	private HashMap<String, String> dincat_textEN = null;
 
 	private ConnectionManager connMgr = null;
 
@@ -197,9 +199,9 @@ public class FetchRoomsDetails {
 				+ "uid, doorCode, doorCodeWithoutSpace, capacity, "
 				+ "site_label, surface, building_name, zone, unitlabel, "
 				+ "site_id, floor, unitname, site_name, unitid, building_label, "
-				+ "cf, adminuse, type, dincat) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) "
-				+ "ON DUPLICATE KEY UPDATE dincat = (?), type = (?)";
+				+ "cf, adminuse, typeFR, typeEN, dincat) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?, ?) "
+				+ "ON DUPLICATE KEY UPDATE dincat = (?), typeFR = (?), typeEN = (?)";
 		PreparedStatement query;
 		try {
 			query = conn.prepareStatement(req);
@@ -303,17 +305,22 @@ public class FetchRoomsDetails {
 			}
 
 			if (room.has("dincat")) {
-				String type = getFromFileDinCatString(room.getString("dincat"));
-				query.setString(18, type);
-				query.setString(19, room.getString("dincat"));
-				// in case of update
+				String typeFR = getFromFileDinCatStringFR(room.getString("dincat"));
+				String typeEN = getFromFileDinCatStringEN(room.getString("dincat"));
+				query.setString(18, typeFR);
+				query.setString(19, typeEN);
 				query.setString(20, room.getString("dincat"));
-				query.setString(21, type);
+				// in case of update
+				query.setString(21, room.getString("dincat"));
+				query.setString(22, typeFR);
+				query.setString(23, typeEN);
 			} else {
 				query.setNull(18, Types.CHAR);
 				query.setNull(19, Types.CHAR);
 				query.setNull(20, Types.CHAR);
 				query.setNull(21, Types.CHAR);
+				query.setNull(22, Types.CHAR);
+				query.setNull(23, Types.CHAR);
 			}
 
 			query.executeUpdate();
@@ -326,17 +333,29 @@ public class FetchRoomsDetails {
 	}
 
 	// TODO extract english info
-	private String getFromFileDinCatString(String dincat) {
-		if (dincat_text == null) {
-			dincat_text = new HashMap<String, String>();
+	private String getFromFileDinCatStringFR(String dincat) {
+		extractDinCatText();
+		return dincat_textFR.get(dincat);
+	}
+	
+	private String getFromFileDinCatStringEN(String dincat) {
+		extractDinCatText();
+		return dincat_textEN.get(dincat);
+	}
+	
+	private void extractDinCatText() {
+		if (dincat_textFR == null || dincat_textEN == null) {
+			dincat_textFR = new HashMap<String, String>();
+			dincat_textEN = new HashMap<String, String>();
 			try {
 				Scanner sc = new Scanner(new File(FILE_DINCAT));
 
 				while (sc.hasNextLine()) {
 					String line = sc.nextLine();
 					String[] lineSplitted = line.split("[;]");
-					if (lineSplitted.length >= 4) {
-						dincat_text.put(lineSplitted[1], lineSplitted[3]);
+					if (lineSplitted.length >= 5) {
+						dincat_textFR.put(lineSplitted[1], lineSplitted[3]);
+						dincat_textEN.put(lineSplitted[1], lineSplitted[4]);
 					} else {
 						System.out
 								.println("Cannot extract dincat plain text for "
@@ -349,6 +368,5 @@ public class FetchRoomsDetails {
 			}
 		}
 
-		return dincat_text.get(dincat);
 	}
 }
