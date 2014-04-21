@@ -8,8 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using ImageTools;
-using ImageTools.IO.Png;
 using Microsoft.Phone.Shell;
 using PocketCampus.Common;
 
@@ -75,7 +73,7 @@ namespace PocketCampus.Main.Services
 
                 using ( var stream = store.CreateFile( fileName ) )
                 {
-                    new PngEncoder().Encode( bitmap.ToImage(), stream );
+                    new PngWriter( stream, bitmap ).Write();
                 }
             }
 
