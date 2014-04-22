@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Directory.Models;
@@ -18,9 +19,9 @@ namespace PocketCampus.Directory.Services
         {
         }
 
-        public Task<SearchResponse> SearchAsync( SearchRequest request )
+        public Task<SearchResponse> SearchAsync( SearchRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<SearchRequest, SearchResponse>( x => x.SearchAsync, request );
+            return CallAsync<SearchRequest, CancellationToken, SearchResponse>( x => x.SearchAsync, request, cancellationToken );
         }
     }
 }

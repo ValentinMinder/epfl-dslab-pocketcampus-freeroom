@@ -127,7 +127,8 @@ namespace PocketCampus.Directory.ViewModels
         {
             return TryExecuteAsync( async token =>
             {
-                var response = await _directoryService.SearchAsync( new SearchRequest { Query = query } );
+                var request = new SearchRequest { Query = query };
+                var response = await _directoryService.SearchAsync( request, token );
 
                 if ( response.Status != SearchStatus.Success )
                 {
@@ -163,7 +164,7 @@ namespace PocketCampus.Directory.ViewModels
                     Query = this.Query,
                     PaginationToken = _currentPaginationToken
                 };
-                var response = await _directoryService.SearchAsync( request );
+                var response = await _directoryService.SearchAsync( request, CurrentCancellationToken );
 
                 if ( response.Status == SearchStatus.Success && !token.IsCancellationRequested )
                 {

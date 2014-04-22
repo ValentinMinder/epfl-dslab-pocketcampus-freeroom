@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Satellite.Models;
 using ThriftSharp;
@@ -18,6 +19,6 @@ namespace PocketCampus.Satellite.Services
         /// Asynchronously gets Satellite's beer menu.
         /// </summary>
         [ThriftMethod( "getBeers" )]
-        Task<BeersResponse> GetBeersAsync();
+        Task<BeersResponse> GetBeersAsync( CancellationToken cancellationToken );
     }
 }

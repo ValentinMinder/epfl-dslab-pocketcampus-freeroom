@@ -7,10 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
-using ThinMvvm;
-using ThinMvvm.Logging;
 using PocketCampus.Transport.Models;
 using PocketCampus.Transport.Services;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Transport.ViewModels
 {
@@ -127,7 +127,7 @@ namespace PocketCampus.Transport.ViewModels
         {
             if ( Settings.Stations.Count == 0 )
             {
-                var defaultStations = await _transportService.GetStationsAsync( DefaultStations );
+                var defaultStations = await _transportService.GetStationsAsync( DefaultStations, token );
                 foreach ( var station in defaultStations )
                 {
                     Settings.Stations.Add( station );
@@ -151,7 +151,7 @@ namespace PocketCampus.Transport.ViewModels
             }
 
             var stations = Settings.Stations.Where( s => s != SelectedStation ).ToArray();
-            var trips = await Task.WhenAll( stations.Select( s => _transportService.GetTripsAsync( SelectedStation.Name, s.Name ) ) );
+            var trips = await Task.WhenAll( stations.Select( s => _transportService.GetTripsAsync( SelectedStation.Name, s.Name, token ) ) );
 
             if ( !token.IsCancellationRequested )
             {

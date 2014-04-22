@@ -154,20 +154,20 @@ namespace PocketCampus.Food.ViewModels
         {
             if ( force )
             {
-                var req = new FoodRequest
+                var request = new FoodRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                     MealTime = MealTime,
                     Date = MealDate
                 };
-                var resp = await _menuService.GetMenusAsync( req );
+                var response = await _menuService.GetMenusAsync( request, token );
 
-                if ( resp.Status != FoodStatus.Success )
+                if ( response.Status != FoodStatus.Success )
                 {
                     throw new Exception( "An error occurred while fetching the menu on the server." );
                 }
 
-                _fullMenu = resp.Menu;
+                _fullMenu = response.Menu;
 
                 foreach ( var restaurant in _fullMenu )
                 {
