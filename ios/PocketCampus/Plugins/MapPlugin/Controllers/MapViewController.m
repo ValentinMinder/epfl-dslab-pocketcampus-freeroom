@@ -148,9 +148,10 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         self.mapService = [MapService sharedInstanceToRetain];
         self.epflTileOverlay = [[EPFLTileOverlay alloc] init];
         //self.epflTileOverlay2 = [[EPFLTileOverlay2 alloc] init];
-        self.epflLayersOverlay = nil; //[[EPFLLayersOverlay alloc] init];
+        self.epflLayersOverlay = [[EPFLLayersOverlay alloc] init];
         self.tilesOverlayRenderer = [[RemoteOverlayRenderer alloc] initWithOverlay:self.epflTileOverlay];
         //self.tilesOverlayRenderer2 = [[MKTileOverlayRenderer alloc] initWithOverlay:self.epflTileOverlay2];
+        self.layersOverlayRenderer = [[RemoteOverlayRenderer alloc] initWithOverlay:self.epflLayersOverlay];
         _searchState = -1; //set to "illegal" value so that first call to setSearchState is not discared (as default value 0)
         _mapControlsState = -1; //set to "illegal" value so that first call to setMapControlState is not discareded (as default value 0)
         self.searchBarShouldBeginEditing = YES;
@@ -819,7 +820,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         if (self.mapView.overlays.count == 0) {
             [self.mapView addOverlay:self.epflTileOverlay];
             //[self.mapView addOverlay:self.epflTileOverlay2];
-            //[mapView removeOverlay:epflLayersOverlay];
+            [self.mapView addOverlay:self.epflLayersOverlay];
         }
         if ([self.epflTileOverlay shouldAllowLayerChange]) {
             self.mapControlsState = MapControlsStateAllAvailable;
@@ -830,7 +831,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     } else {
         if (self.mapView.overlays.count > 0) {
             [self.mapView removeOverlay:self.epflTileOverlay];
-            //[mapView removeOverlay:epflLayersOverlay];
+            [self.mapView removeOverlay:self.epflLayersOverlay];
             self.mapControlsState = MapControlsStateNoFloorControl;
         }
     }
