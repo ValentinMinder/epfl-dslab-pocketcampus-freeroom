@@ -125,7 +125,7 @@ namespace PocketCampus.Map.Controls
         {
             var loc = (MapItem) ( (Pushpin) sender ).DataContext;
             Properties.Center = loc.Position;
-            Properties.BuildingsLevel = loc.Floor;
+            Properties.BuildingsLevel = loc.Floor ?? 0;
         }
 
         /// <summary>
@@ -147,12 +147,12 @@ namespace PocketCampus.Map.Controls
             if ( coords.Length == 1 )
             {
                 LayoutRoot.Center = coords[0];
-                Properties.BuildingsLevel = PinnedLocations[0].Floor;
+                Properties.BuildingsLevel = PinnedLocations[0].Floor ?? 0;
             }
             else if ( coords.Length > 1 )
             {
                 LayoutRoot.SetView( LocationRectangle.CreateBoundingRectangle( coords ) );
-                Properties.BuildingsLevel = PinnedLocations[0].Floor;
+                Properties.BuildingsLevel = PinnedLocations[0].Floor ?? 0;
             }
         }
 

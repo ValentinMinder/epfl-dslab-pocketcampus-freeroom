@@ -18,7 +18,7 @@ namespace PocketCampus.IsAcademia.Models
         /// </summary>
         [ThriftField( 2, false, "weekStart" )]
         [ThriftConverter( typeof( ThriftJavaDateConverter ) )]
-        public DateTime WeekStart { get; set; }
+        public DateTime? WeekStart { get; set; }
 
         /// <summary>
         /// The request language.

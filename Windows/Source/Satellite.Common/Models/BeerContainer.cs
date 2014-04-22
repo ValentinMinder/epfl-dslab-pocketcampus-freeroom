@@ -9,25 +9,22 @@ namespace PocketCampus.Satellite.Models
     /// <summary>
     /// The beer containers used by Satellite.
     /// </summary>
-    [ThriftEnum( "SatelliteBeerContainer" )]
+    [ThriftEnum]
     public enum BeerContainer
     {
         /// <summary>
         /// Draft beer, in a glass.
         /// </summary>
-        [ThriftEnumMember( "DRAFT", 1 )]
-        Draft,
+        Draft = 1,
 
         /// <summary>
         /// Bottled beer.
         /// </summary>
-        [ThriftEnumMember( "BOTTLE", 2 )]
-        Bottle,
+        Bottle = 2,
 
         /// <summary>
         /// Big bottle of beer, meant to be shared.
         /// </summary>
-        [ThriftEnumMember( "LARGE_BOTTLE", 3 )]
-        BigBottle
+        BigBottle = 3
     }
 }

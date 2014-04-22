@@ -2,10 +2,10 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using ThinMvvm;
-using ThriftSharp;
 
 namespace PocketCampus.Main
 {
@@ -13,7 +13,7 @@ namespace PocketCampus.Main
     {
         public static void BindImplementations()
         {
-            DataViewModelOptions.NetworkExceptionType = typeof( ThriftTransportException );
+            DataViewModelOptions.NetworkExceptionType = typeof( OperationCanceledException );
 
             Container.Bind<IMainSettings, MainSettings>();
             Container.Bind<IServerAccess, ServerAccess>();

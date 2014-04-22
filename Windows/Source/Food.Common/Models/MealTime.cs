@@ -9,20 +9,18 @@ namespace PocketCampus.Food.Models
     /// <summary>
     /// The times for which menus are available.
     /// </summary>
-    [ThriftEnum( "MealTime" )]
+    [ThriftEnum]
     public enum MealTime
     {
         /// <summary>
         /// Lunch.
         /// </summary>
-        [ThriftEnumMember( "LUNCH", 1 )]
-        Lunch,
+        Lunch = 1,
 
         /// <summary>
         /// Dinner.
         /// (there may not be any meals for dinner, depending on the day)
         /// </summary>
-        [ThriftEnumMember( "DINNER", 2 )]
-        Dinner
+        Dinner = 2
     }
 }
