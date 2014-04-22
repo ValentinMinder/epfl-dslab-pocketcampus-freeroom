@@ -51,6 +51,8 @@ static id kEmptyImageValue;
 
 @property (nonatomic, strong) NSString* reuseIdentifierPrefix;
 
+@property (nonatomic, strong) NSMutableDictionary* scrollViewStateForIdentifier;
+
 @end
 
 @implementation PCTableViewAdditions
@@ -332,6 +334,39 @@ static id kEmptyImageValue;
         return nil;
     }
     return [self.reuseIdentifierPrefix stringByAppendingString:identifier];
+}
+
+static NSString* const kScrollViewStateContentOffset = @"ContentOffset";
+static NSString* const kScrollViewStateContentSize = @"ContentSize";
+
+- (void)saveContentOffsetForIdentifier:(NSString*)identifier {
+    [PCUtils throwExceptionIfObject:identifier notKindOfClass:[NSString class]];
+    if (!self.scrollViewStateForIdentifier) {
+        self.scrollViewStateForIdentifier = [NSMutableDictionary dictionary];
+    }
+    self.scrollViewStateForIdentifier[identifier] = @{kScrollViewStateContentOffset:NSStringFromCGPoint(self.contentOffset),
+                                                      kScrollViewStateContentSize:NSStringFromCGSize(self.contentSize)};
+}
+
+- (void)restoreContentOffsetForIdentifier:(NSString*)identifier {
+    [PCUtils throwExceptionIfObject:identifier notKindOfClass:[NSString class]];
+    NSString* originalContentOffsetString = self.scrollViewStateForIdentifier[identifier][kScrollViewStateContentOffset];
+    if (!originalContentOffsetString) {
+        return;
+    }
+    CGPoint originalContentOffset = CGPointFromString(originalContentOffsetString);
+    NSString* originalContentSizeString = self.scrollViewStateForIdentifier[identifier][kScrollViewStateContentSize];
+    if (!originalContentSizeString) {
+        return;
+    }
+    CGSize originalContentSize = CGSizeFromString(originalContentSizeString);
+    
+    CGSize currentContentSize = self.contentSize;
+    
+    CGFloat newContentOffsetX = originalContentOffset.x * (currentContentSize.width / originalContentSize.width);
+    CGFloat newContentOffsetY = originalContentOffset.y * (currentContentSize.height / originalContentSize.height);
+    
+    self.contentOffset = CGPointMake(newContentOffsetX, newContentOffsetY);
 }
 
 #pragma mark - Private methods

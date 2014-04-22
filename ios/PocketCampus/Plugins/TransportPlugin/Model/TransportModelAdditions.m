@@ -123,7 +123,11 @@ static NSCache* veryShortNameForTransportLineName;
 - (NSString*)shortName {
     shortNameForTransportLineName = shortNameForTransportLineName ?: [NSCache new];
     if (!shortNameForTransportLineName[self.name]) {
-        shortNameForTransportLineName[self.name] = [self computeShortName];
+        NSString* shortName = [self computeShortName];
+        if (!shortName) {
+            return nil;
+        }
+        shortNameForTransportLineName[self.name] = shortName;
     }
     return shortNameForTransportLineName[self.name];
 }
@@ -131,9 +135,11 @@ static NSCache* veryShortNameForTransportLineName;
 - (NSString*)veryShortName {
     veryShortNameForTransportLineName = veryShortNameForTransportLineName ?: [NSCache new];
     if (!veryShortNameForTransportLineName[self.name]) {
-        veryShortNameForTransportLineName[self.name] = self.shortName.length <= 3 ?
-        self.shortName :
-        [[self.shortName substringToIndex:2] stringByAppendingString:@".."];
+        NSString* veryShortName = self.shortName.length <= 3 ? self.shortName : [[self.shortName substringToIndex:2] stringByAppendingString:@".."];
+        if (!veryShortName) {
+            return nil;
+        }
+        veryShortNameForTransportLineName[self.name] = veryShortName;
     }
     return veryShortNameForTransportLineName[self.name];
 }

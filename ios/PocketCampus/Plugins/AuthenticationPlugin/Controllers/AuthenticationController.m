@@ -68,7 +68,7 @@ static AuthenticationController* instanceStrong __strong = nil;
 
 @interface AuthenticationController ()<AuthenticationServiceDelegate, AuthenticationDelegate>
 
-@property (nonatomic, strong) AuthenticationViewController* gasparViewController;
+@property (nonatomic, strong) AuthenticationViewController* authenticationViewController;
 @property (nonatomic, strong) AuthenticationService* authService;
 @property (nonatomic, strong) NSMutableSet* loginObservers;
 
@@ -141,27 +141,27 @@ static AuthenticationController* instanceStrong __strong = nil;
 
 #pragma mark - Standard authentication
 
-- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate; {
+- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationDelegate>)delegate {
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]];
-    self.gasparViewController = [[AuthenticationViewController alloc] init];
+    self.authenticationViewController = [[AuthenticationViewController alloc] init];
     if (savedPassword) {
-        self.gasparViewController.presentationMode = PresentationModeTryHidden;
-        self.gasparViewController.viewControllerForPresentation = presentationViewController;
-        self.gasparViewController.showSavePasswordSwitch = YES;
-        self.gasparViewController.hideGasparUsageAccountMessage = YES;
-        [self.gasparViewController authenticateSilentlyToken:token delegate:delegate];
+        self.authenticationViewController.presentationMode = PresentationModeTryHidden;
+        self.authenticationViewController.viewControllerForPresentation = presentationViewController;
+        self.authenticationViewController.showSavePasswordSwitch = YES;
+        self.authenticationViewController.hideGasparUsageAccountMessage = YES;
+        [self.authenticationViewController authenticateSilentlyToken:token delegate:delegate];
     } else {
-        self.gasparViewController.presentationMode = PresentationModeModal;
-        self.gasparViewController.viewControllerForPresentation = presentationViewController;
-        self.gasparViewController.showSavePasswordSwitch = YES;
-        self.gasparViewController.hideGasparUsageAccountMessage = YES;
-        self.gasparViewController.delegate = delegate;
-        self.gasparViewController.token = token;
-        UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:self.gasparViewController]; //so that nav bar is shown
+        self.authenticationViewController.presentationMode = PresentationModeModal;
+        self.authenticationViewController.viewControllerForPresentation = presentationViewController;
+        self.authenticationViewController.showSavePasswordSwitch = YES;
+        self.authenticationViewController.hideGasparUsageAccountMessage = YES;
+        self.authenticationViewController.delegate = delegate;
+        self.authenticationViewController.token = token;
+        UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:self.authenticationViewController]; //so that nav bar is shown
         tmpNavController.modalPresentationStyle = UIModalPresentationFormSheet;
         
         [presentationViewController presentViewController:tmpNavController animated:YES completion:^{
-            [self.gasparViewController focusOnInput];
+            [self.authenticationViewController focusOnInput];
         }];
     }
     
@@ -297,12 +297,21 @@ static AuthenticationController* instanceStrong __strong = nil;
     [self.authService getAuthSessionIdWithTequilaToken:self.tequilaToken delegate:self];
 }
 
-- (void)userCancelledAuthentication {
-    [self cleanAndNotifyUserCancelledToObservers];
-}
-
-- (void)invalidToken {
-    [self cleanAndNotifyFailureToObservers];
+- (void)authenticationFailedWithReason:(AuthenticationFailureReason)reason {
+    switch (reason) {
+        case AuthenticationFailureReasonUserCancelled:
+            [self cleanAndNotifyUserCancelledToObservers];
+            break;
+        case AuthenticationFailureReasonInvalidToken:
+            [self cleanAndNotifyFailureToObservers];
+            break;
+        case AuthenticationFailureReasonInternalError:
+            [self cleanAndNotifyFailureToObservers];
+            break;
+        default:
+            [self cleanAndNotifyFailureToObservers];
+            break;
+    }
 }
 
 #pragma mark - SessionId persistence

@@ -123,6 +123,10 @@
     [self.authenticationService loginToTequilaWithUser:self.username password:self.password delegate:self];
 }
 
+- (void)cancelAuthentication {
+    [self.authenticationService cancelOperationsForDelegate:self];
+}
+
 - (void)focusOnInput {
     if (![self.usernameTextField.text isEqualToString:@""]) {
         [self.passwordTextField becomeFirstResponder];
@@ -147,10 +151,10 @@
     [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
     if (self.presentationMode == PresentationModeModal) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
-            if ([(NSObject*)self.delegate respondsToSelector:@selector(userCancelledAuthentication)]) {
-                [(NSObject*)self.delegate performSelectorOnMainThread:@selector(userCancelledAuthentication) withObject:nil waitUntilDone:YES];
-                [AuthenticationService enqueueLogoutNotification];
+            if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+                [self.delegate authenticationFailedWithReason:AuthenticationFailureReasonUserCancelled];
             }
+            [AuthenticationService enqueueLogoutNotification];
         }];
     } else {
         [AuthenticationService enqueueLogoutNotification];
@@ -178,7 +182,7 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
         //check if transferred from PCObjectArchiver to PCConfig default
         static NSString* const kAuthTransferedPasswordSwitchStateKey = @"AuthTransferedPasswordSwitchState";
         if (![[PCConfig defaults] boolForKey:kAuthTransferedPasswordSwitchStateKey]) {
-            NSNumber* nsBool = (NSNumber*)[PCObjectArchiver objectForKey:kSavePasswordSwitchStateOldKey andPluginName:@"authentication"];
+            NSNumber* nsBool = (NSNumber*)[PCPersistenceManager objectForKey:kSavePasswordSwitchStateOldKey pluginName:@"authentication"];
             if (nsBool) {
                 [[PCConfig defaults] setBool:[nsBool boolValue] forKey:kSavePasswordBoolKey];
             }
@@ -197,7 +201,7 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         //delete old saved state if any
-        [PCObjectArchiver saveObject:nil forKey:kSavePasswordSwitchStateOldKey andPluginName:@"authentication"];
+        [PCPersistenceManager saveObject:nil forKey:kSavePasswordSwitchStateOldKey pluginName:@"authentication"];
     });
     [[PCConfig defaults] setBool:savePassword forKey:kSavePasswordBoolKey];
     [[PCConfig defaults] synchronize];
@@ -246,7 +250,7 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
 }
 
 - (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason {
-    CLSNSLog(@"-> loginToTequilaFailedloginToTequilaFailedWithReason: %d", reason);
+    CLSNSLog(@"-> loginToTequilaFailedWithReason: %d", reason);
     switch (reason) {
         case AuthenticationTequilaLoginFailureReasonBadCredentials:
         {
@@ -254,7 +258,13 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
             self.errorMessage = NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil);
             if (self.presentationMode == PresentationModeTryHidden) {
                 if (!self.viewControllerForPresentation) {
-                    @throw [NSException exceptionWithName:@"nil viewControllerForPresentation" reason:@"could not present GasparViewController after failing silent authentication." userInfo:nil];
+                    CLSNSLog(@"ERROR: could not present AuthenticationViewController after failing silent authentication, because viewControllerForPresentation is nil. Calling authenticationFailedWithReason: internal error on delegate and returning.");
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+                            [self.delegate authenticationFailedWithReason:AuthenticationFailureReasonInternalError];
+                        }
+                    });
+                    return;
                 }
                 self.presentationMode = PresentationModeModal;
                 self.usernameTextField.enabled = YES;
@@ -282,19 +292,23 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
 /* STEP 2 */
 
 - (void)authenticateDidSucceedForToken:(NSString *)token tequilaCookie:(NSHTTPCookie *)tequilaCookie {
-    if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceededPersistSession:)]) {
-        [self.delegate authenticationSucceededPersistSession:self.savePassword];
-    }
     [self.loadingIndicator stopAnimating];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceededPersistSession:)]) {
+            [self.delegate authenticationSucceededPersistSession:self.savePassword];
+        }
+    });
 }
 
 - (void)authenticateFailedForToken:(NSString *)token tequilaCookie:(NSHTTPCookie *)tequilaCookie {
-    if ([(NSObject*)self.delegate respondsToSelector:@selector(invalidToken)]) {
-        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(invalidToken) withObject:nil waitUntilDone:NO];
-    }
     [self.loadingIndicator stopAnimating];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationFailedWithReason:)]) {
+            [self.delegate authenticationFailedWithReason:AuthenticationFailureReasonInvalidToken];
+        }
+    });
 }
 
 - (void)connectionError {
@@ -304,10 +318,11 @@ static NSString* const kSavePasswordSwitchStateOldKey = @"savePasswordSwitch"; /
     self.loginCell.textLabel.enabled = YES;
     self.loginCell.selectionStyle = UITableViewCellSelectionStyleGray;
     [PCUtils showConnectionToServerTimedOutAlert];
-    
-    if (self.presentationMode == PresentationModeTryHidden && [(NSObject*)self.delegate respondsToSelector:@selector(serviceConnectionToServerFailed)]) {
-        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(serviceConnectionToServerFailed) withObject:nil waitUntilDone:YES];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.presentationMode == PresentationModeTryHidden && [(NSObject*)self.delegate respondsToSelector:@selector(serviceConnectionToServerFailed)]) {
+            [(NSObject*)self.delegate performSelectorOnMainThread:@selector(serviceConnectionToServerFailed) withObject:nil waitUntilDone:YES];
+        }
+    });
 }
 
 - (void)serviceConnectionToServerFailed {

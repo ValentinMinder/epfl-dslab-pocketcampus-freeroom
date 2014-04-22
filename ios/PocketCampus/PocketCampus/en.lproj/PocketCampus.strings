@@ -45,6 +45,9 @@
 "UnknownError" = "Sorry, an error occured.";
 "UnknownErrorTryRefresh" = "Sorry, an error occured.\nTry to refresh.";
 "Today" = "Today";
+"All" = "All";
+"Favorites" = "Favorites";
+"Attention" = "Attention";
 
 //Accessbility
 

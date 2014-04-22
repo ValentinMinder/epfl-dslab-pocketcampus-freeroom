@@ -110,9 +110,9 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
     
     NSDictionary* cachedArgDic;
     if(evenIfStale) {
-        cachedArgDic = (NSDictionary*) [PCObjectArchiver objectForKey:self.hashIdentifier andPluginName:self.service.serviceName isCache:YES];
+        cachedArgDic = (NSDictionary*) [PCPersistenceManager objectForKey:self.hashIdentifier pluginName:self.service.serviceName isCache:YES];
     } else {
-        cachedArgDic = (NSDictionary*) [PCObjectArchiver objectForKey:self.hashIdentifier andPluginName:self.service.serviceName nilIfDiffIntervalLargerThan:self.cacheValidityInterval isCache:YES];
+        cachedArgDic = (NSDictionary*) [PCPersistenceManager objectForKey:self.hashIdentifier pluginName:self.service.serviceName nilIfDiffIntervalLargerThan:self.cacheValidityInterval isCache:YES];
     }
     
     if ([cachedArgDic[kWrappedElementDictPrimitiveKey] boolValue]) {
@@ -159,9 +159,9 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
         if (self.keepInCache && !self.skipCache) {
             NSDictionary* cachedResponseDic = nil;
             if (self.returnEvenStaleCacheIfNoInternetConnection && ![PCUtils hasDeviceInternetConnection]) {
-                cachedResponseDic = (NSDictionary*)[PCObjectArchiver objectForKey:self.hashIdentifier andPluginName:self.service.serviceName isCache:YES];
+                cachedResponseDic = (NSDictionary*)[PCPersistenceManager objectForKey:self.hashIdentifier pluginName:self.service.serviceName isCache:YES];
             } else {
-                cachedResponseDic = (NSDictionary*) [PCObjectArchiver objectForKey:self.hashIdentifier andPluginName:self.service.serviceName nilIfDiffIntervalLargerThan:self.cacheValidityInterval isCache:YES];
+                cachedResponseDic = (NSDictionary*) [PCPersistenceManager objectForKey:self.hashIdentifier pluginName:self.service.serviceName nilIfDiffIntervalLargerThan:self.cacheValidityInterval isCache:YES];
             }
             if (cachedResponseDic) {
                 ServiceRequestLog(self, @"will return from cache.");
@@ -403,7 +403,7 @@ static inline void ServiceRequestLog(ServiceRequest* serviceRequest, NSString* f
             saveToCache = self.keepInCacheBlock([self.class unwrapArgument:responseDic]);
         }
         if (saveToCache) {
-            [PCObjectArchiver saveObject:responseDic forKey:self.hashIdentifier andPluginName:self.service.serviceName isCache:YES];
+            [PCPersistenceManager saveObject:responseDic forKey:self.hashIdentifier pluginName:self.service.serviceName isCache:YES];
         }
     }
     

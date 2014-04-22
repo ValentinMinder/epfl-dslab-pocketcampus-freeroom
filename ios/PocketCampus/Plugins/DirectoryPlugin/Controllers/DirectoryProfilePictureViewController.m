@@ -68,7 +68,6 @@
         self.imageViewTopLayoutConstraint.constant = 0.0;
     }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
-    self.preferredContentSize = CGSizeMake(self.image.size.width < 500 ? self.image.size.width : 500.0, self.image.size.height < 500 ? self.image.size.height : 500.0);
     self.imageView.image = self.image;
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     self.preferredContentSize = self.imageView.frame.size;

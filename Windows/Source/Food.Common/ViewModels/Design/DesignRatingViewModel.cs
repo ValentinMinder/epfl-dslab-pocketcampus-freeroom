@@ -44,9 +44,9 @@ Buffet de salades",
             }
         }
 
-        public RatingStatus Status
+        public VoteStatus Status
         {
-            get { return RatingStatus.AlreadyVotedToday; }
+            get { return VoteStatus.AlreadyVoted; }
         }
 
         public UserRating Rating
@@ -56,7 +56,7 @@ Buffet de salades",
 
         public ICommand VoteCommand
         {
-            get { return new Command( this, () => { }, () => Status == RatingStatus.Ok ); }
+            get { return new Command( this, () => { } ); }
         }
 #endif
     }

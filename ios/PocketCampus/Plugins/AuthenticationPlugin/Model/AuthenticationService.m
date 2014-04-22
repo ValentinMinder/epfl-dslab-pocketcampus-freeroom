@@ -31,7 +31,7 @@
 
 #import "AFNetworking.h"
 
-#import "PCObjectArchiver.h"
+#import "PCPersistenceManager.h"
 
 #import "SSKeychain.h"
 
@@ -87,11 +87,11 @@ static AuthenticationService* instance __weak = nil;
 }
 
 + (NSString*)savedUsername {
-    return (NSString*)[PCObjectArchiver objectForKey:kSavedUsernameKey andPluginName:@"authentication"];
+    return (NSString*)[PCPersistenceManager objectForKey:kSavedUsernameKey pluginName:@"authentication"];
 }
 
 + (BOOL)saveUsername:(NSString*)username {
-    return [PCObjectArchiver saveObject:username forKey:kSavedUsernameKey andPluginName:@"authentication"];
+    return [PCPersistenceManager saveObject:username forKey:kSavedUsernameKey pluginName:@"authentication"];
 }
 
 + (NSString*)savedPasswordForUsername:(NSString*)username {
@@ -237,6 +237,17 @@ static AuthenticationService* instance __weak = nil;
     [operation addObjectArgument:tequilaToken];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
+}
+
+#pragma mark - Service overrides
+
+- (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
+    for (NSOperation* operation in self.operationQueue.operations) {
+        if ([operation isKindOfClass:[AFHTTPRequestOperation class]]) {
+            [(AFHTTPRequestOperation*)operation setCompletionBlockWithSuccess:NULL failure:NULL];
+        }
+    }
+    [super cancelOperationsForDelegate:delegate];
 }
 
 #pragma mark - Dealloc

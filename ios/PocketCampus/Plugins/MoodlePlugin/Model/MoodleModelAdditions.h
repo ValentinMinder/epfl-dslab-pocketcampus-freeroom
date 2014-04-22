@@ -25,16 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 13.01.13.
 
-
-
 #import "moodle.h"
+
+extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
 
 @interface MoodleResource (Additions)<NSCopying>
 
@@ -53,6 +48,12 @@
 - (BOOL)isEqual:(id)object;
 - (BOOL)isEqualToMoodleResource:(MoodleResource*)moodleResource;
 - (NSUInteger)hash;
+
+/*
+ * Returns empty dictionary if setDefaultsDictionary:forMoodleResource: never called before
+ */
++ (NSDictionary*)defaultsDictionaryForMoodleResource:(MoodleResource*)resource;
++ (void)setDefaultsDictionary:(NSDictionary*)defaultsDic forMoodleResource:(MoodleResource*)resource;
 
 @end
 

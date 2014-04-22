@@ -2,8 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
-using System.Collections.Generic;
 using PocketCampus.Common;
 using PocketCampus.Food.Models;
 
@@ -51,15 +49,6 @@ namespace PocketCampus.Food
             set { Set( value ); }
         }
 
-        /// <summary>
-        /// Gets the map of meal times to the dates at which the last vote for a meal at that time was cast.
-        /// </summary>
-        public Dictionary<MealTime, DateTime> LastVotes
-        {
-            get { return Get<Dictionary<MealTime, DateTime>>(); }
-            set { Set( value ); }
-        }
-
 
         /// <summary>
         /// Creates a new PluginSettings.
@@ -76,8 +65,7 @@ namespace PocketCampus.Food
             {
                 { x => x.PriceTarget, () => PriceTarget.Student },
                 { x => x.MaximumBudget, () => 50.0 }, // this is too much, but it ensures no dish is hidden by default
-                { x => x.DisplayedMealTypes, () => EnumEx.GetValues<MealType>() },
-                { x => x.LastVotes, () => new Dictionary<MealTime, DateTime> { { MealTime.Lunch, DateTime.MinValue }, { MealTime.Dinner, DateTime.MinValue } } }
+                { x => x.DisplayedMealTypes, () => EnumEx.GetValues<MealType>() }
             };
         }
     }

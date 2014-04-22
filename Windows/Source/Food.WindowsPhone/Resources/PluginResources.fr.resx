@@ -217,21 +217,18 @@
   <data name="RateMealButton" xml:space="preserve">
     <value>voter</value>
   </data>
-  <data name="RatingStatus_AlreadyVotedToday" xml:space="preserve">
-    <value>Vous avez déjà évalué un plat aujourd'hui.</value>
+  <data name="VoteStatus_AlreadyVoted" xml:space="preserve">
+    <value>Vous avez déjà évalué un plat pour ce repas.</value>
   </data>
-  <data name="RatingStatus_MealFromTheFuture" xml:space="preserve">
+  <data name="VoteStatus_TooEarly" xml:space="preserve">
     <value>Les plats du futur ne peuvent pas être évalués.</value>
   </data>
-  <data name="RatingStatus_MealFromThePast" xml:space="preserve">
-    <value>Les plats du passé ne peuvent pas être évalués.</value>
+  <data name="VoteStatus_MealInDistantPast" xml:space="preserve">
+    <value>Les plats trop loin dans le passé ne peuvent pas être évalués.</value>
   </data>
-  <data name="RatingStatus_Ok" xml:space="preserve">
+  <data name="VoteStatus_Success" xml:space="preserve">
     <value />
     <comment>Must be empty</comment>
-  </data>
-  <data name="RatingStatus_TooEarly" xml:space="preserve">
-    <value>Il est trop tôt pour évaluer un plat.</value>
   </data>
   <data name="RatingViewTitle" xml:space="preserve">
     <value>évaluer un plat</value>

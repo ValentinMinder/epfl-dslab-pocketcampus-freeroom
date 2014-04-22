@@ -95,7 +95,7 @@ static FoodController* instance __weak = nil;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserverForName:kAuthenticationLogoutNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
             [[FoodService sharedInstanceToRetain] setUserPriceTarget:kFoodDefaultUnknownUserPriceTarget];
-            [PCObjectArchiver deleteAllCachedObjectsForPluginName:@"food"];
+            [PCPersistenceManager deleteCacheForPluginName:@"food"];
             [[MainController publicController] requestLeavePlugin:@"Food"];
         }];
     });

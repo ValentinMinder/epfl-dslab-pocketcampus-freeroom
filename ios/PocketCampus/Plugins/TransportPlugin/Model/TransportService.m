@@ -35,7 +35,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-#import "PCObjectArchiver.h"
+#import "PCPersistenceManager.h"
 
 #import <float.h>
 
@@ -207,16 +207,16 @@ static NSString* const kManualDepartureStationKey = @"manualDepartureStation";
 
 - (void)initPersistedProperties {
     if (!self.privateUserTransportStations) {
-        self.privateUserTransportStations = (NSOrderedSet*)[PCObjectArchiver objectForKey:kUserTransportStationsKey andPluginName:@"transport"];
+        self.privateUserTransportStations = (NSOrderedSet*)[PCPersistenceManager objectForKey:kUserTransportStationsKey pluginName:@"transport"];
         if (!self.privateUserTransportStations) {
-            NSArray* oldFavStations = (NSArray*)[PCObjectArchiver objectForKey:kFavoriteTransportStationsOldKey andPluginName:@"transport"];;
+            NSArray* oldFavStations = (NSArray*)[PCPersistenceManager objectForKey:kFavoriteTransportStationsOldKey pluginName:@"transport"];;
             if (oldFavStations) {
                 self.privateUserTransportStations = [NSOrderedSet orderedSetWithArray:oldFavStations]; //storage transition from old methods to new
             }
         }
     }
     if (!self.privateUserManualDepartureTransportStation) {
-        self.privateUserManualDepartureTransportStation = (TransportStation*)[PCObjectArchiver objectForKey:kManualDepartureStationKey andPluginName:@"transport"];
+        self.privateUserManualDepartureTransportStation = (TransportStation*)[PCPersistenceManager objectForKey:kManualDepartureStationKey pluginName:@"transport"];
     }
 }
 
@@ -231,7 +231,7 @@ static NSString* const kManualDepartureStationKey = @"manualDepartureStation";
         return;
     }
     self.privateUserTransportStations = [userTransportStations copy];
-    [PCObjectArchiver saveObject:self.privateUserTransportStations forKey:kUserTransportStationsKey andPluginName:@"transport"];
+    [PCPersistenceManager saveObject:self.privateUserTransportStations forKey:kUserTransportStationsKey pluginName:@"transport"];
     [[NSNotificationCenter defaultCenter] postNotificationName:kTransportUserTransportStationsModifiedNotification object:self];
 }
 
@@ -248,7 +248,7 @@ static NSString* const kManualDepartureStationKey = @"manualDepartureStation";
     [self willChangeValueForKey:NSStringFromSelector(@selector(userManualDepartureStation))];
     self.privateUserManualDepartureTransportStation = userManualDepartureStation;
     [self didChangeValueForKey:NSStringFromSelector(@selector(userManualDepartureStation))];
-    [PCObjectArchiver saveObject:self.privateUserManualDepartureTransportStation forKey:kManualDepartureStationKey andPluginName:@"transport"];
+    [PCPersistenceManager saveObject:self.privateUserManualDepartureTransportStation forKey:kManualDepartureStationKey pluginName:@"transport"];
 }
 
 #pragma mark - Nearest TransportStation
@@ -321,7 +321,7 @@ static NSString* const kLastLocationKey = @"lastLocation";
         return; //self will be called (see delegate method) by CLLocationManager when user has accepted or rejected access to location
     }
     
-    CLLocation* lastLocation = (CLLocation*)[PCObjectArchiver objectForKey:kLastLocationKey andPluginName:@"transport"];
+    CLLocation* lastLocation = (CLLocation*)[PCPersistenceManager objectForKey:kLastLocationKey pluginName:@"transport"];
     if ([self locationIsStillValid:lastLocation] && [self locationEnglobesOnlyOneStation:lastLocation]) {
         CLSNSLog(@"-> Last location still valid (%@), will return to delegate.", lastLocation.timestamp);
         [self returnLocationToDelegate:lastLocation];
@@ -458,7 +458,7 @@ static NSString* const kLastLocationKey = @"lastLocation";
     
     if (![self locationIsStillValid:newLocation]) {
         CLSLog(@"-> Old location. Ignoring.");
-        [PCObjectArchiver saveObject:nil forKey:kLastLocationKey andPluginName:@"transport"];
+        [PCPersistenceManager saveObject:nil forKey:kLastLocationKey pluginName:@"transport"];
         return;
     }
     
@@ -500,7 +500,7 @@ static NSString* const kLastLocationKey = @"lastLocation";
     /* END OF DEV TEST */
     
     NSLog(@"-> Location considered valid, will return to delegate.");
-    [PCObjectArchiver saveObject:newLocation forKey:kLastLocationKey andPluginName:@"transport"];
+    [PCPersistenceManager saveObject:newLocation forKey:kLastLocationKey pluginName:@"transport"];
     [self returnLocationToDelegate:newLocation];
     
 }
