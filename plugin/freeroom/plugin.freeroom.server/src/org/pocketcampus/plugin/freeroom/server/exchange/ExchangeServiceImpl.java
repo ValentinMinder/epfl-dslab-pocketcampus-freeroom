@@ -216,7 +216,7 @@ public class ExchangeServiceImpl {
 						query.setString(j + 1, uid);
 						query.setLong(j + 2, mPeriod.getTimeStampStart());
 						query.setLong(j + 3, mPeriod.getTimeStampEnd());
-						server.insertOccupancy(mPeriod, OCCUPANCY_TYPE.ROOM, room);
+						server.insertOccupancy(mPeriod, OCCUPANCY_TYPE.ROOM, room, null);
 					}
 //					query.execute();
 				} catch (SQLException e1) {
@@ -240,9 +240,10 @@ public class ExchangeServiceImpl {
 		try {
 			conn = connMgr.getConnection();
 			PreparedStatement query;
-			String b = "DELETE FROM `fr-roomsoccupancy` WHERE uid = ?";
+			String b = "DELETE FROM `fr-occupancy` WHERE uid = ? AND type = ?";
 			query = conn.prepareStatement(b);
 			query.setString(1, uid);
+			query.setString(2, OCCUPANCY_TYPE.ROOM.toString());
 			query.execute();
 		} catch (SQLException e1) {
 			e1.printStackTrace();

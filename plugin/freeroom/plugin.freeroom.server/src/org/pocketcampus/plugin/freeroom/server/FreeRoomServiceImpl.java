@@ -9,6 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -430,9 +433,113 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					tsStart, tsEnd);
 		}
 
+		occupancies = sortRooms(occupancies);
 		reply.setOccupancyOfRooms(occupancies);
 		return reply;
 	}
+
+	private HashMap<String, List<Occupancy>> sortRooms(
+			HashMap<String, List<Occupancy>> occ) {
+		if (occ == null) {
+			return null;
+		}
+
+		for (String key : occ.keySet()) {
+			List<Occupancy> value = occ.get(key);
+			Collections.sort(value, roomsFreeComparator);
+		}
+
+		return occ;
+	}
+
+	private Comparator<Occupancy> roomsFreeComparator = new Comparator<Occupancy>() {
+
+		@Override
+		public int compare(Occupancy o0, Occupancy o1) {
+
+			boolean onlyFree1 = !o0.isIsAtLeastOccupiedOnce();
+			boolean onlyFree2 = !o1.isIsAtLeastOccupiedOnce();
+			boolean occupied1 = o0.isIsAtLeastOccupiedOnce();
+			boolean occupied2 = o1.isIsAtLeastOccupiedOnce();
+			boolean notFree1 = !onlyFree1 && occupied1;
+			boolean notFree2 = !onlyFree2 && occupied2;
+
+			if (onlyFree1 && onlyFree2) {
+				return compareOnlyFree(o0.getRatioWorstCaseProbableOccupancy(),
+						o1.getRatioWorstCaseProbableOccupancy());
+			} else if (onlyFree1 && !onlyFree2) {
+				return -1;
+			} else if (!onlyFree1 && onlyFree2) {
+				return 1;
+			} else if (occupied1 && occupied2) {
+				double rate1 = rateOccupied(o0.getOccupancy());
+				double rate2 = rateOccupied(o1.getOccupancy());
+				return compareFreeOccupied(rate1, rate2,
+						o0.getRatioWorstCaseProbableOccupancy(),
+						o1.getRatioWorstCaseProbableOccupancy());
+			} else if (occupied1 && notFree2) {
+				return -1;
+			} else if (notFree1 && occupied2) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+
+		private int compareFreeOccupied(double rate1, double rate2,
+				double prob1, double prob2) {
+			if (rate1 == rate2) {
+				return equalFreeOccupied(prob1, prob2);
+			} else if (rate1 < rate2) {
+				return -1;
+			} else {
+				return 1;
+			}
+		}
+
+		private int equalFreeOccupied(double prob1, double prob2) {
+			if (prob1 < prob2) {
+				return -1;
+			} else if (prob1 > prob2) {
+				return 1;
+			}
+			return 0;
+		}
+
+		private int countNumberHour(ActualOccupation acc) {
+			long tsStart = acc.getPeriod().getTimeStampStart();
+			long tsEnd = acc.getPeriod().getTimeStampEnd();
+			Calendar mCalendar = Calendar.getInstance();
+			mCalendar.setTimeInMillis(tsStart);
+			int startHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+			mCalendar.setTimeInMillis(tsEnd);
+			int endHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+			return Math.abs(endHour - startHour);
+		}
+
+		private double rateOccupied(List<ActualOccupation> occupations) {
+			int count = 0;
+			int total = 0;
+			for (ActualOccupation acc : occupations) {
+				int nbHours = countNumberHour(acc);
+				if (!acc.isAvailable()) {
+					count += nbHours;
+				}
+				total += nbHours;
+
+			}
+			return total > 0 ? (double) count / total : 0.0;
+		}
+
+		private int compareOnlyFree(double prob1, double prob2) {
+			if (prob1 < prob2) {
+				return -1;
+			} else if (prob1 > prob2) {
+				return +1;
+			}
+			return 0;
+		}
+	};
 
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
 			boolean onlyFreeRooms, long tsStart, long tsEnd) {
