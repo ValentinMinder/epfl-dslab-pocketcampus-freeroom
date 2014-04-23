@@ -137,10 +137,31 @@
             return;
         }
         
+        image = [self imageWithBorderFromImage:image];
+        
         UIGraphicsPushContext(context);
         [image drawInRect:[self rectForMapRect:mapRect] blendMode:kCGBlendModeNormal alpha:0.85];
+        CGContextSetRGBStrokeColor(context, 1.0, 0.5, 1.0, 1.0);
         UIGraphicsPopContext();
     }
+}
+
+- (UIImage*)imageWithBorderFromImage:(UIImage*)source;
+{
+    CGSize size = [source size];
+    size.width *= 2.0;
+    size.height *= 2.0;
+    UIGraphicsBeginImageContext(size);
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetRGBStrokeColor(context, 1.0, 0.5, 1.0, 1.0);
+    CGContextSetLineWidth(context, 0.5);
+    CGContextStrokeRect(context, rect);
+    UIImage *testImg =  UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return testImg;
 }
 
 
