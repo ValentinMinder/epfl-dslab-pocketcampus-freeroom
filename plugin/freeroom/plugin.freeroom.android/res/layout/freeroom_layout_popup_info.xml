@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- stores a background for fancy colorful borders -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_margin="4dp"
+        android:background="@android:color/background_light"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+
+        <!-- headers for title and close button -->
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:orientation="horizontal" >
+
+            <!-- headers : title -->
+
+            <TextView
+                android:id="@+id/reeroom_layout_popup_info_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/freeroom_layout_popup_info_title" />
+
+            <!-- headers : close button -->
+
+            <ImageView
+                android:id="@+id/freeroom_layout_popup_info_close"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="0dip"
+                android:contentDescription="@string/freeroom_layout_popup_info_img_close"
+                android:src="@drawable/close" />
+        </RelativeLayout>
+
+        <!-- shows the detailed occupancy of the room -->
+
+        <ListView
+            android:id="@+id/freeroom_layout_popup_info_roomOccupancy"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6" />
+
+        <!-- shows the details about the room (size, capacity, ...) -->
+
+        <ListView
+            android:id="@+id/freeroom_layout_popup_info_infoRoom"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4" />
+    </LinearLayout>
+
+</LinearLayout>

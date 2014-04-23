@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.freeroom.android.views;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,26 +14,33 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomManageFavoritesView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsResultView;
+import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
-import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +69,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private TextView mTextView;
 	private ExpandableListView mExpView;
 
-	private ExpandableListViewAdapter mExpList;
+	private ExpandableListViewAdapter<Occupancy> mExpList;
+
+	/**
+	 * View that holds the INFO popup content.
+	 */
+	private View popupInfoView;
+	/**
+	 * Window that holds the INFO popup. Note: popup window can be closed by:
+	 * the closing button (red cross), back button, or clicking outside the
+	 * popup.
+	 */
+	private PopupWindow popupInfoWindow;
 
 	/**
 	 * TODO: deprecated.
@@ -201,54 +217,69 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	@Override
 	public void initializeView() {
 		mExpList = new ExpandableListViewAdapter<Occupancy>(
-				getApplicationContext(), mModel.getOccupancyResults(), mModel);
+				getApplicationContext(), mModel.getOccupancyResults(),
+				mController, this);
 		mExpView.setAdapter(mExpList);
 		addActionToActionBar(hideUnhideAllResults);
 		addActionToActionBar(refresh);
 		addActionToActionBar(editFavorites);
 		addActionToActionBar(search);
 		addActionToActionBar(gotBackMenu);
+	}
 
-		/**
-		 * If you click on a completely free room, it will indicate that you're
-		 * going to work there.
-		 */
-		final IFreeRoomView view = this;
-		mExpView.setOnChildClickListener(new OnChildClickListener() {
+	/**
+	 * Inits the popup to diplay the information about a room.
+	 */
+	private void initPopupInfoRoom() {
+		// construct the popup
+		// it MUST fill the parent in height, such that weight works in xml for
+		// heights. Otherwise, some elements may not be displayed anymore
+		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+				.getSystemService(LAYOUT_INFLATER_SERVICE);
+		popupInfoView = layoutInflater.inflate(
+				R.layout.freeroom_layout_popup_info, null);
+		popupInfoWindow = new PopupWindow(popupInfoView,
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, true);
 
-			@Override
-			public boolean onChildClick(ExpandableListView parent, View v,
-					int groupPosition, int childPosition, long id) {
+		// allows outside clicks to close the popup
+		popupInfoWindow.setOutsideTouchable(true);
+		popupInfoWindow.setBackgroundDrawable(new BitmapDrawable());
 
-				Occupancy mOccupancy = mExpList.getChildObject(groupPosition,
-						childPosition);
+		TextView tv = (TextView) popupInfoView
+				.findViewById(R.id.reeroom_layout_popup_info_title);
+		// TODO: string + customized title + bigger/black
+		tv.setText("Room detailled informations");
 
-				List<ActualOccupation> list = mOccupancy.getOccupancy();
-				mModel.setDisplayedOccupancy(mOccupancy);
-				Intent i = new Intent(FreeRoomHomeView.this,
-						ActualOccupationView.class);
-				FreeRoomHomeView.this.startActivity(i);
+		ImageView img = (ImageView) popupInfoView
+				.findViewById(R.id.freeroom_layout_popup_info_close);
+		img.setOnClickListener(new ImageView.OnClickListener() {
 
-				// TODO: move that somewhere else!
-				// submit imworking there by a button!
-				if (list.size() > 0) {
-					long tss = list.get(0).getPeriod().getTimeStampStart();
-					long tse = list.get(list.size() - 1).getPeriod()
-							.getTimeStampEnd();
-					FRPeriod mPeriod = new FRPeriod(tss, tse, false);
-					WorkingOccupancy work = new WorkingOccupancy(mPeriod,
-							mOccupancy.getRoom());
-					// TODO: insert a proper hash!
-					String hash = new BigInteger(130, new SecureRandom())
-							.toString(32);
-					ImWorkingRequest request = new ImWorkingRequest(work, hash);
-					mController.prepareImWorking(request);
-					mController.ImWorking(view);
-					return true;
-				}
-				return false;
+			@Override 
+			public void onClick(View v) {
+				popupInfoWindow.dismiss();
 			}
 		});
+	}
+
+	/**
+	 * Overides the legacy <code>onKeyDown</code> method in order to close the
+	 * popupWindow if one was opened.
+	 * 
+	 * @param keyCode
+	 * @param event
+	 * @return
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		// Override back button
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (popupInfoWindow.isShowing()) {
+				popupInfoWindow.dismiss();
+				return true;
+			}
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
@@ -256,6 +287,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		setTextSummary(getString(R.string.freeroom_home_error_sorry));
 	}
 
+	/**
+	 * Sets the summary text box to the specified text.
+	 * 
+	 * @param text
+	 *            the new summary to be displayed.
+	 */
 	private void setTextSummary(String text) {
 		mTextView.setText(text);
 	}
@@ -271,6 +308,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// FRTimes.getNextValidPeriod());
 		// new interface
 
+		initPopupInfoRoom();
 		mModel.setFRRequest(new FRRequest(FRTimes.getNextValidPeriod(), mModel
 				.getAllRoomMapFavorites().keySet().isEmpty(), array));
 	}
@@ -371,5 +409,69 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 		setTextSummary(s);
 		mExpList.notifyDataSetChanged();
+	}
+
+	public void displayPopupInfo() {
+		Occupancy mOccupancy = mModel.getDisplayedOccupancy();
+		if (mOccupancy != null) {
+			ListView roomOccupancyListView = (ListView) popupInfoView
+					.findViewById(R.id.freeroom_layout_popup_info_roomOccupancy);
+			roomOccupancyListView
+					.setAdapter(new ActualOccupationArrayAdapter<ActualOccupation>(
+							getApplicationContext(), mOccupancy.getOccupancy(),
+							mModel));
+
+			ListView infoRoomListView = (ListView) popupInfoView
+					.findViewById(R.id.freeroom_layout_popup_info_infoRoom);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					R.layout.sdk_list_entry, R.id.sdk_list_entry_text,
+					getInfoFRRoom(mOccupancy.getRoom()));
+			infoRoomListView.setAdapter(adapter);
+			popupInfoWindow.showAsDropDown(mTextView, 10, 10);
+		}
+	}
+
+	/**
+	 * Converts a FRRoom to an arrayList of properties, in order to display
+	 * them.
+	 * <p>
+	 * TODO: this method is to be perfectionned (and put in R.string)
+	 * 
+	 * @param mFrRoom
+	 * @return
+	 */
+	private ArrayList<String> getInfoFRRoom(FRRoom mFrRoom) {
+		ArrayList<String> array = new ArrayList<String>(20);
+		if (mFrRoom.isSetDoorCode()) {
+			if (mFrRoom.isSetDoorCodeAlias()) {
+				array.add(mFrRoom.getDoorCodeAlias() + " ("
+						+ mFrRoom.getDoorCode() + ")");
+			} else {
+				array.add(mFrRoom.getDoorCode());
+			}
+		}
+		if (mFrRoom.isSetType()) {
+			array.add("type: " + mFrRoom.getType());
+		}
+		if (mFrRoom.isSetCapacity()) {
+			array.add(mFrRoom.getCapacity() + " places");
+		}
+		if (mFrRoom.isSetSurface()) {
+			array.add(mFrRoom.getSurface() + " sqm");
+		}
+		if (mFrRoom.isSetUid()) {
+			// uniq UID must be 1201XXUID, with XX filled with 0 such that
+			// it has 10 digit
+			// the prefix "1201" indiquates that it's a EPFL room (not a phone,
+			// a computer)
+			String communUID = "1201";
+			String roomUID = mFrRoom.getUid();
+			for (int i = roomUID.length() + 1; i <= 6; i++) {
+				communUID += "0";
+			}
+			communUID += roomUID;
+			array.add("uniq UID : " + communUID);
+		}
+		return array;
 	}
 }

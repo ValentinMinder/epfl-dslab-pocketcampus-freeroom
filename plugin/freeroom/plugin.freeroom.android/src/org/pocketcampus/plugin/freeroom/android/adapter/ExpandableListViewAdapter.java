@@ -1,11 +1,19 @@
 package org.pocketcampus.plugin.freeroom.android.adapter;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.R;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
+import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
+import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.content.Context;
 import android.content.Intent;
@@ -46,12 +54,17 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	private OrderMapList<String, List<?>, Occupancy> data;
 	// hold the caller view for colors updates.
 	private FreeRoomModel mModel;
+	private FreeRoomController mController;
+	private FreeRoomHomeView homeView;
 
 	public ExpandableListViewAdapter(Context c,
-			OrderMapList<String, List<?>, Occupancy> data, FreeRoomModel model) {
+			OrderMapList<String, List<?>, Occupancy> data,
+			FreeRoomController controller, FreeRoomHomeView homeView) {
 		this.context = c;
 		this.data = data;
-		this.mModel = model;
+		this.mController = controller;
+		this.mModel = (FreeRoomModel) mController.getModel();
+		this.homeView = homeView;
 	}
 
 	/**
@@ -85,8 +98,8 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getChildView(int groupPosition, int childPosition,
-			boolean isLastChild, View convertView, ViewGroup parent) {
+	public View getChildView(final int groupPosition, final int childPosition,
+			boolean isLastChild, View convertView, final ViewGroup parent) {
 		if (groupPosition >= data.size()) {
 			return null;
 		}
@@ -102,6 +115,12 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					.findViewById(R.id.freeroom_layout_roomslist_map));
 			vholder.setImageViewStar((ImageView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_fav));
+			vholder.setImageViewInfo((ImageView) convertView
+					.findViewById(R.id.freeroom_layout_roomslist_info));
+			vholder.setImageViewArrow((ImageView) convertView
+					.findViewById(R.id.freeroom_layout_roomslist_arrow));
+			vholder.setImageViewPeople((ImageView) convertView
+					.findViewById(R.id.freeroom_layout_roomslist_people));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolderChild) convertView.getTag();
@@ -114,7 +133,10 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		tv.setText(doorCode);
 
 		final ImageView star = vholder.getImageViewStar();
-		ImageView map = vholder.getImageViewMap();
+		final ImageView map = vholder.getImageViewMap();
+		final ImageView info = vholder.getImageViewInfo();
+		final ImageView arrow = vholder.getImageViewArrow();
+		final ImageView people = vholder.getImageViewPeople();
 
 		map.setImageResource(R.drawable.map_normal_icon);
 
@@ -157,6 +179,48 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			}
 		});
 		vholder.setStarCheck(false);
+
+		info.setImageResource(R.drawable.information);
+		info.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mModel.setDisplayedOccupancy(occupancy);
+				homeView.displayPopupInfo();
+			}
+		});
+
+		// only display if necessary (if it's only free)
+		if (!occupancy.isIsAtLeastOccupiedOnce()
+				&& occupancy.isIsAtLeastFreeOnce()) {
+			arrow.setImageResource(R.drawable.arrow);
+			arrow.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					List<ActualOccupation> list = occupancy.getOccupancy();
+					long tss = list.get(0).getPeriod().getTimeStampStart();
+					long tse = list.get(list.size() - 1).getPeriod()
+							.getTimeStampEnd();
+					FRPeriod mPeriod = new FRPeriod(tss, tse, false);
+					WorkingOccupancy work = new WorkingOccupancy(mPeriod,
+							occupancy.getRoom());
+					// TODO: insert a proper hash!
+					String hash = new BigInteger(130, new SecureRandom())
+							.toString(32);
+					ImWorkingRequest request = new ImWorkingRequest(work, hash);
+					mController.prepareImWorking(request);
+					mController.ImWorking(homeView);
+				}
+			});
+		}
+
+		people.setImageResource(mModel.getImageFromRatioOccupation(occupancy
+				.getRatioWorstCaseProbableOccupancy()));
+		people.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO: should we do something ?
+			}
+		});
 
 		convertView.setBackgroundColor(mModel.getColor(occupancy));
 		return convertView;
@@ -227,9 +291,9 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		// TODO: let true, but dont submit imworking everytime!
 		return true;
-//		Occupancy mOccupancy = getChildObject(groupPosition, childPosition);
-//		return mOccupancy.isIsAtLeastFreeOnce()
-//				&& !mOccupancy.isIsAtLeastOccupiedOnce();
+		// Occupancy mOccupancy = getChildObject(groupPosition, childPosition);
+		// return mOccupancy.isIsAtLeastFreeOnce()
+		// && !mOccupancy.isIsAtLeastOccupiedOnce();
 	}
 
 	public void updateHeader(int id, String value) {
@@ -245,6 +309,9 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		private TextView tv = null;
 		private ImageView map = null;
 		private ImageView star = null;
+		private ImageView info = null;
+		private ImageView arrow = null;
+		private ImageView people = null;
 		private boolean starChecked = false;
 
 		public void setTextView(TextView tv) {
@@ -279,6 +346,29 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			starChecked = check;
 		}
 
+		public ImageView getImageViewInfo() {
+			return info;
+		}
+
+		public void setImageViewInfo(ImageView iv) {
+			this.info = iv;
+		}
+
+		public ImageView getImageViewArrow() {
+			return arrow;
+		}
+
+		public void setImageViewArrow(ImageView iv) {
+			this.arrow = iv;
+		}
+
+		public ImageView getImageViewPeople() {
+			return people;
+		}
+
+		public void setImageViewPeople(ImageView iv) {
+			this.people = iv;
+		}
 	}
 
 	/**

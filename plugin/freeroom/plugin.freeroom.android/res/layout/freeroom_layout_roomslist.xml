@@ -9,7 +9,9 @@ and an ImageView added
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="6dip" >
+    android:padding="3dip" >
+
+    <!-- Text to display the name of the room -->
 
     <TextView
         android:id="@+id/freeroom_layout_roomslist_roomname"
@@ -20,20 +22,58 @@ and an ImageView added
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/black" />
 
+    <!-- Image to search the room on the map -->
+
     <ImageView
         android:id="@+id/freeroom_layout_roomslist_map"
         android:layout_width="35dip"
         android:layout_height="35dip"
         android:layout_alignParentRight="true"
         android:layout_marginRight="0dip"
-         />
+        android:contentDescription="@string/freeroom_layout_roomslist_img_map" />
+
+    <!-- Image to display and add/remove favorites -->
 
     <ImageView
         android:id="@+id/freeroom_layout_roomslist_fav"
         android:layout_width="35dip"
         android:layout_height="35dip"
         android:layout_alignParentTop="true"
-         android:layout_marginRight="10dip"
-        android:layout_toLeftOf="@id/freeroom_layout_roomslist_map" />
+        android:layout_marginRight="5dip"
+        android:layout_toLeftOf="@id/freeroom_layout_roomslist_map"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_fav" />
+
+    <!-- Image for more informations about occupancy and room -->
+
+    <ImageView
+        android:id="@+id/freeroom_layout_roomslist_info"
+        android:layout_width="35dip"
+        android:layout_height="35dip"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dip"
+        android:layout_toLeftOf="@id/freeroom_layout_roomslist_fav"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_info" />
+
+    <!-- Image to say you're going to work there -->
+
+    <ImageView
+        android:id="@+id/freeroom_layout_roomslist_arrow"
+        android:layout_width="35dip"
+        android:layout_height="35dip"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dip"
+        android:layout_toLeftOf="@id/freeroom_layout_roomslist_info"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_arrow" />
+
+    <!-- Image to show how many people are working there -->
+
+    <ImageView
+        android:id="@+id/freeroom_layout_roomslist_people"
+        android:layout_width="35dip"
+        android:layout_height="35dip"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dip"
+        android:layout_toLeftOf="@id/freeroom_layout_roomslist_arrow"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_people" />
 
 </RelativeLayout>

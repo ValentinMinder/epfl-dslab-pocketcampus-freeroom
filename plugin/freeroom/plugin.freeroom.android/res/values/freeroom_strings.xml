@@ -14,7 +14,7 @@
     <string name="freeroom_file_downloading">Downloading file... Please wait.</string>
     <string name="freeroom_no_app_to_handle_filetype">Could not find any application to open this file.</string>
     <string name="freeroom_pattern_day_format">EEEE MMMM d</string>
-	<string name="freeroom_pattern_hour_format">h:mm a</string>
+    <string name="freeroom_pattern_hour_format">h:mm a</string>
     <string name="freeroom_title_main_title">FreeRoom</string>
     <string name="freeroom_title_FRsearch"> FreeRoom: search for a free room</string>
     <string name="freeroom_title_FRresult"> FreeRoom: free room results</string>
@@ -50,7 +50,16 @@
     <string name="freeroom_tab_freeroomsearch">Quick search</string>
     <string name="freeroom_tab_occupancysearch">Adv. search</string>
     <string name="freeroom_no_favorites_freeroom">No favorites rooms are free right now</string>
-	<string name="freeroom_home_please_wait">Please wait while results are refreshed</string>
-	<string name="freeroom_home_init_please_wait">Initialization, please wait!</string>
-	<string name="freeroom_home_error_sorry">An error occurred, sorry! ;)</string>
+    <string name="freeroom_home_please_wait">Please wait while results are refreshed</string>
+    <string name="freeroom_home_init_please_wait">Initialization, please wait!</string>
+    <string name="freeroom_home_error_sorry">An error occurred, sorry! ;)</string>
+    <string name="freeroom_layout_popup_info_title">Detailed information</string>
+    <!-- No need to translate these layout img identificators -->
+    <string name="freeroom_layout_popup_info_img_close">Close</string>
+    <string name="freeroom_layout_roomslist_img_fav">fav icon</string>
+    <string name="freeroom_layout_roomslist_img_map">map icon</string>
+    <string name="freeroom_layout_roomslist_img_info">info icon</string>
+    <string name="freeroom_layout_roomslist_img_arrow">arrow icon</string>
+    <string name="freeroom_layout_roomslist_img_people">people icon</string>
+
 </resources>

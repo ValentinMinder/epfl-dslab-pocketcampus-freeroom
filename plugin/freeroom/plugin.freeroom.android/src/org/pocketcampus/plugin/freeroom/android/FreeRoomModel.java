@@ -814,4 +814,31 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public Map<String, List<FRRoom>> getAutoComplete() {
 		return listRoom;
 	}
+
+	/**
+	 * Return the id of the right image based on the ratio given.
+	 * <p>
+	 * TODO: may be do that better TODO: insert a "???" image if information is
+	 * not available.
+	 * 
+	 * @param ratio
+	 *            ratio of WorstCaseProbableOccupancy
+	 * @return
+	 */
+	public int getImageFromRatioOccupation(double ratio) {
+		double ratioMed = 0.00;
+		double ratioHigh = 0.25;
+		double ratioFull = 0.50;
+		int id = R.drawable.occupation_low;
+		if (ratio > ratioMed) {
+			id = R.drawable.occupation_med;
+			if (ratio > ratioHigh) {
+				id = R.drawable.occupation_high;
+				if (ratio > ratioFull) {
+					id = R.drawable.occupation_full;
+				}
+			}
+		}
+		return id;
+	}
 }
