@@ -69,6 +69,42 @@ static NewsService* instance __weak = nil;
 
 #pragma mark - Service methods
 
+- (void)getAllFeedsForRequest:(NewsFeedsRequest*)request delegate:(id<NewsServiceDelegate>)delegate {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[NewsFeedsRequest class]];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.skipCache = YES;
+    operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* returnedValue) {
+        NewsFeedsResponse* response = (__bridge id)returnedValue;
+        return (response.statusCode == NewsStatusCode_OK);
+    };
+    operation.serviceClientSelector = @selector(getAllFeeds:);
+    operation.delegateDidReturnSelector = @selector(getAllFeedsForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getAllFeedsFailedForRequest:);
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
+- (void)getFeedItemContentForRequest:(NewsFeedItemContentRequest*)request delegate:(id<NewsServiceDelegate>)delegate {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[NewsFeedItemContentRequest class]];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.skipCache = YES;
+    operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* returnedValue) {
+        NewsFeedItemContentResponse* response = (__bridge id)returnedValue;
+        return (response.statusCode == NewsStatusCode_OK);
+    };
+    operation.serviceClientSelector = @selector(getFeedItemContent:);
+    operation.delegateDidReturnSelector = @selector(getFeedItemContentForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getFeedItemContentFailedForRequest:);
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
+#pragma mark Deprecated
+
 - (void)getNewsItemsForLanguage:(NSString*)language delegate:(id)delegate {
     if (![language isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
@@ -124,6 +160,8 @@ static NewsService* instance __weak = nil;
 }
 
 #pragma mark - Cached
+
+#pragma mark Deprecated
 
 - (NSArray*)getFromCacheNewsItemsForLanguage:(NSString*)language {
     if (![language isKindOfClass:[NSString class]]) {

@@ -126,6 +126,15 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 #pragma mark - NewsServiceDelegate
 
+- (void)getAllFeedsForRequest:(NewsFeedsRequest *)request didReturn:(NewsFeedsResponse *)response {
+#warning TODO
+}
+
+- (void)getAllFeedsFailedForRequest:(NewsFeedsRequest *)request {
+    [PCUtils showServerErrorAlert];
+    [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ServerErrorShort", @"PocketCampus", nil)];
+}
+
 - (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems {
     newsItems = [NewsUtils eliminateDuplicateNewsItemsInArray:newsItems];
     self.sections = [NewsUtils newsItemsSectionsSortedByDate:newsItems];
