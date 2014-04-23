@@ -137,7 +137,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		boolean allowInsert = true;
 		if (type == OCCUPANCY_TYPE.USER) {
 			allowInsert = allowInsert
-					&& checkMultipleSubmissionUserOccupancy(period, room);
+					&& checkMultipleSubmissionUserOccupancy(period, room, hash);
 		}
 
 		if (allowInsert) {
@@ -158,13 +158,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	// TODO answer properly in case of multiple submission (bad request...)
 	private boolean checkMultipleSubmissionUserOccupancy(FRPeriod period,
-			FRRoom room) {
+			FRRoom room, String hash) {
 		// TODO do this rounding before, so it become common
 		long tsStart = Utils.roundSAndMSToZero(period.getTimeStampStart());
 
 		String checkRequest = "SELECT COUNT(*) AS count "
 				+ "FROM `fr-checkOccupancy` co "
-				+ "WHERE co.uid = ? AND co.timestampStart = ?";
+				+ "WHERE co.uid = ? AND co.timestampStart = ? AND hash = ?";
 
 		Connection connectBDD;
 		try {
@@ -174,6 +174,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			checkQuery.setString(1, room.getUid());
 			checkQuery.setLong(2, tsStart);
+			checkQuery.setString(3, hash);
 
 			ResultSet checkResult = checkQuery.executeQuery();
 			if (checkResult.next()) {
@@ -418,7 +419,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		HashMap<String, List<Occupancy>> occupancies = null;
 
-		if (uidList == null) {
+		if (uidList == null || uidList.isEmpty()) {
 			if (onlyFreeRoom) {
 				// we want to look into all the rooms
 				occupancies = getOccupancyOfAnyFreeRoom(onlyFreeRoom, tsStart,
