@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.freeroom.android;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -47,6 +49,11 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 */
 	private final String FAVORITES_ROOMS_KEY = "FAVORITES_ROOMS_KEY";
 	private final String FORBIDDEN_ROOMS_KEY = "FORBIDDEN_ROOMS_KEY";
+	private final String PREF_USER_DETAILS_KEY = "KEY_USER_DETAILS";
+	/**
+	 * key for the anonymous and unique ID of the user.
+	 */
+	private final String anonymIDKey = "anonymIDKey";
 
 	public final int COLOR_CHECK_OCCUPANCY_DEFAULT = Color.WHITE;
 	public final int COLOR_CHECK_OCCUPANCY_FREE = Color.GREEN;
@@ -840,5 +847,58 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 			}
 		}
 		return id;
+	}
+
+	/**
+	 * Retrieves the 32-char unique and anonymous device-identifier.
+	 * <p>
+	 * This identifiers guarantees the uniqueness among users and hold no
+	 * personal data, neither ID or information from the device, it's therefore
+	 * anonymous. We DONT use the ID of the device as this is not anonymous
+	 * enough (it cannot be changed nor deleted, and identifies the device also
+	 * for other apps)
+	 * <p>
+	 * It's stored in persistent memory, and generated if not exists at this
+	 * time. It can be deleted only if the user deletes and reinstall the app,
+	 * and this is not considered as an issue.
+	 * 
+	 * @return the 32-char unique and anonymous device-identifier.
+	 */
+	public String getAnonymID() {
+		SharedPreferences preferences = context.getSharedPreferences(
+				PREF_USER_DETAILS_KEY, Context.MODE_PRIVATE);
+		String anonymID = preferences.getString(anonymIDKey, null);
+		if (anonymID != null) {
+			return anonymID;
+		} else {
+			anonymID = generateAnonymID();
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putString(anonymIDKey, anonymID);
+			editor.commit();
+			return anonymID;
+		}
+	}
+
+	/**
+	 * Generates an unique and anonymous device-identifier based on the time of
+	 * generation in milliseconds concatenated to a random String.
+	 * 
+	 * <p>
+	 * This guarantees that every user has a different identifier with a very
+	 * high certainty. To be the same: must be generated at the exact same
+	 * millisecond + get the exact the same random string, which probability can
+	 * be considered as 0 as there is no security issue with this identifier.
+	 * 
+	 * @return a 32-char anonymous and unique ID.
+	 */
+	private String generateAnonymID() {
+		// time in millis as a string
+		String anonymID = ((Long) System.currentTimeMillis()).toString();
+
+		// random string to complete to 32 chars
+		anonymID += new BigInteger(130, new SecureRandom())
+				.toString(32 - anonymID.length());
+
+		return anonymID;
 	}
 }

@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.freeroom.android.adapter;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.R;
@@ -203,10 +201,8 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					FRPeriod mPeriod = new FRPeriod(tss, tse, false);
 					WorkingOccupancy work = new WorkingOccupancy(mPeriod,
 							occupancy.getRoom());
-					// TODO: insert a proper hash!
-					String hash = new BigInteger(130, new SecureRandom())
-							.toString(32);
-					ImWorkingRequest request = new ImWorkingRequest(work, hash);
+					ImWorkingRequest request = new ImWorkingRequest(work,
+							mModel.getAnonymID());
 					mController.prepareImWorking(request);
 					mController.ImWorking(homeView);
 				}
