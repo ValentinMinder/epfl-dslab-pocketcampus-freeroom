@@ -13,7 +13,7 @@ import org.pocketcampus.plugin.freeroom.android.req.CheckOccupancyRequest;
 import org.pocketcampus.plugin.freeroom.android.req.CheckWhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.android.req.FRRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.android.req.GetFreeRoomRequest;
-import org.pocketcampus.plugin.freeroom.android.req.SubmitImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.android.req.ImWorkingRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRReply;
@@ -32,7 +32,6 @@ import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 /**
@@ -196,7 +195,7 @@ public class FreeRoomController extends PluginController implements
 
 	public void ImWorking(IFreeRoomView view) {
 		if (imWorkingRequest != null) {
-			new SubmitImWorkingRequest(view).start(this, mClient,
+			new ImWorkingRequestASyncTask(view).start(this, mClient,
 					imWorkingRequest);
 			mModel.addImWorkingRequest(imWorkingRequest);
 			imWorkingRequest = null;
