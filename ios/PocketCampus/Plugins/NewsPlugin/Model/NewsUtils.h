@@ -44,12 +44,6 @@
  */
 + (NSArray*)newsFeedItemsSectionsSortedByDate:(NSArray*)newsFeedItems makeItemsUnique:(BOOL)makeItemsUnique;
 
-/*
- * Returns an array1 of arrays, in which array1[0] = news from today, array1[1] = news at most 1 week old,
- * array1[2] = news at most 1 month old, array1[3] = older news
- */
-+ (NSArray*)newsItemsSectionsSortedByDate:(NSArray*)newsItems __attribute__((deprecated));
-
 + (NSString*)htmlReplaceWidthWith100PercentInContent:(NSString*)content ifWidthHeigherThan:(NSInteger)maxWidth;
 
 @end

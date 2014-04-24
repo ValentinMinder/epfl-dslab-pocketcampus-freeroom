@@ -348,7 +348,6 @@
 		32D29719185B64FE006530B7 /* IsAcademiaPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32D2971C185B64FE006530B7 /* IsAcademiaPlugin.strings */; };
 		32D57299157F7D780051230F /* EPFLLayersOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D57298157F7D780051230F /* EPFLLayersOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		32D97C9C15AF1BB8004384A5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D97C9B15AF1BB8004384A5 /* Security.framework */; };
-		32DA6454168E590B00D22D08 /* NewsItem+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */; };
 		32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */; };
 		32DE5B2817F2003800E03423 /* NSLayoutConstraint+LGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B2717F2003800E03423 /* NSLayoutConstraint+LGAdditions.m */; };
@@ -898,8 +897,6 @@
 		32D57297157F7D780051230F /* EPFLLayersOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EPFLLayersOverlay.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32D57298157F7D780051230F /* EPFLLayersOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EPFLLayersOverlay.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32D97C9B15AF1BB8004384A5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		32DA6452168E590A00D22D08 /* NewsItem+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NewsItem+Comparison.h"; sourceTree = "<group>"; };
-		32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NewsItem+Comparison.m"; sourceTree = "<group>"; };
 		32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DirectoryLarge.png; sourceTree = "<group>"; };
 		32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryPersonView.xib; sourceTree = "<group>"; };
 		32DE5B2617F2003800E03423 /* NSLayoutConstraint+LGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+LGAdditions.h"; sourceTree = "<group>"; };
@@ -1973,8 +1970,6 @@
 				32CCB50415554A6600220282 /* NewsService.m */,
 				3297E01915557FE10054F790 /* NewsUtils.h */,
 				3297E01A15557FE10054F790 /* NewsUtils.m */,
-				32DA6452168E590A00D22D08 /* NewsItem+Comparison.h */,
-				32DA6453168E590A00D22D08 /* NewsItem+Comparison.m */,
 				32DFDB0D190902AE008C61E2 /* NewsModelAdditions.h */,
 				32DFDB0E190902AE008C61E2 /* NewsModelAdditions.m */,
 			);
@@ -2858,7 +2853,6 @@
 				32930A7517F882010025F864 /* LGRefreshControl+PCAdditions.m in Sources */,
 				32930AAF17F898910025F864 /* TException.m in Sources */,
 				324654C7168BA2D400F2782D /* PluginControllerAuthentified.m in Sources */,
-				32DA6454168E590B00D22D08 /* NewsItem+Comparison.m in Sources */,
 				329C52AE187EE6200045ECB8 /* UISearchBar+Additions.m in Sources */,
 				3244B3E816A36976006A7E37 /* MoodleModelAdditions.m in Sources */,
 				32A77DC316A564460018976F /* UIPopoverController+Additions.m in Sources */,

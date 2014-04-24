@@ -50,3 +50,19 @@ extern NSString* const kNewsFeedItemImageUrlParameterY;
 - (NSComparisonResult)compareDateToNewsFeedItem:(NewsFeedItem*)otherItem;
 
 @end
+
+@interface NewsFeedItemContent (Additions)
+
+/*
+ * Returns imageUrl where {x} and {y} are replaced
+ * by size.width and size.height respectively.
+ */
+- (NSString*)imageUrlStringForSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
+
+/*
+ * Content without the <img> tag that has src that matches imageUrl
+ * Returns content if imageUrl is nil or in case of failure to find imageUrl
+ */
+@property (nonatomic, readonly, strong) NSString* contentWithoutMainImage;
+
+@end

@@ -49,7 +49,6 @@
 
 @interface NewsItemViewController ()<NewsServiceDelegate, UIAlertViewDelegate, UIWebViewDelegate>
 
-@property (nonatomic, strong) UIImage* image;
 @property (nonatomic, strong) UIPopoverController* actionsPopover;
 @property (nonatomic, strong) NewsFeedItem* newsFeedItem;
 @property (nonatomic, strong) NewsFeedItemContent* newsFeedItemContent;
@@ -201,7 +200,7 @@
             } else {
                 html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_IMAGE_DISPLAY_CSS$" withString:@"none"];
             }
-            html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_CONTENT$" withString:response.content.content];
+            html = [html stringByReplacingOccurrencesOfString:@"$NEWS_ITEM_CONTENT$" withString:self.newsFeedItemContent.contentWithoutMainImage];
             
             html = [NewsUtils htmlReplaceWidthWith100PercentInContent:html ifWidthHeigherThan:self.webView.frame.size.width];
             
@@ -211,6 +210,7 @@
             break;
         }
         default:
+            [self getFeedItemContentFailedForRequest:request];
             break;
     }
     

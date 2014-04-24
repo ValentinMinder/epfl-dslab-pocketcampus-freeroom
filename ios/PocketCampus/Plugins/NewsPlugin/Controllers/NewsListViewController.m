@@ -160,8 +160,6 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
             break;
     }
     
-    
-    
 }
 
 - (void)getAllFeedsFailedForRequest:(NewsFeedsRequest *)request {

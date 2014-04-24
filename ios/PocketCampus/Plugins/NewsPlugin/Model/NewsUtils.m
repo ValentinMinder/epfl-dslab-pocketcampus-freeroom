@@ -70,29 +70,6 @@ static NSTimeInterval kOneMonthSeconds = 2592000;
     return sections;
 }
 
-+ (NSArray*)newsItemsSectionsSortedByDate:(NSArray*)newsItems {
-    NSMutableArray* sections = [NSMutableArray arrayWithCapacity:4];
-    for (int i = 0; i<4; i++) {
-        sections[i] = [NSMutableArray array];
-    }
-    NSDate* nowDate = [NSDate date];
-    NSDateComponents* todayComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:nowDate];
-    for (NewsItem* item in newsItems) {
-        NSDate* itemDate = [NSDate dateWithTimeIntervalSince1970:item.pubDate/1000.0];
-        NSDateComponents* itemComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:itemDate];
-        if ([itemComps isEqual:todayComps]) {
-            [sections[0] addObject:item];
-        } else if (fabs([itemDate timeIntervalSinceNow]) < kOneWeekSeconds) {
-            [sections[1] addObject:item];
-        } else if (fabs([itemDate timeIntervalSinceNow]) < kOneMonthSeconds) {
-            [sections[2] addObject:item];
-        } else {
-            [sections[3] addObject:item];
-        }
-    }
-    return sections;
-}
-
 + (NSString*)htmlReplaceWidthWith100PercentInContent:(NSString*)content ifWidthHeigherThan:(NSInteger)maxWidth {
     NSError* error = nil;
     

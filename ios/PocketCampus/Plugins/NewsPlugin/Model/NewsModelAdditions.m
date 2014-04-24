@@ -36,14 +36,7 @@ NSString* const kNewsFeedItemImageUrlParameterY = @"{y}";
 @implementation NewsFeedItem (Additions)
 
 - (NSString*)imageUrlStringForSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor {
-    if (applyFactor) {
-        CGFloat screenScale = [UIScreen mainScreen].scale;
-        size.width *= screenScale;
-        size.height *= screenScale;
-    }
-    NSString* imageUrl = [self.imageUrl stringByReplacingOccurrencesOfString:kNewsFeedItemImageUrlParameterX withString:[NSString stringWithFormat:@"%d", (int)size.width]];
-    imageUrl = [imageUrl stringByReplacingOccurrencesOfString:kNewsFeedItemImageUrlParameterY withString:[NSString stringWithFormat:@"%d", (int)size.height]];
-    return imageUrl;
+    return [NewsFeedItem imageUrlStringForParameterizedImageUrl:self.imageUrl size:size applyDeviceScreenMultiplyingFactor:applyFactor];
 }
 
 - (BOOL)isEqualToNewsFeedItem:(NewsFeedItem*)otherItem {
@@ -76,6 +69,46 @@ NSString* const kNewsFeedItemImageUrlParameterY = @"{y}";
         //order same => sort alphabetically
         return [self.title compare:otherItem.title];
     }
+}
+
+#pragma mark Private
+
++ (NSString*)imageUrlStringForParameterizedImageUrl:(NSString*)parameterizedImageUrl size:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor {
+    if (applyFactor) {
+        CGFloat screenScale = [UIScreen mainScreen].scale;
+        size.width *= screenScale;
+        size.height *= screenScale;
+    }
+    NSString* imageUrl = [parameterizedImageUrl stringByReplacingOccurrencesOfString:kNewsFeedItemImageUrlParameterX withString:[NSString stringWithFormat:@"%d", (int)size.width]];
+    imageUrl = [imageUrl stringByReplacingOccurrencesOfString:kNewsFeedItemImageUrlParameterY withString:[NSString stringWithFormat:@"%d", (int)size.height]];
+    return imageUrl;
+}
+
+@end
+
+@implementation NewsFeedItemContent (Additions)
+
+- (NSString*)imageUrlStringForSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor {
+    return [NewsFeedItem imageUrlStringForParameterizedImageUrl:self.imageUrl size:size applyDeviceScreenMultiplyingFactor:applyFactor];
+}
+
+- (NSString*)contentWithoutMainImage {
+    if (!self.imageUrl) {
+        return self.content;
+    }
+    NSString* imageUrlWithoutFilename = [[[NSURL URLWithString:[self imageUrlStringForSize:CGSizeZero applyDeviceScreenMultiplyingFactor:NO]] URLByDeletingLastPathComponent] absoluteString];
+    
+    NSError* error = nil;
+    NSString* pattern = [NSString stringWithFormat:@"(<img.*%@.*>)", imageUrlWithoutFilename];
+    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+    NSTextCheckingResult* result = [regex firstMatchInString:self.content options:0 range:NSMakeRange(0, self.content.length)];
+    if (result.numberOfRanges > 1) {
+        NSRange range = [result rangeAtIndex:1];
+        if (range.length != 0) {
+            return [self.content stringByReplacingCharactersInRange:range withString:@""];
+        }
+    }
+    return self.content;
 }
 
 @end
