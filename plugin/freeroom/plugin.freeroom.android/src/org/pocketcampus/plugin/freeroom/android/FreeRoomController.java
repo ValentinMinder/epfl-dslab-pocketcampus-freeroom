@@ -8,7 +8,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.android.req.BuildingAutoCompleteRequest;
+import org.pocketcampus.plugin.freeroom.android.req.AutoCompleteRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.android.req.CheckOccupancyRequest;
 import org.pocketcampus.plugin.freeroom.android.req.CheckWhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.android.req.FRRequestASyncTask;
@@ -96,7 +96,7 @@ public class FreeRoomController extends PluginController implements
 
 	public void autoCompleteBuilding(IFreeRoomView view,
 			AutoCompleteRequest request) {
-		new BuildingAutoCompleteRequest(view).start(this, mClient, request);
+		new AutoCompleteRequestASyncTask(view).start(this, mClient, request);
 	}
 
 	private OccupancyRequest occupancyRequest;
