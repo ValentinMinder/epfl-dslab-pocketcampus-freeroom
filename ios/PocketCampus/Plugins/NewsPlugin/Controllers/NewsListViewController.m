@@ -57,6 +57,8 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
 
 @implementation NewsListViewController
 
+#pragma mark - Init
+
 - (id)init 
 {
     self = [super initWithStyle:UITableViewStylePlain];
@@ -67,13 +69,14 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
         });
         self.gaiScreenName = @"/news";
         self.newsService = [NewsService sharedInstanceToRetain];
-        NSArray* newsItems = nil;//[self.newsService getFromCacheNewsItemsForLanguage:[PCUtils userLanguageCode]];
-        if (newsItems) {
-#warning TODO set sections from cache
-        }
+        NewsFeedsRequest* request = [[NewsFeedsRequest alloc] initWithLanguage:[PCUtils userLanguageCode] generalFeedIncluded:YES];
+        NewsFeedsResponse* cachedResponse = [self.newsService getFromCacheAllFeedsForRequest:request];
+        [self fillSectionsFromNewsFeedsResponse:cachedResponse];
     }
     return self;
 }
+
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
@@ -104,7 +107,7 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     
 }
 
-#pragma mark - refresh control
+#pragma mark - Refresh control
 
 - (void)refreshIfNeeded {
     if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kAutomaticRefreshPeriodSeconds]) {
@@ -119,6 +122,18 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     [self.newsService getAllFeedsForRequest:request delegate:self];
 }
 
+- (void)fillSectionsFromNewsFeedsResponse:(NewsFeedsResponse*)response {
+    if (!response) {
+        self.sections = nil;
+        return;
+    }
+    NSMutableArray* mAllNewsFeedItems = [NSMutableArray arrayWithCapacity:response.feeds.count*20]; //magic estimate
+    for (NewsFeed* feed in response.feeds) {
+        [mAllNewsFeedItems addObjectsFromArray:feed.items];
+    }
+    self.sections = [NewsUtils newsFeedItemsSectionsSortedByDate:mAllNewsFeedItems makeItemsUnique:YES];
+}
+
 #pragma mark - NewsServiceDelegate
 
 - (void)getAllFeedsForRequest:(NewsFeedsRequest *)request didReturn:(NewsFeedsResponse *)response {
@@ -126,13 +141,8 @@ static NSTimeInterval kAutomaticRefreshPeriodSeconds = 1800.0; //30min
     switch (response.statusCode) {
         case NewsStatusCode_OK:
         {
-            NSMutableArray* mAllNewsFeedItems = [NSMutableArray arrayWithCapacity:response.feeds.count*20]; //magic estimate
-            for (NewsFeed* feed in response.feeds) {
-                [mAllNewsFeedItems addObjectsFromArray:feed.items];
-            }
             
-            self.sections = [NewsUtils newsFeedItemsSectionsSortedByDate:mAllNewsFeedItems makeItemsUnique:YES];
-            
+            [self fillSectionsFromNewsFeedsResponse:response];
             [self.tableView reloadData];
             
             if (self.selectedItem) {

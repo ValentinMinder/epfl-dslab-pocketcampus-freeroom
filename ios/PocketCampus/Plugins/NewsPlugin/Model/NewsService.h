@@ -43,17 +43,6 @@
 - (void)getFeedItemContentForRequest:(NewsFeedItemContentRequest*)request didReturn:(NewsFeedItemContentResponse*)response;
 - (void)getFeedItemContentFailedForRequest:(NewsFeedItemContentRequest *)request;
 
-
-// Deprecated delegation
-- (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems __attribute__((deprecated));
-- (void)newsItemsFailedForLanguage:(NSString*)language __attribute__((deprecated));
-- (void)newsItemContentForId:(int64_t)newsItemId didReturn:(NSString*)content __attribute__((deprecated));
-- (void)newsItemContentFailedForId:(int64_t)newsItemId __attribute__((deprecated));
-- (void)feedUrlsForLanguage:(NSString*)language didReturn:(NSDictionary*)feedUrls __attribute__((deprecated));
-- (void)feedUrlsFailedForLanguage:(NSString*)language __attribute__((deprecated));
-- (void)feedsForLanguage:(NSString*)language didReturn:(NSArray*)feeds __attribute__((deprecated));
-- (void)feedsFailedForLanguage:(NSString*)language __attribute__((deprecated));
-
 @end
 
 @interface NewsService : Service <ServiceProtocol>
@@ -69,20 +58,17 @@
 
 
 /*
- DEPRECATED THRIFT METHODS
+ * Cached versions
+ */
+
+- (NewsFeedsResponse*)getFromCacheAllFeedsForRequest:(NewsFeedsRequest*)request;
+
+/*
+ DEPRECATED THRIFT METHODS (not implemented in service)
  - (NSArray *) getNewsItems: (NSString *) language;  // throws TException
  - (NSString *) getNewsItemContent: (Id) newsItemId;  // throws TException
  - (NSDictionary *) getFeedUrls: (NSString *) language;  // throws TException
  - (NSArray *) getFeeds: (NSString *) language;  // throws TException
  */
-
-- (void)getNewsItemsForLanguage:(NSString*)language delegate:(id)delegate __attribute__((deprecated));
-- (void)getNewsItemContentForId:(int64_t)newsItemId delegate:(id)delegate __attribute__((deprecated));
-- (void)getFeedUrlsForLanguage:(NSString*)language delegate:(id)delegate __attribute__((deprecated));
-- (void)getFeedsForLanguage:(NSString*)language delegate:(id)delegate __attribute__((deprecated));
-
-/* Cached versions */
-
-- (NSArray*)getFromCacheNewsItemsForLanguage:(NSString*)language __attribute__((deprecated));
 
 @end
