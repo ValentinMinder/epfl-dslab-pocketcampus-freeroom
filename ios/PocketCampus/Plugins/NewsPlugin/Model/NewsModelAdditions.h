@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,34 +22,31 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
-
-//  Created by Loïc Gardiol on 05.05.12.
-
-
-#import <Foundation/Foundation.h>
+//  Created by Loïc Gardiol on 24.04.14.
 
 #import "news.h"
 
-@interface NewsUtils : NSObject
+extern NSString* const kNewsFeedItemImageUrlParameterX;
+extern NSString* const kNewsFeedItemImageUrlParameterY;
+
+@interface NewsFeedItem (Additions)
 
 /*
- * Returns an array1 of arrays, in which array1[0] = news from today, array1[1] = news at most 1 week old,
- * array1[2] = news at most 1 month old, array1[3] = older news
- * If makeItemsUnique is YES, newsFeedItems is first filtered to remove duplicates (using isEqualToNewsFeedItem:). Oldest one are kept.
+ * Returns imageUrl where {x} and {y} are replaced
+ * by size.width and size.height respectively.
  */
-+ (NSArray*)newsFeedItemsSectionsSortedByDate:(NSArray*)newsFeedItems makeItemsUnique:(BOOL)makeItemsUnique;
+- (NSString*)imageUrlStringForSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
+
+- (BOOL)isEqualToNewsFeedItem:(NewsFeedItem*)otherItem;
+- (BOOL)isEqual:(id)object;
+- (NSUInteger)hash;
 
 /*
- * Returns an array1 of arrays, in which array1[0] = news from today, array1[1] = news at most 1 week old,
- * array1[2] = news at most 1 month old, array1[3] = older news
+ * Returns NSOrderedAscending if self.date is more recent than otherItem.date
  */
-+ (NSArray*)newsItemsSectionsSortedByDate:(NSArray*)newsItems __attribute__((deprecated));
-
-+ (NSString*)htmlReplaceWidthWith100PercentInContent:(NSString*)content ifWidthHeigherThan:(NSInteger)maxWidth;
+- (NSComparisonResult)compareDateToNewsFeedItem:(NewsFeedItem*)otherItem;
 
 @end

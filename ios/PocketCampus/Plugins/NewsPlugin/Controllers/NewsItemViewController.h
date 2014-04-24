@@ -37,6 +37,6 @@
 
 @interface NewsItemViewController : UIViewController
 
-- (id)initWithNewsItem:(NewsItem*)newsItem cachedImageOrNil:(UIImage*)image;
+- (id)initWithNewsFeedItem:(NewsFeedItem*)newsFeedItem;
 
 @end

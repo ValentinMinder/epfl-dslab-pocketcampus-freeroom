@@ -113,9 +113,10 @@
 
 - (UIImage *)imageScaledToSize:(CGSize)size applyDeviceScreenMultiplyingFactor:(BOOL)applyFactor;
 {
-    if (applyFactor && [PCUtils isRetinaDevice]) {
-        size.width *= 2.0;
-        size.height *= 2.0;
+    if (applyFactor) {
+        CGFloat screenScale = [UIScreen mainScreen].scale;
+        size.width *= screenScale;
+        size.height *= screenScale;
     }
     
     //create drawing context
