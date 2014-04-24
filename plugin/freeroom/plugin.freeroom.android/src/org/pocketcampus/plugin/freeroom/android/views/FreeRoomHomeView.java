@@ -385,16 +385,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void occupancyResultsUpdated() {
-		String s = "";
+		StringBuilder build = new StringBuilder(50);
 		if (mModel.getOccupancyResults().isEmpty()) {
-			s += getString(R.string.freeroom_home_error_no_results);
+			build.append(getString(R.string.freeroom_home_error_no_results));
 		} else {
 			FRRequest request = mModel.getFRRequest();
 
 			if (request.isOnlyFreeRooms()) {
-				s += getString(R.string.freeroom_home_info_free_rooms);
+				build.append(getString(R.string.freeroom_home_info_free_rooms));
 			} else {
-				s += getString(R.string.freeroom_home_info_rooms);
+				build.append(getString(R.string.freeroom_home_info_rooms));
 			}
 			FRPeriod period = request.getPeriod();
 			Date endDate = new Date(period.getTimeStampEnd());
@@ -404,18 +404,21 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			SimpleDateFormat hour_min = new SimpleDateFormat(
 					getString(R.string.freeroom_pattern_hour_format));
 
-			s += getString(R.string.freeroom_check_occupancy_result_onthe)
-					+ " ";
-			s += day_month.format(startDate);
-			s += " " + getString(R.string.freeroom_check_occupancy_result_from)
-					+ " ";
-			s += hour_min.format(startDate);
-			s += " " + getString(R.string.freeroom_check_occupancy_result_to)
-					+ " ";
-			s += hour_min.format(endDate);
+			build.append(" ");
+			build.append(getString(R.string.freeroom_check_occupancy_result_onthe));
+			build.append(" ");
+			build.append(day_month.format(startDate));
+			build.append(" ");
+			build.append(getString(R.string.freeroom_check_occupancy_result_from));
+			build.append(" ");
+			build.append(hour_min.format(startDate));
+			build.append(" ");
+			build.append(getString(R.string.freeroom_check_occupancy_result_to));
+			build.append(" ");
+			build.append(hour_min.format(endDate));
 		}
 
-		setTextSummary(s);
+		setTextSummary(build.toString());
 		mExpList.notifyDataSetChanged();
 	}
 
