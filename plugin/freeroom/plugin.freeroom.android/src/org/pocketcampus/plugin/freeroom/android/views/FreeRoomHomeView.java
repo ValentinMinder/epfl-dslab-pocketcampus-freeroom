@@ -3,7 +3,6 @@ package org.pocketcampus.plugin.freeroom.android.views;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -17,7 +16,6 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
@@ -28,7 +26,6 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -155,21 +152,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	};
 
-	/**
-	 * Display or hide more results.
-	 * <p>
-	 * TODO: must be done by a button in the view, not here.
-	 */
-	private Action hideUnhideAllResults = new Action() {
-		public void performAction(View view) {
-			hideUnHideAllResults();
-		}
-
-		public int getDrawable() {
-			return R.drawable.freeroom_filter;
-		}
-	};
-
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return FreeRoomController.class;
@@ -232,7 +214,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				getApplicationContext(), mModel.getOccupancyResults(),
 				mController, this);
 		mExpView.setAdapter(mExpList);
-		addActionToActionBar(hideUnhideAllResults);
 		addActionToActionBar(refresh);
 		addActionToActionBar(editFavorites);
 		addActionToActionBar(search);
@@ -347,42 +328,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// we do nothing here
 	}
 
-	private void hideUnHideAllResults() {
-		mModel.switchAvailable();
-		mExpList.notifyDataSetChanged();
-		sysoAlloccuResult();
-	}
-
-	// TODO: delete, it's for debugging
-	private void sysoAlloccuResult() {
-		OrderMapList<String, List<?>, Occupancy> map = mModel
-				.getOccupancyResults();
-		for (String head : map.keySetOrdered()) {
-			List<Occupancy> listOcc = (List<Occupancy>) map.get(head);
-			for (Occupancy mOccupancy : listOcc) {
-				Log.v("test", "room: " + mOccupancy.getRoom().getDoorCode());
-				for (ActualOccupation mActualOccupation : mOccupancy
-						.getOccupancy()) {
-					FRPeriod period = mActualOccupation.getPeriod();
-					Date end = new Date(period.getTimeStampEnd());
-					Date start = new Date(period.getTimeStampStart());
-					Log.v("test", "ActualOccupation! Available :"
-							+ mActualOccupation.isAvailable());
-					Log.v("test",
-							"From: " + start + " / "
-									+ period.getTimeStampStart());
-					Log.v("test",
-							"To: " + end + " / " + period.getTimeStampEnd());
-					Log.v("test",
-							"Pronostics: "
-									+ mActualOccupation.getProbableOccupation()
-									+ " / ratio:"
-									+ mActualOccupation.getRatioOccupation());
-				}
-			}
-		}
-	}
-
 	@Override
 	public void occupancyResultsUpdated() {
 		StringBuilder build = new StringBuilder(50);
@@ -420,6 +365,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		setTextSummary(build.toString());
 		mExpList.notifyDataSetChanged();
+		mExpList.updateCollapse(mExpView);
 	}
 
 	public void displayPopupInfo() {

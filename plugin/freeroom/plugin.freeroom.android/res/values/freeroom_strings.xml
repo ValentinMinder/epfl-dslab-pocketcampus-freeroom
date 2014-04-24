@@ -62,6 +62,10 @@
     <string name="freeroom_popup_info_surface">Surface</string>
     <string name="freeroom_popup_info_sqm">sqm</string>
     <string name="freeroom_popup_info_uniqID">Unique UID</string>
+    <string name="freeroom_results_room_header_room">room</string>
+    <string name="freeroom_results_room_header_rooms">rooms</string>
+    <string name="freeroom_results_room_header_reduce">reduce</string>
+    <string name="freeroom_results_room_header_more">more</string>
     <string name="freeroom_layout_popup_info_title">Detailed information</string>
     <!-- No need to translate these layout img identificators -->
     <string name="freeroom_layout_popup_info_img_close">Close</string>

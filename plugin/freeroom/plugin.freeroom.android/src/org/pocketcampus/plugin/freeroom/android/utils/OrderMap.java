@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.android.utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -364,5 +365,37 @@ public class OrderMap<K, V> implements Map<K, V> {
 			return listKey.get(index);
 		}
 		return null;
+	}
+
+	/**
+	 * Returns the <code>index</code> of the given <code>key</code>.
+	 * 
+	 * @param key
+	 *            the given <code>key</code>.
+	 * @return the <code>index</code> of the given <code>key</code>.
+	 */
+	public int indexOf(Object key) {
+		return listKey.indexOf(key);
+	}
+
+	/**
+	 * Counts the number of children for the whole dataset (including all
+	 * collection elements if values are collections).
+	 * 
+	 * @return the number of children for the whole dataset
+	 */
+	public int totalChild() {
+		int total = 0;
+		Iterator<V> i = values().iterator();
+		while (i.hasNext()) {
+			V v = i.next();
+			if (v instanceof Collection<?>) {
+				Collection<?> col = (Collection<?>) v;
+				total += col.size();
+			} else {
+				total += 1;
+			}
+		}
+		return total;
 	}
 }

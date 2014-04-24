@@ -16,7 +16,6 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
-import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -753,18 +752,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				// default
 				return COLOR_CHECK_OCCUPANCY_DEFAULT;
 			}
-		}
-	}
-
-	/**
-	 * TODO: NEW INTERFACE as of 2014.04.04.
-	 * <p>
-	 * Switch between displaying all the rooms or not.
-	 */
-	public void switchAvailable() {
-		if (occupancyByBuilding instanceof OrderMapListFew<?, ?, ?>) {
-			((OrderMapListFew<?, ?, ?>) occupancyByBuilding)
-					.setAvailableAllSwitch();
 		}
 	}
 

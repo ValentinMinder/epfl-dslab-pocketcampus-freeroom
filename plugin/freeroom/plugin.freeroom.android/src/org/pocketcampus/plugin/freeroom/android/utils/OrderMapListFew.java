@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android.utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -35,17 +36,22 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	 * The number of elements to make available in each group.
 	 */
 	private int availableLimit = 3;
+
 	/**
+	 * Stores a boolean value for each element. It represent if the elements are
+	 * all available for display or not, for a specific group.
+	 * <p>
 	 * <code>true</code> if all elements are available, <code>false</code> if we
 	 * want to limit the number of elements available.
 	 */
-	private boolean availableAll = false;
+	private ArrayList<Boolean> availabilities = null;
 
 	/**
 	 * Default constructor.
 	 */
 	public OrderMapListFew() {
 		super();
+		availabilities = new ArrayList<Boolean>();
 	}
 
 	/**
@@ -56,12 +62,14 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	 */
 	public OrderMapListFew(int size) {
 		super(size);
+		availabilities = new ArrayList<Boolean>(size);
 	}
 
 	@Override
 	public void clear() {
 		// TODO: this method may NOT be concerned by the availability
 		super.clear();
+		availabilities.clear();
 	}
 
 	@Override
@@ -122,6 +130,7 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	@Override
 	public V put(K key, V value) {
 		// TODO: this method may NOT be concerned by the availability
+		availabilities.add(false);
 		return super.put(key, value);
 	}
 
@@ -130,6 +139,7 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	public V put(K key, V value, int index) {
 		// TODO: this method seems to be concerned by the availability and needs
 		// specific overriding
+		availabilities.add(index, false);
 		return super.put(key, value, index);
 	}
 
@@ -137,12 +147,21 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	public V putGently(K key, V value, int index) {
 		// TODO: this method seems to be concerned by the availability and needs
 		// specific overriding
-		return super.putGently(key, value, index);
+		if (index < 0) {
+			index = 0;
+		}
+		if (index > super.size()) {
+			index = super.size();
+		}
+		return put(key, value, index);
 	}
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> arg0) {
 		// TODO: this method may NOT be concerned by the availability
+		for (int i = 0; i < arg0.size(); i++) {
+			availabilities.add(false);
+		}
 		super.putAll(arg0);
 	}
 
@@ -150,6 +169,10 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	public V remove(Object key) {
 		// TODO: this method seems to be concerned by the availability and needs
 		// specific overriding
+		int index = super.indexOf(key);
+		if (index >= 0 && index < availabilities.size()) {
+			return remove(index);
+		}
 		return super.remove(key);
 	}
 
@@ -157,6 +180,9 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	public V remove(int index) {
 		// TODO: this method seems to be concerned by the availability and needs
 		// specific overriding
+		if (index >= 0 && index < availabilities.size()) {
+			availabilities.remove(index);
+		}
 		return super.remove(index);
 	}
 
@@ -217,8 +243,11 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	 */
 	@Override
 	public int getChildCount(int group) {
+		if (!(group >= 0 && group < super.size())) {
+			return 0;
+		}
 		int size = super.getChildCount(group);
-		if (availableAll) {
+		if (availabilities.get(group)) {
 			return size;
 		}
 		if (availableLimit < size) {
@@ -239,7 +268,10 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	 *         specified <code>group</code>.
 	 */
 	public int getChildCountNonAvailable(int group) {
-		if (availableAll) {
+		if (!(group >= 0 && group < super.size())) {
+			return 0;
+		}
+		if (availabilities.get(group)) {
 			return 0;
 		} else {
 			int size = super.getChildCount(group);
@@ -278,31 +310,26 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	}
 
 	/**
-	 * Sets <code>availableAll</code> to the given boolean value.
-	 * 
-	 * @param availableAll
-	 *            new value for <code>availableAll</code>
-	 */
-	public void setAvailableAll(boolean availableAll) {
-		this.availableAll = availableAll;
-	}
-
-	/**
-	 * Switch <code>availableAll</code> to the opposite of the current boolean
+	 * Switch <code>availability</code> to the opposite of the current boolean
 	 * value, change to <code>false</code> if was previously <code>true</code>,
 	 * change to <code>true</code> if was previously <code>false</code>.
+	 * 
+	 * @param group
+	 *            the group in which we are interested in.
 	 */
-	public void setAvailableAllSwitch() {
-		this.availableAll = !availableAll;
+	public void switchAvailable(int group) {
+		availabilities.set(group, !availabilities.get(group));
 	}
 
 	/**
-	 * Get the value of <code>availableAll</code>.
+	 * Get the value of <code>availability</code> for the given group.
 	 * 
-	 * @return the value of <code>availableAll</code>
+	 * @param group
+	 *            the group in which we are interested in.
+	 * @return the value of <code>availableAll</code> for the given group.
 	 */
-	public boolean getAvailableAll() {
-		return availableAll;
+	public boolean getAvailable(int group) {
+		return availabilities.get(group);
 	}
 
 	/**

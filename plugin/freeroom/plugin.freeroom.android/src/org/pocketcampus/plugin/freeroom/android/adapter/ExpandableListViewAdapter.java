@@ -5,7 +5,6 @@ import java.util.List;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
-import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
@@ -278,22 +277,40 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 		updateClick(more, iv, v, groupPosition);
 
-		OnClickListener ocl = new OnClickListener() {
+		OnClickListener clickLongList = new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO: available must be group by group, not for all
-				// expandable list
 				if (!v.isGroupExpanded(groupPosition)) {
 					v.expandGroup(groupPosition);
 				}
-				data.setAvailableAllSwitch();
+				data.switchAvailable(groupPosition);
 				updateClick(more, iv, v, groupPosition);
 				adapter.notifyDataSetChanged();
 			}
 		};
-		more.setOnClickListener(ocl);
-		iv.setOnClickListener(ocl);
+
+		OnClickListener clickShortList = new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (!v.isGroupExpanded(groupPosition)) {
+					v.expandGroup(groupPosition);
+				} else {
+					v.collapseGroup(groupPosition);
+				}
+				data.switchAvailable(groupPosition);
+				updateClick(more, iv, v, groupPosition);
+				adapter.notifyDataSetChanged();
+			}
+		};
+		if (data.isOverLimit(groupPosition)) {
+			more.setOnClickListener(clickLongList);
+			iv.setOnClickListener(clickLongList);
+		} else {
+			more.setOnClickListener(clickShortList);
+			iv.setOnClickListener(clickShortList);
+		}
 
 		if (v.isGroupExpanded(groupPosition)) {
 			convertView
@@ -311,14 +328,32 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			ExpandableListView ev, int groupPosition) {
 		if (!ev.isGroupExpanded(groupPosition)
 				|| !data.isOverLimit(groupPosition)) {
-			more.setText(data.getChildCountTotal(groupPosition) + " rooms");
-		} else {
-			if (data.getAvailableAll()) {
-				more.setText("collapse");
+			int roomNumber = data.getChildCountTotal(groupPosition);
+			String room_s = "";
+			if (roomNumber > 1) {
+				room_s = context
+						.getString(R.string.freeroom_results_room_header_rooms);
+			} else {
+				room_s = context
+						.getString(R.string.freeroom_results_room_header_room);
+			}
+			more.setText(roomNumber + " " + room_s);
+
+			if (ev.isGroupExpanded(groupPosition)) {
 				iv.setImageResource(R.drawable.arrow_up);
 			} else {
-				more.setText("more: "
-						+ data.getChildCountNonAvailable(groupPosition));
+				iv.setImageResource(R.drawable.arrow_down);
+			}
+
+		} else {
+			if (data.getAvailable(groupPosition)) {
+				more.setText(context
+						.getString(R.string.freeroom_results_room_header_reduce));
+				iv.setImageResource(R.drawable.arrow_up);
+			} else {
+				more.setText(context
+						.getString(R.string.freeroom_results_room_header_more)
+						+ ": " + data.getChildCountNonAvailable(groupPosition));
 				iv.setImageResource(R.drawable.arrow_down);
 			}
 		}
@@ -332,7 +367,8 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		// TODO: let true, but dont submit imworking everytime!
-		return true;
+		// false: this is not used anymore, child is not selectable
+		return false;
 		// Occupancy mOccupancy = getChildObject(groupPosition, childPosition);
 		// return mOccupancy.isIsAtLeastFreeOnce()
 		// && !mOccupancy.isIsAtLeastOccupiedOnce();
@@ -340,6 +376,21 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 	public void updateHeader(int id, String value) {
 		data.updateKey(id, value);
+	}
+
+	/**
+	 * Expands all the groups if there are no more than 3 groups or not more than 10 results.
+	 * @param ev
+	 */
+	public void updateCollapse(ExpandableListView ev) {
+		System.out.println("check: " + data.size() + "/" + data.totalChild());
+		if (data.size() <= 3 || data.totalChild() <= 10) {
+			System.out.println("i wanted to expand");
+			// TODO: this cause troubles in performance! To delete if not found
+			for (int i = 0; i < data.size(); i++) {
+				ev.expandGroup(i);
+			}
+		}
 	}
 
 	/**
