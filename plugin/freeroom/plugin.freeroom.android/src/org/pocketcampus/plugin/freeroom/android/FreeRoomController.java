@@ -206,19 +206,38 @@ public class FreeRoomController extends PluginController implements
 		}
 	}
 
+	/**
+	 * Tells the user the <code>ImWorkingRequest</code> he submitted was
+	 * accepted and registered by the server. (200 OK)
+	 * 
+	 * <p>
+	 * The user will never be blocked to send other request and reuse the
+	 * buttons. The server will handle these cases and reply with a conflict.
+	 * 
+	 * @param reply
+	 *            the reply from the server
+	 */
 	public void validateImWorking(ImWorkingReply result) {
-		// we do nothing here... we could display a confirmation
-		// the user MUST be blocked to send others "ImWorking" indication for
-		// the same period!
-		Toast.makeText(getApplicationContext(), "succcessfully submitted",
+		// TODO: hard coded string
+		Toast.makeText(getApplicationContext(),
+				"Your working indication was succcessfully submitted",
 				Toast.LENGTH_LONG).show();
 	}
 
-	public void cannotValidateImWorking() {
-		// TODO if failure, we should re-enable the buttons, for the user to
-		// submit something else!
-		Toast.makeText(getApplicationContext(), "an error occured, sorry!",
-				Toast.LENGTH_LONG).show();
+	/**
+	 * Tells the user that the period he wanted to submit was already used.
+	 * Should be called when the server replies with a conflict status (409).
+	 * 
+	 * @param reply
+	 *            the reply from the server
+	 */
+	public void conflictImWorking(ImWorkingReply reply) {
+		// TODO: hard coded string
+		Toast.makeText(
+				getApplicationContext(),
+				"You already submitted something for this period of time, "
+						+ "you request was denied by the server "
+						+ "(conflict)", Toast.LENGTH_LONG).show();
 	}
 
 	/**

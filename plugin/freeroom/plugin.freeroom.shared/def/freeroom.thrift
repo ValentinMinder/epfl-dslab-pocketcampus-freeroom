@@ -57,10 +57,12 @@ struct WorkingOccupancy {
 
 // NOTE ABOUT REPLY STATUS
 // it's compliant with standard HTTP status code
-// currently used:
+// currently used in all request - reply scheme:
 // 200 - OK - when the result is correctly given
 // 400 - BAD REQUEST - when the server couldn't answer due to malformed query from the client
 // 500 - INTERNAL ERROR - when the server couldn't answer due to internal implementation error
+// currently used in particular request-reply scheme:
+// 409 - CONFLICT - when the same user want to indicate the same period for a ImWorkingRequest.
 
 // defines if the room is reserved or not, occupation type can give details of the occupation
 struct ActualOccupation {

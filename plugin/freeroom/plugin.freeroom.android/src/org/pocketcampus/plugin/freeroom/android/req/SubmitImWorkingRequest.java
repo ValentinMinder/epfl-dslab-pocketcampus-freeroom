@@ -41,8 +41,10 @@ public class SubmitImWorkingRequest extends
 		if (status == 200) {
 			Log.v(this.getClass().toString(), "server replied successfully");
 			controller.validateImWorking(result);
+		} else if (status == 409) {
+			// in case of conflict with the same user.
+			controller.conflictImWorking(result);
 		} else {
-			controller.cannotValidateImWorking();
 			controller.handleReplyError(caller, status,
 					result.getStatusComment(), this.getClass().toString());
 		}
