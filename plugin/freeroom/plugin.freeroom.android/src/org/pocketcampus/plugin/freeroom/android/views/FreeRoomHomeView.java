@@ -2,18 +2,18 @@ package org.pocketcampus.plugin.freeroom.android.views;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomAbstractView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomManageFavoritesView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
-import org.pocketcampus.plugin.freeroom.android.FreeRoomSearchRoomsResultView;
 import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
@@ -22,9 +22,7 @@ import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
-import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.content.Intent;
@@ -47,12 +45,12 @@ import android.widget.Toast;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
- * // TODO: NEW INTERFACE as of 2014.04.04 TODO THIS MUST BE THE NEW HOME, WHICH
- * IS CURRENTLY UNDER MAINTENANCE FOR REWRITTING COMPLETELY
- * 
- * MainView is the entry of the plugin, displaying the possible menus/features
- * available.
+ * <code>FreeRoomHomeView</code> is the main <code>View</code>, it's the entry
+ * of the plugin. It displays the availabilities for the search given, and for
+ * your favorites NOW at the start.
  * <p>
+ * All others views are supposed to be popup windows, therefore it's always
+ * visible.
  * 
  * @author FreeRoom Project Team (2014/05)
  * @author Julien WEBER <julien.weber@epfl.ch>
@@ -61,14 +59,38 @@ import com.markupartist.android.widget.ActionBar.Action;
 public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		IFreeRoomView {
 
+	/**
+	 * FreeRoom controller in MVC scheme.
+	 */
 	private FreeRoomController mController;
+	/**
+	 * FreeRoom model in MVC scheme.
+	 */
 	private FreeRoomModel mModel;
 
-	private LinearLayout mLayout;
+	/**
+	 * Titled layout that holds the title and the main layout.
+	 */
+	private StandardTitledLayout titleLayout;
+	/**
+	 * Main layout that hold all UI components.
+	 */
+	private LinearLayout mainLayout;
 
+	/**
+	 * TextView to display a short message about what is currently displayed.
+	 * It's also the anchor to all the popup windows.
+	 */
 	private TextView mTextView;
+	/**
+	 * ExpandableListView to display the results of occupancies building by
+	 * building.
+	 */
 	private ExpandableListView mExpView;
 
+	/**
+	 * Adapter for the results (to display the occupancies).
+	 */
 	private ExpandableListViewAdapter<Occupancy> mExpList;
 
 	/**
@@ -83,15 +105,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private PopupWindow popupInfoWindow;
 
 	/**
-	 * TODO: deprecated.
-	 * <p>
-	 * Request currently displayed.
+	 * Action to perform a customized search.
 	 */
-	private OccupancyRequest requestDEPRECATED;
-
 	private Action search = new Action() {
 		public void performAction(View view) {
-			// TODO: this is the future search
+			// TODO: popup instead of new activity
 			Toast.makeText(getApplicationContext(), "search",
 					Toast.LENGTH_SHORT).show();
 			Intent i = new Intent(FreeRoomHomeView.this,
@@ -104,9 +122,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	};
 
+	/**
+	 * Action to edit the user's favorites.
+	 */
 	private Action editFavorites = new Action() {
 		public void performAction(View view) {
-			// TODO: new favorites edition
+			// TODO: popup instead of new activity
 			Toast.makeText(getApplicationContext(), "favorites",
 					Toast.LENGTH_SHORT).show();
 			Intent i = new Intent(FreeRoomHomeView.this,
@@ -119,26 +140,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	};
 
-	private Action gotBackMenu = new Action() {
-		public void performAction(View view) {
-			Calendar calendar = Calendar.getInstance();
-			FreeRoomRequest req = FRTimes.convert(
-					calendar.get(Calendar.DAY_OF_WEEK),
-					calendar.get(Calendar.HOUR_OF_DAY),
-					calendar.get(Calendar.HOUR_OF_DAY) + 1);
-			// send the request to the controller
-			mController.prepareSearchFreeRoom(req);
-			// construct and launch the UI.
-			Intent i = new Intent(FreeRoomHomeView.this,
-					FreeRoomSearchRoomsResultView.class);
-			FreeRoomHomeView.this.startActivity(i);
-		}
-
-		public int getDrawable() {
-			return R.drawable.wheelchair48;
-		}
-	};
-
+	/**
+	 * Action to refresh the view (it sends the same stored request again).
+	 * <p>
+	 * TODO: useful? useless ? delete !
+	 */
 	private Action refresh = new Action() {
 		public void performAction(View view) {
 			refresh();
@@ -149,6 +155,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	};
 
+	/**
+	 * Display or hide more results.
+	 * <p>
+	 * TODO: must be done by a button in the view, not here.
+	 */
 	private Action hideUnhideAllResults = new Action() {
 		public void performAction(View view) {
 			hideUnHideAllResults();
@@ -175,21 +186,23 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mModel = (FreeRoomModel) controller.getModel();
 
 		// Setup the layout
-		mLayout = new LinearLayout(getApplicationContext());
-		mLayout.setOrientation(LinearLayout.VERTICAL);
+		titleLayout = new StandardTitledLayout(this);
+		mainLayout = new LinearLayout(this);
+		mainLayout.setOrientation(LinearLayout.VERTICAL);
 		// The ActionBar is added automatically when you call setContentView
-		setContentView(mLayout);
-		// mLayout.setTitle(getString(R.string.freeroom_title_main_title));
-		// mLayout.hideTitle();
+		setContentView(titleLayout);
+		titleLayout.setTitle(getString(R.string.freeroom_title_main_title));
 
 		mExpView = new ExpandableListView(getApplicationContext());
 		mTextView = new TextView(getApplicationContext());
-		mLayout.addView(mTextView);
+		mainLayout.addView(mTextView);
 		setTextSummary(getString(R.string.freeroom_home_init_please_wait));
-		mLayout.addView(mExpView);
+		mainLayout.addView(mExpView);
 		initializeView();
 
-		init();
+		titleLayout.addFillerView(mainLayout);
+
+		initDefaultRequest();
 		refresh();
 	}
 
@@ -210,7 +223,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		if (mController != null) {
 			mController.sendFRRequest(this);
-			// mController.checkOccupancy(this);
 		}
 	}
 
@@ -224,7 +236,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		addActionToActionBar(refresh);
 		addActionToActionBar(editFavorites);
 		addActionToActionBar(search);
-		addActionToActionBar(gotBackMenu);
 	}
 
 	/**
@@ -254,7 +265,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.findViewById(R.id.freeroom_layout_popup_info_close);
 		img.setOnClickListener(new ImageView.OnClickListener() {
 
-			@Override 
+			@Override
 			public void onClick(View v) {
 				popupInfoWindow.dismiss();
 			}
@@ -262,7 +273,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Overides the legacy <code>onKeyDown</code> method in order to close the
+	 * Overrides the legacy <code>onKeyDown</code> method in order to close the
 	 * popupWindow if one was opened.
 	 * 
 	 * @param keyCode
@@ -298,15 +309,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Inits the request to the current next valid period.
+	 * Constructs the default request (check all the favorites for the next
+	 * valid period) and sets it in the model for future use. You may call
+	 * <code>refresh</code> in order to send it to the server.
 	 */
-	private void init() {
-		ArrayList<String> array = new ArrayList<String>();
-		array.addAll(mModel.getAllRoomMapFavorites().keySet());
-		// TODO: deprecated
-		// requestDEPRECATED = new OccupancyRequest(array,
-		// FRTimes.getNextValidPeriod());
-		// new interface
+	private void initDefaultRequest() {
+		Set<String> set = mModel.getAllRoomMapFavorites().keySet();
+		ArrayList<String> array = new ArrayList<String>(set.size());
+		array.addAll(set);
 
 		initPopupInfoRoom();
 		mModel.setFRRequest(new FRRequest(FRTimes.getNextValidPeriod(), mModel
@@ -314,15 +324,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Send the set request to the controller.
+	 * Asks the controller to send again the request which was already set in
+	 * the model.
 	 */
 	private void refresh() {
 		setTextSummary(getString(R.string.freeroom_home_please_wait));
-		// TODO: deprecated
-		// mController.prepareCheckOccupancy(requestDEPRECATED);
-		// mController.checkOccupancy(this);
-
-		// new interface
 		mController.sendFRRequest(this);
 	}
 
@@ -339,9 +345,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
-
-		// TODO: deprecated
-		// occupancyResultsUpdated();
 	}
 
 	private void hideUnHideAllResults() {
@@ -350,6 +353,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		sysoAlloccuResult();
 	}
 
+	// TODO: delete, it's for debugging
 	private void sysoAlloccuResult() {
 		OrderMapList<String, List<?>, Occupancy> map = mModel
 				.getOccupancyResults();
@@ -381,32 +385,36 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void occupancyResultsUpdated() {
-		FRRequest request = mModel.getFRRequest();
 		String s = "";
-		if (request.isOnlyFreeRooms()) {
-			s += "Free rooms ";
-		} else {
-			s += "Rooms ";
-		}
-		FRPeriod period = request.getPeriod();
-		Date endDate = new Date(period.getTimeStampEnd());
-		Date startDate = new Date(period.getTimeStampStart());
-		SimpleDateFormat day_month = new SimpleDateFormat(
-				getString(R.string.freeroom_pattern_day_format));
-		SimpleDateFormat hour_min = new SimpleDateFormat(
-				getString(R.string.freeroom_pattern_hour_format));
-
-		s += getString(R.string.freeroom_check_occupancy_result_onthe) + " ";
-		s += day_month.format(startDate);
-		s += " " + getString(R.string.freeroom_check_occupancy_result_from)
-				+ " ";
-		s += hour_min.format(startDate);
-		s += " " + getString(R.string.freeroom_check_occupancy_result_to) + " ";
-		s += hour_min.format(endDate);
-		// TODO: remove empty
 		if (mModel.getOccupancyResults().isEmpty()) {
-			s += "Sorry no results";
+			s += getString(R.string.freeroom_home_error_no_results);
+		} else {
+			FRRequest request = mModel.getFRRequest();
+
+			if (request.isOnlyFreeRooms()) {
+				s += getString(R.string.freeroom_home_info_free_rooms);
+			} else {
+				s += getString(R.string.freeroom_home_info_rooms);
+			}
+			FRPeriod period = request.getPeriod();
+			Date endDate = new Date(period.getTimeStampEnd());
+			Date startDate = new Date(period.getTimeStampStart());
+			SimpleDateFormat day_month = new SimpleDateFormat(
+					getString(R.string.freeroom_pattern_day_format));
+			SimpleDateFormat hour_min = new SimpleDateFormat(
+					getString(R.string.freeroom_pattern_hour_format));
+
+			s += getString(R.string.freeroom_check_occupancy_result_onthe)
+					+ " ";
+			s += day_month.format(startDate);
+			s += " " + getString(R.string.freeroom_check_occupancy_result_from)
+					+ " ";
+			s += hour_min.format(startDate);
+			s += " " + getString(R.string.freeroom_check_occupancy_result_to)
+					+ " ";
+			s += hour_min.format(endDate);
 		}
+
 		setTextSummary(s);
 		mExpList.notifyDataSetChanged();
 	}
@@ -427,7 +435,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					R.layout.sdk_list_entry, R.id.sdk_list_entry_text,
 					getInfoFRRoom(mOccupancy.getRoom()));
 			infoRoomListView.setAdapter(adapter);
-			popupInfoWindow.showAsDropDown(mTextView, 10, 10);
+			popupInfoWindow.showAsDropDown(mTextView, 0, 0);
 		}
 	}
 
@@ -435,7 +443,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Converts a FRRoom to an arrayList of properties, in order to display
 	 * them.
 	 * <p>
-	 * TODO: this method is to be perfectionned (and put in R.string)
+	 * TODO: this method may be changed
 	 * 
 	 * @param mFrRoom
 	 * @return
@@ -451,13 +459,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		}
 		if (mFrRoom.isSetType()) {
-			array.add("type: " + mFrRoom.getType());
+			array.add(getString(R.string.freeroom_popup_info_type) + ": "
+					+ mFrRoom.getType());
 		}
 		if (mFrRoom.isSetCapacity()) {
-			array.add(mFrRoom.getCapacity() + " places");
+			array.add(getString(R.string.freeroom_popup_info_capacity) + ": "
+					+ mFrRoom.getCapacity() + " "
+					+ getString(R.string.freeroom_popup_info_places));
 		}
 		if (mFrRoom.isSetSurface()) {
-			array.add(mFrRoom.getSurface() + " sqm");
+			array.add(getString(R.string.freeroom_popup_info_surface) + ": "
+					+ mFrRoom.getSurface() + " "
+					+ getString(R.string.freeroom_popup_info_sqm));
 		}
 		if (mFrRoom.isSetUid()) {
 			// uniq UID must be 1201XXUID, with XX filled with 0 such that
@@ -470,7 +483,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				communUID += "0";
 			}
 			communUID += roomUID;
-			array.add("uniq UID : " + communUID);
+			array.add(getString(R.string.freeroom_popup_info_uniqID) + ": "
+					+ communUID);
 		}
 		return array;
 	}

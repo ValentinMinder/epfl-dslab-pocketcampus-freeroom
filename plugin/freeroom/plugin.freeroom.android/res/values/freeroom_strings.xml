@@ -15,7 +15,7 @@
     <string name="freeroom_no_app_to_handle_filetype">Could not find any application to open this file.</string>
     <string name="freeroom_pattern_day_format">EEEE MMMM d</string>
     <string name="freeroom_pattern_hour_format">h:mm a</string>
-    <string name="freeroom_title_main_title">FreeRoom</string>
+    <string name="freeroom_title_main_title">FreeRoom: Home</string>
     <string name="freeroom_title_FRsearch"> FreeRoom: search for a free room</string>
     <string name="freeroom_title_FRresult"> FreeRoom: free room results</string>
     <string name="freeroom_title_occupancy_search"> FreeRoom: check the occupancy</string>
@@ -53,6 +53,15 @@
     <string name="freeroom_home_please_wait">Please wait while results are refreshed</string>
     <string name="freeroom_home_init_please_wait">Initialization, please wait!</string>
     <string name="freeroom_home_error_sorry">An error occurred, sorry! ;)</string>
+    <string name="freeroom_home_error_no_results">Sorry: server replied with no results</string>
+    <string name="freeroom_home_info_rooms">Rooms occupancies</string>
+    <string name="freeroom_home_info_free_rooms">Free room occupancies</string>
+    <string name="freeroom_popup_info_type">Type</string>
+    <string name="freeroom_popup_info_capacity">Capacity</string>
+    <string name="freeroom_popup_info_places">places</string>
+    <string name="freeroom_popup_info_surface">Surface</string>
+    <string name="freeroom_popup_info_sqm">sqm</string>
+    <string name="freeroom_popup_info_uniqID">Unique UID</string>
     <string name="freeroom_layout_popup_info_title">Detailed information</string>
     <!-- No need to translate these layout img identificators -->
     <string name="freeroom_layout_popup_info_img_close">Close</string>
