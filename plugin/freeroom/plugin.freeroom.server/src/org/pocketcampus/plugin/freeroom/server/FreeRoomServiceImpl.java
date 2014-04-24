@@ -570,135 +570,138 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				query.setString(7, OCCUPANCY_TYPE.ROOM.toString());
 
 				ResultSet resultQuery = query.executeQuery();
-				HashMap<String, FRRoom> rooms = new HashMap<String, FRRoom>();
-				String roomsFreeSQL = "";
+//				HashMap<String, FRRoom> rooms = new HashMap<String, FRRoom>();
+//				String roomsFreeSQL = "";
 
+				ArrayList<String> uidsList = new ArrayList<String>();
 				while (resultQuery.next()) {
-					if (!rooms.isEmpty()) {
-						roomsFreeSQL += ",";
-					}
+//					if (!rooms.isEmpty()) {
+//						roomsFreeSQL += ",";
+//					}
 
 					String uid = resultQuery.getString("uid");
-					String doorCode = resultQuery.getString("doorCode");
-					int capacity = resultQuery.getInt("capacity");
-
-					FRRoom mRoom = new FRRoom(doorCode, uid);
-					mRoom.setCapacity(capacity);
-
-					rooms.put(uid, mRoom);
-					roomsFreeSQL += uid;
+//					String doorCode = resultQuery.getString("doorCode");
+//					int capacity = resultQuery.getInt("capacity");
+//
+//					FRRoom mRoom = new FRRoom(doorCode, uid);
+//					mRoom.setCapacity(capacity);
+//
+//					rooms.put(uid, mRoom);
+//					roomsFreeSQL += uid;
+					uidsList.add(uid);
 				}
 				// TODO call anyspecific list of room with the given list ? be
 				// careful to rooms that has no occupancy won't appear in this
 				// list !
 
-				// and also select user occupancy of these rooms
-				String userOccupancyRequest = "SELECT "
-						+ "uo.uid, uo.count, uo.timestampStart, uo.timestampEnd "
-						+ "FROM `fr-occupancy` uo "
-						+ "WHERE uo.uid IN("
-						+ roomsFreeSQL
-						+ ") "
-						+ "AND uo.type LIKE ? "
-						+ "AND ((uo.timestampEnd <= ? AND uo.timestampEnd >= ? ) "
-						+ "OR (uo.timestampStart <= ? AND uo.timestampStart >= ?)"
-						+ "OR (uo.timestampStart <= ? AND uo.timestampEnd >= ?)) "
-						+ "ORDER BY uo.uid ASC, uo.timestampStart ASC";
-
-				PreparedStatement queryUser = connectBDD
-						.prepareStatement(userOccupancyRequest);
-
-				queryUser.setString(1, OCCUPANCY_TYPE.USER.toString());
-				queryUser.setLong(2, tsEnd);
-				queryUser.setLong(3, tsStart);
-				queryUser.setLong(4, tsEnd);
-				queryUser.setLong(5, tsStart);
-				queryUser.setLong(6, tsStart);
-				queryUser.setLong(7, tsEnd);
-
-				ResultSet occupancyResult = queryUser.executeQuery();
-
-				String currentUID = null;
-				String currentDoorCode = null;
-				OccupancySorted currentOccupancy = null;
-
-				// and now extract and create occupancies for each rooms
-				// query beeing sorted by UID and then by timestampStart, we
-				// don't need to access at each iteration the room stored in
-				// rooms
-				// hashmap, only when there is a change. And also we can add the
-				// actualoccupation as they come, (sorted by timestamp)
-				while (occupancyResult.next()) {
-					// extract attributes of record
-					long start = occupancyResult.getLong("timestampStart");
-					long end = occupancyResult.getLong("timestampEnd");
-					String uid = occupancyResult.getString("uid");
-					int count = occupancyResult.getInt("count");
-
-					FRPeriod period = new FRPeriod(start, end, false);
-
-					// if this is the first iteration
-					if (currentUID == null) {
-						System.out.println("first iteration");
-						FRRoom mRoom = rooms.get(uid);
-						currentUID = uid;
-						currentDoorCode = mRoom.getDoorCode();
-						currentOccupancy = new OccupancySorted(mRoom, tsStart,
-								tsEnd, true);
-					}
-
-					// we move on to the next room thus re-initialize attributes
-					// for the loop, as well as storing the previous room in the
-					// result hashmap
-					if (!uid.equals(currentUID)) {
-						Occupancy mOccupancy = currentOccupancy.getOccupancy();
-
-						addToHashMapOccupancy(currentDoorCode, mOccupancy,
-								result);
-
-						// remove the room from the list
-						rooms.remove(currentUID);
-
-						// re-initialize the value, and continue the process for
-						// other rooms
-						FRRoom mRoom = rooms.get(uid);
-						currentDoorCode = mRoom.getDoorCode();
-						currentOccupancy = new OccupancySorted(mRoom, tsStart,
-								tsEnd, true);
-						currentUID = uid;
-					}
-
-					ActualOccupation accOcc = new ActualOccupation(period, true);
-					accOcc.setProbableOccupation(count);
-					currentOccupancy.addActualOccupation(accOcc);
-				}
-
-				// the last room has not been added yet
-				if (currentOccupancy != null && currentOccupancy.size() != 0) {
-					Occupancy mOccupancy = currentOccupancy.getOccupancy();
-
-					addToHashMapOccupancy(currentDoorCode, mOccupancy, result);
-
-					// remove the room from the list
-					rooms.remove(currentUID);
-				}
-
-				// and finally, check if there is some free rooms left that have
-				// no user occupancy and need manual action (i.e set ratio to 0
-				// and has to be added in the result hashmap)
-
-				for (FRRoom mRoom : rooms.values()) {
-					currentOccupancy = new OccupancySorted(mRoom, tsStart,
-							tsEnd, true);
-					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
-					ActualOccupation accOcc = new ActualOccupation(period, true);
-					accOcc.setProbableOccupation(0);
-					currentOccupancy.addActualOccupation(accOcc);
-
-					Occupancy mOccupancy = currentOccupancy.getOccupancy();
-					addToHashMapOccupancy(mRoom.getDoorCode(), mOccupancy,
-							result);
-				}
+				return getOccupancyOfSpecificRoom(uidsList, onlyFreeRooms, tsStart, tsEnd);
+//				// and also select user occupancy of these rooms
+//				String userOccupancyRequest = "SELECT "
+//						+ "uo.uid, uo.count, uo.timestampStart, uo.timestampEnd "
+//						+ "FROM `fr-occupancy` uo "
+//						+ "WHERE uo.uid IN("
+//						+ roomsFreeSQL
+//						+ ") "
+//						+ "AND uo.type LIKE ? "
+//						+ "AND ((uo.timestampEnd <= ? AND uo.timestampEnd >= ? ) "
+//						+ "OR (uo.timestampStart <= ? AND uo.timestampStart >= ?)"
+//						+ "OR (uo.timestampStart <= ? AND uo.timestampEnd >= ?)) "
+//						+ "ORDER BY uo.uid ASC, uo.timestampStart ASC";
+//
+//				PreparedStatement queryUser = connectBDD
+//						.prepareStatement(userOccupancyRequest);
+//
+//				queryUser.setString(1, OCCUPANCY_TYPE.USER.toString());
+//				queryUser.setLong(2, tsEnd);
+//				queryUser.setLong(3, tsStart);
+//				queryUser.setLong(4, tsEnd);
+//				queryUser.setLong(5, tsStart);
+//				queryUser.setLong(6, tsStart);
+//				queryUser.setLong(7, tsEnd);
+//
+//				ResultSet occupancyResult = queryUser.executeQuery();
+//
+//				String currentUID = null;
+//				String currentDoorCode = null;
+//				OccupancySorted currentOccupancy = null;
+//
+//				// and now extract and create occupancies for each rooms
+//				// query beeing sorted by UID and then by timestampStart, we
+//				// don't need to access at each iteration the room stored in
+//				// rooms
+//				// hashmap, only when there is a change. And also we can add the
+//				// actualoccupation as they come, (sorted by timestamp)
+//				while (occupancyResult.next()) {
+//					// extract attributes of record
+//					long start = occupancyResult.getLong("timestampStart");
+//					long end = occupancyResult.getLong("timestampEnd");
+//					String uid = occupancyResult.getString("uid");
+//					int count = occupancyResult.getInt("count");
+//
+//					FRPeriod period = new FRPeriod(start, end, false);
+//
+//					// if this is the first iteration
+//					if (currentUID == null) {
+//						System.out.println("first iteration");
+//						FRRoom mRoom = rooms.get(uid);
+//						currentUID = uid;
+//						currentDoorCode = mRoom.getDoorCode();
+//						currentOccupancy = new OccupancySorted(mRoom, tsStart,
+//								tsEnd, true);
+//					}
+//
+//					// we move on to the next room thus re-initialize attributes
+//					// for the loop, as well as storing the previous room in the
+//					// result hashmap
+//					if (!uid.equals(currentUID)) {
+//						Occupancy mOccupancy = currentOccupancy.getOccupancy();
+//
+//						addToHashMapOccupancy(currentDoorCode, mOccupancy,
+//								result);
+//
+//						// remove the room from the list
+//						rooms.remove(currentUID);
+//
+//						// re-initialize the value, and continue the process for
+//						// other rooms
+//						FRRoom mRoom = rooms.get(uid);
+//						currentDoorCode = mRoom.getDoorCode();
+//						currentOccupancy = new OccupancySorted(mRoom, tsStart,
+//								tsEnd, true);
+//						currentUID = uid;
+//					}
+//
+//					ActualOccupation accOcc = new ActualOccupation(period, true);
+//					accOcc.setProbableOccupation(count);
+//					currentOccupancy.addActualOccupation(accOcc);
+//				}
+//
+//				// the last room has not been added yet
+//				if (currentOccupancy != null && currentOccupancy.size() != 0) {
+//					Occupancy mOccupancy = currentOccupancy.getOccupancy();
+//
+//					addToHashMapOccupancy(currentDoorCode, mOccupancy, result);
+//
+//					// remove the room from the list
+//					rooms.remove(currentUID);
+//				}
+//
+//				// and finally, check if there is some free rooms left that have
+//				// no user occupancy and need manual action (i.e set ratio to 0
+//				// and has to be added in the result hashmap)
+//
+//				for (FRRoom mRoom : rooms.values()) {
+//					currentOccupancy = new OccupancySorted(mRoom, tsStart,
+//							tsEnd, true);
+//					FRPeriod period = new FRPeriod(tsStart, tsEnd, false);
+//					ActualOccupation accOcc = new ActualOccupation(period, true);
+//					accOcc.setProbableOccupation(0);
+//					currentOccupancy.addActualOccupation(accOcc);
+//
+//					Occupancy mOccupancy = currentOccupancy.getOccupancy();
+//					addToHashMapOccupancy(mRoom.getDoorCode(), mOccupancy,
+//							result);
+//				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
