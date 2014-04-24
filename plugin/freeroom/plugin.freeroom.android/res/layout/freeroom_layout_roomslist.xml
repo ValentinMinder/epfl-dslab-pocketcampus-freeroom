@@ -9,7 +9,7 @@ and an ImageView added
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="3dip" >
+    android:padding="2dip" >
 
     <!-- Text to display the name of the room -->
 
@@ -18,7 +18,7 @@ and an ImageView added
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginLeft="30dip"
+        android:layout_marginLeft="10dip"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/black" />
 
@@ -52,7 +52,8 @@ and an ImageView added
         android:layout_alignParentTop="true"
         android:layout_marginRight="5dip"
         android:layout_toLeftOf="@id/freeroom_layout_roomslist_fav"
-        android:contentDescription="@string/freeroom_layout_roomslist_img_info" />
+        android:contentDescription="@string/freeroom_layout_roomslist_img_info"
+        android:src="@drawable/information" />
 
     <!-- Image to say you're going to work there -->
 
@@ -63,7 +64,8 @@ and an ImageView added
         android:layout_alignParentTop="true"
         android:layout_marginRight="5dip"
         android:layout_toLeftOf="@id/freeroom_layout_roomslist_info"
-        android:contentDescription="@string/freeroom_layout_roomslist_img_arrow" />
+        android:contentDescription="@string/freeroom_layout_roomslist_img_arrow"
+        android:src="@drawable/arrow" />
 
     <!-- Image to show how many people are working there -->
 
@@ -74,6 +76,7 @@ and an ImageView added
         android:layout_alignParentTop="true"
         android:layout_marginRight="5dip"
         android:layout_toLeftOf="@id/freeroom_layout_roomslist_arrow"
-        android:contentDescription="@string/freeroom_layout_roomslist_img_people" />
+        android:contentDescription="@string/freeroom_layout_roomslist_img_people"
+        android:src="@drawable/occupation_unknown" />
 
 </RelativeLayout>

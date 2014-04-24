@@ -201,12 +201,13 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 		return super.getKey(index);
 	}
 
-	/*
-	 * Overridden to give only a few children, the one that are available.
-	 */
 	/**
 	 * Retrieves the number of <code>child</code>ren AVAILABLE for the specified
 	 * <code>group</code>.
+	 * 
+	 * <p>
+	 * Overridden the legacy <code>getChildCount</code> to give only a few
+	 * children, the one that are available.
 	 * 
 	 * @param group
 	 *            specific <code>group</code> number for which to check the
@@ -262,6 +263,18 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	 */
 	public int getChildCountTotal(int group) {
 		return super.getChildCount(group);
+	}
+
+	/**
+	 * Return true if the given group has more elements than the limit (no
+	 * matter if displayed or not).
+	 * 
+	 * @param group
+	 *            the group in which we are interested.
+	 * @return true if the given group has more elements than the limit
+	 */
+	public boolean isOverLimit(int group) {
+		return (getChildCountTotal(group) - availableLimit) > 0;
 	}
 
 	/**

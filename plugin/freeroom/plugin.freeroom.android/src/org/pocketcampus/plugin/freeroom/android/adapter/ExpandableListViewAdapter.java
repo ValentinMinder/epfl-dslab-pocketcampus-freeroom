@@ -6,6 +6,7 @@ import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
+import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -49,14 +50,14 @@ import android.widget.TextView;
 
 public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	private Context context;
-	private OrderMapList<String, List<?>, Occupancy> data;
+	private OrderMapListFew<String, List<?>, Occupancy> data;
 	// hold the caller view for colors updates.
 	private FreeRoomModel mModel;
 	private FreeRoomController mController;
 	private FreeRoomHomeView homeView;
 
 	public ExpandableListViewAdapter(Context c,
-			OrderMapList<String, List<?>, Occupancy> data,
+			OrderMapListFew<String, List<?>, Occupancy> data,
 			FreeRoomController controller, FreeRoomHomeView homeView) {
 		this.context = c;
 		this.data = data;
@@ -243,7 +244,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getGroupView(int groupPosition, boolean isExpanded,
+	public View getGroupView(final int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
 		if (groupPosition >= data.size()) {
 			return null;
@@ -252,10 +253,14 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		ViewHolderGroup vholder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_roomslist, null);
+					R.layout.freeroom_layout_building_header, null);
 			vholder = new ViewHolderGroup();
 			vholder.setTextView((TextView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_roomname));
+					.findViewById(R.id.freeroom_layout_building_header_title));
+			vholder.setImageView((ImageView) convertView
+					.findViewById(R.id.freeroom_layout_building_header_show_more));
+			vholder.setTextViewMore((TextView) convertView
+					.findViewById(R.id.freeroom_layout_building_header_show_more_txt));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolderGroup) convertView.getTag();
@@ -265,7 +270,31 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		TextView tv = vholder.getTextView();
 		tv.setText(text);
 
-		ExpandableListView v = ((ExpandableListView) parent);
+		final TextView more = vholder.getTextViewMore();
+
+		final ImageView iv = vholder.getImageView();
+		final ExpandableListView v = ((ExpandableListView) parent);
+		final ExpandableListViewAdapter<T> adapter = this;
+
+		updateClick(more, iv, v, groupPosition);
+
+		OnClickListener ocl = new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO: available must be group by group, not for all
+				// expandable list
+				if (!v.isGroupExpanded(groupPosition)) {
+					v.expandGroup(groupPosition);
+				}
+				data.setAvailableAllSwitch();
+				updateClick(more, iv, v, groupPosition);
+				adapter.notifyDataSetChanged();
+			}
+		};
+		more.setOnClickListener(ocl);
+		iv.setOnClickListener(ocl);
+
 		if (v.isGroupExpanded(groupPosition)) {
 			convertView
 					.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
@@ -276,6 +305,23 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					groupPosition, 0)));
 		}
 		return convertView;
+	}
+
+	private void updateClick(TextView more, ImageView iv,
+			ExpandableListView ev, int groupPosition) {
+		if (!ev.isGroupExpanded(groupPosition)
+				|| !data.isOverLimit(groupPosition)) {
+			more.setText(data.getChildCountTotal(groupPosition) + " rooms");
+		} else {
+			if (data.getAvailableAll()) {
+				more.setText("collapse");
+				iv.setImageResource(R.drawable.arrow_up);
+			} else {
+				more.setText("more: "
+						+ data.getChildCountNonAvailable(groupPosition));
+				iv.setImageResource(R.drawable.arrow_down);
+			}
+		}
 	}
 
 	@Override
@@ -374,6 +420,8 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	 */
 	private class ViewHolderGroup {
 		private TextView tv = null;
+		private ImageView iv = null;
+		private TextView more = null;
 
 		public void setTextView(TextView tv) {
 			this.tv = tv;
@@ -381,6 +429,22 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 		public TextView getTextView() {
 			return this.tv;
+		}
+
+		public void setImageView(ImageView iv) {
+			this.iv = iv;
+		}
+
+		public ImageView getImageView() {
+			return this.iv;
+		}
+
+		public void setTextViewMore(TextView tv) {
+			this.more = tv;
+		}
+
+		public TextView getTextViewMore() {
+			return this.more;
 		}
 
 	}

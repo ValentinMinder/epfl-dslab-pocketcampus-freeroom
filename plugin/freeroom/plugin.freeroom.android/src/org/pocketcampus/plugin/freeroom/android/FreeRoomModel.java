@@ -106,7 +106,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	private Context context;
 
 	// NEW INTERFACE as of 2104.04.04.
-	private OrderMapList<String, List<?>, Occupancy> occupancyByBuilding;
+	private OrderMapListFew<String, List<?>, Occupancy> occupancyByBuilding;
 
 	/**
 	 * Constructor with reference to the context.
@@ -699,7 +699,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * 
 	 * @return
 	 */
-	public OrderMapList<String, List<?>, Occupancy> getOccupancyResults() {
+	public OrderMapListFew<String, List<?>, Occupancy> getOccupancyResults() {
 		return this.occupancyByBuilding;
 	}
 
