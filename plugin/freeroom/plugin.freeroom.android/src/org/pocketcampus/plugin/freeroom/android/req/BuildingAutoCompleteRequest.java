@@ -10,13 +10,18 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import android.util.Log;
 
 /**
- * BuildingAutoCompleteRequest class sends an HttpRequest using Thrift to the
- * PocketCampus server in order to get auto-complete suggestions on the room
- * name given.
+ * <code>BuildingAutoCompleteRequest</code> is an extension of
+ * <code>Request</code> and <code>ASyncTask</code> that is used to send a
+ * <code>AutoCompleteRequest</code> request to the server and handle the
+ * <code>AutoCompleteReply</code> reply received from the server, thru an Http
+ * and Thrift exchange with the PocketCampus server.
+ * <p>
+ * It's used to get auto-complete suggestions on the room name given.
  * <p>
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 
@@ -24,34 +29,34 @@ public class BuildingAutoCompleteRequest
 		extends
 		Request<FreeRoomController, Iface, AutoCompleteRequest, AutoCompleteReply> {
 
-	private IFreeRoomView caller;
+	private IFreeRoomView callerView;
 
-	public BuildingAutoCompleteRequest(IFreeRoomView caller) {
-		this.caller = caller;
+	public BuildingAutoCompleteRequest(IFreeRoomView callerView) {
+		this.callerView = callerView;
 	}
 
 	@Override
 	protected AutoCompleteReply runInBackground(Iface client,
-			AutoCompleteRequest param) throws Exception {
-		return client.autoCompleteRoom(param);
+			AutoCompleteRequest request) throws Exception {
+		return client.autoCompleteRoom(request);
 	}
 
 	@Override
-	protected void onResult(FreeRoomController controller,
-			AutoCompleteReply result) {
-		int status = result.getStatus();
+	protected void onResult(FreeRoomController mController,
+			AutoCompleteReply reply) {
+		int status = reply.getStatus();
 		if (status == 200) {
 			Log.v(this.getClass().toString(), "server replied successfully");
-			controller.setAutoCompleteResults(result);
+			mController.setAutoCompleteResults(reply);
 		} else {
-			controller.handleReplyError(caller, status,
-					result.getStatusComment(), this.getClass().toString());
+			mController.handleReplyError(callerView, status,
+					reply.getStatusComment(), this.getClass().toString());
 		}
 	}
 
 	@Override
-	protected void onError(FreeRoomController controller, Exception e) {
-		caller.networkErrorHappened();
+	protected void onError(FreeRoomController mController, Exception e) {
+		callerView.networkErrorHappened();
 		e.printStackTrace();
 	}
 }

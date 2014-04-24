@@ -10,50 +10,56 @@ import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import android.util.Log;
 
 /**
- * SubmitImWorkingRequest class sends an HttpRequest using Thrift to the
- * PocketCampus server in order to indicate that you're going to be in that room
- * to work.
+ * <code>SubmitImWorkingRequest</code> is an extension of
+ * <code>Request</code> and <code>ASyncTask</code> that is used to send a
+ * <code>ImWorkingRequest</code> request to the server and handle the
+ * <code>ImWorkingReply</code> reply received from the server, thru an Http and
+ * Thrift exchange with the PocketCampus server.
+ * <p>
+ * It's used to let the user indicate that he's going to be in that room, at
+ * that time. The data given by the users are used to display the probable
+ * occupancies and display the best rooms to other users.
  * <p>
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 
 public class SubmitImWorkingRequest extends
 		Request<FreeRoomController, Iface, ImWorkingRequest, ImWorkingReply> {
 
-	private IFreeRoomView caller;
+	private IFreeRoomView callerView;
 
-	public SubmitImWorkingRequest(IFreeRoomView caller) {
-		this.caller = caller;
+	public SubmitImWorkingRequest(IFreeRoomView callerView) {
+		this.callerView = callerView;
 	}
 
 	@Override
-	protected ImWorkingReply runInBackground(Iface client,
-			ImWorkingRequest param) throws Exception {
-		return client.indicateImWorking(param);
+	protected ImWorkingReply runInBackground(Iface clientInterface,
+			ImWorkingRequest request) throws Exception {
+		return clientInterface.indicateImWorking(request);
 	}
 
 	@Override
-	protected void onResult(FreeRoomController controller, ImWorkingReply result) {
-		int status = result.getStatus();
+	protected void onResult(FreeRoomController mController, ImWorkingReply reply) {
+		int status = reply.getStatus();
 		if (status == 200) {
 			Log.v(this.getClass().toString(), "server replied successfully");
-			controller.validateImWorking(result);
+			mController.validateImWorking(reply);
 		} else if (status == 409) {
 			// in case of conflict with the same user.
-			controller.conflictImWorking(result);
+			mController.conflictImWorking(reply);
 		} else {
-			controller.handleReplyError(caller, status,
-					result.getStatusComment(), this.getClass().toString());
+			mController.handleReplyError(callerView, status,
+					reply.getStatusComment(), this.getClass().toString());
 		}
 	}
 
 	@Override
-	protected void onError(FreeRoomController controller, Exception e) {
-		caller.networkErrorHappened();
+	protected void onError(FreeRoomController mController, Exception e) {
+		callerView.networkErrorHappened();
 		e.printStackTrace();
 	}
-
 }

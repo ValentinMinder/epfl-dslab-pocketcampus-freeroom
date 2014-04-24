@@ -8,50 +8,54 @@ import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 
 /**
- * FRRequestASyncTask class sends an HttpRequest using Thrift to the
- * PocketCampus server in order to get the Occupancy, for a given period of
- * time, for an optional set of rooms
+ * <code>FRRequestASyncTask</code> is an extension of <code>Request</code> and
+ * <code>ASyncTask</code> that is used to send a <code>FRRequest</code> request
+ * to the server and handle the <code>FRReply</code> reply received from the
+ * server, thru an Http and Thrift exchange with the PocketCampus server.
+ * <p>
+ * It's used to get the detailed occupancy, for a given period of time, for an
+ * optional set of rooms.
  * <p>
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
- * 
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  */
 
 public class FRRequestASyncTask extends
 		Request<FreeRoomController, Iface, FRRequest, FRReply> {
 
-	private IFreeRoomView caller;
+	private IFreeRoomView callerView;
 
-	public FRRequestASyncTask(IFreeRoomView caller) {
-		this.caller = caller;
+	public FRRequestASyncTask(IFreeRoomView callerView) {
+		this.callerView = callerView;
 	}
 
 	@Override
-	protected FRReply runInBackground(Iface client, FRRequest request)
+	protected FRReply runInBackground(Iface clientInterface, FRRequest request)
 			throws Exception {
-		return client.getOccupancy(request);
+		return clientInterface.getOccupancy(request);
 	}
 
 	@Override
-	protected void onResult(FreeRoomController controller, FRReply result) {
-		int status = result.getStatus();
+	protected void onResult(FreeRoomController mController, FRReply reply) {
+		int status = reply.getStatus();
 		if (status == 200) {
-			controller.handleReplySuccess(caller, status,
-					result.getStatusComment(), this.getClass().getName(),
-					result.getClass().getSimpleName());
-			controller.setOccupancyResults(result);
+			mController.handleReplySuccess(callerView, status, reply
+					.getStatusComment(), this.getClass().getName(), reply
+					.getClass().getSimpleName());
+			mController.setOccupancyResults(reply);
 		} else {
-			caller.anyError();
-			controller.handleReplyError(caller, status,
-					result.getStatusComment(), this.getClass().toString());
+			callerView.anyError();
+			mController.handleReplyError(callerView, status,
+					reply.getStatusComment(), this.getClass().toString());
 		}
 	}
 
 	@Override
-	protected void onError(FreeRoomController controller, Exception e) {
-		caller.networkErrorHappened();
-		caller.anyError();
+	protected void onError(FreeRoomController mController, Exception e) {
+		callerView.networkErrorHappened();
+		callerView.anyError();
 		e.printStackTrace();
 	}
 }

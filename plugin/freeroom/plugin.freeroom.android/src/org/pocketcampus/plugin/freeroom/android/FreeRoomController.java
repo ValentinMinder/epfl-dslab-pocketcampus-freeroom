@@ -217,7 +217,7 @@ public class FreeRoomController extends PluginController implements
 	 * @param reply
 	 *            the reply from the server
 	 */
-	public void validateImWorking(ImWorkingReply result) {
+	public void validateImWorking(ImWorkingReply reply) {
 		// TODO: hard coded string
 		Toast.makeText(getApplicationContext(),
 				"Your working indication was succcessfully submitted",
