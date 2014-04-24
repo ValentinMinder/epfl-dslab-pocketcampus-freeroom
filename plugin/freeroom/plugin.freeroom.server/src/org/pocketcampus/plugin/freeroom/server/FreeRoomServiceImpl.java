@@ -161,10 +161,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			FRRoom room, String hash) {
 		// TODO do this rounding before, so it become common
 		long tsStart = Utils.roundSAndMSToZero(period.getTimeStampStart());
-
+		//TODO one room per user at a time 
 		String checkRequest = "SELECT COUNT(*) AS count "
 				+ "FROM `fr-checkOccupancy` co "
-				+ "WHERE co.uid = ? AND co.timestampStart = ? AND hash = ?";
+				+ "WHERE co.timestampStart = ? AND hash = ?";
 
 		Connection connectBDD;
 		try {
@@ -172,9 +172,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			PreparedStatement checkQuery = connectBDD
 					.prepareStatement(checkRequest);
 
-			checkQuery.setString(1, room.getUid());
-			checkQuery.setLong(2, tsStart);
-			checkQuery.setString(3, hash);
+//			checkQuery.setString(1, room.getUid());
+			checkQuery.setLong(1, tsStart);
+			checkQuery.setString(2, hash);
 
 			ResultSet checkResult = checkQuery.executeQuery();
 			if (checkResult.next()) {
@@ -1016,12 +1016,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				request.getHash());
 		log(Level.INFO, "ImWorkingThere request for room " + room.getDoorCode()
 				+ " : " + success);
-
+		//TODO return 409 conflict http response if already submitted
 		if (success) {
 			return new ImWorkingReply(HttpURLConnection.HTTP_OK, "");
 		} else {
-			return new ImWorkingReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
-					"Cannot insert user occupancy");
+//			return new ImWorkingReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
+//					"Cannot insert user occupancy");
+			return new ImWorkingReply(HttpURLConnection.HTTP_CONFLICT, "User already said he was working there");
 		}
 	}
 
