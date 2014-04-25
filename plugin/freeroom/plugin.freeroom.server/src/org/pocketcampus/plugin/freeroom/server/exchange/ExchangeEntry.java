@@ -1,11 +1,15 @@
 package org.pocketcampus.plugin.freeroom.server.exchange;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import microsoft.exchange.webservices.data.AttendeeAvailability;
 import microsoft.exchange.webservices.data.AttendeeInfo;
@@ -31,6 +35,9 @@ public class ExchangeEntry {
 	private String domain = "intranet";
 
 	private static String defaultDomain = "intranet";
+	private static String propertyFile = "local.properties";
+	private Properties properties = new Properties();
+	
 
 	private static URI EWAURI;
 	// should be new URI("https://ewa.epfl.ch/EWS/Exchange.asmx");
@@ -101,16 +108,33 @@ public class ExchangeEntry {
 	 * @return true is connection is established.
 	 */
 	private boolean setUp() {
-		service = new ExchangeService();
-
-		ExchangeCredentials credentials = new WebCredentials(gasparUserName,
-				gasparPassword, domain);
-		service.setCredentials(credentials);
+		FileInputStream fis;
 		try {
-			service.autodiscoverUrl(emailAddress);
-		} catch (Exception e) {
-			e.printStackTrace();
-			service.setUrl(EWAURI);
+			fis = new FileInputStream(propertyFile);
+			properties.load(fis);
+			
+			//TODO default value
+			gasparUserName = properties.getProperty("username");
+			gasparPassword = properties.getProperty("password");
+			fis.close();
+			service = new ExchangeService();
+
+			ExchangeCredentials credentials = new WebCredentials(gasparUserName,
+					gasparPassword, domain);
+			service.setCredentials(credentials);
+			try {
+				service.autodiscoverUrl(emailAddress);
+			} catch (Exception e) {
+				e.printStackTrace();
+				service.setUrl(EWAURI);
+			}
+		} catch (FileNotFoundException e1) {
+			System.err.println("Cannot load property file");
+			return false;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			System.err.println("Cannot load property file");
+			return false;
 		}
 		return (service.getServerInfo() != null);
 	}
