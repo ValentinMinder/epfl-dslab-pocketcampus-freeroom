@@ -133,7 +133,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
 			FRRoom room, String hash) {
-
+		
+		period.setTimeStampStart(Utils.roundSAndMSToZero(period.getTimeStampStart()));
+		period.setTimeStampEnd(Utils.roundSAndMSToZero(period.getTimeStampEnd()));
 		boolean allowInsert = true;
 		if (type == OCCUPANCY_TYPE.USER) {
 			allowInsert = allowInsert
@@ -156,12 +158,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	}
 
-	// TODO answer properly in case of multiple submission (bad request...)
 	private boolean checkMultipleSubmissionUserOccupancy(FRPeriod period,
 			FRRoom room, String hash) {
-		// TODO do this rounding before, so it become common
-		long tsStart = Utils.roundSAndMSToZero(period.getTimeStampStart());
-		//TODO one room per user at a time 
+		long tsStart = period.getTimeStampStart();
 		String checkRequest = "SELECT COUNT(*) AS count "
 				+ "FROM `fr-checkOccupancy` co "
 				+ "WHERE co.timestampStart = ? AND hash = ?";
@@ -183,7 +182,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					return true;
 				}
 			} else {
-				// TODO check if this case is correct
 				return true;
 			}
 
@@ -201,8 +199,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private boolean insertAndCheckOccupancyRoom(FRPeriod period, FRRoom room,
 			OCCUPANCY_TYPE typeToInsert, String hash) {
-		long tsStart = Utils.roundSAndMSToZero(period.getTimeStampStart());
-		long tsEnd = Utils.roundSAndMSToZero(period.getTimeStampEnd());
 
 		boolean userOccupation = (typeToInsert == OCCUPANCY_TYPE.USER) ? true
 				: false;
@@ -278,7 +274,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					// return false;
 					// }
 					// } else if (typeToInsert == OCCUPANCY_TYPE.USER){
-					// // TODO check how user occupancies is updated to see if
+					// // TODO  check how user occupancies is updated to see if
 					// it
 					// // is worth keeping this branchment
 					// if (start > tsStart && start < tsEnd) {
@@ -590,7 +586,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 //					roomsFreeSQL += uid;
 					uidsList.add(uid);
 				}
-				// TODO call anyspecific list of room with the given list ? be
 				// careful to rooms that has no occupancy won't appear in this
 				// list !
 
@@ -908,9 +903,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * 
 	 * The hint may be the start of the door code or the uid.
 	 * 
-	 * TODO: verifies that it works with PH D2 398, PHD2 398, PH D2398 and
-	 * PHD2398
-	 * 
 	 */
 	@Override
 	public AutoCompleteReply autoCompleteRoom(AutoCompleteRequest request)
@@ -994,8 +986,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			reply = new AutoCompleteReply(HttpURLConnection.HTTP_OK, ""
 					+ HttpURLConnection.HTTP_OK);
 			reply.setListRoom(Utils.sortRoomsByBuilding(rooms));
-			// TODO TO DELETE
-			reply.setListFRRoom(rooms);
 
 		} catch (SQLException e) {
 			reply = new AutoCompleteReply(
@@ -1014,17 +1004,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			throws TException {
 		WorkingOccupancy work = request.getWork();
 		FRPeriod period = work.getPeriod();
+		
 		FRRoom room = work.getRoom();
 		boolean success = insertOccupancy(period, OCCUPANCY_TYPE.USER, room,
 				request.getHash());
 		log(Level.INFO, "ImWorkingThere request for room " + room.getDoorCode()
 				+ " : " + success);
-		//TODO return 409 conflict http response if already submitted
 		if (success) {
 			return new ImWorkingReply(HttpURLConnection.HTTP_OK, "");
 		} else {
-//			return new ImWorkingReply(HttpURLConnection.HTTP_INTERNAL_ERROR,
-//					"Cannot insert user occupancy");
 			return new ImWorkingReply(HttpURLConnection.HTTP_CONFLICT, "User already said he was working there");
 		}
 	}

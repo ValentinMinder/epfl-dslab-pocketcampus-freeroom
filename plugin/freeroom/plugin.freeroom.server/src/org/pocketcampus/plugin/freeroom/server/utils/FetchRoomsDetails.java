@@ -332,7 +332,6 @@ public class FetchRoomsDetails {
 		return true;
 	}
 
-	// TODO extract english info
 	private String getFromFileDinCatStringFR(String dincat) {
 		extractDinCatText();
 		return dincat_textFR.get(dincat);
