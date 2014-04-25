@@ -138,6 +138,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		period.setTimeStampEnd(Utils.roundSAndMSToZero(period.getTimeStampEnd()));
 		boolean allowInsert = true;
 		if (type == OCCUPANCY_TYPE.USER) {
+			period.setTimeStampStart(Utils.roundToNearestHalfHourBefore(period
+					.getTimeStampStart()));
 			allowInsert = allowInsert
 					&& checkMultipleSubmissionUserOccupancy(period, room, hash);
 		}
@@ -199,10 +201,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	private boolean insertAndCheckOccupancyRoom(FRPeriod period, FRRoom room,
 			OCCUPANCY_TYPE typeToInsert, String hash) {
-
+		
+		long tsStart = period.getTimeStampStart();
+		long tsEnd = period.getTimeStampEnd();
 		boolean userOccupation = (typeToInsert == OCCUPANCY_TYPE.USER) ? true
 				: false;
-
+		
 		// first check if you can fully insert it (no other overlapping
 		// occupancy of rooms)
 		String checkRequest = "SELECT * FROM `fr-occupancy` oc "
