@@ -46,7 +46,7 @@ public class FRRoomSuggestionArrayAdapter<T> extends ArrayAdapter<FRRoom> {
 		ViewHolder vholder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_roomslist, null);
+					R.layout.freeroom_layout_room_home, null);
 			vholder = new ViewHolder();
 			vholder.setTextView((TextView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_roomname));

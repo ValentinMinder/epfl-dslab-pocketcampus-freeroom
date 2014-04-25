@@ -5,15 +5,22 @@ import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.R;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
+import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -36,13 +43,17 @@ public class ActualOccupationArrayAdapter<T> extends
 	private List<ActualOccupation> data;
 	// hold the caller view for colors updates.
 	private FreeRoomModel mModel;
+	private FreeRoomController mController;
+	private FreeRoomHomeView homeView;
 
 	public ActualOccupationArrayAdapter(Context c, List<ActualOccupation> data,
-			FreeRoomModel model) {
+			FreeRoomController mController, FreeRoomHomeView homeView) {
 		super(c, R.layout.sdk_list_entry, R.id.sdk_list_entry_text, data);
 		this.context = c;
 		this.data = data;
-		this.mModel = model;
+		this.mController = mController;
+		this.homeView = homeView;
+		this.mModel = (FreeRoomModel) mController.getModel();
 	}
 
 	@Override
@@ -50,10 +61,14 @@ public class ActualOccupationArrayAdapter<T> extends
 		ViewHolder vholder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_roomslist, null);
+					R.layout.freeroom_layout_room_details, null);
 			vholder = new ViewHolder();
 			vholder.setTextView((TextView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_roomname));
+					.findViewById(R.id.freeroom_layout_details_text));
+			vholder.setImageViewShare((ImageView) convertView
+					.findViewById(R.id.freeroom_layout_details_share));
+			vholder.setImageViewPeople((ImageView) convertView
+					.findViewById(R.id.freeroom_layout_details_people));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolder) convertView.getTag();
@@ -71,19 +86,58 @@ public class ActualOccupationArrayAdapter<T> extends
 		s += sdf.format(start) + "-" + sdf.format(end) + " ";
 
 		boolean free = mActualOccupation.isAvailable();
-		// TODO: string
-		s += free ? "free" : "occupied";
 
 		if (free) {
-			if (mActualOccupation.isSetProbableOccupation()) {
-				s += mActualOccupation.getProbableOccupation() + " p.";
+			if (mActualOccupation.isSetProbableOccupation()
+					&& mActualOccupation.getProbableOccupation() > 0) {
+				s += "(" + mActualOccupation.getProbableOccupation() + " p.) ";
 			}
 			if (mActualOccupation.isSetRatioOccupation()) {
-				s += "(" + mActualOccupation.getRatioOccupation() + " %)";
+				s += "("
+						+ (mActualOccupation.getRatioOccupation() * 100 + "    ")
+								.substring(0, 3) + " %)";
 			}
 		}
 
 		tv.setText(s);
+
+		final ImageView ivpeople = vholder.getImageViewPeople();
+		if (free) {
+			ivpeople.setImageResource(mModel
+					.getImageFromRatioOccupation(mActualOccupation
+							.getRatioOccupation()));
+		} else {
+			ivpeople.setImageResource(R.drawable.occupation_occupied);
+		}
+
+		final ImageView ivshare = vholder.getImageViewShare();
+		if (free) {
+			ivshare.setImageResource(R.drawable.share);
+			OnClickListener ocl = new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+
+					// TODO: ACTUAL sharing!
+					FRPeriod mPeriod = mActualOccupation.getPeriod();
+					FRRoom mRoom = mModel.getDisplayedOccupancy().getRoom();
+
+					String room = mRoom.getDoorCode();
+					System.out.println("im in room " + room + "time: "
+							+ mActualOccupation.getPeriod());
+
+					WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
+					ImWorkingRequest request = new ImWorkingRequest(work,
+							mModel.getAnonymID());
+					mController.prepareImWorking(request);
+					mController.ImWorking(homeView);
+				}
+			};
+			ivshare.setOnClickListener(ocl);
+			convertView.setOnClickListener(ocl);
+		} else {
+			ivshare.setImageResource(R.drawable.share_disabled);
+		}
 
 		int color = free ? mModel.COLOR_CHECK_OCCUPANCY_FREE
 				: mModel.COLOR_CHECK_OCCUPANCY_OCCUPIED;
@@ -104,6 +158,8 @@ public class ActualOccupationArrayAdapter<T> extends
 	 */
 	private class ViewHolder {
 		private TextView tv = null;
+		private ImageView ivshare = null;
+		private ImageView ivpeople = null;
 
 		public void setTextView(TextView tv) {
 			this.tv = tv;
@@ -111,6 +167,22 @@ public class ActualOccupationArrayAdapter<T> extends
 
 		public TextView getTextView() {
 			return this.tv;
+		}
+
+		public void setImageViewShare(ImageView iv) {
+			this.ivshare = iv;
+		}
+
+		public ImageView getImageViewShare() {
+			return this.ivshare;
+		}
+
+		public void setImageViewPeople(ImageView iv) {
+			this.ivpeople = iv;
+		}
+
+		public ImageView getImageViewPeople() {
+			return this.ivpeople;
 		}
 	}
 

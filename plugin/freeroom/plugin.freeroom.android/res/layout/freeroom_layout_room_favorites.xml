@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Same properties for the layout and textview as the one in the pocketcampus sdk : 
+sdk_separated_list_separation_header , difference is a relativeLayout instead of LinearLayout 
+and an ImageView added
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/freeroom_layout_rooms_favorites"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="left"
+    android:orientation="horizontal"
+    android:padding="2dip" >
+
+    <TextView
+        android:id="@+id/freeroom_layout_favlist_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="10dip"
+        android:text="text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/freeroom_layout_favlist_map"
+        android:layout_width="35dip"
+        android:layout_height="35dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="right"
+        android:layout_marginRight="5dip"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_map"
+        android:src="@drawable/map_normal_icon" />
+
+    <ImageView
+        android:id="@+id/freeroom_layout_favlist_fav"
+        android:layout_width="35dip"
+        android:layout_height="35dip"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dip"
+        android:layout_toLeftOf="@id/freeroom_layout_favlist_map"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
+        android:src="@drawable/share" />
+
+</RelativeLayout>

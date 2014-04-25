@@ -105,7 +105,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		ViewHolderChild vholder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_roomslist, null);
+					R.layout.freeroom_layout_room_home, null);
 			vholder = new ViewHolderChild();
 			vholder.setTextView((TextView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_roomname));
@@ -113,10 +113,8 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					.findViewById(R.id.freeroom_layout_roomslist_map));
 			vholder.setImageViewStar((ImageView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_fav));
-			vholder.setImageViewInfo((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_info));
-			vholder.setImageViewArrow((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_arrow));
+			vholder.setImageViewShare((ImageView) convertView
+					.findViewById(R.id.freeroom_layout_roomslist_share));
 			vholder.setImageViewPeople((ImageView) convertView
 					.findViewById(R.id.freeroom_layout_roomslist_people));
 			convertView.setTag(vholder);
@@ -132,8 +130,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 		final ImageView star = vholder.getImageViewStar();
 		final ImageView map = vholder.getImageViewMap();
-		final ImageView info = vholder.getImageViewInfo();
-		final ImageView arrow = vholder.getImageViewArrow();
+		final ImageView share = vholder.getImageViewShare();
 		final ImageView people = vholder.getImageViewPeople();
 
 		map.setImageResource(R.drawable.map_normal_icon);
@@ -159,7 +156,6 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			star.setImageResource(android.R.drawable.star_big_on);
 		} else {
 			star.setImageResource(android.R.drawable.star_big_off);
-
 		}
 
 		star.setOnClickListener(new OnClickListener() {
@@ -178,22 +174,13 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		});
 		vholder.setStarCheck(false);
 
-		info.setImageResource(R.drawable.information);
-		info.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mModel.setDisplayedOccupancy(occupancy);
-				homeView.displayPopupInfo();
-			}
-		});
-
 		// only display if necessary (if it's only free)
 		if (!occupancy.isIsAtLeastOccupiedOnce()
 				&& occupancy.isIsAtLeastFreeOnce()) {
-			arrow.setImageResource(R.drawable.arrow);
-			arrow.setOnClickListener(new OnClickListener() {
+			share.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					// share
 					List<ActualOccupation> list = occupancy.getOccupancy();
 					long tss = list.get(0).getPeriod().getTimeStampStart();
 					long tse = list.get(list.size() - 1).getPeriod()
@@ -207,16 +194,21 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 					mController.ImWorking(homeView);
 				}
 			});
+		} else {
+			share.setImageResource(R.drawable.share_disabled);
 		}
 
 		people.setImageResource(mModel.getImageFromRatioOccupation(occupancy
 				.getRatioWorstCaseProbableOccupancy()));
-		people.setOnClickListener(new OnClickListener() {
+		OnClickListener ocl = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO: should we do something ?
+				mModel.setDisplayedOccupancy(occupancy);
+				homeView.displayPopupInfo();
 			}
-		});
+		};
+		people.setOnClickListener(ocl);
+		convertView.setOnClickListener(ocl);
 
 		convertView.setBackgroundColor(mModel.getColor(occupancy));
 		return convertView;
@@ -379,7 +371,9 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * Expands all the groups if there are no more than 3 groups or not more than 10 results.
+	 * Expands all the groups if there are no more than 3 groups or not more
+	 * than 10 results.
+	 * 
 	 * @param ev
 	 */
 	public void updateCollapse(ExpandableListView ev) {
@@ -402,8 +396,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		private TextView tv = null;
 		private ImageView map = null;
 		private ImageView star = null;
-		private ImageView info = null;
-		private ImageView arrow = null;
+		private ImageView share = null;
 		private ImageView people = null;
 		private boolean starChecked = false;
 
@@ -439,20 +432,12 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			starChecked = check;
 		}
 
-		public ImageView getImageViewInfo() {
-			return info;
+		public ImageView getImageViewShare() {
+			return share;
 		}
 
-		public void setImageViewInfo(ImageView iv) {
-			this.info = iv;
-		}
-
-		public ImageView getImageViewArrow() {
-			return arrow;
-		}
-
-		public void setImageViewArrow(ImageView iv) {
-			this.arrow = iv;
+		public void setImageViewShare(ImageView iv) {
+			this.share = iv;
 		}
 
 		public ImageView getImageViewPeople() {

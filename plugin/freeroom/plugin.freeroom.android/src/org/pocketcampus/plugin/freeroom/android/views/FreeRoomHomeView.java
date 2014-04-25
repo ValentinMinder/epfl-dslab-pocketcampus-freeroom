@@ -238,9 +238,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		popupInfoWindow.setBackgroundDrawable(new BitmapDrawable());
 
 		TextView tv = (TextView) popupInfoView
-				.findViewById(R.id.reeroom_layout_popup_info_title);
-		// TODO: string + customized title + bigger/black
-		tv.setText("Room detailled informations");
+				.findViewById(R.id.freeroom_layout_roomslist_roomname);
+		tv.setText("room");
 
 		ImageView img = (ImageView) popupInfoView
 				.findViewById(R.id.freeroom_layout_popup_info_close);
@@ -371,12 +370,21 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	public void displayPopupInfo() {
 		Occupancy mOccupancy = mModel.getDisplayedOccupancy();
 		if (mOccupancy != null) {
+			TextView tv = (TextView) popupInfoView
+					.findViewById(R.id.freeroom_layout_roomslist_roomname);
+			FRRoom mRoom = mOccupancy.getRoom();
+			String text = mRoom.getDoorCode();
+			if (mRoom.isSetDoorCodeAlias()) {
+				text = mRoom.getDoorCodeAlias() + " (" + text + ")";
+			}
+			tv.setText(text);
+
 			ListView roomOccupancyListView = (ListView) popupInfoView
 					.findViewById(R.id.freeroom_layout_popup_info_roomOccupancy);
 			roomOccupancyListView
 					.setAdapter(new ActualOccupationArrayAdapter<ActualOccupation>(
 							getApplicationContext(), mOccupancy.getOccupancy(),
-							mModel));
+							mController, this));
 
 			ListView infoRoomListView = (ListView) popupInfoView
 					.findViewById(R.id.freeroom_layout_popup_info_infoRoom);

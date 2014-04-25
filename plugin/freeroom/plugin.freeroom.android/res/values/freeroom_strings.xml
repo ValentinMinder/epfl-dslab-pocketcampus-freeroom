@@ -72,7 +72,7 @@
     <string name="freeroom_layout_roomslist_img_fav">fav icon</string>
     <string name="freeroom_layout_roomslist_img_map">map icon</string>
     <string name="freeroom_layout_roomslist_img_info">info icon</string>
-    <string name="freeroom_layout_roomslist_img_arrow">arrow icon</string>
+    <string name="freeroom_layout_roomslist_img_share">share icon</string>
     <string name="freeroom_layout_roomslist_img_people">people icon</string>
     <string name="freeroom_layout_building_header_show_more_img">show more icon</string>
 

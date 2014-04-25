@@ -78,9 +78,10 @@ public class ActualOccupationView extends FreeRoomAbstractView implements
 		// mLayout.setTitle(getString(R.string.freeroom_title_occupancy_search));
 		mLayout.hideTitle();
 
-		mAdapterOcc = new ActualOccupationArrayAdapter<ActualOccupation>(
-				getApplicationContext(), mModel.getDisplayedOccupancy()
-						.getOccupancy(), mModel);
+		// TODO: this view is useless and must be deleted
+//		mAdapterOcc = new ActualOccupationArrayAdapter<ActualOccupation>(
+//				getApplicationContext(), mModel.getDisplayedOccupancy()
+//						.getOccupancy(), mModel);
 		mAutoCompleteSuggestionListView.setAdapter(mAdapterOcc);
 
 		final IFreeRoomView view = this;
