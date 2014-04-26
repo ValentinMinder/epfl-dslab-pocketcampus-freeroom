@@ -96,7 +96,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				PC_SRV_CONFIG.getString("DB_PASSWORD"), this);
 
 		// update ewa : should be done periodically...
-		boolean updateEWA = false;
+		boolean updateEWA = true;
 		if (updateEWA) {
 			if (mExchangeService.updateEWAOccupancy()) {
 				System.out.println("EWA data succesfully updated!");

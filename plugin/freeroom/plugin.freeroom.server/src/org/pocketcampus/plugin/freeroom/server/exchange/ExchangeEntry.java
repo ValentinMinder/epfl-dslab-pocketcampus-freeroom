@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.freeroom.server.exchange;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class ExchangeEntry {
 	private String domain = "intranet";
 
 	private static String defaultDomain = "intranet";
-	private static String propertyFile = "local.properties";
+	private static String propertyFile = "src" + File.separator + "local.properties";
 	private Properties properties = new Properties();
 	
 
@@ -101,7 +102,7 @@ public class ExchangeEntry {
 		this.domain = domain;
 		setUp();
 	}
-
+//TODO issue, search 28 avr BC08, displayed as occupied but no occupancy
 	/**
 	 * Initiates the service and the connection.
 	 * 
