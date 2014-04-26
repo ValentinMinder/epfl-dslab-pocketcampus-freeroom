@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the search popup window. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="4dp"
+        android:background="@android:color/background_light"
+        android:orientation="vertical"
+        android:padding="4dp" >
+
+        <!-- headers for title and close button -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:orientation="horizontal" >
+
+            <!-- Title (search) -->
+
+            <Button
+                android:id="@+id/freeroom_layout_popup_search_go"
+                android:layout_width="0dp"
+                android:layout_gravity="right"
+                android:layout_weight="5"
+                android:text="textgo"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <!-- Reset button -->
+
+            <Button
+                android:id="@+id/freeroom_layout_popup_search_reset"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="3"
+                android:text="reset"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <!-- Button to close the popup -->
+
+            <ImageView
+                android:id="@+id/freeroom_layout_popup_search_close"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="2"
+                android:contentDescription="@string/freeroom_layout_popup_info_img_close"
+                android:src="@drawable/close" />
+        </LinearLayout>
+
+        <!-- Date and timepickers row -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:orientation="horizontal" >
+
+            <!-- Date button -->
+
+            <Button
+                android:id="@+id/freeroom_layout_popup_search_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="8"
+                android:text="date"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/freeroom_layout_popup_search_hour_start"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="5"
+                android:text="h_s"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/freeroom_layout_popup_search_hour_end"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="5"
+                android:text="h_f"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+            
+            <Button
+                android:id="@+id/freeroom_layout_popup_search_hour_end_plus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="3"
+                android:text="+1h"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/freeroom_layout_popup_search_any"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="5"
+                android:text="any free"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/freeroom_layout_popup_search_spec"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="5"
+                android:scrollHorizontally="true"
+                android:text="spec"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/freeroom_layout_popup_search_opt_line"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="4dp"
+                android:background="@android:color/background_light"
+                android:orientation="horizontal"
+                android:paddingTop="4dp" >
+
+                <Button
+                    android:id="@+id/freeroom_layout_popup_search_fav"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="5"
+                    android:text="fav"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:id="@+id/freeroom_layout_popup_search_user"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="5"
+                    android:text="user"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:id="@+id/freeroom_layout_popup_search_user"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="5"
+                    android:text="allow non-free"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/freeroom_layout_popup_search_prev_search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0" />
+
+        <ListView
+            android:id="@+id/freeroom_layout_popup_search_autocomplete"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0" />
+    </LinearLayout>
+
+</LinearLayout>

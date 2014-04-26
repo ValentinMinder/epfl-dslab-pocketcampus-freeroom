@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -105,10 +106,23 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private PopupWindow popupInfoWindow;
 
 	/**
+	 * View that holds the SEARCH popup content.
+	 */
+	private View popupSearchView;
+	/**
+	 * Window that holds the SEARCH popup. Note: popup window can be closed by:
+	 * the closing button (red cross), back button, or clicking outside the
+	 * popup.
+	 */
+	private PopupWindow popupSearchWindow;
+
+	/**
 	 * Action to perform a customized search.
 	 */
 	private Action search = new Action() {
 		public void performAction(View view) {
+			// TODO: remove the rest, only keep the popup
+			popupSearchWindow.showAsDropDown(mTextView, 0, 0);
 			// TODO: popup instead of new activity
 			Toast.makeText(getApplicationContext(), "search",
 					Toast.LENGTH_SHORT).show();
@@ -256,6 +270,39 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
+	 * Inits the popup to diplay the information about a room.
+	 */
+	private void initPopupSearch() {
+		// construct the popup
+		// it MUST fill the parent in height, such that weight works in xml for
+		// heights. Otherwise, some elements may not be displayed anymore
+		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+				.getSystemService(LAYOUT_INFLATER_SERVICE);
+		popupSearchView = layoutInflater.inflate(
+				R.layout.freeroom_layout_popup_search, null);
+		popupSearchWindow = new PopupWindow(popupSearchView,
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, true);
+
+		// allows outside clicks to close the popup
+		popupSearchWindow.setOutsideTouchable(true);
+		popupSearchWindow.setBackgroundDrawable(new BitmapDrawable());
+
+		Button tv = (Button) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_go);
+		tv.setText("Go!!");
+
+		ImageView img = (ImageView) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_close);
+		img.setOnClickListener(new ImageView.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				popupSearchWindow.dismiss();
+			}
+		});
+	}
+
+	/**
 	 * Overrides the legacy <code>onKeyDown</code> method in order to close the
 	 * popupWindow if one was opened.
 	 * 
@@ -268,8 +315,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// Override back button
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			boolean flag = false;
 			if (popupInfoWindow.isShowing()) {
 				popupInfoWindow.dismiss();
+				flag = true;
+			}
+			if (popupSearchWindow.isShowing()) {
+				popupSearchWindow.dismiss();
+				flag = true;
+			}
+			if (flag) {
 				return true;
 			}
 		}
@@ -302,6 +357,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		array.addAll(set);
 
 		initPopupInfoRoom();
+		initPopupSearch();
 		mModel.setFRRequest(new FRRequest(FRTimes.getNextValidPeriod(), mModel
 				.getAllRoomMapFavorites().keySet().isEmpty(), array));
 	}
