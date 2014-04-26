@@ -305,8 +305,33 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		return convertView;
 	}
 
+	/**
+	 * When clicking on the headers (building name) on the arrow or more/reduce
+	 * text, this method updates the text (more/reduce/number of rooms
+	 * available) and the image (arrow down or up). It works also as an
+	 * auto-reduce when collapsing.
+	 * 
+	 * @param more
+	 *            TextView more/reduce
+	 * @param iv
+	 *            ImageView for up/down arrow
+	 * @param ev
+	 *            ExpandableListView of the whole ListView
+	 * @param groupPosition
+	 *            the index of the header we are interested in
+	 */
 	private void updateClick(TextView more, ImageView iv,
 			ExpandableListView ev, int groupPosition) {
+		// if the group is collapsed, then the rooms available must be reduced
+		if (!ev.isGroupExpanded(groupPosition)
+				&& data.getAvailable(groupPosition)) {
+			data.switchAvailable(groupPosition);
+		}
+
+		// if the group is NOT expanded or
+		// if the group doesn't exceed the limit
+		// we display the number of room available
+		// and the arrows works for collapse/expend the listView
 		if (!ev.isGroupExpanded(groupPosition)
 				|| !data.isOverLimit(groupPosition)) {
 			int roomNumber = data.getChildCountTotal(groupPosition);
@@ -327,11 +352,14 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			}
 
 		} else {
+			// else, if the group is expanded and reach the limit
+			// if everything available, arrow up to reduce
 			if (data.getAvailable(groupPosition)) {
 				more.setText(context
 						.getString(R.string.freeroom_results_room_header_reduce));
 				iv.setImageResource(R.drawable.arrow_up);
 			} else {
+				// else, if not everything available, arrow down to see more
 				more.setText(context
 						.getString(R.string.freeroom_results_room_header_more)
 						+ ": " + data.getChildCountNonAvailable(groupPosition));
