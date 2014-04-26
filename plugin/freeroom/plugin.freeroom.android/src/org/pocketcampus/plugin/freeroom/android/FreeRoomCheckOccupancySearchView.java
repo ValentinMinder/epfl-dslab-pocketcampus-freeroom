@@ -632,27 +632,27 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 		mAutoCompleteSuggestionArrayListFRRoom.clear();
 		mAutoCompleteSuggestionArrayListString.clear();
 
-		Iterator<FRRoom> iter = mModel.getAutocompleteSuggestions().iterator();
-		while (iter.hasNext()) {
-			FRRoom room = iter.next();
-
-			// rooms that are already selected are not displayed...
-			if (!mSelectedRoomsToQueryHashSet.contains(room)) {
-				String result = "";
-				result += room.getDoorCode();
-				int capacity = room.getCapacity();
-				FRRoomType t = room.getType();
-				if (capacity > 0 && t != null) {
-					result += "(";
-					result += "Type: " + t + ";";
-					result += "Capacity: " + capacity + " places";
-					result += ")";
-				}
-				result += "";
-				mAutoCompleteSuggestionArrayListFRRoom.add(room);
-				mAutoCompleteSuggestionArrayListString.add(result);
-			}
-		}
+//		Iterator<FRRoom> iter = mModel.getAutocompleteSuggestions().iterator();
+//		while (iter.hasNext()) {
+//			FRRoom room = iter.next();
+//
+//			// rooms that are already selected are not displayed...
+//			if (!mSelectedRoomsToQueryHashSet.contains(room)) {
+//				String result = "";
+//				result += room.getDoorCode();
+//				int capacity = room.getCapacity();
+//				FRRoomType t = room.getType();
+//				if (capacity > 0 && t != null) {
+//					result += "(";
+//					result += "Type: " + t + ";";
+//					result += "Capacity: " + capacity + " places";
+//					result += ")";
+//				}
+//				result += "";
+//				mAutoCompleteSuggestionArrayListFRRoom.add(room);
+//				mAutoCompleteSuggestionArrayListString.add(result);
+//			}
+//		}
 
 		mAdapter.notifyDataSetChanged();
 		mAutoCompleteSuggestionListView.setAdapter(mAdapter);
