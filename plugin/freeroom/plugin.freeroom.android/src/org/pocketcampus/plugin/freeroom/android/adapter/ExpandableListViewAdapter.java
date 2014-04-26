@@ -7,11 +7,8 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
-import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
-import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.content.Context;
 import android.content.Intent;
@@ -124,9 +121,14 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 		final Occupancy occupancy = data.getChild(groupPosition, childPosition);
 
-		final String doorCode = occupancy.getRoom().getDoorCode();
+		FRRoom mRoom = occupancy.getRoom();
+		final String doorCode = mRoom.getDoorCode();
 		TextView tv = vholder.getTextView();
-		tv.setText(doorCode);
+		if (mRoom.isSetDoorCodeAlias()) {
+			tv.setText(mRoom.getDoorCodeAlias());
+		} else {
+			tv.setText(doorCode);
+		}
 
 		final ImageView star = vholder.getImageViewStar();
 		final ImageView map = vholder.getImageViewMap();

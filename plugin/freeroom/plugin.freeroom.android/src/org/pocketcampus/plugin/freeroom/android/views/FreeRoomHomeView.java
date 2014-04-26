@@ -34,7 +34,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -417,7 +416,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			final FRRoom mRoom = mOccupancy.getRoom();
 			String text = mRoom.getDoorCode();
 			if (mRoom.isSetDoorCodeAlias()) {
-				text = mRoom.getDoorCodeAlias() + " (" + text + ")";
+				// alias is displayed IN PLACE of the official name
+				// the official name can be found in bottom of popup
+				text = mRoom.getDoorCodeAlias();
 			}
 			tv.setText(text);
 
@@ -432,12 +433,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							getApplicationContext(), mOccupancy.getOccupancy(),
 							mController, this));
 
-			ListView infoRoomListView = (ListView) popupInfoView
-					.findViewById(R.id.freeroom_layout_popup_info_infoRoom);
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-					R.layout.sdk_list_entry, R.id.sdk_list_entry_text,
-					getInfoFRRoom(mOccupancy.getRoom()));
-			infoRoomListView.setAdapter(adapter);
+			TextView detailsTextView = (TextView) popupInfoView
+					.findViewById(R.id.freeroom_layout_popup_info_details);
+			detailsTextView.setText(getInfoFRRoom(mOccupancy.getRoom()));
 			popupInfoWindow.showAsDropDown(mTextView, 0, 0);
 		}
 	}
@@ -464,38 +462,43 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Converts a FRRoom to an arrayList of properties, in order to display
-	 * them.
+	 * Converts a FRRoom to a String of only major properties, in order to
+	 * display them. It includes name (with alias), type, capacity, surface and
+	 * UID.
 	 * <p>
 	 * TODO: this method may be changed
 	 * 
 	 * @param mFrRoom
 	 * @return
 	 */
-	private ArrayList<String> getInfoFRRoom(FRRoom mFrRoom) {
-		ArrayList<String> array = new ArrayList<String>(20);
+	private String getInfoFRRoom(FRRoom mFrRoom) {
+		StringBuilder builder = new StringBuilder(50);
 		if (mFrRoom.isSetDoorCode()) {
 			if (mFrRoom.isSetDoorCodeAlias()) {
-				array.add(mFrRoom.getDoorCodeAlias() + " ("
-						+ mFrRoom.getDoorCode() + ")");
+				builder.append(mFrRoom.getDoorCode() + " (alias: "
+						+ mFrRoom.getDoorCodeAlias() + ")");
 			} else {
-				array.add(mFrRoom.getDoorCode());
+				builder.append(mFrRoom.getDoorCode());
 			}
 		}
 		if (mFrRoom.isSetType()) {
-			array.add(getString(R.string.freeroom_popup_info_type) + ": "
-					+ mFrRoom.getType());
+			builder.append(" / " + getString(R.string.freeroom_popup_info_type)
+					+ ": " + mFrRoom.getType());
 		}
 		if (mFrRoom.isSetCapacity()) {
-			array.add(getString(R.string.freeroom_popup_info_capacity) + ": "
+			builder.append(" / "
+					+ getString(R.string.freeroom_popup_info_capacity) + ": "
 					+ mFrRoom.getCapacity() + " "
 					+ getString(R.string.freeroom_popup_info_places));
 		}
 		if (mFrRoom.isSetSurface()) {
-			array.add(getString(R.string.freeroom_popup_info_surface) + ": "
+			builder.append(" / "
+					+ getString(R.string.freeroom_popup_info_surface) + ": "
 					+ mFrRoom.getSurface() + " "
 					+ getString(R.string.freeroom_popup_info_sqm));
 		}
+		// TODO: for production, remove UID (it's useful for debugging for the
+		// moment)
 		if (mFrRoom.isSetUid()) {
 			// uniq UID must be 1201XXUID, with XX filled with 0 such that
 			// it has 10 digit
@@ -507,9 +510,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				communUID += "0";
 			}
 			communUID += roomUID;
-			array.add(getString(R.string.freeroom_popup_info_uniqID) + ": "
+			builder.append(" / "
+					+ getString(R.string.freeroom_popup_info_uniqID) + ": "
 					+ communUID);
 		}
-		return array;
+		return builder.toString();
 	}
 }

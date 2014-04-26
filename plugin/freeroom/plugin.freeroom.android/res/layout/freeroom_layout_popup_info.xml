@@ -77,11 +77,15 @@ Double layout stores a background for fancy colorful borders
 
         <!-- shows the details about the room (size, capacity, ...) -->
 
-        <ListView
-            android:id="@+id/freeroom_layout_popup_info_infoRoom"
+        <TextView
+            android:id="@+id/freeroom_layout_popup_info_details"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:padding="5dip"
+            android:text="text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
 </LinearLayout>
