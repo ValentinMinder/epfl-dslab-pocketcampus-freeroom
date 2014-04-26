@@ -402,6 +402,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		if (!mOccupancy.isIsAtLeastOccupiedOnce()
 				&& mOccupancy.isIsAtLeastFreeOnce()) {
+			shareImageView.setClickable(true);
 			shareImageView.setImageResource(R.drawable.share);
 			shareImageView.setOnClickListener(new OnClickListener() {
 				@Override
@@ -416,6 +417,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				}
 			});
 		} else {
+			shareImageView.setClickable(false);
 			shareImageView.setImageResource(R.drawable.share_disabled);
 		}
 	}
@@ -489,6 +491,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		textBuilder.append(generateTimeSummary(mPeriod) + ". ");
 		textBuilder.append(getString(R.string.freeroom_share_please_come));
 
+		System.out.println(textBuilder.toString());
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
 		sendIntent.putExtra(Intent.EXTRA_TEXT, textBuilder.toString()

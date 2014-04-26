@@ -179,8 +179,16 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		// only display if necessary (if it's only free)
 		homeView.setShareClickListener(share, homeView, occupancy);
 
-		people.setImageResource(mModel.getImageFromRatioOccupation(occupancy
-				.getRatioWorstCaseProbableOccupancy()));
+		if (occupancy.isIsAtLeastFreeOnce()) {
+			people.setImageResource(mModel
+					.getImageFromRatioOccupation(occupancy
+							.getRatioWorstCaseProbableOccupancy()));
+		} else if (occupancy.isIsAtLeastOccupiedOnce()) {
+			people.setImageResource(R.drawable.occupation_occupied);
+		} else {
+			people.setImageResource(R.drawable.occupation_unknown);
+		}
+
 		OnClickListener ocl = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
