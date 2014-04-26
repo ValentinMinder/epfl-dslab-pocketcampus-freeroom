@@ -242,10 +242,11 @@ public class OccupancySorted {
 		long numberHours = Utils.determineNumberHour(start, end);
 
 		for (int i = 0; i < numberHours; ++i) {
+			long minStart = Math.max(hourSharpBefore, hourSharpBefore + i
+					* Utils.ONE_HOUR_MS);
 			long maxEnd = Math.min(hourSharpBefore + (i + 1)
 					* Utils.ONE_HOUR_MS, end);
-			FRPeriod period = new FRPeriod(hourSharpBefore + i
-					* Utils.ONE_HOUR_MS, maxEnd, false);
+			FRPeriod period = new FRPeriod(minStart, maxEnd, false);
 			ActualOccupation mAccOcc = new ActualOccupation(period, true);
 			mAccOcc.setProbableOccupation(0);
 			mAccOcc.setRatioOccupation(0.0);
