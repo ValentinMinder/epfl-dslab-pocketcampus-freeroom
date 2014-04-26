@@ -175,28 +175,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		vholder.setStarCheck(false);
 
 		// only display if necessary (if it's only free)
-		if (!occupancy.isIsAtLeastOccupiedOnce()
-				&& occupancy.isIsAtLeastFreeOnce()) {
-			share.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					// share
-					List<ActualOccupation> list = occupancy.getOccupancy();
-					long tss = list.get(0).getPeriod().getTimeStampStart();
-					long tse = list.get(list.size() - 1).getPeriod()
-							.getTimeStampEnd();
-					FRPeriod mPeriod = new FRPeriod(tss, tse, false);
-					WorkingOccupancy work = new WorkingOccupancy(mPeriod,
-							occupancy.getRoom());
-					ImWorkingRequest request = new ImWorkingRequest(work,
-							mModel.getAnonymID());
-					mController.prepareImWorking(request);
-					mController.ImWorking(homeView);
-				}
-			});
-		} else {
-			share.setImageResource(R.drawable.share_disabled);
-		}
+		homeView.setShareClickListener(share, homeView, occupancy);
 
 		people.setImageResource(mModel.getImageFromRatioOccupation(occupancy
 				.getRatioWorstCaseProbableOccupancy()));

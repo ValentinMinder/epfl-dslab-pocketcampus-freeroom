@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.android.views;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -20,7 +21,9 @@ import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.content.Intent;
@@ -29,6 +32,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
@@ -238,7 +242,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		popupInfoWindow.setBackgroundDrawable(new BitmapDrawable());
 
 		TextView tv = (TextView) popupInfoView
-				.findViewById(R.id.freeroom_layout_roomslist_roomname);
+				.findViewById(R.id.freeroom_layout_popup_info_name);
 		tv.setText("room");
 
 		ImageView img = (ImageView) popupInfoView
@@ -367,17 +371,59 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mExpList.updateCollapse(mExpView);
 	}
 
+	/**
+	 * Put a onClickListener on an imageView in order to share the location and
+	 * time when clicking share, if available.
+	 * 
+	 * @param shareImageView
+	 *            the view on which to put the listener
+	 * @param homeView
+	 *            reference to the home view
+	 * @param mOccupancy
+	 *            the holder of data for location and time
+	 */
+	public void setShareClickListener(ImageView shareImageView,
+			final FreeRoomHomeView homeView, final Occupancy mOccupancy) {
+
+		if (!mOccupancy.isIsAtLeastOccupiedOnce()
+				&& mOccupancy.isIsAtLeastFreeOnce()) {
+			shareImageView.setImageResource(R.drawable.share);
+			shareImageView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// share
+					List<ActualOccupation> list = mOccupancy.getOccupancy();
+					long tss = list.get(0).getPeriod().getTimeStampStart();
+					long tse = list.get(list.size() - 1).getPeriod()
+							.getTimeStampEnd();
+					FRPeriod mPeriod = new FRPeriod(tss, tse, false);
+					homeView.share(mPeriod, mOccupancy.getRoom());
+				}
+			});
+		} else {
+			shareImageView.setImageResource(R.drawable.share_disabled);
+		}
+	}
+
+	/**
+	 * Display the popup that provides more info about the occupation of the
+	 * selected room.
+	 */
 	public void displayPopupInfo() {
-		Occupancy mOccupancy = mModel.getDisplayedOccupancy();
+		final Occupancy mOccupancy = mModel.getDisplayedOccupancy();
 		if (mOccupancy != null) {
 			TextView tv = (TextView) popupInfoView
-					.findViewById(R.id.freeroom_layout_roomslist_roomname);
-			FRRoom mRoom = mOccupancy.getRoom();
+					.findViewById(R.id.freeroom_layout_popup_info_name);
+			final FRRoom mRoom = mOccupancy.getRoom();
 			String text = mRoom.getDoorCode();
 			if (mRoom.isSetDoorCodeAlias()) {
 				text = mRoom.getDoorCodeAlias() + " (" + text + ")";
 			}
 			tv.setText(text);
+
+			ImageView iv = (ImageView) popupInfoView
+					.findViewById(R.id.freeroom_layout_popup_info_share);
+			setShareClickListener(iv, this, mOccupancy);
 
 			ListView roomOccupancyListView = (ListView) popupInfoView
 					.findViewById(R.id.freeroom_layout_popup_info_roomOccupancy);
@@ -394,6 +440,27 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			infoRoomListView.setAdapter(adapter);
 			popupInfoWindow.showAsDropDown(mTextView, 0, 0);
 		}
+	}
+
+	/**
+	 * Construct the Intent to share the location and time with friends. The
+	 * same information is shared with the server at the same time
+	 * 
+	 * @param mPeriod
+	 *            time period
+	 * @param mRoom
+	 *            location
+	 */
+	public void share(FRPeriod mPeriod, FRRoom mRoom) {
+		// TODO: actual sharing with friends
+		String room = mRoom.getDoorCode();
+		System.out.println("im in room " + room + "time: " + mPeriod);
+
+		WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
+		ImWorkingRequest request = new ImWorkingRequest(work,
+				mModel.getAnonymID());
+		mController.prepareImWorking(request);
+		mController.ImWorking(this);
 	}
 
 	/**

@@ -84,22 +84,12 @@ public class ActualOccupationArrayAdapter<T> extends
 		SimpleDateFormat sdf = new SimpleDateFormat(
 				context.getString(R.string.freeroom_pattern_hour_format));
 		s += sdf.format(start) + "-" + sdf.format(end) + " ";
+		tv.setText(s);
+		// displayed text is minimal: only hours
+		// free/occupied: it's known by color
+		// user occupancy: indication by the occupation image
 
 		boolean free = mActualOccupation.isAvailable();
-
-		if (free) {
-			if (mActualOccupation.isSetProbableOccupation()
-					&& mActualOccupation.getProbableOccupation() > 0) {
-				s += "(" + mActualOccupation.getProbableOccupation() + " p.) ";
-			}
-			if (mActualOccupation.isSetRatioOccupation()) {
-				s += "("
-						+ (mActualOccupation.getRatioOccupation() * 100 + "    ")
-								.substring(0, 3) + " %)";
-			}
-		}
-
-		tv.setText(s);
 
 		final ImageView ivpeople = vholder.getImageViewPeople();
 		if (free) {
@@ -117,20 +107,9 @@ public class ActualOccupationArrayAdapter<T> extends
 
 				@Override
 				public void onClick(View arg0) {
-
-					// TODO: ACTUAL sharing!
 					FRPeriod mPeriod = mActualOccupation.getPeriod();
 					FRRoom mRoom = mModel.getDisplayedOccupancy().getRoom();
-
-					String room = mRoom.getDoorCode();
-					System.out.println("im in room " + room + "time: "
-							+ mActualOccupation.getPeriod());
-
-					WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
-					ImWorkingRequest request = new ImWorkingRequest(work,
-							mModel.getAnonymID());
-					mController.prepareImWorking(request);
-					mController.ImWorking(homeView);
+					homeView.share(mPeriod, mRoom);
 				}
 			};
 			ivshare.setOnClickListener(ocl);

@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-Same properties for the layout and textview as the one in the pocketcampus sdk : 
-sdk_separated_list_separation_header , difference is a relativeLayout instead of LinearLayout 
-and an ImageView added
--->
+<!-- Layout to hold room details in the popup info. -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/freeroom_layout_room_occupancies_details"
     android:layout_width="fill_parent"
@@ -11,6 +7,8 @@ and an ImageView added
     android:orientation="horizontal"
     android:padding="2dip" >
 
+    <!-- TextView to hold the time period -->
+    
     <TextView
         android:id="@+id/freeroom_layout_details_text"
         android:layout_width="wrap_content"

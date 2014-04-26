@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-Same properties for the layout and textview as the one in the pocketcampus sdk : 
-sdk_separated_list_separation_header , difference is a relativeLayout instead of LinearLayout 
-and an ImageView added
--->
+<!-- Layout for displaying room list on the home view. -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/freeroom_layout_room_home"
     android:layout_width="fill_parent"
@@ -11,6 +7,8 @@ and an ImageView added
     android:gravity="left"
     android:orientation="horizontal"
     android:padding="2dip" >
+
+    <!-- TextView to hold the name of the room -->
 
     <TextView
         android:id="@+id/freeroom_layout_roomslist_roomname"
@@ -35,17 +33,7 @@ and an ImageView added
         android:contentDescription="@string/freeroom_layout_roomslist_img_share"
         android:src="@drawable/share" />
 
-    <!-- Image to show how many people are working there -->
-
-    <ImageView
-        android:id="@+id/freeroom_layout_roomslist_people"
-        android:layout_width="35dip"
-        android:layout_height="35dip"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="5dip"
-        android:layout_toLeftOf="@id/freeroom_layout_roomslist_share"
-        android:contentDescription="@string/freeroom_layout_roomslist_img_people"
-        android:src="@drawable/occupation_unknown" />
+    <!-- Image to show the room on the map -->
 
     <ImageView
         android:id="@+id/freeroom_layout_roomslist_map"
@@ -54,7 +42,7 @@ and an ImageView added
         android:layout_alignParentTop="true"
         android:layout_gravity="right"
         android:layout_marginRight="5dip"
-        android:layout_toLeftOf="@id/freeroom_layout_roomslist_people"
+        android:layout_toLeftOf="@id/freeroom_layout_roomslist_share"
         android:contentDescription="@string/freeroom_layout_roomslist_img_map"
         android:src="@drawable/map_normal_icon" />
 
@@ -69,5 +57,17 @@ and an ImageView added
         android:layout_toLeftOf="@id/freeroom_layout_roomslist_map"
         android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
         android:src="@drawable/star_unknown" />
+
+    <!-- Image to show how many people are working there -->
+
+    <ImageView
+        android:id="@+id/freeroom_layout_roomslist_people"
+        android:layout_width="35dip"
+        android:layout_height="35dip"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dip"
+        android:layout_toLeftOf="@id/freeroom_layout_roomslist_fav"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_people"
+        android:src="@drawable/occupation_unknown" />
 
 </RelativeLayout>

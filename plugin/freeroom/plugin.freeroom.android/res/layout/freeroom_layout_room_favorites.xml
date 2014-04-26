@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-Same properties for the layout and textview as the one in the pocketcampus sdk : 
-sdk_separated_list_separation_header , difference is a relativeLayout instead of LinearLayout 
-and an ImageView added
--->
+<!-- Layout to display the favorites rooms. -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/freeroom_layout_rooms_favorites"
     android:layout_width="fill_parent"
@@ -11,6 +7,8 @@ and an ImageView added
     android:gravity="left"
     android:orientation="horizontal"
     android:padding="2dip" >
+
+    <!-- TextView to hold the name of the room -->
 
     <TextView
         android:id="@+id/freeroom_layout_favlist_text"
@@ -21,6 +19,8 @@ and an ImageView added
         android:text="text"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/black" />
+
+    <!-- Image to show the room on the map -->
 
     <ImageView
         android:id="@+id/freeroom_layout_favlist_map"
@@ -33,6 +33,8 @@ and an ImageView added
         android:contentDescription="@string/freeroom_layout_roomslist_img_map"
         android:src="@drawable/map_normal_icon" />
 
+    <!-- Image to display and add/remove favorites -->
+
     <ImageView
         android:id="@+id/freeroom_layout_favlist_fav"
         android:layout_width="35dip"
@@ -41,6 +43,6 @@ and an ImageView added
         android:layout_marginRight="5dip"
         android:layout_toLeftOf="@id/freeroom_layout_favlist_map"
         android:contentDescription="@string/freeroom_layout_roomslist_img_fav"
-        android:src="@drawable/share" />
+        android:src="@drawable/star_unknown" />
 
 </RelativeLayout>
