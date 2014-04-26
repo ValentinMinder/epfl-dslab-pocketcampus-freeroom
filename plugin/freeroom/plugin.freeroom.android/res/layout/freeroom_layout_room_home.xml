@@ -77,7 +77,7 @@
         android:layout_width="12dip"
         android:layout_height="12dip"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="down"
+        android:layout_gravity="bottom"
         android:layout_marginBottom="5dip"
         android:layout_marginRight="5dip"
         android:layout_toLeftOf="@id/freeroom_layout_roomslist_people"
