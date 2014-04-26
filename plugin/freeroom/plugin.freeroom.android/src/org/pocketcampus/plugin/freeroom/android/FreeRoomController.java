@@ -224,19 +224,18 @@ public class FreeRoomController extends PluginController implements
 	}
 
 	/**
-	 * Tells the user that the period he wanted to submit was already used.
-	 * Should be called when the server replies with a conflict status (409).
+	 * "Tells the user" (only in the log actually) that the period he wanted to
+	 * submit was already used. Should be called when the server replies with a
+	 * conflict status (409).
 	 * 
 	 * @param reply
 	 *            the reply from the server
 	 */
 	public void conflictImWorking(ImWorkingReply reply) {
-		// TODO: hard coded string
-		Toast.makeText(
-				getApplicationContext(),
+		Log.v("controller-imWorking-conflict409",
 				"You already submitted something for this period of time, "
 						+ "you request was denied by the server "
-						+ "(conflict)", Toast.LENGTH_LONG).show();
+						+ "(conflict)");
 	}
 
 	/**
