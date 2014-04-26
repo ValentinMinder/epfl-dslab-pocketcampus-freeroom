@@ -35,7 +35,7 @@ public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
 	/**
 	 * The number of elements to make available in each group.
 	 */
-	private int availableLimit = 3;
+	private int availableLimit = 2;
 
 	/**
 	 * Stores a boolean value for each element. It represent if the elements are
