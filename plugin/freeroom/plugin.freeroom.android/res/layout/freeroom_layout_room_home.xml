@@ -8,6 +8,19 @@
     android:orientation="horizontal"
     android:padding="2dip" >
 
+    <!-- Image to show a little triangle, indicating that a menu can be opened -->
+
+    <ImageView
+        android:id="@+id/freeroom_layout_roomslist_triangle"
+        android:layout_width="12dip"
+        android:layout_height="12dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="left"
+        android:layout_marginLeft="0dip"
+        android:contentDescription="@string/freeroom_layout_roomslist_img_share"
+        android:src="@drawable/triangle" />
+
     <!-- TextView to hold the name of the room -->
 
     <TextView
@@ -15,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginLeft="5dip"
+        android:layout_marginLeft="15dip"
         android:text="text"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/black" />
