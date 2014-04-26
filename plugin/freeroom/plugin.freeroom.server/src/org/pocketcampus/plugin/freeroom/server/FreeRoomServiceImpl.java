@@ -35,6 +35,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
+import org.pocketcampus.plugin.freeroom.shared.LogMessage;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
@@ -1026,6 +1027,18 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			throws TException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void logSevere(LogMessage arg0) throws TException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void logWarning(LogMessage arg0) throws TException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
