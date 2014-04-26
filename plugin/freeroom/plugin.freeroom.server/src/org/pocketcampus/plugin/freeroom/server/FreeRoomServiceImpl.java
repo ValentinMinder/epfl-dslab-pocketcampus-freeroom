@@ -920,14 +920,17 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return result;
 	}
 
-
 	/**
 	 * Add to a given HashMap the given occupancy by extracting the building
 	 * from the doorCode. The HashMap maps a building to a list of Occupancy for
 	 * room in this building.
-	 * @param doorCode The door code of the room to add
-	 * @param mOcc The Occupancy of the room
-	 * @param result The HashMap in which we add the room
+	 * 
+	 * @param doorCode
+	 *            The door code of the room to add
+	 * @param mOcc
+	 *            The Occupancy of the room
+	 * @param result
+	 *            The HashMap in which we add the room
 	 */
 	private void addToHashMapOccupancy(String doorCode, Occupancy mOcc,
 			HashMap<String, List<Occupancy>> result) {
@@ -944,11 +947,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		occ.add(mOcc);
 	}
 
-	
 	/**
 	 * Returns all the rooms that satisfies the hint given in the request.
 	 * 
-	 * The hint may be the start of the door code or the uid.
+	 * The hint may be the start of the door code or the uid or even the alias.
+	 * 
+	 * Constraints should be at least 2 characters long. You can specify a list
+	 * of forbidden rooms the server should not include in the response. The
+	 * number of results is bounded by the constant LIMIT_AUTOCOMPLETE.
 	 * 
 	 */
 	@Override
@@ -1047,6 +1053,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return reply;
 	}
 
+	/**
+	 * The client can specify a user occupancy during a given period, multiple
+	 * submits for the same period (and same user) are not allowed, we return a HTTP_CONFLICT in
+	 * that case.
+	 */
 	@Override
 	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
 			throws TException {
@@ -1073,10 +1084,19 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		return null;
 	}
 
+	/**
+	 * Pre-format the message for logging
+	 * @param message The message
+	 * @param path The path to the file where the bug happened
+	 * @return A pre-formatted message containing the path and the message.
+	 */
 	private String formatPathMessageLogAndroid(String message, String path) {
 		return path + " / " + message;
 	}
 
+	/**
+	 * Log Severe messages coming from external clients such as android.
+	 */
 	@Override
 	public void logSevere(LogMessage arg0) throws TException {
 		log(LOG_SIDE.ANDROID, Level.SEVERE,
@@ -1084,6 +1104,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				arg0.getTimestamp());
 	}
 
+	/**
+	 * Log Warning messages coming from external clients such as android.
+	 */
 	@Override
 	public void logWarning(LogMessage arg0) throws TException {
 		log(LOG_SIDE.ANDROID, Level.WARNING,
