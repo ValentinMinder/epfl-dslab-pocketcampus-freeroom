@@ -344,30 +344,46 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				build.append(getString(R.string.freeroom_home_info_rooms));
 			}
 			FRPeriod period = request.getPeriod();
-			Date endDate = new Date(period.getTimeStampEnd());
-			Date startDate = new Date(period.getTimeStampStart());
-			SimpleDateFormat day_month = new SimpleDateFormat(
-					getString(R.string.freeroom_pattern_day_format));
-			SimpleDateFormat hour_min = new SimpleDateFormat(
-					getString(R.string.freeroom_pattern_hour_format));
-
-			build.append(" ");
-			build.append(getString(R.string.freeroom_check_occupancy_result_onthe));
-			build.append(" ");
-			build.append(day_month.format(startDate));
-			build.append(" ");
-			build.append(getString(R.string.freeroom_check_occupancy_result_from));
-			build.append(" ");
-			build.append(hour_min.format(startDate));
-			build.append(" ");
-			build.append(getString(R.string.freeroom_check_occupancy_result_to));
-			build.append(" ");
-			build.append(hour_min.format(endDate));
+			build.append(generateTimeSummary(period));
 		}
 
 		setTextSummary(build.toString());
 		mExpList.notifyDataSetChanged();
 		mExpList.updateCollapse(mExpView);
+	}
+
+	/**
+	 * Generates a string summary of a given period of time.
+	 * <p>
+	 * eg: "Wednesday Apr 24 from 9am to 12pm"
+	 * 
+	 * @param period
+	 *            the period of time
+	 * @return a string summary of a given period of time.
+	 */
+	private String generateTimeSummary(FRPeriod period) {
+		StringBuilder build = new StringBuilder(100);
+		Date endDate = new Date(period.getTimeStampEnd());
+		Date startDate = new Date(period.getTimeStampStart());
+		SimpleDateFormat day_month = new SimpleDateFormat(
+				getString(R.string.freeroom_pattern_day_format));
+		SimpleDateFormat hour_min = new SimpleDateFormat(
+				getString(R.string.freeroom_pattern_hour_format));
+
+		build.append(" ");
+		// TODO: if date is today, use "today" instead of specifying date
+		build.append(getString(R.string.freeroom_check_occupancy_result_onthe));
+		build.append(" ");
+		build.append(day_month.format(startDate));
+		build.append(" ");
+		build.append(getString(R.string.freeroom_check_occupancy_result_from));
+		build.append(" ");
+		build.append(hour_min.format(startDate));
+		build.append(" ");
+		build.append(getString(R.string.freeroom_check_occupancy_result_to));
+		build.append(" ");
+		build.append(hour_min.format(endDate));
+		return build.toString();
 	}
 
 	/**
@@ -450,15 +466,36 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            location
 	 */
 	public void share(FRPeriod mPeriod, FRRoom mRoom) {
-		// TODO: actual sharing with friends
-		String room = mRoom.getDoorCode();
-		System.out.println("im in room " + room + "time: " + mPeriod);
-
 		WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
 		ImWorkingRequest request = new ImWorkingRequest(work,
 				mModel.getAnonymID());
 		mController.prepareImWorking(request);
 		mController.ImWorking(this);
+
+		// TODO: in case of "now" request (nextPeriodValid is now), just put
+		// "i am, now, " instead of
+		// time
+		StringBuilder textBuilder = new StringBuilder(100);
+		textBuilder.append(getString(R.string.freeroom_share_iwillbe) + " ");
+		textBuilder.append(getString(R.string.freeroom_share_in_room) + " ");
+		if (mRoom.isSetDoorCodeAlias()) {
+			textBuilder.append(mRoom.getDoorCodeAlias() + " ");
+		} else {
+			textBuilder.append(mRoom.getDoorCode() + " ");
+		}
+		// TODO: which period to use ?
+		// in case of specified in request, we should use the personalized
+		// period
+		textBuilder.append(generateTimeSummary(mPeriod) + ". ");
+		textBuilder.append(getString(R.string.freeroom_share_please_come));
+
+		Intent sendIntent = new Intent();
+		sendIntent.setAction(Intent.ACTION_SEND);
+		sendIntent.putExtra(Intent.EXTRA_TEXT, textBuilder.toString()
+				+ " (This was sent thru pocketcampus .org)");
+		sendIntent.setType("text/plain");
+		startActivity(Intent.createChooser(sendIntent,
+				getString(R.string.freeroom_share_title)));
 	}
 
 	/**
