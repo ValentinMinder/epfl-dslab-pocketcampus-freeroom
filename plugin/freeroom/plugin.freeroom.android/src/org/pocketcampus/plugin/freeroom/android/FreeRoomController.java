@@ -301,6 +301,6 @@ public class FreeRoomController extends PluginController implements
 	 */
 	public void sendFRRequest(IFreeRoomView view) {
 		new FRRequestASyncTask(view)
-				.start(this, mClient, mModel.getFRRequest());
+				.start(this, mClient, mModel.getFRRequestDetails());
 	}
 }

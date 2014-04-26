@@ -95,7 +95,7 @@
                 android:text="h_f"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
-            
+
             <Button
                 android:id="@+id/freeroom_layout_popup_search_hour_end_plus"
                 android:layout_width="0dp"
@@ -113,7 +113,7 @@
             android:background="@android:color/background_light"
             android:orientation="horizontal" >
 
-            <Button
+            <ToggleButton
                 android:id="@+id/freeroom_layout_popup_search_any"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -121,9 +121,11 @@
                 android:layout_weight="5"
                 android:text="any free"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textOff="any free room"
+                android:textOn="any free room" />
 
-            <Button
+            <ToggleButton
                 android:id="@+id/freeroom_layout_popup_search_spec"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -132,7 +134,9 @@
                 android:scrollHorizontally="true"
                 android:text="spec"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textOff="specified rooms"
+                android:textOn="specified rooms" />
         </LinearLayout>
 
         <LinearLayout
@@ -150,7 +154,7 @@
                 android:orientation="horizontal"
                 android:paddingTop="4dp" >
 
-                <Button
+                <ToggleButton
                     android:id="@+id/freeroom_layout_popup_search_fav"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
@@ -158,9 +162,11 @@
                     android:layout_weight="5"
                     android:text="fav"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:textOff="favs"
+                    android:textOn="favs" />
 
-                <Button
+                <ToggleButton
                     android:id="@+id/freeroom_layout_popup_search_user"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
@@ -168,17 +174,21 @@
                     android:layout_weight="5"
                     android:text="user"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:textOff="user-def"
+                    android:textOn="user-def" />
 
-                <Button
-                    android:id="@+id/freeroom_layout_popup_search_user"
+                <ToggleButton
+                    android:id="@+id/freeroom_layout_popup_search_non_free"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_gravity="bottom"
                     android:layout_weight="5"
                     android:text="allow non-free"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:textOff="only free rooms: no"
+                    android:textOn="only free rooms: yes" />
             </LinearLayout>
         </LinearLayout>
 

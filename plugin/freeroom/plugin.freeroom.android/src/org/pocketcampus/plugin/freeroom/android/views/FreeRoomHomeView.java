@@ -2,13 +2,20 @@ package org.pocketcampus.plugin.freeroom.android.views;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
+import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomAbstractView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
@@ -16,32 +23,48 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomManageFavoritesView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
+import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomSuggestionArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
+import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
+import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
+import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
+import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.markupartist.android.widget.ActionBar.Action;
 
@@ -87,12 +110,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * ExpandableListView to display the results of occupancies building by
 	 * building.
 	 */
-	private ExpandableListView mExpView;
+	private ExpandableListView mExpListView;
 
 	/**
 	 * Adapter for the results (to display the occupancies).
 	 */
-	private ExpandableListViewAdapter<Occupancy> mExpList;
+	private ExpandableListViewAdapter<Occupancy> mExpListAdapter;
 
 	/**
 	 * View that holds the INFO popup content.
@@ -121,14 +144,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private Action search = new Action() {
 		public void performAction(View view) {
-			// TODO: remove the rest, only keep the popup
 			popupSearchWindow.showAsDropDown(mTextView, 0, 0);
-			// TODO: popup instead of new activity
-			Toast.makeText(getApplicationContext(), "search",
-					Toast.LENGTH_SHORT).show();
-			Intent i = new Intent(FreeRoomHomeView.this,
-					FreeRoomSearchView.class);
-			FreeRoomHomeView.this.startActivity(i);
+			refreshPopupSearch();
 		}
 
 		public int getDrawable() {
@@ -192,11 +209,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		setContentView(titleLayout);
 		titleLayout.setTitle(getString(R.string.freeroom_title_main_title));
 
-		mExpView = new ExpandableListView(getApplicationContext());
+		mExpListView = new ExpandableListView(getApplicationContext());
 		mTextView = new TextView(getApplicationContext());
 		mainLayout.addView(mTextView);
 		setTextSummary(getString(R.string.freeroom_home_init_please_wait));
-		mainLayout.addView(mExpView);
+		mainLayout.addView(mExpListView);
 		initializeView();
 
 		titleLayout.addFillerView(mainLayout);
@@ -227,13 +244,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void initializeView() {
-		mExpList = new ExpandableListViewAdapter<Occupancy>(
+		mExpListAdapter = new ExpandableListViewAdapter<Occupancy>(
 				getApplicationContext(), mModel.getOccupancyResults(),
 				mController, this);
-		mExpView.setAdapter(mExpList);
+		mExpListView.setAdapter(mExpListAdapter);
 		addActionToActionBar(refresh);
 		addActionToActionBar(editFavorites);
 		addActionToActionBar(search);
+		initPopupInfoRoom();
+		initPopupSearch();
 	}
 
 	/**
@@ -300,6 +319,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				popupSearchWindow.dismiss();
 			}
 		});
+
+		initSearch();
 	}
 
 	/**
@@ -352,14 +373,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * <code>refresh</code> in order to send it to the server.
 	 */
 	private void initDefaultRequest() {
+		mModel.setFRRequestDetails(validRequest());
+	}
+
+	private FRRequestDetails validRequest() {
 		Set<String> set = mModel.getAllRoomMapFavorites().keySet();
 		ArrayList<String> array = new ArrayList<String>(set.size());
 		array.addAll(set);
-
-		initPopupInfoRoom();
-		initPopupSearch();
-		mModel.setFRRequest(new FRRequest(FRTimes.getNextValidPeriod(), mModel
-				.getAllRoomMapFavorites().keySet().isEmpty(), array));
+		FRRequestDetails details = new FRRequestDetails(
+				FRTimes.getNextValidPeriod(), false, array, false, true, false,
+				new SetArrayList<FRRoom>());
+		return details;
 	}
 
 	/**
@@ -377,11 +401,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	@Override
-	public void autoCompletedUpdated() {
-		// we do nothing here
-	}
-
-	@Override
 	public void occupancyResultUpdated() {
 		// we do nothing here
 	}
@@ -392,7 +411,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (mModel.getOccupancyResults().isEmpty()) {
 			build.append(getString(R.string.freeroom_home_error_no_results));
 		} else {
-			FRRequest request = mModel.getFRRequest();
+			FRRequest request = mModel.getFRRequestDetails();
 
 			if (request.isOnlyFreeRooms()) {
 				build.append(getString(R.string.freeroom_home_info_free_rooms));
@@ -404,8 +423,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		setTextSummary(build.toString());
-		mExpList.notifyDataSetChanged();
-		mExpList.updateCollapse(mExpView);
+		mExpListAdapter.notifyDataSetChanged();
+		mExpListAdapter.updateCollapse(mExpListView);
 	}
 
 	/**
@@ -514,6 +533,23 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	}
 
+	private void refreshPopupSearch() {
+		final FRRequestDetails request = mModel.getFRRequestDetails();
+		if (request != null) {
+			refreshPopupSearch(request);
+		}
+	}
+
+	private void refreshPopupSearch(final FRRequestDetails request) {
+		resetTimes(request.getPeriod());
+		anyButton.setChecked(request.isAny());
+		specButton.setChecked(!request.isAny());
+		favButton.setChecked(request.isFav());
+		userDefButton.setChecked(request.isUser());
+		freeButton.setChecked(request.isOnlyFreeRooms());
+		searchButton.setEnabled(auditSubmit() == 0);
+	}
+
 	/**
 	 * Construct the Intent to share the location and time with friends. The
 	 * same information is shared with the server at the same time
@@ -611,5 +647,698 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					+ communUID);
 		}
 		return builder.toString();
+	}
+
+	// ** REUSED FROM SCRATCH FROM FreeRoomSearchView ** //
+	private SetArrayList<FRRoom> selectedRooms;
+
+	private ListView mAutoCompleteSuggestionListView;
+	private List<FRRoom> mAutoCompleteSuggestionArrayListFRRoom;
+
+	/** The input bar to make the search */
+	private InputBarElement mAutoCompleteSuggestionInputBarElement;
+	/** Adapter for the <code>mListView</code> */
+	private FRRoomSuggestionArrayAdapter<FRRoom> mAdapter;
+
+	private DatePickerDialog mDatePickerDialog;
+	private TimePickerDialog mTimePickerStartDialog;
+	private TimePickerDialog mTimePickerEndDialog;
+
+	private Button showDatePicker;
+	private Button showStartTimePicker;
+	private Button showEndTimePicker;
+
+	private ToggleButton specButton;
+	private ToggleButton anyButton;
+	private ToggleButton favButton;
+	private ToggleButton userDefButton;
+	/**
+	 * TRUE: "only free rooms" FALSE: "allow non-free rooms"
+	 */
+	private ToggleButton freeButton;
+
+	private Button searchButton;
+	private Button resetButton;
+	private Button addHourButton;
+
+	private TextView mSummarySelectedRoomsTextView;
+
+	private int yearSelected = -1;
+	private int monthSelected = -1;
+	private int dayOfMonthSelected = -1;
+	private int startHourSelected = -1;
+	private int startMinSelected = -1;
+	private int endHourSelected = -1;
+	private int endMinSelected = -1;
+
+	private SimpleDateFormat dateFormat;
+	private SimpleDateFormat timeFormat;
+
+	private void initSearch() {
+
+		selectedRooms = new SetArrayList<FRRoom>();
+		formatters();
+
+		// createSuggestionsList();
+		// addAllFavsToAutoComplete();
+		selectedRooms = new SetArrayList<FRRoom>();
+		mAutoCompleteSuggestionArrayListFRRoom = new ArrayList<FRRoom>(10);
+		resetTimes();
+
+		UIConstructPickers();
+
+		UIConstructButton();
+
+		// UIConstructInputBar();
+
+		reset();
+	}
+
+	private void formatters() {
+		dateFormat = new SimpleDateFormat(
+				getString(R.string.freeroom_pattern_day_format));
+		timeFormat = new SimpleDateFormat(
+				getString(R.string.freeroom_pattern_hour_format));
+	}
+
+	private void UIConstructPickers() {
+		// First allow the user to select a date
+		showDatePicker = (Button) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_date);
+		mDatePickerDialog = new DatePickerDialog(this,
+				new DatePickerDialog.OnDateSetListener() {
+
+					@Override
+					public void onDateSet(DatePicker view, int nYear,
+							int nMonthOfYear, int nDayOfMonth) {
+						yearSelected = nYear;
+						monthSelected = nMonthOfYear;
+						dayOfMonthSelected = nDayOfMonth;
+						updateShowDatePicker();
+						searchButton.setEnabled(auditSubmit() == 0);
+
+					}
+				}, yearSelected, monthSelected, dayOfMonthSelected);
+
+		showDatePicker.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mDatePickerDialog.show();
+			}
+		});
+
+		// Then the starting time of the period
+		showStartTimePicker = (Button) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_hour_start);
+		mTimePickerStartDialog = new TimePickerDialog(this,
+				new OnTimeSetListener() {
+
+					@Override
+					public void onTimeSet(TimePicker view, int nHourOfDay,
+							int nMinute) {
+						startHourSelected = nHourOfDay;
+						startMinSelected = nMinute;
+						updateShowStartTimePicker();
+						searchButton.setEnabled(auditSubmit() == 0);
+
+					}
+				}, startHourSelected, startMinSelected, true);
+
+		showStartTimePicker.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mTimePickerStartDialog.show();
+
+			}
+		});
+
+		// Then the ending time of the period
+		showEndTimePicker = (Button) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_hour_end);
+		mTimePickerEndDialog = new TimePickerDialog(this,
+				new OnTimeSetListener() {
+
+					@Override
+					public void onTimeSet(TimePicker view, int nHourOfDay,
+							int nMinute) {
+						endHourSelected = nHourOfDay;
+						endMinSelected = nMinute;
+						updateShowEndTimePicker();
+						searchButton.setEnabled(auditSubmit() == 0);
+
+					}
+				}, endHourSelected, endMinSelected, true);
+
+		showEndTimePicker.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mTimePickerEndDialog.show();
+
+			}
+		});
+	}
+
+	private void resetUserDefined() {
+		// TODO: add/remove
+		// mGlobalSubLayout.removeView(mAutoCompleteSuggestionInputBarElement);
+		// mGlobalSubLayout.removeView(mSummarySelectedRoomsTextView);
+		userDefButton.setChecked(false);
+	}
+
+	private void UIConstructButton() {
+		specButton = (ToggleButton) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_spec);
+		specButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				specButton.setChecked(true);
+				anyButton.setChecked(false);
+				anyButton.setEnabled(true);
+				specButton.setChecked(true);
+
+				// TODO: is this great ? this guarantees that searhc is always
+				// available, but requires two steps to remove the fav (ass
+				// user-def, remove fav)
+				favButton.setChecked(true);
+				// TODO: open the suggestion as well
+				userDefButton.setChecked(true);
+
+				searchButton.setEnabled(auditSubmit() == 0);
+			}
+		});
+
+		anyButton = (ToggleButton) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_any);
+		anyButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				specButton.setChecked(false);
+				// TODO
+				// resetUserDefined();
+
+				favButton.setChecked(false);
+				userDefButton.setChecked(false);
+				freeButton.setChecked(true);
+				anyButton.setChecked(true);
+				searchButton.setEnabled(auditSubmit() == 0);
+			}
+		});
+
+		favButton = (ToggleButton) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_fav);
+		favButton.setEnabled(true);
+		favButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (!userDefButton.isChecked()) {
+					favButton.setChecked(true);
+				}
+				anyButton.setChecked(false);
+				specButton.setChecked(true);
+				searchButton.setEnabled(auditSubmit() == 0);
+			}
+		});
+
+		userDefButton = (ToggleButton) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_user);
+		// TODO: inputbar doesnt work
+		userDefButton.setEnabled(false);
+		userDefButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (userDefButton.isChecked()) {
+					anyButton.setChecked(false);
+					specButton.setChecked(true);
+
+					// TODO: add/remove
+					// mGlobalSubLayout.addView(mSummarySelectedRoomsTextView);
+					// mGlobalSubLayout
+					// .addView(mAutoCompleteSuggestionInputBarElement);
+				} else if (!favButton.isChecked()) {
+					userDefButton.setChecked(true);
+					anyButton.setChecked(false);
+					specButton.setChecked(true);
+				} else {
+					resetUserDefined();
+				}
+				searchButton.setEnabled(auditSubmit() == 0);
+			}
+		});
+
+		freeButton = (ToggleButton) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_non_free);
+		freeButton.setEnabled(true);
+		freeButton.setFocusable(true);
+		freeButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (!freeButton.isChecked()) {
+					anyButton.setChecked(false);
+					specButton.setChecked(true);
+				}
+				searchButton.setEnabled(auditSubmit() == 0);
+			}
+		});
+
+		searchButton = (Button) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_go);
+		searchButton.setEnabled(false);
+		searchButton.setText(R.string.freeroom_searchbutton);
+		searchButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				prepareSearchQuery();
+			}
+		});
+
+		resetButton = (Button) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_reset);
+		resetButton.setEnabled(true);
+		resetButton.setText(R.string.freeroom_resetbutton);
+		resetButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				reset();
+				// addAllFavsToAutoComplete();
+				// we reset the input bar...
+				// TODO
+				// mAutoCompleteSuggestionInputBarElement.setInputText("");
+			}
+		});
+
+		addHourButton = (Button) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_hour_end_plus);
+		addHourButton.setEnabled(true);
+		addHourButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (endHourSelected <= 18) {
+					endHourSelected += 1;
+					updateShowEndTimePicker();
+					mTimePickerEndDialog.updateTime(endHourSelected,
+							endMinSelected);
+				}
+				if (endHourSelected >= 19) {
+					addHourButton.setEnabled(false);
+				}
+			}
+		});
+	}
+
+	// TODO: the InputBar is not used so far
+	private void UIConstructInputBar() {
+		final IFreeRoomView view = this;
+
+		mAutoCompleteSuggestionInputBarElement = new InputBarElement(
+				this,
+				null,
+				getString(R.string.freeroom_check_occupancy_search_inputbarhint));
+		mAutoCompleteSuggestionInputBarElement
+				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+		mAutoCompleteSuggestionInputBarElement
+				.setOnEditorActionListener(new OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+							String query = mAutoCompleteSuggestionInputBarElement
+									.getInputText();
+							Log.v(this.getClass().toString(),
+									"we do nothing here... with query: "
+											+ query);
+						}
+
+						return true;
+					}
+				});
+		mAutoCompleteSuggestionInputBarElement
+				.setOnButtonClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						String query = mAutoCompleteSuggestionInputBarElement
+								.getInputText();
+						if (query.length() >= 2) {
+							AutoCompleteRequest request = new AutoCompleteRequest(
+									query);
+							mController.autoCompleteBuilding(view, request);
+						}
+					}
+				});
+
+		mAdapter = new FRRoomSuggestionArrayAdapter<FRRoom>(
+				getApplicationContext(),
+				mAutoCompleteSuggestionArrayListFRRoom, mModel);
+
+		mAutoCompleteSuggestionInputBarElement
+				.setOnKeyPressedListener(new OnKeyPressedListener() {
+					@Override
+					public void onKeyPressed(String text) {
+						mAutoCompleteSuggestionListView.setAdapter(mAdapter);
+
+						if (mAutoCompleteSuggestionInputBarElement
+								.getInputText().length() == 0) {
+							mAutoCompleteSuggestionInputBarElement
+									.setButtonText(null);
+							mAutoCompleteSuggestionListView.invalidate();
+							addAllFavsToAutoComplete();
+						} else {
+							mAutoCompleteSuggestionInputBarElement
+									.setButtonText("");
+							if (text.length() >= 2) {
+								AutoCompleteRequest request = new AutoCompleteRequest(
+										text);
+								mController.autoCompleteBuilding(view, request);
+							}
+						}
+					}
+				});
+	}
+
+	private void addAllFavsToAutoComplete() {
+		Map<String, String> map = mModel.getAllRoomMapFavorites();
+
+		mAutoCompleteSuggestionArrayListFRRoom.clear();
+
+		Iterator<String> iter = map.keySet().iterator();
+		while (iter.hasNext()) {
+			String uid = iter.next();
+			String doorCode = map.get(uid);
+			FRRoom room = new FRRoom(doorCode, uid);
+			if (!selectedRooms.contains(room)) {
+				mAutoCompleteSuggestionArrayListFRRoom.add(room);
+			}
+		}
+
+		mAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Initialize the autocomplete suggestion list
+	 */
+	private void createSuggestionsList() {
+		mAutoCompleteSuggestionListView = new LabeledListViewElement(this);
+		mAutoCompleteSuggestionInputBarElement
+				.addView(mAutoCompleteSuggestionListView);
+
+		mAutoCompleteSuggestionListView
+				.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> adapter, View view,
+							int pos, long id) {
+
+						FRRoom room = mAutoCompleteSuggestionArrayListFRRoom
+								.get(pos);
+						addRoomToCheck(room);
+						searchButton.setEnabled(auditSubmit() == 0);
+						// refresh the autocomplete, such that selected rooms
+						// are not displayed
+						if (mAutoCompleteSuggestionInputBarElement
+								.getInputText().length() == 0) {
+							addAllFavsToAutoComplete();
+						} else {
+							autoCompletedUpdated();
+						}
+
+						// WE DONT REMOVE the text in the input bar
+						// INTENTIONNALLY: user may want to select multiple
+						// rooms in the same building
+					}
+				});
+		mAutoCompleteSuggestionListView.setAdapter(mAdapter);
+	}
+
+	private void addRoomToCheck(FRRoom room) {
+		// we only add if it already contains the room
+		if (!selectedRooms.contains(room)) {
+			selectedRooms.add(room);
+			mSummarySelectedRoomsTextView
+					.setText(getSummaryTextFromCollection(selectedRooms));
+
+		} else {
+			Log.e(this.getClass().toString(),
+					"room cannot be added: already added");
+		}
+	}
+
+	private String getSummaryTextFromCollection(Collection<FRRoom> collec) {
+		Iterator<FRRoom> iter = collec.iterator();
+		StringBuffer buffer = new StringBuffer(collec.size() * 5);
+		FRRoom room = null;
+		buffer.append(getString(R.string.freeroom_check_occupancy_search_text_selected_rooms)
+				+ " ");
+		boolean empty = true;
+		while (iter.hasNext()) {
+			empty = false;
+			room = iter.next();
+			buffer.append(room.getDoorCode() + ", ");
+		}
+		buffer.setLength(buffer.length() - 2);
+		String result = "";
+		if (empty) {
+			result = getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms);
+		} else {
+			result = buffer.toString();
+		}
+		return result;
+	}
+
+	/**
+	 * Reset the year, month, day, hour_start, minute_start, hour_end,
+	 * minute_end to their initial values. DONT forget to update the date/time
+	 * pickers afterwards.
+	 */
+	private void resetTimes() {
+		FRPeriod mFrPeriod = FRTimes.getNextValidPeriod();
+		resetTimes(mFrPeriod);
+	}
+
+	private void resetTimes(FRPeriod mFrPeriod) {
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.setTimeInMillis(mFrPeriod.getTimeStampStart());
+		yearSelected = mCalendar.get(Calendar.YEAR);
+		monthSelected = mCalendar.get(Calendar.MONTH);
+		dayOfMonthSelected = mCalendar.get(Calendar.DAY_OF_MONTH);
+		startHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
+		startMinSelected = mCalendar.get(Calendar.MINUTE);
+		mCalendar.setTimeInMillis(mFrPeriod.getTimeStampEnd());
+		endHourSelected = mCalendar.get(Calendar.HOUR_OF_DAY);
+		endMinSelected = mCalendar.get(Calendar.MINUTE);
+	}
+
+	private void updateDateTimePickers() {
+		// reset the time pickers
+		mDatePickerDialog.updateDate(yearSelected, monthSelected,
+				dayOfMonthSelected);
+		mTimePickerStartDialog.updateTime(startHourSelected, startMinSelected);
+		mTimePickerEndDialog.updateTime(endHourSelected, endMinSelected);
+	}
+
+	private void reset() {
+		searchButton.setEnabled(false);
+
+		// // reset the list of selected rooms
+		selectedRooms.clear();
+		// mSummarySelectedRoomsTextView
+		// .setText(getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms));
+		//
+		// mAutoCompleteSuggestionArrayListFRRoom.clear();
+
+		resetTimes();
+		updateDateTimePickers();
+
+		anyButton.setChecked(true);
+		specButton.setChecked(false);
+		favButton.setChecked(false);
+		userDefButton.setChecked(false);
+		// resetUserDefined(); TODO
+		freeButton.setChecked(true);
+		//
+		searchButton.setEnabled(auditSubmit() == 0);
+		// show the buttons
+		updatePickersButtons();
+	}
+
+	private void updatePickersButtons() {
+		updateShowDatePicker();
+		updateShowStartTimePicker();
+		updateShowEndTimePicker();
+	}
+
+	private void updateShowDatePicker() {
+		showDatePicker.setText(dateFormat.format(new Date(prepareFRFrPeriod()
+				.getTimeStampStart())));
+	}
+
+	private void updateShowStartTimePicker() {
+		showStartTimePicker
+				.setText(getString(R.string.freeroom_check_occupancy_search_start)
+						+ " : "
+						+ timeFormat.format(new Date(prepareFRFrPeriod()
+								.getTimeStampStart())));
+	}
+
+	private void updateShowEndTimePicker() {
+		showEndTimePicker
+				.setText(getString(R.string.freeroom_check_occupancy_search_end)
+						+ " : "
+						+ timeFormat.format(new Date(prepareFRFrPeriod()
+								.getTimeStampEnd())));
+		if (endHourSelected >= FRTimes.LAST_HOUR_CHECK
+				|| (endHourSelected == FRTimes.LAST_HOUR_CHECK - 1 && endMinSelected != 0)) {
+			addHourButton.setEnabled(false);
+		} else {
+			addHourButton.setEnabled(true);
+		}
+	}
+
+	/**
+	 * Construct the <code>FRPeriod</code> object asscociated with the current
+	 * selected times.
+	 * 
+	 * @return
+	 */
+	private FRPeriod prepareFRFrPeriod() {
+		Calendar start = Calendar.getInstance();
+		start.set(yearSelected, monthSelected, dayOfMonthSelected,
+				startHourSelected, startMinSelected, 0);
+		start.set(Calendar.MILLISECOND, 0);
+
+		Calendar end = Calendar.getInstance();
+		end.set(yearSelected, monthSelected, dayOfMonthSelected,
+				endHourSelected, endMinSelected, 0);
+		end.set(Calendar.MILLISECOND, 0);
+
+		// constructs the request
+		return new FRPeriod(start.getTimeInMillis(), end.getTimeInMillis(),
+				false);
+	}
+
+	/**
+	 * Prepare the actual query to send and set it in the controller
+	 */
+	private void prepareSearchQuery() {
+		FRPeriod period = prepareFRFrPeriod();
+
+		List<String> mUIDList = new ArrayList<String>(selectedRooms.size());
+
+		if (favButton.isChecked()) {
+			mUIDList.addAll(mModel.getAllRoomMapFavorites().keySet());
+		}
+		if (userDefButton.isChecked()) {
+			Iterator<FRRoom> iter = selectedRooms.iterator();
+			while (iter.hasNext()) {
+				FRRoom room = iter.next();
+				mUIDList.add(room.getUid());
+			}
+		}
+
+		boolean any = anyButton.isChecked();
+		boolean fav = favButton.isChecked();
+		boolean user = userDefButton.isChecked();
+		FRRequestDetails details = new FRRequestDetails(period,
+				freeButton.isChecked(), mUIDList, any, fav, user, selectedRooms);
+		mModel.setFRRequestDetails(details);
+		mController.sendFRRequest(this);
+		popupSearchWindow.dismiss();
+
+	}
+
+	/**
+	 * Check that the times set are valid, according to the shared definition.
+	 * 
+	 * @return 0 if times are valids, positive integer otherwise
+	 */
+	private int auditTimes() {
+		// NOT EVEN SET, we don't bother checking
+		if (yearSelected == -1 || monthSelected == -1
+				|| dayOfMonthSelected == -1) {
+			return 1;
+		}
+		if (startHourSelected == -1 || endHourSelected == -1
+				|| startMinSelected == -1 || endMinSelected == -1) {
+			return 1;
+		}
+
+		// IF SET, we use the shared method checking the prepared period
+
+		String errors = FRTimes.validCalendarsString(prepareFRFrPeriod());
+		if (errors.equals("")) {
+			return 0;
+		}
+
+		Toast.makeText(
+				getApplicationContext(),
+				"Please review the time, should be between Mo-Fr 8am-7pm.\n"
+						+ "The end should also be after the start, and at least 5 minutes.",
+				Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(),
+				"Errors remaining: \n" + errors, Toast.LENGTH_LONG).show();
+		return 1;
+	}
+
+	/**
+	 * This method check if the client is allowed to submit a request to the
+	 * server.
+	 * 
+	 * @return 0 if there is no error and the client can send the request,
+	 *         something else otherwise.
+	 */
+	private int auditSubmit() {
+		if (selectedRooms == null
+				|| (!anyButton.isChecked() && !favButton.isChecked()
+						&& userDefButton.isChecked() && selectedRooms.isEmpty())) {
+			return 1;
+		}
+
+		if (anyButton.isChecked()
+				&& (favButton.isChecked() || userDefButton.isChecked())) {
+			return 1;
+		}
+		if (!anyButton.isChecked() && !favButton.isChecked()
+				&& !userDefButton.isChecked()) {
+			return 1;
+		}
+		// we dont allow query all the room, including non-free
+		if (anyButton.isChecked() && !freeButton.isChecked()) {
+			return 1;
+		}
+		return auditTimes();
+	}
+
+	@Override
+	public void autoCompletedUpdated() {
+		mAdapter.notifyDataSetInvalidated();
+		mAutoCompleteSuggestionArrayListFRRoom.clear();
+
+		// TODO: adapt to use the new version of autocomplete mapped by building
+		Iterator<List<FRRoom>> iter = mModel.getAutoComplete().values()
+				.iterator();
+		System.out.println(mModel.getAutoComplete().values().size());
+		while (iter.hasNext()) {
+			List<FRRoom> list = iter.next();
+			System.out.println(list.size());
+			Iterator<FRRoom> iterroom = list.iterator();
+			while (iterroom.hasNext()) {
+				FRRoom room = iterroom.next();
+				System.out.println(room);
+				// rooms that are already selected are not displayed...
+				if (!selectedRooms.contains(room)) {
+					mAutoCompleteSuggestionArrayListFRRoom.add(room);
+				}
+			}
+		}
+
+		mAdapter.notifyDataSetChanged();
 	}
 }

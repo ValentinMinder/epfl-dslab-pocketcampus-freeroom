@@ -16,6 +16,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
@@ -737,14 +738,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Stores the currently displayed request.
 	 */
-	private FRRequest mFRRequest;
+	private FRRequestDetails mFRRequest;
 
 	/**
 	 * Get the currently displayed request.
 	 * 
 	 * @return the currently displayed request.
 	 */
-	public FRRequest getFRRequest() {
+	public FRRequestDetails getFRRequestDetails() {
 		return mFRRequest;
 	}
 
@@ -754,7 +755,8 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * @param request
 	 *            next currently displayed request.
 	 */
-	public void setFRRequest(FRRequest request) {
+	public void setFRRequestDetails(FRRequestDetails request) {
+		// TODO: write in history each time a request is set.
 		this.mFRRequest = request;
 	}
 
