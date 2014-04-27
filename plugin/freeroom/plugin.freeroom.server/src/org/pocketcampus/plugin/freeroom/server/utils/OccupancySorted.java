@@ -14,11 +14,13 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
  * ActualOccupation for a specific room. Note that the timestamps given in each
  * ActualOccupation will have the seconds and milliseconds set to 0 for
  * practical purpose in the sort and its use (fillGaps()).
+ * 
+ * * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
+ * Valentin MINDER <valentin.minder@epfl.ch>
  **/
 
 public class OccupancySorted {
 
-	//TODO logger
 	// TODO put all constants in Utils
 	private final long MARGIN_FOR_ERROR = 60 * 15 * 1000;
 	private final long MIN_PERIOD = 15 * 60 * 1000;
@@ -140,7 +142,7 @@ public class OccupancySorted {
 		long lastEnd = tsPerRoom;
 		int countFree = 0;
 		int countOccupied = 0;
-		
+
 		// TODO lastEnd, tsPerRoom same thing ?
 		for (ActualOccupation actual : mActualOccupations) {
 			long tsStart = Math.max(timestampStart, actual.getPeriod()
@@ -160,7 +162,7 @@ public class OccupancySorted {
 					lastOccupation.setPeriod(newPeriod);
 					resultList.add(lastOccupation);
 					countFree++;
-				} 				
+				}
 			}
 
 			long tsEnd = Math.min(timestampEnd, actual.getPeriod()
@@ -204,7 +206,7 @@ public class OccupancySorted {
 					isAtLeastFreeOnce = true;
 					countFree++;
 				}
-				
+
 				tsPerRoom = tsEnd;
 				lastEnd = actual.getPeriod().getTimeStampEnd();
 			}
@@ -263,9 +265,8 @@ public class OccupancySorted {
 	 *         returns the occupancy only if there is no occupied period in the
 	 *         list of ActualOccupation, otherwise it returns null. If boolean
 	 *         onlyFreeRooms is false, it returns the occupancy adapted and
-	 *         filled during the period given. //TODO maybe to this things in
-	 *         the server (can check the isAtleastoccupied once.)
-	 */
+	 *         filled during the period given.
+	 * **/
 	public Occupancy getOccupancy() {
 		sortByTimestampStart();
 		fillGaps();

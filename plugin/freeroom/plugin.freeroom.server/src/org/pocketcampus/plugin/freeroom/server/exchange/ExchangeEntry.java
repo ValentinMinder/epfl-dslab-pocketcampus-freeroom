@@ -102,7 +102,7 @@ public class ExchangeEntry {
 		this.domain = domain;
 		setUp();
 	}
-//TODO issue, search 28 avr BC08, displayed as occupied but no occupancy
+
 	/**
 	 * Initiates the service and the connection.
 	 * 
