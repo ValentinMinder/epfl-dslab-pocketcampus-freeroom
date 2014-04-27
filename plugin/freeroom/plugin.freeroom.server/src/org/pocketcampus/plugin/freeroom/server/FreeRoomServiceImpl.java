@@ -105,7 +105,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			}
 		}
 
-		boolean updateRoomsDetails = true;
+		boolean updateRoomsDetails = false;
 		if (updateRoomsDetails) {
 			FetchRoomsDetails details = new FetchRoomsDetails(
 					PC_SRV_CONFIG.getString("DB_URL")
@@ -775,11 +775,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		Connection connectBDD;
 		try {
 			connectBDD = connMgr.getConnection();
-			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, "
+			String request = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.typeEN, rl.typeFR, "
 					+ "uo.count, uo.timestampStart, uo.timestampEnd, uo.type "
 					+ "FROM `fr-roomslist` rl, `fr-occupancy` uo "
 					+ "WHERE rl.uid = uo.uid AND rl.uid IN("
-					+ roomsListQueryFormat + ") "
+					+ roomsListQueryFormat
+					+ ") "
 					+ "AND ((uo.timestampEnd <= ? AND uo.timestampEnd >= ? ) "
 					+ "OR (uo.timestampStart <= ? AND uo.timestampStart >= ?)"
 					+ "OR (uo.timestampStart <= ? AND uo.timestampEnd >= ?)) "
@@ -813,6 +814,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				String uid = resultQuery.getString("uid");
 				int count = resultQuery.getInt("count");
 				String doorCode = resultQuery.getString("doorCode");
+				String alias = resultQuery.getString("alias");
+				String typeFR = resultQuery.getString("typeFR");
+				String typeEN = resultQuery.getString("typeEN");
+
 				OCCUPANCY_TYPE type = OCCUPANCY_TYPE.valueOf(resultQuery
 						.getString("type"));
 				boolean available = (type == OCCUPANCY_TYPE.USER) ? true
@@ -823,6 +828,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				FRPeriod period = new FRPeriod(start, end, false);
 				FRRoom mRoom = new FRRoom(doorCode, uid);
 				mRoom.setCapacity(capacity);
+				if (alias != null) {
+					mRoom.setDoorCodeAlias(alias);
+				}
+				if (typeEN != null) {
+					mRoom.setTypeEN(typeEN);
+				}
+				if (typeFR != null) {
+					mRoom.setTypeFR(typeFR);
+				}
 
 				// if this is the first iteration
 				if (currentUID == null) {
@@ -879,7 +893,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				}
 
 				roomsListQueryFormat += "?";
-				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity "
+				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.typeEN, rl.typeFR "
 						+ "FROM `fr-roomslist` rl " + "WHERE rl.uid IN("
 						+ roomsListQueryFormat + ")";
 
@@ -896,8 +910,21 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					String uid = infoRoom.getString("uid");
 					String doorCode = infoRoom.getString("doorCode");
 					int capacity = infoRoom.getInt("capacity");
+					String alias = infoRoom.getString("alias");
+					String typeFR = infoRoom.getString("typeFR");
+					String typeEN = infoRoom.getString("typeEN");
+
 					FRRoom mRoom = new FRRoom(doorCode, uid);
 					mRoom.setCapacity(capacity);
+					if (alias != null) {
+						mRoom.setDoorCodeAlias(alias);
+					}
+					if (typeEN != null) {
+						mRoom.setTypeEN(typeEN);
+					}
+					if (typeFR != null) {
+						mRoom.setTypeFR(typeFR);
+					}
 
 					currentOccupancy = new OccupancySorted(mRoom, tsStart,
 							tsEnd, onlyFreeRooms);
@@ -1034,6 +1061,16 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				if (alias != null) {
 					frRoom.setDoorCodeAlias(alias);
 				}
+
+				String typeFR = resultQuery.getString("typeFR");
+				if (typeFR != null) {
+					frRoom.setTypeFR(typeFR);
+				}
+
+				String typeEN = resultQuery.getString("typeEN");
+				if (typeEN != null) {
+					frRoom.setTypeEN(typeEN);
+				}
 				rooms.add(frRoom);
 			}
 
@@ -1055,8 +1092,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * The client can specify a user occupancy during a given period, multiple
-	 * submits for the same period (and same user) are not allowed, we return a HTTP_CONFLICT in
-	 * that case.
+	 * submits for the same period (and same user) are not allowed, we return a
+	 * HTTP_CONFLICT in that case.
 	 */
 	@Override
 	public ImWorkingReply indicateImWorking(ImWorkingRequest request)
@@ -1086,8 +1123,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 	/**
 	 * Pre-format the message for logging
-	 * @param message The message
-	 * @param path The path to the file where the bug happened
+	 * 
+	 * @param message
+	 *            The message
+	 * @param path
+	 *            The path to the file where the bug happened
 	 * @return A pre-formatted message containing the path and the message.
 	 */
 	private String formatPathMessageLogAndroid(String message, String path) {
