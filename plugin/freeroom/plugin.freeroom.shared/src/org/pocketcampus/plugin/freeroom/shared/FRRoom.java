@@ -42,8 +42,9 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
   private static final org.apache.thrift.protocol.TField CF_FIELD_DESC = new org.apache.thrift.protocol.TField("cf", org.apache.thrift.protocol.TType.STRING, (short)16);
   private static final org.apache.thrift.protocol.TField ADMINUSE_FIELD_DESC = new org.apache.thrift.protocol.TField("adminuse", org.apache.thrift.protocol.TType.STRING, (short)17);
   private static final org.apache.thrift.protocol.TField EWAID_FIELD_DESC = new org.apache.thrift.protocol.TField("EWAid", org.apache.thrift.protocol.TType.STRING, (short)31);
-  private static final org.apache.thrift.protocol.TField TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("type", org.apache.thrift.protocol.TType.I32, (short)32);
-  private static final org.apache.thrift.protocol.TField DOOR_CODE_ALIAS_FIELD_DESC = new org.apache.thrift.protocol.TField("doorCodeAlias", org.apache.thrift.protocol.TType.STRING, (short)33);
+  private static final org.apache.thrift.protocol.TField TYPE_FR_FIELD_DESC = new org.apache.thrift.protocol.TField("typeFR", org.apache.thrift.protocol.TType.STRING, (short)32);
+  private static final org.apache.thrift.protocol.TField TYPE_EN_FIELD_DESC = new org.apache.thrift.protocol.TField("typeEN", org.apache.thrift.protocol.TType.STRING, (short)33);
+  private static final org.apache.thrift.protocol.TField DOOR_CODE_ALIAS_FIELD_DESC = new org.apache.thrift.protocol.TField("doorCodeAlias", org.apache.thrift.protocol.TType.STRING, (short)34);
 
   private String doorCode; // required
   private String uid; // required
@@ -63,7 +64,8 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
   private String cf; // required
   private String adminuse; // required
   private String EWAid; // required
-  private FRRoomType type; // required
+  private String typeFR; // required
+  private String typeEN; // required
   private String doorCodeAlias; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -86,12 +88,9 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     CF((short)16, "cf"),
     ADMINUSE((short)17, "adminuse"),
     EWAID((short)31, "EWAid"),
-    /**
-     * 
-     * @see FRRoomType
-     */
-    TYPE((short)32, "type"),
-    DOOR_CODE_ALIAS((short)33, "doorCodeAlias");
+    TYPE_FR((short)32, "typeFR"),
+    TYPE_EN((short)33, "typeEN"),
+    DOOR_CODE_ALIAS((short)34, "doorCodeAlias");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -142,9 +141,11 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
           return ADMINUSE;
         case 31: // EWAID
           return EWAID;
-        case 32: // TYPE
-          return TYPE;
-        case 33: // DOOR_CODE_ALIAS
+        case 32: // TYPE_FR
+          return TYPE_FR;
+        case 33: // TYPE_EN
+          return TYPE_EN;
+        case 34: // DOOR_CODE_ALIAS
           return DOOR_CODE_ALIAS;
         default:
           return null;
@@ -232,8 +233,10 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.EWAID, new org.apache.thrift.meta_data.FieldMetaData("EWAid", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.TYPE, new org.apache.thrift.meta_data.FieldMetaData("type", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, FRRoomType.class)));
+    tmpMap.put(_Fields.TYPE_FR, new org.apache.thrift.meta_data.FieldMetaData("typeFR", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.TYPE_EN, new org.apache.thrift.meta_data.FieldMetaData("typeEN", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.DOOR_CODE_ALIAS, new org.apache.thrift.meta_data.FieldMetaData("doorCodeAlias", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -302,8 +305,11 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     if (other.isSetEWAid()) {
       this.EWAid = other.EWAid;
     }
-    if (other.isSetType()) {
-      this.type = other.type;
+    if (other.isSetTypeFR()) {
+      this.typeFR = other.typeFR;
+    }
+    if (other.isSetTypeEN()) {
+      this.typeEN = other.typeEN;
     }
     if (other.isSetDoorCodeAlias()) {
       this.doorCodeAlias = other.doorCodeAlias;
@@ -339,7 +345,8 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     this.cf = null;
     this.adminuse = null;
     this.EWAid = null;
-    this.type = null;
+    this.typeFR = null;
+    this.typeEN = null;
     this.doorCodeAlias = null;
   }
 
@@ -770,35 +777,51 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     }
   }
 
-  /**
-   * 
-   * @see FRRoomType
-   */
-  public FRRoomType getType() {
-    return this.type;
+  public String getTypeFR() {
+    return this.typeFR;
   }
 
-  /**
-   * 
-   * @see FRRoomType
-   */
-  public FRRoom setType(FRRoomType type) {
-    this.type = type;
+  public FRRoom setTypeFR(String typeFR) {
+    this.typeFR = typeFR;
     return this;
   }
 
-  public void unsetType() {
-    this.type = null;
+  public void unsetTypeFR() {
+    this.typeFR = null;
   }
 
-  /** Returns true if field type is set (has been assigned a value) and false otherwise */
-  public boolean isSetType() {
-    return this.type != null;
+  /** Returns true if field typeFR is set (has been assigned a value) and false otherwise */
+  public boolean isSetTypeFR() {
+    return this.typeFR != null;
   }
 
-  public void setTypeIsSet(boolean value) {
+  public void setTypeFRIsSet(boolean value) {
     if (!value) {
-      this.type = null;
+      this.typeFR = null;
+    }
+  }
+
+  public String getTypeEN() {
+    return this.typeEN;
+  }
+
+  public FRRoom setTypeEN(String typeEN) {
+    this.typeEN = typeEN;
+    return this;
+  }
+
+  public void unsetTypeEN() {
+    this.typeEN = null;
+  }
+
+  /** Returns true if field typeEN is set (has been assigned a value) and false otherwise */
+  public boolean isSetTypeEN() {
+    return this.typeEN != null;
+  }
+
+  public void setTypeENIsSet(boolean value) {
+    if (!value) {
+      this.typeEN = null;
     }
   }
 
@@ -972,11 +995,19 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       }
       break;
 
-    case TYPE:
+    case TYPE_FR:
       if (value == null) {
-        unsetType();
+        unsetTypeFR();
       } else {
-        setType((FRRoomType)value);
+        setTypeFR((String)value);
+      }
+      break;
+
+    case TYPE_EN:
+      if (value == null) {
+        unsetTypeEN();
+      } else {
+        setTypeEN((String)value);
       }
       break;
 
@@ -1047,8 +1078,11 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     case EWAID:
       return getEWAid();
 
-    case TYPE:
-      return getType();
+    case TYPE_FR:
+      return getTypeFR();
+
+    case TYPE_EN:
+      return getTypeEN();
 
     case DOOR_CODE_ALIAS:
       return getDoorCodeAlias();
@@ -1100,8 +1134,10 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       return isSetAdminuse();
     case EWAID:
       return isSetEWAid();
-    case TYPE:
-      return isSetType();
+    case TYPE_FR:
+      return isSetTypeFR();
+    case TYPE_EN:
+      return isSetTypeEN();
     case DOOR_CODE_ALIAS:
       return isSetDoorCodeAlias();
     }
@@ -1283,12 +1319,21 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         return false;
     }
 
-    boolean this_present_type = true && this.isSetType();
-    boolean that_present_type = true && that.isSetType();
-    if (this_present_type || that_present_type) {
-      if (!(this_present_type && that_present_type))
+    boolean this_present_typeFR = true && this.isSetTypeFR();
+    boolean that_present_typeFR = true && that.isSetTypeFR();
+    if (this_present_typeFR || that_present_typeFR) {
+      if (!(this_present_typeFR && that_present_typeFR))
         return false;
-      if (!this.type.equals(that.type))
+      if (!this.typeFR.equals(that.typeFR))
+        return false;
+    }
+
+    boolean this_present_typeEN = true && this.isSetTypeEN();
+    boolean that_present_typeEN = true && that.isSetTypeEN();
+    if (this_present_typeEN || that_present_typeEN) {
+      if (!(this_present_typeEN && that_present_typeEN))
+        return false;
+      if (!this.typeEN.equals(that.typeEN))
         return false;
     }
 
@@ -1398,10 +1443,15 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
     if (present_EWAid)
       builder.append(EWAid);
 
-    boolean present_type = true && (isSetType());
-    builder.append(present_type);
-    if (present_type)
-      builder.append(type.getValue());
+    boolean present_typeFR = true && (isSetTypeFR());
+    builder.append(present_typeFR);
+    if (present_typeFR)
+      builder.append(typeFR);
+
+    boolean present_typeEN = true && (isSetTypeEN());
+    builder.append(present_typeEN);
+    if (present_typeEN)
+      builder.append(typeEN);
 
     boolean present_doorCodeAlias = true && (isSetDoorCodeAlias());
     builder.append(present_doorCodeAlias);
@@ -1599,12 +1649,22 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetType()).compareTo(typedOther.isSetType());
+    lastComparison = Boolean.valueOf(isSetTypeFR()).compareTo(typedOther.isSetTypeFR());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetType()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.type, typedOther.type);
+    if (isSetTypeFR()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.typeFR, typedOther.typeFR);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetTypeEN()).compareTo(typedOther.isSetTypeEN());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetTypeEN()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.typeEN, typedOther.typeEN);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1767,14 +1827,21 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 32: // TYPE
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.type = FRRoomType.findByValue(iprot.readI32());
+        case 32: // TYPE_FR
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.typeFR = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 33: // DOOR_CODE_ALIAS
+        case 33: // TYPE_EN
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.typeEN = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 34: // DOOR_CODE_ALIAS
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.doorCodeAlias = iprot.readString();
           } else { 
@@ -1908,10 +1975,17 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
         oprot.writeFieldEnd();
       }
     }
-    if (this.type != null) {
-      if (isSetType()) {
-        oprot.writeFieldBegin(TYPE_FIELD_DESC);
-        oprot.writeI32(this.type.getValue());
+    if (this.typeFR != null) {
+      if (isSetTypeFR()) {
+        oprot.writeFieldBegin(TYPE_FR_FIELD_DESC);
+        oprot.writeString(this.typeFR);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.typeEN != null) {
+      if (isSetTypeEN()) {
+        oprot.writeFieldBegin(TYPE_EN_FIELD_DESC);
+        oprot.writeString(this.typeEN);
         oprot.writeFieldEnd();
       }
     }
@@ -2086,13 +2160,23 @@ public class FRRoom implements org.apache.thrift.TBase<FRRoom, FRRoom._Fields>, 
       }
       first = false;
     }
-    if (isSetType()) {
+    if (isSetTypeFR()) {
       if (!first) sb.append(", ");
-      sb.append("type:");
-      if (this.type == null) {
+      sb.append("typeFR:");
+      if (this.typeFR == null) {
         sb.append("null");
       } else {
-        sb.append(this.type);
+        sb.append(this.typeFR);
+      }
+      first = false;
+    }
+    if (isSetTypeEN()) {
+      if (!first) sb.append(", ");
+      sb.append("typeEN:");
+      if (this.typeEN == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.typeEN);
       }
       first = false;
     }

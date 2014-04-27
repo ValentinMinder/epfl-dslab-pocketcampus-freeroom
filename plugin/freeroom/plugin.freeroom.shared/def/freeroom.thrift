@@ -4,10 +4,6 @@ namespace java org.pocketcampus.plugin.freeroom.shared
 enum FRDay {
 	Monday; Tuesday; Wednesday; Thursday; Friday; Saturday; Sunday;
 }
-	
-enum FRRoomType{
-	AUDITORIUM; EXERCISES; COMPUTER_ROOM; CONFERENCE;
-}
 
 struct FRCourse {
 	1: required string courseID;
@@ -33,8 +29,9 @@ struct FRRoom{
 	16: optional string cf;
 	17: optional string adminuse;
 	31: optional string EWAid;
-	32: optional FRRoomType type;
-	33: optional string doorCodeAlias;
+	32: optional string typeFR;
+	33: optional string typeEN;
+	34: optional string doorCodeAlias;
 }
 
 
