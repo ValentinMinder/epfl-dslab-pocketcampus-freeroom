@@ -573,7 +573,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		textBuilder.append(getString(R.string.freeroom_share_iwillbe) + " ");
 		textBuilder.append(getString(R.string.freeroom_share_in_room) + " ");
 		if (mRoom.isSetDoorCodeAlias()) {
-			textBuilder.append(mRoom.getDoorCodeAlias() + " ");
+			textBuilder.append(mRoom.getDoorCodeAlias() + " ("
+					+ mRoom.getDoorCode() + ") ");
 		} else {
 			textBuilder.append(mRoom.getDoorCode() + " ");
 		}
@@ -613,9 +614,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				builder.append(mFrRoom.getDoorCode());
 			}
 		}
-		if (mFrRoom.isSetType()) {
+		if (mFrRoom.isSetTypeFR() || mFrRoom.isSetTypeEN()) {
 			builder.append(" / " + getString(R.string.freeroom_popup_info_type)
-					+ ": " + mFrRoom.getType());
+					+ ": ");
+			if (mFrRoom.isSetTypeFR()) {
+				builder.append(mFrRoom.getTypeFR());
+			}
+			if (mFrRoom.isSetTypeFR() && mFrRoom.isSetTypeEN()) {
+				builder.append(" / ");
+			}
+			if (mFrRoom.isSetTypeFR()) {
+				builder.append(mFrRoom.getTypeEN());
+			}
 		}
 		if (mFrRoom.isSetCapacity()) {
 			builder.append(" / "
