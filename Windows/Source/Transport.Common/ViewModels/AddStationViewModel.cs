@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PocketCampus.Transport.Services;
 using ThinMvvm;
 using ThinMvvm.Logging;
-using PocketCampus.Transport.Services;
 
 namespace PocketCampus.Transport.ViewModels
 {
@@ -56,7 +56,7 @@ namespace PocketCampus.Transport.ViewModels
         /// </summary>
         private async Task<IEnumerable<string>> ProvideAutoComplete( string query )
         {
-            var suggestions = await _transportService.GetSuggestionsAsync( query );
+            var suggestions = await _transportService.GetSuggestionsAsync( query, CurrentCancellationToken );
             return suggestions.Select( s => s.Name );
         }
 
@@ -65,9 +65,9 @@ namespace PocketCampus.Transport.ViewModels
         /// </summary>
         private Task AddAsync( string stationName )
         {
-            return TryExecuteAsync( async _ =>
+            return TryExecuteAsync( async token =>
             {
-                var station = ( await _transportService.GetStationsAsync( new[] { stationName } ) )[0];
+                var station = ( await _transportService.GetStationsAsync( new[] { stationName }, token ) )[0];
                 _pluginSettings.Stations.Add( station );
                 _navigationService.NavigateBack();
             } );

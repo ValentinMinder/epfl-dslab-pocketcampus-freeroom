@@ -38,19 +38,14 @@
                         Width="136"
                         Height="136">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        
                         <!-- Icon -->
                         <ContentControl Template="{Binding Converter={StaticResource PluginToIconTemplate}}"
-                                        Margin="20,10,20,5" />
+                                        Margin="5,-20,5,0" />
                         
                         <!-- Text-->
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding Name}"
+                        <TextBlock Text="{Binding Name}"
                                    Style="{StaticResource PhoneTextNormalStyle}"
+                                   VerticalAlignment="Bottom"
                                    FontSize="{StaticResource PhoneFontSizeNormal}"
                                    FontFamily="{StaticResource PhoneFontFamilySemiBold}"
                                    Foreground="{StaticResource AppHeaderForegroundBrush}"

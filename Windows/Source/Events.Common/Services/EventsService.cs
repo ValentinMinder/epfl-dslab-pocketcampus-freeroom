@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Events.Models;
@@ -15,14 +16,14 @@ namespace PocketCampus.Events.Services
     {
         public EventsService( IServerAccess access ) : base( access.CreateCommunication( "events" ) ) { }
 
-        public Task<EventItemResponse> GetEventItemAsync( EventItemRequest request )
+        public Task<EventItemResponse> GetEventItemAsync( EventItemRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<EventItemRequest, EventItemResponse>( x => x.GetEventItemAsync, request );
+            return CallAsync<EventItemRequest, CancellationToken, EventItemResponse>( x => x.GetEventItemAsync, request, cancellationToken );
         }
 
-        public Task<EventPoolResponse> GetEventPoolAsync( EventPoolRequest request )
+        public Task<EventPoolResponse> GetEventPoolAsync( EventPoolRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<EventPoolRequest, EventPoolResponse>( x => x.GetEventPoolAsync, request );
+            return CallAsync<EventPoolRequest, CancellationToken, EventPoolResponse>( x => x.GetEventPoolAsync, request, cancellationToken );
         }
 
         public Task<FavoriteEmailResponse> SendFavoriteItemsByEmailAsync( FavoriteEmailRequest request )

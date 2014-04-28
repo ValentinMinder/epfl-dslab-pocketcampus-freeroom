@@ -9,31 +9,27 @@ namespace PocketCampus.IsAcademia.Models
     /// <summary>
     /// The possible response statuses of server requests.
     /// </summary>
-    [ThriftEnum( "IsaStatusCode" )]
+    [ThriftEnum]
     public enum ResponseStatus
     {
         /// <summary>
         /// The request completed successfully.
         /// </summary>
-        [ThriftEnumMember( "OK", 200 )]
-        Success,
+        Success = 200,
 
         /// <summary>
         /// A network error occurred while executing the request.
         /// </summary>
-        [ThriftEnumMember( "NETWORK_ERROR", 404 )]
-        NetworkError,
+        NetworkError = 404,
 
         /// <summary>
         /// The provided credentials are invalid or expired.
         /// </summary>
-        [ThriftEnumMember( "INVALID_SESSION", 407 )]
-        AuthenticationError,
+        AuthenticationError = 407,
 
         /// <summary>
         /// An error was thrown by IS-Academia while executing the request.
         /// </summary>
-        [ThriftEnumMember( "ISA_ERROR", 418 )]
-        IsAcademiaError
+        IsAcademiaError = 418
     }
 }

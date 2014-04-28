@@ -9,19 +9,17 @@ namespace PocketCampus.Satellite.Models
     /// <summary>
     /// The possible response statuses of server requests.
     /// </summary>
-    [ThriftEnum( "SatelliteStatusCode" )]
+    [ThriftEnum]
     public enum BeerMenuStatus
     {
         /// <summary>
         /// The request completed successfully.
         /// </summary>
-        [ThriftEnumMember( "OK", 200 )]
-        Success,
+        Success = 200,
 
         /// <summary>
         /// A network error occurred while executing the request.
         /// </summary>
-        [ThriftEnumMember( "NETWORK_ERROR", 407 )]
-        NetworkError
+        NetworkError = 407
     }
 }

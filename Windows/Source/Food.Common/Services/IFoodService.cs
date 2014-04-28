@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Food.Models;
 using ThriftSharp;
@@ -18,7 +19,7 @@ namespace PocketCampus.Food.Services
         /// Asynchronously gets the menus for the specified request.
         /// </summary>
         [ThriftMethod( "getFood" )]
-        Task<FoodResponse> GetMenusAsync( [ThriftParameter( 1, "foodReq" )] FoodRequest request );
+        Task<FoodResponse> GetMenusAsync( [ThriftParameter( 1, "foodReq" )] FoodRequest request, CancellationToken cancellationToken );
 
         /// <summary>
         /// Asynchronously submits the specified vote request.

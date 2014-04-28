@@ -96,7 +96,7 @@ namespace PocketCampus.IsAcademia.ViewModels
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                     WeekStart = WeekDate
                 };
-                var response = await _isaService.GetScheduleAsync( request );
+                var response = await _isaService.GetScheduleAsync( request, token );
                 if ( response.Status == ResponseStatus.AuthenticationError )
                 {
                     return false;

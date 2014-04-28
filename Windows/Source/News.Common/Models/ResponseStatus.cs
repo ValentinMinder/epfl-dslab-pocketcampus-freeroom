@@ -9,25 +9,22 @@ namespace PocketCampus.News.Models
     /// <summary>
     /// The possible response statuses of a request.
     /// </summary>
-    [ThriftEnum( "NewsStatusCode" )]
+    [ThriftEnum]
     public enum ResponseStatus
     {
         /// <summary>
         /// The request completed successfully.
         /// </summary>
-        [ThriftEnumMember( "OK", 200 )]
-        Success,
+        Success = 200,
 
         /// <summary>
         /// The requested ID is invalid.
         /// </summary>
-        [ThriftEnumMember( "INVALID_ID", 400 )]
-        InvalidId,
+        InvalidId = 400,
 
         /// <summary>
         /// A network error occurred on the server while executing the request.
         /// </summary>
-        [ThriftEnumMember( "NETWORK_ERROR", 404 )]
-        NetworkError
+        NetworkError = 404
     }
 }

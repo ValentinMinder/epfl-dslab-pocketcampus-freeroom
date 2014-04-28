@@ -181,7 +181,7 @@ namespace PocketCampus.Events.ViewModels
                     FavoriteEventIds = _settings.FavoriteItemIds.ToArray(),
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
-                var response = await _eventsService.GetEventPoolAsync( request );
+                var response = await _eventsService.GetEventPoolAsync( request, token );
 
                 if ( response.Status != EventsStatus.Success )
                 {

@@ -123,7 +123,7 @@ namespace PocketCampus.Moodle.ViewModels
                     return true;
                 }
 
-                var coursesResponse = await _moodleService.GetCoursesAsync( "dummy" );
+                var coursesResponse = await _moodleService.GetCoursesAsync( "", token );
 
                 if ( coursesResponse.Status == ResponseStatus.AuthenticationError )
                 {
@@ -136,7 +136,7 @@ namespace PocketCampus.Moodle.ViewModels
 
                 foreach ( var course in coursesResponse.Courses )
                 {
-                    var sectionsResponse = await _moodleService.GetCourseSectionsAsync( course.Id.ToString() );
+                    var sectionsResponse = await _moodleService.GetCourseSectionsAsync( course.Id.ToString(), token );
 
                     if ( sectionsResponse.Status == ResponseStatus.AuthenticationError )
                     {

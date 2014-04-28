@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using ThinMvvm;
-using ThinMvvm.Logging;
 using PocketCampus.Satellite.Models;
 using PocketCampus.Satellite.Services;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Satellite.ViewModels
 {
@@ -49,7 +49,7 @@ namespace PocketCampus.Satellite.ViewModels
         {
             if ( force )
             {
-                var beersResponse = await _beerService.GetBeersAsync();
+                var beersResponse = await _beerService.GetBeersAsync( token );
                 if ( beersResponse.Status != BeerMenuStatus.Success )
                 {
                     throw new Exception( "An error occurred on the Satellite server-side." );

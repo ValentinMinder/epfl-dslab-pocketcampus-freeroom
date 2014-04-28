@@ -7,10 +7,10 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
-using ThinMvvm;
-using ThinMvvm.Logging;
 using PocketCampus.News.Models;
 using PocketCampus.News.Services;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.News.ViewModels
 {
@@ -67,7 +67,7 @@ namespace PocketCampus.News.ViewModels
                 ItemId = _itemId
             };
 
-            var response = await _newsService.GetFeedItemContentAsync( request );
+            var response = await _newsService.GetFeedItemContentAsync( request, token );
 
             if ( response.Status != ResponseStatus.Success )
             {

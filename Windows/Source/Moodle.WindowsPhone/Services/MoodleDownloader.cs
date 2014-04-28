@@ -47,8 +47,8 @@ namespace PocketCampus.Moodle.Services
             string downloadUrl = string.Format( "{0}://pocketcampus.epfl.ch:{1}/v3r1/raw-moodle",
                                                 _serverSettings.Configuration.Protocol, _serverSettings.Configuration.Port );
 
-            var resp = await client.PostAsync( downloadUrl, new FormUrlEncodedContent( postParams ) );
-            return await resp.Content.ReadAsByteArrayAsync();
+            var response = await client.PostAsync( downloadUrl, new FormUrlEncodedContent( postParams ) );
+            return await response.Content.ReadAsByteArrayAsync();
         }
     }
 }

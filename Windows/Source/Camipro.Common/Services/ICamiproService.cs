@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Camipro.Models;
 using PocketCampus.Common.Services;
@@ -32,13 +33,13 @@ namespace PocketCampus.Camipro.Services
         /// Asynchronously gets information about a CAMIPRO card.
         /// </summary>
         [ThriftMethod( "getBalanceAndTransactions" )]
-        Task<AccountInfo> GetAccountInfoAsync( [ThriftParameter( 1, "iRequest" )] CamiproRequest request );
+        Task<AccountInfo> GetAccountInfoAsync( [ThriftParameter( 1, "iRequest" )] CamiproRequest request, CancellationToken token );
 
         /// <summary>
         /// Asynchronously gets information about the e-banking payment used to charge a CAMIPRO card.
         /// </summary>
         [ThriftMethod( "getStatsAndLoadingInfo" )]
-        Task<EbankingInfo> GetEBankingInfoAsync( [ThriftParameter( 1, "iRequest" )] CamiproRequest request );
+        Task<EbankingInfo> GetEBankingInfoAsync( [ThriftParameter( 1, "iRequest" )] CamiproRequest request, CancellationToken token );
 
         /// <summary>
         /// Asynchronously requests an e-mail containing information about the e-banking payment used to charge a CAMIPRO card.

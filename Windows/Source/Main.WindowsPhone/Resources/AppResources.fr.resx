@@ -234,4 +234,10 @@ George Candea</value>
   <data name="AuthenticationSaveCredentials" xml:space="preserve">
     <value>se souvenir de moi</value>
   </data>
+  <data name="UseColoredTile" xml:space="preserve">
+    <value>utiliser une tuile colorée</value>
+  </data>
+  <data name="UseColoredTileExplanation" xml:space="preserve">
+    <value>désactivez cette option si la tuile colorée rend mal sur votre fond d'écran démarrer</value>
+  </data>
 </root>

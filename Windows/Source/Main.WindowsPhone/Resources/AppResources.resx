@@ -231,4 +231,10 @@ George Candea</value>
   <data name="AuthenticationSaveCredentials" xml:space="preserve">
     <value>remember me</value>
   </data>
+  <data name="UseColoredTile" xml:space="preserve">
+    <value>use colored application tile</value>
+  </data>
+  <data name="UseColoredTileExplanation" xml:space="preserve">
+    <value>disable this if the colored image doesn't look good on your start screen background</value>
+  </data>
 </root>
