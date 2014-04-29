@@ -3,7 +3,7 @@ This application makes use of the following third party libraries:
 
 ## AFNetworking
 
-Copyright (c) 2013 AFNetworking (http://afnetworking.com/)
+Copyright (c) 2013-2014 AFNetworking (http://afnetworking.com/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -125,7 +125,7 @@ THE SOFTWARE.
 
 ## SSKeychain
 
-Copyright (c) 2010-2013 Sam Soffes.
+Copyright (c) 2010-2014 Sam Soffes, http://soff.es
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

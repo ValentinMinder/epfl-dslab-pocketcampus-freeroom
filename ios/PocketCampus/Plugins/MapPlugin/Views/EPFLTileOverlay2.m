@@ -38,6 +38,8 @@
 
 @implementation EPFLTileOverlay2
 
+#pragma mark - MKTileOverlay overrides
+
 - (NSURL *)URLForTilePath:(MKTileOverlayPath)path {
     return [self urlForEpflTilesWithX:path.x andY:path.y andZoom:path.z];
 }
