@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -23,6 +25,7 @@ import org.pocketcampus.plugin.freeroom.android.FreeRoomManageFavoritesView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
+import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavoriteAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomSuggestionArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
@@ -119,7 +122,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private ExpandableListViewAdapter<Occupancy> mExpListAdapter;
 
 	/**
-	 * View that holds the INFO popup content.
+	 * View that holds the INFO popup content, defined in xml in layout folder.
 	 */
 	private View popupInfoView;
 	/**
@@ -130,7 +133,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private PopupWindow popupInfoWindow;
 
 	/**
-	 * View that holds the SEARCH popup content.
+	 * View that holds the SEARCH popup content, defined in xml in layout
+	 * folder.
 	 */
 	private View popupSearchView;
 	/**
@@ -139,6 +143,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * popup.
 	 */
 	private PopupWindow popupSearchWindow;
+
+	/**
+	 * View that holds the FAVORITES popup content, defined in xml in layout
+	 * folder.
+	 */
+	private View popupFavoritesView;
+	/**
+	 * Window that holds the FAVORITES popup. Note: popup window can be closed
+	 * by: the closing button (red cross), back button, or clicking outside the
+	 * popup.
+	 */
+	private PopupWindow popupFavoritesWindow;
 
 	/**
 	 * Action to perform a customized search.
@@ -159,12 +175,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private Action editFavorites = new Action() {
 		public void performAction(View view) {
+			popupFavoritesWindow.showAsDropDown(mTextView, 0, 0);
+			// refreshPopupSearch();
 			// TODO: popup instead of new activity
-			Toast.makeText(getApplicationContext(), "favorites",
-					Toast.LENGTH_SHORT).show();
-			Intent i = new Intent(FreeRoomHomeView.this,
-					FreeRoomManageFavoritesView.class);
-			FreeRoomHomeView.this.startActivity(i);
+			// Toast.makeText(getApplicationContext(), "favorites",
+			// Toast.LENGTH_SHORT).show();
+			// Intent i = new Intent(FreeRoomHomeView.this,
+			// FreeRoomManageFavoritesView.class);
+			// FreeRoomHomeView.this.startActivity(i);
 		}
 
 		public int getDrawable() {
@@ -268,6 +286,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		addActionToActionBar(search);
 		initPopupInfoRoom();
 		initPopupSearch();
+		initPopupFavorites();
 	}
 
 	/**
@@ -290,7 +309,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		TextView tv = (TextView) popupInfoView
 				.findViewById(R.id.freeroom_layout_popup_info_name);
-		tv.setText("room");
+		tv.setText("room"); // TODO
 
 		ImageView img = (ImageView) popupInfoView
 				.findViewById(R.id.freeroom_layout_popup_info_close);
@@ -301,6 +320,49 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				popupInfoWindow.dismiss();
 			}
 		});
+	}
+
+	/**
+	 * Inits the popup to diplay the favorites.
+	 */
+	private ArrayList<String> buildings;
+	private Map<String, List<FRRoom>> rooms;
+	private ExpandableListViewFavoriteAdapter mAdapterFav;
+
+	private void initPopupFavorites() {
+		// construct the popup
+		// it MUST fill the parent in height, such that weight works in xml for
+		// heights. Otherwise, some elements may not be displayed anymore
+		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+				.getSystemService(LAYOUT_INFLATER_SERVICE);
+		popupFavoritesView = layoutInflater.inflate(
+				R.layout.freeroom_layout_popup_fav, null);
+		popupFavoritesWindow = new PopupWindow(popupFavoritesView,
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, true);
+
+		// allows outside clicks to close the popup
+		popupFavoritesWindow.setOutsideTouchable(true);
+		popupFavoritesWindow.setBackgroundDrawable(new BitmapDrawable());
+
+		ExpandableListView lv = (ExpandableListView) popupFavoritesView
+				.findViewById(R.id.freeroom_layout_popup_fav_list);
+
+		// TODO: THIS IS AWWWWWWWFUUUUULLL
+		// PLEASE STORE FRROOM OBJECTS, NOT THESE UIDS
+		Map<String, String> allFavorites = mModel.getAllRoomMapFavorites();
+		HashSet<FRRoom> favoritesAsFRRoom = new HashSet<FRRoom>();
+		for (Entry<String, String> e : allFavorites.entrySet()) {
+			// Favorites beeing stored as uid -> doorCode
+			favoritesAsFRRoom.add(new FRRoom(e.getValue(), e.getKey()));
+		}
+		rooms = mModel.sortFRRoomsByBuildingsAndFavorites(favoritesAsFRRoom,
+				false);
+		buildings = new ArrayList<String>(rooms.keySet());
+
+		mAdapterFav = new ExpandableListViewFavoriteAdapter(this, buildings,
+				rooms, mModel);
+		lv.setAdapter(mAdapterFav);
+		mAdapterFav.notifyDataSetChanged();
 	}
 
 	/**
@@ -358,6 +420,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 			if (popupSearchWindow.isShowing()) {
 				popupSearchWindow.dismiss();
+				flag = true;
+			}
+			if (popupFavoritesWindow.isShowing()) {
+				popupFavoritesWindow.dismiss();
 				flag = true;
 			}
 			if (flag) {
@@ -447,6 +513,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * than 10 results.
 	 * <p>
 	 * TODO defines these consts somewhere else
+	 * 
 	 * @param ev
 	 */
 	public void updateCollapse(ExpandableListView ev,
