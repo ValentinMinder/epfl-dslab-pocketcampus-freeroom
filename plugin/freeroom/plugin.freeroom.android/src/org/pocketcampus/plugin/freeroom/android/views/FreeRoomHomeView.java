@@ -439,7 +439,27 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		setTextSummary(build.toString());
 		mExpListAdapter.notifyDataSetChanged();
-		mExpListAdapter.updateCollapse(mExpListView);
+		updateCollapse(mExpListView, mExpListAdapter);
+	}
+
+	/**
+	 * Expands all the groups if there are no more than 4 groups or not more
+	 * than 10 results.
+	 * <p>
+	 * TODO defines these consts somewhere else
+	 * @param ev
+	 */
+	public void updateCollapse(ExpandableListView ev,
+			ExpandableListViewAdapter<Occupancy> ad) {
+		System.out.println("check: " + ad.getGroupCount() + "/"
+				+ ad.getChildrenTotalCount()); // TODO delete
+		if (ad.getGroupCount() <= 4 || ad.getChildrenTotalCount() <= 10) {
+			System.out.println("i wanted to expand");
+			// TODO: this cause troubles in performance when first launch
+			for (int i = 0; i < ad.getGroupCount(); i++) {
+				ev.expandGroup(i);
+			}
+		}
 	}
 
 	/**

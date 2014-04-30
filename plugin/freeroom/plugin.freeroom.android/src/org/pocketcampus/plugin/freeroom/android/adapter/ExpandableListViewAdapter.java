@@ -208,6 +208,10 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		return data.getChildCount(groupPosition);
 	}
 
+	public int getChildrenTotalCount() {
+		return data.totalChild();
+	}
+
 	@Override
 	public Object getGroup(int groupPosition) {
 		return data.get(groupPosition);
@@ -385,23 +389,6 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 	public void updateHeader(int id, String value) {
 		data.updateKey(id, value);
-	}
-
-	/**
-	 * Expands all the groups if there are no more than 3 groups or not more
-	 * than 10 results.
-	 * 
-	 * @param ev
-	 */
-	public void updateCollapse(ExpandableListView ev) {
-		System.out.println("check: " + data.size() + "/" + data.totalChild());
-		if (data.size() <= 3 || data.totalChild() <= 10) {
-			System.out.println("i wanted to expand");
-			// TODO: this cause troubles in performance! To delete if not found
-			for (int i = 0; i < data.size(); i++) {
-				ev.expandGroup(i);
-			}
-		}
 	}
 
 	/**
