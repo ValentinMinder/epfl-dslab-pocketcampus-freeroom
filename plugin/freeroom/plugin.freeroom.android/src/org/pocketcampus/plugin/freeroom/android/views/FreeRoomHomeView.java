@@ -433,6 +433,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
+		mSummarySelectedRoomsTextView = (TextView) popupAddRoomView
+				.findViewById(R.id.freeroom_layout_popup_add_room_summary);
+
 		UIConstructInputBar();
 		LinearLayout ll = (LinearLayout) popupAddRoomView
 				.findViewById(R.id.freeroom_layout_popup_add_layout_main);
@@ -494,6 +497,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 			selectedRooms.clear();
 			if (flag) {
+				resetUserDefined();
 				return true;
 			}
 		}
@@ -994,6 +998,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// mGlobalSubLayout.removeView(mSummarySelectedRoomsTextView);
 		selectedRooms.clear();
 		userDefButton.setChecked(false);
+		mSummarySelectedRoomsTextView
+				.setText(getSummaryTextFromCollection(selectedRooms));
+		mAutoCompleteSuggestionInputBarElement.setInputText("");
 	}
 
 	private void UIConstructButton() {
@@ -1294,9 +1301,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// we only add if it already contains the room
 		if (!selectedRooms.contains(room)) {
 			selectedRooms.add(room);
-			// TODO: summary ?!?
-			// mSummarySelectedRoomsTextView
-			// .setText(getSummaryTextFromCollection(selectedRooms));
+			mSummarySelectedRoomsTextView
+					.setText(getSummaryTextFromCollection(selectedRooms));
 
 		} else {
 			Log.e(this.getClass().toString(),
@@ -1317,6 +1323,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			buffer.append(room.getDoorCode() + ", ");
 		}
 		buffer.setLength(buffer.length() - 2);
+		int MAX = 1000;
+		if (buffer.length() > MAX) {
+			buffer.setLength(MAX);
+			buffer.append("...");
+		}
 		String result = "";
 		if (empty) {
 			result = getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms);
@@ -1365,7 +1376,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// mSummarySelectedRoomsTextView
 		// .setText(getString(R.string.freeroom_check_occupancy_search_text_no_selected_rooms));
 		//
-		// mAutoCompleteSuggestionArrayListFRRoom.clear();
+		mAutoCompleteSuggestionArrayListFRRoom.clear();
 
 		resetTimes();
 		updateDateTimePickers();
@@ -1550,7 +1561,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			Iterator<FRRoom> iterroom = list.iterator();
 			while (iterroom.hasNext()) {
 				FRRoom room = iterroom.next();
-				System.out.println(room);
 				// rooms that are already selected are not displayed...
 				if (!selectedRooms.contains(room)) {
 					mAutoCompleteSuggestionArrayListFRRoom.add(room);

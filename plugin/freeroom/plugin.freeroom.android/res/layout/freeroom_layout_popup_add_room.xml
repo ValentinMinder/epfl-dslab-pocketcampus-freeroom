@@ -46,10 +46,17 @@
                 android:text="@string/freeroom_popup_add_room_validate"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
-            
         </LinearLayout>
-        
-        <!-- InputBar should be added programmatically here  -->
+
+        <TextView
+            android:id="@+id/freeroom_layout_popup_add_room_summary"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/freeroom_popup_add_room_empty_list"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black" />
+
+        <!-- InputBar should be added programmatically here -->
 
     </LinearLayout>
 
