@@ -6,6 +6,11 @@
 
     <uses-sdk android:minSdkVersion="8" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
+    
     <application
         android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext"
         android:icon="@drawable/building2x177"
@@ -36,6 +41,13 @@
                 <data
                     android:host="freeroom.plugin.pocketcampus.org"
                     android:scheme="pocketcampus-authenticate" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity
@@ -113,9 +125,6 @@
         </receiver>
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
+    
 
 </manifest>

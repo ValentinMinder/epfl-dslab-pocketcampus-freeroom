@@ -32,7 +32,6 @@ import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.FRRoomType;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
@@ -41,9 +40,11 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -197,6 +198,25 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Tracker
 		Tracker.getInstance().trackPageView("freeroom");
 
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		String type = intent.getType();
+
+		if (Intent.ACTION_SEND.equals(action) && type != null) {
+			System.out.println("yes");
+			if ("text/plain".equals(type)) {
+				System.out.println("yes");
+				handleSendText(intent); // Handle text being sent
+			} else {
+				System.out.println("no");
+				// handling other types being sent (we dont care)
+			}
+		} else {
+			System.out.println("no");
+			// Handle other intents, such as being started from the home screen
+			// (we dont care)
+		}
+
 		// Get and cast the controller and model
 		mController = (FreeRoomController) controller;
 		mModel = (FreeRoomModel) controller.getModel();
@@ -239,6 +259,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		if (mController != null) {
 			mController.sendFRRequest(this);
+		}
+	}
+
+	/**
+	 * Useless for now.
+	 * 
+	 * @param intent
+	 */
+	private void handleSendText(Intent intent) {
+		String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+		if (sharedText != null) {
+			Log.v("home-textIntent", sharedText);
 		}
 	}
 
