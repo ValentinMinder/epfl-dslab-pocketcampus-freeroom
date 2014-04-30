@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -21,7 +21,6 @@ import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomAbstractView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
-import org.pocketcampus.plugin.freeroom.android.FreeRoomManageFavoritesView;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.adapter.ActualOccupationArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewAdapter;
@@ -43,12 +42,9 @@ import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.text.ClipboardManager;
-import android.text.Layout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -193,7 +189,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		public int getDrawable() {
-			return R.drawable.pencil2x187;
+			return R.drawable.star2x28;
 		}
 	};
 
@@ -389,7 +385,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private boolean calling = true;
 
 	private void showPopupAddRoom(boolean calling) {
-		popupAddRoomWindow.showAsDropDown(mTextView, 0, 60);
+		popupAddRoomWindow.showAsDropDown(mTextView, 0, 55);
 		// TODO: reset the data ? the text input, the selected room ?
 		this.calling = calling;
 	}
