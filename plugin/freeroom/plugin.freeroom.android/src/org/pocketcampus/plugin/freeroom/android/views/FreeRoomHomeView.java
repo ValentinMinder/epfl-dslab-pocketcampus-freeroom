@@ -390,7 +390,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		lv.setAdapter(mAdapterFav);
 		mAdapterFav.notifyDataSetChanged();
 	}
-	
+
 	private void showPopupAddRoom() {
 		popupAddRoomWindow.showAsDropDown(mTextView, 0, 60);
 		// TODO: reset the data ? the text input, the selected room ?
@@ -450,16 +450,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		Button tv = (Button) popupSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_go);
 		tv.setText("Go!!");
-
-		ImageView img = (ImageView) popupSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_close);
-		img.setOnClickListener(new ImageView.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				popupSearchWindow.dismiss();
-			}
-		});
 
 		initSearch();
 	}
@@ -714,6 +704,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		userDefButton.setChecked(request.isUser());
 		freeButton.setChecked(request.isOnlyFreeRooms());
 		searchButton.setEnabled(auditSubmit() == 0);
+		boolean enabled = !request.isAny();
+		favButton.setEnabled(enabled);
+		userDefButton.setEnabled(enabled);
+		freeButton.setEnabled(enabled);
 	}
 
 	/**
@@ -860,6 +854,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private Button searchButton;
 	private Button resetButton;
 	private Button addHourButton;
+	private Button upToEndHourButton;
 
 	private TextView mSummarySelectedRoomsTextView;
 
@@ -999,13 +994,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				anyButton.setChecked(false);
 				anyButton.setEnabled(true);
 				specButton.setChecked(true);
+				freeButton.setChecked(false);
 
-				// TODO: is this great ? this guarantees that searhc is always
+				boolean enabled = true;
+				favButton.setEnabled(enabled);
+				userDefButton.setEnabled(enabled);
+				freeButton.setEnabled(enabled);
+
+				// TODO: is this great ? this guarantees that search is always
 				// available, but requires two steps to remove the fav (ass
 				// user-def, remove fav)
 				favButton.setChecked(true);
-				// TODO: open the suggestion as well
-				userDefButton.setChecked(true);
 
 				searchButton.setEnabled(auditSubmit() == 0);
 			}
@@ -1020,6 +1019,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				specButton.setChecked(false);
 				// TODO
 				// resetUserDefined();
+
+				boolean enabled = false;
+				favButton.setEnabled(enabled);
+				userDefButton.setEnabled(enabled);
+				freeButton.setEnabled(enabled);
 
 				favButton.setChecked(false);
 				userDefButton.setChecked(false);
@@ -1054,12 +1058,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				if (userDefButton.isChecked()) {
 					anyButton.setChecked(false);
 					specButton.setChecked(true);
+					freeButton.setChecked(false);
 					// TODO: init and use the data.
 					showPopupAddRoom();
 				} else if (!favButton.isChecked()) {
 					userDefButton.setChecked(true);
 					anyButton.setChecked(false);
 					specButton.setChecked(true);
+					freeButton.setChecked(false);
+					showPopupAddRoom();
+
 				} else {
 					resetUserDefined();
 				}
@@ -1126,6 +1134,22 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				if (endHourSelected >= 19) {
 					addHourButton.setEnabled(false);
 				}
+			}
+		});
+
+		upToEndHourButton = (Button) popupSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_hour_end_toend);
+		upToEndHourButton.setEnabled(true);
+		upToEndHourButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				endHourSelected = FRTimes.LAST_HOUR_CHECK;
+				endMinSelected = 0;
+				updateShowEndTimePicker();
+				mTimePickerEndDialog
+						.updateTime(endHourSelected, endMinSelected);
+				searchButton.setEnabled(auditSubmit() == 0);
 			}
 		});
 	}
@@ -1258,8 +1282,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (!selectedRooms.contains(room)) {
 			selectedRooms.add(room);
 			// TODO: summary ?!?
-//			mSummarySelectedRoomsTextView
-//					.setText(getSummaryTextFromCollection(selectedRooms));
+			// mSummarySelectedRoomsTextView
+			// .setText(getSummaryTextFromCollection(selectedRooms));
 
 		} else {
 			Log.e(this.getClass().toString(),
@@ -1339,8 +1363,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		userDefButton.setChecked(false);
 		// resetUserDefined(); TODO
 		freeButton.setChecked(true);
-		//
+		// verify the submit
 		searchButton.setEnabled(auditSubmit() == 0);
+
+		boolean enabled = false;
+		favButton.setEnabled(enabled);
+		userDefButton.setEnabled(enabled);
+		freeButton.setEnabled(enabled);
 		// show the buttons
 		updatePickersButtons();
 	}

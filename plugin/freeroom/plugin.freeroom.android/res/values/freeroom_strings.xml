@@ -13,7 +13,7 @@
     <string name="freeroom_file_downloaded">File successfully downloaded.</string>
     <string name="freeroom_file_downloading">Downloading file... Please wait.</string>
     <string name="freeroom_no_app_to_handle_filetype">Could not find any application to open this file.</string>
-    <string name="freeroom_pattern_day_format">EEEE MMMM d</string>
+    <string name="freeroom_pattern_day_format">EEE MMM d</string>
     <string name="freeroom_pattern_hour_format">h:mm a</string>
     <string name="freeroom_title_main_title">FreeRoom: Home</string>
     <string name="freeroom_title_FRsearch"> FreeRoom: search for a free room</string>
@@ -75,7 +75,7 @@
     <string name="freeroom_popup_fav_title">Favorites</string>
     <string name="freeroom_popup_fav_add">Add</string>
     <string name="freeroom_popup_add_room_title">Add rooms</string>
-    <string name="freeroom_popup_add_room_done">Done</string>
+    <string name="freeroom_popup_add_room_validate">Validate</string>
     <string name="freeroom_results_room_header_room">room</string>
     <string name="freeroom_results_room_header_rooms">rooms</string>
     <string name="freeroom_results_room_header_reduce">reduce</string>
