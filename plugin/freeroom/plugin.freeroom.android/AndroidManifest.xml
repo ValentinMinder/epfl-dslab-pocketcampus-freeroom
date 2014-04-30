@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
-    
+
     <application
         android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext"
         android:icon="@drawable/building2x177"
@@ -19,9 +19,9 @@
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView"
-            android:launchMode="singleTask"
             android:icon="@drawable/building2x177"
             android:label="@string/freeroom_plugin_title"
+            android:launchMode="singleTask"
             android:screenOrientation="nosensor" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,12 +42,33 @@
                     android:host="freeroom.plugin.pocketcampus.org"
                     android:scheme="pocketcampus-authenticate" />
             </intent-filter>
+        </activity>
+        <activity
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.freeroom.android.views.share.FreeRoomShareOnly"
+            android:icon="@drawable/share_back"
+            android:label="@string/freeroom_share_ShareOnly"
+            android:screenOrientation="nosensor" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/org.pocketcampus.freeroom.onlysharewithserver" />
+            </intent-filter>
+        </activity>
+        <activity
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.freeroom.android.views.share.FreeRoomCopyClipBoard"
+            android:icon="@drawable/copy"
+            android:label="@string/freeroom_share_CopyClipBoard"
+            android:screenOrientation="nosensor" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/org.pocketcampus.copytoclipboard" />
             </intent-filter>
         </activity>
         <activity
@@ -92,12 +113,10 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView"
             android:screenOrientation="nosensor" />
-        
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.views.FreeRoomSearchView"
             android:screenOrientation="nosensor" />
-        
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.views.ActualOccupationView"
@@ -124,7 +143,5 @@
             </intent-filter>
         </receiver>
     </application>
-
-    
 
 </manifest>

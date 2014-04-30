@@ -198,25 +198,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// Tracker
 		Tracker.getInstance().trackPageView("freeroom");
 
-		Intent intent = getIntent();
-		String action = intent.getAction();
-		String type = intent.getType();
-
-		if (Intent.ACTION_SEND.equals(action) && type != null) {
-			System.out.println("yes");
-			if ("text/plain".equals(type)) {
-				System.out.println("yes");
-				handleSendText(intent); // Handle text being sent
-			} else {
-				System.out.println("no");
-				// handling other types being sent (we dont care)
-			}
-		} else {
-			System.out.println("no");
-			// Handle other intents, such as being started from the home screen
-			// (we dont care)
-		}
-
 		// Get and cast the controller and model
 		mController = (FreeRoomController) controller;
 		mModel = (FreeRoomModel) controller.getModel();
@@ -240,6 +221,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		initDefaultRequest();
 		refresh();
+
+		handleIntent(getIntent());
 	}
 
 	/**
@@ -263,15 +246,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
-	 * Useless for now.
+	 * Handles an intent for a search coming from outside.
+	 * <p>
+	 * // TODO: handles occupancy.epfl.ch + pockecampus://
 	 * 
 	 * @param intent
+	 *            the intent to handle
 	 */
-	private void handleSendText(Intent intent) {
-		String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-		if (sharedText != null) {
-			Log.v("home-textIntent", sharedText);
-		}
+	private void handleSearchIntent(Intent intent) {
+		// TODO: if search launched by other plugin.
 	}
 
 	@Override
@@ -615,13 +598,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// period
 		textBuilder.append(generateTimeSummary(mPeriod) + ". ");
 		textBuilder.append(getString(R.string.freeroom_share_please_come));
+		textBuilder.append(getString(R.string.freeroom_share_ref_pocket));
 
-		System.out.println(textBuilder.toString());
+		String sharing = textBuilder.toString();
+		Log.v(this.getClass().getName() + "-share", "sharing:" + sharing);
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
-		sendIntent.putExtra(Intent.EXTRA_TEXT, textBuilder.toString()
-				+ " (This was sent thru pocketcampus .org)");
-		sendIntent.setType("text/plain");
+		sendIntent.putExtra(Intent.EXTRA_TEXT, sharing);
+		// this ensure that our handler, that is handling home-made text types,
+		// will also work. But our won't work outside the app, which is needed,
+		// because it waits for this special type.
+		sendIntent.setType("text/*");
 		startActivity(Intent.createChooser(sendIntent,
 				getString(R.string.freeroom_share_title)));
 	}
