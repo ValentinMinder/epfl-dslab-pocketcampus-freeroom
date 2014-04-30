@@ -526,11 +526,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private FRRequestDetails validRequest() {
 		Set<String> set = mModel.getAllRoomMapFavorites().keySet();
-		ArrayList<String> array = new ArrayList<String>(set.size());
-		array.addAll(set);
-		FRRequestDetails details = new FRRequestDetails(
-				FRTimes.getNextValidPeriod(), false, array, false, true, false,
-				new SetArrayList<FRRoom>());
+		FRRequestDetails details = null;
+		if (set.isEmpty()) {
+			// NO FAV = check all free rooms
+			details = new FRRequestDetails(FRTimes.getNextValidPeriod(), true,
+					new ArrayList<String>(1), false, true, false,
+					new SetArrayList<FRRoom>());
+		} else {
+			// FAV: check occupancy of ALL favs
+			ArrayList<String> array = new ArrayList<String>(set.size());
+			array.addAll(set);
+			details = new FRRequestDetails(FRTimes.getNextValidPeriod(), false,
+					array, false, true, false, new SetArrayList<FRRoom>());
+		}
 		return details;
 	}
 
@@ -1533,6 +1541,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 		if (!anyButton.isChecked() && !favButton.isChecked()
 				&& !userDefButton.isChecked()) {
+			return 1;
+		}
+		Set<String> set = mModel.getAllRoomMapFavorites().keySet();
+		if (favButton.isChecked()
+				&& set.isEmpty()
+				&& (!userDefButton.isChecked() || (userDefButton.isChecked() && selectedRooms
+						.isEmpty()))) {
 			return 1;
 		}
 		// we dont allow query all the room, including non-free
