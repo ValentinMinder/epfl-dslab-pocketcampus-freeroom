@@ -77,14 +77,14 @@ public class ExpandableListViewFavoriteAdapter extends
 		ViewHolderChild vholder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_room_home, null);
+					R.layout.freeroom_layout_room_favorites, null);
 			vholder = new ViewHolderChild();
 			vholder.setTextView((TextView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_roomname));
+					.findViewById(R.id.freeroom_layout_favlist_text));
 			vholder.setImageViewMap((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_map));
+					.findViewById(R.id.freeroom_layout_favlist_map));
 			vholder.setImageViewStar((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_fav));
+					.findViewById(R.id.freeroom_layout_favlist_fav));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolderChild) convertView.getTag();
@@ -97,8 +97,6 @@ public class ExpandableListViewFavoriteAdapter extends
 
 		final ImageView star = vholder.getImageViewStar();
 		ImageView map = vholder.getImageViewMap();
-
-		map.setImageResource(android.R.drawable.btn_minus);
 
 		map.setOnClickListener(new OnClickListener() {
 
@@ -121,7 +119,6 @@ public class ExpandableListViewFavoriteAdapter extends
 			star.setImageResource(android.R.drawable.star_big_on);
 		} else {
 			star.setImageResource(android.R.drawable.star_big_off);
-
 		}
 
 		star.setOnClickListener(new OnClickListener() {
@@ -152,10 +149,14 @@ public class ExpandableListViewFavoriteAdapter extends
 		ViewHolderGroup vholder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_room_home, null);
+					R.layout.freeroom_layout_building_header_fav, null);
 			vholder = new ViewHolderGroup();
 			vholder.setTextView((TextView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_roomname));
+					.findViewById(R.id.freeroom_layout_building_header_fav_title));
+			vholder.setTextViewExpand((TextView) convertView
+					.findViewById(R.id.freeroom_layout_building_header_fav_show_more_txt));
+			vholder.setImageViewExpand((ImageView) convertView
+					.findViewById(R.id.freeroom_layout_building_header_fav_show_more));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolderGroup) convertView.getTag();
@@ -164,6 +165,20 @@ public class ExpandableListViewFavoriteAdapter extends
 		String text = (String) headers.get(groupPosition);
 		TextView tv = vholder.getTextView();
 		tv.setText(text);
+
+		TextView tv_expand = vholder.getTextViewExpand();
+		int size = data.get(text).size();
+		if (size > 1) {
+			tv_expand.setText(size + " rooms");
+			// TODO: use R.string.freeroom_results_room_header_rooms
+		} else {
+			tv_expand.setText(size + " room");
+			// TODO: use R.string.freeroom_results_room_header_room
+		}
+
+		TextView iv_expand = vholder.getTextViewExpand();
+		// TODO: change the arrow up/down depending on collapse/expand
+
 		return convertView;
 
 	}
@@ -220,6 +235,8 @@ public class ExpandableListViewFavoriteAdapter extends
 	 */
 	private class ViewHolderGroup {
 		private TextView tv = null;
+		private TextView tv_expand = null;
+		private ImageView iv_expand = null;
 
 		public void setTextView(TextView tv) {
 			this.tv = tv;
@@ -227,6 +244,22 @@ public class ExpandableListViewFavoriteAdapter extends
 
 		public TextView getTextView() {
 			return this.tv;
+		}
+
+		public void setTextViewExpand(TextView tv) {
+			this.tv_expand = tv;
+		}
+
+		public TextView getTextViewExpand() {
+			return this.tv_expand;
+		}
+
+		public void setImageViewExpand(ImageView iv) {
+			this.iv_expand = iv;
+		}
+
+		public ImageView getImageViewExpand() {
+			return this.iv_expand;
 		}
 
 	}

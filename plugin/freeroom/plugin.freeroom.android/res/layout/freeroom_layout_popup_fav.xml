@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:padding="4dp" >
 
-        <!-- headers for title and close button -->
+        <!-- headers for title and button -->
 
         <LinearLayout
             android:layout_width="fill_parent"
