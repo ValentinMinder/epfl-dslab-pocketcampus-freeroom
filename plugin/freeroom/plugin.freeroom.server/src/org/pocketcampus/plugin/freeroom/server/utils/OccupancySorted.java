@@ -68,6 +68,34 @@ public class OccupancySorted {
 	}
 
 	/**
+	 * Create an Occupancy object, set its properties. The resulting object is
+	 * suitable for a reply to the client.
+	 * 
+	 * @return If boolean onlyFreeRooms (passed to the constructor) is true it
+	 *         returns the occupancy only if there is no occupied period in the
+	 *         list of ActualOccupation, otherwise it returns null. If boolean
+	 *         onlyFreeRooms is false, it returns the occupancy adapted and
+	 *         filled during the period given.
+	 * **/
+	public Occupancy getOccupancy() {
+		sortByTimestampStart();
+		fillGaps();
+		if (isAtLeastOccupiedOnce && onlyFreeRooms) {
+			return null;
+		} else {
+			Occupancy mOccupancy = new Occupancy(room, mActualOccupations,
+					isAtLeastOccupiedOnce, isAtLeastFreeOnce);
+			mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
+
+			return mOccupancy;
+		}
+	}
+
+	public int size() {
+		return mActualOccupations.size();
+	}
+
+	/**
 	 * This method's job is to sort the data in the mActualOccupations ArrayList
 	 * by timestamp start and type of the occupation. See doc for
 	 * equalTimestamp() in the comparator below.
@@ -248,41 +276,15 @@ public class OccupancySorted {
 					* Utils.ONE_HOUR_MS);
 			long maxEnd = Math.min(hourSharpBefore + (i + 1)
 					* Utils.ONE_HOUR_MS, end);
-			FRPeriod period = new FRPeriod(minStart, maxEnd, false);
-			ActualOccupation mAccOcc = new ActualOccupation(period, true);
-			mAccOcc.setProbableOccupation(0);
-			mAccOcc.setRatioOccupation(0.0);
-			result.add(mAccOcc);
+			if (maxEnd - minStart > MIN_PERIOD) {
+				FRPeriod period = new FRPeriod(minStart, maxEnd, false);
+				ActualOccupation mAccOcc = new ActualOccupation(period, true);
+				mAccOcc.setProbableOccupation(0);
+				mAccOcc.setRatioOccupation(0.0);
+				result.add(mAccOcc);
+			}
 		}
 		return result;
-	}
-
-	/**
-	 * Create an Occupancy object, set its properties. The resulting object is
-	 * suitable for a reply to the client.
-	 * 
-	 * @return If boolean onlyFreeRooms (passed to the constructor) is true it
-	 *         returns the occupancy only if there is no occupied period in the
-	 *         list of ActualOccupation, otherwise it returns null. If boolean
-	 *         onlyFreeRooms is false, it returns the occupancy adapted and
-	 *         filled during the period given.
-	 * **/
-	public Occupancy getOccupancy() {
-		sortByTimestampStart();
-		fillGaps();
-		if (isAtLeastOccupiedOnce && onlyFreeRooms) {
-			return null;
-		} else {
-			Occupancy mOccupancy = new Occupancy(room, mActualOccupations,
-					isAtLeastOccupiedOnce, isAtLeastFreeOnce);
-			mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
-
-			return mOccupancy;
-		}
-	}
-
-	public int size() {
-		return mActualOccupations.size();
 	}
 
 }
