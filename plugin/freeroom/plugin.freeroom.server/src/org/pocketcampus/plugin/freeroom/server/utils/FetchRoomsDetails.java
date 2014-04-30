@@ -94,34 +94,6 @@ public class FetchRoomsDetails {
 	}
 
 	/**
-	 * Remove the rooms not needed for the scope of this projet
-	 * 
-	 * @return The number of removed rooms
-	 * **/
-	private int removeNotNeededRooms() {
-		Connection conn = null;
-		try {
-			conn = connMgr.getConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			return 0;
-		}
-		int countGlobal = 0;
-		PreparedStatement query;
-		try {
-			for (String req : deleteNotNeededRooms) {
-				query = conn.prepareStatement(req);
-				countGlobal += query.executeUpdate();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return countGlobal;
-		}
-		return countGlobal;
-
-	}
-
-	/**
 	 * Fetch details about a room (i.e all its attributes) and convert it to a
 	 * JSONObject.
 	 * 
@@ -161,6 +133,34 @@ public class FetchRoomsDetails {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * Remove the rooms not needed for the scope of this projet
+	 * 
+	 * @return The number of removed rooms
+	 * **/
+	private int removeNotNeededRooms() {
+		Connection conn = null;
+		try {
+			conn = connMgr.getConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			return 0;
+		}
+		int countGlobal = 0;
+		PreparedStatement query;
+		try {
+			for (String req : deleteNotNeededRooms) {
+				query = conn.prepareStatement(req);
+				countGlobal += query.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return countGlobal;
+		}
+		return countGlobal;
+
 	}
 
 	/**
@@ -237,17 +237,15 @@ public class FetchRoomsDetails {
 				return false;
 			}
 
-			
 			// from now, fields are optional, thus if some are not present,
 			// we still continue to check the other
-			
+
 			if (room.has("alias")) {
 				query.setString(4, room.getString("alias"));
 			} else {
 				query.setNull(4, Types.CHAR);
 			}
-			
-			
+
 			if (room.has("places")) {
 				query.setInt(5, room.getInt("places"));
 			} else {
@@ -352,8 +350,6 @@ public class FetchRoomsDetails {
 				query.setNull(23, Types.CHAR);
 				query.setNull(24, Types.CHAR);
 			}
-			
-
 
 			query.executeUpdate();
 		} catch (SQLException | JSONException e) {

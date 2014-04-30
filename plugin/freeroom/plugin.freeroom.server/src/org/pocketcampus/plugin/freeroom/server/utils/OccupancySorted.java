@@ -66,6 +66,35 @@ public class OccupancySorted {
 					.setPeriod(new FRPeriod(start, end, false)));
 		}
 	}
+	
+	/**
+	 * Create an Occupancy object, set its properties. The resulting object is
+	 * suitable for a reply to the client.
+	 * 
+	 * @return If boolean onlyFreeRooms (passed to the constructor) is true it
+	 *         returns the occupancy only if there is no occupied period in the
+	 *         list of ActualOccupation, otherwise it returns null. If boolean
+	 *         onlyFreeRooms is false, it returns the occupancy adapted and
+	 *         filled during the period given.
+	 * **/
+	public Occupancy getOccupancy() {
+		sortByTimestampStart();
+		fillGaps();
+		if (isAtLeastOccupiedOnce && onlyFreeRooms) {
+			return null;
+		} else {
+			Occupancy mOccupancy = new Occupancy(room, mActualOccupations,
+					isAtLeastOccupiedOnce, isAtLeastFreeOnce);
+			mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
+
+			return mOccupancy;
+		}
+	}
+
+	public int size() {
+		return mActualOccupations.size();
+	}
+	
 
 	/**
 	 * This method's job is to sort the data in the mActualOccupations ArrayList
@@ -156,7 +185,7 @@ public class OccupancySorted {
 						.size() - 1);
 				countFree = Math.min(0, countFree - 1);
 				FRPeriod previousPeriod = lastOccupation.getPeriod();
-				if (tsStart - previousPeriod.getTimeStampStart() > MIN_PERIOD) {
+				if (tsStart - previousPeriod.getTimeStampEnd() > MIN_PERIOD) {
 					FRPeriod newPeriod = new FRPeriod(
 							previousPeriod.getTimeStampStart(), tsStart, false);
 					lastOccupation.setPeriod(newPeriod);
@@ -257,32 +286,6 @@ public class OccupancySorted {
 		return result;
 	}
 
-	/**
-	 * Create an Occupancy object, set its properties. The resulting object is
-	 * suitable for a reply to the client.
-	 * 
-	 * @return If boolean onlyFreeRooms (passed to the constructor) is true it
-	 *         returns the occupancy only if there is no occupied period in the
-	 *         list of ActualOccupation, otherwise it returns null. If boolean
-	 *         onlyFreeRooms is false, it returns the occupancy adapted and
-	 *         filled during the period given.
-	 * **/
-	public Occupancy getOccupancy() {
-		sortByTimestampStart();
-		fillGaps();
-		if (isAtLeastOccupiedOnce && onlyFreeRooms) {
-			return null;
-		} else {
-			Occupancy mOccupancy = new Occupancy(room, mActualOccupations,
-					isAtLeastOccupiedOnce, isAtLeastFreeOnce);
-			mOccupancy.setRatioWorstCaseProbableOccupancy(worstRatio);
 
-			return mOccupancy;
-		}
-	}
-
-	public int size() {
-		return mActualOccupations.size();
-	}
 
 }
