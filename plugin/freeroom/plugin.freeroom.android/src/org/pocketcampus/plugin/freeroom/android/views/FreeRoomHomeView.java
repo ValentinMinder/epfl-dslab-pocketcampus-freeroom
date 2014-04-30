@@ -48,6 +48,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.ClipboardManager;
+import android.text.Layout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -155,6 +156,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * popup.
 	 */
 	private PopupWindow popupFavoritesWindow;
+
+	/**
+	 * View that holds the ADDROOM popup content, defined in xml in layout
+	 * folder.
+	 */
+	private View popupAddRoomView;
+	/**
+	 * Window that holds the ADDROOM popup. Note: popup window can be closed by:
+	 * the closing button (red cross), back button, or clicking outside the
+	 * popup.
+	 */
+	private PopupWindow popupAddRoomWindow;
 
 	/**
 	 * Action to perform a customized search.
@@ -287,6 +300,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initPopupInfoRoom();
 		initPopupSearch();
 		initPopupFavorites();
+		initPopupAddRoom();
 	}
 
 	/**
@@ -344,6 +358,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		popupFavoritesWindow.setOutsideTouchable(true);
 		popupFavoritesWindow.setBackgroundDrawable(new BitmapDrawable());
 
+		Button tv = (Button) popupFavoritesView
+				.findViewById(R.id.freeroom_layout_popup_fav_add);
+		tv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (!popupAddRoomWindow.isShowing()) {
+					showPopupAddRoom();
+				}
+			}
+		});
+
 		ExpandableListView lv = (ExpandableListView) popupFavoritesView
 				.findViewById(R.id.freeroom_layout_popup_fav_list);
 
@@ -363,6 +389,44 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				rooms, mModel);
 		lv.setAdapter(mAdapterFav);
 		mAdapterFav.notifyDataSetChanged();
+	}
+	
+	private void showPopupAddRoom() {
+		popupAddRoomWindow.showAsDropDown(mTextView, 0, 60);
+		// TODO: reset the data ? the text input, the selected room ?
+	}
+
+	private void initPopupAddRoom() {
+		// construct the popup
+		// it MUST fill the parent in height, such that weight works in xml for
+		// heights. Otherwise, some elements may not be displayed anymore
+		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+				.getSystemService(LAYOUT_INFLATER_SERVICE);
+		popupAddRoomView = layoutInflater.inflate(
+				R.layout.freeroom_layout_popup_add_room, null);
+		popupAddRoomWindow = new PopupWindow(popupAddRoomView,
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, true);
+
+		// allows outside clicks to close the popup
+		popupAddRoomWindow.setOutsideTouchable(true);
+		popupAddRoomWindow.setBackgroundDrawable(new BitmapDrawable());
+
+		Button bt_done = (Button) popupAddRoomView
+				.findViewById(R.id.freeroom_layout_popup_add_room_done);
+		bt_done.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				popupAddRoomWindow.dismiss();
+			}
+		});
+
+		UIConstructInputBar();
+		LinearLayout ll = (LinearLayout) popupAddRoomView
+				.findViewById(R.id.freeroom_layout_popup_add_layout_main);
+		ll.addView(mAutoCompleteSuggestionInputBarElement);
+		createSuggestionsList();
+
 	}
 
 	/**
@@ -983,8 +1047,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		userDefButton = (ToggleButton) popupSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_user);
-		// TODO: inputbar doesnt work
-		userDefButton.setEnabled(false);
 		userDefButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -992,11 +1054,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				if (userDefButton.isChecked()) {
 					anyButton.setChecked(false);
 					specButton.setChecked(true);
-
-					// TODO: add/remove
-					// mGlobalSubLayout.addView(mSummarySelectedRoomsTextView);
-					// mGlobalSubLayout
-					// .addView(mAutoCompleteSuggestionInputBarElement);
+					// TODO: init and use the data.
+					showPopupAddRoom();
 				} else if (!favButton.isChecked()) {
 					userDefButton.setChecked(true);
 					anyButton.setChecked(false);
@@ -1198,8 +1257,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// we only add if it already contains the room
 		if (!selectedRooms.contains(room)) {
 			selectedRooms.add(room);
-			mSummarySelectedRoomsTextView
-					.setText(getSummaryTextFromCollection(selectedRooms));
+			// TODO: summary ?!?
+//			mSummarySelectedRoomsTextView
+//					.setText(getSummaryTextFromCollection(selectedRooms));
 
 		} else {
 			Log.e(this.getClass().toString(),
