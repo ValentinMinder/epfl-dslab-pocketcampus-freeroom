@@ -188,14 +188,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private Action editFavorites = new Action() {
 		public void performAction(View view) {
+			mAdapterFav.notifyDataSetChanged();
 			popupFavoritesWindow.showAsDropDown(mTextView, 0, 0);
-			// refreshPopupSearch();
-			// TODO: popup instead of new activity
-			// Toast.makeText(getApplicationContext(), "favorites",
-			// Toast.LENGTH_SHORT).show();
-			// Intent i = new Intent(FreeRoomHomeView.this,
-			// FreeRoomManageFavoritesView.class);
-			// FreeRoomHomeView.this.startActivity(i);
 		}
 
 		public int getDrawable() {
@@ -365,7 +359,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				if (!popupAddRoomWindow.isShowing()) {
-					showPopupAddRoom();
+					showPopupAddRoom(true);
 				}
 			}
 		});
@@ -391,9 +385,26 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mAdapterFav.notifyDataSetChanged();
 	}
 
-	private void showPopupAddRoom() {
+	// true: fav // false: user-def search
+	private boolean calling = true;
+
+	private void showPopupAddRoom(boolean calling) {
 		popupAddRoomWindow.showAsDropDown(mTextView, 0, 60);
 		// TODO: reset the data ? the text input, the selected room ?
+		this.calling = calling;
+	}
+
+	private void treatEndAddPopup() {
+		if (calling) {
+			Iterator<FRRoom> iter = selectedRooms.iterator();
+			while (iter.hasNext()) {
+				FRRoom mRoom = iter.next();
+				mModel.addRoomFavorites(mRoom.getUid(), mRoom.getDoorCode());
+			}
+			resetUserDefined();
+		} else {
+			// we do nothing: reset will be done at search time
+		}
 	}
 
 	private void initPopupAddRoom() {
@@ -418,6 +429,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				popupAddRoomWindow.dismiss();
+				treatEndAddPopup();
 			}
 		});
 
@@ -480,6 +492,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				popupFavoritesWindow.dismiss();
 				flag = true;
 			}
+			selectedRooms.clear();
 			if (flag) {
 				return true;
 			}
@@ -876,7 +889,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// createSuggestionsList();
 		// addAllFavsToAutoComplete();
-		selectedRooms = new SetArrayList<FRRoom>();
 		mAutoCompleteSuggestionArrayListFRRoom = new ArrayList<FRRoom>(10);
 		resetTimes();
 
@@ -980,6 +992,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// TODO: add/remove
 		// mGlobalSubLayout.removeView(mAutoCompleteSuggestionInputBarElement);
 		// mGlobalSubLayout.removeView(mSummarySelectedRoomsTextView);
+		selectedRooms.clear();
 		userDefButton.setChecked(false);
 	}
 
@@ -1060,13 +1073,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					specButton.setChecked(true);
 					freeButton.setChecked(false);
 					// TODO: init and use the data.
-					showPopupAddRoom();
+					showPopupAddRoom(false);
 				} else if (!favButton.isChecked()) {
 					userDefButton.setChecked(true);
 					anyButton.setChecked(false);
 					specButton.setChecked(true);
 					freeButton.setChecked(false);
-					showPopupAddRoom();
+					showPopupAddRoom(false);
 
 				} else {
 					resetUserDefined();
@@ -1457,6 +1470,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mController.sendFRRequest(this);
 		popupSearchWindow.dismiss();
 
+		resetUserDefined(); // cleans the selectedRooms of userDefined
 	}
 
 	/**
