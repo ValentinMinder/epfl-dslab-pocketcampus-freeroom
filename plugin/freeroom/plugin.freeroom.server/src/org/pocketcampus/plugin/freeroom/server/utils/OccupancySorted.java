@@ -66,7 +66,7 @@ public class OccupancySorted {
 					.setPeriod(new FRPeriod(start, end, false)));
 		}
 	}
-	
+
 	/**
 	 * Create an Occupancy object, set its properties. The resulting object is
 	 * suitable for a reply to the client.
@@ -94,7 +94,6 @@ public class OccupancySorted {
 	public int size() {
 		return mActualOccupations.size();
 	}
-	
 
 	/**
 	 * This method's job is to sort the data in the mActualOccupations ArrayList
@@ -185,7 +184,7 @@ public class OccupancySorted {
 						.size() - 1);
 				countFree = Math.min(0, countFree - 1);
 				FRPeriod previousPeriod = lastOccupation.getPeriod();
-				if (tsStart - previousPeriod.getTimeStampEnd() > MIN_PERIOD) {
+				if (tsStart - previousPeriod.getTimeStampStart() > MIN_PERIOD) {
 					FRPeriod newPeriod = new FRPeriod(
 							previousPeriod.getTimeStampStart(), tsStart, false);
 					lastOccupation.setPeriod(newPeriod);
@@ -277,15 +276,15 @@ public class OccupancySorted {
 					* Utils.ONE_HOUR_MS);
 			long maxEnd = Math.min(hourSharpBefore + (i + 1)
 					* Utils.ONE_HOUR_MS, end);
-			FRPeriod period = new FRPeriod(minStart, maxEnd, false);
-			ActualOccupation mAccOcc = new ActualOccupation(period, true);
-			mAccOcc.setProbableOccupation(0);
-			mAccOcc.setRatioOccupation(0.0);
-			result.add(mAccOcc);
+			if (maxEnd - minStart > MIN_PERIOD) {
+				FRPeriod period = new FRPeriod(minStart, maxEnd, false);
+				ActualOccupation mAccOcc = new ActualOccupation(period, true);
+				mAccOcc.setProbableOccupation(0);
+				mAccOcc.setRatioOccupation(0.0);
+				result.add(mAccOcc);
+			}
 		}
 		return result;
 	}
-
-
 
 }
