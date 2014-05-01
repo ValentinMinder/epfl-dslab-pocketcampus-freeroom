@@ -172,6 +172,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	public boolean insertOccupancy(FRPeriod period, OCCUPANCY_TYPE type,
 			FRRoom room, String hash) {
 
+		// putting seconds and milliseconds to zero
 		period.setTimeStampStart(Utils.roundSAndMSToZero(period
 				.getTimeStampStart()));
 		period.setTimeStampEnd(Utils.roundSAndMSToZero(period.getTimeStampEnd()));
@@ -195,7 +196,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			return inserted;
 		} else {
 			log(LOG_SIDE.SERVER,
-					Level.INFO,
+					Level.WARNING,
 					"Client already said he was working in "
 							+ room.getDoorCode());
 			return false;
@@ -388,6 +389,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 									hourSharpBefore + (i + 1)
 											* Utils.ONE_HOUR_MS,
 									OCCUPANCY_TYPE.USER, 1);
+					// also insert in the check table to prevent further submit
+					// during the same period from the same user
 					insertCheckOccupancyInDB(room.getUid(), hourSharpBefore + i
 							* Utils.ONE_HOUR_MS, hash);
 				}
@@ -731,6 +734,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						"SQL error for occupancy of any free room, start = "
 								+ tsStart + " end = " + tsEnd);
 			}
+		} else {
+			log(LOG_SIDE.SERVER, Level.WARNING,
+					"Getting request for any free rooms, with onlyFreeRoom attributes false");
 		}
 
 		return result;
@@ -894,7 +900,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 				roomsListQueryFormat += "?";
 				String infoRequest = "SELECT rl.uid, rl.doorCode, rl.capacity, rl.alias, rl.typeEN, rl.typeFR "
-						+ "FROM `fr-roomslist` rl " + "WHERE rl.uid IN("
+						+ "FROM `fr-roomslist` rl "
+						+ "WHERE rl.uid IN("
 						+ roomsListQueryFormat + ")";
 
 				PreparedStatement infoQuery = connectBDD
@@ -950,7 +957,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	/**
 	 * Add to a given HashMap the given occupancy by extracting the building
 	 * from the doorCode. The HashMap maps a building to a list of Occupancy for
-	 * room in this building.
+	 * rooms in its building.
 	 * 
 	 * @param doorCode
 	 *            The door code of the room to add
@@ -961,7 +968,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	private void addToHashMapOccupancy(String doorCode, Occupancy mOcc,
 			HashMap<String, List<Occupancy>> result) {
-		if (mOcc == null) {
+		if (mOcc == null || doorCode == null) {
 			return;
 		}
 		String building = Utils.extractBuilding(doorCode);

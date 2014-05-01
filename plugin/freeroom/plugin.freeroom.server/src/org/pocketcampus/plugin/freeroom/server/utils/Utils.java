@@ -49,6 +49,18 @@ public class Utils {
 
 	}
 
+	/**
+	 * Extract the building from the doorCode
+	 * 
+	 * @param doorCode
+	 *            The doorCode from which we extract the building, it is assumed
+	 *            to be well formatted (with space separating the building from
+	 *            the zone and number e.g BC 01) otherwise it takes the first
+	 *            characters of the string until it hits a number.
+	 * @return The building of the given door code if the door code is correct
+	 *         as defined above or the door code itself if no matches has been
+	 *         found.
+	 */
 	public static String extractBuilding(String doorCode) {
 		String mDoorCode = doorCode.trim();
 		int firstSpace = mDoorCode.indexOf(" ");
@@ -68,8 +80,20 @@ public class Utils {
 		return mDoorCode;
 	}
 
+	/**
+	 * From a list of rooms it creates a HashMap that maps a building to a list
+	 * of rooms (contained in this building).
+	 * 
+	 * @param rooms
+	 *            The rooms to sort
+	 * @return The HashMap as defined above
+	 */
 	public static Map<String, List<FRRoom>> sortRoomsByBuilding(
 			List<FRRoom> rooms) {
+		if (rooms == null) {
+			return null;
+		}
+
 		Iterator<FRRoom> iter = rooms.iterator();
 		HashMap<String, List<FRRoom>> sortedResult = new HashMap<String, List<FRRoom>>();
 		ArrayList<String> buildingsList = new ArrayList<String>();
@@ -91,21 +115,52 @@ public class Utils {
 		return sortedResult;
 	}
 
+	/**
+	 * Round the given timestamp to the previous hour.
+	 * 
+	 * @param timestamp
+	 *            The timestamp to round
+	 * @return The timestamp rounded to the previous hour (10h12 -> 10h00)
+	 */
 	public static long roundHourBefore(long timestamp) {
 		long min = timestamp % ONE_HOUR_MS;
 		return timestamp - min;
 	}
 
-	// TODO one half a hour is added mysteriously from the converter probably
+	/**
+	 * Round the given timestamp to the next hour with a margin for error
+	 * defined my MARGIN_ERROR (if the minutes in the given hour is less than
+	 * MARGIN_ERROR we round to the previous hour).
+	 * 
+	 * @param timestamp
+	 *            The timestamp to round
+	 * @return The timestamp rounded as defined above
+	 */
 	public static long roundHourAfter(long timestamp) {
 		long minToCompleteHour = ONE_HOUR_MS - (timestamp % ONE_HOUR_MS);
-		if (minToCompleteHour >= ONE_HOUR_MS - MARGIN_ERROR
-				|| minToCompleteHour == ONE_HOUR_MS) {
+		long min = timestamp % ONE_HOUR_MS;
+
+		// if the hour is really close (according to MARGIN_ERROR) to the
+		// previous hour, we simply keep the current hour (e.g if MARGIN_ERROR
+		// is 5min, if we get 10h04 return value will be 10h00)
+		if (min <= MARGIN_ERROR) {
+			return timestamp - min;
+		} else if (minToCompleteHour == ONE_HOUR_MS) {
 			return timestamp;
 		}
 		return timestamp + minToCompleteHour;
 	}
 
+	/**
+	 * Determine the number of hours between the two given timestamps. The
+	 * result will be taken from the rounded version of the two timestamps
+	 * 
+	 * @param tsStart
+	 *            The timestamp of the start of the period
+	 * @param tsEnd
+	 *            The timestamp of the end of the period
+	 * @return The number of hours between the two timestamps
+	 */
 	public static long determineNumberHour(long tsStart, long tsEnd) {
 		long startHour = Utils.roundHourBefore(tsStart);
 		long endHour = Utils.roundHourAfter(tsEnd);
@@ -119,6 +174,14 @@ public class Utils {
 		return end - start;
 	}
 
+	/**
+	 * Round to the nearest half hour before : if the minutes are less than
+	 * 30min, we round to the previous full hour, otherwise we round the half
+	 * hour
+	 * 
+	 * @param timestamp The timestamp to round
+	 * @return The rounded timestamp
+	 */
 	public static long roundToNearestHalfHourBefore(long timestamp) {
 		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
 
@@ -130,14 +193,20 @@ public class Utils {
 		return timestamp - timeInMin;
 	}
 
+	/**
+	 * Round the nearest half hour after
+	 * @param timestamp The timestamp to round
+	 * @return The rounded timestamp
+	 */
 	public static long roundToNearestHalfHourAfter(long timestamp) {
 		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
 		long timeInMin = timestamp % ONE_HOUR_MS;
-		
+
 		// if the hour is full (like 8:00am) no need to round
 		if (timeInMin == 0) {
 			return timestamp;
 		} else if (timeInMin < MARGIN_ERROR && timeInMin > 0) {
+			//in this case we are very close to the full hour, take the full hour
 			return timestamp - timeInMin;
 		}
 
