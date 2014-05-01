@@ -23,7 +23,6 @@ public class OccupancySorted {
 
 	// TODO put all constants in Utils
 	private final long MARGIN_FOR_ERROR = 60 * 15 * 1000;
-	private final long MIN_PERIOD = 15 * 60 * 1000;
 
 	private boolean onlyFreeRooms;
 	private ArrayList<ActualOccupation> mActualOccupations;
@@ -184,7 +183,7 @@ public class OccupancySorted {
 						.size() - 1);
 				countFree = Math.min(0, countFree - 1);
 				FRPeriod previousPeriod = lastOccupation.getPeriod();
-				if (tsStart - previousPeriod.getTimeStampStart() > MIN_PERIOD) {
+				if (tsStart - previousPeriod.getTimeStampStart() > Utils.MIN_PERIOD) {
 					FRPeriod newPeriod = new FRPeriod(
 							previousPeriod.getTimeStampStart(), tsStart, false);
 					lastOccupation.setPeriod(newPeriod);
@@ -204,7 +203,7 @@ public class OccupancySorted {
 				actual.setPeriod(newPeriod);
 			}
 
-			if (tsStart - tsPerRoom > MIN_PERIOD) {
+			if (tsStart - tsPerRoom > Utils.MIN_PERIOD) {
 				// We got a free period of time !
 				ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(
 						tsPerRoom, tsStart);
@@ -217,7 +216,7 @@ public class OccupancySorted {
 
 			// if the period is big enough (it might not be as we resize without
 			// checking when there are a room-user conflict, see above)
-			if (actualEnd - actualStart > MIN_PERIOD) {
+			if (actualEnd - actualStart > Utils.MIN_PERIOD) {
 				resultList.add(actual);
 				previousIsRoom = !actual.isAvailable();
 				double ratio = actual.getRatioOccupation();
@@ -276,7 +275,7 @@ public class OccupancySorted {
 					* Utils.ONE_HOUR_MS);
 			long maxEnd = Math.min(hourSharpBefore + (i + 1)
 					* Utils.ONE_HOUR_MS, end);
-			if (maxEnd - minStart > MIN_PERIOD) {
+			if (maxEnd - minStart > Utils.MIN_PERIOD) {
 				FRPeriod period = new FRPeriod(minStart, maxEnd, false);
 				ActualOccupation mAccOcc = new ActualOccupation(period, true);
 				mAccOcc.setProbableOccupation(0);

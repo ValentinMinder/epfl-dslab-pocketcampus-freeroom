@@ -29,6 +29,7 @@ public class Utils {
 	public static final long m30M_MS = 60 * 30 * 1000;
 	public static final long ONE_DAY_MS = ONE_HOUR_MS * 24;
 	public static final long MARGIN_ERROR = 5 * 60 * 1000;
+	public static final long MIN_PERIOD = 15 * 60 * 1000;
 
 	/**
 	 * Adjust the period given in the request. It adds 30s to the lower bound,
