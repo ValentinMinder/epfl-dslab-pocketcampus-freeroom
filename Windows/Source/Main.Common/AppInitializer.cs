@@ -6,6 +6,7 @@ using System;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.Main
 {
@@ -14,6 +15,8 @@ namespace PocketCampus.Main
         public static void BindImplementations()
         {
             DataViewModelOptions.NetworkExceptionType = typeof( OperationCanceledException );
+
+            Logger.WarnOnMissingAttributes = true;
 
             Container.Bind<IMainSettings, MainSettings>();
             Container.Bind<IServerAccess, ServerAccess>();
