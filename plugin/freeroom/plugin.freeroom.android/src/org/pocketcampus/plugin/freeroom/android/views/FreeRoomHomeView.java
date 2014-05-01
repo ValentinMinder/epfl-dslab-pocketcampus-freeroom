@@ -57,6 +57,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -875,8 +876,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private Button searchButton;
 	private Button resetButton;
-	private Button addHourButton;
-	private Button upToEndHourButton;
+	private ImageButton addHourButton;
+	private ImageButton upToEndHourButton;
 
 	private TextView mSummarySelectedRoomsTextView;
 
@@ -1143,7 +1144,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		addHourButton = (Button) popupSearchView
+		addHourButton = (ImageButton) popupSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_hour_end_plus);
 		addHourButton.setEnabled(true);
 		addHourButton.setOnClickListener(new OnClickListener() {
@@ -1162,7 +1163,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		upToEndHourButton = (Button) popupSearchView
+		upToEndHourButton = (ImageButton) popupSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_hour_end_toend);
 		upToEndHourButton.setEnabled(true);
 		upToEndHourButton.setOnClickListener(new OnClickListener() {

@@ -73,7 +73,7 @@ Double layout stores a background for fancy colorful borders
             android:id="@+id/freeroom_layout_popup_info_roomOccupancy"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="8" />
+            android:layout_weight="1" />
 
         <!-- shows the details about the room (size, capacity, ...) -->
 

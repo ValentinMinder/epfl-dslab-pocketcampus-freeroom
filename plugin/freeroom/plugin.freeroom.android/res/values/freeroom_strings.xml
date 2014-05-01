@@ -91,5 +91,7 @@
     <string name="freeroom_layout_roomslist_img_people">people icon</string>
     <string name="freeroom_layout_roomslist_img_triangle">triangle icon</string>
     <string name="freeroom_layout_building_header_show_more_img">show more icon</string>
+    <string name="freeroom_layout_search_next_hour_img">to next hour</string>
+    <string name="freeroom_layout_search_last_hour_img">to last hour</string>
 
 </resources>
