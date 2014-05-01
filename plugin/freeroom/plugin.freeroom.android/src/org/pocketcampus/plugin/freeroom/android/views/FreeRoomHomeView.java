@@ -243,6 +243,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initDefaultRequest();
 		refresh();
 
+		// TODO: NOT the right call to handle the intent
 		handleIntent(getIntent());
 	}
 
@@ -1416,7 +1417,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void updateShowStartTimePicker() {
 		showStartTimePicker
 				.setText(getString(R.string.freeroom_check_occupancy_search_start)
-						+ " : "
+						+ " "
 						+ timeFormat.format(new Date(prepareFRFrPeriod()
 								.getTimeStampStart())));
 	}
@@ -1424,7 +1425,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void updateShowEndTimePicker() {
 		showEndTimePicker
 				.setText(getString(R.string.freeroom_check_occupancy_search_end)
-						+ " : "
+						+ " "
 						+ timeFormat.format(new Date(prepareFRFrPeriod()
 								.getTimeStampEnd())));
 		if (endHourSelected >= FRTimes.LAST_HOUR_CHECK
