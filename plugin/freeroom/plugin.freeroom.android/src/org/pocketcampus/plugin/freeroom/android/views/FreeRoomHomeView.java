@@ -954,8 +954,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					@Override
 					public void onTimeSet(TimePicker view, int nHourOfDay,
 							int nMinute) {
+						int previous = startHourSelected;
+						startHourSelected = nHourOfDay;
+						startMinSelected = nMinute;
+						if (startHourSelected < FRTimes.FIRST_HOUR_CHECK) {
+							startHourSelected = FRTimes.FIRST_HOUR_CHECK;
+							startMinSelected = 0;
+						}
+						if (startHourSelected >= FRTimes.LAST_HOUR_CHECK) {
+							startHourSelected = FRTimes.LAST_HOUR_CHECK - 1;
+							startMinSelected = 0;
+						}
 						if (startHourSelected != -1) {
-							int shift = nHourOfDay - startHourSelected;
+							int shift = startHourSelected - previous;
 							int newEndHour = endHourSelected + shift;
 							if (startHourSelected <= endHourSelected) {
 								if (newEndHour > FRTimes.LAST_HOUR_CHECK) {
@@ -971,8 +982,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 								updateEndTimePickerAndButton();
 							}
 						}
-						startHourSelected = nHourOfDay;
-						startMinSelected = nMinute;
 						updateStartTimePickerAndButton();
 						searchButton.setEnabled(auditSubmit() == 0);
 
@@ -998,6 +1007,23 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							int nMinute) {
 						endHourSelected = nHourOfDay;
 						endMinSelected = nMinute;
+						if (endHourSelected < startHourSelected) {
+							endHourSelected = startHourSelected + 1;
+						}
+						if (endHourSelected < FRTimes.FIRST_HOUR_CHECK) {
+							endHourSelected = FRTimes.FIRST_HOUR_CHECK + 1;
+							endMinSelected = 0;
+						}
+						if (endHourSelected == FRTimes.FIRST_HOUR_CHECK
+								&& endMinSelected <= FRTimes.MIN_MINUTE_INTERVAL) {
+							endMinSelected = FRTimes.MIN_MINUTE_INTERVAL;
+							// TODO: if start is not 8h00 (eg 8h10 dont work)
+						}
+						
+						if (endHourSelected >= FRTimes.LAST_HOUR_CHECK) {
+							endHourSelected = FRTimes.LAST_HOUR_CHECK;
+							endMinSelected = 0;
+						}
 						updateEndTimePickerAndButton();
 						searchButton.setEnabled(auditSubmit() == 0);
 
