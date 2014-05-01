@@ -931,7 +931,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						yearSelected = nYear;
 						monthSelected = nMonthOfYear;
 						dayOfMonthSelected = nDayOfMonth;
-						updateShowDatePicker();
+						updateDatePickerAndButton();
 						searchButton.setEnabled(auditSubmit() == 0);
 
 					}
@@ -954,9 +954,26 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					@Override
 					public void onTimeSet(TimePicker view, int nHourOfDay,
 							int nMinute) {
+						if (startHourSelected != -1) {
+							int shift = nHourOfDay - startHourSelected;
+							int newEndHour = endHourSelected + shift;
+							if (startHourSelected <= endHourSelected) {
+								if (newEndHour > FRTimes.LAST_HOUR_CHECK) {
+									newEndHour = FRTimes.LAST_HOUR_CHECK;
+								}
+								if (newEndHour < FRTimes.FIRST_HOUR_CHECK) {
+									newEndHour = FRTimes.FIRST_HOUR_CHECK;
+								}
+								endHourSelected = newEndHour;
+								if (endHourSelected == FRTimes.LAST_HOUR_CHECK) {
+									endMinSelected = 0;
+								}
+								updateEndTimePickerAndButton();
+							}
+						}
 						startHourSelected = nHourOfDay;
 						startMinSelected = nMinute;
-						updateShowStartTimePicker();
+						updateStartTimePickerAndButton();
 						searchButton.setEnabled(auditSubmit() == 0);
 
 					}
@@ -967,7 +984,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				mTimePickerStartDialog.show();
-
 			}
 		});
 
@@ -982,7 +998,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							int nMinute) {
 						endHourSelected = nHourOfDay;
 						endMinSelected = nMinute;
-						updateShowEndTimePicker();
+						updateEndTimePickerAndButton();
 						searchButton.setEnabled(auditSubmit() == 0);
 
 					}
@@ -993,7 +1009,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				mTimePickerEndDialog.show();
-
 			}
 		});
 	}
@@ -1153,7 +1168,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onClick(View v) {
 				if (endHourSelected <= 18) {
 					endHourSelected += 1;
-					updateShowEndTimePicker();
+					updateEndTimePickerAndButton();
 					mTimePickerEndDialog.updateTime(endHourSelected,
 							endMinSelected);
 				}
@@ -1172,7 +1187,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			public void onClick(View v) {
 				endHourSelected = FRTimes.LAST_HOUR_CHECK;
 				endMinSelected = 0;
-				updateShowEndTimePicker();
+				updateEndTimePickerAndButton();
 				mTimePickerEndDialog
 						.updateTime(endHourSelected, endMinSelected);
 				searchButton.setEnabled(auditSubmit() == 0);
@@ -1366,14 +1381,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		endMinSelected = mCalendar.get(Calendar.MINUTE);
 	}
 
-	private void updateDateTimePickers() {
-		// reset the time pickers
-		mDatePickerDialog.updateDate(yearSelected, monthSelected,
-				dayOfMonthSelected);
-		mTimePickerStartDialog.updateTime(startHourSelected, startMinSelected);
-		mTimePickerEndDialog.updateTime(endHourSelected, endMinSelected);
-	}
-
 	private void reset() {
 		searchButton.setEnabled(false);
 
@@ -1385,7 +1392,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mAutoCompleteSuggestionArrayListFRRoom.clear();
 
 		resetTimes();
-		updateDateTimePickers();
 
 		anyButton.setChecked(true);
 		specButton.setChecked(false);
@@ -1401,29 +1407,32 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		userDefButton.setEnabled(enabled);
 		freeButton.setEnabled(enabled);
 		// show the buttons
-		updatePickersButtons();
+		updateDateTimePickersAndButtons();
 	}
 
-	private void updatePickersButtons() {
-		updateShowDatePicker();
-		updateShowStartTimePicker();
-		updateShowEndTimePicker();
+	private void updateDateTimePickersAndButtons() {
+		updateDatePickerAndButton();
+		updateStartTimePickerAndButton();
+		updateEndTimePickerAndButton();
 	}
 
-	private void updateShowDatePicker() {
+	private void updateDatePickerAndButton() {
 		showDatePicker.setText(dateFormat.format(new Date(prepareFRFrPeriod()
 				.getTimeStampStart())));
+		mDatePickerDialog.updateDate(yearSelected, monthSelected,
+				dayOfMonthSelected);
 	}
 
-	private void updateShowStartTimePicker() {
+	private void updateStartTimePickerAndButton() {
 		showStartTimePicker
 				.setText(getString(R.string.freeroom_check_occupancy_search_start)
 						+ " "
 						+ timeFormat.format(new Date(prepareFRFrPeriod()
 								.getTimeStampStart())));
+		mTimePickerStartDialog.updateTime(startHourSelected, startMinSelected);
 	}
 
-	private void updateShowEndTimePicker() {
+	private void updateEndTimePickerAndButton() {
 		showEndTimePicker
 				.setText(getString(R.string.freeroom_check_occupancy_search_end)
 						+ " "
@@ -1435,6 +1444,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		} else {
 			addHourButton.setEnabled(true);
 		}
+		mTimePickerEndDialog.updateTime(endHourSelected, endMinSelected);
 	}
 
 	/**
