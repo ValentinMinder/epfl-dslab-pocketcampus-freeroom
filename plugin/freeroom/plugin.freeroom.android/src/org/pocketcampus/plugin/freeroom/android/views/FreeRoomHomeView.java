@@ -968,19 +968,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						if (startHourSelected != -1) {
 							int shift = startHourSelected - previous;
 							int newEndHour = endHourSelected + shift;
-							if (startHourSelected <= endHourSelected) {
-								if (newEndHour > FRTimes.LAST_HOUR_CHECK) {
-									newEndHour = FRTimes.LAST_HOUR_CHECK;
-								}
-								if (newEndHour < FRTimes.FIRST_HOUR_CHECK) {
-									newEndHour = FRTimes.FIRST_HOUR_CHECK;
-								}
-								endHourSelected = newEndHour;
-								if (endHourSelected == FRTimes.LAST_HOUR_CHECK) {
-									endMinSelected = 0;
-								}
-								updateEndTimePickerAndButton();
+							if (newEndHour > FRTimes.LAST_HOUR_CHECK) {
+								newEndHour = FRTimes.LAST_HOUR_CHECK;
 							}
+							if (newEndHour < FRTimes.FIRST_HOUR_CHECK) {
+								newEndHour = FRTimes.FIRST_HOUR_CHECK + 1;
+							}
+							endHourSelected = newEndHour;
+							if (endHourSelected == FRTimes.LAST_HOUR_CHECK) {
+								endMinSelected = 0;
+							}
+							updateEndTimePickerAndButton();
 						}
 						updateStartTimePickerAndButton();
 						searchButton.setEnabled(auditSubmit() == 0);
