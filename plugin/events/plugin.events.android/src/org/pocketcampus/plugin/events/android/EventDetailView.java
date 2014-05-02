@@ -77,6 +77,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 		mList = (ListView) findViewById(R.id.events_main_list);
 		
 
+		setActionBarTitle(getString(R.string.events_plugin_title));
 	}
 
 	/**
@@ -119,8 +120,9 @@ public class EventDetailView extends PluginView implements IEventsView {
 	
 	@Override
 	protected void onPause() {
-		super.onResume();
-		scrollState = new ScrollStateSaver(mList);
+		super.onPause();
+		if(mList != null)
+			scrollState = new ScrollStateSaver(mList);
 	}
 	
 	@Override

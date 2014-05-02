@@ -1,6 +1,30 @@
 namespace java org.pocketcampus.plugin.isacademia.shared
 namespace csharp org.pocketcampus.plugin.isacademia.shared
 
+/**
+
+From Tim:
+
+Here is the list of possible class types
+
+LIP_TP TP
+LIP_ORAL Oral
+LIP_COURS Cours
+LIP_LABO Labo
+LIP_RTP Rapport de TP
+LIP_ECRIT Ecrit
+LIP_EXERCICE Exercices
+LIP_CC Pendant le semestre
+LIP_AUTRE_REPRISE  Autre (reprise)
+LIP_PROJET Projet
+LIP_ECRIT_ORAL Ecrit & Oral
+LIP_SYNTHESE Synthèse
+LIP_ATELIER Atelier
+LIP_MEM Mémoire
+LIP_EXP Exposé
+
+**/
+
 typedef i64 timestamp
 
 enum StudyPeriodType {

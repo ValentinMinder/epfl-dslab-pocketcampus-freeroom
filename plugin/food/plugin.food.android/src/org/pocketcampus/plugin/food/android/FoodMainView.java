@@ -121,6 +121,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		StandardLayout sl = new StandardLayout(this);
 		setContentView(sl);
 
+		setActionBarTitle(getString(R.string.food_plugin_title));
 	}
 
 
