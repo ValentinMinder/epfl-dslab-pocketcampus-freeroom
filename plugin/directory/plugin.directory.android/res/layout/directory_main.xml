@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+	
+    
+    
+    
+	    
+	    
+	<FrameLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="3dip"
+		>
+	    
+	        
+			    
+
+			<EditText
+			    android:id="@+id/directory_searchinput"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="1"
+			    android:ems="10"
+			    android:paddingRight="50dp"
+			    android:hint="@string/directory_searchView_hint"
+			    android:inputType="textPersonName" >
+
+			    <requestFocus />
+			</EditText>
+			
+		    
+    <Button
+        android:id="@+id/directory_searchinput_delete"      
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="right|center_vertical"
+        android:background="@drawable/directory_input_delete"
+         />
+<!-- 
+        android:background="@android:drawable/ic_notification_clear_all"
+        android:background="@android:drawable/ic_input_delete"
+
+ -->			
+			
+	
+	</FrameLayout>    
+    
+    
+    
+    
+    
+    
+    <RelativeLayout
+        android:id="@+id/directory_main"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+ />
+
+</LinearLayout>

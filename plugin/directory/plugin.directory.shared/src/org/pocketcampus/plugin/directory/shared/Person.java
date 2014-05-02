@@ -36,17 +36,17 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
   private static final org.apache.thrift.protocol.TField ORGANISATIONAL_UNITS_FIELD_DESC = new org.apache.thrift.protocol.TField("organisationalUnits", org.apache.thrift.protocol.TType.LIST, (short)10);
   private static final org.apache.thrift.protocol.TField PICTURE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("pictureUrl", org.apache.thrift.protocol.TType.STRING, (short)11);
 
-  public String firstName; // required
-  public String lastName; // required
-  public String sciper; // required
-  public String email; // required
-  public String web; // required
-  public String privatePhoneNumber; // required
-  public String officePhoneNumber; // required
-  public String office; // required
-  public String gaspar; // required
-  public List<String> organisationalUnits; // required
-  public String pictureUrl; // required
+  private String firstName; // required
+  private String lastName; // required
+  private String sciper; // required
+  private String email; // required
+  private String web; // required
+  private String privatePhoneNumber; // required
+  private String officePhoneNumber; // required
+  private String office; // required
+  private String gaspar; // required
+  private List<String> organisationalUnits; // required
+  private String pictureUrl; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

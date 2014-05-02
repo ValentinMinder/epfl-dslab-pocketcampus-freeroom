@@ -30,4 +30,8 @@
 
      <string name="directory_loading">Chargement...</string>
    
+     <string name="directory_ambiguous_query">Requête ambiguë</string>
+     <string name="directory_popup_title">Coordonnées</string>
+     
+     
 </resources>
