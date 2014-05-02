@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the favorites popup window. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="4dp"
+        android:background="@android:color/background_light"
+        android:orientation="vertical"
+        android:padding="4dp" >
+
+        <!-- headers for title and button -->
+
+        <ImageView
+            android:id="@+id/hb"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/freeroom_layout_popup_info_img_close"
+            android:src="@drawable/hb" />
+    </LinearLayout>
+
+</LinearLayout>
