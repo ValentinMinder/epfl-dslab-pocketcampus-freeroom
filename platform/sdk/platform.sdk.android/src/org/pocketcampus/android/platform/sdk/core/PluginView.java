@@ -35,6 +35,7 @@ public abstract class PluginView extends Activity {
 	private ServiceConnection mServiceConnection;
 	private ArrayList<PluginController> mControllers = new ArrayList<PluginController>();
 	private boolean mActionBarDisabled = false;
+	private boolean mActionBarLayoutWrapContent = false;
 
 	public interface ViewBoundCallback {
 		void onViewBound(PluginController controller);
@@ -214,13 +215,20 @@ public abstract class PluginView extends Activity {
 	}
 
 	/**
-	 * Overriden method to automatically add the ActionBar.
+	 * Override method to automatically add the ActionBar.
 	 */
 	@Override
 	public void setContentView(int layoutResID) {
+		setContentView(layoutResID, null);
+	}
+
+	/**
+	 * Method to automatically add the ActionBar.
+	 */
+	public void setContentView(int layoutResID, LayoutParams params) {
 		LayoutInflater inflater = getLayoutInflater();
 		View view = inflater.inflate(layoutResID, null);
-		setupActionBar(view);
+		setupActionBar(view,  params);
 	}
 
 	/**
@@ -228,7 +236,7 @@ public abstract class PluginView extends Activity {
 	 */
 	@Override
 	public void setContentView(View view) {
-		setupActionBar(view);
+		setupActionBar(view, null);
 	}
 
 	/**
@@ -236,7 +244,7 @@ public abstract class PluginView extends Activity {
 	 */
 	@Override
 	public void setContentView(View view, LayoutParams params) {
-		setupActionBar(view);
+		setupActionBar(view, params);
 	}
 
 	// TODO addContentView!!
@@ -247,15 +255,19 @@ public abstract class PluginView extends Activity {
 	 * 
 	 * @param view
 	 */
-	private void setupActionBar(View view) {
+	private void setupActionBar(View view, LayoutParams layoutParams) {
 		if (mActionBarDisabled) {
-			super.setContentView(view);
+			if(layoutParams == null)
+				super.setContentView(view);
+			else
+				super.setContentView(view, layoutParams);
 			return;
 		}
 		
 		if(actionBarLayout == null) {
 			LayoutInflater inflater = getLayoutInflater();
-			View actionBarView = inflater.inflate(R.layout.sdk_actionbar_layout, null);
+			int layout = (mActionBarLayoutWrapContent ? R.layout.sdk_actionbar_layout_wrap : R.layout.sdk_actionbar_layout);
+			View actionBarView = inflater.inflate(layout, null);
 			super.setContentView(actionBarView);
 			actionBarLayout = (RelativeLayout) actionBarView.findViewById(R.id.sdk_actionbar_layout);
 			mActionBar = (ActionBar) actionBarView.findViewById(R.id.sdk_actionbar_layout_actionbar);
@@ -263,7 +275,10 @@ public abstract class PluginView extends Activity {
 		}
 		
 		actionBarLayout.removeAllViews();
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		if(layoutParams == null) {
+			int param = (mActionBarLayoutWrapContent ? LayoutParams.WRAP_CONTENT : LayoutParams.FILL_PARENT);
+			layoutParams = new LayoutParams(param, param);
+		}
 		actionBarLayout.addView(view, layoutParams);
 	}
 	
@@ -308,6 +323,13 @@ public abstract class PluginView extends Activity {
 	}
 	
 	/**
+	 * Sets title of ActionBar.
+	 */
+	protected void setActionBarTitle(CharSequence title) {
+		mActionBar.setTitle(title);
+	}
+	
+	/**
 	 * Do not setup the ActionBar for this Activity. Must be called before
 	 * <code>setContentView</code>.
 	 * 
@@ -316,14 +338,16 @@ public abstract class PluginView extends Activity {
 	protected void disableActionBar() {
 		mActionBarDisabled = true;
 	}
-
+	
 	/**
-	 * Returns the ActionBar, use it to add custom button to it.
-	 * 
-	 * @return
+	 * Call this if you want to set ActionBar
+	 * but you want the layout to wrap contents,
+	 * e.g., in dialog popups.
+	 * Must be called before
+	 * <code>setContentView</code>.
 	 */
-	public ActionBar getActionBar() {
-		return mActionBar;
+	protected void makeActionBarLayoutWrapContent() {
+		mActionBarLayoutWrapContent = true;
 	}
 
 	@Override
