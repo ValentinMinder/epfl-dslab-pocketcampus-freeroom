@@ -127,7 +127,7 @@ namespace PocketCampus.Events.ViewModels
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
 
-                var response = await _eventsService.GetEventItemAsync( request );
+                var response = await _eventsService.GetEventItemAsync( request, token );
 
                 if ( response.Status != EventsStatus.Success )
                 {

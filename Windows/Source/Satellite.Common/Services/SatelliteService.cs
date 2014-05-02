@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Satellite.Models;
@@ -19,9 +20,9 @@ namespace PocketCampus.Satellite.Services
 
         }
 
-        public Task<BeersResponse> GetBeersAsync()
+        public Task<BeersResponse> GetBeersAsync( CancellationToken cancellationToken )
         {
-            return CallAsync<BeersResponse>( x => x.GetBeersAsync );
+            return CallAsync<CancellationToken, BeersResponse>( x => x.GetBeersAsync, cancellationToken );
         }
     }
 }

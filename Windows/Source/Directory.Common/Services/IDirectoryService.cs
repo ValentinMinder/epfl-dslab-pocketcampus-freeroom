@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Directory.Models;
 using ThriftSharp;
@@ -18,6 +19,6 @@ namespace PocketCampus.Directory.Services
         /// Asynchronously searches for all people whose name or SCIPER number matches the specified request.
         /// </summary>
         [ThriftMethod( "searchDirectory" )]
-        Task<SearchResponse> SearchAsync( [ThriftParameter( 1, "req" )] SearchRequest request );
+        Task<SearchResponse> SearchAsync( [ThriftParameter( 1, "req" )] SearchRequest request, CancellationToken cancellationToken );
     }
 }

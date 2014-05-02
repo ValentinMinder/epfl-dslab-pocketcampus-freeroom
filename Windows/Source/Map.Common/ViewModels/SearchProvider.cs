@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -93,7 +92,7 @@ namespace PocketCampus.Map.ViewModels
                 // while the search is taking place
                 AnySearchResults = true;
 
-                var results = await _mapService.SearchAsync( query );
+                var results = await _mapService.SearchAsync( query, token );
                 var uniqueResult = results.FirstOrDefault( r => AreNamesEqual( r.Name, query ) );
 
                 if ( !token.IsCancellationRequested )

@@ -120,7 +120,7 @@
         <!-- Search box -->
         <Border Grid.Row="1"
                 Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
-            <comControls:SearchBox AutoCompleteProvider="{Binding SearchAutoCompleteProvider}"
+            <comControls:SearchBox Query="{Binding Query, Mode=TwoWay}" 
                                    SearchCommand="{Binding SearchCommand}" />
         </Border>
 

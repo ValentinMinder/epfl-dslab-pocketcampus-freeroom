@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Food.Models;
@@ -19,9 +20,9 @@ namespace PocketCampus.Food.Services
 
         }
 
-        public Task<FoodResponse> GetMenusAsync( FoodRequest request )
+        public Task<FoodResponse> GetMenusAsync( FoodRequest request, CancellationToken cancellationToken )
         {
-            return CallAsync<FoodRequest, FoodResponse>( x => x.GetMenusAsync, request );
+            return CallAsync<FoodRequest, CancellationToken, FoodResponse>( x => x.GetMenusAsync, request, cancellationToken );
         }
 
         public Task<VoteResponse> VoteAsync( VoteRequest request )

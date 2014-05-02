@@ -16,7 +16,7 @@ namespace PocketCampus.Camipro.Models
         /// The current balance, in Swiss Francs.
         /// </summary>
         [ThriftField( 1, false, "iBalance" )]
-        public double Balance { get; set; }
+        public double? Balance { get; set; }
 
         /// <summary>
         /// The last transactions.

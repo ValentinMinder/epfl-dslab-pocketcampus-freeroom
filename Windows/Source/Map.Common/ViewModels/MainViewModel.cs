@@ -129,7 +129,7 @@ namespace PocketCampus.Map.ViewModels
                 //layers = layers.Where( l => l.CanDisplay );
                 //foreach ( var layer in layers )
                 //{
-                //    layer.Items = await _mapService.GetLayerItemsAsync( layer.Id );
+                //    layer.Items = await _mapService.GetLayerItemsAsync( layer.Id, token );
                 //    foreach ( var item in layer.Items )
                 //    {
                 //        item.ImageUrl = "http://pocketcampus.epfl.ch/" + layer.ImageUrl;

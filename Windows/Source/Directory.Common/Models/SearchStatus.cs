@@ -12,17 +12,17 @@ namespace PocketCampus.Directory.Models
     /// <remarks>
     /// Not part of the Thrift interface.
     /// </remarks>
-    [ThriftEnum( "_" )]
+    [ThriftEnum]
     public enum SearchStatus
     {
         /// <summary>
         /// The request completed successfully.
         /// </summary>
-        Success,
+        Success = 200,
 
         /// <summary>
         /// An internal error occurred on the server.
         /// </summary>
-        InternalError
+        InternalError = 500
     }
 }

@@ -12,7 +12,7 @@ namespace PocketCampus.Moodle.Models
     /// <remarks>
     /// Not in the Thrift interface (it uses undocumented constants).
     /// </remarks>
-    [ThriftEnum( "_" )]
+    [ThriftEnum]
     public enum ResponseStatus
     {
         /// <summary>

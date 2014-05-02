@@ -6,10 +6,10 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using ThinMvvm;
-using ThinMvvm.Logging;
 using PocketCampus.News.Models;
 using PocketCampus.News.Services;
+using ThinMvvm;
+using ThinMvvm.Logging;
 
 namespace PocketCampus.News.ViewModels
 {
@@ -65,7 +65,7 @@ namespace PocketCampus.News.ViewModels
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                     IncludeGeneralFeed = true
                 };
-                var response = await _feedsService.GetFeedsAsync( request );
+                var response = await _feedsService.GetFeedsAsync( request, token );
 
                 if ( response.Status != ResponseStatus.Success )
                 {

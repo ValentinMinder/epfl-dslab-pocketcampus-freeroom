@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Threading;
 using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
@@ -19,14 +20,14 @@ namespace PocketCampus.Moodle.Services
 
         }
 
-        public Task<CourseListResponse> GetCoursesAsync( string dummy )
+        public Task<CourseListResponse> GetCoursesAsync( string dummy, CancellationToken cancellationToken )
         {
-            return CallAsync<string, CourseListResponse>( x => x.GetCoursesAsync, dummy );
+            return CallAsync<string, CancellationToken, CourseListResponse>( x => x.GetCoursesAsync, dummy, cancellationToken );
         }
 
-        public Task<CourseSectionListResponse> GetCourseSectionsAsync( string courseId )
+        public Task<CourseSectionListResponse> GetCourseSectionsAsync( string courseId, CancellationToken cancellationToken )
         {
-            return CallAsync<string, CourseSectionListResponse>( x => x.GetCourseSectionsAsync, courseId );
+            return CallAsync<string, CancellationToken, CourseSectionListResponse>( x => x.GetCourseSectionsAsync, courseId, cancellationToken );
         }
     }
 }

@@ -25,7 +25,7 @@ namespace PocketCampus.Food.Models
         /// Lunch by default.
         /// </summary>
         [ThriftField( 2, false, "mealTime" )]
-        public MealTime MealTime { get; set; }
+        public MealTime? MealTime { get; set; }
 
         /// <summary>
         /// The date of the request.
@@ -33,6 +33,6 @@ namespace PocketCampus.Food.Models
         /// </summary>
         [ThriftField( 3, false, "mealDate" )]
         [ThriftConverter( typeof( ThriftJavaDateConverter ) )]
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

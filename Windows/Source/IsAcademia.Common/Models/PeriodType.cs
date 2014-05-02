@@ -9,26 +9,23 @@ namespace PocketCampus.IsAcademia.Models
     /// <summary>
     /// The period types.
     /// </summary>
-    [ThriftEnum( "StudyPeriodType" )]
+    [ThriftEnum]
     public enum PeriodType
     {
         /// <summary>
         /// A lecture, usually in only 1 room.
         /// </summary>
-        [ThriftEnumMember( "LECTURE", 0 )]
-        Lecture,
+        Lecture = 0,
 
         /// <summary>
         /// An exercise session, usually in many rooms.
         /// </summary>
-        [ThriftEnumMember( "EXERCISES", 1 )]
-        Exercises,
+        Exercises = 1,
 
         /// <summary>
         /// A lab session.
         /// </summary>
-        [ThriftEnumMember( "LAB", 2 )]
-        Lab,
+        Lab = 2,
 
         /// <summary>
         /// A project session.
@@ -36,7 +33,16 @@ namespace PocketCampus.IsAcademia.Models
         /// <remarks>
         /// Some periods marked as "project" are actually exercises.
         /// </remarks>
-        [ThriftEnumMember( "PROJECT", 3 )]
-        Project
+        Project = 3,
+
+        /// <summary>
+        /// An oral exam.
+        /// </summary>
+        OralExam = 4,
+
+        /// <summary>
+        /// A written exam.
+        /// </summary>
+        WrittenExam = 5
     }
 }
