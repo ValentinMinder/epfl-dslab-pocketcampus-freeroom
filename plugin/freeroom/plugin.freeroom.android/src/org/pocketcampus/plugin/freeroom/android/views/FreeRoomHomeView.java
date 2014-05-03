@@ -316,16 +316,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		TextView tv = (TextView) popupInfoView
 				.findViewById(R.id.freeroom_layout_popup_info_name);
 		tv.setText("room"); // TODO
-
-		ImageView img = (ImageView) popupInfoView
-				.findViewById(R.id.freeroom_layout_popup_info_close);
-		img.setOnClickListener(new ImageView.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				popupInfoWindow.dismiss();
-			}
-		});
 	}
 
 	/**
