@@ -567,7 +567,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				build.append(getString(R.string.freeroom_home_info_rooms));
 			}
 			FRPeriod period = request.getPeriod();
-			build.append(generateTimeSummary(period));
+			build.append(generateFullTimeSummary(period));
 		}
 
 		setTextSummary(build.toString());
@@ -605,7 +605,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            the period of time
 	 * @return a string summary of a given period of time.
 	 */
-	private String generateTimeSummary(FRPeriod period) {
+	private String generateFullTimeSummary(FRPeriod period) {
 		StringBuilder build = new StringBuilder(100);
 		Date endDate = new Date(period.getTimeStampEnd());
 		Date startDate = new Date(period.getTimeStampStart());
@@ -631,6 +631,28 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	/**
+	 * Generates a short string summary of a given period of time.
+	 * <p>
+	 * eg: "9:00\n12:00pm"
+	 * 
+	 * @param period
+	 *            the period of time
+	 * @return a string summary of a given period of time.
+	 */
+	private String generateShortTimeSummary(FRPeriod period) {
+		StringBuilder build = new StringBuilder(100);
+		Date endDate = new Date(period.getTimeStampEnd());
+		Date startDate = new Date(period.getTimeStampStart());
+		SimpleDateFormat hour_min = new SimpleDateFormat(
+				getString(R.string.freeroom_pattern_hour_format));
+
+		build.append(hour_min.format(startDate));
+		build.append("\n");
+		build.append(hour_min.format(endDate));
+		return build.toString();
+	}
+
+	/**
 	 * Put a onClickListener on an imageView in order to share the location and
 	 * time when clicking share, if available.
 	 * 
@@ -651,19 +673,30 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			shareImageView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// share
-					List<ActualOccupation> list = mOccupancy.getOccupancy();
-					long tss = list.get(0).getPeriod().getTimeStampStart();
-					long tse = list.get(list.size() - 1).getPeriod()
-							.getTimeStampEnd();
-					FRPeriod mPeriod = new FRPeriod(tss, tse, false);
-					homeView.share(mPeriod, mOccupancy.getRoom());
+					homeView.share(
+							getMaxPeriodFromList(mOccupancy.getOccupancy()),
+							mOccupancy.getRoom());
 				}
 			});
 		} else {
 			shareImageView.setClickable(false);
 			shareImageView.setImageResource(R.drawable.share_disabled);
 		}
+	}
+
+	/**
+	 * Finds the whole period covered by a list of contiguous and ordered of
+	 * occupancies.
+	 * 
+	 * @param listOccupations
+	 *            the list of occupancies.
+	 * @return the period covered by the list
+	 */
+	private FRPeriod getMaxPeriodFromList(List<ActualOccupation> listOccupations) {
+		long tss = listOccupations.get(0).getPeriod().getTimeStampStart();
+		long tse = listOccupations.get(listOccupations.size() - 1).getPeriod()
+				.getTimeStampEnd();
+		return new FRPeriod(tss, tse, false);
 	}
 
 	/**
@@ -683,6 +716,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				text = mRoom.getDoorCodeAlias();
 			}
 			tv.setText(text);
+
+			TextView periodTextView = (TextView) popupInfoView
+					.findViewById(R.id.freeroom_layout_popup_info_period);
+			periodTextView
+					.setText(generateShortTimeSummary(getMaxPeriodFromList(mOccupancy
+							.getOccupancy())));
 
 			ImageView iv = (ImageView) popupInfoView
 					.findViewById(R.id.freeroom_layout_popup_info_share);
@@ -754,7 +793,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// TODO: which period to use ?
 		// in case of specified in request, we should use the personalized
 		// period
-		textBuilder.append(generateTimeSummary(mPeriod) + ". ");
+		textBuilder.append(generateFullTimeSummary(mPeriod) + ". ");
 		textBuilder.append(getString(R.string.freeroom_share_please_come));
 		textBuilder.append(getString(R.string.freeroom_share_ref_pocket));
 
