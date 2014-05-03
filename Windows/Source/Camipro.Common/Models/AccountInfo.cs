@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Runtime.Serialization;
 using ThriftSharp;
 
 namespace PocketCampus.Camipro.Models
@@ -10,12 +11,14 @@ namespace PocketCampus.Camipro.Models
     /// Information about a CAMIPRO account.
     /// </summary>
     [ThriftStruct( "BalanceAndTransactions" )]
+    [DataContract]
     public sealed class AccountInfo
     {
         /// <summary>
         /// The current balance, in Swiss Francs.
         /// </summary>
         [ThriftField( 1, false, "iBalance" )]
+        [DataMember]
         public double? Balance { get; set; }
 
         /// <summary>
@@ -25,6 +28,7 @@ namespace PocketCampus.Camipro.Models
         /// At most 10.
         /// </remarks>
         [ThriftField( 2, false, "iTransactions" )]
+        [DataMember]
         public Transaction[] Transactions { get; set; }
 
         /// <summary>

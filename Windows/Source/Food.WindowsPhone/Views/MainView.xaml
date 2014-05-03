@@ -181,6 +181,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="55" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -208,9 +209,12 @@
                                   TextStyle="{StaticResource AppTextSecondaryHeaderStyle}"
                                   Margin="10,0" Height="55" />
         </Border>
+        
+        <!-- Cache indicator -->
+        <comControls:CacheIndicator Grid.Row="2" />
 
         <!-- Meal list -->
-        <phone:LongListSelector Grid.Row="2"
+        <phone:LongListSelector Grid.Row="3"
                                 ItemsSource="{Binding Menu, Converter={StaticResource RestaurantsToGroups}}"
                                 ItemTemplate="{StaticResource MealItemTemplate}"
                                 IsGroupingEnabled="True"
@@ -219,13 +223,13 @@
                                 JumpListStyle="{StaticResource JumpListStyle}" />
 
         <!-- "No filter results" text -->
-        <TextBlock Grid.Row="2"
+        <TextBlock Grid.Row="3"
                    Text="{Binding Resources.AllResultsFilteredOut, Source={StaticResource Strings}}"
                    Visibility="{Binding AnyFilterResults, Converter={StaticResource BoolToOppositeVisibility}}"
                    Style="{StaticResource AppTextCenterStyle}" />
 
         <!-- "No meals" text (the container is needed to hide the "no filter results" text) -->
-        <Border Grid.Row="2"
+        <Border Grid.Row="3"
                 Visibility="{Binding AnyMeals, Converter={StaticResource BoolToOppositeVisibility}}"
                 Background="{StaticResource PhoneBackgroundBrush}">
             <TextBlock Text="{Binding Resources.NoMeals, Source={StaticResource Strings}}"
@@ -233,7 +237,7 @@
         </Border>
 
         <!-- Loading & error -->
-        <comControls:LoadingAndError Grid.Row="2" />
+        <comControls:LoadingAndError Grid.Row="3" />
     </Grid>
 
     <!-- App bar -->

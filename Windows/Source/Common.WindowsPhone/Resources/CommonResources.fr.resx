@@ -118,16 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Error" xml:space="preserve">
-    <value>Une erreur est survenue lors du chargement. Veuillez réessayer plus tard.</value>
+    <value>Une erreur est survenue lors du chargement. 
+Veuillez réessayer plus tard.</value>
   </data>
   <data name="Loading" xml:space="preserve">
     <value>Chargement en cours...</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
-    <value>Une erreur est survenue lors du chargement. Vérifiez votre connexion à Internet.</value>
+    <value>Une erreur est survenue lors du chargement. 
+Vérifiez votre connexion à Internet.</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>non</value>
+  </data>
+  <data name="UsingCachedData" xml:space="preserve">
+    <value>Une erreur est survenue lors de la connexion au serveur. 
+Les données affichées sont celles d'une requête antérieure.</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>oui</value>

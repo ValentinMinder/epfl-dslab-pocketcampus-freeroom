@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Net;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
 using ThinMvvm;
@@ -14,7 +15,8 @@ namespace PocketCampus.Main
     {
         public static void BindImplementations()
         {
-            DataViewModelOptions.NetworkExceptionType = typeof( OperationCanceledException );
+            DataViewModelOptions.AddNetworkExceptionType( typeof( WebException ) );
+            DataViewModelOptions.AddNetworkExceptionType( typeof( OperationCanceledException ) );
 
             Logger.WarnOnMissingAttributes = true;
 

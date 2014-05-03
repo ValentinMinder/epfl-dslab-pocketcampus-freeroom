@@ -17,6 +17,8 @@ namespace PocketCampus.Food.ViewModels.Design
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
 
+        public bool IsDataCached { get { return false; } }
+
         public Restaurant[] Menu
         {
             get

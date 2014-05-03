@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using ThriftSharp;
 
 namespace PocketCampus.Food.Models
@@ -65,6 +66,7 @@ namespace PocketCampus.Food.Models
         /// <remarks>
         /// Not in the Thrift interface.
         /// </remarks>
+        [IgnoreDataMember]
         public Restaurant Restaurant { get; set; }
 
 

@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Runtime.Serialization;
 using PocketCampus.Common;
 using ThriftSharp;
 
@@ -68,6 +69,7 @@ namespace PocketCampus.Map.Models
         /// <remarks>
         /// Not in the Thrift interface; computed from the latitude and longitude.
         /// </remarks>
+        [IgnoreDataMember]
         public GeoPosition Position
         {
             get { return new GeoPosition( Latitude, Longitude ); }

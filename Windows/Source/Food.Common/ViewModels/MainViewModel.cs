@@ -20,7 +20,7 @@ namespace PocketCampus.Food.ViewModels
     /// The main ViewModel.
     /// </summary>
     [LogId( "/food" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    public sealed class MainViewModel : CachedDataViewModel<NoParameter>
     {
         // On startup, lunch is selected if the current hour is less than or equal to this one
         private const int LunchLimit = 18;
@@ -125,14 +125,15 @@ namespace PocketCampus.Food.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( INavigationService navigationService, IFoodService menuService,
+        public MainViewModel( IDataCache cache, INavigationService navigationService, IFoodService menuService,
                               IPluginSettings settings, IServerSettings serverSettings )
+            : base( cache )
         {
             _navigationService = navigationService;
             _menuService = menuService;
 
             _mealDate = DateTime.Now;
-            _mealTime = _mealDate.Hour <= LunchLimit ? MealTime.Lunch : MealTime.Dinner;
+            _mealTime = GetMealTime( _mealDate.Hour );
 
             AreRatingsEnabled = serverSettings.Configuration.AreFoodRatingsEnabled != 0;
             Settings = settings;
@@ -148,37 +149,24 @@ namespace PocketCampus.Food.ViewModels
         }
 
         /// <summary>
-        /// Refreshes the data.
+        /// Asynchronously refreshes the data.
         /// </summary>
         protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
             if ( force )
             {
-                var request = new FoodRequest
+                if ( MealDate.Date == DateTime.Now.Date )
                 {
-                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                    MealTime = MealTime,
-                    Date = MealDate
-                };
-                var response = await _menuService.GetMenusAsync( request, token );
-
-                if ( response.Status != FoodStatus.Success )
-                {
-                    throw new Exception( "An error occurred while fetching the menu on the server." );
+                    _fullMenu = await GetWithCacheAsync( () => GetMenuAsync( token ), MealTime.GetHashCode(), DateTime.Now.Date.AddDays( 1 ) );
                 }
-
-                _fullMenu = response.Menu;
-
-                foreach ( var restaurant in _fullMenu )
+                else
                 {
-                    foreach ( var meal in restaurant.Meals )
-                    {
-                        meal.Restaurant = restaurant;
-                    }
+                    IsDataCached = false;
+                    _fullMenu = await GetMenuAsync( token );
                 }
             }
 
-            // using Any() on Settings.DisplayedDishTypes allows dishes with more than one type to be displayed
+            // the simple solution, using Any() on Settings.DisplayedMealTypes, displays meals with more than one type
             // even if the user doesn't want the second type to appear
             var forbiddenTypes = EnumEx.GetValues<MealType>().Where( type => !Settings.DisplayedMealTypes.Contains( type ) );
 
@@ -199,6 +187,44 @@ namespace PocketCampus.Food.ViewModels
                 AnyMeals = _fullMenu.Any();
                 AnyFilterResults = Menu.Any();
             }
+        }
+
+        /// <summary>
+        /// Asynchronously gets the menu from the server.
+        /// </summary>
+        private async Task<Restaurant[]> GetMenuAsync( CancellationToken token )
+        {
+            var request = new FoodRequest
+            {
+                Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                MealTime = MealTime,
+                Date = MealDate
+            };
+            var response = await _menuService.GetMenusAsync( request, token );
+
+            if ( response.Status != FoodStatus.Success )
+            {
+                throw new Exception( "An error occurred while fetching the menu on the server." );
+            }
+
+            foreach ( var restaurant in response.Menu )
+            {
+                foreach ( var meal in restaurant.Meals )
+                {
+                    meal.Restaurant = restaurant;
+                }
+            }
+
+            return response.Menu;
+        }
+
+
+        /// <summary>
+        /// Gets the meal time associated with the specified hour.
+        /// </summary>
+        private static MealTime GetMealTime( int hour )
+        {
+            return hour <= LunchLimit ? MealTime.Lunch : MealTime.Dinner;
         }
     }
 }

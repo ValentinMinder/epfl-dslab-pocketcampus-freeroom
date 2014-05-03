@@ -94,6 +94,7 @@ namespace PocketCampus.Main
             Container.Bind<ITileCreator, TileCreator>();
             Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
             Container.Bind<IRatingService, RatingService>();
+            Container.Bind<IDataCache, WindowsPhoneDataCache>();
 
             // URI mapping
             RootFrame.UriMapper = UriMapper = new PocketCampusUriMapper( pluginLoader.GetPlugins() );

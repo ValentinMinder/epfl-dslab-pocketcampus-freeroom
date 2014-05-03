@@ -19,7 +19,7 @@ namespace PocketCampus.Camipro.ViewModels
     /// The main (and only) ViewModel.
     /// </summary>
     [LogId( "/camipro" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    public sealed class MainViewModel : CachedDataViewModel<NoParameter>
     {
         private readonly ICamiproService _camiproService;
         private readonly ISecureRequestHandler _requestHandler;
@@ -69,7 +69,8 @@ namespace PocketCampus.Camipro.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( ICamiproService camiproService, ISecureRequestHandler requestHandler )
+        public MainViewModel( IDataCache cache, ICamiproService camiproService, ISecureRequestHandler requestHandler )
+            : base( cache )
         {
             _camiproService = camiproService;
             _requestHandler = requestHandler;
@@ -119,22 +120,23 @@ namespace PocketCampus.Camipro.ViewModels
                     Session = new SessionId { CamiproCookie = session.Cookie }
                 };
 
-                var accountInfo = await _camiproService.GetAccountInfoAsync( _lastRequest, token );
-                var ebankingInfo = await _camiproService.GetEBankingInfoAsync( _lastRequest, token );
+                var info = await GetWithCacheAsync( async () => new CamiproInfo( await _camiproService.GetAccountInfoAsync( _lastRequest, token ), await _camiproService.GetEBankingInfoAsync( _lastRequest, token ) ) );
 
-                if ( accountInfo.Status == ResponseStatus.NetworkError || ebankingInfo.Status == ResponseStatus.NetworkError )
+                if ( info.AccountInfo.Status == ResponseStatus.NetworkError || info.EbankingInfo.Status == ResponseStatus.NetworkError )
                 {
+                    ClearCache();
                     throw new Exception( "Server error while getting the account or e-banking info." );
                 }
-                if ( accountInfo.Status == ResponseStatus.AuthenticationError || ebankingInfo.Status == ResponseStatus.AuthenticationError )
+                if ( info.AccountInfo.Status == ResponseStatus.AuthenticationError || info.EbankingInfo.Status == ResponseStatus.AuthenticationError )
                 {
+                    ClearCache();
                     return false;
                 }
 
                 if ( !token.IsCancellationRequested )
                 {
-                    AccountInfo = accountInfo;
-                    EbankingInfo = ebankingInfo;
+                    AccountInfo = info.AccountInfo;
+                    EbankingInfo = info.EbankingInfo;
                 }
 
                 return true;

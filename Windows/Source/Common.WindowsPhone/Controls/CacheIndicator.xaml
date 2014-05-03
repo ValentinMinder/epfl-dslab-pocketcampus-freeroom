@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="PocketCampus.Common.Controls.CacheIndicator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:my="clr-namespace:PocketCampus.Common">
+    <!-- Control resources -->
+    <UserControl.Resources>
+        <!-- Strings -->
+        <my:LocalizedStrings x:Key="Strings" />
+    </UserControl.Resources>
+    
+    <!-- Main border -->
+    <Border Background="#A00000"
+            Width="480"
+            Margin="-100,0"
+            Visibility="{Binding IsDataCached, Converter={StaticResource BoolToVisibility}}">
+        <TextBlock Text="{Binding Resources.UsingCachedData, Source={StaticResource Strings}}"
+                   TextWrapping="Wrap"
+                   Style="{StaticResource PhoneTextSmallStyle}"
+                   Margin="24,6"
+                   Foreground="White" />
+    </Border>
+</UserControl>

@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Runtime.Serialization;
 using ThriftSharp;
 
 namespace PocketCampus.Camipro.Models
@@ -32,6 +33,7 @@ namespace PocketCampus.Camipro.Models
         /// <remarks>
         /// Not in the Thrift interface.
         /// </remarks>
+        [IgnoreDataMember]
         public double ThreeMonthsAverage
         {
             get { return Math.Round( ThreeMonthsTotal / 3 ); }
@@ -86,6 +88,7 @@ namespace PocketCampus.Camipro.Models
         /// The status of the request that fetched the information.
         /// </summary>
         [ThriftField( 3, true, "iStatus" )]
+        [IgnoreDataMember]
         public ResponseStatus Status { get; set; }
     }
 }
