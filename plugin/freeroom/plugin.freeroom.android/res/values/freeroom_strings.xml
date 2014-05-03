@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+    <!-- \&#8230; is the replacement char for ... -->
     <string name="freeroom_plugin_title">FreeRoom</string>
     <string name="freeroom_courses_view_title">List of enrolled FreeRoom Courses</string>
     <string name="freeroom_events_view_title">Current FreeRoom Events</string>
@@ -56,7 +67,7 @@
     <string name="freeroom_home_error_no_results">Sorry: server replied with no results</string>
     <string name="freeroom_home_info_rooms">Rooms occupancies</string>
     <string name="freeroom_home_info_free_rooms">Free room occupancies</string>
-    <string name="freeroom_share_title">Share your location...</string>
+    <string name="freeroom_share_title">Share your location\&#8230;</string>
     <string name="freeroom_share_iam">I am</string>
     <string name="freeroom_share_iwillbe">I will be</string>
     <string name="freeroom_share_in_room">in room</string>
@@ -66,6 +77,12 @@
     <string name="freeroom_share_CopyClipBoard">Copy to clipboard</string>
     <string name="freeroom_share_copied_ClipBoard">Copied to clipboard</string>
     <string name="freeroom_share_copied_ClipBoard_error">Error while copying to clipboard</string>
+    <string name="freeroom_popup_share_title">Share your location\&#8230;</string>
+    <string name="freeroom_popup_share_textedit_hint">Type an optional message ONLY for your friends \&#8230;</string>
+    <string name="freeroom_popup_share_checkbox_msg">share what you\&apos;re doing with server</string>
+    <string name="freeroom_popup_share_button_friends">share with friends</string>
+    <string name="freeroom_popup_share_button_server">share only with server</string>
+    <string name="freeroom_popup_share_disclaimer">Sharing with server is done in both cases. It\&apos;s done to know approximately how many people are in the room, to display better results for the next users.</string>
     <string name="freeroom_popup_info_type">Type</string>
     <string name="freeroom_popup_info_capacity">Capacity</string>
     <string name="freeroom_popup_info_places">places</string>

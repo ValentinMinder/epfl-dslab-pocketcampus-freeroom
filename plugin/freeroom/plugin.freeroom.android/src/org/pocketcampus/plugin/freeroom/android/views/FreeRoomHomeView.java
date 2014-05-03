@@ -54,14 +54,18 @@ import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.TimePicker;
@@ -165,6 +169,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * popup.
 	 */
 	private PopupWindow popupAddRoomWindow;
+
+	/**
+	 * View that holds the SHARE popup content, defined in xml in layout folder.
+	 */
+	private View popupShareView;
+	/**
+	 * Window that holds the SHARE popup. Note: popup window can be closed by:
+	 * the closing button (red cross), back button, or clicking outside the
+	 * popup.
+	 */
+	private PopupWindow popupShareWindow;
 
 	/**
 	 * Action to perform a customized search.
@@ -293,6 +308,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initPopupSearch();
 		initPopupFavorites();
 		initPopupAddRoom();
+		initPopupShare();
 	}
 
 	/**
@@ -430,6 +446,92 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		ll.addView(mAutoCompleteSuggestionInputBarElement);
 		createSuggestionsList();
 
+	}
+
+	private void initPopupShare() {
+		// construct the popup
+		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+				.getSystemService(LAYOUT_INFLATER_SERVICE);
+		popupShareView = layoutInflater.inflate(
+				R.layout.freeroom_layout_popup_share, null);
+		popupShareWindow = new PopupWindow(popupShareView,
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+
+		// allows outside clicks to close the popup
+		popupShareWindow.setOutsideTouchable(true);
+		popupShareWindow.setBackgroundDrawable(new BitmapDrawable());
+
+	}
+
+	public void showPopupShare(final FRPeriod mPeriod, final FRRoom mRoom) {
+		final TextView tv = (TextView) popupShareView
+				.findViewById(R.id.freeroom_layout_popup_share_textBasic);
+		tv.setText(wantToShare(mPeriod, mRoom, ""));
+
+		final EditText ed = (EditText) popupShareView
+				.findViewById(R.id.freeroom_layout_popup_share_text_edit);
+		ed.setOnEditorActionListener(new OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+				tv.setText(wantToShare(mPeriod, mRoom, ed.getText().toString()));
+				return true;
+			}
+		});
+
+		Button shareWithServer = (Button) popupShareView
+				.findViewById(R.id.freeroom_layout_popup_share_server);
+		shareWithServer.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				share(mPeriod, mRoom, false, ed.getText().toString());
+				popupShareWindow.dismiss();
+			}
+		});
+
+		Button shareWithFriends = (Button) popupShareView
+				.findViewById(R.id.freeroom_layout_popup_share_friends);
+		shareWithFriends.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				share(mPeriod, mRoom, true, ed.getText().toString());
+				popupShareWindow.dismiss();
+			}
+		});
+
+		Spinner spinner = (Spinner) popupShareView
+				.findViewById(R.id.freeroom_layout_popup_share_spinner_course);
+		// Create an ArrayAdapter using the string array and a default spinner
+		// layout
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+				this, R.array.planets_array,
+				android.R.layout.simple_spinner_item);
+		// Specify the layout to use when the list of choices appears
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		spinner.setAdapter(adapter);
+
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO do something with that
+				System.out.println("selected" + arg0.getItemAtPosition(arg2));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO find out how is this relevant
+				System.out.println("nothing selected!");
+			}
+
+		});
+
+		// TODO: make it in center of screen!
+		popupShareWindow.showAsDropDown(mTextView, 0, 0);
 	}
 
 	/**
@@ -673,7 +775,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			shareImageView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					homeView.share(
+					homeView.showPopupShare(
 							getMaxPeriodFromList(mOccupancy.getOccupancy()),
 							mOccupancy.getRoom());
 				}
@@ -762,22 +864,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		freeButton.setEnabled(enabled);
 	}
 
-	/**
-	 * Construct the Intent to share the location and time with friends. The
-	 * same information is shared with the server at the same time
-	 * 
-	 * @param mPeriod
-	 *            time period
-	 * @param mRoom
-	 *            location
-	 */
-	public void share(FRPeriod mPeriod, FRRoom mRoom) {
-		WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
-		ImWorkingRequest request = new ImWorkingRequest(work,
-				mModel.getAnonymID());
-		mController.prepareImWorking(request);
-		mController.ImWorking(this);
-
+	public String wantToShare(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
 		// TODO: in case of "now" request (nextPeriodValid is now), just put
 		// "i am, now, " instead of
 		// time
@@ -794,10 +881,38 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// in case of specified in request, we should use the personalized
 		// period
 		textBuilder.append(generateFullTimeSummary(mPeriod) + ". ");
-		textBuilder.append(getString(R.string.freeroom_share_please_come));
-		textBuilder.append(getString(R.string.freeroom_share_ref_pocket));
+		if (toShare.length() == 0) {
+			textBuilder.append(getString(R.string.freeroom_share_please_come));
+		} else {
+			textBuilder.append(toShare);
+		}
+		return textBuilder.toString();
+	}
 
-		String sharing = textBuilder.toString();
+	private void share(FRPeriod mPeriod, FRRoom mRoom, boolean withFriends,
+			String toShare) {
+		WorkingOccupancy work = new WorkingOccupancy(mPeriod, mRoom);
+		ImWorkingRequest request = new ImWorkingRequest(work,
+				mModel.getAnonymID());
+		mController.prepareImWorking(request);
+		mController.ImWorking(this);
+		if (withFriends) {
+			shareWithFriends(mPeriod, mRoom, toShare);
+		}
+	}
+
+	/**
+	 * Construct the Intent to share the location and time with friends. The
+	 * same information is shared with the server at the same time
+	 * 
+	 * @param mPeriod
+	 *            time period
+	 * @param mRoom
+	 *            location
+	 */
+	private void shareWithFriends(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
+		String sharing = wantToShare(mPeriod, mRoom, toShare);
+		sharing += " \n" + getString(R.string.freeroom_share_ref_pocket);
 		Log.v(this.getClass().getName() + "-share", "sharing:" + sharing);
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
