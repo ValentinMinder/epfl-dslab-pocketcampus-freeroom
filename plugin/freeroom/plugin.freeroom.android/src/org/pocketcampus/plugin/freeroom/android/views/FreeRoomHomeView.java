@@ -50,7 +50,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -294,40 +293,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		initPopupSearch();
 		initPopupFavorites();
 		initPopupAddRoom();
-		initHB();
-	}
-
-	private boolean flag = true;
-
-	private void initHB() {
-		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-				.getSystemService(LAYOUT_INFLATER_SERVICE);
-		View popupHB = layoutInflater.inflate(
-				R.layout.freeroom_layout_popup_hb, null);
-		final PopupWindow popupHBWindow = new PopupWindow(popupHB,
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, true);
-
-		// allows outside clicks to close the popup
-		popupHBWindow.setOutsideTouchable(true);
-		popupHBWindow.setBackgroundDrawable(new BitmapDrawable());
-		if (flag) {
-			popupHBWindow.showAsDropDown(mTextView, 0, 50);
-		}
-
-		ImageView iv = (ImageView) popupHB.findViewById(R.id.hb);
-		iv.setOnLongClickListener(new OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View v) {
-				setFlag();
-				popupHBWindow.dismiss();
-				return false;
-			}
-		});
-	}
-
-	private void setFlag() {
-		flag = false;
 	}
 
 	/**
