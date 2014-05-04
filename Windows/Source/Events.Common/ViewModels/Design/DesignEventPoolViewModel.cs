@@ -17,6 +17,8 @@ namespace PocketCampus.Events.ViewModels.Design
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
 
+        public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
+
         public EmailSendingStatus EmailStatus { get { return EmailSendingStatus.Success; } }
 
         public EventPool Pool

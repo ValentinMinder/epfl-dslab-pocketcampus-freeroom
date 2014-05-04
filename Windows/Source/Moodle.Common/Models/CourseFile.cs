@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System.Runtime.Serialization;
 using ThriftSharp;
 
 namespace PocketCampus.Moodle.Models
@@ -31,6 +32,7 @@ namespace PocketCampus.Moodle.Models
         /// <remarks>
         /// Not in the Thrift interface.
         /// </remarks>
+        [IgnoreDataMember]
         public Course Course { get; set; }
     }
 }

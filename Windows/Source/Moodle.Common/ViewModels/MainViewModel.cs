@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
@@ -19,7 +20,7 @@ namespace PocketCampus.Moodle.ViewModels
     /// The main (and only) ViewModel.
     /// </summary>
     [LogId( "/moodle" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    public sealed class MainViewModel : CachedDataViewModel<NoParameter, CourseListResponse>
     {
         private const char UrlParametersPrefix = '?';
 
@@ -71,8 +72,9 @@ namespace PocketCampus.Moodle.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( ISecureRequestHandler requestHandler, IMoodleService moodleService,
+        public MainViewModel( IDataCache cache, ISecureRequestHandler requestHandler, IMoodleService moodleService,
                               IMoodleDownloader downloader, IFileStorage storage )
+            : base( cache )
         {
             _requestHandler = requestHandler;
             _moodleService = moodleService;
@@ -80,48 +82,15 @@ namespace PocketCampus.Moodle.ViewModels
             _storage = storage;
         }
 
-        /// <summary>
-        /// Downloads (if it hasn't already been downloaded) and opens the specified file.
-        /// </summary>
-        private async Task DownloadAndOpenAsync( CourseFile file )
-        {
-            if ( DownloadState == DownloadState.Downloading )
-            {
-                return;
-            }
 
-            if ( !( await _storage.IsStoredAsync( file ) ) )
-            {
-                DownloadState = DownloadState.Downloading;
-
-                try
-                {
-                    var bytes = await _downloader.DownloadAsync( file.Url );
-                    await _storage.StoreFileAsync( file, bytes );
-                    DownloadState = DownloadState.None;
-                }
-                catch
-                {
-                    DownloadState = DownloadState.Error;
-                }
-            }
-            if ( DownloadState == DownloadState.None )
-            {
-                await _storage.OpenFileAsync( file );
-            }
-        }
-
-        /// <summary>
-        /// Refreshes the data.
-        /// </summary>
-        protected override async Task RefreshAsync( CancellationToken token, bool force )
+        protected override CachedTask<CourseListResponse> GetData( bool force, CancellationToken token )
         {
             if ( !force )
             {
-                return;
+                return CachedTask.NoNewData<CourseListResponse>();
             }
 
-            var courses = await _requestHandler.ExecuteAsync( async () =>
+            return CachedTask.Create( () => _requestHandler.ExecuteAsync( async () =>
             {
                 var coursesResponse = await _moodleService.GetCoursesAsync( "", token );
 
@@ -164,15 +133,56 @@ namespace PocketCampus.Moodle.ViewModels
                     }
                 }
 
-                return coursesResponse.Courses;
-            } );
+                return coursesResponse;
+            } ) );
+        }
 
-
-            if ( !token.IsCancellationRequested && courses != null )
+        protected override bool HandleData( CourseListResponse data, CancellationToken token )
+        {
+            if ( data == null )
             {
-                Courses = courses.Where( c => c.Sections.Length > 0 ).ToArray();
+                return false;
+            }
+
+            if ( !token.IsCancellationRequested )
+            {
+                Courses = data.Courses.Where( c => c.Sections.Length > 0 ).ToArray();
                 AnyCourses = Courses.Length > 0;
             }
+
+            return true;
         }
+
+        /// <summary>
+        /// Downloads (if it hasn't already been downloaded) and opens the specified file.
+        /// </summary>
+        private async Task DownloadAndOpenAsync( CourseFile file )
+        {
+            if ( DownloadState == DownloadState.Downloading )
+            {
+                return;
+            }
+
+            if ( !( await _storage.IsStoredAsync( file ) ) )
+            {
+                DownloadState = DownloadState.Downloading;
+
+                try
+                {
+                    var bytes = await _downloader.DownloadAsync( file.Url );
+                    await _storage.StoreFileAsync( file, bytes );
+                    DownloadState = DownloadState.None;
+                }
+                catch
+                {
+                    DownloadState = DownloadState.Error;
+                }
+            }
+            if ( DownloadState == DownloadState.None )
+            {
+                await _storage.OpenFileAsync( file );
+            }
+        }
+
     }
 }

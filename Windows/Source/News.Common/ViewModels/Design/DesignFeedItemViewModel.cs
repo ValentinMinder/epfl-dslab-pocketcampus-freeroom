@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using PocketCampus.Common;
 using PocketCampus.News.Models;
 
 // Design data for FeedItemViewModel
@@ -14,6 +15,8 @@ namespace PocketCampus.News.ViewModels.Design
         public bool IsLoading { get { return false; } }
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
+
+        public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
 
         public FeedItemContent ItemContent
         {

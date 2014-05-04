@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
+using PocketCampus.Common;
 using PocketCampus.Satellite.Models;
 
 // Design data for MainViewModel
@@ -15,6 +16,8 @@ namespace PocketCampus.Satellite.ViewModels.Design
         public bool IsLoading { get { return false; } }
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
+
+        public CacheStatus CacheStatus { get { return CacheStatus.Used; } }
 
         public IDictionary<BeerContainer, BeerMenuPart> BeerMenu
         {

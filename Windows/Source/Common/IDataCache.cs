@@ -15,7 +15,7 @@ namespace PocketCampus.Common
         /// <param name="id">The ID.</param>
         /// <param name="value">The value, if any.</param>
         /// <returns>A value indicating whether a value was found.</returns>
-        bool TryGet<T>( Type owner, int id, out T value );
+        bool TryGet<T>( Type owner, long id, out T value );
 
         /// <summary>
         /// Sets the specified value for the specified owner type, with the specified ID.
@@ -24,12 +24,6 @@ namespace PocketCampus.Common
         /// <param name="id">The ID.</param>
         /// <param name="expirationDate">The expiration date.</param>
         /// <param name="value">The value.</param>
-        void Set( Type owner, int id, DateTime expirationDate, object value );
-
-        /// <summary>
-        /// Removes all values stored by the specified owner type.
-        /// </summary>
-        /// <param name="owner">The owner type.</param>
-        void Remove( Type owner );
+        void Set( Type owner, long id, DateTime expirationDate, object value );
     }
 }

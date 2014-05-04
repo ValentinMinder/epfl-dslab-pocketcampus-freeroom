@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using PocketCampus.Common;
 using PocketCampus.Food.Models;
 
 // Design data for MainViewModel
@@ -17,7 +18,7 @@ namespace PocketCampus.Food.ViewModels.Design
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
 
-        public bool IsDataStale { get { return false; } }
+        public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
 
         public Restaurant[] Menu
         {

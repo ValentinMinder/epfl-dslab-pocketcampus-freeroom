@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
+using PocketCampus.Common;
 using PocketCampus.Satellite.Models;
 using PocketCampus.Satellite.Services;
 using ThinMvvm;
@@ -17,7 +17,7 @@ namespace PocketCampus.Satellite.ViewModels
     /// The main (and only) ViewModel.
     /// </summary>
     [LogId( "/satellite" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    public sealed class MainViewModel : CachedDataViewModel<NoParameter, BeersResponse>
     {
         private readonly ISatelliteService _beerService;
 
@@ -36,30 +36,35 @@ namespace PocketCampus.Satellite.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( ISatelliteService beerService )
+        public MainViewModel( IDataCache cache, ISatelliteService beerService )
+            : base( cache )
         {
             _beerService = beerService;
         }
 
 
-        /// <summary>
-        /// Updates the data.
-        /// </summary>
-        protected override async Task RefreshAsync( CancellationToken token, bool force )
+        protected override CachedTask<BeersResponse> GetData( bool force, CancellationToken token )
         {
             if ( force )
             {
-                var beersResponse = await _beerService.GetBeersAsync( token );
-                if ( beersResponse.Status != BeerMenuStatus.Success )
-                {
-                    throw new Exception( "An error occurred on the Satellite server-side." );
-                }
-
-                if ( !token.IsCancellationRequested )
-                {
-                    BeerMenu = beersResponse.BeerMenu;
-                }
+                return CachedTask.Create( () => _beerService.GetBeersAsync( token ) );
             }
+            return CachedTask.NoNewData<BeersResponse>();
+        }
+
+        protected override bool HandleData( BeersResponse data, CancellationToken token )
+        {
+            if ( data.Status != BeerMenuStatus.Success )
+            {
+                throw new Exception( "An error occurred on the Satellite server-side." );
+            }
+
+            if ( !token.IsCancellationRequested )
+            {
+                BeerMenu = data.BeerMenu;
+            }
+
+            return true;
         }
     }
 }

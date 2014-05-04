@@ -184,7 +184,7 @@
                     </Grid.RowDefinitions>
 
                     <!-- Stale data indicator -->
-                    <comControls:StaleDataIndicator />
+                    <comControls:StaleDataIndicator Margin="0,-11,0,6" />
 
                     <!-- Payment type -->
                     <TextBlock Grid.Row="1"

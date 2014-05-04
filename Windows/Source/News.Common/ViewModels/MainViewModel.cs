@@ -5,7 +5,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks;
+using PocketCampus.Common;
 using PocketCampus.News.Models;
 using PocketCampus.News.Services;
 using ThinMvvm;
@@ -17,7 +17,7 @@ namespace PocketCampus.News.ViewModels
     /// The main ViewModel.
     /// </summary>
     [LogId( "/news" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    public sealed class MainViewModel : CachedDataViewModel<NoParameter, FeedsResponse>
     {
         private readonly INewsService _feedsService;
         private readonly INavigationService _navigationService;
@@ -46,37 +46,43 @@ namespace PocketCampus.News.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( INewsService feedsService, INavigationService navigationService )
+        public MainViewModel( IDataCache cache, INewsService feedsService, INavigationService navigationService )
+            : base( cache )
         {
             _feedsService = feedsService;
             _navigationService = navigationService;
         }
 
 
-        /// <summary>
-        /// Refreshes the list of feeds.
-        /// </summary>
-        protected override async Task RefreshAsync( CancellationToken token, bool force )
+        protected override CachedTask<FeedsResponse> GetData( bool force, CancellationToken token )
         {
-            if ( force )
+            if ( !force )
             {
-                var request = new FeedsRequest
-                {
-                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                    IncludeGeneralFeed = true
-                };
-                var response = await _feedsService.GetFeedsAsync( request, token );
-
-                if ( response.Status != ResponseStatus.Success )
-                {
-                    throw new Exception( "A server error occurred while fetching news feeds." );
-                }
-
-                if ( !token.IsCancellationRequested )
-                {
-                    Feeds = response.Feeds;
-                }
+                return CachedTask.NoNewData<FeedsResponse>();
             }
+
+            var request = new FeedsRequest
+            {
+                Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                IncludeGeneralFeed = true
+            };
+
+            return CachedTask.Create( () => _feedsService.GetFeedsAsync( request, token ) );
+        }
+
+        protected override bool HandleData( FeedsResponse data, CancellationToken token )
+        {
+            if ( data.Status != ResponseStatus.Success )
+            {
+                throw new Exception( "A server error occurred while fetching news feeds." );
+            }
+
+            if ( !token.IsCancellationRequested )
+            {
+                Feeds = data.Feeds;
+            }
+
+            return true;
         }
     }
 }

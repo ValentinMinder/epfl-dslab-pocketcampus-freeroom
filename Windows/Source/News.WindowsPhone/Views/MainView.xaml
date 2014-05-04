@@ -70,9 +70,21 @@
 
         <!-- Feed pivot item template -->
         <DataTemplate x:Key="FeedTemplate">
-            <ItemsControl ItemsSource="{Binding Items}"
-                          ItemTemplate="{StaticResource FeedItemTemplate}"
-                          Style="{StaticResource ScrollingItemsControlStyle}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <!-- Stale data indicator (put here because it needs to be inside the Pivot) -->
+                <comControls:StaleDataIndicator DataContext="{Binding DataContext, ElementName=LayoutRoot}"
+                                                Margin="0,-15,0,0" />
+                
+                <ItemsControl Grid.Row="1"
+                              ItemsSource="{Binding Items}"
+                              ItemTemplate="{StaticResource FeedItemTemplate}"
+                              Style="{StaticResource ScrollingItemsControlStyle}" />
+            </Grid>
         </DataTemplate>
 
         <!-- Feed pivot header template -->

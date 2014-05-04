@@ -31,6 +31,7 @@ namespace PocketCampus.Common.Controls
                 if ( DataContext.GetType().GetProperty( "CacheStatus" ) != null )
                 {
                     ( (INotifyPropertyChanged) DataContext ).PropertyChanged += DataContext_PropertyChanged;
+                    SwitchState();
                 }
             };
         }
@@ -39,24 +40,29 @@ namespace PocketCampus.Common.Controls
         {
             if ( e.PropertyName == "CacheStatus" )
             {
-                switch ( (CacheStatus) ( (dynamic) DataContext ).CacheStatus )
-                {
-                    case CacheStatus.NoCache:
-                    case CacheStatus.OptedOut:
-                    case CacheStatus.Used:
-                    case CacheStatus.Unused:
-                        RemoveLoadingTray();
-                        break;
+                SwitchState();
+            }
+        }
 
-                    case CacheStatus.Loading:
-                        Visibility = Visibility.Visible;
-                        break;
+        private void SwitchState()
+        {
+            switch ( (CacheStatus) ( (dynamic) DataContext ).CacheStatus )
+            {
+                case CacheStatus.NoCache:
+                case CacheStatus.OptedOut:
+                case CacheStatus.Used:
+                case CacheStatus.Unused:
+                    RemoveLoadingTray();
+                    break;
 
-                    case CacheStatus.UsedTemporarily:
-                        Visibility = Visibility.Collapsed;
-                        SetLoadingTray();
-                        break;
-                }
+                case CacheStatus.Loading:
+                    Visibility = Visibility.Visible;
+                    break;
+
+                case CacheStatus.UsedTemporarily:
+                    Visibility = Visibility.Collapsed;
+                    SetLoadingTray();
+                    break;
             }
         }
 

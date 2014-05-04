@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.IsAcademia.Models;
 using PocketCampus.IsAcademia.Services;
@@ -21,8 +22,9 @@ namespace PocketCampus.IsAcademia.ViewModels
     /// The main (and only) ViewModel.
     /// </summary>
     [LogId( "/isacademia" )]
-    public sealed class MainViewModel : DataViewModel<NoParameter>
+    public sealed class MainViewModel : CachedDataViewModel<NoParameter, ScheduleResponse>
     {
+        private const int DaysInWeek = 7;
         private const int MinimumDaysInWeek = 5;
 
         private readonly IIsAcademiaService _isaService;
@@ -62,7 +64,8 @@ namespace PocketCampus.IsAcademia.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IIsAcademiaService isaService, ISecureRequestHandler requestHandler )
+        public MainViewModel( IDataCache cache, IIsAcademiaService isaService, ISecureRequestHandler requestHandler )
+            : base( cache )
         {
             _isaService = isaService;
             _requestHandler = requestHandler;
@@ -79,47 +82,52 @@ namespace PocketCampus.IsAcademia.ViewModels
             await TryRefreshAsync( true );
         }
 
-        /// <summary>
-        /// Fetches the periods and transforms them to a binding-friendly representation.
-        /// </summary>
-        protected override async Task RefreshAsync( CancellationToken token, bool force )
+        protected override CachedTask<ScheduleResponse> GetData( bool force, CancellationToken token )
         {
             if ( !force )
             {
-                return;
+                return CachedTask.NoNewData<ScheduleResponse>();
             }
 
-            var days = await _requestHandler.ExecuteAsync( async () =>
+            Func<Task<ScheduleResponse>> getter = () => _requestHandler.ExecuteAsync( () =>
             {
                 var request = new ScheduleRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                     WeekStart = WeekDate
                 };
-                var response = await _isaService.GetScheduleAsync( request, token );
-                if ( response.Status == ResponseStatus.AuthenticationError )
-                {
-                    _requestHandler.Authenticate<MainViewModel>();
-                    return null;
-                }
-                if ( response.Status != ResponseStatus.Success )
-                {
-                    throw new Exception( "An error occurred on the server while fetching the schedule." );
-                }
-
-                return response.Days;
+                return _isaService.GetScheduleAsync( request, token );
             } );
 
-            if ( days != null && !token.IsCancellationRequested )
+            if ( DateTime.Now >= WeekDate && ( DateTime.Now - WeekDate ).TotalDays < DaysInWeek )
+            {
+                return CachedTask.Create( getter, expirationDate: WeekDate.AddDays( DaysInWeek ) );
+            }
+            return CachedTask.DoNotCache( getter );
+        }
+
+        protected override bool HandleData( ScheduleResponse data, CancellationToken token )
+        {
+            if ( data.Status == ResponseStatus.AuthenticationError )
+            {
+                _requestHandler.Authenticate<MainViewModel>();
+                return false;
+            }
+            if ( data.Status != ResponseStatus.Success )
+            {
+                throw new Exception( "An error occurred on the server while fetching the schedule." );
+            }
+
+            if ( !token.IsCancellationRequested )
             {
                 // Now for the fun part!
                 // The days group their periods by UTC date
                 // but since we're in local date, some "days" may hold periods outside of their UTC date
                 // so we have to disassemble them and re-assemble new days
-                days = days.SelectMany( d => ForceSameStartAndEndDays( d.Periods ) )
-                           .GroupBy( p => p.Start.Date )
-                           .Select( g => new StudyDay { Day = g.Key, Periods = g.ToArray() } )
-                           .ToArray();
+                var days = data.Days.SelectMany( d => ForceSameStartAndEndDays( d.Periods ) )
+                                    .GroupBy( p => p.Start.Date )
+                                    .Select( g => new StudyDay { Day = g.Key, Periods = g.ToArray() } )
+                                    .ToArray();
                 var missingDays = Enumerable.Range( 0, MinimumDaysInWeek )
                                             .Select( n => WeekDate.AddDays( n ) )
                                             .Where( d => days.All( d2 => d.Date != d2.Day.Date ) )
@@ -128,10 +136,12 @@ namespace PocketCampus.IsAcademia.ViewModels
                            .OrderBy( d => d.Day )
                            .ToArray();
             }
+
+            return true;
         }
 
         /// <summary>
-        /// Gets the last specified day of week before or at the specified date.
+        /// Gets the start of the week the specified date is in.
         /// </summary>
         private static DateTime GetWeekStart( DateTime date )
         {
@@ -161,7 +171,7 @@ namespace PocketCampus.IsAcademia.ViewModels
                 {
                     var earlyPeriod = period.Clone();
                     var latePeriod = period.Clone();
-                    latePeriod.Start = earlyPeriod.End = period.End.Date;
+                    earlyPeriod.End = latePeriod.Start = period.End.Date;
                     yield return earlyPeriod;
                     yield return latePeriod;
                 }

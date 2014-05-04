@@ -98,12 +98,24 @@
 
         <!-- Course template -->
         <DataTemplate x:Key="CourseTemplate">
-            <phone:LongListSelector ItemsSource="{Binding Sections, Converter={StaticResource SectionsToGroups}}"
-                                    ItemTemplate="{StaticResource FileTemplate}"
-                                    IsGroupingEnabled="True"
-                                    GroupHeaderTemplate="{StaticResource SectionHeaderTemplate}"
-                                    GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
-                                    JumpListStyle="{StaticResource CourseJumpListStyle}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <!-- Stale data indicator (put here because it has to be inside the pivot) -->
+                <comControls:StaleDataIndicator DataContext="{Binding DataContext, ElementName=LayoutRoot}"
+                                                Margin="0,-15,0,0" />
+                
+                <phone:LongListSelector Grid.Row="1"
+                                        ItemsSource="{Binding Sections, Converter={StaticResource SectionsToGroups}}"
+                                        ItemTemplate="{StaticResource FileTemplate}"
+                                        IsGroupingEnabled="True"
+                                        GroupHeaderTemplate="{StaticResource SectionHeaderTemplate}"
+                                        GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
+                                        JumpListStyle="{StaticResource CourseJumpListStyle}" />
+            </Grid>
         </DataTemplate>
     </comControls:BasePage.Resources>
 
@@ -115,15 +127,14 @@
     </shell:SystemTray.ProgressIndicator>
 
     <!-- Main grid -->
-    <Grid>
+    <Grid x:Name="LayoutRoot">
         <!-- Page header & title background -->
         <Rectangle Fill="{StaticResource AppHeaderBackgroundBrush}"
                    Height="110"
                    VerticalAlignment="Top" />
 
         <!-- Pivot containing courses -->
-        <phone:Pivot Grid.Row="1"
-                     ItemsSource="{Binding Courses}"
+        <phone:Pivot ItemsSource="{Binding Courses}"
                      Title="{Binding Resources.MainViewTitle, Source={StaticResource Strings}}"
                      HeaderTemplate="{StaticResource CoursePivotHeaderTemplate}"
                      ItemTemplate="{StaticResource CourseTemplate}"

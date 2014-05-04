@@ -127,6 +127,7 @@
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -135,9 +136,12 @@
             <TextBlock Text="{Binding Resources.PagesHeader, Source={StaticResource Strings}}"
                        Style="{StaticResource AppTextHeaderStyle}" />
         </Border>
+        
+        <!-- Stale data indicator -->
+        <comControls:StaleDataIndicator Grid.Row="1" />
 
         <!-- Items -->
-        <phone:LongListSelector Grid.Row="1"
+        <phone:LongListSelector Grid.Row="2"
                                 ItemsSource="{Binding ItemGroups}"
                                 ItemTemplate="{StaticResource EventItemTemplate}"
                                 IsGroupingEnabled="True"
@@ -147,12 +151,13 @@
                                 Margin="0,0,-13,0" />
         
         <!-- "No items" text -->
-        <TextBlock Grid.Row="1"
+        <TextBlock Grid.Row="2"
                    Text="{Binding Pool.NoEventsFallbackText}"
                    Style="{StaticResource AppTextCenterStyle}"
                    Visibility="{Binding AnyItems, Converter={StaticResource BoolToOppositeVisibility}}" />
 
         <!-- Loading & error -->
-        <comControls:LoadingAndError Grid.Row="1" />
+        <comControls:LoadingAndError Grid.RowSpan="2"
+                                     Grid.Row="1" />
     </Grid>
 </comControls:BasePage>

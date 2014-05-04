@@ -61,7 +61,7 @@ namespace PocketCampus.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while loading data. 
+        ///   Looks up a localized string similar to An error occurred while processing data. 
         ///Please try again later..
         /// </summary>
         public static string Error {
@@ -99,8 +99,8 @@ namespace PocketCampus.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while contacting the server. 
-        ///The displayed data was cached during an older request..
+        ///   Looks up a localized string similar to An error occurred while loading data. 
+        ///Displaying data from an older request..
         /// </summary>
         public static string UsingStaleData {
             get {

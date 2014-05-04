@@ -109,12 +109,24 @@
 
         <!-- Beer menu part-->
         <DataTemplate x:Key="BeerMenuPartTemplate">
-            <phone:LongListSelector ItemsSource="{Binding}"
-                                    ItemTemplate="{StaticResource BeerListItemTemplate}"
-                                    IsGroupingEnabled="True"
-                                    GroupHeaderTemplate="{StaticResource BeerGroupListHeaderTemplate}"
-                                    GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
-                                    JumpListStyle="{StaticResource BeerGroupJumpListStyle}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <!-- Stale data indicator (here because it needs to be inside the Pivot) -->
+                <comControls:StaleDataIndicator Margin="0,-15,0,0"
+                                                DataContext="{Binding DataContext, ElementName=LayoutRoot}" />
+
+                <phone:LongListSelector Grid.Row="1"
+                                        ItemsSource="{Binding}"
+                                        ItemTemplate="{StaticResource BeerListItemTemplate}"
+                                        IsGroupingEnabled="True"
+                                        GroupHeaderTemplate="{StaticResource BeerGroupListHeaderTemplate}"
+                                        GroupFooterTemplate="{StaticResource SpacerFooterTemplate}"
+                                        JumpListStyle="{StaticResource BeerGroupJumpListStyle}" />
+            </Grid>
         </DataTemplate>
 
         <!-- Header template for menu parts -->
@@ -124,7 +136,7 @@
     </comControls:BasePage.Resources>
 
     <!-- Main grid -->
-    <Grid>
+    <Grid x:Name="LayoutRoot">
         <!-- Pivot title & header background -->
         <Rectangle Fill="{StaticResource AppHeaderBackgroundBrush}"
                    Height="150"

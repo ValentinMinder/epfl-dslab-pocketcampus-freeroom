@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using PocketCampus.Common;
 using PocketCampus.Moodle.Models;
 
 // Design data for MainViewModel
@@ -14,6 +15,8 @@ namespace PocketCampus.Moodle.ViewModels.Design
         public bool IsLoading { get { return false; } }
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
+
+        public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
 
         public bool AnyCourses { get { return true; } }
 

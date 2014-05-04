@@ -133,7 +133,7 @@ Vérifiez votre connexion à Internet.</value>
   </data>
   <data name="UsingStaleData" xml:space="preserve">
     <value>Erreur de connexion au serveur.
-Ces données viennent d'une requête antérieure.</value>
+Ces données proviennent d'une requête antérieure.</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>oui</value>

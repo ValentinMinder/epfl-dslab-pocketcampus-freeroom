@@ -27,6 +27,8 @@ namespace PocketCampus.Common
             _settings = IsolatedStorageSettings.ApplicationSettings;
             _metadata = LoadMetadata( _settings );
             _data = LoadData( _metadata, _settings );
+
+            Cleanup();
         }
 
 
@@ -38,7 +40,7 @@ namespace PocketCampus.Common
         /// <param name="id">The ID.</param>
         /// <param name="value">The value, if any.</param>
         /// <returns>A value indicating whether a value was found.</returns>
-        public bool TryGet<T>( Type owner, int id, out T value )
+        public bool TryGet<T>( Type owner, long id, out T value )
         {
             string key = GetKey( owner.FullName, id );
             bool? upToDate = _metadata.IsUpToDate( owner.FullName, id );
@@ -64,7 +66,7 @@ namespace PocketCampus.Common
         /// <param name="id">The ID.</param>
         /// <param name="expirationDate">The expiration date.</param>
         /// <param name="value">The value.</param>
-        public void Set( Type owner, int id, DateTime expirationDate, object value )
+        public void Set( Type owner, long id, DateTime expirationDate, object value )
         {
             _data[GetKey( owner.FullName, id )] = value;
             _metadata.Add( owner.FullName, id, expirationDate );
@@ -73,16 +75,27 @@ namespace PocketCampus.Common
             SaveData( _data, _settings );
         }
 
+
         /// <summary>
-        /// Removes all values stored by the specified owner type.
+        /// Removes the values stored by the specified owner type, with the specified ID.
         /// </summary>
-        /// <param name="owner">The owner type.</param>
-        public void Remove( Type owner )
+        private void Remove( Type owner, long id )
         {
-            foreach ( int id in _metadata.GetIdsForKey( owner.FullName ) )
+            _data.Remove( GetKey( owner.FullName, id ) );
+            _metadata.Remove( owner.FullName, id );
+        }
+
+        /// <summary>
+        /// Cleans up the old values in the cache.
+        /// </summary>
+        private void Cleanup()
+        {
+            foreach ( var tup in _metadata.Cleanup() )
             {
-                _data.Remove( GetKey( owner.FullName, id ) );
+                _data.Remove( GetKey( tup.Item1, tup.Item2 ) );
             }
+            SaveData( _data, _settings );
+            SaveMetadata( _metadata, _settings );
         }
 
 
@@ -139,7 +152,7 @@ namespace PocketCampus.Common
         /// <summary>
         /// Gets the setting key associated with the specified key and ID.
         /// </summary>
-        private static string GetKey( string key, int id )
+        private static string GetKey( string key, long id )
         {
             return string.Format( DataKeyFormat, key, id );
         }
@@ -155,7 +168,7 @@ namespace PocketCampus.Common
             /// The serialized data.
             /// </summary>
             [DataMember]
-            public Dictionary<string, Dictionary<int, DateTime>> Data { get; set; }
+            public Dictionary<string, Dictionary<long, DateTime>> Data { get; set; }
 
 
             /// <summary>
@@ -163,17 +176,17 @@ namespace PocketCampus.Common
             /// </summary>
             public CacheMetadata()
             {
-                Data = new Dictionary<string, Dictionary<int, DateTime>>();
+                Data = new Dictionary<string, Dictionary<long, DateTime>>();
             }
 
             /// <summary>
             /// Adds the specified expiration date, associated with the specified key and ID, in the metadata.
             /// </summary>
-            public void Add( string key, int id, DateTime expirationDate )
+            public void Add( string key, long id, DateTime expirationDate )
             {
                 if ( !Data.ContainsKey( key ) )
                 {
-                    Data.Add( key, new Dictionary<int, DateTime>() );
+                    Data.Add( key, new Dictionary<long, DateTime>() );
                 }
                 Data[key][id] = expirationDate;
             }
@@ -181,7 +194,7 @@ namespace PocketCampus.Common
             /// <summary>
             /// Removes the specified key and ID from the metadata.
             /// </summary>
-            public void Remove( string key, int id )
+            public void Remove( string key, long id )
             {
                 if ( Data.ContainsKey( key ) )
                 {
@@ -194,23 +207,32 @@ namespace PocketCampus.Common
             }
 
             /// <summary>
-            /// Gets all IDs associated with the specified key.
-            /// </summary>
-            public IEnumerable<int> GetIdsForKey( string key )
-            {
-                return Data.ContainsKey( key ) ? Data[key].Keys : Enumerable.Empty<int>();
-            }
-
-            /// <summary>
             /// Gets a value indicating whether the data associated with the specified key and ID is up to date, or null if it's not present.
             /// </summary>
-            public bool? IsUpToDate( string key, int id )
+            public bool? IsUpToDate( string key, long id )
             {
                 if ( !Data.ContainsKey( key ) || !Data[key].ContainsKey( id ) )
                 {
                     return null;
                 }
                 return DateTime.Now <= Data[key][id];
+            }
+
+            /// <summary>
+            /// Removes and returns all entries whose expiration date is in the past.
+            /// </summary>
+            public IEnumerable<Tuple<string, long>> Cleanup()
+            {
+                var tooOld = Data.SelectMany( p => p.Value.Where( p2 => p2.Value < DateTime.Now )
+                                                          .Select( p2 => Tuple.Create( p.Key, p2.Key ) ) )
+                                 .ToArray();
+
+                foreach ( var tuple in tooOld )
+                {
+                    Remove( tuple.Item1, tuple.Item2 );
+                }
+
+                return tooOld;
             }
         }
     }

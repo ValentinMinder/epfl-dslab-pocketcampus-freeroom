@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using PocketCampus.Common;
 using PocketCampus.News.Models;
 
 // Design data for MainViewModel
@@ -15,6 +16,8 @@ namespace PocketCampus.News.ViewModels.Design
         public bool IsLoading { get { return false; } }
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
+
+        public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
 
         public Feed[] Feeds
         {

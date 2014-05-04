@@ -6,7 +6,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
+using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Services;
@@ -19,8 +19,10 @@ namespace PocketCampus.Events.ViewModels
     /// ViewModel for item details.
     /// </summary>
     [LogId( "/events/item" )]
-    public sealed class EventItemViewModel : DataViewModel<ViewEventItemRequest>
+    public sealed class EventItemViewModel : CachedDataViewModel<ViewEventItemRequest, EventItemResponse>
     {
+        private static readonly TimeSpan CacheDuration = TimeSpan.FromDays( 7 );
+
         private readonly INavigationService _navigationService;
         private readonly IBrowserService _browserService;
         private readonly IEventsService _eventsService;
@@ -100,9 +102,10 @@ namespace PocketCampus.Events.ViewModels
         /// <summary>
         /// Creates a new EventItemViewModel.
         /// </summary>
-        public EventItemViewModel( INavigationService navigationService, IBrowserService browserService,
+        public EventItemViewModel( IDataCache cache, INavigationService navigationService, IBrowserService browserService,
                                    IEventsService eventsService, IPluginSettings settings,
                                    ViewEventItemRequest request )
+            : base( cache )
         {
             _navigationService = navigationService;
             _browserService = browserService;
@@ -113,10 +116,7 @@ namespace PocketCampus.Events.ViewModels
         }
 
 
-        /// <summary>
-        /// Refreshes the data.
-        /// </summary>
-        protected override async Task RefreshAsync( CancellationToken token, bool force )
+        protected override CachedTask<EventItemResponse> GetData( bool force, CancellationToken token )
         {
             if ( force )
             {
@@ -127,21 +127,28 @@ namespace PocketCampus.Events.ViewModels
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
 
-                var response = await _eventsService.GetEventItemAsync( request, token );
-
-                if ( response.Status != EventsStatus.Success )
-                {
-                    throw new Exception( "An error occured while fetching an event item." );
-                }
-
-                _settings.EventCategories = response.EventCategories;
-                _settings.EventTags = response.EventTags;
-
-                var pools = response.ChildrenPools == null ? Enumerable.Empty<EventPool>() : response.ChildrenPools.Values;
-                Pools = pools.OrderBy( p => p.Id ).ToArray();
-                Item = response.Item;
-                IsFavorite = _settings.FavoriteItemIds.Contains( Item.Id );
+                return CachedTask.Create( () => _eventsService.GetEventItemAsync( request, token ), _itemId, DateTime.Now.Add( CacheDuration ) );
             }
+
+            return CachedTask.NoNewData<EventItemResponse>();
+        }
+
+        protected override bool HandleData( EventItemResponse data, CancellationToken token )
+        {
+            if ( data.Status != EventsStatus.Success )
+            {
+                throw new Exception( "An error occured while fetching an event item." );
+            }
+
+            _settings.EventCategories = data.EventCategories;
+            _settings.EventTags = data.EventTags;
+
+            var pools = data.ChildrenPools == null ? Enumerable.Empty<EventPool>() : data.ChildrenPools.Values;
+            Pools = pools.OrderBy( p => p.Id ).ToArray();
+            Item = data.Item;
+            IsFavorite = _settings.FavoriteItemIds.Contains( Item.Id );
+
+            return true;
         }
 
 

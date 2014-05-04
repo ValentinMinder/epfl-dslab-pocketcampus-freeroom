@@ -7,7 +7,7 @@ namespace PocketCampus.Common
     {
         private readonly Func<Task<T>> _getter;
 
-        public int? Id { get; private set; }
+        public long? Id { get; private set; }
 
         public DateTime? ExpirationDate { get; private set; }
 
@@ -16,7 +16,7 @@ namespace PocketCampus.Common
         public bool ShouldBeCached { get; private set; }
 
 
-        internal CachedTask( Func<Task<T>> getter, int? id, DateTime? expirationDate, bool hasNewData, bool shouldBeCached )
+        internal CachedTask( Func<Task<T>> getter, long? id, DateTime? expirationDate, bool hasNewData, bool shouldBeCached )
         {
             _getter = getter;
             Id = id;
@@ -34,7 +34,7 @@ namespace PocketCampus.Common
 
     public static class CachedTask
     {
-        public static CachedTask<T> Create<T>( Func<Task<T>> getter, int? id = null, DateTime? expirationDate = null )
+        public static CachedTask<T> Create<T>( Func<Task<T>> getter, long? id = null, DateTime? expirationDate = null )
         {
             return new CachedTask<T>( getter, id, expirationDate, true, true );
         }

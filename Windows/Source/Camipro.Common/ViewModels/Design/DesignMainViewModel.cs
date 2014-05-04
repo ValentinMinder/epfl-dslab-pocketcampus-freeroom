@@ -17,7 +17,7 @@ namespace PocketCampus.Camipro.ViewModels.Design
         public bool HasError { get { return false; } }
         public bool HasNetworkError { get { return false; } }
 
-        public bool IsDataStale { get { return false; } }
+        public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
 
         public AccountInfo AccountInfo
         {

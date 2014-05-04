@@ -20,8 +20,10 @@ namespace PocketCampus.Events.ViewModels
     /// ViewModel for pool details.
     /// </summary>
     [LogId( "/events/pool" )]
-    public sealed class EventPoolViewModel : DataViewModel<long>
+    public sealed class EventPoolViewModel : CachedDataViewModel<long, EventPoolResponse>
     {
+        private static readonly TimeSpan CacheDuration = TimeSpan.FromDays( 7 );
+
         private readonly INavigationService _navigationService;
         private readonly IEventsService _eventsService;
         private readonly IPluginSettings _settings;
@@ -138,9 +140,10 @@ namespace PocketCampus.Events.ViewModels
         /// <summary>
         /// Creates a new EventPoolViewModel.
         /// </summary>
-        public EventPoolViewModel( INavigationService navigationService, IEventsService eventsService,
+        public EventPoolViewModel( IDataCache cache, INavigationService navigationService, IEventsService eventsService,
                                    IPluginSettings settings, IEmailPrompt emailPrompt, ICodeScanner codeScanner,
                                    long poolId )
+            : base( cache )
         {
             _navigationService = navigationService;
             _eventsService = eventsService;
@@ -153,10 +156,7 @@ namespace PocketCampus.Events.ViewModels
         }
 
 
-        /// <summary>
-        /// Refreshes the data.
-        /// </summary>
-        protected override async Task RefreshAsync( CancellationToken token, bool force )
+        protected override CachedTask<EventPoolResponse> GetData( bool force, CancellationToken token )
         {
             if ( force
               || Pool == null
@@ -181,22 +181,27 @@ namespace PocketCampus.Events.ViewModels
                     FavoriteEventIds = _settings.FavoriteItemIds.ToArray(),
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
-                var response = await _eventsService.GetEventPoolAsync( request, token );
-
-                if ( response.Status != EventsStatus.Success )
-                {
-                    throw new Exception( "An error occurred while fetching the event pool." );
-                }
-
-                _settings.EventTags = response.EventTags;
-                _settings.EventCategories = response.EventCategories;
-
-                _previousSettings = Tuple.Create( _settings.SearchPeriod, _settings.SearchInPast );
-
-                Pool = response.Pool;
-                Pool.Items = response.ChildrenItems == null ? new EventItem[0] : response.ChildrenItems.Values.ToArray();
-                AnyItems = Pool.Items.Any();
+                return CachedTask.Create( () => _eventsService.GetEventPoolAsync( request, token ), _poolId, DateTime.Now.Add( CacheDuration ) );
             }
+            return CachedTask.NoNewData<EventPoolResponse>();
+        }
+
+        protected override bool HandleData( EventPoolResponse data, CancellationToken token )
+        {
+            if ( data.Status != EventsStatus.Success )
+            {
+                throw new Exception( "An error occurred while fetching the event pool." );
+            }
+
+            _settings.EventTags = data.EventTags;
+            _settings.EventCategories = data.EventCategories;
+
+            _previousSettings = Tuple.Create( _settings.SearchPeriod, _settings.SearchInPast );
+
+            Pool = data.Pool;
+            Pool.Items = data.ChildrenItems == null ? new EventItem[0] : data.ChildrenItems.Values.ToArray();
+            AnyItems = Pool.Items.Any();
+
 
             var groups = from item in Pool.Items
                          where item.CategoryId == null
@@ -217,6 +222,8 @@ namespace PocketCampus.Events.ViewModels
                          select new EventItemGroup( categName, itemGroup );
 
             ItemGroups = groups.ToArray();
+
+            return true;
         }
 
 

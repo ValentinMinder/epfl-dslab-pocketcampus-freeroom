@@ -49,6 +49,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -98,9 +99,11 @@
                    Visibility="{Binding Item.HidePictureThumbnail, Converter={StaticResource BoolToOppositeVisibility}}"/>
         </Grid>
 
+        <!-- Stale data indicator -->
+        <comControls:StaleDataIndicator Grid.Row="2" />
 
         <!-- Everything needs to scroll, sometimes some values are extremely long -->
-        <ScrollViewer Grid.Row="2">
+        <ScrollViewer Grid.Row="3">
             <StackPanel>
                 <!-- Information -->
                 <Grid Margin="12,0"

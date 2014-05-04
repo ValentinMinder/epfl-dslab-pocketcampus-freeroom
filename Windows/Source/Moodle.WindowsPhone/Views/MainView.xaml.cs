@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System.Windows.Controls;
+using System.Windows.Input;
 using PocketCampus.Common.Controls;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.ViewModels;
@@ -17,8 +18,7 @@ namespace PocketCampus.Moodle.Views
         }
 
         // see XAML for explanation
-        // DO NOT REMOVE THE NAMESPACE IN THE SECOND PARAMETER, it's System.Windows.Input, not Microsoft.Phone.Controls
-        private async void FileButton_Tap( object sender, System.Windows.Input.GestureEventArgs e )
+        private async void FileButton_Tap( object sender, GestureEventArgs e )
         {
             var param = (CourseFile) ( (Button) sender ).CommandParameter;
             var cmd = ( (MainViewModel) DataContext ).DownloadAndOpenCommand;
