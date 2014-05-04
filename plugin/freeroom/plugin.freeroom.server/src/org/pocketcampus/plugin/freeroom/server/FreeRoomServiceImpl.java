@@ -761,7 +761,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private HashMap<String, List<Occupancy>> getOccupancyOfSpecificRoom(
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
 			long tsEnd) {
-
+		
 		if (uidList.isEmpty()) {
 			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd);
 		}
@@ -997,8 +997,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		log(LOG_SIDE.SERVER, Level.INFO,
 				"Autocomplete of " + request.getConstraint());
 		AutoCompleteReply reply = new AutoCompleteReply(
-				HttpURLConnection.HTTP_CREATED, ""
-						+ HttpURLConnection.HTTP_CREATED);
+				HttpURLConnection.HTTP_OK, ""
+						+ HttpURLConnection.HTTP_OK);
+		reply.setListFRRoom(new ArrayList<FRRoom>());
 
 		String constraint = request.getConstraint();
 
