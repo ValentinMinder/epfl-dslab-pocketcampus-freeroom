@@ -25,7 +25,6 @@ namespace PocketCampus.Main.Services
         private readonly ITequilaAuthenticator _authenticator;
         private readonly IAuthenticationService _authenticationService;
 
-        private bool _isRetrying;
 
         /// <summary>
         /// Creates a new SecureRequestHandler.
@@ -42,10 +41,9 @@ namespace PocketCampus.Main.Services
 
         /// <summary>
         /// Asynchronously executes the specified request for the specified ViewModel type.
-        /// The request asynchronously returns a boolean indicating whether the authentication succeeded.
         /// </summary>
-        public async Task ExecuteAsync<TViewModel>( Func<Task<bool>> attempt )
-            where TViewModel : IViewModel<NoParameter>
+        public async Task<T> ExecuteAsync<T>( Func<Task<T>> attempt )
+            where T : class
         {
             string session = _mainSettings.Session;
 
@@ -74,49 +72,24 @@ namespace PocketCampus.Main.Services
                             }
                         }
                     }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
 
-            if ( session == null )
-            {
-                // Authenticate, and then go to this plugin if it succeeds
-                // but go back to whatever was the previous plugin rather than to this one if it doesn't
-                var authRequest = new AuthenticationRequest( true, () => _navigationService.NavigateTo<TViewModel>() );
-                _navigationService.PopBackStack();
-                _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
-                return;
-            }
-
-
-            if ( !( await attempt() ) )
-            {
-                if ( _isRetrying )
-                {
-                    throw new Exception( "An error occurred while authenticating with HTTP headers." );
-                }
-
-                _isRetrying = true;
-                _mainSettings.Session = null;
-
-                try
-                {
-                    await ExecuteAsync<TViewModel>( attempt );
-                }
-                finally
-                {
-                    _isRetrying = false;
-                }
-            }
+            return await attempt();
         }
 
         /// <summary>
         /// Asynchronously executes the specified request, with the specified authenticator, for the specified ViewModel type.
-        /// The request asynchronously returns a boolean indicating whether the authentication succeeded.
         /// </summary>
-        public async Task ExecuteAsync<TViewModel, TToken, TSession>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task<bool>> attempt )
+        public async Task<TResult> ExecuteAsync<TViewModel, TToken, TSession, TResult>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task<TResult>> attempt )
             where TViewModel : IViewModel<NoParameter>
             where TToken : IAuthenticationToken
             where TSession : class
+            where TResult : class
         {
             var session = LoadSession<TSession>( typeof( TViewModel ) );
 
@@ -140,34 +113,23 @@ namespace PocketCampus.Main.Services
                 }
                 else
                 {
-                    // Authenticate, and then go to this plugin if it succeeds
-                    // but go back to whatever was the previous plugin rather than to this one if it doesn't
-                    var authRequest = new AuthenticationRequest( true, () => _navigationService.NavigateTo<TViewModel>() );
-                    _navigationService.PopBackStack();
-                    _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
-                    return;
+                    return null;
                 }
             }
 
-            if ( !( await attempt( session ) ) )
-            {
-                if ( _isRetrying )
-                {
-                    throw new Exception( "An error occurred while performing two-step authentication." );
-                }
+            return await attempt( session );
+        }
 
-                _isRetrying = true;
-                SaveSession( typeof( TViewModel ), (TSession) null );
-
-                try
-                {
-                    await ExecuteAsync<TViewModel, TToken, TSession>( authenticator, attempt );
-                }
-                finally
-                {
-                    _isRetrying = false;
-                }
-            }
+        /// <summary>
+        /// Requests new credentials from the user.
+        /// If authentication is successful, comes back to a new instance of the ViewModel.
+        /// </summary>
+        public void Authenticate<TViewModel>()
+            where TViewModel : IViewModel<NoParameter>
+        {
+            var authRequest = new AuthenticationRequest( true, () => _navigationService.NavigateTo<TViewModel>() );
+            _navigationService.PopBackStack();
+            _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( authRequest );
         }
 
 

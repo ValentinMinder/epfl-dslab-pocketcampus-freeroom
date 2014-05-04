@@ -20,7 +20,7 @@ namespace PocketCampus.Food.ViewModels
     /// The main ViewModel.
     /// </summary>
     [LogId( "/food" )]
-    public sealed class MainViewModel : CachedDataViewModel<NoParameter>
+    public sealed class MainViewModel : CachedDataViewModel<NoParameter, FoodResponse>
     {
         // On startup, lunch is selected if the current hour is less than or equal to this one
         private const int LunchLimit = 18;
@@ -148,23 +148,45 @@ namespace PocketCampus.Food.ViewModels
             await TryRefreshAsync( true );
         }
 
-        /// <summary>
-        /// Asynchronously refreshes the data.
-        /// </summary>
-        protected override async Task RefreshAsync( CancellationToken token, bool force )
+        protected override CachedTask<FoodResponse> GetData( bool force, CancellationToken token )
         {
-            if ( force )
+            if ( !force )
             {
-                if ( MealDate.Date == DateTime.Now.Date )
+                return CachedTask.NoNewData<FoodResponse>();
+            }
+
+            var request = new FoodRequest
+            {
+                Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                MealTime = MealTime,
+                Date = MealDate
+            };
+
+            Func<Task<FoodResponse>> getter = () => _menuService.GetMenusAsync( request, token );
+
+            if ( MealDate.Date == DateTime.Now.Date )
+            {
+                return CachedTask.Create( getter, MealTime.GetHashCode(), DateTime.Now.Date.AddDays( 1 ) );
+            }
+            return CachedTask.DoNotCache( getter );
+        }
+
+        protected override bool HandleData( FoodResponse data, CancellationToken token )
+        {
+            if ( data.Status != FoodStatus.Success )
+            {
+                throw new Exception( "An error occurred while fetching the menu on the server." );
+            }
+
+            foreach ( var restaurant in data.Menu )
+            {
+                foreach ( var meal in restaurant.Meals )
                 {
-                    _fullMenu = await GetWithCacheAsync( () => GetMenuAsync( token ), MealTime.GetHashCode(), DateTime.Now.Date.AddDays( 1 ) );
-                }
-                else
-                {
-                    IsDataCached = false;
-                    _fullMenu = await GetMenuAsync( token );
+                    meal.Restaurant = restaurant;
                 }
             }
+
+            _fullMenu = data.Menu;
 
             // the simple solution, using Any() on Settings.DisplayedMealTypes, displays meals with more than one type
             // even if the user doesn't want the second type to appear
@@ -187,35 +209,8 @@ namespace PocketCampus.Food.ViewModels
                 AnyMeals = _fullMenu.Any();
                 AnyFilterResults = Menu.Any();
             }
-        }
 
-        /// <summary>
-        /// Asynchronously gets the menu from the server.
-        /// </summary>
-        private async Task<Restaurant[]> GetMenuAsync( CancellationToken token )
-        {
-            var request = new FoodRequest
-            {
-                Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                MealTime = MealTime,
-                Date = MealDate
-            };
-            var response = await _menuService.GetMenusAsync( request, token );
-
-            if ( response.Status != FoodStatus.Success )
-            {
-                throw new Exception( "An error occurred while fetching the menu on the server." );
-            }
-
-            foreach ( var restaurant in response.Menu )
-            {
-                foreach ( var meal in restaurant.Meals )
-                {
-                    meal.Restaurant = restaurant;
-                }
-            }
-
-            return response.Menu;
+            return true;
         }
 
 

@@ -6,6 +6,7 @@ using System;
 using System.Globalization;
 using System.Resources;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -162,6 +163,22 @@ namespace PocketCampus.Common
         public override Visibility Convert( int value )
         {
             return value == 0 ? Visibility.Collapsed : Visibility.Visible;
+        }
+    }
+
+    /// <summary>
+    /// Converts an enum to Visible if the value is equal to the parameter, and Collapsed otherwise.
+    /// </summary>
+    public sealed class EnumToVisibilityConverter : IValueConverter
+    {
+        public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
+        {
+            return value.ToString() == parameter.ToString() ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
+        {
+            throw new NotSupportedException();
         }
     }
 }

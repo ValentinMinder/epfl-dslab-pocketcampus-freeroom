@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿// Copyright (c) PocketCampus.Org 2014
+// See LICENSE file for more details
+// File author: Solal Pirelli
 
 namespace PocketCampus.Camipro.Models
 {
@@ -9,19 +11,16 @@ namespace PocketCampus.Camipro.Models
     /// This class is used to cache both an AccountInfo and an EbankingInfo, 
     /// Tuple can't be used because it's not serializable by DataContractSerializers.
     /// </remarks>
-    [DataContract]
     public sealed class CamiproInfo
     {
         /// <summary>
         /// Gets or sets the account info.
         /// </summary>
-        [DataMember]
         public AccountInfo AccountInfo { get; set; }
 
         /// <summary>
         /// Gets or sets the e-banking info.
         /// </summary>
-        [DataMember]
         public EbankingInfo EbankingInfo { get; set; }
 
 

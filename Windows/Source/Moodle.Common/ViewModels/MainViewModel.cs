@@ -114,20 +114,21 @@ namespace PocketCampus.Moodle.ViewModels
         /// <summary>
         /// Refreshes the data.
         /// </summary>
-        protected override Task RefreshAsync( CancellationToken token, bool force )
+        protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
-            return _requestHandler.ExecuteAsync<MainViewModel>( async () =>
+            if ( !force )
             {
-                if ( !force )
-                {
-                    return true;
-                }
+                return;
+            }
 
+            var courses = await _requestHandler.ExecuteAsync( async () =>
+            {
                 var coursesResponse = await _moodleService.GetCoursesAsync( "", token );
 
                 if ( coursesResponse.Status == ResponseStatus.AuthenticationError )
                 {
-                    return false;
+                    _requestHandler.Authenticate<MainViewModel>();
+                    return null;
                 }
                 if ( coursesResponse.Status != ResponseStatus.Success )
                 {
@@ -140,7 +141,8 @@ namespace PocketCampus.Moodle.ViewModels
 
                     if ( sectionsResponse.Status == ResponseStatus.AuthenticationError )
                     {
-                        return false;
+                        _requestHandler.Authenticate<MainViewModel>();
+                        return null;
                     }
                     if ( sectionsResponse.Status != ResponseStatus.Success )
                     {
@@ -162,14 +164,15 @@ namespace PocketCampus.Moodle.ViewModels
                     }
                 }
 
-                if ( !token.IsCancellationRequested )
-                {
-                    Courses = coursesResponse.Courses.Where( c => c.Sections.Length > 0 ).ToArray();
-                    AnyCourses = Courses.Length > 0;
-                }
-
-                return true;
+                return coursesResponse.Courses;
             } );
+
+
+            if ( !token.IsCancellationRequested && courses != null )
+            {
+                Courses = courses.Where( c => c.Sections.Length > 0 ).ToArray();
+                AnyCourses = Courses.Length > 0;
+            }
         }
     }
 }

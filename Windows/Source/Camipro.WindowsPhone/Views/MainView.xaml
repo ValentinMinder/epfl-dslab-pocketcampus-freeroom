@@ -104,8 +104,8 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     
-                    <!-- Cached data indicator -->
-                    <comControls:CacheIndicator Margin="0,-11,0,6" />
+                    <!-- Stale data indicator -->
+                    <comControls:StaleDataIndicator Margin="0,-11,0,6" />
 
                     <!-- Current balance -->
                     <StackPanel Grid.Row="1"
@@ -183,8 +183,8 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <!-- Cached data indicator -->
-                    <comControls:CacheIndicator />
+                    <!-- Stale data indicator -->
+                    <comControls:StaleDataIndicator />
 
                     <!-- Payment type -->
                     <TextBlock Grid.Row="1"

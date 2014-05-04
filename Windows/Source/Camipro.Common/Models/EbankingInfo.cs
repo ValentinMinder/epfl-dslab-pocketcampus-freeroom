@@ -88,7 +88,6 @@ namespace PocketCampus.Camipro.Models
         /// The status of the request that fetched the information.
         /// </summary>
         [ThriftField( 3, true, "iStatus" )]
-        [IgnoreDataMember]
         public ResponseStatus Status { get; set; }
     }
 }

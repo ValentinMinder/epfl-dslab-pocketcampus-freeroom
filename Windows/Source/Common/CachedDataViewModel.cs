@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using ThinMvvm;
 
@@ -8,22 +9,20 @@ namespace PocketCampus.Common
     /// DataViewModel that can cache data.
     /// </summary>
     /// <typeparam name="TArg">The viewmodel's argument type.</typeparam>
-    public abstract class CachedDataViewModel<TArg> : DataViewModel<TArg>
+    /// <typeparam name="TData">The type of the cached data.</typeparam>
+    public abstract class CachedDataViewModel<TArg, TData> : DataViewModel<TArg>
     {
         private const int DefaultId = 0;
         private static readonly DateTime DefaultExpirationDate = DateTime.MaxValue;
 
         private readonly IDataCache _cache;
 
-        private bool _isDataCached;
+        private CacheStatus _cacheStatus;
 
-        /// <summary>
-        /// Gets a value indicating whether the last call to <see cref="GetWithCache" /> returned cached data.
-        /// </summary>
-        public bool IsDataCached
+        public CacheStatus CacheStatus
         {
-            get { return _isDataCached; }
-            protected set { SetProperty( ref _isDataCached, value ); }
+            get { return _cacheStatus; }
+            private set { SetProperty( ref _cacheStatus, value ); }
         }
 
 
@@ -37,49 +36,61 @@ namespace PocketCampus.Common
         }
 
 
-        /// <summary>
-        /// Asynchronously gets data with the specified getter method and caches it, or returns cached data if the method throws a network error.
-        /// </summary>
-        /// <typeparam name="T">The data type.</typeparam>
-        /// <param name="getter">The data getter method.</param>
-        /// <param name="expirationDate">The date until which to cache the data, if it's fetched successfully.</param>
-        /// <returns>The data, which may be cached.</returns>
-        /// <remarks>
-        /// Exceptions are considered to be network errors if they are (or inherit from) one of the declared network exception types in
-        /// <see cref="DataViewModelOptions" />.
-        /// </remarks>
-        protected async Task<T> GetWithCacheAsync<T>( Func<Task<T>> getter, int? id = null, DateTime? expirationDate = null )
+        protected abstract CachedTask<TData> GetData( bool force, CancellationToken token );
+
+        protected abstract bool HandleData( TData data, CancellationToken token );
+
+
+        protected override sealed async Task RefreshAsync( CancellationToken token, bool force )
         {
+            var cachedData = GetData( force, token );
+
+            TData data;
+            if ( cachedData.ShouldBeCached && _cache.TryGet( this.GetType(), cachedData.Id ?? DefaultId, out data ) )
+            {
+                CacheStatus = CacheStatus.UsedTemporarily;
+                HandleData( data, token );
+            }
+            else
+            {
+                CacheStatus = CacheStatus.Loading;
+            }
+
+            if ( !cachedData.HasNewData )
+            {
+                return;
+            }
+
             try
             {
-                var value = await getter();
-
-                _cache.Set( this.GetType(), id ?? DefaultId, expirationDate ?? DefaultExpirationDate, value );
-                IsDataCached = false;
-                return value;
+                data = await cachedData.GetDataAsync();
+                if ( HandleData( data, token ) && cachedData.ShouldBeCached )
+                {
+                    _cache.Set( this.GetType(), cachedData.Id ?? DefaultId, cachedData.ExpirationDate ?? DefaultExpirationDate, data );
+                    CacheStatus = CacheStatus.Unused;
+                }
+                else
+                {
+                    CacheStatus = CacheStatus.OptedOut;
+                }
             }
             catch ( Exception e )
             {
 #warning Change this!
                 if ( e is System.Net.WebException || e is System.OperationCanceledException )
                 {
-                    T data;
-                    if ( _cache.TryGet( this.GetType(), id ?? DefaultId, out data ) )
+                    if ( CacheStatus == CacheStatus.UsedTemporarily )
                     {
-                        IsDataCached = true;
-                        return data;
+                        CacheStatus = CacheStatus.Used;
                     }
                 }
-                throw;
-            }
-        }
 
-        /// <summary>
-        /// Clears the cache.
-        /// </summary>
-        protected void ClearCache()
-        {
-            _cache.Remove( this.GetType() );
+                if ( CacheStatus != CacheStatus.Used )
+                {
+                    CacheStatus = CacheStatus.NoCache;
+                    throw;
+                }
+            }
         }
     }
 }

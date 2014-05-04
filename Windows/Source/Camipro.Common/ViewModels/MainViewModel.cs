@@ -19,7 +19,7 @@ namespace PocketCampus.Camipro.ViewModels
     /// The main (and only) ViewModel.
     /// </summary>
     [LogId( "/camipro" )]
-    public sealed class MainViewModel : CachedDataViewModel<NoParameter>
+    public sealed class MainViewModel : CachedDataViewModel<NoParameter, CamiproInfo>
     {
         private readonly ICamiproService _camiproService;
         private readonly ISecureRequestHandler _requestHandler;
@@ -102,45 +102,45 @@ namespace PocketCampus.Camipro.ViewModels
             }
         }
 
-        /// <summary>
-        /// Refreshes the data.
-        /// </summary>
-        protected override Task RefreshAsync( CancellationToken token, bool force )
+        protected override CachedTask<CamiproInfo> GetData( bool force, CancellationToken token )
         {
-            return _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
+            if ( !force )
             {
-                if ( !force )
-                {
-                    return true;
-                }
+                return CachedTask.NoNewData<CamiproInfo>();
+            }
 
+            return CachedTask.Create( () => _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession, CamiproInfo>( _camiproService, async session =>
+            {
                 _lastRequest = new CamiproRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                     Session = new SessionId { CamiproCookie = session.Cookie }
                 };
 
-                var info = await GetWithCacheAsync( async () => new CamiproInfo( await _camiproService.GetAccountInfoAsync( _lastRequest, token ), await _camiproService.GetEBankingInfoAsync( _lastRequest, token ) ) );
+                return new CamiproInfo( await _camiproService.GetAccountInfoAsync( _lastRequest, token ),
+                                        await _camiproService.GetEBankingInfoAsync( _lastRequest, token ) );
+            } ) );
+        }
 
-                if ( info.AccountInfo.Status == ResponseStatus.NetworkError || info.EbankingInfo.Status == ResponseStatus.NetworkError )
-                {
-                    ClearCache();
-                    throw new Exception( "Server error while getting the account or e-banking info." );
-                }
-                if ( info.AccountInfo.Status == ResponseStatus.AuthenticationError || info.EbankingInfo.Status == ResponseStatus.AuthenticationError )
-                {
-                    ClearCache();
-                    return false;
-                }
+        protected override bool HandleData( CamiproInfo data, CancellationToken token )
+        {
+            if ( data.AccountInfo.Status == ResponseStatus.NetworkError || data.EbankingInfo.Status == ResponseStatus.NetworkError )
+            {
+                throw new Exception( "Server error while getting the account or e-banking info." );
+            }
+            if ( data.AccountInfo.Status == ResponseStatus.AuthenticationError || data.EbankingInfo.Status == ResponseStatus.AuthenticationError )
+            {
+                _requestHandler.Authenticate<MainViewModel>();
+                return false;
+            }
 
-                if ( !token.IsCancellationRequested )
-                {
-                    AccountInfo = info.AccountInfo;
-                    EbankingInfo = info.EbankingInfo;
-                }
+            if ( !token.IsCancellationRequested )
+            {
+                AccountInfo = data.AccountInfo;
+                EbankingInfo = data.EbankingInfo;
+            }
 
-                return true;
-            } );
+            return true;
         }
     }
 }

@@ -82,15 +82,15 @@ namespace PocketCampus.IsAcademia.ViewModels
         /// <summary>
         /// Fetches the periods and transforms them to a binding-friendly representation.
         /// </summary>
-        protected override Task RefreshAsync( CancellationToken token, bool force )
+        protected override async Task RefreshAsync( CancellationToken token, bool force )
         {
-            return _requestHandler.ExecuteAsync<MainViewModel>( async () =>
+            if ( !force )
             {
-                if ( !force )
-                {
-                    return true;
-                }
+                return;
+            }
 
+            var days = await _requestHandler.ExecuteAsync( async () =>
+            {
                 var request = new ScheduleRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
@@ -99,35 +99,35 @@ namespace PocketCampus.IsAcademia.ViewModels
                 var response = await _isaService.GetScheduleAsync( request, token );
                 if ( response.Status == ResponseStatus.AuthenticationError )
                 {
-                    return false;
+                    _requestHandler.Authenticate<MainViewModel>();
+                    return null;
                 }
                 if ( response.Status != ResponseStatus.Success )
                 {
                     throw new Exception( "An error occurred on the server while fetching the schedule." );
                 }
 
-                if ( !token.IsCancellationRequested )
-                {
-                    // Now for the fun part!
-                    // The days group their periods by UTC date
-                    // but since we're in local date, some "days" may hold periods outside of their UTC date
-                    // so we have to disassemble them and re-assemble new days
-                    var days = response.Days
-                                       .SelectMany( d => ForceSameStartAndEndDays( d.Periods ) )
-                                       .GroupBy( p => p.Start.Date )
-                                       .Select( g => new StudyDay { Day = g.Key, Periods = g.ToArray() } )
-                                       .ToArray();
-                    var missingDays = Enumerable.Range( 0, MinimumDaysInWeek )
-                                                .Select( n => WeekDate.AddDays( n ) )
-                                                .Where( d => days.All( d2 => d.Date != d2.Day.Date ) )
-                                                .Select( d => new StudyDay { Day = d.Date, Periods = new Period[0] } );
-                    Days = days.Concat( missingDays )
-                               .OrderBy( d => d.Day )
-                               .ToArray();
-                }
-
-                return true;
+                return response.Days;
             } );
+
+            if ( days != null && !token.IsCancellationRequested )
+            {
+                // Now for the fun part!
+                // The days group their periods by UTC date
+                // but since we're in local date, some "days" may hold periods outside of their UTC date
+                // so we have to disassemble them and re-assemble new days
+                days = days.SelectMany( d => ForceSameStartAndEndDays( d.Periods ) )
+                           .GroupBy( p => p.Start.Date )
+                           .Select( g => new StudyDay { Day = g.Key, Periods = g.ToArray() } )
+                           .ToArray();
+                var missingDays = Enumerable.Range( 0, MinimumDaysInWeek )
+                                            .Select( n => WeekDate.AddDays( n ) )
+                                            .Where( d => days.All( d2 => d.Date != d2.Day.Date ) )
+                                            .Select( d => new StudyDay { Day = d.Date, Periods = new Period[0] } );
+                Days = days.Concat( missingDays )
+                           .OrderBy( d => d.Day )
+                           .ToArray();
+            }
         }
 
         /// <summary>

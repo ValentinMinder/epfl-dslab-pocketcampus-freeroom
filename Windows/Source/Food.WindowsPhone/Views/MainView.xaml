@@ -210,8 +210,8 @@
                                   Margin="10,0" Height="55" />
         </Border>
         
-        <!-- Cache indicator -->
-        <comControls:CacheIndicator Grid.Row="2" />
+        <!-- Stale data indicator -->
+        <comControls:StaleDataIndicator Grid.Row="2" />
 
         <!-- Meal list -->
         <phone:LongListSelector Grid.Row="3"
@@ -237,7 +237,8 @@
         </Border>
 
         <!-- Loading & error -->
-        <comControls:LoadingAndError Grid.Row="3" />
+        <comControls:LoadingAndError Grid.RowSpan="2"
+                                     Grid.Row="2" />
     </Grid>
 
     <!-- App bar -->

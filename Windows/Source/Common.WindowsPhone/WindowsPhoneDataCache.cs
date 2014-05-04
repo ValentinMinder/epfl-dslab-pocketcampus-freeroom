@@ -66,8 +66,7 @@ namespace PocketCampus.Common
         /// <param name="value">The value.</param>
         public void Set( Type owner, int id, DateTime expirationDate, object value )
         {
-            Remove( owner );
-            _data.Add( GetKey( owner.FullName, id ), value );
+            _data[GetKey( owner.FullName, id )] = value;
             _metadata.Add( owner.FullName, id, expirationDate );
 
             SaveMetadata( _metadata, _settings );

@@ -61,7 +61,8 @@ namespace PocketCampus.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while loading data. Please try again later..
+        ///   Looks up a localized string similar to An error occurred while loading data. 
+        ///Please try again later..
         /// </summary>
         public static string Error {
             get {
@@ -79,7 +80,8 @@ namespace PocketCampus.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while loading data. Please check your Internet connection..
+        ///   Looks up a localized string similar to An error occurred while loading data. 
+        ///Please check your Internet connection..
         /// </summary>
         public static string NetworkError {
             get {
@@ -97,11 +99,12 @@ namespace PocketCampus.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while contacting the server. The displayed data was cached during an older request..
+        ///   Looks up a localized string similar to An error occurred while contacting the server. 
+        ///The displayed data was cached during an older request..
         /// </summary>
-        public static string UsingCachedData {
+        public static string UsingStaleData {
             get {
-                return ResourceManager.GetString("UsingCachedData", resourceCulture);
+                return ResourceManager.GetString("UsingStaleData", resourceCulture);
             }
         }
         

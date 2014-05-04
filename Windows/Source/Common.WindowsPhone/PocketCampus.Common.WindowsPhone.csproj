@@ -86,8 +86,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controls\CacheIndicator.xaml.cs">
-      <DependentUpon>CacheIndicator.xaml</DependentUpon>
+    <Compile Include="Controls\StaleDataIndicator.xaml.cs">
+      <DependentUpon>StaleDataIndicator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\HtmlTextBlock.cs" />
     <Compile Include="Converters.cs" />
@@ -161,7 +161,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\CacheIndicator.xaml">
+    <Page Include="Controls\StaleDataIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

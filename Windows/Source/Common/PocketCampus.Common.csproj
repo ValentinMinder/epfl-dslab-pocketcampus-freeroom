@@ -36,7 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyReader.cs" />
+    <Compile Include="CachedTask.cs" />
     <Compile Include="CachedDataViewModel.cs" />
+    <Compile Include="CacheStatus.cs" />
     <Compile Include="EmailSendingStatus.cs" />
     <Compile Include="EnumEx.cs" />
     <Compile Include="GeoLocationStatus.cs" />
