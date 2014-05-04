@@ -103,6 +103,7 @@ struct AutoCompleteRequest {
 	// the string must be at least two chars to be accepted by the server
 	1: required string constraint;
 	2: optional set<string> forbiddenRoomsUID;
+	3: required i32 userGroup;
 }
 
 struct AutoCompleteReply {
