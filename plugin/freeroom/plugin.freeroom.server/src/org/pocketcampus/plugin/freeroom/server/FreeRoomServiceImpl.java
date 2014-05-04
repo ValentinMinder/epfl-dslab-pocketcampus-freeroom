@@ -513,7 +513,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				.getTimeStampStart());
 		long tsEnd = Utils
 				.roundToNearestHalfHourAfter(period.getTimeStampEnd());
-
+		int group = request.getUserGroup();
+		
 		if (!FRTimes.validCalendars(period)) {
 			// if something is wrong in the request
 			return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
@@ -529,7 +530,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			if (onlyFreeRoom) {
 				// we want to look into all the rooms
 				occupancies = getOccupancyOfAnyFreeRoom(onlyFreeRoom, tsStart,
-						tsEnd);
+						tsEnd, group);
 			} else {
 				return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
 						"The search fo any free room must contains onlyFreeRoom = true");
@@ -537,7 +538,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		} else {
 			// or the user specified a specific list of rooms he wants to check
 			occupancies = getOccupancyOfSpecificRoom(uidList, onlyFreeRoom,
-					tsStart, tsEnd);
+					tsStart, tsEnd, group);
 		}
 
 		occupancies = sortRooms(occupancies);
@@ -687,7 +688,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *         the building)
 	 */
 	private HashMap<String, List<Occupancy>> getOccupancyOfAnyFreeRoom(
-			boolean onlyFreeRooms, long tsStart, long tsEnd) {
+			boolean onlyFreeRooms, long tsStart, long tsEnd, int userGroup) {
 		log(LOG_SIDE.SERVER, Level.INFO,
 				"Requesting occupancy of any free rooms");
 		HashMap<String, List<Occupancy>> result = new HashMap<String, List<Occupancy>>();
@@ -703,7 +704,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ?) "
 						+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
 						+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
-						+ "AND ro.type LIKE ?)";
+						+ "AND ro.type LIKE ?) AND rl.accessGroup <= ?";
 
 				PreparedStatement query = connectBDD.prepareStatement(request);
 				query.setLong(1, tsEnd);
@@ -713,6 +714,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				query.setLong(5, tsStart);
 				query.setLong(6, tsEnd);
 				query.setString(7, OCCUPANCY_TYPE.ROOM.toString());
+				query.setInt(8, userGroup);
 
 				ResultSet resultQuery = query.executeQuery();
 
@@ -727,7 +729,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				// list !
 
 				return getOccupancyOfSpecificRoom(uidsList, onlyFreeRooms,
-						tsStart, tsEnd);
+						tsStart, tsEnd, userGroup);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				log(LOG_SIDE.SERVER, Level.SEVERE,
@@ -760,10 +762,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 */
 	private HashMap<String, List<Occupancy>> getOccupancyOfSpecificRoom(
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
-			long tsEnd) {
+			long tsEnd, int userGroup) {
 		
 		if (uidList.isEmpty()) {
-			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd);
+			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd, userGroup);
 		}
 
 		log(LOG_SIDE.SERVER, Level.INFO,
