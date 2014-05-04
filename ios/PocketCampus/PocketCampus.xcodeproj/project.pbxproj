@@ -365,6 +365,7 @@
 		32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */; };
 		32EE9623166E19D5005B0F65 /* MoodleCoursesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32EE9628166E25BD005B0F65 /* MoodleCourseSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32EF72121915199400863BAA /* EPFLLayersOverlay2.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EF72111915199400863BAA /* EPFLLayersOverlay2.m */; };
 		32F5308916EA974B00F66484 /* EventsCategorySelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32F5308D16EAB02400F66484 /* EventItemInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308C16EAB02400F66484 /* EventItemInfo.html */; };
 		32F5308F16EAB89500F66484 /* EventsSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F5308E16EAB89500F66484 /* EventsSplashDetailView.xib */; };
@@ -926,6 +927,8 @@
 		32EE9622166E19D5005B0F65 /* MoodleCoursesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleCoursesListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32EE9626166E25BD005B0F65 /* MoodleCourseSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodleCourseSectionsViewController.h; sourceTree = "<group>"; };
 		32EE9627166E25BD005B0F65 /* MoodleCourseSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MoodleCourseSectionsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		32EF72101915199400863BAA /* EPFLLayersOverlay2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPFLLayersOverlay2.h; sourceTree = "<group>"; };
+		32EF72111915199400863BAA /* EPFLLayersOverlay2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPFLLayersOverlay2.m; sourceTree = "<group>"; };
 		32F5308716EA973B00F66484 /* EventsCategorySelectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventsCategorySelectorViewController.h; sourceTree = "<group>"; };
 		32F5308816EA973B00F66484 /* EventsCategorySelectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventsCategorySelectorViewController.m; sourceTree = "<group>"; };
 		32F5308C16EAB02400F66484 /* EventItemInfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = EventItemInfo.html; sourceTree = "<group>"; };
@@ -1330,6 +1333,8 @@
 				3297E368180856E60047AD07 /* EPFLTileOverlay2.m */,
 				32D57297157F7D780051230F /* EPFLLayersOverlay.h */,
 				32D57298157F7D780051230F /* EPFLLayersOverlay.m */,
+				32EF72101915199400863BAA /* EPFLLayersOverlay2.h */,
+				32EF72111915199400863BAA /* EPFLLayersOverlay2.m */,
 				3277F860180437670057F77C /* RemoteOverlayRenderer.h */,
 				3277F861180437670057F77C /* RemoteOverlayRenderer.m */,
 			);
@@ -2809,6 +2814,7 @@
 				320A05B215B02C240057B15C /* PCGlobalSettingsViewController.m in Sources */,
 				3241F1DE15B4AB9C00C7DF3A /* PCEditableTableViewCell.m in Sources */,
 				32A54B7D15B5A8E100A7C882 /* AuthenticationViewController.m in Sources */,
+				32EF72121915199400863BAA /* EPFLLayersOverlay2.m in Sources */,
 				3293AD2015D1BC7C0097D414 /* PCAboutViewController.m in Sources */,
 				32649B23160DD7DA002E6498 /* DirectoryPersonViewController.m in Sources */,
 				32930AB717F898910025F864 /* TSharedProcessorFactory.m in Sources */,

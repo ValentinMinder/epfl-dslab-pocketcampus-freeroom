@@ -650,11 +650,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Views/RemoteOverlayRenderer.m"
-            timestampString = "408825663.565153"
+            timestampString = "420893719.824055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "-canDrawMapRect:zoomScale:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4139,11 +4139,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Controllers/EventsController.m"
-            timestampString = "416094081.181527"
+            timestampString = "420554203.940819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "-handleURLQueryAction:parameters:"
             landmarkType = "5">
          </BreakpointContent>

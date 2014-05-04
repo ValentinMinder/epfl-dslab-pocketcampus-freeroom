@@ -29,11 +29,24 @@
 
 @import MapKit;
 
+typedef enum {
+    PCRemoteOverlayRendererTileModeNormal = 0,
+    PCRemoteOverlayRendererTileModeSingleTilePerRenderingMapViewVisibleMapRect
+} PCRemoteOverlayRendererTileMode;
+
 @protocol RemoteOverlayRendererDelegate;
 
 @interface RemoteOverlayRenderer : MKOverlayRenderer
 
 @property (weak) id<RemoteOverlayRendererDelegate> delegate;
+@property (nonatomic, readonly) PCRemoteOverlayRendererTileMode tileMode;
+@property (weak) MKMapView* renderingMapView;
+
+/*
+ * If tile mode is PCRemoteOverlayRendererTileModeSingleTilePerRenderingMapViewVisibleMapRect,
+ * renderingMapView must be set
+ */
+- (id)initWithOverlay:(id <MKOverlay>)overlay tileMode:(PCRemoteOverlayRendererTileMode)tileMode;
 
 - (void)cancelTilesDownload:(BOOL)willBeDeallocated;
 

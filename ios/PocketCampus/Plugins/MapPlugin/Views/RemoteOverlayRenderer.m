@@ -37,6 +37,8 @@
 
 @interface RemoteOverlayRenderer ()
 
+@property (nonatomic, readwrite) PCRemoteOverlayRendererTileMode tileMode;
+
 @property (nonatomic, strong) NSOperationQueue* operationQueue;
 
 @property (nonatomic, strong) NSTimer* callDelegateTimer;
@@ -49,9 +51,12 @@
 
 @implementation RemoteOverlayRenderer
 
-- (id)initWithOverlay:(id <MKOverlay>)overlay {
+#pragma mark - Init
+
+- (id)initWithOverlay:(id <MKOverlay>)overlay tileMode:(PCRemoteOverlayRendererTileMode)tileMode {
     self = [super initWithOverlay:overlay];
     if (self) {
+        self.tileMode = tileMode;
         self.operationQueue = [NSOperationQueue new];
         self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
         self.tilesCache = [NSCache new];
@@ -59,6 +64,10 @@
         self.willBeDeallocated = NO;
     }
     return self;
+}
+
+- (id)initWithOverlay:(id <MKOverlay>)overlay {
+    return [self initWithOverlay:overlay tileMode:PCRemoteOverlayRendererTileModeNormal];
 }
 
 - (NSString*)keyWithMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale {
@@ -73,6 +82,13 @@
         if (![(id<OverlayWithURLs>)self.overlay canDrawMapRect:mapRect zoomScale:zoomScale]) {
             return NO;
         }
+        if (self.tileMode == PCRemoteOverlayRendererTileModeSingleTilePerRenderingMapViewVisibleMapRect) {
+            if (!self.renderingMapView) {
+                [NSException raise:@"Illegal state" format:@"renderingView cannot be nil if tileMode is PCRemoteOverlayRendererTileModeSingleTilePerRenderingMapViewVisibleMapRect"];
+            }
+            mapRect = self.renderingMapView.visibleMapRect;
+        }
+        
         
         NSString* key = [self keyWithMapRect:mapRect andZoomScale:zoomScale];
         if (self.tilesCache[key]) { //tile has already been downloaded and is in memory
