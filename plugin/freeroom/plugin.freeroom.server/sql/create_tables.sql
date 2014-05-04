@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	`typeEN` char(255) DEFAULT NULL,
 	`dincat` char(255) DEFAULT NULL,
 	`enabled` boolean DEFAULT TRUE,
-	`groupAcess` int(11) DEFAULT 1,
+	`groupAccess` int(11) DEFAULT 1,
 	PRIMARY KEY (`uid`)
 ) CHARSET=latin1;
 
