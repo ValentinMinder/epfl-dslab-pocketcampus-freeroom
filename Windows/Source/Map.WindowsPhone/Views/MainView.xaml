@@ -68,7 +68,7 @@
                            Style="{StaticResource AppTextSecondaryHeaderStyle}"
                            TextWrapping="Wrap"
                            Margin="24,-16,24,0"
-                           Visibility="{Binding SearchProvider.IsLoading, Converter={StaticResource BoolToVisibility}}" />
+                           Visibility="{Binding SearchProvider.DataStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=Loading}" />
 
                 <!-- "Error while searching" text -->
                 <TextBlock Grid.Row="2"
@@ -76,7 +76,7 @@
                            Style="{StaticResource AppTextSecondaryHeaderStyle}"
                            TextWrapping="Wrap"
                            Margin="24,-16,24,0"
-                           Visibility="{Binding SearchProvider.HasError, Converter={StaticResource BoolToVisibility}}" />
+                           Visibility="{Binding SearchProvider.DataStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=Error}" />
 
                 <!-- "Network error while searching" text -->
                 <TextBlock Grid.Row="2"
@@ -84,7 +84,7 @@
                            Style="{StaticResource AppTextSecondaryHeaderStyle}"
                            TextWrapping="Wrap"
                            Margin="24,-16,24,0"
-                           Visibility="{Binding SearchProvider.HasNetworkError, Converter={StaticResource BoolToVisibility}}" />
+                           Visibility="{Binding SearchProvider.DataStatus, Converter={StaticResource EnumToVisibility}, ConverterParameter=NetworkError}" />
             </StackPanel>
         </Border>
 

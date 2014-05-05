@@ -6,7 +6,6 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Events.Models;
 using PocketCampus.Events.Services;
@@ -102,7 +101,7 @@ namespace PocketCampus.Events.ViewModels
         /// <summary>
         /// Creates a new EventItemViewModel.
         /// </summary>
-        public EventItemViewModel( IDataCache cache, INavigationService navigationService, IBrowserService browserService,
+        public EventItemViewModel( ICache cache, INavigationService navigationService, IBrowserService browserService,
                                    IEventsService eventsService, IPluginSettings settings,
                                    ViewEventItemRequest request )
             : base( cache )

@@ -4,9 +4,9 @@
 
 using System.Collections.Generic;
 using PocketCampus.Common;
-using ThinMvvm;
 using PocketCampus.News.Services;
 using PocketCampus.News.ViewModels;
+using ThinMvvm;
 
 namespace PocketCampus.News
 {

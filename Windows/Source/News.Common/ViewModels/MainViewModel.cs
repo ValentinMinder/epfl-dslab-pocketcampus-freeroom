@@ -5,7 +5,6 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using PocketCampus.Common;
 using PocketCampus.News.Models;
 using PocketCampus.News.Services;
 using ThinMvvm;
@@ -46,7 +45,7 @@ namespace PocketCampus.News.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IDataCache cache, INewsService feedsService, INavigationService navigationService )
+        public MainViewModel( ICache cache, INewsService feedsService, INavigationService navigationService )
             : base( cache )
         {
             _feedsService = feedsService;

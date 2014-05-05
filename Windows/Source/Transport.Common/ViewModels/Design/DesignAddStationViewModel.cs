@@ -4,14 +4,13 @@
 
 // Design data for AddStationViewModel
 
+using ThinMvvm;
 namespace PocketCampus.Transport.ViewModels.Design
 {
     public sealed class DesignAddStationViewModel
     {
 #if DEBUG
-        public bool IsLoading { get { return false; } }
-        public bool HasError { get { return false; } }
-        public bool HasNetworkError { get { return false; } }
+        public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
 #endif
     }
 }

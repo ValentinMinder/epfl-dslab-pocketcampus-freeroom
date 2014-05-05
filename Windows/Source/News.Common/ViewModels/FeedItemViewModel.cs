@@ -5,7 +5,6 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.News.Models;
 using PocketCampus.News.Services;
@@ -50,7 +49,7 @@ namespace PocketCampus.News.ViewModels
         /// <summary>
         /// Creates a new FeedItemViewModel.
         /// </summary>
-        public FeedItemViewModel( IDataCache cache, INewsService newsService, IBrowserService browserService,
+        public FeedItemViewModel( ICache cache, INewsService newsService, IBrowserService browserService,
                                   FeedItem item )
             : base( cache )
         {

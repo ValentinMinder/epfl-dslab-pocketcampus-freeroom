@@ -123,7 +123,7 @@ namespace PocketCampus.Transport.ViewModels
         /// <summary>
         /// Refreshes the data.
         /// </summary>
-        protected override async Task RefreshAsync( CancellationToken token, bool force )
+        protected override async Task RefreshAsync( bool force, CancellationToken token )
         {
             if ( Settings.Stations.Count == 0 )
             {

@@ -8,7 +8,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.IsAcademia.Models;
 using PocketCampus.IsAcademia.Services;
@@ -64,7 +63,7 @@ namespace PocketCampus.IsAcademia.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IDataCache cache, IIsAcademiaService isaService, ISecureRequestHandler requestHandler )
+        public MainViewModel( ICache cache, IIsAcademiaService isaService, ISecureRequestHandler requestHandler )
             : base( cache )
         {
             _isaService = isaService;

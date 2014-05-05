@@ -3,8 +3,8 @@
 // File author: Solal Pirelli
 
 using System;
-using PocketCampus.Common;
 using PocketCampus.Events.Models;
+using ThinMvvm;
 
 // Design data for EventItemViewModel
 
@@ -13,10 +13,7 @@ namespace PocketCampus.Events.ViewModels.Design
     public sealed class DesignEventItemViewModel
     {
 #if DEBUG
-        public bool IsLoading { get { return false; } }
-        public bool HasError { get { return false; } }
-        public bool HasNetworkError { get { return false; } }
-
+        public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
         public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
 
         public bool CanBeFavorite { get { return true; } }

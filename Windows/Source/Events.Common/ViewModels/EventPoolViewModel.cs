@@ -140,7 +140,7 @@ namespace PocketCampus.Events.ViewModels
         /// <summary>
         /// Creates a new EventPoolViewModel.
         /// </summary>
-        public EventPoolViewModel( IDataCache cache, INavigationService navigationService, IEventsService eventsService,
+        public EventPoolViewModel( ICache cache, INavigationService navigationService, IEventsService eventsService,
                                    IPluginSettings settings, IEmailPrompt emailPrompt, ICodeScanner codeScanner,
                                    long poolId )
             : base( cache )

@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using PocketCampus.Map.Models;
+using ThinMvvm;
 
 // Design data for MainViewModel
 
@@ -11,9 +12,7 @@ namespace PocketCampus.Map.ViewModels.Design
     public sealed class DesignMainViewModel
     {
 #if DEBUG
-        public bool IsSearching { get { return false; } }
-        public bool HasError { get { return false; } }
-        public bool HasNetworkError { get { return false; } }
+        public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
 
         public MapProperties Properties
         {

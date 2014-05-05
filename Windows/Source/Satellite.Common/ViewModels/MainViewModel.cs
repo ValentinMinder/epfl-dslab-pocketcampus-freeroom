@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using PocketCampus.Common;
 using PocketCampus.Satellite.Models;
 using PocketCampus.Satellite.Services;
 using ThinMvvm;
@@ -36,7 +35,7 @@ namespace PocketCampus.Satellite.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IDataCache cache, ISatelliteService beerService )
+        public MainViewModel( ICache cache, ISatelliteService beerService )
             : base( cache )
         {
             _beerService = beerService;

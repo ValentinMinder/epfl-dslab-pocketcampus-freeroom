@@ -125,7 +125,7 @@ namespace PocketCampus.Food.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IDataCache cache, INavigationService navigationService, IFoodService menuService,
+        public MainViewModel( ICache cache, INavigationService navigationService, IFoodService menuService,
                               IPluginSettings settings, IServerSettings serverSettings )
             : base( cache )
         {

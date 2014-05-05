@@ -13,9 +13,7 @@ namespace PocketCampus.Main.ViewModels.Design
     public sealed class DesignMainViewModel
     {
 #if DEBUG
-        public bool IsLoading { get { return false; } }
-        public bool HasError { get { return false; } }
-        public bool HasNetworkError { get { return false; } }
+        public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
 
         public IPlugin[] Plugins
         {

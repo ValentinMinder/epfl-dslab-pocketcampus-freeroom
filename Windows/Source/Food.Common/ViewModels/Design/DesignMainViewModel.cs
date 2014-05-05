@@ -4,8 +4,8 @@
 
 using System;
 using System.Collections.Generic;
-using PocketCampus.Common;
 using PocketCampus.Food.Models;
+using ThinMvvm;
 
 // Design data for MainViewModel
 
@@ -14,10 +14,7 @@ namespace PocketCampus.Food.ViewModels.Design
     public sealed class DesignMainViewModel
     {
 #if DEBUG
-        public bool IsLoading { get { return false; } }
-        public bool HasError { get { return false; } }
-        public bool HasNetworkError { get { return false; } }
-
+        public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
         public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
 
         public Restaurant[] Menu

@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using PocketCampus.Common.Resources;
+using ThinMvvm;
 
 namespace PocketCampus.Common.Controls
 {

@@ -14,9 +14,7 @@ namespace PocketCampus.Food.ViewModels.Design
     public sealed class DesignRatingViewModel
     {
 #if DEBUG
-        public bool IsLoading { get { return false; } }
-        public bool HasError { get { return false; } }
-        public bool HasNetworkError { get { return false; } }
+        public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
 
         public Meal Meal
         {

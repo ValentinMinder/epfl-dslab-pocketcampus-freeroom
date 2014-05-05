@@ -69,7 +69,7 @@ namespace PocketCampus.Camipro.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IDataCache cache, ICamiproService camiproService, ISecureRequestHandler requestHandler )
+        public MainViewModel( ICache cache, ICamiproService camiproService, ISecureRequestHandler requestHandler )
             : base( cache )
         {
             _camiproService = camiproService;

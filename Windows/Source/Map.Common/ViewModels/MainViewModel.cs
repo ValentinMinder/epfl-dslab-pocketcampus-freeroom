@@ -119,7 +119,7 @@ namespace PocketCampus.Map.ViewModels
         /// <summary>
         /// Executed when the user opens the plugin, or comes back from the settings page.
         /// </summary>
-        protected override async Task RefreshAsync( CancellationToken token, bool force )
+        protected override async Task RefreshAsync( bool force, CancellationToken token )
         {
             if ( force )
             {

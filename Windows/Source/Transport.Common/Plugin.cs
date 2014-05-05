@@ -4,9 +4,9 @@
 
 using System.Collections.Generic;
 using PocketCampus.Common;
-using ThinMvvm;
 using PocketCampus.Transport.Services;
 using PocketCampus.Transport.ViewModels;
+using ThinMvvm;
 
 namespace PocketCampus.Transport
 {

@@ -5,6 +5,7 @@
 using System;
 using PocketCampus.Common;
 using PocketCampus.Events.Models;
+using ThinMvvm;
 
 // Design data for EventPoolViewModel
 
@@ -13,10 +14,7 @@ namespace PocketCampus.Events.ViewModels.Design
     public sealed class DesignEventPoolViewModel
     {
 #if DEBUG
-        public bool IsLoading { get { return false; } }
-        public bool HasError { get { return false; } }
-        public bool HasNetworkError { get { return false; } }
-
+        public DataStatus DataStatus { get { return DataStatus.DataLoaded; } }
         public CacheStatus CacheStatus { get { return CacheStatus.Unused; } }
 
         public EmailSendingStatus EmailStatus { get { return EmailSendingStatus.Success; } }

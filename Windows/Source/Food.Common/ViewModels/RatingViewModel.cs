@@ -55,7 +55,7 @@ namespace PocketCampus.Food.ViewModels
         [LogId( "Rate" )]
         public Command RateCommand
         {
-            get { return GetCommand( Rate, () => !IsLoading ); }
+            get { return GetCommand( Rate, () => DataStatus != DataStatus.Loading ); }
         }
 
 

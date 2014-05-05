@@ -98,7 +98,7 @@ namespace PocketCampus.Main.ViewModels
         /// <summary>
         /// Loads plugins.
         /// </summary>
-        protected override async Task RefreshAsync( CancellationToken token, bool force )
+        protected override async Task RefreshAsync( bool force, CancellationToken token )
         {
             if ( Plugins == null )
             {

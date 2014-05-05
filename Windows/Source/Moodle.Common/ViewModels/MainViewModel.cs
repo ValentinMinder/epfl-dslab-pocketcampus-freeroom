@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
@@ -72,7 +71,7 @@ namespace PocketCampus.Moodle.ViewModels
         /// <summary>
         /// Creates a new MainViewModel.
         /// </summary>
-        public MainViewModel( IDataCache cache, ISecureRequestHandler requestHandler, IMoodleService moodleService,
+        public MainViewModel( ICache cache, ISecureRequestHandler requestHandler, IMoodleService moodleService,
                               IMoodleDownloader downloader, IFileStorage storage )
             : base( cache )
         {

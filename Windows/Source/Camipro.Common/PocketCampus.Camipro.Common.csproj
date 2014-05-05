@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">
-      <HintPath>..\..\packages\ThinMvvm.0.9.2\lib\portable-net45+wp8+win8+wpa81\ThinMvvm.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.9.3\lib\portable-net45+wp8+win8+wpa81\ThinMvvm.dll</HintPath>
     </Reference>
     <Reference Include="ThriftSharp">
       <HintPath>..\..\packages\ThriftSharp.2.0.4\lib\portable-net45+wp8+win8+wpa81\ThriftSharp.dll</HintPath>
