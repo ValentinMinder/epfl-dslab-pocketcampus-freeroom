@@ -240,20 +240,25 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mModel = (FreeRoomModel) controller.getModel();
 
 		// Setup the layout
-		titleLayout = new StandardTitledLayout(this);
-		mainLayout = new LinearLayout(this);
-		mainLayout.setOrientation(LinearLayout.VERTICAL);
+
+		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+				.getSystemService(LAYOUT_INFLATER_SERVICE);
+		titleLayout = (StandardTitledLayout) layoutInflater.inflate(
+				R.layout.freeroom_layout_home, null);
+		mainLayout = (LinearLayout) titleLayout
+				.findViewById(R.id.freeroom_layout_home_main_layout);
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(titleLayout);
 		titleLayout.setTitle(getString(R.string.freeroom_title_main_title));
 
-		mExpListView = new ExpandableListView(getApplicationContext());
-		mTextView = new TextView(getApplicationContext());
-		mainLayout.addView(mTextView);
+		mExpListView = (ExpandableListView) titleLayout
+				.findViewById(R.id.freeroom_layout_home_list);
+		mTextView = (TextView) titleLayout
+				.findViewById(R.id.freeroom_layout_home_text_summary);
 		setTextSummary(getString(R.string.freeroom_home_init_please_wait));
-		mainLayout.addView(mExpListView);
 		initializeView();
 
+		titleLayout.removeView(mainLayout);
 		titleLayout.addFillerView(mainLayout);
 
 		initDefaultRequest();
