@@ -24,10 +24,11 @@ public class FRRequestDetails extends FRRequest {
 	private boolean user = false;
 	private SetArrayList<FRRoom> uidNonFav = null;
 
+	//TODO change group accordingly, set to 1 by default and for testing purpose
 	public FRRequestDetails(FRPeriod period, boolean onlyFreeRooms,
 			List<String> uidList, boolean any, boolean fav, boolean user,
-			SetArrayList<FRRoom> uidNonFav) {
-		super(period, onlyFreeRooms, uidList);
+			SetArrayList<FRRoom> uidNonFav, int userGroup) {
+		super(period, onlyFreeRooms, uidList, userGroup);
 		this.any = any;
 		this.fav = fav;
 		this.user = user;
@@ -71,8 +72,8 @@ public class FRRequestDetails extends FRRequest {
 	}
 
 	public FRRequestDetails(FRPeriod period, boolean onlyFreeRooms,
-			List<String> uidList) {
-		super(period, onlyFreeRooms, uidList);
+			List<String> uidList, int userGroup) {
+		super(period, onlyFreeRooms, uidList, userGroup);
 		// TODO Auto-generated constructor stub
 	}
 

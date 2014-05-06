@@ -86,12 +86,12 @@ public class Utils {
 	 * 
 	 * @param rooms
 	 *            The rooms to sort
-	 * @return The HashMap as defined above
+	 * @return The HashMap as defined above, an empty HashMap is rooms is null or is empty
 	 */
 	public static Map<String, List<FRRoom>> sortRoomsByBuilding(
 			List<FRRoom> rooms) {
-		if (rooms == null) {
-			return null;
+		if (rooms == null || rooms.isEmpty()) {
+			return new HashMap<String, List<FRRoom>>();
 		}
 
 		Iterator<FRRoom> iter = rooms.iterator();

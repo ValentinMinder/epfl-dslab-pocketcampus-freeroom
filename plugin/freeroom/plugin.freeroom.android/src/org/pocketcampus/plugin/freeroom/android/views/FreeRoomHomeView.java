@@ -623,15 +623,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		FRRequestDetails details = null;
 		if (set.isEmpty()) {
 			// NO FAV = check all free rooms
+			//TODO change group accordingly, set to 1 by default and for testing purpose
 			details = new FRRequestDetails(FRTimes.getNextValidPeriod(), true,
 					new ArrayList<String>(1), false, true, false,
-					new SetArrayList<FRRoom>());
+					new SetArrayList<FRRoom>(), 1);
 		} else {
 			// FAV: check occupancy of ALL favs
 			ArrayList<String> array = new ArrayList<String>(set.size());
 			array.addAll(set);
+			//TODO change group accordingly, set to 1 by default and for testing purpose
 			details = new FRRequestDetails(FRTimes.getNextValidPeriod(), false,
-					array, false, true, false, new SetArrayList<FRRoom>());
+					array, false, true, false, new SetArrayList<FRRoom>(), 1);
 		}
 		return details;
 	}
@@ -1397,8 +1399,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						String query = mAutoCompleteSuggestionInputBarElement
 								.getInputText();
 						if (query.length() >= 2) {
+							//TODO change group accordingly, set to 1 by default and for testing purpose
 							AutoCompleteRequest request = new AutoCompleteRequest(
-									query);
+									query, 1);
 							mController.autoCompleteBuilding(view, request);
 						}
 					}
@@ -1424,8 +1427,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							mAutoCompleteSuggestionInputBarElement
 									.setButtonText("");
 							if (text.length() >= 2) {
+								//TODO change group accordingly, set to 1 by default and for testing purpose
 								AutoCompleteRequest request = new AutoCompleteRequest(
-										text);
+										text, 1);
 								mController.autoCompleteBuilding(view, request);
 							}
 						}
@@ -1659,8 +1663,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		boolean any = anyButton.isChecked();
 		boolean fav = favButton.isChecked();
 		boolean user = userDefButton.isChecked();
+		//TODO change group accordingly, set to 1 by default and for testing purpose
 		FRRequestDetails details = new FRRequestDetails(period,
-				freeButton.isChecked(), mUIDList, any, fav, user, selectedRooms);
+				freeButton.isChecked(), mUIDList, any, fav, user, selectedRooms, 1);
 		mModel.setFRRequestDetails(details);
 		mController.sendFRRequest(this);
 		popupSearchWindow.dismiss();

@@ -514,7 +514,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		long tsEnd = Utils
 				.roundToNearestHalfHourAfter(period.getTimeStampEnd());
 		int group = request.getUserGroup();
-		
+
 		if (!FRTimes.validCalendars(period)) {
 			// if something is wrong in the request
 			return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
@@ -533,7 +533,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						tsEnd, group);
 			} else {
 				return new FRReply(HttpURLConnection.HTTP_BAD_REQUEST,
-						"The search fo any free room must contains onlyFreeRoom = true");
+						"The search for any free room must contains onlyFreeRoom = true");
 			}
 		} else {
 			// or the user specified a specific list of rooms he wants to check
@@ -724,9 +724,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					String uid = resultQuery.getString("uid");
 					uidsList.add(uid);
 				}
-				// TODO careful to rooms that has no occupancy won't appear in
-				// this
-				// list !
 
 				return getOccupancyOfSpecificRoom(uidsList, onlyFreeRooms,
 						tsStart, tsEnd, userGroup);
@@ -763,9 +760,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	private HashMap<String, List<Occupancy>> getOccupancyOfSpecificRoom(
 			List<String> uidList, boolean onlyFreeRooms, long tsStart,
 			long tsEnd, int userGroup) {
-		
+
 		if (uidList.isEmpty()) {
-			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd, userGroup);
+			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd,
+					userGroup);
 		}
 
 		log(LOG_SIDE.SERVER, Level.INFO,
@@ -998,11 +996,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			throws TException {
 		log(LOG_SIDE.SERVER, Level.INFO,
 				"Autocomplete of " + request.getConstraint());
-		AutoCompleteReply reply = new AutoCompleteReply(
-				HttpURLConnection.HTTP_OK, ""
-						+ HttpURLConnection.HTTP_OK);
-		reply.setListFRRoom(new ArrayList<FRRoom>());
 
+		AutoCompleteReply reply = new AutoCompleteReply(
+				HttpURLConnection.HTTP_OK, "" + HttpURLConnection.HTTP_OK);
+		
 		String constraint = request.getConstraint();
 
 		if (constraint.length() < 2) {
@@ -1033,13 +1030,15 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				requestSQL = "SELECT * "
 						+ "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?)) "
+						+ "AND rl.groupAccess <= ? "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
 			} else {
 				requestSQL = "SELECT * "
 						+ "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?)) "
-						+ "AND rl.uid NOT IN (" + forbidRoomsSQL + ") "
+						+ "AND rl.groupAccess <= ? AND rl.uid NOT IN ("
+						+ forbidRoomsSQL + ") "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
 			}
@@ -1048,9 +1047,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			query.setString(1, constraint + "%");
 			query.setString(2, constraint + "%");
 			query.setString(3, constraint + "%");
+			query.setInt(4, request.getUserGroup());
 
 			if (forbiddenRooms != null) {
-				int i = 2;
+				int i = 5;
 				for (String roomUID : forbiddenRooms) {
 					query.setString(i, roomUID);
 					++i;
