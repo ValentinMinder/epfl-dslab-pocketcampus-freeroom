@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.server.utils;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -233,5 +234,16 @@ public class Utils {
 		mCalendar.set(Calendar.SECOND, 0);
 		mCalendar.set(Calendar.MILLISECOND, 0);
 		return mCalendar.getTimeInMillis();
+	}
+
+	/**
+	 * Remove duplicates in a list of rooms
+	 * @param uidList The list to check
+	 * @return The list with unique ids without duplicates
+	 */
+	public static List<String> removeDuplicate(List<String> uidList) {
+		HashSet<String> uidSet = new HashSet<>();
+		uidSet.addAll(uidList);
+		return new ArrayList<>(uidSet);
 	}
 }

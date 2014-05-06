@@ -762,10 +762,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			long tsEnd, int userGroup) {
 
 		if (uidList.isEmpty()) {
+			//TODO be careful of infinite recursive
 			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd,
 					userGroup);
 		}
 
+		uidList = Utils.removeDuplicate(uidList);
 		log(LOG_SIDE.SERVER, Level.INFO,
 				"Requesting occupancy of specific list of rooms " + uidList);
 
