@@ -202,7 +202,7 @@
     </Reference>
     <Reference Include="zxing.wp8.0, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ZXing.Net.0.14.0.0\lib\wp8\zxing.wp8.0.dll</HintPath>
+      <HintPath>..\..\packages\ZXing.Net.0.14.0.1\lib\wp8\zxing.wp8.0.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
