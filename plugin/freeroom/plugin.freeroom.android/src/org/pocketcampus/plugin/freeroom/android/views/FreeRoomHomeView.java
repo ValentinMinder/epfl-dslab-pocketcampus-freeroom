@@ -464,7 +464,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mAddRoomDialog.getWindow().setAttributes(lp);
 
 		mAddRoomView = mLayoutInflater.inflate(
-				R.layout.freeroom_layout_popup_add_room, null);
+				R.layout.freeroom_layout_dialog_add_room, null);
 		// these work perfectly
 		mAddRoomView.setMinimumWidth((int) (activityWidth * 0.9f));
 		// mAddRoomView.setMinimumHeight((int) (activityHeight * 0.8f));
