@@ -8,29 +8,29 @@ namespace PocketCampus.Camipro.Models
     /// Information about a CAMIPRO account balance and e-banking.
     /// </summary>
     /// <remarks>
-    /// This class is used to cache both an AccountInfo and an EbankingInfo, 
-    /// Tuple can't be used because it's not serializable by DataContractSerializers.
+    /// This class is used to cache both an <see cref="AccountInfo" /> and an <see cref="EbankingInfo" />, 
+    /// <see cref="Tuple{T1,T2}" /> can't be used because it's not serializable by DataContractSerializers.
     /// </remarks>
     public sealed class CamiproInfo
     {
         /// <summary>
-        /// Gets or sets the account info.
+        /// The account info.
         /// </summary>
         public AccountInfo AccountInfo { get; set; }
 
         /// <summary>
-        /// Gets or sets the e-banking info.
+        /// The e-banking info.
         /// </summary>
         public EbankingInfo EbankingInfo { get; set; }
 
 
         /// <summary>
-        /// Creates an empty CamiproInfo, for serialization purposes.
+        /// Initializes a new instance for serialization purposes.
         /// </summary>
         public CamiproInfo() { }
 
         /// <summary>
-        /// Creates a CamiproInfo with the specified account and e-banking info.
+        /// Initializes a new instance of the <see cref="CamiproInfo" /> class with the specified account and e-banking info.
         /// </summary>
         public CamiproInfo( AccountInfo accountInfo, EbankingInfo ebankingInfo )
         {

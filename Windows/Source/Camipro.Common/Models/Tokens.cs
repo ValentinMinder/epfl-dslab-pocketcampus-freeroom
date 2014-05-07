@@ -6,8 +6,7 @@ using System.Runtime.Serialization;
 using PocketCampus.Common;
 using ThriftSharp;
 
-// The tokens used for authentication.
-// Magic.
+// The tokens used for authentication. Magic.
 
 namespace PocketCampus.Camipro.Models
 {

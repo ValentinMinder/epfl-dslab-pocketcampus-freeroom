@@ -67,7 +67,7 @@ namespace PocketCampus.Camipro.ViewModels
         }
 
         /// <summary>
-        /// Creates a new MainViewModel.
+        /// Initializes a new instance.
         /// </summary>
         public MainViewModel( ICache cache, ICamiproService camiproService, ISecureRequestHandler requestHandler )
             : base( cache )
@@ -102,6 +102,9 @@ namespace PocketCampus.Camipro.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets data from the server.
+        /// </summary>
         protected override CachedTask<CamiproInfo> GetData( bool force, CancellationToken token )
         {
             if ( !force )
@@ -117,11 +120,18 @@ namespace PocketCampus.Camipro.ViewModels
                     Session = new SessionId { CamiproCookie = session.Cookie }
                 };
 
-                return new CamiproInfo( await _camiproService.GetAccountInfoAsync( _lastRequest, token ),
-                                        await _camiproService.GetEBankingInfoAsync( _lastRequest, token ) );
+                var accountTask = _camiproService.GetAccountInfoAsync( _lastRequest, token );
+                var ebankingTask = _camiproService.GetEBankingInfoAsync( _lastRequest, token );
+
+                await Task.WhenAll( accountTask, ebankingTask );
+
+                return new CamiproInfo( accountTask.Result, ebankingTask.Result );
             } ) );
         }
 
+        /// <summary>
+        /// Handles data received from the server.
+        /// </summary>
         protected override bool HandleData( CamiproInfo data, CancellationToken token )
         {
             if ( data.AccountInfo.Status == ResponseStatus.NetworkError || data.EbankingInfo.Status == ResponseStatus.NetworkError )
