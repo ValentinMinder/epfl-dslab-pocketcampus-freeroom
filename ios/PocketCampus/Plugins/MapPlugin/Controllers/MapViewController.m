@@ -25,15 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 12.04.12.
 
+@import MapKit;
+@import QuartzCore;
 
 #import "MapViewController.h"
-
-#import <MapKit/MapKit.h>
 
 #import "MapService.h"
 
@@ -41,9 +38,7 @@
 
 #import "EPFLTileOverlay.h"
 
-#import "EPFLLayersOverlay.h"
-
-#import "RemoteOverlayRenderer.h"
+#import "PCTileOverlayRenderer.h"
 
 #import "MapItemAnnotation.h"
 
@@ -54,10 +49,6 @@
 #import "NSTimer+Blocks.h"
 
 #import "DirectoryPersonViewController.h"
-
-#import <QuartzCore/QuartzCore.h>
-
-#import "EPFLTileOverlay2.h"
 
 #import "MapResultsListViewController.h"
 
@@ -80,7 +71,7 @@ static NSString* const kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 static CGFloat const kSearchBarHeightPortrait = 44.0;
 static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
-@interface MapViewController ()<MKMapViewDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, RemoteOverlayRendererDelegate, UIPopoverControllerDelegate>
+@interface MapViewController ()<MKMapViewDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, UIPopoverControllerDelegate>
 
 
 @property (nonatomic, strong) IBOutlet MKMapView* mapView;
@@ -89,11 +80,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 @property (nonatomic, strong) MapService* mapService;
 
 @property (nonatomic, strong) EPFLTileOverlay* epflTileOverlay;
-//@property (nonatomic, strong) EPFLTileOverlay2* epflTileOverlay2;
-@property (nonatomic, strong) EPFLLayersOverlay* epflLayersOverlay;
-@property (nonatomic, strong) RemoteOverlayRenderer* tilesOverlayRenderer;
-//@property (nonatomic, strong) MKOverlayRenderer* tilesOverlayRenderer2;
-@property (nonatomic, strong) RemoteOverlayRenderer* layersOverlayRenderer; //not initialized for now (disabled feature)
 
 @property (nonatomic, strong) NSArray* mapItemsAllResults; //raw result from map service for a search. Nil if searchState is != SearchStateResults
 
@@ -147,11 +133,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         self.gaiScreenName = @"/map";
         self.mapService = [MapService sharedInstanceToRetain];
         self.epflTileOverlay = [[EPFLTileOverlay alloc] init];
-        //self.epflTileOverlay2 = [[EPFLTileOverlay2 alloc] init];
-        self.epflLayersOverlay = [[EPFLLayersOverlay alloc] init];
-        self.tilesOverlayRenderer = [[RemoteOverlayRenderer alloc] initWithOverlay:self.epflTileOverlay];
-        //self.tilesOverlayRenderer2 = [[MKTileOverlayRenderer alloc] initWithOverlay:self.epflTileOverlay2];
-        self.layersOverlayRenderer = [[RemoteOverlayRenderer alloc] initWithOverlay:self.epflLayersOverlay];
         _searchState = -1; //set to "illegal" value so that first call to setSearchState is not discared (as default value 0)
         _mapControlsState = -1; //set to "illegal" value so that first call to setMapControlState is not discareded (as default value 0)
         self.searchBarShouldBeginEditing = YES;
@@ -197,11 +178,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 {
     [super viewDidLoad];
     self.leftBarButtonItemsAtLoad = self.navigationItem.leftBarButtonItems;
-    self.tilesOverlayRenderer.delegate = self;
-    //self.layersOverlayView.delegate = self;
     [self.mapView setRegion:self.epflRegion animated:NO];
-    self.epflTileOverlay.mapView = self.mapView;
-    self.epflLayersOverlay.mapView = self.mapView;
     
     self.searchState = SearchStateReady; //will set nav bar elements, see implementation
     [self manageRecentSearchesControllerVisibilityAnimated:NO];
@@ -639,8 +616,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) { //copy in case they are modified in the meantime (highly unlikely though)
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
-    [self.epflTileOverlay decreaseLayerLevel];
-    [self.epflLayersOverlay decreaseLayerLevel];
+    [self.epflTileOverlay decreaseFloorLevel];
+    //[self.epflLayersOverlay decreaseLayerLevel];
     [self updateControls];
 }
 
@@ -649,8 +626,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) {
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
-    [self.epflTileOverlay increaseLayerLevel];
-    [self.epflLayersOverlay increaseLayerLevel];
+    [self.epflTileOverlay increaseFloorLevel];
+    //[self.epflLayersOverlay increaseLayerLevel];
     [self updateControls];
 }
 
@@ -660,28 +637,28 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 }
 
 - (void)updateControls {
-    if (self.epflTileOverlay.currentLayerLevel == MIN_LAYER_LEVEL) {
+    if (self.epflTileOverlay.floorLevel == self.epflTileOverlay.minFloorLevel) {
         self.floorDownButton.enabled = NO;
         self.floorUpButton.enabled = YES;
-    } else if (self.epflTileOverlay.currentLayerLevel == MAX_LAYER_LEVEL) {
+    } else if (self.epflTileOverlay.floorLevel == self.epflTileOverlay.maxFloorLevel) {
         self.floorDownButton.enabled = YES;
         self.floorUpButton.enabled = NO;
     } else {
         self.floorDownButton.enabled = YES;
         self.floorUpButton.enabled = YES;
     }
-    ((UILabel*)(self.floorLabelItem.customView)).text = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"Floor", @"MapPlugin", nil), (int)self.epflTileOverlay.currentLayerLevel];
+    ((UILabel*)(self.floorLabelItem.customView)).text = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"Floor", @"MapPlugin", nil), (int)self.epflTileOverlay.floorLevel];
 }
 
-- (void)setLayersLevel:(NSInteger)level {
-    if (level == self.epflTileOverlay.currentLayerLevel) {
+- (void)setFloorsLevel:(NSInteger)level {
+    if (level == self.epflTileOverlay.floorLevel) {
         return;
     }
     for (id<MKAnnotation> annotation in [self.mapView.annotations copy]) {
         [self.mapView deselectAnnotation:annotation animated:YES];
     }
-    [self.epflTileOverlay setLayerLevel:level];
-    [self.epflLayersOverlay setLayerLevel:level];
+    self.epflTileOverlay.floorLevel = level;
+    //[self.epflLayersOverlay setLayerLevel:level];
     [self updateControls];
 }
 
@@ -747,11 +724,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 - (MKOverlayRenderer*)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay {
     if ([overlay isKindOfClass:[EPFLTileOverlay class]]) {
-        return self.tilesOverlayRenderer;
-    } else if ([overlay isKindOfClass:[EPFLLayersOverlay class]]) {
-        return self.layersOverlayRenderer;
-    } else if ([overlay isKindOfClass:[EPFLTileOverlay2 class]]) {
-        //return self.tilesOverlayRenderer2;
+        return [[PCTileOverlayRenderer alloc] initWithPCTileOverlay:self.epflTileOverlay];
     }
     //other, not managed
     return nil;
@@ -804,34 +777,38 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         return;
     }
     MapItem* mapItem = [((MapItemAnnotation*)(view.annotation)) mapItem];
-    [self.epflTileOverlay setLayerLevel:mapItem.floor];
-    [self.epflLayersOverlay setLayerLevel:mapItem.floor];
+    self.epflTileOverlay.floorLevel = mapItem.floor;
+    //[self.epflLayersOverlay setLayerLevel:mapItem.floor];
     [self updateControls];
 
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
     
-    MKZoomScale zoomScale = self.mapView.bounds.size.width / self.mapView.visibleMapRect.size.width;
+    NSInteger zoomLevel = [MapUtils zoomLevelForMapRect:self.mapView.visibleMapRect];
     
     //NSLog(@"Coordinate: %lf %lf span: %lf %lf", mapView.region.center.latitude, mapView.region.center.longitude, mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
     
-    if ([self.epflTileOverlay canDrawMapRect:self.mapView.visibleMapRect zoomScale:zoomScale]) {
+    BOOL shouldShowOverlay = (zoomLevel >= self.epflTileOverlay.minimumZ) && (zoomLevel <= self.epflTileOverlay.maximumZ);
+    
+    CLLocationDistance altitude = self.mapView.camera.altitude/cos(self.mapView.camera.pitch*M_PI/180.0);
+    BOOL shouldAllowFloorLevelChange = altitude <= self.epflTileOverlay.floorLevelsMaxAltitude;
+    
+    if (shouldShowOverlay) {
         if (self.mapView.overlays.count == 0) {
-            [self.mapView addOverlay:self.epflTileOverlay];
-            //[self.mapView addOverlay:self.epflTileOverlay2];
-            [self.mapView addOverlay:self.epflLayersOverlay];
+            [self.mapView addOverlay:self.epflTileOverlay level:MKOverlayLevelAboveRoads];
+            //[self.mapView addOverlay:self.epflLayersOverlay];
         }
-        if ([self.epflTileOverlay shouldAllowLayerChange]) {
+        if (shouldAllowFloorLevelChange) {
             self.mapControlsState = MapControlsStateAllAvailable;
         } else {
-            [self setLayersLevel:DEFAULT_LAYER_LEVEL]; //back to default floor because other floors might display nothing at low zoom scale
+            [self setFloorsLevel:self.epflTileOverlay.defaultFloorLevel]; //back to default floor because other floors might display nothing at low zoom scale
             self.mapControlsState = MapControlsStateNoFloorControl;
         }
     } else {
         if (self.mapView.overlays.count > 0) {
             [self.mapView removeOverlay:self.epflTileOverlay];
-            [self.mapView removeOverlay:self.epflLayersOverlay];
+            //[self.mapView removeOverlay:self.epflLayersOverlay];
             self.mapControlsState = MapControlsStateNoFloorControl;
         }
     }
@@ -986,7 +963,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
 
 #pragma mark - CustomOverlayViewDelegate
 
-- (void)remoteOverlayRendererDidStartLoading:(RemoteOverlayRenderer *)overlayView {
+/*- (void)remoteOverlayRendererDidStartLoading:(RemoteOverlayRenderer *)overlayView {
     if (self.overlaysLoadingIndicator.isAnimating) {
         return;
     }
@@ -998,7 +975,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         return;
     }
     [self.overlaysLoadingIndicator stopAnimating];
-}
+}*/
 
 #pragma mark - Utilities
 
@@ -1042,10 +1019,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     }
     @catch (NSException *exception) {}
     self.mapView.delegate = nil;
-    [self.tilesOverlayRenderer cancelTilesDownload:YES];
-    self.tilesOverlayRenderer.delegate = nil;
-    [self.layersOverlayRenderer cancelTilesDownload:YES];
-    self.layersOverlayRenderer.delegate = nil;
     self.internetConnectionAlert.delegate = nil;
 }
 

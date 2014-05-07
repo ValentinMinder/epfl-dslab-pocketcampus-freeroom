@@ -101,6 +101,18 @@ double WGStoCHy(double lat, double lng) {
     return y;
 }
 
+/*
+ * http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+ */
+
+double tilex2long(int x, int z) {
+	return x / pow(2.0, z) * 360.0 - 180;
+}
+
+double tiley2lat(int y, int z) {
+	double n = M_PI - 2.0 * M_PI * y / pow(2.0, z);
+	return 180.0 / M_PI * atan(0.5 * (exp(n) - exp(-n)));
+}
 
 @implementation MapUtils
 
@@ -421,6 +433,30 @@ double WGStoCHy(double lat, double lng) {
     bbox.end_y = WGStoCHy(bottomRightWGS.latitude, bottomRightWGS.longitude);
     return bbox;
     
+}
+
++ (CH1903BBox)tilePathToCH1903:(MKTileOverlayPath)tilePath tileSize:(CGSize)tileSize {
+    double lat = tiley2lat(tilePath.y, tilePath.z);
+    double lon = tilex2long(tilePath.x, tilePath.z);
+    
+    CLLocationDegrees span = 360.0 / [MapUtils worldTileWidthForZoomLevel:tilePath.z];
+    
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(lat, lon), MKCoordinateSpanMake(span, span));
+    
+    MKMapRect mapRect = MKMapRectForCoordinateRegion(region);
+    
+    return [MapUtils WGStoCH1903:mapRect];
+}
+
+MKMapRect MKMapRectForCoordinateRegion(MKCoordinateRegion region)
+{
+    MKMapPoint a = MKMapPointForCoordinate(CLLocationCoordinate2DMake(
+                                                                      region.center.latitude + region.span.latitudeDelta / 2,
+                                                                      region.center.longitude - region.span.longitudeDelta / 2));
+    MKMapPoint b = MKMapPointForCoordinate(CLLocationCoordinate2DMake(
+                                                                      region.center.latitude - region.span.latitudeDelta / 2,
+                                                                      region.center.longitude + region.span.longitudeDelta / 2));
+    return MKMapRectMake(MIN(a.x,b.x), MIN(a.y,b.y), ABS(a.x-b.x), ABS(a.y-b.y));
 }
 
 @end

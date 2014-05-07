@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,23 +22,50 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//  Created by Loïc Gardiol on 07.05.14.
 
+#import "PCTileOverlayRenderer.h"
 
+#import "PCTileOverlay.h"
 
-//  Created by Loïc Gardiol on 06.06.12.
+@interface PCTileOverlayRenderer ()
 
+@property (nonatomic, readwrite) PCTileOverlay* pcTileOverlay;
 
-#import <Foundation/Foundation.h>
+@end
 
-#import <MapKit/MapKit.h>
+@implementation PCTileOverlayRenderer
 
-@protocol OverlayWithURLs <MKOverlay>
+#pragma mark - Init
 
-- (NSString *)urlForMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale;
-- (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;
-- (NSString*)identifier;
+- (instancetype)initWithPCTileOverlay:(PCTileOverlay*)overlay {
+    self = [super initWithTileOverlay:overlay];
+    if (self) {
+        self.pcTileOverlay = overlay;
+        self.alpha = overlay.desiredAlpha;
+        [self.pcTileOverlay addObserver:self forKeyPath:NSStringFromSelector(@selector(floorLevel)) options:0 context:nil];
+    }
+    return self;
+}
+
+#pragma mark - Observation
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == self.pcTileOverlay && [keyPath isEqualToString:NSStringFromSelector(@selector(floorLevel))]) {
+        [self reloadData];
+    }
+}
+
+#pragma mark - Dealloc
+
+- (void)dealloc {
+    @try {
+        [self.pcTileOverlay removeObserver:self forKeyPath:NSStringFromSelector(@selector(floorLevel))];
+    }
+    @catch (NSException *exception) {}
+}
 
 @end

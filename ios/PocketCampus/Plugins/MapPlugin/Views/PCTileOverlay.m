@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * 	* Neither the name of PocketCampus.Org nor the
  * 	  names of its contributors may be used to endorse or promote products
  * 	  derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,39 +22,65 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 08.10.13.
+//  Created by Loïc Gardiol on 07.05.14.
 
-@import MapKit;
+#import "PCTileOverlay.h"
 
-typedef enum {
-    PCRemoteOverlayRendererTileModeNormal = 0,
-    PCRemoteOverlayRendererTileModeSingleTilePerRenderingMapViewVisibleMapRect
-} PCRemoteOverlayRendererTileMode;
+@implementation PCTileOverlay
 
-@protocol RemoteOverlayRendererDelegate;
+#pragma mark - Init
 
-@interface RemoteOverlayRenderer : MKOverlayRenderer
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.floorLevel = self.defaultFloorLevel;
+    }
+    return self;
+}
 
-@property (weak) id<RemoteOverlayRendererDelegate> delegate;
-@property (nonatomic, readonly) PCRemoteOverlayRendererTileMode tileMode;
-@property (weak) MKMapView* renderingMapView;
+#pragma mark - Public
 
-/*
- * If tile mode is PCRemoteOverlayRendererTileModeSingleTilePerRenderingMapViewVisibleMapRect,
- * renderingMapView must be set
- */
-- (id)initWithOverlay:(id <MKOverlay>)overlay tileMode:(PCRemoteOverlayRendererTileMode)tileMode;
+- (void)setFloorLevel:(NSInteger)floorLevel {
+    if (floorLevel > self.maxFloorLevel) {
+        _floorLevel = self.maxFloorLevel;
+    } else if (floorLevel < self.minFloorLevel) {
+        _floorLevel = self.minFloorLevel;
+    } else {
+        _floorLevel = floorLevel;
+    }
+}
 
-- (void)cancelTilesDownload:(BOOL)willBeDeallocated;
+- (void)increaseFloorLevel {
+    self.floorLevel = (self.floorLevel+1);
+}
 
-@end
+- (void)decreaseFloorLevel {
+    self.floorLevel = (self.floorLevel-1);
+}
 
-@protocol RemoteOverlayRendererDelegate <NSObject>
+#pragma mark Default implementations
 
-- (void)remoteOverlayRendererDidStartLoading:(RemoteOverlayRenderer*)overlayRenderer;
-- (void)remoteOverlayRendererDidFinishLoading:(RemoteOverlayRenderer*)overlayRenderer;
+- (NSInteger)defaultFloorLevel {
+    return 0;
+}
+
+- (NSInteger)maxFloorLevel {
+    return 100;
+}
+
+- (NSInteger)minFloorLevel {
+    return 100;
+}
+
+- (CLLocationDistance)floorLevelsMaxAltitude {
+    return 10000.0;
+}
+
+- (CGFloat)desiredAlpha {
+    return 1.0;
+}
 
 @end
