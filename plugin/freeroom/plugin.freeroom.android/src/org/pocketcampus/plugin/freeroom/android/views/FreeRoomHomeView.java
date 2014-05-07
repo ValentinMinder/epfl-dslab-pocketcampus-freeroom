@@ -701,7 +701,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (set.isEmpty()) {
 			// NO FAV = check all free rooms
 			details = new FRRequestDetails(FRTimes.getNextValidPeriod(), true,
-					new ArrayList<String>(1), false, true, false,
+					new ArrayList<String>(1), true, false, false,
 					new SetArrayList<FRRoom>());
 		} else {
 			// FAV: check occupancy of ALL favs
