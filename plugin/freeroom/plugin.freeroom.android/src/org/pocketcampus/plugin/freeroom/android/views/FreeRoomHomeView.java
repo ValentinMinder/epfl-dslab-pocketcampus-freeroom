@@ -527,7 +527,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mShareDialog.getWindow().setAttributes(lp);
 
 		mShareView = mLayoutInflater.inflate(
-				R.layout.freeroom_layout_popup_share, null);
+				R.layout.freeroom_layout_dialog_share, null);
 		// these work perfectly
 		mShareView.setMinimumWidth((int) (activityWidth * 0.95f));
 //		mShareView.setMinimumHeight((int) (activityHeight * 0.8f));
