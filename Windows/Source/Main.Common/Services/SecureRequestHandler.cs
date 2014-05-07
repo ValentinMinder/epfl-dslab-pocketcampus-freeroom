@@ -89,7 +89,6 @@ namespace PocketCampus.Main.Services
             where TViewModel : IViewModel<NoParameter>
             where TToken : IAuthenticationToken
             where TSession : class
-            where TResult : class
         {
             var session = LoadSession<TSession>( typeof( TViewModel ) );
 
@@ -113,7 +112,7 @@ namespace PocketCampus.Main.Services
                 }
                 else
                 {
-                    return null;
+                    return default( TResult );
                 }
             }
 

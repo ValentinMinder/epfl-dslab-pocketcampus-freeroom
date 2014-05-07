@@ -28,8 +28,7 @@ namespace PocketCampus.Common.Services
         Task<TResult> ExecuteAsync<TViewModel, TToken, TSession, TResult>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task<TResult>> attempt )
             where TViewModel : IViewModel<NoParameter>
             where TToken : IAuthenticationToken
-            where TSession : class
-            where TResult : class;
+            where TSession : class;
 
         /// <summary>
         /// Requests new credentials from the user.

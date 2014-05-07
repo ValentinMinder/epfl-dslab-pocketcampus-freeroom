@@ -28,7 +28,6 @@ namespace PocketCampus.Camipro.ViewModels
         private EbankingInfo _ebankingInfo;
         private EmailSendingStatus _emailStatus;
 
-        private CamiproRequest _lastRequest;
 
         /// <summary>
         /// Gets the account information.
@@ -81,25 +80,24 @@ namespace PocketCampus.Camipro.ViewModels
         /// </summary>
         private async Task RequestEbankingEmailAsync()
         {
-            bool threw = false;
-            try
+            EmailStatus = await _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession, EmailSendingStatus>( _camiproService, async session =>
             {
-                var result = await _camiproService.RequestEBankingEMailAsync( _lastRequest );
-                if ( result.Status != ResponseStatus.Success )
+                var request = new CamiproRequest
                 {
-                    throw new Exception( "Server error while requesting an e-banking e-mail." );
-                }
-            }
-            catch // catches both the manually thrown exception as well as the ones thrown by RequestEBankingEMailAsync
-            {
-                EmailStatus = EmailSendingStatus.Error;
-                threw = true;
-            }
+                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                    Session = new SessionId { CamiproCookie = session.Cookie }
+                };
 
-            if ( !threw )
-            {
-                EmailStatus = EmailSendingStatus.Success;
-            }
+                try
+                {
+                    var result = await _camiproService.RequestEBankingEMailAsync( request );
+                    return result.Status == ResponseStatus.Success ? EmailSendingStatus.Success : EmailSendingStatus.Error;
+                }
+                catch
+                {
+                    return EmailSendingStatus.Error;
+                }
+            } );
         }
 
         /// <summary>
@@ -114,14 +112,14 @@ namespace PocketCampus.Camipro.ViewModels
 
             return CachedTask.Create( () => _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession, CamiproInfo>( _camiproService, async session =>
             {
-                _lastRequest = new CamiproRequest
+                var request = new CamiproRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                     Session = new SessionId { CamiproCookie = session.Cookie }
                 };
 
-                var accountTask = _camiproService.GetAccountInfoAsync( _lastRequest, token );
-                var ebankingTask = _camiproService.GetEBankingInfoAsync( _lastRequest, token );
+                var accountTask = _camiproService.GetAccountInfoAsync( request, token );
+                var ebankingTask = _camiproService.GetEBankingInfoAsync( request, token );
 
                 await Task.WhenAll( accountTask, ebankingTask );
 
