@@ -85,7 +85,6 @@
     <string name="freeroom_share_in_room">in room</string>
     <string name="freeroom_share_please_come">Please come and join me.</string>
     <string name="freeroom_share_ref_pocket">(This was sent with pocketcampus.org)</string>
-    <string name="freeroom_share_ShareOnly">Share only with server</string>
     <string name="freeroom_share_CopyClipBoard">Copy to clipboard</string>
     <string name="freeroom_share_copied_ClipBoard">Copied to clipboard</string>
     <string name="freeroom_share_copied_ClipBoard_error">Error while copying to clipboard</string>
