@@ -81,42 +81,36 @@
 
     <!-- Line to choose between any rooms or specific rooms -->
 
-    <LinearLayout
+    <RadioGroup
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
         android:orientation="horizontal" >
 
-        <!-- Button to choose any rooms -->
-
-        
-        <ToggleButton
+        <RadioButton
             android:id="@+id/freeroom_layout_dialog_search_any"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="right"
             android:layout_weight="5"
-            android:text="any free"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/freeroom_search_any"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:textOff="any free room"
-            android:textOn="any free room" />
+            android:textColor="@android:color/black" />
 
         <!-- Button to choose specific rooms -->
 
-        <ToggleButton
+        <RadioButton
             android:id="@+id/freeroom_layout_dialog_search_spec"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="right"
             android:layout_weight="5"
+            android:onClick="onRadioButtonClicked"
             android:scrollHorizontally="true"
-            android:text="spec"
+            android:text="@string/freeroom_search_spec"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:textOff="specified rooms"
-            android:textOn="specified rooms" />
-    </LinearLayout>
+            android:textColor="@android:color/black" />
+    </RadioGroup>
 
     <!-- Line to choose more options (only free rooms, favorites, user-defined list of rooms) -->
 

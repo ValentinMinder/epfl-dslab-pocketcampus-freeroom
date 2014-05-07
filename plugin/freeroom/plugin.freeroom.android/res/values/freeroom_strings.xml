@@ -43,6 +43,8 @@
     <string name="freeroom_search_search">Search</string>
     <string name="freeroom_search_reset">Reset</string>
     <string name="freeroom_search_cancel">Cancel</string>
+    <string name="freeroom_search_any">Any free room</string>
+    <string name="freeroom_search_spec">Choose rooms</string>
     <string name="freeroom_selectday">Day</string>
     <string name="freeroom_selectstartHour">Start</string>
     <string name="freeroom_selectendHour">End</string>

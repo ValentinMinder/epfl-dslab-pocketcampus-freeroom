@@ -72,6 +72,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -1085,8 +1086,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private Button showStartTimePicker;
 	private Button showEndTimePicker;
 
-	private ToggleButton specButton;
-	private ToggleButton anyButton;
+	private RadioButton specButton;
+	private RadioButton anyButton;
 	private ToggleButton favButton;
 	private ToggleButton userDefButton;
 	/**
@@ -1269,7 +1270,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void UIConstructButton() {
-		specButton = (ToggleButton) mSearchView
+		specButton = (RadioButton) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_spec);
 		specButton.setOnClickListener(new OnClickListener() {
 
@@ -1295,7 +1296,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		anyButton = (ToggleButton) mSearchView
+		anyButton = (RadioButton) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_any);
 		anyButton.setOnClickListener(new OnClickListener() {
 
