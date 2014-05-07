@@ -436,6 +436,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			resetUserDefined();
 		} else {
 			// we do nothing: reset will be done at search time
+			mSummarySelectedRoomsTextViewSearchMenu
+					.setText(getSummaryTextFromCollection(selectedRooms));
 		}
 	}
 
@@ -617,6 +619,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		searchDialog.dismiss();
 		resetButton = searchDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
 		searchButton = searchDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+
+		mSummarySelectedRoomsTextViewSearchMenu = (TextView) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_text_summary);
+		// the view will be removed or the text changed, no worry
+		mSummarySelectedRoomsTextViewSearchMenu.setText("empty");
 
 		searchPreviousListView = (ListView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_prev_search);
@@ -945,6 +952,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			mOptionalLineLinearLayoutContainer
 					.addView(mOptionalLineLinearLayoutWrapper);
 		}
+		mOptionalLineLinearLayoutWrapper
+				.removeView(mOptionalLineLinearLayoutWrapperIn);
+		if (request.isUser()) {
+			mOptionalLineLinearLayoutWrapper
+					.addView(mOptionalLineLinearLayoutWrapperIn);
+			selectedRooms.addAll(request.getUidNonFav());
+			mSummarySelectedRoomsTextViewSearchMenu
+					.setText(getSummaryTextFromCollection(selectedRooms));
+		}
 	}
 
 	public String wantToShare(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
@@ -1103,6 +1119,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private Button searchButton;
 	private Button resetButton;
+
+	private Button userDefEditButton;
+	private Button userDefResetButton;
 	private ImageButton addHourButton;
 	private ImageButton upToEndHourButton;
 
@@ -1116,6 +1135,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private boolean upToEndSelected = false;
 
 	private TextView mSummarySelectedRoomsTextView;
+	private TextView mSummarySelectedRoomsTextViewSearchMenu;
 
 	private int yearSelected = -1;
 	private int monthSelected = -1;
@@ -1128,6 +1148,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private SimpleDateFormat dateFormat;
 	private SimpleDateFormat timeFormat;
 	private LinearLayout mOptionalLineLinearLayoutWrapper;
+	private LinearLayout mOptionalLineLinearLayoutWrapperIn;
 	private LinearLayout mOptionalLineLinearLayoutContainer;
 
 	private void initSearch() {
@@ -1136,6 +1157,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper);
 		mOptionalLineLinearLayoutContainer = (LinearLayout) searchDialog
 				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_container);
+		mOptionalLineLinearLayoutWrapperIn = (LinearLayout) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper_in);
 
 		selectedRooms = new SetArrayList<FRRoom>();
 		formatters();
@@ -1288,9 +1311,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// TODO: add/remove
 		// mGlobalSubLayout.removeView(mAutoCompleteSuggestionInputBarElement);
 		// mGlobalSubLayout.removeView(mSummarySelectedRoomsTextView);
+		mOptionalLineLinearLayoutWrapper
+				.removeView(mOptionalLineLinearLayoutWrapperIn);
 		selectedRooms.clear();
 		userDefButton.setChecked(false);
 		mSummarySelectedRoomsTextView
+				.setText(getSummaryTextFromCollection(selectedRooms));
+		mSummarySelectedRoomsTextViewSearchMenu
 				.setText(getSummaryTextFromCollection(selectedRooms));
 		mAutoCompleteSuggestionInputBarElement.setInputText("");
 	}
@@ -1339,8 +1366,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							.removeView(mOptionalLineLinearLayoutWrapper);
 				}
 				specButton.setChecked(false);
-				// TODO
-				// resetUserDefined();
+				resetUserDefined();
 
 				boolean enabled = false;
 				favButton.setEnabled(enabled);
@@ -1382,14 +1408,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					specButton.setChecked(true);
 					freeButton.setChecked(false);
 					// TODO: init and use the data.
+					mOptionalLineLinearLayoutWrapper
+							.removeView(mOptionalLineLinearLayoutWrapperIn);
+					mOptionalLineLinearLayoutWrapper
+							.addView(mOptionalLineLinearLayoutWrapperIn);
+					mSummarySelectedRoomsTextViewSearchMenu
+							.setText(getSummaryTextFromCollection(selectedRooms));
 					showPopupAddRoom(false);
 				} else if (!favButton.isChecked()) {
 					userDefButton.setChecked(true);
 					anyButton.setChecked(false);
 					specButton.setChecked(true);
 					freeButton.setChecked(false);
-					showPopupAddRoom(false);
-
 				} else {
 					resetUserDefined();
 				}
@@ -1478,6 +1508,25 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					.findViewById(R.id.freeroom_layout_dialog_search_opt_line_semi);
 			mLinearLayout.setOrientation(LinearLayout.VERTICAL);
 		}
+
+		userDefEditButton = (Button) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_user_edit);
+		userDefEditButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				showPopupAddRoom(false);
+			}
+		});
+		userDefResetButton = (Button) mSearchView
+				.findViewById(R.id.freeroom_layout_dialog_search_user_reset);
+		userDefResetButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				resetUserDefined();
+			}
+		});
 	}
 
 	// TODO: the InputBar is not used so far
@@ -1629,7 +1678,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			buffer.append(room.getDoorCode() + ", ");
 		}
 		buffer.setLength(buffer.length() - 2);
-		int MAX = 1000;
+		int MAX = 100;
 		if (buffer.length() > MAX) {
 			buffer.setLength(MAX);
 			buffer.append("...");

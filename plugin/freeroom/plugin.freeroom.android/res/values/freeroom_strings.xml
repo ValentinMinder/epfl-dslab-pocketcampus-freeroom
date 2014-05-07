@@ -48,6 +48,8 @@
     <string name="freeroom_search_only_free">Only free rooms</string>
     <string name="freeroom_search_favorites">Choose favorites</string>
     <string name="freeroom_search_userdef">Choose user-defined list</string>
+    <string name="freeroom_search_userdef_reset">Reset</string>
+    <string name="freeroom_search_userdef_edit">Edit</string>
     <string name="freeroom_selectday">Day</string>
     <string name="freeroom_selectstartHour">Start</string>
     <string name="freeroom_selectendHour">End</string>
@@ -57,7 +59,7 @@
     <string name="freeroom_check_occupancy_search_date">Date</string>
     <string name="freeroom_check_occupancy_search_start">Start</string>
     <string name="freeroom_check_occupancy_search_end">End</string>
-    <string name="freeroom_check_occupancy_search_text_no_selected_rooms">No selected rooms : type in first letters in inputbar or select in your favorites</string>
+    <string name="freeroom_check_occupancy_search_text_no_selected_rooms">No selected rooms.</string>
     <string name="freeroom_check_occupancy_search_text_selected_rooms">Selected room(s): </string>
     <string name="freeroom_check_occupancy_result_onthe">on</string>
     <string name="freeroom_check_occupancy_result_from">from</string>
