@@ -153,6 +153,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private ListView searchPreviousListView;
 
+	/**
+	 * Dialog that holds the SEARCH Dialog.
+	 */
 	private AlertDialog searchDialog;
 
 	/**
@@ -171,13 +174,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * View that holds the ADDROOM popup content, defined in xml in layout
 	 * folder.
 	 */
-	private View popupAddRoomView;
+	private View mAddRoomView;
+
 	/**
-	 * Window that holds the ADDROOM popup. Note: popup window can be closed by:
-	 * the closing button (red cross), back button, or clicking outside the
-	 * popup.
+	 * Dialog that holds the ADDROOM Dialog.
 	 */
-	private PopupWindow popupAddRoomWindow;
+	private AlertDialog mAddRoomDialog;
 
 	/**
 	 * View that holds the SHARE popup content, defined in xml in layout folder.
@@ -333,9 +335,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		addActionToActionBar(editFavorites);
 		addActionToActionBar(search);
 		initPopupInfoRoom();
-		initPopupSearch();
+		initSearchDialog();
 		initPopupFavorites();
-		initPopupAddRoom();
+		initAddRoomDialog();
 		initPopupShare();
 	}
 
@@ -390,8 +392,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				if (!popupAddRoomWindow.isShowing()) {
-					showPopupAddRoom(true);
+				if (!mAddRoomDialog.isShowing()) {
+					showAddRoomDialog(true);
 				}
 			}
 		});
@@ -420,8 +422,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	// true: fav // false: user-def search
 	private boolean calling = true;
 
-	private void showPopupAddRoom(boolean calling) {
-		popupAddRoomWindow.showAsDropDown(mTextView, 0, 55);
+	private void showAddRoomDialog(boolean calling) {
+		mAddRoomDialog.show();
 		// TODO: reset the data ? the text input, the selected room ?
 		this.calling = calling;
 	}
@@ -441,38 +443,58 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	}
 
-	private void initPopupAddRoom() {
-		// construct the popup
-		// it MUST fill the parent in height, such that weight works in xml for
-		// heights. Otherwise, some elements may not be displayed anymore
-		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-				.getSystemService(LAYOUT_INFLATER_SERVICE);
-		popupAddRoomView = layoutInflater.inflate(
+	private void initAddRoomDialog() {
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		// Get the AlertDialog from create()
+		mAddRoomDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mAddRoomDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mAddRoomDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mAddRoomDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mAddRoomDialog.getWindow().setAttributes(lp);
+
+		mAddRoomView = mLayoutInflater.inflate(
 				R.layout.freeroom_layout_popup_add_room, null);
-		popupAddRoomWindow = new PopupWindow(popupAddRoomView,
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, true);
+		// these work perfectly
+		mAddRoomView.setMinimumWidth((int) (activityWidth * 0.9f));
+		// mAddRoomView.setMinimumHeight((int) (activityHeight * 0.8f));
 
-		// allows outside clicks to close the popup
-		popupAddRoomWindow.setOutsideTouchable(true);
-		popupAddRoomWindow.setBackgroundDrawable(new BitmapDrawable());
+		mAddRoomDialog.setView(mAddRoomView);
+		mAddRoomDialog.setOnShowListener(new OnShowListener() {
 
-		Button bt_done = (Button) popupAddRoomView
-				.findViewById(R.id.freeroom_layout_popup_add_room_done);
+			@Override
+			public void onShow(DialogInterface dialog) {
+				// searchButton.setEnabled(auditSubmit() == 0);
+			}
+		});
+
+		Button bt_done = (Button) mAddRoomView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_done);
 		bt_done.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				popupAddRoomWindow.dismiss();
+				mAddRoomDialog.dismiss();
 				treatEndAddPopup();
 			}
 		});
 
-		mSummarySelectedRoomsTextView = (TextView) popupAddRoomView
-				.findViewById(R.id.freeroom_layout_popup_add_room_summary);
+		mSummarySelectedRoomsTextView = (TextView) mAddRoomView
+				.findViewById(R.id.freeroom_layout_dialog_add_room_summary);
 
 		UIConstructInputBar();
-		LinearLayout ll = (LinearLayout) popupAddRoomView
-				.findViewById(R.id.freeroom_layout_popup_add_layout_main);
+		LinearLayout ll = (LinearLayout) mAddRoomView
+				.findViewById(R.id.freeroom_layout_dialog_add_layout_main);
 		ll.addView(mAutoCompleteSuggestionInputBarElement);
 		createSuggestionsList();
 
@@ -567,7 +589,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * Inits the popup to diplay the information about a room.
 	 */
-	private void initPopupSearch() {
+	private void initSearchDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -1414,7 +1436,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							.addView(mOptionalLineLinearLayoutWrapperIn);
 					mSummarySelectedRoomsTextViewSearchMenu
 							.setText(getSummaryTextFromCollection(selectedRooms));
-					showPopupAddRoom(false);
+					showAddRoomDialog(false);
 				} else if (!favButton.isChecked()) {
 					userDefButton.setChecked(true);
 					anyButton.setChecked(false);
@@ -1515,7 +1537,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				showPopupAddRoom(false);
+				showAddRoomDialog(false);
 			}
 		});
 		userDefResetButton = (Button) mSearchView

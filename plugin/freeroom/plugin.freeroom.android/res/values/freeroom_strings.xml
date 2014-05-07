@@ -103,9 +103,9 @@
     <string name="freeroom_popup_info_uniqID">Unique UID</string>
     <string name="freeroom_popup_fav_title">Favorites</string>
     <string name="freeroom_popup_fav_add">Add</string>
-    <string name="freeroom_popup_add_room_title">Add rooms</string>
-    <string name="freeroom_popup_add_room_validate">Validate</string>
-    <string name="freeroom_popup_add_room_empty_list">Empty selected list, please insert room by typing first letters.</string>
+    <string name="freeroom_dialog_add_room_title">Add rooms</string>
+    <string name="freeroom_dialog_add_room_validate">Validate</string>
+    <string name="freeroom_dialog_add_room_empty_list">Empty selected list, please insert room by typing first letters.</string>
     <string name="freeroom_results_room_header_room">room</string>
     <string name="freeroom_results_room_header_rooms">rooms</string>
     <string name="freeroom_results_room_header_reduce">reduce</string>
