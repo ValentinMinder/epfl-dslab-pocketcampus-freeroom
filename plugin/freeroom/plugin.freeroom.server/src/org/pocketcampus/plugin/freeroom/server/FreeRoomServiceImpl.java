@@ -178,6 +178,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		period.setTimeStampEnd(Utils.roundSAndMSToZero(period.getTimeStampEnd()));
 
 		boolean allowInsert = true;
+		/**
+		 * the previous room is useful in case of an update. If we have to
+		 * update the user occupancy, we need to know which room will be
+		 * replaced to adjust its count field
+		 */
 		String prevRoom = null;
 		if (type == OCCUPANCY_TYPE.USER) {
 			// round user occupancy to a full hour
@@ -218,7 +223,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @return true if the user occupancy is allowed and can be stored, false
 	 *         otherwise.
 	 */
-	//TODO eventually do not user exact timestamp but allow margin even in queries ?
+	// TODO eventually do not user exact timestamp but allow margin even in
+	// queries ?
 	private String checkMultipleSubmissionUserOccupancy(FRPeriod period,
 			FRRoom room, String hash) {
 		long tsStart = period.getTimeStampStart();
@@ -273,6 +279,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The unique hash for each user, used to store an entry in the
 	 *            checkOccupancy table to avoid multiple submissions for the
 	 *            same period from an user
+	 * @param prevRoom
+	 *            The uid of the previous room stored in the checkOccupancy
+	 *            table (if one), otherwise null
 	 * @return Return true if the occupancy has been successfully stored in the
 	 *         database, false otherwise.
 	 */
@@ -376,8 +385,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The start of the user occupancy
 	 * @param hash
 	 *            The unique hash per user
+	 * @param prevRoom
+	 *            The uid of the previous room beeing stored in the
+	 *            checkOccupancy table (if one) null otherwise
 	 */
-	private void insertCheckOccupancyInDB(String uid, long tsStart, String hash, String prevRoom) {
+	private void insertCheckOccupancyInDB(String uid, long tsStart,
+			String hash, String prevRoom) {
 		String insertRequest = "INSERT INTO `fr-checkOccupancy` (uid, timestampStart, hash) "
 				+ "VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE uid = ?";
 
@@ -407,19 +420,22 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		}
 
 	}
-	
+
 	/**
 	 * Decrement the count of users in the room by one
-	 * @param uid The room to update
-	 * @param tsStart The period to update
+	 * 
+	 * @param uid
+	 *            The room to update
+	 * @param tsStart
+	 *            The period to update
 	 */
 	private void decrementUserOccupancyCount(String uid, long tsStart) {
 		if (uid == null) {
 			return;
 		}
-		
-		String updateRequest = "UPDATE `fr-occupancy` co SET co.count = co.count - 1 " +
-				"WHERE co.uid = ? AND co.timestampStart = ?";
+
+		String updateRequest = "UPDATE `fr-occupancy` co SET co.count = co.count - 1 "
+				+ "WHERE co.uid = ? AND co.timestampStart = ?";
 
 		Connection connectBDD;
 		try {
@@ -435,8 +451,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		} catch (SQLException e) {
 			log(LOG_SIDE.SERVER, Level.SEVERE,
-					"SQL error when updating (decrement by one) user occupancy for uid = " + uid
-							+ " start = " + tsStart);
+					"SQL error when updating (decrement by one) user occupancy for uid = "
+							+ uid + " start = " + tsStart);
 			e.printStackTrace();
 		}
 	}
