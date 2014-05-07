@@ -1664,6 +1664,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		resetTimes();
 
 		anyButton.setChecked(true);
+		mOptionalLineLinearLayoutContainer
+				.removeView(mOptionalLineLinearLayoutWrapper);
 		specButton.setChecked(false);
 		favButton.setChecked(false);
 		userDefButton.setChecked(false);
