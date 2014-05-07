@@ -1106,6 +1106,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private ImageButton addHourButton;
 	private ImageButton upToEndHourButton;
 
+	/**
+	 * Stores if the "up to end" button has been trigged.
+	 * <p>
+	 * If yes, the endHour don't follow anymore the startHour when you change
+	 * it. It will be disabled when you change manually the endHour to a value
+	 * under the maximal hour.
+	 */
+	private boolean upToEndSelected = false;
+
 	private TextView mSummarySelectedRoomsTextView;
 
 	private int yearSelected = -1;
@@ -1199,7 +1208,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							startHourSelected = FRTimes.LAST_HOUR_CHECK - 1;
 							startMinSelected = 0;
 						}
-						if (startHourSelected != -1) {
+						if (startHourSelected != -1 && !upToEndSelected) {
 							int shift = startHourSelected - previous;
 							int newEndHour = endHourSelected + shift;
 							if (newEndHour > FRTimes.LAST_HOUR_CHECK) {
@@ -1255,6 +1264,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						if (endHourSelected >= FRTimes.LAST_HOUR_CHECK) {
 							endHourSelected = FRTimes.LAST_HOUR_CHECK;
 							endMinSelected = 0;
+						}
+						if (endHourSelected != FRTimes.LAST_HOUR_CHECK) {
+							upToEndSelected = false;
+							upToEndHourButton.setEnabled(!upToEndSelected);
 						}
 						updateEndTimePickerAndButton();
 						searchButton.setEnabled(auditSubmit() == 0);
@@ -1451,6 +1464,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				updateEndTimePickerAndButton();
 				mTimePickerEndDialog
 						.updateTime(endHourSelected, endMinSelected);
+				upToEndSelected = true;
+				upToEndHourButton.setEnabled(!upToEndSelected);
 				searchButton.setEnabled(auditSubmit() == 0);
 			}
 		});
