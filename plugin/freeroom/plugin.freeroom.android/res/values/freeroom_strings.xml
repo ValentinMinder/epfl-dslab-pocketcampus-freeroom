@@ -78,7 +78,7 @@
     <string name="freeroom_home_error_sorry">An error occurred, sorry! ;)</string>
     <string name="freeroom_home_error_no_results">Sorry: server replied with no results</string>
     <string name="freeroom_home_info_rooms">Rooms occupancies</string>
-    <string name="freeroom_home_info_free_rooms">Free room occupancies</string>
+    <string name="freeroom_home_info_free_rooms">Free rooms</string>
     <string name="freeroom_share_title">Share your location\&#8230;</string>
     <string name="freeroom_share_iam">I am</string>
     <string name="freeroom_share_iwillbe">I will be</string>
