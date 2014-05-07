@@ -64,6 +64,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -78,7 +79,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.markupartist.android.widget.ActionBar.Action;
 
@@ -1088,12 +1088,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private RadioButton specButton;
 	private RadioButton anyButton;
-	private ToggleButton favButton;
-	private ToggleButton userDefButton;
+	private CheckBox favButton;
+	private CheckBox userDefButton;
 	/**
 	 * TRUE: "only free rooms" FALSE: "allow non-free rooms"
 	 */
-	private ToggleButton freeButton;
+	private CheckBox freeButton;
 
 	private Button searchButton;
 	private Button resetButton;
@@ -1319,7 +1319,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		favButton = (ToggleButton) mSearchView
+		favButton = (CheckBox) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_fav);
 		favButton.setEnabled(true);
 		favButton.setOnClickListener(new OnClickListener() {
@@ -1335,7 +1335,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		userDefButton = (ToggleButton) mSearchView
+		userDefButton = (CheckBox) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_user);
 		userDefButton.setOnClickListener(new OnClickListener() {
 
@@ -1361,10 +1361,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		freeButton = (ToggleButton) mSearchView
+		freeButton = (CheckBox) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_non_free);
 		freeButton.setEnabled(true);
-		freeButton.setFocusable(true);
 		freeButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

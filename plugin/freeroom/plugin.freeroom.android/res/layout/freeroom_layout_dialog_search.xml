@@ -122,45 +122,39 @@
 
         <!-- Button to choose whether non-free rooms should be displayed -->
 
-        <ToggleButton
+        <CheckBox
             android:id="@+id/freeroom_layout_dialog_search_non_free"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="bottom"
             android:layout_weight="10"
-            android:text="allow non-free"
+            android:text="@string/freeroom_search_only_free"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:textOff="only free rooms: no"
-            android:textOn="only free rooms: yes" />
+            android:textColor="@android:color/black" />
 
         <!-- Button to choose your favorites -->
 
-        <ToggleButton
+        <CheckBox
             android:id="@+id/freeroom_layout_dialog_search_fav"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="bottom"
             android:layout_weight="5"
-            android:text="fav"
+            android:text="@string/freeroom_search_favorites"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:textOff="favs"
-            android:textOn="favs" />
+            android:textColor="@android:color/black" />
 
         <!-- Button to choose specific user-defined rooms (open a menu to choose them) -->
 
-        <ToggleButton
+        <CheckBox
             android:id="@+id/freeroom_layout_dialog_search_user"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="bottom"
             android:layout_weight="5"
-            android:text="user"
+            android:text="@string/freeroom_search_userdef"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:textOff="user-def"
-            android:textOn="user-def" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <!-- TODO: this can be deleted -->
