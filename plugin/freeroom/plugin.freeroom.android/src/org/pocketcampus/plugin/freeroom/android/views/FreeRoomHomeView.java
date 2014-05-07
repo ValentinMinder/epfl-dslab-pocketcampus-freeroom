@@ -184,13 +184,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	/**
 	 * View that holds the SHARE popup content, defined in xml in layout folder.
 	 */
-	private View popupShareView;
+	private View mShareView;
 	/**
-	 * Window that holds the SHARE popup. Note: popup window can be closed by:
-	 * the closing button (red cross), back button, or clicking outside the
-	 * popup.
+	 * Dialog that holds the SHARE Dialog.
 	 */
-	private PopupWindow popupShareWindow;
+	private AlertDialog mShareDialog;
 
 	private int activityWidth;
 	private int activityHeight;
@@ -501,27 +499,53 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void initPopupShare() {
-		// construct the popup
-		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-				.getSystemService(LAYOUT_INFLATER_SERVICE);
-		popupShareView = layoutInflater.inflate(
-				R.layout.freeroom_layout_popup_share, null);
-		popupShareWindow = new PopupWindow(popupShareView,
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_dialog_share_title));
+		builder.setPositiveButton(
+				getString(R.string.freeroom_dialog_share_button_friends), null);
+		builder.setNegativeButton(getString(R.string.freeroom_search_cancel),
+				null);
+		builder.setNeutralButton(
+				getString(R.string.freeroom_dialog_share_button_server), null);
+		builder.setIcon(R.drawable.share_white_50);
 
-		// allows outside clicks to close the popup
-		popupShareWindow.setOutsideTouchable(true);
-		popupShareWindow.setBackgroundDrawable(new BitmapDrawable());
+		// Get the AlertDialog from create()
+		mShareDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mShareDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.FILL_PARENT;
+		mShareDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mShareDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mShareDialog.getWindow().setAttributes(lp);
+
+		mShareView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_popup_share, null);
+		// these work perfectly
+		mShareView.setMinimumWidth((int) (activityWidth * 0.95f));
+//		mShareView.setMinimumHeight((int) (activityHeight * 0.8f));
+
+		mShareDialog.setView(mShareView);
 
 	}
 
 	public void showPopupShare(final FRPeriod mPeriod, final FRRoom mRoom) {
-		final TextView tv = (TextView) popupShareView
-				.findViewById(R.id.freeroom_layout_popup_share_textBasic);
+		mShareDialog.hide();
+		mShareDialog.show();
+
+		final TextView tv = (TextView) mShareView
+				.findViewById(R.id.freeroom_layout_dialog_share_textBasic);
 		tv.setText(wantToShare(mPeriod, mRoom, ""));
 
-		final EditText ed = (EditText) popupShareView
-				.findViewById(R.id.freeroom_layout_popup_share_text_edit);
+		final EditText ed = (EditText) mShareView
+				.findViewById(R.id.freeroom_layout_dialog_share_text_edit);
 		ed.setOnEditorActionListener(new OnEditorActionListener() {
 
 			@Override
@@ -531,30 +555,30 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		Button shareWithServer = (Button) popupShareView
-				.findViewById(R.id.freeroom_layout_popup_share_server);
+		Button shareWithServer = mShareDialog
+				.getButton(DialogInterface.BUTTON_NEUTRAL);
 		shareWithServer.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				share(mPeriod, mRoom, false, ed.getText().toString());
-				popupShareWindow.dismiss();
+				mShareDialog.dismiss();
 			}
 		});
 
-		Button shareWithFriends = (Button) popupShareView
-				.findViewById(R.id.freeroom_layout_popup_share_friends);
+		Button shareWithFriends = mShareDialog
+				.getButton(DialogInterface.BUTTON_POSITIVE);
 		shareWithFriends.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				share(mPeriod, mRoom, true, ed.getText().toString());
-				popupShareWindow.dismiss();
+				mShareDialog.dismiss();
 			}
 		});
 
-		Spinner spinner = (Spinner) popupShareView
-				.findViewById(R.id.freeroom_layout_popup_share_spinner_course);
+		Spinner spinner = (Spinner) mShareView
+				.findViewById(R.id.freeroom_layout_dialog_share_spinner_course);
 		// Create an ArrayAdapter using the string array and a default spinner
 		// layout
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -582,8 +606,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		});
 
-		// TODO: make it in center of screen!
-		popupShareWindow.showAsDropDown(mTextView, 0, 0);
+		// it's automatically in center of screen!
+		mShareDialog.show();
 	}
 
 	/**
