@@ -43,6 +43,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
@@ -59,6 +60,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -530,7 +532,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				R.layout.freeroom_layout_dialog_share, null);
 		// these work perfectly
 		mShareView.setMinimumWidth((int) (activityWidth * 0.95f));
-//		mShareView.setMinimumHeight((int) (activityHeight * 0.8f));
+		// mShareView.setMinimumHeight((int) (activityHeight * 0.8f));
+		mShareDialog.setOnShowListener(new OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+				disableSoftKeyBoard(mShareView);
+			}
+		});
 
 		mShareDialog.setView(mShareView);
 
@@ -608,6 +617,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// it's automatically in center of screen!
 		mShareDialog.show();
+	}
+
+	/**
+	 * Dismiss the keyboard associated with the view.
+	 * 
+	 * @param v
+	 */
+	private void disableSoftKeyBoard(View v) {
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 	}
 
 	/**
