@@ -10,12 +10,16 @@
 
     <!-- Basic summary of what will be shared with friends -->
 
+
+    <!-- on android 3.0+, add: android:textIsSelectable="true" -->
+
     <TextView
         android:id="@+id/freeroom_layout_dialog_share_textBasic"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:padding="6dip"
+        android:selectAllOnFocus="true"
         android:text="I will be in room ... "
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black" />

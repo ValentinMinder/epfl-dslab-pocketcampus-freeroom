@@ -54,7 +54,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/org.pocketcampus.freeroom.text" />
             </intent-filter>
         </activity>
         <activity
