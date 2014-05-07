@@ -179,7 +179,7 @@
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="coming soon: history of your previous search at this specific place"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
@@ -191,37 +191,6 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
-
-        <!-- headers for title and reset button -->
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/background_light"
-            android:orientation="horizontal" >
-
-            <!-- Reset button -->
-
-            <Button
-                android:id="@+id/freeroom_layout_popup_search_reset"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="10"
-                android:text="reset"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black" />
-
-            <!-- Title (search) -->
-
-            <Button
-                android:id="@+id/freeroom_layout_popup_search_go"
-                android:layout_width="0dp"
-                android:layout_gravity="right"
-                android:layout_weight="10"
-                android:text="textgo"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

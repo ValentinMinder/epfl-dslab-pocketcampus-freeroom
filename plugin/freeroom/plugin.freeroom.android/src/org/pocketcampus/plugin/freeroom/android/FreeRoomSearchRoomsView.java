@@ -94,11 +94,11 @@ public class FreeRoomSearchRoomsView extends FreeRoomAbstractView implements
 		// Creating and initializing button
 		searchButton = new Button(this);
 		searchButton.setEnabled(false);
-		searchButton.setText(R.string.freeroom_searchbutton);
+		searchButton.setText(R.string.freeroom_search_search);
 
 		resetButton = new Button(this);
 		resetButton.setEnabled(true);
-		resetButton.setText(R.string.freeroom_resetbutton);
+		resetButton.setText(R.string.freeroom_search_reset);
 
 		final IFreeRoomView view = this;
 		searchButton.setOnClickListener(new OnClickListener() {

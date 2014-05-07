@@ -39,17 +39,24 @@ import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -135,16 +142,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private PopupWindow popupInfoWindow;
 
 	/**
-	 * View that holds the SEARCH popup content, defined in xml in layout
+	 * View that holds the SEARCH dialog content, defined in xml in layout
 	 * folder.
 	 */
-	private View popupSearchView;
+	private View mSearchView;
+
 	/**
-	 * Window that holds the SEARCH popup. Note: popup window can be closed by:
-	 * the closing button (red cross), back button, or clicking outside the
-	 * popup.
+	 * ListView that holds previous searches.
 	 */
-	private PopupWindow popupSearchWindow;
+	private ListView searchPreviousListView;
+
+	private AlertDialog searchDialog;
 
 	/**
 	 * View that holds the FAVORITES popup content, defined in xml in layout
@@ -181,13 +189,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private PopupWindow popupShareWindow;
 
+	private int activityWidth;
+	private int activityHeight;
+
+	private LayoutInflater mLayoutInflater;
+
 	/**
 	 * Action to perform a customized search.
 	 */
 	private Action search = new Action() {
 		public void performAction(View view) {
-			popupSearchWindow.showAsDropDown(mTextView, 0, 0);
 			refreshPopupSearch();
+			searchDialog.show();
 		}
 
 		public int getDrawable() {
@@ -302,6 +315,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	@Override
 	public void initializeView() {
+		mLayoutInflater = this.getLayoutInflater();
+
+		// retrieve display dimensions
+		Rect displayRectangle = new Rect();
+		Window window = this.getWindow();
+		window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+		activityWidth = displayRectangle.width();
+		activityHeight = displayRectangle.height();
+
 		mExpListAdapter = new ExpandableListViewAdapter<Occupancy>(
 				getApplicationContext(), mModel.getOccupancyResults(),
 				mController, this);
@@ -543,25 +565,74 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Inits the popup to diplay the information about a room.
 	 */
 	private void initPopupSearch() {
-		// construct the popup
-		// it MUST fill the parent in height, such that weight works in xml for
-		// heights. Otherwise, some elements may not be displayed anymore
-		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-				.getSystemService(LAYOUT_INFLATER_SERVICE);
-		popupSearchView = layoutInflater.inflate(
-				R.layout.freeroom_layout_popup_search, null);
-		popupSearchWindow = new PopupWindow(popupSearchView,
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, true);
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-		// allows outside clicks to close the popup
-		popupSearchWindow.setOutsideTouchable(true);
-		popupSearchWindow.setBackgroundDrawable(new BitmapDrawable());
+		// Various setter methods to set the searchDialog characteristics
 
-		Button tv = (Button) popupSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_go);
-		tv.setText("Go!!");
+		builder.setTitle(getString(R.string.freeroom_search_title));
+		builder.setPositiveButton(getString(R.string.freeroom_search_search),
+				null);
+		builder.setNegativeButton(getString(R.string.freeroom_search_cancel),
+				null);
+		builder.setNeutralButton(getString(R.string.freeroom_search_reset),
+				null);
+		builder.setIcon(R.drawable.magnify2x06);
+
+		// Get the AlertDialog from create()
+
+		searchDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = searchDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.FILL_PARENT;
+		searchDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		searchDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		searchDialog.getWindow().setAttributes(lp);
+
+		mSearchView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_dialog_search, null);
+		// these work perfectly
+		mSearchView.setMinimumWidth((int) (activityWidth * 0.9f));
+		mSearchView.setMinimumHeight((int) (activityHeight * 0.8f));
+
+		searchDialog.setView(mSearchView);
+		searchDialog.setOnShowListener(new OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+				searchButton.setEnabled(auditSubmit() == 0);
+			}
+		});
+		// this is necessary o/w buttons don't exists!
+		searchDialog.hide();
+		searchDialog.show();
+		searchDialog.dismiss();
+		resetButton = searchDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+		searchButton = searchDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+
+		searchPreviousListView = (ListView) mSearchView
+				.findViewById(R.id.freeroom_layout_popup_search_prev_search);
+		// TODO: previous search
+		// searchPreviousListView.setAdapter();
 
 		initSearch();
+	}
+
+	public boolean onTouchEvent(MotionEvent event) {
+
+		if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+			System.out
+					.println("TOuch outside the dialog ******************** ");
+			searchDialog.dismiss();
+		}
+		return false;
 	}
 
 	/**
@@ -582,8 +653,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				popupInfoWindow.dismiss();
 				flag = true;
 			}
-			if (popupSearchWindow.isShowing()) {
-				popupSearchWindow.dismiss();
+			if (searchDialog.isShowing()) {
+				searchDialog.dismiss();
 				flag = true;
 			}
 			if (popupFavoritesWindow.isShowing()) {
@@ -1069,7 +1140,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private void UIConstructPickers() {
 		// First allow the user to select a date
-		showDatePicker = (Button) popupSearchView
+		showDatePicker = (Button) mSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_date);
 		mDatePickerDialog = new DatePickerDialog(this,
 				new DatePickerDialog.OnDateSetListener() {
@@ -1095,7 +1166,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		// Then the starting time of the period
-		showStartTimePicker = (Button) popupSearchView
+		showStartTimePicker = (Button) mSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_hour_start);
 		mTimePickerStartDialog = new TimePickerDialog(this,
 				new OnTimeSetListener() {
@@ -1144,7 +1215,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		// Then the ending time of the period
-		showEndTimePicker = (Button) popupSearchView
+		showEndTimePicker = (Button) mSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_hour_end);
 		mTimePickerEndDialog = new TimePickerDialog(this,
 				new OnTimeSetListener() {
@@ -1198,7 +1269,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void UIConstructButton() {
-		specButton = (ToggleButton) popupSearchView
+		specButton = (ToggleButton) mSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_spec);
 		specButton.setOnClickListener(new OnClickListener() {
 
@@ -1224,7 +1295,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		anyButton = (ToggleButton) popupSearchView
+		anyButton = (ToggleButton) mSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_any);
 		anyButton.setOnClickListener(new OnClickListener() {
 
@@ -1247,7 +1318,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		favButton = (ToggleButton) popupSearchView
+		favButton = (ToggleButton) mSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_fav);
 		favButton.setEnabled(true);
 		favButton.setOnClickListener(new OnClickListener() {
@@ -1263,7 +1334,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		userDefButton = (ToggleButton) popupSearchView
+		userDefButton = (ToggleButton) mSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_user);
 		userDefButton.setOnClickListener(new OnClickListener() {
 
@@ -1289,7 +1360,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		freeButton = (ToggleButton) popupSearchView
+		freeButton = (ToggleButton) mSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_non_free);
 		freeButton.setEnabled(true);
 		freeButton.setFocusable(true);
@@ -1304,10 +1375,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		searchButton = (Button) popupSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_go);
-		searchButton.setEnabled(false);
-		searchButton.setText(R.string.freeroom_searchbutton);
+		searchButton.setEnabled(auditSubmit() == 0);
 		searchButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1316,10 +1384,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		resetButton = (Button) popupSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_reset);
 		resetButton.setEnabled(true);
-		resetButton.setText(R.string.freeroom_resetbutton);
 		resetButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1332,7 +1397,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		addHourButton = (ImageButton) popupSearchView
+		addHourButton = (ImageButton) mSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_hour_end_plus);
 		addHourButton.setEnabled(true);
 		addHourButton.setOnClickListener(new OnClickListener() {
@@ -1351,7 +1416,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		upToEndHourButton = (ImageButton) popupSearchView
+		upToEndHourButton = (ImageButton) mSearchView
 				.findViewById(R.id.freeroom_layout_popup_search_hour_end_toend);
 		upToEndHourButton.setEnabled(true);
 		upToEndHourButton.setOnClickListener(new OnClickListener() {
@@ -1734,7 +1799,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				freeButton.isChecked(), mUIDList, any, fav, user, selectedRooms);
 		mModel.setFRRequestDetails(details);
 		mController.sendFRRequest(this);
-		popupSearchWindow.dismiss();
+		searchDialog.dismiss();
 
 		resetUserDefined(); // cleans the selectedRooms of userDefined
 	}

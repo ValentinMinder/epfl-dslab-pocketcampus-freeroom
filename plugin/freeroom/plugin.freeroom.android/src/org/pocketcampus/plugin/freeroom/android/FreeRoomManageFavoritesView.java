@@ -84,7 +84,7 @@ public class FreeRoomManageFavoritesView extends FreeRoomAbstractView implements
 	public void initializeView() {
 		resetView();
 		resetAllFavorites = new Button(this);
-		resetAllFavorites.setText(getString(R.string.freeroom_resetbutton));
+		resetAllFavorites.setText(getString(R.string.freeroom_search_reset));
 		resetAllFavorites.setOnClickListener(new OnClickListener() {
 
 			@Override
