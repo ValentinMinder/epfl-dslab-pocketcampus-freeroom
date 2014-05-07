@@ -618,7 +618,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		searchButton = searchDialog.getButton(DialogInterface.BUTTON_POSITIVE);
 
 		searchPreviousListView = (ListView) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_prev_search);
+				.findViewById(R.id.freeroom_layout_dialog_search_prev_search);
 		// TODO: previous search
 		// searchPreviousListView.setAdapter();
 
@@ -1141,7 +1141,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private void UIConstructPickers() {
 		// First allow the user to select a date
 		showDatePicker = (Button) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_date);
+				.findViewById(R.id.freeroom_layout_dialog_search_date);
 		mDatePickerDialog = new DatePickerDialog(this,
 				new DatePickerDialog.OnDateSetListener() {
 
@@ -1167,7 +1167,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// Then the starting time of the period
 		showStartTimePicker = (Button) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_hour_start);
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_start);
 		mTimePickerStartDialog = new TimePickerDialog(this,
 				new OnTimeSetListener() {
 
@@ -1216,7 +1216,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// Then the ending time of the period
 		showEndTimePicker = (Button) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_hour_end);
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_end);
 		mTimePickerEndDialog = new TimePickerDialog(this,
 				new OnTimeSetListener() {
 
@@ -1270,7 +1270,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private void UIConstructButton() {
 		specButton = (ToggleButton) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_spec);
+				.findViewById(R.id.freeroom_layout_dialog_search_spec);
 		specButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1296,7 +1296,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		anyButton = (ToggleButton) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_any);
+				.findViewById(R.id.freeroom_layout_dialog_search_any);
 		anyButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1319,7 +1319,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		favButton = (ToggleButton) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_fav);
+				.findViewById(R.id.freeroom_layout_dialog_search_fav);
 		favButton.setEnabled(true);
 		favButton.setOnClickListener(new OnClickListener() {
 
@@ -1335,7 +1335,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		userDefButton = (ToggleButton) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_user);
+				.findViewById(R.id.freeroom_layout_dialog_search_user);
 		userDefButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1361,7 +1361,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		freeButton = (ToggleButton) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_non_free);
+				.findViewById(R.id.freeroom_layout_dialog_search_non_free);
 		freeButton.setEnabled(true);
 		freeButton.setFocusable(true);
 		freeButton.setOnClickListener(new OnClickListener() {
@@ -1398,7 +1398,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		addHourButton = (ImageButton) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_hour_end_plus);
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_end_plus);
 		addHourButton.setEnabled(true);
 		addHourButton.setOnClickListener(new OnClickListener() {
 
@@ -1417,7 +1417,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		upToEndHourButton = (ImageButton) mSearchView
-				.findViewById(R.id.freeroom_layout_popup_search_hour_end_toend);
+				.findViewById(R.id.freeroom_layout_dialog_search_hour_end_toend);
 		upToEndHourButton.setEnabled(true);
 		upToEndHourButton.setOnClickListener(new OnClickListener() {
 

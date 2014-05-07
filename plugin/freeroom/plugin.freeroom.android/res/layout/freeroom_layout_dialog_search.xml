@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Layout for the search popup window. -->
+<!-- Layout for the search dialog. -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -19,7 +19,7 @@
         <!-- Button that display the date selected, with picker associated to set specific date -->
 
         <Button
-            android:id="@+id/freeroom_layout_popup_search_date"
+            android:id="@+id/freeroom_layout_dialog_search_date"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="right"
@@ -31,7 +31,7 @@
         <!-- Button that display the start hour selected, with picker associated to set specific hour -->
 
         <Button
-            android:id="@+id/freeroom_layout_popup_search_hour_start"
+            android:id="@+id/freeroom_layout_dialog_search_hour_start"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="right"
@@ -43,7 +43,7 @@
         <!-- Button that display the end hour selected, with picker associated to set specific hour -->
 
         <Button
-            android:id="@+id/freeroom_layout_popup_search_hour_end"
+            android:id="@+id/freeroom_layout_dialog_search_hour_end"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="right"
@@ -55,7 +55,7 @@
         <!-- Image button to switch end hour to next hour -->
 
         <ImageButton
-            android:id="@+id/freeroom_layout_popup_search_hour_end_plus"
+            android:id="@+id/freeroom_layout_dialog_search_hour_end_plus"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="right"
@@ -68,7 +68,7 @@
         <!-- Image button to switch end hour to the last hour possible -->
 
         <ImageButton
-            android:id="@+id/freeroom_layout_popup_search_hour_end_toend"
+            android:id="@+id/freeroom_layout_dialog_search_hour_end_toend"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="right"
@@ -89,8 +89,9 @@
 
         <!-- Button to choose any rooms -->
 
+        
         <ToggleButton
-            android:id="@+id/freeroom_layout_popup_search_any"
+            android:id="@+id/freeroom_layout_dialog_search_any"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="right"
@@ -104,7 +105,7 @@
         <!-- Button to choose specific rooms -->
 
         <ToggleButton
-            android:id="@+id/freeroom_layout_popup_search_spec"
+            android:id="@+id/freeroom_layout_dialog_search_spec"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="right"
@@ -120,7 +121,7 @@
     <!-- Line to choose more options (only free rooms, favorites, user-defined list of rooms) -->
 
     <LinearLayout
-        android:id="@+id/freeroom_layout_popup_search_opt_line"
+        android:id="@+id/freeroom_layout_dialog_search_opt_line"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
@@ -128,7 +129,7 @@
         <!-- Button to choose whether non-free rooms should be displayed -->
 
         <ToggleButton
-            android:id="@+id/freeroom_layout_popup_search_non_free"
+            android:id="@+id/freeroom_layout_dialog_search_non_free"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="bottom"
@@ -142,7 +143,7 @@
         <!-- Button to choose your favorites -->
 
         <ToggleButton
-            android:id="@+id/freeroom_layout_popup_search_fav"
+            android:id="@+id/freeroom_layout_dialog_search_fav"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="bottom"
@@ -156,7 +157,7 @@
         <!-- Button to choose specific user-defined rooms (open a menu to choose them) -->
 
         <ToggleButton
-            android:id="@+id/freeroom_layout_popup_search_user"
+            android:id="@+id/freeroom_layout_dialog_search_user"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="bottom"
@@ -180,7 +181,7 @@
     <!-- to display previous searches -->
 
     <ListView
-        android:id="@+id/freeroom_layout_popup_search_prev_search"
+        android:id="@+id/freeroom_layout_dialog_search_prev_search"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
