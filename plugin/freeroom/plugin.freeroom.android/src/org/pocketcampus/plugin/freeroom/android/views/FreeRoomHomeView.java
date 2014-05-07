@@ -939,6 +939,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		favButton.setEnabled(enabled);
 		userDefButton.setEnabled(enabled);
 		freeButton.setEnabled(enabled);
+		mOptionalLineLinearLayoutContainer
+				.removeView(mOptionalLineLinearLayoutWrapper);
+		if (enabled) {
+			mOptionalLineLinearLayoutContainer
+					.addView(mOptionalLineLinearLayoutWrapper);
+		}
 	}
 
 	public String wantToShare(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
@@ -1112,8 +1118,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private SimpleDateFormat dateFormat;
 	private SimpleDateFormat timeFormat;
+	private LinearLayout mOptionalLineLinearLayoutWrapper;
+	private LinearLayout mOptionalLineLinearLayoutContainer;
 
 	private void initSearch() {
+
+		mOptionalLineLinearLayoutWrapper = (LinearLayout) searchDialog
+				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper);
+		mOptionalLineLinearLayoutContainer = (LinearLayout) searchDialog
+				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_container);
 
 		selectedRooms = new SetArrayList<FRRoom>();
 		formatters();
@@ -1276,6 +1289,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
+				if (specButton.isChecked()) {
+					mOptionalLineLinearLayoutContainer
+							.removeView(mOptionalLineLinearLayoutWrapper);
+					mOptionalLineLinearLayoutContainer
+							.addView(mOptionalLineLinearLayoutWrapper);
+				}
 				specButton.setChecked(true);
 				anyButton.setChecked(false);
 				anyButton.setEnabled(true);
@@ -1302,6 +1321,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
+				if (anyButton.isChecked()) {
+					mOptionalLineLinearLayoutContainer
+							.removeView(mOptionalLineLinearLayoutWrapper);
+				}
 				specButton.setChecked(false);
 				// TODO
 				// resetUserDefined();
@@ -1431,6 +1454,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				searchButton.setEnabled(auditSubmit() == 0);
 			}
 		});
+
+		// on vertical screens, choose fav and choose user-def are vertically
+		// aligned
+		// on horizontal screens, there are horizontally aligned.
+		if (activityHeight > activityWidth) {
+			LinearLayout mLinearLayout = (LinearLayout) searchDialog
+					.findViewById(R.id.freeroom_layout_dialog_search_opt_line_semi);
+			mLinearLayout.setOrientation(LinearLayout.VERTICAL);
+		}
 	}
 
 	// TODO: the InputBar is not used so far
