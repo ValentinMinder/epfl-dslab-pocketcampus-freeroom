@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:hint="@string/freeroom_dialog_share_textedit_hint"
+            android:imeOptions="actionSend"
             android:padding="6dip"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />

@@ -537,7 +537,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onShow(DialogInterface dialog) {
-				disableSoftKeyBoard(mShareView);
+				dismissSoftKeyBoard(mShareView);
 			}
 		});
 
@@ -560,6 +560,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
 				tv.setText(wantToShare(mPeriod, mRoom, ed.getText().toString()));
+				dismissSoftKeyBoard(arg0);
 				return true;
 			}
 		});
@@ -624,7 +625,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * 
 	 * @param v
 	 */
-	private void disableSoftKeyBoard(View v) {
+	private void dismissSoftKeyBoard(View v) {
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 	}
