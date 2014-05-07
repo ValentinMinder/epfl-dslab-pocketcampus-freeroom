@@ -542,4 +542,23 @@ public class FRTimes {
 		return (hour >= LAST_HOUR_CHECK)
 				|| (hour == (LAST_HOUR_CHECK - 1) && min >= (60 - MIN_MINUTE_INTERVAL));
 	}
+
+	/**
+	 * Compare two calendars to know if it's the same day, basically if their
+	 * year/month/day are all the same.
+	 * 
+	 * @param cal1
+	 *            first calendar to compare
+	 * @param cal2
+	 *            second calendar to compare
+	 * @return true if their year/month/day are all the same.
+	 */
+	public static boolean compareCalendars(Calendar cal1, Calendar cal2) {
+		boolean sameYear = (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR));
+		boolean sameMonth = (cal1.get(Calendar.MONTH) == cal2
+				.get(Calendar.MONTH));
+		boolean sameDay = (cal1.get(Calendar.DAY_OF_MONTH) == cal2
+				.get(Calendar.DAY_OF_MONTH));
+		return sameYear && sameMonth && sameDay;
+	}
 }

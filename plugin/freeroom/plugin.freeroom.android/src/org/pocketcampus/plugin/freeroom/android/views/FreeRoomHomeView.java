@@ -1583,19 +1583,75 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		updateDateTimePickersAndButtons();
 	}
 
+	/**
+	 * Updates ALL the date and time <code>PickerDialog</code> and related
+	 * <code>Button</code>.
+	 * 
+	 * <p>
+	 * It updates the <code>Button</code> to summarize the date/time selected
+	 * according to your language preferences. The <code>PickerDialog</code> is
+	 * also updated: it's useful if the date/time has changed from somewhere
+	 * else, the <code>PickerDialog</code> will reopen with the new value.
+	 */
 	private void updateDateTimePickersAndButtons() {
 		updateDatePickerAndButton();
 		updateStartTimePickerAndButton();
 		updateEndTimePickerAndButton();
 	}
 
+	/**
+	 * Updates the date <code>PickerDialog</code> and related
+	 * <code>Button</code>.
+	 * 
+	 * <p>
+	 * It updates the <code>Button</code> to summarize the date selected
+	 * according to your language preferences. The <code>PickerDialog</code> is
+	 * also updated: it's useful if the date has changed from somewhere else,
+	 * the <code>PickerDialog</code> will reopen with the new value.
+	 * 
+	 * <p>
+	 * Instead of the usual format "Wed 24 May", the date is summarize to
+	 * "today", "yesterday", "tomorrow" when relevant.
+	 */
 	private void updateDatePickerAndButton() {
-		showDatePicker.setText(dateFormat.format(new Date(prepareFRFrPeriod()
-				.getTimeStampStart())));
+		// creating selected time
+		Calendar selected = Calendar.getInstance();
+		selected.setTimeInMillis(prepareFRFrPeriod().getTimeStampStart());
+		// creating now time reference
+		Calendar now = Calendar.getInstance();
+		// creating tomorrow time reference
+		Calendar tomorrow = Calendar.getInstance();
+		tomorrow.roll(Calendar.DAY_OF_MONTH, true);
+		// creating yesterday time reference
+		Calendar yesterday = Calendar.getInstance();
+		yesterday.roll(Calendar.DAY_OF_MONTH, false);
+
+		if (FRTimes.compareCalendars(now, selected)) {
+			showDatePicker.setText(getString(R.string.freeroom_search_today));
+		} else if (FRTimes.compareCalendars(tomorrow, selected)) {
+			showDatePicker
+					.setText(getString(R.string.freeroom_search_tomorrow));
+		} else if (FRTimes.compareCalendars(yesterday, selected)) {
+			showDatePicker
+					.setText(getString(R.string.freeroom_search_yesterday));
+		} else {
+			showDatePicker.setText(dateFormat.format(selected.getTime()));
+		}
+
 		mDatePickerDialog.updateDate(yearSelected, monthSelected,
 				dayOfMonthSelected);
 	}
 
+	/**
+	 * Updates the START time <code>PickerDialog</code> and related
+	 * <code>Button</code>.
+	 * 
+	 * <p>
+	 * It updates the <code>Button</code> to summarize the START time selected
+	 * according to your language preferences. The <code>PickerDialog</code> is
+	 * also updated: it's useful if the START time has changed from somewhere
+	 * else, the <code>PickerDialog</code> will reopen with the new value.
+	 */
 	private void updateStartTimePickerAndButton() {
 		showStartTimePicker
 				.setText(getString(R.string.freeroom_check_occupancy_search_start)
@@ -1605,6 +1661,16 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mTimePickerStartDialog.updateTime(startHourSelected, startMinSelected);
 	}
 
+	/**
+	 * Updates the END time <code>PickerDialog</code> and related
+	 * <code>Button</code>.
+	 * 
+	 * <p>
+	 * It updates the <code>Button</code> to summarize the END time selected
+	 * according to your language preferences. The <code>PickerDialog</code> is
+	 * also updated: it's useful if the END time has changed from somewhere
+	 * else, the <code>PickerDialog</code> will reopen with the new value.
+	 */
 	private void updateEndTimePickerAndButton() {
 		showEndTimePicker
 				.setText(getString(R.string.freeroom_check_occupancy_search_end)
