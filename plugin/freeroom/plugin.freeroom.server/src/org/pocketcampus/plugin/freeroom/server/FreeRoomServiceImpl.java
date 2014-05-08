@@ -191,21 +191,13 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			prevRoom = checkMultipleSubmissionUserOccupancy(period, room, hash);
 		}
 
-		if (allowInsert) {
-
-			boolean inserted = insertAndCheckOccupancyRoom(period, room, type,
-					hash, prevRoom);
-			log(LOG_SIDE.SERVER, Level.INFO,
-					"Inserting occupancy " + type.toString() + " for room "
-							+ room.getDoorCode() + " : " + inserted);
-			return inserted;
-		} else {
-			log(LOG_SIDE.SERVER,
-					Level.WARNING,
-					"Client already said he was working in "
-							+ room.getDoorCode());
-			return false;
-		}
+		boolean inserted = insertAndCheckOccupancyRoom(period, room, type,
+				hash, prevRoom);
+		log(LOG_SIDE.SERVER,
+				Level.INFO,
+				"Inserting occupancy " + type.toString() + " for room "
+						+ room.getDoorCode() + " : " + inserted);
+		return inserted;
 
 	}
 
@@ -743,7 +735,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 									+ tsStart + " end = " + tsEnd);
 					return new HashMap<String, List<Occupancy>>();
 				}
-				
+
 				return getOccupancyOfSpecificRoom(uidsList, onlyFreeRooms,
 						tsStart, tsEnd, userGroup);
 			} catch (SQLException e) {
