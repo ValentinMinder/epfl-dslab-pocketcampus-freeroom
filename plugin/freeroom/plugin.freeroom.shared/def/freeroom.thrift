@@ -112,8 +112,6 @@ struct AutoCompleteRequest {
 struct AutoCompleteReply {
 	1: required i32 status;
 	2: required string statusComment;
-	//TO DELETE
-	3: optional list<FRRoom> listFRRoom;
 	4: optional map<string, list<FRRoom>> listRoom;
 }
 
