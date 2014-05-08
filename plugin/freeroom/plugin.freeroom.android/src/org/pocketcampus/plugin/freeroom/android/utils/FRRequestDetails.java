@@ -18,13 +18,19 @@ import org.pocketcampus.plugin.freeroom.shared.FRRoom;
  * 
  */
 public class FRRequestDetails extends FRRequest {
+	/**
+	 * Auto-generated serial version ID.
+	 */
+	private static final long serialVersionUID = 1097781363203978779L;
+
 	private FRRequest req = null;
 	private boolean any = false;
 	private boolean fav = true;
 	private boolean user = false;
 	private SetArrayList<FRRoom> uidNonFav = null;
 
-	//TODO change group accordingly, set to 1 by default and for testing purpose
+	// TODO change group accordingly, set to 1 by default and for testing
+	// purpose
 	public FRRequestDetails(FRPeriod period, boolean onlyFreeRooms,
 			List<String> uidList, boolean any, boolean fav, boolean user,
 			SetArrayList<FRRoom> uidNonFav, int userGroup) {

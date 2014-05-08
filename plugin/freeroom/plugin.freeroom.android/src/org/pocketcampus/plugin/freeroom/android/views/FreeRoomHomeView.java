@@ -5,12 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
@@ -28,6 +24,7 @@ import org.pocketcampus.plugin.freeroom.android.adapter.ExpandableListViewFavori
 import org.pocketcampus.plugin.freeroom.android.adapter.FRRoomSuggestionArrayAdapter;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
+import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.android.utils.SetArrayList;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
@@ -261,7 +258,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private Action editFavorites = new Action() {
 		public void performAction(View view) {
-			mAdapterFav.notifyDataSetChanged();
+			mFavoritesAdapter.notifyDataSetChanged();
 			mFavoritesDialog.show();
 		}
 
@@ -435,12 +432,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/**
 	 * Inits the dialog to diplay the favorites.
-	 * <p>
-	 * TODO: how to store them!!
 	 */
-	private ArrayList<String> buildings;
-	private Map<String, List<FRRoom>> rooms;
-	private ExpandableListViewFavoriteAdapter mAdapterFav;
+	private ExpandableListViewFavoriteAdapter mFavoritesAdapter;
 
 	private void initFavoritesDialog() {
 		// Instantiate an AlertDialog.Builder with its constructor
@@ -480,7 +473,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onShow(DialogInterface dialog) {
-
+				mFavoritesAdapter.notifyDataSetChanged();
 			}
 		});
 
@@ -501,23 +494,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		ExpandableListView lv = (ExpandableListView) mFavoritesView
 				.findViewById(R.id.freeroom_layout_dialog_fav_list);
-
-		// TODO: THIS IS AWWWWWWWFUUUUULLL
-		// PLEASE STORE FRROOM OBJECTS, NOT THESE UIDS
-		Map<String, String> allFavorites = mModel.getAllRoomMapFavorites();
-		HashSet<FRRoom> favoritesAsFRRoom = new HashSet<FRRoom>();
-		for (Entry<String, String> e : allFavorites.entrySet()) {
-			// Favorites beeing stored as uid -> doorCode
-			favoritesAsFRRoom.add(new FRRoom(e.getValue(), e.getKey()));
-		}
-		rooms = mModel.sortFRRoomsByBuildingsAndFavorites(favoritesAsFRRoom,
-				false);
-		buildings = new ArrayList<String>(rooms.keySet());
-
-		mAdapterFav = new ExpandableListViewFavoriteAdapter(this, buildings,
-				rooms, mModel);
-		lv.setAdapter(mAdapterFav);
-		mAdapterFav.notifyDataSetChanged();
+		mFavoritesAdapter = new ExpandableListViewFavoriteAdapter(this, mModel
+				.getFavorites().keySetOrdered(), mModel.getFavorites(), mModel);
+		lv.setAdapter(mFavoritesAdapter);
+		mFavoritesAdapter.notifyDataSetChanged();
 	}
 
 	private void displayAddRoomDialog(AddRoomCaller calling) {
@@ -531,8 +511,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			Iterator<FRRoom> iter = selectedRooms.iterator();
 			while (iter.hasNext()) {
 				FRRoom mRoom = iter.next();
-				mModel.addRoomFavorites(mRoom.getUid(), mRoom.getDoorCode());
+				// TODO: add all in batch!
+				mModel.addFavorite(mRoom);
 			}
+			mFavoritesAdapter.notifyDataSetChanged();
 			resetUserDefined();
 		} else if (lastCaller.equals(AddRoomCaller.SEARCH)) {
 			// we do nothing: reset will be done at search time
@@ -696,7 +678,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				android.R.layout.simple_spinner_item);
 		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
+		// Apply the mFavoritesAdapter to the spinner
 		spinner.setAdapter(adapter);
 
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -869,7 +851,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private FRRequestDetails validRequest() {
-		Set<String> set = mModel.getAllRoomMapFavorites().keySet();
+		OrderMapListFew<String, List<FRRoom>, FRRoom> set = mModel
+				.getFavorites();
 		FRRequestDetails details = null;
 		if (set.isEmpty()) {
 			// NO FAV = check all free rooms
@@ -882,7 +865,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		} else {
 			// FAV: check occupancy of ALL favs
 			ArrayList<String> array = new ArrayList<String>(set.size());
-			array.addAll(set);
+
+			addAllFavoriteToCollection(array, AddCollectionCaller.SEARCH, true);
+
 			// TODO change group accordingly, set to 1 by default and for
 			// testing purpose
 
@@ -1791,21 +1776,53 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void addAllFavsToAutoComplete() {
-		Map<String, String> map = mModel.getAllRoomMapFavorites();
-
 		mAutoCompleteSuggestionArrayListFRRoom.clear();
-
-		Iterator<String> iter = map.keySet().iterator();
-		while (iter.hasNext()) {
-			String uid = iter.next();
-			String doorCode = map.get(uid);
-			FRRoom room = new FRRoom(doorCode, uid);
-			if (!selectedRooms.contains(room)) {
-				mAutoCompleteSuggestionArrayListFRRoom.add(room);
-			}
-		}
+		addAllFavoriteToCollection(mAutoCompleteSuggestionArrayListFRRoom,
+				AddCollectionCaller.ADDALLFAV, false);
 
 		mAdapter.notifyDataSetChanged();
+	}
+
+	private enum AddCollectionCaller {
+		ADDALLFAV, SEARCH;
+	}
+
+	/**
+	 * Add all the favorites FRRoom to the collection. Caller is needed in order
+	 * to have special condition depending on the caller. The collection will be
+	 * cleared prior to any adding.
+	 * 
+	 * @param collection
+	 *            collection in which you want the favorites to be added.
+	 * @param caller
+	 *            identification of the caller, to provide conditions.
+	 * @param addOnlyUID
+	 *            true to add UID, false to add fully FRRoom object.
+	 */
+	private void addAllFavoriteToCollection(Collection collection,
+			AddCollectionCaller caller, boolean addOnlyUID) {
+		collection.clear();
+		OrderMapListFew<String, List<FRRoom>, FRRoom> set = mModel
+				.getFavorites();
+		Iterator<String> iter = set.keySetOrdered().iterator();
+		while (iter.hasNext()) {
+			String key = iter.next();
+			Iterator<FRRoom> iter2 = set.get(key).iterator();
+			label: while (iter2.hasNext()) {
+				FRRoom mRoom = iter2.next();
+				// condition of adding depending on the caller
+				if (caller.equals(AddCollectionCaller.ADDALLFAV)) {
+					if (selectedRooms.contains(mRoom)) {
+						break label;
+					}
+				}
+				if (addOnlyUID) {
+					collection.add(mRoom.getUid());
+				} else {
+					collection.add(mRoom);
+				}
+			}
+		}
 	}
 
 	/**
@@ -2074,7 +2091,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		List<String> mUIDList = new ArrayList<String>(selectedRooms.size());
 
 		if (favButton.isChecked()) {
-			mUIDList.addAll(mModel.getAllRoomMapFavorites().keySet());
+			addAllFavoriteToCollection(mUIDList, AddCollectionCaller.SEARCH,
+					true);
 		}
 		if (userDefButton.isChecked()) {
 			Iterator<FRRoom> iter = selectedRooms.iterator();
@@ -2087,9 +2105,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		boolean any = anyButton.isChecked();
 		boolean fav = favButton.isChecked();
 		boolean user = userDefButton.isChecked();
-		//TODO change group accordingly, set to 1 by default and for testing purpose
+		// TODO change group accordingly, set to 1 by default and for testing
+		// purpose
 		FRRequestDetails details = new FRRequestDetails(period,
-				freeButton.isChecked(), mUIDList, any, fav, user, selectedRooms, 1);
+				freeButton.isChecked(), mUIDList, any, fav, user,
+				selectedRooms, 1);
 		mModel.setFRRequestDetails(details);
 		mController.sendFRRequest(this);
 		mSearchDialog.dismiss();
@@ -2152,9 +2172,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				&& !userDefButton.isChecked()) {
 			return 1;
 		}
-		Set<String> set = mModel.getAllRoomMapFavorites().keySet();
+		boolean isFavEmpty = mModel.getFavorites().isEmpty();
 		if (favButton.isChecked()
-				&& set.isEmpty()
+				&& isFavEmpty
 				&& (!userDefButton.isChecked() || (userDefButton.isChecked() && selectedRooms
 						.isEmpty()))) {
 			return 1;
@@ -2190,4 +2210,5 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		mAdapter.notifyDataSetChanged();
 	}
+
 }

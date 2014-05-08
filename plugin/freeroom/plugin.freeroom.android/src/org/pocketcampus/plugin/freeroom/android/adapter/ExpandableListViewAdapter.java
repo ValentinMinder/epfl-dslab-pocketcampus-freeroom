@@ -121,7 +121,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 
 		final Occupancy occupancy = data.getChild(groupPosition, childPosition);
 
-		FRRoom mRoom = occupancy.getRoom();
+		final FRRoom mRoom = occupancy.getRoom();
 		final String doorCode = mRoom.getDoorCode();
 		TextView tv = vholder.getTextView();
 		if (mRoom.isSetDoorCodeAlias()) {
@@ -152,7 +152,7 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 		});
 
 		final String uid = occupancy.getRoom().getUid();
-		final boolean isFav = mModel.containRoomFavorites(uid);
+		final boolean isFav = mModel.isFavorite(mRoom);
 
 		if (isFav) {
 			star.setImageResource(android.R.drawable.star_big_on);
@@ -166,10 +166,10 @@ public class ExpandableListViewAdapter<T> extends BaseExpandableListAdapter {
 			public void onClick(View v) {
 				if (isFav) {
 					star.setImageResource(android.R.drawable.star_big_off);
-					mModel.removeRoomFavorites(uid);
+					mModel.removeFavorite(mRoom);
 				} else {
 					star.setImageResource(android.R.drawable.star_big_on);
-					mModel.addRoomFavorites(uid, doorCode);
+					mModel.addFavorite(mRoom);
 				}
 				notifyDataSetChanged();
 			}

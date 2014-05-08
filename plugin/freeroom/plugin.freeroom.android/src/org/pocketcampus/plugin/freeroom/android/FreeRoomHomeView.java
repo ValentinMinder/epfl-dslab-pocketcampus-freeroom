@@ -106,8 +106,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		subLayout.addView(mExpView);
 
 		// create the request for the server
-		List<String> uidsFavorites = new ArrayList<String>(
-				mModel.getAllRoomMapFavorites().keySet());
+		List<String> uidsFavorites =  null ; //new ArrayList<String>(
+			//	mModel.getAllRoomMapFavorites().keySet());
 		Calendar calendar = Calendar.getInstance();
 		FreeRoomRequest req = FRTimes.convert(
 				calendar.get(Calendar.DAY_OF_WEEK),

@@ -89,16 +89,16 @@ public class FreeRoomManageFavoritesView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				if (mModel.removeAllRoomsFavorites()) {
-					initializeView();
-				}
+//				if (mModel.removeAllRoomsFavorites()) {
+//					initializeView();
+//				}
 			}
 		});
 		subLayout.addView(resetAllFavorites);
 
 		mExpList = new ExpandableListView(this);
 
-		Map<String, String> allFavorites = mModel.getAllRoomMapFavorites();
+		Map<String, String> allFavorites = null; //mModel.getAllRoomMapFavorites();
 		HashSet<FRRoom> favoritesAsFRRoom = new HashSet<FRRoom>();
 
 		for (Entry<String, String> e : allFavorites.entrySet()) {

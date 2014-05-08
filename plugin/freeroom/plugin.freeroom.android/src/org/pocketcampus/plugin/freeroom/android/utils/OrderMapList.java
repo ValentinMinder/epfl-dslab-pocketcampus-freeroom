@@ -26,6 +26,10 @@ import java.util.List;
  *            the type of the <code>value</code>s elements
  */
 public class OrderMapList<K, V, T> extends OrderMap<K, V> {
+	/**
+	 * Auto-generated serial version ID.
+	 */
+	private static final long serialVersionUID = -2302200486834357420L;
 
 	/**
 	 * Default constructor.

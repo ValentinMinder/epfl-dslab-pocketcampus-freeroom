@@ -1,5 +1,12 @@
 package org.pocketcampus.plugin.freeroom.android;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OptionalDataException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -20,7 +27,6 @@ import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
@@ -47,8 +53,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	/**
 	 * Keys to persistent storage
 	 */
-	private final String FAVORITES_ROOMS_KEY = "FAVORITES_ROOMS_KEY";
-	private final String FORBIDDEN_ROOMS_KEY = "FORBIDDEN_ROOMS_KEY";
 	private final String PREF_USER_DETAILS_KEY = "KEY_USER_DETAILS";
 	/**
 	 * key for the anonymous and unique ID of the user.
@@ -466,107 +470,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	// ********** END OF "WHO'S WORKING THERE" PART **********
-	// ********** START OF "FAVORITES" PART **********
-
-	public boolean addRoomFavorites(String uid, String doorCode) {
-		return addRoom(uid, doorCode, FAVORITES_ROOMS_KEY);
-	}
-
-	public boolean removeRoomFavorites(String uid) {
-		return removeRoomByUID(uid, FAVORITES_ROOMS_KEY);
-	}
-
-	public boolean removeAllRoomsFavorites() {
-		SharedPreferences preferences = context.getSharedPreferences(
-				FAVORITES_ROOMS_KEY, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.clear();
-		return editor.commit();
-	}
-
-	/**
-	 * Checks if the uid is present in the map.
-	 * 
-	 * @param uid
-	 * @return
-	 */
-	public boolean containRoomFavorites(String uid) {
-		return containsRoomByUID(uid, FAVORITES_ROOMS_KEY);
-	}
-
-	/**
-	 * Return the door code of the room represented by the uid.
-	 * 
-	 * Return null if the favorite is not in the map.
-	 * 
-	 * @param uid
-	 * @return
-	 */
-	public String getRoomFavorites(String uid) {
-		return getRoomByUID(uid, FAVORITES_ROOMS_KEY);
-	}
-
-	public Map<String, String> getAllRoomMapFavorites() {
-		return getAllRoomAsMap(FAVORITES_ROOMS_KEY);
-	}
-
-	public boolean addRoomForbidden(String uid, String doorCode) {
-		return addRoom(uid, doorCode, FORBIDDEN_ROOMS_KEY);
-	}
-
-	public boolean removeRoomForbidden(String uid) {
-		return removeRoomByUID(uid, FORBIDDEN_ROOMS_KEY);
-	}
-
-	public boolean containRoomForbidden(String uid) {
-		return containsRoomByUID(uid, FORBIDDEN_ROOMS_KEY);
-	}
-
-	public String getRoomForbidden(String uid) {
-		return getRoomByUID(uid, FORBIDDEN_ROOMS_KEY);
-	}
-
-	public Map<String, String> getAllRoomMapForbidden() {
-		return getAllRoomAsMap(FORBIDDEN_ROOMS_KEY);
-	}
-
-	private boolean addRoom(String uid, String doorCode, String key) {
-		SharedPreferences preferences = context.getSharedPreferences(key,
-				Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(uid, doorCode);
-		return editor.commit();
-	}
-
-	private boolean removeRoomByUID(String uid, String key) {
-		SharedPreferences preferences = context.getSharedPreferences(key,
-				Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.remove(uid);
-		return editor.commit();
-	}
-
-	private boolean containsRoomByUID(String uid, String key) {
-		SharedPreferences preferences = context.getSharedPreferences(key,
-				Context.MODE_PRIVATE);
-		return preferences.contains(uid);
-	}
-
-	private boolean containsRoomByDoorCode(String doorCode, String key) {
-		return getAllRoomAsMap(key).containsValue(doorCode);
-	}
-
-	private String getRoomByUID(String uid, String key) {
-		SharedPreferences preferences = context.getSharedPreferences(key,
-				Context.MODE_PRIVATE);
-		return preferences.getString(uid, null);
-	}
-
-	private Map<String, String> getAllRoomAsMap(String key) {
-		SharedPreferences preferences = context.getSharedPreferences(key,
-				Context.MODE_PRIVATE);
-		return (Map<String, String>) preferences.getAll();
-	}
 
 	/**
 	 * TODO: deprecated
@@ -612,7 +515,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		while (iter.hasNext()) {
 			FRRoom frRoom = iter.next();
 
-			if (wantFavoritesList && containRoomFavorites(frRoom.getUid())) {
+			if (wantFavoritesList && isFavorite(frRoom)) {
 				roomsFavorites.add(frRoom);
 			}
 
@@ -883,5 +786,201 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 				.toString(32 - anonymID.length());
 
 		return anonymID;
+	}
+
+	/* INTERACTION WITH FILESYSTEM */
+
+	/**
+	 * Writes the give Object to the file given.
+	 * 
+	 * @param filename
+	 *            the file to write on.
+	 * @param object
+	 *            the object to write on file.
+	 * @return true if written successfully, false if any error occured.
+	 */
+	private boolean writeObjectToFile(String filename, Object object) {
+		FileOutputStream fos;
+		try {
+			fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(object);
+			oos.close();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Read a single object from the file given.
+	 * 
+	 * @param filename
+	 *            file on which to read
+	 * @return a single object read from file, null if an error occured.
+	 */
+	private Object readObjectFromFile(String filename) {
+		FileInputStream fos;
+		try {
+			fos = context.openFileInput(filename);
+			ObjectInputStream oin = new ObjectInputStream(fos);
+			Object o = oin.readObject();
+			oin.close();
+			return o;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+
+		} catch (OptionalDataException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/* NEW FAVORITES IMPLEMENTATION AS OF MAY 8 2014 */
+
+	private OrderMapListFew<String, List<FRRoom>, FRRoom> favorites;
+	private String FAVORITES_FILENAME = "freeroom_favorites_file.dat";
+
+	/**
+	 * Retrieves the favorites object from persistent file.
+	 * 
+	 * @return true if successful.
+	 */
+	private boolean retrieveFavorites() {
+		Object read = readObjectFromFile(FAVORITES_FILENAME);
+		if (read instanceof OrderMapListFew<?, ?, ?>) {
+			favorites = (OrderMapListFew<String, List<FRRoom>, FRRoom>) read;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Save the favorites object to persistent file.
+	 * 
+	 * @return true if successful.
+	 */
+	private boolean saveFavorites() {
+		return writeObjectToFile(FAVORITES_FILENAME, favorites);
+	}
+
+	/**
+	 * Get a reference to the map of favorites. It will load from the persistent
+	 * file if not loaded so far. It will construct a new favorites structure
+	 * and save it to file if none is found.
+	 * 
+	 * @return a reference to the map of favorites.
+	 */
+	public OrderMapListFew<String, List<FRRoom>, FRRoom> getFavorites() {
+		if (favorites == null) {
+			if (!retrieveFavorites()) {
+				resetFavorites();
+			}
+		}
+		return favorites;
+	}
+
+	/**
+	 * Reset the favorites structure to an empty structure and save it to file.
+	 * Useful when a bug appear, when changing structures during updates, or
+	 * simply at first launch of the app.
+	 * <p>
+	 * Call getFavorites in usual mode, this is reserved for particular uses.
+	 * 
+	 * @return true if written to file successful.
+	 */
+	public boolean resetFavorites() {
+		favorites = new OrderMapListFew<String, List<FRRoom>, FRRoom>(50);
+		favorites.setAvailableLimit(Integer.MAX_VALUE);
+		return saveFavorites();
+	}
+
+	/**
+	 * Add a room to the favorites, and save the favorites.
+	 * 
+	 * @param mRoom
+	 *            room to add to favorites
+	 * @return true if successful
+	 */
+	public boolean addFavorite(FRRoom mRoom) {
+		// ensure favorites structure exists.
+		getFavorites();
+		String key = getKey(mRoom);
+		List<FRRoom> list = null;
+		if (favorites.containsKey(key)) {
+			list = favorites.get(key);
+		} else {
+			list = new ArrayList<FRRoom>();
+		}
+		boolean flag1 = list.add(mRoom);
+		favorites.put(key, list);
+		boolean flag2 = saveFavorites();
+		return flag1 && flag2;
+	}
+
+	/**
+	 * Checks if a room is in the favorites.
+	 * 
+	 * @param mRoom
+	 *            room to add to favorites
+	 * @return true if successful
+	 */
+	public boolean isFavorite(FRRoom mRoom) {
+		// ensure favorites structure exists.
+		getFavorites();
+		String key = getKey(mRoom);
+		List<FRRoom> list = null;
+		if (favorites.containsKey(key)) {
+			list = favorites.get(key);
+			return list.contains(mRoom);
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Removes a room from the favorites, and save the favorites.
+	 * 
+	 * @param mRoom
+	 *            room to remove from the favorites.
+	 * @return true if successful.
+	 */
+	public boolean removeFavorite(FRRoom mRoom) {
+		// ensure favorites structure exists.
+		getFavorites();
+
+		String key = getKey(mRoom);
+		List<FRRoom> list = null;
+		if (favorites.containsKey(key)) {
+			list = favorites.get(key);
+			boolean flag1 = list.remove(mRoom);
+			favorites.put(key, list);
+			boolean flag2 = saveFavorites();
+			return flag1 && flag2;
+		} else {
+			return true;
+		}
+	}
+
+	// TODO: this is not secured (may not exist)
+	private String getKey(FRRoom mRoom) {
+		String key = mRoom.getBuilding_name();
+		if (key == null || key.length() == 0) {
+			key = getBuilding(mRoom.getDoorCode());
+			if (key == null || key.length() == 0) {
+				key = "unknown";
+			}
+		}
+		return key;
 	}
 }

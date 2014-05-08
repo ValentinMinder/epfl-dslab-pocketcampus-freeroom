@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.freeroom.android.utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -57,8 +58,11 @@ import java.util.Set;
  * @param <V>
  *            the type of the <code>value</code>s
  */
-public class OrderMap<K, V> implements Map<K, V> {
-
+public class OrderMap<K, V> implements Map<K, V>, Serializable {
+	/**
+	 * Auto-generated serial version ID.
+	 */
+	private static final long serialVersionUID = 8898116355542735442L;
 	public static int defaultSize = 30;
 	private List<K> listKey = new ArrayList<K>();
 	private Map<K, V> data = new HashMap<K, V>();

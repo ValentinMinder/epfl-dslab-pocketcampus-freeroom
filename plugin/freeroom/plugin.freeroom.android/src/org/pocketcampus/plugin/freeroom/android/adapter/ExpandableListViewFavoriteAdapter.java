@@ -113,7 +113,7 @@ public class ExpandableListViewFavoriteAdapter extends
 		});
 
 		final String uid = room.getUid();
-		final boolean isFav = mModel.containRoomFavorites(uid);
+		final boolean isFav = mModel.isFavorite(room);
 
 		if (isFav) {
 			star.setImageResource(android.R.drawable.star_big_on);
@@ -127,10 +127,10 @@ public class ExpandableListViewFavoriteAdapter extends
 			public void onClick(View v) {
 				if (isFav) {
 					star.setImageResource(android.R.drawable.star_big_off);
-					mModel.removeRoomFavorites(room.getUid());
+					mModel.removeFavorite(room);
 				} else {
 					star.setImageResource(android.R.drawable.star_big_on);
-					mModel.addRoomFavorites(room.getUid(), room.getDoorCode());
+					mModel.addFavorite(room);
 				}
 				notifyDataSetChanged();
 			}

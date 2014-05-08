@@ -351,7 +351,7 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 	}
 	
 	private void addAllFavsToAutoComplete() {
-		Map<String, String> map = mModel.getAllRoomMapFavorites();
+		Map<String, String> map = null; //mModel.getAllRoomMapFavorites();
 		
 		mAutoCompleteSuggestionArrayListFRRoom.clear();
 		mAutoCompleteSuggestionArrayListString.clear();

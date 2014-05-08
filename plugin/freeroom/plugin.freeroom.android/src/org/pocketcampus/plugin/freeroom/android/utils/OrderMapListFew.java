@@ -31,6 +31,10 @@ import java.util.Set;
  *            the type of the <code>value</code>s elements
  */
 public class OrderMapListFew<K, V, T> extends OrderMapList<K, V, T> {
+	/**
+	 * Auto-generated serial version ID.
+	 */
+	private static final long serialVersionUID = -7495053409497613416L;
 
 	/**
 	 * The number of elements to make available in each group.
