@@ -716,7 +716,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 						+ "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ?) "
 						+ "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
 						+ "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
-						+ "AND ro.type LIKE ?) AND rl.accessGroup <= ?";
+						+ "AND ro.type LIKE ?) AND rl.accessGroup <= ? AND rl.enabled = 1";
 
 				PreparedStatement query = connectBDD.prepareStatement(request);
 				query.setLong(1, tsEnd);
