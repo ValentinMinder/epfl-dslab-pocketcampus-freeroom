@@ -771,11 +771,19 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mSearchView.setMinimumHeight((int) (activityHeight * 0.8f));
 
 		mSearchDialog.setView(mSearchView);
+		final String textTitlePrevious = getString(R.string.freeroom_search_previous_search);
 		mSearchDialog.setOnShowListener(new OnShowListener() {
 
 			@Override
 			public void onShow(DialogInterface dialog) {
 				searchButton.setEnabled(auditSubmit() == 0);
+				TextView prevSearchTitle = (TextView) mSearchView
+						.findViewById(R.id.freeroom_layout_dialog_search_prev_search_title);
+				if (mModel.getPreviousRequest().isEmpty()) {
+					prevSearchTitle.setText("");
+				} else {
+					prevSearchTitle.setText(textTitlePrevious);
+				}
 			}
 		});
 		// this is necessary o/w buttons don't exists!
@@ -792,7 +800,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// display the previous searches
 		mSearchPreviousListView = (ListView) mSearchView
-				.findViewById(R.id.freeroom_layout_dialog_search_prev_search);
+				.findViewById(R.id.freeroom_layout_dialog_search_prev_search_list);
 		ArrayAdapter<FRRequestDetails> adapter = new ArrayAdapter<FRRequestDetails>(
 				this, R.layout.sdk_list_entry, R.id.sdk_list_entry_text,
 				mModel.getPreviousRequest());
@@ -1071,7 +1079,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// TODO: move that to utils, and clean that.
 		// SimpleDateFormat hour_min = new SimpleDateFormat(
 		// getString(R.string.freeroom_pattern_hour_format));
-		SimpleDateFormat hour_min = new SimpleDateFormat("HH:MM");
+		SimpleDateFormat hour_min = new SimpleDateFormat("HH:mm");
 
 		build.append(hour_min.format(startDate));
 		build.append(" - ");
@@ -1761,15 +1769,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 
-		// on vertical screens, choose fav and choose user-def are vertically
-		// aligned
-		// on horizontal screens, there are horizontally aligned.
-		if (activityHeight > activityWidth) {
-			LinearLayout mLinearLayout = (LinearLayout) mSearchDialog
-					.findViewById(R.id.freeroom_layout_dialog_search_opt_line_semi);
-			mLinearLayout.setOrientation(LinearLayout.VERTICAL);
-		}
-
 		userDefEditButton = (Button) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_user_edit);
 		userDefEditButton.setOnClickListener(new OnClickListener() {
@@ -1788,6 +1787,28 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				resetUserDefined();
 			}
 		});
+
+		// on vertical screens, choose fav and choose user-def are vertically
+		// aligned
+		// on horizontal screens, there are horizontally aligned.
+		if (activityHeight > activityWidth) {
+			LinearLayout mLinearLayout = (LinearLayout) mSearchDialog
+					.findViewById(R.id.freeroom_layout_dialog_search_opt_line_semi);
+			mLinearLayout.setOrientation(LinearLayout.VERTICAL);
+			if (activityWidth <= 480) {
+				LinearLayout header_main = (LinearLayout) mSearchView
+						.findViewById(R.id.freeroom_layout_dialog_search_upper_main);
+				header_main.setOrientation(LinearLayout.VERTICAL);
+				LinearLayout header_1st = (LinearLayout) mSearchView
+						.findViewById(R.id.freeroom_layout_dialog_search_upper_first);
+				LinearLayout header_2nd = (LinearLayout) mSearchView
+						.findViewById(R.id.freeroom_layout_dialog_search_upper_second);
+				header_1st.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
+				header_1st.getLayoutParams().width = LayoutParams.FILL_PARENT;
+				header_2nd.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
+				header_2nd.getLayoutParams().width = LayoutParams.FILL_PARENT;
+			}
+		}
 	}
 
 	// TODO: the InputBar is not used so far
@@ -2123,11 +2144,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * else, the <code>PickerDialog</code> will reopen with the new value.
 	 */
 	private void updateStartTimePickerAndButton() {
-		showStartTimePicker
-				.setText(getString(R.string.freeroom_check_occupancy_search_start)
-						+ " "
-						+ timeFormat.format(new Date(prepareFRFrPeriod()
-								.getTimeStampStart())));
+		showStartTimePicker.setText(generateTime(
+				getString(R.string.freeroom_check_occupancy_search_start),
+				prepareFRFrPeriod().getTimeStampStart()));
 		mTimePickerStartDialog.updateTime(startHourSelected, startMinSelected);
 	}
 
@@ -2142,11 +2161,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * else, the <code>PickerDialog</code> will reopen with the new value.
 	 */
 	private void updateEndTimePickerAndButton() {
-		showEndTimePicker
-				.setText(getString(R.string.freeroom_check_occupancy_search_end)
-						+ " "
-						+ timeFormat.format(new Date(prepareFRFrPeriod()
-								.getTimeStampEnd())));
+		showEndTimePicker.setText(generateTime(
+				getString(R.string.freeroom_check_occupancy_search_end),
+				prepareFRFrPeriod().getTimeStampEnd()));
 		if (endHourSelected >= FRTimes.LAST_HOUR_CHECK
 				|| (endHourSelected == FRTimes.LAST_HOUR_CHECK - 1 && endMinSelected != 0)) {
 			addHourButton.setEnabled(false);
@@ -2154,6 +2171,26 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			addHourButton.setEnabled(true);
 		}
 		mTimePickerEndDialog.updateTime(endHourSelected, endMinSelected);
+	}
+
+	/**
+	 * Generates the start and end time summary. On small screens, specific
+	 * start and end are not written.
+	 * 
+	 * @param prefix
+	 *            eg. "start"
+	 * @param time
+	 *            in milliseconds, time to display
+	 * @return a formatted time with an optional prefix.
+	 */
+	private String generateTime(String prefix, long time) {
+		String returned = "";
+		if (activityWidth < 480) {
+			returned = timeFormat.format(new Date(time));
+		} else {
+			returned = prefix + " " + timeFormat.format(new Date(time));
+		}
+		return returned;
 	}
 
 	/**

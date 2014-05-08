@@ -23,7 +23,7 @@
             android:id="@+id/freeroom_layout_dialog_add_room_summary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="15"
+            android:layout_weight="10"
             android:text="@string/freeroom_dialog_add_room_empty_list"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
