@@ -582,6 +582,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
+				dismissSoftKeyBoard(v);
 				mAddRoomDialog.dismiss();
 				dimissAddRoomDialog();
 			}
@@ -1780,6 +1781,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mAutoCompleteSuggestionInputBarElement
 				.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 
+		// click on magnify glass on the keyboard
 		mAutoCompleteSuggestionInputBarElement
 				.setOnEditorActionListener(new OnEditorActionListener() {
 					@Override
@@ -1788,14 +1790,17 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 							String query = mAutoCompleteSuggestionInputBarElement
 									.getInputText();
-							Log.v(this.getClass().toString(),
-									"we do nothing here... with query: "
-											+ query);
+							dismissSoftKeyBoard(v);
+							AutoCompleteRequest request = new AutoCompleteRequest(
+									query, 1);
+							mController.autoCompleteBuilding(view, request);
 						}
 
 						return true;
 					}
 				});
+
+		// click on BUTTON magnify glass on the inputbar
 		mAutoCompleteSuggestionInputBarElement
 				.setOnButtonClickListener(new OnClickListener() {
 					@Override
@@ -1803,6 +1808,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						String query = mAutoCompleteSuggestionInputBarElement
 								.getInputText();
 						if (query.length() >= 2) {
+							dismissSoftKeyBoard(v);
 							// TODO change group accordingly, set to 1 by
 							// default and for testing purpose
 							AutoCompleteRequest request = new AutoCompleteRequest(
@@ -1834,6 +1840,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							if (text.length() >= 2) {
 								// TODO change group accordingly, set to 1 by
 								// default and for testing purpose
+								// remove this if you don't want auto-complete
+								// without pressing the button
 								AutoCompleteRequest request = new AutoCompleteRequest(
 										text, 1);
 								mController.autoCompleteBuilding(view, request);
