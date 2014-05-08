@@ -341,12 +341,12 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					// also insert in the check table to prevent further submit
 					// during the same period from the same user
 					insertCheckOccupancyInDB(room.getUid(), hourSharpBefore + i
-							* Utils.ONE_HOUR_MS, hash, prevRoom);
+							* FRTimes.ONE_HOUR_IN_MS, hash, prevRoom);
 					overallInsertion = overallInsertion
 							&& insertOccupancyInDB(room.getUid(),
-									hourSharpBefore + i * Utils.ONE_HOUR_MS,
+									hourSharpBefore + i * FRTimes.ONE_HOUR_IN_MS,
 									hourSharpBefore + (i + 1)
-											* Utils.ONE_HOUR_MS,
+											* FRTimes.ONE_HOUR_IN_MS,
 									OCCUPANCY_TYPE.USER, 1);
 
 				}
@@ -516,7 +516,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		FRPeriod period = request.getPeriod();
 		long tsStart = TimesUtils.roundToNearestHalfHourBefore(period
 				.getTimeStampStart());
-		long tsEnd = Utils
+		long tsEnd = TimesUtils
 				.roundToNearestHalfHourAfter(period.getTimeStampEnd());
 		int group = request.getUserGroup();
 

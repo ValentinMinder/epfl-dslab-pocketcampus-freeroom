@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
  * This is an utility class doing useful conversions, and defining a few
@@ -23,14 +24,6 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
  * 
  */
 public class Utils {
-
-	// TODO: move in FRTimes in shared!!!
-	public static final long m30s_IN_MS = 30 * 1000;
-	public static final long ONE_HOUR_MS = 60 * 60 * 1000;
-	public static final long m30M_MS = 60 * 30 * 1000;
-	public static final long ONE_DAY_MS = ONE_HOUR_MS * 24;
-	public static final long MARGIN_ERROR = 5 * 60 * 1000;
-	public static final long MIN_PERIOD = 15 * 60 * 1000;
 
 	/**
 	 * Adjust the period given in the request. It adds 30s to the lower bound,
@@ -43,8 +36,8 @@ public class Utils {
 	 */
 	public static FreeRoomRequest convertMinPrecision(FreeRoomRequest req) {
 		FRPeriod period = req.getPeriod();
-		period.setTimeStampStart(period.getTimeStampStart() + m30s_IN_MS);
-		period.setTimeStampEnd(period.getTimeStampEnd() - m30s_IN_MS);
+		period.setTimeStampStart(period.getTimeStampStart() + FRTimes.m30_MIN_IN_MS);
+		period.setTimeStampEnd(period.getTimeStampEnd() - FRTimes.m30_MIN_IN_MS);
 
 		return new FreeRoomRequest(period);
 
@@ -124,7 +117,7 @@ public class Utils {
 	 * @return The timestamp rounded to the previous hour (10h12 -> 10h00)
 	 */
 	public static long roundHourBefore(long timestamp) {
-		long min = timestamp % ONE_HOUR_MS;
+		long min = timestamp % FRTimes.ONE_HOUR_IN_MS;
 		return timestamp - min;
 	}
 
@@ -138,15 +131,15 @@ public class Utils {
 	 * @return The timestamp rounded as defined above
 	 */
 	public static long roundHourAfter(long timestamp) {
-		long minToCompleteHour = ONE_HOUR_MS - (timestamp % ONE_HOUR_MS);
-		long min = timestamp % ONE_HOUR_MS;
+		long minToCompleteHour = FRTimes.ONE_HOUR_IN_MS - (timestamp % FRTimes.ONE_HOUR_IN_MS);
+		long min = timestamp % FRTimes.ONE_HOUR_IN_MS;
 
 		// if the hour is really close (according to MARGIN_ERROR) to the
 		// previous hour, we simply keep the current hour (e.g if MARGIN_ERROR
 		// is 5min, if we get 10h04 return value will be 10h00)
-		if (min <= MARGIN_ERROR) {
+		if (min <= FRTimes.MARGIN_ERROR) {
 			return timestamp - min;
-		} else if (minToCompleteHour == ONE_HOUR_MS) {
+		} else if (minToCompleteHour == FRTimes.ONE_HOUR_IN_MS) {
 			return timestamp;
 		}
 		return timestamp + minToCompleteHour;
@@ -177,33 +170,7 @@ public class Utils {
 
 
 
-	/**
-	 * Round the nearest half hour after
-	 * @param timestamp The timestamp to round
-	 * @return The rounded timestamp
-	 */
-	public static long roundToNearestHalfHourAfter(long timestamp) {
-		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
-		long timeInMin = timestamp % ONE_HOUR_MS;
-
-		// if the hour is full (like 8:00am) no need to round
-		if (timeInMin == 0) {
-			return timestamp;
-		} else if (timeInMin < MARGIN_ERROR && timeInMin > 0) {
-			//in this case we are very close to the full hour, take the full hour
-			return timestamp - timeInMin;
-		}
-
-		// if we are beyond 30min for the hour, we take the next one
-		if (timeToCompleteHour < m30M_MS) {
-			return timestamp + timeToCompleteHour;
-		}
-
-		// otherwise we take the next half hour
-		long timeInMinToHalfHour = m30M_MS - timestamp % m30M_MS;
-		return timestamp + timeInMinToHalfHour;
-	}
-
+	
 	/**
 	 * Set the seconds and milliseconds to zero in the given timestamp.
 	 * 

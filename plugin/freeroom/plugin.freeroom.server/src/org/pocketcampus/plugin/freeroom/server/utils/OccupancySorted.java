@@ -8,6 +8,7 @@ import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 /**
  * This class is used to sort, fill and then create an occupancy based on
@@ -58,7 +59,7 @@ public class OccupancySorted {
 			end = timestampEnd;
 		}
 
-		if (occ.isAvailable() && end - start > Utils.ONE_HOUR_MS) {
+		if (occ.isAvailable() && end - start > FRTimes.ONE_HOUR_IN_MS) {
 			mActualOccupations.addAll(cutInStepsPeriod(start, end));
 		} else {
 			mActualOccupations.add(occ
@@ -183,7 +184,7 @@ public class OccupancySorted {
 						.size() - 1);
 				countFree = Math.min(0, countFree - 1);
 				FRPeriod previousPeriod = lastOccupation.getPeriod();
-				if (tsStart - previousPeriod.getTimeStampStart() > Utils.MIN_PERIOD) {
+				if (tsStart - previousPeriod.getTimeStampStart() > FRTimes.MIN_PERIOD) {
 					FRPeriod newPeriod = new FRPeriod(
 							previousPeriod.getTimeStampStart(), tsStart, false);
 					lastOccupation.setPeriod(newPeriod);
@@ -203,7 +204,7 @@ public class OccupancySorted {
 				actual.setPeriod(newPeriod);
 			}
 
-			if (tsStart - tsPerRoom > Utils.MIN_PERIOD) {
+			if (tsStart - tsPerRoom > FRTimes.MIN_PERIOD) {
 				// We got a free period of time !
 				ArrayList<ActualOccupation> subDivised = cutInStepsPeriod(
 						tsPerRoom, tsStart);
@@ -216,7 +217,7 @@ public class OccupancySorted {
 
 			// if the period is big enough (it might not be as we resize without
 			// checking when there are a room-user conflict, see above)
-			if (actualEnd - actualStart > Utils.MIN_PERIOD) {
+			if (actualEnd - actualStart > FRTimes.MIN_PERIOD) {
 				resultList.add(actual);
 				previousIsRoom = !actual.isAvailable();
 				double ratio = actual.getRatioOccupation();
@@ -272,10 +273,10 @@ public class OccupancySorted {
 
 		for (int i = 0; i < numberHours; ++i) {
 			long minStart = Math.max(hourSharpBefore, hourSharpBefore + i
-					* Utils.ONE_HOUR_MS);
+					* FRTimes.ONE_HOUR_IN_MS);
 			long maxEnd = Math.min(hourSharpBefore + (i + 1)
-					* Utils.ONE_HOUR_MS, end);
-			if (maxEnd - minStart > Utils.MIN_PERIOD) {
+					* FRTimes.ONE_HOUR_IN_MS, end);
+			if (maxEnd - minStart > FRTimes.MIN_PERIOD) {
 				FRPeriod period = new FRPeriod(minStart, maxEnd, false);
 				ActualOccupation mAccOcc = new ActualOccupation(period, true);
 				mAccOcc.setProbableOccupation(0);

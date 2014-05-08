@@ -40,6 +40,10 @@ public class FRTimes {
 	public static final int LAST_HOUR_CHECK = 19;
 	public static final int MIN_MINUTE_INTERVAL = 5;
 
+	
+	public static final long MARGIN_ERROR = 5 * 60 * 1000;
+	public static final long MIN_PERIOD = 15 * 60 * 1000;
+	
 	/**
 	 * Return a FreeRoomRequest from a given day, starthour and endhour.
 	 * 
