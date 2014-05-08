@@ -48,7 +48,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -90,6 +89,26 @@ import com.markupartist.android.widget.ActionBar.Action;
  * <p>
  * All others views are supposed to be dialog windows, therefore it's always
  * visible.
+ * <p>
+ * <code>AlertDialog</code> that exists are the following:
+ * <p>
+ * INFO ROOM display detailed information and occupancy about a room, and give
+ * the ability to share the location.
+ * <p>
+ * SEARCH enables the user to enter a customized search, and retrieves
+ * previously entered searches.
+ * <p>
+ * FAVORITES show the current favorites, with the possibility to remove them one
+ * by one. Adding is done by the ADD ROOM dialog.
+ * <p>
+ * ADD ROOM gives the possibility to construct an user-defined list of selected
+ * rooms, with auto-complete capabilities. It can be user to add favorites or a
+ * custom search.
+ * <p>
+ * SHARE give the possibility to share the location with friends through a share
+ * Intent. The server will also be notified, such that approximately occupancies
+ * continues to be as accurate as possible.
+ * <p>
  * 
  * @author FreeRoom Project Team (2014/05)
  * @author Julien WEBER <julien.weber@epfl.ch>
@@ -98,6 +117,7 @@ import com.markupartist.android.widget.ActionBar.Action;
 public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		IFreeRoomView {
 
+	/* MVC STRUCTURE */
 	/**
 	 * FreeRoom controller in MVC scheme.
 	 */
@@ -107,6 +127,21 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private FreeRoomModel mModel;
 
+	/* COMMON SHARED VALUES */
+	/**
+	 * Width of the main Activity.
+	 */
+	private int activityWidth;
+	/**
+	 * Height of the main Activity.
+	 */
+	private int activityHeight;
+	/**
+	 * Common LayoutInflater for all Layout inflated from xml.
+	 */
+	private LayoutInflater mLayoutInflater;
+
+	/* UI OF MAIN ACTIVITY */
 	/**
 	 * Titled layout that holds the title and the main layout.
 	 */
@@ -115,7 +150,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * Main layout that hold all UI components.
 	 */
 	private LinearLayout mainLayout;
-
 	/**
 	 * TextView to display a short message about what is currently displayed.
 	 */
@@ -125,12 +159,12 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * building.
 	 */
 	private ExpandableListView mExpListView;
-
 	/**
 	 * Adapter for the results (to display the occupancies).
 	 */
 	private ExpandableListViewAdapter<Occupancy> mExpListAdapter;
 
+	/* VIEW/DIALOGS FOR ALL ALERTDIALOG */
 	/**
 	 * View that holds the INFO dialog content, defined in xml in layout folder.
 	 */
@@ -139,23 +173,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * AlertDialog that holds the INFO dialog.
 	 */
 	private AlertDialog mInfoRoomDialog;
-
 	/**
 	 * View that holds the SEARCH dialog content, defined in xml in layout
 	 * folder.
 	 */
 	private View mSearchView;
-
-	/**
-	 * ListView that holds previous searches.
-	 */
-	private ListView searchPreviousListView;
-
 	/**
 	 * Dialog that holds the SEARCH Dialog.
 	 */
-	private AlertDialog searchDialog;
-
+	private AlertDialog mSearchDialog;
 	/**
 	 * View that holds the FAVORITES dialog content, defined in xml in layout
 	 * folder.
@@ -165,20 +191,18 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * AlertDialog that holds the FAVORITES dialog.
 	 */
 	private AlertDialog mFavoritesDialog;
-
 	/**
 	 * View that holds the ADDROOM dialog content, defined in xml in layout
 	 * folder.
 	 */
 	private View mAddRoomView;
-
 	/**
 	 * AlertDialog that holds the ADDROOM dialog.
 	 */
 	private AlertDialog mAddRoomDialog;
-
 	/**
-	 * View that holds the SHARE dialog content, defined in xml in layout folder.
+	 * View that holds the SHARE dialog content, defined in xml in layout
+	 * folder.
 	 */
 	private View mShareView;
 	/**
@@ -186,18 +210,45 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 */
 	private AlertDialog mShareDialog;
 
-	private int activityWidth;
-	private int activityHeight;
+	/* UI ELEMENTS FOR ALL DIALOGS */
+	/* UI ELEMENTS FOR DIALOGS - INFO ROOM */
 
-	private LayoutInflater mLayoutInflater;
+	/* UI ELEMENTS FOR DIALOGS - SEARCH */
+	/**
+	 * ListView that holds previous searches.
+	 * <P>
+	 * TODO: NOT USED SO FAR
+	 */
+	private ListView mSearchPreviousListView;
+
+	/* UI ELEMENTS FOR DIALOGS - FAVORITES */
+
+	/* UI ELEMENTS FOR DIALOGS - ADDROOM */
+
+	/* UI ELEMENTS FOR DIALOGS - SHARE */
+
+	/* OTHER UTILS */
+	/**
+	 * Enum to have types and store the last caller of the "Add" dialog.
+	 * 
+	 */
+	private enum AddRoomCaller {
+		FAVORITES, SEARCH;
+	}
 
 	/**
-	 * Action to perform a customized search.
+	 * Stores the last caller of the ADDROOM dialog.
+	 */
+	private AddRoomCaller lastCaller = null;
+
+	/* ACTIONS FOR THE ACTION BAR */
+	/**
+	 * Action to perform a customized search, by showing the search dialog.
 	 */
 	private Action search = new Action() {
 		public void performAction(View view) {
 			fillSearchDialog();
-			searchDialog.show();
+			mSearchDialog.show();
 		}
 
 		public int getDrawable() {
@@ -206,7 +257,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	};
 
 	/**
-	 * Action to edit the user's favorites.
+	 * Action to edit the user's favorites, by showing the favorites dialog.
 	 */
 	private Action editFavorites = new Action() {
 		public void performAction(View view) {
@@ -234,6 +285,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 	};
 
+	/* MAIN ACTIVITY - OVERRIDEN METHODS */
+
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return FreeRoomController.class;
@@ -250,10 +303,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mModel = (FreeRoomModel) controller.getModel();
 
 		// Setup the layout
-
-		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-				.getSystemService(LAYOUT_INFLATER_SERVICE);
-		titleLayout = (StandardTitledLayout) layoutInflater.inflate(
+		mLayoutInflater = this.getLayoutInflater();
+		titleLayout = (StandardTitledLayout) mLayoutInflater.inflate(
 				R.layout.freeroom_layout_home, null);
 		mainLayout = (LinearLayout) titleLayout
 				.findViewById(R.id.freeroom_layout_home_main_layout);
@@ -268,6 +319,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		setTextSummary(getString(R.string.freeroom_home_init_please_wait));
 		initializeView();
 
+		// This is necessary: xml definition don't support affFillerView!!
 		titleLayout.removeView(mainLayout);
 		titleLayout.addFillerView(mainLayout);
 
@@ -310,10 +362,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// TODO: if search launched by other plugin.
 	}
 
+	/* MAIN ACTIVITY - INITIALIZATION */
+
 	@Override
 	public void initializeView() {
-		mLayoutInflater = this.getLayoutInflater();
-
 		// retrieve display dimensions
 		Rect displayRectangle = new Rect();
 		Window window = this.getWindow();
@@ -352,7 +404,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mInfoRoomDialog = builder.create();
 
 		// redefine paramaters to dim screen when displayed
-		WindowManager.LayoutParams lp = mInfoRoomDialog.getWindow().getAttributes();
+		WindowManager.LayoutParams lp = mInfoRoomDialog.getWindow()
+				.getAttributes();
 		lp.dimAmount = 0.60f;
 		// these doesn't work
 		lp.width = LayoutParams.FILL_PARENT;
@@ -382,6 +435,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	/**
 	 * Inits the dialog to diplay the favorites.
+	 * <p>
+	 * TODO: how to store them!!
 	 */
 	private ArrayList<String> buildings;
 	private Map<String, List<FRRoom>> rooms;
@@ -439,7 +494,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				if (!mAddRoomDialog.isShowing()) {
-					showAddRoomDialog(true);
+					displayAddRoomDialog(AddRoomCaller.FAVORITES);
 				}
 			}
 		});
@@ -465,24 +520,21 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mAdapterFav.notifyDataSetChanged();
 	}
 
-	// true: fav // false: user-def search
-	private boolean calling = true;
-
-	private void showAddRoomDialog(boolean calling) {
+	private void displayAddRoomDialog(AddRoomCaller calling) {
 		mAddRoomDialog.show();
 		// TODO: reset the data ? the text input, the selected room ?
-		this.calling = calling;
+		lastCaller = calling;
 	}
 
-	private void treatEndAddRoomDialog() {
-		if (calling) {
+	private void dimissAddRoomDialog() {
+		if (lastCaller.equals(AddRoomCaller.FAVORITES)) {
 			Iterator<FRRoom> iter = selectedRooms.iterator();
 			while (iter.hasNext()) {
 				FRRoom mRoom = iter.next();
 				mModel.addRoomFavorites(mRoom.getUid(), mRoom.getDoorCode());
 			}
 			resetUserDefined();
-		} else {
+		} else if (lastCaller.equals(AddRoomCaller.SEARCH)) {
 			// we do nothing: reset will be done at search time
 			mSummarySelectedRoomsTextViewSearchMenu
 					.setText(getSummaryTextFromCollection(selectedRooms));
@@ -531,7 +583,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			@Override
 			public void onClick(View v) {
 				mAddRoomDialog.dismiss();
-				treatEndAddRoomDialog();
+				dimissAddRoomDialog();
 			}
 		});
 
@@ -696,20 +748,20 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		// Get the AlertDialog from create()
 
-		searchDialog = builder.create();
+		mSearchDialog = builder.create();
 
 		// redefine paramaters to dim screen when displayed
-		WindowManager.LayoutParams lp = searchDialog.getWindow()
+		WindowManager.LayoutParams lp = mSearchDialog.getWindow()
 				.getAttributes();
 		lp.dimAmount = 0.60f;
 		// these doesn't work
 		lp.width = LayoutParams.FILL_PARENT;
 		lp.height = LayoutParams.FILL_PARENT;
-		searchDialog.getWindow().addFlags(
+		mSearchDialog.getWindow().addFlags(
 				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
-		searchDialog.getWindow().addFlags(
+		mSearchDialog.getWindow().addFlags(
 				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-		searchDialog.getWindow().setAttributes(lp);
+		mSearchDialog.getWindow().setAttributes(lp);
 
 		mSearchView = mLayoutInflater.inflate(
 				R.layout.freeroom_layout_dialog_search, null);
@@ -717,8 +769,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mSearchView.setMinimumWidth((int) (activityWidth * 0.9f));
 		mSearchView.setMinimumHeight((int) (activityHeight * 0.8f));
 
-		searchDialog.setView(mSearchView);
-		searchDialog.setOnShowListener(new OnShowListener() {
+		mSearchDialog.setView(mSearchView);
+		mSearchDialog.setOnShowListener(new OnShowListener() {
 
 			@Override
 			public void onShow(DialogInterface dialog) {
@@ -726,21 +778,21 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		});
 		// this is necessary o/w buttons don't exists!
-		searchDialog.hide();
-		searchDialog.show();
-		searchDialog.dismiss();
-		resetButton = searchDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
-		searchButton = searchDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+		mSearchDialog.hide();
+		mSearchDialog.show();
+		mSearchDialog.dismiss();
+		resetButton = mSearchDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+		searchButton = mSearchDialog.getButton(DialogInterface.BUTTON_POSITIVE);
 
 		mSummarySelectedRoomsTextViewSearchMenu = (TextView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_text_summary);
 		// the view will be removed or the text changed, no worry
 		mSummarySelectedRoomsTextViewSearchMenu.setText("empty");
 
-		searchPreviousListView = (ListView) mSearchView
+		mSearchPreviousListView = (ListView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_prev_search);
 		// TODO: previous search
-		// searchPreviousListView.setAdapter();
+		// mSearchPreviousListView.setAdapter();
 
 		initSearch();
 	}
@@ -750,15 +802,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
 			System.out
 					.println("TOuch outside the dialog ******************** ");
-			searchDialog.dismiss();
+			mSearchDialog.dismiss();
 		}
 		return false;
 	}
 
 	/**
 	 * Overrides the legacy <code>onKeyDown</code> method in order to close the
-	 * dialog if one was opened.
-	 * TODO: test if really needed.
+	 * dialog if one was opened. TODO: test if really needed.
 	 * 
 	 * @param keyCode
 	 * @param event
@@ -774,8 +825,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				mInfoRoomDialog.dismiss();
 				flag = true;
 			}
-			if (searchDialog.isShowing()) {
-				searchDialog.dismiss();
+			if (mSearchDialog.isShowing()) {
+				mSearchDialog.dismiss();
 				flag = true;
 			}
 			if (mFavoritesDialog.isShowing()) {
@@ -1035,7 +1086,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 					.findViewById(R.id.freeroom_layout_dialog_info_share);
 			setShareClickListener(iv, this, mOccupancy);
 
-			Button share = mInfoRoomDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+			Button share = mInfoRoomDialog
+					.getButton(AlertDialog.BUTTON_POSITIVE);
 			share.setEnabled(mOccupancy.isIsAtLeastFreeOnce()
 					&& !mOccupancy.isIsAtLeastOccupiedOnce());
 			setShareClickListener(share, this, mOccupancy);
@@ -1172,8 +1224,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 		}
 		if (mFrRoom.isSetTypeFR() || mFrRoom.isSetTypeEN()) {
-			builder.append(" / " + getString(R.string.freeroom_dialog_info_type)
-					+ ": ");
+			builder.append(" / "
+					+ getString(R.string.freeroom_dialog_info_type) + ": ");
 			if (mFrRoom.isSetTypeFR()) {
 				builder.append(mFrRoom.getTypeFR());
 			}
@@ -1280,9 +1332,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 	private void initSearch() {
 
-		mOptionalLineLinearLayoutWrapper = (LinearLayout) searchDialog
+		mOptionalLineLinearLayoutWrapper = (LinearLayout) mSearchDialog
 				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper);
-		mOptionalLineLinearLayoutContainer = (LinearLayout) searchDialog
+		mOptionalLineLinearLayoutContainer = (LinearLayout) mSearchDialog
 				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_container);
 		mOptionalLineLinearLayoutWrapperIn = (LinearLayout) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_opt_line_wrapper_in);
@@ -1541,7 +1593,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 							.addView(mOptionalLineLinearLayoutWrapperIn);
 					mSummarySelectedRoomsTextViewSearchMenu
 							.setText(getSummaryTextFromCollection(selectedRooms));
-					showAddRoomDialog(false);
+					displayAddRoomDialog(AddRoomCaller.SEARCH);
 				} else if (!favButton.isChecked()) {
 					userDefButton.setChecked(true);
 					anyButton.setChecked(false);
@@ -1631,7 +1683,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// aligned
 		// on horizontal screens, there are horizontally aligned.
 		if (activityHeight > activityWidth) {
-			LinearLayout mLinearLayout = (LinearLayout) searchDialog
+			LinearLayout mLinearLayout = (LinearLayout) mSearchDialog
 					.findViewById(R.id.freeroom_layout_dialog_search_opt_line_semi);
 			mLinearLayout.setOrientation(LinearLayout.VERTICAL);
 		}
@@ -1642,7 +1694,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onClick(View v) {
-				showAddRoomDialog(false);
+				displayAddRoomDialog(AddRoomCaller.SEARCH);
 			}
 		});
 		userDefResetButton = (Button) mSearchView
@@ -2024,7 +2076,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				freeButton.isChecked(), mUIDList, any, fav, user, selectedRooms);
 		mModel.setFRRequestDetails(details);
 		mController.sendFRRequest(this);
-		searchDialog.dismiss();
+		mSearchDialog.dismiss();
 
 		resetUserDefined(); // cleans the selectedRooms of userDefined
 	}
