@@ -109,7 +109,7 @@ public class ActualOccupationArrayAdapter<T> extends
 				public void onClick(View arg0) {
 					FRPeriod mPeriod = mActualOccupation.getPeriod();
 					FRRoom mRoom = mModel.getDisplayedOccupancy().getRoom();
-					homeView.showPopupShare(mPeriod, mRoom);
+					homeView.displayShareDialog(mPeriod, mRoom);
 				}
 			};
 			ivshare.setOnClickListener(ocl);

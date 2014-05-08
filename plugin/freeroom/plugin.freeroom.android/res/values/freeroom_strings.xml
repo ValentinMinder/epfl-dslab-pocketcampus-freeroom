@@ -94,12 +94,12 @@
     <string name="freeroom_dialog_share_button_friends">share with friends</string>
     <string name="freeroom_dialog_share_button_server">share only with server</string>
     <string name="freeroom_dialog_share_disclaimer">Your location is shared with server is done in both cases. It\&apos;s done to know approximately how many people are in the room, to display better results for the next users. Your personnal message is NEVER shared to anyone. You can choose to share on what subject you\&apos;re working if you like.</string>
-    <string name="freeroom_popup_info_type">Type</string>
-    <string name="freeroom_popup_info_capacity">Capacity</string>
-    <string name="freeroom_popup_info_places">places</string>
-    <string name="freeroom_popup_info_surface">Surface</string>
-    <string name="freeroom_popup_info_sqm">sqm</string>
-    <string name="freeroom_popup_info_uniqID">Unique UID</string>
+    <string name="freeroom_dialog_info_type">Type</string>
+    <string name="freeroom_dialog_info_capacity">Capacity</string>
+    <string name="freeroom_dialog_info_places">places</string>
+    <string name="freeroom_dialog_info_surface">Surface</string>
+    <string name="freeroom_dialog_info_sqm">sqm</string>
+    <string name="freeroom_dialog_info_uniqID">Unique UID</string>
     <string name="freeroom_dialog_info_share">Share my location</string>
     <string name="freeroom_dialog_fav_title">Favorites</string>
     <string name="freeroom_dialog_fav_add">Add new favorites</string>
@@ -111,9 +111,7 @@
     <string name="freeroom_results_room_header_rooms">rooms</string>
     <string name="freeroom_results_room_header_reduce">reduce</string>
     <string name="freeroom_results_room_header_more">more</string>
-    <string name="freeroom_layout_popup_info_title">Detailed information</string>
     <!-- No need to translate these layout img identificators -->
-    <string name="freeroom_layout_popup_info_img_close">Close</string>
     <string name="freeroom_layout_roomslist_img_fav">fav icon</string>
     <string name="freeroom_layout_roomslist_img_map">map icon</string>
     <string name="freeroom_layout_roomslist_img_info">info icon</string>
