@@ -1917,6 +1917,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// verify the submit
 		searchButton.setEnabled(auditSubmit() == 0);
 
+		upToEndHourButton.setEnabled(true);
+		upToEndSelected = false;
+
 		boolean enabled = false;
 		favButton.setEnabled(enabled);
 		userDefButton.setEnabled(enabled);
