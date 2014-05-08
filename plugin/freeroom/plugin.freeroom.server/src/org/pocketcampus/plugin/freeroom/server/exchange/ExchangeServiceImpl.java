@@ -184,7 +184,6 @@ public class ExchangeServiceImpl {
 	 * @return true if successful for all the rooms, false if an error occurred.
 	 */
 	private boolean updateEWAOccupancy(FRPeriod mFrPeriod) {
-		// TODO: it construct an exchange client with default username/login
 		ExchangeEntry ee = new ExchangeEntry();
 
 		List<FRRoom> listRooms = getEWARooms();

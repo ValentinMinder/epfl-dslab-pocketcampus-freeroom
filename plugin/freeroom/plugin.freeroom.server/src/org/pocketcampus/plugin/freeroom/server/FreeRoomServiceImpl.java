@@ -737,6 +737,10 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 					uidsList.add(uid);
 				}
 
+				if (uidsList.isEmpty()) {
+					return new HashMap<String, List<Occupancy>>();
+				}
+				
 				return getOccupancyOfSpecificRoom(uidsList, onlyFreeRooms,
 						tsStart, tsEnd, userGroup);
 			} catch (SQLException e) {
@@ -774,7 +778,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			long tsEnd, int userGroup) {
 
 		if (uidList.isEmpty()) {
-			// TODO be careful of infinite recursive
 			return getOccupancyOfAnyFreeRoom(onlyFreeRooms, tsStart, tsEnd,
 					userGroup);
 		}

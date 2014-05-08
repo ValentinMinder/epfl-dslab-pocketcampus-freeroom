@@ -101,7 +101,7 @@ public class ExchangeLoading {
 	 * Load the given room as a contact (name + email).
 	 * @param nameEmail
 	 *            contact of the room (usually: "Name <name@intranet.epfl.ch>").
-	 * @returntrue if successful, false in case of errors.
+	 * @return true if successful, false in case of errors.
 	 */
 	private static boolean loadExchangeData(String nameEmail) {
 		nameEmail = nameEmail.trim();
