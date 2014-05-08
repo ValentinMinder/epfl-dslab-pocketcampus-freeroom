@@ -1044,14 +1044,14 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				requestSQL = "SELECT * "
 						+ "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?)) "
-						+ "AND rl.groupAccess <= ? "
+						+ "AND rl.groupAccess <= ? AND rl.enabled = 1 "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
 			} else {
 				requestSQL = "SELECT * "
 						+ "FROM `fr-roomslist` rl "
 						+ "WHERE (rl.uid LIKE (?) OR rl.doorCodeWithoutSpace LIKE (?) OR rl.alias LIKE (?)) "
-						+ "AND rl.groupAccess <= ? AND rl.uid NOT IN ("
+						+ "AND rl.groupAccess <= ? AND rl.enabled = 1 AND rl.uid NOT IN ("
 						+ forbidRoomsSQL + ") "
 						+ "ORDER BY rl.doorCode ASC LIMIT "
 						+ LIMIT_AUTOCOMPLETE;
