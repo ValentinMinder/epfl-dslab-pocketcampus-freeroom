@@ -315,8 +315,9 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 					public void onClick(View v) {
 						String query = mAutoCompleteSuggestionInputBarElement
 								.getInputText();
+						//TODO change group accordingly, set to 1 by default and for testing purpose
 						AutoCompleteRequest request = new AutoCompleteRequest(
-								query);
+								query, 1);
 						mController.autoCompleteBuilding(view, request);
 					}
 				});
@@ -340,8 +341,9 @@ public class FreeRoomCheckOccupancySearchView extends FreeRoomAbstractView
 						} else {
 							mAutoCompleteSuggestionInputBarElement
 									.setButtonText("");
+							//TODO change group accordingly, set to 1 by default and for testing purpose
 							AutoCompleteRequest request = new AutoCompleteRequest(
-									text);
+									text, 1);
 							mController.autoCompleteBuilding(view, request);
 						}
 					}

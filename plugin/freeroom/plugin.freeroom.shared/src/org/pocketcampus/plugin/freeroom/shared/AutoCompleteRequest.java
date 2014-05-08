@@ -26,14 +26,17 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
 
   private static final org.apache.thrift.protocol.TField CONSTRAINT_FIELD_DESC = new org.apache.thrift.protocol.TField("constraint", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField FORBIDDEN_ROOMS_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("forbiddenRoomsUID", org.apache.thrift.protocol.TType.SET, (short)2);
+  private static final org.apache.thrift.protocol.TField USER_GROUP_FIELD_DESC = new org.apache.thrift.protocol.TField("userGroup", org.apache.thrift.protocol.TType.I32, (short)3);
 
   private String constraint; // required
   private Set<String> forbiddenRoomsUID; // required
+  private int userGroup; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     CONSTRAINT((short)1, "constraint"),
-    FORBIDDEN_ROOMS_UID((short)2, "forbiddenRoomsUID");
+    FORBIDDEN_ROOMS_UID((short)2, "forbiddenRoomsUID"),
+    USER_GROUP((short)3, "userGroup");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -52,6 +55,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
           return CONSTRAINT;
         case 2: // FORBIDDEN_ROOMS_UID
           return FORBIDDEN_ROOMS_UID;
+        case 3: // USER_GROUP
+          return USER_GROUP;
         default:
           return null;
       }
@@ -92,6 +97,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
   }
 
   // isset id assignments
+  private static final int __USERGROUP_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -101,6 +108,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     tmpMap.put(_Fields.FORBIDDEN_ROOMS_UID, new org.apache.thrift.meta_data.FieldMetaData("forbiddenRoomsUID", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.SetMetaData(org.apache.thrift.protocol.TType.SET, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+    tmpMap.put(_Fields.USER_GROUP, new org.apache.thrift.meta_data.FieldMetaData("userGroup", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(AutoCompleteRequest.class, metaDataMap);
   }
@@ -109,16 +118,21 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
   }
 
   public AutoCompleteRequest(
-    String constraint)
+    String constraint,
+    int userGroup)
   {
     this();
     this.constraint = constraint;
+    this.userGroup = userGroup;
+    setUserGroupIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public AutoCompleteRequest(AutoCompleteRequest other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetConstraint()) {
       this.constraint = other.constraint;
     }
@@ -129,6 +143,7 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       }
       this.forbiddenRoomsUID = __this__forbiddenRoomsUID;
     }
+    this.userGroup = other.userGroup;
   }
 
   public AutoCompleteRequest deepCopy() {
@@ -139,6 +154,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
   public void clear() {
     this.constraint = null;
     this.forbiddenRoomsUID = null;
+    setUserGroupIsSet(false);
+    this.userGroup = 0;
   }
 
   public String getConstraint() {
@@ -204,6 +221,29 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     }
   }
 
+  public int getUserGroup() {
+    return this.userGroup;
+  }
+
+  public AutoCompleteRequest setUserGroup(int userGroup) {
+    this.userGroup = userGroup;
+    setUserGroupIsSet(true);
+    return this;
+  }
+
+  public void unsetUserGroup() {
+    __isset_bit_vector.clear(__USERGROUP_ISSET_ID);
+  }
+
+  /** Returns true if field userGroup is set (has been assigned a value) and false otherwise */
+  public boolean isSetUserGroup() {
+    return __isset_bit_vector.get(__USERGROUP_ISSET_ID);
+  }
+
+  public void setUserGroupIsSet(boolean value) {
+    __isset_bit_vector.set(__USERGROUP_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case CONSTRAINT:
@@ -222,6 +262,14 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       }
       break;
 
+    case USER_GROUP:
+      if (value == null) {
+        unsetUserGroup();
+      } else {
+        setUserGroup((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -232,6 +280,9 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
 
     case FORBIDDEN_ROOMS_UID:
       return getForbiddenRoomsUID();
+
+    case USER_GROUP:
+      return Integer.valueOf(getUserGroup());
 
     }
     throw new IllegalStateException();
@@ -248,6 +299,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       return isSetConstraint();
     case FORBIDDEN_ROOMS_UID:
       return isSetForbiddenRoomsUID();
+    case USER_GROUP:
+      return isSetUserGroup();
     }
     throw new IllegalStateException();
   }
@@ -283,6 +336,15 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
         return false;
     }
 
+    boolean this_present_userGroup = true;
+    boolean that_present_userGroup = true;
+    if (this_present_userGroup || that_present_userGroup) {
+      if (!(this_present_userGroup && that_present_userGroup))
+        return false;
+      if (this.userGroup != that.userGroup)
+        return false;
+    }
+
     return true;
   }
 
@@ -299,6 +361,11 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     builder.append(present_forbiddenRoomsUID);
     if (present_forbiddenRoomsUID)
       builder.append(forbiddenRoomsUID);
+
+    boolean present_userGroup = true;
+    builder.append(present_userGroup);
+    if (present_userGroup)
+      builder.append(userGroup);
 
     return builder.toHashCode();
   }
@@ -327,6 +394,16 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     }
     if (isSetForbiddenRoomsUID()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.forbiddenRoomsUID, typedOther.forbiddenRoomsUID);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetUserGroup()).compareTo(typedOther.isSetUserGroup());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetUserGroup()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.userGroup, typedOther.userGroup);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -372,6 +449,14 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 3: // USER_GROUP
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.userGroup = iprot.readI32();
+            setUserGroupIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -380,6 +465,9 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
+    if (!isSetUserGroup()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'userGroup' was not found in serialized data! Struct: " + toString());
+    }
     validate();
   }
 
@@ -406,6 +494,9 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
         oprot.writeFieldEnd();
       }
     }
+    oprot.writeFieldBegin(USER_GROUP_FIELD_DESC);
+    oprot.writeI32(this.userGroup);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -432,6 +523,10 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
       }
       first = false;
     }
+    if (!first) sb.append(", ");
+    sb.append("userGroup:");
+    sb.append(this.userGroup);
+    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -441,6 +536,7 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
     if (constraint == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'constraint' was not present! Struct: " + toString());
     }
+    // alas, we cannot check 'userGroup' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -453,6 +549,8 @@ public class AutoCompleteRequest implements org.apache.thrift.TBase<AutoComplete
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
