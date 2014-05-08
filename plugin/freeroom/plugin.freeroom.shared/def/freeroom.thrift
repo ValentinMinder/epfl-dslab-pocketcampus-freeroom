@@ -1,6 +1,8 @@
 namespace java org.pocketcampus.plugin.freeroom.shared
 //namespace csharp org.pocketcampus.plugin.freeroom.shared
 
+const i32 HTTP_UPDATED = 299
+
 enum FRDay {
 	Monday; Tuesday; Wednesday; Thursday; Friday; Saturday; Sunday;
 }
