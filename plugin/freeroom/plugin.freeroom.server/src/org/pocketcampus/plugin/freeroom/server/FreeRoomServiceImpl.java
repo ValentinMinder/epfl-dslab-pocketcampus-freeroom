@@ -261,9 +261,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 *            The unique hash for each user, used to store an entry in the
 	 *            checkOccupancy table to avoid multiple submissions for the
 	 *            same period from an user
-	 * @param prevRoom
-	 *            The uid of the previous room stored in the checkOccupancy
-	 *            table (if one), otherwise null
 	 * @return Return true if the occupancy has been successfully stored in the
 	 *         database, false otherwise.
 	 */
