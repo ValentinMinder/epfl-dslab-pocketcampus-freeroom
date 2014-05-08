@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Layout for the favorites popup window. -->
+<!-- Layout for the favorites dialog window. -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -26,23 +26,23 @@
             <!-- Title (favorites) -->
 
             <TextView
-                android:id="@+id/freeroom_layout_popup_fav_title"
+                android:id="@+id/freeroom_layout_dialog_fav_title"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="right"
                 android:layout_weight="10"
-                android:text="@string/freeroom_popup_fav_title"
+                android:text="@string/freeroom_dialog_fav_title"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/black" />
 
             <!-- Button to add a favorites -->
 
             <Button
-                android:id="@+id/freeroom_layout_popup_fav_add"
+                android:id="@+id/freeroom_layout_dialog_fav_add"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:text="@string/freeroom_popup_fav_add"
+                android:text="@string/freeroom_dialog_fav_add"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
             
@@ -51,7 +51,7 @@
         <!-- ListView that contains all the favorites by buildings -->
 
         <ExpandableListView
-            android:id="@+id/freeroom_layout_popup_fav_list"
+            android:id="@+id/freeroom_layout_dialog_fav_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

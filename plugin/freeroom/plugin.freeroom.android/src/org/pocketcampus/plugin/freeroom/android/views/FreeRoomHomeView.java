@@ -170,7 +170,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * by: the closing button (red cross), back button, or clicking outside the
 	 * popup.
 	 */
-	private PopupWindow popupFavoritesWindow;
+	private AlertDialog mFavoritesDialog;
 
 	/**
 	 * View that holds the ADDROOM popup content, defined in xml in layout
@@ -217,7 +217,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private Action editFavorites = new Action() {
 		public void performAction(View view) {
 			mAdapterFav.notifyDataSetChanged();
-			popupFavoritesWindow.showAsDropDown(mTextView, 0, 0);
+			mFavoritesDialog.show();
 		}
 
 		public int getDrawable() {
@@ -336,7 +336,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		addActionToActionBar(search);
 		initPopupInfoRoom();
 		initSearchDialog();
-		initPopupFavorites();
+		initFavoritesDialog();
 		initAddRoomDialog();
 		initPopupShare();
 	}
@@ -371,23 +371,50 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private Map<String, List<FRRoom>> rooms;
 	private ExpandableListViewFavoriteAdapter mAdapterFav;
 
-	private void initPopupFavorites() {
+	private void initFavoritesDialog() {
 		// construct the popup
 		// it MUST fill the parent in height, such that weight works in xml for
 		// heights. Otherwise, some elements may not be displayed anymore
-		LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-				.getSystemService(LAYOUT_INFLATER_SERVICE);
-		popupFavoritesView = layoutInflater.inflate(
-				R.layout.freeroom_layout_popup_fav, null);
-		popupFavoritesWindow = new PopupWindow(popupFavoritesView,
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, true);
 
-		// allows outside clicks to close the popup
-		popupFavoritesWindow.setOutsideTouchable(true);
-		popupFavoritesWindow.setBackgroundDrawable(new BitmapDrawable());
+		// Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		// Get the AlertDialog from create()
+		mFavoritesDialog = builder.create();
+
+		// redefine paramaters to dim screen when displayed
+		WindowManager.LayoutParams lp = mFavoritesDialog.getWindow()
+				.getAttributes();
+		lp.dimAmount = 0.60f;
+		// these doesn't work
+		lp.width = LayoutParams.FILL_PARENT;
+		lp.height = LayoutParams.WRAP_CONTENT;
+		mFavoritesDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+		mFavoritesDialog.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		mFavoritesDialog.getWindow().setAttributes(lp);
+
+		popupFavoritesView = mLayoutInflater.inflate(
+				R.layout.freeroom_layout_popup_fav, null);
+		
+		// these work perfectly
+		popupFavoritesView.setMinimumWidth((int) (activityWidth * 0.9f));
+		popupFavoritesView.setMinimumHeight((int) (activityHeight * 0.8f));
+
+		mFavoritesDialog.setView(popupFavoritesView);
+		mFavoritesDialog.setOnShowListener(new OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+				
+			}
+		});
+
+		
 
 		Button tv = (Button) popupFavoritesView
-				.findViewById(R.id.freeroom_layout_popup_fav_add);
+				.findViewById(R.id.freeroom_layout_dialog_fav_add);
 		tv.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -399,7 +426,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		});
 
 		ExpandableListView lv = (ExpandableListView) popupFavoritesView
-				.findViewById(R.id.freeroom_layout_popup_fav_list);
+				.findViewById(R.id.freeroom_layout_dialog_fav_list);
 
 		// TODO: THIS IS AWWWWWWWFUUUUULLL
 		// PLEASE STORE FRROOM OBJECTS, NOT THESE UIDS
@@ -731,8 +758,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 				searchDialog.dismiss();
 				flag = true;
 			}
-			if (popupFavoritesWindow.isShowing()) {
-				popupFavoritesWindow.dismiss();
+			if (mFavoritesDialog.isShowing()) {
+				mFavoritesDialog.dismiss();
 				flag = true;
 			}
 			selectedRooms.clear();
