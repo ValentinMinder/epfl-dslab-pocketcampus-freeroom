@@ -576,17 +576,21 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	public boolean addFavorite(FRRoom mRoom) {
 		// ensure favorites structure exists.
 		getFavorites();
-		String key = getKey(mRoom);
-		List<FRRoom> list = null;
-		if (favorites.containsKey(key)) {
-			list = favorites.get(key);
-		} else {
-			list = new ArrayList<FRRoom>();
+		// cannot add twice!
+		if (!isFavorite(mRoom)) {
+			String key = getKey(mRoom);
+			List<FRRoom> list = null;
+			if (favorites.containsKey(key)) {
+				list = favorites.get(key);
+			} else {
+				list = new ArrayList<FRRoom>();
+			}
+			boolean flag1 = list.add(mRoom);
+			favorites.put(key, list);
+			boolean flag2 = saveFavorites();
+			return flag1 && flag2;
 		}
-		boolean flag1 = list.add(mRoom);
-		favorites.put(key, list);
-		boolean flag2 = saveFavorites();
-		return flag1 && flag2;
+		return false;
 	}
 
 	/**
