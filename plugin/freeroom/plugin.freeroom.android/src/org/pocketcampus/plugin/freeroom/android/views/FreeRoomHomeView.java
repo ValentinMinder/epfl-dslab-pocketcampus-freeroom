@@ -952,11 +952,35 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			}
 			FRPeriod period = request.getPeriod();
 			build.append(generateFullTimeSummary(period));
+
+			// if the info dialog is opened, we update the CORRECT occupancy
+			// with the new data.
+			if (mInfoRoomDialog.isShowing()) {
+				FRRoom room = mModel.getDisplayedOccupancy().getRoom();
+				List<?> list = mModel.getOccupancyResults().get(
+						mModel.getKey(room));
+				Iterator<?> iter = list.iterator();
+				label: while (iter.hasNext()) {
+					Object o = iter.next();
+					if (o instanceof Occupancy) {
+						if (((Occupancy) o).getRoom().getUid()
+								.equals(room.getUid())) {
+							mModel.setDisplayedOccupancy((Occupancy) o);
+							// dont work
+							mInfoActualOccupationAdapter.notifyDataSetChanged();
+							// work!
+							displayInfoDialog();
+							break label;
+						}
+					}
+				}
+			}
 		}
 
 		setTextSummary(build.toString());
 		mExpListAdapter.notifyDataSetChanged();
 		updateCollapse(mExpListView, mExpListAdapter);
+
 	}
 
 	/**
@@ -1091,6 +1115,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		return new FRPeriod(tss, tse, false);
 	}
 
+	private ActualOccupationArrayAdapter<ActualOccupation> mInfoActualOccupationAdapter;
+
 	/**
 	 * Display the dialog that provides more info about the occupation of the
 	 * selected room.
@@ -1128,10 +1154,10 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			ListView roomOccupancyListView = (ListView) mInfoRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_roomOccupancy);
-			roomOccupancyListView
-					.setAdapter(new ActualOccupationArrayAdapter<ActualOccupation>(
-							getApplicationContext(), mOccupancy.getOccupancy(),
-							mController, this));
+			mInfoActualOccupationAdapter = new ActualOccupationArrayAdapter<ActualOccupation>(
+					getApplicationContext(), mOccupancy.getOccupancy(),
+					mController, this);
+			roomOccupancyListView.setAdapter(mInfoActualOccupationAdapter);
 
 			TextView detailsTextView = (TextView) mInfoRoomView
 					.findViewById(R.id.freeroom_layout_dialog_info_details);
@@ -2250,6 +2276,11 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		}
 
 		mAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void refreshOccupancies() {
+		refresh();
 	}
 
 }

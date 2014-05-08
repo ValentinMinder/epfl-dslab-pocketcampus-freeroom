@@ -634,7 +634,7 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	}
 
 	// TODO: this is not secured (may not exist)
-	private String getKey(FRRoom mRoom) {
+	public String getKey(FRRoom mRoom) {
 		String key = mRoom.getBuilding_name();
 		if (key == null || key.length() == 0) {
 			key = getBuilding(mRoom.getDoorCode());

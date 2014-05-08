@@ -45,6 +45,7 @@ public class ImWorkingRequestASyncTask extends
 	@Override
 	protected void onResult(FreeRoomController mController, ImWorkingReply reply) {
 		int status = reply.getStatus();
+		callerView.refreshOccupancies();
 		if (status == 200) {
 			Log.v(this.getClass().toString(), "server replied successfully");
 			mController.validateImWorking(reply);

@@ -21,4 +21,6 @@ public interface IFreeRoomView extends IAbstractFreeRoomView {
 
 	void initializeView();
 
+	void refreshOccupancies();
+
 }

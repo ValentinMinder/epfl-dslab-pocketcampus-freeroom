@@ -132,4 +132,9 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 	public void initializeView() {
 		// WE DO NOTHING!
 	}
+
+	@Override
+	public void refreshOccupancies() {
+		// WE DO NOTHING!
+	}
 }
