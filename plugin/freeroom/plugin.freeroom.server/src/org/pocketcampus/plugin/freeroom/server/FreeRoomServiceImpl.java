@@ -174,9 +174,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			FRRoom room, String hash) {
 
 		// putting seconds and milliseconds to zero
-		period.setTimeStampStart(Utils.roundSAndMSToZero(period
+		period.setTimeStampStart(TimesUtils.roundSAndMSToZero(period
 				.getTimeStampStart()));
-		period.setTimeStampEnd(Utils.roundSAndMSToZero(period.getTimeStampEnd()));
+		period.setTimeStampEnd(TimesUtils.roundSAndMSToZero(period.getTimeStampEnd()));
 
 		boolean allowInsert = true;
 		/**
@@ -334,8 +334,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 				boolean overallInsertion = true;
 
-				long hourSharpBefore = Utils.roundHourBefore(tsStart);
-				long numberHours = Utils.determineNumberHour(tsStart, tsEnd);
+				long hourSharpBefore = TimesUtils.roundHourBefore(tsStart);
+				long numberHours = TimesUtils.determineNumberHour(tsStart, tsEnd);
 
 				for (int i = 0; i < numberHours; ++i) {
 					// also insert in the check table to prevent further submit
