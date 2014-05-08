@@ -3,6 +3,8 @@
 -- The lowest groupAccess possible is 1, usually for students, staff can have groupAccess of 20
 -- It is possible to defines as many groups as there are integer between 1 and 20, 
 -- the bigger the integer, the more rooms the group has access to.
+-- enabled is used to temporarily disable a room, (e.g during a special event, it there are no occupancy for the room
+-- it will be displayed as entirely free, enabled can be used to prevent such things)
 CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	`uid` char(255) NOT NULL,
 	`doorCode` char(255) NOT NULL,
