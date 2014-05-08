@@ -10,9 +10,7 @@ import java.io.OptionalDataException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,10 +23,7 @@ import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.utils.FRRequestDetails;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapListFew;
-import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
@@ -44,8 +39,9 @@ import android.graphics.Color;
  * (none at the moment!) Other data are temporary.
  * <p>
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
@@ -70,36 +66,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * changes.
 	 */
 	IFreeRoomView mListeners = (IFreeRoomView) getListeners();
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * <p>
-	 * List of <code>FRRoom</code>'s obtained from the freeroom query
-	 **/
-	private Set<FRRoom> mFreeRoomResult = new HashSet<FRRoom>();
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 */
-	private TreeMap<String, List<FRRoom>> sortedRooms = new TreeMap<String, List<FRRoom>>();
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 */
-	private ArrayList<String> buildings = new ArrayList<String>();
-	/** List of suggestions for the check occupancy search view */
-	private List<FRRoom> mAutoCompleteSuggestions = new ArrayList<FRRoom>();
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * <p>
-	 * Ordered list of <code>Occupancy</code>'s displayed in the check occupancy
-	 */
-	private List<Occupancy> mListCheckedOccupancyRoom = new ArrayList<Occupancy>();
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 */
-	private LinkedHashSet<FRRoom> mLinkedHashSetCheckedRoom = new LinkedHashSet<FRRoom>();
-
-	private Set<ImWorkingRequest> allImWorkingRequests = new HashSet<ImWorkingRequest>();
 
 	/**
 	 * Storing the <code>WorkingOccupancy</code> of people who indicate their
@@ -142,311 +108,6 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return mListeners;
 	}
 
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * <p>
-	 * Getter for the results of the request
-	 * 
-	 * @return Set of FRRoom
-	 */
-	public Set<FRRoom> getFreeRoomResults() {
-		return mFreeRoomResult;
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * 
-	 * @return
-	 */
-	public TreeMap<String, List<FRRoom>> getFreeRoomResultsFilteredByBuildings() {
-		return sortedRooms;
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * 
-	 * @return
-	 */
-	public List<String> getFreeRoomResultsBuildings() {
-		return buildings;
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * 
-	 * @param group
-	 * @param child
-	 * @return
-	 */
-	public FRRoom getFreeRoomResult(int group, int child) {
-		if (group < 0 || group >= buildings.size()) {
-			return null;
-		}
-		String building = buildings.get(group);
-		List<FRRoom> list = sortedRooms.get(building);
-		if (list != null && child >= 0 && child < list.size()) {
-			return list.get(child);
-		}
-		return null;
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * <p>
-	 * Setter for the results of a freeroom request
-	 * 
-	 * @param results
-	 *            the result for the specific freeroom search
-	 */
-	public void setFreeRoomResults(Set<FRRoom> results) {
-		mFreeRoomResult = results;
-		sortedRooms = sortFRRoomsByBuildingsAndFavorites(mFreeRoomResult, true);
-		buildings.clear();
-		buildings.addAll(sortedRooms.keySet());
-		mListeners.freeRoomResultsUpdated();
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * <p>
-	 * Sets the occupancy result for all the rooms and notifies the listeners.
-	 * 
-	 * @param list
-	 */
-	public void setOccupancyResultsListOccupancy(List<Occupancy> list) {
-		mListCheckedOccupancyRoom = list;
-		mListeners.occupancyResultUpdated();
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * <p>
-	 * Gets the list of room checked against occupancy.
-	 * 
-	 * @return
-	 */
-	public List<Occupancy> getListCheckedOccupancyRoom() {
-		return mListCheckedOccupancyRoom;
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * 
-	 * @param mLinkedHashSet
-	 */
-	public void setOccupancyResultsLinkedHashSetFRRoom(
-			LinkedHashSet<FRRoom> mLinkedHashSet) {
-		mLinkedHashSetCheckedRoom = mLinkedHashSet;
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * 
-	 * @param mGroupPosition
-	 * @return
-	 */
-	private Occupancy getOccupancy(int mGroupPosition) {
-		if (mListCheckedOccupancyRoom != null
-				&& mGroupPosition < mListCheckedOccupancyRoom.size()) {
-			return mListCheckedOccupancyRoom.get(mGroupPosition);
-		}
-		// default
-		return null;
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * 
-	 * @param mGroupPosition
-	 * @param mChildPosition
-	 * @return
-	 */
-	private ActualOccupation getActualOccupation(int mGroupPosition,
-			int mChildPosition) {
-
-		Occupancy mOccupancy = getOccupancy(mGroupPosition);
-		if (mOccupancy != null) {
-			List<ActualOccupation> mActualOccupationList = mOccupancy
-					.getOccupancy();
-			if (mChildPosition < mActualOccupationList.size()) {
-				ActualOccupation mActualOccupation = mActualOccupationList
-						.get(mChildPosition);
-				return mActualOccupation;
-			}
-		}
-
-		// default
-		return null;
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * 
-	 * @param mGroupPosition
-	 * @param mChildPosition
-	 * @return
-	 */
-	public int getColorOfCheckOccupancyRoom(int mGroupPosition,
-			int mChildPosition) {
-		ActualOccupation mActualOccupation = getActualOccupation(
-				mGroupPosition, mChildPosition);
-		if (mActualOccupation != null) {
-			if (mActualOccupation.isAvailable()) {
-				return COLOR_CHECK_OCCUPANCY_FREE;
-			} else {
-				return COLOR_CHECK_OCCUPANCY_OCCUPIED;
-			}
-		}
-		// default
-		return COLOR_CHECK_OCCUPANCY_DEFAULT;
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * 
-	 * @param mGroupPosition
-	 * @param mChildPosition
-	 * @return
-	 */
-	public boolean isCheckOccupancyLineClickable(int mGroupPosition,
-			int mChildPosition) {
-		ActualOccupation mActualOccupation = getActualOccupation(
-				mGroupPosition, mChildPosition);
-		if (mActualOccupation != null) {
-			if (mActualOccupation.isAvailable()) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-		// default
-		return false;
-	}
-
-	/**
-	 * TODO: TO BE DELETED as of 2014.04.04 after NEW INTERFACE
-	 * 
-	 * @param mGroupPosition
-	 * @return
-	 */
-	public int getColorOfCheckOccupancyRoom(int mGroupPosition) {
-		Occupancy mOccupancy = getOccupancy(mGroupPosition);
-
-		boolean atLeastOneFree = mOccupancy.isIsAtLeastFreeOnce();
-		boolean atLeastOneOccupied = mOccupancy.isIsAtLeastOccupiedOnce();
-
-		if (atLeastOneFree) {
-			if (atLeastOneOccupied) {
-				return COLOR_CHECK_OCCUPANCY_ATLEASTONCE;
-			} else {
-				return COLOR_CHECK_OCCUPANCY_FREE;
-			}
-		} else {
-			if (atLeastOneOccupied) {
-				return COLOR_CHECK_OCCUPANCY_OCCUPIED;
-			} else {
-				// default
-				return COLOR_CHECK_OCCUPANCY_DEFAULT;
-			}
-		}
-
-	}
-
-	// ********** START OF "I'M WORKING THERE" PART **********
-
-	/**
-	 * Add a <code>ImWorkingRequest</code> to the collection of
-	 * <code>ImWorkingRequest</code> stored.
-	 * 
-	 * @param imWorkingRequest
-	 *            the <code>ImWorkingRequest</code> to add.
-	 */
-	public void addImWorkingRequest(ImWorkingRequest imWorkingRequest) {
-		allImWorkingRequests.add(imWorkingRequest);
-	}
-
-	/**
-	 * Removes a <code>ImWorkingRequest</code> to the collection of
-	 * <code>ImWorkingRequest</code> stored.
-	 * 
-	 * @param imWorkingRequest
-	 *            the <code>ImWorkingRequest</code> to remove.
-	 */
-	public void removeImWorkingRequest(ImWorkingRequest imWorkingRequest) {
-		allImWorkingRequests.remove(imWorkingRequest);
-	}
-
-	/**
-	 * Return all the <code>ImWorkingRequest</code> stored.
-	 * 
-	 * @return the <code>ImWorkingRequest</code> stored.
-	 */
-	public Set<ImWorkingRequest> getAllImWorkingRequest() {
-		return allImWorkingRequests;
-	}
-
-	/**
-	 * Resets all the <code>ImWorkingRequest</code> stored.
-	 * 
-	 * @return false if an error occurred, namely
-	 *         <code>UnsupportedOperationException</code>.
-	 */
-	public boolean resetAllImWorkingRequest() {
-		try {
-			allImWorkingRequests.clear();
-			return true;
-		} catch (UnsupportedOperationException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	/**
-	 * Removes from the set of the working request all the request that end
-	 * timestamp is after now.
-	 * 
-	 * @return
-	 */
-	public boolean resetAllPASTImWorkingRequest() {
-		boolean flag = false;
-		for (ImWorkingRequest imWorkingRequest : allImWorkingRequests) {
-			if (imWorkingRequest.getWork().getPeriod().getTimeStampEnd() < System
-					.currentTimeMillis()) {
-				boolean result = allImWorkingRequests.remove(imWorkingRequest);
-				flag = flag || result;
-			}
-		}
-		return flag;
-	}
-
-	/**
-	 * DOES NOTHING: TO BE DEFINED!
-	 * 
-	 * @param period
-	 * @param b
-	 */
-	private void setImWorkingAvailable(FRPeriod period, boolean b) {
-		// TODO well... how to store that, and prevent the use to commit
-		// multiple times for the same period
-	}
-
-	/**
-	 * DOES NOTHING: TO BE DEFINED!
-	 * 
-	 * Check if the user can submit a <code>ImWorkingRequest</code> given a
-	 * <code>FRPeriod</code>, if the user didn't submit another request for the
-	 * same time.
-	 * 
-	 * @param period
-	 * @return always true for now... which is bad.
-	 */
-	public boolean getIsImWorkingAvailable(FRPeriod period) {
-		// TODO code something!
-		return true;
-	}
-
-	// ********** END OF "I'M WORKING THERE" PART **********
 	// ********** START OF "WHO'S WORKING THERE" PART **********
 
 	/**

@@ -115,36 +115,21 @@ public class FreeRoomCopyClipBoard extends FreeRoomAbstractView implements
 		}
 
 		Toast.makeText(this, userMsg + ": " + text, Toast.LENGTH_SHORT).show();
-		
-	}
-
-	@Override
-	public void freeRoomResultsUpdated() {
-		// WE DO NOTHING!
 
 	}
 
 	@Override
 	public void autoCompletedUpdated() {
 		// WE DO NOTHING!
-
-	}
-
-	@Override
-	public void occupancyResultUpdated() {
-		// WE DO NOTHING!
-
 	}
 
 	@Override
 	public void occupancyResultsUpdated() {
 		// WE DO NOTHING!
-
 	}
 
 	@Override
 	public void initializeView() {
 		// WE DO NOTHING!
-
 	}
 }

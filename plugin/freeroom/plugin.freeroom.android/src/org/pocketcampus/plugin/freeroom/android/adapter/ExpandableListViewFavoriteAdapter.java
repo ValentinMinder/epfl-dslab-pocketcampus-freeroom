@@ -20,11 +20,14 @@ import android.widget.TextView;
 /**
  * //TODO: NOT USED as of 2014.04.04, REPLACED BY ExpandableListViewAdapter
  * <p>
+ * still used for now, may be need a few refactoring! :)
+ * <p>
  * Simple adapter to use with ExpandableListView, Headers are Strings, Childs
  * are FRRooms.
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class ExpandableListViewFavoriteAdapter extends
@@ -112,7 +115,6 @@ public class ExpandableListViewFavoriteAdapter extends
 			}
 		});
 
-		final String uid = room.getUid();
 		final boolean isFav = mModel.isFavorite(room);
 
 		if (isFav) {

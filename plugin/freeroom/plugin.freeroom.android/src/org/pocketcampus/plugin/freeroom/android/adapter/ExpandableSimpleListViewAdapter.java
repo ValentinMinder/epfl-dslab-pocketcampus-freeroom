@@ -5,23 +5,24 @@ import java.util.Map;
 
 import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
-import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 /**
  * //TODO: NOT USED as of 2014.04.04, REPLACED BY ExpandableListViewAdapter
  * <p>
+ * NOT USED, but need refactoring
+ * <p>
  * Simple adapter to use with ExpandableListView, all elements are String.
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class ExpandableSimpleListViewAdapter extends
@@ -62,8 +63,8 @@ public class ExpandableSimpleListViewAdapter extends
 		TextView tv = vholder.getTextView();
 		tv.setText(text);
 		if (mModel != null) {
-			convertView.setBackgroundColor(mModel.getColorOfCheckOccupancyRoom(
-					groupPosition, childPosition));
+			// convertView.setBackgroundColor(mModel.getColorOfCheckOccupancyRoom(
+			// groupPosition, childPosition));
 		}
 		return convertView;
 	}
@@ -100,8 +101,8 @@ public class ExpandableSimpleListViewAdapter extends
 				convertView
 						.setBackgroundColor(mModel.COLOR_CHECK_OCCUPANCY_DEFAULT);
 			} else {
-				convertView.setBackgroundColor(mModel
-						.getColorOfCheckOccupancyRoom(groupPosition));
+				// convertView.setBackgroundColor(mModel
+				// .getColorOfCheckOccupancyRoom(groupPosition));
 			}
 		}
 		return convertView;

@@ -1,13 +1,12 @@
 package org.pocketcampus.plugin.freeroom.android.iface;
 
 /**
- * IFreeRoomModel
+ * IFreeRoomModel it the Interface for the Model of the FreeRoom plugin. It is
+ * empty as we have only one Model in this plugin.
  * 
- * Interface for the Model of the FreeRoom plugin. It is empty as we have only
- * one Model in this plugin.
- * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  */
 public interface IFreeRoomModel {
 

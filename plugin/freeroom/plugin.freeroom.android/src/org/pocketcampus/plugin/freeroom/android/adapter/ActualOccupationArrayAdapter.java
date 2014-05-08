@@ -11,8 +11,6 @@ import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.ActualOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 
 import android.content.Context;
 import android.view.LayoutInflater;

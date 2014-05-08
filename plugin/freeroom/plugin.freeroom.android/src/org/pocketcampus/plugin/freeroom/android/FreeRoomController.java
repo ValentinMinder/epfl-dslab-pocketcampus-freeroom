@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.freeroom.android;
 
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -9,24 +7,16 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.req.AutoCompleteRequestASyncTask;
-import org.pocketcampus.plugin.freeroom.android.req.CheckOccupancyRequest;
 import org.pocketcampus.plugin.freeroom.android.req.CheckWhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.android.req.FRRequestASyncTask;
-import org.pocketcampus.plugin.freeroom.android.req.GetFreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.android.req.ImWorkingRequestASyncTask;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteReply;
 import org.pocketcampus.plugin.freeroom.shared.AutoCompleteRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRReply;
-import org.pocketcampus.plugin.freeroom.shared.FRRoom;
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomReply;
-import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Client;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
-import org.pocketcampus.plugin.freeroom.shared.Occupancy;
-import org.pocketcampus.plugin.freeroom.shared.OccupancyReply;
-import org.pocketcampus.plugin.freeroom.shared.OccupancyRequest;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
@@ -40,8 +30,9 @@ import android.widget.Toast;
  * This class issues requests to the FreeRoom PocketCampus server to get the
  * FreeRoom data of the logged in user.
  * 
- * @author FreeRoom Project Team - Julien WEBER <julien.weber@epfl.ch> and
- *         Valentin MINDER <valentin.minder@epfl.ch>
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
 public class FreeRoomController extends PluginController implements
@@ -77,84 +68,13 @@ public class FreeRoomController extends PluginController implements
 		return mModel;
 	}
 
-	private FreeRoomRequest freeRoomRequest = null;
-
-	public void prepareSearchFreeRoom(FreeRoomRequest request) {
-		this.freeRoomRequest = request;
-	}
-
-	public void searchFreeRoom(IFreeRoomView view) {
-		if (freeRoomRequest != null) {
-			new GetFreeRoomRequest(view).start(this, mClient,
-					this.freeRoomRequest);
-			freeRoomRequest = null;
-		} else {
-			Log.e(this.getClass().toString(),
-					"request not defined in controller!");
-		}
-	}
-
 	public void autoCompleteBuilding(IFreeRoomView view,
 			AutoCompleteRequest request) {
 		new AutoCompleteRequestASyncTask(view).start(this, mClient, request);
 	}
 
-	private OccupancyRequest occupancyRequest;
-
-	public void prepareCheckOccupancy(OccupancyRequest request) {
-		occupancyRequest = request;
-	}
-
-	public void checkOccupancy(IFreeRoomView view) {
-		if (occupancyRequest != null) {
-			new CheckOccupancyRequest(view).start(this, mClient,
-					occupancyRequest);
-			occupancyRequest = null;
-		} else {
-			Log.e(this.getClass().toString(),
-					"request not defined in controller!");
-		}
-	}
-
-	/**
-	 * Sets the result in the model.
-	 */
-	public void setFreeRoomResults(FreeRoomReply rep) {
-		mModel.setFreeRoomResults(rep.getRooms());
-	}
-
 	public void setAutoCompleteResults(AutoCompleteReply result) {
 		mModel.setAutoComplete(result.getListRoom());
-	}
-
-	public void setCheckOccupancyResults(OccupancyReply result) {
-		List<Occupancy> list = result.getOccupancyOfRooms();
-
-		// this check the uniqueness of the rooms in the reply
-		LinkedHashSet<FRRoom> mLinkedHashSet = null;
-		boolean allUniqueFlag = true;
-		if (list != null) {
-			mLinkedHashSet = new LinkedHashSet<FRRoom>(list.size());
-			Iterator<Occupancy> iter = list.iterator();
-			while (iter.hasNext() && allUniqueFlag) {
-				FRRoom mFrRoom = iter.next().getRoom();
-				if (mLinkedHashSet.contains(mFrRoom)) {
-					allUniqueFlag = false;
-				} else {
-					mLinkedHashSet.add(mFrRoom);
-				}
-			}
-		} else {
-			allUniqueFlag = false;
-		}
-
-		if (allUniqueFlag) {
-			mModel.setOccupancyResultsListOccupancy(list);
-			mModel.setOccupancyResultsLinkedHashSetFRRoom(mLinkedHashSet);
-		} else {
-			Log.e(this.getClass().toString(),
-					"Warning: the response from the server contains duplicates!");
-		}
 	}
 
 	public void handleReplySuccess(IFreeRoomView caller, int status,
@@ -194,7 +114,6 @@ public class FreeRoomController extends PluginController implements
 		if (imWorkingRequest != null) {
 			new ImWorkingRequestASyncTask(view).start(this, mClient,
 					imWorkingRequest);
-			mModel.addImWorkingRequest(imWorkingRequest);
 			imWorkingRequest = null;
 		} else {
 			Log.e(this.getClass().toString(),
@@ -300,7 +219,7 @@ public class FreeRoomController extends PluginController implements
 	 *            the caller view
 	 */
 	public void sendFRRequest(IFreeRoomView view) {
-		new FRRequestASyncTask(view)
-				.start(this, mClient, mModel.getFRRequestDetails());
+		new FRRequestASyncTask(view).start(this, mClient,
+				mModel.getFRRequestDetails());
 	}
 }

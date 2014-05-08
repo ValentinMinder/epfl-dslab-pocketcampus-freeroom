@@ -12,6 +12,10 @@ import android.widget.BaseExpandableListAdapter;
 
 /**
  * //TODO: NOT USED as of 2014.04.04, REPLACED BY ExpandableListViewAdapter
+ * 
+ * @author FreeRoom Project Team (2014/05)
+ * @author Julien WEBER <julien.weber@epfl.ch>
+ * @author Valentin MINDER <valentin.minder@epfl.ch>
  */
 public abstract class ExpandableAbstractListViewAdapter<T> extends
 		BaseExpandableListAdapter {
@@ -107,10 +111,6 @@ public abstract class ExpandableAbstractListViewAdapter<T> extends
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		if (mModel != null) {
-			return mModel.isCheckOccupancyLineClickable(groupPosition,
-					childPosition);
-		}
 		return true;
 	}
 

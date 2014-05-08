@@ -938,16 +938,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	@Override
-	public void freeRoomResultsUpdated() {
-		// we do nothing here
-	}
-
-	@Override
-	public void occupancyResultUpdated() {
-		// we do nothing here
-	}
-
-	@Override
 	public void occupancyResultsUpdated() {
 		StringBuilder build = new StringBuilder(50);
 		if (mModel.getOccupancyResults().isEmpty()) {
