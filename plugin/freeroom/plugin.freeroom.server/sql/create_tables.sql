@@ -1,4 +1,8 @@
 -- Hold the list of rooms and all the details needed about a room.
+-- groupAccess is used to differentiate the visibility of the rooms for some peoples (e.g student, staff..)
+-- The lowest groupAccess possible is 1, usually for students, staff can have groupAccess of 20
+-- It is possible to defines as many groups as there are integer between 1 and 20, 
+-- the bigger the integer, the more rooms the group has access to.
 CREATE TABLE IF NOT EXISTS `fr-roomslist` (
 	`uid` char(255) NOT NULL,
 	`doorCode` char(255) NOT NULL,

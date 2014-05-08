@@ -89,7 +89,7 @@ struct FRRequest {
 	2: required bool onlyFreeRooms;
 	//if null, it means every rooms
 	3: required list<string> uidList;
-	//as defined in database, user: 1, staff : 20
+	//as defined in database, see create-tables.sql in server for more info
 	4: required i32 userGroup;
 }
 
@@ -105,6 +105,7 @@ struct AutoCompleteRequest {
 	// the string must be at least two chars to be accepted by the server
 	1: required string constraint;
 	2: optional set<string> forbiddenRoomsUID;
+	//as defined in database, see create-tables.sql in server for more info
 	3: required i32 userGroup;
 }
 
