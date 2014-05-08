@@ -191,7 +191,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 			prevRoom = checkMultipleSubmissionUserOccupancy(period, room, hash);
 		}
 
-		boolean inserted = insertAndCheckOccupancyRoom(period, room, type,
+		boolean inserted = insertOccupancyAndCheckOccupancy(period, room, type,
 				hash, prevRoom);
 		log(LOG_SIDE.SERVER,
 				Level.INFO,
@@ -277,7 +277,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 	 * @return Return true if the occupancy has been successfully stored in the
 	 *         database, false otherwise.
 	 */
-	private boolean insertAndCheckOccupancyRoom(FRPeriod period, FRRoom room,
+	private boolean insertOccupancyAndCheckOccupancy(FRPeriod period, FRRoom room,
 			OCCUPANCY_TYPE typeToInsert, String hash, String prevRoom) {
 
 		long tsStart = period.getTimeStampStart();
