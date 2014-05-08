@@ -396,7 +396,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mFavoritesDialog.getWindow().setAttributes(lp);
 
 		popupFavoritesView = mLayoutInflater.inflate(
-				R.layout.freeroom_layout_popup_fav, null);
+				R.layout.freeroom_layout_dialog_fav, null);
 		
 		// these work perfectly
 		popupFavoritesView.setMinimumWidth((int) (activityWidth * 0.9f));
