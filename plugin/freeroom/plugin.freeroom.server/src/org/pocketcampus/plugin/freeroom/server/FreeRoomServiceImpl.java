@@ -738,6 +738,9 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 				}
 
 				if (uidsList.isEmpty()) {
+					log(LOG_SIDE.SERVER, Level.WARNING,
+							"No rooms are free during period start = "
+									+ tsStart + " end = " + tsEnd);
 					return new HashMap<String, List<Occupancy>>();
 				}
 				
