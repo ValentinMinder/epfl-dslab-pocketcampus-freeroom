@@ -371,7 +371,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		mInfoDialog.getWindow().setAttributes(lp);
 
 		popupInfoView = mLayoutInflater.inflate(
-				R.layout.freeroom_layout_popup_info, null);
+				R.layout.freeroom_layout_dialog_info, null);
 
 		// these work perfectly
 		popupInfoView.setMinimumWidth((int) (activityWidth * 0.9f));
