@@ -4,56 +4,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/darker_gray"
-    android:orientation="vertical" >
+    android:background="@android:color/background_light"
+    android:orientation="vertical"
+    android:padding="4dp" >
 
-    <LinearLayout
+    <!-- ListView that contains all the favorites by buildings -->
+
+    <ExpandableListView
+        android:id="@+id/freeroom_layout_dialog_fav_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_margin="4dp"
-        android:background="@android:color/background_light"
-        android:orientation="vertical"
-        android:padding="4dp" >
-
-        <!-- headers for title and button -->
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/background_light"
-            android:orientation="horizontal" >
-
-            <!-- Title (favorites) -->
-
-            <TextView
-                android:id="@+id/freeroom_layout_dialog_fav_title"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="right"
-                android:layout_weight="10"
-                android:text="@string/freeroom_dialog_fav_title"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@android:color/black" />
-
-            <!-- Button to add a favorites -->
-
-            <Button
-                android:id="@+id/freeroom_layout_dialog_fav_add"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:text="@string/freeroom_dialog_fav_add"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black" />
-            
-        </LinearLayout>
-
-        <!-- ListView that contains all the favorites by buildings -->
-
-        <ExpandableListView
-            android:id="@+id/freeroom_layout_dialog_fav_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

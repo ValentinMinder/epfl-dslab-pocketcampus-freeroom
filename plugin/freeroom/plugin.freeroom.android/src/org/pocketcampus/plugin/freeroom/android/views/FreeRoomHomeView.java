@@ -372,12 +372,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	private ExpandableListViewFavoriteAdapter mAdapterFav;
 
 	private void initFavoritesDialog() {
-		// construct the popup
-		// it MUST fill the parent in height, such that weight works in xml for
-		// heights. Otherwise, some elements may not be displayed anymore
-
 		// Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.freeroom_dialog_fav_title));
+		builder.setIcon(R.drawable.star2x28);
+		builder.setPositiveButton(getString(R.string.freeroom_dialog_fav_add),
+				null);
+		builder.setNegativeButton(
+				getString(R.string.freeroom_dialog_fav_close), null);
 
 		// Get the AlertDialog from create()
 		mFavoritesDialog = builder.create();
@@ -397,7 +399,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 		popupFavoritesView = mLayoutInflater.inflate(
 				R.layout.freeroom_layout_dialog_fav, null);
-		
+
 		// these work perfectly
 		popupFavoritesView.setMinimumWidth((int) (activityWidth * 0.9f));
 		popupFavoritesView.setMinimumHeight((int) (activityHeight * 0.8f));
@@ -407,14 +409,15 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 
 			@Override
 			public void onShow(DialogInterface dialog) {
-				
+
 			}
 		});
 
-		
+		mFavoritesDialog.hide();
+		mFavoritesDialog.show();
+		mFavoritesDialog.dismiss();
 
-		Button tv = (Button) popupFavoritesView
-				.findViewById(R.id.freeroom_layout_dialog_fav_add);
+		Button tv = mFavoritesDialog.getButton(DialogInterface.BUTTON_POSITIVE);
 		tv.setOnClickListener(new OnClickListener() {
 
 			@Override
