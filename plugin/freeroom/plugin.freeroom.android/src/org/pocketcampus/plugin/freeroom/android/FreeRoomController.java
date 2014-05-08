@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.plugin.freeroom.R;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
 import org.pocketcampus.plugin.freeroom.android.req.AutoCompleteRequestASyncTask;
@@ -127,7 +128,8 @@ public class FreeRoomController extends PluginController implements
 	 * 
 	 * <p>
 	 * The user will never be blocked to send other request and reuse the
-	 * buttons. The server will handle these cases and reply with a conflict.
+	 * buttons. The server will handle these cases and reply with a
+	 * conflict/update.
 	 * 
 	 * @param reply
 	 *            the reply from the server
@@ -135,6 +137,41 @@ public class FreeRoomController extends PluginController implements
 	public void validateImWorking(ImWorkingReply reply) {
 		Log.v("controller-imWorking-ok200",
 				"Your working indication was succcessfully submitted");
+		if (mModel.isOnlyServer()) {
+			Toast.makeText(
+					this,
+					getString(R.string.freeroom_share_server_basis)
+							+ " "
+							+ getString(
+									R.string.freeroom_share_server_submitted)
+									.toUpperCase(), Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	/**
+	 * Tells the user the <code>ImWorkingRequest</code> he submitted was
+	 * accepted and registered by the server, and updated correctly his previous
+	 * indication. (299 updated)
+	 * 
+	 * <p>
+	 * The user will never be blocked to send other request and reuse the
+	 * buttons. The server will handle these cases and reply with a
+	 * conflict/update.
+	 * 
+	 * @param reply
+	 *            the reply from the server
+	 */
+	public void updateImWorking(ImWorkingReply reply) {
+		Log.v("controller-imWorking-updated299",
+				"Your working indication was succcessfully updated");
+		if (mModel.isOnlyServer()) {
+			Toast.makeText(
+					this,
+					getString(R.string.freeroom_share_server_basis)
+							+ " "
+							+ getString(R.string.freeroom_share_server_updated)
+									.toUpperCase(), Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	/**
@@ -150,6 +187,9 @@ public class FreeRoomController extends PluginController implements
 				"You already submitted something for this period of time, "
 						+ "you request was denied by the server "
 						+ "(conflict)");
+		Toast.makeText(this,
+				getString(R.string.freeroom_share_server_conflict),
+				Toast.LENGTH_LONG).show();
 	}
 
 	/**

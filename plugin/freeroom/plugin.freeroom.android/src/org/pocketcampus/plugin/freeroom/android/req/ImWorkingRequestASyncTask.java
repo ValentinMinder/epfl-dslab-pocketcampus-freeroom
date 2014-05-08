@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.freeroom.android.req;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomController;
 import org.pocketcampus.plugin.freeroom.android.iface.IFreeRoomView;
+import org.pocketcampus.plugin.freeroom.shared.Constants;
 import org.pocketcampus.plugin.freeroom.shared.FreeRoomService.Iface;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.ImWorkingRequest;
@@ -47,8 +48,13 @@ public class ImWorkingRequestASyncTask extends
 		int status = reply.getStatus();
 		callerView.refreshOccupancies();
 		if (status == 200) {
-			Log.v(this.getClass().toString(), "server replied successfully");
+			Log.v(this.getClass().toString(), "server replied successfully: ok");
+			// in case of first submit
 			mController.validateImWorking(reply);
+		} else if (status == Constants.HTTP_UPDATED) {
+			Log.v(this.getClass().toString(), "server replied successfully: updated");
+			// in case of update
+			mController.updateImWorking(reply);
 		} else if (status == 409) {
 			// in case of conflict with the same user.
 			mController.conflictImWorking(reply);

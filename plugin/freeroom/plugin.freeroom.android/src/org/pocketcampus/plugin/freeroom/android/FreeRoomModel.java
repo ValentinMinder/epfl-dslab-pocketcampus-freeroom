@@ -644,4 +644,13 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		}
 		return key;
 	}
+
+	private boolean onlyServer = false;
+	public boolean isOnlyServer() {
+		return onlyServer;
+	}
+	
+	public void setOnlyServer(boolean newValue) {
+		onlyServer = newValue;
+	}
 }

@@ -966,9 +966,9 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 						if (((Occupancy) o).getRoom().getUid()
 								.equals(room.getUid())) {
 							mModel.setDisplayedOccupancy((Occupancy) o);
-							// dont work
+							// doesn't work
 							mInfoActualOccupationAdapter.notifyDataSetChanged();
-							// work!
+							// works!
 							displayInfoDialog();
 							break label;
 						}
@@ -1233,6 +1233,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		ImWorkingRequest request = new ImWorkingRequest(work,
 				mModel.getAnonymID());
 		mController.prepareImWorking(request);
+		mModel.setOnlyServer(!withFriends);
 		mController.ImWorking(this);
 		if (withFriends) {
 			shareWithFriends(mPeriod, mRoom, toShare);
