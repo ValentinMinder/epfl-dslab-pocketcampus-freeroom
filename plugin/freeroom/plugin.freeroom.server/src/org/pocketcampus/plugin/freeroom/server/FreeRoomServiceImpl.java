@@ -41,6 +41,7 @@ import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingReply;
 import org.pocketcampus.plugin.freeroom.shared.WhoIsWorkingRequest;
 import org.pocketcampus.plugin.freeroom.shared.WorkingOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
+import org.pocketcampus.plugin.freeroom.shared.utils.TimesUtils;
 
 /**
  * The actual implementation of the server side of the FreeRoom Plugin.
@@ -186,7 +187,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 		String prevRoom = null;
 		if (type == OCCUPANCY_TYPE.USER) {
 			// round user occupancy to a full hour
-			period.setTimeStampStart(Utils.roundToNearestHalfHourBefore(period
+			period.setTimeStampStart(TimesUtils.roundToNearestHalfHourBefore(period
 					.getTimeStampStart()));
 			prevRoom = checkMultipleSubmissionUserOccupancy(period, room, hash);
 		}
@@ -513,7 +514,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 		// round the given period to half hours to have a nice display on UI.
 		FRPeriod period = request.getPeriod();
-		long tsStart = Utils.roundToNearestHalfHourBefore(period
+		long tsStart = TimesUtils.roundToNearestHalfHourBefore(period
 				.getTimeStampStart());
 		long tsEnd = Utils
 				.roundToNearestHalfHourAfter(period.getTimeStampEnd());

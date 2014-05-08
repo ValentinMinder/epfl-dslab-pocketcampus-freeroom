@@ -19,6 +19,7 @@ import org.pocketcampus.plugin.freeroom.shared.FreeRoomRequest;
 public class FRTimes {
 	public static final long ONE_SEC_IN_MS = 1000;
 	public static final long ONE_MIN_IN_MS = ONE_SEC_IN_MS * 60;
+	public static final long m30_MIN_IN_MS = ONE_MIN_IN_MS * 30;
 	public static final long ONE_HOUR_IN_MS = ONE_MIN_IN_MS * 60;
 	public static final long ONE_DAY_IN_MS = ONE_HOUR_IN_MS * 24;
 	public static final long ONE_WEEK_IN_MS = ONE_DAY_IN_MS * 7;
@@ -520,6 +521,7 @@ public class FRTimes {
 		long startMS = mCalendar.getTimeInMillis();
 		mCalendar.set(yearSelected, monthSelected, dayOfMonthSelected,
 				endHourSelected, endMinSelected);
+		startMS = TimesUtils.roundToNearestHalfHourBefore(startMS);
 		long endMS = mCalendar.getTimeInMillis();
 
 		FRPeriod mFrPeriod = new FRPeriod(startMS, endMS, false);

@@ -175,24 +175,7 @@ public class Utils {
 		return end - start;
 	}
 
-	/**
-	 * Round to the nearest half hour before : if the minutes are less than
-	 * 30min, we round to the previous full hour, otherwise we round the half
-	 * hour
-	 * 
-	 * @param timestamp The timestamp to round
-	 * @return The rounded timestamp
-	 */
-	public static long roundToNearestHalfHourBefore(long timestamp) {
-		long timeToCompleteHour = ONE_HOUR_MS - timestamp % ONE_HOUR_MS;
 
-		if (timeToCompleteHour < m30M_MS) {
-			return (timestamp + timeToCompleteHour) - m30M_MS;
-		}
-
-		long timeInMin = timestamp % ONE_HOUR_MS;
-		return timestamp - timeInMin;
-	}
 
 	/**
 	 * Round the nearest half hour after
