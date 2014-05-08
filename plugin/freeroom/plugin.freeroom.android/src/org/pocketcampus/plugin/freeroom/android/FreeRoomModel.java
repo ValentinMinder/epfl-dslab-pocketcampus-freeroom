@@ -318,9 +318,14 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 	 * 
 	 * @param request
 	 *            next currently displayed request.
+	 * @param save
+	 *            if the request should be kept in history or not.
 	 */
-	public void setFRRequestDetails(FRRequestDetails request) {
-		// TODO: write in history each time a request is set.
+	public void setFRRequestDetails(FRRequestDetails request, boolean save) {
+		if (save) {
+			// write in history each time a request is set.
+			addPreviousRequest(request);
+		}
 		this.mFRRequest = request;
 	}
 
@@ -649,12 +654,102 @@ public class FreeRoomModel extends PluginModel implements IFreeRoomModel {
 		return key;
 	}
 
+	/**
+	 * True if the last sharing was only for server, false if also for friends.
+	 */
 	private boolean onlyServer = false;
+
+	/**
+	 * Return the value of onlyServer boolean.
+	 * 
+	 * @return true if the last sharing was only for server, false if also for
+	 *         friends.
+	 */
 	public boolean isOnlyServer() {
 		return onlyServer;
 	}
-	
+
+	/**
+	 * Set the value of onlyServer boolean.
+	 * 
+	 * @param newValue
+	 *            true if the last sharing was only for server, false if also
+	 *            for friends.
+	 */
 	public void setOnlyServer(boolean newValue) {
 		onlyServer = newValue;
+	}
+
+	/* STORAGE OF PREV. REQUEST */
+
+	private List<FRRequestDetails> previousRequestDetails;
+	private String PREV_REQ_FILENAME = "freeroom_prev_req_file.dat";
+
+	/**
+	 * Retrieves the previous request object from persistent file.
+	 * 
+	 * @return true if successful.
+	 */
+	private boolean retrievePreviousRequest() {
+		Object read = readObjectFromFile(PREV_REQ_FILENAME);
+		if (read instanceof List<?>) {
+			previousRequestDetails = (List<FRRequestDetails>) read;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Save the previous request object to persistent file.
+	 * 
+	 * @return true if successful.
+	 */
+	private boolean savePreviousRequest() {
+		return writeObjectToFile(PREV_REQ_FILENAME, previousRequestDetails);
+	}
+
+	/**
+	 * Get a reference to the list of previous request. It will load from the
+	 * persistent file if not loaded so far. It will construct a new previous
+	 * request structure and save it to file if none is found.
+	 * 
+	 * @return a reference to the list of previous request.
+	 */
+	public List<FRRequestDetails> getPreviousRequest() {
+		if (previousRequestDetails == null) {
+			if (!retrievePreviousRequest()) {
+				resetPreviousRequest();
+			}
+		}
+		return previousRequestDetails;
+	}
+
+	/**
+	 * Reset the previous request structure to an empty structure and save it to
+	 * file. Useful when a bug appear, when changing structures during updates,
+	 * or simply at first launch of the app.
+	 * <p>
+	 * Call getPreviousRequest in usual mode, this is reserved for particular
+	 * uses.
+	 * 
+	 * @return true if written to file successful.
+	 */
+	public boolean resetPreviousRequest() {
+		previousRequestDetails = new ArrayList<FRRequestDetails>(10);
+		return savePreviousRequest();
+	}
+
+	/**
+	 * Add a request to the previous request, and save the previous request.
+	 * 
+	 * @param request
+	 *            request to add to previous request.
+	 * @return true if successful
+	 */
+	public boolean addPreviousRequest(FRRequestDetails request) {
+		// ensure favorites structure exists.
+		getPreviousRequest();
+		return previousRequestDetails.add(request);
 	}
 }

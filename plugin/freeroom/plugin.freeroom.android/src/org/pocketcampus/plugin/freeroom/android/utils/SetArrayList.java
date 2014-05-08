@@ -30,6 +30,11 @@ public class SetArrayList<E> implements List<E>, Set<E> {
 	private List<E> internalList;
 	private Set<E> internalSet;
 
+	public SetArrayList(int i) {
+		internalList = new ArrayList<E>(i);
+		internalSet = new HashSet<E>(i);
+	}
+
 	public SetArrayList() {
 		internalList = new ArrayList<E>();
 		internalSet = new HashSet<E>();
@@ -180,5 +185,16 @@ public class SetArrayList<E> implements List<E>, Set<E> {
 	@Override
 	public <T> T[] toArray(T[] arg0) {
 		return internalList.toArray(arg0);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder build = new StringBuilder(size() * 50);
+		Iterator<E> iter = iterator();
+		while (iter.hasNext()) {
+			E e = iter.next();
+			build.append(e);
+		}
+		return build.toString();
 	}
 }

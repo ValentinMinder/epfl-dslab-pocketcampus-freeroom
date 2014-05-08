@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.freeroom.android.utils;
 
 import java.util.List;
 
+import org.pocketcampus.plugin.freeroom.android.views.FreeRoomHomeView;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRequest;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
@@ -86,6 +87,27 @@ public class FRRequestDetails extends FRRequest {
 	public FRRequestDetails(FRRequest other) {
 		super(other);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		// TODO: should be better!!!
+		StringBuilder build = new StringBuilder(100);
+		build.append(FreeRoomHomeView.generateShortTimeSummary(super
+				.getPeriod()) + " ");
+		if (isAny()) {
+			build.append("any free room");
+		} else {
+			build.append("specified rooms: ");
+			if (isFav()) {
+				build.append("favorites ");
+			}
+			if (isUser()) {
+				build.append("user-defined: ");
+				build.append(getUidNonFav());
+			}
+		}
+		return build.toString();
 	}
 
 }

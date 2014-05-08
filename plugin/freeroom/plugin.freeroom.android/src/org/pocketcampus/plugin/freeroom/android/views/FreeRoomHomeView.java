@@ -790,10 +790,26 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// the view will be removed or the text changed, no worry
 		mSummarySelectedRoomsTextViewSearchMenu.setText("empty");
 
+		// display the previous searches
 		mSearchPreviousListView = (ListView) mSearchView
 				.findViewById(R.id.freeroom_layout_dialog_search_prev_search);
-		// TODO: previous search
-		// mSearchPreviousListView.setAdapter();
+		ArrayAdapter<FRRequestDetails> adapter = new ArrayAdapter<FRRequestDetails>(
+				this, R.layout.sdk_list_entry, R.id.sdk_list_entry_text,
+				mModel.getPreviousRequest());
+		mSearchPreviousListView.setAdapter(adapter);
+		mSearchPreviousListView
+				.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						FRRequestDetails req = mModel.getPreviousRequest().get(
+								arg2);
+						if (req != null) {
+							fillSearchDialog(req);
+						}
+					}
+				});
 
 		initSearch();
 	}
@@ -899,7 +915,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 * <code>refresh</code> in order to send it to the server.
 	 */
 	private void initDefaultRequest() {
-		mModel.setFRRequestDetails(validRequest());
+		mModel.setFRRequestDetails(validRequest(), false);
 	}
 
 	private FRRequestDetails validRequest() {
@@ -1048,12 +1064,14 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	 *            the period of time
 	 * @return a string summary of a given period of time.
 	 */
-	private String generateShortTimeSummary(FRPeriod period) {
+	public static String generateShortTimeSummary(FRPeriod period) {
 		StringBuilder build = new StringBuilder(100);
 		Date endDate = new Date(period.getTimeStampEnd());
 		Date startDate = new Date(period.getTimeStampStart());
-		SimpleDateFormat hour_min = new SimpleDateFormat(
-				getString(R.string.freeroom_pattern_hour_format));
+		// TODO: move that to utils, and clean that.
+		// SimpleDateFormat hour_min = new SimpleDateFormat(
+		// getString(R.string.freeroom_pattern_hour_format));
+		SimpleDateFormat hour_min = new SimpleDateFormat("HH:MM");
 
 		build.append(hour_min.format(startDate));
 		build.append(" - ");
@@ -1175,6 +1193,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 	}
 
 	private void fillSearchDialog(final FRRequestDetails request) {
+		reset();
 		resetTimes(request.getPeriod());
 		anyButton.setChecked(request.isAny());
 		specButton.setChecked(!request.isAny());
@@ -1201,6 +1220,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			mSummarySelectedRoomsTextViewSearchMenu
 					.setText(getSummaryTextFromCollection(selectedRooms));
 		}
+		updateDateTimePickersAndButtons();
 	}
 
 	public String wantToShare(FRPeriod mPeriod, FRRoom mRoom, String toShare) {
@@ -2170,10 +2190,13 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 			addAllFavoriteToCollection(mUIDList, AddCollectionCaller.SEARCH,
 					true);
 		}
+		SetArrayList<FRRoom> userDef = new SetArrayList<FRRoom>(
+				selectedRooms.size());
 		if (userDefButton.isChecked()) {
 			Iterator<FRRoom> iter = selectedRooms.iterator();
 			while (iter.hasNext()) {
 				FRRoom room = iter.next();
+				userDef.add(room);
 				mUIDList.add(room.getUid());
 			}
 		}
@@ -2184,9 +2207,8 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements
 		// TODO change group accordingly, set to 1 by default and for testing
 		// purpose
 		FRRequestDetails details = new FRRequestDetails(period,
-				freeButton.isChecked(), mUIDList, any, fav, user,
-				selectedRooms, 1);
-		mModel.setFRRequestDetails(details);
+				freeButton.isChecked(), mUIDList, any, fav, user, userDef, 1);
+		mModel.setFRRequestDetails(details, true);
 		mController.sendFRRequest(this);
 		mSearchDialog.dismiss();
 
