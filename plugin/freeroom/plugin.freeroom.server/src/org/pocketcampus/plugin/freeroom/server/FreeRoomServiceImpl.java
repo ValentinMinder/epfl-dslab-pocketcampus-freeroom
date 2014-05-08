@@ -846,6 +846,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 				FRPeriod period = new FRPeriod(start, end, false);
 				FRRoom mRoom = new FRRoom(doorCode, uid);
+				mRoom.setBuilding_name(Utils.extractBuilding(doorCode));
+				
 				mRoom.setCapacity(capacity);
 				if (alias != null) {
 					mRoom.setDoorCodeAlias(alias);
@@ -1074,8 +1076,11 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
 			ResultSet resultQuery = query.executeQuery();
 			while (resultQuery.next()) {
-				FRRoom frRoom = new FRRoom(resultQuery.getString("doorCode"),
+				String doorCode = resultQuery.getString("doorCode");
+				FRRoom frRoom = new FRRoom(doorCode,
 						resultQuery.getString("uid"));
+				frRoom.setBuilding_name(Utils.extractBuilding(doorCode));
+				
 				int cap = resultQuery.getInt("capacity");
 				if (cap > 0) {
 					frRoom.setCapacity(cap);
