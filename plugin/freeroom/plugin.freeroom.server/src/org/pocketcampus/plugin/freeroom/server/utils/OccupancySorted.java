@@ -9,6 +9,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.Occupancy;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
+import org.pocketcampus.plugin.freeroom.shared.utils.TimesUtils;
 
 /**
  * This class is used to sort, fill and then create an occupancy based on
@@ -48,8 +49,8 @@ public class OccupancySorted {
 
 	public void addActualOccupation(ActualOccupation occ) {
 		FRPeriod period = occ.getPeriod();
-		long start = Utils.roundSAndMSToZero(period.getTimeStampStart());
-		long end = Utils.roundSAndMSToZero(period.getTimeStampEnd());
+		long start = TimesUtils.roundSAndMSToZero(period.getTimeStampStart());
+		long end = TimesUtils.roundSAndMSToZero(period.getTimeStampEnd());
 
 		if (start < timestampStart) {
 			start = timestampStart;
@@ -268,8 +269,8 @@ public class OccupancySorted {
 	 */
 	private ArrayList<ActualOccupation> cutInStepsPeriod(long start, long end) {
 		ArrayList<ActualOccupation> result = new ArrayList<ActualOccupation>();
-		long hourSharpBefore = Utils.roundHourBefore(start);
-		long numberHours = Utils.determineNumberHour(start, end);
+		long hourSharpBefore = TimesUtils.roundHourBefore(start);
+		long numberHours = TimesUtils.determineNumberHour(start, end);
 
 		for (int i = 0; i < numberHours; ++i) {
 			long minStart = Math.max(hourSharpBefore, hourSharpBefore + i
